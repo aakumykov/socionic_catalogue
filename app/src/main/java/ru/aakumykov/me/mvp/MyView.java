@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MyView extends AppCompatActivity implements View.OnClickListener{
+public class MyView extends AppCompatActivity implements View.OnClickListener {
 
     private final static String TAG = "myLog";
     MyPresenter myPresenter;
@@ -33,21 +33,20 @@ public class MyView extends AppCompatActivity implements View.OnClickListener{
         setButton.setOnClickListener(this);
         clearButton.setOnClickListener(this);
 
-        myPresenter = (MyPresenter) getLastCustomNonConfigurationInstance();
-        if (null == myPresenter)
-            myPresenter = new MyPresenter();
+        myPresenter = new MyPresenter();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "=START");
         myPresenter.linkView(this);
     }
 
     @Override
-    public Object onRetainCustomNonConfigurationInstance() {
-        return myPresenter;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "=DESTROY");
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "=STOP");
         myPresenter.unlinkView();
     }
 

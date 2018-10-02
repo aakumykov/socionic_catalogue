@@ -8,7 +8,6 @@ public class MyPresenter {
     private final static String TAG = "myLog";
     private MyView view;
     private MyModel model;
-    private String lastText;
 
     MyPresenter() {
         Log.d(TAG, "=MyPresenter()=");
@@ -18,9 +17,6 @@ public class MyPresenter {
     public void linkView(MyView view) {
         Log.d(TAG, "=linkView()=");
         this.view = view;
-        Log.d(TAG, this.view.toString());
-        if (!TextUtils.isEmpty(lastText))
-            view.displayText(lastText);
     }
 
     public void unlinkView() {
@@ -31,7 +27,6 @@ public class MyPresenter {
     public void setButtonClicked() {
         String newText = view.getNewText();
         if (!TextUtils.isEmpty(newText)) {
-            lastText = newText;
             String processedText = model.processText(newText);
             view.displayText(processedText);
             view.clearTextInput();
