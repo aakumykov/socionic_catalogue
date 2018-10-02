@@ -3,7 +3,7 @@ package ru.aakumykov.me.mvp;
 import android.text.TextUtils;
 import android.util.Log;
 
-public class MyPresenter {
+class MyPresenter {
 
     private final static String TAG = "myLog";
     private MyView view;
@@ -14,17 +14,17 @@ public class MyPresenter {
         this.model = new MyModel();
     }
 
-    public void linkView(MyView view) {
+    void linkView(MyView view) {
         Log.d(TAG, "=linkView()=");
         this.view = view;
     }
 
-    public void unlinkView() {
+    void unlinkView() {
         Log.d(TAG, "=unlinkView()=");
         this.view = null;
     }
 
-    public void setButtonClicked() {
+    void setButtonClicked() {
         String newText = view.getNewText();
         if (!TextUtils.isEmpty(newText)) {
             String processedText = model.processText(newText);
@@ -33,7 +33,7 @@ public class MyPresenter {
         }
     }
 
-    public void clearButtonClicked() {
+    void clearButtonClicked() {
         view.reset();
     }
 }

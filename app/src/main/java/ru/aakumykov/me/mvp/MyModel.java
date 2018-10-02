@@ -1,8 +1,8 @@
 package ru.aakumykov.me.mvp;
 
-public class MyModel {
+class MyModel {
 
-    public String processText(String text) {
+    String processText(String text) {
         return "'" + text + "'" + " из модели";
     }
 
