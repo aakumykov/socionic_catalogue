@@ -33,9 +33,7 @@ public class MyView extends AppCompatActivity implements View.OnClickListener {
         setButton.setOnClickListener(this);
         clearButton.setOnClickListener(this);
 
-        myPresenter = new MyPresenter(getLifecycle());
-
-//        getLifecycle().addObserver(myPresenter);
+        myPresenter = new MyPresenter();
     }
 
     @Override
