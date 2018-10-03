@@ -1,44 +1,52 @@
 package ru.aakumykov.me.mvp;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.text.TextUtils;
 import android.util.Log;
 
-public class MyPresenter {
+import static android.arch.lifecycle.Lifecycle.State.CREATED;
+import static android.arch.lifecycle.Lifecycle.State.STARTED;
+
+class MyPresenter implements LifecycleObserver {
 
     private final static String TAG = "myLog";
     private MyView view;
     private MyModel model;
-    private String lastText;
 
-    MyPresenter() {
+    MyPresenter(Lifecycle lifecycle) {
         Log.d(TAG, "=MyPresenter()=");
+
         this.model = new MyModel();
+
+        if (lifecycle.getCurrentState().isAtLeast(CREATED)) {
+            lifecycle.addObserver(this);
+        }
     }
 
-    public void linkView(MyView view) {
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    void linkView(MyView view) {
         Log.d(TAG, "=linkView()=");
         this.view = view;
-        Log.d(TAG, this.view.toString());
-        if (!TextUtils.isEmpty(lastText))
-            view.displayText(lastText);
     }
 
-    public void unlinkView() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    void unlinkView() {
         Log.d(TAG, "=unlinkView()=");
         this.view = null;
     }
 
-    public void setButtonClicked() {
+    void setButtonClicked() {
         String newText = view.getNewText();
         if (!TextUtils.isEmpty(newText)) {
-            lastText = newText;
             String processedText = model.processText(newText);
             view.displayText(processedText);
             view.clearTextInput();
         }
     }
 
-    public void clearButtonClicked() {
+    void clearButtonClicked() {
         view.reset();
     }
 }
