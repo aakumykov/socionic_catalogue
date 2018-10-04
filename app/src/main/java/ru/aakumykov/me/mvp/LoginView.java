@@ -9,33 +9,31 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class LoginView extends AppCompatActivity implements
         android.view.View.OnClickListener, iLogin.View {
 
     private final static String TAG = "myLog";
-    iLogin.Presenter presenter;
+    private iLogin.Presenter presenter;
 
-    private ProgressBar progressBar;
-    private TextView infoView;
-    private TextView errorView;
-    private EditText emailInput;
-    private EditText passwordInput;
-    private Button loginButton;
-    private Button logoutButton;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
+    @BindView(R.id.infoView) TextView infoView;
+    @BindView(R.id.errorView) TextView errorView;
+    @BindView(R.id.emailInput) EditText emailInput;
+    @BindView(R.id.passwordInput) EditText passwordInput;
+    @BindView(R.id.loginButton) Button loginButton;
+    @BindView(R.id.logoutButton) Button logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "=CREATE");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        progressBar = findViewById(R.id.progressBar);
-        infoView = findViewById(R.id.infoView);
-        errorView = findViewById(R.id.errorView);
-        emailInput = findViewById(R.id.emailInput);
-        passwordInput = findViewById(R.id.passwordInput);
-        loginButton = findViewById(R.id.loginButton);
-        logoutButton = findViewById(R.id.logoutButton);
+        ButterKnife.bind(this);
 
         loginButton.setOnClickListener(this);
         logoutButton.setOnClickListener(this);
@@ -58,6 +56,7 @@ public class LoginView extends AppCompatActivity implements
     }
 
     @Override
+    @OnClick({R.id.loginButton, R.id.logoutButton})
     public void onClick(android.view.View view) {
         switch (view.getId()) {
 
