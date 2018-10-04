@@ -4,11 +4,15 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.security.cert.Extension;
 
 class LoginPresenter implements iLogin.Presenter {
 
@@ -58,35 +62,27 @@ class LoginPresenter implements iLogin.Presenter {
         view.showProgressBar();
         view.showInfo(R.string.logging_in);
 
+        // TODO: валидация форм
         firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                @Override
-                public void onSuccess(AuthResult authResult) {
-                    Log.d(TAG, "LOGIN SUCCESS");
-                    firebaseUser = firebaseAuth.getCurrentUser();
-                    view.hideProgressBar();
-                    view.showInfo(R.string.login_success);
-                    view.enableLoginForm();
-                }
-            })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "LOGIN FAILED");
-                    view.hideProgressBar();
-                    view.showError(R.string.login_error);
-                    view.enableLoginForm();
-                }
-            })
-            .addOnCanceledListener(new OnCanceledListener() {
-                @Override
-                public void onCanceled() {
-                    Log.d(TAG, "LOGIN CANCELLED");
-                    view.hideProgressBar();
-                    view.showError(R.string.login_canceled);
-                    view.enableLoginForm();
-                }
-            });
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        view.hideProgressBar();
+                        view.enableLoginForm();
+
+                        if (task.isSuccessful()) {
+                            view.showInfo(R.string.login_success);
+                        }
+                        else if (task.isCanceled()) {
+                            view.showError(R.string.login_canceled);
+                        }
+                        else {
+                            view.showError(R.string.login_error);
+                            Exception e = task.getException();
+                            if (null != e) e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     private void logout() {
