@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -16,7 +15,6 @@ public class LoginView extends AppCompatActivity implements
     private final static String TAG = "myLog";
     iLogin.Presenter presenter;
 
-    private FrameLayout loginForm;
     private ProgressBar progressBar;
     private TextView infoView;
     private TextView errorView;

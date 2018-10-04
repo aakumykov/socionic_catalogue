@@ -13,4 +13,6 @@
     <string name="logout_success">Вы вышли из системы</string>
     <string name="logout_error">Ошибка выхода</string>
     <string name="logout">Выйти</string>
+    <string name="testEmail">user@example.com</string>
+    <string name="testPassword">Qwerty123!@#</string>
 </resources>

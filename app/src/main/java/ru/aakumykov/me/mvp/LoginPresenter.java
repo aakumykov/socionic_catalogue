@@ -14,14 +14,14 @@ class LoginPresenter implements iLogin.Presenter {
 
     private final static String TAG = "myLog";
     private iLogin.View view;
-    private iLogin.Model model;
+//    private iLogin.Model model;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
 
     LoginPresenter() {
         Log.d(TAG, "=LoginPresenter()=");
-        model = new LoginModel();
+//        model = new LoginModel();
         firebaseAuth = FirebaseAuth.getInstance();
     }
 

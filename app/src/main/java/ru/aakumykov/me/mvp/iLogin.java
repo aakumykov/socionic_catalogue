@@ -2,7 +2,7 @@ package ru.aakumykov.me.mvp;
 
 public interface iLogin {
 
-    public interface View {
+    interface View {
         void showInfo(String message);
         void showInfo(int messageId);
         void hideInfo();
@@ -21,14 +21,14 @@ public interface iLogin {
         void enableLoginForm();
     }
 
-    public interface Presenter {
+    interface Presenter {
         void linkView(iLogin.View v);
         void unlinkView();
         void loginButtonClicked();
         void logoutButtonClicked();
     }
 
-    public interface Model {
+    interface Model {
 
     }
 }

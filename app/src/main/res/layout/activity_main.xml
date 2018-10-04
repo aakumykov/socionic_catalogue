@@ -16,7 +16,7 @@
                 android:gravity="center_horizontal"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
-                android:text="user@example.com" />
+                android:text="@string/testEmail" />
 
             <EditText
                 android:id="@+id/passwordInput"
@@ -26,7 +26,7 @@
                 android:gravity="center_horizontal"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:text="Qwerty123!@#" />
+                android:text="@string/testPassword" />
 
             <Button
                 android:id="@+id/loginButton"
