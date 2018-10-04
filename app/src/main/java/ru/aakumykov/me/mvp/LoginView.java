@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +10,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.List;
+
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -26,6 +30,25 @@ public class LoginView extends AppCompatActivity implements
     @BindView(R.id.passwordInput) EditText passwordInput;
     @BindView(R.id.loginButton) Button loginButton;
     @BindView(R.id.logoutButton) Button logoutButton;
+
+    @BindViews({R.id.emailInput, R.id.passwordInput, R.id.loginButton, R.id.logoutButton})
+    List<View> formElements;
+
+    static final ButterKnife.Action<View> ENABLE = new ButterKnife.Action<View>() {
+        @Override
+        public void apply(@NonNull View view, int index) {
+            view.setEnabled(true);
+        }
+    };
+
+    static final ButterKnife.Action<View> DISABLE = new ButterKnife.Action<View>() {
+        @Override
+        public void apply(@NonNull View view, int index) {
+            view.setEnabled(false);
+        }
+    };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,18 +140,12 @@ public class LoginView extends AppCompatActivity implements
 
     @Override
     public void disableLoginForm() {
-        emailInput.setEnabled(false);
-        passwordInput.setEnabled(false);
-        loginButton.setEnabled(false);
-        logoutButton.setEnabled(false);
+        ButterKnife.apply(formElements, DISABLE);
     }
 
     @Override
     public void enableLoginForm() {
-        emailInput.setEnabled(true);
-        passwordInput.setEnabled(true);
-        loginButton.setEnabled(true);
-        logoutButton.setEnabled(true);
+        ButterKnife.apply(formElements, ENABLE);
     }
 
     @Override
