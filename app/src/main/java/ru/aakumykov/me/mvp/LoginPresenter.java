@@ -14,20 +14,18 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.security.cert.Extension;
 
-class LoginPresenter implements iLogin.Presenter, iLoginCallbacks {
+class LoginPresenter implements iLogin.Presenter {
 
-    private final static String TAG = "LoginPresenter";
+    private final static String TAG = "myLog";
     private iLogin.View view;
-    private iLogin.Model model;
+//    private iLogin.Model model;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
 
-    // TODO: валидация форм
-
     LoginPresenter() {
-        Log.d(TAG, "new LoginPresenter()");
-        model = LoginModel.getInstance(this);
+        Log.d(TAG, "=LoginPresenter()=");
+//        model = new LoginModel();
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
@@ -63,6 +61,28 @@ class LoginPresenter implements iLogin.Presenter, iLoginCallbacks {
         view.disableLoginForm();
         view.showProgressBar();
         view.showInfo(R.string.logging_in);
+
+        // TODO: валидация форм
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        view.hideProgressBar();
+                        view.enableLoginForm();
+
+                        if (task.isSuccessful()) {
+                            view.showInfo(R.string.login_success);
+                        }
+                        else if (task.isCanceled()) {
+                            view.showError(R.string.login_canceled);
+                        }
+                        else {
+                            view.showError(R.string.login_error);
+                            Exception e = task.getException();
+                            if (null != e) e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     private void logout() {
@@ -75,26 +95,6 @@ class LoginPresenter implements iLogin.Presenter, iLoginCallbacks {
             view.showInfo(R.string.logout_success);
         } else {
             view.showError(R.string.logout_error);
-        }
-    }
-
-    @Override
-    public void onAuthSuccess() {
-        Log.d(TAG, "onAuthSuccess()");
-
-        view.hideProgressBar();
-        view.enableLoginForm();
-
-        if (task.isSuccessful()) {
-            view.showInfo(R.string.login_success);
-        }
-        else if (task.isCanceled()) {
-            view.showError(R.string.login_canceled);
-        }
-        else {
-            view.showError(R.string.login_error);
-            Exception e = task.getException();
-            if (null != e) e.printStackTrace();
         }
     }
 }
