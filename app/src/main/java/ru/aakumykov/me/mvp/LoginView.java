@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,9 +25,7 @@ public class LoginView extends AppCompatActivity implements
     private iLogin.Presenter presenter;
 
     @BindView(R.id.progressBar) ProgressBar progressBar;
-    @BindView(R.id.infoView) TextView infoView;
-    @BindView(R.id.warningView) TextView warningView;
-    @BindView(R.id.errorView) TextView errorView;
+    @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.emailInput) EditText emailInput;
     @BindView(R.id.passwordInput) EditText passwordInput;
     @BindView(R.id.loginButton) Button loginButton;
@@ -56,7 +55,7 @@ public class LoginView extends AppCompatActivity implements
         Log.d(TAG, "=CREATE=");
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.login_activity);
         ButterKnife.bind(this);
 
         loginButton.setOnClickListener(this);
@@ -109,55 +108,46 @@ public class LoginView extends AppCompatActivity implements
 
 
     @Override
-    public void showInfo(String message) {
-//        infoView.setTextColor(R.color.info);
-        hideWarning();
-        hideError();
-        infoView.setText(message);
-        infoView.setVisibility(View.VISIBLE);
-    }
-    @Override
     public void showInfo(int messageId) {
-        showInfo(getString(messageId));
+        showMessage(messageId, R.color.info);
     }
     @Override
     public void hideInfo() {
-        infoView.setVisibility(View.GONE);
+        hideMessage();
     }
 
 
-    @Override
-    public void showWarning(String message) {
-        hideInfo();
-        hideError();
-        warningView.setText(message);
-        warningView.setVisibility(View.VISIBLE);
-    }
     @Override
     public void showWarning(int messageId) {
-        showWarning(getString(messageId));
+        showMessage(messageId, R.color.warning);
     }
     @Override
     public void hideWarning() {
-        warningView.setVisibility(View.GONE);
+        hideMessage();
     }
 
 
-
-    @Override
-    public void showError(String message) {
-        hideInfo();
-        hideWarning();
-        errorView.setText(message);
-        errorView.setVisibility(View.VISIBLE);
-    }
     @Override
     public void showError(int messageId) {
-        showError(getString(messageId));
+        showMessage(messageId, R.color.error);
     }
     @Override
     public void hideError() {
-        errorView.setVisibility(View.GONE);
+        hideMessage();
+    }
+
+
+    private void showMessage(int messageId, int colorId) {
+        String textMsg = getResources().getString(messageId);
+        showMessage(textMsg, colorId);
+    }
+    private void showMessage(String message, int colorId) {
+        messageView.setTextColor(getResources().getColor(colorId));
+        messageView.setText(message);
+        messageView.setVisibility(View.VISIBLE);
+    }
+    private void hideMessage() {
+        messageView.setVisibility(View.GONE);
     }
 
 

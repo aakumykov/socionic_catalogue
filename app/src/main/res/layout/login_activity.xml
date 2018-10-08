@@ -41,7 +41,7 @@
 
 
     <TextView
-        android:id="@+id/infoView"
+        android:id="@+id/messageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -49,26 +49,10 @@
         android:textSize="18sp"
         android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/warningView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textColor="@color/warning"
-        android:textSize="18sp"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/errorView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textColor="@color/error"
-        android:textSize="18sp"
-        android:visibility="gone" />
-
     <ProgressBar
         android:id="@+id/progressBar"
+        android:outlineAmbientShadowColor="@color/colorPrimary"
+        android:outlineSpotShadowColor="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"

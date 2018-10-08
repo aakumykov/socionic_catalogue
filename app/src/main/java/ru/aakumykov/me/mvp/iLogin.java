@@ -3,15 +3,12 @@ package ru.aakumykov.me.mvp;
 public interface iLogin {
 
     interface View {
-        void showInfo(String message);
         void showInfo(int messageId);
         void hideInfo();
 
-        void showWarning(String message);
         void showWarning(int messageId);
         void hideWarning();
 
-        void showError(String message);
         void showError(int messageId);
         void hideError();
 

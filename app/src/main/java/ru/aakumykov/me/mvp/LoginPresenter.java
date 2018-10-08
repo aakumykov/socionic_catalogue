@@ -30,6 +30,7 @@ class LoginPresenter implements iLogin.Presenter, iLogin.LoginCallbacks {
         String email = view.getEmail();
         String password = view.getPassword();
         view.showProgressBar();
+        view.showInfo(R.string.logging_in);
         model.login(email, password);
     }
 
