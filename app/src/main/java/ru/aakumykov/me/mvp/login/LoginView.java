@@ -1,6 +1,5 @@
-package ru.aakumykov.me.mvp;
+package ru.aakumykov.me.mvp.login;
 
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +16,7 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ru.aakumykov.me.mvp.R;
 
 public class LoginView extends AppCompatActivity implements
         android.view.View.OnClickListener, iLogin.View {

@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp;
+package ru.aakumykov.me.mvp.login;
 
 public interface iLogin {
 

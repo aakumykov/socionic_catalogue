@@ -1,6 +1,8 @@
-package ru.aakumykov.me.mvp;
+package ru.aakumykov.me.mvp.login;
 
 import android.util.Log;
+
+import ru.aakumykov.me.mvp.R;
 
 class LoginPresenter implements iLogin.Presenter, iLogin.LoginCallbacks {
 
