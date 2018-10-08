@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,8 +25,7 @@ public class LoginView extends AppCompatActivity implements
     private iLogin.Presenter presenter;
 
     @BindView(R.id.progressBar) ProgressBar progressBar;
-    @BindView(R.id.infoView) TextView infoView;
-    @BindView(R.id.errorView) TextView errorView;
+    @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.emailInput) EditText emailInput;
     @BindView(R.id.passwordInput) EditText passwordInput;
     @BindView(R.id.loginButton) Button loginButton;
@@ -52,10 +52,10 @@ public class LoginView extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "=CREATE");
+        Log.d(TAG, "=CREATE=");
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.login_activity);
         ButterKnife.bind(this);
 
         loginButton.setOnClickListener(this);
@@ -67,14 +67,14 @@ public class LoginView extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "=START");
+        Log.d(TAG, "=START=");
         presenter.linkView(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG, "=STOP");
+        Log.d(TAG, "=STOP=");
         presenter.unlinkView();
     }
 
@@ -106,47 +106,60 @@ public class LoginView extends AppCompatActivity implements
         progressBar.setVisibility(View.INVISIBLE);
     }
 
-    @Override
-    public void showInfo(String message) {
-        hideError();
-        infoView.setText(message);
-        infoView.setVisibility(View.VISIBLE);
-    }
+
     @Override
     public void showInfo(int messageId) {
-        showInfo(getString(messageId));
+        showMessage(messageId, R.color.info);
     }
-
     @Override
     public void hideInfo() {
-        infoView.setVisibility(View.GONE);
+        hideMessage();
     }
 
+
     @Override
-    public void showError(String message) {
-        hideInfo();
-        errorView.setText(message);
-        errorView.setVisibility(View.VISIBLE);
+    public void showWarning(int messageId) {
+        showMessage(messageId, R.color.warning);
     }
+    @Override
+    public void hideWarning() {
+        hideMessage();
+    }
+
+
     @Override
     public void showError(int messageId) {
-        showError(getString(messageId));
+        showMessage(messageId, R.color.error);
     }
-
     @Override
     public void hideError() {
-        errorView.setVisibility(View.GONE);
+        hideMessage();
     }
 
-    @Override
-    public void disableLoginForm() {
-        ButterKnife.apply(formElements, DISABLE);
+
+    private void showMessage(int messageId, int colorId) {
+        String textMsg = getResources().getString(messageId);
+        showMessage(textMsg, colorId);
     }
+    private void showMessage(String message, int colorId) {
+        messageView.setTextColor(getResources().getColor(colorId));
+        messageView.setText(message);
+        messageView.setVisibility(View.VISIBLE);
+    }
+    private void hideMessage() {
+        messageView.setVisibility(View.GONE);
+    }
+
 
     @Override
     public void enableLoginForm() {
         ButterKnife.apply(formElements, ENABLE);
     }
+    @Override
+    public void disableLoginForm() {
+        ButterKnife.apply(formElements, DISABLE);
+    }
+
 
     @Override
     public String getEmail() {
