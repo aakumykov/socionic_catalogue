@@ -7,6 +7,10 @@ public interface iLogin {
         void showInfo(int messageId);
         void hideInfo();
 
+        void showWarning(String message);
+        void showWarning(int messageId);
+        void hideWarning();
+
         void showError(String message);
         void showError(int messageId);
         void hideError();
@@ -29,6 +33,19 @@ public interface iLogin {
     }
 
     interface Model {
+//        iLogin.Model getInstance();
+        void login(String email, String password);
+        void logout();
+//        void changePassword(String email, String oldPassword, String newPassword);
+    }
 
+
+    interface LoginCallbacks {
+        void onAuthSuccess();
+        void onAuthFail();
+        void onAuthCancel();
+
+        void onLogoutSuccess();
+        void onLogoutFail();
     }
 }

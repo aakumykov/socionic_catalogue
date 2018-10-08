@@ -25,6 +25,7 @@ public class LoginView extends AppCompatActivity implements
 
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.infoView) TextView infoView;
+    @BindView(R.id.warningView) TextView warningView;
     @BindView(R.id.errorView) TextView errorView;
     @BindView(R.id.emailInput) EditText emailInput;
     @BindView(R.id.passwordInput) EditText passwordInput;
@@ -52,7 +53,7 @@ public class LoginView extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "=CREATE");
+        Log.d(TAG, "=CREATE=");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -67,14 +68,14 @@ public class LoginView extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "=START");
+        Log.d(TAG, "=START=");
         presenter.linkView(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG, "=STOP");
+        Log.d(TAG, "=STOP=");
         presenter.unlinkView();
     }
 
@@ -106,8 +107,11 @@ public class LoginView extends AppCompatActivity implements
         progressBar.setVisibility(View.INVISIBLE);
     }
 
+
     @Override
     public void showInfo(String message) {
+//        infoView.setTextColor(R.color.info);
+        hideWarning();
         hideError();
         infoView.setText(message);
         infoView.setVisibility(View.VISIBLE);
@@ -116,15 +120,34 @@ public class LoginView extends AppCompatActivity implements
     public void showInfo(int messageId) {
         showInfo(getString(messageId));
     }
-
     @Override
     public void hideInfo() {
         infoView.setVisibility(View.GONE);
     }
 
+
+    @Override
+    public void showWarning(String message) {
+        hideInfo();
+        hideError();
+        warningView.setText(message);
+        warningView.setVisibility(View.VISIBLE);
+    }
+    @Override
+    public void showWarning(int messageId) {
+        showWarning(getString(messageId));
+    }
+    @Override
+    public void hideWarning() {
+        warningView.setVisibility(View.GONE);
+    }
+
+
+
     @Override
     public void showError(String message) {
         hideInfo();
+        hideWarning();
         errorView.setText(message);
         errorView.setVisibility(View.VISIBLE);
     }
@@ -132,21 +155,21 @@ public class LoginView extends AppCompatActivity implements
     public void showError(int messageId) {
         showError(getString(messageId));
     }
-
     @Override
     public void hideError() {
         errorView.setVisibility(View.GONE);
     }
 
-    @Override
-    public void disableLoginForm() {
-        ButterKnife.apply(formElements, DISABLE);
-    }
 
     @Override
     public void enableLoginForm() {
         ButterKnife.apply(formElements, ENABLE);
     }
+    @Override
+    public void disableLoginForm() {
+        ButterKnife.apply(formElements, DISABLE);
+    }
+
 
     @Override
     public String getEmail() {
