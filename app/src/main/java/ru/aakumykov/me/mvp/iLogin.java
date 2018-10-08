@@ -29,6 +29,6 @@ public interface iLogin {
     }
 
     interface Model {
-
+        void login(String email, String password);
     }
 }
