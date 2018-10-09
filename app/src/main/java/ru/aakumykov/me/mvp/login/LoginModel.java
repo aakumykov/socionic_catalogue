@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp;
+package ru.aakumykov.me.mvp.login;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -35,7 +35,7 @@ class LoginModel implements iLogin.Model {
 
     @Override
     public void login(String email, String password) {
-        Log.d(TAG, "LoginModel.login("+email+", "+password+")");
+        Log.d(TAG, "LoginModel.ru.aakumykov.me.mvp.login("+email+", "+password+")");
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
