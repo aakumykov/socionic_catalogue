@@ -3,11 +3,13 @@ package ru.aakumykov.me.mvp.cards_list;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -18,10 +20,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.card_view.iCardView;
 import ru.aakumykov.me.mvp.models.Card;
 
-public class CardsList_View extends AppCompatActivity {
+public class CardsList_View extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private final static String TAG = "CardsList_View";
 
@@ -67,5 +71,15 @@ public class CardsList_View extends AppCompatActivity {
     void loadList() {
         Log.d(TAG, "loadList()");
         viewModel.loadList();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "onItemClick()");
+        String cardKey = cardsList.get(position).getKey();
+        Intent intent = new Intent();
+        intent.setClass(this, iCardView.View.class);
+        intent.putExtra(Constants.CARD_KEY, cardKey);
+        startActivity(intent);
     }
 }
