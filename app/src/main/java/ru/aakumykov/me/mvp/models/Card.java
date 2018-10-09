@@ -1,5 +1,9 @@
 package ru.aakumykov.me.mvp.models;
 
+import com.google.firebase.database.DataSnapshot;
+
+import java.util.HashMap;
+
 public class Card {
 
     private String title;

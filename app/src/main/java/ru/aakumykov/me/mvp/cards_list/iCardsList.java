@@ -21,6 +21,7 @@ public interface iCardsList {
     }
 
     interface Callbacks {
-        void onListLoaded();
+        void onLoadSuccess(List<Card> list);
+        void onLoadError();
     }
 }
