@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.card_view.CardView_View;
 import ru.aakumykov.me.mvp.card_view.iCardView;
 import ru.aakumykov.me.mvp.models.Card;
 
@@ -49,10 +50,11 @@ public class CardsList_View extends AppCompatActivity implements AdapterView.OnI
         cardsList = new ArrayList<>();
         cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
         listView.setAdapter(cardsListAdapter);
+        listView.setOnItemClickListener(this);
 
         viewModel = ViewModelProviders.of(this).get(CardsList_ViewModel.class);
-        liveData = viewModel.getLiveData();
 
+        liveData = viewModel.getLiveData();
         liveData.observe(this, new Observer<List<Card>>() {
             @Override
             public void onChanged(@Nullable List<Card> cards) {
@@ -75,10 +77,13 @@ public class CardsList_View extends AppCompatActivity implements AdapterView.OnI
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "onItemClick()");
         String cardKey = cardsList.get(position).getKey();
+
+        Log.d(TAG, "onItemClick(), cardKey: "+cardKey);
+
         Intent intent = new Intent();
-        intent.setClass(this, iCardView.View.class);
+        // TODO: сделать независимым от конкретного класса
+        intent.setClass(this, CardView_View.class);
         intent.putExtra(Constants.CARD_KEY, cardKey);
         startActivity(intent);
     }
