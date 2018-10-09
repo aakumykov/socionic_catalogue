@@ -5,8 +5,7 @@ import ru.aakumykov.me.mvp.models.Card;
 public interface iCardView {
 
     interface View {
-        void showInfo(int msgId);
-        void showError(int msgId);
+        void showMessage(int msgId, String msgType);
         void hideMessage();
 
         void showProgressBar();
@@ -17,12 +16,13 @@ public interface iCardView {
     }
 
     interface Presenter {
+        void cardKeyRecieved(String key);
         void linkView(iCardView.View view);
         void unlinkView();
     }
 
     interface Model {
-        void loadCard(String key);
+        void loadCard(String key, iCardView.Callbacks callbacks);
     }
 
     interface Callbacks {

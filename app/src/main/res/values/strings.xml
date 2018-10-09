@@ -17,4 +17,6 @@
     <string name="testPassword">Qwerty123!@#</string>
     <string name="card_load_error">Ошибка загрузки карточки</string>
     <string name="card_load_canceled">Загрузка карточки отменена</string>
+    <string name="loading_card">Загружаем карточку</string>
+    <string name="loading_cards_list">Загружаем список карточек</string>
 </resources>

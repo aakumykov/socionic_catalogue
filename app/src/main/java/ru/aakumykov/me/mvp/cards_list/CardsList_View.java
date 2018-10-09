@@ -10,20 +10,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_view.CardView_View;
-import ru.aakumykov.me.mvp.card_view.iCardView;
 import ru.aakumykov.me.mvp.models.Card;
 
 public class CardsList_View extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -37,6 +35,7 @@ public class CardsList_View extends AppCompatActivity implements AdapterView.OnI
     private CardsListAdapter cardsListAdapter;
 
     @BindView(R.id.progressBar) ProgressBar progressBar;
+    @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.listView) ListView listView;
 
     @Override
@@ -46,6 +45,10 @@ public class CardsList_View extends AppCompatActivity implements AdapterView.OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cards_list_activity);
         ButterKnife.bind(this);
+
+        messageView.setText(R.string.loading_cards_list);
+        messageView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
 
         cardsList = new ArrayList<>();
         cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
@@ -60,6 +63,7 @@ public class CardsList_View extends AppCompatActivity implements AdapterView.OnI
             public void onChanged(@Nullable List<Card> cards) {
                 Log.d(TAG, "onChanged()");
                 progressBar.setVisibility(View.GONE);
+                messageView.setVisibility(View.GONE);
                 cardsList.clear();
                 cardsList.addAll(cards);
                 cardsListAdapter.notifyDataSetChanged();

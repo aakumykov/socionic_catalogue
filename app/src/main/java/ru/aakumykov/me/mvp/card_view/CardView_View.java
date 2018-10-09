@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.card_view;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ProgressBar;
@@ -7,12 +8,13 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 
 public class CardView_View extends AppCompatActivity implements iCardView.View {
 
-    private final static String TAG = "CardView_View";
+//    private final static String TAG = "CardView_View";
 
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
@@ -29,6 +31,12 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
         ButterKnife.bind(this);
 
         presenter = new CardView_Presenter();
+
+        Intent intent = getIntent();
+        String cardKey = intent.getStringExtra(Constants.CARD_KEY);
+
+        presenter.linkView(this); // нужно для отображения карточки!
+        presenter.cardKeyRecieved(cardKey);
     }
 
     @Override
@@ -71,21 +79,24 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
 
 
     @Override
-    public void showInfo(int msgId) {
-        messageView.setTextColor(getResources().getColor(R.color.info));
-        String msg = getResources().getString(msgId);
-        showMessage(msg);
-    }
+    public void showMessage(int msgId, String msgType) {
+        int colorId;
+        switch (msgType) {
+            case Constants.INFO_MSG:
+                colorId = R.color.info;
+                break;
+            case Constants.ERROR_MSG:
+                colorId = R.color.error;
+                break;
+            default:
+                colorId = R.color.undefined;
+                break;
+        }
+        messageView.setTextColor(getResources().getColor(colorId));
 
-    @Override
-    public void showError(int msgId) {
-        messageView.setTextColor(getResources().getColor(R.color.error));
         String msg = getResources().getString(msgId);
-        showMessage(msg);
-    }
-
-    private void showMessage(String msg) {
         messageView.setText(msg);
+
         MyUtils.show(messageView);
     }
 

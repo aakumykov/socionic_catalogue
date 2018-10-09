@@ -7,21 +7,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.models.Card;
 
 public class CardView_Model implements iCardView.Model {
 
-    private final static String TAG = "CardView_Model";
-    private iCardView.Callbacks callbacks;
+//    private final static String TAG = "CardView_Model";
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
-    CardView_Model(iCardView.Callbacks callbacks) {
-        this.callbacks = callbacks;
-    }
-
     @Override
-    public void loadCard(String key) {
-        firebaseDatabase.getReference().child(key)
+    public void loadCard(String key, final iCardView.Callbacks callbacks) {
+
+        firebaseDatabase.getReference().child(Constants.CARDS_PATH).child(key)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
