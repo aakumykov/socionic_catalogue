@@ -3,7 +3,6 @@ package ru.aakumykov.me.mvp.card_view;
 import android.util.Log;
 
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Card;
 
@@ -19,8 +18,7 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
 
     @Override
     public void cardKeyRecieved(String key) {
-        Log.d(TAG, "cardKeyRecieved("+key+")");
-        Log.d(TAG, "view: "+view);
+//        Log.d(TAG, "cardKeyRecieved("+key+")");
         view.showMessage(R.string.loading_card, Constants.INFO_MSG);
         model.loadCard(key, this);
     }
@@ -28,20 +26,22 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
 
     @Override
     public void onLoadSuccess(Card card) {
-        view.hideMessage();
-        view.hideProgressBar();
 
         view.setTitle(card.getTitle());
         view.setDescription(card.getDescription());
 
         switch (card.getType()) {
             case Constants.TEXT_CARD:
+                view.hideMessage();
+                view.hideProgressBar();
+                view.showQuote();
 //                view.displayTextCard(Card card);
                 view.setQuote(card.getQuote());
                 break;
             case Constants.IMAGE_CARD:
+                view.showImage();
 //                view.displayImageCard(Card card);
-                view.setImage(card.getImageURL());
+                view.loadImage(card.getImageURL());
                 break;
             default:
                 view.showMessage(R.string.unknown_card_type, Constants.ERROR_MSG);
@@ -67,7 +67,6 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
 
     @Override
     public void linkView(iCardView.View view) {
-        Log.d(TAG, "linkView(), view: "+view);
         this.view = view;
     }
 

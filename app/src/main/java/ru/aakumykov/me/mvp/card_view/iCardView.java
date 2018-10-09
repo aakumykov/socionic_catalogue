@@ -11,9 +11,12 @@ public interface iCardView {
         void showProgressBar();
         void hideProgressBar();
 
+        void showQuote();
+        void showImage();
+
         void setTitle(String title);
         void setQuote(String quote);
-        void setImage(String quote);
+        void loadImage(String quote);
         void setDescription(String description);
     }
 
