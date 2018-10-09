@@ -3,6 +3,7 @@ package ru.aakumykov.me.mvp.card_view;
 import android.util.Log;
 
 import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Card;
 
@@ -31,8 +32,21 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
         view.hideProgressBar();
 
         view.setTitle(card.getTitle());
-        view.setQuote(card.getQuote());
         view.setDescription(card.getDescription());
+
+        switch (card.getType()) {
+            case Constants.TEXT_CARD:
+//                view.displayTextCard(Card card);
+                view.setQuote(card.getQuote());
+                break;
+            case Constants.IMAGE_CARD:
+//                view.displayImageCard(Card card);
+                view.setImage(card.getImageURL());
+                break;
+            default:
+                view.showMessage(R.string.unknown_card_type, Constants.ERROR_MSG);
+                break;
+        }
     }
 
     @Override

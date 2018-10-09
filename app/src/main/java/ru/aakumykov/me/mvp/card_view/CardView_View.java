@@ -20,6 +20,7 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.titleView) TextView titleView;
     @BindView(R.id.quoteView) TextView quoteView;
+    @BindView(R.id.imageView) TextView imageView;
     @BindView(R.id.descriptionView) TextView descriptionView;
 
     iCardView.Presenter presenter;
@@ -70,6 +71,12 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     @Override
     public void setQuote(String quote) {
         quoteView.setText(quote);
+        MyUtils.show(quoteView);
+    }
+
+    @Override
+    public void setImage(String quote) {
+        MyUtils.show(imageView);
     }
 
     @Override
