@@ -69,14 +69,20 @@ public class CardsList_View extends AppCompatActivity implements AdapterView.OnI
                 cardsListAdapter.notifyDataSetChanged();
             }
         });
-
-        // TODO: не загружать список повторно при повороте
-        loadList();
     }
 
-    void loadList() {
-        Log.d(TAG, "loadList()");
-        viewModel.loadList();
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause()");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume()");
+        // TODO: не загружать список повторно при повороте
+        loadList();
     }
 
     @Override
@@ -90,5 +96,10 @@ public class CardsList_View extends AppCompatActivity implements AdapterView.OnI
         intent.setClass(this, CardView_View.class);
         intent.putExtra(Constants.CARD_KEY, cardKey);
         startActivity(intent);
+    }
+
+    void loadList() {
+        Log.d(TAG, "loadList()");
+        viewModel.loadList();
     }
 }

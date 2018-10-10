@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.card_view;
 
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,8 +29,8 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.titleView) TextView titleView;
     @BindView(R.id.quoteView) TextView quoteView;
-    @BindView(R.id.imageHolder) LinearLayout imageHolder;
-    @BindView(R.id.imagePlaceholder) ImageView imagePlaceholder;
+    @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
+    @BindView(R.id.imagePlaceholder) ProgressBar imagePlaceholder;
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.descriptionView) TextView descriptionView;
 
