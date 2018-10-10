@@ -1,11 +1,13 @@
 package ru.aakumykov.me.mvp.card_view;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -26,6 +28,7 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.titleView) TextView titleView;
     @BindView(R.id.quoteView) TextView quoteView;
+    @BindView(R.id.imageHolder) LinearLayout imageHolder;
     @BindView(R.id.imagePlaceholder) ImageView imagePlaceholder;
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.descriptionView) TextView descriptionView;
@@ -38,11 +41,15 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
         setContentView(R.layout.card_view_activity);
         ButterKnife.bind(this);
 
-        presenter = new CardView_Presenter();
+        ActionBar actionBar = getSupportActionBar();
+        if (null != actionBar) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         Intent intent = getIntent();
         String cardKey = intent.getStringExtra(Constants.CARD_KEY);
 
+        presenter = new CardView_Presenter();
         presenter.linkView(this); // нужно для отображения карточки!
         presenter.cardKeyRecieved(cardKey);
     }
@@ -72,6 +79,7 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
 
     @Override
     public void showImagePlaceholder() {
+        imageHolder.setVisibility(View.VISIBLE);
         imagePlaceholder.setVisibility(View.VISIBLE);
     }
 

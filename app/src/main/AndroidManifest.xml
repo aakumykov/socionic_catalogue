@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".card_view.CardView_View"/>
+        <activity android:name=".card_view.CardView_View"
+            android:parentActivityName=".cards_list.CardsList_View"/>
     </application>
 
 </manifest>
