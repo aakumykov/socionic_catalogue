@@ -27,21 +27,22 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
     @Override
     public void onLoadSuccess(Card card) {
 
+        view.hideMessage();
+        view.hideProgressBar();
+
         view.setTitle(card.getTitle());
         view.setDescription(card.getDescription());
 
         switch (card.getType()) {
             case Constants.TEXT_CARD:
-                view.hideMessage();
-                view.hideProgressBar();
                 view.showQuote();
-//                view.displayTextCard(Card card);
                 view.setQuote(card.getQuote());
+//                view.displayTextCard(Card card);
                 break;
             case Constants.IMAGE_CARD:
-                view.showImage();
-//                view.displayImageCard(Card card);
+                view.showImagePlaceholder();
                 view.loadImage(card.getImageURL());
+//                view.displayImageCard(Card card);
                 break;
             default:
                 view.showMessage(R.string.unknown_card_type, Constants.ERROR_MSG);

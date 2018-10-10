@@ -26,6 +26,7 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.titleView) TextView titleView;
     @BindView(R.id.quoteView) TextView quoteView;
+    @BindView(R.id.imagePlaceholder) ImageView imagePlaceholder;
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.descriptionView) TextView descriptionView;
 
@@ -70,6 +71,16 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     }
 
     @Override
+    public void showImagePlaceholder() {
+        imagePlaceholder.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideImagePlaceholder() {
+        imagePlaceholder.setVisibility(View.GONE);
+    }
+
+    @Override
     public void showQuote() {
         quoteView.setVisibility(View.VISIBLE);
     }
@@ -99,8 +110,8 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
                 .into(imageView, new Callback() {
                     @Override
                     public void onSuccess() {
-                        hideMessage();
-                        hideProgressBar();
+                        hideImagePlaceholder();
+                        showImage();
                     }
 
                     @Override

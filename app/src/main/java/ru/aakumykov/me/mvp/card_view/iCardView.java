@@ -11,6 +11,9 @@ public interface iCardView {
         void showProgressBar();
         void hideProgressBar();
 
+        void showImagePlaceholder();
+        void hideImagePlaceholder();
+
         void showQuote();
         void showImage();
 
