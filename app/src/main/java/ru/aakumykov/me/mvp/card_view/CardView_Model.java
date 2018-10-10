@@ -12,6 +12,17 @@ import ru.aakumykov.me.mvp.models.Card;
 
 public class CardView_Model implements iCardView.Model {
 
+    /* Одиночка */
+    private static volatile iCardView.Model ourInstance = new CardView_Model();
+    static synchronized iCardView.Model getInstance() {
+        synchronized (CardView_Model.class) {
+            if (null == ourInstance) ourInstance = new CardView_Model();
+        }
+        return ourInstance;
+    }
+    private CardView_Model(){}
+    /* Одиночка */
+
 //    private final static String TAG = "CardView_Model";
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 

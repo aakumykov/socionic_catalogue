@@ -13,7 +13,7 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
     private iCardView.Model model;
 
     CardView_Presenter() {
-        model = new CardView_Model();
+        model = CardView_Model.getInstance();
     }
 
     @Override
