@@ -17,7 +17,7 @@ public interface iCardsList {
     }
 
     interface Model {
-        void loadList();
+        void loadList(iCardsList.Callbacks callbacks);
     }
 
     interface Callbacks {

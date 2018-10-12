@@ -40,15 +40,11 @@ public class CardsList_View extends AppCompatActivity implements AdapterView.OnI
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "CardsList_View.onCreate()");
+        Log.d(TAG+"_L-CYCLE", "onCreate()");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cards_list_activity);
         ButterKnife.bind(this);
-
-        messageView.setText(R.string.loading_cards_list);
-        messageView.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
 
         cardsList = new ArrayList<>();
         cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
@@ -58,31 +54,40 @@ public class CardsList_View extends AppCompatActivity implements AdapterView.OnI
         viewModel = ViewModelProviders.of(this).get(CardsList_ViewModel.class);
 
         liveData = viewModel.getLiveData();
+
         liveData.observe(this, new Observer<List<Card>>() {
             @Override
             public void onChanged(@Nullable List<Card> cards) {
-                Log.d(TAG, "onChanged()");
+                Log.d(TAG+"_LiveData", "=ПОСТУПИЛИ ЖИВЫЕ ДАННЫЕ=, ("+cards.size()+") "+cards);
+
                 progressBar.setVisibility(View.GONE);
                 messageView.setVisibility(View.GONE);
-                cardsList.clear();
+
+                // Очищать список не нужно, так как он каждый раз (?) создаётся заново.
                 cardsList.addAll(cards);
                 cardsListAdapter.notifyDataSetChanged();
             }
         });
+
+        refreshList();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause()");
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG+"_L-CYCLE", "onStart()");
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume()");
-        // TODO: не загружать список повторно при повороте
-        loadList();
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG+"_L-CYCLE", "onStop()");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG+"_L-CYCLE", "onDestroy()");
     }
 
     @Override
@@ -98,8 +103,13 @@ public class CardsList_View extends AppCompatActivity implements AdapterView.OnI
         startActivity(intent);
     }
 
-    void loadList() {
-        Log.d(TAG, "loadList()");
+    private void refreshList() {
+        Log.d(TAG, "refreshList()");
+
+        messageView.setText(R.string.loading_cards_list);
+        messageView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+
         viewModel.loadList();
     }
 }

@@ -18,8 +18,8 @@ public class CardsList_ViewModel extends ViewModel implements iCardsList.Callbac
     private MutableLiveData<List<Card>> liveData = new MutableLiveData<>();
 
     CardsList_ViewModel() {
-        Log.d(TAG, "new CardsList_ViewModel()");
-        model = CardsList_Model.getInstance(this);
+        Log.d(TAG, "== new CardsList_ViewModel()");
+        model = CardsList_Model.getInstance();
     }
 
     LiveData<List<Card>> getLiveData() {
@@ -28,8 +28,9 @@ public class CardsList_ViewModel extends ViewModel implements iCardsList.Callbac
 
     @Override
     public void onLoadSuccess(List<Card> list) {
-        Log.d(TAG, "onLoadSuccess()");
-//        Log.d(TAG, list.toString());
+        Log.d(TAG, "onLoadSuccess(), "+list);
+//        List<Card> emptyList = new ArrayList<Card>();
+//        liveData.setValue(emptyList);
         liveData.setValue(list);
     }
 
@@ -39,12 +40,13 @@ public class CardsList_ViewModel extends ViewModel implements iCardsList.Callbac
     }
 
     void loadList() {
-        Log.d(TAG, "loadList()");
-        if (0 == cardsList.size()) {
-            Log.d(TAG, "списка нет, загружаю");
-            model.loadList();
+        if (cardsList.isEmpty()) {
+            Log.d(TAG, "loadList(): список пустой, запрашиваю");
+            Log.d(TAG, cardsList.toString());
+            model.loadList(this);
         } else {
-            Log.d(TAG, "список уже загружен");
+            Log.d(TAG, "loadList(), список уже заполнен, возвращаю");
+            Log.d(TAG, cardsList.toString());
         }
     }
 }

@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.cards_list;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,16 @@ import ru.aakumykov.me.mvp.models.Card;
 
 public class CardsListAdapter extends ArrayAdapter<Card> {
 
+    // TODO: реализовать ViewHolder
+
+    private final static String TAG = "CardsListAdapter";
     private LayoutInflater inflater;
     private int layout;
     private List<Card> cards;
 
     CardsListAdapter(Context context, int resource, List<Card> cards) {
         super(context, resource, cards);
+        Log.d(TAG, "== new CardsListAdapter(), cards: "+cards);
         this.cards = cards;
         this.layout = resource;
         this.inflater = LayoutInflater.from(context);
