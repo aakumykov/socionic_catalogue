@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +25,10 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_view.CardView_View;
 import ru.aakumykov.me.mvp.models.Card;
 
-public class CardsList_View extends AppCompatActivity implements AdapterView.OnItemClickListener {
+// TODO: Пункт "обновить" в меню панели.
+
+public class CardsList_View extends AppCompatActivity implements
+        AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private final static String TAG = "CardsList_View";
 
@@ -34,6 +38,7 @@ public class CardsList_View extends AppCompatActivity implements AdapterView.OnI
     private List<Card> cardsList;
     private CardsListAdapter cardsListAdapter;
 
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.listView) ListView listView;
@@ -46,30 +51,31 @@ public class CardsList_View extends AppCompatActivity implements AdapterView.OnI
         setContentView(R.layout.cards_list_activity);
         ButterKnife.bind(this);
 
+        swipeRefreshLayout.setOnRefreshListener(this);
+        listView.setOnItemClickListener(this);
+
         cardsList = new ArrayList<>();
         cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
         listView.setAdapter(cardsListAdapter);
-        listView.setOnItemClickListener(this);
 
         viewModel = ViewModelProviders.of(this).get(CardsList_ViewModel.class);
 
         liveData = viewModel.getLiveData();
-
         liveData.observe(this, new Observer<List<Card>>() {
             @Override
             public void onChanged(@Nullable List<Card> cards) {
                 Log.d(TAG+"_LiveData", "=ПОСТУПИЛИ ЖИВЫЕ ДАННЫЕ=, ("+cards.size()+") "+cards);
 
-                progressBar.setVisibility(View.GONE);
-                messageView.setVisibility(View.GONE);
+                hideLoadingMessage();
+                swipeRefreshLayout.setRefreshing(false);
 
-                // Очищать список не нужно, так как он каждый раз (?) создаётся заново.
+                cardsList.clear();
                 cardsList.addAll(cards);
                 cardsListAdapter.notifyDataSetChanged();
             }
         });
 
-        refreshList();
+        loadList(false);
     }
 
     @Override
@@ -103,13 +109,29 @@ public class CardsList_View extends AppCompatActivity implements AdapterView.OnI
         startActivity(intent);
     }
 
-    private void refreshList() {
-        Log.d(TAG, "refreshList()");
+    @Override
+    public void onRefresh() {
+        Log.d(TAG, "onRefresh()");
+        loadList(true);
+    }
 
+    private void loadList(boolean manualRefresh) {
+        Log.d(TAG, "loadList("+manualRefresh+")");
+
+        if (!manualRefresh)
+            showLoadingMessage();
+
+        viewModel.loadList(manualRefresh);
+    }
+
+    private void showLoadingMessage() {
         messageView.setText(R.string.loading_cards_list);
         messageView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
+    }
 
-        viewModel.loadList();
+    private void hideLoadingMessage() {
+        progressBar.setVisibility(View.GONE);
+        messageView.setVisibility(View.GONE);
     }
 }
