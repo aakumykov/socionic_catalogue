@@ -17,53 +17,63 @@ import ru.aakumykov.me.mvp.models.Card;
 
 public class CardsList_Model implements iCardsList.Model {
 
-    private final static String TAG = "CardsList_Model";
-
     /* Одиночка: начало */
     private volatile static CardsList_Model ourInstance;
-    static synchronized CardsList_Model getInstance(iCardsList.Callbacks callbacks) {
+
+    private CardsList_Model() { Log.d(TAG, "== new CardsList_Model()"); }
+
+    static synchronized CardsList_Model getInstance() {
+        Log.d(TAG, "getInstance()");
+
         if (null == ourInstance) {
             synchronized (CardsList_Model.class) {
-                ourInstance = new CardsList_Model(callbacks);
+                ourInstance = new CardsList_Model();
             }
         }
+
         return ourInstance;
-    }
-    private CardsList_Model(iCardsList.Callbacks callbacks) {
-        Log.d(TAG, "new CardsList_Model()");
-        this.callbacks = callbacks;
     }
     /* Одиночка: конецъ */
 
+    private final static String TAG = "CardsList_Model";
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private List<Card> cardsList = new ArrayList<>();
     private iCardsList.Callbacks callbacks;
 
+
     @Override
-    public void loadList() {
+    public void loadList(final iCardsList.Callbacks callbacks) {
         Log.d(TAG, "loadList()");
 
-        DatabaseReference cardsRef = firebaseDatabase.getReference().child(Constants.CARDS_PATH);
+        if (cardsList.isEmpty()) {
+            Log.d(TAG, "запрашиваю список с сервера");
 
-        cardsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Card card = ds.getValue(Card.class);
-                    if (null != card) {
-                        card.setKey(ds.getKey());
-                        cardsList.add(card);
+            DatabaseReference cardsRef = firebaseDatabase.getReference().child(Constants.CARDS_PATH);
+
+            cardsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        Card card = ds.getValue(Card.class);
+                        if (null != card) {
+                            card.setKey(ds.getKey());
+                            cardsList.add(card);
+                        }
                     }
-                }
 //                Log.d(TAG, "cardsList: "+cardsList);
-                callbacks.onLoadSuccess(cardsList);
-            }
+                    callbacks.onLoadSuccess(cardsList);
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } else {
+            Log.d(TAG, "возвращаю существующий список");
+
+            callbacks.onLoadSuccess(cardsList);
+        }
     }
 
 }
