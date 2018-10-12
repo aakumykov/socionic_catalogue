@@ -66,8 +66,7 @@ public class CardsList_View extends AppCompatActivity implements
             public void onChanged(@Nullable List<Card> cards) {
                 Log.d(TAG+"_LiveData", "=ПОСТУПИЛИ ЖИВЫЕ ДАННЫЕ=, ("+cards.size()+") "+cards);
 
-                progressBar.setVisibility(View.GONE);
-                messageView.setVisibility(View.GONE);
+                hideLoadingMessage();
                 swipeRefreshLayout.setRefreshing(false);
 
                 cardsList.clear();
@@ -119,13 +118,20 @@ public class CardsList_View extends AppCompatActivity implements
     private void loadList(boolean manualRefresh) {
         Log.d(TAG, "loadList("+manualRefresh+")");
 
-        if (!manualRefresh) {
-            messageView.setText(R.string.loading_cards_list);
-            messageView.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.VISIBLE);
-        }
+        if (!manualRefresh)
+            showLoadingMessage();
 
         viewModel.loadList(manualRefresh);
     }
 
+    private void showLoadingMessage() {
+        messageView.setText(R.string.loading_cards_list);
+        messageView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoadingMessage() {
+        progressBar.setVisibility(View.GONE);
+        messageView.setVisibility(View.GONE);
+    }
 }
