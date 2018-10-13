@@ -24,6 +24,7 @@
             android:name=".card_view.CardView_View"
             android:parentActivityName=".cards_list.CardsList_View" />
 
+        <activity android:name=".card_edit.CardEdit_View"></activity>
     </application>
 
 </manifest>

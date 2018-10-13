@@ -24,4 +24,9 @@
     <string name="error_loading_image">Ошибка загрузки картинки</string>
     <string name="image_is_loaded">Картинка загружена</string>
     <string name="card_image">Картинка карточки</string>
+    <string name="title">Заголовок</string>
+    <string name="quote">Цитата</string>
+    <string name="description">Описание</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отменить</string>
 </resources>
