@@ -1,5 +1,8 @@
 package ru.aakumykov.me.mvp.card_view;
 
+import android.content.Intent;
+import android.support.annotation.Nullable;
+
 import ru.aakumykov.me.mvp.models.Card;
 
 public interface iCardView {
@@ -30,7 +33,7 @@ public interface iCardView {
     interface Presenter {
         void cardKeyRecieved(String key);
         void editButtonPressed();
-        void updateCurrentCard(Card card); // как-то это криво
+        void activityResultComes(int requestCode, int resultCode, @Nullable Intent data);
 
         void linkView(iCardView.View view);
         void unlinkView();

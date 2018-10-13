@@ -77,19 +77,8 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.d(TAG, "onActivityResult()");
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (RESULT_OK == resultCode && null != data) {
-            Card card = data.getParcelableExtra(Constants.CARD);
-            Log.d(TAG, "card from result: "+card);
-
-            if (null != card) {
-                displayCard(card);
-                presenter.updateCurrentCard(card);
-            } else {
-                showMessage(R.string.error_displaying_card, Constants.ERROR_MSG);
-                Log.e(TAG, "Card from intent is missing.");
-            }
-        }
+        presenter.linkView(this);
+        presenter.activityResultComes(requestCode, resultCode, data);
     }
 
     @Override
@@ -120,6 +109,7 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
 
     @Override
     public void displayCard(Card card) {
+        Log.d(TAG, "displayCard(), "+card);
         setTitle(card.getTitle());
         setQuote(card.getQuote());
         setDescription(card.getDescription());

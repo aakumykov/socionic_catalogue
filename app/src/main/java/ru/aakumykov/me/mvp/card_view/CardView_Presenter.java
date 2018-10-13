@@ -1,5 +1,8 @@
 package ru.aakumykov.me.mvp.card_view;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import ru.aakumykov.me.mvp.Constants;
@@ -30,8 +33,20 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
     }
 
     @Override
-    public void updateCurrentCard(Card card) {
-        currentCard = card;
+    public void activityResultComes(int requestCode, int resultCode, @Nullable Intent data) {
+        if (Activity.RESULT_OK == resultCode) {
+            if (null != data) {
+                Card card = data.getParcelableExtra(Constants.CARD);
+                Log.d(TAG, "card from activity result: "+card);
+                if (null != card) {
+                    currentCard = card;
+                    view.displayCard(card);
+                } else {
+                    Log.e(TAG, "Card from intent of activity result is null.");
+                    view.showMessage(R.string.error_displaying_card, Constants.ERROR_MSG);
+                }
+            }
+        }
     }
 
     @Override
@@ -82,6 +97,7 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
 
     @Override
     public void linkView(iCardView.View view) {
+        Log.d(TAG, "linkView(), view: "+view);
         this.view = view;
     }
 
