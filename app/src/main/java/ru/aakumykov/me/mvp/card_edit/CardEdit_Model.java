@@ -1,7 +1,11 @@
 package ru.aakumykov.me.mvp.card_edit;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,8 +34,32 @@ public class CardEdit_Model implements iCardEdit.Model {
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
     @Override
-    public void saveCard(Card card, iCardEdit.ModelCallbacks callbacks) {
+    public void saveCard(Card card, final iCardEdit.ModelCallbacks callbacks) {
+        Log.d(TAG, "saveCard(), "+card);
 
+        DatabaseReference cardRef = firebaseDatabase.getReference()
+                .child(Constants.CARDS_PATH).child(card.getKey());
+
+        cardRef.setValue(card)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onSaveSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onSaveError(e.getMessage());
+                        e.printStackTrace();
+                    }
+                })
+                .addOnCanceledListener(new OnCanceledListener() {
+                    @Override
+                    public void onCanceled() {
+                        callbacks.onSaveCancel();
+                    }
+                });
     }
 
     //    @Override
@@ -45,13 +73,13 @@ public class CardEdit_Model implements iCardEdit.Model {
 //                Card card = dataSnapshot.getValue(Card.class);
 //                if (null != card) {
 //                    card.setKey(dataSnapshot.getKey());
-//                    callbacks.onLoadSuccess(card);
+//                    callbacks.onSaveSuccess(card);
 //                }
 //            }
 //
 //            @Override
 //            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                callbacks.onLoadError(databaseError.getMessage());
+//                callbacks.onSaveError(databaseError.getMessage());
 //                databaseError.toException().printStackTrace();
 //            }
 //        });

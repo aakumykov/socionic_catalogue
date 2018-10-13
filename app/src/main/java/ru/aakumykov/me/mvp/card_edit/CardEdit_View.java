@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
@@ -22,11 +23,13 @@ import ru.aakumykov.me.mvp.models.Card;
 // TODO: кнопка Вверх как Отмена
 
 public class CardEdit_View extends AppCompatActivity
-        implements iCardEdit.View {
+        implements iCardEdit.View, iCardEdit.ModelCallbacks {
 
     private final static String TAG = "CardEdit_View";
+    private Card currentCard;
+    private iCardEdit.Model model = CardEdit_Model.getInstance();
 
-    @BindView(R.id.errorView) TextView errorView;
+    @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.titleView) EditText titleView;
     @BindView(R.id.quoteView) EditText quoteView;
     @BindView(R.id.descriptionView) EditText descriptionView;
@@ -44,8 +47,11 @@ public class CardEdit_View extends AppCompatActivity
         Card card = intent.getParcelableExtra(Constants.CARD);
         Log.d(TAG, "card из Intent: "+card);
         if (null != card) {
+            currentCard = card;
             fillEditForm(card);
         }
+
+
 
 //        iCardEdit.ViewModel viewModel = ViewModelProviders.of(this).get(CardEdit_ViewModel.class);
 //
@@ -80,8 +86,39 @@ public class CardEdit_View extends AppCompatActivity
         enableSaveButton();
     }
 
-    void saveCard() {
-        
+
+    // TODO: сохранение в виде транзакции (и/или блокировка на время правки)
+    @OnClick(R.id.saveButton)
+    public void saveCard() {
+        Log.d(TAG, "saveCard()");
+        currentCard.setTitle(titleView.getText().toString());
+        currentCard.setQuote(quoteView.getText().toString());
+        currentCard.setDescription(descriptionView.getText().toString());
+        model.saveCard(currentCard, this);
+    }
+
+    @Override
+    public void onSaveSuccess() {
+        Log.d(TAG, "onSaveSuccess()");
+
+    }
+
+    @Override
+    public void onSaveError(String message) {
+        Log.d(TAG, "onSaveError()");
+        showMessage(R.string.savingError, Constants.ERROR_MSG);
+    }
+
+    @Override
+    public void onSaveCancel() {
+        showMessage(R.string.savingCancel, Constants.ERROR_MSG);
+    }
+
+
+    @OnClick(R.id.cancelButton)
+    @Override
+    public void cancelEdit() {
+        this.finish();
     }
 
 
@@ -89,19 +126,35 @@ public class CardEdit_View extends AppCompatActivity
     public void enableSaveButton() {
         saveButton.setEnabled(true);
     }
-
     @Override
     public void disableSaveButton() {
         saveButton.setEnabled(false);
     }
 
     @Override
-    public void showError(String msg) {
-        errorView.setText(msg);
+    public void showMessage(int msgId, String msgType) {
+        int colorId;
+        switch (msgType) {
+            case Constants.INFO_MSG:
+                colorId = R.color.info;
+                break;
+            case Constants.ERROR_MSG:
+                colorId = R.color.error;
+                break;
+            default:
+                colorId = R.color.undefined;
+                break;
+        }
+        messageView.setTextColor(getResources().getColor(colorId));
+
+        String msg = getResources().getString(msgId);
+        messageView.setText(msg);
+
+        MyUtils.show(messageView);
+    }
+    @Override
+    public void hideMessage() {
+        MyUtils.hide(messageView);
     }
 
-    @Override
-    public void hideError() {
-        MyUtils.hide(errorView);
-    }
 }

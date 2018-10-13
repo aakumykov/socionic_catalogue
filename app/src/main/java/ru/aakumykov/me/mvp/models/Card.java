@@ -15,13 +15,13 @@ public class Card implements Parcelable {
     public Card() {
     }
 
-    protected Card(Parcel in) {
-        key = in.readString();
-        type = in.readString();
-        title = in.readString();
-        quote = in.readString();
-        imageURL = in.readString();
-        description = in.readString();
+    public Card(String key, String type, String title, String quote, String imageURL, String description) {
+        this.key = key;
+        this.type = type;
+        this.title = title;
+        this.quote = quote;
+        this.imageURL = imageURL;
+        this.description = description;
     }
 
     public String getKey() {
@@ -67,13 +67,22 @@ public class Card implements Parcelable {
         return "Card { key: "+getKey()+", title: "+getTitle()+", quote: "+getQuote()+", imageURL: "+imageURL+", description: "+getDescription()+",}";
     }
 
+
+    /* Parcelable */
+    protected Card(Parcel in) {
+        key = in.readString();
+        type = in.readString();
+        title = in.readString();
+        quote = in.readString();
+        imageURL = in.readString();
+        description = in.readString();
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
 
-
-    /* Parcelable */
     public static final Creator<Card> CREATOR = new Creator<Card>() {
         @Override
         public Card createFromParcel(Parcel in) {

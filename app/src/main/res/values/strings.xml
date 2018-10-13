@@ -31,4 +31,6 @@
     <string name="cancel">Отменить</string>
     <string name="edit">Изменить</string>
     <string name="delete">Удалить</string>
+    <string name="savingCancel">Сохранение отменено</string>
+    <string name="savingError">Ошибка сохранения</string>
 </resources>

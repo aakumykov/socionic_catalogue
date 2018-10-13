@@ -7,10 +7,12 @@ import ru.aakumykov.me.mvp.models.Card;
 public interface iCardEdit {
 
     interface View {
-        void showError(String msg);
-        void hideError();
-
         void fillEditForm(Card card);
+        void saveCard();
+        void cancelEdit();
+
+        void showMessage(int msgId, String msgType);
+        void hideMessage();
 
         void enableSaveButton();
         void disableSaveButton();
@@ -26,7 +28,8 @@ public interface iCardEdit {
     }
 
     interface ModelCallbacks {
-        void onLoadSuccess(Card card);
-        void onLoadError(String message);
+        void onSaveSuccess();
+        void onSaveError(String message);
+        void onSaveCancel();
     }
 }
