@@ -6,12 +6,12 @@ public class TemplateModel implements Interfaces.Model {
     private static volatile TemplateModel ourInstance = new TemplateModel();
     private TemplateModel() { }
     public static synchronized TemplateModel getInstance() {
-        synchronized (TemplateModel.class) {
-            if (null == ourInstance) {
+        if (null == ourInstance) {
+            synchronized (TemplateModel.class) {
                 ourInstance = new TemplateModel();
             }
-            return ourInstance;
         }
+        return ourInstance;
     }
     /* Одиночка */
 
