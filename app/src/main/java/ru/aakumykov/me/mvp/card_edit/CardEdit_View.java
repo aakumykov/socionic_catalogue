@@ -50,29 +50,6 @@ public class CardEdit_View extends AppCompatActivity
             currentCard = card;
             fillEditForm(card);
         }
-
-
-
-//        iCardEdit.ViewModel viewModel = ViewModelProviders.of(this).get(CardEdit_ViewModel.class);
-//
-//        LiveData<Card> cardLiveData = viewModel.getCardLiveData();
-//        cardLiveData.observe(this, new Observer<Card>() {
-//            @Override
-//            public void onChanged(@Nullable Card card) {
-//                Log.d(TAG, "поступили cardLiveData: "+card);
-//                fillEditForm(card);
-//            }
-//        });
-//
-//        LiveData<String> errorLiveData = viewModel.getErrorLiveData();
-//        errorLiveData.observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                Log.d(TAG, "поступили errorLiveData: "+s);
-//                Log.d(TAG, "onCreate()");
-//                showError(s);
-//            }
-//        });
     }
 
     @Override

@@ -38,8 +38,6 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.descriptionView) TextView descriptionView;
 
-    private ActionBar actionBar;
-
     private iCardView.Presenter presenter;
 
 
@@ -49,7 +47,7 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
         setContentView(R.layout.card_view_activity);
         ButterKnife.bind(this);
 
-        actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         if (null != actionBar) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -84,13 +82,18 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.actionEdit:
                 presenter.editButtonPressed();
                 break;
+            case android.R.id.home:
+                this.finish();
+                break;
             default:
                 super.onOptionsItemSelected(item);
         }
+
         return true;
     }
 
