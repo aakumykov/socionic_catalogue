@@ -14,6 +14,7 @@ public final class Constants {
     public final static String TEXT_CARD = "TEXT_CARD";
     public final static String IMAGE_CARD = "IMAGE_CARD";
 
+    public final static int CODE_EDIT_CARD = 20;
 
 //    public final static String = "";
 //    public final static String = "";

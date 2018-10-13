@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.card_view;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -73,6 +74,24 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d(TAG, "onActivityResult()");
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (RESULT_OK == resultCode && null != data) {
+            Card card = data.getParcelableExtra(Constants.CARD);
+            Log.d(TAG, "card from result: "+card);
+
+            if (null != card) {
+                displayCard(card);
+            } else {
+                showMessage(R.string.error_displaying_card, Constants.ERROR_MSG);
+                Log.e(TAG, "Card from intent is missing.");
+            }
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
@@ -97,35 +116,12 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
         return true;
     }
 
-    @Override
-    public void showProgressBar() {
-        MyUtils.show(progressBar);
-    }
 
     @Override
-    public void hideProgressBar() {
-        MyUtils.hide(progressBar);
-    }
-
-    @Override
-    public void showImagePlaceholder() {
-        imageHolder.setVisibility(View.VISIBLE);
-        imagePlaceholder.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideImagePlaceholder() {
-        imagePlaceholder.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showQuote() {
-        quoteView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void showImage() {
-        imageView.setVisibility(View.VISIBLE);
+    public void displayCard(Card card) {
+        setTitle(card.getTitle());
+        setQuote(card.getQuote());
+        setDescription(card.getDescription());
     }
 
     @Override
@@ -165,6 +161,38 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     }
 
 
+
+    @Override
+    public void showProgressBar() {
+        MyUtils.show(progressBar);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        MyUtils.hide(progressBar);
+    }
+
+    @Override
+    public void showImagePlaceholder() {
+        imageHolder.setVisibility(View.VISIBLE);
+        imagePlaceholder.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideImagePlaceholder() {
+        imagePlaceholder.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showQuote() {
+        quoteView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showImage() {
+        imageView.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void showMessage(int msgId, String msgType) {
         int colorId;
@@ -193,6 +221,7 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     }
 
 
+    // TODO: что, если перенести в Presenter?
     @Override
     public void editCard(Card card) {
         Log.d(TAG, "editCard(), "+card);
@@ -202,6 +231,6 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
 
 //        intent.put
 
-        startActivity(intent);
+        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 }

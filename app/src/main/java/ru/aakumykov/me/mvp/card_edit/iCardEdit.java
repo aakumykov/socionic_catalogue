@@ -14,8 +14,11 @@ public interface iCardEdit {
         void showMessage(int msgId, String msgType);
         void hideMessage();
 
-        void enableSaveButton();
-        void disableSaveButton();
+        void enableEditForm();
+        void disableEditForm();
+
+        void showProgressBar();
+        void hideProgressBar();
     }
 
     interface ViewModel {

@@ -33,4 +33,6 @@
     <string name="delete">Удалить</string>
     <string name="savingCancel">Сохранение отменено</string>
     <string name="savingError">Ошибка сохранения</string>
+    <string name="savingCard">Сохраняю карточку</string>
+    <string name="error_displaying_card">Ошибка отображения карточки</string>
 </resources>

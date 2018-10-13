@@ -17,6 +17,8 @@ public interface iCardView {
         void showQuote();
         void showImage();
 
+        void displayCard(Card card);
+
         void setTitle(String title);
         void setQuote(String quote);
         void loadImage(String quote);
