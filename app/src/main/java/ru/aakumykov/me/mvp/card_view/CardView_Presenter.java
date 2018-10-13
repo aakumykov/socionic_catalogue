@@ -11,6 +11,7 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
     private final static String TAG = "CardView_Presenter";
     private iCardView.View view;
     private iCardView.Model model;
+    private Card currentCard;
 
     CardView_Presenter() {
         model = CardView_Model.getInstance();
@@ -23,9 +24,16 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
         model.loadCard(key, this);
     }
 
+    public void editButtonPressed() {
+        Log.d(TAG, "editButtonPressed()");
+        view.editCard(currentCard);
+    }
+
 
     @Override
     public void onLoadSuccess(Card card) {
+
+        this.currentCard = card;
 
         view.hideMessage();
         view.hideProgressBar();
@@ -37,12 +45,12 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
             case Constants.TEXT_CARD:
                 view.showQuote();
                 view.setQuote(card.getQuote());
-//                view.displayTextCard(Card card);
+//                view.displayTextCard(Card currentCard);
                 break;
             case Constants.IMAGE_CARD:
                 view.showImagePlaceholder();
                 view.loadImage(card.getImageURL());
-//                view.displayImageCard(Card card);
+//                view.displayImageCard(Card currentCard);
                 break;
             default:
                 view.showMessage(R.string.unknown_card_type, Constants.ERROR_MSG);
@@ -52,14 +60,16 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
 
     @Override
     public void onLoadFailed(String msg) {
+        this.currentCard = null;
+
         view.hideMessage();
         view.hideProgressBar();
         view.showMessage(R.string.card_load_error, Constants.ERROR_MSG);
-        // Log.e(TAG, msg); // Это уже выводит модель
     }
 
     @Override
     public void onLoadCanceled() {
+        // Нужно обнулять currentCard ?
         view.hideMessage();
         view.hideProgressBar();
         view.showMessage(R.string.card_load_canceled, Constants.ERROR_MSG);

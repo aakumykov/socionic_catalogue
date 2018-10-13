@@ -6,9 +6,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -20,6 +22,8 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
+import ru.aakumykov.me.mvp.models.Card;
 
 public class CardView_View extends AppCompatActivity implements iCardView.View {
 
@@ -34,7 +38,10 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.descriptionView) TextView descriptionView;
 
-    iCardView.Presenter presenter;
+    private ActionBar actionBar;
+
+    private iCardView.Presenter presenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +49,7 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
         setContentView(R.layout.card_view_activity);
         ButterKnife.bind(this);
 
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         if (null != actionBar) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -67,6 +74,25 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
         presenter.unlinkView();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.card_view_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionEdit:
+                presenter.editButtonPressed();
+                break;
+            default:
+                super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
 
     @Override
     public void showProgressBar() {
@@ -112,7 +138,7 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
 
     @Override
     public void loadImage(String imageURL) {
-        Log.d(TAG, "loadImage("+imageURL+")");
+//        Log.d(TAG, "loadImage("+imageURL+")");
 
         Picasso.get()
                 .load(imageURL)
@@ -161,5 +187,18 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     @Override
     public void hideMessage() {
         MyUtils.hide(messageView);
+    }
+
+
+    @Override
+    public void editCard(Card card) {
+        Log.d(TAG, "editCard(), "+card);
+        Intent intent = new Intent();
+        intent.setClass(this, CardEdit_View.class);
+        intent.putExtra(Constants.CARD, card);
+
+//        intent.put
+
+        startActivity(intent);
     }
 }

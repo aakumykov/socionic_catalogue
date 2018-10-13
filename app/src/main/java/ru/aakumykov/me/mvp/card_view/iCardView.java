@@ -21,10 +21,13 @@ public interface iCardView {
         void setQuote(String quote);
         void loadImage(String quote);
         void setDescription(String description);
+
+        void editCard(Card card);
     }
 
     interface Presenter {
         void cardKeyRecieved(String key);
+        void editButtonPressed();
         void linkView(iCardView.View view);
         void unlinkView();
     }

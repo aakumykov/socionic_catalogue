@@ -30,25 +30,30 @@ public class CardEdit_Model implements iCardEdit.Model {
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
     @Override
-    public void loadCard(String key, final iCardEdit.ModelCallbacks callbacks) {
-        DatabaseReference cardRef = firebaseDatabase.getReference()
-                .child(Constants.CARDS_PATH).child(key);
+    public void saveCard(Card card, iCardEdit.ModelCallbacks callbacks) {
 
-        cardRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Card card = dataSnapshot.getValue(Card.class);
-                if (null != card) {
-                    card.setKey(dataSnapshot.getKey());
-                    callbacks.onLoadSuccess(card);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                callbacks.onLoadError(databaseError.getMessage());
-                databaseError.toException().printStackTrace();
-            }
-        });
     }
+
+    //    @Override
+//    public void loadCard(String key, final iCardEdit.ModelCallbacks callbacks) {
+//        DatabaseReference cardRef = firebaseDatabase.getReference()
+//                .child(Constants.CARDS_PATH).child(key);
+//
+//        cardRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                Card card = dataSnapshot.getValue(Card.class);
+//                if (null != card) {
+//                    card.setKey(dataSnapshot.getKey());
+//                    callbacks.onLoadSuccess(card);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                callbacks.onLoadError(databaseError.getMessage());
+//                databaseError.toException().printStackTrace();
+//            }
+//        });
+//    }
 }

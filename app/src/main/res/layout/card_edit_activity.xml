@@ -13,14 +13,14 @@
         android:textSize="16sp"
         android:visibility="gone" />
 
-    <TextView
+    <EditText
         android:id="@+id/titleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/title"
         android:textSize="16sp" />
 
-    <TextView
+    <EditText
         android:id="@+id/quoteView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         android:textSize="16sp"
         android:textStyle="italic" />
 
-    <TextView
+    <EditText
         android:id="@+id/descriptionView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

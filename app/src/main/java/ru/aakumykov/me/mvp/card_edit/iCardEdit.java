@@ -22,7 +22,7 @@ public interface iCardEdit {
     }
 
     interface Model {
-        void loadCard(String key, iCardEdit.ModelCallbacks callbacks);
+        void saveCard(Card card, iCardEdit.ModelCallbacks callbacks);
     }
 
     interface ModelCallbacks {
