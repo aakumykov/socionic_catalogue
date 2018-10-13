@@ -30,6 +30,8 @@ public interface iCardView {
     interface Presenter {
         void cardKeyRecieved(String key);
         void editButtonPressed();
+        void updateCurrentCard(Card card); // как-то это криво
+
         void linkView(iCardView.View view);
         void unlinkView();
     }

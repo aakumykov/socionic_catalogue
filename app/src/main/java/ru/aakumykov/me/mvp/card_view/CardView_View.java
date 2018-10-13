@@ -84,6 +84,7 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
 
             if (null != card) {
                 displayCard(card);
+                presenter.updateCurrentCard(card);
             } else {
                 showMessage(R.string.error_displaying_card, Constants.ERROR_MSG);
                 Log.e(TAG, "Card from intent is missing.");

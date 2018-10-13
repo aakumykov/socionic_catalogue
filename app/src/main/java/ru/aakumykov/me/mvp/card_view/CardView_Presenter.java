@@ -29,6 +29,10 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
         view.editCard(currentCard);
     }
 
+    @Override
+    public void updateCurrentCard(Card card) {
+        currentCard = card;
+    }
 
     @Override
     public void onLoadSuccess(Card card) {
