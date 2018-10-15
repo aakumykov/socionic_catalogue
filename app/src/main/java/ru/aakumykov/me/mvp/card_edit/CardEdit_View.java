@@ -154,10 +154,11 @@ public class CardEdit_View extends AppCompatActivity
                 .into(remoteImageView, new Callback() {
                     @Override
                     public void onSuccess() {
-                        MyUtils.show(imageHolder);
                         MyUtils.hide(localImageView);
                         MyUtils.hide(imageProgressBar);
+                        MyUtils.show(imageHolder);
                         MyUtils.show(remoteImageView);
+                        MyUtils.show(discardImageButton);
                     }
 
                     @Override
