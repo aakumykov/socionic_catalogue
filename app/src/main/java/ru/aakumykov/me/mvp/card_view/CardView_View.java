@@ -141,6 +141,8 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     public void loadImage(String imageURL) {
 //        Log.d(TAG, "loadImage("+imageURL+")");
 
+        MyUtils.show(imageProgressBar);
+
         if (null == imageURL) {
             showMessage(R.string.error_missing_image, Constants.ERROR_MSG);
             MyUtils.hide(imageProgressBar);
