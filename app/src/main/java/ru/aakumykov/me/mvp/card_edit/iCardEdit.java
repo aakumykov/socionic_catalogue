@@ -11,12 +11,18 @@ public interface iCardEdit {
         void displayTextCard(Card card);
         void displayImageCard(Card card);
 
+        String getCardTitle();
+        String getCardQuote();
+        String getCardDescription();
+
         void selectImage();
 
         void displayRemoteImage(String imageURI);
         void displayRemoteImage(Uri imageURI);
+
         void displayLocalImage(String imageURI);
         void displayLocalImage(Uri imageURI);
+
         void removeImage();
 
         void showProgressBar();

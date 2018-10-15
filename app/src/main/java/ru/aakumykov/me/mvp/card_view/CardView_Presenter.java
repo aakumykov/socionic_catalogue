@@ -72,7 +72,7 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
 //                view.displayImageCard(Card currentCard);
                 break;
             default:
-                view.showMessage(R.string.unknown_card_type, Constants.ERROR_MSG);
+                view.showMessage(R.string.wrong_card_type, Constants.ERROR_MSG);
                 break;
         }
     }

@@ -53,7 +53,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
                 view.displayImageCard(card);
                 break;
             default:
-                view.showError(R.string.unknown_card_type);
+                view.showError(R.string.wrong_card_type);
                 Log.e(TAG, "Unknown card type: "+card.getType());
         }
     }
@@ -82,11 +82,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
 
     @Override
     public void onCancelButtonClicked() {
-        currentCard = null;
-        localImageURI = null;
-        localImageType = null;
-        oldImageURI = null;
-        newImageURI = null;
+        forgetCardData();
         view.closeActivity();
     }
 
@@ -112,22 +108,6 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
     }
 
 
-    /* Model callbacks */
-    @Override
-    public void onCardSaveSuccess() {
-
-    }
-
-    @Override
-    public void onCardSaveError(String message) {
-
-    }
-
-    @Override
-    public void onCardSaveCancel() {
-
-    }
-
 
     @Override
     public void onImageUploadProgress(int progress) {
@@ -138,15 +118,15 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
     public void onImageUploadSuccess(Uri remoteImageURI) {
         Log.d(TAG, "onImageUploadSuccess(), "+remoteImageURI);
 
-        // Это делать здесь? Нет.
-//        localImageURI = null;
-//        localImageType = null;
-//        oldImageURI = null;
-
         newImageURI = remoteImageURI.toString();
-        // TODO: display local/remote image
-//        view.hideImageProgressBar();
         view.displayRemoteImage(remoteImageURI);
+
+        try {
+            saveCompleteCard();
+        } catch (Exception e) {
+            view.showError(R.string.error_saving_card);
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     @Override
@@ -158,5 +138,56 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
     public void onImageUploadCancel() {
         view.showError(R.string.image_upload_cancelled);
     }
-    /* Model callbacks */
+
+
+
+    private void saveCompleteCard() throws Exception {
+        Log.d(TAG, "saveCompleteCard()");
+
+        currentCard.setTitle(view.getCardTitle());
+        currentCard.setDescription(view.getCardDescription());
+
+        switch (currentCard.getType()) {
+            case Constants.TEXT_CARD:
+                currentCard.setQuote(view.getCardQuote());
+                break;
+            case Constants.IMAGE_CARD:
+                currentCard.setImageURL(newImageURI);
+                break;
+            default:
+                view.showError(R.string.wrong_card_type);
+                throw new Exception("Unknown card type: "+currentCard.getType());
+        }
+
+        model.saveCard(currentCard, this);
+    }
+
+    @Override
+    public void onCardSaveSuccess() {
+        forgetCardData();
+        // TODO: передавать новую карточку
+        view.closeActivity();
+    }
+
+    @Override
+    public void onCardSaveError(String message) {
+        view.showError(R.string.error_saving_card);
+        Log.e(TAG, message);
+    }
+
+    @Override
+    public void onCardSaveCancel() {
+        view.showError(R.string.card_saving_cancelled);
+    }
+
+
+
+    private void forgetCardData() {
+        Log.d(TAG, "forgetCardData()");
+        currentCard = null;
+        localImageURI = null;
+        localImageType = null;
+        oldImageURI = null;
+        newImageURI = null;
+    }
 }

@@ -207,6 +207,7 @@ public class CardEdit_View extends AppCompatActivity
 
 
     // TODO: запрос разрешений
+    // TODO: не показывать ошибку при ручном отказе
     @Override
     public void selectImage() {
         Log.d(TAG, "selectImage()");
@@ -246,6 +247,22 @@ public class CardEdit_View extends AppCompatActivity
         String mimeType =  this.getContentResolver().getType(dataURI);
 
         presenter.onImageSelected(dataURI, mimeType);
+    }
+
+
+    @Override
+    public String getCardTitle() {
+        return titleView.getText().toString();
+    }
+
+    @Override
+    public String getCardQuote() {
+        return quoteView.getText().toString();
+    }
+
+    @Override
+    public String getCardDescription() {
+        return descriptionView.getText().toString();
     }
 
 

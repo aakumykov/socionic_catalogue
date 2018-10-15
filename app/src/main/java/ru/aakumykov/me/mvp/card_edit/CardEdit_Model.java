@@ -38,35 +38,6 @@ public class CardEdit_Model implements iCardEdit.Model {
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
     @Override
-    public void saveCard(Card card, final iCardEdit.ModelCallbacks callbacks) {
-        Log.d(TAG, "saveCard(), "+card);
-
-        DatabaseReference cardRef = firebaseDatabase.getReference()
-                .child(Constants.CARDS_PATH).child(card.getKey());
-
-        cardRef.setValue(card)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onCardSaveSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onCardSaveError(e.getMessage());
-                        e.printStackTrace();
-                    }
-                })
-                .addOnCanceledListener(new OnCanceledListener() {
-                    @Override
-                    public void onCanceled() {
-                        callbacks.onCardSaveCancel();
-                    }
-                });
-    }
-
-    @Override
     public void uploadImage(Uri imageURI, String mimeType, String remotePath, final iCardEdit.ModelCallbacks callbacks) {
         Log.d(TAG, "uploadImage()");
 
@@ -118,6 +89,35 @@ public class CardEdit_Model implements iCardEdit.Model {
                     @Override
                     public void onCanceled() {
                         callbacks.onImageUploadCancel();
+                    }
+                });
+    }
+
+    @Override
+    public void saveCard(Card card, final iCardEdit.ModelCallbacks callbacks) {
+        Log.d(TAG, "saveCard(), "+card);
+
+        DatabaseReference cardRef = firebaseDatabase.getReference()
+                .child(Constants.CARDS_PATH).child(card.getKey());
+
+        cardRef.setValue(card)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onCardSaveSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onCardSaveError(e.getMessage());
+                        e.printStackTrace();
+                    }
+                })
+                .addOnCanceledListener(new OnCanceledListener() {
+                    @Override
+                    public void onCanceled() {
+                        callbacks.onCardSaveCancel();
                     }
                 });
     }
