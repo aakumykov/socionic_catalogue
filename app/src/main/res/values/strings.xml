@@ -39,4 +39,7 @@
     <string name="discard_image_button">Кнопка отказа от картинки</string>
     <string name="error_selecting_image">Ошибка выбора картинки</string>
     <string name="image_data_error">Ошибка данных картинки</string>
+    <string name="wrong_mime_type">Неправильный тип картинки</string>
+    <string name="image_upload_cancelled">Отправка картинки отменена</string>
+    <string name="image_upload_error">Ошибка отправки картинки</string>
 </resources>

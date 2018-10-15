@@ -37,4 +37,7 @@
     <string name="select_image">Select image</string>
     <string name="error_selecting_image">Error selecting image</string>
     <string name="image_data_error">Image data error</string>
+    <string name="wrong_mime_type">Wrong image type</string>
+    <string name="image_upload_cancelled">Image upload cancelled</string>
+    <string name="image_upload_error">Image upload error</string>
 </resources>

@@ -86,13 +86,13 @@ public class CardEdit_View extends AppCompatActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.saveButton:
-                presenter.saveButonClicked();
+                presenter.onSaveButtonClicked();
                 break;
             case R.id.cancelButton:
-                presenter.cancelButtonClicked();
+                presenter.onCancelButtonClicked();
                 break;
             case R.id.localImageView:
-                presenter.selectImageClicked();
+                presenter.onSelectImageClicked();
                 break;
             case R.id.discardImageButton:
                 presenter.imageDiscardClicked();
@@ -106,6 +106,8 @@ public class CardEdit_View extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult()");
+
+        presenter.linkView(this);
 
         switch (requestCode) {
             case Constants.CODE_SELECT_IMAGE:
@@ -129,15 +131,15 @@ public class CardEdit_View extends AppCompatActivity
     public void displayImageCard(Card card) {
         Log.d(TAG, "displayImageCard()");
         displayCommonCardParts(card);
-        displayImage(card.getImageURL());
+        displayRemoteImage(card.getImageURL());
     }
 
 
     @Override
-    public void displayImage(String imageURI) {
+    public void displayRemoteImage(String imageURI) {
         Uri uri = Uri.parse(imageURI);
         if (null != uri) {
-            displayImage(uri);
+            displayRemoteImage(uri);
         } else {
             showError(R.string.error_loading_image);
             Log.e(TAG, "Wrong image URI: "+imageURI);
@@ -145,28 +147,48 @@ public class CardEdit_View extends AppCompatActivity
     }
 
     @Override
-    public void displayImage(Uri imageURI) {
-//        Log.d(TAG, "displayImage("+imageURI+")");
+    public void displayRemoteImage(Uri imageURI) {
+//        Log.d(TAG, "displayRemoteImage("+imageURI+")");
 
         MyUtils.show(imageHolder);
+        MyUtils.hide(localImageView);
+        displayImage(remoteImageView, imageURI);
+    }
 
-        Picasso.get().load(imageURI)
-                .into(remoteImageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        MyUtils.hide(localImageView);
-                        MyUtils.hide(imageProgressBar);
-                        MyUtils.show(imageHolder);
-                        MyUtils.show(remoteImageView);
-                        MyUtils.show(discardImageButton);
-                    }
+    @Override
+    public void displayLocalImage(String imageURI) {
+        Uri uri = Uri.parse(imageURI);
+        if (null != uri) {
+            displayLocalImage(uri);
+        } else {
+            showError(R.string.error_loading_image);
+            Log.e(TAG, "Wrong image URI: "+imageURI);
+        }
+    }
 
-                    @Override
-                    public void onError(Exception e) {
-                        showError(R.string.error_loading_image);
-                        e.printStackTrace();
-                    }
-                });
+    @Override
+    public void displayLocalImage(Uri imageURI) {
+        MyUtils.show(imageHolder);
+        MyUtils.hide(remoteImageView);
+        displayImage(localImageView, imageURI);
+    }
+
+    private void displayImage(final ImageView imageView, Uri imageURI) {
+
+        MyUtils.show(imageProgressBar);
+
+        Picasso.get().load(imageURI).into(imageView, new Callback() {
+            @Override
+            public void onSuccess() {
+                MyUtils.hide(imageProgressBar);
+                MyUtils.show(imageView);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                showError(R.string.error_loading_image);
+            }
+        });
     }
 
     @Override
@@ -215,7 +237,15 @@ public class CardEdit_View extends AppCompatActivity
         }
 
         Uri dataURI = data.getData();
-        displayImage(dataURI);
+
+        if (null == dataURI) {
+            showError(R.string.image_data_error);
+            return;
+        }
+
+        String mimeType =  this.getContentResolver().getType(dataURI);
+
+        presenter.onImageSelected(dataURI, mimeType);
     }
 
 
@@ -234,6 +264,14 @@ public class CardEdit_View extends AppCompatActivity
         MyUtils.hide(progressBar);
     }
 
+    @Override
+    public void showImageProgressBar() {
+        MyUtils.show(imageProgressBar);
+    }
+    @Override
+    public void hideImageProgressBar() {
+        MyUtils.hide(imageProgressBar);
+    }
 
     @Override
     public void enableForm() {

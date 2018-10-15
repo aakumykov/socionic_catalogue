@@ -13,12 +13,17 @@ public interface iCardEdit {
 
         void selectImage();
 
-        void displayImage(String imageURI);
-        void displayImage(Uri imageURI);
+        void displayRemoteImage(String imageURI);
+        void displayRemoteImage(Uri imageURI);
+        void displayLocalImage(String imageURI);
+        void displayLocalImage(Uri imageURI);
         void removeImage();
 
         void showProgressBar();
         void hideProgressBar();
+
+        void showImageProgressBar();
+        void hideImageProgressBar();
 
         void enableForm();
         void disableForm();
@@ -35,13 +40,16 @@ public interface iCardEdit {
         void unlinkView();
 
         void onCardRecieved(Card card);
-        void saveButonClicked();
-        void cancelButtonClicked();
-        void selectImageClicked();
+        void onSaveButtonClicked();
+        void onCancelButtonClicked();
         void imageDiscardClicked();
+
+        void onSelectImageClicked();
+        void onImageSelected(Uri imageURI, String mimeType);
     }
 
     interface Model {
+        void uploadImage(Uri imageURI, String imageMimeType, String remotePath, iCardEdit.ModelCallbacks callbacks);
         void saveCard(Card card, iCardEdit.ModelCallbacks callbacks);
     }
 
@@ -50,7 +58,8 @@ public interface iCardEdit {
         void onCardSaveError(String message);
         void onCardSaveCancel();
 
-        void onImageUploadSuccess();
+        void onImageUploadProgress(int progress);
+        void onImageUploadSuccess(Uri remoteImageURI);
         void onImageUploadError(String message);
         void onImageUploadCancel();
     }
