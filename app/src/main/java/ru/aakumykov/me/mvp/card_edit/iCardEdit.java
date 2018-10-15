@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.card_edit;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.net.Uri;
 
 import ru.aakumykov.me.mvp.models.Card;
 
@@ -8,10 +9,10 @@ public interface iCardEdit {
 
     interface View {
         void fillEditForm(Card card);
-        void saveCard();
-        void cancelEdit();
+        void displayImage(Uri imageUI);
 
-        void showMessage(int msgId, String msgType);
+        void showInfo(int msgId);
+        void showError(int msgId);
         void hideMessage();
 
         void enableEditForm();
@@ -21,9 +22,15 @@ public interface iCardEdit {
         void hideProgressBar();
     }
 
-    interface ViewModel {
-        MutableLiveData<Card> getCardLiveData();
-        MutableLiveData<String> getErrorLiveData();
+    interface Presenter {
+        void linkView(iCardEdit.View view);
+        void unlinkView();
+
+        void cardRecieved(Card card);
+        void saveButonClicked();
+        void cancelButtonClicked();
+        void selectImageButtonClicked();
+        void imageDiscardButtonClicked();
     }
 
     interface Model {
@@ -31,8 +38,12 @@ public interface iCardEdit {
     }
 
     interface ModelCallbacks {
-        void onSaveSuccess();
-        void onSaveError(String message);
-        void onSaveCancel();
+        void onCardSaveSuccess();
+        void onCardSaveError(String message);
+        void onCardSaveCancel();
+
+        void onImageUploadSuccess();
+        void onImageUploadError(String message);
+        void onImageUploadCancel();
     }
 }

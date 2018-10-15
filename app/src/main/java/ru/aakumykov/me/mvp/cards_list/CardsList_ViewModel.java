@@ -43,7 +43,7 @@ public class CardsList_ViewModel extends ViewModel implements
 
     @Override
     public void onLoadSuccess(List<Card> list) {
-        Log.d(TAG, "onSaveSuccess(), "+list);
+        Log.d(TAG, "onCardSaveSuccess(), "+list);
 //        List<Card> emptyList = new ArrayList<Card>();
 //        liveData.setValue(emptyList);
         liveData.setValue(list);
@@ -51,6 +51,6 @@ public class CardsList_ViewModel extends ViewModel implements
 
     @Override
     public void onLoadError() {
-        Log.d(TAG, "onSaveError()");
+        Log.d(TAG, "onCardSaveError()");
     }
 }

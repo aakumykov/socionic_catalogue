@@ -6,11 +6,8 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.models.Card;
@@ -44,20 +41,20 @@ public class CardEdit_Model implements iCardEdit.Model {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        callbacks.onSaveSuccess();
+                        callbacks.onCardSaveSuccess();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        callbacks.onSaveError(e.getMessage());
+                        callbacks.onCardSaveError(e.getMessage());
                         e.printStackTrace();
                     }
                 })
                 .addOnCanceledListener(new OnCanceledListener() {
                     @Override
                     public void onCanceled() {
-                        callbacks.onSaveCancel();
+                        callbacks.onCardSaveCancel();
                     }
                 });
     }
@@ -73,13 +70,13 @@ public class CardEdit_Model implements iCardEdit.Model {
 //                Card card = dataSnapshot.getValue(Card.class);
 //                if (null != card) {
 //                    card.setKey(dataSnapshot.getKey());
-//                    callbacks.onSaveSuccess(card);
+//                    callbacks.onCardSaveSuccess(card);
 //                }
 //            }
 //
 //            @Override
 //            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                callbacks.onSaveError(databaseError.getMessage());
+//                callbacks.onCardSaveError(databaseError.getMessage());
 //                databaseError.toException().printStackTrace();
 //            }
 //        });

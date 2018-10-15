@@ -35,6 +35,6 @@
     <string name="saving_error">Ошибка сохранения</string>
     <string name="saving_card">Сохраняю карточку</string>
     <string name="error_displaying_card">Ошибка отображения карточки</string>
-    <string name="delete_image_button">Кнопка удаления картинки</string>
     <string name="select_image">Выберите картинку</string>
+    <string name="discard_image_button">Кнопка отказа от картинки</string>
 </resources>

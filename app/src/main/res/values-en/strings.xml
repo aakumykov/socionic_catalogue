@@ -33,6 +33,6 @@
     <string name="saving_error">Saving error</string>
     <string name="saving_card">Saving card</string>
     <string name="error_displaying_card">Error displaying card</string>
-    <string name="delete_image_button">Image delete button</string>
+    <string name="discard_image_button">Image delete button</string>
     <string name="select_image">Select image</string>
 </resources>
