@@ -35,8 +35,8 @@ public interface iCardEdit {
         void onCardRecieved(Card card);
         void saveButonClicked();
         void cancelButtonClicked();
-        void selectImageButtonClicked();
-        void imageDiscardButtonClicked();
+        void selectImageClicked();
+        void imageDiscardClicked();
     }
 
     interface Model {

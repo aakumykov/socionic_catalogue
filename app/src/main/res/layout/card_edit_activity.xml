@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/title"
         android:inputType="textCapSentences"
+        android:singleLine="true"
         android:textSize="16sp" />
 
     <EditText
@@ -74,6 +75,7 @@
             android:id="@+id/discardImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/undefined"
             android:contentDescription="@string/discard_image_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -47,7 +46,6 @@ public class CardEdit_View extends AppCompatActivity
 
     private final static String TAG = "CardEdit_View";
     private iCardEdit.Presenter presenter;
-    private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
 
     @Override
@@ -93,10 +91,10 @@ public class CardEdit_View extends AppCompatActivity
                 presenter.cancelButtonClicked();
                 break;
             case R.id.localImageView:
-                presenter.selectImageButtonClicked();
+                presenter.selectImageClicked();
                 break;
             case R.id.discardImageButton:
-                presenter.imageDiscardButtonClicked();
+                presenter.imageDiscardClicked();
                 break;
             default:
                 Log.e(TAG, "Clicked element with unknown id: "+v.getId());
@@ -167,7 +165,7 @@ public class CardEdit_View extends AppCompatActivity
 
     @Override
     public void displayImage(Uri imageURI) {
-        Log.d(TAG, "displayImage("+imageURI+")");
+//        Log.d(TAG, "displayImage("+imageURI+")");
 
         MyUtils.show(imageHolder);
 
@@ -191,7 +189,16 @@ public class CardEdit_View extends AppCompatActivity
 
     @Override
     public void removeImage() {
+        Log.d(TAG, "removeImage()");
 
+        remoteImageView.setImageDrawable(null);
+        MyUtils.hide(remoteImageView);
+
+        localImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_picture_placeholder));
+        MyUtils.show(localImageView);
+
+        MyUtils.hide(discardImageButton);
+//        localImageView.setOnClickListener(this);
     }
 
 

@@ -10,7 +10,7 @@ import ru.aakumykov.me.mvp.models.Card;
 
 
 public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
-        implements iCardEdit.Presenter {
+        implements iCardEdit.Presenter, iCardEdit.ModelCallbacks {
 
     private final static String TAG = "CardEdit_Presenter";
     private iCardEdit.View view;
@@ -61,14 +61,47 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
     }
 
     @Override
-    public void selectImageButtonClicked() {
+    public void selectImageClicked() {
+        Log.d(TAG, "selectImageClicked()");
 
     }
 
     @Override
-    public void imageDiscardButtonClicked() {
-
+    public void imageDiscardClicked() {
+        Log.d(TAG, "imageDiscardClicked()");
+        view.removeImage();
     }
 
 
+    /* Model callbacks */
+    @Override
+    public void onCardSaveSuccess() {
+
+    }
+
+    @Override
+    public void onCardSaveError(String message) {
+
+    }
+
+    @Override
+    public void onCardSaveCancel() {
+
+    }
+
+    @Override
+    public void onImageUploadSuccess() {
+
+    }
+
+    @Override
+    public void onImageUploadError(String message) {
+
+    }
+
+    @Override
+    public void onImageUploadCancel() {
+
+    }
+    /* Model callbacks */
 }
