@@ -58,27 +58,6 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
         }
     }
 
-    @Override
-    public void onSaveButtonClicked() {
-        Log.d(TAG, "saveButtonClicked()");
-
-        String fname = currentCard.getKey();
-
-        String fext = MyUtils.mime2ext(localImageType);
-        if (null == fext) {
-            view.showError(R.string.wrong_mime_type);
-            return;
-        }
-
-        String remoteImagePath = Constants.IMAGES_PATH + "/" + fname + "." + fext;
-        Log.d(TAG, "remoteImagePath: " + remoteImagePath);
-
-        if (null != localImageURI) {
-            Log.d(TAG, "Отправляю новую картинку");
-            view.showImageProgressBar();
-            model.uploadImage(localImageURI, localImageType, remoteImagePath, this);
-        }
-    }
 
     @Override
     public void onCancelButtonClicked() {
@@ -108,6 +87,32 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
     }
 
 
+    // BUG: mimeType of unchanged remote image
+    @Override
+    public void onSaveButtonClicked() {
+        Log.d(TAG, "saveButtonClicked()");
+
+        if (null != localImageURI) {
+            try {
+                String remoteImagePath = constructImagePath();
+                view.showImageProgressBar();
+                model.uploadImage(localImageURI, localImageType, remoteImagePath, this);
+
+            } catch (Exception e) {
+                // TODO: сделать возможным это?
+                //view.showError(e.getMessage());
+                view.showError(R.string.image_upload_error);
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                saveCompleteCard();
+            } catch (Exception e) {
+                view.showError(R.string.error_saving_card);
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     public void onImageUploadProgress(int progress) {
@@ -141,6 +146,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
 
 
 
+    // TODO: проверка данных перед отправкой
     private void saveCompleteCard() throws Exception {
         Log.d(TAG, "saveCompleteCard()");
 
@@ -159,6 +165,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
                 throw new Exception("Unknown card type: "+currentCard.getType());
         }
 
+        view.disableForm();
         model.saveCard(currentCard, this);
     }
 
@@ -172,15 +179,28 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
     @Override
     public void onCardSaveError(String message) {
         view.showError(R.string.error_saving_card);
+        view.enableForm();
         Log.e(TAG, message);
     }
 
     @Override
     public void onCardSaveCancel() {
         view.showError(R.string.card_saving_cancelled);
+        view.enableForm();
     }
 
 
+    private String constructImagePath() throws Exception {
+        String fname = currentCard.getKey();
+        String fext = MyUtils.mime2ext(localImageType);
+
+        if (null == fext) {
+            view.showError(R.string.wrong_mime_type);
+            throw new Exception("Wrong mime type: "+localImageType);
+        }
+
+        return Constants.IMAGES_PATH + "/" + fname + "." + fext;
+    }
 
     private void forgetCardData() {
         Log.d(TAG, "forgetCardData()");

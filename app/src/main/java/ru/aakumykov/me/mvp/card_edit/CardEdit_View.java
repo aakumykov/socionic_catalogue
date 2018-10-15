@@ -299,6 +299,8 @@ public class CardEdit_View extends AppCompatActivity
         titleView.setEnabled(true);
         quoteView.setEnabled(true);
         descriptionView.setEnabled(true);
+
+        discardImageButton.setEnabled(false);
         saveButton.setEnabled(true);
     }
     @Override
@@ -306,6 +308,8 @@ public class CardEdit_View extends AppCompatActivity
         titleView.setEnabled(false);
         quoteView.setEnabled(false);
         descriptionView.setEnabled(false);
+
+        discardImageButton.setEnabled(false);
         saveButton.setEnabled(false);
     }
 
