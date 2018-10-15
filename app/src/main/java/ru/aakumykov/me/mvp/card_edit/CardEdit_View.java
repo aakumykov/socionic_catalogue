@@ -1,13 +1,21 @@
 package ru.aakumykov.me.mvp.card_edit;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,14 +33,19 @@ public class CardEdit_View extends AppCompatActivity
     private final static String TAG = "CardEdit_View";
     private Card currentCard;
     private iCardEdit.Model model = CardEdit_Model.getInstance();
+    private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.titleView) EditText titleView;
     @BindView(R.id.quoteView) EditText quoteView;
+    @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
+    @BindView(R.id.imageView) ImageView imageView;
+    @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
     @BindView(R.id.descriptionView) EditText descriptionView;
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +56,7 @@ public class CardEdit_View extends AppCompatActivity
 
         Intent intent = getIntent();
         Card card = intent.getParcelableExtra(Constants.CARD);
-        Log.d(TAG, "card из Intent: "+card);
+//        Log.d(TAG, "card из Intent: "+card);
         if (null != card) {
             currentCard = card;
             fillEditForm(card);
@@ -56,7 +69,37 @@ public class CardEdit_View extends AppCompatActivity
 
         descriptionView.setText(card.getDescription());
         titleView.setText(card.getTitle());
-        quoteView.setText(card.getQuote());
+
+        switch (card.getType()) {
+
+            case Constants.TEXT_CARD:
+                Log.d(TAG, "текстовая карточка");
+                quoteView.setText(card.getQuote());
+                MyUtils.show(quoteView);
+                break;
+
+            case Constants.IMAGE_CARD:
+                Log.d(TAG, "графическая карточка");
+                MyUtils.show(imageHolder);
+                loadImage(card.getImageURL(), new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        MyUtils.hide(imageProgressBar);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        showError(R.string.error_loading_image);
+                    }
+                });
+                break;
+
+            default:
+                showMessage(R.string.error_displaying_card, Constants.ERROR_MSG);
+                disableEditForm();
+                Log.e(TAG, "Unknown card type: "+card.getType());
+                break;
+        }
 
         enableEditForm();
     }
@@ -136,6 +179,16 @@ public class CardEdit_View extends AppCompatActivity
         MyUtils.hide(progressBar);
     }
 
+
+
+    private void showInfo(int messageId) {
+        showMessage(messageId, Constants.INFO_MSG);
+    }
+
+    private void showError(int messageId) {
+        showMessage(messageId, Constants.ERROR_MSG);
+    }
+
     @Override
     public void showMessage(int msgId, String msgType) {
         int colorId;
@@ -162,4 +215,26 @@ public class CardEdit_View extends AppCompatActivity
         MyUtils.hide(messageView);
     }
 
+
+
+    private void loadImage(String imageURL, final Callback callback) {
+        Log.d(TAG, "loadImage("+imageURL+")");
+        Uri imageURI = Uri.parse(imageURL);
+
+        Picasso.get()
+                .load(imageURI)
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        callback.onSuccess();
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        callback.onError(e);
+                        e.printStackTrace();
+                    }
+                });
+
+    }
 }
