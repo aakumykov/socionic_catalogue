@@ -87,12 +87,13 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
     }
 
 
-    // BUG: mimeType of unchanged remote image
+
     @Override
     public void onSaveButtonClicked() {
         Log.d(TAG, "saveButtonClicked()");
 
         if (null != localImageURI) {
+            Log.d(TAG, "Новая картинка");
             try {
                 String remoteImagePath = constructImagePath();
                 view.showImageProgressBar();
@@ -105,6 +106,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
                 e.printStackTrace();
             }
         } else {
+            Log.d(TAG, "Старая картинка");
             try {
                 saveCompleteCard();
             } catch (Exception e) {
@@ -158,7 +160,8 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
                 currentCard.setQuote(view.getCardQuote());
                 break;
             case Constants.IMAGE_CARD:
-                currentCard.setImageURL(newImageURI);
+                if ((null != newImageURI))
+                    currentCard.setImageURL(newImageURI);
                 break;
             default:
                 view.showError(R.string.wrong_card_type);
@@ -210,4 +213,5 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
         oldImageURI = null;
         newImageURI = null;
     }
+
 }
