@@ -42,4 +42,5 @@
     <string name="image_upload_error">Image upload error</string>
     <string name="error_saving_card">Error saving card</string>
     <string name="card_saving_cancelled">Card saving cancelled</string>
+    <string name="error_missing_image">Image is missing</string>
 </resources>

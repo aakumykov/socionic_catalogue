@@ -35,7 +35,7 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     @BindView(R.id.titleView) TextView titleView;
     @BindView(R.id.quoteView) TextView quoteView;
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
-    @BindView(R.id.imagePlaceholder) ProgressBar imagePlaceholder;
+    @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.descriptionView) TextView descriptionView;
 
@@ -130,6 +130,12 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     public void loadImage(String imageURL) {
 //        Log.d(TAG, "loadImage("+imageURL+")");
 
+        if (null == imageURL) {
+            showMessage(R.string.error_missing_image, Constants.ERROR_MSG);
+            MyUtils.hide(imageProgressBar);
+            return;
+        }
+
         Picasso.get()
                 .load(imageURL)
                 .into(imageView, new Callback() {
@@ -166,12 +172,12 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     @Override
     public void showImagePlaceholder() {
         imageHolder.setVisibility(View.VISIBLE);
-        imagePlaceholder.setVisibility(View.VISIBLE);
+        imageProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideImagePlaceholder() {
-        imagePlaceholder.setVisibility(View.GONE);
+        imageProgressBar.setVisibility(View.GONE);
     }
 
     @Override
