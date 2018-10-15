@@ -41,7 +41,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
 
     @Override
     public void onCardRecieved(Card card) {
-//        Log.d(TAG, "onCardRecieved(), "+card);
+        Log.d(TAG, "onCardRecieved(), "+card);
 
         currentCard = card;
 

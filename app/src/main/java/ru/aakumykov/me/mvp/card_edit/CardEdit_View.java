@@ -121,27 +121,38 @@ public class CardEdit_View extends AppCompatActivity
 
     @Override
     public void displayRemoteImage(String imageURI) {
+        if (null == imageURI) {
+            showError(R.string.error_loading_image);
+            MyUtils.show(imageHolder);
+            MyUtils.show(localImageView);
+            MyUtils.hide(imageProgressBar);
+            MyUtils.hide(discardImageButton);
+            return;
+        }
+
         Uri uri = Uri.parse(imageURI);
-        if (null != uri) {
-            displayRemoteImage(uri);
-        } else {
+        if (null == uri) {
             showError(R.string.error_loading_image);
             Log.e(TAG, "Wrong image URI: "+imageURI);
+            return;
         }
+
+        displayRemoteImage(uri);
     }
 
     @Override
     public void displayRemoteImage(Uri imageURI) {
-//        Log.d(TAG, "displayRemoteImage("+imageURI+")");
-
-        MyUtils.show(imageHolder);
+        hideMessage();
         MyUtils.hide(localImageView);
+        MyUtils.show(imageHolder);
+        MyUtils.show(discardImageButton);
         displayImage(remoteImageView, imageURI);
     }
 
     @Override
     public void displayLocalImage(String imageURI) {
         Uri uri = Uri.parse(imageURI);
+
         if (null != uri) {
             displayLocalImage(uri);
         } else {
@@ -152,6 +163,7 @@ public class CardEdit_View extends AppCompatActivity
 
     @Override
     public void displayLocalImage(Uri imageURI) {
+        hideMessage();
         MyUtils.hide(remoteImageView);
         MyUtils.show(imageHolder);
         MyUtils.show(discardImageButton);
