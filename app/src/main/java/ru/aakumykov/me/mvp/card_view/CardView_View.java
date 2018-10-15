@@ -111,8 +111,19 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     public void displayCard(Card card) {
         Log.d(TAG, "displayCard(), "+card);
         setTitle(card.getTitle());
-        setQuote(card.getQuote());
         setDescription(card.getDescription());
+
+        switch (card.getType()) {
+            case Constants.TEXT_CARD:
+                setQuote(card.getQuote());
+                break;
+            case Constants.IMAGE_CARD:
+                loadImage(card.getImageURL());
+                break;
+            default:
+                showMessage(R.string.wrong_card_type, Constants.ERROR_MSG);
+                break;
+        }
     }
 
     @Override

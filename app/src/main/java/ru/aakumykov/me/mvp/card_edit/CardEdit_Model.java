@@ -94,7 +94,7 @@ public class CardEdit_Model implements iCardEdit.Model {
     }
 
     @Override
-    public void saveCard(Card card, final iCardEdit.ModelCallbacks callbacks) {
+    public void saveCard(final Card card, final iCardEdit.ModelCallbacks callbacks) {
         Log.d(TAG, "saveCard(), "+card);
 
         DatabaseReference cardRef = firebaseDatabase.getReference()
@@ -104,7 +104,7 @@ public class CardEdit_Model implements iCardEdit.Model {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        callbacks.onCardSaveSuccess();
+                        callbacks.onCardSaveSuccess(card);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

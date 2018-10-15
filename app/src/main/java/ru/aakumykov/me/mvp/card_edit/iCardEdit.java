@@ -38,7 +38,7 @@ public interface iCardEdit {
         void showError(int msgId);
         void hideMessage();
 
-        void closeActivity();
+        void closeActivity(Card card);
     }
 
     interface Presenter {
@@ -60,7 +60,7 @@ public interface iCardEdit {
     }
 
     interface ModelCallbacks {
-        void onCardSaveSuccess();
+        void onCardSaveSuccess(Card card);
         void onCardSaveError(String message);
         void onCardSaveCancel();
 

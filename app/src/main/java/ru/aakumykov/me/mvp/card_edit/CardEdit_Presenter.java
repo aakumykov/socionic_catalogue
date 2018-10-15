@@ -62,7 +62,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
     @Override
     public void onCancelButtonClicked() {
         forgetCardData();
-        view.closeActivity();
+        view.closeActivity(null);
     }
 
     @Override
@@ -173,10 +173,10 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
     }
 
     @Override
-    public void onCardSaveSuccess() {
-        forgetCardData();
+    public void onCardSaveSuccess(Card card) {
         // TODO: передавать новую карточку
-        view.closeActivity();
+        forgetCardData();
+        view.closeActivity(card);
     }
 
     @Override
