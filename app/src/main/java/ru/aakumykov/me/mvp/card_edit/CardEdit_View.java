@@ -1,39 +1,22 @@
 package ru.aakumykov.me.mvp.card_edit;
 
-import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCanceledListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-
-import java.security.SecureRandom;
-import java.security.SecureRandomSpi;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import permissions.dispatcher.NeedsPermission;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
@@ -119,49 +102,49 @@ public class CardEdit_View extends AppCompatActivity
     }
 
 
+//    @Override
+//    public void fillEditForm(Card card) {
+//        Log.d(TAG, "fillEditForm(), "+card);
+//
+//        descriptionView.setText(card.getDescription());
+//        titleView.setText(card.getTitle());
+//
+//        switch (card.getType()) {
+//
+//            case Constants.TEXT_CARD:
+//                Log.d(TAG, "текстовая карточка");
+//                quoteView.setText(card.getQuote());
+//                MyUtils.show(quoteView);
+//                break;
+//
+//            case Constants.IMAGE_CARD:
+//                Log.d(TAG, "графическая карточка");
+//                break;
+//
+//            default:
+//                showMessage(R.string.error_displaying_card, Constants.ERROR_MSG);
+//                disableForm();
+//                Log.e(TAG, "Unknown card type: "+card.getType());
+//                break;
+//        }
+//
+//        enableForm();
+//    }
+
+
     @Override
-    public void fillEditForm(Card card) {
-        Log.d(TAG, "fillEditForm(), "+card);
+    public void setTitle(String title) {
 
-        descriptionView.setText(card.getDescription());
-        titleView.setText(card.getTitle());
-
-        switch (card.getType()) {
-
-            case Constants.TEXT_CARD:
-                Log.d(TAG, "текстовая карточка");
-                quoteView.setText(card.getQuote());
-                MyUtils.show(quoteView);
-                break;
-
-            case Constants.IMAGE_CARD:
-                Log.d(TAG, "графическая карточка");
-                break;
-
-            default:
-                showMessage(R.string.error_displaying_card, Constants.ERROR_MSG);
-                disableEditForm();
-                Log.e(TAG, "Unknown card type: "+card.getType());
-                break;
-        }
-
-        enableEditForm();
     }
 
+    @Override
+    public void setQuote(String quote) {
+
+    }
 
     @Override
-    public void enableEditForm() {
-        titleView.setEnabled(true);
-        quoteView.setEnabled(true);
-        descriptionView.setEnabled(true);
-        saveButton.setEnabled(true);
-    }
-    @Override
-    public void disableEditForm() {
-        titleView.setEnabled(false);
-        quoteView.setEnabled(false);
-        descriptionView.setEnabled(false);
-        saveButton.setEnabled(false);
+    public void setDescription(String description) {
+
     }
 
 
@@ -169,7 +152,10 @@ public class CardEdit_View extends AppCompatActivity
     public void displayImage(Uri imageUI) {
 
     }
+    @Override
+    public void removeImage() {
 
+    }
 
 
     @Override
@@ -183,15 +169,29 @@ public class CardEdit_View extends AppCompatActivity
 
 
     @Override
+    public void enableForm() {
+        titleView.setEnabled(true);
+        quoteView.setEnabled(true);
+        descriptionView.setEnabled(true);
+        saveButton.setEnabled(true);
+    }
+    @Override
+    public void disableForm() {
+        titleView.setEnabled(false);
+        quoteView.setEnabled(false);
+        descriptionView.setEnabled(false);
+        saveButton.setEnabled(false);
+    }
+
+
+    @Override
     public void showInfo(int msgId) {
         showMessage(msgId, Constants.INFO_MSG);
     }
-
     @Override
     public void showError(int msgId) {
         showMessage(msgId, Constants.ERROR_MSG);
     }
-
     @Override
     public void hideMessage() {
         MyUtils.hide(messageView);

@@ -8,18 +8,22 @@ import ru.aakumykov.me.mvp.models.Card;
 public interface iCardEdit {
 
     interface View {
-        void fillEditForm(Card card);
+        void setTitle(String title);
+        void setQuote(String quote);
+        void setDescription(String description);
+
         void displayImage(Uri imageUI);
+        void removeImage();
+
+        void showProgressBar();
+        void hideProgressBar();
+
+        void enableForm();
+        void disableForm();
 
         void showInfo(int msgId);
         void showError(int msgId);
         void hideMessage();
-
-        void enableEditForm();
-        void disableEditForm();
-
-        void showProgressBar();
-        void hideProgressBar();
     }
 
     interface Presenter {
