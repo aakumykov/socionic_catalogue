@@ -63,7 +63,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
     @Override
     public void selectImageClicked() {
         Log.d(TAG, "selectImageClicked()");
-
+        view.selectImage();
     }
 
     @Override

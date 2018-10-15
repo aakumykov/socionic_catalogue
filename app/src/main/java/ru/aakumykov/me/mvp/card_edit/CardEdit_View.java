@@ -3,6 +3,7 @@ package ru.aakumykov.me.mvp.card_edit;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -102,38 +103,18 @@ public class CardEdit_View extends AppCompatActivity
     }
 
     @Override
-    public void closeActivity() {
-        finish();
-    }
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult()");
 
-//    @Override
-//    public void fillEditForm(Card card) {
-//        Log.d(TAG, "fillEditForm(), "+card);
-//
-//        descriptionView.setText(card.getDescription());
-//        titleView.setText(card.getTitle());
-//
-//        switch (card.getType()) {
-//
-//            case Constants.TEXT_CARD:
-//                Log.d(TAG, "текстовая карточка");
-//                quoteView.setText(card.getQuote());
-//                MyUtils.show(quoteView);
-//                break;
-//
-//            case Constants.IMAGE_CARD:
-//                Log.d(TAG, "графическая карточка");
-//                break;
-//
-//            default:
-//                showMessage(R.string.error_displaying_card, Constants.ERROR_MSG);
-//                disableForm();
-//                Log.e(TAG, "Unknown card type: "+card.getType());
-//                break;
-//        }
-//
-//        enableForm();
-//    }
+        switch (requestCode) {
+            case Constants.CODE_SELECT_IMAGE:
+                processSelectedImage(resultCode, data);
+                break;
+            default:
+                break;
+        }
+    }
 
 
     @Override
@@ -199,6 +180,47 @@ public class CardEdit_View extends AppCompatActivity
 
         MyUtils.hide(discardImageButton);
 //        localImageView.setOnClickListener(this);
+    }
+
+
+    // TODO: запрос разрешений
+    @Override
+    public void selectImage() {
+        Log.d(TAG, "selectImage()");
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        if (null != intent.resolveActivity(getPackageManager())) {
+            startActivityForResult(
+                    Intent.createChooser(intent, getResources().getString(R.string.select_image)),
+                    Constants.CODE_SELECT_IMAGE
+            );
+        }
+    }
+
+    private void processSelectedImage(int resultCode, @Nullable Intent data) {
+        Log.d(TAG, "processSelectedImage()");
+
+        if (RESULT_OK != resultCode) {
+            showError(R.string.error_selecting_image);
+            return;
+        }
+
+        if (null == data) {
+            showError(R.string.image_data_error);
+            return;
+        }
+
+        Uri dataURI = data.getData();
+        displayImage(dataURI);
+    }
+
+
+    @Override
+    public void closeActivity() {
+        finish();
     }
 
 

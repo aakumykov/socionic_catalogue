@@ -11,6 +11,8 @@ public interface iCardEdit {
         void displayTextCard(Card card);
         void displayImageCard(Card card);
 
+        void selectImage();
+
         void displayImage(String imageURI);
         void displayImage(Uri imageURI);
         void removeImage();

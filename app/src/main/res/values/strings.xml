@@ -37,4 +37,6 @@
     <string name="error_displaying_card">Ошибка отображения карточки</string>
     <string name="select_image">Выберите картинку</string>
     <string name="discard_image_button">Кнопка отказа от картинки</string>
+    <string name="error_selecting_image">Ошибка выбора картинки</string>
+    <string name="image_data_error">Ошибка данных картинки</string>
 </resources>
