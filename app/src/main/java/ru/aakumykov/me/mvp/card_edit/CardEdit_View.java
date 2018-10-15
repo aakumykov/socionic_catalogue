@@ -14,6 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.firebase.storage.FirebaseStorage;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +58,7 @@ public class CardEdit_View extends AppCompatActivity
         ButterKnife.bind(this);
 
         this.presenter = new CardEdit_Presenter();
+        this.presenter.linkView(this);
 
         saveButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
@@ -64,9 +67,8 @@ public class CardEdit_View extends AppCompatActivity
 
         Intent intent = getIntent();
         Card card = intent.getParcelableExtra(Constants.CARD);
-        Log.d(TAG, "card из Intent: "+card);
-//        String cardKey = intent.getStringExtra(Constants.CARD_KEY);
-        presenter.cardRecieved(card);
+//        Log.d(TAG, "card из Intent: "+card);
+        presenter.onCardRecieved(card);
     }
 
     @Override
@@ -101,6 +103,10 @@ public class CardEdit_View extends AppCompatActivity
         }
     }
 
+    @Override
+    public void closeActivity() {
+        finish();
+    }
 
 //    @Override
 //    public void fillEditForm(Card card) {
@@ -133,25 +139,56 @@ public class CardEdit_View extends AppCompatActivity
 
 
     @Override
-    public void setTitle(String title) {
-
+    public void displayTextCard(Card card) {
+        Log.d(TAG, "displayTextCard()");
+        displayCommonCardParts(card);
+        quoteView.setText(card.getQuote());
+        MyUtils.show(quoteView);
     }
 
     @Override
-    public void setQuote(String quote) {
-
-    }
-
-    @Override
-    public void setDescription(String description) {
-
+    public void displayImageCard(Card card) {
+        Log.d(TAG, "displayImageCard()");
+        displayCommonCardParts(card);
+        displayImage(card.getImageURL());
     }
 
 
     @Override
-    public void displayImage(Uri imageUI) {
-
+    public void displayImage(String imageURI) {
+        Uri uri = Uri.parse(imageURI);
+        if (null != uri) {
+            displayImage(uri);
+        } else {
+            showError(R.string.error_loading_image);
+            Log.e(TAG, "Wrong image URI: "+imageURI);
+        }
     }
+
+    @Override
+    public void displayImage(Uri imageURI) {
+        Log.d(TAG, "displayImage("+imageURI+")");
+
+        MyUtils.show(imageHolder);
+
+        Picasso.get().load(imageURI)
+                .into(remoteImageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        MyUtils.show(imageHolder);
+                        MyUtils.hide(localImageView);
+                        MyUtils.hide(imageProgressBar);
+                        MyUtils.show(remoteImageView);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        showError(R.string.error_loading_image);
+                        e.printStackTrace();
+                    }
+                });
+    }
+
     @Override
     public void removeImage() {
 
@@ -218,4 +255,9 @@ public class CardEdit_View extends AppCompatActivity
         MyUtils.show(messageView);
     }
 
+
+    private void displayCommonCardParts(Card card) {
+        titleView.setText(card.getTitle());
+        descriptionView.setText(card.getDescription());
+    }
 }
