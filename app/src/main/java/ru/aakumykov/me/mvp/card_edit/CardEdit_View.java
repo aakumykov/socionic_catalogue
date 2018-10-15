@@ -102,22 +102,6 @@ public class CardEdit_View extends AppCompatActivity
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "onActivityResult()");
-
-        presenter.linkView(this);
-
-        switch (requestCode) {
-            case Constants.CODE_SELECT_IMAGE:
-                processSelectedImage(resultCode, data);
-                break;
-            default:
-                break;
-        }
-    }
-
 
     @Override
     public void displayTextCard(Card card) {
@@ -168,8 +152,9 @@ public class CardEdit_View extends AppCompatActivity
 
     @Override
     public void displayLocalImage(Uri imageURI) {
-        MyUtils.show(imageHolder);
         MyUtils.hide(remoteImageView);
+        MyUtils.show(imageHolder);
+        MyUtils.show(discardImageButton);
         displayImage(localImageView, imageURI);
     }
 
@@ -224,8 +209,27 @@ public class CardEdit_View extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult(requestCode: "+requestCode+", resultCode: "+resultCode+", ...)");
+
+        presenter.linkView(this);
+
+        switch (requestCode) {
+            case Constants.CODE_SELECT_IMAGE:
+                processSelectedImage(resultCode, data);
+                break;
+            default:
+                break;
+        }
+    }
+
     private void processSelectedImage(int resultCode, @Nullable Intent data) {
         Log.d(TAG, "processSelectedImage()");
+
+        if (RESULT_CANCELED == resultCode)
+            return;
 
         if (RESULT_OK != resultCode) {
             showError(R.string.error_selecting_image);
