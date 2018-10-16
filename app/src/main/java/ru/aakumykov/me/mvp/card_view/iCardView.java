@@ -1,5 +1,8 @@
 package ru.aakumykov.me.mvp.card_view;
 
+import android.content.Intent;
+import android.support.annotation.Nullable;
+
 import ru.aakumykov.me.mvp.models.Card;
 
 public interface iCardView {
@@ -17,14 +20,21 @@ public interface iCardView {
         void showQuote();
         void showImage();
 
+        void displayCard(Card card);
+
         void setTitle(String title);
         void setQuote(String quote);
         void loadImage(String quote);
         void setDescription(String description);
+
+        void editCard(Card card);
     }
 
     interface Presenter {
         void cardKeyRecieved(String key);
+        void editButtonPressed();
+        void activityResultComes(int requestCode, int resultCode, @Nullable Intent data);
+
         void linkView(iCardView.View view);
         void unlinkView();
     }

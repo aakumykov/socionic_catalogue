@@ -30,7 +30,7 @@ public interface iLogin {
     }
 
     interface Model {
-//        iLogin.Model getInstance();
+//        iLogin.TemplateModel getInstance();
         void login(String email, String password);
         void logout();
 //        void changePassword(String email, String oldPassword, String newPassword);
