@@ -41,6 +41,8 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
 
     private iCardView.Presenter presenter;
 
+    //TODO: уменьшение изображения
+    //TODO: scrollView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
