@@ -11,6 +11,7 @@ public final class Constants {
 
     public final static String CARD = "CARD";
     public final static String CARD_KEY = "CARD_KEY";
+    public final static String CARD_TYPE = "CARD_TYPE";
 
     public final static String TEXT_CARD = "TEXT_CARD";
     public final static String IMAGE_CARD = "IMAGE_CARD";

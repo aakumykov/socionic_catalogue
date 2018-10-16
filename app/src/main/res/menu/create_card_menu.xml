@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/actionCreateCard"
+        android:icon="@drawable/ic_add"
+        android:title="@string/add_card"
+        app:showAsAction="ifRoom">
+
+        <menu xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <item
+                android:id="@+id/actionCreateTextCard"
+                android:icon="@drawable/ic_text"
+                android:title="@string/text"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/actionCreateImageCard"
+                android:icon="@drawable/ic_image"
+                android:title="@string/image"
+                app:showAsAction="never" />
+
+        </menu>
+
+    </item>
+
+</menu>

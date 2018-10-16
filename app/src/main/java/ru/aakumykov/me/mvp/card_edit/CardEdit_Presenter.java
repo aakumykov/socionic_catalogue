@@ -19,7 +19,6 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
     private Card currentCard;
     private Uri localImageURI;
     private String localImageType;
-    private String oldImageURI;
     private String newImageURI;
 
     CardEdit_Presenter() {
@@ -58,6 +57,25 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
         }
     }
 
+    @Override
+    public void onCreateCard(String cardType) {
+        Log.d(TAG, "onCreateCard("+cardType+")");
+
+        // TODO: где будет корректно проверять cardType ?
+        switch (cardType) {
+            case Constants.TEXT_CARD:
+                view.prepareTextCard();
+                break;
+            case Constants.IMAGE_CARD:
+                view.prepareImageCard();
+                break;
+            default:
+                return;
+        }
+
+        currentCard = new Card();
+        currentCard.setType(cardType);
+    }
 
     @Override
     public void onCancelButtonClicked() {
@@ -82,7 +100,6 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
     @Override
     public void imageDiscardClicked() {
         Log.d(TAG, "imageDiscardClicked()");
-        oldImageURI = currentCard.getImageURL();
         view.removeImage();
     }
 
@@ -210,7 +227,6 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
         currentCard = null;
         localImageURI = null;
         localImageType = null;
-        oldImageURI = null;
         newImageURI = null;
     }
 

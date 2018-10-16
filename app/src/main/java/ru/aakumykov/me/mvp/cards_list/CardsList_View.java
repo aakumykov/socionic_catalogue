@@ -9,6 +9,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -22,12 +25,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_view.CardView_View;
 import ru.aakumykov.me.mvp.models.Card;
 
 // TODO: Пункт "обновить" в меню панели.
 
 public class CardsList_View extends AppCompatActivity implements
+        iCardsList.View,
         AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private final static String TAG = "CardsList_View";
@@ -37,6 +42,8 @@ public class CardsList_View extends AppCompatActivity implements
 
     private List<Card> cardsList;
     private CardsListAdapter cardsListAdapter;
+
+//    private ActionBar actionBar;
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.progressBar) ProgressBar progressBar;
@@ -50,6 +57,8 @@ public class CardsList_View extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cards_list_activity);
         ButterKnife.bind(this);
+
+//        actionBar = getSupportActionBar();
 
         swipeRefreshLayout.setOnRefreshListener(this);
         listView.setOnItemClickListener(this);
@@ -114,6 +123,58 @@ public class CardsList_View extends AppCompatActivity implements
         Log.d(TAG, "onRefresh()");
         loadList(true);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.create_card_menu, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.actionCreateTextCard:
+                onAddCardButton(Constants.TEXT_CARD);
+                break;
+
+            case R.id.actionCreateImageCard:
+                onAddCardButton(Constants.IMAGE_CARD);
+                break;
+
+            case android.R.id.home:
+                this.finish();
+                break;
+
+            default:
+                super.onOptionsItemSelected(item);
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onAddCardButton(String cardType) {
+        Log.d(TAG, "onAddCardButton("+cardType+")");
+
+        switch (cardType) {
+            case Constants.TEXT_CARD:
+                break;
+            case Constants.IMAGE_CARD:
+                break;
+            default:
+                Log.e(TAG, "Wrong card type: "+cardType);
+                return;
+        }
+
+        Intent intent = new Intent();
+        intent.setClass(this, CardEdit_View.class);
+        intent.putExtra(Constants.CARD_TYPE, cardType);
+        startActivity(intent);
+    }
+
 
     private void loadList(boolean manualRefresh) {
         Log.d(TAG, "loadList("+manualRefresh+")");

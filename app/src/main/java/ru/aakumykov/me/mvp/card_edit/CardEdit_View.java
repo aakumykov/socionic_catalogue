@@ -64,10 +64,7 @@ public class CardEdit_View extends AppCompatActivity
         discardImageButton.setOnClickListener(this);
         localImageView.setOnClickListener(this);
 
-        Intent intent = getIntent();
-        Card card = intent.getParcelableExtra(Constants.CARD);
-//        Log.d(TAG, "card из Intent: "+card);
-        presenter.onCardRecieved(card);
+        processInputIntent();
     }
 
     @Override
@@ -294,6 +291,19 @@ public class CardEdit_View extends AppCompatActivity
 
 
     @Override
+    public void prepareTextCard() {
+        MyUtils.show(quoteView);
+    }
+
+    @Override
+    public void prepareImageCard() {
+        MyUtils.show(imageHolder);
+        MyUtils.show(localImageView);
+        MyUtils.hide(imageProgressBar);
+        MyUtils.hide(discardImageButton);
+    }
+
+    @Override
     public void showProgressBar() {
         MyUtils.show(progressBar);
     }
@@ -305,10 +315,6 @@ public class CardEdit_View extends AppCompatActivity
     @Override
     public void showImageProgressBar() {
         MyUtils.show(imageProgressBar);
-    }
-    @Override
-    public void hideImageProgressBar() {
-        MyUtils.hide(imageProgressBar);
     }
 
     @Override
@@ -365,6 +371,18 @@ public class CardEdit_View extends AppCompatActivity
         MyUtils.show(messageView);
     }
 
+
+    private void processInputIntent() {
+        Intent intent = getIntent();
+        Card card = intent.getParcelableExtra(Constants.CARD);
+        String cardType = intent.getStringExtra(Constants.CARD_TYPE);
+
+        if (null != card) {
+            presenter.onCardRecieved(card);
+        } else {
+            presenter.onCreateCard(cardType);
+        }
+    }
 
     private void displayCommonCardParts(Card card) {
         titleView.setText(card.getTitle());

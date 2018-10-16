@@ -87,7 +87,7 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.card_view_menu, menu);
+        menuInflater.inflate(R.menu.create_card_menu, menu);
         return true;
     }
 

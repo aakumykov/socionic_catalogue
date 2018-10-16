@@ -10,7 +10,7 @@ import ru.aakumykov.me.mvp.models.Card;
 public interface iCardsList {
 
     interface View {
-
+        void onAddCardButton(String cardType);
     }
 
     interface ViewModel {

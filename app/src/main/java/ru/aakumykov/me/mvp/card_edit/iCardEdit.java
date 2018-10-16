@@ -28,8 +28,10 @@ public interface iCardEdit {
         void showProgressBar();
         void hideProgressBar();
 
+        void prepareTextCard();
+        void prepareImageCard();
+
         void showImageProgressBar();
-        void hideImageProgressBar();
 
         void enableForm();
         void disableForm();
@@ -45,7 +47,9 @@ public interface iCardEdit {
         void linkView(iCardEdit.View view);
         void unlinkView();
 
+        void onCreateCard(String cardType);
         void onCardRecieved(Card card);
+
         void onSaveButtonClicked();
         void onCancelButtonClicked();
         void imageDiscardClicked();

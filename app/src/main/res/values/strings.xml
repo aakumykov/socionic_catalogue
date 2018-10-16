@@ -45,4 +45,7 @@
     <string name="error_saving_card">Ошибка сохранения карточки</string>
     <string name="card_saving_cancelled">Сохранение карточки отменено</string>
     <string name="error_missing_image">Картинка отсутствует</string>
+    <string name="add_card">Добавить карточку</string>
+    <string name="text">Текст</string>
+    <string name="image">Картинка</string>
 </resources>
