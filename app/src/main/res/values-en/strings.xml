@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MVP</string>
+    <string name="name">Name</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="auth_state">Authorized?</string>
+    <string name="already_logged_in">You are already logged in</string>
+    <string name="logging_in">Logging in...</string>
+    <string name="login_success">You are logged in</string>
+    <string name="login_error">Error logging in</string>
+    <string name="login_canceled">Login cencelled</string>
+    <string name="logout_success">You are logged out</string>
+    <string name="logout_error">Error of logout</string>
+    <string name="logout">Logout</string>
+    <string name="card_load_error">Error loading card</string>
+    <string name="card_load_canceled">Card loading cancelled</string>
+    <string name="loading_card">Loading card</string>
+    <string name="loading_cards_list">Loading cards list</string>
+    <string name="image_placeholder">Image stub</string>
+    <string name="wrong_card_type">Unknown card type</string>
+    <string name="error_loading_image">Error loading image</string>
+    <string name="image_is_loaded">Image is loaded</string>
+    <string name="card_image">Image of card</string>
+    <string name="title">Title</string>
+    <string name="quote">Quote</string>
+    <string name="description">Description</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="saving_cancel">Saving cancelled</string>
+    <string name="saving_error">Saving error</string>
+    <string name="saving_card">Saving card</string>
+    <string name="error_displaying_card">Error displaying card</string>
+    <string name="discard_image_button">Image delete button</string>
+    <string name="select_image">Select image</string>
+    <string name="error_selecting_image">Error selecting image</string>
+    <string name="image_data_error">Image data error</string>
+    <string name="wrong_mime_type">Wrong image type</string>
+    <string name="image_upload_cancelled">Image upload cancelled</string>
+    <string name="image_upload_error">Image upload error</string>
+    <string name="error_saving_card">Error saving card</string>
+    <string name="card_saving_cancelled">Card saving cancelled</string>
+    <string name="error_missing_image">Image is missing</string>
+</resources>

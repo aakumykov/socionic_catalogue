@@ -5,23 +5,44 @@
     <string name="login">Войти</string>
     <string name="auth_state">Авторизован?</string>
     <string name="already_logged_in">Вы уже вошли</string>
-    <string name="logging_in">Входим в систему...</string>
-    <string name="email">E-mail</string>
+    <string name="logging_in">Входим в систему…</string>
+    <string name="email" translatable="false">E-mail</string>
     <string name="login_success">Вы вошли в систему</string>
     <string name="login_error">Ошибка входа в систему</string>
     <string name="login_canceled">Вход отменён</string>
     <string name="logout_success">Вы вышли из системы</string>
     <string name="logout_error">Ошибка выхода</string>
     <string name="logout">Выйти</string>
-    <string name="testEmail">user@example.com</string>
-    <string name="testPassword">Qwerty123!@#</string>
+    <string name="testEmail" translatable="false">user@example.com</string>
+    <string name="testPassword" translatable="false">Qwerty123!@#</string>
     <string name="card_load_error">Ошибка загрузки карточки</string>
     <string name="card_load_canceled">Загрузка карточки отменена</string>
     <string name="loading_card">Загружаю карточку</string>
     <string name="loading_cards_list">Загружаю список карточек</string>
     <string name="image_placeholder">Заглушка для картинки</string>
-    <string name="unknown_card_type">Неизвестный тип карточки</string>
+    <string name="wrong_card_type">Неизвестный тип карточки</string>
     <string name="error_loading_image">Ошибка загрузки картинки</string>
     <string name="image_is_loaded">Картинка загружена</string>
     <string name="card_image">Картинка карточки</string>
+    <string name="title">Заголовок</string>
+    <string name="quote">Цитата</string>
+    <string name="description">Описание</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отменить</string>
+    <string name="edit">Изменить</string>
+    <string name="delete">Удалить</string>
+    <string name="saving_cancel">Сохранение отменено</string>
+    <string name="saving_error">Ошибка сохранения</string>
+    <string name="saving_card">Сохраняю карточку</string>
+    <string name="error_displaying_card">Ошибка отображения карточки</string>
+    <string name="select_image">Выберите картинку</string>
+    <string name="discard_image_button">Кнопка отказа от картинки</string>
+    <string name="error_selecting_image">Ошибка выбора картинки</string>
+    <string name="image_data_error">Ошибка данных картинки</string>
+    <string name="wrong_mime_type">Неправильный тип картинки</string>
+    <string name="image_upload_cancelled">Отправка картинки отменена</string>
+    <string name="image_upload_error">Ошибка отправки картинки</string>
+    <string name="error_saving_card">Ошибка сохранения карточки</string>
+    <string name="card_saving_cancelled">Сохранение карточки отменено</string>
+    <string name="error_missing_image">Картинка отсутствует</string>
 </resources>

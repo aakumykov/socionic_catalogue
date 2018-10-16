@@ -1,19 +1,27 @@
 package ru.aakumykov.me.mvp.models;
 
-import com.google.firebase.database.DataSnapshot;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import java.util.HashMap;
-
-public class Card {
+public class Card implements Parcelable {
 
     private String key;
     private String type;
     private String title;
     private String quote;
-    private String ImageURL;
+    private String imageURL;
     private String description;
 
     public Card() {
+    }
+
+    public Card(String key, String type, String title, String quote, String imageURL, String description) {
+        this.key = key;
+        this.type = type;
+        this.title = title;
+        this.quote = quote;
+        this.imageURL = imageURL;
+        this.description = description;
     }
 
     public String getKey() {
@@ -29,7 +37,7 @@ public class Card {
         return quote;
     }
     public String getImageURL() {
-        return ImageURL;
+        return imageURL;
     }
     public String getDescription() {
         return description;
@@ -48,7 +56,7 @@ public class Card {
         this.quote = quote;
     }
     public void setImageURL(String imageURL) {
-        ImageURL = imageURL;
+        this.imageURL = imageURL;
     }
     public void setDescription(String description) {
         this.description = description;
@@ -56,6 +64,46 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Card {"+getKey()+", "+getTitle()+", "+getQuote()+", "+getDescription()+",}";
+        return "Card { key: "+getKey()+", title: "+getTitle()+", quote: "+getQuote()+", imageURL: "+imageURL+", description: "+getDescription()+",}";
     }
+
+
+    /* Parcelable */
+    protected Card(Parcel in) {
+        key = in.readString();
+        type = in.readString();
+        title = in.readString();
+        quote = in.readString();
+        imageURL = in.readString();
+        description = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Card> CREATOR = new Creator<Card>() {
+        @Override
+        public Card createFromParcel(Parcel in) {
+            return new Card(in);
+        }
+
+        @Override
+        public Card[] newArray(int size) {
+            return new Card[size];
+        }
+    };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        // порядок заполнения важен
+        dest.writeString(this.key);
+        dest.writeString(this.type);
+        dest.writeString(this.title);
+        dest.writeString(this.quote);
+        dest.writeString(this.imageURL);
+        dest.writeString(this.description);
+    }
+    /* Parcelable */
 }
