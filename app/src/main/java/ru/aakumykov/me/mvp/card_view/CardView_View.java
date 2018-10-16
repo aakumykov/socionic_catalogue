@@ -83,30 +83,30 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
         presenter.activityResultComes(requestCode, resultCode, data);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.create_card_menu, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        super.onCreateOptionsMenu(menu);
+////        MenuInflater menuInflater = getMenuInflater();
+////        menuInflater.inflate(R.menu.create_card_menu, menu);
+//        return true;
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.actionEdit:
-                presenter.editButtonPressed();
-                break;
-            case android.R.id.home:
-                this.finish();
-                break;
-            default:
-                super.onOptionsItemSelected(item);
-        }
-
-        return true;
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        switch (item.getItemId()) {
+//            case R.id.actionEdit:
+//                presenter.editButtonPressed();
+//                break;
+//            case android.R.id.home:
+//                this.finish();
+//                break;
+//            default:
+//                super.onOptionsItemSelected(item);
+//        }
+//
+//        return true;
+//    }
 
 
     @Override
