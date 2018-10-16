@@ -59,6 +59,7 @@ public interface iCardEdit {
     }
 
     interface Model {
+        String createKey();
         void uploadImage(Uri imageURI, String imageMimeType, String remotePath, iCardEdit.ModelCallbacks callbacks);
         void saveCard(Card card, iCardEdit.ModelCallbacks callbacks);
     }

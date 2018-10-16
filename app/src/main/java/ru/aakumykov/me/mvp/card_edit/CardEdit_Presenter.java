@@ -73,7 +73,11 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
                 return;
         }
 
+        String newKey = model.createKey();
+        Log.d(TAG, "newKey: "+newKey);
+
         currentCard = new Card();
+        currentCard.setKey(newKey);
         currentCard.setType(cardType);
     }
 

@@ -38,6 +38,13 @@ public class CardEdit_Model implements iCardEdit.Model {
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
     @Override
+    public String createKey() {
+        return firebaseDatabase.getReference()
+                .child(Constants.CARDS_PATH)
+                .push().getKey();
+    }
+
+    @Override
     public void uploadImage(Uri imageURI, String mimeType, String remotePath, final iCardEdit.ModelCallbacks callbacks) {
         Log.d(TAG, "uploadImage()");
 
