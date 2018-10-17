@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.card_view;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -116,6 +117,8 @@ public class CardView_View extends AppCompatActivity implements
     // Карточка
     @Override
     public void displayCard(Card card) {
+        Log.d(TAG, "displayCard(), "+card);
+
         hideWaitScreen();
 
         switch (card.getType()) {
@@ -137,14 +140,17 @@ public class CardView_View extends AppCompatActivity implements
     // Изображение
     @Override
     public void displayImage(Uri imageURI) {
-        MyUtils.hide(imageView);
+        Log.d(TAG, "displayImage("+imageURI+")");
+
+        MyUtils.show(imageHolder);
         MyUtils.show(imageProgressBar);
+        MyUtils.hide(imageView);
 
         Picasso.get().load(imageURI).into(imageView, new Callback() {
             @Override
             public void onSuccess() {
-                MyUtils.show(imageView);
                 MyUtils.hide(imageProgressBar);
+                MyUtils.show(imageView);
             }
 
             @Override
@@ -165,22 +171,17 @@ public class CardView_View extends AppCompatActivity implements
     // Сообщения
     @Override
     public void showInfoMsg(int messageId) {
-        hideWaitScreen();
-        messageView.setText(getResources().getString(messageId));
-        messageView.setTextColor(getResources().getColor(R.color.info));
+        showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));
     }
 
     @Override
     public void showErrorMsg(int messageId) {
-        String text = getResources().getString(messageId);
-        showErrorMsg(text);
+        showErrorMsg(getResources().getString(messageId));
     }
 
     @Override
     public void showErrorMsg(String message) {
-        hideWaitScreen();
-        messageView.setText(message);
-        messageView.setTextColor(getResources().getColor(R.color.error));
+        showMsg(message, getResources().getColor(R.color.error));
     }
 
     @Override
@@ -214,22 +215,33 @@ public class CardView_View extends AppCompatActivity implements
 
 
     // Внутренние методы
+    private void showMsg(String text, int color) {
+        messageView.setText(text);
+        messageView.setTextColor(color);
+        hideWaitScreen();
+        MyUtils.show(messageView);
+    }
+
     private void hideWaitScreen() {
         MyUtils.hide(messageView);
         MyUtils.hide(progressBar);
     }
 
     private void displayImageCard(Card card) {
+        Log.d(TAG, "displayImageCard(), "+card);
+
+        displayCommonCard(card);
+
         try {
             Uri imageURI = Uri.parse(card.getImageURL());
             displayImage(imageURI);
         } catch (Exception e) {
-            showErrorMsg(R.string.error_loading_image);
             displayImageError();
         }
     }
 
     private void displayTextCard(Card card) {
+        Log.d(TAG, "displayTextCard(), "+card);
         quoteView.setText(card.getQuote());
         displayCommonCard(card);
     }
