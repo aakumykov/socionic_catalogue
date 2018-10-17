@@ -108,6 +108,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
     }
 
 
+    // TODO: отмена выгрузки картинки...
 
     @Override
     public void onSaveButtonClicked() {
@@ -118,6 +119,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
             try {
                 String remoteImagePath = constructImagePath();
                 view.showImageProgressBar();
+                view.disableForm();
                 model.uploadImage(localImageURI, localImageType, remoteImagePath, this);
 
             } catch (Exception e) {
