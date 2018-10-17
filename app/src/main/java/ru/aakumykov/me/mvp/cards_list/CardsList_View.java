@@ -186,7 +186,7 @@ public class CardsList_View extends AppCompatActivity implements
     }
 
     private void showLoadingMessage() {
-        messageView.setText(R.string.loading_cards_list);
+        messageView.setText(R.string.getting_cards_list);
         messageView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
     }
