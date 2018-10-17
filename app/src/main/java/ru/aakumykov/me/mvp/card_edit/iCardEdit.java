@@ -8,14 +8,11 @@ import ru.aakumykov.me.mvp.models.Card;
 public interface iCardEdit {
 
     interface View {
+        void prepareTextCard();
+        void prepareImageCard();
+
         void displayTextCard(Card card);
         void displayImageCard(Card card);
-
-        String getCardTitle();
-        String getCardQuote();
-        String getCardDescription();
-
-        void selectImage();
 
         void displayRemoteImage(String imageURI);
         void displayRemoteImage(Uri imageURI);
@@ -23,13 +20,15 @@ public interface iCardEdit {
         void displayLocalImage(String imageURI);
         void displayLocalImage(Uri imageURI);
 
+        void selectImage();
         void removeImage();
+
+        String getCardTitle();
+        String getCardQuote();
+        String getCardDescription();
 
         void showProgressBar();
         void hideProgressBar();
-
-        void prepareTextCard();
-        void prepareImageCard();
 
         void showImageProgressBar();
 
