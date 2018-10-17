@@ -6,7 +6,7 @@
     <string name="login">Login</string>
     <string name="auth_state">Authorized?</string>
     <string name="already_logged_in">You are already logged in</string>
-    <string name="logging_in">Logging in...</string>
+    <string name="logging_in">Logging in…</string>
     <string name="login_success">You are logged in</string>
     <string name="login_error">Error logging in</string>
     <string name="login_canceled">Login cencelled</string>
@@ -15,7 +15,7 @@
     <string name="logout">Logout</string>
     <string name="card_load_error">Error loading card</string>
     <string name="card_load_canceled">Card loading cancelled</string>
-    <string name="loading_card">Loading card</string>
+    <string name="opening_card">Opening card</string>
     <string name="getting_cards_list">Getting cards list</string>
     <string name="image_placeholder">Image stub</string>
     <string name="wrong_card_type">Unknown card type</string>

@@ -23,7 +23,7 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
     @Override
     public void cardKeyRecieved(String key) {
 //        Log.d(TAG, "onCardRecieved("+key+")");
-        view.showMessage(R.string.loading_card, Constants.INFO_MSG);
+        view.showMessage(R.string.opening_card, Constants.INFO_MSG);
         model.loadCard(key, this);
     }
 
