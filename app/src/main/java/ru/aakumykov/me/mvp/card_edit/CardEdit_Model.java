@@ -5,8 +5,10 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -57,7 +59,14 @@ public class CardEdit_Model implements iCardEdit.Model {
         final StorageReference imageRef = firebaseStorage.getReference().child(remotePath);
         uploadTask = imageRef.putFile(imageURI, metadata);
 
-        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+        uploadTask
+                .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        uploadTask = null;
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                         long totalBytes = taskSnapshot.getTotalByteCount();
@@ -105,7 +114,7 @@ public class CardEdit_Model implements iCardEdit.Model {
     @Override
     public void cancelImageUpload() {
         Log.d(TAG, "cancelImageUpload()");
-        this.uploadTask.cancel();
+        if (null != uploadTask) uploadTask.cancel();
     }
 
     @Override

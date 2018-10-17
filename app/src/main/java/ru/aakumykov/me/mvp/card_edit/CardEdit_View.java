@@ -92,7 +92,7 @@ public class CardEdit_View extends AppCompatActivity
                 presenter.onSelectImageClicked();
                 break;
             case R.id.discardImageButton:
-                presenter.imageDiscardClicked();
+                presenter.onImageDiscardClicked();
                 break;
             default:
                 Log.e(TAG, "Clicked element with unknown id: "+v.getId());

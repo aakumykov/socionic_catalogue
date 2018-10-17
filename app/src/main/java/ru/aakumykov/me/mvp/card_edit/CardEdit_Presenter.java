@@ -106,13 +106,14 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
     }
 
     @Override
-    public void imageDiscardClicked() {
-        Log.d(TAG, "imageDiscardClicked()");
+    public void onImageDiscardClicked() {
+        Log.d(TAG, "onImageDiscardClicked()");
+        model.cancelImageUpload();
         view.removeImage();
     }
 
 
-    // TODO: отмена выгрузки картинки...
+    // TODO: нормальная отмена выгрузки картинки...
 
     @Override
     public void onSaveButtonClicked() {

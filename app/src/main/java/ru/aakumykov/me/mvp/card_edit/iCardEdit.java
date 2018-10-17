@@ -52,7 +52,7 @@ public interface iCardEdit {
 
         void onSaveButtonClicked();
         void onCancelButtonClicked();
-        void imageDiscardClicked();
+        void onImageDiscardClicked();
 
         void onSelectImageClicked();
         void onImageSelected(Uri imageURI, String mimeType);
