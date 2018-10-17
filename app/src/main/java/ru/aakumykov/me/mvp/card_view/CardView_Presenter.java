@@ -27,10 +27,42 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
         model.loadCard(key, this);
     }
 
-    public void editButtonPressed() {
-        Log.d(TAG, "editButtonPressed()");
-        view.editCard(currentCard);
+    @Override
+    public void onEditButtonClicked() {
+        Log.d(TAG, "onEditButtonClicked()");
+        view.goEditCard(currentCard);
     }
+
+
+    @Override
+    public void onDeleteButtonClicked() {
+        Log.d(TAG, "onDeleteButtonClicked()");
+        view.showProgressBar();
+        view.showMessage(R.string.deleting_card, Constants.INFO_MSG);
+
+        // Ну криво же это!
+        try {
+            model.deleteCard(currentCard, this);
+        } catch (Exception e) {
+            view.hideProgressBar();
+            view.showMessage(R.string.error_deleting_card, Constants.ERROR_MSG);
+        }
+    }
+
+    @Override
+    public void onDeleteComplete(@Nullable String errorMsg) {
+        view.hideProgressBar();
+
+        if (null == errorMsg) {
+            view.showMessage(R.string.card_deleted, Constants.INFO_MSG);
+            view.close();
+        } else {
+            view.showMessage(R.string.error_deleting_card, Constants.ERROR_MSG);
+        }
+    }
+
+    // TODO: удаление также из списка
+
 
     @Override
     public void activityResultComes(int requestCode, int resultCode, @Nullable Intent data) {
@@ -48,6 +80,7 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
             }
         }
     }
+
 
     @Override
     public void onLoadSuccess(Card card) {
@@ -93,6 +126,8 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
         view.hideProgressBar();
         view.showMessage(R.string.card_load_canceled, Constants.ERROR_MSG);
     }
+
+
 
 
     @Override

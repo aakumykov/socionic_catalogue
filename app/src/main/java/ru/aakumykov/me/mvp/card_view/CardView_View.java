@@ -26,7 +26,8 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.models.Card;
 
-public class CardView_View extends AppCompatActivity implements iCardView.View {
+public class CardView_View extends AppCompatActivity implements
+        iCardView.View {
 
     private final static String TAG = "CardView_View";
 
@@ -87,7 +88,7 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.card_edit_menu, menu);
+        menuInflater.inflate(R.menu.card_view_menu, menu);
         return true;
     }
 
@@ -96,7 +97,10 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
 
         switch (item.getItemId()) {
             case R.id.actionEdit:
-                presenter.editButtonPressed();
+                presenter.onEditButtonClicked();
+                break;
+            case R.id.actionDelete:
+                presenter.onDeleteButtonClicked();
                 break;
             case android.R.id.home:
                 this.finish();
@@ -163,6 +167,7 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
                     @Override
                     public void onError(Exception e) {
                         showMessage(R.string.error_loading_image, Constants.ERROR_MSG);
+                        showImageIsBroken();
                     }
                 });
     }
@@ -206,6 +211,13 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     }
 
     @Override
+    public void showImageIsBroken() {
+        imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
+        MyUtils.show(imageView);
+        MyUtils.hide(imageProgressBar);
+    }
+
+    @Override
     public void showMessage(int msgId, String msgType) {
         int colorId;
         switch (msgType) {
@@ -235,14 +247,19 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
 
     // TODO: что, если перенести в Presenter?
     @Override
-    public void editCard(Card card) {
-        Log.d(TAG, "editCard(), "+card);
+    public void goEditCard(Card card) {
+        Log.d(TAG, "goEditCard(), "+card);
+
         Intent intent = new Intent();
         intent.setClass(this, CardEdit_View.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         intent.putExtra(Constants.CARD, card);
 
-//        intent.put
-
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+    }
+
+    @Override
+    public void close() {
+        this.finish();
     }
 }

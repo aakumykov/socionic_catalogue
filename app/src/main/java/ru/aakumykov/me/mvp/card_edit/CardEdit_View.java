@@ -143,7 +143,6 @@ public class CardEdit_View extends AppCompatActivity
         hideMessage();
         MyUtils.hide(localImageView);
         MyUtils.show(imageHolder);
-        MyUtils.show(discardImageButton);
         displayImage(remoteImageView, imageURI);
     }
 
@@ -176,15 +175,29 @@ public class CardEdit_View extends AppCompatActivity
             @Override
             public void onSuccess() {
                 MyUtils.hide(imageProgressBar);
+                MyUtils.show(discardImageButton);
                 MyUtils.show(imageView);
             }
 
             @Override
             public void onError(Exception e) {
                 showError(R.string.error_loading_image);
+                displayBrokenImage();
             }
         });
     }
+
+
+    @Override
+    public void displayBrokenImage() {
+        Log.d(TAG, "displayBrokenImage()");
+        localImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
+        MyUtils.show(imageHolder);
+        MyUtils.show(localImageView);
+        MyUtils.hide(discardImageButton);
+        MyUtils.hide(imageProgressBar);
+    }
+
 
     @Override
     public void removeImage() {
@@ -193,7 +206,7 @@ public class CardEdit_View extends AppCompatActivity
         remoteImageView.setImageDrawable(null);
         MyUtils.hide(remoteImageView);
 
-        localImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_picture_placeholder));
+        localImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_placeholder));
         MyUtils.show(localImageView);
 
         MyUtils.hide(discardImageButton);
