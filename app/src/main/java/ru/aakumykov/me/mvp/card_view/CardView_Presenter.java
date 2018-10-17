@@ -87,7 +87,7 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
 
         this.currentCard = card;
 
-        view.hideMessage();
+        view.hideMsg();
         view.hideProgressBar();
 
         view.setTitle(card.getTitle());
@@ -114,7 +114,7 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
     public void onLoadFailed(String msg) {
         this.currentCard = null;
 
-        view.hideMessage();
+        view.hideMsg();
         view.hideProgressBar();
         view.showMessage(R.string.card_load_error, Constants.ERROR_MSG);
     }
@@ -122,7 +122,7 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
     @Override
     public void onLoadCanceled() {
         // Нужно обнулять currentCard ?
-        view.hideMessage();
+        view.hideMsg();
         view.hideProgressBar();
         view.showMessage(R.string.card_load_canceled, Constants.ERROR_MSG);
     }
