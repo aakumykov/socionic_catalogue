@@ -16,7 +16,7 @@
     <string name="card_load_error">Error loading card</string>
     <string name="card_load_canceled">Card loading cancelled</string>
     <string name="loading_card">Loading card</string>
-    <string name="loading_cards_list">Loading cards list</string>
+    <string name="getting_cards_list">Getting cards list</string>
     <string name="image_placeholder">Image stub</string>
     <string name="wrong_card_type">Unknown card type</string>
     <string name="error_loading_image">Error loading image</string>
