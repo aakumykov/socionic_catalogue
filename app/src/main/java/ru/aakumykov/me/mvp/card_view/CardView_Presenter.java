@@ -39,7 +39,14 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
         Log.d(TAG, "onDeleteButtonClicked()");
         view.showProgressBar();
         view.showMessage(R.string.deleting_card, Constants.INFO_MSG);
-        model.deleteCard(currentCard.getKey(), this);
+
+        // Ну криво же это!
+        try {
+            model.deleteCard(currentCard, this);
+        } catch (Exception e) {
+            view.hideProgressBar();
+            view.showMessage(R.string.error_deleting_card, Constants.ERROR_MSG);
+        }
     }
 
     @Override

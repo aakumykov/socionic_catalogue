@@ -45,7 +45,7 @@ public interface iCardView {
 
     interface Model {
         void loadCard(String key, iCardView.Callbacks callbacks);
-        void deleteCard(String key, iCardView.Callbacks callbacks);
+        void deleteCard(Card card, final iCardView.Callbacks callbacks) throws Exception;
     }
 
     interface Callbacks {
