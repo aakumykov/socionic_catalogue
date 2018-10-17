@@ -249,11 +249,11 @@ public class CardView_View extends AppCompatActivity implements
     @Override
     public void goEditCard(Card card) {
         Log.d(TAG, "goEditCard(), "+card);
+
         Intent intent = new Intent();
         intent.setClass(this, CardEdit_View.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         intent.putExtra(Constants.CARD, card);
-
-//        intent.put
 
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
