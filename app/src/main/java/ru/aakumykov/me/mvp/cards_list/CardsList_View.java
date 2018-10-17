@@ -128,7 +128,7 @@ public class CardsList_View extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.create_card_menu, menu);
+        menuInflater.inflate(R.menu.cards_list_menu, menu);
         return true;
     }
 

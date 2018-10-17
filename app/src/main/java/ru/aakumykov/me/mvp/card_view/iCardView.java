@@ -27,12 +27,16 @@ public interface iCardView {
         void loadImage(String quote);
         void setDescription(String description);
 
-        void editCard(Card card);
+        void goEditCard(Card card);
+        void close();
     }
 
     interface Presenter {
         void cardKeyRecieved(String key);
-        void editButtonPressed();
+
+        void onEditButtonClicked();
+        void onDeleteButtonClicked();
+
         void activityResultComes(int requestCode, int resultCode, @Nullable Intent data);
 
         void linkView(iCardView.View view);
@@ -41,11 +45,13 @@ public interface iCardView {
 
     interface Model {
         void loadCard(String key, iCardView.Callbacks callbacks);
+        void deleteCard(String key, iCardView.Callbacks callbacks);
     }
 
     interface Callbacks {
         void onLoadSuccess(Card card);
         void onLoadFailed(String msg);
         void onLoadCanceled();
+        void onDeleteComplete(@Nullable String msg);
     }
 }

@@ -7,7 +7,7 @@
     <color name="grey">#949494</color>
 
     <color name="undefined">#a4a4a4</color>
-    <color name="info">#3f51b5</color>
-    <color name="warning">#ff9544</color>
-    <color name="error">#ff0000</color>
+    <color name="info">#54BF8C</color>
+    <color name="warning">#FF7140</color>
+    <color name="error">@color/colorAccent</color>
 </resources>

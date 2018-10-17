@@ -1,9 +1,12 @@
 package ru.aakumykov.me.mvp.card_view;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -23,7 +26,7 @@ public class CardView_Model implements iCardView.Model {
     private CardView_Model(){}
     /* Одиночка */
 
-//    private final static String TAG = "CardView_Model";
+    private final static String TAG = "CardView_Model";
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
     @Override
@@ -46,5 +49,25 @@ public class CardView_Model implements iCardView.Model {
                         databaseError.toException().printStackTrace();
                     }
                 });
+    }
+
+    @Override
+    public void deleteCard(String key, final iCardView.Callbacks callbacks) {
+        Log.d(TAG, "deleteCard("+key+")");
+
+        DatabaseReference cardRef = firebaseDatabase.getReference()
+                .child(Constants.CARDS_PATH).child(key);
+
+        cardRef.removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                String msg = null;
+                if (null != databaseError) {
+                    msg = databaseError.getMessage();
+                    databaseError.toException().printStackTrace();
+                }
+                callbacks.onDeleteComplete(msg);
+            }
+        });
     }
 }

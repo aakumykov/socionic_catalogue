@@ -26,7 +26,8 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.models.Card;
 
-public class CardView_View extends AppCompatActivity implements iCardView.View {
+public class CardView_View extends AppCompatActivity implements
+        iCardView.View {
 
     private final static String TAG = "CardView_View";
 
@@ -87,7 +88,7 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.card_edit_menu, menu);
+        menuInflater.inflate(R.menu.card_view_menu, menu);
         return true;
     }
 
@@ -96,7 +97,10 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
 
         switch (item.getItemId()) {
             case R.id.actionEdit:
-                presenter.editButtonPressed();
+                presenter.onEditButtonClicked();
+                break;
+            case R.id.actionDelete:
+                presenter.onDeleteButtonClicked();
                 break;
             case android.R.id.home:
                 this.finish();
@@ -235,8 +239,8 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
 
     // TODO: что, если перенести в Presenter?
     @Override
-    public void editCard(Card card) {
-        Log.d(TAG, "editCard(), "+card);
+    public void goEditCard(Card card) {
+        Log.d(TAG, "goEditCard(), "+card);
         Intent intent = new Intent();
         intent.setClass(this, CardEdit_View.class);
         intent.putExtra(Constants.CARD, card);
@@ -244,5 +248,10 @@ public class CardView_View extends AppCompatActivity implements iCardView.View {
 //        intent.put
 
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+    }
+
+    @Override
+    public void close() {
+        this.finish();
     }
 }

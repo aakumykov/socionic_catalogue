@@ -48,4 +48,7 @@
     <string name="add_card">Добавить карточку</string>
     <string name="text">Текст</string>
     <string name="image">Картинка</string>
+    <string name="card_deleted">Карточка удалена</string>
+    <string name="deleting_card">Удаляем карточку</string>
+    <string name="error_deleting_card">Ошибка удаления карточки</string>
 </resources>
