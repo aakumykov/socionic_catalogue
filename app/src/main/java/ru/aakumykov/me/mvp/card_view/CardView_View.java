@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.models.Card;
 
 //TODO: уменьшение изображения
@@ -63,6 +64,32 @@ public class CardView_View extends AppCompatActivity implements
         String cardKey = intent.getStringExtra(Constants.CARD_KEY);
 
         presenter.cardKeyRecieved(cardKey);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (RESULT_OK == resultCode) {
+
+            switch (requestCode) {
+
+                case Constants.CODE_EDIT_CARD:
+                    if (null != data) {
+                        Card card = data.getParcelableExtra(Constants.CARD);
+                        presenter.cardKeyRecieved(card.getKey());
+                    } else {
+                        showErrorMsg(R.string.error_displaying_card);
+                        Log.e(TAG, "Intent data in activity result == null.");
+                    }
+                    break;
+
+                default:
+                    showErrorMsg(R.string.unknown_request_code);
+                    Log.d(TAG, "Unknown request code: "+requestCode);
+                    break;
+            }
+        }
     }
 
     @Override
@@ -205,12 +232,16 @@ public class CardView_View extends AppCompatActivity implements
     // Переходы
     @Override
     public void goEditPage(Card card) {
-
+        Intent intent = new Intent();
+        intent.setClass(this, CardEdit_View.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.putExtra(Constants.CARD, card);
+        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
     @Override
     public void closePage() {
-
+        finish();
     }
 
 
