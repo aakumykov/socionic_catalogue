@@ -19,6 +19,7 @@ public interface iCardEdit {
 
         void displayLocalImage(String imageURI);
         void displayLocalImage(Uri imageURI);
+        void displayBrokenImage();
 
         void selectImage();
         void removeImage();
