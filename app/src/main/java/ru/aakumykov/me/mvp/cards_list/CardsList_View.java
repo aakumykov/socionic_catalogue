@@ -171,6 +171,7 @@ public class CardsList_View extends AppCompatActivity implements
 
         Intent intent = new Intent();
         intent.setClass(this, CardEdit_View.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         intent.putExtra(Constants.CARD_TYPE, cardType);
         startActivity(intent);
     }

@@ -204,7 +204,8 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
     public void onCardSaveSuccess(Card card) {
         // TODO: передавать новую карточку
         forgetCardData();
-        view.closeActivity(card);
+//        view.closeActivity(card);
+        view.displayNewCard(card);
     }
 
     @Override

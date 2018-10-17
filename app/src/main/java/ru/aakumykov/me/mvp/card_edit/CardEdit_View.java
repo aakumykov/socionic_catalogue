@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.card_view.CardView_View;
 import ru.aakumykov.me.mvp.models.Card;
 
 // TODO: кнопка Вверх как Отмена
@@ -289,6 +290,14 @@ public class CardEdit_View extends AppCompatActivity
         finish();
     }
 
+    @Override
+    public void displayNewCard(Card card) {
+        Log.d(TAG, "displayNewCard(), "+card);
+        Intent intent = new Intent();
+        intent.setClass(this, CardView_View.class);
+        intent.putExtra(Constants.CARD_KEY, card.getKey());
+        startActivity(intent);
+    }
 
     @Override
     public void prepareTextCard() {
