@@ -36,6 +36,7 @@ public class CardEdit_Model implements iCardEdit.Model {
     private final static String TAG = "CardEdit_Model";
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+    private UploadTask uploadTask;
 
     @Override
     public String createKey() {
@@ -44,18 +45,19 @@ public class CardEdit_Model implements iCardEdit.Model {
                 .push().getKey();
     }
 
+    // TODO: пауза и возобновление...
     @Override
     public void uploadImage(Uri imageURI, String mimeType, String remotePath, final iCardEdit.ModelCallbacks callbacks) {
         Log.d(TAG, "uploadImage()");
-
-        final StorageReference imageRef = firebaseStorage.getReference().child(remotePath);
 
         StorageMetadata metadata = new StorageMetadata.Builder()
                 .setContentType(mimeType)
                 .build();
 
-        imageRef.putFile(imageURI, metadata)
-                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+        final StorageReference imageRef = firebaseStorage.getReference().child(remotePath);
+        uploadTask = imageRef.putFile(imageURI, metadata);
+
+        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                         long totalBytes = taskSnapshot.getTotalByteCount();
@@ -98,6 +100,12 @@ public class CardEdit_Model implements iCardEdit.Model {
                         callbacks.onImageUploadCancel();
                     }
                 });
+    }
+
+    @Override
+    public void cancelImageUpload() {
+        Log.d(TAG, "cancelImageUpload()");
+        this.uploadTask.cancel();
     }
 
     @Override
