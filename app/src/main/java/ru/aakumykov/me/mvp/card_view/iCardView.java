@@ -21,6 +21,9 @@ public interface iCardView {
         void showErrorMsg(String message);
         void hideMsg();
 
+        void showProgressMessage(int messageId);
+        void hideProgressMessage();
+
         void goEditPage(Card card);
         void closePage();
     }
@@ -30,9 +33,6 @@ public interface iCardView {
 
         void onEditButtonClicked();
         void onDeleteButtonClicked();
-
-        // Сомневаюсь, в уместности
-        void activityResultComes(int requestCode, int resultCode, @Nullable Intent data);
 
         void linkView(iCardView.View view);
         void unlinkView();

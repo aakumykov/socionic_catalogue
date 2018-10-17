@@ -20,113 +20,62 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
         model = CardView_Model.getInstance();
     }
 
+
+    // Получение карточки
     @Override
     public void cardKeyRecieved(String key) {
-//        Log.d(TAG, "onCardRecieved("+key+")");
-        view.showMessage(R.string.opening_card, Constants.INFO_MSG);
+        view.showWaitScreen();
         model.loadCard(key, this);
     }
 
     @Override
-    public void onEditButtonClicked() {
-        Log.d(TAG, "onEditButtonClicked()");
-        view.goEditCard(currentCard);
-    }
-
-
-    @Override
-    public void onDeleteButtonClicked() {
-        Log.d(TAG, "onDeleteButtonClicked()");
-        view.showProgressBar();
-        view.showMessage(R.string.deleting_card, Constants.INFO_MSG);
-
-        // Ну криво же это!
-        try {
-            model.deleteCard(currentCard, this);
-        } catch (Exception e) {
-            view.hideProgressBar();
-            view.showMessage(R.string.error_deleting_card, Constants.ERROR_MSG);
-        }
-    }
-
-    @Override
-    public void onDeleteComplete(@Nullable String errorMsg) {
-        view.hideProgressBar();
-
-        if (null == errorMsg) {
-            view.showMessage(R.string.card_deleted, Constants.INFO_MSG);
-            view.close();
-        } else {
-            view.showMessage(R.string.error_deleting_card, Constants.ERROR_MSG);
-        }
-    }
-
-    // TODO: удаление также из списка
-
-
-    @Override
-    public void activityResultComes(int requestCode, int resultCode, @Nullable Intent data) {
-        if (Activity.RESULT_OK == resultCode) {
-            if (null != data) {
-                Card card = data.getParcelableExtra(Constants.CARD);
-                Log.d(TAG, "card from activity result: "+card);
-                if (null != card) {
-                    currentCard = card;
-                    view.displayCard(card);
-                } else {
-                    Log.e(TAG, "Card from intent of activity result is null.");
-                    view.showMessage(R.string.error_displaying_card, Constants.ERROR_MSG);
-                }
-            }
-        }
-    }
-
-
-    @Override
     public void onLoadSuccess(Card card) {
-
         this.currentCard = card;
-
-        view.hideMsg();
-        view.hideProgressBar();
-
-        view.setTitle(card.getTitle());
-        view.setDescription(card.getDescription());
-
-        switch (card.getType()) {
-            case Constants.TEXT_CARD:
-                view.showQuote();
-                view.setQuote(card.getQuote());
-//                view.displayTextCard(Card currentCard);
-                break;
-            case Constants.IMAGE_CARD:
-                view.showImagePlaceholder();
-                view.loadImage(card.getImageURL());
-//                view.displayImageCard(Card currentCard);
-                break;
-            default:
-                view.showMessage(R.string.wrong_card_type, Constants.ERROR_MSG);
-                break;
-        }
+        view.displayCard(card);
     }
 
     @Override
     public void onLoadFailed(String msg) {
         this.currentCard = null;
-
-        view.hideMsg();
-        view.hideProgressBar();
-        view.showMessage(R.string.card_load_error, Constants.ERROR_MSG);
+        view.showErrorMsg(R.string.card_load_error);
     }
 
     @Override
     public void onLoadCanceled() {
-        // Нужно обнулять currentCard ?
-        view.hideMsg();
-        view.hideProgressBar();
-        view.showMessage(R.string.card_load_canceled, Constants.ERROR_MSG);
+        view.showErrorMsg(R.string.card_load_canceled);
     }
 
+
+    // Реакция на кнопки
+    @Override
+    public void onEditButtonClicked() {
+        view.goEditPage(currentCard);
+    }
+
+    // TODO: удаление также и из списка
+    @Override
+    public void onDeleteButtonClicked() {
+        Log.d(TAG, "onDeleteButtonClicked()");
+        view.showProgressMessage(R.string.deleting_card);
+
+        try {
+            model.deleteCard(currentCard, this);
+        } catch (Exception e) {
+            view.hideProgressMessage();
+            view.showErrorMsg(R.string.error_deleting_card);
+        }
+    }
+
+    @Override
+    public void onDeleteComplete(@Nullable String errorMsg) {
+        view.hideProgressMessage();
+
+        if (null == errorMsg) {
+            view.closePage();
+        } else {
+            view.showErrorMsg(R.string.error_deleting_card);
+        }
+    }
 
 
 
