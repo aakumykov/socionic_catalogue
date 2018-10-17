@@ -109,7 +109,7 @@ public class CardView_View extends AppCompatActivity implements
     // Ожидание
     @Override
     public void showWaitScreen() {
-        showInfoMsg(R.string.opening_card);
+//        showInfoMsg(R.string.opening_card);
         MyUtils.show(progressBar);
     }
 
