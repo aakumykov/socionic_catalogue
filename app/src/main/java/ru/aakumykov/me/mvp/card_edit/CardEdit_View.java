@@ -193,7 +193,7 @@ public class CardEdit_View extends AppCompatActivity
         remoteImageView.setImageDrawable(null);
         MyUtils.hide(remoteImageView);
 
-        localImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_picture_placeholder));
+        localImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_placeholder));
         MyUtils.show(localImageView);
 
         MyUtils.hide(discardImageButton);

@@ -19,6 +19,7 @@ public interface iCardView {
 
         void showQuote();
         void showImage();
+        void showImageIsBroken();
 
         void displayCard(Card card);
 

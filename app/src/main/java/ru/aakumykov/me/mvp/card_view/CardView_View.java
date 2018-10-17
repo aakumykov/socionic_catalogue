@@ -167,6 +167,7 @@ public class CardView_View extends AppCompatActivity implements
                     @Override
                     public void onError(Exception e) {
                         showMessage(R.string.error_loading_image, Constants.ERROR_MSG);
+                        showImageIsBroken();
                     }
                 });
     }
@@ -207,6 +208,13 @@ public class CardView_View extends AppCompatActivity implements
     @Override
     public void showImage() {
         imageView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showImageIsBroken() {
+        imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
+        MyUtils.show(imageView);
+        MyUtils.hide(imageProgressBar);
     }
 
     @Override
