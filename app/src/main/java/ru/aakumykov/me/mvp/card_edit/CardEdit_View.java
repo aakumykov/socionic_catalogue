@@ -321,8 +321,12 @@ public class CardEdit_View extends AppCompatActivity
     public void finishEdit(Card card) {
         Log.d(TAG, "finishEdit(), "+card);
         Intent intent = new Intent();
+
+        int resultCode = (null != card) ? RESULT_OK : RESULT_CANCELED;
+        setResult(resultCode, intent);
+
         intent.putExtra(Constants.CARD, card);
-        setResult(RESULT_OK, intent);
+
         finish();
     }
 
