@@ -19,13 +19,8 @@ public class CardsList_Model implements iCardsList.Model {
 
     /* Одиночка: начало */
     private volatile static CardsList_Model ourInstance;
-
-    private CardsList_Model() { Log.d(TAG, "== new CardsList_Model()"); }
-
-    static synchronized CardsList_Model getInstance() {
-        Log.d(TAG, "getInstance()");
-
-        if (null == ourInstance) {
+    private CardsList_Model() {}
+    static synchronized CardsList_Model getInstance() { if (null == ourInstance) {
             synchronized (CardsList_Model.class) {
                 ourInstance = new CardsList_Model();
             }
@@ -44,17 +39,17 @@ public class CardsList_Model implements iCardsList.Model {
     @Override
     public void loadList(final iCardsList.Callbacks callbacks, boolean forcePullFromServer) {
         Log.d(TAG, "loadList(forcePullFromServer: "+forcePullFromServer+")");
-        Log.d(TAG, "cardsList: "+cardsList);
+//        Log.d(TAG, "cardsList: "+cardsList);
 
         if (forcePullFromServer) {
 //            cardsList = new ArrayList<>();
             cardsList.clear();
-            Log.d(TAG, "после clear(), cardsList: "+cardsList);
+//            Log.d(TAG, "после clear(), cardsList: "+cardsList);
         }
 
         if (forcePullFromServer || cardsList.isEmpty()) {
             Log.d(TAG, "запрашиваю список с сервера");
-            Log.d(TAG, "cardsList: "+cardsList);
+//            Log.d(TAG, "cardsList: "+cardsList);
 
             DatabaseReference cardsRef = firebaseDatabase.getReference().child(Constants.CARDS_PATH);
 
@@ -68,8 +63,7 @@ public class CardsList_Model implements iCardsList.Model {
                             cardsList.add(card);
                         }
                     }
-//                Log.d(TAG, "cardsList: "+cardsList);
-                    Log.d(TAG, "cardsList: "+cardsList);
+//                  Log.d(TAG, "cardsList: "+cardsList);
                     callbacks.onLoadSuccess(cardsList);
                 }
 
@@ -80,7 +74,7 @@ public class CardsList_Model implements iCardsList.Model {
             });
         } else {
             Log.d(TAG, "возвращаю существующий список");
-            Log.d(TAG, "cardsList: "+cardsList);
+//            Log.d(TAG, "cardsList: "+cardsList);
 
             callbacks.onLoadSuccess(cardsList);
         }

@@ -52,7 +52,7 @@ public class CardsList_View extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG+"_L-CYCLE", "onCreate()");
+//        Log.d(TAG+"_L-CYCLE", "onCreate()");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cards_list_activity);
@@ -73,7 +73,7 @@ public class CardsList_View extends AppCompatActivity implements
         liveData.observe(this, new Observer<List<Card>>() {
             @Override
             public void onChanged(@Nullable List<Card> cards) {
-                Log.d(TAG+"_LiveData", "=ПОСТУПИЛИ ЖИВЫЕ ДАННЫЕ=, ("+cards.size()+") "+cards);
+//                Log.d(TAG+"_LiveData", "=ПОСТУПИЛИ ЖИВЫЕ ДАННЫЕ=, ("+cards.size()+") "+cards);
 
                 hideLoadingMessage();
                 swipeRefreshLayout.setRefreshing(false);
@@ -90,37 +90,38 @@ public class CardsList_View extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG+"_L-CYCLE", "onStart()");
+//        Log.d(TAG+"_L-CYCLE", "onStart()");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG+"_L-CYCLE", "onStop()");
+//        Log.d(TAG+"_L-CYCLE", "onStop()");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG+"_L-CYCLE", "onDestroy()");
+//        Log.d(TAG+"_L-CYCLE", "onDestroy()");
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "onItemClick(..., position: "+position+", id: "+id+")");
+
         String cardKey = cardsList.get(position).getKey();
+//        Log.d(TAG, "onItemClick(), cardKey: "+cardKey);
 
-        Log.d(TAG, "onItemClick(), cardKey: "+cardKey);
-
-        Intent intent = new Intent();
-        // TODO: сделать независимым от конкретного класса
-        intent.setClass(this, CardView_View.class);
-        intent.putExtra(Constants.CARD_KEY, cardKey);
-        startActivity(intent);
+//        Intent intent = new Intent();
+//        // TODO: сделать независимым от конкретного класса
+//        intent.setClass(this, CardView_View.class);
+//        intent.putExtra(Constants.CARD_KEY, cardKey);
+//        startActivity(intent);
     }
 
     @Override
     public void onRefresh() {
-        Log.d(TAG, "onRefresh()");
+//        Log.d(TAG, "onRefresh()");
         loadList(true);
     }
 
@@ -157,7 +158,7 @@ public class CardsList_View extends AppCompatActivity implements
 
     @Override
     public void onAddCardButton(String cardType) {
-        Log.d(TAG, "onAddCardButton("+cardType+")");
+//        Log.d(TAG, "onAddCardButton("+cardType+")");
 
         switch (cardType) {
             case Constants.TEXT_CARD:
@@ -178,7 +179,7 @@ public class CardsList_View extends AppCompatActivity implements
 
 
     private void loadList(boolean manualRefresh) {
-        Log.d(TAG, "loadList("+manualRefresh+")");
+        Log.d(TAG, "loadList(manualRefresh: "+manualRefresh+")");
 
         if (!manualRefresh)
             showLoadingMessage();
