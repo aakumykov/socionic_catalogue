@@ -3,8 +3,6 @@ package ru.aakumykov.me.mvp.card_edit;
 import android.net.Uri;
 import android.util.Log;
 
-import com.google.firebase.storage.UploadTask;
-
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
@@ -88,7 +86,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
         Log.d(TAG, "onCancelButtonClicked()");
         forgetCardData();
         model.cancelImageUpload();
-        view.closeActivity(null);
+        view.finishEdit(null);
     }
 
     @Override
@@ -204,8 +202,8 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
     public void onCardSaveSuccess(Card card) {
         // TODO: передавать новую карточку
         forgetCardData();
-//        view.closeActivity(card);
-        view.displayNewCard(card);
+        view.finishEdit(card);
+//        view.displayNewCard(card);
     }
 
     @Override

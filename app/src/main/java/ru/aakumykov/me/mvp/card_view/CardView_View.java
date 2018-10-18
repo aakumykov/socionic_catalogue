@@ -68,7 +68,10 @@ public class CardView_View extends AppCompatActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d(TAG, "onActivityResult("+requestCode+", "+requestCode+", ...), "+data);
         super.onActivityResult(requestCode, resultCode, data);
+
+        presenter.linkView(this); // обязательно
 
         if (RESULT_OK == resultCode) {
 

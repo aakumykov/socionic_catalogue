@@ -40,8 +40,9 @@ public interface iCardEdit {
         void showError(int msgId);
         void hideMessage();
 
-        void closeActivity(Card card);
         void displayNewCard(Card card);
+
+        void finishEdit(Card card);
     }
 
     interface Presenter {

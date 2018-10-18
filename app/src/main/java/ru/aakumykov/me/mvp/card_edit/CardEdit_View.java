@@ -294,12 +294,11 @@ public class CardEdit_View extends AppCompatActivity
 
 
     @Override
-    public void closeActivity(Card card) {
-        if (null != card) {
-            Intent intent = new Intent();
-            intent.putExtra(Constants.CARD, card);
-            setResult(-1, intent);
-        }
+    public void finishEdit(Card card) {
+        Log.d(TAG, "finishEdit(), "+card);
+        Intent intent = new Intent();
+        intent.putExtra(Constants.CARD, card);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
