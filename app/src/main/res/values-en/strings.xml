@@ -51,4 +51,8 @@
     <string name="error_deleting_card">Error deleting card</string>
     <string name="unknown_request_code">Unknown request code</string>
     <string name="result_error">Operation error</string>
+    <string name="card_deletion">Card deletion</string>
+    <string name="really_delete_card">Really delete card?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

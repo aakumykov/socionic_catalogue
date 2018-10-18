@@ -1,10 +1,12 @@
 package ru.aakumykov.me.mvp.card_view;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +19,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -122,7 +126,8 @@ public class CardView_View extends AppCompatActivity implements
                 presenter.onEditButtonClicked();
                 break;
             case R.id.actionDelete:
-                presenter.onDeleteButtonClicked();
+//                presenter.onDeleteButtonClicked();
+                makeDialog(R.string.card_deletion, R.string.really_delete_card, R.drawable.ic_delete, true);
                 break;
             case android.R.id.home:
                 this.finish();
@@ -285,4 +290,31 @@ public class CardView_View extends AppCompatActivity implements
         descriptionView.setText(card.getDescription());
     }
 
+
+    public void makeDialog(int titleId, int msgId, int iconId, boolean isCancelable) {
+
+//        HashMap<String, Object> options = new HashMap<>();
+//        options.put("title", "Заголовок");
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
+        .setTitle(getResources().getString(titleId))
+        .setMessage(getResources().getString(titleId))
+        .setIcon(iconId)
+        .setCancelable(isCancelable)
+        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d(TAG, "В диалоге нажато ДА");
+            }
+        })
+        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d(TAG, "В диалоге нажато НЕТ");
+            }
+        });
+
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+    }
 }
