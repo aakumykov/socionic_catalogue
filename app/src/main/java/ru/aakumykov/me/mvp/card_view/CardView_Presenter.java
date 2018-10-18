@@ -1,11 +1,7 @@
 package ru.aakumykov.me.mvp.card_view;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.Log;
-
-import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Card;
 

@@ -1,7 +1,6 @@
 package ru.aakumykov.me.mvp.card_view;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -237,7 +236,7 @@ public class CardView_View extends AppCompatActivity implements
     public void goEditPage(Card card) {
         Intent intent = new Intent();
         intent.setClass(this, CardEdit_View.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         intent.putExtra(Constants.CARD, card);
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
