@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.card_edit;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
@@ -30,6 +33,7 @@ import ru.aakumykov.me.mvp.models.Card;
 
 // TODO: кнопка Вверх как Отмена
 
+@RuntimePermissions
 public class CardEdit_View extends AppCompatActivity
         implements iCardEdit.View, View.OnClickListener {
 
@@ -67,6 +71,8 @@ public class CardEdit_View extends AppCompatActivity
         cancelButton.setOnClickListener(this);
         discardImageButton.setOnClickListener(this);
         localImageView.setOnClickListener(this);
+
+        CardEdit_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
 
         processInputIntent();
     }
@@ -420,6 +426,10 @@ public class CardEdit_View extends AppCompatActivity
         MyUtils.show(messageView);
     }
 
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    void checkPermissions() {
+
+    }
 
     private void processInputIntent() {
         Intent intent = getIntent();
