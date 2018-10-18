@@ -274,6 +274,7 @@ public class CardView_View extends AppCompatActivity implements
     private void displayTextCard(Card card) {
         Log.d(TAG, "displayTextCard(), "+card);
         quoteView.setText(card.getQuote());
+        MyUtils.show(quoteView);
         displayCommonCard(card);
     }
 
