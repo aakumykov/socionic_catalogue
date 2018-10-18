@@ -7,6 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -98,6 +101,27 @@ public class CardEdit_View extends AppCompatActivity
             default:
                 Log.e(TAG, "Clicked element with unknown id: "+v.getId());
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.card_edit_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionSave:
+                presenter.onSaveButtonClicked();
+                break;
+            default:
+                super.onOptionsItemSelected(item);
+                break;
+        }
+        return true;
     }
 
 
