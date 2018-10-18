@@ -52,8 +52,12 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
     @Override
     public void onDeleteButtonClicked() {
         Log.d(TAG, "onDeleteButtonClicked()");
-        view.showProgressMessage(R.string.deleting_card);
+        view.showDeleteDialog();
+    }
 
+    @Override
+    public void onDeleteConfirmed() {
+        view.showProgressMessage(R.string.deleting_card);
         try {
             model.deleteCard(currentCard, this);
         } catch (Exception e) {

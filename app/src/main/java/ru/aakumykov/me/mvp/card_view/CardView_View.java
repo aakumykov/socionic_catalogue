@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +22,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
+import java.util.concurrent.Callable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +30,9 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
+import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 //TODO: уменьшение изображения
 //TODO: scrollView
@@ -126,8 +130,7 @@ public class CardView_View extends AppCompatActivity implements
                 presenter.onEditButtonClicked();
                 break;
             case R.id.actionDelete:
-//                presenter.onDeleteButtonClicked();
-                makeDialog(R.string.card_deletion, R.string.really_delete_card, R.drawable.ic_delete, true);
+                presenter.onDeleteButtonClicked();
                 break;
             case android.R.id.home:
                 this.finish();
@@ -291,30 +294,38 @@ public class CardView_View extends AppCompatActivity implements
     }
 
 
-    public void makeDialog(int titleId, int msgId, int iconId, boolean isCancelable) {
+    // Диалоги
 
-//        HashMap<String, Object> options = new HashMap<>();
-//        options.put("title", "Заголовок");
+    @Override
+    public void showDeleteDialog() {
 
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this)
-        .setTitle(getResources().getString(titleId))
-        .setMessage(getResources().getString(titleId))
-        .setIcon(iconId)
-        .setCancelable(isCancelable)
-        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.d(TAG, "В диалоге нажато ДА");
-            }
-        })
-        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.d(TAG, "В диалоге нажато НЕТ");
-            }
-        });
+        YesNoDialog yesNoDialog = new YesNoDialog(
+                this,
+                R.string.card_deletion,
+                R.string.really_delete_card,
+                new MyInterfaces.DialogCallbacks.onCheck() {
+                    @Override
+                    public boolean doCheck() {
+                        return true;
+                    }
+                },
+                new MyInterfaces.DialogCallbacks.onYes() {
+                    @Override
+                    public void yesAction() {
+                        //Log.d(TAG, "yesAction");
+                        presenter.onDeleteConfirmed();
+                    }
+                },
+                new MyInterfaces.DialogCallbacks.onNo() {
+                    @Override
+                    public void noAction() {
+                        //Log.d(TAG, "noAction");
+                    }
+                }
+        );
 
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.show();
+        yesNoDialog.show();
     }
+
+
 }

@@ -26,6 +26,8 @@ public interface iCardView {
 
         void goEditPage(Card card);
         void closePage();
+
+        void showDeleteDialog();
     }
 
     interface Presenter {
@@ -33,6 +35,7 @@ public interface iCardView {
 
         void onEditButtonClicked();
         void onDeleteButtonClicked();
+        void onDeleteConfirmed();
 
         void linkView(iCardView.View view);
         void unlinkView();
