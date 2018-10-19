@@ -48,11 +48,8 @@ public class CardsList_View extends AppCompatActivity implements
     private LiveData<Card> cardRemove_LiveData;
     private LiveData<Card> cardChange_LiveData;
 
-    private List<Card> cardsList;
+    private CardsArrayList cardsList;
     private CardsListAdapter cardsListAdapter;
-
-
-//    private ActionBar actionBar;
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.progressBar) ProgressBar progressBar;
@@ -62,12 +59,9 @@ public class CardsList_View extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        Log.d(TAG+"_L-CYCLE", "onCreate()");
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cards_list_activity);
         ButterKnife.bind(this);
-
-//        actionBar = getSupportActionBar();
 
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
@@ -251,10 +245,17 @@ public class CardsList_View extends AppCompatActivity implements
             @Override
             public void onChanged(@Nullable Card card) {
                 Log.d(TAG, "ИЗМЕНЕНО: "+card);
-//                Card card = cardsList.
-//                cardsListAdapter.
-//                int changedPosition = cardsListAdapter.getPosition(card);
-//                Log.d(TAG, "changedPosition: "+changedPosition);
+                Card oldCard = cardsList.findCardByKey( card.getKey() );
+                Log.d(TAG, "карточка с таким же key в списке: "+oldCard);
+
+                int oldCardIndex = cardsList.indexOf(oldCard);
+                Log.d(TAG, "номер старой карточки: "+oldCardIndex);
+
+                int oldCardPosition = cardsListAdapter.getPosition(oldCard);
+                Log.d(TAG, "позиция старой карточки: "+oldCardPosition);
+
+                cardsList.set(oldCardIndex, card);
+                cardsListAdapter.notifyDataSetChanged();
             }
         });
     }
