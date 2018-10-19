@@ -101,12 +101,7 @@ public class CardsList_View extends AppCompatActivity implements
                 case Constants.CODE_EDIT_CARD:
                     if (null != data) {
                         Card card = data.getParcelableExtra(Constants.CARD);
-                        Card oldCard = data.getParcelableExtra(Constants.OLD_CARD);
                         Log.d(TAG, "Отредактированная карточка: "+card);
-                        Log.d(TAG, "Старая карточка: "+oldCard);
-                        Log.d(TAG, "место старой карточки: "+cardsListAdapter.getPosition(oldCard));
-                        Log.d(TAG, "место новой карточки: "+cardsListAdapter.getPosition(card));
-
                     } else {
                         showErrorMsg(R.string.error_displaying_card);
                         Log.e(TAG, "Intent data in activity result == null.");

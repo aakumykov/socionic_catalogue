@@ -55,7 +55,6 @@ public class CardEdit_View extends AppCompatActivity
 
     private final static String TAG = "CardEdit_View";
     private iCardEdit.Presenter presenter;
-    private Card oldCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -329,13 +328,9 @@ public class CardEdit_View extends AppCompatActivity
     public void finishEdit(Card card) {
         Log.d(TAG, "finishEdit(), "+card);
         Intent intent = new Intent();
-
         int resultCode = (null != card) ? RESULT_OK : RESULT_CANCELED;
         setResult(resultCode, intent);
-
         intent.putExtra(Constants.CARD, card);
-        intent.putExtra(Constants.OLD_CARD, oldCard);
-
         finish();
     }
 
@@ -443,15 +438,6 @@ public class CardEdit_View extends AppCompatActivity
 
         if (null != card) {
             Log.d(TAG, "Правка");
-
-            try {
-                oldCard = card.clone();
-                Log.d(TAG, "oldCard: "+oldCard);
-            } catch (CloneNotSupportedException e) {
-                Log.e(TAG, e.getMessage());
-                e.printStackTrace();
-            }
-
             presenter.onCardRecieved(card);
         } else {
             Log.d(TAG, "Созидание");
