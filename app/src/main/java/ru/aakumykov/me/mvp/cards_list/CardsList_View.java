@@ -8,7 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,9 +22,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
@@ -33,7 +37,9 @@ import ru.aakumykov.me.mvp.models.Card;
 
 public class CardsList_View extends AppCompatActivity implements
         iCardsList.View,
-        AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+        AdapterView.OnItemClickListener,
+        AdapterView.OnItemLongClickListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     private final static String TAG = "CardsList_View";
 
@@ -61,7 +67,11 @@ public class CardsList_View extends AppCompatActivity implements
 //        actionBar = getSupportActionBar();
 
         swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
+
         listView.setOnItemClickListener(this);
+        listView.setLongClickable(true);
+        listView.setOnItemLongClickListener(this);
 
         cardsList = new ArrayList<>();
         cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
@@ -85,6 +95,12 @@ public class CardsList_View extends AppCompatActivity implements
         });
 
         loadList(false);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d(TAG+"_L-CYCLE", "onActivityResult()");
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -116,6 +132,13 @@ public class CardsList_View extends AppCompatActivity implements
         intent.setClass(this, CardView_View.class);
         intent.putExtra(Constants.CARD_KEY, cardKey);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        Card card = cardsList.get(position);
+        showPopupMenu(view, card);
+        return true;
     }
 
     @Override
@@ -176,6 +199,12 @@ public class CardsList_View extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    void editCard(Card card) {
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.putExtra(Constants.CARD, card);
+        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+    }
+
 
     private void loadList(boolean manualRefresh) {
         Log.d(TAG, "loadList("+manualRefresh+")");
@@ -195,5 +224,56 @@ public class CardsList_View extends AppCompatActivity implements
     private void hideLoadingMessage() {
         progressBar.setVisibility(View.GONE);
         messageView.setVisibility(View.GONE);
+    }
+
+
+    private void showPopupMenu(final View v, final Card card) {
+
+        PopupMenu popupMenu = new PopupMenu(this, v);
+
+        popupMenu.inflate(R.menu.card_actions_menu);
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+
+                    case R.id.actionEdit:
+                        editCard(card);
+//                        try { editCard(CardsListActivity.this, baseCard.getType(), baseCard.getKey()); }
+//                        catch (Exception e) { msg.error(getString(R.string.error_editing_card), e); }
+                        return true;
+
+                    case R.id.actionDelete:
+//                        try {
+//                            deleteCard(baseCard, new Callable<Boolean>() {
+//                                @Override
+//                                public Boolean call() throws Exception {
+//                                    cardsList.remove(baseCard);
+//                                    cardsAdapter.notifyDataSetChanged();
+//                                    return null;
+//                                }
+//                            });
+//                        }
+////                        catch (SecurityException e) { Log.e(TAG, getString(R.string.action_denied), e); }
+//                        catch (Exception e) { Log.e(TAG, getString(R.string.error_deleting_card), e); }
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+        });
+
+//        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+//            @Override
+//            public void onDismiss(PopupMenu menu) {
+//                Toast.makeText(getApplicationContext(), "onDismiss", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+        popupMenu.setGravity(Gravity.END);
+
+        popupMenu.show();
     }
 }
