@@ -38,7 +38,9 @@ public class CardsList_View extends AppCompatActivity implements
     private final static String TAG = "CardsList_View";
 
     private CardsList_ViewModel viewModel;
-    private LiveData<List<Card>> liveData;
+    private LiveData<Card> cardAdd_LiveData;
+    private LiveData<Card> cardRemove_LiveData;
+    private LiveData<Card> cardChange_LiveData;
 
     private List<Card> cardsList;
     private CardsListAdapter cardsListAdapter;
@@ -58,8 +60,6 @@ public class CardsList_View extends AppCompatActivity implements
         setContentView(R.layout.cards_list_activity);
         ButterKnife.bind(this);
 
-//        actionBar = getSupportActionBar();
-
         swipeRefreshLayout.setOnRefreshListener(this);
         listView.setOnItemClickListener(this);
 
@@ -69,18 +69,35 @@ public class CardsList_View extends AppCompatActivity implements
 
         viewModel = ViewModelProviders.of(this).get(CardsList_ViewModel.class);
 
-        liveData = viewModel.getLiveData();
-        liveData.observe(this, new Observer<List<Card>>() {
+        cardAdd_LiveData = viewModel.getCardAdd_LiveData();
+        cardAdd_LiveData.observe(this, new Observer<Card>() {
             @Override
-            public void onChanged(@Nullable List<Card> cards) {
-//                Log.d(TAG+"_LiveData", "=ПОСТУПИЛИ ЖИВЫЕ ДАННЫЕ=, ("+cards.size()+") "+cards);
-
+            public void onChanged(@Nullable Card card) {
                 hideLoadingMessage();
                 swipeRefreshLayout.setRefreshing(false);
 
-                cardsList.clear();
-                cardsList.addAll(cards);
+                cardsList.add(card);
                 cardsListAdapter.notifyDataSetChanged();
+            }
+        });
+
+        cardRemove_LiveData = viewModel.getCardRemove_LiveData();
+        cardRemove_LiveData.observe(this, new Observer<Card>() {
+            @Override
+            public void onChanged(@Nullable Card card) {
+                int removedPosition = cardsListAdapter.getPosition(card);
+                Log.d(TAG, "removedPosition: "+removedPosition);
+            }
+        });
+
+        cardChange_LiveData = viewModel.getCardChange_LiveData();
+        cardChange_LiveData.observe(this, new Observer<Card>() {
+            @Override
+            public void onChanged(@Nullable Card card) {
+                Log.d(TAG, "onChanged(): "+card);
+//                cardsListAdapter.
+                int changedPosition = cardsListAdapter.getPosition(card);
+                Log.d(TAG, "changedPosition: "+changedPosition);
             }
         });
 
@@ -112,11 +129,11 @@ public class CardsList_View extends AppCompatActivity implements
         String cardKey = cardsList.get(position).getKey();
 //        Log.d(TAG, "onItemClick(), cardKey: "+cardKey);
 
-//        Intent intent = new Intent();
-//        // TODO: сделать независимым от конкретного класса
-//        intent.setClass(this, CardView_View.class);
-//        intent.putExtra(Constants.CARD_KEY, cardKey);
-//        startActivity(intent);
+        Intent intent = new Intent();
+        // TODO: сделать независимым от конкретного класса
+        intent.setClass(this, CardView_View.class);
+        intent.putExtra(Constants.CARD_KEY, cardKey);
+        startActivity(intent);
     }
 
     @Override
