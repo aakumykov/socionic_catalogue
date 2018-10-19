@@ -1,8 +1,10 @@
 package ru.aakumykov.me.mvp.cards_list;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,13 +21,8 @@ public class CardsList_Model implements iCardsList.Model {
 
     /* Одиночка: начало */
     private volatile static CardsList_Model ourInstance;
-
-    private CardsList_Model() { Log.d(TAG, "== new CardsList_Model()"); }
-
-    static synchronized CardsList_Model getInstance() {
-        Log.d(TAG, "getInstance()");
-
-        if (null == ourInstance) {
+    private CardsList_Model() {}
+    static synchronized CardsList_Model getInstance() { if (null == ourInstance) {
             synchronized (CardsList_Model.class) {
                 ourInstance = new CardsList_Model();
             }
@@ -52,38 +49,39 @@ public class CardsList_Model implements iCardsList.Model {
             Log.d(TAG, "после clear(), cardsList: "+cardsList);
         }
 
-        if (forcePullFromServer || cardsList.isEmpty()) {
-            Log.d(TAG, "запрашиваю список с сервера");
-//            Log.d(TAG, "cardsList: "+cardsList);
+        listRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Card card = dataSnapshot.getValue(Card.class);
+                // TODO: проверка корректности Карточки (Card)
+                callbacks.onChildAdded(card);
+            }
 
-            DatabaseReference cardsRef = firebaseDatabase.getReference().child(Constants.CARDS_PATH);
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Card card = dataSnapshot.getValue(Card.class);
+                callbacks.onChildChanged(card, s);
+            }
 
-            cardsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        Card card = ds.getValue(Card.class);
-                        if (null != card) {
-                            card.setKey(ds.getKey());
-                            cardsList.add(card);
-                        }
-                    }
-//                Log.d(TAG, "cardsList: "+cardsList);
-//                    Log.d(TAG, "cardsList: "+cardsList);
-                    callbacks.onLoadSuccess(cardsList);
-                }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onChildRemoved(), "+dataSnapshot);
+                Card card = dataSnapshot.getValue(Card.class);
+                callbacks.onChildRemoved(card);
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Card card = dataSnapshot.getValue(Card.class);
+                callbacks.onChildMoved(card, s);
+            }
 
-                }
-            });
-        } else {
-            Log.d(TAG, "возвращаю существующий список");
-//            Log.d(TAG, "cardsList: "+cardsList);
-
-            callbacks.onLoadSuccess(cardsList);
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callbacks.onCancelled(databaseError.getMessage());
+                databaseError.toException().printStackTrace();
+            }
+        });
     }
 
 }

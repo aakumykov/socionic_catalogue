@@ -44,7 +44,9 @@ public class CardsList_View extends AppCompatActivity implements
     private final static String TAG = "CardsList_View";
 
     private CardsList_ViewModel viewModel;
-    private LiveData<List<Card>> liveData;
+    private LiveData<Card> cardAdd_LiveData;
+    private LiveData<Card> cardRemove_LiveData;
+    private LiveData<Card> cardChange_LiveData;
 
     private List<Card> cardsList;
     private CardsListAdapter cardsListAdapter;
@@ -59,7 +61,7 @@ public class CardsList_View extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG+"_L-CYCLE", "onCreate()");
+//        Log.d(TAG+"_L-CYCLE", "onCreate()");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cards_list_activity);
@@ -109,32 +111,55 @@ public class CardsList_View extends AppCompatActivity implements
                     Log.d(TAG, "Unknown request code: "+requestCode);
                     break;
             }
-        }
+        });
+
+        cardRemove_LiveData = viewModel.getCardRemove_LiveData();
+        cardRemove_LiveData.observe(this, new Observer<Card>() {
+            @Override
+            public void onChanged(@Nullable Card card) {
+                int removedPosition = cardsListAdapter.getPosition(card);
+                Log.d(TAG, "removedPosition: "+removedPosition);
+            }
+        });
+
+        cardChange_LiveData = viewModel.getCardChange_LiveData();
+        cardChange_LiveData.observe(this, new Observer<Card>() {
+            @Override
+            public void onChanged(@Nullable Card card) {
+                Log.d(TAG, "onChanged(): "+card);
+//                cardsListAdapter.
+                int changedPosition = cardsListAdapter.getPosition(card);
+                Log.d(TAG, "changedPosition: "+changedPosition);
+            }
+        });
+
+        loadList(false);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG+"_L-CYCLE", "onStart()");
+//        Log.d(TAG+"_L-CYCLE", "onStart()");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG+"_L-CYCLE", "onStop()");
+//        Log.d(TAG+"_L-CYCLE", "onStop()");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG+"_L-CYCLE", "onDestroy()");
+//        Log.d(TAG+"_L-CYCLE", "onDestroy()");
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        String cardKey = cardsList.get(position).getKey();
+        Log.d(TAG, "onItemClick(..., position: "+position+", id: "+id+")");
 
-        Log.d(TAG, "onItemClick(), cardKey: "+cardKey);
+        String cardKey = cardsList.get(position).getKey();
+//        Log.d(TAG, "onItemClick(), cardKey: "+cardKey);
 
         Intent intent = new Intent();
         // TODO: сделать независимым от конкретного класса
@@ -156,7 +181,7 @@ public class CardsList_View extends AppCompatActivity implements
 
     @Override
     public void onRefresh() {
-        Log.d(TAG, "onRefresh()");
+//        Log.d(TAG, "onRefresh()");
         loadList(true);
     }
 
@@ -193,7 +218,7 @@ public class CardsList_View extends AppCompatActivity implements
 
     @Override
     public void onAddCardButton(String cardType) {
-        Log.d(TAG, "onAddCardButton("+cardType+")");
+//        Log.d(TAG, "onAddCardButton("+cardType+")");
 
         switch (cardType) {
             case Constants.TEXT_CARD:
@@ -243,7 +268,7 @@ public class CardsList_View extends AppCompatActivity implements
 
 
     private void loadList(boolean manualRefresh) {
-        Log.d(TAG, "loadList("+manualRefresh+")");
+        Log.d(TAG, "loadList(manualRefresh: "+manualRefresh+")");
 
         if (!manualRefresh)
             showLoadingMessage();
