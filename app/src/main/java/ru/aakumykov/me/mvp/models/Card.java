@@ -3,7 +3,7 @@ package ru.aakumykov.me.mvp.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Card implements Parcelable {
+public class Card implements Parcelable, Cloneable {
 
     private String key;
     private String type;
@@ -67,6 +67,22 @@ public class Card implements Parcelable {
         return "Card { key: "+getKey()+", title: "+getTitle()+", quote: "+getQuote()+", imageURL: "+imageURL+", description: "+getDescription()+",}";
     }
 
+    @Override
+    public Card clone() throws CloneNotSupportedException {
+        super.clone();
+
+        Card theClone = new Card();
+
+        theClone.setKey(getKey());
+        theClone.setType(getType());
+
+        theClone.setTitle(getTitle());
+        theClone.setQuote(getQuote());
+        theClone.setImageURL(getImageURL());
+        theClone.setDescription(getDescription());
+
+        return theClone;
+    }
 
     /* Parcelable */
     protected Card(Parcel in) {

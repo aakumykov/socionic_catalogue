@@ -10,6 +10,7 @@ public final class Constants {
     public final static String IMAGES_PATH = "/images";
 
     public final static String CARD = "CARD";
+    public final static String OLD_CARD = "OLD_CARD";
     public final static String CARD_KEY = "CARD_KEY";
     public final static String CARD_TYPE = "CARD_TYPE";
 

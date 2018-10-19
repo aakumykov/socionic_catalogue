@@ -43,11 +43,7 @@ public class CardsList_Model implements iCardsList.Model {
         Log.d(TAG, "loadList(forcePullFromServer: "+forcePullFromServer+")");
 //        Log.d(TAG, "cardsList: "+cardsList);
 
-        if (forcePullFromServer) {
-//            cardsList = new ArrayList<>();
-            cardsList.clear();
-            Log.d(TAG, "после clear(), cardsList: "+cardsList);
-        }
+        DatabaseReference listRef = firebaseDatabase.getReference().child(Constants.CARDS_PATH);
 
         listRef.addChildEventListener(new ChildEventListener() {
             @Override

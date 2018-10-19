@@ -31,7 +31,9 @@ import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_view.CardView_View;
+import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 // TODO: Пункт "обновить" в меню панели.
 
@@ -99,7 +101,12 @@ public class CardsList_View extends AppCompatActivity implements
                 case Constants.CODE_EDIT_CARD:
                     if (null != data) {
                         Card card = data.getParcelableExtra(Constants.CARD);
+                        Card oldCard = data.getParcelableExtra(Constants.OLD_CARD);
                         Log.d(TAG, "Отредактированная карточка: "+card);
+                        Log.d(TAG, "Старая карточка: "+oldCard);
+                        Log.d(TAG, "место старой карточки: "+cardsListAdapter.getPosition(oldCard));
+                        Log.d(TAG, "место новой карточки: "+cardsListAdapter.getPosition(card));
+
                     } else {
                         showErrorMsg(R.string.error_displaying_card);
                         Log.e(TAG, "Intent data in activity result == null.");
@@ -111,30 +118,9 @@ public class CardsList_View extends AppCompatActivity implements
                     Log.d(TAG, "Unknown request code: "+requestCode);
                     break;
             }
-        });
-
-        cardRemove_LiveData = viewModel.getCardRemove_LiveData();
-        cardRemove_LiveData.observe(this, new Observer<Card>() {
-            @Override
-            public void onChanged(@Nullable Card card) {
-                int removedPosition = cardsListAdapter.getPosition(card);
-                Log.d(TAG, "removedPosition: "+removedPosition);
-            }
-        });
-
-        cardChange_LiveData = viewModel.getCardChange_LiveData();
-        cardChange_LiveData.observe(this, new Observer<Card>() {
-            @Override
-            public void onChanged(@Nullable Card card) {
-                Log.d(TAG, "onChanged(): "+card);
-//                cardsListAdapter.
-                int changedPosition = cardsListAdapter.getPosition(card);
-                Log.d(TAG, "changedPosition: "+changedPosition);
-            }
-        });
-
-        loadList(false);
+        }
     }
+
 
     @Override
     protected void onStart() {
@@ -237,12 +223,6 @@ public class CardsList_View extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    void editCard(Card card) {
-        Intent intent = new Intent(this, CardEdit_View.class);
-        intent.putExtra(Constants.CARD, card);
-        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
-    }
-
 
 
     private void connectToViewModel() {
@@ -250,18 +230,37 @@ public class CardsList_View extends AppCompatActivity implements
 
         viewModel = ViewModelProviders.of(this).get(CardsList_ViewModel.class);
 
-        liveData = viewModel.getLiveData();
-        liveData.observe(this, new Observer<List<Card>>() {
+        cardAdd_LiveData = viewModel.getCardAdd_LiveData();
+        cardAdd_LiveData.observe(this, new Observer<Card>() {
             @Override
-            public void onChanged(@Nullable List<Card> cards) {
-//                Log.d(TAG+"_LiveData", "=ПОСТУПИЛИ ЖИВЫЕ ДАННЫЕ=, ("+cards.size()+") "+cards);
+            public void onChanged(@Nullable Card card) {
+//                Log.d(TAG+"_LiveData", "=ПОСТУПИЛИ ЖИВЫЕ ДАННЫЕ=, "+card);
 
                 hideLoadingMessage();
                 swipeRefreshLayout.setRefreshing(false);
 
-                cardsList.clear();
-                cardsList.addAll(cards);
+                cardsList.add(card);
                 cardsListAdapter.notifyDataSetChanged();
+            }
+        });
+
+        cardRemove_LiveData = viewModel.getCardRemove_LiveData();
+        cardRemove_LiveData.observe(this, new Observer<Card>() {
+            @Override
+            public void onChanged(@Nullable Card card) {
+                int removedPosition = cardsListAdapter.getPosition(card);
+                Log.d(TAG, "УДАЛЕНО: "+removedPosition);
+            }
+        });
+
+        cardChange_LiveData = viewModel.getCardChange_LiveData();
+        cardChange_LiveData.observe(this, new Observer<Card>() {
+            @Override
+            public void onChanged(@Nullable Card card) {
+                Log.d(TAG, "ИЗМЕНЕНО: "+card);
+//                cardsListAdapter.
+//                int changedPosition = cardsListAdapter.getPosition(card);
+//                Log.d(TAG, "changedPosition: "+changedPosition);
             }
         });
     }
@@ -313,18 +312,7 @@ public class CardsList_View extends AppCompatActivity implements
                         return true;
 
                     case R.id.actionDelete:
-//                        try {
-//                            deleteCard(baseCard, new Callable<Boolean>() {
-//                                @Override
-//                                public Boolean call() throws Exception {
-//                                    cardsList.remove(baseCard);
-//                                    cardsAdapter.notifyDataSetChanged();
-//                                    return null;
-//                                }
-//                            });
-//                        }
-////                        catch (SecurityException e) { Log.e(TAG, getString(R.string.action_denied), e); }
-//                        catch (Exception e) { Log.e(TAG, getString(R.string.error_deleting_card), e); }
+                        deleteCard(card);
                         return true;
 
                     default:
@@ -343,6 +331,39 @@ public class CardsList_View extends AppCompatActivity implements
         popupMenu.setGravity(Gravity.END);
 
         popupMenu.show();
+    }
+
+
+    private void editCard(Card card) {
+        Log.d(TAG, "editCard()");
+
+        Log.d(TAG, "место редактируемой карточки: "+cardsListAdapter.getPosition(card));
+
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.putExtra(Constants.CARD, card);
+        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+    }
+
+    private void deleteCard(Card card) {
+        Log.d(TAG, "deleteCard() STUB");
+
+        // TODO: вот здесь-то и нужна Служба
+//        YesNoDialog yesNoDialog = new YesNoDialog(this, R.string.card_deletion,
+//                R.string.really_delete_card,
+//                new MyInterfaces.DialogCallbacks.onCheck() {
+//                    @Override
+//                    public boolean doCheck() {
+//                        return true;
+//                    }
+//                },
+//                new MyInterfaces.DialogCallbacks.onYes() {
+//                    @Override
+//                    public void yesAction() {
+//
+//                    }
+//                },
+//                null
+//        );
     }
 
 
