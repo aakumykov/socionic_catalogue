@@ -59,7 +59,7 @@ public class CardEdit_View extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate()");
+        Log.d(TAG+"_L-CYCLE", "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_edit_activity);
         ButterKnife.bind(this);
@@ -79,12 +79,14 @@ public class CardEdit_View extends AppCompatActivity
 
     @Override
     protected void onStart() {
+        Log.d(TAG+"_L-CYCLE", "onStart()");
         super.onStart();
         this.presenter.linkView(this);
     }
 
     @Override
     protected void onStop() {
+        Log.d(TAG+"_L-CYCLE", "onStop()");
         super.onStop();
         presenter.unlinkView();
     }
@@ -265,7 +267,7 @@ public class CardEdit_View extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "onActivityResult(requestCode: "+requestCode+", resultCode: "+resultCode+", ...)");
+        Log.d(TAG+"_L-CYCLE", "onActivityResult(requestCode: "+requestCode+", resultCode: "+resultCode+", ...)");
 
         presenter.linkView(this);
 
