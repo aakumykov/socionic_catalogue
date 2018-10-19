@@ -4,11 +4,14 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +27,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_view.CardView_View;
@@ -33,7 +37,9 @@ import ru.aakumykov.me.mvp.models.Card;
 
 public class CardsList_View extends AppCompatActivity implements
         iCardsList.View,
-        AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+        AdapterView.OnItemClickListener,
+        AdapterView.OnItemLongClickListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     private final static String TAG = "CardsList_View";
 
@@ -42,6 +48,7 @@ public class CardsList_View extends AppCompatActivity implements
 
     private List<Card> cardsList;
     private CardsListAdapter cardsListAdapter;
+
 
 //    private ActionBar actionBar;
 
@@ -61,30 +68,48 @@ public class CardsList_View extends AppCompatActivity implements
 //        actionBar = getSupportActionBar();
 
         swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
+
         listView.setOnItemClickListener(this);
+        listView.setLongClickable(true);
+        listView.setOnItemLongClickListener(this);
 
         cardsList = new ArrayList<>();
         cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
         listView.setAdapter(cardsListAdapter);
 
-        viewModel = ViewModelProviders.of(this).get(CardsList_ViewModel.class);
-
-        liveData = viewModel.getLiveData();
-        liveData.observe(this, new Observer<List<Card>>() {
-            @Override
-            public void onChanged(@Nullable List<Card> cards) {
-                Log.d(TAG+"_LiveData", "=ПОСТУПИЛИ ЖИВЫЕ ДАННЫЕ=, ("+cards.size()+") "+cards);
-
-                hideLoadingMessage();
-                swipeRefreshLayout.setRefreshing(false);
-
-                cardsList.clear();
-                cardsList.addAll(cards);
-                cardsListAdapter.notifyDataSetChanged();
-            }
-        });
+        connectToViewModel();
 
         loadList(false);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d(TAG+"_L-CYCLE", "onActivityResult()");
+        super.onActivityResult(requestCode, resultCode, data);
+
+        connectToViewModel();
+
+        if (RESULT_OK == resultCode) {
+
+            switch (requestCode) {
+
+                case Constants.CODE_EDIT_CARD:
+                    if (null != data) {
+                        Card card = data.getParcelableExtra(Constants.CARD);
+                        Log.d(TAG, "Отредактированная карточка: "+card);
+                    } else {
+                        showErrorMsg(R.string.error_displaying_card);
+                        Log.e(TAG, "Intent data in activity result == null.");
+                    }
+                    break;
+
+                default:
+                    showErrorMsg(R.string.unknown_request_code);
+                    Log.d(TAG, "Unknown request code: "+requestCode);
+                    break;
+            }
+        }
     }
 
     @Override
@@ -116,6 +141,17 @@ public class CardsList_View extends AppCompatActivity implements
         intent.setClass(this, CardView_View.class);
         intent.putExtra(Constants.CARD_KEY, cardKey);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        Card card = cardsList.get(position);
+
+        Drawable oldBackground = view.getBackground();
+        view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
+
+        showPopupMenu(view, oldBackground,  card);
+        return true;
     }
 
     @Override
@@ -176,6 +212,35 @@ public class CardsList_View extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    void editCard(Card card) {
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.putExtra(Constants.CARD, card);
+        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+    }
+
+
+
+    private void connectToViewModel() {
+        Log.d(TAG, "connectToViewModel()");
+
+        viewModel = ViewModelProviders.of(this).get(CardsList_ViewModel.class);
+
+        liveData = viewModel.getLiveData();
+        liveData.observe(this, new Observer<List<Card>>() {
+            @Override
+            public void onChanged(@Nullable List<Card> cards) {
+//                Log.d(TAG+"_LiveData", "=ПОСТУПИЛИ ЖИВЫЕ ДАННЫЕ=, ("+cards.size()+") "+cards);
+
+                hideLoadingMessage();
+                swipeRefreshLayout.setRefreshing(false);
+
+                cardsList.clear();
+                cardsList.addAll(cards);
+                cardsListAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
 
     private void loadList(boolean manualRefresh) {
         Log.d(TAG, "loadList("+manualRefresh+")");
@@ -196,4 +261,87 @@ public class CardsList_View extends AppCompatActivity implements
         progressBar.setVisibility(View.GONE);
         messageView.setVisibility(View.GONE);
     }
+
+
+    private void showPopupMenu(final View v, final Drawable oldBackground, final Card card) {
+
+        PopupMenu popupMenu = new PopupMenu(this, v);
+
+        popupMenu.inflate(R.menu.card_actions_menu);
+
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu popupMenu) {
+                v.setBackground(oldBackground);
+            }
+        });
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+
+                    case R.id.actionEdit:
+                        editCard(card);
+//                        try { editCard(CardsListActivity.this, baseCard.getType(), baseCard.getKey()); }
+//                        catch (Exception e) { msg.error(getString(R.string.error_editing_card), e); }
+                        return true;
+
+                    case R.id.actionDelete:
+//                        try {
+//                            deleteCard(baseCard, new Callable<Boolean>() {
+//                                @Override
+//                                public Boolean call() throws Exception {
+//                                    cardsList.remove(baseCard);
+//                                    cardsAdapter.notifyDataSetChanged();
+//                                    return null;
+//                                }
+//                            });
+//                        }
+////                        catch (SecurityException e) { Log.e(TAG, getString(R.string.action_denied), e); }
+//                        catch (Exception e) { Log.e(TAG, getString(R.string.error_deleting_card), e); }
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+        });
+
+//        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+//            @Override
+//            public void onDismiss(PopupMenu menu) {
+//                Toast.makeText(getApplicationContext(), "onDismiss", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+        popupMenu.setGravity(Gravity.END);
+
+        popupMenu.show();
+    }
+
+
+    public void showInfoMsg(int messageId) {
+        showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));
+    }
+
+    public void showErrorMsg(int messageId) {
+        showErrorMsg(getResources().getString(messageId));
+    }
+
+    public void showErrorMsg(String message) {
+        showMsg(message, getResources().getColor(R.color.error));
+    }
+
+    private void showMsg(String text, int color) {
+        messageView.setText(text);
+        messageView.setTextColor(color);
+        MyUtils.show(messageView);
+    }
+
+    public void hideMsg() {
+        MyUtils.hide(messageView);
+    }
+
+
 }
