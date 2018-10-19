@@ -28,6 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_view.CardView_View;
@@ -77,22 +78,7 @@ public class CardsList_View extends AppCompatActivity implements
         cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
         listView.setAdapter(cardsListAdapter);
 
-        viewModel = ViewModelProviders.of(this).get(CardsList_ViewModel.class);
-
-        liveData = viewModel.getLiveData();
-        liveData.observe(this, new Observer<List<Card>>() {
-            @Override
-            public void onChanged(@Nullable List<Card> cards) {
-                Log.d(TAG+"_LiveData", "=ПОСТУПИЛИ ЖИВЫЕ ДАННЫЕ=, ("+cards.size()+") "+cards);
-
-                hideLoadingMessage();
-                swipeRefreshLayout.setRefreshing(false);
-
-                cardsList.clear();
-                cardsList.addAll(cards);
-                cardsListAdapter.notifyDataSetChanged();
-            }
-        });
+        connectToViewModel();
 
         loadList(false);
     }
@@ -101,6 +87,29 @@ public class CardsList_View extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.d(TAG+"_L-CYCLE", "onActivityResult()");
         super.onActivityResult(requestCode, resultCode, data);
+
+        connectToViewModel();
+
+        if (RESULT_OK == resultCode) {
+
+            switch (requestCode) {
+
+                case Constants.CODE_EDIT_CARD:
+                    if (null != data) {
+                        Card card = data.getParcelableExtra(Constants.CARD);
+                        Log.d(TAG, "Отредактированная карточка: "+card);
+                    } else {
+                        showErrorMsg(R.string.error_displaying_card);
+                        Log.e(TAG, "Intent data in activity result == null.");
+                    }
+                    break;
+
+                default:
+                    showErrorMsg(R.string.unknown_request_code);
+                    Log.d(TAG, "Unknown request code: "+requestCode);
+                    break;
+            }
+        }
     }
 
     @Override
@@ -206,6 +215,29 @@ public class CardsList_View extends AppCompatActivity implements
     }
 
 
+
+    private void connectToViewModel() {
+        Log.d(TAG, "connectToViewModel()");
+
+        viewModel = ViewModelProviders.of(this).get(CardsList_ViewModel.class);
+
+        liveData = viewModel.getLiveData();
+        liveData.observe(this, new Observer<List<Card>>() {
+            @Override
+            public void onChanged(@Nullable List<Card> cards) {
+//                Log.d(TAG+"_LiveData", "=ПОСТУПИЛИ ЖИВЫЕ ДАННЫЕ=, ("+cards.size()+") "+cards);
+
+                hideLoadingMessage();
+                swipeRefreshLayout.setRefreshing(false);
+
+                cardsList.clear();
+                cardsList.addAll(cards);
+                cardsListAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+
     private void loadList(boolean manualRefresh) {
         Log.d(TAG, "loadList("+manualRefresh+")");
 
@@ -276,4 +308,29 @@ public class CardsList_View extends AppCompatActivity implements
 
         popupMenu.show();
     }
+
+
+    public void showInfoMsg(int messageId) {
+        showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));
+    }
+
+    public void showErrorMsg(int messageId) {
+        showErrorMsg(getResources().getString(messageId));
+    }
+
+    public void showErrorMsg(String message) {
+        showMsg(message, getResources().getColor(R.color.error));
+    }
+
+    private void showMsg(String text, int color) {
+        messageView.setText(text);
+        messageView.setTextColor(color);
+        MyUtils.show(messageView);
+    }
+
+    public void hideMsg() {
+        MyUtils.hide(messageView);
+    }
+
+
 }
