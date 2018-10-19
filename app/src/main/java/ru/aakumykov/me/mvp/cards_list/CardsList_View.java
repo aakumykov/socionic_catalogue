@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -22,11 +23,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
@@ -49,6 +48,7 @@ public class CardsList_View extends AppCompatActivity implements
 
     private List<Card> cardsList;
     private CardsListAdapter cardsListAdapter;
+
 
 //    private ActionBar actionBar;
 
@@ -146,7 +146,11 @@ public class CardsList_View extends AppCompatActivity implements
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         Card card = cardsList.get(position);
-        showPopupMenu(view, card);
+
+        Drawable oldBackground = view.getBackground();
+        view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
+
+        showPopupMenu(view, oldBackground,  card);
         return true;
     }
 
@@ -259,11 +263,18 @@ public class CardsList_View extends AppCompatActivity implements
     }
 
 
-    private void showPopupMenu(final View v, final Card card) {
+    private void showPopupMenu(final View v, final Drawable oldBackground, final Card card) {
 
         PopupMenu popupMenu = new PopupMenu(this, v);
 
         popupMenu.inflate(R.menu.card_actions_menu);
+
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu popupMenu) {
+                v.setBackground(oldBackground);
+            }
+        });
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
