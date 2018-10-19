@@ -31,9 +31,7 @@ import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_view.CardView_View;
-import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
 import ru.aakumykov.me.mvp.models.Card;
-import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 // TODO: Пункт "обновить" в меню панели.
 
@@ -78,7 +76,7 @@ public class CardsList_View extends AppCompatActivity implements
         listView.setLongClickable(true);
         listView.setOnItemLongClickListener(this);
 
-        cardsList = new ArrayList<>();
+        cardsList = new CardsArrayList();
         cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
         listView.setAdapter(cardsListAdapter);
 
@@ -253,6 +251,7 @@ public class CardsList_View extends AppCompatActivity implements
             @Override
             public void onChanged(@Nullable Card card) {
                 Log.d(TAG, "ИЗМЕНЕНО: "+card);
+//                Card card = cardsList.
 //                cardsListAdapter.
 //                int changedPosition = cardsListAdapter.getPosition(card);
 //                Log.d(TAG, "changedPosition: "+changedPosition);
