@@ -31,7 +31,9 @@ import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_view.CardView_View;
+import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 // TODO: Пункт "обновить" в меню панели.
 
@@ -211,7 +213,6 @@ public class CardsList_View extends AppCompatActivity implements
     }
 
 
-
     private void connectToViewModel() {
         Log.d(TAG, "connectToViewModel()");
 
@@ -235,8 +236,11 @@ public class CardsList_View extends AppCompatActivity implements
         cardRemove_LiveData.observe(this, new Observer<Card>() {
             @Override
             public void onChanged(@Nullable Card card) {
-                int removedPosition = cardsListAdapter.getPosition(card);
-                Log.d(TAG, "УДАЛЕНО: "+removedPosition);
+                int removedCardIndex = cardsList.indexOf(card);
+                Log.d(TAG, "номер удалённой карточки в списке: "+removedCardIndex);
+
+                int removedCardPosition = cardsListAdapter.getPosition(card);
+                Log.d(TAG, "позиция удалённой карточки на экране: "+removedCardPosition);
             }
         });
 
@@ -340,9 +344,9 @@ public class CardsList_View extends AppCompatActivity implements
     }
 
     private void deleteCard(Card card) {
-        Log.d(TAG, "deleteCard() STUB");
+        Log.d(TAG, "deleteCard('"+card.getTitle()+"') ЗАГЛУШКА");
 
-        // TODO: вот здесь-то и нужна Служба
+//        // TODO: вот здесь-то и нужна Служба
 //        YesNoDialog yesNoDialog = new YesNoDialog(this, R.string.card_deletion,
 //                R.string.really_delete_card,
 //                new MyInterfaces.DialogCallbacks.onCheck() {
@@ -359,6 +363,8 @@ public class CardsList_View extends AppCompatActivity implements
 //                },
 //                null
 //        );
+//
+//        yesNoDialog.show();
     }
 
 
