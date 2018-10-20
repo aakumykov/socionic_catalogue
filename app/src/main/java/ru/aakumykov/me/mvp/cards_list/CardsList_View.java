@@ -243,7 +243,7 @@ public class CardsList_View extends AppCompatActivity implements
 
 
     private void loadList(boolean manualRefresh) {
-        Log.d(TAG, "loadList("+manualRefresh+")");
+        Log.d(TAG, "loadList(manualRefresh: "+manualRefresh+")");
 
         if (!manualRefresh)
             showLoadingMessage();
