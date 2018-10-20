@@ -79,34 +79,34 @@ public class CardsList_View extends AppCompatActivity implements
         loadList(false);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.d(TAG+"_L-CYCLE", "onActivityResult()");
-        super.onActivityResult(requestCode, resultCode, data);
-
-        connectToViewModel();
-
-        if (RESULT_OK == resultCode) {
-
-            switch (requestCode) {
-
-                case Constants.CODE_EDIT_CARD:
-                    if (null != data) {
-                        Card card = data.getParcelableExtra(Constants.CARD);
-                        Log.d(TAG, "Отредактированная карточка: "+card);
-                    } else {
-                        showErrorMsg(R.string.error_displaying_card);
-                        Log.e(TAG, "Intent data in activity result == null.");
-                    }
-                    break;
-
-                default:
-                    showErrorMsg(R.string.unknown_request_code);
-                    Log.d(TAG, "Unknown request code: "+requestCode);
-                    break;
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        Log.d(TAG+"_L-CYCLE", "onActivityResult()");
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        connectToViewModel();
+//
+//        if (RESULT_OK == resultCode) {
+//
+//            switch (requestCode) {
+//
+//                case Constants.CODE_EDIT_CARD:
+//                    if (null != data) {
+//                        Card card = data.getParcelableExtra(Constants.CARD);
+//                        Log.d(TAG, "Отредактированная карточка: "+card);
+//                    } else {
+//                        showErrorMsg(R.string.error_displaying_card);
+//                        Log.e(TAG, "Intent data in activity result == null.");
+//                    }
+//                    break;
+//
+//                default:
+//                    showErrorMsg(R.string.unknown_request_code);
+//                    Log.d(TAG, "Unknown request code: "+requestCode);
+//                    break;
+//            }
+//        }
+//    }
 
 
     @Override
@@ -254,6 +254,8 @@ public class CardsList_View extends AppCompatActivity implements
                 int oldCardPosition = cardsListAdapter.getPosition(oldCard);
                 Log.d(TAG, "позиция старой карточки: "+oldCardPosition);
 
+//                cardsListAdapter.setNotifyOnChange(true);
+//                cardsListAdapter.
                 cardsList.set(oldCardIndex, card);
                 cardsListAdapter.notifyDataSetChanged();
             }

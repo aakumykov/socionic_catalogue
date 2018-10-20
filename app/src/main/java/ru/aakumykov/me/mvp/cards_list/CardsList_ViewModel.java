@@ -49,7 +49,7 @@ public class CardsList_ViewModel extends ViewModel implements
 
     @Override
     public void onChildChanged(Card card, String previousCardName) {
-        Log.d(TAG, "onChildChanged("+card.getTitle()+", "+previousCardName+")");
+        Log.d(TAG, "onChildChanged("+card.getTitle()+", previousCardName: "+previousCardName+")");
         cardChange_LiveData.setValue(card);
     }
 
@@ -61,7 +61,7 @@ public class CardsList_ViewModel extends ViewModel implements
 
     @Override
     public void onChildMoved(Card card, String previousCardName) {
-        Log.d(TAG, "onChildMoved("+card.getTitle()+", "+previousCardName+")");
+        Log.d(TAG, "onChildMoved("+card.getTitle()+", previousCardName: "+previousCardName+")");
     }
 
     @Override
