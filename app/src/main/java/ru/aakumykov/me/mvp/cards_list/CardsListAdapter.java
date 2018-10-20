@@ -26,7 +26,7 @@ public class CardsListAdapter extends ArrayAdapter<Card> {
 
     CardsListAdapter(Context context, int resource, List<Card> cards) {
         super(context, resource, cards);
-        Log.d(TAG, "== new CardsListAdapter(), cards: "+cards);
+//        Log.d(TAG, "== new CardsListAdapter(), cards: "+cards);
         this.cards = cards;
         this.layout = resource;
         this.inflater = LayoutInflater.from(context);

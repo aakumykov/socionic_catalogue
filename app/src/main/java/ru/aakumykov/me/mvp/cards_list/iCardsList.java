@@ -14,7 +14,7 @@ public interface iCardsList {
     }
 
     interface ViewModel {
-        MutableLiveData<List<Card>> getLiveData();
+        MutableLiveData<Card> getCardAdd_LiveData();
         void loadList(boolean forcePullFromServer);
     }
 
@@ -23,7 +23,12 @@ public interface iCardsList {
     }
 
     interface Callbacks {
-        void onLoadSuccess(List<Card> list);
-        void onLoadError();
+//        void onLoadSuccess(List<Card> list);
+//        void onLoadError();
+        void onChildAdded(Card card);
+        void onChildChanged(Card card, String previousCardName); // или title?
+        void onChildRemoved(Card card);
+        void onChildMoved(Card card, String previousCardName); // или title?
+        void onCancelled(String errorMessage);
     }
 }

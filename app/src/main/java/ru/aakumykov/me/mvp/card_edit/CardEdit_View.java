@@ -56,7 +56,6 @@ public class CardEdit_View extends AppCompatActivity
     private final static String TAG = "CardEdit_View";
     private iCardEdit.Presenter presenter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG+"_L-CYCLE", "onCreate()");
@@ -329,12 +328,9 @@ public class CardEdit_View extends AppCompatActivity
     public void finishEdit(Card card) {
         Log.d(TAG, "finishEdit(), "+card);
         Intent intent = new Intent();
-
         int resultCode = (null != card) ? RESULT_OK : RESULT_CANCELED;
         setResult(resultCode, intent);
-
         intent.putExtra(Constants.CARD, card);
-
         finish();
     }
 
@@ -434,13 +430,17 @@ public class CardEdit_View extends AppCompatActivity
     }
 
     private void processInputIntent() {
+        Log.d(TAG, "processInputIntent()");
+
         Intent intent = getIntent();
         Card card = intent.getParcelableExtra(Constants.CARD);
         String cardType = intent.getStringExtra(Constants.CARD_TYPE);
 
         if (null != card) {
+            Log.d(TAG, "Правка");
             presenter.onCardRecieved(card);
         } else {
+            Log.d(TAG, "Созидание");
             presenter.onCreateCard(cardType);
         }
     }
