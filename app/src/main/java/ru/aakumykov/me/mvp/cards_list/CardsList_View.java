@@ -123,7 +123,8 @@ public class CardsList_View extends AppCompatActivity implements
     protected void onStop() {
         Log.d(TAG, "onStop()");
         super.onStop();
-        unbindService(cardsServiceConnection);
+        if (isCardsServiceBounded)
+            unbindService(cardsServiceConnection);
     }
 
 
