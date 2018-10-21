@@ -148,9 +148,12 @@ public class CardsList_View extends AppCompatActivity implements
         return true;
     }
 
+    // Зачем, если список живой?
     @Override
     public void onRefresh() {
 //        Log.d(TAG, "onRefresh()");
+        cardsList.clear();
+        cardsListAdapter.notifyDataSetChanged();
         loadList(true);
     }
 
@@ -339,7 +342,7 @@ public class CardsList_View extends AppCompatActivity implements
     // Методы обратнаго вызова
     @Override
     public void onChildAdded(Card card) {
-//        Log.d(TAG, "onChildAdded()");
+        Log.d(TAG, "onChildAdded()");
         hideLoadingMessage();
         cardsList.add(card);
         cardsListAdapter.notifyDataSetChanged();
