@@ -56,4 +56,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="error_updating_list">Error updating list</string>
+    <string name="card_update_cancelled">Card update cancelled</string>
+    <string name="card_update_success">Card update success</string>
+    <string name="card_update_error">Card update error</string>
 </resources>

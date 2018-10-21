@@ -11,16 +11,16 @@ public interface MyInterfaces {
 
         void loadCard(String key, CardCallbacks callbacks);
         void loadList(ListCallbacks callbacks);
-        void updateCard(String key, Card newCard);
+        void updateCard(Card newCard, UpdateCardCallbacks callbacks);
         void deleteCard(Card card, DeleteCallbacks callbacks);
 
-        interface CardCallbacks extends DeleteCallbacks  {
+        interface CardCallbacks extends DeleteCallbacks, UpdateCardCallbacks  {
             void onLoadSuccess(Card card);
             void onLoadFailed(String msg);
             void onLoadCanceled();
         }
 
-        interface ListCallbacks extends DeleteCallbacks {
+        interface ListCallbacks extends DeleteCallbacks, UpdateCardCallbacks {
             void onChildAdded(Card card);
             void onChildChanged(Card card, String previousCardName); // или title?
             void onChildMoved(Card card, String previousCardName); // или title?
@@ -32,6 +32,11 @@ public interface MyInterfaces {
         interface DeleteCallbacks {
             void onDeleteSuccess(Card card);
             void onDeleteError(String msg);
+        }
+
+        interface UpdateCardCallbacks {
+            void onUpdateSuccess(Card card);
+            void onUpdateError(String msg);
         }
     }
 

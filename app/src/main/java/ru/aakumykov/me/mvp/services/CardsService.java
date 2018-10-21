@@ -9,6 +9,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
+import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
 import ru.aakumykov.me.mvp.models.Card;
 
@@ -133,18 +137,32 @@ public class CardsService extends Service implements MyInterfaces.CardsService
     }
 
     @Override
-    public void updateCard(String key, Card newCard) {
-        Log.d(TAG, "updateCard(), "+key+", "+newCard.getTitle());
+    public void updateCard(final Card newCard, final UpdateCardCallbacks callbacks) {
+        Log.d(TAG, "updateCard(), "+newCard.getKey()+", "+newCard.getTitle());
 
         DatabaseReference cardRef = firebaseDatabase.getReference()
-                .child(Constants.CARDS_PATH).child(key);
+                .child(Constants.CARDS_PATH).child(newCard.getKey());
 
-        cardRef.updateChildren(newCard, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-
-            }
-        });
+        cardRef.setValue(newCard)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onUpdateSuccess(newCard);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onUpdateError(e.getMessage());
+                        e.printStackTrace();
+                    }
+                })
+                .addOnCanceledListener(new OnCanceledListener() {
+                    @Override
+                    public void onCanceled() {
+                        callbacks.onUpdateError(getResources().getString(R.string.card_update_cancelled));
+                    }
+                });
     }
 
     @Override

@@ -58,4 +58,7 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="error_updating_list">Ошибка обновления списка</string>
+    <string name="card_update_cancelled">Обновление карточки отменено</string>
+    <string name="card_update_success">Карточка обновлена</string>
+    <string name="card_update_error">Ошибка обновления карточки</string>
 </resources>
