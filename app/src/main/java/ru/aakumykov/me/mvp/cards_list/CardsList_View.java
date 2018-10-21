@@ -1,15 +1,11 @@
 package ru.aakumykov.me.mvp.cards_list;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.drawable.Drawable;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,15 +46,10 @@ public class CardsList_View extends AppCompatActivity implements
 
     private final static String TAG = "CardsList_View";
 
-    private ServiceConnection cardsServiceConnection;
     private Intent cardsServiceIntent;
+    private ServiceConnection cardsServiceConnection;
     private MyInterfaces.CardsService cardsService;
     private boolean isCardsServiceBounded = false;
-
-    private CardsList_ViewModel viewModel;
-    private LiveData<Card> cardAdd_LiveData;
-    private LiveData<Card> cardRemove_LiveData;
-    private LiveData<Card> cardChange_LiveData;
 
     private CardsArrayList cardsList;
     private CardsListAdapter cardsListAdapter;
@@ -68,9 +59,11 @@ public class CardsList_View extends AppCompatActivity implements
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.listView) ListView listView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate()");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cards_list_activity);
         ButterKnife.bind(this);
@@ -86,16 +79,36 @@ public class CardsList_View extends AppCompatActivity implements
         cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
         listView.setAdapter(cardsListAdapter);
 
-        prepareServiceConnection(new Callable() {
+
+        final Callable onServiceConnected = new Callable() {
             @Override
             public Void call() throws Exception {
                 loadList(false);
                 return null;
             }
-        });
+        };
 
-        // TODO: перенести в onStart()
-        connectToViewModel();
+        cardsServiceIntent = new Intent(this, CardsService.class);
+
+        cardsServiceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                CardsService.LocalBinder localBinder = (CardsService.LocalBinder) service;
+                cardsService = localBinder.getService();
+                isCardsServiceBounded = true;
+
+                try {
+                    onServiceConnected.call();
+                } catch (Exception e) {
+                    showErrorMsg(e.getMessage());
+                }
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                isCardsServiceBounded = false;
+            }
+        };
     }
 
 
@@ -197,92 +210,9 @@ public class CardsList_View extends AppCompatActivity implements
     }
 
 
-    private void prepareServiceConnection(final Callable onSerivceConnected) {
-        Log.d(TAG, "prepareServiceConnection()");
-
-        cardsServiceIntent = new Intent(this, CardsService.class);
-
-        cardsServiceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                CardsService.LocalBinder localBinder = (CardsService.LocalBinder) service;
-                cardsService = localBinder.getService();
-                isCardsServiceBounded = true;
-
-                try {
-                    onSerivceConnected.call();
-                } catch (Exception e) {
-                    showErrorMsg(e.getMessage());
-                }
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                isCardsServiceBounded = false;
-            }
-        };
-    }
-
-    private void connectToViewModel() {
-        Log.d(TAG, "connectToViewModel()");
-
-        viewModel = ViewModelProviders.of(this).get(CardsList_ViewModel.class);
-
-        cardAdd_LiveData = viewModel.getCardAdd_LiveData();
-        cardAdd_LiveData.observe(this, new Observer<Card>() {
-            @Override
-            public void onChanged(@Nullable Card card) {
-//                Log.d(TAG+"_LiveData", "=ПОСТУПИЛИ ЖИВЫЕ ДАННЫЕ=, "+card);
-
-                hideLoadingMessage();
-                swipeRefreshLayout.setRefreshing(false);
-
-                cardsList.add(card);
-                cardsListAdapter.notifyDataSetChanged();
-            }
-        });
-
-        cardRemove_LiveData = viewModel.getCardRemove_LiveData();
-        cardRemove_LiveData.observe(this, new Observer<Card>() {
-            @Override
-            public void onChanged(@Nullable Card card) {
-                int removedCardIndex = cardsList.indexOf(card);
-                Log.d(TAG, "номер удалённой карточки в списке: "+removedCardIndex);
-
-                int removedCardPosition = cardsListAdapter.getPosition(card);
-                Log.d(TAG, "позиция удалённой карточки на экране: "+removedCardPosition);
-            }
-        });
-
-        cardChange_LiveData = viewModel.getCardChange_LiveData();
-        cardChange_LiveData.observe(this, new Observer<Card>() {
-            @Override
-            public void onChanged(@Nullable Card card) {
-                Log.d(TAG, "ИЗМЕНЕНО: "+card);
-                Card oldCard = cardsList.findCardByKey( card.getKey() );
-                Log.d(TAG, "карточка с таким же key в списке: "+oldCard);
-
-                int oldCardIndex = cardsList.indexOf(oldCard);
-                Log.d(TAG, "номер старой карточки: "+oldCardIndex);
-
-                int oldCardPosition = cardsListAdapter.getPosition(oldCard);
-                Log.d(TAG, "позиция старой карточки: "+oldCardPosition);
-
-                cardsList.set(oldCardIndex, card);
-                cardsListAdapter.notifyDataSetChanged();
-            }
-        });
-    }
-
-
     private void loadList(boolean manualRefresh) {
         Log.d(TAG, "loadList(manualRefresh: "+manualRefresh+")");
-
-        if (!manualRefresh)
-            showLoadingMessage();
-
-//        viewModel.loadList(manualRefresh);
-
+        if (!manualRefresh) showLoadingMessage();
         cardsService.loadList(this);
     }
 
@@ -405,7 +335,8 @@ public class CardsList_View extends AppCompatActivity implements
 
     @Override
     public void onChildAdded(Card card) {
-        Log.d(TAG, "onChildAdded()");
+//        Log.d(TAG, "onChildAdded()");
+        hideLoadingMessage();
         cardsList.add(card);
         cardsListAdapter.notifyDataSetChanged();
     }
