@@ -11,6 +11,7 @@ public interface MyInterfaces {
 
         void loadCard(String key, CardCallbacks callbacks);
         void loadList(ListCallbacks callbacks);
+        void updateCard(String key, Card newCard);
         void deleteCard(Card card, DeleteCallbacks callbacks);
 
         interface CardCallbacks extends DeleteCallbacks  {

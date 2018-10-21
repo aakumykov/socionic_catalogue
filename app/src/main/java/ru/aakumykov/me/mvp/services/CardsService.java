@@ -133,6 +133,21 @@ public class CardsService extends Service implements MyInterfaces.CardsService
     }
 
     @Override
+    public void updateCard(String key, Card newCard) {
+        Log.d(TAG, "updateCard(), "+key+", "+newCard.getTitle());
+
+        DatabaseReference cardRef = firebaseDatabase.getReference()
+                .child(Constants.CARDS_PATH).child(key);
+
+        cardRef.updateChildren(newCard, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+
+            }
+        });
+    }
+
+    @Override
     public void deleteCard(final Card card, final  DeleteCallbacks callbacks) {
         Log.d(TAG, "deleteCard(), "+card);
 
