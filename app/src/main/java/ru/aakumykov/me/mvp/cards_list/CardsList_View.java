@@ -25,6 +25,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.concurrent.Callable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.Constants;
@@ -42,7 +44,9 @@ public class CardsList_View extends AppCompatActivity implements
         iCardsList.View,
         AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener,
+        MyInterfaces.CardsService.ListCallbacks
+{
 
     private final static String TAG = "CardsList_View";
 
@@ -66,7 +70,7 @@ public class CardsList_View extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        Log.d(TAG+"_L-CYCLE", "onCreate()");
+        Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cards_list_activity);
         ButterKnife.bind(this);
@@ -82,12 +86,16 @@ public class CardsList_View extends AppCompatActivity implements
         cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
         listView.setAdapter(cardsListAdapter);
 
-        prepareServiceConnection();
+        prepareServiceConnection(new Callable() {
+            @Override
+            public Void call() throws Exception {
+                loadList(false);
+                return null;
+            }
+        });
 
         // TODO: перенести в onStart()
         connectToViewModel();
-
-        loadList(false);
     }
 
 
@@ -189,7 +197,7 @@ public class CardsList_View extends AppCompatActivity implements
     }
 
 
-    private void prepareServiceConnection() {
+    private void prepareServiceConnection(final Callable onSerivceConnected) {
         Log.d(TAG, "prepareServiceConnection()");
 
         cardsServiceIntent = new Intent(this, CardsService.class);
@@ -200,6 +208,12 @@ public class CardsList_View extends AppCompatActivity implements
                 CardsService.LocalBinder localBinder = (CardsService.LocalBinder) service;
                 cardsService = localBinder.getService();
                 isCardsServiceBounded = true;
+
+                try {
+                    onSerivceConnected.call();
+                } catch (Exception e) {
+                    showErrorMsg(e.getMessage());
+                }
             }
 
             @Override
@@ -267,7 +281,9 @@ public class CardsList_View extends AppCompatActivity implements
         if (!manualRefresh)
             showLoadingMessage();
 
-        viewModel.loadList(manualRefresh);
+//        viewModel.loadList(manualRefresh);
+
+        cardsService.loadList(this);
     }
 
     private void showLoadingMessage() {
@@ -387,4 +403,35 @@ public class CardsList_View extends AppCompatActivity implements
     }
 
 
+    @Override
+    public void onChildAdded(Card card) {
+        Log.d(TAG, "onChildAdded()");
+        cardsList.add(card);
+        cardsListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onChildChanged(Card card, String previousCardName) {
+
+    }
+
+    @Override
+    public void onChildRemoved(Card card) {
+
+    }
+
+    @Override
+    public void onChildMoved(Card card, String previousCardName) {
+
+    }
+
+    @Override
+    public void onCancelled(String errorMessage) {
+
+    }
+
+    @Override
+    public void onBadData(String errorMsg) {
+
+    }
 }
