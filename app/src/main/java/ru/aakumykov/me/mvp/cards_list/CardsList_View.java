@@ -343,6 +343,7 @@ public class CardsList_View extends AppCompatActivity implements
     public void onChildAdded(Card card) {
         Log.d(TAG, "onChildAdded()");
         hideLoadingMessage();
+        swipeRefreshLayout.setRefreshing(false);
         cardsList.add(card);
         cardsListAdapter.notifyDataSetChanged();
     }
