@@ -33,6 +33,7 @@ import ru.aakumykov.me.mvp.card_view.CardView_View;
 import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.CardsService;
+import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 // TODO: Пункт "обновить" в меню панели.
 
@@ -41,7 +42,8 @@ public class CardsList_View extends AppCompatActivity implements
         AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener,
         SwipeRefreshLayout.OnRefreshListener,
-        MyInterfaces.CardsService.ListCallbacks
+        MyInterfaces.CardsService.ListCallbacks,
+        MyInterfaces.CardsService.DeleteCallbacks
 {
 
     private final static String TAG = "CardsList_View";
@@ -131,14 +133,8 @@ public class CardsList_View extends AppCompatActivity implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(TAG, "onItemClick(..., position: "+position+", id: "+id+")");
-
-        String cardKey = cardsList.get(position).getKey();
-
-        Intent intent = new Intent();
-        intent.setClass(this, CardView_View.class);
-        intent.putExtra(Constants.CARD_KEY, cardKey);
-
-        startActivity(intent);
+        Card card = cardsList.get(position);
+        viewCard(card);
     }
 
     @Override
@@ -276,41 +272,6 @@ public class CardsList_View extends AppCompatActivity implements
     }
 
 
-    private void editCard(Card card) {
-        Log.d(TAG, "editCard()");
-
-        Log.d(TAG, "место редактируемой карточки: "+cardsListAdapter.getPosition(card));
-
-        Intent intent = new Intent(this, CardEdit_View.class);
-        intent.putExtra(Constants.CARD, card);
-        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
-    }
-
-    private void deleteCard(Card card) {
-        Log.d(TAG, "deleteCard('"+card.getTitle()+"') ЗАГЛУШКА");
-
-//        // TODO: вот здесь-то и нужна Служба
-//        YesNoDialog yesNoDialog = new YesNoDialog(this, R.string.card_deletion,
-//                R.string.really_delete_card,
-//                new MyInterfaces.DialogCallbacks.onCheck() {
-//                    @Override
-//                    public boolean doCheck() {
-//                        return true;
-//                    }
-//                },
-//                new MyInterfaces.DialogCallbacks.onYes() {
-//                    @Override
-//                    public void yesAction() {
-//
-//                    }
-//                },
-//                null
-//        );
-//
-//        yesNoDialog.show();
-    }
-
-
     public void showInfoMsg(int messageId) {
         showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));
     }
@@ -334,6 +295,48 @@ public class CardsList_View extends AppCompatActivity implements
     }
 
 
+    // "Методы карточки" (в списке)
+    private void viewCard(Card card) {
+        Log.d(TAG, "viewCard()");
+        Intent intent = new Intent();
+        intent.setClass(this, CardView_View.class);
+        intent.putExtra(Constants.CARD_KEY, card.getKey());
+        startActivity(intent);
+    }
+
+    private void editCard(Card card) {
+        Log.d(TAG, "editCard()");
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.putExtra(Constants.CARD, card);
+        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+    }
+
+    private void deleteCard(final Card card) {
+        Log.d(TAG, "deleteCard(), "+card.getTitle());
+
+        YesNoDialog yesNoDialog = new YesNoDialog(this, R.string.card_deletion,
+                R.string.really_delete_card,
+                new MyInterfaces.DialogCallbacks.onCheck() {
+                    @Override
+                    public boolean doCheck() {
+                        return true;
+                    }
+                },
+                new MyInterfaces.DialogCallbacks.onYes() {
+                    @Override
+                    public void yesAction() {
+                        // Правильно: CardsList_View.this ?
+                        cardsService.deleteCard(card, CardsList_View.this);
+                    }
+                },
+                null
+        );
+
+        yesNoDialog.show();
+    }
+
+
+    // Методы обратнаго вызова
     @Override
     public void onChildAdded(Card card) {
 //        Log.d(TAG, "onChildAdded()");
@@ -359,9 +362,20 @@ public class CardsList_View extends AppCompatActivity implements
     }
 
     @Override
-    public void onChildRemoved(Card card) {
-
+    public void onDeleteSuccess(Card card) {
+        Log.d(TAG, "onDeleteSuccess(), "+card);
+        String changedCardKey = card.getKey();
+        Card oldCard = cardsList.findCardByKey(changedCardKey);
+        cardsList.remove(oldCard);
+        cardsListAdapter.remove(oldCard);
     }
+
+    @Override
+    public void onDeleteError(String msg) {
+        Log.d(TAG, "onDeleteError(), "+msg);
+        showErrorMsg(R.string.error_deleting_card);
+    }
+
 
     @Override
     public void onChildMoved(Card card, String previousCardName) {

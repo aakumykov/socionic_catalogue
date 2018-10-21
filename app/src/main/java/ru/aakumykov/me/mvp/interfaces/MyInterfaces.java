@@ -8,23 +8,29 @@ import ru.aakumykov.me.mvp.models.Card;
 public interface MyInterfaces {
 
     interface CardsService {
+
         void loadCard(String key, CardCallbacks callbacks);
         void loadList(ListCallbacks callbacks);
+        void deleteCard(Card card, DeleteCallbacks callbacks);
 
-        interface CardCallbacks {
+        interface CardCallbacks extends DeleteCallbacks  {
             void onLoadSuccess(Card card);
             void onLoadFailed(String msg);
             void onLoadCanceled();
-            void onDeleteComplete(@Nullable String msg);
         }
 
-        interface ListCallbacks {
+        interface ListCallbacks extends DeleteCallbacks {
             void onChildAdded(Card card);
             void onChildChanged(Card card, String previousCardName); // или title?
-            void onChildRemoved(Card card);
             void onChildMoved(Card card, String previousCardName); // или title?
             void onCancelled(String errorMessage);
             void onBadData(String errorMsg);
+        }
+
+        // Используется в CardCallbacks и ListCallbacks
+        interface DeleteCallbacks {
+            void onDeleteSuccess(Card card);
+            void onDeleteError(String msg);
         }
     }
 

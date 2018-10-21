@@ -115,7 +115,7 @@ public class CardsService extends Service implements MyInterfaces.CardsService
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 Card card = MyUtils.snapshot2card(dataSnapshot);
-                callbacks.onChildRemoved(card);
+                callbacks.onDeleteSuccess(card);
             }
 
             @Override
@@ -131,4 +131,25 @@ public class CardsService extends Service implements MyInterfaces.CardsService
             }
         });
     }
+
+    @Override
+    public void deleteCard(final Card card, final  DeleteCallbacks callbacks) {
+        Log.d(TAG, "deleteCard(), "+card);
+
+        DatabaseReference cardRef =firebaseDatabase.getReference()
+                .child(Constants.CARDS_PATH).child(card.getKey());
+
+        cardRef.removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (null == databaseError) {
+                    callbacks.onDeleteSuccess(card);
+                } else {
+                    callbacks.onDeleteError(databaseError.getMessage());
+                    databaseError.toException().printStackTrace();
+                }
+            }
+        });
+    }
+
 }
