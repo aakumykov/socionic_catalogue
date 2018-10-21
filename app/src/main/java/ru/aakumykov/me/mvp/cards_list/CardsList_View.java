@@ -343,7 +343,18 @@ public class CardsList_View extends AppCompatActivity implements
 
     @Override
     public void onChildChanged(Card card, String previousCardName) {
-
+        Log.d(TAG, "onChildChanged(), "+card);
+        String changedCardKey = card.getKey();
+        Card oldCard = cardsList.findCardByKey(changedCardKey);
+        // TODO: где обрабатывать ошибки?
+//        if (null != oldCard) {
+            int cardArrayIndex = cardsList.indexOf(oldCard);
+            cardsList.set(cardArrayIndex, card);
+            cardsListAdapter.notifyDataSetChanged();
+//        } else {
+//            showErrorMsg(R.string.error_updating_list);
+//            Log.e(TAG, "Ошибка обновления списка после изменения карточки "+card);
+//        }
     }
 
     @Override

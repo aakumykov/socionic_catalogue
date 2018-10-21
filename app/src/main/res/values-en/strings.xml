@@ -55,4 +55,5 @@
     <string name="really_delete_card">Really delete card?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="error_updating_list">Error updating list</string>
 </resources>

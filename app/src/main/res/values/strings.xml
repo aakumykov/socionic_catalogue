@@ -57,4 +57,5 @@
     <string name="really_delete_card">Действительно удалить карточку?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="error_updating_list">Ошибка обновления списка</string>
 </resources>
