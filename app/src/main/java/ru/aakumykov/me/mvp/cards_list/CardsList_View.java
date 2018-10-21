@@ -3,8 +3,12 @@ package ru.aakumykov.me.mvp.cards_list;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.drawable.Drawable;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -21,9 +25,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.Constants;
@@ -33,7 +34,7 @@ import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_view.CardView_View;
 import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
 import ru.aakumykov.me.mvp.models.Card;
-import ru.aakumykov.me.mvp.utils.YesNoDialog;
+import ru.aakumykov.me.mvp.services.CardsService;
 
 // TODO: Пункт "обновить" в меню панели.
 
@@ -44,6 +45,11 @@ public class CardsList_View extends AppCompatActivity implements
         SwipeRefreshLayout.OnRefreshListener {
 
     private final static String TAG = "CardsList_View";
+
+    private ServiceConnection cardsServiceConnection;
+    private Intent cardsServiceIntent;
+    private MyInterfaces.CardsService cardsService;
+    private boolean isCardsServiceBounded = false;
 
     private CardsList_ViewModel viewModel;
     private LiveData<Card> cardAdd_LiveData;
@@ -76,70 +82,40 @@ public class CardsList_View extends AppCompatActivity implements
         cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
         listView.setAdapter(cardsListAdapter);
 
+        prepareServiceConnection();
+
+        // TODO: перенести в onStart()
         connectToViewModel();
 
         loadList(false);
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        Log.d(TAG+"_L-CYCLE", "onActivityResult()");
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        connectToViewModel();
-//
-//        if (RESULT_OK == resultCode) {
-//
-//            switch (requestCode) {
-//
-//                case Constants.CODE_EDIT_CARD:
-//                    if (null != data) {
-//                        Card card = data.getParcelableExtra(Constants.CARD);
-//                        Log.d(TAG, "Отредактированная карточка: "+card);
-//                    } else {
-//                        showErrorMsg(R.string.error_displaying_card);
-//                        Log.e(TAG, "Intent data in activity result == null.");
-//                    }
-//                    break;
-//
-//                default:
-//                    showErrorMsg(R.string.unknown_request_code);
-//                    Log.d(TAG, "Unknown request code: "+requestCode);
-//                    break;
-//            }
-//        }
-//    }
-
 
     @Override
     protected void onStart() {
+        Log.d(TAG, "onStart()");
         super.onStart();
-//        Log.d(TAG+"_L-CYCLE", "onStart()");
+        bindService(cardsServiceIntent, cardsServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     protected void onStop() {
+        Log.d(TAG, "onStop()");
         super.onStop();
-//        Log.d(TAG+"_L-CYCLE", "onStop()");
+        unbindService(cardsServiceConnection);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-//        Log.d(TAG+"_L-CYCLE", "onDestroy()");
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(TAG, "onItemClick(..., position: "+position+", id: "+id+")");
 
         String cardKey = cardsList.get(position).getKey();
-//        Log.d(TAG, "onItemClick(), cardKey: "+cardKey);
 
         Intent intent = new Intent();
-        // TODO: сделать независимым от конкретного класса
         intent.setClass(this, CardView_View.class);
         intent.putExtra(Constants.CARD_KEY, cardKey);
+
         startActivity(intent);
     }
 
@@ -212,6 +188,26 @@ public class CardsList_View extends AppCompatActivity implements
         startActivity(intent);
     }
 
+
+    private void prepareServiceConnection() {
+        Log.d(TAG, "prepareServiceConnection()");
+
+        cardsServiceIntent = new Intent(this, CardsService.class);
+
+        cardsServiceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                CardsService.LocalBinder localBinder = (CardsService.LocalBinder) service;
+                cardsService = localBinder.getService();
+                isCardsServiceBounded = true;
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                isCardsServiceBounded = false;
+            }
+        };
+    }
 
     private void connectToViewModel() {
         Log.d(TAG, "connectToViewModel()");

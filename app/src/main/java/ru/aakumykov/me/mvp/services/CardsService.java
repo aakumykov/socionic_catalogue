@@ -24,8 +24,8 @@ import ru.aakumykov.me.mvp.models.Card;
 public class CardsService extends Service implements MyInterfaces.CardsService
 {
     // Внутренний класс
-    class LocalBinder extends Binder {
-        CardsService getService() {
+    public class LocalBinder extends Binder {
+        public CardsService getService() {
             return CardsService.this;
         }
     }
