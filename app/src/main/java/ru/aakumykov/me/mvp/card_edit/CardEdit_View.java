@@ -32,6 +32,8 @@ import ru.aakumykov.me.mvp.card_view.CardView_View;
 import ru.aakumykov.me.mvp.models.Card;
 
 // TODO: кнопка Вверх как Отмена
+// TODO: сохранение при ещё не загруженной картинке
+
 
 @RuntimePermissions
 public class CardEdit_View extends AppCompatActivity
