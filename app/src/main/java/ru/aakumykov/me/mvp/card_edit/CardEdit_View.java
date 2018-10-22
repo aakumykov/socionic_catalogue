@@ -67,6 +67,8 @@ public class CardEdit_View extends AppCompatActivity
 
     private Intent cardsServiceIntent;
     private ServiceConnection cardsServiceConnection;
+    private Callable onServiceConnected;
+    private Callable onServiceDisconnected;
     private MyInterfaces.CardsService cardsService;
     private boolean isCardsServiceBounded = false;
     
@@ -75,7 +77,7 @@ public class CardEdit_View extends AppCompatActivity
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG+"_L-CYCLE", "onCreate()");
+        Log.d(TAG, "onCreate()");
         
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_edit_activity);
@@ -89,16 +91,28 @@ public class CardEdit_View extends AppCompatActivity
 
         // Запрос разрешений
         CardEdit_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
+
+        // Создание Презентатора
+        presenter = new CardEdit_Presenter();
         
         // Соединение со службой
         cardsServiceIntent = new Intent(this, CardsService.class);
 
-        final Callable onServiceConnected = new Callable() {
+        onServiceConnected = new Callable() {
             @Override
             public Void call() throws Exception {
-                presenter = new CardEdit_Presenter(cardsService);
                 presenter.linkView(CardEdit_View.this);
+                presenter.linkModel(cardsService);
                 processInputIntent();
+                return null;
+            }
+        };
+
+        onServiceDisconnected = new Callable() {
+            @Override
+            public Void call() throws Exception {
+                presenter.unlinkView();
+                presenter.unlinkModel();
                 return null;
             }
         };
@@ -106,6 +120,8 @@ public class CardEdit_View extends AppCompatActivity
         cardsServiceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
+                Log.d(TAG, "onServiceConnected()");
+
                 CardsService.LocalBinder localBinder = (CardsService.LocalBinder) service;
                 cardsService = localBinder.getService();
                 isCardsServiceBounded = true;
@@ -120,25 +136,33 @@ public class CardEdit_View extends AppCompatActivity
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
+                Log.d(TAG, "onServiceDisconnected()");
+
                 isCardsServiceBounded = false;
+
+                try {
+                    onServiceDisconnected.call();
+                } catch (Exception e) {
+                    showErrorMsg(e.getMessage());
+                    e.printStackTrace();
+                }
             }
         };
     }
 
     @Override
     protected void onStart() {
-        Log.d(TAG+"_L-CYCLE", "onStart()");
+        Log.d(TAG, "onStart()");
         super.onStart();
-        if (isCardsServiceBounded) bindService(cardsServiceIntent, cardsServiceConnection, Context.BIND_AUTO_CREATE);
-        if (null != presenter) presenter.linkView(this);
+        bindService(cardsServiceIntent, cardsServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     protected void onStop() {
-        Log.d(TAG+"_L-CYCLE", "onStop()");
+        Log.d(TAG, "onStop()");
         super.onStop();
-        if (isCardsServiceBounded) unbindService(cardsServiceConnection);
-        if (null != presenter) presenter.unlinkView();
+        if (isCardsServiceBounded)
+            unbindService(cardsServiceConnection);
     }
 
     @Override

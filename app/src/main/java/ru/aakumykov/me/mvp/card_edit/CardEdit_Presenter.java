@@ -18,7 +18,6 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
 
     private final static String TAG = "CardEdit_Presenter";
     private iCardEdit.View view;
-//    private iCardEdit.Model model;
     private MyInterfaces.CardsService model;
 
     private Card currentCard;
@@ -27,9 +26,8 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     private String newImageURI;
 
 
-    CardEdit_Presenter(MyInterfaces.CardsService cardsService) {
+    CardEdit_Presenter() {
         Log.d(TAG, "new CardEdit_Presenter()");
-        model = cardsService;
     }
 
 
@@ -42,6 +40,17 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     public void unlinkView() {
         Log.d(TAG, "unlinkView()");
         this.view = null;
+    }
+
+    @Override
+    public void linkModel(MyInterfaces.CardsService model) {
+        Log.d(TAG, "linkModel()");
+        this.model = model;
+    }
+    @Override
+    public void unlinkModel() {
+        Log.d(TAG, "unlinkModel()");
+        this.model = null;
     }
 
 
