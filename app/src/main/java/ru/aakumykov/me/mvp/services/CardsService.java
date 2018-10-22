@@ -81,7 +81,10 @@ public class CardsService extends Service implements MyInterfaces.CardsService
     public void onDestroy() {
         Log.d(TAG, "onDestroy()");
         super.onDestroy();
-        cancelImageUpload();
+
+        if (uploadTask.isInProgress())
+            cancelUpload();
+
         firebaseDatabase.goOffline();
     }
 
@@ -301,8 +304,8 @@ public class CardsService extends Service implements MyInterfaces.CardsService
     }
 
     @Override
-    public void cancelImageUpload() {
-        Log.d(TAG, "cancelImageUpload()");
+    public void cancelUpload() {
+        Log.d(TAG, "cancelUpload()");
         if (null != uploadTask) uploadTask.cancel();
     }
 }

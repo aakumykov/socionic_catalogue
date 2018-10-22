@@ -22,7 +22,7 @@ public interface MyInterfaces {
         void deleteCard(Card card, DeleteCallbacks callbacks);
 
         void uploadImage(Uri imageURI, String mimeType, String remotePath, ImageUploadCallbacks callbacks);
-        void cancelImageUpload();
+        void cancelUpload();
 
 
         interface CardCallbacks extends DeleteCallbacks, UpdateCardCallbacks {

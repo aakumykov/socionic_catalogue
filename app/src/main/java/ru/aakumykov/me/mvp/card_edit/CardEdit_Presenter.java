@@ -101,7 +101,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     public void onCancelButtonClicked() {
         Log.d(TAG, "onCancelButtonClicked()");
         forgetCardData();
-        model.cancelImageUpload();
+        model.cancelUpload();
         view.finishEdit(null);
     }
 
@@ -122,7 +122,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     @Override
     public void onImageDiscardClicked() {
         Log.d(TAG, "onImageDiscardClicked()");
-        model.cancelImageUpload();
+        model.cancelUpload();
         view.removeImage();
     }
 
