@@ -31,32 +31,35 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     }
 
 
+    // Да варианта работы
     @Override
-    public void linkView(iCardEdit.View view) {
-        Log.d(TAG, "linkView()");
-        if (null == this.view) this.view = view;
-    }
-    @Override
-    public void unlinkView() {
-        Log.d(TAG, "unlinkView()");
-        this.view = null;
+    public void createCard(String cardType) {
+        Log.d(TAG, "createCard("+cardType+")");
+
+        switch (cardType) {
+            case Constants.TEXT_CARD:
+                view.prepareForTextCard();
+                break;
+            case Constants.IMAGE_CARD:
+                view.prepareForImageCard();
+                break;
+            default:
+                view.showErrorMsg(R.string.wrong_card_type);
+                Log.d(TAG, cardType);
+                return;
+        }
+
+        String newKey = model.createKey();
+        Log.d(TAG, "newKey: "+newKey);
+
+        currentCard = new Card();
+        currentCard.setKey(newKey);
+        currentCard.setType(cardType);
     }
 
     @Override
-    public void linkModel(MyInterfaces.CardsService model) {
-        Log.d(TAG, "linkModel()");
-        this.model = model;
-    }
-    @Override
-    public void unlinkModel() {
-        Log.d(TAG, "unlinkModel()");
-        this.model = null;
-    }
-
-
-    @Override
-    public void onCardRecieved(Card card) {
-        Log.d(TAG, "onCardRecieved(), "+card);
+    public void editCard(Card card) {
+        Log.d(TAG, "editCard(), "+card);
 
         currentCard = card;
 
@@ -73,28 +76,33 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         }
     }
 
+
+    // Реакция на кнопки
     @Override
-    public void onCreateCard(String cardType) {
-        Log.d(TAG, "onCreateCard("+cardType+")");
+    public void onSaveButtonClicked() {
+        Log.d(TAG, "saveButtonClicked()");
 
-        // TODO: где будет корректно проверять cardType ?
-        switch (cardType) {
-            case Constants.TEXT_CARD:
-                view.prepareTextCard();
-                break;
-            case Constants.IMAGE_CARD:
-                view.prepareImageCard();
-                break;
-            default:
-                return;
+        if (null != localImageURI) {
+            Log.d(TAG, "Новая картинка");
+
+            try {
+                String remoteImagePath = constructImagePath();
+                view.disableForm();
+                model.uploadImage(localImageURI, localImageType, remoteImagePath, this);
+            } catch (Exception e) {
+                view.showErrorMsg(R.string.image_data_error);
+                e.printStackTrace();
+            }
+
+        } else {
+            Log.d(TAG, "Старая картинка");
+            try {
+                saveCompleteCard();
+            } catch (Exception e) {
+                view.showErrorMsg(R.string.error_saving_card);
+                e.printStackTrace();
+            }
         }
-
-        String newKey = model.createKey();
-        Log.d(TAG, "newKey: "+newKey);
-
-        currentCard = new Card();
-        currentCard.setKey(newKey);
-        currentCard.setType(cardType);
     }
 
     @Override
@@ -112,52 +120,28 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     }
 
     @Override
-    public void onImageSelected(Uri imageURI, String mimeType) {
-        Log.d(TAG, "onImageSelected("+imageURI+", "+mimeType+")");
-        localImageURI = imageURI;
-        localImageType = mimeType;
-        view.displayLocalImage(imageURI);
-    }
-
-    @Override
     public void onImageDiscardClicked() {
         Log.d(TAG, "onImageDiscardClicked()");
         model.cancelUpload();
         view.removeImage();
+        currentCard.setImageURL(null);
     }
 
 
-    // TODO: нормальная отмена выгрузки картинки...
-
+    // Реакция на события
     @Override
-    public void onSaveButtonClicked() {
-        Log.d(TAG, "saveButtonClicked()");
+    public void onImageSelected(Uri imageURI, String mimeType) {
+        Log.d(TAG, "onImageSelected("+imageURI+", "+mimeType+")");
 
-        if (null != localImageURI) {
-            Log.d(TAG, "Новая картинка");
-            try {
-                String remoteImagePath = constructImagePath();
-                view.showImageProgressBar();
-                view.disableForm();
-                model.uploadImage(localImageURI, localImageType, remoteImagePath, this);
+        localImageURI = imageURI;
+        localImageType = mimeType;
 
-            } catch (Exception e) {
-                // TODO: сделать возможным это?
-                //view.showErrorMsg(e.getMessage());
-                view.showErrorMsg(R.string.image_upload_error);
-                e.printStackTrace();
-            }
-        } else {
-            Log.d(TAG, "Старая картинка");
-            try {
-                saveCompleteCard();
-            } catch (Exception e) {
-                view.showErrorMsg(R.string.error_saving_card);
-                e.printStackTrace();
-            }
-        }
+        view.showImage(imageURI);
     }
 
+
+    // Коллбеки выгрузки картинки
+    // TODO: нормальная отмена выгрузки картинки...
     @Override
     public void onImageUploadProgress(int progress) {
         Log.d(TAG, "imageUploadProgress: "+progress);
@@ -181,6 +165,8 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     @Override
     public void onImageUploadError(String message) {
         view.showErrorMsg(R.string.image_upload_error);
+        view.enableForm();
+        Log.e(TAG, message);
     }
 
     @Override
@@ -189,8 +175,31 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     }
 
 
-
+    // Колбеки сохранения карточки
     // TODO: проверка данных перед отправкой
+    @Override
+    public void onCardSaveSuccess(Card card) {
+        // TODO: передавать новую карточку
+        forgetCardData();
+        view.finishEdit(card);
+//        view.displayNewCard(card);
+    }
+
+    @Override
+    public void onCardSaveError(String message) {
+        view.showErrorMsg(R.string.error_saving_card);
+        view.enableForm();
+        Log.e(TAG, message);
+    }
+
+    @Override
+    public void onCardSaveCancel() {
+        view.showErrorMsg(R.string.card_saving_cancelled);
+        view.enableForm();
+    }
+
+
+    // Внутренние методы
     private void saveCompleteCard() throws Exception {
         Log.d(TAG, "saveCompleteCard()");
 
@@ -214,28 +223,32 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         model.saveCard(currentCard, this);
     }
 
+
+    // Служебные методы
     @Override
-    public void onCardSaveSuccess(Card card) {
-        // TODO: передавать новую карточку
-        forgetCardData();
-        view.finishEdit(card);
-//        view.displayNewCard(card);
+    public void linkView(iCardEdit.View view) {
+        Log.d(TAG, "linkView()");
+        if (null == this.view) this.view = view;
+    }
+    @Override
+    public void unlinkView() {
+        Log.d(TAG, "unlinkView()");
+        this.view = null;
     }
 
     @Override
-    public void onCardSaveError(String message) {
-        view.showErrorMsg(R.string.error_saving_card);
-        view.enableForm();
-        Log.e(TAG, message);
+    public void linkModel(MyInterfaces.CardsService model) {
+        Log.d(TAG, "linkModel()");
+        this.model = model;
     }
-
     @Override
-    public void onCardSaveCancel() {
-        view.showErrorMsg(R.string.card_saving_cancelled);
-        view.enableForm();
+    public void unlinkModel() {
+        Log.d(TAG, "unlinkModel()");
+        this.model = null;
     }
 
 
+    // Вспомогательные методы
     private String constructImagePath() throws Exception {
         String fname = currentCard.getKey();
         String fext = MyUtils.mime2ext(localImageType);

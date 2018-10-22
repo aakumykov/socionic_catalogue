@@ -34,7 +34,6 @@ import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.card_view.CardView_View;
 import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.CardsService;
@@ -53,8 +52,7 @@ public class CardEdit_View extends AppCompatActivity
     @BindView(R.id.quoteView) EditText quoteView;
 
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
-    @BindView(R.id.localImageView) ImageView localImageView;
-    @BindView(R.id.remoteImageView) ImageView remoteImageView;
+    @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.discardImageButton) ImageView discardImageButton;
     @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
 
@@ -74,7 +72,10 @@ public class CardEdit_View extends AppCompatActivity
     
     private iCardEdit.Presenter presenter;
 
-    
+    private boolean firstRun = true;
+
+
+    // Системные методы
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate()");
@@ -87,7 +88,7 @@ public class CardEdit_View extends AppCompatActivity
         saveButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
         discardImageButton.setOnClickListener(this);
-        localImageView.setOnClickListener(this);
+        imageView.setOnClickListener(this);
 
         // Запрос разрешений
         CardEdit_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
@@ -103,7 +104,7 @@ public class CardEdit_View extends AppCompatActivity
             public Void call() throws Exception {
                 presenter.linkView(CardEdit_View.this);
                 presenter.linkModel(cardsService);
-                processInputIntent();
+                if (firstRun) processInputIntent();
                 return null;
             }
         };
@@ -174,7 +175,7 @@ public class CardEdit_View extends AppCompatActivity
             case R.id.cancelButton:
                 presenter.onCancelButtonClicked();
                 break;
-            case R.id.localImageView:
+            case R.id.imageView:
                 presenter.onSelectImageClicked();
                 break;
             case R.id.discardImageButton:
@@ -207,121 +208,110 @@ public class CardEdit_View extends AppCompatActivity
     }
 
 
+    // Индикатор загрузки
+    @Override
+    public void showWating() {
+        MyUtils.show(progressBar);
+    }
+
+    @Override
+    public void hideWating() {
+        MyUtils.hide(progressBar);
+    }
+
+
+    // Отображение карточки
     @Override
     public void displayTextCard(Card card) {
         Log.d(TAG, "displayTextCard()");
         displayCommonCardParts(card);
-        quoteView.setText(card.getQuote());
-        MyUtils.show(quoteView);
+        showQuote(card);
     }
 
     @Override
     public void displayImageCard(Card card) {
         Log.d(TAG, "displayImageCard()");
         displayCommonCardParts(card);
-        displayRemoteImage(card.getImageURL());
+        showImage(card.getImageURL());
+    }
+
+    private void displayCommonCardParts(Card card) {
+        titleView.setText(card.getTitle());
+        descriptionView.setText(card.getDescription());
     }
 
 
+    // Показ картинки
     @Override
-    public void displayRemoteImage(String imageURI) {
-        if (null == imageURI) {
+    public void showImage(String imageURI) {
+        try {
+            Uri uri = Uri.parse(imageURI);
+            showImage(uri);
+        } catch (Exception e) {
             showErrorMsg(R.string.error_loading_image);
-            MyUtils.show(imageHolder);
-            MyUtils.show(localImageView);
-            MyUtils.hide(imageProgressBar);
-            MyUtils.hide(discardImageButton);
-            return;
+            showBrokenImage();
         }
-
-        Uri uri = Uri.parse(imageURI);
-        if (null == uri) {
-            showErrorMsg(R.string.error_loading_image);
-            Log.e(TAG, "Wrong image URI: "+imageURI);
-            return;
-        }
-
-        displayRemoteImage(uri);
     }
 
     @Override
-    public void displayRemoteImage(Uri imageURI) {
+    public void showImage(Uri imageURI) {
         hideMsg();
-        MyUtils.hide(localImageView);
         MyUtils.show(imageHolder);
-        displayImage(remoteImageView, imageURI);
-    }
-
-    @Override
-    public void displayLocalImage(String imageURI) {
-        Uri uri = Uri.parse(imageURI);
-
-        if (null != uri) {
-            displayLocalImage(uri);
-        } else {
-            showErrorMsg(R.string.error_loading_image);
-            Log.e(TAG, "Wrong image URI: "+imageURI);
-        }
-    }
-
-    @Override
-    public void displayLocalImage(Uri imageURI) {
-        hideMsg();
-        MyUtils.hide(remoteImageView);
-        MyUtils.show(imageHolder);
-        MyUtils.show(discardImageButton);
-        displayImage(localImageView, imageURI);
-    }
-
-    private void displayImage(final ImageView imageView, Uri imageURI) {
-
         MyUtils.show(imageProgressBar);
 
-        Picasso.get().load(imageURI).into(imageView, new Callback() {
-            @Override
-            public void onSuccess() {
-                MyUtils.hide(imageProgressBar);
-                MyUtils.show(discardImageButton);
-                MyUtils.show(imageView);
-            }
+        Picasso.get().load(imageURI)
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        MyUtils.hide(imageProgressBar);
+                        MyUtils.show(imageView);
+                        MyUtils.show(discardImageButton);
+                    }
 
-            @Override
-            public void onError(Exception e) {
-                showErrorMsg(R.string.error_loading_image);
-                displayBrokenImage();
-            }
-        });
+                    @Override
+                    public void onError(Exception e) {
+                        MyUtils.hide(imageProgressBar);
+                        showBrokenImage();
+                        showErrorMsg(R.string.error_loading_image);
+                    }
+                });
     }
-
-
-    @Override
-    public void displayBrokenImage() {
-        Log.d(TAG, "displayBrokenImage()");
-        localImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
-        MyUtils.show(imageHolder);
-        MyUtils.show(localImageView);
-        MyUtils.hide(discardImageButton);
-        MyUtils.hide(imageProgressBar);
-    }
-
 
     @Override
     public void removeImage() {
         Log.d(TAG, "removeImage()");
-
-        remoteImageView.setImageDrawable(null);
-        MyUtils.hide(remoteImageView);
-
-        localImageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_placeholder));
-        MyUtils.show(localImageView);
-
+        imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_placeholder));
         MyUtils.hide(discardImageButton);
-//        localImageView.setOnClickListener(this);
+    }
+
+    @Override
+    public void showBrokenImage() {
+        imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
+        MyUtils.hide(discardImageButton);
     }
 
 
-    // TODO: запрос разрешений
-    // TODO: не показывать ошибку при ручном отказе
+    // Показ цитаты
+    private void showQuote(Card card) {
+        quoteView.setText(card.getQuote());
+        MyUtils.show(quoteView);
+    }
+
+
+    // Подготовка формы для новой карточки
+
+
+    @Override
+    public void prepareForTextCard() {
+        MyUtils.show(quoteView);
+    }
+
+    @Override
+    public void prepareForImageCard() {
+        MyUtils.show(imageHolder);
+    }
+
+    // Выбор картинки
     @Override
     public void selectImage() {
         Log.d(TAG, "selectImage()");
@@ -341,48 +331,42 @@ public class CardEdit_View extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG+"_L-CYCLE", "onActivityResult(requestCode: "+requestCode+", resultCode: "+resultCode+", ...)");
+        Log.d(TAG, "onActivityResult(requestCode: "+requestCode+", resultCode: "+resultCode+", ...)");
 
-        presenter.linkView(this);
+//        presenter.linkView(this);
+//        presenter.linkModel(cardsService);
+
+        if (RESULT_CANCELED == resultCode) {
+            Log.d(TAG, "Выбор картинки отменён");
+            return;
+        }
+
+        if (null == data) {
+            showErrorMsg(R.string.data_error);
+            Log.e(TAG, "Нет данных (null) в результатах выбора");
+            return;
+        }
+
+        Uri dataURI = data.getData();
+        Log.d(TAG, "dataURI: "+dataURI);
 
         switch (requestCode) {
             case Constants.CODE_SELECT_IMAGE:
-                processSelectedImage(resultCode, data);
+                processSelectedImage(dataURI);
                 break;
             default:
                 break;
         }
     }
 
-    private void processSelectedImage(int resultCode, @Nullable Intent data) {
+    private void processSelectedImage(Uri dataURI) {
         Log.d(TAG, "processSelectedImage()");
-
-        if (RESULT_CANCELED == resultCode)
-            return;
-
-        if (RESULT_OK != resultCode) {
-            showErrorMsg(R.string.error_selecting_image);
-            return;
-        }
-
-        if (null == data) {
-            showErrorMsg(R.string.image_data_error);
-            return;
-        }
-
-        Uri dataURI = data.getData();
-
-        if (null == dataURI) {
-            showErrorMsg(R.string.image_data_error);
-            return;
-        }
-
         String mimeType =  this.getContentResolver().getType(dataURI);
-
         presenter.onImageSelected(dataURI, mimeType);
     }
 
 
+    // Получение данных со страницы
     @Override
     public String getCardTitle() {
         return titleView.getText().toString();
@@ -399,6 +383,32 @@ public class CardEdit_View extends AppCompatActivity
     }
 
 
+    // Активация / дизактивация формы
+    @Override
+    public void enableForm() {
+        titleView.setEnabled(true);
+        quoteView.setEnabled(true);
+        descriptionView.setEnabled(true);
+
+        MyUtils.hide(imageProgressBar);
+
+//        discardImageButton.setEnabled(false);
+        saveButton.setEnabled(true);
+    }
+    @Override
+    public void disableForm() {
+        titleView.setEnabled(false);
+        quoteView.setEnabled(false);
+        descriptionView.setEnabled(false);
+
+        MyUtils.show(imageProgressBar);
+
+//        discardImageButton.setEnabled(false);
+        saveButton.setEnabled(false);
+    }
+
+
+    // Завершение редактирования
     @Override
     public void finishEdit(Card card) {
         Log.d(TAG, "finishEdit(), "+card);
@@ -409,62 +419,8 @@ public class CardEdit_View extends AppCompatActivity
         finish();
     }
 
-    @Override
-    public void displayNewCard(Card card) {
-        Log.d(TAG, "displayNewCard(), "+card);
-        Intent intent = new Intent();
-        intent.setClass(this, CardView_View.class);
-        intent.putExtra(Constants.CARD_KEY, card.getKey());
-        startActivity(intent);
-    }
 
-    @Override
-    public void prepareTextCard() {
-        MyUtils.show(quoteView);
-    }
-
-    @Override
-    public void prepareImageCard() {
-        MyUtils.show(imageHolder);
-        MyUtils.show(localImageView);
-        MyUtils.hide(imageProgressBar);
-        MyUtils.hide(discardImageButton);
-    }
-
-    @Override
-    public void showProgressBar() {
-        MyUtils.show(progressBar);
-    }
-    @Override
-    public void hideProgressBar() {
-        MyUtils.hide(progressBar);
-    }
-
-    @Override
-    public void showImageProgressBar() {
-        MyUtils.show(imageProgressBar);
-    }
-
-    @Override
-    public void enableForm() {
-        titleView.setEnabled(true);
-        quoteView.setEnabled(true);
-        descriptionView.setEnabled(true);
-
-        discardImageButton.setEnabled(false);
-        saveButton.setEnabled(true);
-    }
-    @Override
-    public void disableForm() {
-        titleView.setEnabled(false);
-        quoteView.setEnabled(false);
-        descriptionView.setEnabled(false);
-
-        discardImageButton.setEnabled(false);
-        saveButton.setEnabled(false);
-    }
-
-
+    // Сообщения пользователю
     @Override
     public void showInfoMsg(int messageId) {
         showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));
@@ -472,7 +428,9 @@ public class CardEdit_View extends AppCompatActivity
 
     @Override
     public void showErrorMsg(int messageId) {
-        showErrorMsg(getResources().getString(messageId));
+        String msg = getResources().getString(messageId);
+        showErrorMsg(msg);
+        Log.e(TAG, msg);
     }
 
     @Override
@@ -491,7 +449,8 @@ public class CardEdit_View extends AppCompatActivity
         MyUtils.hide(messageView);
     }
 
-    
+
+    // Служебные методы
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     void checkPermissions() {
 
@@ -500,21 +459,21 @@ public class CardEdit_View extends AppCompatActivity
     private void processInputIntent() {
         Log.d(TAG, "processInputIntent()");
 
+        firstRun = false;
+
+        hideWating();
+
         Intent intent = getIntent();
         Card card = intent.getParcelableExtra(Constants.CARD);
         String cardType = intent.getStringExtra(Constants.CARD_TYPE);
 
         if (null != card) {
             Log.d(TAG, "Правка");
-            presenter.onCardRecieved(card);
+            presenter.editCard(card);
         } else {
             Log.d(TAG, "Созидание");
-            presenter.onCreateCard(cardType);
+            presenter.createCard(cardType);
         }
     }
 
-    private void displayCommonCardParts(Card card) {
-        titleView.setText(card.getTitle());
-        descriptionView.setText(card.getDescription());
-    }
 }

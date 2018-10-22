@@ -9,30 +9,25 @@ import ru.aakumykov.me.mvp.models.Card;
 public interface iCardEdit {
 
     interface View {
-        void prepareTextCard();
-        void prepareImageCard();
+        void showWating();
+        void hideWating();
 
         void displayTextCard(Card card);
         void displayImageCard(Card card);
 
-        void displayRemoteImage(String imageURI);
-        void displayRemoteImage(Uri imageURI);
+        void showImage(String imageURI);
+        void showImage(Uri imageURI);
+        void showBrokenImage();
+        void removeImage();
 
-        void displayLocalImage(String imageURI);
-        void displayLocalImage(Uri imageURI);
-        void displayBrokenImage();
+        void prepareForTextCard();
+        void prepareForImageCard();
 
         void selectImage();
-        void removeImage();
 
         String getCardTitle();
         String getCardQuote();
         String getCardDescription();
-
-        void showProgressBar();
-        void hideProgressBar();
-
-        void showImageProgressBar();
 
         void enableForm();
         void disableForm();
@@ -41,8 +36,6 @@ public interface iCardEdit {
         void showErrorMsg(int msgId);
         void showErrorMsg(String msg);
         void hideMsg();
-
-        void displayNewCard(Card card);
 
         void finishEdit(Card card);
     }
@@ -54,8 +47,8 @@ public interface iCardEdit {
         void linkModel(MyInterfaces.CardsService model);
         void unlinkModel();
 
-        void onCreateCard(String cardType);
-        void onCardRecieved(Card card);
+        void createCard(String cardType);
+        void editCard(Card card);
 
         void onSaveButtonClicked();
         void onCancelButtonClicked();
