@@ -84,7 +84,8 @@ public class CardsList_View extends AppCompatActivity implements
         final Callable onServiceConnected = new Callable() {
             @Override
             public Void call() throws Exception {
-                loadList(false);
+                if (cardsListAdapter.isEmpty())
+                    loadList(false);
                 return null;
             }
         };
