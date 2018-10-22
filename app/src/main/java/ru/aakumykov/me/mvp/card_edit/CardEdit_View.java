@@ -97,6 +97,7 @@ public class CardEdit_View extends AppCompatActivity
             @Override
             public Void call() throws Exception {
                 presenter = new CardEdit_Presenter(cardsService);
+                presenter.linkView(CardEdit_View.this);
                 processInputIntent();
                 return null;
             }
@@ -122,8 +123,6 @@ public class CardEdit_View extends AppCompatActivity
                 isCardsServiceBounded = false;
             }
         };
-
-        presenter.linkView(this);
     }
 
     @Override
@@ -131,7 +130,7 @@ public class CardEdit_View extends AppCompatActivity
         Log.d(TAG+"_L-CYCLE", "onStart()");
         super.onStart();
         if (isCardsServiceBounded) bindService(cardsServiceIntent, cardsServiceConnection, Context.BIND_AUTO_CREATE);
-        this.presenter.linkView(this);
+        if (null != presenter) presenter.linkView(this);
     }
 
     @Override
@@ -139,7 +138,7 @@ public class CardEdit_View extends AppCompatActivity
         Log.d(TAG+"_L-CYCLE", "onStop()");
         super.onStop();
         if (isCardsServiceBounded) unbindService(cardsServiceConnection);
-        presenter.unlinkView();
+        if (null != presenter) presenter.unlinkView();
     }
 
     @Override
