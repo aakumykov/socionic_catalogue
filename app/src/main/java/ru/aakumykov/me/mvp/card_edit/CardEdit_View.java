@@ -273,6 +273,7 @@ public class CardEdit_View extends AppCompatActivity
                         MyUtils.hide(imageProgressBar);
                         showBrokenImage();
                         showErrorMsg(R.string.error_loading_image);
+                        e.printStackTrace();
                     }
                 });
     }

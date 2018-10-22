@@ -257,7 +257,8 @@ public class CardView_View extends AppCompatActivity implements
 
             @Override
             public void onError(Exception e) {
-                showErrorMsg(e.getMessage());
+                showErrorMsg(R.string.error_loading_image);
+                e.printStackTrace();
                 MyUtils.hide(imageProgressBar);
                 displayImageError();
             }
