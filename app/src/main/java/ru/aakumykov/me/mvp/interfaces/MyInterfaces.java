@@ -18,7 +18,6 @@ public interface MyInterfaces {
 
         String createKey();
         void saveCard(Card card, SaveCardCallbacks callbacks);
-//        void updateCard(Card newCard, SaveCardCallbacks callbacks);
         void deleteCard(Card card, DeleteCallbacks callbacks);
 
         void uploadImage(Uri imageURI, String mimeType, String remotePath, ImageUploadCallbacks callbacks);
