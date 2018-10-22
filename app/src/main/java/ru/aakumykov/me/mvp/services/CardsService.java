@@ -38,12 +38,15 @@ public class CardsService extends Service implements MyInterfaces.CardsService
     private final static String TAG = "CardsService";
     private final IBinder binder;
     private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference cardsRef;
+
 
     // Слежебные методы
     public CardsService() {
         Log.d(TAG, "new CardsService()");
         binder = new LocalBinder();
         firebaseDatabase = FirebaseDatabase.getInstance();
+        cardsRef = firebaseDatabase.getReference().child(Constants.CARDS_PATH);
     }
 
     @Override
@@ -66,13 +69,19 @@ public class CardsService extends Service implements MyInterfaces.CardsService
         firebaseDatabase.goOffline();
     }
 
+
     // Пользовательские методы
+
+    @Override
+    public String createKey() {
+        return cardsRef.push().getKey();
+    }
+
     @Override
     public void loadCard(String key, final CardCallbacks callbacks) {
         Log.d(TAG, "loadCard("+key+")");
 
-        DatabaseReference cardRef = firebaseDatabase.getReference()
-                .child(Constants.CARDS_PATH).child(key);
+        DatabaseReference cardRef = cardsRef.child(key);
 
         cardRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -93,10 +102,7 @@ public class CardsService extends Service implements MyInterfaces.CardsService
     public void loadList(final ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
 
-        DatabaseReference listRef = firebaseDatabase.getReference()
-                .child(Constants.CARDS_PATH);
-
-        listRef.addChildEventListener(new ChildEventListener() {
+        cardsRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 // TODO: сложно это всё. Проверить. Где обрабатывать ошибку? Где выделять Card?
@@ -140,8 +146,7 @@ public class CardsService extends Service implements MyInterfaces.CardsService
     public void updateCard(final Card newCard, final UpdateCardCallbacks callbacks) {
         Log.d(TAG, "updateCard(), "+newCard.getKey()+", "+newCard.getTitle());
 
-        DatabaseReference cardRef = firebaseDatabase.getReference()
-                .child(Constants.CARDS_PATH).child(newCard.getKey());
+        DatabaseReference cardRef = cardsRef.child(newCard.getKey());
 
         cardRef.setValue(newCard)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -169,8 +174,7 @@ public class CardsService extends Service implements MyInterfaces.CardsService
     public void deleteCard(final Card card, final  DeleteCallbacks callbacks) {
         Log.d(TAG, "deleteCard(), "+card);
 
-        DatabaseReference cardRef =firebaseDatabase.getReference()
-                .child(Constants.CARDS_PATH).child(card.getKey());
+        DatabaseReference cardRef = cardsRef.child(card.getKey());
 
         cardRef.removeValue(new DatabaseReference.CompletionListener() {
             @Override
