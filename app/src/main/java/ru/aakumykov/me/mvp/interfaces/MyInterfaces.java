@@ -18,20 +18,20 @@ public interface MyInterfaces {
 
         String createKey();
         void saveCard(Card card, SaveCardCallbacks callbacks);
-        void updateCard(Card newCard, UpdateCardCallbacks callbacks);
+//        void updateCard(Card newCard, SaveCardCallbacks callbacks);
         void deleteCard(Card card, DeleteCallbacks callbacks);
 
         void uploadImage(Uri imageURI, String mimeType, String remotePath, ImageUploadCallbacks callbacks);
         void cancelUpload();
 
 
-        interface CardCallbacks extends DeleteCallbacks, UpdateCardCallbacks {
+        interface CardCallbacks extends DeleteCallbacks {
             void onLoadSuccess(Card card);
             void onLoadFailed(String msg);
             void onLoadCanceled();
         }
 
-        interface ListCallbacks extends DeleteCallbacks, UpdateCardCallbacks {
+        interface ListCallbacks extends DeleteCallbacks {
             void onChildAdded(Card card);
             void onChildChanged(Card card, String previousCardName); // или title?
             void onChildMoved(Card card, String previousCardName); // или title?
@@ -48,11 +48,6 @@ public interface MyInterfaces {
         interface DeleteCallbacks {
             void onDeleteSuccess(Card card);
             void onDeleteError(String msg);
-        }
-
-        interface UpdateCardCallbacks {
-            void onUpdateSuccess(Card card);
-            void onUpdateError(String msg);
         }
 
         interface ImageUploadCallbacks {

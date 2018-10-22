@@ -190,33 +190,33 @@ public class CardsService extends Service implements MyInterfaces.CardsService
                 });
     }
 
-    @Override
-    public void updateCard(final Card newCard, final UpdateCardCallbacks callbacks) {
-        Log.d(TAG, "updateCard(), "+newCard.getKey()+", "+newCard.getTitle());
-
-        DatabaseReference cardRef = cardsRef.child(newCard.getKey());
-
-        cardRef.setValue(newCard)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onUpdateSuccess(newCard);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onUpdateError(e.getMessage());
-                        e.printStackTrace();
-                    }
-                })
-                .addOnCanceledListener(new OnCanceledListener() {
-                    @Override
-                    public void onCanceled() {
-                        callbacks.onUpdateError(getResources().getString(R.string.card_update_cancelled));
-                    }
-                });
-    }
+//    @Override
+//    public void updateCard(final Card newCard, final SaveCardCallbacks callbacks) {
+//        Log.d(TAG, "updateCard(), "+newCard.getKey()+", "+newCard.getTitle());
+//
+//        DatabaseReference cardRef = cardsRef.child(newCard.getKey());
+//
+//        cardRef.setValue(newCard)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        callbacks.onCardSaveSuccess(newCard);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        callbacks.onCardSaveError(e.getMessage());
+//                        e.printStackTrace();
+//                    }
+//                })
+//                .addOnCanceledListener(new OnCanceledListener() {
+//                    @Override
+//                    public void onCanceled() {
+//                        callbacks.onCardSaveCancel();
+//                    }
+//                });
+//    }
 
     @Override
     public void deleteCard(final Card card, final  DeleteCallbacks callbacks) {

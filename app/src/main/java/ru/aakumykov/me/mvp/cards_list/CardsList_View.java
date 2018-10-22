@@ -369,18 +369,18 @@ public class CardsList_View extends AppCompatActivity implements
 
     // Блять, это же не нужно на живом списке (нужно на обычном)
     // Пора отдыхать!
-    @Override
-    public void onUpdateSuccess(Card card) {
-        Log.d(TAG, "onUpdateSuccess()");
-        // TODO: переделать на Toast
-        showInfoMsg(R.string.card_update_success);
-    }
-
-    @Override
-    public void onUpdateError(String msg) {
-        Log.d(TAG, "onUpdateError()");
-        showErrorMsg(R.string.card_update_error);
-    }
+//    @Override
+//    public void onUpdateSuccess(Card card) {
+//        Log.d(TAG, "onUpdateSuccess()");
+//        // TODO: переделать на Toast
+//        showInfoMsg(R.string.card_update_success);
+//    }
+//
+//    @Override
+//    public void onUpdateError(String msg) {
+//        Log.d(TAG, "onUpdateError()");
+//        showErrorMsg(R.string.card_update_error);
+//    }
 
     @Override
     public void onDeleteSuccess(Card card) {
