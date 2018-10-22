@@ -102,6 +102,7 @@ public class CardsList_View extends AppCompatActivity implements
                     onServiceConnected.call();
                 } catch (Exception e) {
                     showErrorMsg(e.getMessage());
+                    e.printStackTrace();
                 }
             }
 

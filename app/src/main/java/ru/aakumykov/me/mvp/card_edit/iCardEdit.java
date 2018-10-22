@@ -36,9 +36,10 @@ public interface iCardEdit {
         void enableForm();
         void disableForm();
 
-        void showInfo(int msgId);
-        void showError(int msgId);
-        void hideMessage();
+        void showInfoMsg(int msgId);
+        void showErrorMsg(int msgId);
+        void showErrorMsg(String msg);
+        void hideMsg();
 
         void displayNewCard(Card card);
 
@@ -60,21 +61,4 @@ public interface iCardEdit {
         void onImageSelected(Uri imageURI, String mimeType);
     }
 
-    interface Model {
-        String createKey();
-        void uploadImage(Uri imageURI, String imageMimeType, String remotePath, iCardEdit.ModelCallbacks callbacks);
-        void cancelImageUpload();
-        void saveCard(Card card, iCardEdit.ModelCallbacks callbacks);
-    }
-
-    interface ModelCallbacks {
-        void onCardSaveSuccess(Card card);
-        void onCardSaveError(String message);
-        void onCardSaveCancel();
-
-        void onImageUploadProgress(int progress);
-        void onImageUploadSuccess(Uri remoteImageURI);
-        void onImageUploadError(String message);
-        void onImageUploadCancel();
-    }
 }

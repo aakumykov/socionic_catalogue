@@ -1,9 +1,13 @@
 package ru.aakumykov.me.mvp.card_edit;
 
 import android.Manifest;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +25,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.concurrent.Callable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import permissions.dispatcher.NeedsPermission;
@@ -29,7 +35,9 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_view.CardView_View;
+import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.services.CardsService;
 
 // TODO: кнопка Вверх как Отмена
 // TODO: сохранение при ещё не загруженной картинке
@@ -56,32 +64,73 @@ public class CardEdit_View extends AppCompatActivity
 
 
     private final static String TAG = "CardEdit_View";
+
+    private Intent cardsServiceIntent;
+    private ServiceConnection cardsServiceConnection;
+    private MyInterfaces.CardsService cardsService;
+    private boolean isCardsServiceBounded = false;
+    
     private iCardEdit.Presenter presenter;
 
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG+"_L-CYCLE", "onCreate()");
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_edit_activity);
         ButterKnife.bind(this);
 
-        this.presenter = new CardEdit_Presenter();
-        this.presenter.linkView(this);
-
+        // Настройка элементов интерфейса
         saveButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
         discardImageButton.setOnClickListener(this);
         localImageView.setOnClickListener(this);
 
+        // Запрос разрешений
         CardEdit_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
+        
+        // Соединение со службой
+        cardsServiceIntent = new Intent(this, CardsService.class);
 
-        processInputIntent();
+        final Callable onServiceConnected = new Callable() {
+            @Override
+            public Void call() throws Exception {
+                presenter = new CardEdit_Presenter(cardsService);
+                processInputIntent();
+                return null;
+            }
+        };
+        
+        cardsServiceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                CardsService.LocalBinder localBinder = (CardsService.LocalBinder) service;
+                cardsService = localBinder.getService();
+                isCardsServiceBounded = true;
+
+                try {
+                    onServiceConnected.call();
+                } catch (Exception e) {
+                    showErrorMsg(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                isCardsServiceBounded = false;
+            }
+        };
+
+        presenter.linkView(this);
     }
 
     @Override
     protected void onStart() {
         Log.d(TAG+"_L-CYCLE", "onStart()");
         super.onStart();
+        if (isCardsServiceBounded) bindService(cardsServiceIntent, cardsServiceConnection, Context.BIND_AUTO_CREATE);
         this.presenter.linkView(this);
     }
 
@@ -89,6 +138,7 @@ public class CardEdit_View extends AppCompatActivity
     protected void onStop() {
         Log.d(TAG+"_L-CYCLE", "onStop()");
         super.onStop();
+        if (isCardsServiceBounded) unbindService(cardsServiceConnection);
         presenter.unlinkView();
     }
 
@@ -153,7 +203,7 @@ public class CardEdit_View extends AppCompatActivity
     @Override
     public void displayRemoteImage(String imageURI) {
         if (null == imageURI) {
-            showError(R.string.error_loading_image);
+            showErrorMsg(R.string.error_loading_image);
             MyUtils.show(imageHolder);
             MyUtils.show(localImageView);
             MyUtils.hide(imageProgressBar);
@@ -163,7 +213,7 @@ public class CardEdit_View extends AppCompatActivity
 
         Uri uri = Uri.parse(imageURI);
         if (null == uri) {
-            showError(R.string.error_loading_image);
+            showErrorMsg(R.string.error_loading_image);
             Log.e(TAG, "Wrong image URI: "+imageURI);
             return;
         }
@@ -173,7 +223,7 @@ public class CardEdit_View extends AppCompatActivity
 
     @Override
     public void displayRemoteImage(Uri imageURI) {
-        hideMessage();
+        hideMsg();
         MyUtils.hide(localImageView);
         MyUtils.show(imageHolder);
         displayImage(remoteImageView, imageURI);
@@ -186,14 +236,14 @@ public class CardEdit_View extends AppCompatActivity
         if (null != uri) {
             displayLocalImage(uri);
         } else {
-            showError(R.string.error_loading_image);
+            showErrorMsg(R.string.error_loading_image);
             Log.e(TAG, "Wrong image URI: "+imageURI);
         }
     }
 
     @Override
     public void displayLocalImage(Uri imageURI) {
-        hideMessage();
+        hideMsg();
         MyUtils.hide(remoteImageView);
         MyUtils.show(imageHolder);
         MyUtils.show(discardImageButton);
@@ -214,7 +264,7 @@ public class CardEdit_View extends AppCompatActivity
 
             @Override
             public void onError(Exception e) {
-                showError(R.string.error_loading_image);
+                showErrorMsg(R.string.error_loading_image);
                 displayBrokenImage();
             }
         });
@@ -288,19 +338,19 @@ public class CardEdit_View extends AppCompatActivity
             return;
 
         if (RESULT_OK != resultCode) {
-            showError(R.string.error_selecting_image);
+            showErrorMsg(R.string.error_selecting_image);
             return;
         }
 
         if (null == data) {
-            showError(R.string.image_data_error);
+            showErrorMsg(R.string.image_data_error);
             return;
         }
 
         Uri dataURI = data.getData();
 
         if (null == dataURI) {
-            showError(R.string.image_data_error);
+            showErrorMsg(R.string.image_data_error);
             return;
         }
 
@@ -393,39 +443,32 @@ public class CardEdit_View extends AppCompatActivity
 
 
     @Override
-    public void showInfo(int msgId) {
-        showMessage(msgId, Constants.INFO_MSG);
+    public void showInfoMsg(int messageId) {
+        showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));
     }
+
     @Override
-    public void showError(int msgId) {
-        showMessage(msgId, Constants.ERROR_MSG);
+    public void showErrorMsg(int messageId) {
+        showErrorMsg(getResources().getString(messageId));
     }
+
     @Override
-    public void hideMessage() {
-        MyUtils.hide(messageView);
+    public void showErrorMsg(String message) {
+        showMsg(message, getResources().getColor(R.color.error));
     }
 
-    private void showMessage(int msgId, String msgType) {
-        int colorId;
-        switch (msgType) {
-            case Constants.INFO_MSG:
-                colorId = R.color.info;
-                break;
-            case Constants.ERROR_MSG:
-                colorId = R.color.error;
-                break;
-            default:
-                colorId = R.color.undefined;
-                break;
-        }
-        messageView.setTextColor(getResources().getColor(colorId));
-
-        String msg = getResources().getString(msgId);
-        messageView.setText(msg);
-
+    private void showMsg(String text, int color) {
+        messageView.setText(text);
+        messageView.setTextColor(color);
         MyUtils.show(messageView);
     }
 
+    @Override
+    public void hideMsg() {
+        MyUtils.hide(messageView);
+    }
+
+    
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     void checkPermissions() {
 

@@ -6,25 +6,32 @@ import android.util.Log;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
 import ru.aakumykov.me.mvp.models.Card;
 
 
-public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
-        implements iCardEdit.Presenter, iCardEdit.ModelCallbacks {
+public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel implements
+        iCardEdit.Presenter,
+        MyInterfaces.CardsService.ImageUploadCallbacks,
+        MyInterfaces.CardsService.SaveCardCallbacks
+{
 
     private final static String TAG = "CardEdit_Presenter";
     private iCardEdit.View view;
-    private iCardEdit.Model model;
+//    private iCardEdit.Model model;
+    private MyInterfaces.CardsService model;
 
     private Card currentCard;
     private Uri localImageURI;
     private String localImageType;
     private String newImageURI;
 
-    CardEdit_Presenter() {
+
+    CardEdit_Presenter(MyInterfaces.CardsService cardsService) {
         Log.d(TAG, "new CardEdit_Presenter()");
-        if (null == model) model = CardEdit_Model.getInstance();
+        model = cardsService;
     }
+
 
     @Override
     public void linkView(iCardEdit.View view) {
@@ -52,7 +59,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
                 view.displayImageCard(card);
                 break;
             default:
-                view.showError(R.string.wrong_card_type);
+                view.showErrorMsg(R.string.wrong_card_type);
                 Log.e(TAG, "Unknown card type: "+card.getType());
         }
     }
@@ -127,8 +134,8 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
 
             } catch (Exception e) {
                 // TODO: сделать возможным это?
-                //view.showError(e.getMessage());
-                view.showError(R.string.image_upload_error);
+                //view.showErrorMsg(e.getMessage());
+                view.showErrorMsg(R.string.image_upload_error);
                 e.printStackTrace();
             }
         } else {
@@ -136,7 +143,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
             try {
                 saveCompleteCard();
             } catch (Exception e) {
-                view.showError(R.string.error_saving_card);
+                view.showErrorMsg(R.string.error_saving_card);
                 e.printStackTrace();
             }
         }
@@ -157,19 +164,19 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
         try {
             saveCompleteCard();
         } catch (Exception e) {
-            view.showError(R.string.error_saving_card);
+            view.showErrorMsg(R.string.error_saving_card);
             Log.e(TAG, e.getMessage());
         }
     }
 
     @Override
     public void onImageUploadError(String message) {
-        view.showError(R.string.image_upload_error);
+        view.showErrorMsg(R.string.image_upload_error);
     }
 
     @Override
     public void onImageUploadCancel() {
-        view.showError(R.string.image_upload_cancelled);
+        view.showErrorMsg(R.string.image_upload_cancelled);
     }
 
 
@@ -190,7 +197,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
                     currentCard.setImageURL(newImageURI);
                 break;
             default:
-                view.showError(R.string.wrong_card_type);
+                view.showErrorMsg(R.string.wrong_card_type);
                 throw new Exception("Unknown card type: "+currentCard.getType());
         }
 
@@ -208,14 +215,14 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
 
     @Override
     public void onCardSaveError(String message) {
-        view.showError(R.string.error_saving_card);
+        view.showErrorMsg(R.string.error_saving_card);
         view.enableForm();
         Log.e(TAG, message);
     }
 
     @Override
     public void onCardSaveCancel() {
-        view.showError(R.string.card_saving_cancelled);
+        view.showErrorMsg(R.string.card_saving_cancelled);
         view.enableForm();
     }
 
@@ -225,7 +232,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel
         String fext = MyUtils.mime2ext(localImageType);
 
         if (null == fext) {
-            view.showError(R.string.wrong_mime_type);
+            view.showErrorMsg(R.string.wrong_mime_type);
             throw new Exception("Wrong mime type: "+localImageType);
         }
 
