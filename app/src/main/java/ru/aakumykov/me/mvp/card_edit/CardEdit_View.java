@@ -309,6 +309,7 @@ public class CardEdit_View extends AppCompatActivity
     @Override
     public void prepareForImageCard() {
         MyUtils.show(imageHolder);
+        MyUtils.hide(imageProgressBar);
     }
 
     // Выбор картинки
