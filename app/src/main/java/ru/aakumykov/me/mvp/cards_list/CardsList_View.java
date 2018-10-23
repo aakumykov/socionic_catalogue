@@ -1,13 +1,8 @@
 package ru.aakumykov.me.mvp.cards_list;
 
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.graphics.drawable.Drawable;
-import android.os.IBinder;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
@@ -21,10 +16,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.concurrent.Callable;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.aakumykov.me.mvp.BaseClass;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
@@ -33,12 +27,11 @@ import ru.aakumykov.me.mvp.card_view.CardView_View;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
-import ru.aakumykov.me.mvp.services.CardsService;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 // TODO: Пункт "обновить" в меню панели.
 
-public class CardsList_View extends AppCompatActivity implements
+public class CardsList_View extends BaseClass implements
         iCardsList.View,
         AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener,
@@ -46,21 +39,14 @@ public class CardsList_View extends AppCompatActivity implements
         iCardsService.ListCallbacks
 {
 
-    private final static String TAG = "CardsList_View";
-
-    private Intent cardsServiceIntent;
-    private ServiceConnection cardsServiceConnection;
-    private iCardsService cardsService;
-    private boolean isCardsServiceBounded = false;
-
-    private CardsArrayList cardsList;
-    private CardsListAdapter cardsListAdapter;
-
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.listView) ListView listView;
 
+    private final static String TAG = "CardsList_View";
+    private CardsArrayList cardsList;
+    private CardsListAdapter cardsListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,57 +66,17 @@ public class CardsList_View extends AppCompatActivity implements
         cardsList = new CardsArrayList();
         cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
         listView.setAdapter(cardsListAdapter);
-
-
-        final Callable onServiceConnected = new Callable() {
-            @Override
-            public Void call() throws Exception {
-                if (cardsListAdapter.isEmpty())
-                    loadList(false);
-                return null;
-            }
-        };
-
-        cardsServiceIntent = new Intent(this, CardsService.class);
-
-        cardsServiceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                CardsService.LocalBinder localBinder = (CardsService.LocalBinder) service;
-                cardsService = localBinder.getService();
-                isCardsServiceBounded = true;
-
-                try {
-                    onServiceConnected.call();
-                } catch (Exception e) {
-                    showErrorMsg(e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                isCardsServiceBounded = false;
-            }
-        };
-    }
-
-
-    @Override
-    protected void onStart() {
-        Log.d(TAG, "onStart()");
-        super.onStart();
-        bindService(cardsServiceIntent, cardsServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
-    protected void onStop() {
-        Log.d(TAG, "onStop()");
-        super.onStop();
-        if (isCardsServiceBounded)
-            unbindService(cardsServiceConnection);
+    public void onServiceBounded() {
+        loadList(false);
     }
 
+    @Override
+    public void onServiceUnbounded() {
+
+    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -215,7 +161,7 @@ public class CardsList_View extends AppCompatActivity implements
     private void loadList(boolean manualRefresh) {
         Log.d(TAG, "loadList(manualRefresh: "+manualRefresh+")");
         if (!manualRefresh) showLoadingMessage();
-        cardsService.loadList(this);
+        getCardsService().loadList(this);
     }
 
     private void showLoadingMessage() {
@@ -331,7 +277,7 @@ public class CardsList_View extends AppCompatActivity implements
                     @Override
                     public void yesAction() {
                         // Правильно: CardsList_View.this ?
-                        cardsService.deleteCard(card, CardsList_View.this);
+                        getCardsService().deleteCard(card, CardsList_View.this);
                     }
                 },
                 null
