@@ -1,7 +1,11 @@
 package ru.aakumykov.me.mvp.card_view;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.Uri;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
@@ -18,14 +22,18 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.concurrent.Callable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
-import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
+import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.services.CardsService;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 //TODO: уменьшение изображения
@@ -33,9 +41,6 @@ import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 public class CardView_View extends AppCompatActivity implements
         iCardView.View {
-
-    private final static String TAG = "CardView_View";
-    private iCardView.Presenter presenter;
 
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
@@ -45,6 +50,18 @@ public class CardView_View extends AppCompatActivity implements
     @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.descriptionView) TextView descriptionView;
+
+    private final static String TAG = "CardView_View";
+    private iCardView.Presenter presenter;
+
+    private Intent cardsServiceIntent;
+    private ServiceConnection cardsServiceConnection;
+    private Callable onServiceConnected;
+    private Callable onServiceDisconnected;
+    private iCardsService cardsService;
+    private boolean isCardsServiceBounded = false;
+
+    private boolean firstRun = true;
 
 
     @Override
@@ -59,12 +76,79 @@ public class CardView_View extends AppCompatActivity implements
         }
 
         presenter = new CardView_Presenter();
-        presenter.linkView(this); // Здесь тоже нужен linkView()
 
-        Intent intent = getIntent();
-        String cardKey = intent.getStringExtra(Constants.CARD_KEY);
+        // Соединение со службой
+        cardsServiceIntent = new Intent(this, CardsService.class);
 
-        presenter.cardKeyRecieved(cardKey);
+        onServiceConnected = new Callable() {
+            @Override
+            public Void call() throws Exception {
+                presenter.linkView(CardView_View.this);
+                presenter.linkModel(cardsService);
+                if (firstRun) {
+                    Intent intent = getIntent();
+                    String cardKey = intent.getStringExtra(Constants.CARD_KEY);
+                    presenter.cardKeyRecieved(cardKey);
+                    firstRun = false;
+                }
+                return null;
+            }
+        };
+
+        onServiceDisconnected = new Callable() {
+            @Override
+            public Void call() throws Exception {
+                presenter.unlinkView();
+                presenter.unlinkModel();
+                return null;
+            }
+        };
+
+        cardsServiceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                Log.d(TAG, "onServiceConnected()");
+
+                CardsService.LocalBinder localBinder = (CardsService.LocalBinder) service;
+                cardsService = localBinder.getService();
+                isCardsServiceBounded = true;
+
+                try {
+                    onServiceConnected.call();
+                } catch (Exception e) {
+                    showErrorMsg(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                Log.d(TAG, "onServiceDisconnected()");
+
+                isCardsServiceBounded = false;
+
+                try {
+                    onServiceDisconnected.call();
+                } catch (Exception e) {
+                    showErrorMsg(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        };
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        bindService(cardsServiceIntent, cardsServiceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (isCardsServiceBounded)
+            unbindService(cardsServiceConnection);
     }
 
     @Override
@@ -94,18 +178,6 @@ public class CardView_View extends AppCompatActivity implements
                     break;
             }
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        presenter.linkView(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        presenter.unlinkView();
     }
 
     @Override
@@ -186,7 +258,8 @@ public class CardView_View extends AppCompatActivity implements
 
             @Override
             public void onError(Exception e) {
-                showErrorMsg(e.getMessage());
+                showErrorMsg(R.string.error_loading_image);
+                e.printStackTrace();
                 MyUtils.hide(imageProgressBar);
                 displayImageError();
             }
@@ -289,7 +362,6 @@ public class CardView_View extends AppCompatActivity implements
 
 
     // Диалоги
-
     @Override
     public void showDeleteDialog() {
 
@@ -297,20 +369,20 @@ public class CardView_View extends AppCompatActivity implements
                 this,
                 R.string.card_deletion,
                 R.string.really_delete_card,
-                new MyInterfaces.DialogCallbacks.onCheck() {
+                new iDialogCallbacks.onCheck() {
                     @Override
                     public boolean doCheck() {
                         return true;
                     }
                 },
-                new MyInterfaces.DialogCallbacks.onYes() {
+                new iDialogCallbacks.onYes() {
                     @Override
                     public void yesAction() {
                         //Log.d(TAG, "yesAction");
                         presenter.onDeleteConfirmed();
                     }
                 },
-                new MyInterfaces.DialogCallbacks.onNo() {
+                new iDialogCallbacks.onNo() {
                     @Override
                     public void noAction() {
                         //Log.d(TAG, "noAction");
@@ -320,6 +392,5 @@ public class CardView_View extends AppCompatActivity implements
 
         yesNoDialog.show();
     }
-
 
 }

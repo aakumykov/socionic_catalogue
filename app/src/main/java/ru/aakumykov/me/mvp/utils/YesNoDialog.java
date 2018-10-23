@@ -5,7 +5,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
+import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 
 
 public class YesNoDialog {
@@ -17,17 +17,17 @@ public class YesNoDialog {
     private Context context;
     private String title;
     private String message;
-    private MyInterfaces.DialogCallbacks.onCheck checkCallback;
-    private MyInterfaces.DialogCallbacks.onYes yesCallback;
-    private MyInterfaces.DialogCallbacks.onNo noCallback;
+    private iDialogCallbacks.onCheck checkCallback;
+    private iDialogCallbacks.onYes yesCallback;
+    private iDialogCallbacks.onNo noCallback;
 
     public YesNoDialog (
             final Context context,
             int titleId,
             int messageId,
-            final MyInterfaces.DialogCallbacks.onCheck checkCallback,
-            final MyInterfaces.DialogCallbacks.onYes yesCallback,
-            final MyInterfaces.DialogCallbacks.onNo noCallback
+            final iDialogCallbacks.onCheck checkCallback,
+            final iDialogCallbacks.onYes yesCallback,
+            final iDialogCallbacks.onNo noCallback
             ) {
 
         this.context = context;

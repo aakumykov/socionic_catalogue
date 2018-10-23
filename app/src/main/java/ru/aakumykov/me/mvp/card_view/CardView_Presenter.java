@@ -1,20 +1,21 @@
 package ru.aakumykov.me.mvp.card_view;
 
-import android.support.annotation.Nullable;
 import android.util.Log;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
-public class CardView_Presenter implements iCardView.Presenter, iCardView.Callbacks {
+public class CardView_Presenter implements
+        iCardView.Presenter,
+        iCardsService.CardCallbacks
+{
 
     private final static String TAG = "CardView_Presenter";
     private iCardView.View view;
-    private iCardView.Model model;
+    private iCardsService model;
     private Card currentCard;
 
-    CardView_Presenter() {
-        model = CardView_Model.getInstance();
-    }
+    CardView_Presenter() {}
 
 
     // Получение карточки
@@ -24,6 +25,8 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
         model.loadCard(key, this);
     }
 
+
+    // Коллбеки
     @Override
     public void onLoadSuccess(Card card) {
         this.currentCard = card;
@@ -41,6 +44,17 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
         view.showErrorMsg(R.string.card_load_canceled);
     }
 
+    @Override
+    public void onDeleteSuccess(Card card) {
+        view.closePage();
+    }
+
+    @Override
+    public void onDeleteError(String msg) {
+        view.hideProgressMessage();
+        view.showErrorMsg(R.string.error_deleting_card);
+    }
+
 
     // Реакция на кнопки
     @Override
@@ -48,7 +62,6 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
         view.goEditPage(currentCard);
     }
 
-    // TODO: удаление также и из списка
     @Override
     public void onDeleteButtonClicked() {
         Log.d(TAG, "onDeleteButtonClicked()");
@@ -66,18 +79,6 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
         }
     }
 
-    @Override
-    public void onDeleteComplete(@Nullable String errorMsg) {
-        view.hideProgressMessage();
-
-        if (null == errorMsg) {
-            view.closePage();
-        } else {
-            view.showErrorMsg(R.string.error_deleting_card);
-        }
-    }
-
-
 
     @Override
     public void linkView(iCardView.View view) {
@@ -91,4 +92,13 @@ public class CardView_Presenter implements iCardView.Presenter, iCardView.Callba
         this.view = null;
     }
 
+    @Override
+    public void linkModel(iCardsService model) {
+        this.model = model;
+    }
+
+    @Override
+    public void unlinkModel() {
+        this.model = null;
+    }
 }

@@ -1,11 +1,11 @@
 package ru.aakumykov.me.mvp.cards_list;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
+import android.os.IBinder;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,8 +21,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.Callable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,8 +30,10 @@ import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_view.CardView_View;
-import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
+import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.services.CardsService;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 // TODO: Пункт "обновить" в меню панели.
@@ -41,14 +42,16 @@ public class CardsList_View extends AppCompatActivity implements
         iCardsList.View,
         AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener,
+        iCardsService.ListCallbacks
+{
 
     private final static String TAG = "CardsList_View";
 
-    private CardsList_ViewModel viewModel;
-    private LiveData<Card> cardAdd_LiveData;
-    private LiveData<Card> cardRemove_LiveData;
-    private LiveData<Card> cardChange_LiveData;
+    private Intent cardsServiceIntent;
+    private ServiceConnection cardsServiceConnection;
+    private iCardsService cardsService;
+    private boolean isCardsServiceBounded = false;
 
     private CardsArrayList cardsList;
     private CardsListAdapter cardsListAdapter;
@@ -58,9 +61,11 @@ public class CardsList_View extends AppCompatActivity implements
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.listView) ListView listView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        Log.d(TAG+"_L-CYCLE", "onCreate()");
+        Log.d(TAG, "onCreate()");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cards_list_activity);
         ButterKnife.bind(this);
@@ -76,71 +81,62 @@ public class CardsList_View extends AppCompatActivity implements
         cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
         listView.setAdapter(cardsListAdapter);
 
-        connectToViewModel();
 
-        loadList(false);
+        final Callable onServiceConnected = new Callable() {
+            @Override
+            public Void call() throws Exception {
+                if (cardsListAdapter.isEmpty())
+                    loadList(false);
+                return null;
+            }
+        };
+
+        cardsServiceIntent = new Intent(this, CardsService.class);
+
+        cardsServiceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                CardsService.LocalBinder localBinder = (CardsService.LocalBinder) service;
+                cardsService = localBinder.getService();
+                isCardsServiceBounded = true;
+
+                try {
+                    onServiceConnected.call();
+                } catch (Exception e) {
+                    showErrorMsg(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                isCardsServiceBounded = false;
+            }
+        };
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        Log.d(TAG+"_L-CYCLE", "onActivityResult()");
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        connectToViewModel();
-//
-//        if (RESULT_OK == resultCode) {
-//
-//            switch (requestCode) {
-//
-//                case Constants.CODE_EDIT_CARD:
-//                    if (null != data) {
-//                        Card card = data.getParcelableExtra(Constants.CARD);
-//                        Log.d(TAG, "Отредактированная карточка: "+card);
-//                    } else {
-//                        showErrorMsg(R.string.error_displaying_card);
-//                        Log.e(TAG, "Intent data in activity result == null.");
-//                    }
-//                    break;
-//
-//                default:
-//                    showErrorMsg(R.string.unknown_request_code);
-//                    Log.d(TAG, "Unknown request code: "+requestCode);
-//                    break;
-//            }
-//        }
-//    }
 
 
     @Override
     protected void onStart() {
+        Log.d(TAG, "onStart()");
         super.onStart();
-//        Log.d(TAG+"_L-CYCLE", "onStart()");
+        bindService(cardsServiceIntent, cardsServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     protected void onStop() {
+        Log.d(TAG, "onStop()");
         super.onStop();
-//        Log.d(TAG+"_L-CYCLE", "onStop()");
+        if (isCardsServiceBounded)
+            unbindService(cardsServiceConnection);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-//        Log.d(TAG+"_L-CYCLE", "onDestroy()");
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(TAG, "onItemClick(..., position: "+position+", id: "+id+")");
-
-        String cardKey = cardsList.get(position).getKey();
-//        Log.d(TAG, "onItemClick(), cardKey: "+cardKey);
-
-        Intent intent = new Intent();
-        // TODO: сделать независимым от конкретного класса
-        intent.setClass(this, CardView_View.class);
-        intent.putExtra(Constants.CARD_KEY, cardKey);
-        startActivity(intent);
+        Card card = cardsList.get(position);
+        viewCard(card);
     }
 
     @Override
@@ -154,9 +150,12 @@ public class CardsList_View extends AppCompatActivity implements
         return true;
     }
 
+    // Зачем, если список живой?
     @Override
     public void onRefresh() {
 //        Log.d(TAG, "onRefresh()");
+        cardsList.clear();
+        cardsListAdapter.notifyDataSetChanged();
         loadList(true);
     }
 
@@ -207,71 +206,16 @@ public class CardsList_View extends AppCompatActivity implements
 
         Intent intent = new Intent();
         intent.setClass(this, CardEdit_View.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         intent.putExtra(Constants.CARD_TYPE, cardType);
         startActivity(intent);
     }
 
 
-    private void connectToViewModel() {
-        Log.d(TAG, "connectToViewModel()");
-
-        viewModel = ViewModelProviders.of(this).get(CardsList_ViewModel.class);
-
-        cardAdd_LiveData = viewModel.getCardAdd_LiveData();
-        cardAdd_LiveData.observe(this, new Observer<Card>() {
-            @Override
-            public void onChanged(@Nullable Card card) {
-//                Log.d(TAG+"_LiveData", "=ПОСТУПИЛИ ЖИВЫЕ ДАННЫЕ=, "+card);
-
-                hideLoadingMessage();
-                swipeRefreshLayout.setRefreshing(false);
-
-                cardsList.add(card);
-                cardsListAdapter.notifyDataSetChanged();
-            }
-        });
-
-        cardRemove_LiveData = viewModel.getCardRemove_LiveData();
-        cardRemove_LiveData.observe(this, new Observer<Card>() {
-            @Override
-            public void onChanged(@Nullable Card card) {
-                int removedCardIndex = cardsList.indexOf(card);
-                Log.d(TAG, "номер удалённой карточки в списке: "+removedCardIndex);
-
-                int removedCardPosition = cardsListAdapter.getPosition(card);
-                Log.d(TAG, "позиция удалённой карточки на экране: "+removedCardPosition);
-            }
-        });
-
-        cardChange_LiveData = viewModel.getCardChange_LiveData();
-        cardChange_LiveData.observe(this, new Observer<Card>() {
-            @Override
-            public void onChanged(@Nullable Card card) {
-                Log.d(TAG, "ИЗМЕНЕНО: "+card);
-                Card oldCard = cardsList.findCardByKey( card.getKey() );
-                Log.d(TAG, "карточка с таким же key в списке: "+oldCard);
-
-                int oldCardIndex = cardsList.indexOf(oldCard);
-                Log.d(TAG, "номер старой карточки: "+oldCardIndex);
-
-                int oldCardPosition = cardsListAdapter.getPosition(oldCard);
-                Log.d(TAG, "позиция старой карточки: "+oldCardPosition);
-
-                cardsList.set(oldCardIndex, card);
-                cardsListAdapter.notifyDataSetChanged();
-            }
-        });
-    }
-
-
     private void loadList(boolean manualRefresh) {
         Log.d(TAG, "loadList(manualRefresh: "+manualRefresh+")");
-
-        if (!manualRefresh)
-            showLoadingMessage();
-
-        viewModel.loadList(manualRefresh);
+        if (!manualRefresh) showLoadingMessage();
+        cardsService.loadList(this);
     }
 
     private void showLoadingMessage() {
@@ -333,41 +277,6 @@ public class CardsList_View extends AppCompatActivity implements
     }
 
 
-    private void editCard(Card card) {
-        Log.d(TAG, "editCard()");
-
-        Log.d(TAG, "место редактируемой карточки: "+cardsListAdapter.getPosition(card));
-
-        Intent intent = new Intent(this, CardEdit_View.class);
-        intent.putExtra(Constants.CARD, card);
-        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
-    }
-
-    private void deleteCard(Card card) {
-        Log.d(TAG, "deleteCard('"+card.getTitle()+"') ЗАГЛУШКА");
-
-//        // TODO: вот здесь-то и нужна Служба
-//        YesNoDialog yesNoDialog = new YesNoDialog(this, R.string.card_deletion,
-//                R.string.really_delete_card,
-//                new MyInterfaces.DialogCallbacks.onCheck() {
-//                    @Override
-//                    public boolean doCheck() {
-//                        return true;
-//                    }
-//                },
-//                new MyInterfaces.DialogCallbacks.onYes() {
-//                    @Override
-//                    public void yesAction() {
-//
-//                    }
-//                },
-//                null
-//        );
-//
-//        yesNoDialog.show();
-    }
-
-
     public void showInfoMsg(int messageId) {
         showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));
     }
@@ -391,4 +300,117 @@ public class CardsList_View extends AppCompatActivity implements
     }
 
 
+    // "Методы карточки" (в списке)
+    private void viewCard(Card card) {
+        Log.d(TAG, "viewCard()");
+        Intent intent = new Intent();
+        intent.setClass(this, CardView_View.class);
+        intent.putExtra(Constants.CARD_KEY, card.getKey());
+        startActivity(intent);
+    }
+
+    private void editCard(Card card) {
+        Log.d(TAG, "editCard()");
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.putExtra(Constants.CARD, card);
+        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+    }
+
+    private void deleteCard(final Card card) {
+        Log.d(TAG, "deleteCard(), "+card.getTitle());
+
+        YesNoDialog yesNoDialog = new YesNoDialog(this, R.string.card_deletion,
+                R.string.really_delete_card,
+                new iDialogCallbacks.onCheck() {
+                    @Override
+                    public boolean doCheck() {
+                        return true;
+                    }
+                },
+                new iDialogCallbacks.onYes() {
+                    @Override
+                    public void yesAction() {
+                        // Правильно: CardsList_View.this ?
+                        cardsService.deleteCard(card, CardsList_View.this);
+                    }
+                },
+                null
+        );
+
+        yesNoDialog.show();
+    }
+
+
+    // Методы обратнаго вызова
+    @Override
+    public void onChildAdded(Card card) {
+        Log.d(TAG, "onChildAdded()");
+        hideLoadingMessage();
+        swipeRefreshLayout.setRefreshing(false);
+        cardsList.add(card);
+        cardsListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onChildChanged(Card card, String previousCardName) {
+        Log.d(TAG, "onChildChanged(), "+card);
+        String changedCardKey = card.getKey();
+        Card oldCard = cardsList.findCardByKey(changedCardKey);
+        // TODO: где обрабатывать ошибки?
+//        if (null != oldCard) {
+            int cardArrayIndex = cardsList.indexOf(oldCard);
+            cardsList.set(cardArrayIndex, card);
+            cardsListAdapter.notifyDataSetChanged();
+//        } else {
+//            showErrorMsg(R.string.error_updating_list);
+//            Log.e(TAG, "Ошибка обновления списка после изменения карточки "+card);
+//        }
+    }
+
+
+    // Блять, это же не нужно на живом списке (нужно на обычном)
+    // Пора отдыхать!
+//    @Override
+//    public void onUpdateSuccess(Card card) {
+//        Log.d(TAG, "onUpdateSuccess()");
+//        // TODO: переделать на Toast
+//        showInfoMsg(R.string.card_update_success);
+//    }
+//
+//    @Override
+//    public void onUpdateError(String msg) {
+//        Log.d(TAG, "onUpdateError()");
+//        showErrorMsg(R.string.card_update_error);
+//    }
+
+    @Override
+    public void onDeleteSuccess(Card card) {
+        Log.d(TAG, "onDeleteSuccess(), "+card);
+        String changedCardKey = card.getKey();
+        Card oldCard = cardsList.findCardByKey(changedCardKey);
+        cardsList.remove(oldCard);
+        cardsListAdapter.remove(oldCard);
+    }
+
+    @Override
+    public void onDeleteError(String msg) {
+        Log.d(TAG, "onDeleteError(), "+msg);
+        showErrorMsg(R.string.error_deleting_card);
+    }
+
+
+    @Override
+    public void onChildMoved(Card card, String previousCardName) {
+
+    }
+
+    @Override
+    public void onCancelled(String errorMessage) {
+
+    }
+
+    @Override
+    public void onBadData(String errorMsg) {
+
+    }
 }

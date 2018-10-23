@@ -4,8 +4,12 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 
+import com.google.firebase.database.DataSnapshot;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ru.aakumykov.me.mvp.models.Card;
 
 public final class MyUtils {
     private MyUtils() {}
@@ -26,6 +30,17 @@ public final class MyUtils {
         } else {
             return null;
         }
+    }
+
+    public static Card snapshot2card(DataSnapshot dataSnapshot) throws IllegalArgumentException {
+        Card card = dataSnapshot.getValue(Card.class);
+        // TODO: протестировать с card == null
+        if (null != card) {
+            card.setKey(dataSnapshot.getKey());
+        } else {
+            throw new IllegalArgumentException("Card object is null");
+        }
+        return card;
     }
 
 //    public static String getMimeType(String url) {
