@@ -30,7 +30,8 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
-import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
+import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.CardsService;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
@@ -57,7 +58,7 @@ public class CardView_View extends AppCompatActivity implements
     private ServiceConnection cardsServiceConnection;
     private Callable onServiceConnected;
     private Callable onServiceDisconnected;
-    private MyInterfaces.CardsService cardsService;
+    private iCardsService cardsService;
     private boolean isCardsServiceBounded = false;
 
     private boolean firstRun = true;
@@ -368,20 +369,20 @@ public class CardView_View extends AppCompatActivity implements
                 this,
                 R.string.card_deletion,
                 R.string.really_delete_card,
-                new MyInterfaces.DialogCallbacks.onCheck() {
+                new iDialogCallbacks.onCheck() {
                     @Override
                     public boolean doCheck() {
                         return true;
                     }
                 },
-                new MyInterfaces.DialogCallbacks.onYes() {
+                new iDialogCallbacks.onYes() {
                     @Override
                     public void yesAction() {
                         //Log.d(TAG, "yesAction");
                         presenter.onDeleteConfirmed();
                     }
                 },
-                new MyInterfaces.DialogCallbacks.onNo() {
+                new iDialogCallbacks.onNo() {
                     @Override
                     public void noAction() {
                         //Log.d(TAG, "noAction");

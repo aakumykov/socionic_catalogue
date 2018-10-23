@@ -30,7 +30,8 @@ import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_view.CardView_View;
-import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
+import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.CardsService;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
@@ -42,14 +43,14 @@ public class CardsList_View extends AppCompatActivity implements
         AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener,
         SwipeRefreshLayout.OnRefreshListener,
-        MyInterfaces.CardsService.ListCallbacks
+        iCardsService.ListCallbacks
 {
 
     private final static String TAG = "CardsList_View";
 
     private Intent cardsServiceIntent;
     private ServiceConnection cardsServiceConnection;
-    private MyInterfaces.CardsService cardsService;
+    private iCardsService cardsService;
     private boolean isCardsServiceBounded = false;
 
     private CardsArrayList cardsList;
@@ -320,13 +321,13 @@ public class CardsList_View extends AppCompatActivity implements
 
         YesNoDialog yesNoDialog = new YesNoDialog(this, R.string.card_deletion,
                 R.string.really_delete_card,
-                new MyInterfaces.DialogCallbacks.onCheck() {
+                new iDialogCallbacks.onCheck() {
                     @Override
                     public boolean doCheck() {
                         return true;
                     }
                 },
-                new MyInterfaces.DialogCallbacks.onYes() {
+                new iDialogCallbacks.onYes() {
                     @Override
                     public void yesAction() {
                         // Правильно: CardsList_View.this ?

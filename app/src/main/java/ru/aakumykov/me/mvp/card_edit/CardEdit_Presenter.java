@@ -6,19 +6,19 @@ import android.util.Log;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
+import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
 
 public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel implements
         iCardEdit.Presenter,
-        MyInterfaces.CardsService.ImageUploadCallbacks,
-        MyInterfaces.CardsService.SaveCardCallbacks
+        iCardsService.ImageUploadCallbacks,
+        iCardsService.SaveCardCallbacks
 {
 
     private final static String TAG = "CardEdit_Presenter";
     private iCardEdit.View view;
-    private MyInterfaces.CardsService model;
+    private iCardsService model;
 
     private Card currentCard;
     private Uri localImageURI;
@@ -237,7 +237,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     }
 
     @Override
-    public void linkModel(MyInterfaces.CardsService model) {
+    public void linkModel(iCardsService model) {
         Log.d(TAG, "linkModel()");
         this.model = model;
     }

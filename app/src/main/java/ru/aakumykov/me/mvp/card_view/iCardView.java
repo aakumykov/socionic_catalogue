@@ -1,10 +1,8 @@
 package ru.aakumykov.me.mvp.card_view;
 
-import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 
-import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
+import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
 public interface iCardView {
@@ -41,7 +39,7 @@ public interface iCardView {
         void linkView(iCardView.View view);
         void unlinkView();
 
-        void linkModel(MyInterfaces.CardsService model);
+        void linkModel(iCardsService model);
         void unlinkModel();
     }
 }

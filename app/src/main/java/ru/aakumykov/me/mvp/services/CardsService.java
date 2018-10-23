@@ -28,11 +28,10 @@ import com.google.firebase.storage.UploadTask;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
-import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
+import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
-public class CardsService extends Service implements MyInterfaces.CardsService
+public class CardsService extends Service implements iCardsService
 {
     // Внутренний класс
     public class LocalBinder extends Binder {

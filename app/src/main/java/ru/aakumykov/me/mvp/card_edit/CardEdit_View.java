@@ -34,7 +34,7 @@ import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
+import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.CardsService;
 
@@ -67,7 +67,7 @@ public class CardEdit_View extends AppCompatActivity
     private ServiceConnection cardsServiceConnection;
     private Callable onServiceConnected;
     private Callable onServiceDisconnected;
-    private MyInterfaces.CardsService cardsService;
+    private iCardsService cardsService;
     private boolean isCardsServiceBounded = false;
     
     private iCardEdit.Presenter presenter;

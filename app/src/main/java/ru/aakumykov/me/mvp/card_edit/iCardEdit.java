@@ -1,9 +1,8 @@
 package ru.aakumykov.me.mvp.card_edit;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.net.Uri;
 
-import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
+import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
 public interface iCardEdit {
@@ -44,7 +43,7 @@ public interface iCardEdit {
         void linkView(iCardEdit.View view);
         void unlinkView();
 
-        void linkModel(MyInterfaces.CardsService model);
+        void linkModel(iCardsService model);
         void unlinkModel();
 
         void createCard(String cardType);

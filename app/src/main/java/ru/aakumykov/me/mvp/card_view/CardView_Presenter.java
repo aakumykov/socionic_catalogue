@@ -1,19 +1,18 @@
 package ru.aakumykov.me.mvp.card_view;
 
-import android.support.annotation.Nullable;
 import android.util.Log;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.interfaces.MyInterfaces;
+import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
 public class CardView_Presenter implements
         iCardView.Presenter,
-        MyInterfaces.CardsService.CardCallbacks
+        iCardsService.CardCallbacks
 {
 
     private final static String TAG = "CardView_Presenter";
     private iCardView.View view;
-    private MyInterfaces.CardsService model;
+    private iCardsService model;
     private Card currentCard;
 
     CardView_Presenter() {}
@@ -94,7 +93,7 @@ public class CardView_Presenter implements
     }
 
     @Override
-    public void linkModel(MyInterfaces.CardsService model) {
+    public void linkModel(iCardsService model) {
         this.model = model;
     }
 
