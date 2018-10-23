@@ -47,6 +47,7 @@ public class CardsList_View extends BaseActivity implements
     private final static String TAG = "CardsList_View";
     private CardsArrayList cardsList;
     private CardsListAdapter cardsListAdapter;
+    private boolean firstRun = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +71,17 @@ public class CardsList_View extends BaseActivity implements
 
     @Override
     public void onServiceBounded() {
-        loadList(false);
+        if (firstRun) {
+            loadList(false);
+            firstRun = false;
+        }
     }
 
     @Override
     public void onServiceUnbounded() {
 
     }
+
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -95,6 +100,7 @@ public class CardsList_View extends BaseActivity implements
         showPopupMenu(view, oldBackground,  card);
         return true;
     }
+
 
     // Зачем, если список живой?
     @Override
