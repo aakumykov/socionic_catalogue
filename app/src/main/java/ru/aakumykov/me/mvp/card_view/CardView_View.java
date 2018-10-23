@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.aakumykov.me.mvp.BaseClass;
+import ru.aakumykov.me.mvp.BaseActivity;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
@@ -29,7 +29,7 @@ import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 //TODO: уменьшение изображения
 
-public class CardView_View extends BaseClass implements
+public class CardView_View extends BaseActivity implements
         iCardView.View
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
@@ -225,13 +225,6 @@ public class CardView_View extends BaseClass implements
 
 
     // Внутренние методы
-    private void showMsg(String text, int color) {
-        messageView.setText(text);
-        messageView.setTextColor(color);
-        hideWaitScreen();
-        MyUtils.show(messageView);
-    }
-
     private void hideWaitScreen() {
         MyUtils.hide(messageView);
         MyUtils.hide(progressBar);

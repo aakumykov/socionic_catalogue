@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.aakumykov.me.mvp.BaseClass;
+import ru.aakumykov.me.mvp.BaseActivity;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
@@ -31,7 +31,7 @@ import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 // TODO: Пункт "обновить" в меню панели.
 
-public class CardsList_View extends BaseClass implements
+public class CardsList_View extends BaseActivity implements
         iCardsList.View,
         AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener,

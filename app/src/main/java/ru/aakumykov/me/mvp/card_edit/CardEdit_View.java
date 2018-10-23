@@ -24,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
-import ru.aakumykov.me.mvp.BaseClass;
+import ru.aakumykov.me.mvp.BaseActivity;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
@@ -35,7 +35,7 @@ import ru.aakumykov.me.mvp.models.Card;
 
 
 @RuntimePermissions
-public class CardEdit_View extends BaseClass implements
+public class CardEdit_View extends BaseActivity implements
         iCardEdit.View,
         View.OnClickListener
 {
