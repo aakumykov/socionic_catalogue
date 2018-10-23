@@ -1,15 +1,9 @@
 package ru.aakumykov.me.mvp.card_view;
 
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.net.Uri;
-import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,26 +16,22 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.util.concurrent.Callable;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.aakumykov.me.mvp.BaseClass;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
-import ru.aakumykov.me.mvp.services.CardsService;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 //TODO: уменьшение изображения
-//TODO: scrollView
 
-public class CardView_View extends AppCompatActivity implements
-        iCardView.View {
-
+public class CardView_View extends BaseClass implements
+        iCardView.View
+{
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.titleView) TextView titleView;
@@ -53,14 +43,6 @@ public class CardView_View extends AppCompatActivity implements
 
     private final static String TAG = "CardView_View";
     private iCardView.Presenter presenter;
-
-    private Intent cardsServiceIntent;
-    private ServiceConnection cardsServiceConnection;
-    private Callable onServiceConnected;
-    private Callable onServiceDisconnected;
-    private iCardsService cardsService;
-    private boolean isCardsServiceBounded = false;
-
     private boolean firstRun = true;
 
 
@@ -70,85 +52,25 @@ public class CardView_View extends AppCompatActivity implements
         setContentView(R.layout.card_view_activity);
         ButterKnife.bind(this);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (null != actionBar) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
         presenter = new CardView_Presenter();
-
-        // Соединение со службой
-        cardsServiceIntent = new Intent(this, CardsService.class);
-
-        onServiceConnected = new Callable() {
-            @Override
-            public Void call() throws Exception {
-                presenter.linkView(CardView_View.this);
-                presenter.linkModel(cardsService);
-                if (firstRun) {
-                    Intent intent = getIntent();
-                    String cardKey = intent.getStringExtra(Constants.CARD_KEY);
-                    presenter.cardKeyRecieved(cardKey);
-                    firstRun = false;
-                }
-                return null;
-            }
-        };
-
-        onServiceDisconnected = new Callable() {
-            @Override
-            public Void call() throws Exception {
-                presenter.unlinkView();
-                presenter.unlinkModel();
-                return null;
-            }
-        };
-
-        cardsServiceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                Log.d(TAG, "onServiceConnected()");
-
-                CardsService.LocalBinder localBinder = (CardsService.LocalBinder) service;
-                cardsService = localBinder.getService();
-                isCardsServiceBounded = true;
-
-                try {
-                    onServiceConnected.call();
-                } catch (Exception e) {
-                    showErrorMsg(e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                Log.d(TAG, "onServiceDisconnected()");
-
-                isCardsServiceBounded = false;
-
-                try {
-                    onServiceDisconnected.call();
-                } catch (Exception e) {
-                    showErrorMsg(e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-        };
-
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        bindService(cardsServiceIntent, cardsServiceConnection, Context.BIND_AUTO_CREATE);
+    public void onServiceBounded() {
+        presenter.linkView(this);
+        presenter.linkModel(getCardsService());
+        if (firstRun) {
+            Intent intent = getIntent();
+            String cardKey = intent.getStringExtra(Constants.CARD_KEY);
+            presenter.cardKeyRecieved(cardKey);
+            firstRun = false;
+        }
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        if (isCardsServiceBounded)
-            unbindService(cardsServiceConnection);
+    public void onServiceUnbounded() {
+        presenter.unlinkView();
+        presenter.unlinkModel();
     }
 
     @Override
@@ -272,27 +194,7 @@ public class CardView_View extends AppCompatActivity implements
     }
 
 
-    // Сообщения
-    @Override
-    public void showInfoMsg(int messageId) {
-        showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));
-    }
-
-    @Override
-    public void showErrorMsg(int messageId) {
-        showErrorMsg(getResources().getString(messageId));
-    }
-
-    @Override
-    public void showErrorMsg(String message) {
-        showMsg(message, getResources().getColor(R.color.error));
-    }
-
-    @Override
-    public void hideMsg() {
-        MyUtils.hide(messageView);
-    }
-
+    // Индикатор ожидания
     @Override
     public void showProgressMessage(int messageId) {
         showInfoMsg(messageId);
