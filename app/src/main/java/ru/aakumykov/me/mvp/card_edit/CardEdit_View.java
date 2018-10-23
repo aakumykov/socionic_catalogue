@@ -31,6 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
+import ru.aakumykov.me.mvp.BaseClass;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
@@ -43,9 +44,10 @@ import ru.aakumykov.me.mvp.services.CardsService;
 
 
 @RuntimePermissions
-public class CardEdit_View extends AppCompatActivity
-        implements iCardEdit.View, View.OnClickListener {
-
+public class CardEdit_View extends BaseClass implements
+        iCardEdit.View,
+        View.OnClickListener
+{
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.titleView) EditText titleView;
@@ -62,16 +64,7 @@ public class CardEdit_View extends AppCompatActivity
 
 
     private final static String TAG = "CardEdit_View";
-
-    private Intent cardsServiceIntent;
-    private ServiceConnection cardsServiceConnection;
-    private Callable onServiceConnected;
-    private Callable onServiceDisconnected;
-    private iCardsService cardsService;
-    private boolean isCardsServiceBounded = false;
-    
     private iCardEdit.Presenter presenter;
-
     private boolean firstRun = true;
 
 
@@ -95,75 +88,21 @@ public class CardEdit_View extends AppCompatActivity
 
         // Создание Презентатора
         presenter = new CardEdit_Presenter();
-        
-        // Соединение со службой
-        cardsServiceIntent = new Intent(this, CardsService.class);
-
-        onServiceConnected = new Callable() {
-            @Override
-            public Void call() throws Exception {
-                presenter.linkView(CardEdit_View.this);
-                presenter.linkModel(cardsService);
-                if (firstRun) processInputIntent();
-                return null;
-            }
-        };
-
-        onServiceDisconnected = new Callable() {
-            @Override
-            public Void call() throws Exception {
-                presenter.unlinkView();
-                presenter.unlinkModel();
-                return null;
-            }
-        };
-        
-        cardsServiceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                Log.d(TAG, "onServiceConnected()");
-
-                CardsService.LocalBinder localBinder = (CardsService.LocalBinder) service;
-                cardsService = localBinder.getService();
-                isCardsServiceBounded = true;
-
-                try {
-                    onServiceConnected.call();
-                } catch (Exception e) {
-                    showErrorMsg(e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                Log.d(TAG, "onServiceDisconnected()");
-
-                isCardsServiceBounded = false;
-
-                try {
-                    onServiceDisconnected.call();
-                } catch (Exception e) {
-                    showErrorMsg(e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-        };
     }
 
     @Override
-    protected void onStart() {
-        Log.d(TAG, "onStart()");
-        super.onStart();
-        bindService(cardsServiceIntent, cardsServiceConnection, Context.BIND_AUTO_CREATE);
+    public void onServiceBounded() {
+        Log.d(TAG, "onServiceBounded()");
+        presenter.linkView(this);
+        presenter.linkModel(getCardsService());
+        processInputIntent();
     }
 
     @Override
-    protected void onStop() {
-        Log.d(TAG, "onStop()");
-        super.onStop();
-        if (isCardsServiceBounded)
-            unbindService(cardsServiceConnection);
+    public void onServiceUnbounded() {
+        Log.d(TAG, "onServiceUnbounded()");
+        presenter.unlinkView();
+        presenter.unlinkModel();
     }
 
     @Override
@@ -300,8 +239,6 @@ public class CardEdit_View extends AppCompatActivity
 
 
     // Подготовка формы для новой карточки
-
-
     @Override
     public void prepareForTextCard() {
         MyUtils.show(quoteView);
@@ -312,6 +249,7 @@ public class CardEdit_View extends AppCompatActivity
         MyUtils.show(imageHolder);
         MyUtils.hide(imageProgressBar);
     }
+
 
     // Выбор картинки
     @Override
@@ -422,36 +360,6 @@ public class CardEdit_View extends AppCompatActivity
     }
 
 
-    // Сообщения пользователю
-    @Override
-    public void showInfoMsg(int messageId) {
-        showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));
-    }
-
-    @Override
-    public void showErrorMsg(int messageId) {
-        String msg = getResources().getString(messageId);
-        showErrorMsg(msg);
-        Log.e(TAG, msg);
-    }
-
-    @Override
-    public void showErrorMsg(String message) {
-        showMsg(message, getResources().getColor(R.color.error));
-    }
-
-    private void showMsg(String text, int color) {
-        messageView.setText(text);
-        messageView.setTextColor(color);
-        MyUtils.show(messageView);
-    }
-
-    @Override
-    public void hideMsg() {
-        MyUtils.hide(messageView);
-    }
-
-
     // Служебные методы
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
     void checkPermissions() {
@@ -477,5 +385,6 @@ public class CardEdit_View extends AppCompatActivity
             presenter.createCard(cardType);
         }
     }
+
 
 }
