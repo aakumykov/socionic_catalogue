@@ -46,6 +46,7 @@ public class CardView_View extends BaseView implements
     private boolean firstRun = true;
 
 
+    // Системные методы
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,12 +60,7 @@ public class CardView_View extends BaseView implements
     public void onServiceBounded() {
         presenter.linkView(this);
         presenter.linkModel(getCardsService());
-        if (firstRun) {
-            Intent intent = getIntent();
-            String cardKey = intent.getStringExtra(Constants.CARD_KEY);
-            presenter.cardKeyRecieved(cardKey);
-            firstRun = false;
-        }
+        loadCard();
     }
 
     @Override
@@ -72,6 +68,7 @@ public class CardView_View extends BaseView implements
         presenter.unlinkView();
         presenter.unlinkModel();
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -101,6 +98,7 @@ public class CardView_View extends BaseView implements
             }
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -225,6 +223,15 @@ public class CardView_View extends BaseView implements
 
 
     // Внутренние методы
+    private void loadCard() {
+        if (firstRun) {
+            Intent intent = getIntent();
+            String cardKey = intent.getStringExtra(Constants.CARD_KEY);
+            presenter.cardKeyRecieved(cardKey);
+            firstRun = false;
+        }
+    }
+
     private void hideWaitScreen() {
         MyUtils.hide(messageView);
         MyUtils.hide(progressBar);
