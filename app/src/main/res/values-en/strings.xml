@@ -61,4 +61,5 @@
     <string name="card_update_error">Card update error</string>
     <string name="data_error">Data error</string>
     <string name="not_authorized">Not authorized</string>
+    <string name="error_loading_list">Error loading list</string>
 </resources>

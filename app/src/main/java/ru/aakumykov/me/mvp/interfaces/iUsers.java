@@ -1,5 +1,7 @@
 package ru.aakumykov.me.mvp.interfaces;
 
+import java.util.List;
+
 import ru.aakumykov.me.mvp.models.User;
 
 public interface iUsers {
@@ -12,7 +14,7 @@ public interface iUsers {
 //    boolean userExists(String id);
 
     interface ListCallbacks {
-        void onListSuccess();
+        void onListRecieved(List<User> usersList);
         void onListFail(String errorMsg);
     }
 }

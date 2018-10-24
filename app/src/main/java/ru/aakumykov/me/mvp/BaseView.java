@@ -112,6 +112,11 @@ public abstract class BaseView extends AppCompatActivity {
         showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));
     }
 
+    public void showInfoMsg(int userMessageId, String consoleMessage) {
+        showInfoMsg(userMessageId);
+        Log.d(TAG, consoleMessage);
+    }
+
     public void showErrorMsg(int messageId) {
         String msg = getResources().getString(messageId);
         showErrorMsg(msg);
@@ -120,6 +125,11 @@ public abstract class BaseView extends AppCompatActivity {
 
     public void showErrorMsg(String message) {
         showMsg(message, getResources().getColor(R.color.error));
+    }
+
+    public void showErrorMsg(int userMessageId, String consoleMessage) {
+        showErrorMsg(userMessageId);
+        Log.e(TAG, consoleMessage);
     }
 
     private void showMsg(String text, int color) {

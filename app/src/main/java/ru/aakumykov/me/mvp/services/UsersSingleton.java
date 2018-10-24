@@ -10,26 +10,29 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.interfaces.iUsers;
 import ru.aakumykov.me.mvp.models.User;
 
 
-public class Users implements iUsers {
+public class UsersSingleton implements iUsers {
 
     /* Одиночка */
-    private static volatile Users ourInstance;
-    public synchronized static Users getInstance() {
-        synchronized (Users.class) {
-            if (null == ourInstance) ourInstance = new Users();
+    private static volatile UsersSingleton ourInstance;
+    public synchronized static UsersSingleton getInstance() {
+        synchronized (UsersSingleton.class) {
+            if (null == ourInstance) ourInstance = new UsersSingleton();
             return ourInstance;
         }
     }
-    private Users() {
+    private UsersSingleton() {
     }
     /* Одиночка */
 
-    private final static String TAG = "Users Singleton";
+    private final static String TAG = "UsersSingleton";
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference usersRef = firebaseDatabase.getReference().child(Constants.USERS_PATH);
@@ -37,10 +40,22 @@ public class Users implements iUsers {
 
     @Override
     public void listUsers(final ListCallbacks callbacks) {
+        final ArrayList<User> list = new ArrayList<>();
+
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "dataSnapshot: "+dataSnapshot);
+
+                for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
+                    User user = singleDataSnapshot.getValue(User.class);
+                    if (null != user) {
+                        Log.d(TAG, user.toString());
+                        list.add(user);
+                    }
+                }
+
+                callbacks.onListRecieved(list);
             }
 
             @Override
