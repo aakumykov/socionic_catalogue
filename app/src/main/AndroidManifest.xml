@@ -24,10 +24,8 @@
             android:parentActivityName=".cards_list.CardsList_View" />
         <activity android:name=".card_edit.CardEdit_View" />
 
-        <service
-            android:name=".services.CardsService"
-            android:enabled="true"
-            android:exported="false"></service>
+        <service android:name=".services.CardsService" android:enabled="true" android:exported="false"/>
+        <service android:name=".services.AuthService" android:enabled="true" android:exported="false" />
     </application>
 
 </manifest>
