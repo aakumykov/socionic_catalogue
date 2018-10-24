@@ -17,8 +17,7 @@ import ru.aakumykov.me.mvp.interfaces.iUsers;
 import ru.aakumykov.me.mvp.models.User;
 
 public class UsersList_View extends BaseView implements
-        iUsersList.View,
-        iUsers.ListCallbacks
+        iUsersList.View
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.listView) ListView listView;
@@ -27,6 +26,7 @@ public class UsersList_View extends BaseView implements
     private UsersListAdapter usersListAdapter;
     private ArrayList<User> usersList;
     private iUsersList.Presenter presenter;
+
 
     // Системные методы
     @Override
@@ -41,7 +41,7 @@ public class UsersList_View extends BaseView implements
         listView.setAdapter(usersListAdapter);
 
         presenter = new UsersList_Presenter();
-        presenter.loadList(this);
+        presenter.loadList();
     }
 
     @Override
@@ -66,22 +66,6 @@ public class UsersList_View extends BaseView implements
     }
 
 
-    // Коллбеки
-    @Override
-    public void onListRecieved(List<User> list) {
-        Log.d(TAG, "onListRecieved()");
-        hideProgressBar();
-        usersList.addAll(list);
-        usersListAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onListFail(String errorMsg) {
-        Log.d(TAG, "onListFail()");
-        showErrorMsg(R.string.error_loading_list, errorMsg);
-    }
-
-
     // Методы интерфейса
     @Override
     public void showProgressBar() {
@@ -91,5 +75,13 @@ public class UsersList_View extends BaseView implements
     @Override
     public void hideProgressBar() {
         MyUtils.hide(progressBar);
+    }
+
+    @Override
+    public void displayList(List<User> list) {
+        Log.d(TAG, "displayList()");
+        hideProgressBar();
+        usersList.addAll(list);
+        usersListAdapter.notifyDataSetChanged();
     }
 }

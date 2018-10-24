@@ -17,7 +17,9 @@ import ru.aakumykov.me.mvp.services.AuthService;
 import ru.aakumykov.me.mvp.services.CardsService;
 
 
-public abstract class BaseView extends AppCompatActivity {
+public abstract class BaseView extends AppCompatActivity implements
+    iBaseView
+{
 
     @BindView(R.id.messageView) TextView messageView;
 
@@ -108,25 +110,31 @@ public abstract class BaseView extends AppCompatActivity {
 
 
     // Сообщения пользователю
+
+    @Override
     public void showInfoMsg(int messageId) {
         showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));
     }
 
+    @Override
     public void showInfoMsg(int userMessageId, String consoleMessage) {
         showInfoMsg(userMessageId);
         Log.d(TAG, consoleMessage);
     }
 
+    @Override
     public void showErrorMsg(int messageId) {
         String msg = getResources().getString(messageId);
         showErrorMsg(msg);
         Log.e(TAG, msg);
     }
 
+    @Override
     public void showErrorMsg(String message) {
         showMsg(message, getResources().getColor(R.color.error));
     }
 
+    @Override
     public void showErrorMsg(int userMessageId, String consoleMessage) {
         showErrorMsg(userMessageId);
         Log.e(TAG, consoleMessage);
@@ -138,6 +146,7 @@ public abstract class BaseView extends AppCompatActivity {
         MyUtils.show(messageView);
     }
 
+    @Override
     public void hideMsg() {
         MyUtils.hide(messageView);
     }

@@ -229,29 +229,6 @@ public class CardsList_View extends BaseView implements
     }
 
 
-    public void showInfoMsg(int messageId) {
-        showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));
-    }
-
-    public void showErrorMsg(int messageId) {
-        showErrorMsg(getResources().getString(messageId));
-    }
-
-    public void showErrorMsg(String message) {
-        showMsg(message, getResources().getColor(R.color.error));
-    }
-
-    private void showMsg(String text, int color) {
-        messageView.setText(text);
-        messageView.setTextColor(color);
-        MyUtils.show(messageView);
-    }
-
-    public void hideMsg() {
-        MyUtils.hide(messageView);
-    }
-
-
     // "Методы карточки" (в списке)
     private void viewCard(Card card) {
         Log.d(TAG, "viewCard()");
