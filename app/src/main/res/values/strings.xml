@@ -62,4 +62,5 @@
     <string name="card_update_success">Карточка обновлена</string>
     <string name="card_update_error">Ошибка обновления карточки</string>
     <string name="data_error">Ошибка данных</string>
+    <string name="not_authorized">Требуется авторизация</string>
 </resources>

@@ -60,4 +60,5 @@
     <string name="card_update_success">Card update success</string>
     <string name="card_update_error">Card update error</string>
     <string name="data_error">Data error</string>
+    <string name="not_authorized">Not authorized</string>
 </resources>

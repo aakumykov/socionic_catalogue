@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.card_view;
 
 import android.net.Uri;
 
+import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
@@ -40,6 +41,8 @@ public interface iCardView {
         void unlinkView();
 
         void linkModel(iCardsService model);
+        void linkAuth(iAuthService authService);
         void unlinkModel();
+        void unlinkAuth();
     }
 }

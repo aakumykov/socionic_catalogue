@@ -60,6 +60,7 @@ public class CardView_View extends BaseView implements
     public void onServiceBounded() {
         presenter.linkView(this);
         presenter.linkModel(getCardsService());
+        presenter.linkAuth(getAuthService());
         loadCard();
     }
 
@@ -67,6 +68,7 @@ public class CardView_View extends BaseView implements
     public void onServiceUnbounded() {
         presenter.unlinkView();
         presenter.unlinkModel();
+        presenter.unlinkAuth();
     }
 
 

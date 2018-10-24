@@ -11,7 +11,9 @@ import android.util.Log;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.services.AuthService;
 import ru.aakumykov.me.mvp.services.CardsService;
 
 
@@ -20,10 +22,18 @@ public abstract class BaseView extends AppCompatActivity {
     @BindView(R.id.messageView) TextView messageView;
 
     private final static String TAG = "BaseView";
+
     private Intent cardsServiceIntent;
+    private Intent authServiceIntent;
+
     private ServiceConnection cardsServiceConnection;
+    private ServiceConnection authServiceConnection;
+
     private iCardsService cardsService;
     private boolean isCardsServiceBounded = false;
+
+    private iAuthService authService;
+    private boolean isAuthServiceBounded = false;
 
     public abstract void onServiceBounded();
     public abstract void onServiceUnbounded();
@@ -34,13 +44,13 @@ public abstract class BaseView extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Соединение со службой
+        // Соединение со службой карточек
         cardsServiceIntent = new Intent(this, CardsService.class);
 
         cardsServiceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                Log.d(TAG, "onServiceConnected()");
+                Log.d(TAG, "onCardsServiceConnected()");
 
                 CardsService.LocalBinder localBinder = (CardsService.LocalBinder) service;
                 cardsService = localBinder.getService();
@@ -51,11 +61,32 @@ public abstract class BaseView extends AppCompatActivity {
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                Log.d(TAG, "onServiceDisconnected()");
-
-                isCardsServiceBounded = false;
-
+                Log.d(TAG, "onCardsServiceDisconnected()");
                 onServiceUnbounded();
+                isCardsServiceBounded = false;
+            }
+        };
+
+        // Соединение со службой авторизации
+        authServiceIntent = new Intent(this, AuthService.class);
+
+        authServiceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                Log.d(TAG, "onAuthServiceConnected()");
+
+                AuthService.LocalBinder localBinder = (AuthService.LocalBinder) service;
+                authService = localBinder.getService();
+                isAuthServiceBounded = true;
+
+                onServiceBounded();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                Log.d(TAG, "onAuthServiceDisconnected()");
+                onServiceUnbounded();
+                isAuthServiceBounded = false;
             }
         };
     }
@@ -64,6 +95,7 @@ public abstract class BaseView extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         bindService(cardsServiceIntent, cardsServiceConnection, BIND_AUTO_CREATE);
+        bindService(authServiceIntent, authServiceConnection, BIND_AUTO_CREATE);
     }
 
     @Override
@@ -71,6 +103,7 @@ public abstract class BaseView extends AppCompatActivity {
         super.onStop();
         if (isCardsServiceBounded)
             unbindService(cardsServiceConnection);
+            unbindService(authServiceConnection);
     }
 
 
@@ -105,4 +138,7 @@ public abstract class BaseView extends AppCompatActivity {
         return cardsService;
     }
 
+    public iAuthService getAuthService() {
+        return authService;
+    }
 }
