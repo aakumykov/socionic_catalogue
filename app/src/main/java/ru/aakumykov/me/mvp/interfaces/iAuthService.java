@@ -6,4 +6,5 @@ public interface iAuthService {
     boolean isAdmin();
 //    boolean isModerator();
 
+
 }
