@@ -73,6 +73,7 @@ public abstract class BaseView extends AppCompatActivity {
             unbindService(cardsServiceConnection);
     }
 
+
     // Сообщения пользователю
     public void showInfoMsg(int messageId) {
         showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));
@@ -97,6 +98,7 @@ public abstract class BaseView extends AppCompatActivity {
     public void hideMsg() {
         MyUtils.hide(messageView);
     }
+
 
     // Геттеры
     public iCardsService getCardsService() {
