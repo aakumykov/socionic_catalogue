@@ -62,4 +62,5 @@
     <string name="data_error">Data error</string>
     <string name="not_authorized">Not authorized</string>
     <string name="error_loading_list">Error loading list</string>
+    <string name="users">Users</string>
 </resources>

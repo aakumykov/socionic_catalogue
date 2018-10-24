@@ -64,4 +64,5 @@
     <string name="data_error">Ошибка данных</string>
     <string name="not_authorized">Требуется авторизация</string>
     <string name="error_loading_list">Ошибка загрузки списка</string>
+    <string name="users">Пользователи</string>
 </resources>

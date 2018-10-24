@@ -27,6 +27,7 @@ import ru.aakumykov.me.mvp.card_view.CardView_View;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.users_list.UsersList_View;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 // TODO: Пункт "обновить" в меню панели.
@@ -123,6 +124,10 @@ public class CardsList_View extends BaseView implements
 
         switch (item.getItemId()) {
 
+            case R.id.actionUsers:
+                onUsersButton();
+                break;
+
             case R.id.actionCreateTextCard:
                 onAddCardButton(Constants.TEXT_CARD);
                 break;
@@ -163,6 +168,11 @@ public class CardsList_View extends BaseView implements
         startActivity(intent);
     }
 
+    @Override
+    public void onUsersButton() {
+        Intent intent = new Intent(this, UsersList_View.class);
+        startActivity(intent);
+    }
 
     private void loadList(boolean manualRefresh) {
         Log.d(TAG, "loadList(manualRefresh: "+manualRefresh+")");
