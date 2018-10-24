@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.aakumykov.me.mvp.BaseActivity;
+import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
@@ -29,7 +29,7 @@ import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 //TODO: уменьшение изображения
 
-public class CardView_View extends BaseActivity implements
+public class CardView_View extends BaseView implements
         iCardView.View
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;

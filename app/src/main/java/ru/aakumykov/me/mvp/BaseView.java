@@ -15,11 +15,11 @@ import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.services.CardsService;
 
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseView extends AppCompatActivity {
 
     @BindView(R.id.messageView) TextView messageView;
 
-    private final static String TAG = "BaseActivity";
+    private final static String TAG = "BaseView";
     private Intent cardsServiceIntent;
     private ServiceConnection cardsServiceConnection;
     private iCardsService cardsService;
