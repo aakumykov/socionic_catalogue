@@ -11,10 +11,10 @@ public final class Constants {
     public final static String USERS_PATH = "/users";
 
     public final static String CARD = "CARD";
-    public final static String OLD_CARD = "OLD_CARD";
     public final static String CARD_KEY = "CARD_KEY";
     public final static String CARD_TYPE = "CARD_TYPE";
 
+    public final static String USER = "USER";
     public final static String USER_ID = "USER_ID";
 
     public final static String TEXT_CARD = "TEXT_CARD";
@@ -22,6 +22,7 @@ public final class Constants {
 
     public final static int CODE_SELECT_IMAGE = 10;
     public final static int CODE_EDIT_CARD = 20;
+    public final static int CODE_EDIT_USER = 30;
 
 //    public final static String = "";
 //    public final static String = "";

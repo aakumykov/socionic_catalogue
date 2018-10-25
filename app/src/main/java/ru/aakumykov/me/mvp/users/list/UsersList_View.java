@@ -18,6 +18,7 @@ import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.users.Users_Presenter;
 import ru.aakumykov.me.mvp.users.iUsers;
@@ -25,6 +26,7 @@ import ru.aakumykov.me.mvp.users.show.UserShow_View;
 
 public class UsersList_View extends BaseView implements
         iUsers.ListView,
+        iUsersSingleton.ListCallbacks,
         SwipeRefreshLayout.OnRefreshListener,
         AdapterView.OnItemClickListener
 {
@@ -56,7 +58,7 @@ public class UsersList_View extends BaseView implements
 
         presenter = new Users_Presenter();
 
-        presenter.loadList();
+        presenter.loadList(this);
     }
 
     @Override
@@ -74,7 +76,7 @@ public class UsersList_View extends BaseView implements
     @Override
     public void onRefresh() {
         Log.d(TAG, "onRefresh()");
-        presenter.loadList();
+        presenter.loadList(this);
     }
 
     @Override
@@ -131,6 +133,20 @@ public class UsersList_View extends BaseView implements
     }
     private void hideSwipeProgressBar() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+
+    // Коллбеки
+    @Override
+    public void onListRecieved(List<User> usersList) {
+        Log.d(TAG, "onListRecieved()");
+        displayList(usersList);
+    }
+
+    @Override
+    public void onListFail(String errorMsg) {
+        Log.d(TAG, "onListFail()");
+        showErrorMsg(R.string.error_loading_list, errorMsg);
     }
 
 }

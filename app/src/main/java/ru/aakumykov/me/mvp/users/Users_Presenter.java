@@ -2,6 +2,9 @@ package ru.aakumykov.me.mvp.users;
 
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.List;
 
 import ru.aakumykov.me.mvp.R;
@@ -12,27 +15,31 @@ import ru.aakumykov.me.mvp.users.list.UsersList_View;
 import ru.aakumykov.me.mvp.users.show.UserShow_View;
 
 public class Users_Presenter implements
-        iUsers.Presenter,
-        iUsersSingleton.ListCallbacks,
-        iUsersSingleton.UserCallbacks
+        iUsers.Presenter
 {
 
     private final static String TAG = "Users_Presenter";
     private iUsers.ShowView showView;
     private iUsers.ListView listView;
+    private iUsers.EditView editView;
     private UsersSingleton usersSingleton = UsersSingleton.getInstance();
-
+    private User currentUser;
 
     // Системные методы
     @Override
     public void linkView(iUsers.View view) {
-        Log.d(TAG, "linkView()");
 
         if (view instanceof iUsers.ListView) {
+            Log.d(TAG, "linkView(ListView)");
             this.listView = (iUsers.ListView) view;
         }
         else if (view instanceof iUsers.ShowView) {
+            Log.d(TAG, "linkView(ShowView)");
             this.showView = (iUsers.ShowView) view;
+        }
+        else if (view instanceof iUsers.EditView) {
+            Log.d(TAG, "linkView(EditView)");
+            this.editView = (iUsers.EditView) view;
         }
         else {
             throw new IllegalArgumentException("Unknown type of View");
@@ -44,14 +51,53 @@ public class Users_Presenter implements
         Log.d(TAG, "unlinkView()");
         this.listView = null;
         this.showView = null;
+        this.editView = null;
     }
 
 
     // Пользовательские методы
     @Override
-    public void loadList() {
+    public void userEditClicked() {
+        showView.goUserEdit();
+    }
+
+    @Override
+    public void userDeleteClicked(String userId) {
+
+    }
+
+    @Override
+    public void saveButtonClicked(String userId, iUsersSingleton.SaveCallbacks callbacks) {
+        Log.d(TAG, "saveButtonClicked("+userId+", callbacks)");
+
+        // TODO: привязка этого пользователя к пользователю Firebase!
+//        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+//        String currentUserId = currentUser.getUid();
+
+        // TODO: проверочку бы здесь! Важно ведь.
+        User user = new User();
+        user.setKey(userId);
+        user.setName(editView.getName());
+        user.setEmail(editView.getEmail());
+
+        editView.showInfoMsg(R.string.saving_user);
+        editView.showProgressBar();
+        editView.disableEditForm();
+
+        usersSingleton.saveUser(user, callbacks);
+    }
+
+    @Override
+    public void cancelButtonClicked() {
+        Log.d(TAG, "cancelButtonClicked()");
+        editView.closePage();
+    }
+
+
+    @Override
+    public void loadList(iUsersSingleton.ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
-        usersSingleton.listUsers(this);
+        usersSingleton.listUsers(callbacks);
     }
 
     @Override
@@ -61,35 +107,23 @@ public class Users_Presenter implements
     }
 
     @Override
-    public void loadUser(String userId) throws Exception {
+    public void loadUser(String userId, iUsersSingleton.UserCallbacks callbacks) throws Exception {
         Log.d(TAG, "loadUser("+userId+")");
         if (null == userId) {
             throw new Exception("userId == null");
         }
-        usersSingleton.getUser(userId, this);
-    }
-
-
-    // Коллбеки
-    @Override
-    public void onUserReadSuccess(User user) {
-        showView.displayUser(user);
+        usersSingleton.getUser(userId, callbacks);
     }
 
     @Override
-    public void onUserReadFail(String errorMsg) {
-        showView.showErrorMsg(R.string.error_displaying_user, errorMsg);
+    public void prepareUserEdit(String userId, iUsersSingleton.UserCallbacks callbacks) throws Exception {
+        Log.d(TAG, "prepareUserEdit("+userId+")");
+        usersSingleton.getUser(userId, callbacks);
     }
 
     @Override
-    public void onListRecieved(List<User> usersList) {
-        Log.d(TAG, "onListRecieved()");
-        listView.displayList(usersList);
-    }
+    public void saveUser(User user) {
+        Log.d(TAG, "saveUser(), "+user);
 
-    @Override
-    public void onListFail(String errorMsg) {
-        Log.d(TAG, "onListFail()");
-        listView.showErrorMsg(R.string.error_loading_list, errorMsg);
     }
 }

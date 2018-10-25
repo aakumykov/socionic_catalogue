@@ -9,5 +9,7 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/actionDelete"
-        android:title="@string/delete" />
+        android:icon="@drawable/ic_delete"
+        android:title="@string/delete"
+        app:showAsAction="never" />
 </menu>

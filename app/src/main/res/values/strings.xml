@@ -56,7 +56,7 @@
     <string name="card_deletion">Удаление карточки</string>
     <string name="really_delete_card">Действительно удалить карточку?</string>
     <string name="yes">Да</string>
-    <string name="no">Нет</string>
+    <string name="no" translatable="false">Нет</string>
     <string name="error_updating_list">Ошибка обновления списка</string>
     <string name="card_update_cancelled">Обновление карточки отменено</string>
     <string name="card_update_success">Карточка обновлена</string>
@@ -66,4 +66,10 @@
     <string name="error_loading_list">Ошибка загрузки списка</string>
     <string name="users">Пользователи</string>
     <string name="error_displaying_user">Ошибка отображения пользователя</string>
+    <string name="data_loading_data">Ошибка загрузки данных</string>
+    <string name="error_loading_data">Ошибка загрузки данных</string>
+    <string name="user_saving_error">Ошибка сохранения пользователя</string>
+    <string name="saving_user">Сохранение пользователя</string>
+    <string name="error_saving_user">Ошибка сохранения пользователя</string>
+    <string name="user_saved">Пользователь сохранён</string>
 </resources>

@@ -3,6 +3,9 @@ package ru.aakumykov.me.mvp.services;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,7 +51,7 @@ public class UsersSingleton implements iUsersSingleton {
 //                Log.d(TAG, "dataSnapshot: "+dataSnapshot);
 
                 for (DataSnapshot dataSnapshotItem : dataSnapshot.getChildren()) {
-                    Log.d(TAG, "dataSnapshotItem: "+dataSnapshotItem);
+//                    Log.d(TAG, "dataSnapshotItem: "+dataSnapshotItem);
 
                     User user = dataSnapshotItem.getValue(User.class);
                     if (null != user) {
@@ -98,8 +101,33 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void saveUser(User user) {
+    public void saveUser(final User user, final SaveCallbacks callbacks) {
+        Log.d(TAG, "saveUser(), "+user);
 
+        DatabaseReference userRef = usersRef.child(user.getKey());
+
+        //TODO: транзакция
+        //TODO: update вместо save
+        userRef.setValue(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onUserSaveSuccess(user);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onUserSaveFail(e.getMessage());
+                        e.printStackTrace();
+                    }
+                })
+                .addOnCanceledListener(new OnCanceledListener() {
+                    @Override
+                    public void onCanceled() {
+                        callbacks.onUserSaveFail("User saving cancelled");
+                    }
+                });
     }
 
     @Override

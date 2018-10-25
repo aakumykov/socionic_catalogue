@@ -11,9 +11,8 @@ public interface iUsersSingleton {
     void listUsers(ListCallbacks callbacks);
     void createUser(String name, String email);
     void getUser(String id, UserCallbacks callbacks);
-    void saveUser(User user);
+    void saveUser(User user, SaveCallbacks callbacks);
     void deleteUser(User user);
-//    boolean userExists(String id);
 
     interface ListCallbacks {
         void onListRecieved(List<User> usersList);
@@ -23,5 +22,10 @@ public interface iUsersSingleton {
     interface UserCallbacks {
         void onUserReadSuccess(User user);
         void onUserReadFail(String errorMsg);
+    }
+
+    interface SaveCallbacks {
+        void onUserSaveSuccess(User user);
+        void onUserSaveFail(String errorMsg);
     }
 }

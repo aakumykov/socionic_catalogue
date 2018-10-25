@@ -10,4 +10,6 @@ public interface iBaseView {
     void showErrorMsg(int userMessageId, String consoleMessage);
 
     void hideMsg();
+
+    void closePage();
 }

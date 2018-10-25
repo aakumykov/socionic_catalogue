@@ -52,7 +52,7 @@ public abstract class BaseView extends AppCompatActivity implements
         cardsServiceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                Log.d(TAG, "onCardsServiceConnected()");
+//                Log.d(TAG, "onCardsServiceConnected()");
 
                 CardsService.LocalBinder localBinder = (CardsService.LocalBinder) service;
                 cardsService = localBinder.getService();
@@ -63,7 +63,7 @@ public abstract class BaseView extends AppCompatActivity implements
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                Log.d(TAG, "onCardsServiceDisconnected()");
+//                Log.d(TAG, "onCardsServiceDisconnected()");
                 onServiceUnbounded();
                 isCardsServiceBounded = false;
             }
@@ -75,7 +75,7 @@ public abstract class BaseView extends AppCompatActivity implements
         authServiceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                Log.d(TAG, "onAuthServiceConnected()");
+//                Log.d(TAG, "onAuthServiceConnected()");
 
                 AuthService.LocalBinder localBinder = (AuthService.LocalBinder) service;
                 authService = localBinder.getService();
@@ -86,7 +86,7 @@ public abstract class BaseView extends AppCompatActivity implements
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                Log.d(TAG, "onAuthServiceDisconnected()");
+//                Log.d(TAG, "onAuthServiceDisconnected()");
                 onServiceUnbounded();
                 isAuthServiceBounded = false;
             }
@@ -110,7 +110,6 @@ public abstract class BaseView extends AppCompatActivity implements
 
 
     // Сообщения пользователю
-
     @Override
     public void showInfoMsg(int messageId) {
         showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));
@@ -159,5 +158,13 @@ public abstract class BaseView extends AppCompatActivity implements
 
     public iAuthService getAuthService() {
         return authService;
+    }
+
+
+    // Разное
+    @Override
+    public void closePage() {
+        Log.d(TAG, "closePage()");
+        finish();
     }
 }

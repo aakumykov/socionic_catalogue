@@ -218,11 +218,6 @@ public class CardView_View extends BaseView implements
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
-    @Override
-    public void closePage() {
-        finish();
-    }
-
 
     // Внутренние методы
     private void loadCard() {
