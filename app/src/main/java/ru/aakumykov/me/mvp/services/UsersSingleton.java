@@ -47,10 +47,12 @@ public class UsersSingleton implements iUsersSingleton {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                Log.d(TAG, "dataSnapshot: "+dataSnapshot);
 
-                for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
-                    User user = singleDataSnapshot.getValue(User.class);
+                for (DataSnapshot dataSnapshotItem : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "dataSnapshotItem: "+dataSnapshotItem);
+
+                    User user = dataSnapshotItem.getValue(User.class);
                     if (null != user) {
-//                        Log.d(TAG, user.toString());
+                        user.setKey(dataSnapshotItem.getKey());
                         list.add(user);
                     }
                 }

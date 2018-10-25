@@ -30,7 +30,7 @@ public class UsersList_View extends BaseView implements
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.listView) ListView listView;
 
-    private final static String TAG = "UsersList_Presenter";
+    private final static String TAG = "UsersList_View";
     private UsersListAdapter usersListAdapter;
     private ArrayList<User> usersList;
     private iUsersList.Presenter presenter;
@@ -77,7 +77,11 @@ public class UsersList_View extends BaseView implements
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "onItemClick(..., position: "+position+", id: "+id);
+        Log.d(TAG, "onItemClick(..., position: "+position+", id: "+id+")");
+
+        User user = usersList.get(position);
+        Log.d(TAG, user.toString());
+
         String userId = usersList.get(position).getKey();
         presenter.listItemClicked(userId);
     }
@@ -126,6 +130,7 @@ public class UsersList_View extends BaseView implements
 
     @Override
     public void goUserPage(String userId) {
+        Log.d(TAG, "goUserPage("+userId+")");
         Intent intent = new Intent(this, UserPage_View.class);
         intent.putExtra(Constants.USER_ID, userId);
         startActivity(intent);

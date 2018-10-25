@@ -40,11 +40,15 @@ public class UserPage_View extends BaseView implements
 
         Intent intent = getIntent();
         String userId = intent.getStringExtra(Constants.USER_ID);
-        if (null == userId) {
-            hideProgressBar();
-            showErrorMsg(R.string.error_displaying_user, "userId == null");
-        } else {
+        Log.d(TAG, "userId: "+userId);
+
+        try {
             presenter.userIdRecieved(userId);
+        } catch (Exception e) {
+            // TODO: всунуть сокрытие крутилки внутрь show*Message()
+            hideProgressBar();
+            showErrorMsg(R.string.error_displaying_user, e.getMessage());
+            e.printStackTrace();
         }
     }
 

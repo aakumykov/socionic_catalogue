@@ -31,11 +31,11 @@ class UserPage_Presenter implements
 
     // Пользовательские методы
     @Override
-    public void userIdRecieved(String userId) {
+    public void userIdRecieved(String userId) throws Exception {
         Log.d(TAG, "userIdRecieved("+userId+")");
-//        if (null == userId) {
-//            view.showErrorMsg(R.string.);
-//        }
+        if (null == userId) {
+            throw new Exception("userId == null");
+        }
         usersSingleton.getUser(userId, this);
     }
 

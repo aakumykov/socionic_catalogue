@@ -13,8 +13,8 @@ public interface iUserPage {
     // TODO: вынести (un)linkView в интерфейс
 
     interface Presenter {
-        void userIdRecieved(String userId);
         void linkView(iUserPage.View view);
         void unlinkView();
+        void userIdRecieved(String userId) throws Exception;
     }
 }
