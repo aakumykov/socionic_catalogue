@@ -98,23 +98,6 @@ public class UsersList_View extends BaseView implements
     }
 
 
-    // Методы интерфейса
-    @Override
-    public void showPageProgressBar() {
-        MyUtils.show(progressBar);
-    }
-
-    @Override
-    public void hidePageProgressBar() {
-        MyUtils.hide(progressBar);
-    }
-
-    @Override
-    public void hideSwipeProgressBar() {
-        swipeRefreshLayout.setRefreshing(false);
-    }
-
-
     // Пользовательские методы
     @Override
     public void displayList(List<User> list) {
@@ -137,4 +120,17 @@ public class UsersList_View extends BaseView implements
         intent.putExtra(Constants.USER_ID, userId);
         startActivity(intent);
     }
+
+
+    // Методы интерфейса
+    private void showPageProgressBar() {
+        MyUtils.show(progressBar);
+    }
+    private void hidePageProgressBar() {
+        MyUtils.hide(progressBar);
+    }
+    private void hideSwipeProgressBar() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
 }

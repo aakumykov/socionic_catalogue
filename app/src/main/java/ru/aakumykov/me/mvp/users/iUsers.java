@@ -10,9 +10,6 @@ public interface iUsers {
     interface View {} // Это объединение нужно для работы linkView / unlinkView
 
     interface ListView  extends iBaseView, View {
-        void showPageProgressBar();
-        void hidePageProgressBar();
-        void hideSwipeProgressBar();
         void displayList(List<User> list);
         void goUserPage(String userId);
     }
