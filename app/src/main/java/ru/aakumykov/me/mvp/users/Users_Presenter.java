@@ -9,6 +9,7 @@ import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
 import ru.aakumykov.me.mvp.users.list.UsersList_View;
+import ru.aakumykov.me.mvp.users.show.UserShow_View;
 
 public class Users_Presenter implements
         iUsers.Presenter,
@@ -24,17 +25,20 @@ public class Users_Presenter implements
 
     // Системные методы
     @Override
-    public void linkView(iUsers.ShowView showView) {
+    public void linkView(iUsers.View view) {
         Log.d(TAG, "linkView()");
-        this.showView = showView;
 
-//        listView instanceof iUsers.ListView ?  : null;
+        if (view instanceof iUsers.ListView) {
+            this.listView = (iUsers.ListView) view;
+        }
+        else if (view instanceof iUsers.ShowView) {
+            this.showView = (iUsers.ShowView) view;
+        }
+        else {
+            throw new IllegalArgumentException("Unknown type of View");
+        }
     }
-    @Override
-    public void linkView(iUsers.ListView listView) {
-        Log.d(TAG, "linkView()");
-        this.listView = listView;
-    }
+
     @Override
     public void unlinkView() {
         Log.d(TAG, "unlinkView()");

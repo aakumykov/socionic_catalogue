@@ -7,7 +7,9 @@ import ru.aakumykov.me.mvp.models.User;
 
 public interface iUsers {
 
-    interface ListView  extends iBaseView {
+    interface View {} // Это объединение нужно для работы linkView / unlinkView
+
+    interface ListView  extends iBaseView, View {
         void showPageProgressBar();
         void hidePageProgressBar();
         void hideSwipeProgressBar();
@@ -15,17 +17,16 @@ public interface iUsers {
         void goUserPage(String userId);
     }
 
-    interface ShowView  extends iBaseView {
+    interface ShowView  extends iBaseView, View {
         void displayUser(User user);
     }
 
-    interface EditView  extends iBaseView {
+    interface EditView  extends iBaseView, View {
 
     }
 
     interface Presenter {
-        void linkView(ShowView showView);
-        void linkView(ListView listView);
+        void linkView(View view);
         void unlinkView();
 
         void loadList();
