@@ -13,7 +13,11 @@
         android:theme="@style/AppTheme">
         <activity android:name=".login.LoginView" />
         <activity android:name=".cards_list.CardsList_View">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".card_view.CardView_View"
@@ -30,11 +34,7 @@
             android:exported="false" />
 
         <activity android:name=".users.list.UsersList_View">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".users.show.UserShow_View"
