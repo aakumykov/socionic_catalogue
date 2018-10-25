@@ -12,6 +12,7 @@ public interface iUsersList {
         void hidePageProgressBar();
         void hideSwipeProgressBar();
         void displayList(List<User> list);
+        void goUserPage(String userId);
     }
 
     interface Presenter {
@@ -19,5 +20,7 @@ public interface iUsersList {
         void unlinkView();
 
         void loadList();
+
+        void listItemClicked(String key);
     }
 }

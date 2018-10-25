@@ -11,15 +11,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.interfaces.iUsers;
+import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
 
 // TODO: пункт меню "Обновить"
 
-public class UsersSingleton implements iUsers {
+public class UsersSingleton implements iUsersSingleton {
 
     /* Одиночка */
     private static volatile UsersSingleton ourInstance;
@@ -73,8 +72,27 @@ public class UsersSingleton implements iUsers {
     }
 
     @Override
-    public void getUser(String id) {
+    public void getUser(final String userId, final iUsersSingleton.UserCallbacks callbacks) {
+        Log.d(TAG, "getUser("+userId+", callbacks)");
 
+        usersRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (null != user) {
+                    user.setKey(dataSnapshot.getKey());
+                    callbacks.onUserReadSuccess(user);
+                } else {
+                    callbacks.onUserReadFail("User with key: "+userId+" is null");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callbacks.onUserReadFail(databaseError.getMessage());
+                databaseError.toException().printStackTrace();
+            }
+        });
     }
 
     @Override

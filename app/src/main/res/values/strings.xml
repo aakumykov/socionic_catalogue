@@ -65,4 +65,5 @@
     <string name="not_authorized">Требуется авторизация</string>
     <string name="error_loading_list">Ошибка загрузки списка</string>
     <string name="users">Пользователи</string>
+    <string name="error_displaying_user">Ошибка отображения пользователя</string>
 </resources>

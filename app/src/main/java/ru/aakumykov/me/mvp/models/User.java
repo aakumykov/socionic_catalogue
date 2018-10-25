@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 public class User implements Parcelable {
     
+    private String key;
     private String name;
     private String email;
     
@@ -17,7 +18,7 @@ public class User implements Parcelable {
 
     @Override
     public String toString() {
-        return "User { name: "+name+", email: "+email+" }";
+        return "User { key: "+key+", name: "+name+", email: "+email+" }";
     }
 
 
@@ -35,6 +36,7 @@ public class User implements Parcelable {
     };
 
     private User(Parcel in) {
+        key = in.readString();
         name = in.readString();
         email = in.readString();
     }
@@ -46,11 +48,17 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        // порядок заполнения важен (или нет?)
+        dest.writeString(key);
+        dest.writeString(name);
+        dest.writeString(email);
     }
     /* Parcelable */
 
 
+    public String getKey() {
+        return key;
+    }
     public String getName() {
         return name;
     }
@@ -58,11 +66,13 @@ public class User implements Parcelable {
         return email;
     }
 
+    public void setKey(String key) {
+        this.key = key;
+    }
     public void setName(String name) {
         this.name = name;
     }
     public void setEmail(String email) {
         this.email = email;
     }
-
 }

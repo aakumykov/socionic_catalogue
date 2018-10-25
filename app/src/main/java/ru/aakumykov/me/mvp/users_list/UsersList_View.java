@@ -1,8 +1,11 @@
 package ru.aakumykov.me.mvp.users_list;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -12,13 +15,16 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.User;
+import ru.aakumykov.me.mvp.user_page.UserPage_View;
 
 public class UsersList_View extends BaseView implements
         iUsersList.View,
-        SwipeRefreshLayout.OnRefreshListener
+        SwipeRefreshLayout.OnRefreshListener,
+        AdapterView.OnItemClickListener
 {
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.progressBar) ProgressBar progressBar;
@@ -44,6 +50,7 @@ public class UsersList_View extends BaseView implements
         usersList = new ArrayList<>();
         usersListAdapter = new UsersListAdapter(this, R.layout.users_list_item, usersList);
         listView.setAdapter(usersListAdapter);
+        listView.setOnItemClickListener(this);
 
         presenter = new UsersList_Presenter();
 
@@ -66,6 +73,13 @@ public class UsersList_View extends BaseView implements
     public void onRefresh() {
         Log.d(TAG, "onRefresh()");
         presenter.loadList();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "onItemClick(..., position: "+position+", id: "+id);
+        String userId = usersList.get(position).getKey();
+        presenter.listItemClicked(userId);
     }
 
     @Override
@@ -94,6 +108,8 @@ public class UsersList_View extends BaseView implements
         swipeRefreshLayout.setRefreshing(false);
     }
 
+
+    // Пользовательские методы
     @Override
     public void displayList(List<User> list) {
         Log.d(TAG, "displayList()");
@@ -106,5 +122,12 @@ public class UsersList_View extends BaseView implements
 
         usersList.addAll(list);
         usersListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void goUserPage(String userId) {
+        Intent intent = new Intent(this, UserPage_View.class);
+        intent.putExtra(Constants.USER_ID, userId);
+        startActivity(intent);
     }
 }

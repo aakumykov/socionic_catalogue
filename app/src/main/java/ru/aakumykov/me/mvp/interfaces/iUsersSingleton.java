@@ -4,11 +4,13 @@ import java.util.List;
 
 import ru.aakumykov.me.mvp.models.User;
 
-public interface iUsers {
+// TODO: глобальный goOffline() для Firebase
+
+public interface iUsersSingleton {
 
     void listUsers(ListCallbacks callbacks);
     void createUser(String name, String email);
-    void getUser(String id);
+    void getUser(String id, UserCallbacks callbacks);
     void saveUser(User user);
     void deleteUser(User user);
 //    boolean userExists(String id);
@@ -16,5 +18,10 @@ public interface iUsers {
     interface ListCallbacks {
         void onListRecieved(List<User> usersList);
         void onListFail(String errorMsg);
+    }
+
+    interface UserCallbacks {
+        void onUserReadSuccess(User user);
+        void onUserReadFail(String errorMsg);
     }
 }
