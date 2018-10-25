@@ -17,6 +17,7 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.interfaces.iUsers;
 import ru.aakumykov.me.mvp.models.User;
 
+// TODO: пункт меню "Обновить"
 
 public class UsersSingleton implements iUsers {
 
