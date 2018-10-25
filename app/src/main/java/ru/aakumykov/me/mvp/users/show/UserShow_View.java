@@ -1,7 +1,6 @@
-package ru.aakumykov.me.mvp.user_page;
+package ru.aakumykov.me.mvp.users.show;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
@@ -16,9 +15,11 @@ import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
+import ru.aakumykov.me.mvp.users.Users_Presenter;
+import ru.aakumykov.me.mvp.users.iUsers;
 
-public class UserPage_View extends BaseView implements
-        iUserPage.View
+public class UserShow_View extends BaseView implements
+        iUsers.ShowView
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.nameRow) LinearLayout nameRow;
@@ -26,9 +27,9 @@ public class UserPage_View extends BaseView implements
     @BindView(R.id.nameView) TextView nameView;
     @BindView(R.id.emailView) TextView emailView;
 
-    private final static String TAG = "UserPage_View";
+    private final static String TAG = "UserShow_View";
     private UsersSingleton usersSingleton = UsersSingleton.getInstance();
-    private iUserPage.Presenter presenter;
+    private iUsers.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +37,14 @@ public class UserPage_View extends BaseView implements
         setContentView(R.layout.user_page_activity);
         ButterKnife.bind(this);
 
-        presenter = new UserPage_Presenter();
+        presenter = new Users_Presenter();
 
         Intent intent = getIntent();
         String userId = intent.getStringExtra(Constants.USER_ID);
         Log.d(TAG, "userId: "+userId);
 
         try {
-            presenter.userIdRecieved(userId);
+            presenter.loadUser(userId);
         } catch (Exception e) {
             // TODO: всунуть сокрытие крутилки внутрь show*Message()
             hideProgressBar();

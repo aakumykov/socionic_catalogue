@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp.users_list;
+package ru.aakumykov.me.mvp.users.list;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,10 +19,12 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.User;
-import ru.aakumykov.me.mvp.user_page.UserPage_View;
+import ru.aakumykov.me.mvp.users.Users_Presenter;
+import ru.aakumykov.me.mvp.users.iUsers;
+import ru.aakumykov.me.mvp.users.show.UserShow_View;
 
 public class UsersList_View extends BaseView implements
-        iUsersList.View,
+        iUsers.ListView,
         SwipeRefreshLayout.OnRefreshListener,
         AdapterView.OnItemClickListener
 {
@@ -33,7 +35,7 @@ public class UsersList_View extends BaseView implements
     private final static String TAG = "UsersList_View";
     private UsersListAdapter usersListAdapter;
     private ArrayList<User> usersList;
-    private iUsersList.Presenter presenter;
+    private iUsers.Presenter presenter;
 
 
     // Системные методы
@@ -52,7 +54,7 @@ public class UsersList_View extends BaseView implements
         listView.setAdapter(usersListAdapter);
         listView.setOnItemClickListener(this);
 
-        presenter = new UsersList_Presenter();
+        presenter = new Users_Presenter();
 
         presenter.loadList();
     }
@@ -131,7 +133,7 @@ public class UsersList_View extends BaseView implements
     @Override
     public void goUserPage(String userId) {
         Log.d(TAG, "goUserPage("+userId+")");
-        Intent intent = new Intent(this, UserPage_View.class);
+        Intent intent = new Intent(this, UserShow_View.class);
         intent.putExtra(Constants.USER_ID, userId);
         startActivity(intent);
     }

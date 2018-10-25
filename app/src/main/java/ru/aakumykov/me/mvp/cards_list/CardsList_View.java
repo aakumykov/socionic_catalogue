@@ -20,14 +20,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_view.CardView_View;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
-import ru.aakumykov.me.mvp.users_list.UsersList_View;
+import ru.aakumykov.me.mvp.users.list.UsersList_View;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 // TODO: Пункт "обновить" в меню панели.

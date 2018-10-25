@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp.users_list;
+package ru.aakumykov.me.mvp.users.list;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

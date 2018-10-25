@@ -1,13 +1,13 @@
-package ru.aakumykov.me.mvp.users_list;
+package ru.aakumykov.me.mvp.users;
 
 import java.util.List;
 
 import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.models.User;
 
-public interface iUsersList {
+public interface iUsers {
 
-    interface View extends iBaseView {
+    interface ListView  extends iBaseView {
         void showPageProgressBar();
         void hidePageProgressBar();
         void hideSwipeProgressBar();
@@ -15,12 +15,23 @@ public interface iUsersList {
         void goUserPage(String userId);
     }
 
+    interface ShowView  extends iBaseView {
+        void displayUser(User user);
+    }
+
+    interface EditView  extends iBaseView {
+
+    }
+
     interface Presenter {
-        void linkView(iUsersList.View view);
+        void linkView(ShowView showView);
+        void linkView(ListView listView);
         void unlinkView();
 
         void loadList();
-
         void listItemClicked(String key);
+
+        void loadUser(String userId) throws Exception;
     }
+
 }
