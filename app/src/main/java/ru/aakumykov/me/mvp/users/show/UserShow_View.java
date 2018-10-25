@@ -119,7 +119,12 @@ public class UserShow_View extends BaseView implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected()");
+
         switch (item.getItemId()) {
+            case android.R.id.home:
+                closePage();
+                break;
             case R.id.actionEdit:
                 presenter.userEditClicked();
                 break;
