@@ -39,7 +39,7 @@
 
         </activity>
 
-        <activity android:name=".user_page.UserPage_View"></activity>
+        <activity android:name=".user_page.UserPage_View" android:parentActivityName=".users_list.UsersList_View" />
     </application>
 
 </manifest>
