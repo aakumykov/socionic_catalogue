@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.users_list;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -13,12 +14,13 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.interfaces.iUsers;
 import ru.aakumykov.me.mvp.models.User;
 
 public class UsersList_View extends BaseView implements
-        iUsersList.View
+        iUsersList.View,
+        SwipeRefreshLayout.OnRefreshListener
 {
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.listView) ListView listView;
 
@@ -36,11 +38,15 @@ public class UsersList_View extends BaseView implements
         setContentView(R.layout.users_list_activity);
         ButterKnife.bind(this);
 
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
+
         usersList = new ArrayList<>();
         usersListAdapter = new UsersListAdapter(this, R.layout.users_list_item, usersList);
         listView.setAdapter(usersListAdapter);
 
         presenter = new UsersList_Presenter();
+
         presenter.loadList();
     }
 
@@ -57,6 +63,12 @@ public class UsersList_View extends BaseView implements
     }
 
     @Override
+    public void onRefresh() {
+        Log.d(TAG, "onRefresh()");
+        presenter.loadList();
+    }
+
+    @Override
     public void onServiceBounded() {
 
     }
@@ -68,19 +80,30 @@ public class UsersList_View extends BaseView implements
 
     // Методы интерфейса
     @Override
-    public void showProgressBar() {
+    public void showPageProgressBar() {
         MyUtils.show(progressBar);
     }
 
     @Override
-    public void hideProgressBar() {
+    public void hidePageProgressBar() {
         MyUtils.hide(progressBar);
+    }
+
+    @Override
+    public void hideSwipeProgressBar() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void displayList(List<User> list) {
         Log.d(TAG, "displayList()");
-        hideProgressBar();
+
+        hidePageProgressBar();
+        hideSwipeProgressBar();
+
+        usersList.clear();
+        usersListAdapter.notifyDataSetChanged();
+
         usersList.addAll(list);
         usersListAdapter.notifyDataSetChanged();
     }

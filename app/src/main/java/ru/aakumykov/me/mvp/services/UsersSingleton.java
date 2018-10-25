@@ -45,12 +45,12 @@ public class UsersSingleton implements iUsers {
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "dataSnapshot: "+dataSnapshot);
+//                Log.d(TAG, "dataSnapshot: "+dataSnapshot);
 
                 for (DataSnapshot singleDataSnapshot : dataSnapshot.getChildren()) {
                     User user = singleDataSnapshot.getValue(User.class);
                     if (null != user) {
-                        Log.d(TAG, user.toString());
+//                        Log.d(TAG, user.toString());
                         list.add(user);
                     }
                 }

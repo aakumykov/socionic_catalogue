@@ -8,8 +8,9 @@ import ru.aakumykov.me.mvp.models.User;
 public interface iUsersList {
 
     interface View extends iBaseView {
-        void showProgressBar();
-        void hideProgressBar();
+        void showPageProgressBar();
+        void hidePageProgressBar();
+        void hideSwipeProgressBar();
         void displayList(List<User> list);
     }
 
