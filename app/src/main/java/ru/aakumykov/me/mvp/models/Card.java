@@ -3,7 +3,7 @@ package ru.aakumykov.me.mvp.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Card implements Parcelable /*, Cloneable*/ {
+public class Card implements Parcelable {
 
     private String key;
     private String type;
@@ -15,50 +15,11 @@ public class Card implements Parcelable /*, Cloneable*/ {
     public Card() {
     }
 
-    public Card(String key, String type, String title, String quote, String imageURL, String description) {
-        this.key = key;
+    public Card(String type, String title, String quote, String imageURL, String description) {
         this.type = type;
         this.title = title;
         this.quote = quote;
         this.imageURL = imageURL;
-        this.description = description;
-    }
-
-    public String getKey() {
-        return key;
-    }
-    public String getType() {
-        return type;
-    }
-    public String getTitle() {
-        return title;
-    }
-    public String getQuote() {
-        return quote;
-    }
-    public String getImageURL() {
-        return imageURL;
-    }
-    public String getDescription() {
-        return description;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-    public void setType(String type) {
-        this.type = type;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public void setQuote(String quote) {
-        this.quote = quote;
-    }
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
-    }
-    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -67,22 +28,6 @@ public class Card implements Parcelable /*, Cloneable*/ {
         return "Card { key: "+getKey()+", title: "+getTitle()+", quote: "+getQuote()+", imageURL: "+imageURL+", description: "+getDescription()+",}";
     }
 
-//    @Override
-//    public Card clone() throws CloneNotSupportedException {
-//        super.clone();
-//
-//        Card theClone = new Card();
-//
-//        theClone.setKey(getKey());
-//        theClone.setType(getType());
-//
-//        theClone.setTitle(getTitle());
-//        theClone.setQuote(getQuote());
-//        theClone.setImageURL(getImageURL());
-//        theClone.setDescription(getDescription());
-//
-//        return theClone;
-//    }
 
     /* Parcelable */
     protected Card(Parcel in) {
@@ -122,4 +67,44 @@ public class Card implements Parcelable /*, Cloneable*/ {
         dest.writeString(this.description);
     }
     /* Parcelable */
+
+
+    public String getKey() {
+        return key;
+    }
+    public String getType() {
+        return type;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public String getQuote() {
+        return quote;
+    }
+    public String getImageURL() {
+        return imageURL;
+    }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+    public void setType(String type) {
+        this.type = type;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public void setQuote(String quote) {
+        this.quote = quote;
+    }
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }
