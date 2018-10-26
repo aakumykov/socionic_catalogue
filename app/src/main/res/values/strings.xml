@@ -56,7 +56,7 @@
     <string name="card_deletion">Удаление карточки</string>
     <string name="really_delete_card">Действительно удалить карточку?</string>
     <string name="yes">Да</string>
-    <string name="no" translatable="false">Нет</string>
+    <string name="no">Нет</string>
     <string name="error_updating_list">Ошибка обновления списка</string>
     <string name="card_update_cancelled">Обновление карточки отменено</string>
     <string name="card_update_success">Карточка обновлена</string>
@@ -72,4 +72,5 @@
     <string name="saving_user">Сохранение пользователя</string>
     <string name="error_saving_user">Ошибка сохранения пользователя</string>
     <string name="user_saved">Пользователь сохранён</string>
+    <string name="about_me">О себе</string>
 </resources>

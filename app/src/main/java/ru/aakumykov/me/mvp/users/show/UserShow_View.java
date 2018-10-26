@@ -19,7 +19,6 @@ import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
-import ru.aakumykov.me.mvp.services.UsersSingleton;
 import ru.aakumykov.me.mvp.users.Users_Presenter;
 import ru.aakumykov.me.mvp.users.edit.UserEdit_View;
 import ru.aakumykov.me.mvp.users.iUsers;
@@ -43,7 +42,7 @@ public class UserShow_View extends BaseView implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_page_activity);
+        setContentView(R.layout.user_show_activity);
         ButterKnife.bind(this);
 
         presenter = new Users_Presenter();

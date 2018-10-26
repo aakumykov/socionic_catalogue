@@ -9,7 +9,7 @@ import ru.aakumykov.me.mvp.models.User;
 public interface iUsersSingleton {
 
     void listUsers(ListCallbacks callbacks);
-    void createUser(String name, String email);
+    void createUser(String name, String about);
     void getUser(String id, UserCallbacks callbacks);
     void saveUser(User user, SaveCallbacks callbacks);
     void deleteUser(User user);
