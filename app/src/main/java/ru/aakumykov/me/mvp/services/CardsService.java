@@ -40,6 +40,7 @@ public class CardsService extends Service implements iCardsService
         }
     }
 
+
     // Свойства
     private final static String TAG = "CardsService";
     private final IBinder binder;
@@ -59,7 +60,6 @@ public class CardsService extends Service implements iCardsService
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         cardsRef = firebaseDatabase.getReference().child(Constants.CARDS_PATH);
-
         imagesRef = FirebaseStorage.getInstance().getReference().child(Constants.IMAGES_PATH);
     }
 
@@ -73,6 +73,7 @@ public class CardsService extends Service implements iCardsService
     public void onCreate() {
         Log.d(TAG, "onCreate()");
         super.onCreate();
+
         firebaseDatabase.goOnline(); // нужно ли?
     }
 
@@ -88,7 +89,6 @@ public class CardsService extends Service implements iCardsService
 
 
     // Пользовательские методы
-
     @Override
     public void loadList(final ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
@@ -133,7 +133,6 @@ public class CardsService extends Service implements iCardsService
         });
     }
 
-
     @Override
     public void loadCard(String key, final CardCallbacks callbacks) {
         Log.d(TAG, "loadCard("+key+")");
@@ -154,7 +153,6 @@ public class CardsService extends Service implements iCardsService
             }
         });
     }
-
 
     @Override
     public String createKey() {
@@ -189,34 +187,6 @@ public class CardsService extends Service implements iCardsService
                 });
     }
 
-//    @Override
-//    public void updateCard(final Card newCard, final SaveCardCallbacks callbacks) {
-//        Log.d(TAG, "updateCard(), "+newCard.getKey()+", "+newCard.getTitle());
-//
-//        DatabaseReference cardRef = cardsRef.child(newCard.getKey());
-//
-//        cardRef.setValue(newCard)
-//                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                        callbacks.onCardSaveSuccess(newCard);
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        callbacks.onCardSaveError(e.getMessage());
-//                        e.printStackTrace();
-//                    }
-//                })
-//                .addOnCanceledListener(new OnCanceledListener() {
-//                    @Override
-//                    public void onCanceled() {
-//                        callbacks.onCardSaveCancel();
-//                    }
-//                });
-//    }
-
     @Override
     public void deleteCard(final Card card, final  DeleteCallbacks callbacks) {
         Log.d(TAG, "deleteCard(), "+card);
@@ -235,7 +205,6 @@ public class CardsService extends Service implements iCardsService
             }
         });
     }
-
 
     @Override
     public void uploadImage(final Uri imageURI, final String mimeType, final String remotePath, final ImageUploadCallbacks callbacks) {

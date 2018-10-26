@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.card_view;
 
 import android.util.Log;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
@@ -13,7 +14,10 @@ public class CardView_Presenter implements
     private final static String TAG = "CardView_Presenter";
     private iCardView.View view;
     private iCardsService model;
+    private iAuthService authService;
+
     private Card currentCard;
+
 
     CardView_Presenter() {}
 
@@ -65,7 +69,8 @@ public class CardView_Presenter implements
     @Override
     public void onDeleteButtonClicked() {
         Log.d(TAG, "onDeleteButtonClicked()");
-        view.showDeleteDialog();
+        if (authService.isAuthorized()) view.showDeleteDialog();
+        else view.showErrorMsg(R.string.not_authorized);
     }
 
     @Override
@@ -100,5 +105,15 @@ public class CardView_Presenter implements
     @Override
     public void unlinkModel() {
         this.model = null;
+    }
+
+    @Override
+    public void linkAuth(iAuthService authService) {
+        this.authService = authService;
+    }
+
+    @Override
+    public void unlinkAuth() {
+        this.authService = null;
     }
 }

@@ -2,12 +2,14 @@ package ru.aakumykov.me.mvp.card_view;
 
 import android.net.Uri;
 
+import ru.aakumykov.me.mvp.iBaseView;
+import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
 public interface iCardView {
 
-    interface View {
+    interface View extends iBaseView {
         void showWaitScreen();
 
         void displayCard(Card card);
@@ -24,7 +26,6 @@ public interface iCardView {
         void hideProgressMessage();
 
         void goEditPage(Card card);
-        void closePage();
 
         void showDeleteDialog();
     }
@@ -40,6 +41,8 @@ public interface iCardView {
         void unlinkView();
 
         void linkModel(iCardsService model);
+        void linkAuth(iAuthService authService);
         void unlinkModel();
+        void unlinkAuth();
     }
 }

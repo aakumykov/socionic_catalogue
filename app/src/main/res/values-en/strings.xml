@@ -60,4 +60,16 @@
     <string name="card_update_success">Card update success</string>
     <string name="card_update_error">Card update error</string>
     <string name="data_error">Data error</string>
+    <string name="not_authorized">Not authorized</string>
+    <string name="error_loading_list">Error loading list</string>
+    <string name="users">Users</string>
+    <string name="error_displaying_user">Error displaying user</string>
+    <string name="data_loading_data">Error loading data</string>
+    <string name="error_loading_data">Error loading data</string>
+    <string name="user_saving_error">User saving error</string>
+    <string name="saving_user">Saving user</string>
+    <string name="error_saving_user">Error saving user</string>
+    <string name="user_saved">User saved</string>
+    <string name="about">About</string>
+    <string name="internal_error">Internal error</string>
 </resources>

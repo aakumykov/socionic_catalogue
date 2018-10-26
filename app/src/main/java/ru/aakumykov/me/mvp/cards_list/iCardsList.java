@@ -4,6 +4,7 @@ public interface iCardsList {
 
     interface View {
         void onAddCardButton(String cardType);
+        void onUsersButton();
     }
 
 }

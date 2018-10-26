@@ -27,7 +27,19 @@
         <service
             android:name=".services.CardsService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
+        <service
+            android:name=".services.AuthService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <activity android:name=".users.list.UsersList_View">
+
+        </activity>
+        <activity
+            android:name=".users.show.UserShow_View"
+            android:parentActivityName=".users.list.UsersList_View" />
+        <activity android:name=".users.edit.UserEdit_View" />
     </application>
 
 </manifest>
