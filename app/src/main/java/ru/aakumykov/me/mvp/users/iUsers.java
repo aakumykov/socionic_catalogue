@@ -23,7 +23,7 @@ public interface iUsers {
     interface EditView  extends iBaseView, View {
         void fillUserForm(User user);
         String getName();
-        String getEmail();
+        String getAbout();
 
         void showProgressBar();
         void hideProgressBar();

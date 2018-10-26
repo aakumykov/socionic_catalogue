@@ -7,18 +7,18 @@ public class User implements Parcelable {
     
     private String key;
     private String name;
-    private String email;
+    private String about;
     
     public User() {}
     
-    public User(String name, String email) {
+    public User(String name, String about) {
         this.name = name;
-        this.email = email;
+        this.about = about;
     }
 
     @Override
     public String toString() {
-        return "User { key: "+key+", name: "+name+", email: "+email+" }";
+        return "User { key: "+key+", name: "+name+", about: "+ about +" }";
     }
 
 
@@ -38,7 +38,7 @@ public class User implements Parcelable {
     private User(Parcel in) {
         key = in.readString();
         name = in.readString();
-        email = in.readString();
+        about = in.readString();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class User implements Parcelable {
         // порядок заполнения важен (или нет?)
         dest.writeString(key);
         dest.writeString(name);
-        dest.writeString(email);
+        dest.writeString(about);
     }
     /* Parcelable */
 
@@ -62,8 +62,8 @@ public class User implements Parcelable {
     public String getName() {
         return name;
     }
-    public String getEmail() {
-        return email;
+    public String getAbout() {
+        return about;
     }
 
     public void setKey(String key) {
@@ -72,7 +72,7 @@ public class User implements Parcelable {
     public void setName(String name) {
         this.name = name;
     }
-    public void setEmail(String email) {
-        this.email = email;
+    public void setAbout(String about) {
+        this.about = about;
     }
 }

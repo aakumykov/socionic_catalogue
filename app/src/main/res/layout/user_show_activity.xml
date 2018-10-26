@@ -47,25 +47,28 @@
             android:textSize="18sp" />
     </LinearLayout>
 
+
     <LinearLayout
-        android:id="@+id/emailRow"
+        android:id="@+id/aboutRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="invisible" android:paddingTop="10dp" android:paddingBottom="10dp">
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:visibility="invisible">
 
         <TextView
-            android:id="@+id/emailLabel"
+            android:id="@+id/aboutLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:text="@string/email"
+            android:text="@string/about"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/emailView"
+            android:id="@+id/aboutView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"

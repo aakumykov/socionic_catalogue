@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +19,6 @@ import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
-import ru.aakumykov.me.mvp.services.UsersSingleton;
 import ru.aakumykov.me.mvp.users.Users_Presenter;
 import ru.aakumykov.me.mvp.users.iUsers;
 
@@ -36,7 +32,7 @@ public class UserEdit_View extends BaseView implements
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.nameInput) EditText nameInput;
-    @BindView(R.id.emailInput) EditText emailInput;
+    @BindView(R.id.aboutInput) EditText aboutInput;
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
@@ -111,7 +107,7 @@ public class UserEdit_View extends BaseView implements
         Log.d(TAG, "fillUserForm()");
         hideProgressBar();
         nameInput.setText(user.getName());
-        emailInput.setText(user.getEmail());
+        aboutInput.setText(user.getAbout());
     }
 
     @Override
@@ -120,8 +116,8 @@ public class UserEdit_View extends BaseView implements
     }
 
     @Override
-    public String getEmail() {
-        return emailInput.getText().toString();
+    public String getAbout() {
+        return aboutInput.getText().toString();
     }
 
 
@@ -170,14 +166,14 @@ public class UserEdit_View extends BaseView implements
     @Override
     public void enableEditForm() {
         nameInput.setEnabled(true);
-        emailInput.setEnabled(true);
+        aboutInput.setEnabled(true);
         saveButton.setEnabled(true);
     }
 
     @Override
     public void disableEditForm() {
         nameInput.setEnabled(false);
-        emailInput.setEnabled(false);
+        aboutInput.setEnabled(false);
         saveButton.setEnabled(false);
     }
 }

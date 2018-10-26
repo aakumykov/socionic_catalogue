@@ -2,17 +2,10 @@ package ru.aakumykov.me.mvp.users;
 
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import java.util.List;
-
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
-import ru.aakumykov.me.mvp.users.list.UsersList_View;
-import ru.aakumykov.me.mvp.users.show.UserShow_View;
 
 public class Users_Presenter implements
         iUsers.Presenter
@@ -78,7 +71,7 @@ public class Users_Presenter implements
         User user = new User();
         user.setKey(userId);
         user.setName(editView.getName());
-        user.setEmail(editView.getEmail());
+        user.setAbout(editView.getAbout());
 
         editView.showInfoMsg(R.string.saving_user);
         editView.showProgressBar();

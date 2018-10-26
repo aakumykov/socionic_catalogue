@@ -32,13 +32,13 @@
         android:singleLine="true" />
 
     <EditText
-        android:id="@+id/emailInput"
+        android:id="@+id/aboutInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        android:singleLine="true" />
+        android:hint="@string/about"
+        android:inputType="textCapSentences"
+        android:singleLine="false" />
 
     <Button
         android:id="@+id/saveButton"

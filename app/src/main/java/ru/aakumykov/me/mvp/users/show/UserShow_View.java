@@ -29,9 +29,9 @@ public class UserShow_View extends BaseView implements
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.nameRow) LinearLayout nameRow;
-    @BindView(R.id.emailRow) LinearLayout emailRow;
+    @BindView(R.id.aboutRow) LinearLayout emailRow;
     @BindView(R.id.nameView) TextView nameView;
-    @BindView(R.id.emailView) TextView emailView;
+    @BindView(R.id.aboutView) TextView emailView;
 
     private final static String TAG = "UserShow_View";
     private iUsers.Presenter presenter;
@@ -145,7 +145,7 @@ public class UserShow_View extends BaseView implements
         hideProgressBar();
 
         nameView.setText(user.getName());
-        emailView.setText(user.getEmail());
+        emailView.setText(user.getAbout());
 
         MyUtils.show(nameRow);
         MyUtils.show(emailRow);

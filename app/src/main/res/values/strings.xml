@@ -6,7 +6,7 @@
     <string name="auth_state">Авторизован?</string>
     <string name="already_logged_in">Вы уже вошли</string>
     <string name="logging_in">Входим в систему…</string>
-    <string name="email" translatable="false">E-mail</string>
+    <string name="about" translatable="false">E-mail</string>
     <string name="login_success">Вы вошли в систему</string>
     <string name="login_error">Ошибка входа в систему</string>
     <string name="login_canceled">Вход отменён</string>
