@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.mvp.Constants;
@@ -43,9 +44,10 @@ public class TagsSingleton implements iTagsSingleton {
     public void createTag(final Tag tag, final iTagsSingleton.TagCallbacks callbacks) {
         Log.d(TAG, "createTag()");
 
-        DatabaseReference newTagRef = tagsRef.push();
+        HashMap<String, Object> updatePool = new HashMap<>();
+        updatePool.put(tag.getName(), true);
 
-        newTagRef.setValue(tag)
+        tagsRef.updateChildren(updatePool)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
