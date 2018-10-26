@@ -32,6 +32,6 @@
         app:horizontal_interval="10dp"
         app:tag_clickable="true"
         app:tag_theme="pure_teal"
-        app:vertical_interval="10dp" />
+        app:vertical_interval="10dp"/>
 
 </LinearLayout>
