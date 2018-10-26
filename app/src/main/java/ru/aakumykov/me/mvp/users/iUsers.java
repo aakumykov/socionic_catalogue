@@ -33,7 +33,7 @@ public interface iUsers {
     }
 
     interface Presenter {
-        void linkView(View view);
+        void linkView(View view) throws IllegalArgumentException;
         void unlinkView();
 
         void userEditClicked();

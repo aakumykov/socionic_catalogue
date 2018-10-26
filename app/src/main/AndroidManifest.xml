@@ -33,13 +33,12 @@
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".users.list.UsersList_View">
-
-        </activity>
+        <activity android:name=".users.list.UsersList_View"></activity>
         <activity
             android:name=".users.show.UserShow_View"
             android:parentActivityName=".users.list.UsersList_View" />
         <activity android:name=".users.edit.UserEdit_View" />
+        <activity android:name=".tags.list.TagsList_View_View"></activity>
     </application>
 
 </manifest>

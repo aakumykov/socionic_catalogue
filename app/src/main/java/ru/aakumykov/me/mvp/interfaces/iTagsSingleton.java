@@ -30,7 +30,7 @@ public interface iTagsSingleton {
     }
 
     interface ListCallbacks {
-        void onTagsListSuccess(List<Tag> tagsList);
+        void onTagsListSuccess(List<Tag> list);
         void onTagsListFail(String errorMsg);
     }
 }

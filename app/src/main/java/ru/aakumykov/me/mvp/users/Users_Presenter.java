@@ -20,7 +20,7 @@ public class Users_Presenter implements
 
     // Системные методы
     @Override
-    public void linkView(iUsers.View view) {
+    public void linkView(iUsers.View view) throws IllegalArgumentException {
 
         if (view instanceof iUsers.ListView) {
             Log.d(TAG, "linkView(ListView)");
@@ -35,7 +35,7 @@ public class Users_Presenter implements
             this.editView = (iUsers.EditView) view;
         }
         else {
-            throw new IllegalArgumentException("Unknown type of View");
+            throw new IllegalArgumentException("Unknown type of View '"+view.getClass()+"'");
         }
     }
 
