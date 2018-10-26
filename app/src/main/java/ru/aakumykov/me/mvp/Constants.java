@@ -3,10 +3,8 @@ package ru.aakumykov.me.mvp;
 public final class Constants {
     private Constants() {}
 
-    public final static String INFO_MSG = "INFO_MSG";
-    public final static String ERROR_MSG = "ERROR_MSG";
-
     public final static String CARDS_PATH = "/cards";
+    public final static String TAGS_PATH = "/cards";
     public final static String IMAGES_PATH = "/images";
     public final static String USERS_PATH = "/users";
 
@@ -24,7 +22,4 @@ public final class Constants {
     public final static int CODE_EDIT_CARD = 20;
     public final static int CODE_EDIT_USER = 30;
 
-//    public final static String = "";
-//    public final static String = "";
-//    public final static String = "";
 }
