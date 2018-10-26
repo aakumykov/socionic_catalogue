@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -28,10 +27,10 @@ public class UserShow_View extends BaseView implements
         iUsersSingleton.UserCallbacks
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
-    @BindView(R.id.nameRow) LinearLayout nameRow;
-    @BindView(R.id.aboutRow) LinearLayout emailRow;
+    @BindView(R.id.nameLabel) TextView nameLabel;
     @BindView(R.id.nameView) TextView nameView;
-    @BindView(R.id.aboutView) TextView emailView;
+    @BindView(R.id.aboutLabel) TextView aboutLabel;
+    @BindView(R.id.aboutView) TextView aboutView;
 
     private final static String TAG = "UserShow_View";
     private iUsers.Presenter presenter;
@@ -138,10 +137,12 @@ public class UserShow_View extends BaseView implements
         hideProgressBar();
 
         nameView.setText(user.getName());
-        emailView.setText(user.getAbout());
+        aboutView.setText(user.getAbout());
 
-        MyUtils.show(nameRow);
-        MyUtils.show(emailRow);
+        MyUtils.show(nameLabel);
+        MyUtils.show(nameView);
+        MyUtils.show(aboutLabel);
+        MyUtils.show(aboutView);
     }
 
     @Override
