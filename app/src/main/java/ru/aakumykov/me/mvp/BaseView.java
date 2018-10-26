@@ -8,6 +8,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -22,6 +23,7 @@ public abstract class BaseView extends AppCompatActivity implements
 {
 
     @BindView(R.id.messageView) TextView messageView;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
 
     private final static String TAG = "BaseView";
 
@@ -148,6 +150,16 @@ public abstract class BaseView extends AppCompatActivity implements
     @Override
     public void hideMsg() {
         MyUtils.hide(messageView);
+    }
+
+    @Override
+    public void showProgressBar() {
+        MyUtils.show(progressBar);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        MyUtils.hide(progressBar);
     }
 
 

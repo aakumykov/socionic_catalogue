@@ -26,6 +26,7 @@ import ru.aakumykov.me.mvp.card_view.CardView_View;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.tags.list.TagsList_View;
 import ru.aakumykov.me.mvp.users.list.UsersList_View;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
@@ -122,6 +123,10 @@ public class CardsList_View extends BaseView implements
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+
+            case R.id.actionTags:
+                goToPage(TagsList_View.class);
+                break;
 
             case R.id.actionUsers:
                 onUsersButton();
@@ -350,5 +355,12 @@ public class CardsList_View extends BaseView implements
     @Override
     public void onBadData(String errorMsg) {
 
+    }
+
+
+    private void goToPage(Class<?> activityClass) {
+        Log.d(TAG, "goToPage("+activityClass+")");
+        Intent intent = new Intent(this, activityClass);
+        startActivity(intent);
     }
 }

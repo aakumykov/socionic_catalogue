@@ -152,12 +152,6 @@ public class UserShow_View extends BaseView implements
     }
 
 
-    //TODO: перенести в общий интерфейс
-    void hideProgressBar() {
-        MyUtils.hide(progressBar);
-    }
-
-
     // Коллбеки
     @Override
     public void onUserReadSuccess(User user) {

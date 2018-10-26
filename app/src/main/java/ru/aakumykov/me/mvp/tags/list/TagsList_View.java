@@ -16,13 +16,13 @@ import ru.aakumykov.me.mvp.models.Tag;
 import ru.aakumykov.me.mvp.tags.Tags_Presenter;
 import ru.aakumykov.me.mvp.tags.iTags;
 
-public class TagsList_View_View extends BaseView implements
+public class TagsList_View extends BaseView implements
         iTags.ListView,
         iTagsSingleton.ListCallbacks
 {
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
 
-    private final static String TAG = "TagsList_View_View";
+    private final static String TAG = "TagsList_View";
     private iTags.Presenter presenter;
     private List<String> tagsList = new ArrayList<>();
 
@@ -65,6 +65,8 @@ public class TagsList_View_View extends BaseView implements
     public void onTagsListSuccess(List<Tag> list) {
         Log.d(TAG, "onTagsListSuccess(), "+list);
 
+        hideProgressBar();
+
         for (Tag tag : list) {
             tagsList.add(tag.getName());
         }
@@ -76,4 +78,5 @@ public class TagsList_View_View extends BaseView implements
     public void onTagsListFail(String errorMsg) {
         showErrorMsg(R.string.error_loading_tags);
     }
+
 }

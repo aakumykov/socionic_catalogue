@@ -35,7 +35,8 @@ public class TagsSingleton implements iTagsSingleton {
 
     private final static String TAG = "TagsSingleton";
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference tagsRef = firebaseDatabase.getReference().child(Constants.TAGS_PATH);
+//    private DatabaseReference tagsRef = firebaseDatabase.getReference().child(Constants.TAGS_PATH);
+    private DatabaseReference tagsRef = firebaseDatabase.getReference().child("/tags2");
 
 
     @Override
@@ -145,7 +146,7 @@ public class TagsSingleton implements iTagsSingleton {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot tagSnapshot : dataSnapshot.getChildren()) {
-                    Log.d(TAG, "tagSnapshot: "+tagSnapshot);
+//                    Log.d(TAG, "tagSnapshot: "+tagSnapshot);
 
                     Tag tag = tagSnapshot.getValue(Tag.class);
                     if (null != tag) {

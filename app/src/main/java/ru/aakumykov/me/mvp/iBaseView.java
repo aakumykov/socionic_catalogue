@@ -9,6 +9,9 @@ public interface iBaseView {
     void showErrorMsg(String message);
     void showErrorMsg(int userMessageId, String consoleMessage);
 
+    void showProgressBar();
+    void hideProgressBar();
+
     void hideMsg();
 
     void closePage();
