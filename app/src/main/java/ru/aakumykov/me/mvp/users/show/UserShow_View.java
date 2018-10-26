@@ -38,6 +38,7 @@ public class UserShow_View extends BaseView implements
 
     private User currentUser;
 
+
     // Системные методы
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,22 +69,14 @@ public class UserShow_View extends BaseView implements
 
         presenter.linkView(this);
 
-        if (RESULT_CANCELED == resultCode) return;
-
-        // TODO: как обрабатывать ошибки?
-        if (RESULT_OK == resultCode) {
-            showInfoMsg(R.string.user_saved);
-
-            Intent intent = getIntent();
-            Log.d(TAG, intent.toString());
-
-            User user = intent.getParcelableExtra(Constants.USER);
-            Log.d(TAG, "user: "+user);
-
-//            displayUser(user);
-        }
-        else {
-            showErrorMsg(R.string.error_saving_user);
+        switch (resultCode) {
+            case RESULT_CANCELED:
+                return;
+            case RESULT_OK:
+                processActivityResult(requestCode, data);
+                break;
+            default:
+                showErrorMsg(R.string.user_saving_error, "Unknown resultCode: "+resultCode);
         }
     }
 
@@ -178,4 +171,31 @@ public class UserShow_View extends BaseView implements
         showErrorMsg(R.string.error_displaying_user, errorMsg);
     }
 
+
+    // Внутренние методы
+    private void processActivityResult(int requestCode, @Nullable Intent data) {
+        Log.d(TAG, "processActivityResult()");
+
+//        switch (requestCode) {
+//            case Constants.CODE_EDIT_USER:
+//                break;
+//            default:
+//                showErrorMsg(R.string.internal_error, "Unknowm request code: "+requestCode);
+//                break;
+//        }
+
+        if (null != data) {
+
+            User user = data.getParcelableExtra(Constants.USER);
+
+            if (null != user) {
+                displayUser(user);
+            } else {
+                showErrorMsg(R.string.user_saving_error, "User from activity result data == null");
+            }
+
+        } else {
+            showErrorMsg(R.string.user_saving_error, "Activity result data == null");
+        }
+    }
 }

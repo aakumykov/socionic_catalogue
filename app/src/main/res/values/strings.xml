@@ -73,4 +73,5 @@
     <string name="error_saving_user">Ошибка сохранения пользователя</string>
     <string name="user_saved">Пользователь сохранён</string>
     <string name="about_me">О себе</string>
+    <string name="internal_error">Внутренняя ошибка</string>
 </resources>

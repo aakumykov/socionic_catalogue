@@ -71,4 +71,5 @@
     <string name="error_saving_user">Error saving user</string>
     <string name="user_saved">User saved</string>
     <string name="about_me">About</string>
+    <string name="internal_error">Internal error</string>
 </resources>
