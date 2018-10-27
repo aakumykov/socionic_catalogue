@@ -3,6 +3,9 @@ package ru.aakumykov.me.mvp.card_edit;
 import android.net.Uri;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
@@ -58,6 +61,14 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         currentCard = new Card();
         currentCard.setKey(newKey);
         currentCard.setType(cardType);
+
+        List<String> tags = new ArrayList<>();
+        tags.add("Метка-1");
+        tags.add("Tag-2");
+        tags.add("Metka.3");
+        tags.add("METKA_4");
+
+        currentCard.setTags(tags);
     }
 
     @Override
