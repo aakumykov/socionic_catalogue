@@ -39,6 +39,10 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     public void createCard(String cardType) {
         Log.d(TAG, "createCard("+cardType+")");
 
+        currentCard = new Card();
+        currentCard.setKey(model.createKey());
+        currentCard.setType(cardType);
+
         switch (cardType) {
 
             case Constants.TEXT_CARD:
@@ -54,21 +58,6 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
                 Log.d(TAG, cardType);
                 return;
         }
-
-        String newKey = model.createKey();
-        Log.d(TAG, "newKey: "+newKey);
-
-        currentCard = new Card();
-        currentCard.setKey(newKey);
-        currentCard.setType(cardType);
-
-        List<String> tags = new ArrayList<>();
-        tags.add("Метка-1");
-        tags.add("Tag-2");
-        tags.add("Metka.3");
-        tags.add("METKA_4");
-
-        currentCard.setTags(tags);
     }
 
     @Override
