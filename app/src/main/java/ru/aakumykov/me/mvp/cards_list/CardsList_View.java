@@ -105,14 +105,15 @@ public class CardsList_View extends BaseView implements
     }
 
 
-    // Зачем, если список живой?
     @Override
     public void onRefresh() {
-//        Log.d(TAG, "onRefresh()");
-        cardsList.clear();
-        cardsListAdapter.notifyDataSetChanged();
+        Log.d(TAG, "onRefresh()");
+        hideMsg();
+        showInfoMsg(R.string.refreshing_list);
         loadList(true);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -187,7 +188,7 @@ public class CardsList_View extends BaseView implements
     }
 
     private void showLoadingMessage() {
-        messageView.setText(R.string.getting_cards_list);
+        messageView.setText(R.string.loading_cards_list);
         messageView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -292,6 +293,7 @@ public class CardsList_View extends BaseView implements
         Log.d(TAG, "onListLoadSuccess()");
 
         hideLoadingMessage();
+        swipeRefreshLayout.setRefreshing(false);
 
         cardsList.clear();
         cardsList.addAll(list);
