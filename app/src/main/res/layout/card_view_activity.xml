@@ -104,6 +104,7 @@
             app:container_background_color="@color/transparent"
             app:horizontal_interval="10dp"
             app:tag_clickable="true"
+            app:tag_ripple_duration="400"
             app:tag_theme="pure_teal"
             app:vertical_interval="10dp" />
 

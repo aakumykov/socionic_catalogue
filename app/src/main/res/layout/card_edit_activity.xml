@@ -114,7 +114,7 @@
                 app:container_enable_drag="false"
                 app:horizontal_interval="10dp"
                 app:tag_clickable="true"
-                app:tag_ripple_duration="200"
+                app:tag_ripple_duration="400"
                 app:tag_theme="pure_teal"
                 app:vertical_interval="10dp" />
 
