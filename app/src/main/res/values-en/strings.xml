@@ -74,4 +74,5 @@
     <string name="internal_error">Internal error</string>
     <string name="error_loading_tags">Error loading tags</string>
     <string name="tags">Tags</string>
+    <string name="list_is_empty">List is empty</string>
 </resources>

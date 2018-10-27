@@ -2,6 +2,8 @@ package ru.aakumykov.me.mvp.interfaces;
 
 import android.net.Uri;
 
+import java.util.List;
+
 import ru.aakumykov.me.mvp.models.Card;
 
 public interface iCardsService {
@@ -24,11 +26,8 @@ public interface iCardsService {
     }
 
     interface ListCallbacks extends DeleteCallbacks {
-        void onChildAdded(Card card);
-        void onChildChanged(Card card, String previousCardName); // или title?
-        void onChildMoved(Card card, String previousCardName); // или title?
-        void onCancelled(String errorMessage);
-        void onBadData(String errorMsg);
+        void onListLoadSuccess(List<Card> list);
+        void onListLoadFail(String errorMessage);
     }
 
     interface SaveCardCallbacks {

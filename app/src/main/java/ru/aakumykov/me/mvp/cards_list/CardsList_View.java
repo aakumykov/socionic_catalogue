@@ -16,6 +16,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
@@ -286,45 +288,23 @@ public class CardsList_View extends BaseView implements
 
     // Методы обратнаго вызова
     @Override
-    public void onChildAdded(Card card) {
-        Log.d(TAG, "onChildAdded()");
+    public void onListLoadSuccess(List<Card> list) {
+        Log.d(TAG, "onListLoadSuccess()");
+
         hideLoadingMessage();
-        swipeRefreshLayout.setRefreshing(false);
-        cardsList.add(card);
+
+        cardsList.clear();
+        cardsList.addAll(list);
         cardsListAdapter.notifyDataSetChanged();
+
+        if (0 == list.size()) showInfoMsg(R.string.list_is_empty);
     }
 
     @Override
-    public void onChildChanged(Card card, String previousCardName) {
-        Log.d(TAG, "onChildChanged(), "+card);
-        String changedCardKey = card.getKey();
-        Card oldCard = cardsList.findCardByKey(changedCardKey);
-        // TODO: где обрабатывать ошибки?
-//        if (null != oldCard) {
-            int cardArrayIndex = cardsList.indexOf(oldCard);
-            cardsList.set(cardArrayIndex, card);
-            cardsListAdapter.notifyDataSetChanged();
-//        } else {
-//            showErrorMsg(R.string.error_updating_list);
-//            Log.e(TAG, "Ошибка обновления списка после изменения карточки "+card);
-//        }
+    public void onListLoadFail(String errorMessage) {
+        Log.d(TAG, "onListLoadFail()");
+        showErrorMsg(R.string.error_loading_list, errorMessage);
     }
-
-
-    // Блять, это же не нужно на живом списке (нужно на обычном)
-    // Пора отдыхать!
-//    @Override
-//    public void onUpdateSuccess(Card card) {
-//        Log.d(TAG, "onUpdateSuccess()");
-//        // TODO: переделать на Toast
-//        showInfoMsg(R.string.card_update_success);
-//    }
-//
-//    @Override
-//    public void onUpdateError(String msg) {
-//        Log.d(TAG, "onUpdateError()");
-//        showErrorMsg(R.string.card_update_error);
-//    }
 
     @Override
     public void onDeleteSuccess(Card card) {
@@ -342,22 +322,7 @@ public class CardsList_View extends BaseView implements
     }
 
 
-    @Override
-    public void onChildMoved(Card card, String previousCardName) {
-
-    }
-
-    @Override
-    public void onCancelled(String errorMessage) {
-
-    }
-
-    @Override
-    public void onBadData(String errorMsg) {
-
-    }
-
-
+    // Внутренние методы
     private void goToPage(Class<?> activityClass) {
         Log.d(TAG, "goToPage("+activityClass+")");
         Intent intent = new Intent(this, activityClass);

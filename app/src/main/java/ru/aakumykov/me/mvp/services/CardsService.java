@@ -14,7 +14,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,8 +25,10 @@ import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
@@ -169,41 +170,29 @@ public class CardsService extends Service implements
     public void loadList(final ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
 
-        cardsRef.addChildEventListener(new ChildEventListener() {
+        cardsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                // TODO: сложно это всё. Проверить. Где обрабатывать ошибку? Где выделять Card?
-//                try {
-//                    Card card = MyUtils.snapshot2card(dataSnapshot);
-//                } catch (IllegalArgumentException e) {
-//                    callbacks.onBadData(e.getMessage());
-//                    e.printStackTrace();
-//                }
-                Card card = MyUtils.snapshot2card(dataSnapshot);
-                callbacks.onChildAdded(card);
-            }
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Card> list = new ArrayList<>();
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Card card = MyUtils.snapshot2card(dataSnapshot);
-                callbacks.onChildChanged(card, s);
-            }
+                for (DataSnapshot snapshotPiece : dataSnapshot.getChildren()) {
+                    Card card = snapshotPiece.getValue(Card.class);
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                Card card = MyUtils.snapshot2card(dataSnapshot);
-                callbacks.onDeleteSuccess(card);
-            }
+                    if (null != card) {
+                        card.setKey(snapshotPiece.getKey());
+                        list.add(card);
+                    } else {
+                       callbacks.onListLoadFail("Card from snapshotPiece is null");
+                       Log.d(TAG, "snapshotPiece: "+snapshotPiece);
+                    }
+                }
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Card card = MyUtils.snapshot2card(dataSnapshot);
-                callbacks.onChildMoved(card, s);
+                callbacks.onListLoadSuccess(list);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                callbacks.onCancelled(databaseError.getMessage());
+                callbacks.onListLoadFail(databaseError.getMessage());
                 databaseError.toException().printStackTrace();
             }
         });
