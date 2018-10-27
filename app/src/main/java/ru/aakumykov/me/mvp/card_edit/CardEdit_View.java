@@ -64,7 +64,7 @@ public class CardEdit_View extends BaseView implements
 
     private final static String TAG = "CardEdit_View";
     private iCardEdit.Presenter presenter;
-    private boolean firstRun = true;
+//    private boolean firstRun = true;
 
 
     // Системные методы
@@ -396,7 +396,7 @@ public class CardEdit_View extends BaseView implements
     private void processInputIntent() {
         Log.d(TAG, "processInputIntent()");
 
-        firstRun = false;
+//        firstRun = false;
 
         hideWating();
 
