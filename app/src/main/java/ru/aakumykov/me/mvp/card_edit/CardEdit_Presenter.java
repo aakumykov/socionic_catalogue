@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.card_edit;
 
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -128,6 +129,26 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         model.cancelUpload();
         view.removeImage();
         currentCard.setImageURL(null);
+    }
+
+    @Override
+    public void onAddTagButtonClicked() {
+        Log.d(TAG, "onAddTagButtonClicked()");
+
+        String newTag = view.getNewTag();
+
+        if (!TextUtils.isEmpty(newTag)) {
+
+            List<String> existingTags = view.getCardTags();
+
+            newTag = newTag.replaceAll("^\\s+|\\s+$", "");
+
+            if (!existingTags.contains(newTag)) {
+                view.addTag(newTag);
+            }
+
+            view.clearNewTag();
+        }
     }
 
 

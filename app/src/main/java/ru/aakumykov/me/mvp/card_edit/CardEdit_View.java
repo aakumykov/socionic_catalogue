@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -49,14 +50,15 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.titleView) EditText titleView;
     @BindView(R.id.quoteView) EditText quoteView;
-
-    @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
-    @BindView(R.id.imageView) ImageView imageView;
-    @BindView(R.id.discardImageButton) ImageView discardImageButton;
-    @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
-
+     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
+     @BindView(R.id.imageView) ImageView imageView;
+     @BindView(R.id.discardImageButton) ImageView discardImageButton;
+     @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
     @BindView(R.id.descriptionView) EditText descriptionView;
+
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
+    @BindView(R.id.newTagInput) EditText newTagInput;
+    @BindView(R.id.addTagButton) Button tagAddButton;
 
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
@@ -105,10 +107,12 @@ public class CardEdit_View extends BaseView implements
         R.id.saveButton,
         R.id.cancelButton,
         R.id.discardImageButton,
-        R.id.imageView
+        R.id.imageView,
+        R.id.addTagButton
     })
     @Override
     public void onClick(View v) {
+//        Log.d(TAG,"onClick("+v.getId()+")");
 
         switch (v.getId()) {
 
@@ -126,6 +130,10 @@ public class CardEdit_View extends BaseView implements
 
             case R.id.discardImageButton:
                 presenter.onImageDiscardClicked();
+                break;
+
+            case R.id.addTagButton:
+                presenter.onAddTagButtonClicked();
                 break;
 
             default:
@@ -271,6 +279,12 @@ public class CardEdit_View extends BaseView implements
         MyUtils.hide(imageProgressBar);
     }
 
+    @Override
+    public void addTag(String tagName) {
+//        Log.d(TAG, "addTag("+tagName+")");
+        tagsContainer.addTag(tagName);
+    }
+
 
     // Выбор картинки
     @Override
@@ -346,6 +360,17 @@ public class CardEdit_View extends BaseView implements
     @Override
     public List<String> getCardTags() {
         return tagsContainer.getTags();
+    }
+
+
+    @Override
+    public String getNewTag() {
+        return newTagInput.getText().toString();
+    }
+
+    @Override
+    public void clearNewTag() {
+        newTagInput.setText("");
     }
 
     // Активация / дизактивация формы

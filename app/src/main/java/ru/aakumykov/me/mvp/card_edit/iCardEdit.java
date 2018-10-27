@@ -25,12 +25,18 @@ public interface iCardEdit {
         void prepareTextCardForm();
         void prepareImageCardForm();
 
+        void addTag(String tagName);
+        // void removeTag(tagName|position);
+
         void selectImage();
 
         String getCardTitle();
         String getCardQuote();
         String getCardDescription();
         List<String> getCardTags();
+
+        String getNewTag();
+        void clearNewTag();
 
         void enableForm();
         void disableForm();
@@ -52,6 +58,7 @@ public interface iCardEdit {
         void onSaveButtonClicked();
         void onCancelButtonClicked();
         void onImageDiscardClicked();
+        void onAddTagButtonClicked();
 
         void onSelectImageClicked();
         void onImageSelected(Uri imageURI, String mimeType);

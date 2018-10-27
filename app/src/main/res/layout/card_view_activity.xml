@@ -97,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
-            android:padding="10dp"
+            android:padding="0dp"
             android:visibility="invisible"
             app:container_enable_drag="false"
             app:container_border_color="@color/transparent"

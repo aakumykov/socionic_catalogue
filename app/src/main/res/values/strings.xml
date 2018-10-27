@@ -78,4 +78,6 @@
     <string name="tags">Метки</string>
     <string name="list_is_empty">Список пуст</string>
     <string name="refreshing_list">Обновление списка</string>
+    <string name="add">Добавить</string>
+    <string name="new_tag">Новая метка</string>
 </resources>

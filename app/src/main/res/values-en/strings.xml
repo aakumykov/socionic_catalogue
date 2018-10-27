@@ -76,4 +76,6 @@
     <string name="tags">Tags</string>
     <string name="list_is_empty">List is empty</string>
     <string name="refreshing_list">Refreshing list</string>
+    <string name="add">Add</string>
+    <string name="new_tag">New tag</string>
 </resources>
