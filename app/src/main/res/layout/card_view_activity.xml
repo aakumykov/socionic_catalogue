@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical" android:padding="8dp">
 
         <TextView
             android:id="@+id/messageView"
@@ -36,7 +36,6 @@
             android:textStyle="bold" android:layout_marginBottom="6dp"/>
 
         <TextView
-
             android:id="@+id/quoteView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,7 +90,22 @@
             android:id="@+id/descriptionView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp" />
+            android:textSize="18sp" android:layout_marginBottom="16dp"/>
+
+        <co.lujun.androidtagview.TagContainerLayout
+            android:id="@+id/tagsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:padding="10dp"
+            android:visibility="invisible"
+            app:container_enable_drag="false"
+            app:container_border_color="@color/transparent"
+            app:container_background_color="@color/transparent"
+            app:horizontal_interval="10dp"
+            app:tag_clickable="true"
+            app:tag_theme="pure_teal"
+            app:vertical_interval="10dp" />
 
     </LinearLayout>
 </ScrollView>

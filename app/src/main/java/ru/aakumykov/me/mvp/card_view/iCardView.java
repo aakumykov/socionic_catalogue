@@ -2,6 +2,8 @@ package ru.aakumykov.me.mvp.card_view;
 
 import android.net.Uri;
 
+import java.util.List;
+
 import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
@@ -14,6 +16,7 @@ public interface iCardView {
 
         void displayCard(Card card);
         void displayImage(Uri imageURI);
+        void showTags(List<String> tagsList);
 
         void displayImageError();
 

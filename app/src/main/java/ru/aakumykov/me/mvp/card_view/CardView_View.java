@@ -16,8 +16,11 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import co.lujun.androidtagview.TagContainerLayout;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
@@ -40,6 +43,7 @@ public class CardView_View extends BaseView implements
     @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.descriptionView) TextView descriptionView;
+    @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
 
     private final static String TAG = "CardView_View";
     private iCardView.Presenter presenter;
@@ -193,6 +197,13 @@ public class CardView_View extends BaseView implements
         imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
     }
 
+    // Метки
+    @Override
+    public void showTags(List<String> tagsList) {
+        Log.d(TAG, "showTags(), "+tagsList);
+        tagsContainer.setTags(tagsList);
+        MyUtils.show(tagsContainer);
+    }
 
     // Индикатор ожидания
     @Override
@@ -257,6 +268,7 @@ public class CardView_View extends BaseView implements
     private void displayCommonCard(Card card) {
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
+        showTags(card.getTags());
     }
 
 
