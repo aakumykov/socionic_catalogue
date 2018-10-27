@@ -37,12 +37,15 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         Log.d(TAG, "createCard("+cardType+")");
 
         switch (cardType) {
+
             case Constants.TEXT_CARD:
-                view.prepareForTextCard();
+                view.prepareTextCardForm();
                 break;
+
             case Constants.IMAGE_CARD:
-                view.prepareForImageCard();
+                view.prepareImageCardForm();
                 break;
+
             default:
                 view.showErrorMsg(R.string.wrong_card_type);
                 Log.d(TAG, cardType);
@@ -207,20 +210,23 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         currentCard.setDescription(view.getCardDescription());
 
         switch (currentCard.getType()) {
+
             case Constants.TEXT_CARD:
                 currentCard.setQuote(view.getCardQuote());
                 break;
+
             case Constants.IMAGE_CARD:
                 if ((null != newImageURI))
                     currentCard.setImageURL(newImageURI);
                 break;
+
             default:
                 view.showErrorMsg(R.string.wrong_card_type);
                 throw new Exception("Unknown card type: "+currentCard.getType());
         }
 
         view.disableForm();
-        model.saveCard(currentCard, this);
+        model.updateCard(currentCard, this);
     }
 
 

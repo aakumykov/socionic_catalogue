@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Card implements Parcelable {
@@ -30,6 +31,7 @@ public class Card implements Parcelable {
         this.tags = tagsList;
     }
 
+    @Exclude
     @Override
     public String toString() {
         return "Card { key: "+getKey()+
@@ -39,6 +41,19 @@ public class Card implements Parcelable {
                 ", description: "+getDescription()+
                 ", tags: "+getTags()+
             ",}";
+    }
+
+    @Exclude
+    public HashMap<String, Object> toMap() {
+        HashMap<String,Object> map = new HashMap<>();
+//        map.put("key", key); // Не нужно
+        map.put("type", type);
+        map.put("title", title);
+        map.put("quote", quote);
+        map.put("imageURL", imageURL);
+        map.put("description", description);
+        map.put("tags", tags);
+        return map;
     }
 
 

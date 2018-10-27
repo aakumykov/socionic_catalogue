@@ -31,7 +31,8 @@ import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
-public class CardsService extends Service implements iCardsService
+public class CardsService extends Service implements
+        iCardsService
 {
     // Внутренний класс
     public class LocalBinder extends Binder {
@@ -54,7 +55,7 @@ public class CardsService extends Service implements iCardsService
 
     // Слежебные методы
     public CardsService() {
-        Log.d(TAG, "new CardsService()");
+//        Log.d(TAG, "new CardsService()");
 
         binder = new LocalBinder();
 
@@ -65,13 +66,13 @@ public class CardsService extends Service implements iCardsService
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "onBind()");
+//        Log.d(TAG, "onBind()");
         return binder;
     }
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "onCreate()");
+//        Log.d(TAG, "onCreate()");
         super.onCreate();
 
         firebaseDatabase.goOnline(); // нужно ли?
@@ -79,7 +80,7 @@ public class CardsService extends Service implements iCardsService
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "onDestroy()");
+//        Log.d(TAG, "onDestroy()");
         super.onDestroy();
 
         cancelUpload();
@@ -89,6 +90,82 @@ public class CardsService extends Service implements iCardsService
 
 
     // Пользовательские методы
+    @Override
+    public String createKey() {
+        return cardsRef.push().getKey();
+    }
+
+    @Override
+    public void loadCard(String key, final CardCallbacks callbacks) {
+        Log.d(TAG, "loadCard("+key+")");
+
+        DatabaseReference cardRef = cardsRef.child(key);
+
+        cardRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Card card = dataSnapshot.getValue(Card.class);
+                callbacks.onLoadSuccess(card);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callbacks.onLoadFailed(databaseError.getMessage());
+                databaseError.toException().printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void updateCard(final Card card, final SaveCardCallbacks callbacks) {
+        Log.d(TAG, "saveCard(), "+card);
+
+        DatabaseReference cardRef = cardsRef.child(card.getKey());
+
+//        cardRef.setValue(card)
+        cardRef.updateChildren(card.toMap())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onCardSaveSuccess(card);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onCardSaveError(e.getMessage());
+                        e.printStackTrace();
+                    }
+                })
+                .addOnCanceledListener(new OnCanceledListener() {
+                    @Override
+                    public void onCanceled() {
+                        callbacks.onCardSaveCancel();
+                    }
+                });
+    }
+
+    @Override
+    public void deleteCard(final Card card, final  DeleteCallbacks callbacks) {
+        Log.d(TAG, "deleteCard(), "+card);
+
+        DatabaseReference cardRef = cardsRef.child(card.getKey());
+
+        cardRef.removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (null == databaseError) {
+                    callbacks.onDeleteSuccess(card);
+                } else {
+                    callbacks.onDeleteError(databaseError.getMessage());
+                    databaseError.toException().printStackTrace();
+                }
+            }
+        });
+    }
+
+
+    // При пустом списке в приложении крутится и крутится ожидание
     @Override
     public void loadList(final ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
@@ -133,78 +210,6 @@ public class CardsService extends Service implements iCardsService
         });
     }
 
-    @Override
-    public void loadCard(String key, final CardCallbacks callbacks) {
-        Log.d(TAG, "loadCard("+key+")");
-
-        DatabaseReference cardRef = cardsRef.child(key);
-
-        cardRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Card card = dataSnapshot.getValue(Card.class);
-                callbacks.onLoadSuccess(card);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                callbacks.onLoadFailed(databaseError.getMessage());
-                databaseError.toException().printStackTrace();
-            }
-        });
-    }
-
-    @Override
-    public String createKey() {
-        return cardsRef.push().getKey();
-    }
-
-    @Override
-    public void saveCard(final Card card, final SaveCardCallbacks callbacks) {
-        Log.d(TAG, "saveCard(), "+card);
-
-        DatabaseReference cardRef = cardsRef.child(card.getKey());
-
-        cardRef.setValue(card)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onCardSaveSuccess(card);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onCardSaveError(e.getMessage());
-                        e.printStackTrace();
-                    }
-                })
-                .addOnCanceledListener(new OnCanceledListener() {
-                    @Override
-                    public void onCanceled() {
-                        callbacks.onCardSaveCancel();
-                    }
-                });
-    }
-
-    @Override
-    public void deleteCard(final Card card, final  DeleteCallbacks callbacks) {
-        Log.d(TAG, "deleteCard(), "+card);
-
-        DatabaseReference cardRef = cardsRef.child(card.getKey());
-
-        cardRef.removeValue(new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                if (null == databaseError) {
-                    callbacks.onDeleteSuccess(card);
-                } else {
-                    callbacks.onDeleteError(databaseError.getMessage());
-                    databaseError.toException().printStackTrace();
-                }
-            }
-        });
-    }
 
     @Override
     public void uploadImage(final Uri imageURI, final String mimeType, final String remotePath, final ImageUploadCallbacks callbacks) {

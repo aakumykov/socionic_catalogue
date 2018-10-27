@@ -19,8 +19,8 @@ public interface iCardEdit {
         void showBrokenImage();
         void removeImage();
 
-        void prepareForTextCard();
-        void prepareForImageCard();
+        void prepareTextCardForm();
+        void prepareImageCardForm();
 
         void selectImage();
 

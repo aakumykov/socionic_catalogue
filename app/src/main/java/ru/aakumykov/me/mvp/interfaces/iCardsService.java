@@ -10,7 +10,7 @@ public interface iCardsService {
     void loadCard(String key, CardCallbacks callbacks);
 
     String createKey();
-    void saveCard(Card card, SaveCardCallbacks callbacks);
+    void updateCard(Card card, SaveCardCallbacks callbacks);
     void deleteCard(Card card, DeleteCallbacks callbacks);
 
     void uploadImage(Uri imageURI, String mimeType, String remotePath, ImageUploadCallbacks callbacks);

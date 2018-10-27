@@ -231,12 +231,12 @@ public class CardEdit_View extends BaseView implements
 
     // Подготовка формы для новой карточки
     @Override
-    public void prepareForTextCard() {
+    public void prepareTextCardForm() {
         MyUtils.show(quoteView);
     }
 
     @Override
-    public void prepareForImageCard() {
+    public void prepareImageCardForm() {
         MyUtils.show(imageHolder);
         MyUtils.hide(imageProgressBar);
     }
