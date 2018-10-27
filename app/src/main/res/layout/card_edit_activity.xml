@@ -95,13 +95,28 @@
                 tools:visibility="gone" />
         </android.support.constraint.ConstraintLayout>
 
-            <EditText
-                android:id="@+id/descriptionView"
+        <EditText
+            android:id="@+id/descriptionView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/description"
+            android:inputType="textCapSentences|textMultiLine"
+            android:textSize="18sp" />
+
+            <co.lujun.androidtagview.TagContainerLayout
+                android:id="@+id/tagsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/description"
-                android:inputType="textCapSentences|textMultiLine"
-                android:textSize="18sp" />
+                android:layout_margin="0dp"
+                android:padding="10dp"
+                app:container_background_color="@color/transparent"
+                app:container_border_color="@color/transparent"
+                app:container_enable_drag="false"
+                app:horizontal_interval="10dp"
+                app:tag_clickable="true"
+                app:tag_theme="pure_teal"
+                app:vertical_interval="10dp"
+                app:tag_ripple_duration="200" />
 
         <Button
             android:id="@+id/saveButton"
