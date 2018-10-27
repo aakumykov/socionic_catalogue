@@ -122,8 +122,7 @@ public class CardsService extends Service implements
 
         DatabaseReference cardRef = cardsRef.child(card.getKey());
 
-//        cardRef.setValue(card)
-        cardRef.updateChildren(card.toMap())
+        cardRef.setValue(card)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
