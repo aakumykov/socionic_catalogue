@@ -1,7 +1,10 @@
 package ru.aakumykov.me.mvp.tags;
 
+import java.util.List;
+
 import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
+import ru.aakumykov.me.mvp.models.Tag;
 
 
 public interface iTags {
@@ -10,7 +13,7 @@ public interface iTags {
 
 
     interface ListView extends iBaseView, View {
-
+        void displayTags(List<Tag> list);
     }
 
     interface ShowView extends iBaseView, View {

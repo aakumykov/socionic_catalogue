@@ -60,18 +60,33 @@ public class TagsList_View extends BaseView implements
     }
 
 
-    // Коллбеки
+    // Внешние методы
     @Override
-    public void onTagsListSuccess(List<Tag> list) {
-        Log.d(TAG, "onTagsListSuccess(), "+list);
-
-        hideProgressBar();
+    public void displayTags(List<Tag> list) {
+        Log.d(TAG, "displayTags(), "+list);
 
         for (Tag tag : list) {
             tagsList.add(tag.getName());
         }
 
+//        List<String> tagsList = new ArrayList<>();
+//
+//        tagsList.add("Метка-1");
+//        tagsList.add("Метка-2");
+//        tagsList.add("Метка-3");
+//        tagsList.add("Метка-4");
+
+//        TagContainerLayout tagsContainer = findViewById(R.id.tagsContainer);
         tagsContainer.setTags(tagsList);
+    }
+
+
+    // Коллбеки
+    @Override
+    public void onTagsListSuccess(List<Tag> list) {
+        Log.d(TAG, "onTagsListSuccess(), "+list);
+        hideProgressBar();
+        displayTags(list);
     }
 
     @Override
