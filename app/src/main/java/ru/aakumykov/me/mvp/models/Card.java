@@ -17,7 +17,6 @@ public class Card implements Parcelable {
     private String quote;
     private String imageURL;
     private String description;
-    private List<String> tags = new ArrayList<>();
     private HashMap<String, Boolean> tags2;
 
     public Card() {
@@ -32,7 +31,6 @@ public class Card implements Parcelable {
         this.quote = quote;
         this.imageURL = imageURL;
         this.description = description;
-        this.tags = tagsList;
         this.tags2 = tagsList2;
     }
 
@@ -44,7 +42,6 @@ public class Card implements Parcelable {
                 ", quote: "+getQuote()+
                 ", imageURL: "+imageURL+
                 ", description: "+getDescription()+
-                ", tags: "+getTags()+
                 ", tags2: "+getTags2()+
             ",}";
     }
@@ -57,7 +54,6 @@ public class Card implements Parcelable {
          map.put("quote", quote);
          map.put("imageURL", imageURL);
          map.put("description", description);
-         map.put("tags", tags);
          map.put("tags2", tags2);
         return map;
     }
@@ -66,14 +62,13 @@ public class Card implements Parcelable {
     /* Parcelable */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        // порядок заполнения важен
+        // важен порядок заполнения
         dest.writeString(this.key);
         dest.writeString(this.type);
         dest.writeString(this.title);
         dest.writeString(this.quote);
         dest.writeString(this.imageURL);
         dest.writeString(this.description);
-        dest.writeStringList(this.tags);
         dest.writeMap(this.tags2);
     }
 
@@ -84,7 +79,6 @@ public class Card implements Parcelable {
         quote = in.readString();
         imageURL = in.readString();
         description = in.readString();
-        in.readStringList(this.tags);
         tags2 = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
     }
 
@@ -125,7 +119,9 @@ public class Card implements Parcelable {
     public String getDescription() {
         return description;
     }
-    public List<String> getTags() { return this.tags; }
+    public HashMap<String, Boolean> getTags2() {
+        return tags2;
+    }
 
     public void setKey(String key) {
         this.key = key;
@@ -145,12 +141,6 @@ public class Card implements Parcelable {
     public void setDescription(String description) {
         this.description = description;
     }
-    public void setTags(List<String> tagsList) { this.tags = tagsList; }
-
-    public HashMap<String, Boolean> getTags2() {
-        return tags2;
-    }
-
     public void setTags2(HashMap<String, Boolean> tags2) {
         this.tags2 = tags2;
     }

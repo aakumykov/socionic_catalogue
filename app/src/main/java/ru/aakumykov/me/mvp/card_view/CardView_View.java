@@ -204,13 +204,10 @@ public class CardView_View extends BaseView implements
     public void showTags(HashMap<String,Boolean> tagsHash) {
 //        Log.d(TAG, "showTags(), "+tagsHash);
         List<String> tagsList = new ArrayList<>(tagsHash.keySet());
-        showTags(tagsList);
-    }
-    @Override
-    public void showTags(List<String> tagsList) {
         tagsContainer.setTags(tagsList);
         MyUtils.show(tagsContainer);
     }
+
 
     // Индикатор ожидания
     @Override

@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -360,15 +359,10 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public List<String> getCardTags() {
-        return tagsContainer.getTags();
-    }
-
-    @Override
     public HashMap<String,Boolean> getCardTags2() {
         HashMap<String,Boolean> map = new HashMap<>();
-        List<String> tags = getCardTags();
-        for (String tagName : tags) {
+        List<String> tagsList = tagsContainer.getTags();
+        for (String tagName : tagsList) {
             map.put(tagName, true);
         }
         return map;

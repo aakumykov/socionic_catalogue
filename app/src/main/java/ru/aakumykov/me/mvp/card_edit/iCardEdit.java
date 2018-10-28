@@ -34,7 +34,6 @@ public interface iCardEdit {
         String getCardTitle();
         String getCardQuote();
         String getCardDescription();
-        List<String> getCardTags();
         HashMap<String,Boolean> getCardTags2();
 
         String getNewTag();

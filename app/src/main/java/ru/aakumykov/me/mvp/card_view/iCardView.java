@@ -17,7 +17,6 @@ public interface iCardView {
 
         void displayCard(Card card);
         void displayImage(Uri imageURI);
-        void showTags(List<String> tagsList);
         void showTags(HashMap<String,Boolean> tagsHash);
 
         void displayImageError();
