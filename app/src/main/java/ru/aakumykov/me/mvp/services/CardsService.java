@@ -180,9 +180,12 @@ public class CardsService extends Service implements
             ? cardsRef.orderByChild("tags/"+tagFilter).equalTo(true)
             : cardsRef.orderByKey();
 
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+//        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                Log.d(TAG, "onDataChange(), "+dataSnapshot);
+
                 List<Card> list = new ArrayList<>();
 
                 for (DataSnapshot snapshotPiece : dataSnapshot.getChildren()) {
