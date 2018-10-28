@@ -170,20 +170,29 @@ public class CardsService extends Service implements
     public void loadList(final ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
 
-        cardsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        cardsRef
+//        .orderByChild("tags/0").equalTo("1")
+        .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Card> list = new ArrayList<>();
 
                 for (DataSnapshot snapshotPiece : dataSnapshot.getChildren()) {
-                    Card card = snapshotPiece.getValue(Card.class);
+                    try {
+                        Card card = snapshotPiece.getValue(Card.class);
 
-                    if (null != card) {
-                        card.setKey(snapshotPiece.getKey());
-                        list.add(card);
-                    } else {
-                       callbacks.onListLoadFail("Card from snapshotPiece is null");
-                       Log.d(TAG, "snapshotPiece: "+snapshotPiece);
+                        if (null != card) {
+                            card.setKey(snapshotPiece.getKey());
+                            list.add(card);
+                        } else {
+                           callbacks.onListLoadFail("Card from snapshotPiece is null");
+                           Log.d(TAG, "snapshotPiece: "+snapshotPiece);
+                        }
+
+                    } catch (Exception e) {
+                        // Здесь бы сообщение пользователю, но оно затрётся инфой
+                        Log.e(TAG, e.getMessage()+", snapshotPiece: "+snapshotPiece);
+                        e.printStackTrace();
                     }
                 }
 
