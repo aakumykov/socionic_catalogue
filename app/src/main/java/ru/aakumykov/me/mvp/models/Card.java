@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.models;
 
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -17,11 +18,9 @@ public class Card implements Parcelable {
     private String quote;
     private String imageURL;
     private String description;
-    private List<String> tags = new ArrayList<>();
-    // Подозреваю, что опасно без <String, Boolean> в типе переменной!
-    private HashMap tags2 = new HashMap<String, Boolean>();
-    // TODO: читать про загрузку HashMap
-    // TODO: или преобразовывать в Bundle?
+    private List<String> tags;
+    private HashMap<String,Boolean> tags2;
+
 
     public Card() {
     }
@@ -77,7 +76,10 @@ public class Card implements Parcelable {
         dest.writeString(this.imageURL);
         dest.writeString(this.description);
         dest.writeStringList(this.tags);
-        dest.writeMap(this.tags2);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("tags2", this.tags2);
+        dest.writeBundle(bundle);
     }
 
     protected Card(Parcel in) {
@@ -87,9 +89,9 @@ public class Card implements Parcelable {
         quote = in.readString();
         imageURL = in.readString();
         description = in.readString();
-        in.readStringList(this.tags);  // Вот это да!
-//        tags2 = in.readHashMap(HashMap.class.getClassLoader());
-        tags2 = in.readHashMap(String.class.getClassLoader());
+        in.readStringList(this.tags);
+
+        tags2 = (HashMap<String,Boolean>) in.readBundle().getSerializable("tags2");
     }
 
     @Override
