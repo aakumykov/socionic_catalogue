@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.card_view;
 
 import android.net.Uri;
 
+import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.mvp.iBaseView;
@@ -16,7 +17,7 @@ public interface iCardView {
 
         void displayCard(Card card);
         void displayImage(Uri imageURI);
-        void showTags(List<String> tagsList);
+        void showTags(HashMap<String,Boolean> tagsHash);
 
         void displayImageError();
 
@@ -29,12 +30,15 @@ public interface iCardView {
         void hideProgressMessage();
 
         void goEditPage(Card card);
+        void goList(String tagFilter);
 
         void showDeleteDialog();
     }
 
     interface Presenter {
         void cardKeyRecieved(String key);
+
+        void onTagClicked(String tagName);
 
         void onEditButtonClicked();
         void onDeleteButtonClicked();

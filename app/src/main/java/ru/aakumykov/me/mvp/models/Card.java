@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,18 +16,20 @@ public class Card implements Parcelable {
     private String quote;
     private String imageURL;
     private String description;
-    private List<String> tags = new ArrayList<>();
+    private HashMap<String, Boolean> tags;
 
     public Card() {
     }
 
-    public Card(String type, String title, String quote, String imageURL, String description, List<String> tagsList) {
+    public Card(String type, String title, String quote, String imageURL, String description,
+                HashMap<String,Boolean> tagsMap
+    ) {
         this.type = type;
         this.title = title;
         this.quote = quote;
         this.imageURL = imageURL;
         this.description = description;
-        this.tags = tagsList;
+        this.tags = tagsMap;
     }
 
     @Exclude
@@ -39,20 +40,19 @@ public class Card implements Parcelable {
                 ", quote: "+getQuote()+
                 ", imageURL: "+imageURL+
                 ", description: "+getDescription()+
-                ", tags: "+getTags()+
+                ", tags: "+ getTags()+
             ",}";
     }
 
     @Exclude
     public HashMap<String, Object> toMap() {
         HashMap<String,Object> map = new HashMap<>();
-//        map.put("key", key); // Не нужно
-        map.put("type", type);
-        map.put("title", title);
-        map.put("quote", quote);
-        map.put("imageURL", imageURL);
-        map.put("description", description);
-        map.put("tags", tags);
+         map.put("type", type);
+         map.put("title", title);
+         map.put("quote", quote);
+         map.put("imageURL", imageURL);
+         map.put("description", description);
+         map.put("tags", tags);
         return map;
     }
 
@@ -60,14 +60,14 @@ public class Card implements Parcelable {
     /* Parcelable */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        // порядок заполнения важен
+        // важен порядок заполнения
         dest.writeString(this.key);
         dest.writeString(this.type);
         dest.writeString(this.title);
         dest.writeString(this.quote);
         dest.writeString(this.imageURL);
         dest.writeString(this.description);
-        dest.writeStringList(this.tags);
+        dest.writeMap(this.tags);
     }
 
     protected Card(Parcel in) {
@@ -77,7 +77,7 @@ public class Card implements Parcelable {
         quote = in.readString();
         imageURL = in.readString();
         description = in.readString();
-        in.readStringList(this.tags);  // Вот это да!
+        tags = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
     }
 
     @Override
@@ -117,7 +117,9 @@ public class Card implements Parcelable {
     public String getDescription() {
         return description;
     }
-    public List<String> getTags() { return this.tags; }
+    public HashMap<String, Boolean> getTags() {
+        return tags;
+    }
 
     public void setKey(String key) {
         this.key = key;
@@ -137,14 +139,7 @@ public class Card implements Parcelable {
     public void setDescription(String description) {
         this.description = description;
     }
-    public void setTags(List<String> tagsList) { this.tags = tagsList; }
-
-//    public List<String> getTags() {
-//        List<String> tagsList = new ArrayList<>();
-//        tagsList.add("Метка-1");
-//        tagsList.add("Метка-2");
-//        tagsList.add("Метка-3");
-//        tagsList.add("Метка-4");
-//        return tagsList;
-//    }
+    public void setTags(HashMap<String, Boolean> tags) {
+        this.tags = tags;
+    }
 }

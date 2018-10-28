@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +20,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -358,10 +359,14 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public List<String> getCardTags() {
-        return tagsContainer.getTags();
+    public HashMap<String,Boolean> getCardTags() {
+        HashMap<String,Boolean> map = new HashMap<>();
+        List<String> tagsList = tagsContainer.getTags();
+        for (String tagName : tagsList) {
+            map.put(tagName, true);
+        }
+        return map;
     }
-
 
     @Override
     public String getNewTag() {
@@ -445,9 +450,12 @@ public class CardEdit_View extends BaseView implements
     }
 
 
-    private void showTags(List<String> tagsList) {
-        Log.d(TAG, "showTags(), "+tagsList);
-        tagsContainer.setEnableCross(true);
-        tagsContainer.setTags(tagsList);
+    private void showTags(HashMap<String,Boolean> tagsMap) {
+        Log.d(TAG, "showTags(), "+tagsMap);
+        if (null != tagsMap) {
+            List<String> tagsList = new ArrayList<>(tagsMap.keySet());
+            tagsContainer.setTags(tagsList);
+            tagsContainer.setEnableCross(true);
+        }
     }
 }

@@ -4,13 +4,15 @@ public final class Constants {
     private Constants() {}
 
     public final static String CARDS_PATH = "/cards";
-    public final static String TAGS_PATH = "/cards";
+    public final static String TAGS_PATH = "/tags";
     public final static String IMAGES_PATH = "/images";
     public final static String USERS_PATH = "/users";
 
     public final static String CARD = "CARD";
     public final static String CARD_KEY = "CARD_KEY";
     public final static String CARD_TYPE = "CARD_TYPE";
+
+    public final static String TAG_FILTER = "TAG_FILTER";
 
     public final static String USER = "USER";
     public final static String USER_ID = "USER_ID";

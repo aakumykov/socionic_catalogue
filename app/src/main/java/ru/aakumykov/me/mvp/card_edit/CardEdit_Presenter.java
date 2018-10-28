@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.mvp.Constants;
@@ -139,7 +140,8 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
 
         if (!TextUtils.isEmpty(newTag)) {
 
-            List<String> existingTags = view.getCardTags();
+            HashMap<String,Boolean> tagsMap = view.getCardTags();
+            List<String> existingTags = new ArrayList<>(tagsMap.keySet());
 
             newTag = newTag.replaceAll("^\\s+|\\s+$", "");
 

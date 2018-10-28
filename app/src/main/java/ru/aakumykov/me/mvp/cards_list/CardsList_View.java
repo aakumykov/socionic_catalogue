@@ -183,8 +183,13 @@ public class CardsList_View extends BaseView implements
 
     private void loadList(boolean manualRefresh) {
         Log.d(TAG, "loadList(manualRefresh: "+manualRefresh+")");
+
         if (!manualRefresh) showLoadingMessage();
-        getCardsService().loadList(this);
+
+        Intent intent = getIntent();
+        String tagFilter = intent.getStringExtra(Constants.TAG_FILTER);
+
+        getCardsService().loadList(tagFilter, this);
     }
 
     private void showLoadingMessage() {

@@ -18,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -119,7 +120,7 @@ public class CardsService extends Service implements
 
     @Override
     public void updateCard(final Card card, final SaveCardCallbacks callbacks) {
-        Log.d(TAG, "saveCard(), "+card);
+        Log.d(TAG, "updateCard(), "+card);
 
         DatabaseReference cardRef = cardsRef.child(card.getKey());
 
@@ -165,14 +166,21 @@ public class CardsService extends Service implements
     }
 
 
-    // При пустом списке в приложении крутится и крутится ожидание
     @Override
-    public void loadList(final ListCallbacks callbacks) {
+    public void loadList(ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
+        loadList(null, callbacks);
+    }
 
-        cardsRef
-//        .orderByChild("tags/0").equalTo("1")
-        .addListenerForSingleValueEvent(new ValueEventListener() {
+    @Override
+    public void loadList(@Nullable String tagFilter, final ListCallbacks callbacks) {
+        Log.d(TAG, "loadList(tagFilter: "+ tagFilter +", ...)");
+
+        Query query = (null != tagFilter)
+            ? cardsRef.orderByChild("tags/"+tagFilter).equalTo(true)
+            : cardsRef.orderByKey();
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Card> list = new ArrayList<>();
