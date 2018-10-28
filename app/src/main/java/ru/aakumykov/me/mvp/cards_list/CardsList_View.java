@@ -183,7 +183,9 @@ public class CardsList_View extends BaseView implements
 
     private void loadList(boolean manualRefresh) {
         Log.d(TAG, "loadList(manualRefresh: "+manualRefresh+")");
+
         if (!manualRefresh) showLoadingMessage();
+
         getCardsService().loadList(this);
     }
 
