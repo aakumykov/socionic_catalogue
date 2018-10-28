@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -451,13 +452,14 @@ public class CardEdit_View extends BaseView implements
     private void displayCommonCardParts(Card card) {
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
-        showTags(card.getTags());
+        showTags(card.getTags2());
     }
 
 
-    private void showTags(List<String> tagsList) {
-        Log.d(TAG, "showTags(), "+tagsList);
-        tagsContainer.setEnableCross(true);
+    private void showTags(HashMap<String,Boolean> tagsMap) {
+        Log.d(TAG, "showTags(), "+tagsMap);
+        List<String> tagsList = new ArrayList<>(tagsMap.keySet());
         tagsContainer.setTags(tagsList);
+        tagsContainer.setEnableCross(true);
     }
 }

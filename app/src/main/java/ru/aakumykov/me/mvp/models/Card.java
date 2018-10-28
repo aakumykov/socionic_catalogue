@@ -1,6 +1,5 @@
 package ru.aakumykov.me.mvp.models;
 
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -18,9 +17,8 @@ public class Card implements Parcelable {
     private String quote;
     private String imageURL;
     private String description;
-    private List<String> tags;
-    private HashMap<String,Boolean> tags2;
-
+    private List<String> tags = new ArrayList<>();
+    private HashMap<String, Boolean> tags2;
 
     public Card() {
     }
@@ -76,10 +74,7 @@ public class Card implements Parcelable {
         dest.writeString(this.imageURL);
         dest.writeString(this.description);
         dest.writeStringList(this.tags);
-
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("tags2", this.tags2);
-        dest.writeBundle(bundle);
+        dest.writeMap(this.tags2);
     }
 
     protected Card(Parcel in) {
@@ -90,8 +85,7 @@ public class Card implements Parcelable {
         imageURL = in.readString();
         description = in.readString();
         in.readStringList(this.tags);
-
-        tags2 = (HashMap<String,Boolean>) in.readBundle().getSerializable("tags2");
+        tags2 = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
     }
 
     @Override
