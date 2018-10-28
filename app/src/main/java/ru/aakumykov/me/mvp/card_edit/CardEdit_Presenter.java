@@ -13,6 +13,7 @@ import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.services.TagsSingleton;
 
 
 public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel implements
@@ -29,6 +30,8 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     private Uri localImageURI;
     private String localImageType;
     private String newImageURI;
+    private HashMap<String,Boolean> oldTags = new HashMap<>();
+    private HashMap<String,Boolean> newTags;
 
 
     CardEdit_Presenter() {
@@ -62,11 +65,14 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         }
     }
 
+    // TODO: при повторном редактировании карточки
+    // TODO: из необновлённого списка не отображаются все метки
     @Override
     public void editCard(Card card) {
         Log.d(TAG, "editCard(), "+card);
 
         currentCard = card;
+        oldTags = card.getTags();
 
         switch (card.getType()) {
             case Constants.TEXT_CARD:
@@ -140,12 +146,11 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
 
         if (!TextUtils.isEmpty(newTag)) {
 
-            HashMap<String,Boolean> tagsMap = view.getCardTags();
-            List<String> existingTags = new ArrayList<>(tagsMap.keySet());
+            newTag = MyUtils.normalizeTag(newTag);
 
-            newTag = newTag.replaceAll("^\\s+|\\s+$", "");
+            HashMap<String,Boolean> existingTags = view.getCardTags();
 
-            if (!existingTags.contains(newTag)) {
+            if (!existingTags.containsKey(newTag)) {
                 view.addTag(newTag);
             }
 
@@ -201,59 +206,6 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     }
 
 
-    // Колбеки сохранения карточки
-    // TODO: проверка данных перед отправкой
-    @Override
-    public void onCardSaveSuccess(Card card) {
-        // TODO: передавать новую карточку
-        forgetCardData();
-        view.finishEdit(card);
-//        view.displayNewCard(card);
-    }
-
-    @Override
-    public void onCardSaveError(String message) {
-        view.showErrorMsg(R.string.error_saving_card);
-        view.enableForm();
-        Log.e(TAG, message);
-    }
-
-    @Override
-    public void onCardSaveCancel() {
-        view.showErrorMsg(R.string.card_saving_cancelled);
-        view.enableForm();
-    }
-
-
-    // Внутренние методы
-    private void saveCompleteCard() throws Exception {
-        Log.d(TAG, "saveCompleteCard()");
-
-        currentCard.setTitle(view.getCardTitle());
-        currentCard.setDescription(view.getCardDescription());
-        currentCard.setTags(view.getCardTags());
-
-        switch (currentCard.getType()) {
-
-            case Constants.TEXT_CARD:
-                currentCard.setQuote(view.getCardQuote());
-                break;
-
-            case Constants.IMAGE_CARD:
-                if ((null != newImageURI))
-                    currentCard.setImageURL(newImageURI);
-                break;
-
-            default:
-                view.showErrorMsg(R.string.wrong_card_type);
-                throw new Exception("Unknown card type: "+currentCard.getType());
-        }
-
-        view.disableForm();
-        model.updateCard(currentCard, this);
-    }
-
-
     // Служебные методы
     @Override
     public void linkView(iCardEdit.View view) {
@@ -278,7 +230,66 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     }
 
 
-    // Вспомогательные методы
+    // Колбеки сохранения карточки
+    // TODO: проверка данных перед отправкой
+    @Override
+    public void onCardSaveSuccess(Card card) {
+//        Log.d(TAG, "onCardSaveSuccess()");
+
+        TagsSingleton.getInstance().updateCardTags(
+                currentCard.getKey(),
+                oldTags,
+                newTags
+        );
+
+        forgetCardData();
+        view.finishEdit(card);
+    }
+
+    @Override
+    public void onCardSaveError(String message) {
+        view.showErrorMsg(R.string.error_saving_card);
+        view.enableForm();
+        Log.e(TAG, message);
+    }
+
+    @Override
+    public void onCardSaveCancel() {
+        view.showErrorMsg(R.string.card_saving_cancelled);
+        view.enableForm();
+    }
+
+
+    // Внутренние методы
+    private void saveCompleteCard() throws Exception {
+        Log.d(TAG, "saveCompleteCard()");
+
+        currentCard.setTitle(view.getCardTitle());
+        currentCard.setDescription(view.getCardDescription());
+        currentCard.setTags(view.getCardTags());
+
+        newTags = currentCard.getTags();
+
+        switch (currentCard.getType()) {
+
+            case Constants.TEXT_CARD:
+                currentCard.setQuote(view.getCardQuote());
+                break;
+
+            case Constants.IMAGE_CARD:
+                if ((null != newImageURI))
+                    currentCard.setImageURL(newImageURI);
+                break;
+
+            default:
+                view.showErrorMsg(R.string.wrong_card_type);
+                throw new Exception("Unknown card type: "+currentCard.getType());
+        }
+
+        view.disableForm();
+        model.updateCard(currentCard, this);
+    }
+
     private String constructImagePath() throws Exception {
         String fname = currentCard.getKey();
         String fext = MyUtils.mime2ext(localImageType);

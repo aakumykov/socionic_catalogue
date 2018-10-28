@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.interfaces;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.mvp.models.Tag;
@@ -12,6 +13,8 @@ public interface iTagsSingleton {
     void saveTag(Tag tag, SaveCallbacks callbacks);
     void deleteTag(Tag tag, DeleteCallbacks callbacks);
     void listTags(ListCallbacks callbacks);
+
+    void updateCardTags(String cardKey, HashMap<String,Boolean> oldTags, HashMap<String,Boolean> newTags);
 
 
     interface TagCallbacks {

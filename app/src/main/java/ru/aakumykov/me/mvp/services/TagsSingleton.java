@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.services;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,8 +17,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Tag;
 
@@ -36,8 +39,7 @@ public class TagsSingleton implements iTagsSingleton {
 
     private final static String TAG = "TagsSingleton";
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-//    private DatabaseReference tagsRef = firebaseDatabase.getReference().child(Constants.TAGS_PATH);
-    private DatabaseReference tagsRef = firebaseDatabase.getReference().child("/tags2");
+    private DatabaseReference tagsRef = firebaseDatabase.getReference().child(Constants.TAGS_PATH);
 
 
     @Override
@@ -166,5 +168,43 @@ public class TagsSingleton implements iTagsSingleton {
                 databaseError.toException().printStackTrace();
             }
         });
+    }
+
+
+    @Override
+    public void updateCardTags(
+            String cardKey,
+            @Nullable HashMap<String,Boolean> oldTags,
+            @Nullable HashMap<String,Boolean> newTags
+    ) {
+        Log.d(TAG, "updateCardTags(cardKey: "+cardKey+", oldTags: "+oldTags+", newTags: "+newTags+")");
+
+        if (null == oldTags) oldTags = new HashMap<String,Boolean>();
+        if (null == newTags) newTags = new HashMap<String,Boolean>();
+
+        Map<String, Boolean> addedTags = MyUtils.mapDiff(newTags, oldTags);
+        Map<String, Boolean> removedTags = MyUtils.mapDiff(oldTags, newTags);
+
+        HashMap<String,Object> updatePool = new HashMap<>();
+
+        for (String tagName : addedTags.keySet()) {
+            updatePool.put(tagName + "/cards/" + cardKey, true);
+        }
+
+        for (String tagName : removedTags.keySet()) {
+            updatePool.put(tagName + "/cards/" + cardKey, null);
+        }
+
+        Log.d(TAG, "updatePool: "+updatePool);
+
+        tagsRef.updateChildren(updatePool)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // TODO: сообщать, куда следует
+                        Log.e(TAG, e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
     }
 }

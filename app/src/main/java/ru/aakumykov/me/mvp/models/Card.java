@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.google.firebase.database.Exclude;
 
@@ -19,6 +20,7 @@ public class Card implements Parcelable {
     private HashMap<String, Boolean> tags;
 
     public Card() {
+
     }
 
     public Card(String type, String title, String quote, String imageURL, String description,
