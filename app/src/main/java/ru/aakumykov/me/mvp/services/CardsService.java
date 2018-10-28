@@ -173,8 +173,8 @@ public class CardsService extends Service implements
     }
 
     @Override
-    public void loadList(String tagFilter, final ListCallbacks callbacks) {
-        Log.d(TAG, "loadList(withTag: "+ tagFilter +", ...)");
+    public void loadList(@Nullable String tagFilter, final ListCallbacks callbacks) {
+        Log.d(TAG, "loadList(tagFilter: "+ tagFilter +", ...)");
 
         Query query = (null != tagFilter)
             ? cardsRef.orderByChild("tags/"+tagFilter).equalTo(true)

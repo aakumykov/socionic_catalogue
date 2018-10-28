@@ -31,6 +31,12 @@ public class CardView_Presenter implements
 
 
     // Реакция на кнопки
+
+    @Override
+    public void onTagClicked(String tagName) {
+        view.goList(tagName);
+    }
+
     @Override
     public void onEditButtonClicked() {
         view.goEditPage(currentCard);

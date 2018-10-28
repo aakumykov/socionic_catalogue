@@ -10,6 +10,7 @@ public interface iCardsService {
 
     void loadList(ListCallbacks callbacks);
     void loadList(String tagFilter, ListCallbacks callbacks);
+
     void loadCard(String key, CardCallbacks callbacks);
 
     String createKey();

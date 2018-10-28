@@ -23,11 +23,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.lujun.androidtagview.TagContainerLayout;
+import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
+import ru.aakumykov.me.mvp.cards_list.CardsList_View;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
@@ -35,7 +37,8 @@ import ru.aakumykov.me.mvp.utils.YesNoDialog;
 //TODO: уменьшение изображения
 
 public class CardView_View extends BaseView implements
-        iCardView.View
+        iCardView.View,
+        TagView.OnTagClickListener
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
@@ -58,6 +61,8 @@ public class CardView_View extends BaseView implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_view_activity);
         ButterKnife.bind(this);
+
+        tagsContainer.setOnTagClickListener(this);
 
         presenter = new CardView_Presenter();
     }
@@ -134,6 +139,23 @@ public class CardView_View extends BaseView implements
         }
 
         return true;
+    }
+
+
+    @Override
+    public void onTagClick(int position, String text) {
+        Log.d(TAG, "onTagClick("+position+", "+text+")");
+        presenter.onTagClicked(text);
+    }
+
+    @Override
+    public void onTagLongClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagCrossClick(int position) {
+
     }
 
 
@@ -235,6 +257,13 @@ public class CardView_View extends BaseView implements
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
+    @Override
+    public void goList(@Nullable String tagFilter) {
+        Intent intent = new Intent(this, CardsList_View.class);
+        if (null != tagFilter)
+            intent.putExtra(Constants.TAG_FILTER, tagFilter);
+        startActivity(intent);
+    }
 
     // Внутренние методы
     private void loadCard() {

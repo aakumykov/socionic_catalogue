@@ -30,12 +30,15 @@ public interface iCardView {
         void hideProgressMessage();
 
         void goEditPage(Card card);
+        void goList(String tagFilter);
 
         void showDeleteDialog();
     }
 
     interface Presenter {
         void cardKeyRecieved(String key);
+
+        void onTagClicked(String tagName);
 
         void onEditButtonClicked();
         void onDeleteButtonClicked();

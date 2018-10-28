@@ -186,7 +186,10 @@ public class CardsList_View extends BaseView implements
 
         if (!manualRefresh) showLoadingMessage();
 
-        getCardsService().loadList(this);
+        Intent intent = getIntent();
+        String tagFilter = intent.getStringExtra(Constants.TAG_FILTER);
+
+        getCardsService().loadList(tagFilter, this);
     }
 
     private void showLoadingMessage() {
