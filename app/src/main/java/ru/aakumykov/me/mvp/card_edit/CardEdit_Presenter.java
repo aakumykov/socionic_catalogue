@@ -4,9 +4,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
@@ -44,6 +42,9 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     public void createCard(String cardType) {
         Log.d(TAG, "createCard("+cardType+")");
 
+        view.hideWating();
+        view.enableForm();
+
         currentCard = new Card();
         currentCard.setKey(model.createKey());
         currentCard.setType(cardType);
@@ -61,7 +62,6 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
             default:
                 view.showErrorMsg(R.string.wrong_card_type);
                 Log.d(TAG, cardType);
-                return;
         }
     }
 
