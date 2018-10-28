@@ -171,7 +171,7 @@ public class CardsService extends Service implements
         Log.d(TAG, "loadList()");
 
         cardsRef
-//            .orderByKey()
+//        .orderByChild("tags/0").equalTo("1")
         .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
