@@ -1,6 +1,12 @@
 package ru.aakumykov.me.mvp;
 
+import ru.aakumykov.me.mvp.interfaces.iAuthService;
+import ru.aakumykov.me.mvp.interfaces.iCardsService;
+
 public interface iBaseView {
+
+    iCardsService getCardsService();
+    iAuthService getAuthService();
 
     void showInfoMsg(int messageId);
     void showInfoMsg(int messageId, String consoleMessage);

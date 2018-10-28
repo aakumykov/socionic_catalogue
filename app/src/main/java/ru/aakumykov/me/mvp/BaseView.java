@@ -105,8 +105,11 @@ public abstract class BaseView extends AppCompatActivity implements
     @Override
     protected void onStop() {
         super.onStop();
+
         if (isCardsServiceBounded)
             unbindService(cardsServiceConnection);
+
+        if (isAuthServiceBounded)
             unbindService(authServiceConnection);
     }
 
