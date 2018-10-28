@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -362,6 +363,15 @@ public class CardEdit_View extends BaseView implements
         return tagsContainer.getTags();
     }
 
+    @Override
+    public HashMap<String,Boolean> getCardTags2() {
+        HashMap<String,Boolean> map = new HashMap<>();
+        List<String> tags = getCardTags();
+        for (String tagName : tags) {
+            map.put(tagName, true);
+        }
+        return map;
+    }
 
     @Override
     public String getNewTag() {

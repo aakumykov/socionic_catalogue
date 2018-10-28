@@ -230,6 +230,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         currentCard.setTitle(view.getCardTitle());
         currentCard.setDescription(view.getCardDescription());
         currentCard.setTags(view.getCardTags());
+        currentCard.setTags2(view.getCardTags2());
 
         switch (currentCard.getType()) {
 

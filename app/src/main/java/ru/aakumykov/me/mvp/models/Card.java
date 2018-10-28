@@ -18,17 +18,25 @@ public class Card implements Parcelable {
     private String imageURL;
     private String description;
     private List<String> tags = new ArrayList<>();
+    // Подозреваю, что опасно без <String, Boolean> в типе переменной!
+    private HashMap tags2 = new HashMap<String, Boolean>();
+    // TODO: читать про загрузку HashMap
+    // TODO: или преобразовывать в Bundle?
 
     public Card() {
     }
 
-    public Card(String type, String title, String quote, String imageURL, String description, List<String> tagsList) {
+    public Card(String type, String title, String quote, String imageURL, String description,
+                List<String> tagsList,
+                HashMap<String,Boolean> tagsList2
+    ) {
         this.type = type;
         this.title = title;
         this.quote = quote;
         this.imageURL = imageURL;
         this.description = description;
         this.tags = tagsList;
+        this.tags2 = tagsList2;
     }
 
     @Exclude
@@ -40,19 +48,20 @@ public class Card implements Parcelable {
                 ", imageURL: "+imageURL+
                 ", description: "+getDescription()+
                 ", tags: "+getTags()+
+                ", tags2: "+getTags2()+
             ",}";
     }
 
     @Exclude
     public HashMap<String, Object> toMap() {
         HashMap<String,Object> map = new HashMap<>();
-//        map.put("key", key); // Не нужно
-        map.put("type", type);
-        map.put("title", title);
-        map.put("quote", quote);
-        map.put("imageURL", imageURL);
-        map.put("description", description);
-        map.put("tags", tags);
+         map.put("type", type);
+         map.put("title", title);
+         map.put("quote", quote);
+         map.put("imageURL", imageURL);
+         map.put("description", description);
+         map.put("tags", tags);
+         map.put("tags2", tags2);
         return map;
     }
 
@@ -68,6 +77,7 @@ public class Card implements Parcelable {
         dest.writeString(this.imageURL);
         dest.writeString(this.description);
         dest.writeStringList(this.tags);
+        dest.writeMap(this.tags2);
     }
 
     protected Card(Parcel in) {
@@ -78,6 +88,8 @@ public class Card implements Parcelable {
         imageURL = in.readString();
         description = in.readString();
         in.readStringList(this.tags);  // Вот это да!
+//        tags2 = in.readHashMap(HashMap.class.getClassLoader());
+        tags2 = in.readHashMap(String.class.getClassLoader());
     }
 
     @Override
@@ -139,12 +151,11 @@ public class Card implements Parcelable {
     }
     public void setTags(List<String> tagsList) { this.tags = tagsList; }
 
-//    public List<String> getTags() {
-//        List<String> tagsList = new ArrayList<>();
-//        tagsList.add("Метка-1");
-//        tagsList.add("Метка-2");
-//        tagsList.add("Метка-3");
-//        tagsList.add("Метка-4");
-//        return tagsList;
-//    }
+    public HashMap<String, Boolean> getTags2() {
+        return tags2;
+    }
+
+    public void setTags2(HashMap<String, Boolean> tags2) {
+        this.tags2 = tags2;
+    }
 }

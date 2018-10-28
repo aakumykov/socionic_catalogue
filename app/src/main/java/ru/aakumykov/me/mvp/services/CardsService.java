@@ -119,7 +119,7 @@ public class CardsService extends Service implements
 
     @Override
     public void updateCard(final Card card, final SaveCardCallbacks callbacks) {
-        Log.d(TAG, "saveCard(), "+card);
+        Log.d(TAG, "updateCard(), "+card);
 
         DatabaseReference cardRef = cardsRef.child(card.getKey());
 
@@ -171,7 +171,7 @@ public class CardsService extends Service implements
         Log.d(TAG, "loadList()");
 
         cardsRef
-//        .orderByChild("tags/0").equalTo("1")
+//        .orderByChild("tags2/222").equalTo(true)
         .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

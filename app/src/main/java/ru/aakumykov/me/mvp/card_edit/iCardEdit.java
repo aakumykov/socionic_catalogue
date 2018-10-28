@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.card_edit;
 
 import android.net.Uri;
 
+import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.mvp.iBaseView;
@@ -34,6 +35,7 @@ public interface iCardEdit {
         String getCardQuote();
         String getCardDescription();
         List<String> getCardTags();
+        HashMap<String,Boolean> getCardTags2();
 
         String getNewTag();
         void clearNewTag();
