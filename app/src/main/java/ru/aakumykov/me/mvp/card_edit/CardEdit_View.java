@@ -49,12 +49,13 @@ public class CardEdit_View extends BaseView implements
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
+
     @BindView(R.id.titleView) EditText titleView;
     @BindView(R.id.quoteView) EditText quoteView;
-     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
-     @BindView(R.id.imageView) ImageView imageView;
-     @BindView(R.id.discardImageButton) ImageView discardImageButton;
-     @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
+    @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
+    @BindView(R.id.imageView) ImageView imageView;
+    @BindView(R.id.discardImageButton) ImageView discardImageButton;
+    @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
     @BindView(R.id.descriptionView) EditText descriptionView;
 
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
@@ -67,7 +68,6 @@ public class CardEdit_View extends BaseView implements
 
     private final static String TAG = "CardEdit_View";
     private iCardEdit.Presenter presenter;
-//    private boolean firstRun = true;
 
 
     // Системные методы
@@ -79,6 +79,7 @@ public class CardEdit_View extends BaseView implements
         setContentView(R.layout.card_edit_activity);
         ButterKnife.bind(this);
 
+        disableForm();
         tagsContainer.setOnTagClickListener(this);
 
         // Запрос разрешений
@@ -426,17 +427,13 @@ public class CardEdit_View extends BaseView implements
     private void processInputIntent() {
         Log.d(TAG, "processInputIntent()");
 
-//        firstRun = false;
-
-        hideWating();
-
         Intent intent = getIntent();
         Card card = intent.getParcelableExtra(Constants.CARD);
         String cardType = intent.getStringExtra(Constants.CARD_TYPE);
 
         if (null != card) {
             Log.d(TAG, "Правка");
-            presenter.editCard(card);
+            presenter.editCard(card.getKey());
         } else {
             Log.d(TAG, "Созидание");
             presenter.createCard(cardType);

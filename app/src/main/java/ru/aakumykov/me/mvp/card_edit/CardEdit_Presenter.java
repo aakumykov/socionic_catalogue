@@ -65,26 +65,58 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         }
     }
 
-    // TODO: при повторном редактировании карточки
-    // TODO: из необновлённого списка не отображаются все метки
     @Override
-    public void editCard(Card card) {
-        Log.d(TAG, "editCard(), "+card);
+    public void editCard(String cardKey) {
+        Log.d(TAG, "editCard("+cardKey+")");
 
-        currentCard = card;
-        oldTags = card.getTags();
+        model.loadCard(cardKey, new iCardsService.CardCallbacks() {
+            @Override
+            public void onLoadSuccess(Card card) {
 
-        switch (card.getType()) {
-            case Constants.TEXT_CARD:
-                view.displayTextCard(card);
-                break;
-            case Constants.IMAGE_CARD:
-                view.displayImageCard(card);
-                break;
-            default:
-                view.showErrorMsg(R.string.wrong_card_type);
-                Log.e(TAG, "Unknown card type: "+card.getType());
-        }
+                view.hideWating();
+                view.enableForm();
+
+                currentCard = card;
+                oldTags = card.getTags();
+
+                switch (card.getType()) {
+
+                    case Constants.TEXT_CARD:
+                        view.displayTextCard(card);
+                        break;
+
+                    case Constants.IMAGE_CARD:
+                        view.displayImageCard(card);
+                        break;
+
+                    default:
+                        view.showErrorMsg(R.string.wrong_card_type);
+                        Log.e(TAG, "Unknown card type: "+card.getType());
+                }
+            }
+
+            @Override
+            public void onLoadFailed(String msg) {
+
+            }
+
+            // Убрать этот?
+            @Override
+            public void onLoadCanceled() {
+
+            }
+
+            // Не к месту эти
+            @Override
+            public void onDeleteSuccess(Card card) {
+
+            }
+
+            @Override
+            public void onDeleteError(String msg) {
+
+            }
+        });
     }
 
 

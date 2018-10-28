@@ -54,7 +54,7 @@ public interface iCardEdit {
         void unlinkModel();
 
         void createCard(String cardType);
-        void editCard(Card card);
+        void editCard(String cardKey);
 
         void onSaveButtonClicked();
         void onCancelButtonClicked();
