@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -199,8 +201,13 @@ public class CardView_View extends BaseView implements
 
     // Метки
     @Override
+    public void showTags(HashMap<String,Boolean> tagsHash) {
+//        Log.d(TAG, "showTags(), "+tagsHash);
+        List<String> tagsList = new ArrayList<>(tagsHash.keySet());
+        showTags(tagsList);
+    }
+    @Override
     public void showTags(List<String> tagsList) {
-        Log.d(TAG, "showTags(), "+tagsList);
         tagsContainer.setTags(tagsList);
         MyUtils.show(tagsContainer);
     }
@@ -235,7 +242,9 @@ public class CardView_View extends BaseView implements
         if (firstRun) {
             Intent intent = getIntent();
             String cardKey = intent.getStringExtra(Constants.CARD_KEY);
+
             presenter.cardKeyRecieved(cardKey);
+
             firstRun = false;
         }
     }
@@ -268,7 +277,7 @@ public class CardView_View extends BaseView implements
     private void displayCommonCard(Card card) {
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
-        showTags(card.getTags());
+        showTags(card.getTags2());
     }
 
 
