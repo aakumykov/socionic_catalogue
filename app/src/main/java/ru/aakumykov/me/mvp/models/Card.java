@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,21 +16,20 @@ public class Card implements Parcelable {
     private String quote;
     private String imageURL;
     private String description;
-    private HashMap<String, Boolean> tags2;
+    private HashMap<String, Boolean> tags;
 
     public Card() {
     }
 
     public Card(String type, String title, String quote, String imageURL, String description,
-                List<String> tagsList,
-                HashMap<String,Boolean> tagsList2
+                HashMap<String,Boolean> tagsMap
     ) {
         this.type = type;
         this.title = title;
         this.quote = quote;
         this.imageURL = imageURL;
         this.description = description;
-        this.tags2 = tagsList2;
+        this.tags = tagsMap;
     }
 
     @Exclude
@@ -42,7 +40,7 @@ public class Card implements Parcelable {
                 ", quote: "+getQuote()+
                 ", imageURL: "+imageURL+
                 ", description: "+getDescription()+
-                ", tags2: "+getTags2()+
+                ", tags: "+ getTags()+
             ",}";
     }
 
@@ -54,7 +52,7 @@ public class Card implements Parcelable {
          map.put("quote", quote);
          map.put("imageURL", imageURL);
          map.put("description", description);
-         map.put("tags2", tags2);
+         map.put("tags", tags);
         return map;
     }
 
@@ -69,7 +67,7 @@ public class Card implements Parcelable {
         dest.writeString(this.quote);
         dest.writeString(this.imageURL);
         dest.writeString(this.description);
-        dest.writeMap(this.tags2);
+        dest.writeMap(this.tags);
     }
 
     protected Card(Parcel in) {
@@ -79,7 +77,7 @@ public class Card implements Parcelable {
         quote = in.readString();
         imageURL = in.readString();
         description = in.readString();
-        tags2 = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+        tags = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
     }
 
     @Override
@@ -119,8 +117,8 @@ public class Card implements Parcelable {
     public String getDescription() {
         return description;
     }
-    public HashMap<String, Boolean> getTags2() {
-        return tags2;
+    public HashMap<String, Boolean> getTags() {
+        return tags;
     }
 
     public void setKey(String key) {
@@ -141,7 +139,7 @@ public class Card implements Parcelable {
     public void setDescription(String description) {
         this.description = description;
     }
-    public void setTags2(HashMap<String, Boolean> tags2) {
-        this.tags2 = tags2;
+    public void setTags(HashMap<String, Boolean> tags) {
+        this.tags = tags;
     }
 }

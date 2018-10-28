@@ -140,7 +140,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
 
         if (!TextUtils.isEmpty(newTag)) {
 
-            HashMap<String,Boolean> tagsMap = view.getCardTags2();
+            HashMap<String,Boolean> tagsMap = view.getCardTags();
             List<String> existingTags = new ArrayList<>(tagsMap.keySet());
 
             newTag = newTag.replaceAll("^\\s+|\\s+$", "");
@@ -231,7 +231,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
 
         currentCard.setTitle(view.getCardTitle());
         currentCard.setDescription(view.getCardDescription());
-        currentCard.setTags2(view.getCardTags2());
+        currentCard.setTags(view.getCardTags());
 
         switch (currentCard.getType()) {
 

@@ -359,7 +359,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public HashMap<String,Boolean> getCardTags2() {
+    public HashMap<String,Boolean> getCardTags() {
         HashMap<String,Boolean> map = new HashMap<>();
         List<String> tagsList = tagsContainer.getTags();
         for (String tagName : tagsList) {
@@ -446,14 +446,16 @@ public class CardEdit_View extends BaseView implements
     private void displayCommonCardParts(Card card) {
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
-        showTags(card.getTags2());
+        showTags(card.getTags());
     }
 
 
     private void showTags(HashMap<String,Boolean> tagsMap) {
         Log.d(TAG, "showTags(), "+tagsMap);
-        List<String> tagsList = new ArrayList<>(tagsMap.keySet());
-        tagsContainer.setTags(tagsList);
-        tagsContainer.setEnableCross(true);
+        if (null != tagsMap) {
+            List<String> tagsList = new ArrayList<>(tagsMap.keySet());
+            tagsContainer.setTags(tagsList);
+            tagsContainer.setEnableCross(true);
+        }
     }
 }

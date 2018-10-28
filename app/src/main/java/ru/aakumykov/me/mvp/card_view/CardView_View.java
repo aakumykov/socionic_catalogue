@@ -203,9 +203,11 @@ public class CardView_View extends BaseView implements
     @Override
     public void showTags(HashMap<String,Boolean> tagsHash) {
 //        Log.d(TAG, "showTags(), "+tagsHash);
-        List<String> tagsList = new ArrayList<>(tagsHash.keySet());
-        tagsContainer.setTags(tagsList);
-        MyUtils.show(tagsContainer);
+        if (null != tagsHash) {
+            List<String> tagsList = new ArrayList<>(tagsHash.keySet());
+            tagsContainer.setTags(tagsList);
+            MyUtils.show(tagsContainer);
+        }
     }
 
 
@@ -274,7 +276,7 @@ public class CardView_View extends BaseView implements
     private void displayCommonCard(Card card) {
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
-        showTags(card.getTags2());
+        showTags(card.getTags());
     }
 
 
