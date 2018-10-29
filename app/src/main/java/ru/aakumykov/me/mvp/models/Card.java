@@ -2,8 +2,14 @@ package ru.aakumykov.me.mvp.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
-public class Card implements Parcelable /*, Cloneable*/ {
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.List;
+
+public class Card implements Parcelable {
 
     private String key;
     private String type;
@@ -11,18 +17,89 @@ public class Card implements Parcelable /*, Cloneable*/ {
     private String quote;
     private String imageURL;
     private String description;
+    private HashMap<String, Boolean> tags;
 
     public Card() {
+
     }
 
-    public Card(String key, String type, String title, String quote, String imageURL, String description) {
-        this.key = key;
+    public Card(String type, String title, String quote, String imageURL, String description,
+                HashMap<String,Boolean> tagsMap
+    ) {
         this.type = type;
         this.title = title;
         this.quote = quote;
         this.imageURL = imageURL;
         this.description = description;
+        this.tags = tagsMap;
     }
+
+    @Exclude
+    @Override
+    public String toString() {
+        return "Card { key: "+getKey()+
+                ", title: "+getTitle()+
+                ", quote: "+getQuote()+
+                ", imageURL: "+imageURL+
+                ", description: "+getDescription()+
+                ", tags: "+ getTags()+
+            ",}";
+    }
+
+    @Exclude
+    public HashMap<String, Object> toMap() {
+        HashMap<String,Object> map = new HashMap<>();
+         map.put("type", type);
+         map.put("title", title);
+         map.put("quote", quote);
+         map.put("imageURL", imageURL);
+         map.put("description", description);
+         map.put("tags", tags);
+        return map;
+    }
+
+
+    /* Parcelable */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        // важен порядок заполнения
+        dest.writeString(this.key);
+        dest.writeString(this.type);
+        dest.writeString(this.title);
+        dest.writeString(this.quote);
+        dest.writeString(this.imageURL);
+        dest.writeString(this.description);
+        dest.writeMap(this.tags);
+    }
+
+    protected Card(Parcel in) {
+        key = in.readString();
+        type = in.readString();
+        title = in.readString();
+        quote = in.readString();
+        imageURL = in.readString();
+        description = in.readString();
+        tags = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Card> CREATOR = new Creator<Card>() {
+        @Override
+        public Card createFromParcel(Parcel in) {
+            return new Card(in);
+        }
+
+        @Override
+        public Card[] newArray(int size) {
+            return new Card[size];
+        }
+    };
+    /* Parcelable */
+
 
     public String getKey() {
         return key;
@@ -41,6 +118,9 @@ public class Card implements Parcelable /*, Cloneable*/ {
     }
     public String getDescription() {
         return description;
+    }
+    public HashMap<String, Boolean> getTags() {
+        return tags;
     }
 
     public void setKey(String key) {
@@ -61,65 +141,7 @@ public class Card implements Parcelable /*, Cloneable*/ {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    @Override
-    public String toString() {
-        return "Card { key: "+getKey()+", title: "+getTitle()+", quote: "+getQuote()+", imageURL: "+imageURL+", description: "+getDescription()+",}";
+    public void setTags(HashMap<String, Boolean> tags) {
+        this.tags = tags;
     }
-
-//    @Override
-//    public Card clone() throws CloneNotSupportedException {
-//        super.clone();
-//
-//        Card theClone = new Card();
-//
-//        theClone.setKey(getKey());
-//        theClone.setType(getType());
-//
-//        theClone.setTitle(getTitle());
-//        theClone.setQuote(getQuote());
-//        theClone.setImageURL(getImageURL());
-//        theClone.setDescription(getDescription());
-//
-//        return theClone;
-//    }
-
-    /* Parcelable */
-    protected Card(Parcel in) {
-        key = in.readString();
-        type = in.readString();
-        title = in.readString();
-        quote = in.readString();
-        imageURL = in.readString();
-        description = in.readString();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Card> CREATOR = new Creator<Card>() {
-        @Override
-        public Card createFromParcel(Parcel in) {
-            return new Card(in);
-        }
-
-        @Override
-        public Card[] newArray(int size) {
-            return new Card[size];
-        }
-    };
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        // порядок заполнения важен
-        dest.writeString(this.key);
-        dest.writeString(this.type);
-        dest.writeString(this.title);
-        dest.writeString(this.quote);
-        dest.writeString(this.imageURL);
-        dest.writeString(this.description);
-    }
-    /* Parcelable */
 }

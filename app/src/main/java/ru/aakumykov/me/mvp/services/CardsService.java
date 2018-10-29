@@ -14,11 +14,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -26,12 +26,15 @@ import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
-public class CardsService extends Service implements iCardsService
+public class CardsService extends Service implements
+        iCardsService
 {
     // Внутренний класс
     public class LocalBinder extends Binder {
@@ -54,7 +57,7 @@ public class CardsService extends Service implements iCardsService
 
     // Слежебные методы
     public CardsService() {
-        Log.d(TAG, "new CardsService()");
+//        Log.d(TAG, "new CardsService()");
 
         binder = new LocalBinder();
 
@@ -65,13 +68,13 @@ public class CardsService extends Service implements iCardsService
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "onBind()");
+//        Log.d(TAG, "onBind()");
         return binder;
     }
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "onCreate()");
+//        Log.d(TAG, "onCreate()");
         super.onCreate();
 
         firebaseDatabase.goOnline(); // нужно ли?
@@ -79,7 +82,7 @@ public class CardsService extends Service implements iCardsService
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "onDestroy()");
+//        Log.d(TAG, "onDestroy()");
         super.onDestroy();
 
         cancelUpload();
@@ -90,47 +93,8 @@ public class CardsService extends Service implements iCardsService
 
     // Пользовательские методы
     @Override
-    public void loadList(final ListCallbacks callbacks) {
-        Log.d(TAG, "loadList()");
-
-        cardsRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                // TODO: сложно это всё. Проверить. Где обрабатывать ошибку? Где выделять Card?
-//                try {
-//                    Card card = MyUtils.snapshot2card(dataSnapshot);
-//                } catch (IllegalArgumentException e) {
-//                    callbacks.onBadData(e.getMessage());
-//                    e.printStackTrace();
-//                }
-                Card card = MyUtils.snapshot2card(dataSnapshot);
-                callbacks.onChildAdded(card);
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Card card = MyUtils.snapshot2card(dataSnapshot);
-                callbacks.onChildChanged(card, s);
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                Card card = MyUtils.snapshot2card(dataSnapshot);
-                callbacks.onDeleteSuccess(card);
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Card card = MyUtils.snapshot2card(dataSnapshot);
-                callbacks.onChildMoved(card, s);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                callbacks.onCancelled(databaseError.getMessage());
-                databaseError.toException().printStackTrace();
-            }
-        });
+    public String createKey() {
+        return cardsRef.push().getKey();
     }
 
     @Override
@@ -155,13 +119,8 @@ public class CardsService extends Service implements iCardsService
     }
 
     @Override
-    public String createKey() {
-        return cardsRef.push().getKey();
-    }
-
-    @Override
-    public void saveCard(final Card card, final SaveCardCallbacks callbacks) {
-        Log.d(TAG, "saveCard(), "+card);
+    public void updateCard(final Card card, final SaveCardCallbacks callbacks) {
+        Log.d(TAG, "updateCard(), "+card);
 
         DatabaseReference cardRef = cardsRef.child(card.getKey());
 
@@ -205,6 +164,60 @@ public class CardsService extends Service implements iCardsService
             }
         });
     }
+
+
+    @Override
+    public void loadList(ListCallbacks callbacks) {
+        Log.d(TAG, "loadList()");
+        loadList(null, callbacks);
+    }
+
+    @Override
+    public void loadList(@Nullable String tagFilter, final ListCallbacks callbacks) {
+        Log.d(TAG, "loadList(tagFilter: "+ tagFilter +", ...)");
+
+        Query query = (null != tagFilter)
+            ? cardsRef.orderByChild("tags/"+tagFilter).equalTo(true)
+            : cardsRef.orderByKey();
+
+//        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                Log.d(TAG, "onDataChange(), "+dataSnapshot);
+
+                List<Card> list = new ArrayList<>();
+
+                for (DataSnapshot snapshotPiece : dataSnapshot.getChildren()) {
+                    try {
+                        Card card = snapshotPiece.getValue(Card.class);
+
+                        if (null != card) {
+                            card.setKey(snapshotPiece.getKey());
+                            list.add(card);
+                        } else {
+                           callbacks.onListLoadFail("Card from snapshotPiece is null");
+                           Log.d(TAG, "snapshotPiece: "+snapshotPiece);
+                        }
+
+                    } catch (Exception e) {
+                        // Здесь бы сообщение пользователю, но оно затрётся инфой
+                        Log.e(TAG, e.getMessage()+", snapshotPiece: "+snapshotPiece);
+                        e.printStackTrace();
+                    }
+                }
+
+                callbacks.onListLoadSuccess(list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callbacks.onListLoadFail(databaseError.getMessage());
+                databaseError.toException().printStackTrace();
+            }
+        });
+    }
+
 
     @Override
     public void uploadImage(final Uri imageURI, final String mimeType, final String remotePath, final ImageUploadCallbacks callbacks) {

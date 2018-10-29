@@ -16,7 +16,7 @@
     <string name="card_load_error">Error loading card</string>
     <string name="card_load_canceled">Card loading cancelled</string>
     <string name="opening_card">Opening card</string>
-    <string name="getting_cards_list">Getting cards list</string>
+    <string name="loading_cards_list">Loading cards list</string>
     <string name="image_placeholder">Image stub</string>
     <string name="wrong_card_type">Unknown card type</string>
     <string name="error_loading_image">Error loading image</string>
@@ -72,4 +72,10 @@
     <string name="user_saved">User saved</string>
     <string name="about">About</string>
     <string name="internal_error">Internal error</string>
+    <string name="error_loading_tags">Error loading tags</string>
+    <string name="tags">Tags</string>
+    <string name="list_is_empty">List is empty</string>
+    <string name="refreshing_list">Refreshing list</string>
+    <string name="add">Add</string>
+    <string name="new_tag">New tag</string>
 </resources>

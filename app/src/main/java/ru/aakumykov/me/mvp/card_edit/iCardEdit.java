@@ -2,12 +2,16 @@ package ru.aakumykov.me.mvp.card_edit;
 
 import android.net.Uri;
 
+import java.util.HashMap;
+import java.util.List;
+
+import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
 public interface iCardEdit {
 
-    interface View {
+    interface View extends iBaseView {
         void showWating();
         void hideWating();
 
@@ -19,25 +23,28 @@ public interface iCardEdit {
         void showBrokenImage();
         void removeImage();
 
-        void prepareForTextCard();
-        void prepareForImageCard();
+        void prepareTextCardForm();
+        void prepareImageCardForm();
+
+        void addTag(String tagName);
+        // void removeTag(tagName|position);
 
         void selectImage();
 
         String getCardTitle();
         String getCardQuote();
         String getCardDescription();
+        HashMap<String,Boolean> getCardTags();
+
+        String getNewTag();
+        void clearNewTag();
 
         void enableForm();
         void disableForm();
 
-        void showInfoMsg(int msgId);
-        void showErrorMsg(int msgId);
-        void showErrorMsg(String msg);
-        void hideMsg();
-
         void finishEdit(Card card);
     }
+
 
     interface Presenter {
         void linkView(iCardEdit.View view);
@@ -47,11 +54,12 @@ public interface iCardEdit {
         void unlinkModel();
 
         void createCard(String cardType);
-        void editCard(Card card);
+        void editCard(String cardKey);
 
         void onSaveButtonClicked();
         void onCancelButtonClicked();
         void onImageDiscardClicked();
+        void onAddTagButtonClicked();
 
         void onSelectImageClicked();
         void onImageSelected(Uri imageURI, String mimeType);

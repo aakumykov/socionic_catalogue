@@ -16,13 +16,20 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import co.lujun.androidtagview.TagContainerLayout;
+import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
+import ru.aakumykov.me.mvp.cards_list.CardsList_View;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
@@ -30,7 +37,8 @@ import ru.aakumykov.me.mvp.utils.YesNoDialog;
 //TODO: уменьшение изображения
 
 public class CardView_View extends BaseView implements
-        iCardView.View
+        iCardView.View,
+        TagView.OnTagClickListener
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
@@ -40,6 +48,7 @@ public class CardView_View extends BaseView implements
     @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.descriptionView) TextView descriptionView;
+    @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
 
     private final static String TAG = "CardView_View";
     private iCardView.Presenter presenter;
@@ -52,6 +61,8 @@ public class CardView_View extends BaseView implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_view_activity);
         ButterKnife.bind(this);
+
+        tagsContainer.setOnTagClickListener(this);
 
         presenter = new CardView_Presenter();
     }
@@ -131,6 +142,23 @@ public class CardView_View extends BaseView implements
     }
 
 
+    @Override
+    public void onTagClick(int position, String text) {
+        Log.d(TAG, "onTagClick("+position+", "+text+")");
+        presenter.onTagClicked(text);
+    }
+
+    @Override
+    public void onTagLongClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagCrossClick(int position) {
+
+    }
+
+
     // Ожидание
     @Override
     public void showWaitScreen() {
@@ -193,6 +221,17 @@ public class CardView_View extends BaseView implements
         imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
     }
 
+    // Метки
+    @Override
+    public void showTags(HashMap<String,Boolean> tagsHash) {
+//        Log.d(TAG, "showTags(), "+tagsHash);
+        if (null != tagsHash) {
+            List<String> tagsList = new ArrayList<>(tagsHash.keySet());
+            tagsContainer.setTags(tagsList);
+            MyUtils.show(tagsContainer);
+        }
+    }
+
 
     // Индикатор ожидания
     @Override
@@ -218,13 +257,22 @@ public class CardView_View extends BaseView implements
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
+    @Override
+    public void goList(@Nullable String tagFilter) {
+        Intent intent = new Intent(this, CardsList_View.class);
+        if (null != tagFilter)
+            intent.putExtra(Constants.TAG_FILTER, tagFilter);
+        startActivity(intent);
+    }
 
     // Внутренние методы
     private void loadCard() {
         if (firstRun) {
             Intent intent = getIntent();
             String cardKey = intent.getStringExtra(Constants.CARD_KEY);
+
             presenter.cardKeyRecieved(cardKey);
+
             firstRun = false;
         }
     }
@@ -257,6 +305,7 @@ public class CardView_View extends BaseView implements
     private void displayCommonCard(Card card) {
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
+        showTags(card.getTags());
     }
 
 

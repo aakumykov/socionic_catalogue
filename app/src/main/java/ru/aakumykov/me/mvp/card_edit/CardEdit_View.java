@@ -20,8 +20,15 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import co.lujun.androidtagview.TagContainerLayout;
+import co.lujun.androidtagview.TagView;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.BaseView;
@@ -37,26 +44,30 @@ import ru.aakumykov.me.mvp.models.Card;
 @RuntimePermissions
 public class CardEdit_View extends BaseView implements
         iCardEdit.View,
-        View.OnClickListener
+        View.OnClickListener,
+        TagView.OnTagClickListener
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
+
     @BindView(R.id.titleView) EditText titleView;
     @BindView(R.id.quoteView) EditText quoteView;
-
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.discardImageButton) ImageView discardImageButton;
     @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
-
     @BindView(R.id.descriptionView) EditText descriptionView;
+
+    @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
+    @BindView(R.id.newTagInput) EditText newTagInput;
+    @BindView(R.id.addTagButton) Button tagAddButton;
+
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
 
     private final static String TAG = "CardEdit_View";
     private iCardEdit.Presenter presenter;
-    private boolean firstRun = true;
 
 
     // Системные методы
@@ -68,11 +79,8 @@ public class CardEdit_View extends BaseView implements
         setContentView(R.layout.card_edit_activity);
         ButterKnife.bind(this);
 
-        // Настройка элементов интерфейса
-        saveButton.setOnClickListener(this);
-        cancelButton.setOnClickListener(this);
-        discardImageButton.setOnClickListener(this);
-        imageView.setOnClickListener(this);
+        disableForm();
+        tagsContainer.setOnTagClickListener(this);
 
         // Запрос разрешений
         CardEdit_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
@@ -96,25 +104,61 @@ public class CardEdit_View extends BaseView implements
         presenter.unlinkModel();
     }
 
+
+    @OnClick({
+        R.id.saveButton,
+        R.id.cancelButton,
+        R.id.discardImageButton,
+        R.id.imageView,
+        R.id.addTagButton
+    })
     @Override
     public void onClick(View v) {
+//        Log.d(TAG,"onClick("+v.getId()+")");
+
         switch (v.getId()) {
+
             case R.id.saveButton:
                 presenter.onSaveButtonClicked();
                 break;
+
             case R.id.cancelButton:
                 presenter.onCancelButtonClicked();
                 break;
+
             case R.id.imageView:
                 presenter.onSelectImageClicked();
                 break;
+
             case R.id.discardImageButton:
                 presenter.onImageDiscardClicked();
                 break;
+
+            case R.id.addTagButton:
+                presenter.onAddTagButtonClicked();
+                break;
+
             default:
                 Log.e(TAG, "Clicked element with unknown id: "+v.getId());
         }
     }
+
+    @Override
+    public void onTagClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagLongClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagCrossClick(int position) {
+//        Log.d(TAG, "onTagCrossClick(), position: "+position);
+        tagsContainer.removeTag(position);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -153,22 +197,18 @@ public class CardEdit_View extends BaseView implements
     // Отображение карточки
     @Override
     public void displayTextCard(Card card) {
-        Log.d(TAG, "displayTextCard()");
+        Log.d(TAG, "displayTextCard(), "+card);
         displayCommonCardParts(card);
         showQuote(card);
     }
 
     @Override
     public void displayImageCard(Card card) {
-        Log.d(TAG, "displayImageCard()");
+        Log.d(TAG, "displayImageCard(), "+card);
         displayCommonCardParts(card);
         showImage(card.getImageURL());
     }
 
-    private void displayCommonCardParts(Card card) {
-        titleView.setText(card.getTitle());
-        descriptionView.setText(card.getDescription());
-    }
 
 
     // Показ картинки
@@ -231,14 +271,20 @@ public class CardEdit_View extends BaseView implements
 
     // Подготовка формы для новой карточки
     @Override
-    public void prepareForTextCard() {
+    public void prepareTextCardForm() {
         MyUtils.show(quoteView);
     }
 
     @Override
-    public void prepareForImageCard() {
+    public void prepareImageCardForm() {
         MyUtils.show(imageHolder);
         MyUtils.hide(imageProgressBar);
+    }
+
+    @Override
+    public void addTag(String tagName) {
+//        Log.d(TAG, "addTag("+tagName+")");
+        tagsContainer.addTag(tagName);
     }
 
 
@@ -313,6 +359,25 @@ public class CardEdit_View extends BaseView implements
         return descriptionView.getText().toString();
     }
 
+    @Override
+    public HashMap<String,Boolean> getCardTags() {
+        HashMap<String,Boolean> map = new HashMap<>();
+        List<String> tagsList = tagsContainer.getTags();
+        for (String tagName : tagsList) {
+            map.put(tagName, true);
+        }
+        return map;
+    }
+
+    @Override
+    public String getNewTag() {
+        return newTagInput.getText().toString();
+    }
+
+    @Override
+    public void clearNewTag() {
+        newTagInput.setText("");
+    }
 
     // Активация / дизактивация формы
     @Override
@@ -357,12 +422,10 @@ public class CardEdit_View extends BaseView implements
 
     }
 
+
+    // Внутренние методы
     private void processInputIntent() {
         Log.d(TAG, "processInputIntent()");
-
-        firstRun = false;
-
-        hideWating();
 
         Intent intent = getIntent();
         Card card = intent.getParcelableExtra(Constants.CARD);
@@ -370,12 +433,26 @@ public class CardEdit_View extends BaseView implements
 
         if (null != card) {
             Log.d(TAG, "Правка");
-            presenter.editCard(card);
+            presenter.editCard(card.getKey());
         } else {
             Log.d(TAG, "Созидание");
             presenter.createCard(cardType);
         }
     }
 
+    private void displayCommonCardParts(Card card) {
+        titleView.setText(card.getTitle());
+        descriptionView.setText(card.getDescription());
+        showTags(card.getTags());
+    }
 
+
+    private void showTags(HashMap<String,Boolean> tagsMap) {
+        Log.d(TAG, "showTags(), "+tagsMap);
+        if (null != tagsMap) {
+            List<String> tagsList = new ArrayList<>(tagsMap.keySet());
+            tagsContainer.setTags(tagsList);
+            tagsContainer.setEnableCross(true);
+        }
+    }
 }

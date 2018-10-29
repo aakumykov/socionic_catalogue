@@ -21,20 +21,20 @@ public class AuthService extends Service implements
     }
 
     // Свойства
-    private final static String TAG = "CardsService";
+    private final static String TAG = "AuthService";
     private final IBinder binder;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
 
     // Системные методы
     public AuthService() {
-        Log.d(TAG, "new AuthService()");
+//        Log.d(TAG, "new AuthService()");
         binder = new LocalBinder();
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "onBind()");
+//        Log.d(TAG, "onBind()");
         return binder;
     }
 

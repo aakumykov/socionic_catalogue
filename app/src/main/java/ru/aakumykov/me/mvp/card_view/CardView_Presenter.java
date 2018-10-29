@@ -30,6 +30,68 @@ public class CardView_Presenter implements
     }
 
 
+    // Реакция на кнопки
+
+    @Override
+    public void onTagClicked(String tagName) {
+        view.goList(tagName);
+    }
+
+    @Override
+    public void onEditButtonClicked() {
+        view.goEditPage(currentCard);
+    }
+
+    @Override
+    public void onDeleteButtonClicked() {
+        Log.d(TAG, "onDeleteButtonClicked()");
+        if (authService.isAuthorized()) view.showDeleteDialog();
+        else view.showErrorMsg(R.string.not_authorized);
+    }
+
+    @Override
+    public void onDeleteConfirmed() {
+        view.showProgressMessage(R.string.deleting_card);
+        try {
+            model.deleteCard(currentCard, this);
+        } catch (Exception e) {
+            view.hideProgressMessage();
+            view.showErrorMsg(R.string.error_deleting_card);
+        }
+    }
+
+
+    // Link / Unlink
+    @Override
+    public void linkView(iCardView.View view) {
+        Log.d(TAG, "linkView(), view: "+view);
+        this.view = view;
+    }
+    @Override
+    public void unlinkView() {
+        Log.d(TAG, "unlinkView()");
+        this.view = null;
+    }
+
+    @Override
+    public void linkModel(iCardsService model) {
+        this.model = model;
+    }
+    @Override
+    public void unlinkModel() {
+        this.model = null;
+    }
+
+    @Override
+    public void linkAuth(iAuthService authService) {
+        this.authService = authService;
+    }
+    @Override
+    public void unlinkAuth() {
+        this.authService = null;
+    }
+
+
     // Коллбеки
     @Override
     public void onLoadSuccess(Card card) {
@@ -59,61 +121,4 @@ public class CardView_Presenter implements
         view.showErrorMsg(R.string.error_deleting_card);
     }
 
-
-    // Реакция на кнопки
-    @Override
-    public void onEditButtonClicked() {
-        view.goEditPage(currentCard);
-    }
-
-    @Override
-    public void onDeleteButtonClicked() {
-        Log.d(TAG, "onDeleteButtonClicked()");
-        if (authService.isAuthorized()) view.showDeleteDialog();
-        else view.showErrorMsg(R.string.not_authorized);
-    }
-
-    @Override
-    public void onDeleteConfirmed() {
-        view.showProgressMessage(R.string.deleting_card);
-        try {
-            model.deleteCard(currentCard, this);
-        } catch (Exception e) {
-            view.hideProgressMessage();
-            view.showErrorMsg(R.string.error_deleting_card);
-        }
-    }
-
-
-    @Override
-    public void linkView(iCardView.View view) {
-        Log.d(TAG, "linkView(), view: "+view);
-        this.view = view;
-    }
-
-    @Override
-    public void unlinkView() {
-        Log.d(TAG, "unlinkView()");
-        this.view = null;
-    }
-
-    @Override
-    public void linkModel(iCardsService model) {
-        this.model = model;
-    }
-
-    @Override
-    public void unlinkModel() {
-        this.model = null;
-    }
-
-    @Override
-    public void linkAuth(iAuthService authService) {
-        this.authService = authService;
-    }
-
-    @Override
-    public void unlinkAuth() {
-        this.authService = null;
-    }
 }

@@ -16,6 +16,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
@@ -26,6 +28,7 @@ import ru.aakumykov.me.mvp.card_view.CardView_View;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.tags.list.TagsList_View;
 import ru.aakumykov.me.mvp.users.list.UsersList_View;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
@@ -102,14 +105,15 @@ public class CardsList_View extends BaseView implements
     }
 
 
-    // Зачем, если список живой?
     @Override
     public void onRefresh() {
-//        Log.d(TAG, "onRefresh()");
-        cardsList.clear();
-        cardsListAdapter.notifyDataSetChanged();
+        Log.d(TAG, "onRefresh()");
+        hideMsg();
+        showInfoMsg(R.string.refreshing_list);
         loadList(true);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -122,6 +126,10 @@ public class CardsList_View extends BaseView implements
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+
+            case R.id.actionTags:
+                goToPage(TagsList_View.class);
+                break;
 
             case R.id.actionUsers:
                 onUsersButton();
@@ -175,12 +183,17 @@ public class CardsList_View extends BaseView implements
 
     private void loadList(boolean manualRefresh) {
         Log.d(TAG, "loadList(manualRefresh: "+manualRefresh+")");
+
         if (!manualRefresh) showLoadingMessage();
-        getCardsService().loadList(this);
+
+        Intent intent = getIntent();
+        String tagFilter = intent.getStringExtra(Constants.TAG_FILTER);
+
+        getCardsService().loadList(tagFilter, this);
     }
 
     private void showLoadingMessage() {
-        messageView.setText(R.string.getting_cards_list);
+        messageView.setText(R.string.loading_cards_list);
         messageView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -281,45 +294,24 @@ public class CardsList_View extends BaseView implements
 
     // Методы обратнаго вызова
     @Override
-    public void onChildAdded(Card card) {
-        Log.d(TAG, "onChildAdded()");
+    public void onListLoadSuccess(List<Card> list) {
+        Log.d(TAG, "onListLoadSuccess()");
+
         hideLoadingMessage();
         swipeRefreshLayout.setRefreshing(false);
-        cardsList.add(card);
+
+        cardsList.clear();
+        cardsList.addAll(list);
         cardsListAdapter.notifyDataSetChanged();
+
+        if (0 == list.size()) showInfoMsg(R.string.list_is_empty);
     }
 
     @Override
-    public void onChildChanged(Card card, String previousCardName) {
-        Log.d(TAG, "onChildChanged(), "+card);
-        String changedCardKey = card.getKey();
-        Card oldCard = cardsList.findCardByKey(changedCardKey);
-        // TODO: где обрабатывать ошибки?
-//        if (null != oldCard) {
-            int cardArrayIndex = cardsList.indexOf(oldCard);
-            cardsList.set(cardArrayIndex, card);
-            cardsListAdapter.notifyDataSetChanged();
-//        } else {
-//            showErrorMsg(R.string.error_updating_list);
-//            Log.e(TAG, "Ошибка обновления списка после изменения карточки "+card);
-//        }
+    public void onListLoadFail(String errorMessage) {
+        Log.d(TAG, "onListLoadFail()");
+        showErrorMsg(R.string.error_loading_list, errorMessage);
     }
-
-
-    // Блять, это же не нужно на живом списке (нужно на обычном)
-    // Пора отдыхать!
-//    @Override
-//    public void onUpdateSuccess(Card card) {
-//        Log.d(TAG, "onUpdateSuccess()");
-//        // TODO: переделать на Toast
-//        showInfoMsg(R.string.card_update_success);
-//    }
-//
-//    @Override
-//    public void onUpdateError(String msg) {
-//        Log.d(TAG, "onUpdateError()");
-//        showErrorMsg(R.string.card_update_error);
-//    }
 
     @Override
     public void onDeleteSuccess(Card card) {
@@ -337,18 +329,10 @@ public class CardsList_View extends BaseView implements
     }
 
 
-    @Override
-    public void onChildMoved(Card card, String previousCardName) {
-
-    }
-
-    @Override
-    public void onCancelled(String errorMessage) {
-
-    }
-
-    @Override
-    public void onBadData(String errorMsg) {
-
+    // Внутренние методы
+    private void goToPage(Class<?> activityClass) {
+        Log.d(TAG, "goToPage("+activityClass+")");
+        Intent intent = new Intent(this, activityClass);
+        startActivity(intent);
     }
 }

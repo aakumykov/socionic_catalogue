@@ -18,7 +18,7 @@
     <string name="card_load_error">Ошибка загрузки карточки</string>
     <string name="card_load_canceled">Загрузка карточки отменена</string>
     <string name="opening_card">Открываю карточку</string>
-    <string name="getting_cards_list">Получаю список карточек</string>
+    <string name="loading_cards_list">Загрузка списка карточек</string>
     <string name="image_placeholder">Заглушка для картинки</string>
     <string name="wrong_card_type">Неизвестный тип карточки</string>
     <string name="error_loading_image">Ошибка загрузки картинки</string>
@@ -74,4 +74,10 @@
     <string name="user_saved">Пользователь сохранён</string>
     <string name="email" translatable="false">E-mail</string>
     <string name="internal_error">Внутренняя ошибка</string>
+    <string name="error_loading_tags">Ошибка получения меток</string>
+    <string name="tags">Метки</string>
+    <string name="list_is_empty">Список пуст</string>
+    <string name="refreshing_list">Обновление списка</string>
+    <string name="add">Добавить</string>
+    <string name="new_tag">Новая метка</string>
 </resources>

@@ -22,18 +22,16 @@ public interface iUsers {
 
     interface EditView  extends iBaseView, View {
         void fillUserForm(User user);
+
         String getName();
         String getAbout();
-
-        void showProgressBar();
-        void hideProgressBar();
 
         void enableEditForm();
         void disableEditForm();
     }
 
     interface Presenter {
-        void linkView(View view);
+        void linkView(View view) throws IllegalArgumentException;
         void unlinkView();
 
         void userEditClicked();

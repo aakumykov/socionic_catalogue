@@ -6,6 +6,8 @@ import android.webkit.MimeTypeMap;
 
 import com.google.firebase.database.DataSnapshot;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,4 +53,23 @@ public final class MyUtils {
 //        }
 //        return type;
 //    }
+
+    public static <K, V> Map<K, V> mapDiff(Map<? extends K, ? extends V> left, Map<? extends K, ? extends V> right) {
+        Map<K, V> difference = new HashMap<>();
+        difference.putAll(left);
+        difference.putAll(right);
+        difference.entrySet().removeAll(right.entrySet());
+        return difference;
+    }
+
+    public static String normalizeTag(String tagName) {
+
+        // trim spaces
+        tagName = tagName.replaceAll("^\\s+|\\s+$", "");
+
+        // convert number to non-numeric string
+        if (tagName.matches("^[0-9]+$")) tagName = "_"+tagName+"_";
+
+        return tagName;
+    }
 }

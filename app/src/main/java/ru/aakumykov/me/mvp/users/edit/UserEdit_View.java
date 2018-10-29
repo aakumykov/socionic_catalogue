@@ -155,15 +155,6 @@ public class UserEdit_View extends BaseView implements
 
     // Методы интерфейса
     @Override
-    public void showProgressBar() {
-        MyUtils.show(progressBar);
-    }
-
-    public void hideProgressBar() {
-        MyUtils.hide(progressBar);
-    }
-
-    @Override
     public void enableEditForm() {
         nameInput.setEnabled(true);
         aboutInput.setEnabled(true);
