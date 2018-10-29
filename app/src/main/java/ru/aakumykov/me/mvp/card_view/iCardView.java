@@ -17,17 +17,12 @@ public interface iCardView {
 
         void displayCard(Card card);
         void displayImage(Uri imageURI);
-        void showTags(HashMap<String,Boolean> tagsHash);
-
         void displayImageError();
 
-        void showInfoMsg(int messageId);
-        void showErrorMsg(int messageId);
-        void showErrorMsg(String message);
-        void hideMsg();
+        void showTags(HashMap<String,Boolean> tagsHash);
 
-        void showProgressMessage(int messageId);
-        void hideProgressMessage();
+        void showProgressMessage(int messageId); // убрать в BaseView
+        void hideProgressMessage(); // убрать в BaseView
 
         void goEditPage(Card card);
         void goList(String tagFilter);
@@ -48,8 +43,9 @@ public interface iCardView {
         void unlinkView();
 
         void linkModel(iCardsService model);
-        void linkAuth(iAuthService authService);
         void unlinkModel();
+
+        void linkAuth(iAuthService authService);
         void unlinkAuth();
     }
 }

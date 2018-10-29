@@ -91,7 +91,7 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void onServiceBounded() {
-        Log.d(TAG, "onServiceBounded()");
+//        Log.d(TAG, "onServiceBounded()");
         presenter.linkView(this);
         presenter.linkModel(getCardsService());
         processInputIntent();
@@ -99,7 +99,7 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void onServiceUnbounded() {
-        Log.d(TAG, "onServiceUnbounded()");
+//        Log.d(TAG, "onServiceUnbounded()");
         presenter.unlinkView();
         presenter.unlinkModel();
     }
@@ -428,15 +428,53 @@ public class CardEdit_View extends BaseView implements
         Log.d(TAG, "processInputIntent()");
 
         Intent intent = getIntent();
-        Card card = intent.getParcelableExtra(Constants.CARD);
-        String cardType = intent.getStringExtra(Constants.CARD_TYPE);
 
-        if (null != card) {
-            Log.d(TAG, "Правка");
+        if (null == intent) {
+            Log.e(TAG, "Intent == null");
+            return;
+        }
+
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Constants.ACTION_CREATE.equals(action)) {
+            Log.d(TAG, "ACTION_CREATE");
+            Card cardDraft = intent.getParcelableExtra(Constants.CARD);
+            presenter.createCard(cardDraft);
+        }
+        else if (Intent.ACTION_SEND.equals(action)) {
+            Log.d(TAG, "ACTION_SEND");
+
+            if (type != null) {
+                Card cardDraft = new Card();
+
+                if ("text/plain".equals(type)) {
+                    String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+                    cardDraft.setType(Constants.TEXT_CARD);
+                    cardDraft.setQuote(text);
+                } else if (type.startsWith("image/")) {
+                    Uri imageURI = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                    cardDraft.setType(Constants.IMAGE_CARD);
+                    cardDraft.setImageURL(imageURI.toString());
+                } else {
+                    Log.e(TAG, "Unsupported intent content type: " + type);
+                    return;
+                }
+
+                presenter.createCard(cardDraft);
+            }
+            else {
+                Log.e(TAG, "Missing intent content type");
+            }
+        }
+        else if (Intent.ACTION_EDIT.equals(action))
+        {
+            Log.d(TAG, "ACTION_EDIT");
+            Card card = intent.getParcelableExtra(Constants.CARD);
             presenter.editCard(card.getKey());
-        } else {
-            Log.d(TAG, "Созидание");
-            presenter.createCard(cardType);
+        }
+        else  {
+            Log.e(TAG, "Unknown intent action '"+action+"'");
         }
     }
 

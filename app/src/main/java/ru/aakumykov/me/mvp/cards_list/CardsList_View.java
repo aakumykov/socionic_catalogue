@@ -114,7 +114,6 @@ public class CardsList_View extends BaseView implements
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -154,10 +153,10 @@ public class CardsList_View extends BaseView implements
         return true;
     }
 
-    @Override
-    public void onAddCardButton(String cardType) {
-//        Log.d(TAG, "onAddCardButton("+cardType+")");
 
+    private void onAddCardButton(String cardType) {
+
+        // А ведь можно перенести эту проверку в модель Card...
         switch (cardType) {
             case Constants.TEXT_CARD:
                 break;
@@ -168,15 +167,17 @@ public class CardsList_View extends BaseView implements
                 return;
         }
 
-        Intent intent = new Intent();
-        intent.setClass(this, CardEdit_View.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        intent.putExtra(Constants.CARD_TYPE, cardType);
+        Card cardDraft = new Card();
+        cardDraft.setType(cardType);
+
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.setAction(Constants.ACTION_CREATE);
+        intent.putExtra(Constants.CARD, cardDraft);
+
         startActivity(intent);
     }
 
-    @Override
-    public void onUsersButton() {
+    private void onUsersButton() {
         Intent intent = new Intent(this, UsersList_View.class);
         startActivity(intent);
     }

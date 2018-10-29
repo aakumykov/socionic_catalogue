@@ -53,7 +53,7 @@ public interface iCardEdit {
         void linkModel(iCardsService model);
         void unlinkModel();
 
-        void createCard(String cardType);
+        void createCard(Card cardDraft);
         void editCard(String cardKey);
 
         void onSaveButtonClicked();

@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.card_edit;
 
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -39,15 +40,17 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
 
     // Да варианта работы
     @Override
-    public void createCard(String cardType) {
-        Log.d(TAG, "createCard("+cardType+")");
+    public void createCard(Card cardDraft) {
+        Log.d(TAG, "createCard(), "+cardDraft);
 
         view.hideWating();
         view.enableForm();
 
-        currentCard = new Card();
-        currentCard.setKey(model.createKey());
-        currentCard.setType(cardType);
+        cardDraft.setKey(model.createKey());
+
+        currentCard = cardDraft;
+
+        String cardType = cardDraft.getType();
 
         switch (cardType) {
 
@@ -241,23 +244,23 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     // Служебные методы
     @Override
     public void linkView(iCardEdit.View view) {
-        Log.d(TAG, "linkView()");
+//        Log.d(TAG, "linkView()");
         if (null == this.view) this.view = view;
     }
     @Override
     public void unlinkView() {
-        Log.d(TAG, "unlinkView()");
+//        Log.d(TAG, "unlinkView()");
         this.view = null;
     }
 
     @Override
     public void linkModel(iCardsService model) {
-        Log.d(TAG, "linkModel()");
+//        Log.d(TAG, "linkModel()");
         this.model = model;
     }
     @Override
     public void unlinkModel() {
-        Log.d(TAG, "unlinkModel()");
+//        Log.d(TAG, "unlinkModel()");
         this.model = null;
     }
 
