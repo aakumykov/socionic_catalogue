@@ -250,9 +250,9 @@ public class CardView_View extends BaseView implements
     // Переходы
     @Override
     public void goEditPage(Card card) {
-        Intent intent = new Intent();
-        intent.setClass(this, CardEdit_View.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        Log.d(TAG, "goEditPage()");
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.setAction(Intent.ACTION_EDIT);
         intent.putExtra(Constants.CARD, card);
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
@@ -264,6 +264,7 @@ public class CardView_View extends BaseView implements
             intent.putExtra(Constants.TAG_FILTER, tagFilter);
         startActivity(intent);
     }
+
 
     // Внутренние методы
     private void loadCard() {
