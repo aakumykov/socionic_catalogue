@@ -38,6 +38,7 @@ public class CardsList_View extends BaseView implements
         iCardsList.View,
         AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener,
+        PopupMenu.OnMenuItemClickListener,
         SwipeRefreshLayout.OnRefreshListener,
         iCardsService.ListCallbacks
 {
@@ -51,6 +52,7 @@ public class CardsList_View extends BaseView implements
     private CardsArrayList cardsList;
     private CardsListAdapter cardsListAdapter;
     private boolean firstRun = true;
+    private Card currentCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,15 +97,34 @@ public class CardsList_View extends BaseView implements
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        Card card = cardsList.get(position);
+        currentCard = cardsList.get(position);
 
         Drawable oldBackground = view.getBackground();
         view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
 
-        showPopupMenu(view, oldBackground,  card);
+        showPopupMenu(view, oldBackground);
         return true;
     }
 
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+
+        switch (menuItem.getItemId()) {
+
+            case R.id.actionEdit:
+                editCard(currentCard);
+                currentCard = null; // Надо же, editCard() так работает!
+                return true;
+
+            case R.id.actionDelete:
+                deleteCard(currentCard);
+//                currentCard = null; // Попробовать (ещё не пробовал)
+                return true;
+
+            default:
+                return false;
+        }
+    }
 
     @Override
     public void onRefresh() {
@@ -205,7 +226,7 @@ public class CardsList_View extends BaseView implements
     }
 
 
-    private void showPopupMenu(final View v, final Drawable oldBackground, final Card card) {
+    private void showPopupMenu(final View v, final Drawable oldBackground) {
 
         PopupMenu popupMenu = new PopupMenu(this, v);
 
@@ -218,33 +239,7 @@ public class CardsList_View extends BaseView implements
             }
         });
 
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-
-                    case R.id.actionEdit:
-                        editCard(card);
-//                        try { editCard(CardsListActivity.this, baseCard.getType(), baseCard.getKey()); }
-//                        catch (Exception e) { msg.error(getString(R.string.error_editing_card), e); }
-                        return true;
-
-                    case R.id.actionDelete:
-                        deleteCard(card);
-                        return true;
-
-                    default:
-                        return false;
-                }
-            }
-        });
-
-//        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-//            @Override
-//            public void onDismiss(PopupMenu menu) {
-//                Toast.makeText(getApplicationContext(), "onDismiss", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        popupMenu.setOnMenuItemClickListener(this);
 
         popupMenu.setGravity(Gravity.END);
 
@@ -261,9 +256,10 @@ public class CardsList_View extends BaseView implements
         startActivity(intent);
     }
 
-    private void editCard(Card card) {
+    private void editCard(final Card card) {
         Log.d(TAG, "editCard()");
         Intent intent = new Intent(this, CardEdit_View.class);
+        intent.setAction(Intent.ACTION_EDIT);
         intent.putExtra(Constants.CARD, card);
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
