@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,6 +29,7 @@ import ru.aakumykov.me.mvp.card_view.CardView_View;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.services.TagsSingleton;
 import ru.aakumykov.me.mvp.tags.list.TagsList_View;
 import ru.aakumykov.me.mvp.users.list.UsersList_View;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
@@ -278,7 +280,6 @@ public class CardsList_View extends BaseView implements
                 new iDialogCallbacks.onYes() {
                     @Override
                     public void yesAction() {
-                        // Правильно: CardsList_View.this ?
                         getCardsService().deleteCard(card, CardsList_View.this);
                     }
                 },
@@ -311,12 +312,16 @@ public class CardsList_View extends BaseView implements
     }
 
     @Override
-    public void onDeleteSuccess(Card card) {
-        Log.d(TAG, "onDeleteSuccess(), "+card);
-        String changedCardKey = card.getKey();
-        Card oldCard = cardsList.findCardByKey(changedCardKey);
+    public void onDeleteSuccess(Card deletedCard) {
+        Log.d(TAG, "onDeleteSuccess(), "+deletedCard);
+
+        String oldCardKey = deletedCard.getKey();
+        Card oldCard = cardsList.findCardByKey(oldCardKey);
         cardsList.remove(oldCard);
         cardsListAdapter.remove(oldCard);
+
+        HashMap<String,Boolean> oldTags = deletedCard.getTags();
+        TagsSingleton.getInstance().updateCardTags(oldCardKey, oldTags, null);
     }
 
     @Override
