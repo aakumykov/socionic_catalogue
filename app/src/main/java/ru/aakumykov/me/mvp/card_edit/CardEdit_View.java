@@ -271,14 +271,16 @@ public class CardEdit_View extends BaseView implements
 
     // Подготовка формы для новой карточки
     @Override
-    public void prepareTextCardForm() {
+    public void prepareTextCardForm(Card cardDraft) {
+        quoteView.setText(cardDraft.getQuote());
         MyUtils.show(quoteView);
     }
 
     @Override
-    public void prepareImageCardForm() {
+    public void prepareImageCardForm(Card cardDraft) {
         MyUtils.show(imageHolder);
         MyUtils.hide(imageProgressBar);
+        showImage(cardDraft.getImageURL());
     }
 
     @Override
@@ -422,6 +424,7 @@ public class CardEdit_View extends BaseView implements
 
     }
 
+    // TODO: контроль размера изображения
 
     // Внутренние методы
     private void processInputIntent() {

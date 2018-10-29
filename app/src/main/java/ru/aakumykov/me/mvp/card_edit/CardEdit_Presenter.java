@@ -40,7 +40,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
 
     // Да варианта работы
     @Override
-    public void createCard(Card cardDraft) {
+    public void createCard(final Card cardDraft) {
         Log.d(TAG, "createCard(), "+cardDraft);
 
         view.hideWating();
@@ -55,11 +55,11 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         switch (cardType) {
 
             case Constants.TEXT_CARD:
-                view.prepareTextCardForm();
+                view.prepareTextCardForm(cardDraft);
                 break;
 
             case Constants.IMAGE_CARD:
-                view.prepareImageCardForm();
+                view.prepareImageCardForm(cardDraft);
                 break;
 
             default:
