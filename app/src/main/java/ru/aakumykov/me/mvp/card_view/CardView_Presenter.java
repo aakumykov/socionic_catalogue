@@ -5,6 +5,7 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.services.TagsSingleton;
 
 public class CardView_Presenter implements
         iCardView.Presenter,
@@ -45,8 +46,9 @@ public class CardView_Presenter implements
     @Override
     public void onDeleteButtonClicked() {
         Log.d(TAG, "onDeleteButtonClicked()");
-        if (authService.isAuthorized()) view.showDeleteDialog();
-        else view.showErrorMsg(R.string.not_authorized);
+//        if (authService.isAuthorized()) view.showDeleteDialog();
+//        else view.showErrorMsg(R.string.not_authorized);
+        view.showDeleteDialog();
     }
 
     @Override
@@ -112,6 +114,7 @@ public class CardView_Presenter implements
 
     @Override
     public void onDeleteSuccess(Card card) {
+        TagsSingleton.getInstance().updateCardTags(card.getKey(), card.getTags(), null);
         view.closePage();
     }
 

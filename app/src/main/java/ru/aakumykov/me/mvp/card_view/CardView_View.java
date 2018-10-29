@@ -125,15 +125,19 @@ public class CardView_View extends BaseView implements
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+
             case R.id.actionEdit:
                 presenter.onEditButtonClicked();
                 break;
+
             case R.id.actionDelete:
                 presenter.onDeleteButtonClicked();
                 break;
+
             case android.R.id.home:
                 this.finish();
                 break;
+
             default:
                 super.onOptionsItemSelected(item);
         }
