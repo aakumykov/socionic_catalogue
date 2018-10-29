@@ -190,6 +190,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
             }
 
             view.clearNewTag();
+            view.focusTagInput();
         }
     }
 

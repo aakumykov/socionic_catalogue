@@ -38,6 +38,7 @@ public interface iCardEdit {
 
         String getNewTag();
         void clearNewTag();
+        void focusTagInput();
 
         void enableForm();
         void disableForm();

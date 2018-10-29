@@ -382,6 +382,11 @@ public class CardEdit_View extends BaseView implements
         newTagInput.setText("");
     }
 
+    @Override
+    public void focusTagInput() {
+        newTagInput.requestFocus();
+    }
+
     // Активация / дизактивация формы
     @Override
     public void enableForm() {
