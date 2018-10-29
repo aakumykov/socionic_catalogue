@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.tags.list;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,21 +12,19 @@ import butterknife.ButterKnife;
 import co.lujun.androidtagview.TagContainerLayout;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Tag;
 import ru.aakumykov.me.mvp.tags.Tags_Presenter;
 import ru.aakumykov.me.mvp.tags.iTags;
 
 public class TagsList_View extends BaseView implements
-        iTags.ListView,
-        iTagsSingleton.ListCallbacks
+        iTags.ListView
 {
-    @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
+    @BindView(R.id.listView) ListView listView;
 
     private final static String TAG = "TagsList_View";
     private iTags.Presenter presenter;
-    private List<String> tagsList = new ArrayList<>();
-
+    private List<Tag> tagsList = new ArrayList<>();
+    private TagsListAdapter tagsListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,23 +32,24 @@ public class TagsList_View extends BaseView implements
         setContentView(R.layout.tags_list_activity);
         ButterKnife.bind(this);
 
-        presenter = new Tags_Presenter();
+        tagsListAdapter = new TagsListAdapter(this, R.layout.tags_list_item, tagsList);
+        listView.setAdapter(tagsListAdapter);
 
-        presenter.listPageCreated(this);
+        presenter = new Tags_Presenter();
+        presenter.onPageCreated();
     }
+
 
     @Override
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
     }
-
     @Override
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
     }
-
     @Override
     public void onServiceBounded() {
 
@@ -64,34 +64,10 @@ public class TagsList_View extends BaseView implements
     @Override
     public void displayTags(List<Tag> list) {
         Log.d(TAG, "displayTags(), "+list);
-
-        for (Tag tag : list) {
-            tagsList.add(tag.getName());
-        }
-
-//        List<String> tagsList = new ArrayList<>();
-//
-//        tagsList.add("Метка-1");
-//        tagsList.add("Метка-2");
-//        tagsList.add("Метка-3");
-//        tagsList.add("Метка-4");
-
-//        TagContainerLayout tagsContainer = findViewById(R.id.tagsContainer);
-        tagsContainer.setTags(tagsList);
+        tagsList.addAll(list);
+        tagsListAdapter.notifyDataSetChanged();
     }
 
 
-    // Коллбеки
-    @Override
-    public void onTagsListSuccess(List<Tag> list) {
-        Log.d(TAG, "onTagsListSuccess(), "+list);
-        hideProgressBar();
-        displayTags(list);
-    }
-
-    @Override
-    public void onTagsListFail(String errorMsg) {
-        showErrorMsg(R.string.error_loading_tags);
-    }
 
 }

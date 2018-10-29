@@ -78,4 +78,6 @@
     <string name="refreshing_list">Refreshing list</string>
     <string name="add">Add</string>
     <string name="new_tag">New tag</string>
+    <string name="tag_name">Tag name</string>
+    <string name="tag_counter">Tag counter</string>
 </resources>

@@ -73,6 +73,7 @@ public class Card implements Parcelable {
     }
 
     protected Card(Parcel in) {
+        // важен порядок считывания
         key = in.readString();
         type = in.readString();
         title = in.readString();

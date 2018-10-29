@@ -29,6 +29,6 @@ public interface iTags {
         void linkView(View view) throws IllegalArgumentException;
         void unlinkView();
 
-        void listPageCreated(iTagsSingleton.ListCallbacks callbacks);
+        void onPageCreated();
     }
 }

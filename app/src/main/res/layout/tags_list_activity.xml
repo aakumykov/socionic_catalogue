@@ -22,16 +22,10 @@
         android:layout_height="wrap_content"
         android:indeterminate="true" />
 
-    <co.lujun.androidtagview.TagContainerLayout
-        android:id="@+id/tagsContainer"
+    <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="0dp"
-        android:padding="10dp"
-        app:container_enable_drag="false"
-        app:horizontal_interval="10dp"
-        app:tag_clickable="true"
-        app:tag_theme="pure_teal"
-        app:vertical_interval="10dp"/>
+        android:layout_height="match_parent" />
+
 
 </LinearLayout>

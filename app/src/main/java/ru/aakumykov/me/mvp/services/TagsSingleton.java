@@ -44,7 +44,7 @@ public class TagsSingleton implements iTagsSingleton {
 
     @Override
     public void createTag(final Tag tag, final iTagsSingleton.TagCallbacks callbacks) {
-        Log.d(TAG, "createTag()");
+        Log.d(TAG, "createTag(), "+tag);
 
         HashMap<String, Object> updatePool = new HashMap<>();
         updatePool.put(tag.getName(), true);
@@ -68,7 +68,7 @@ public class TagsSingleton implements iTagsSingleton {
 
     @Override
     public void readTag(String key, final TagCallbacks callbacks) {
-        Log.d(TAG, "readTag()");
+        Log.d(TAG, "readTag("+key+")");
 
         DatabaseReference tagRef = tagsRef.child(key);
 
@@ -96,7 +96,7 @@ public class TagsSingleton implements iTagsSingleton {
 
     @Override
     public void saveTag(final Tag tag, final SaveCallbacks callbacks) {
-        Log.d(TAG, "readTag()");
+        Log.d(TAG, "saveTag(), "+tag);
 
         DatabaseReference tagRef = tagsRef.child(tag.getKey());
 
@@ -119,7 +119,7 @@ public class TagsSingleton implements iTagsSingleton {
 
     @Override
     public void deleteTag(final Tag tag, final DeleteCallbacks callbacks) {
-        Log.d(TAG, "readTag()");
+        Log.d(TAG, "deleteTag(), "+tag);
 
         DatabaseReference tagRef = tagsRef.child(tag.getKey());
 
@@ -140,20 +140,26 @@ public class TagsSingleton implements iTagsSingleton {
     }
 
 
+    // TODO: throw Exception
     @Override
     public void listTags(final ListCallbacks callbacks) {
-        Log.d(TAG, "readTag()");
+        Log.d(TAG, "listTags()");
 
         final List<Tag> list = new ArrayList<>();
 
         tagsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                Log.d(TAG, "dataSnapshot: "+dataSnapshot);
+
                 for (DataSnapshot tagSnapshot : dataSnapshot.getChildren()) {
 //                    Log.d(TAG, "tagSnapshot: "+tagSnapshot);
 
                     Tag tag = tagSnapshot.getValue(Tag.class);
+
                     if (null != tag) {
+                        tag.setKey(tagSnapshot.getKey());
+                        tag.setName(tagSnapshot.getKey());
                         list.add(tag);
                     } else {
                         Log.e(TAG, "Tag from DataSnapshot is null.");

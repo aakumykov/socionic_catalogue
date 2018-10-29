@@ -1,9 +1,18 @@
 package ru.aakumykov.me.mvp.tags;
 
+import android.util.Log;
+
+import java.util.List;
+
+import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
+import ru.aakumykov.me.mvp.models.Tag;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
 
-public class Tags_Presenter implements iTags.Presenter {
+public class Tags_Presenter implements
+        iTags.Presenter,
+        iTagsSingleton.ListCallbacks
+{
 
     private final static String TAG = "Tags_Presenter";
     private iTags.ListView listView;
@@ -35,7 +44,22 @@ public class Tags_Presenter implements iTags.Presenter {
 
 
     @Override
-    public void listPageCreated(iTagsSingleton.ListCallbacks callbacks) {
-        tagsSingleton.listTags(callbacks);
+    public void onPageCreated() {
+        tagsSingleton.listTags(this);
     }
+
+
+    // Коллбеки
+    @Override
+    public void onTagsListSuccess(List<Tag> list) {
+//        Log.d(TAG, "onTagsListSuccess(), "+list);
+        listView.hideProgressBar();
+        listView.displayTags(list);
+    }
+
+    @Override
+    public void onTagsListFail(String errorMsg) {
+        listView.showErrorMsg(R.string.error_loading_tags);
+    }
+
 }
