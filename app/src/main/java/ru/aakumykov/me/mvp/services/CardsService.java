@@ -180,6 +180,7 @@ public class CardsService extends Service implements
             ? cardsRef.orderByChild("tags/"+tagFilter).equalTo(true)
             : cardsRef.orderByKey();
 
+        // TODO: а где уходить в оффлайн?
 //        query.addListenerForSingleValueEvent(new ValueEventListener() {
         query.addValueEventListener(new ValueEventListener() {
             @Override

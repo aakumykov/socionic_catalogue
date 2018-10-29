@@ -23,8 +23,8 @@ public interface iCardEdit {
         void showBrokenImage();
         void removeImage();
 
-        void prepareTextCardForm();
-        void prepareImageCardForm();
+        void prepareTextCardForm(Card cardDraft);
+        void prepareImageCardForm(Card cardDraft);
 
         void addTag(String tagName);
         // void removeTag(tagName|position);
@@ -53,7 +53,7 @@ public interface iCardEdit {
         void linkModel(iCardsService model);
         void unlinkModel();
 
-        void createCard(String cardType);
+        void createCard(Card cardDraft);
         void editCard(String cardKey);
 
         void onSaveButtonClicked();

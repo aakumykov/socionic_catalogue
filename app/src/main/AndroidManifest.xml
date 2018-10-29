@@ -22,7 +22,19 @@
         <activity
             android:name=".card_view.CardView_View"
             android:parentActivityName=".cards_list.CardsList_View" />
-        <activity android:name=".card_edit.CardEdit_View" />
+
+        <activity android:name=".card_edit.CardEdit_View">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".services.CardsService"
