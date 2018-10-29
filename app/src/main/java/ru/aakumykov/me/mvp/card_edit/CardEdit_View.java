@@ -280,7 +280,8 @@ public class CardEdit_View extends BaseView implements
     public void prepareImageCardForm(Card cardDraft) {
         MyUtils.show(imageHolder);
         MyUtils.hide(imageProgressBar);
-        showImage(cardDraft.getImageURL());
+        String imageURL = cardDraft.getImageURL();
+        if (null != imageURL) showImage(imageURL);
     }
 
     @Override
