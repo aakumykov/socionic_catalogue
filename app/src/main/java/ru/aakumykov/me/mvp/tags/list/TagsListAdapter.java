@@ -42,7 +42,7 @@ public class TagsListAdapter extends ArrayAdapter<Tag> {
         Log.d(TAG, "oneTag: "+oneTag);
 
         nameView.setText(oneTag.getName());
-        counterView.setText(oneTag.getCounter());
+        counterView.setText( String.valueOf( oneTag.getCards().size() ) );
 
         return view;
     }
