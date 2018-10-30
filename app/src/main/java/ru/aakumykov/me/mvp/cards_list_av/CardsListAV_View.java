@@ -2,19 +2,38 @@ package ru.aakumykov.me.mvp.cards_list_av;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.tags.list.TagsList_View;
 
 public class CardsListAV_View extends BaseView implements
-        iCardsListAV.View
+        iCardsListAV.View,
+        ListView.OnItemClickListener,
+        ListView.OnItemLongClickListener
 {
+    @BindView(R.id.listView) ListView listView;
+
     private final static String TAG = "CardsListAV_View";
     private iCardsListAV.Presenter presenter;
+    private List<Card> cardsList;
+    private ListAdapter cardsListAdapter;
 
     // Системные методы
     @Override
@@ -26,6 +45,14 @@ public class CardsListAV_View extends BaseView implements
         setPageTitle("CardsList_ActiveView");
 
         presenter = new CardsListAV_Presenter();
+
+        cardsList = new ArrayList<>();
+        cardsListAdapter = new ArrayAdapter<Card>(this, R.layout.cards_list_item, cardsList);
+        listView.setAdapter(cardsListAdapter);
+
+        listView.setOnItemClickListener(this);
+        listView.setOnItemLongClickListener(this);
+        listView.setLongClickable(true);
     }
 
     @Override
@@ -43,7 +70,49 @@ public class CardsListAV_View extends BaseView implements
     }
 
 
-    // Основные методы
+    // Меню панели
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.cards_list_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.actionCreateTextCard:
+//                onAddCardButton(Constants.TEXT_CARD);
+                break;
+
+            case R.id.actionCreateImageCard:
+//                onAddCardButton(Constants.IMAGE_CARD);
+                break;
+
+            default:
+                super.onOptionsItemSelected(item);
+        }
+
+        return true;
+    }
+
+
+    // Нажатия списка
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "onItemClick(pos: "+position+", id: "+id+")");
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(TAG, "onItemLongClick(pos: "+position+", id: "+id+")");
+        return false;
+    }
+
+
+    // Интерфейсные методы
     @Override
     public void displayList(List<Card> cardsList) {
 

@@ -14,6 +14,7 @@ public interface iCardsListAV {
 
     interface Presenter {
 
+        void getList();
         void deleteCard(Card card);
 
         // TODO: вынести в общий интерфейс
