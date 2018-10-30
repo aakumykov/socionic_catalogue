@@ -196,4 +196,9 @@ public class CardsListAV_View extends BaseView implements
         startActivity(intent);
         currentCard = null;
     }
+
+    private void deleteCard() {
+        presenter.deleteCard(currentCard);
+        currentCard = null;
+    }
 }

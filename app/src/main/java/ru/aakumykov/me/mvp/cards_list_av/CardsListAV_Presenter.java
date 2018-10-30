@@ -27,8 +27,9 @@ public class CardsListAV_Presenter implements
     }
 
     @Override
-    public void deleteCard(Card card) {
-
+    public void deleteCard(final Card card) {
+        Log.d(TAG, "deleteCard(), "+card);
+        model.deleteCard(card, this);
     }
 
 
