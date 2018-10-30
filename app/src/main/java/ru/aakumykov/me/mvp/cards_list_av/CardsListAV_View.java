@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.cards_list_av;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -16,7 +17,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.models.Card;
 
 public class CardsListAV_View extends BaseView implements
@@ -103,6 +106,13 @@ public class CardsListAV_View extends BaseView implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(TAG, "onItemClick(pos: "+position+", id: "+id+")");
+
+        // TODO: где контролировать эти данные?
+        Card card = cardsList.get(position);
+
+        Intent intent = new Intent(this, CardShow_View.class);
+        intent.putExtra(Constants.CARD_KEY, card.getKey());
+        startActivity(intent);
     }
 
     @Override
