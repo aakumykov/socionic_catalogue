@@ -148,12 +148,12 @@ public abstract class BaseView extends AppCompatActivity implements
     public void showErrorMsg(int messageId) {
         String msg = getResources().getString(messageId);
         showErrorMsg(msg);
-        Log.e(TAG, msg);
     }
 
     @Override
     public void showErrorMsg(String message) {
         showMsg(message, getResources().getColor(R.color.error));
+        Log.e(TAG, message);
     }
 
     @Override
@@ -166,6 +166,7 @@ public abstract class BaseView extends AppCompatActivity implements
         messageView.setText(text);
         messageView.setTextColor(color);
         MyUtils.show(messageView);
+        hideProgressBar();
     }
 
     @Override

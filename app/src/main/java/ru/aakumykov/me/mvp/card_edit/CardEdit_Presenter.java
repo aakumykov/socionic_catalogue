@@ -62,7 +62,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
             editCard(cardDraft.getKey());
         }
         else {
-            Log.e(TAG, "Unknown intent action '"+action+"'");
+            view.showErrorMsg(R.string.CARD_EDIT_error_editing_card, "Unknown intent action '"+action+"'");
         }
     }
 
