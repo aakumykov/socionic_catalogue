@@ -212,7 +212,7 @@ public class CardView_View extends BaseView implements
 
             @Override
             public void onError(Exception e) {
-                showErrorMsg(R.string.error_loading_image);
+                showErrorMsg(R.string.error_loading_image, e.getMessage());
                 e.printStackTrace();
                 MyUtils.hide(imageProgressBar);
                 displayImageError();
