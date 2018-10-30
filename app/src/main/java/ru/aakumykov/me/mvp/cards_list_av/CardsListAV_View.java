@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.models.Card;
 
@@ -37,6 +38,8 @@ public class CardsListAV_View extends BaseView implements
     private iCardsListAV.Presenter presenter;
     private List<Card> cardsList;
     private CardsListAVAdapter cardsListAdapter;
+    private Card currentCard;
+
 
     // Системные методы
     @Override
@@ -122,6 +125,7 @@ public class CardsListAV_View extends BaseView implements
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 //        Log.d(TAG, "onItemLongClick(pos: "+position+", id: "+id+")");
+        currentCard = cardsList.get(position);
 
         Drawable oldBackground = view.getBackground();
         view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
@@ -138,6 +142,7 @@ public class CardsListAV_View extends BaseView implements
         switch (menuItem.getItemId()) {
 
             case R.id.actionEdit:
+                editCard();
                 return true;
 
             case R.id.actionDelete:
@@ -182,5 +187,13 @@ public class CardsListAV_View extends BaseView implements
         popupMenu.setGravity(Gravity.END);
 
         popupMenu.show();
+    }
+
+    private void editCard() {
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.setAction(Intent.ACTION_EDIT);
+        intent.putExtra(Constants.CARD_KEY, currentCard.getKey());
+        startActivity(intent);
+        currentCard = null;
     }
 }
