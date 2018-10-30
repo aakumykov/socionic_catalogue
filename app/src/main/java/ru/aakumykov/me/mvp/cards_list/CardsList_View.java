@@ -59,10 +59,11 @@ public class CardsList_View extends BaseView implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate()");
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cards_list_activity);
         ButterKnife.bind(this);
+
+        setPageTitle(R.string.CARDS_LIST_page_title);
 
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);

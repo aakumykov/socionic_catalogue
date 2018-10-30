@@ -186,11 +186,14 @@ public abstract class BaseView extends AppCompatActivity implements
 
     @Override
     public void setPageTitle(int titleId) {
-       String title = getResources().getString(titleId);
+        Log.d(TAG, "setPageTitle("+titleId+")");
+        String title = getResources().getString(titleId);
+        setPageTitle(title);
     }
 
     @Override
     public void setPageTitle(String title) {
+        Log.d(TAG, "setPageTitle("+title+")");
         ActionBar actionBar = getSupportActionBar();
         if (null != actionBar) {
             actionBar.setTitle(title);
