@@ -137,6 +137,7 @@ public class Card implements Parcelable {
         this.quote = quote;
     }
     public void setImageURL(String imageURL) {
+        // TODO: проверять бы на корректность
         this.imageURL = imageURL;
     }
     public void setDescription(String description) {

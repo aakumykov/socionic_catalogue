@@ -1,7 +1,7 @@
 package ru.aakumykov.me.mvp.card_edit;
 
+import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -33,8 +33,37 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     private HashMap<String,Boolean> newTags;
 
 
-    CardEdit_Presenter() {
-        Log.d(TAG, "new CardEdit_Presenter()");
+    @Override
+    public void processInputIntent(Intent intent) {
+        Log.d(TAG, "processInputIntent()");
+
+        if (null == intent) {
+            Log.e(TAG, "Intent == null");
+            return;
+        }
+
+        String action = intent.getAction();
+
+        if (Constants.ACTION_CREATE.equals(action)) {
+            Card cardDraft = intent.getParcelableExtra(Constants.CARD);
+            createCard(cardDraft);
+        }
+        else if (Intent.ACTION_SEND.equals(action)) {
+            try {
+                Card cardDraft = makeCardDraft(intent);
+                createCard(cardDraft);
+            } catch (Exception e) {
+                view.showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        else if (Intent.ACTION_EDIT.equals(action)) {
+            Card cardDraft = intent.getParcelableExtra(Constants.CARD);
+            editCard(cardDraft.getKey());
+        }
+        else {
+            Log.e(TAG, "Unknown intent action '"+action+"'");
+        }
     }
 
 
@@ -135,6 +164,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
                 String remoteImagePath = constructImagePath();
                 view.disableForm();
                 model.uploadImage(localImageURI, localImageType, remoteImagePath, this);
+
             } catch (Exception e) {
                 view.showErrorMsg(R.string.image_data_error);
                 e.printStackTrace();
@@ -219,7 +249,6 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         Log.d(TAG, "onImageUploadSuccess(), "+remoteImageURI);
 
         newImageURI = remoteImageURI.toString();
-//        view.displayRemoteImage(remoteImageURI);
 
         try {
             saveCompleteCard();
@@ -296,13 +325,51 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     }
 
 
+    // TODO: единый метод обработки поступающих изображений
+
     // Внутренние методы
+   private Card makeCardDraft(final Intent intent) throws Exception {
+        Log.d(TAG, "makeCardDraft()");
+
+        String type = intent.getType();
+
+        if (type != null) {
+            Card cardDraft = new Card();
+
+            if ("text/plain".equals(type)) {
+                String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+                cardDraft.setType(Constants.TEXT_CARD);
+                cardDraft.setQuote(text);
+
+            } else if (type.startsWith("image/")) {
+                Uri imageURI = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+
+                localImageURI = imageURI;
+                localImageType = MyUtils.getMimeTypeFromIntent(intent);
+
+                cardDraft.setType(Constants.IMAGE_CARD);
+                cardDraft.setImageURL(imageURI.toString());
+
+            } else {
+                throw new Exception("Unsupported intent content type '"+type+"'");
+            }
+
+            return cardDraft;
+        }
+        else {
+            throw new Exception("Missing intent content type");
+        }
+    }
+
+
     private void saveCompleteCard() throws Exception {
         Log.d(TAG, "saveCompleteCard()");
 
         currentCard.setTitle(view.getCardTitle());
         currentCard.setDescription(view.getCardDescription());
         currentCard.setTags(view.getCardTags());
+
+        Log.d(TAG, "CARD TO SAVE: "+currentCard);
 
         newTags = currentCard.getTags();
 
@@ -313,8 +380,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
                 break;
 
             case Constants.IMAGE_CARD:
-                if ((null != newImageURI))
-                    currentCard.setImageURL(newImageURI);
+                currentCard.setImageURL(newImageURI);
                 break;
 
             default:

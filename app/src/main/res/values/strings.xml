@@ -84,4 +84,5 @@
     <string name="tag_counter">Счётчик метки</string>
     <string name="tag">Метка</string>
     <string name="error_loading_tag">Ошибка получения метки</string>
+    <string name="CARD_EDIT_error_editing_card">Ошибка редактирования карточки</string>
 </resources>

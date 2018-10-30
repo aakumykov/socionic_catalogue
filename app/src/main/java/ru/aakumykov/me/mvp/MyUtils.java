@@ -1,17 +1,15 @@
 package ru.aakumykov.me.mvp;
 
-import android.util.Log;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.view.View;
-import android.webkit.MimeTypeMap;
-
-import com.google.firebase.database.DataSnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import ru.aakumykov.me.mvp.models.Card;
 
 public final class MyUtils {
     private MyUtils() {}
@@ -34,16 +32,16 @@ public final class MyUtils {
         }
     }
 
-    public static Card snapshot2card(DataSnapshot dataSnapshot) throws IllegalArgumentException {
-        Card card = dataSnapshot.getValue(Card.class);
-        // TODO: протестировать с card == null
-        if (null != card) {
-            card.setKey(dataSnapshot.getKey());
-        } else {
-            throw new IllegalArgumentException("Card object is null");
-        }
-        return card;
-    }
+//    public static Card snapshot2card(DataSnapshot dataSnapshot) throws IllegalArgumentException {
+//        Card card = dataSnapshot.getValue(Card.class);
+//        // TODO: протестировать с card == null
+//        if (null != card) {
+//            card.setKey(dataSnapshot.getKey());
+//        } else {
+//            throw new IllegalArgumentException("Card object is null");
+//        }
+//        return card;
+//    }
 
 //    public static String getMimeType(String url) {
 //        String type = null;
@@ -71,5 +69,18 @@ public final class MyUtils {
         if (tagName.matches("^[0-9]+$")) tagName = "_"+tagName+"_";
 
         return tagName;
+    }
+
+    public static String getMimeTypeFromIntent(@Nullable Intent intent) throws IllegalArgumentException {
+
+        if (null == intent) throw new IllegalArgumentException("Supplied Intent is null");
+
+        ClipData clipData = intent.getClipData();
+        if (null == clipData) throw new IllegalArgumentException("ClipData is null");
+
+        ClipDescription clipDescription = clipData.getDescription();
+        if (null == clipDescription) throw new IllegalArgumentException("ClipDescription is null");
+
+        return clipDescription.getMimeType(0);
     }
 }
