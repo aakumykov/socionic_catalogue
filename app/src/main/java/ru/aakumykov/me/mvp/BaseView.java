@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -112,6 +113,22 @@ public abstract class BaseView extends AppCompatActivity implements
 
         if (isAuthServiceBounded)
             unbindService(authServiceConnection);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                this.finish();
+                break;
+
+            default:
+                super.onOptionsItemSelected(item);
+        }
+
+        return true;
     }
 
 
