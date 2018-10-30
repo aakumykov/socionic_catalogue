@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp.card_view;
+package ru.aakumykov.me.mvp.card_show;
 
 import android.util.Log;
 import ru.aakumykov.me.mvp.R;
@@ -8,12 +8,12 @@ import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
 
 public class CardView_Presenter implements
-        iCardView.Presenter,
+        iCardShow.Presenter,
         iCardsService.CardCallbacks
 {
 
     private final static String TAG = "CardView_Presenter";
-    private iCardView.View view;
+    private iCardShow.View view;
     private iCardsService model;
     private iAuthService authService;
 
@@ -32,7 +32,6 @@ public class CardView_Presenter implements
 
 
     // Реакция на кнопки
-
     @Override
     public void onTagClicked(String tagName) {
         view.goList(tagName);
@@ -65,7 +64,7 @@ public class CardView_Presenter implements
 
     // Link / Unlink
     @Override
-    public void linkView(iCardView.View view) {
+    public void linkView(iCardShow.View view) {
         Log.d(TAG, "linkView(), view: "+view);
         this.view = view;
     }

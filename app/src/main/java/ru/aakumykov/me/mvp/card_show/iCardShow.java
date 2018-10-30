@@ -1,16 +1,15 @@
-package ru.aakumykov.me.mvp.card_view;
+package ru.aakumykov.me.mvp.card_show;
 
 import android.net.Uri;
 
 import java.util.HashMap;
-import java.util.List;
 
 import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
-public interface iCardView {
+public interface iCardShow {
 
     interface View extends iBaseView {
         void showWaitScreen();
@@ -39,7 +38,7 @@ public interface iCardView {
         void onDeleteButtonClicked();
         void onDeleteConfirmed();
 
-        void linkView(iCardView.View view);
+        void linkView(iCardShow.View view);
         void unlinkView();
 
         void linkModel(iCardsService model);

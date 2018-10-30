@@ -25,7 +25,7 @@ import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
-import ru.aakumykov.me.mvp.card_view.CardView_View;
+import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
@@ -254,7 +254,7 @@ public class CardsList_View extends BaseView implements
     private void viewCard(Card card) {
         Log.d(TAG, "viewCard()");
         Intent intent = new Intent();
-        intent.setClass(this, CardView_View.class);
+        intent.setClass(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
         startActivity(intent);
     }

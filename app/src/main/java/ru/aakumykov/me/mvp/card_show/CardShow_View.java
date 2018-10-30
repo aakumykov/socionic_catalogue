@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp.card_view;
+package ru.aakumykov.me.mvp.card_show;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -36,8 +36,8 @@ import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 //TODO: уменьшение изображения
 
-public class CardView_View extends BaseView implements
-        iCardView.View,
+public class CardShow_View extends BaseView implements
+        iCardShow.View,
         TagView.OnTagClickListener
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
@@ -50,8 +50,8 @@ public class CardView_View extends BaseView implements
     @BindView(R.id.descriptionView) TextView descriptionView;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
 
-    private final static String TAG = "CardView_View";
-    private iCardView.Presenter presenter;
+    private final static String TAG = "CardShow_View";
+    private iCardShow.Presenter presenter;
     private boolean firstRun = true;
 
 
@@ -59,7 +59,7 @@ public class CardView_View extends BaseView implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.card_view_activity);
+        setContentView(R.layout.card_show_activity);
         ButterKnife.bind(this);
 
         tagsContainer.setOnTagClickListener(this);
@@ -177,6 +177,9 @@ public class CardView_View extends BaseView implements
         Log.d(TAG, "displayCard(), "+card);
 
         hideWaitScreen();
+
+        String pageTitle = getResources().getString(R.string.CARD_SHOW_page_title, card.getTitle());
+        setPageTitle(pageTitle);
 
         switch (card.getType()) {
             case Constants.IMAGE_CARD:

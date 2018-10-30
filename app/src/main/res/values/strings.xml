@@ -89,4 +89,5 @@
     <string name="TAGS_LIST_tags_list">Список меток</string>
     <string name="TAG_SHOW_page_title">Метка «%1$s»</string>
     <string name="CARDS_LIST_page_title">Список карточек</string>
+    <string name="CARD_SHOW_page_title">«%1$s», просмотр карточки</string>
 </resources>
