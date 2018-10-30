@@ -90,7 +90,9 @@ public class TagShow_View extends BaseView implements
 
         hideProgressBar();
 
-        nameView.setText(tag.getName());
+        String tagName = getResources()
+                .getString(R.string.braces, tag.getName());
+        nameView.setText(tagName);
 
         int cardsCount =  tag.getCards().size();
         Log.d(TAG, "cardsCount: "+cardsCount);
