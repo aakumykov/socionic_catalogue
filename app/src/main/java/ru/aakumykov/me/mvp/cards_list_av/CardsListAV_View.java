@@ -1,9 +1,12 @@
 package ru.aakumykov.me.mvp.cards_list_av;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,7 +28,8 @@ import ru.aakumykov.me.mvp.models.Card;
 public class CardsListAV_View extends BaseView implements
         iCardsListAV.View,
         ListView.OnItemClickListener,
-        ListView.OnItemLongClickListener
+        ListView.OnItemLongClickListener,
+        PopupMenu.OnMenuItemClickListener
 {
     @BindView(R.id.listView) ListView listView;
 
@@ -105,7 +109,7 @@ public class CardsListAV_View extends BaseView implements
     // Нажатия списка
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "onItemClick(pos: "+position+", id: "+id+")");
+//        Log.d(TAG, "onItemClick(pos: "+position+", id: "+id+")");
 
         // TODO: где контролировать эти данные?
         Card card = cardsList.get(position);
@@ -117,8 +121,31 @@ public class CardsListAV_View extends BaseView implements
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "onItemLongClick(pos: "+position+", id: "+id+")");
-        return false;
+//        Log.d(TAG, "onItemLongClick(pos: "+position+", id: "+id+")");
+
+        Drawable oldBackground = view.getBackground();
+        view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
+
+        showPopupMenu(view, oldBackground);
+        return true;
+    }
+
+
+    // Нажатия в контекстном меню
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+
+        switch (menuItem.getItemId()) {
+
+            case R.id.actionEdit:
+                return true;
+
+            case R.id.actionDelete:
+                return true;
+
+            default:
+                return false;
+        }
     }
 
 
@@ -133,5 +160,27 @@ public class CardsListAV_View extends BaseView implements
         cardsList.clear();
         cardsList.addAll(list);
         cardsListAdapter.notifyDataSetChanged();
+    }
+
+
+    // Внутренние методы
+    private void showPopupMenu(final View v, final Drawable oldBackground) {
+
+        PopupMenu popupMenu = new PopupMenu(this, v);
+
+        popupMenu.inflate(R.menu.card_actions_menu);
+
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu popupMenu) {
+                v.setBackground(oldBackground);
+            }
+        });
+
+        popupMenu.setOnMenuItemClickListener(this);
+
+        popupMenu.setGravity(Gravity.END);
+
+        popupMenu.show();
     }
 }
