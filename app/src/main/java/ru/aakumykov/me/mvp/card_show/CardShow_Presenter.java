@@ -7,12 +7,12 @@ import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
 
-public class CardView_Presenter implements
+public class CardShow_Presenter implements
         iCardShow.Presenter,
         iCardsService.CardCallbacks
 {
 
-    private final static String TAG = "CardView_Presenter";
+    private final static String TAG = "CardShow_Presenter";
     private iCardShow.View view;
     private iCardsService model;
     private iAuthService authService;
@@ -20,7 +20,7 @@ public class CardView_Presenter implements
     private Card currentCard;
 
 
-    CardView_Presenter() {}
+    CardShow_Presenter() {}
 
 
     // Получение карточки

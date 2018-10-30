@@ -64,7 +64,7 @@ public class CardShow_View extends BaseView implements
 
         tagsContainer.setOnTagClickListener(this);
 
-        presenter = new CardView_Presenter();
+        presenter = new CardShow_Presenter();
     }
 
     @Override
