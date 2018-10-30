@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.card_edit;
 
+import android.content.Intent;
 import android.net.Uri;
 
 import java.util.HashMap;
@@ -53,6 +54,8 @@ public interface iCardEdit {
 
         void linkModel(iCardsService model);
         void unlinkModel();
+
+        void processInputIntent(final Intent intent);
 
         void createCard(Card cardDraft);
         void editCard(String cardKey);

@@ -78,4 +78,9 @@
     <string name="refreshing_list">Refreshing list</string>
     <string name="add">Add</string>
     <string name="new_tag">New tag</string>
+    <string name="tag_name">Tag name</string>
+    <string name="tag_counter">Tag counter</string>
+    <string name="tag">Tag</string>
+    <string name="error_loading_tag">Error loading tag</string>
+    <string name="CARD_EDIT_error_editing_card">Error editing card</string>
 </resources>

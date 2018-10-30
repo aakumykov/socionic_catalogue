@@ -94,7 +94,7 @@ public class CardEdit_View extends BaseView implements
 //        Log.d(TAG, "onServiceBounded()");
         presenter.linkView(this);
         presenter.linkModel(getCardsService());
-        processInputIntent();
+        presenter.processInputIntent(getIntent());
     }
 
     @Override
@@ -281,7 +281,9 @@ public class CardEdit_View extends BaseView implements
         MyUtils.show(imageHolder);
         MyUtils.hide(imageProgressBar);
         String imageURL = cardDraft.getImageURL();
-        if (null != imageURL) showImage(imageURL);
+        if (null != imageURL) {
+            showImage(imageURL);
+        }
     }
 
     @Override
@@ -433,66 +435,11 @@ public class CardEdit_View extends BaseView implements
     // TODO: контроль размера изображения
 
     // Внутренние методы
-    private void processInputIntent() {
-        Log.d(TAG, "processInputIntent()");
-
-        Intent intent = getIntent();
-
-        if (null == intent) {
-            Log.e(TAG, "Intent == null");
-            return;
-        }
-
-        String action = intent.getAction();
-        String type = intent.getType();
-
-        if (Constants.ACTION_CREATE.equals(action)) {
-            Log.d(TAG, "ACTION_CREATE");
-            Card cardDraft = intent.getParcelableExtra(Constants.CARD);
-            presenter.createCard(cardDraft);
-        }
-        else if (Intent.ACTION_SEND.equals(action)) {
-            Log.d(TAG, "ACTION_SEND");
-
-            if (type != null) {
-                Card cardDraft = new Card();
-
-                if ("text/plain".equals(type)) {
-                    String text = intent.getStringExtra(Intent.EXTRA_TEXT);
-                    cardDraft.setType(Constants.TEXT_CARD);
-                    cardDraft.setQuote(text);
-                } else if (type.startsWith("image/")) {
-                    Uri imageURI = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-                    cardDraft.setType(Constants.IMAGE_CARD);
-                    cardDraft.setImageURL(imageURI.toString());
-                } else {
-                    Log.e(TAG, "Unsupported intent content type: " + type);
-                    return;
-                }
-
-                presenter.createCard(cardDraft);
-            }
-            else {
-                Log.e(TAG, "Missing intent content type");
-            }
-        }
-        else if (Intent.ACTION_EDIT.equals(action))
-        {
-            Log.d(TAG, "ACTION_EDIT");
-            Card card = intent.getParcelableExtra(Constants.CARD);
-            presenter.editCard(card.getKey());
-        }
-        else  {
-            Log.e(TAG, "Unknown intent action '"+action+"'");
-        }
-    }
-
     private void displayCommonCardParts(Card card) {
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
         showTags(card.getTags());
     }
-
 
     private void showTags(HashMap<String,Boolean> tagsMap) {
         Log.d(TAG, "showTags(), "+tagsMap);
@@ -502,4 +449,7 @@ public class CardEdit_View extends BaseView implements
             tagsContainer.setEnableCross(true);
         }
     }
+
+
+
 }

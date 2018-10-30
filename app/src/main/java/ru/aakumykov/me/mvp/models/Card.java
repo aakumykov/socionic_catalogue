@@ -73,6 +73,7 @@ public class Card implements Parcelable {
     }
 
     protected Card(Parcel in) {
+        // важен порядок считывания
         key = in.readString();
         type = in.readString();
         title = in.readString();
@@ -136,6 +137,7 @@ public class Card implements Parcelable {
         this.quote = quote;
     }
     public void setImageURL(String imageURL) {
+        // TODO: проверять бы на корректность
         this.imageURL = imageURL;
     }
     public void setDescription(String description) {
