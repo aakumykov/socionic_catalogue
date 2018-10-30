@@ -1,5 +1,7 @@
 package ru.aakumykov.me.mvp.tags;
 
+import android.support.annotation.Nullable;
+
 import java.util.List;
 
 import ru.aakumykov.me.mvp.iBaseView;
@@ -20,7 +22,7 @@ public interface iTags {
 
     interface ShowView extends iBaseView, View {
         void displayTag(Tag tag);
-        void displayCards(List<Card> cardsList);
+        void goCardsListPage(@Nullable String tagFilter);
     }
 
     interface EditView extends iBaseView, View {

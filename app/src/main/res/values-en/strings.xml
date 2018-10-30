@@ -82,5 +82,4 @@
     <string name="tag_counter">Tag counter</string>
     <string name="tag">Tag</string>
     <string name="error_loading_tag">Error loading tag</string>
-    <string name="cards_number">Cards number</string>
 </resources>
