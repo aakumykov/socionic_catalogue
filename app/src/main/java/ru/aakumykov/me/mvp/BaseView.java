@@ -6,6 +6,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ProgressBar;
@@ -181,5 +182,18 @@ public abstract class BaseView extends AppCompatActivity implements
     public void closePage() {
         Log.d(TAG, "closePage()");
         finish();
+    }
+
+    @Override
+    public void setPageTitle(int titleId) {
+       String title = getResources().getString(titleId);
+    }
+
+    @Override
+    public void setPageTitle(String title) {
+        ActionBar actionBar = getSupportActionBar();
+        if (null != actionBar) {
+            actionBar.setTitle(title);
+        }
     }
 }

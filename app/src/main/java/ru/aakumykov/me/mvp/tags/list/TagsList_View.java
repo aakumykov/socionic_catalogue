@@ -38,6 +38,8 @@ public class TagsList_View extends BaseView implements
         setContentView(R.layout.tags_list_activity);
         ButterKnife.bind(this);
 
+        setPageTitle(R.string.TAGS_LIST_tags_list);
+
         tagsListAdapter = new TagsListAdapter(this, R.layout.tags_list_item, tagsList);
         listView.setAdapter(tagsListAdapter);
 

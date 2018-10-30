@@ -90,20 +90,20 @@ public class TagShow_View extends BaseView implements
 
         hideProgressBar();
 
+        String pageTitle = getString(R.string.TAG_SHOW_page_title, tag.getName());
+        setPageTitle(pageTitle);
+
         String tagName = getResources()
                 .getString(R.string.braces, tag.getName());
         nameView.setText(tagName);
 
         int cardsCount =  tag.getCards().size();
-        Log.d(TAG, "cardsCount: "+cardsCount);
-
         String linkText = getResources()
                 .getQuantityString(
                         R.plurals.cards_count,
                         cardsCount,
                         cardsCount
                 );
-
         linkToCardsView.setText(linkText);
         MyUtils.show(linkToCardsView);
 

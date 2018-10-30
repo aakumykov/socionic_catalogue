@@ -21,4 +21,6 @@ public interface iBaseView {
     void hideMsg();
 
     void closePage();
+    void setPageTitle(int titleId);
+    void setPageTitle(String title);
 }

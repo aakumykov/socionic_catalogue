@@ -83,4 +83,6 @@
     <string name="tag">Tag</string>
     <string name="error_loading_tag">Error loading tag</string>
     <string name="CARD_EDIT_error_editing_card">Error editing card</string>
+    <string name="TAGS_LIST_tags_list">Tags List</string>
+    <string name="TAG_SHOW_page_title">Tag «%1$s»</string>
 </resources>
