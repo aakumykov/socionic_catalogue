@@ -2,22 +2,54 @@ package ru.aakumykov.me.mvp.cards_list_av;
 
 import android.util.Log;
 
+import java.util.List;
+
 import ru.aakumykov.me.mvp.card_show.iCardShow;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
 public class CardsListAV_Presenter implements
-        iCardsListAV.Presenter
+        iCardsListAV.Presenter,
+        iCardsService.ListCallbacks
 {
     private final static String TAG = "CardsListAV_Presenter";
     private iCardsListAV.View view;
     private iCardsService model;
     private iAuthService authService;
 
-    // Основные методы
+    // Интерфейсные
+
+    @Override
+    public void loadList() {
+        Log.d(TAG, "loadList()");
+        model.loadList(this);
+    }
+
     @Override
     public void deleteCard(Card card) {
+
+    }
+
+
+    // Коллбеки
+    @Override
+    public void onListLoadSuccess(List<Card> list) {
+        view.displayList(list);
+    }
+
+    @Override
+    public void onListLoadFail(String errorMessage) {
+
+    }
+
+    @Override
+    public void onDeleteSuccess(Card card) {
+
+    }
+
+    @Override
+    public void onDeleteError(String msg) {
 
     }
 

@@ -9,12 +9,12 @@ import ru.aakumykov.me.mvp.models.Card;
 public interface iCardsListAV {
 
     interface View {
-        void displayList(List<Card> cardsList);
+        void displayList(List<Card> list);
     }
 
     interface Presenter {
 
-        void getList();
+        void loadList();
         void deleteCard(Card card);
 
         // TODO: вынести в общий интерфейс

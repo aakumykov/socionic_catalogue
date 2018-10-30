@@ -8,8 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -18,10 +16,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
-import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Card;
-import ru.aakumykov.me.mvp.tags.list.TagsList_View;
 
 public class CardsListAV_View extends BaseView implements
         iCardsListAV.View,
@@ -33,7 +29,7 @@ public class CardsListAV_View extends BaseView implements
     private final static String TAG = "CardsListAV_View";
     private iCardsListAV.Presenter presenter;
     private List<Card> cardsList;
-    private ListAdapter cardsListAdapter;
+    private CardsListAVAdapter cardsListAdapter;
 
     // Системные методы
     @Override
@@ -47,7 +43,7 @@ public class CardsListAV_View extends BaseView implements
         presenter = new CardsListAV_Presenter();
 
         cardsList = new ArrayList<>();
-        cardsListAdapter = new ArrayAdapter<Card>(this, R.layout.cards_list_item, cardsList);
+        cardsListAdapter = new CardsListAVAdapter(this, R.layout.cards_list_item, cardsList);
         listView.setAdapter(cardsListAdapter);
 
         listView.setOnItemClickListener(this);
@@ -60,6 +56,10 @@ public class CardsListAV_View extends BaseView implements
         presenter.linkView(this);
         presenter.linkModel(getCardsService());
         presenter.linkAuth(getAuthService());
+
+        showProgressBar();
+        showInfoMsg(R.string.loading_cards_list);
+        presenter.loadList();
     }
 
     @Override
@@ -114,7 +114,14 @@ public class CardsListAV_View extends BaseView implements
 
     // Интерфейсные методы
     @Override
-    public void displayList(List<Card> cardsList) {
+    public void displayList(final List<Card> list) {
+        Log.d(TAG, "displayList()");
 
+        hideProgressBar();
+        hideMsg();
+
+        cardsList.clear();
+        cardsList.addAll(list);
+        cardsListAdapter.notifyDataSetChanged();
     }
 }
