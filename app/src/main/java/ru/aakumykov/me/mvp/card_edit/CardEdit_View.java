@@ -94,7 +94,13 @@ public class CardEdit_View extends BaseView implements
 //        Log.d(TAG, "onServiceBounded()");
         presenter.linkView(this);
         presenter.linkModel(getCardsService());
-        presenter.processInputIntent(getIntent());
+
+        try {
+            presenter.processInputIntent(getIntent());
+        } catch (Exception e) {
+            showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override

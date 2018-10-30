@@ -34,7 +34,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
 
 
     @Override
-    public void processInputIntent(Intent intent) {
+    public void processInputIntent(Intent intent) throws Exception {
         Log.d(TAG, "processInputIntent()");
 
         if (null == intent) {
@@ -58,11 +58,11 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
             }
         }
         else if (Intent.ACTION_EDIT.equals(action)) {
-            Card cardDraft = intent.getParcelableExtra(Constants.CARD);
-            editCard(cardDraft.getKey());
+            String cardKey = intent.getStringExtra(Constants.CARD_KEY);
+            editCard(cardKey);
         }
         else {
-            view.showErrorMsg(R.string.CARD_EDIT_error_editing_card, "Unknown intent action '"+action+"'");
+            throw  new Exception("Unknown intent action '"+action+"'");
         }
     }
 

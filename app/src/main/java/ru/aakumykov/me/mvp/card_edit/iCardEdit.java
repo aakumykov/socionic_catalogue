@@ -55,7 +55,7 @@ public interface iCardEdit {
         void linkModel(iCardsService model);
         void unlinkModel();
 
-        void processInputIntent(final Intent intent);
+        void processInputIntent(final Intent intent) throws Exception;
 
         void createCard(Card cardDraft);
         void editCard(String cardKey);
