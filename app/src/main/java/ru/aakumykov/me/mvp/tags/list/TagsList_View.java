@@ -1,7 +1,10 @@
 package ru.aakumykov.me.mvp.tags.list;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -9,15 +12,17 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import co.lujun.androidtagview.TagContainerLayout;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Tag;
 import ru.aakumykov.me.mvp.tags.Tags_Presenter;
 import ru.aakumykov.me.mvp.tags.iTags;
+import ru.aakumykov.me.mvp.tags.view.TagShow_View;
 
 public class TagsList_View extends BaseView implements
-        iTags.ListView
+        iTags.ListView,
+        AdapterView.OnItemClickListener
 {
     @BindView(R.id.listView) ListView listView;
 
@@ -25,6 +30,7 @@ public class TagsList_View extends BaseView implements
     private iTags.Presenter presenter;
     private List<Tag> tagsList = new ArrayList<>();
     private TagsListAdapter tagsListAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +41,14 @@ public class TagsList_View extends BaseView implements
         tagsListAdapter = new TagsListAdapter(this, R.layout.tags_list_item, tagsList);
         listView.setAdapter(tagsListAdapter);
 
+        listView.setOnItemClickListener(this);
+
         presenter = new Tags_Presenter();
-        presenter.onPageCreated();
+        presenter.onListPageReady();
     }
 
 
+    // Системные методы
     @Override
     protected void onStart() {
         super.onStart();
@@ -60,14 +69,26 @@ public class TagsList_View extends BaseView implements
     }
 
 
-    // Внешние методы
+    // Обработчики
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Tag tag = tagsList.get(position);
+        presenter.onTagClicked(tag);
+    }
+
+
+    // Основные методы
     @Override
     public void displayTags(List<Tag> list) {
-        Log.d(TAG, "displayTags(), "+list);
+//        Log.d(TAG, "displayTags(), "+list);
         tagsList.addAll(list);
         tagsListAdapter.notifyDataSetChanged();
     }
 
-
-
+    @Override
+    public void goShowPage(String tagId) {
+        Intent intent = new Intent(this, TagShow_View.class);
+        intent.putExtra(Constants.TAG_KEY, tagId);
+        startActivity(intent);
+    }
 }

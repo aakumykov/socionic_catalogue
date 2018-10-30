@@ -11,7 +11,8 @@ import ru.aakumykov.me.mvp.services.TagsSingleton;
 
 public class Tags_Presenter implements
         iTags.Presenter,
-        iTagsSingleton.ListCallbacks
+        iTagsSingleton.ListCallbacks,
+        iTagsSingleton.TagCallbacks
 {
 
     private final static String TAG = "Tags_Presenter";
@@ -21,6 +22,7 @@ public class Tags_Presenter implements
     private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
 
 
+    // Служебные методы
     @Override
     public void linkView(iTags.View view) throws IllegalArgumentException {
 
@@ -34,7 +36,6 @@ public class Tags_Presenter implements
             throw new IllegalArgumentException("Unknown type of View '"+view.getClass()+"'");
         }
     }
-
     @Override
     public void unlinkView() {
         this.listView = null;
@@ -43,9 +44,28 @@ public class Tags_Presenter implements
     }
 
 
+    // Основные методы
     @Override
-    public void onPageCreated() {
+    public void onTagClicked(Tag tag) {
+        // TODO: проверить с null, чтобы понять, где обрабатывать ошибку
+        listView.goShowPage(tag.getKey());
+    }
+
+    @Override
+    public void onListPageReady() {
+        Log.d(TAG, "onListPageReady()");
         tagsSingleton.listTags(this);
+    }
+
+    @Override
+    public void onShowPageReady(String tagKey) {
+        Log.d(TAG, "onShowPageReady('"+tagKey+"')");
+        TagsSingleton.getInstance().readTag(tagKey, this);
+    }
+
+    @Override
+    public void onEditPageReady(String tagKey) {
+        Log.d(TAG, "onEditPageReady("+tagKey+"')");
     }
 
 
@@ -62,4 +82,14 @@ public class Tags_Presenter implements
         listView.showErrorMsg(R.string.error_loading_tags);
     }
 
+    @Override
+    public void onTagSuccess(Tag tag) {
+        showView.displayTag(tag);
+    }
+
+    @Override
+    public void onTagFail(String errorMsg) {
+        showView.showErrorMsg(R.string.error_loading_tag);
+        Log.e(TAG, errorMsg);
+    }
 }

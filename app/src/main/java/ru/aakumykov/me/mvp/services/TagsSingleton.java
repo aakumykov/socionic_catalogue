@@ -68,7 +68,7 @@ public class TagsSingleton implements iTagsSingleton {
 
     @Override
     public void readTag(String key, final TagCallbacks callbacks) {
-        Log.d(TAG, "readTag("+key+")");
+        Log.d(TAG, "readTag('"+key+"')");
 
         DatabaseReference tagRef = tagsRef.child(key);
 
@@ -78,7 +78,9 @@ public class TagsSingleton implements iTagsSingleton {
                 Tag tag = dataSnapshot.getValue(Tag.class);
 
                 if (null != tag) {
+                    // TODO: объединить их, что ли?
                     tag.setKey(dataSnapshot.getKey());
+                    tag.setName(dataSnapshot.getKey());
                     callbacks.onTagSuccess(tag);
                 } else {
                     callbacks.onTagFail("Tag from dataSnapshot is null");

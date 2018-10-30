@@ -39,7 +39,7 @@ public class TagsListAdapter extends ArrayAdapter<Tag> {
         TextView counterView = view.findViewById(R.id.counterView);
 
         Tag oneTag = tagsList.get(position);
-        Log.d(TAG, "oneTag: "+oneTag);
+//        Log.d(TAG, "oneTag: "+oneTag);
 
         nameView.setText(oneTag.getName());
         counterView.setText( String.valueOf( oneTag.getCards().size() ) );
