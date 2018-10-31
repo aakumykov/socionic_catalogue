@@ -322,7 +322,7 @@ public class CardsList_View extends BaseView implements
         cardsListAdapter.remove(oldCard);
 
         HashMap<String,Boolean> oldTags = deletedCard.getTags();
-        TagsSingleton.getInstance().updateCardTags(oldCardKey, oldTags, null);
+        TagsSingleton.getInstance().updateCardTags(oldCardKey, oldTags, null, null);
     }
 
     @Override

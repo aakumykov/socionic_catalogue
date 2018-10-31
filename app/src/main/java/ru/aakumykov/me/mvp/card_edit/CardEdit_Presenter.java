@@ -304,7 +304,8 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         TagsSingleton.getInstance().updateCardTags(
                 currentCard.getKey(),
                 oldTags,
-                newTags
+                newTags,
+                null
         );
 
         forgetCardData();

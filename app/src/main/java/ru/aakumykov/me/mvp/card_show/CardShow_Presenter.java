@@ -113,7 +113,7 @@ public class CardShow_Presenter implements
 
     @Override
     public void onDeleteSuccess(Card card) {
-        TagsSingleton.getInstance().updateCardTags(card.getKey(), card.getTags(), null);
+        TagsSingleton.getInstance().updateCardTags(card.getKey(), card.getTags(), null, null);
         view.closePage();
     }
 
