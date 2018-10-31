@@ -18,20 +18,16 @@ public class YesNoDialog {
     private Context context;
     private String title;
     private String message;
-    private iDialogCallbacks.onCheck checkCallback;
-    private iDialogCallbacks.onYes yesCallback;
-    private iDialogCallbacks.onNo noCallback;
+    private iDialogCallbacks.Delete callbacks;
 
 
     public <T> YesNoDialog (
             final Context context,
             T title,
             @Nullable T msg,
-            final iDialogCallbacks.onCheck checkCallback,
-            final iDialogCallbacks.onYes yesCallback,
-            @Nullable final iDialogCallbacks.onNo noCallback
-            ) {
-
+            final iDialogCallbacks.Delete callbacks
+            )
+    {
         this.context = context;
 
         // Хотел перенести это во внутренний метод, да не смог
@@ -47,9 +43,7 @@ public class YesNoDialog {
                 this.message = context.getResources().getString((Integer) msg);
         }
 
-        this.checkCallback = checkCallback;
-        this.yesCallback = yesCallback;
-        this.noCallback = noCallback;
+        this.callbacks = callbacks;
 
         this.create();
     }
@@ -62,15 +56,15 @@ public class YesNoDialog {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (checkCallback.doCheck()) {
-                            yesCallback.yesAction();
+                        if (callbacks.deleteDialogCheck()) {
+                            callbacks.deleteDialogYes();
                         }
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (null != noCallback) noCallback.noAction();
+                        callbacks.onDeleteDialogNo();
                     }
                 });
 

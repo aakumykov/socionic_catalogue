@@ -2,15 +2,9 @@ package ru.aakumykov.me.mvp.interfaces;
 
 public interface iDialogCallbacks {
 
-    interface onCheck {
-        boolean doCheck();
-    }
-
-    interface onYes {
-        void yesAction();
-    }
-
-    interface onNo {
-        void noAction();
+    interface Delete {
+        boolean deleteDialogCheck();
+        void deleteDialogYes();
+        void onDeleteDialogNo();
     }
 }
