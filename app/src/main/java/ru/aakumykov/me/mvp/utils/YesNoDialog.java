@@ -2,8 +2,8 @@ package ru.aakumykov.me.mvp.utils;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
@@ -25,20 +25,27 @@ public class YesNoDialog {
 
     public <T> YesNoDialog (
             final Context context,
-            int titleId,
-            T msg,
+            T title,
+            @Nullable T msg,
             final iDialogCallbacks.onCheck checkCallback,
             final iDialogCallbacks.onYes yesCallback,
-            final iDialogCallbacks.onNo noCallback
+            @Nullable final iDialogCallbacks.onNo noCallback
             ) {
 
         this.context = context;
-        this.title = context.getResources().getString(titleId);
 
         // Хотел перенести это во внутренний метод, да не смог
-        this.message = context.getResources().getString(R.string.DIALOG_really_delete_card);
-        if (msg instanceof String) this.message = (String) msg;
-        else if (msg instanceof Integer) this.message = context.getResources().getString((Integer)msg);
+        this.title = context.getResources().getString(R.string.DIALOG_card_deletion);
+        if (title instanceof String) this.title = (String) title;
+        else if (title instanceof Integer) this.title = context.getResources().getString((Integer)title);
+
+        // Хотел перенести это во внутренний метод, да не смог
+        if (null != msg) {
+            this.message = context.getResources().getString(R.string.DIALOG_really_delete_card);
+            if (msg instanceof String) this.message = (String) msg;
+            else if (msg instanceof Integer)
+                this.message = context.getResources().getString((Integer) msg);
+        }
 
         this.checkCallback = checkCallback;
         this.yesCallback = yesCallback;
