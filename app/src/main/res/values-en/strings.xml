@@ -51,8 +51,8 @@
     <string name="error_deleting_card">Error deleting card</string>
     <string name="unknown_request_code">Unknown request code</string>
     <string name="result_error">Operation error</string>
-    <string name="card_deletion">Card deletion</string>
-    <string name="really_delete_card">Really delete card?</string>
+    <string name="DIALOG_card_deletion">Card deletion</string>
+    <string name="DIALOG_really_delete_card">Really delete card?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="error_updating_list">Error updating list</string>
@@ -87,4 +87,5 @@
     <string name="TAG_SHOW_page_title">Tag «%1$s»</string>
     <string name="CARDS_LIST_page_title">Cards list</string>
     <string name="CARD_SHOW_page_title">«%1$s», card viewing</string>
+    <string name="DIALOG_deleted_card_name">Really delete card «%1$s»</string>
 </resources>

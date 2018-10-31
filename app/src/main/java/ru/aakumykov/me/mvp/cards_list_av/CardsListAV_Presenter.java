@@ -4,14 +4,15 @@ import android.util.Log;
 
 import java.util.List;
 
-import ru.aakumykov.me.mvp.card_show.iCardShow;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
 
 public class CardsListAV_Presenter implements
         iCardsListAV.Presenter,
-        iCardsService.ListCallbacks
+        iCardsService.ListCallbacks,
+        iDialogCallbacks.Delete
 {
     private final static String TAG = "CardsListAV_Presenter";
     private iCardsListAV.View view;
@@ -27,9 +28,9 @@ public class CardsListAV_Presenter implements
     }
 
     @Override
-    public void deleteCard(final Card card) {
-        Log.d(TAG, "deleteCard(), "+card);
-        model.deleteCard(card, this);
+    public void deleteCard() {
+        Log.d(TAG, "deleteCard()");
+        view.deleteCardRequest(this);
     }
 
 
@@ -43,6 +44,23 @@ public class CardsListAV_Presenter implements
     public void onListLoadFail(String errorMessage) {
 
     }
+
+
+    @Override
+    public boolean deleteDialogCheck() {
+        return true;
+    }
+
+    @Override
+    public void deleteDialogYes() {
+        Log.d(TAG, "Удаление подтверждено");
+    }
+
+    @Override
+    public void onDeleteDialogNo() {
+        Log.d(TAG, "Удаление отклонено");
+    }
+
 
     @Override
     public void onDeleteSuccess(Card card) {
@@ -83,4 +101,10 @@ public class CardsListAV_Presenter implements
         this.authService = null;
     }
 
+
+    // Внутренние методы
+    private void performDeleteCard(Card card) {
+        Log.d(TAG, "performDeleteCard(), "+card);
+
+    }
 }

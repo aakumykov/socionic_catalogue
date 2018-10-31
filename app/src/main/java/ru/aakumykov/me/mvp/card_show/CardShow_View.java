@@ -321,32 +321,32 @@ public class CardShow_View extends BaseView implements
     @Override
     public void showDeleteDialog() {
 
-        YesNoDialog yesNoDialog = new YesNoDialog(
-                this,
-                R.string.card_deletion,
-                R.string.really_delete_card,
-                new iDialogCallbacks.onCheck() {
-                    @Override
-                    public boolean doCheck() {
-                        return true;
-                    }
-                },
-                new iDialogCallbacks.onYes() {
-                    @Override
-                    public void yesAction() {
-                        //Log.d(TAG, "yesAction");
-                        presenter.onDeleteConfirmed();
-                    }
-                },
-                new iDialogCallbacks.onNo() {
-                    @Override
-                    public void noAction() {
-                        //Log.d(TAG, "noAction");
-                    }
-                }
-        );
-
-        yesNoDialog.show();
+//        YesNoDialog yesNoDialog = new YesNoDialog(
+//                this,
+//                R.string.DIALOG_card_deletion,
+//                R.string.DIALOG_really_delete_card,
+//                new iDialogCallbacks.onCheck() {
+//                    @Override
+//                    public boolean doCheck() {
+//                        return true;
+//                    }
+//                },
+//                new iDialogCallbacks.onYes() {
+//                    @Override
+//                    public void yesAction() {
+//                        //Log.d(TAG, "yesAction");
+//                        presenter.onDeleteConfirmed();
+//                    }
+//                },
+//                new iDialogCallbacks.onNo() {
+//                    @Override
+//                    public void noAction() {
+//                        //Log.d(TAG, "noAction");
+//                    }
+//                }
+//        );
+//
+//        yesNoDialog.show();
     }
 
 }

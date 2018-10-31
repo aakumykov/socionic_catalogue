@@ -24,7 +24,10 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
+import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 public class CardsListAV_View extends BaseView implements
         iCardsListAV.View,
@@ -146,6 +149,7 @@ public class CardsListAV_View extends BaseView implements
                 return true;
 
             case R.id.actionDelete:
+                presenter.deleteCard();
                 return true;
 
             default:
@@ -165,6 +169,22 @@ public class CardsListAV_View extends BaseView implements
         cardsList.clear();
         cardsList.addAll(list);
         cardsListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void deleteCardRequest(iDialogCallbacks.Delete callbacks) {
+        Log.d(TAG, "deleteCardRequest()");
+
+        String cardName = currentCard.getTitle();
+
+        YesNoDialog yesNoDialog = new YesNoDialog(
+                this,
+                getResources().getString(R.string.DIALOG_deleted_card_name, cardName),
+                null,
+                callbacks
+        );
+
+        yesNoDialog.show();
     }
 
 
@@ -190,6 +210,7 @@ public class CardsListAV_View extends BaseView implements
     }
 
     private void editCard() {
+        Log.d(TAG, "editCard()");
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.setAction(Intent.ACTION_EDIT);
         intent.putExtra(Constants.CARD_KEY, currentCard.getKey());
@@ -197,8 +218,4 @@ public class CardsListAV_View extends BaseView implements
         currentCard = null;
     }
 
-    private void deleteCard() {
-        presenter.deleteCard(currentCard);
-        currentCard = null;
-    }
 }

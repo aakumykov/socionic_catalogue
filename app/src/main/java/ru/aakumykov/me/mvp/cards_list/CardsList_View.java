@@ -270,24 +270,24 @@ public class CardsList_View extends BaseView implements
     private void deleteCard(final Card card) {
         Log.d(TAG, "deleteCard(), "+card.getTitle());
 
-        YesNoDialog yesNoDialog = new YesNoDialog(this, R.string.card_deletion,
-                R.string.really_delete_card,
-                new iDialogCallbacks.onCheck() {
-                    @Override
-                    public boolean doCheck() {
-                        return true;
-                    }
-                },
-                new iDialogCallbacks.onYes() {
-                    @Override
-                    public void yesAction() {
-                        getCardsService().deleteCard(card, CardsList_View.this);
-                    }
-                },
-                null
-        );
-
-        yesNoDialog.show();
+//        YesNoDialog yesNoDialog = new YesNoDialog(this, R.string.DIALOG_card_deletion,
+//                R.string.DIALOG_really_delete_card,
+//                new iDialogCallbacks.onCheck() {
+//                    @Override
+//                    public boolean doCheck() {
+//                        return true;
+//                    }
+//                },
+//                new iDialogCallbacks.onYes() {
+//                    @Override
+//                    public void yesAction() {
+//                        getCardsService().deleteCard(card, CardsList_View.this);
+//                    }
+//                },
+//                null
+//        );
+//
+//        yesNoDialog.show();
     }
 
 

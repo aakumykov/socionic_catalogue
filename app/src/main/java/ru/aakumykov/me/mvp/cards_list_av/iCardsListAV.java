@@ -4,18 +4,20 @@ import java.util.List;
 
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
 
 public interface iCardsListAV {
 
     interface View {
         void displayList(List<Card> list);
+        void deleteCardRequest(iDialogCallbacks.Delete callbacks);
     }
 
     interface Presenter {
 
         void loadList();
-        void deleteCard(Card card);
+        void deleteCard();
 
         // TODO: вынести в общий интерфейс
         void linkView(iCardsListAV.View view);

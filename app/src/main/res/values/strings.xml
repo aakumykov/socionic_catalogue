@@ -53,8 +53,8 @@
     <string name="error_deleting_card">Ошибка удаления карточки</string>
     <string name="unknown_request_code">Неизвестный код операции</string>
     <string name="result_error">Ошибка операции</string>
-    <string name="card_deletion">Удаление карточки</string>
-    <string name="really_delete_card">Действительно удалить карточку?</string>
+    <string name="DIALOG_card_deletion">Удаление карточки</string>
+    <string name="DIALOG_really_delete_card">Действительно удалить карточку?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="error_updating_list">Ошибка обновления списка</string>
@@ -90,4 +90,5 @@
     <string name="TAG_SHOW_page_title">Метка «%1$s»</string>
     <string name="CARDS_LIST_page_title">Список карточек</string>
     <string name="CARD_SHOW_page_title">«%1$s», просмотр карточки</string>
+    <string name="DIALOG_deleted_card_name">Удалить карточку «%1$s»</string>
 </resources>
