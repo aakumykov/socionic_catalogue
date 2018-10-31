@@ -149,7 +149,7 @@ public class CardsListAV_View extends BaseView implements
                 return true;
 
             case R.id.actionDelete:
-                presenter.deleteCard();
+                presenter.deleteCard(currentCard);
                 return true;
 
             default:

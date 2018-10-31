@@ -4,10 +4,13 @@ import android.util.Log;
 
 import java.util.List;
 
+import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
+import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.services.TagsSingleton;
 
 public class CardsListAV_Presenter implements
         iCardsListAV.Presenter,
@@ -18,6 +21,7 @@ public class CardsListAV_Presenter implements
     private iCardsListAV.View view;
     private iCardsService model;
     private iAuthService authService;
+    private Card currentCard;
 
     // Интерфейсные
 
@@ -28,8 +32,9 @@ public class CardsListAV_Presenter implements
     }
 
     @Override
-    public void deleteCard() {
+    public void deleteCard(final Card card) {
         Log.d(TAG, "deleteCard()");
+        this.currentCard = card;
         view.deleteCardRequest(this);
     }
 
@@ -54,22 +59,47 @@ public class CardsListAV_Presenter implements
     @Override
     public void deleteDialogYes() {
         Log.d(TAG, "Удаление подтверждено");
+        view.showProgressBar();
+        view.showInfoMsg(R.string.deleting_card);
+        model.deleteCard(currentCard, this);
     }
 
     @Override
     public void onDeleteDialogNo() {
         Log.d(TAG, "Удаление отклонено");
+        this.currentCard = null;
     }
 
 
     @Override
     public void onDeleteSuccess(Card card) {
+        Log.d(TAG, "onDeleteSuccess()");
 
+        view.hideProgressBar();
+
+        TagsSingleton.getInstance().updateCardTags(
+                currentCard.getKey(),
+                currentCard.getTags(),
+                null,
+                new iTagsSingleton.UpdateCallbacks() {
+                    @Override
+                    public void onUpdateSuccess() {
+                        view.showInfoMsg(R.string.card_deleted);
+                    }
+
+                    @Override
+                    public void onUpdateFail(String errorMsg) {
+                        view.showErrorMsg(R.string.error_deleting_card, errorMsg);
+                    }
+                }
+        );
     }
 
     @Override
     public void onDeleteError(String msg) {
-
+        Log.d(TAG, "onDeleteError()");
+        view.hideProgressBar();
+        view.showErrorMsg(R.string.error_deleting_card, msg);
     }
 
 
