@@ -1,18 +1,19 @@
-package ru.aakumykov.me.mvp.template_active_view;
+package ru.aakumykov.me.mvp.register;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.cards_list_av.iCardsListAV;
 
-public class TemplateAV_View  extends BaseView implements
-        iTemplateAV.View
+public class Register_View extends BaseView implements
+        iRegister.View
 {
     private final static String TAG = "Register_View";
-    private iTemplateAV.Presenter presenter;
+    private iRegister.Presenter presenter;
 
     // Интерфейсные методы
     @Override
@@ -25,12 +26,12 @@ public class TemplateAV_View  extends BaseView implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.template_activity);
+        setContentView(R.layout.register_activity);
         ButterKnife.bind(this);
 
         setPageTitle("Register_View");
 
-        presenter = new TemplateAV_Presenter();
+        presenter = new Register_Presenter();
     }
 
     @Override

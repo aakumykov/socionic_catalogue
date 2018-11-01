@@ -19,11 +19,7 @@
         </activity>
 
         <activity android:name=".cards_list_av.CardsListAV_View" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity
@@ -63,6 +59,14 @@
         <activity android:name=".tags.list.TagsList_View" />
 
         <activity android:name=".tags.view.TagShow_View" android:parentActivityName=".tags.list.TagsList_View" />
+
+        <activity android:name=".register.Register_View">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
     </application>
 

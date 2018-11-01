@@ -1,14 +1,13 @@
-package ru.aakumykov.me.mvp.template_active_view;
+package ru.aakumykov.me.mvp.register;
 
-import ru.aakumykov.me.mvp.cards_list_av.iCardsListAV;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 
-public class TemplateAV_Presenter implements
-        iTemplateAV.Presenter
+public class Register_Presenter implements
+        iRegister.Presenter
 {
     private final static String TAG = "Register_Presenter";
-    private iTemplateAV.View view;
+    private iRegister.View view;
     private iCardsService model;
     private iAuthService authService;
 
@@ -22,7 +21,7 @@ public class TemplateAV_Presenter implements
 
     // Системные методы
     @Override
-    public void linkView(iTemplateAV.View view) {
+    public void linkView(iRegister.View view) {
         this.view = view;
     }
     @Override
