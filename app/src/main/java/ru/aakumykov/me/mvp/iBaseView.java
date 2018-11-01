@@ -9,6 +9,7 @@ public interface iBaseView {
     iAuthService getAuthService();
 
     void showInfoMsg(int messageId);
+    void showInfoMsg(String message);
     void showInfoMsg(int messageId, String consoleMessage);
 
     void showErrorMsg(int messageId);

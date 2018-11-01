@@ -139,6 +139,11 @@ public abstract class BaseView extends AppCompatActivity implements
     }
 
     @Override
+    public void showInfoMsg(String message) {
+        showMsg(message, getResources().getColor(R.color.info));
+    }
+
+    @Override
     public void showInfoMsg(int userMessageId, String consoleMessage) {
         showInfoMsg(userMessageId);
         Log.d(TAG, consoleMessage);
