@@ -2,25 +2,25 @@ package ru.aakumykov.me.mvp.register;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.widget.EditText;
 
-import com.google.firebase.auth.FirebaseAuth;
-
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.R;
 
 public class Register_View extends BaseView implements
         iRegister.View
 {
+    @BindView(R.id.nicknameInput) EditText nicknameInput;
+    @BindView(R.id.emailInput) EditText emailInput;
+    @BindView(R.id.passwordInput) EditText passwordInput;
+    @BindView(R.id.password2Input) EditText password2Input;
+
     private final static String TAG = "Register_View";
     private iRegister.Presenter presenter;
-
-    // Интерфейсные методы
-    @Override
-    public void display() {
-
-    }
-
 
     // Системные методы
     @Override
@@ -49,5 +49,22 @@ public class Register_View extends BaseView implements
         presenter.unlinkModel();
         presenter.unlinkAuth();
     }
+
+
+    // Интерфейсные методы
+    @Override
+    public void display() {
+
+    }
+
+
+    // Обработчики нажатий
+    @OnClick(R.id.registerButton)
+    void register() {
+        Log.d(TAG, "register()");
+    }
+
+
+    // Коллбеки
 
 }

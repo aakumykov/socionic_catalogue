@@ -97,4 +97,5 @@
     <string name="REGISTER_password_confirmation">Повторите пароль</string>
     <string name="REGISTER_proceed">Зарегистрироваться</string>
     <string name="REGISTER_cancel">Отказаться</string>
+    <string name="REGISTER_nickname_cannot_be_empty">Псевдоним не может быть пустым</string>
 </resources>

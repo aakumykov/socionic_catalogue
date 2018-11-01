@@ -93,4 +93,5 @@
     <string name="REGISTER_password_confirmation">Confirm password</string>
     <string name="REGISTER_proceed">Register</string>
     <string name="REGISTER_cancel">Cancel</string>
+    <string name="REGISTER_nickname_cannot_be_empty">Nickname cannot be empty</string>
 </resources>
