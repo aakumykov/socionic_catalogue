@@ -14,7 +14,7 @@ import ru.aakumykov.me.mvp.R;
 public class Register_View extends BaseView implements
         iRegister.View
 {
-    @BindView(R.id.nicknameInput) EditText nicknameInput;
+    @BindView(R.id.nameInput) EditText nameInput;
     @BindView(R.id.emailInput) EditText emailInput;
     @BindView(R.id.passwordInput) EditText passwordInput;
     @BindView(R.id.password2Input) EditText password2Input;

@@ -30,7 +30,7 @@ public class UserEdit_View extends BaseView implements
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
-    @BindView(R.id.nicknameInput) EditText nameInput;
+    @BindView(R.id.nameInput) EditText nameInput;
     @BindView(R.id.aboutInput) EditText aboutInput;
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;

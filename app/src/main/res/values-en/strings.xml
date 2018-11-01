@@ -88,10 +88,10 @@
     <string name="CARDS_LIST_page_title">Cards list</string>
     <string name="CARD_SHOW_page_title">«%1$s», card viewing</string>
     <string name="DIALOG_deleted_card_name">Really delete card «%1$s»</string>
-    <string name="REGISTER_nickname">Nickame</string>
+    <string name="REGISTER_name">Nickame</string>
     <string name="REGISTER_password">Password</string>
     <string name="REGISTER_password_confirmation">Confirm password</string>
     <string name="REGISTER_proceed">Register</string>
     <string name="REGISTER_cancel">Cancel</string>
-    <string name="REGISTER_nickname_cannot_be_empty">Nickname cannot be empty</string>
+    <string name="REGISTER_name_cannot_be_empty">Nickname cannot be empty</string>
 </resources>

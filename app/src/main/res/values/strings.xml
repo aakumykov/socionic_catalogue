@@ -91,11 +91,11 @@
     <string name="CARDS_LIST_page_title">Список карточек</string>
     <string name="CARD_SHOW_page_title">«%1$s», просмотр карточки</string>
     <string name="DIALOG_deleted_card_name">Удалить карточку «%1$s»</string>
-    <string name="REGISTER_nickname">Псевдоним</string>
+    <string name="REGISTER_name">Псевдоним</string>
     <string name="REGISTER_email" translatable="false">E-mail</string>
     <string name="REGISTER_password">Пароль</string>
     <string name="REGISTER_password_confirmation">Повторите пароль</string>
     <string name="REGISTER_proceed">Зарегистрироваться</string>
     <string name="REGISTER_cancel">Отказаться</string>
-    <string name="REGISTER_nickname_cannot_be_empty">Псевдоним не может быть пустым</string>
+    <string name="REGISTER_name_cannot_be_empty">Псевдоним не может быть пустым</string>
 </resources>
