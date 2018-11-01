@@ -60,7 +60,7 @@ public class CardsListAV_Presenter implements
     public void deleteDialogYes() {
         Log.d(TAG, "Удаление подтверждено");
         view.showProgressBar();
-        view.showInfoMsg(R.string.deleting_card);
+//        view.showInfoMsg(R.string.deleting_card);
         model.deleteCard(currentCard, this);
     }
 
