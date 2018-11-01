@@ -94,4 +94,6 @@
     <string name="REGISTER_proceed">Register</string>
     <string name="REGISTER_cancel">Cancel</string>
     <string name="REGISTER_name_cannot_be_empty">Nickname cannot be empty</string>
+    <string name="REGISTER_registration_failed">Registration failed</string>
+    <string name="REGISTER_passwords_mismatch">Passwords mismatch</string>
 </resources>

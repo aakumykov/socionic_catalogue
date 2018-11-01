@@ -16,8 +16,8 @@ public class Register_View extends BaseView implements
 {
     @BindView(R.id.nameInput) EditText nameInput;
     @BindView(R.id.emailInput) EditText emailInput;
-    @BindView(R.id.passwordInput) EditText passwordInput;
-    @BindView(R.id.password2Input) EditText password2Input;
+    @BindView(R.id.passwordInput1) EditText passwordInput1;
+    @BindView(R.id.passwordInput2) EditText passwordInput2;
 
     private final static String TAG = "Register_View";
     private iRegister.Presenter presenter;
@@ -39,8 +39,6 @@ public class Register_View extends BaseView implements
         presenter.linkView(this);
         presenter.linkModel(getCardsService());
         presenter.linkAuth(getAuthService());
-
-        presenter.load();
     }
 
     @Override
@@ -52,16 +50,23 @@ public class Register_View extends BaseView implements
 
 
     // Интерфейсные методы
-    @Override
-    public void display() {
-
-    }
 
 
     // Обработчики нажатий
     @OnClick(R.id.registerButton)
     void register() {
         Log.d(TAG, "register()");
+
+        String name = nameInput.getText().toString();
+        String email = emailInput.getText().toString();
+        String password1 = passwordInput1.getText().toString();
+        String password2 = passwordInput2.getText().toString();
+
+        if (password1.equals(password2)) {
+            presenter.regUserWithEmail(name, email, password1);
+        } else {
+            showErrorMsg(R.string.REGISTER_passwords_mismatch);
+        }
     }
 
 

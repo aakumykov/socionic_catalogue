@@ -27,11 +27,11 @@ public class LoginView extends AppCompatActivity implements
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.aboutInput) EditText emailInput;
-    @BindView(R.id.passwordInput) EditText passwordInput;
+    @BindView(R.id.passwordInput1) EditText passwordInput;
     @BindView(R.id.loginButton) Button loginButton;
     @BindView(R.id.logoutButton) Button logoutButton;
 
-    @BindViews({R.id.aboutInput, R.id.passwordInput, R.id.loginButton, R.id.logoutButton})
+    @BindViews({R.id.aboutInput, R.id.passwordInput1, R.id.loginButton, R.id.logoutButton})
     List<View> formElements;
 
     static final ButterKnife.Action<View> ENABLE = new ButterKnife.Action<View>() {

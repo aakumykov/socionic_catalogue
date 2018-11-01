@@ -98,4 +98,6 @@
     <string name="REGISTER_proceed">Зарегистрироваться</string>
     <string name="REGISTER_cancel">Отказаться</string>
     <string name="REGISTER_name_cannot_be_empty">Псевдоним не может быть пустым</string>
+    <string name="REGISTER_registration_failed">Ошибка регистрации</string>
+    <string name="REGISTER_passwords_mismatch">Пароли не совпадают</string>
 </resources>

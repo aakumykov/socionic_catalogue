@@ -45,7 +45,7 @@
             android:singleLine="true" />
 
         <EditText
-            android:id="@+id/passwordInput"
+            android:id="@+id/passwordInput1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -54,7 +54,7 @@
             android:singleLine="true" />
 
         <EditText
-            android:id="@+id/password2Input"
+            android:id="@+id/passwordInput2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
