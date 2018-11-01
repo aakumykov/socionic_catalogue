@@ -2,23 +2,36 @@ package ru.aakumykov.me.mvp.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
+
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class User implements Parcelable {
     
-    private String key;
     private String name;
-    private String about;
-    
+
     public User() {}
     
-    public User(String name, String about) {
+    public User(String name) throws Exception {
+        if (TextUtils.isEmpty(name)) throw new Exception("Name cannot be empty.");
         this.name = name;
-        this.about = about;
     }
 
+
+    @Exclude
     @Override
     public String toString() {
-        return "User { key: "+key+", name: "+name+", about: "+ about +" }";
+        return "User { name: "+name+" }";
+    }
+
+    @Exclude
+    public HashMap<String, Object> toMap() {
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("name", name);
+        return map;
     }
 
 
@@ -36,9 +49,7 @@ public class User implements Parcelable {
     };
 
     private User(Parcel in) {
-        key = in.readString();
         name = in.readString();
-        about = in.readString();
     }
 
     @Override
@@ -49,30 +60,17 @@ public class User implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         // порядок заполнения важен (или нет?)
-        dest.writeString(key);
         dest.writeString(name);
-        dest.writeString(about);
     }
     /* Parcelable */
 
 
-    public String getKey() {
-        return key;
-    }
+    @Exclude
     public String getName() {
         return name;
     }
-    public String getAbout() {
-        return about;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
+    @Exclude
     public void setName(String name) {
         this.name = name;
-    }
-    public void setAbout(String about) {
-        this.about = about;
     }
 }
