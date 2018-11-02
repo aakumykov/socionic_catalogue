@@ -14,8 +14,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseUserMetadata;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
+import ru.aakumykov.me.mvp.models.User;
 
 public class AuthService extends Service implements
         iAuthService
@@ -31,6 +38,8 @@ public class AuthService extends Service implements
     private final static String TAG = "AuthService";
     private final IBinder binder;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private DatabaseReference usersRef = FirebaseDatabase.getInstance()
+            .getReference().child(Constants.USERS_PATH);
 
 
     // Системные методы
@@ -63,6 +72,8 @@ public class AuthService extends Service implements
             String password,
             final iAuthService.RegisterCallbacks callbacks
     ) {
+        Log.d(TAG, "registerWithEmail("+email+", ***)");
+
         firebaseAuth.createUserWithEmailAndPassword(email, password)
         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
@@ -80,8 +91,48 @@ public class AuthService extends Service implements
     }
 
     @Override
-    public void createUser(String uid, String name, CreateUserCallbacks callbacks) {
+    public void createUser(final String uid, final User userDraft,
+                           final CreateUserCallbacks callbacks)/* throws Exception */{
 
+        Log.d(TAG, "createUser("+uid+"), "+userDraft);
+
+        // Проверяю на существование
+        usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (null == dataSnapshot.getValue()) {
+                    Log.d(TAG, "Ключа "+uid+" в ветке /users нет.");
+
+                    // Если данных нет, значит ключа такого нет
+                    usersRef.child(uid).setValue(userDraft)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    User newUser = userDraft;
+                                         newUser.setKey(uid);
+                                    callbacks.onCreateSuccess(newUser);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    callbacks.onCreateFail(e.getMessage());
+                                    e.printStackTrace();
+                                }
+                            });
+
+                } else {
+                    Log.e(TAG, "Ключ "+uid+" в ветке /users УЖЕ ЕСТЬ.");
+                    callbacks.onCreateFail("Key already exists");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callbacks.onCreateFail(databaseError.getMessage());
+                databaseError.toException().printStackTrace();
+            }
+        });
     }
 }
 

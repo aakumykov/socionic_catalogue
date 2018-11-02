@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.firebase.database.Exclude;
@@ -15,22 +16,32 @@ public class User implements Parcelable {
 
     public User() {}
     
-    public User(String name) throws Exception {
-        if (TextUtils.isEmpty(name)) throw new Exception("Name cannot be empty.");
+    public User(String name, String email, @Nullable String about) throws  IllegalArgumentException {
+        if (TextUtils.isEmpty(name)) throw new IllegalArgumentException("Name cannot be empty.");
         this.name = name;
+
+        // TODO: проверять REGEXP-ом
+        if (TextUtils.isEmpty(email)) throw new IllegalArgumentException("Email cannot be empty.");
+        this.email = email;
+
+        if (null != about) this.about = about;
     }
 
 
-    @Exclude
+    // Преобразователи
     @Override
+    @Exclude
     public String toString() {
-        return "User { name: "+name+" }";
+        return "User { key: "+key+", name: "+name+", email: "+email+", about: "+about+" }";
     }
 
     @Exclude
     public HashMap<String, Object> toMap() {
         HashMap<String,Object> map = new HashMap<>();
+        map.put("key", key);
         map.put("name", name);
+        map.put("email", email);
+        map.put("about", about);
         return map;
     }
 
@@ -48,10 +59,6 @@ public class User implements Parcelable {
         }
     };
 
-    private User(Parcel in) {
-        name = in.readString();
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -59,8 +66,19 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        // порядок заполнения важен (или нет?)
+        // важен порядок заполнения
+        dest.writeString(key);
         dest.writeString(name);
+        dest.writeString(email);
+        dest.writeString(about);
+    }
+
+    private User(Parcel in) {
+        // важен порядок чтения
+        key = in.readString();
+        name = in.readString();
+        email = in.readString();
+        about = in.readString();
     }
     /* Parcelable */
 
@@ -72,5 +90,11 @@ public class User implements Parcelable {
     @Exclude
     public void setName(String name) {
         this.name = name;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public void setAbout(String about) {
+        this.about = about;
     }
 }

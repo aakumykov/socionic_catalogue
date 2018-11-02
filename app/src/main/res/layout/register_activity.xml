@@ -57,7 +57,7 @@
         android:hint="@string/REGISTER_password"
         android:inputType="textPassword"
         android:singleLine="true"
-        android:text="12345" />
+        android:text="123456" />
 
     <EditText
         android:id="@+id/passwordInput2"
@@ -67,7 +67,7 @@
         android:hint="@string/REGISTER_password_confirmation"
         android:inputType="textPassword"
         android:singleLine="true"
-        android:text="12345" />
+        android:text="123456" />
 
         <Button
             android:id="@+id/registerButton"

@@ -13,7 +13,7 @@ public interface iAuthService {
             RegisterCallbacks callbacks
     );
 
-    void createUser(String uid, String name, CreateUserCallbacks callbacks);
+    void createUser(String uid, User userDraft, CreateUserCallbacks callbacks)/* throws Exception*/;
 //    void getUser(String uid);
 //    void updateUser(String uid, String name);
 //    void deleteUser(String uid)

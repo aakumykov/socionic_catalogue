@@ -152,8 +152,8 @@ public abstract class BaseView extends AppCompatActivity implements
 
     @Override
     public void showErrorMsg(int messageId) {
-        String msg = getResources().getString(messageId);
-        showErrorMsg(msg);
+        String message = getResources().getString(messageId);
+        showErrorMsg(message);
     }
 
     @Override
@@ -163,8 +163,8 @@ public abstract class BaseView extends AppCompatActivity implements
     }
 
     @Override
-    public void showErrorMsg(int userMessageId, String consoleMessage) {
-        showErrorMsg(userMessageId);
+    public void showErrorMsg(int messageId, String consoleMessage) {
+        showErrorMsg(messageId);
         Log.e(TAG, consoleMessage);
     }
 
