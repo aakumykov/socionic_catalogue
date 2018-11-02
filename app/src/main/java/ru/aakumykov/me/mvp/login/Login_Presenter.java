@@ -24,6 +24,7 @@ public class Login_Presenter implements
             view.hideProgressBar();
             view.enableForm();
             view.showErrorMsg(R.string.LOGIN_login_failed, e.getMessage());
+            e.printStackTrace();
         }
     }
 

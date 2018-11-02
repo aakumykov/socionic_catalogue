@@ -32,7 +32,15 @@ public class Register_Presenter implements
 
         userDraft = new User(name, email, null);
 
-        authService.registerWithEmail(email, password, this);
+        try {
+            authService.registerWithEmail(email, password, this);
+        }
+        catch (Exception e) {
+            view.hideProgressBar();
+            view.enableForm();
+            view.showErrorMsg(R.string.REGISTER_registration_failed, e.getMessage());
+            e.printStackTrace();
+        }
 
         // Для проверки
 //        authService.createUser("58lQdvxNDlSDE7iot0yqtxrNOg53", userDraft, this);
@@ -75,8 +83,15 @@ public class Register_Presenter implements
         view.hideProgressBar();
         view.showInfoMsg("userId: "+userId);
 
-        // try
-        authService.createUser(userId, userDraft, this);
+        try {
+            authService.createUser(userId, userDraft, this);
+        }
+        catch (Exception e) {
+            view.hideProgressBar();
+            view.enableForm();
+            view.showErrorMsg(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override
