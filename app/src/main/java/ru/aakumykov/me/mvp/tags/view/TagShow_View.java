@@ -18,7 +18,7 @@ import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.cards_list.CardsList_View;
+import ru.aakumykov.me.mvp.cards_list_av.CardsListAV_View;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.models.Tag;
 import ru.aakumykov.me.mvp.tags.Tags_Presenter;
@@ -115,7 +115,7 @@ public class TagShow_View extends BaseView implements
     @Override
     public void goCardsListPage(@Nullable String tagFilter) {
         Log.d(TAG, "goCardsListPage('"+tagFilter+"'");
-        Intent intent = new Intent(this, CardsList_View.class);
+        Intent intent = new Intent(this, CardsListAV_View.class);
         intent.putExtra(Constants.TAG_FILTER, tagFilter);
         startActivity(intent);
     }
