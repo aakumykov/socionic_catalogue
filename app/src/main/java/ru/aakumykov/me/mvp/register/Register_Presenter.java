@@ -92,12 +92,7 @@ public class Register_Presenter implements
     public void onCreateSuccess(User user) {
         Log.d(TAG, "onCreateSuccess(), "+user);
         view.showInfoMsg("Пользователь создан");
-
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        Log.d(TAG, "firebaseUser: "+firebaseUser);
-        Log.d(TAG, "firebaseUser uid: "+firebaseUser.getUid());
-        Log.d(TAG, "firebaseUser email: "+firebaseUser.getEmail());
-
+        view.goUserPage(user);
     }
 
     @Override

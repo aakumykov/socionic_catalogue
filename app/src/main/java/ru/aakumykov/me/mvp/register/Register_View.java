@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.register;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -13,8 +14,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.models.User;
+import ru.aakumykov.me.mvp.users.show.UserShow_View;
+
+// TODO: no-history
 
 public class Register_View extends BaseView implements
         iRegister.View
@@ -57,8 +63,6 @@ public class Register_View extends BaseView implements
 
 
     // Интерфейсные методы
-
-
     @Override
     public void disableForm() {
         MyUtils.disable(nameInput);
@@ -76,6 +80,14 @@ public class Register_View extends BaseView implements
         MyUtils.enable(passwordInput2);
         MyUtils.enable(registerButton);
     }
+
+    @Override
+    public void goUserPage(User user) {
+        Intent intent = new Intent(this, UserShow_View.class);
+        intent.putExtra(Constants.USER_ID, user.getKey());
+        startActivity(intent);
+    }
+
 
     // Обработчики нажатий
     @OnClick(R.id.registerButton)
@@ -105,8 +117,5 @@ public class Register_View extends BaseView implements
             showErrorMsg(R.string.REGISTER_passwords_mismatch);
         }
     }
-
-
-    // Коллбеки
 
 }

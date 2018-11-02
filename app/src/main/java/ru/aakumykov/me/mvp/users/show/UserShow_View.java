@@ -47,11 +47,10 @@ public class UserShow_View extends BaseView implements
 
         presenter = new Users_Presenter();
 
-        Intent intent = getIntent();
-        String userId = intent.getStringExtra(Constants.USER_ID);
-        Log.d(TAG, "userId: "+userId);
-
         try {
+            Intent intent = getIntent();
+            String userId = intent.getStringExtra(Constants.USER_ID);
+            Log.d(TAG, "userId: "+userId);
             presenter.loadUser(userId, this);
         } catch (Exception e) {
             // TODO: всунуть сокрытие крутилки внутрь show*Message()
