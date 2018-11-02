@@ -8,7 +8,7 @@ import android.util.Log;
 import java.util.HashMap;
 
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.MyUtils;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;

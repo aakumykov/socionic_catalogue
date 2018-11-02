@@ -10,7 +10,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
-import ru.aakumykov.me.mvp.MyUtils;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 
 public class Login_View extends BaseView implements

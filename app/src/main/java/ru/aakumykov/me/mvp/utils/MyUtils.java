@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp;
+package ru.aakumykov.me.mvp.utils;
 
 import android.content.ClipData;
 import android.content.ClipDescription;

@@ -14,7 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.MyUtils;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;

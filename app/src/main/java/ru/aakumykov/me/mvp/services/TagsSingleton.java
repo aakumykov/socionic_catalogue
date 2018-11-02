@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.MyUtils;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Tag;
 

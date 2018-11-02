@@ -20,6 +20,7 @@ import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.login.Login_View;
 import ru.aakumykov.me.mvp.services.AuthService;
 import ru.aakumykov.me.mvp.services.CardsService;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 
 
 public abstract class BaseView extends AppCompatActivity implements
