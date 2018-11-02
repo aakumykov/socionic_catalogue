@@ -28,7 +28,7 @@ public class TemplateAV_View  extends BaseView implements
         setContentView(R.layout.template_activity);
         ButterKnife.bind(this);
 
-        setPageTitle("Register_View");
+        setPageTitle("TemplateAV_View");
 
         presenter = new TemplateAV_Presenter();
     }
