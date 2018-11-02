@@ -2,6 +2,9 @@ package ru.aakumykov.me.mvp.register;
 
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
@@ -89,6 +92,12 @@ public class Register_Presenter implements
     public void onCreateSuccess(User user) {
         Log.d(TAG, "onCreateSuccess(), "+user);
         view.showInfoMsg("Пользователь создан");
+
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        Log.d(TAG, "firebaseUser: "+firebaseUser);
+        Log.d(TAG, "firebaseUser uid: "+firebaseUser.getUid());
+        Log.d(TAG, "firebaseUser email: "+firebaseUser.getEmail());
+
     }
 
     @Override

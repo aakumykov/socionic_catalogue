@@ -92,7 +92,14 @@ public class Register_View extends BaseView implements
             showInfoMsg(R.string.REGISTER_registering_user);
             disableForm();
 
-            presenter.regUserWithEmail(name, email, password1);
+            try {
+                presenter.regUserWithEmail(name, email, password1);
+            } catch (Exception e) {
+                hideProgressBar();
+                enableForm();
+                showErrorMsg(e.getMessage());
+                e.printStackTrace();
+            }
 
         } else {
             showErrorMsg(R.string.REGISTER_passwords_mismatch);

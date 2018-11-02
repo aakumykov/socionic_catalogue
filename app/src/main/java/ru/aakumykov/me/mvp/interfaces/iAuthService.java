@@ -14,6 +14,7 @@ public interface iAuthService {
     );
 
     void createUser(String uid, User userDraft, CreateUserCallbacks callbacks)/* throws Exception*/;
+
 //    void getUser(String uid);
 //    void updateUser(String uid, String name);
 //    void deleteUser(String uid)
