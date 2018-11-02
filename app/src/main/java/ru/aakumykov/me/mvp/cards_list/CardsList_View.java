@@ -52,7 +52,7 @@ public class CardsList_View extends BaseView implements
         setContentView(R.layout.cards_list_activity);
         ButterKnife.bind(this);
 
-        setPageTitle("CardsList_ActiveView");
+        setPageTitle(getResources().getString(R.string.CARDS_LIST_page_title));
 
         presenter = new CardsList_Presenter();
 
