@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.cards_list_av.iCardsListAV;
 
 public class TemplateAV_View  extends BaseView implements
         iTemplateAV.View

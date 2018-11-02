@@ -24,23 +24,22 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
-public class CardsListAV_View extends BaseView implements
-        iCardsListAV.View,
+public class CardsList_View extends BaseView implements
+        iCardsList.View,
         ListView.OnItemClickListener,
         ListView.OnItemLongClickListener,
         PopupMenu.OnMenuItemClickListener
 {
     @BindView(R.id.listView) ListView listView;
 
-    private final static String TAG = "CardsListAV_View";
-    private iCardsListAV.Presenter presenter;
+    private final static String TAG = "CardsList_View";
+    private iCardsList.Presenter presenter;
     private List<Card> cardsList;
-    private CardsListAVAdapter cardsListAdapter;
+    private CardsListAdapter cardsListAdapter;
     private Card currentCard;
 
 
@@ -48,15 +47,15 @@ public class CardsListAV_View extends BaseView implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cards_list_av_activity);
+        setContentView(R.layout.cards_list_activity);
         ButterKnife.bind(this);
 
         setPageTitle("CardsList_ActiveView");
 
-        presenter = new CardsListAV_Presenter();
+        presenter = new CardsList_Presenter();
 
         cardsList = new ArrayList<>();
-        cardsListAdapter = new CardsListAVAdapter(this, R.layout.cards_list_item, cardsList);
+        cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
         listView.setAdapter(cardsListAdapter);
 
         listView.setOnItemClickListener(this);

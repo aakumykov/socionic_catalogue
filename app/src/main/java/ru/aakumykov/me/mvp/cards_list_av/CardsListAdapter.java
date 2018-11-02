@@ -13,7 +13,7 @@ import java.util.List;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Card;
 
-public class CardsListAVAdapter extends ArrayAdapter<Card> {
+public class CardsListAdapter extends ArrayAdapter<Card> {
 
     // TODO: реализовать ViewHolder
 
@@ -22,7 +22,7 @@ public class CardsListAVAdapter extends ArrayAdapter<Card> {
     private int layout;
     private List<Card> cards;
 
-    CardsListAVAdapter(Context context, int resource, List<Card> cards) {
+    CardsListAdapter(Context context, int resource, List<Card> cards) {
         super(context, resource, cards);
 //        Log.d(TAG, "== new CardsListAdapter(), cards: "+cards);
         this.cards = cards;

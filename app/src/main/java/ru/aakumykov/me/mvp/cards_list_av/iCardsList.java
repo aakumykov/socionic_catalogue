@@ -8,7 +8,7 @@ import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
 
-public interface iCardsListAV {
+public interface iCardsList {
 
     interface View extends iBaseView {
         void displayList(List<Card> list);
@@ -21,7 +21,7 @@ public interface iCardsListAV {
         void deleteCard(final Card card);
 
         // TODO: вынести в общий интерфейс
-        void linkView(iCardsListAV.View view);
+        void linkView(iCardsList.View view);
         void unlinkView();
 
         void linkModel(iCardsService model);

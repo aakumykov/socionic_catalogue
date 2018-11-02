@@ -12,19 +12,18 @@ import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
 
-public class CardsListAV_Presenter implements
-        iCardsListAV.Presenter,
+public class CardsList_Presenter implements
+        iCardsList.Presenter,
         iCardsService.ListCallbacks,
         iDialogCallbacks.Delete
 {
-    private final static String TAG = "CardsListAV_Presenter";
-    private iCardsListAV.View view;
+    private final static String TAG = "CardsList_Presenter";
+    private iCardsList.View view;
     private iCardsService model;
     private iAuthService authService;
     private Card currentCard;
 
     // Интерфейсные
-
     @Override
     public void loadList() {
         Log.d(TAG, "loadList()");
@@ -105,7 +104,7 @@ public class CardsListAV_Presenter implements
 
     // Системные методы
     @Override
-    public void linkView(iCardsListAV.View view) {
+    public void linkView(iCardsList.View view) {
         this.view = view;
     }
     @Override
