@@ -71,6 +71,7 @@ public class Register_Presenter implements
         Log.d(TAG, "onRegFail(), "+errorMessage);
         view.hideProgressBar();
         view.showErrorMsg(R.string.REGISTER_registration_failed, errorMessage);
+        view.enableForm();
     }
 
     @Override

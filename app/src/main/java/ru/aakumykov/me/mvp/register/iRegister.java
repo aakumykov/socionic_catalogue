@@ -7,7 +7,8 @@ import ru.aakumykov.me.mvp.interfaces.iCardsService;
 public interface iRegister {
 
     interface View extends iBaseView {
-
+        void disableForm();
+        void enableForm();
     }
 
     interface Presenter {

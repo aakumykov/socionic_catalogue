@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,12 +19,12 @@ import ru.aakumykov.me.mvp.R;
 public class Register_View extends BaseView implements
         iRegister.View
 {
-    @BindView(R.id.progressBar) ProgressBar progressBar;
-    @BindView(R.id.messageView) TextView messageView;
-//    @BindView(R.id.nameInput) EditText nameInput;
-//    @BindView(R.id.emailInput) EditText emailInput;
-//    @BindView(R.id.passwordInput1) EditText passwordInput1;
-//    @BindView(R.id.passwordInput2) EditText passwordInput2;
+    @BindView(R.id.nameInput) EditText nameInput;
+    @BindView(R.id.emailInput) EditText emailInput;
+    @BindView(R.id.passwordInput1) EditText passwordInput1;
+    @BindView(R.id.passwordInput2) EditText passwordInput2;
+    @BindView(R.id.registerButton) Button registerButton;
+    @BindView(R.id.cancelButton) Button cancelButton;
 
     private final static String TAG = "Register_View";
     private iRegister.Presenter presenter;
@@ -32,7 +33,7 @@ public class Register_View extends BaseView implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.qwerty);
+        setContentView(R.layout.register_activity);
         ButterKnife.bind(this);
 
         setPageTitle("Register_View");
@@ -58,38 +59,44 @@ public class Register_View extends BaseView implements
     // Интерфейсные методы
 
 
+    @Override
+    public void disableForm() {
+        MyUtils.disable(nameInput);
+        MyUtils.disable(emailInput);
+        MyUtils.disable(passwordInput1);
+        MyUtils.disable(passwordInput2);
+        MyUtils.disable(registerButton);
+    }
+
+    @Override
+    public void enableForm() {
+        MyUtils.enable(nameInput);
+        MyUtils.enable(emailInput);
+        MyUtils.enable(passwordInput1);
+        MyUtils.enable(passwordInput2);
+        MyUtils.enable(registerButton);
+    }
+
     // Обработчики нажатий
     @OnClick(R.id.registerButton)
     void register() {
-//        Log.d(TAG, "register()");
+        Log.d(TAG, "register()");
 
-//        showProgressBar();
-//        MyUtils.hide(progressBar);
+        String name = nameInput.getText().toString();
+        String email = emailInput.getText().toString();
+        String password1 = passwordInput1.getText().toString();
+        String password2 = passwordInput2.getText().toString();
 
-        if (progressBar.getVisibility() == View.VISIBLE) {
-            Log.d(TAG, "Скрываем панель");
-            progressBar.setVisibility(View.INVISIBLE);
-            messageView.setVisibility(View.INVISIBLE);
+        if (password1.equals(password2)) {
+            showProgressBar();
+            showInfoMsg(R.string.REGISTER_registering_user);
+            disableForm();
+
+            presenter.regUserWithEmail(name, email, password1);
+
+        } else {
+            showErrorMsg(R.string.REGISTER_passwords_mismatch);
         }
-        else {
-            Log.d(TAG, "Показываем панель");
-            progressBar.setVisibility(View.VISIBLE);
-            messageView.setVisibility(View.VISIBLE);
-            if (progressBar.getVisibility() != View.VISIBLE) Log.d(TAG, "НО ОНА НЕ СТАЛА ВИДИМОЙ");
-        }
-
-        showInfoMsg(R.string.REGISTER_registering_user);
-
-//        String name = nameInput.getText().toString();
-//        String email = emailInput.getText().toString();
-//        String password1 = passwordInput1.getText().toString();
-//        String password2 = passwordInput2.getText().toString();
-//
-//        if (password1.equals(password2)) {
-//            presenter.regUserWithEmail(name, email, password1);
-//        } else {
-//            showErrorMsg(R.string.REGISTER_passwords_mismatch);
-//        }
     }
 
 

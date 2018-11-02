@@ -18,7 +18,8 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:indeterminate="true" />
+            android:indeterminate="true"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/messageView"
@@ -48,25 +49,25 @@
             android:singleLine="true"
             android:text="qwerty@mail.site" />
 
-        <EditText
-            android:id="@+id/passwordInput1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/REGISTER_password"
-            android:inputType="textPassword"
-            android:singleLine="true"
-            android:text="12345"
-            tools:text="12345" />
+    <EditText
+        android:id="@+id/passwordInput1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/REGISTER_password"
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:text="12345" />
 
-        <EditText
-            android:id="@+id/passwordInput2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/REGISTER_password_confirmation"
-            android:inputType="textPassword"
-            android:singleLine="true" />
+    <EditText
+        android:id="@+id/passwordInput2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/REGISTER_password_confirmation"
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:text="12345" />
 
         <Button
             android:id="@+id/registerButton"
