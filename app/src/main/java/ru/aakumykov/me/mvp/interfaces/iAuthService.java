@@ -7,17 +7,11 @@ public interface iAuthService {
     boolean isAuthorized();
     boolean isAdmin();
 
-    void registerWithEmail(
-            String email,
-            String password,
-            RegisterCallbacks callbacks
-    );
-
+    void registerWithEmail(String email, String password, RegisterCallbacks callbacks);
     void createUser(String uid, User userDraft, CreateUserCallbacks callbacks)/* throws Exception*/;
+    void login(String email, String password);
+    void cancelLogin();
 
-//    void getUser(String uid);
-//    void updateUser(String uid, String name);
-//    void deleteUser(String uid)
 
     interface RegisterCallbacks {
         void onRegSucsess(String userId);
@@ -27,5 +21,10 @@ public interface iAuthService {
     interface CreateUserCallbacks {
         void onCreateSuccess(User user);
         void onCreateFail(String errorMessage);
+    }
+
+    interface LoginCallbacks {
+        void onLoginSuccess();
+        void onLoginFail(String errorMsg);
     }
 }

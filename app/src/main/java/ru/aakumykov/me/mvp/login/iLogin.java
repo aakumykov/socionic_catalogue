@@ -9,10 +9,12 @@ public interface iLogin {
     interface View extends iBaseView {
         void disableForm();
         void enableForm();
+        void finishLogin(boolean byCancel);
     }
 
     interface Presenter {
-        void doLogin();
+        void doLogin(String email, String password) throws Exception;
+        void cancelLogin();
 
         // TODO: вынести в общий интерфейс
         void linkView(iLogin.View view);

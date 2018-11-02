@@ -99,4 +99,10 @@
     <string name="REGISTER_registering_user">Registering new user</string>
     <string name="MENU_login">Login</string>
     <string name="MENU_logout">Logout</string>
+    <string name="LOGIN_page_title">Login into app</string>
+    <string name="LOGIN_login_failed">Login failed</string>
+    <string name="LOGIN_login_success">Login success</string>
+    <string name="LOGIN_cancel">Cancel</string>
+    <string name="LOGIN_logging_in">Login in progress</string>
+    <string name="LOGIN_login">Login</string>
 </resources>

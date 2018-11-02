@@ -249,6 +249,12 @@ public abstract class BaseView extends AppCompatActivity implements
         }
     }
 
+    @Override
+    public void enableUpButton() {
+        ActionBar actionBar = getSupportActionBar();
+        if (null != actionBar) actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
 
     // Внутренние методы
     void doLogin() {

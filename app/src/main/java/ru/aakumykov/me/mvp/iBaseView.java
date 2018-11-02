@@ -26,6 +26,7 @@ public interface iBaseView {
     void closePage();
     void setPageTitle(int titleId);
     void setPageTitle(String title);
+    void enableUpButton();
 
     View getProgressBar();
 }

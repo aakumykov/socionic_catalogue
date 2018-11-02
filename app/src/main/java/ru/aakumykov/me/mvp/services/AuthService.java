@@ -92,8 +92,8 @@ public class AuthService extends Service implements
 
     @Override
     public void createUser(final String uid, final User userDraft,
-                           final CreateUserCallbacks callbacks)/* throws Exception */{
-
+                           final CreateUserCallbacks callbacks)
+    {
         Log.d(TAG, "createUser("+uid+"), "+userDraft);
 
         // Проверяю на существование
@@ -133,6 +133,28 @@ public class AuthService extends Service implements
                 databaseError.toException().printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void login(String email, String password) {
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void cancelLogin() {
+        firebaseAuth.signOut();
     }
 }
 

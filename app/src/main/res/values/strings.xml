@@ -103,4 +103,10 @@
     <string name="REGISTER_registering_user">Регистрируем нового пользователя</string>
     <string name="MENU_login">Войти</string>
     <string name="MENU_logout">Выйти</string>
+    <string name="LOGIN_page_title">Вход в программу</string>
+    <string name="LOGIN_login_failed">Ошибка входа</string>
+    <string name="LOGIN_login_success">Успешный вход</string>
+    <string name="LOGIN_cancel">Не входить</string>
+    <string name="LOGIN_logging_in">Осуществляется вход</string>
+    <string name="LOGIN_login">Войти</string>
 </resources>
