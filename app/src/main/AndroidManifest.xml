@@ -55,7 +55,7 @@
         <activity android:name=".tags.view.TagShow_View"
             android:parentActivityName=".tags.list.TagsList_View" />
 
-        <activity android:name=".register.Register_View">
+        <activity android:name=".register.Register_View" android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
