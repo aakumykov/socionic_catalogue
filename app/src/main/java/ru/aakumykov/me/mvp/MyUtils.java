@@ -25,6 +25,14 @@ public final class MyUtils {
         view.setVisibility(View.GONE);
     }
 
+    public static void enable(View view) {
+        view.setEnabled(true);
+    }
+
+    public static void disable(View view) {
+        view.setEnabled(false);
+    }
+
     public static String mime2ext(String mimeType) {
         Pattern pattern = Pattern.compile("^image/([a-z]+)$");
         Matcher matcher = pattern.matcher(mimeType);
