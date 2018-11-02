@@ -14,7 +14,13 @@
 
         <activity android:name=".login.LoginView" />
 
-        <activity android:name=".cards_list_av.CardsList_View" />
+        <activity android:name=".cards_list_av.CardsList_View">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".card_show.CardShow_View"
@@ -55,13 +61,7 @@
         <activity android:name=".tags.view.TagShow_View"
             android:parentActivityName=".tags.list.TagsList_View" />
 
-        <activity android:name=".register.Register_View" android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".register.Register_View" android:noHistory="true" />
 
     </application>
 
