@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp.cards_list_av;
+package ru.aakumykov.me.mvp.cards_list;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;

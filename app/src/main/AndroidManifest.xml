@@ -14,7 +14,7 @@
 
         <activity android:name=".login.LoginView" />
 
-        <activity android:name=".cards_list_av.CardsList_View">
+        <activity android:name=".cards_list.CardsList_View">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,7 +24,7 @@
 
         <activity
             android:name=".card_show.CardShow_View"
-            android:parentActivityName=".cards_list_av.CardsList_View" />
+            android:parentActivityName=".cards_list.CardsList_View" />
 
         <activity android:name=".card_edit.CardEdit_View">
             <intent-filter>
