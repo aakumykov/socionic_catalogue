@@ -1,5 +1,7 @@
 package ru.aakumykov.me.mvp;
 
+import android.view.View;
+
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 
@@ -24,4 +26,6 @@ public interface iBaseView {
     void closePage();
     void setPageTitle(int titleId);
     void setPageTitle(String title);
+
+    View getProgressBar();
 }

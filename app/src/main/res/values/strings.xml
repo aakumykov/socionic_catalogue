@@ -100,4 +100,5 @@
     <string name="REGISTER_name_cannot_be_empty">Псевдоним не может быть пустым</string>
     <string name="REGISTER_registration_failed">Ошибка регистрации</string>
     <string name="REGISTER_passwords_mismatch">Пароли не совпадают</string>
+    <string name="REGISTER_registering_user">Регистрируем нового пользователя</string>
 </resources>

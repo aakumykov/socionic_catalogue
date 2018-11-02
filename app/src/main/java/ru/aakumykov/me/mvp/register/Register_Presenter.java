@@ -59,7 +59,7 @@ public class Register_Presenter implements
     // Коллбеки
     @Override
     public void onRegSucsess(String userId) {
-        Log.d(TAG, "onCreateSuccess(), "+userId);
+        Log.d(TAG, "onRegSucsess(), "+userId);
         view.hideProgressBar();
         view.showInfoMsg("userId: "+userId);
 
@@ -68,7 +68,7 @@ public class Register_Presenter implements
 
     @Override
     public void onRegFail(String errorMessage) {
-        Log.d(TAG, "onCreateSuccess(), "+errorMessage);
+        Log.d(TAG, "onRegFail(), "+errorMessage);
         view.hideProgressBar();
         view.showErrorMsg(R.string.REGISTER_registration_failed, errorMessage);
     }

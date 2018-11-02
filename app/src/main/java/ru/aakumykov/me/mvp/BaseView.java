@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -199,6 +200,10 @@ public abstract class BaseView extends AppCompatActivity implements
         return authService;
     }
 
+    @Override
+    public View getProgressBar() {
+        return progressBar;
+    }
 
     // Разное
     @Override
