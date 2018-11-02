@@ -101,4 +101,6 @@
     <string name="REGISTER_registration_failed">Ошибка регистрации</string>
     <string name="REGISTER_passwords_mismatch">Пароли не совпадают</string>
     <string name="REGISTER_registering_user">Регистрируем нового пользователя</string>
+    <string name="MENU_login">Войти</string>
+    <string name="MENU_logout">Выйти</string>
 </resources>

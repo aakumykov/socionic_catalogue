@@ -25,5 +25,6 @@ public final class Constants {
     public final static int CODE_SELECT_IMAGE = 10;
     public final static int CODE_EDIT_CARD = 20;
     public final static int CODE_EDIT_USER = 30;
+    public final static int CODE_LOGIN = 40;
 
 }

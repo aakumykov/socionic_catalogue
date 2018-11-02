@@ -6,12 +6,12 @@
         android:id="@+id/actionTags"
         android:icon="@drawable/ic_tags"
         android:title="@string/tags"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/actionUsers"
         android:icon="@drawable/ic_users"
         android:title="@string/users"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/actionCreateCard"
         android:icon="@drawable/ic_add"
@@ -36,5 +36,15 @@
         </menu>
 
     </item>
+    <item
+        android:id="@+id/actionLogin"
+        android:icon="@drawable/ic_login"
+        android:title="@string/MENU_login"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/actionLogout"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/MENU_logout"
+        app:showAsAction="never" />
 
 </menu>

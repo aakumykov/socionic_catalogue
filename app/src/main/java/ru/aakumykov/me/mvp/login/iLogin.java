@@ -1,48 +1,27 @@
 package ru.aakumykov.me.mvp.login;
 
+import ru.aakumykov.me.mvp.iBaseView;
+import ru.aakumykov.me.mvp.interfaces.iAuthService;
+import ru.aakumykov.me.mvp.interfaces.iCardsService;
+
 public interface iLogin {
 
-    interface View {
-        void showInfo(int messageId);
-        void hideInfo();
-
-        void showWarning(int messageId);
-        void hideWarning();
-
-        void showError(int messageId);
-        void hideError();
-
-        void showProgressBar();
-        void hideProgressBar();
-
-        String getEmail();
-        String getPassword();
-
-        void disableLoginForm();
-        void enableLoginForm();
+    interface View extends iBaseView {
+        void disableForm();
+        void enableForm();
     }
 
     interface Presenter {
-        void linkView(iLogin.View v);
+        void doLogin();
+
+        // TODO: вынести в общий интерфейс
+        void linkView(iLogin.View view);
         void unlinkView();
-        void loginButtonClicked();
-        void logoutButtonClicked();
-    }
 
-    interface Model {
-//        iLogin.TemplateModel getInstance();
-        void login(String email, String password);
-        void logout();
-//        void changePassword(String email, String oldPassword, String newPassword);
-    }
+        void linkModel(iCardsService model);
+        void unlinkModel();
 
-
-    interface LoginCallbacks {
-        void onAuthSuccess();
-        void onAuthFail();
-        void onAuthCancel();
-
-        void onLogoutSuccess();
-        void onLogoutFail();
+        void linkAuth(iAuthService authService);
+        void unlinkAuth();
     }
 }

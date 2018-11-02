@@ -97,4 +97,6 @@
     <string name="REGISTER_registration_failed">Registration failed</string>
     <string name="REGISTER_passwords_mismatch">Passwords mismatch</string>
     <string name="REGISTER_registering_user">Registering new user</string>
+    <string name="MENU_login">Login</string>
+    <string name="MENU_logout">Logout</string>
 </resources>

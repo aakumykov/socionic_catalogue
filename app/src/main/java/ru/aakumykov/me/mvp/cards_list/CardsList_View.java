@@ -28,6 +28,8 @@ import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
+// Построен по принципу Active View
+
 public class CardsList_View extends BaseView implements
         iCardsList.View,
         ListView.OnItemClickListener,

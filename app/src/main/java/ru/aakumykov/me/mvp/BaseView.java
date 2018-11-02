@@ -17,6 +17,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.login.Login_View;
 import ru.aakumykov.me.mvp.services.AuthService;
 import ru.aakumykov.me.mvp.services.CardsService;
 
@@ -125,6 +126,14 @@ public abstract class BaseView extends AppCompatActivity implements
                 this.finish();
                 break;
 
+            case R.id.actionLogin:
+                doLogin();
+                break;
+
+            case R.id.actionLogout:
+                doLogout();
+                break;
+
             default:
                 super.onOptionsItemSelected(item);
         }
@@ -132,6 +141,18 @@ public abstract class BaseView extends AppCompatActivity implements
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d(TAG, "onActivityResult()");
+
+        switch (requestCode) {
+            case Constants.CODE_LOGIN:
+                processLoginResult(resultCode, data);
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
     // Сообщения пользователю
     @Override
@@ -204,6 +225,7 @@ public abstract class BaseView extends AppCompatActivity implements
         return progressBar;
     }
 
+
     // Разное
     @Override
     public void closePage() {
@@ -225,5 +247,21 @@ public abstract class BaseView extends AppCompatActivity implements
         if (null != actionBar) {
             actionBar.setTitle(title);
         }
+    }
+
+
+    // Внутренние методы
+    void doLogin() {
+        Log.d(TAG, "doLogin()");
+        Intent intent = new Intent(this, Login_View.class);
+        startActivityForResult(intent, Constants.CODE_LOGIN);
+    }
+
+    void doLogout() {
+        Log.d(TAG, "doLogout()");
+    }
+
+    void processLoginResult(int resultCode, @Nullable Intent data) {
+        Log.d(TAG, "processLoginResult()");
     }
 }
