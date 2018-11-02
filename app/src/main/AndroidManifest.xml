@@ -14,17 +14,11 @@
 
         <activity android:name=".login.LoginView" />
 
-        <activity android:name=".cards_list.CardsList_View">
-
-        </activity>
-
-        <activity android:name=".cards_list_av.CardsList_View" >
-
-        </activity>
+        <activity android:name=".cards_list_av.CardsList_View" />
 
         <activity
             android:name=".card_show.CardShow_View"
-            android:parentActivityName=".cards_list.CardsList_View" />
+            android:parentActivityName=".cards_list_av.CardsList_View" />
 
         <activity android:name=".card_edit.CardEdit_View">
             <intent-filter>
@@ -58,7 +52,8 @@
 
         <activity android:name=".tags.list.TagsList_View" />
 
-        <activity android:name=".tags.view.TagShow_View" android:parentActivityName=".tags.list.TagsList_View" />
+        <activity android:name=".tags.view.TagShow_View"
+            android:parentActivityName=".tags.list.TagsList_View" />
 
         <activity android:name=".register.Register_View">
             <intent-filter>
