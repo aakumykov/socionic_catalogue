@@ -172,7 +172,6 @@ public abstract class BaseView extends AppCompatActivity implements
         messageView.setText(text);
         messageView.setTextColor(color);
         MyUtils.show(messageView);
-        hideProgressBar();
     }
 
     @Override
