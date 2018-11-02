@@ -13,7 +13,7 @@ public interface iLogin {
     }
 
     interface Presenter {
-        void doLogin(String email, String password) throws Exception;
+        void doLogin(String email, String password);
         void cancelLogin();
 
         // TODO: вынести в общий интерфейс

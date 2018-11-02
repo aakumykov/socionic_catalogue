@@ -103,6 +103,6 @@
     <string name="LOGIN_login_failed">Login failed</string>
     <string name="LOGIN_login_success">Login success</string>
     <string name="LOGIN_cancel">Cancel</string>
-    <string name="LOGIN_logging_in">Login in progress</string>
-    <string name="LOGIN_login">Login</string>
+    <string name="LOGIN_logging_in">Making login</string>
+    <string name="LOGIN_login">Log in</string>
 </resources>

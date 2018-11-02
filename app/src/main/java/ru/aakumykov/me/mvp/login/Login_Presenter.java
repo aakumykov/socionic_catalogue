@@ -16,8 +16,15 @@ public class Login_Presenter implements
 
     // Интерфейсные методы
     @Override
-    public void doLogin(String email, String password) throws Exception {
-
+    public void doLogin(String email, String password) {
+        try {
+            authService.login(email, password, this);
+        }
+        catch (Exception e) {
+            view.hideProgressBar();
+            view.enableForm();
+            view.showErrorMsg(R.string.LOGIN_login_failed, e.getMessage());
+        }
     }
 
     @Override

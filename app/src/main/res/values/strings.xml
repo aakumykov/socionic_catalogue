@@ -107,6 +107,6 @@
     <string name="LOGIN_login_failed">Ошибка входа</string>
     <string name="LOGIN_login_success">Успешный вход</string>
     <string name="LOGIN_cancel">Не входить</string>
-    <string name="LOGIN_logging_in">Осуществляется вход</string>
+    <string name="LOGIN_logging_in">Осуществляем вход</string>
     <string name="LOGIN_login">Войти</string>
 </resources>

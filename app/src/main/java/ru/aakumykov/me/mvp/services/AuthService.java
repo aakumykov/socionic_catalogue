@@ -70,8 +70,8 @@ public class AuthService extends Service implements
     public void registerWithEmail(
             String email,
             String password,
-            final iAuthService.RegisterCallbacks callbacks
-    ) {
+            final iAuthService.RegisterCallbacks callbacks) throws Exception
+    {
         Log.d(TAG, "registerWithEmail("+email+", ***)");
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)
@@ -92,7 +92,7 @@ public class AuthService extends Service implements
 
     @Override
     public void createUser(final String uid, final User userDraft,
-                           final CreateUserCallbacks callbacks)
+                           final CreateUserCallbacks callbacks)  throws Exception
     {
         Log.d(TAG, "createUser("+uid+"), "+userDraft);
 
@@ -136,18 +136,20 @@ public class AuthService extends Service implements
     }
 
     @Override
-    public void login(String email, String password) {
+    public void login(String email, String password, final LoginCallbacks callbacks) throws Exception {
+
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-
+                        callbacks.onLoginSuccess();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        callbacks.onLoginFail(e.getMessage());
+                        e.printStackTrace();
                     }
                 });
     }

@@ -96,14 +96,7 @@ public class Login_View extends BaseView implements
         disableForm();
         showInfoMsg(R.string.LOGIN_logging_in);
 
-        try {
-            presenter.doLogin(email, password);
-        }
-        catch (Exception e) {
-            hideProgressBar();
-            enableForm();
-            showErrorMsg(e.getMessage());
-        }
+        presenter.doLogin(email, password);
     }
 
     @OnClick(R.id.cancelButton)
