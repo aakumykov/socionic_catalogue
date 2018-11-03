@@ -43,7 +43,6 @@ public class TagShow_View extends BaseView implements
 
         processIntent();
     }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -62,7 +61,6 @@ public class TagShow_View extends BaseView implements
     public void onServiceUnbounded() {
 
     }
-
     @Override
     public void onClick(View v) {
 
@@ -74,8 +72,16 @@ public class TagShow_View extends BaseView implements
                 break;
         }
     }
+    @Override
+    public void processLogin() {
 
-    // Главные методы
+    }
+    @Override
+    public void processLogout() {
+
+    }
+
+    // Интерфейсныне методы
     @Override
     public void displayTag(final Tag tag) {
         Log.d(TAG, "displayTag(), "+tag);

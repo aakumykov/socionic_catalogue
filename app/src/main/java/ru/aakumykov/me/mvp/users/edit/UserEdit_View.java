@@ -99,8 +99,18 @@ public class UserEdit_View extends BaseView implements
         }
     }
 
+    @Override
+    public void processLogin() {
 
-    // Пользовательские методы
+    }
+
+    @Override
+    public void processLogout() {
+
+    }
+
+
+    // Интерфейсные методы
     @Override
     public void fillUserForm(User user) {
         Log.d(TAG, "fillUserForm()");

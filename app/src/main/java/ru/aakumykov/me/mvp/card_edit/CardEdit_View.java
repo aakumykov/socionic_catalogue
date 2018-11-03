@@ -110,6 +110,15 @@ public class CardEdit_View extends BaseView implements
         presenter.unlinkCardsService();
     }
 
+    @Override
+    public void processLogin() {
+
+    }
+
+    @Override
+    public void processLogout() {
+
+    }
 
     @OnClick({
         R.id.saveButton,
@@ -170,7 +179,7 @@ public class CardEdit_View extends BaseView implements
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.card_edit_menu, menu);
+        menuInflater.inflate(R.menu.save, menu);
         return true;
     }
 

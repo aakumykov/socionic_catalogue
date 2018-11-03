@@ -58,6 +58,16 @@ public class Register_View extends BaseView implements
         presenter.unlinkAuthService();
     }
 
+    @Override
+    public void processLogin() {
+        // TODO: что здесь?
+    }
+
+    @Override
+    public void processLogout() {
+        // TODO: а здесь?
+    }
+
 
     // Интерфейсные методы
     @Override

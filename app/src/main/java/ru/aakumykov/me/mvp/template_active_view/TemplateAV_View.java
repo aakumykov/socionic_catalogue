@@ -13,12 +13,6 @@ public class TemplateAV_View  extends BaseView implements
     private final static String TAG = "Register_View";
     private iTemplateAV.Presenter presenter;
 
-    // Интерфейсные методы
-    @Override
-    public void display() {
-
-    }
-
 
     // Системные методы
     @Override
@@ -46,6 +40,23 @@ public class TemplateAV_View  extends BaseView implements
         presenter.unlinkView();
         presenter.unlinkCardsService();
         presenter.unlinkAuthService();
+    }
+
+    @Override
+    public void processLogin() {
+
+    }
+
+    @Override
+    public void processLogout() {
+
+    }
+
+
+    // Интерфейсные методы
+    @Override
+    public void display() {
+
     }
 
 }

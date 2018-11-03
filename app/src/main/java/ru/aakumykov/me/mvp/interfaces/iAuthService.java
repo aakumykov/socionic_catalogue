@@ -4,7 +4,7 @@ import ru.aakumykov.me.mvp.models.User;
 
 public interface iAuthService {
 
-    boolean isLoggedIn();
+    boolean isUserLoggedIn();
 
     void registerWithEmail(String email, String password, RegisterCallbacks callbacks) throws Exception;
     void createUser(String uid, User userDraft, CreateUserCallbacks callbacks) throws Exception;

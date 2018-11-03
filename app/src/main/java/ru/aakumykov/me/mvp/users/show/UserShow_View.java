@@ -103,7 +103,7 @@ public class UserShow_View extends BaseView implements
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.user_show_menu, menu);
+        menuInflater.inflate(R.menu.edit_delete, menu);
         return true;
     }
 
@@ -127,8 +127,18 @@ public class UserShow_View extends BaseView implements
         return true;
     }
 
+    @Override
+    public void processLogin() {
 
-    // Пользовательские методы
+    }
+
+    @Override
+    public void processLogout() {
+
+    }
+
+
+    // Интерфейсные методы
     @Override
     public void displayUser(User user) {
         Log.d(TAG, "displayUser(), "+user);

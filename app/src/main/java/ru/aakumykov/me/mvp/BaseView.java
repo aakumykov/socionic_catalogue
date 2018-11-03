@@ -9,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -44,10 +46,12 @@ public abstract class BaseView extends AppCompatActivity implements
     private boolean isCardsServiceBounded = false;
     private boolean isAuthServiceBounded = false;
 
-
     // Абстрактные методы
     public abstract void onServiceBounded();
     public abstract void onServiceUnbounded();
+
+    public abstract void processLogin();
+    public abstract void processLogout();
 
 
     // Системные методы
@@ -104,13 +108,13 @@ public abstract class BaseView extends AppCompatActivity implements
         // Слушатель изменений авторизации
         iAuthStateListener authStateListener = new AuthStateListener(new iAuthStateListener.StateChangeCallbacks() {
             @Override
-            public void processLogin() {
-                onLoggedIn_TEMP();
+            public void onLoggedIn() {
+                processLogin();
             }
 
             @Override
-            public void processLogout() {
-                onLoggedOut_TEMP();
+            public void onLoggedOut() {
+                processLogout();
             }
         });
     }
@@ -131,6 +135,28 @@ public abstract class BaseView extends AppCompatActivity implements
 
         if (isAuthServiceBounded)
             unbindService(authServiceConnection);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuInflater menuInflater = getMenuInflater();
+
+        menu.clear();
+
+        if (userLoggedIn()) {
+            Log.d(TAG, "User is logged IN");
+            menuInflater.inflate(R.menu.user_in, menu);
+            menuInflater.inflate(R.menu.logout, menu);
+        } else {
+            Log.d(TAG, "User is logged OUT");
+            menuInflater.inflate(R.menu.user_out, menu);
+            menuInflater.inflate(R.menu.login, menu);
+        }
+
+        return true;
     }
 
     @Override
@@ -168,19 +194,6 @@ public abstract class BaseView extends AppCompatActivity implements
             default:
                 super.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-
-    // Обработчики статуса авторизации
-    // TODO: сделать абстрактными!
-    @Override
-    public void onLoggedIn_TEMP() {
-        Log.d(TAG, "onLoggedIn_TEMP()");
-    }
-
-    @Override
-    public void onLoggedOut_TEMP(){
-        Log.d(TAG, "onLoggedOut_TEMP()");
     }
 
 
@@ -257,6 +270,13 @@ public abstract class BaseView extends AppCompatActivity implements
 
 
     // Разное
+
+
+    @Override
+    public boolean userLoggedIn() {
+        return authService.isUserLoggedIn();
+    }
+
     @Override
     public void closePage() {
         Log.d(TAG, "closePage()");
@@ -288,7 +308,7 @@ public abstract class BaseView extends AppCompatActivity implements
 
     // Внутренние методы
     void login() {
-        if (!authService.isLoggedIn()) {
+        if (!authService.isUserLoggedIn()) {
             Log.d(TAG, "doLogin()");
             Intent intent = new Intent(this, Login_View.class);
             startActivityForResult(intent, Constants.CODE_LOGIN);

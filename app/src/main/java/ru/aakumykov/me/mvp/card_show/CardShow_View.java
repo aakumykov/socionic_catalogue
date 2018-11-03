@@ -80,6 +80,16 @@ public class CardShow_View extends BaseView implements
         presenter.unlinkAuthService();
     }
 
+    @Override
+    public void processLogin() {
+
+    }
+
+    @Override
+    public void processLogout() {
+
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -113,10 +123,9 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.card_actions_menu, menu);
-        return true;
+        menuInflater.inflate(R.menu.edit_delete, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

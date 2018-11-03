@@ -57,8 +57,9 @@ public class AuthService extends Service implements
 
 
     // Интерфейсные методы
+    // TODO: как быть с Гостем?
     @Override
-    public boolean isLoggedIn() {
+    public boolean isUserLoggedIn() {
         return null != firebaseAuth.getCurrentUser();
     }
 

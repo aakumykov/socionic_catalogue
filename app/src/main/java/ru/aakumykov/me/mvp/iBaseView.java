@@ -10,8 +10,7 @@ public interface iBaseView {
     iCardsService getCardsService();
     iAuthService getAuthService();
 
-    void onLoggedIn_TEMP();
-    void onLoggedOut_TEMP();
+    boolean userLoggedIn();
 
     void showInfoMsg(int messageId);
     void showInfoMsg(String message);

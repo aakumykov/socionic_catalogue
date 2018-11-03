@@ -62,6 +62,16 @@ public class Login_View extends BaseView implements
         }
     }
 
+    @Override
+    public void processLogin() {
+        // TODO: что здесь?
+    }
+
+    @Override
+    public void processLogout() {
+        // TODO: а здесь?
+    }
+
 
     // Интерфейсные методы
     @Override

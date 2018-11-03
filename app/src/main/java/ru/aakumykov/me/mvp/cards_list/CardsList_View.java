@@ -83,13 +83,25 @@ public class CardsList_View extends BaseView implements
         presenter.unlinkAuthService();
     }
 
+    @Override
+    public void processLogin() {
+
+    }
+
+    @Override
+    public void processLogout() {
+
+    }
+
 
     // Меню панели
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.cards_list_menu, menu);
+        if (userLoggedIn()) {
+            MenuInflater menuInflater = getMenuInflater();
+            menuInflater.inflate(R.menu.create_card, menu);
+        }
         return true;
     }
 
@@ -194,7 +206,7 @@ public class CardsList_View extends BaseView implements
 
         PopupMenu popupMenu = new PopupMenu(this, v);
 
-        popupMenu.inflate(R.menu.card_actions_menu);
+        popupMenu.inflate(R.menu.edit_delete);
 
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
