@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.cards_list;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -85,12 +86,12 @@ public class CardsList_View extends BaseView implements
 
     @Override
     public void processLogin() {
-
+        invalidateOptionsMenu();
     }
 
     @Override
     public void processLogout() {
-
+        invalidateOptionsMenu();
     }
 
 
