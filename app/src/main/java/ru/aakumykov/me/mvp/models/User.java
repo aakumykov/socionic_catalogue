@@ -12,7 +12,10 @@ import java.util.Map;
 
 public class User implements Parcelable {
     
+    private String key;
     private String name;
+    private String email;
+    private String about;
 
     public User() {}
     
@@ -83,17 +86,34 @@ public class User implements Parcelable {
     /* Parcelable */
 
 
-    @Exclude
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public String getName() {
         return name;
     }
-    @Exclude
+
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getAbout() {
+        return about;
+    }
+
     public void setAbout(String about) {
         this.about = about;
     }
