@@ -266,6 +266,7 @@ public abstract class BaseView extends AppCompatActivity implements
 
     void doLogout() {
         Log.d(TAG, "doLogout()");
+
     }
 
     void processLoginResult(int resultCode, @Nullable Intent data) {

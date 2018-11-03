@@ -4,8 +4,10 @@ import android.util.Log;
 
 import java.util.List;
 
+import ru.aakumykov.me.mvp.AuthStateListener;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
+import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
@@ -22,6 +24,11 @@ public class CardsList_Presenter implements
     private iCardsService model;
     private iAuthService authService;
     private Card currentCard;
+
+
+    CardsList_Presenter() {
+        iAuthStateListener authStateListener = new AuthStateListener();
+    }
 
     // Интерфейсные
     @Override

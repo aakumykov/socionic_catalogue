@@ -1,17 +1,24 @@
 package ru.aakumykov.me.mvp.login;
 
+import ru.aakumykov.me.mvp.AuthStateListener;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
+import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 
 public class Login_Presenter implements
         iLogin.Presenter,
         iAuthService.LoginCallbacks
 {
-    private final static String TAG = "Register_Presenter";
+    private final static String TAG = "Login_Presenter";
     private iLogin.View view;
     private iCardsService model;
     private iAuthService authService;
+
+
+    Login_Presenter() {
+        iAuthStateListener authStateListener = new AuthStateListener();
+    }
 
 
     // Интерфейсные методы
@@ -64,7 +71,6 @@ public class Login_Presenter implements
 
 
     // Методы обратного вызова
-
     @Override
     public void onLoginSuccess() {
         view.hideProgressBar();
