@@ -47,15 +47,15 @@ public class Register_View extends BaseView implements
     @Override
     public void onServiceBounded() {
         presenter.linkView(this);
-        presenter.linkModel(getCardsService());
-        presenter.linkAuth(getAuthService());
+        presenter.linkCardsService(getCardsService());
+        presenter.linkAuthService(getAuthService());
     }
 
     @Override
     public void onServiceUnbounded() {
         presenter.unlinkView();
-        presenter.unlinkModel();
-        presenter.unlinkAuth();
+        presenter.unlinkCardsService();
+        presenter.unlinkAuthService();
     }
 
 

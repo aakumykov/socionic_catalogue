@@ -93,7 +93,7 @@ public class CardEdit_View extends BaseView implements
     public void onServiceBounded() {
 //        Log.d(TAG, "onServiceBounded()");
         presenter.linkView(this);
-        presenter.linkModel(getCardsService());
+        presenter.linkCardsService(getCardsService());
 
         try {
             presenter.processInputIntent(getIntent());
@@ -107,7 +107,7 @@ public class CardEdit_View extends BaseView implements
     public void onServiceUnbounded() {
 //        Log.d(TAG, "onServiceUnbounded()");
         presenter.unlinkView();
-        presenter.unlinkModel();
+        presenter.unlinkCardsService();
     }
 
 
@@ -322,7 +322,7 @@ public class CardEdit_View extends BaseView implements
         Log.d(TAG, "onActivityResult(requestCode: "+requestCode+", resultCode: "+resultCode+", ...)");
 
 //        presenter.linkView(this);
-//        presenter.linkModel(cardsService);
+//        presenter.linkCardsService(cardsService);
 
         if (RESULT_CANCELED == resultCode) {
             Log.d(TAG, "Выбор картинки отменён");

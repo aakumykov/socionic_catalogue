@@ -41,10 +41,10 @@ public interface iCardShow {
         void linkView(iCardShow.View view);
         void unlinkView();
 
-        void linkModel(iCardsService model);
-        void unlinkModel();
+        void linkCardsService(iCardsService model);
+        void unlinkCardsService();
 
         void linkAuth(iAuthService authService);
-        void unlinkAuth();
+        void unlinkAuthService();
     }
 }

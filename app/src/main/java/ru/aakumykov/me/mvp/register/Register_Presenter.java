@@ -58,20 +58,20 @@ public class Register_Presenter implements
     }
 
     @Override
-    public void linkModel(iCardsService model) {
+    public void linkCardsService(iCardsService model) {
         this.model = model;
     }
     @Override
-    public void unlinkModel() {
+    public void unlinkCardsService() {
         this.model = null;
     }
 
     @Override
-    public void linkAuth(iAuthService authService) {
+    public void linkAuthService(iAuthService authService) {
         this.authService = authService;
     }
     @Override
-    public void unlinkAuth() {
+    public void unlinkAuthService() {
         this.authService = null;
     }
 

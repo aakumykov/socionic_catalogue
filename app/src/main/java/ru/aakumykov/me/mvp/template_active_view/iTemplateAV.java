@@ -17,10 +17,10 @@ public interface iTemplateAV {
         void linkView(iTemplateAV.View view);
         void unlinkView();
 
-        void linkModel(iCardsService model);
-        void unlinkModel();
+        void linkCardsService(iCardsService model);
+        void unlinkCardsService();
 
         void linkAuth(iAuthService authService);
-        void unlinkAuth();
+        void unlinkAuthService();
     }
 }

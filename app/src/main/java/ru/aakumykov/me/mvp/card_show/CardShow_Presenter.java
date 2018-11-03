@@ -75,11 +75,11 @@ public class CardShow_Presenter implements
     }
 
     @Override
-    public void linkModel(iCardsService model) {
+    public void linkCardsService(iCardsService model) {
         this.model = model;
     }
     @Override
-    public void unlinkModel() {
+    public void unlinkCardsService() {
         this.model = null;
     }
 
@@ -88,7 +88,7 @@ public class CardShow_Presenter implements
         this.authService = authService;
     }
     @Override
-    public void unlinkAuth() {
+    public void unlinkAuthService() {
         this.authService = null;
     }
 

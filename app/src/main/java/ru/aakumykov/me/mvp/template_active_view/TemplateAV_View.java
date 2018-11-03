@@ -35,7 +35,7 @@ public class TemplateAV_View  extends BaseView implements
     @Override
     public void onServiceBounded() {
         presenter.linkView(this);
-        presenter.linkModel(getCardsService());
+        presenter.linkCardsService(getCardsService());
         presenter.linkAuth(getAuthService());
 
         presenter.load();
@@ -44,8 +44,8 @@ public class TemplateAV_View  extends BaseView implements
     @Override
     public void onServiceUnbounded() {
         presenter.unlinkView();
-        presenter.unlinkModel();
-        presenter.unlinkAuth();
+        presenter.unlinkCardsService();
+        presenter.unlinkAuthService();
     }
 
 }

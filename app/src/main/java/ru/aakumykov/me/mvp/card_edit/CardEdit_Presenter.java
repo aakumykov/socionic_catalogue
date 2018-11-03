@@ -284,13 +284,13 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     }
 
     @Override
-    public void linkModel(iCardsService model) {
-//        Log.d(TAG, "linkModel()");
+    public void linkCardsService(iCardsService model) {
+//        Log.d(TAG, "linkCardsService()");
         this.model = model;
     }
     @Override
-    public void unlinkModel() {
-//        Log.d(TAG, "unlinkModel()");
+    public void unlinkCardsService() {
+//        Log.d(TAG, "unlinkCardsService()");
         this.model = null;
     }
 

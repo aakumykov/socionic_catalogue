@@ -52,8 +52,8 @@ public interface iCardEdit {
         void linkView(iCardEdit.View view);
         void unlinkView();
 
-        void linkModel(iCardsService model);
-        void unlinkModel();
+        void linkCardsService(iCardsService model);
+        void unlinkCardsService();
 
         void processInputIntent(final Intent intent) throws Exception;
 
