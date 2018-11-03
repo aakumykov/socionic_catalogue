@@ -4,12 +4,12 @@ import ru.aakumykov.me.mvp.models.User;
 
 public interface iAuthService {
 
-    boolean isAuthorized();
-    boolean isAdmin();
+    boolean isLoggedIn();
 
     void registerWithEmail(String email, String password, RegisterCallbacks callbacks) throws Exception;
     void createUser(String uid, User userDraft, CreateUserCallbacks callbacks) throws Exception;
     void login(String email, String password, LoginCallbacks callbacks) throws Exception;
+    void logout(LogoutCallbacks callbacks);
     void cancelLogin();
 
 
@@ -26,5 +26,10 @@ public interface iAuthService {
     interface LoginCallbacks {
         void onLoginSuccess();
         void onLoginFail(String errorMsg);
+    }
+
+    interface LogoutCallbacks {
+        void onLogoutSuccess();
+        void onLogoutFail(String errorMsg);
     }
 }

@@ -17,7 +17,7 @@ public class Login_Presenter implements
 
 
     Login_Presenter() {
-        iAuthStateListener authStateListener = new AuthStateListener();
+//        iAuthStateListener authStateListener = new AuthStateListener();
     }
 
 

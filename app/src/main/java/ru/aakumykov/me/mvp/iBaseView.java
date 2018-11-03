@@ -10,6 +10,9 @@ public interface iBaseView {
     iCardsService getCardsService();
     iAuthService getAuthService();
 
+    void onLoggedIn_TEMP();
+    void onLoggedOut_TEMP();
+
     void showInfoMsg(int messageId);
     void showInfoMsg(String message);
     void showInfoMsg(int messageId, String consoleMessage);

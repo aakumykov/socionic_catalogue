@@ -27,7 +27,7 @@ public class CardsList_Presenter implements
 
 
     CardsList_Presenter() {
-        iAuthStateListener authStateListener = new AuthStateListener();
+//        iAuthStateListener authStateListener = new AuthStateListener();
     }
 
     // Интерфейсные

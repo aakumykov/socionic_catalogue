@@ -12,16 +12,20 @@ import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 public class AuthStateListener implements iAuthStateListener {
 
     private final static String TAG = "AuthStateListener";
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-    public AuthStateListener(/*iAuthStateListener.StateChangeCallbacks callbacks*/) {
+    public AuthStateListener(final iAuthStateListener.StateChangeCallbacks callbacks) {
         Log.d(TAG, "new AuthStateListener()");
 
-        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+        FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                Log.d(TAG, "onAuthStateChanged(), "+firebaseAuth);
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                if (null == firebaseUser) {
+                    callbacks.processLogout();
+                } else {
+//                    if (firebaseUser instanceof FirebaseUser) {
+                    callbacks.processLogin();
+                }
             }
         });
     }

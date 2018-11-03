@@ -27,7 +27,7 @@ public class Register_Presenter implements
     private User userDraft;
 
     Register_Presenter() {
-        iAuthStateListener authStateListener = new AuthStateListener();
+//        iAuthStateListener authStateListener = new AuthStateListener();
     }
 
     // Интерфейсные методы
