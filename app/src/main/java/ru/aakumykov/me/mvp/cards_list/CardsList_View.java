@@ -85,12 +85,12 @@ public class CardsList_View extends BaseView implements
 
     @Override
     public void processLogin() {
-
+        invalidateOptionsMenu();
     }
 
     @Override
     public void processLogout() {
-
+        invalidateOptionsMenu();
     }
 
 
