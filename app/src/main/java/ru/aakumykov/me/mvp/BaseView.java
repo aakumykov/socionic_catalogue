@@ -39,9 +39,9 @@ public abstract class BaseView extends AppCompatActivity implements
     private ServiceConnection authServiceConnection;
 
     private iCardsService cardsService;
-    private boolean isCardsServiceBounded = false;
-
     private iAuthService authService;
+
+    private boolean isCardsServiceBounded = false;
     private boolean isAuthServiceBounded = false;
 
     public abstract void onServiceBounded();
