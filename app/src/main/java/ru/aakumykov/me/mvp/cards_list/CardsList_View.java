@@ -120,52 +120,6 @@ public class CardsList_View extends BaseView implements
     }
 
 
-    // Нажатия в списке
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        Log.d(TAG, "onItemClick(pos: "+position+", id: "+id+")");
-
-        // TODO: где контролировать эти данные?
-        Card card = cardsList.get(position);
-
-        Intent intent = new Intent(this, CardShow_View.class);
-        intent.putExtra(Constants.CARD_KEY, card.getKey());
-        startActivity(intent);
-    }
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//        Log.d(TAG, "onItemLongClick(pos: "+position+", id: "+id+")");
-        currentCard = cardsList.get(position);
-
-        Drawable oldBackground = view.getBackground();
-        view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
-
-        showPopupMenu(view, oldBackground);
-        return true;
-    }
-
-
-    // Нажатия в контекстном меню
-    @Override
-    public boolean onMenuItemClick(MenuItem menuItem) {
-
-        switch (menuItem.getItemId()) {
-
-            case R.id.actionEdit:
-                editCard();
-                return true;
-
-            case R.id.actionDelete:
-                presenter.deleteCard(currentCard);
-                return true;
-
-            default:
-                return false;
-        }
-    }
-
-
     // Интерфейсные методы
     @Override
     public void displayList(final List<Card> list) {
@@ -196,7 +150,35 @@ public class CardsList_View extends BaseView implements
     }
 
 
-    // Внутренние методы
+    // Нажатия в списке
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//        Log.d(TAG, "onItemClick(pos: "+position+", id: "+id+")");
+
+        // TODO: где контролировать эти данные?
+        Card card = cardsList.get(position);
+
+        Intent intent = new Intent(this, CardShow_View.class);
+        intent.putExtra(Constants.CARD_KEY, card.getKey());
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//        Log.d(TAG, "onItemLongClick(pos: "+position+", id: "+id+")");
+        currentCard = cardsList.get(position);
+
+        if (isUserLoggedIn()) {
+            Drawable oldBackground = view.getBackground();
+            view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
+            showPopupMenu(view, oldBackground);
+        }
+
+        return true;
+    }
+
+
+    // Выслывающее меню
     private void showPopupMenu(final View v, final Drawable oldBackground) {
 
         PopupMenu popupMenu = new PopupMenu(this, v);
@@ -217,6 +199,26 @@ public class CardsList_View extends BaseView implements
         popupMenu.show();
     }
 
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+
+        switch (menuItem.getItemId()) {
+
+            case R.id.actionEdit:
+                editCard();
+                return true;
+
+            case R.id.actionDelete:
+                presenter.deleteCard(currentCard);
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+
+    // Внутренние методы
     private void editCard() {
         Log.d(TAG, "editCard()");
         Intent intent = new Intent(this, CardEdit_View.class);
