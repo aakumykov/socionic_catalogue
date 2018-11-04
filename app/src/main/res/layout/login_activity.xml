@@ -62,5 +62,22 @@
         android:textSize="@dimen/minor_button_font_size"
         android:layout_marginTop="@dimen/subsequent_button_margin_top" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:gravity="center_horizontal"
+        android:text="@string/LOGIN_register_label"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/subsequent_button_margin_top"
+        android:text="@string/LOGIN_register"
+        android:textSize="@dimen/major_button_font_size" />
+
 
 </LinearLayout>

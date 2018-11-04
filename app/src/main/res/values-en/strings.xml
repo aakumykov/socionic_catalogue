@@ -91,7 +91,7 @@
     <string name="REGISTER_name">Nickame</string>
     <string name="REGISTER_password">Password</string>
     <string name="REGISTER_password_confirmation">Confirm password</string>
-    <string name="REGISTER_proceed">Register</string>
+    <string name="REGISTER_proceed">SignUp</string>
     <string name="REGISTER_cancel">Cancel</string>
     <string name="REGISTER_name_cannot_be_empty">Nickname cannot be empty</string>
     <string name="REGISTER_registration_failed">Registration failed</string>
@@ -111,4 +111,7 @@
     <string name="INFO_card_saved">Card saved</string>
     <string name="INFO_operation_cancelled">Operation cancelled</string>
     <string name="ERROR_saving_card">Error saving card</string>
+    <string name="LOGIN_register">SignUp</string>
+    <string name="LOGIN_register_label">First time here?</string>
+    <string name="REGISTER_page_title">New account</string>
 </resources>

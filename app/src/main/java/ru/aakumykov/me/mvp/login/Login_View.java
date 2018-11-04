@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Menu;
@@ -11,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.register.Register_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 
@@ -20,6 +22,7 @@ public class Login_View extends BaseView implements
     @BindView(R.id.passwordInput) EditText passwordInput;
     @BindView(R.id.loginButton) Button loginButton;
     @BindView(R.id.cancelButton) Button cancelButton;
+    @BindView(R.id.registerButton) Button registerButton;
 
     private final static String TAG = "Login_View";
     private iLogin.Presenter presenter;
@@ -122,5 +125,12 @@ public class Login_View extends BaseView implements
     void cancelLogin() {
         setResult(RESULT_CANCELED);
         finish();
+    }
+
+    // TODO: Проверить переходы назад
+    @OnClick(R.id.registerButton)
+    void goRegisterPage() {
+        Intent intent = new Intent(this, Register_View.class);
+        startActivity(intent);
     }
 }

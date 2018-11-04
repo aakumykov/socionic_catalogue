@@ -115,4 +115,7 @@
     <string name="INFO_card_saved">Карточка сохранена</string>
     <string name="INFO_operation_cancelled">Операция отменена</string>
     <string name="ERROR_saving_card">Ошибка сохранения карточки</string>
+    <string name="LOGIN_register">Зарегистрироваться</string>
+    <string name="LOGIN_register_label">Вы здесь впервые?</string>
+    <string name="REGISTER_page_title">Регистрация</string>
 </resources>
