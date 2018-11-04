@@ -33,7 +33,7 @@
         android:gravity="center_horizontal"
         android:inputType="textEmailAddress"
         android:singleLine="true"
-        android:text="@string/testEmail" />
+        android:text="@string/LOGIN_testEmail" />
 
     <EditText
         android:id="@+id/passwordInput"
@@ -44,7 +44,7 @@
         android:inputType="textPassword"
         android:selectAllOnFocus="false"
         android:singleLine="true"
-        android:text="@string/testPassword" />
+        android:text="@string/LOGIN_testPassword" />
 
     <Button
         android:id="@+id/loginButton"

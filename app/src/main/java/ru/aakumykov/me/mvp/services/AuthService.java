@@ -64,6 +64,11 @@ public class AuthService extends Service implements
     }
 
     @Override
+    public String currentUid() {
+        return firebaseAuth.getUid();
+    }
+
+    @Override
     public void registerWithEmail(
             String email,
             String password,

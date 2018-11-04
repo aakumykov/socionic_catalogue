@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/userLoggedIn"
+        android:id="@+id/actionUserProfile"
         android:icon="@drawable/ic_user_logged_in"
         android:title="Пользователь вошёл"
         app:showAsAction="always" />

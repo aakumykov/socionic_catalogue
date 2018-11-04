@@ -25,6 +25,7 @@ import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.AuthService;
 import ru.aakumykov.me.mvp.services.AuthStateListener;
 import ru.aakumykov.me.mvp.services.CardsService;
+import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 
@@ -149,7 +150,7 @@ public abstract class BaseView extends AppCompatActivity implements
 
         MenuInflater menuInflater = getMenuInflater();
 
-        menu.clear();
+//        menu.clear();
 
         if (isUserLoggedIn()) {
             Log.d(TAG, "User is logged IN");
@@ -171,6 +172,10 @@ public abstract class BaseView extends AppCompatActivity implements
 
             case android.R.id.home:
                 this.finish();
+                break;
+
+            case R.id.actionUserProfile:
+                seeUserProfile();
                 break;
 
             case R.id.actionLogin:
@@ -345,6 +350,12 @@ public abstract class BaseView extends AppCompatActivity implements
                 showErrorMsg(errorMsg);
             }
         });
+    }
+
+    private void seeUserProfile() {
+        Intent intent = new Intent(this, UserShow_View.class);
+        intent.putExtra(Constants.USER_ID, authService.currentUid());
+        startActivity(intent);
     }
 
     private void createCard(String cardType) {

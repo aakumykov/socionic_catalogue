@@ -45,6 +45,8 @@ public class UserShow_View extends BaseView implements
         setContentView(R.layout.user_show_activity);
         ButterKnife.bind(this);
 
+        setPageTitle(R.string.USER_page_title);
+
         presenter = new Users_Presenter();
 
         try {
@@ -52,6 +54,7 @@ public class UserShow_View extends BaseView implements
             String userId = intent.getStringExtra(Constants.USER_ID);
             Log.d(TAG, "userId: "+userId);
             presenter.loadUser(userId, this);
+
         } catch (Exception e) {
             // TODO: всунуть сокрытие крутилки внутрь show*Message()
             hideProgressBar();
@@ -101,9 +104,9 @@ public class UserShow_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.edit_delete, menu);
+        super.onCreateOptionsMenu(menu);
         return true;
     }
 
@@ -134,7 +137,7 @@ public class UserShow_View extends BaseView implements
 
     @Override
     public void onUserLogout() {
-
+        closePage();
     }
 
 
@@ -172,6 +175,7 @@ public class UserShow_View extends BaseView implements
     @Override
     public void onUserReadFail(String errorMsg) {
         currentUser = null;
+        hideProgressBar();
         showErrorMsg(R.string.error_displaying_user, errorMsg);
     }
 
