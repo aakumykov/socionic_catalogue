@@ -43,24 +43,19 @@ public class TagShow_View extends BaseView implements
 
         processIntent();
     }
+
     @Override
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
     }
+
     @Override
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
     }
-    @Override
-    public void onServiceBounded() {
 
-    }
-    @Override
-    public void onServiceUnbounded() {
-
-    }
     @Override
     public void onClick(View v) {
 
@@ -72,6 +67,17 @@ public class TagShow_View extends BaseView implements
                 break;
         }
     }
+
+
+    // Обязательные методы
+    @Override
+    public void onServiceBounded() {
+
+    }
+    @Override
+    public void onServiceUnbounded() {
+
+    }
     @Override
     public void onUserLogin() {
 
@@ -80,6 +86,7 @@ public class TagShow_View extends BaseView implements
     public void onUserLogout() {
 
     }
+
 
     // Интерфейсныне методы
     @Override
@@ -119,6 +126,7 @@ public class TagShow_View extends BaseView implements
         intent.putExtra(Constants.TAG_FILTER, tagFilter);
         startActivity(intent);
     }
+
 
     // Внутренние методы
     private void processIntent() {

@@ -91,6 +91,7 @@ public class Login_View extends BaseView implements
         MyUtils.disable(emailInput);
         MyUtils.disable(passwordInput);
         MyUtils.disable(loginButton);
+        MyUtils.disable(registerButton);
     }
 
     @Override
@@ -98,6 +99,7 @@ public class Login_View extends BaseView implements
         MyUtils.enable(emailInput);
         MyUtils.enable(passwordInput);
         MyUtils.enable(loginButton);
+        MyUtils.enable(registerButton);
     }
 
     @Override
