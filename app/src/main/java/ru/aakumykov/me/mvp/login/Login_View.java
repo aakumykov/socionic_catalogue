@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.login;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +39,25 @@ public class Login_View extends BaseView implements
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                cancelLogin();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+
+    // Обязательные методы
+    @Override
     public void onServiceBounded() {
         presenter.linkView(this);
         presenter.linkCardsService(getCardsService());
@@ -52,24 +72,13 @@ public class Login_View extends BaseView implements
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                cancelLogin();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     public void onUserLogin() {
-        // TODO: что здесь?
+        closePage(); // Если пользователь каким-то образом залогинился
     }
 
     @Override
     public void onUserLogout() {
-        // TODO: а здесь?
+
     }
 
 
