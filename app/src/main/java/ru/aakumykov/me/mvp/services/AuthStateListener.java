@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp;
+package ru.aakumykov.me.mvp.services;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 
+// TODO: как обрабатывать reauthenticate ?
 
 public class AuthStateListener implements iAuthStateListener {
 

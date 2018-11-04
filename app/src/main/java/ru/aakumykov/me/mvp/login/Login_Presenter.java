@@ -1,9 +1,7 @@
 package ru.aakumykov.me.mvp.login;
 
-import ru.aakumykov.me.mvp.AuthStateListener;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
-import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 
 public class Login_Presenter implements

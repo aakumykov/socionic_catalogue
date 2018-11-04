@@ -22,6 +22,7 @@ import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.login.Login_View;
 import ru.aakumykov.me.mvp.services.AuthService;
+import ru.aakumykov.me.mvp.services.AuthStateListener;
 import ru.aakumykov.me.mvp.services.CardsService;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
@@ -192,7 +193,6 @@ public abstract class BaseView extends AppCompatActivity implements
 
         switch (requestCode) {
             case Constants.CODE_LOGIN:
-                processLoginResult(resultCode, data);
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
@@ -273,8 +273,6 @@ public abstract class BaseView extends AppCompatActivity implements
 
 
     // Разное
-
-
     @Override
     public boolean userLoggedIn() {
         return authService.isUserLoggedIn();
@@ -311,6 +309,8 @@ public abstract class BaseView extends AppCompatActivity implements
 
     // Внутренние методы
     void login() {
+        // Можно и без result, потому что статус авторизации обрабатывается в
+        // AuthStateListener
         if (!authService.isUserLoggedIn()) {
             Log.d(TAG, "doLogin()");
             Intent intent = new Intent(this, Login_View.class);
@@ -333,7 +333,4 @@ public abstract class BaseView extends AppCompatActivity implements
         });
     }
 
-    void processLoginResult(int resultCode, @Nullable Intent data) {
-        Log.d(TAG, "processLoginResult()");
-    }
 }
