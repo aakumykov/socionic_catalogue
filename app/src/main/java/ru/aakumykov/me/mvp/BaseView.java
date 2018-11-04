@@ -46,6 +46,7 @@ public abstract class BaseView extends AppCompatActivity implements
     private boolean isCardsServiceBounded = false;
     private boolean isAuthServiceBounded = false;
 
+
     // Абстрактные методы
     public abstract void onServiceBounded();
     public abstract void onServiceUnbounded();
@@ -109,11 +110,13 @@ public abstract class BaseView extends AppCompatActivity implements
         iAuthStateListener authStateListener = new AuthStateListener(new iAuthStateListener.StateChangeCallbacks() {
             @Override
             public void onLoggedIn() {
+                invalidateOptionsMenu();
                 processLogin();
             }
 
             @Override
             public void onLoggedOut() {
+                invalidateOptionsMenu();
                 processLogout();
             }
         });
