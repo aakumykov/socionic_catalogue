@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.utils;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 
 import ru.aakumykov.me.mvp.R;
@@ -17,25 +18,32 @@ public class YesNoDialog {
     private Context context;
     private String title;
     private String message;
-    private iDialogCallbacks.onCheck checkCallback;
-    private iDialogCallbacks.onYes yesCallback;
-    private iDialogCallbacks.onNo noCallback;
+    private iDialogCallbacks.Delete callbacks;
 
-    public YesNoDialog (
+
+    public <T> YesNoDialog (
             final Context context,
-            int titleId,
-            int messageId,
-            final iDialogCallbacks.onCheck checkCallback,
-            final iDialogCallbacks.onYes yesCallback,
-            final iDialogCallbacks.onNo noCallback
-            ) {
-
+            T title,
+            @Nullable T msg,
+            final iDialogCallbacks.Delete callbacks
+            )
+    {
         this.context = context;
-        this.title = context.getResources().getString(titleId);
-        this.message = context.getResources().getString(messageId);
-        this.checkCallback = checkCallback;
-        this.yesCallback = yesCallback;
-        this.noCallback = noCallback;
+
+        // Хотел перенести это во внутренний метод, да не смог
+        this.title = context.getResources().getString(R.string.DIALOG_card_deletion);
+        if (title instanceof String) this.title = (String) title;
+        else if (title instanceof Integer) this.title = context.getResources().getString((Integer)title);
+
+        // Хотел перенести это во внутренний метод, да не смог
+        if (null != msg) {
+            this.message = context.getResources().getString(R.string.DIALOG_really_delete_card);
+            if (msg instanceof String) this.message = (String) msg;
+            else if (msg instanceof Integer)
+                this.message = context.getResources().getString((Integer) msg);
+        }
+
+        this.callbacks = callbacks;
 
         this.create();
     }
@@ -48,15 +56,15 @@ public class YesNoDialog {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (checkCallback.doCheck()) {
-                            yesCallback.yesAction();
+                        if (callbacks.deleteDialogCheck()) {
+                            callbacks.deleteDialogYes();
                         }
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (null != noCallback) noCallback.noAction();
+                        callbacks.onDeleteDialogNo();
                     }
                 });
 

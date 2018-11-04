@@ -5,21 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.MyUtils;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.cards_list.CardsList_View;
-import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.models.Tag;
 import ru.aakumykov.me.mvp.tags.Tags_Presenter;
 import ru.aakumykov.me.mvp.tags.iTags;
@@ -55,18 +49,11 @@ public class TagShow_View extends BaseView implements
         super.onStart();
         presenter.linkView(this);
     }
+
     @Override
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
-    }
-    @Override
-    public void onServiceBounded() {
-
-    }
-    @Override
-    public void onServiceUnbounded() {
-
     }
 
     @Override
@@ -81,7 +68,27 @@ public class TagShow_View extends BaseView implements
         }
     }
 
-    // Главные методы
+
+    // Обязательные методы
+    @Override
+    public void onServiceBounded() {
+
+    }
+    @Override
+    public void onServiceUnbounded() {
+
+    }
+    @Override
+    public void onUserLogin() {
+
+    }
+    @Override
+    public void onUserLogout() {
+
+    }
+
+
+    // Интерфейсныне методы
     @Override
     public void displayTag(final Tag tag) {
         Log.d(TAG, "displayTag(), "+tag);
@@ -119,6 +126,7 @@ public class TagShow_View extends BaseView implements
         intent.putExtra(Constants.TAG_FILTER, tagFilter);
         startActivity(intent);
     }
+
 
     // Внутренние методы
     private void processIntent() {

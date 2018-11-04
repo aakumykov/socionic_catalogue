@@ -26,13 +26,11 @@ import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.MyUtils;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.cards_list.CardsList_View;
-import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
-import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 //TODO: уменьшение изображения
 
@@ -64,13 +62,13 @@ public class CardShow_View extends BaseView implements
 
         tagsContainer.setOnTagClickListener(this);
 
-        presenter = new CardView_Presenter();
+        presenter = new CardShow_Presenter();
     }
 
     @Override
     public void onServiceBounded() {
         presenter.linkView(this);
-        presenter.linkModel(getCardsService());
+        presenter.linkCardsService(getCardsService());
         presenter.linkAuth(getAuthService());
         loadCard();
     }
@@ -78,8 +76,18 @@ public class CardShow_View extends BaseView implements
     @Override
     public void onServiceUnbounded() {
         presenter.unlinkView();
-        presenter.unlinkModel();
-        presenter.unlinkAuth();
+        presenter.unlinkCardsService();
+        presenter.unlinkAuthService();
+    }
+
+    @Override
+    public void onUserLogin() {
+
+    }
+
+    @Override
+    public void onUserLogout() {
+
     }
 
 
@@ -115,10 +123,9 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.card_actions_menu, menu);
-        return true;
+        menuInflater.inflate(R.menu.edit_delete, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -321,32 +328,32 @@ public class CardShow_View extends BaseView implements
     @Override
     public void showDeleteDialog() {
 
-        YesNoDialog yesNoDialog = new YesNoDialog(
-                this,
-                R.string.card_deletion,
-                R.string.really_delete_card,
-                new iDialogCallbacks.onCheck() {
-                    @Override
-                    public boolean doCheck() {
-                        return true;
-                    }
-                },
-                new iDialogCallbacks.onYes() {
-                    @Override
-                    public void yesAction() {
-                        //Log.d(TAG, "yesAction");
-                        presenter.onDeleteConfirmed();
-                    }
-                },
-                new iDialogCallbacks.onNo() {
-                    @Override
-                    public void noAction() {
-                        //Log.d(TAG, "noAction");
-                    }
-                }
-        );
-
-        yesNoDialog.show();
+//        YesNoDialog yesNoDialog = new YesNoDialog(
+//                this,
+//                R.string.DIALOG_card_deletion,
+//                R.string.DIALOG_really_delete_card,
+//                new iDialogCallbacks.onCheck() {
+//                    @Override
+//                    public boolean doCheck() {
+//                        return true;
+//                    }
+//                },
+//                new iDialogCallbacks.onYes() {
+//                    @Override
+//                    public void yesAction() {
+//                        //Log.d(TAG, "yesAction");
+//                        presenter.onDeleteConfirmed();
+//                    }
+//                },
+//                new iDialogCallbacks.onNo() {
+//                    @Override
+//                    public void noAction() {
+//                        //Log.d(TAG, "noAction");
+//                    }
+//                }
+//        );
+//
+//        yesNoDialog.show();
     }
 
 }

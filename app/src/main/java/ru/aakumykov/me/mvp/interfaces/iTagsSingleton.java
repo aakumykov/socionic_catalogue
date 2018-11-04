@@ -1,6 +1,8 @@
 package ru.aakumykov.me.mvp.interfaces;
 
 
+import android.support.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,7 +16,11 @@ public interface iTagsSingleton {
     void deleteTag(Tag tag, DeleteCallbacks callbacks);
     void listTags(ListCallbacks callbacks);
 
-    void updateCardTags(String cardKey, HashMap<String,Boolean> oldTags, HashMap<String,Boolean> newTags);
+    void updateCardTags(String cardKey,
+                        @Nullable HashMap<String,Boolean> oldTags,
+                        @Nullable HashMap<String,Boolean> newTags,
+                        @Nullable UpdateCallbacks callbacks
+    );
 
 
     interface TagCallbacks {
@@ -25,6 +31,11 @@ public interface iTagsSingleton {
     interface SaveCallbacks {
         void onSaveSuccess(Tag tag);
         void onSaveFail(String errorMsg);
+    }
+
+    interface UpdateCallbacks {
+        void onUpdateSuccess();
+        void onUpdateFail(String errorMsg);
     }
 
     interface DeleteCallbacks {

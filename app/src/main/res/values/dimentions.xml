@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="first_button_margin_top">10dp</dimen>
+    <dimen name="subsequent_button_margin_top">3dp</dimen>
+
+    <dimen name="major_button_font_size">16sp</dimen>
+    <dimen name="minor_button_font_size">14sp</dimen>
+</resources>

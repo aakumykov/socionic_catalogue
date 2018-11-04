@@ -16,7 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.MyUtils;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
@@ -99,8 +99,18 @@ public class UsersList_View extends BaseView implements
 
     }
 
+    @Override
+    public void onUserLogin() {
 
-    // Пользовательские методы
+    }
+
+    @Override
+    public void onUserLogout() {
+
+    }
+
+
+    // Интерфейсные методы
     @Override
     public void displayList(List<User> list) {
         Log.d(TAG, "displayList()");

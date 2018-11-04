@@ -8,7 +8,7 @@ import android.util.Log;
 import java.util.HashMap;
 
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.MyUtils;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
@@ -34,7 +34,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
 
 
     @Override
-    public void processInputIntent(Intent intent) {
+    public void processInputIntent(Intent intent) throws Exception {
         Log.d(TAG, "processInputIntent()");
 
         if (null == intent) {
@@ -58,11 +58,11 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
             }
         }
         else if (Intent.ACTION_EDIT.equals(action)) {
-            Card cardDraft = intent.getParcelableExtra(Constants.CARD);
-            editCard(cardDraft.getKey());
+            String cardKey = intent.getStringExtra(Constants.CARD_KEY);
+            editCard(cardKey);
         }
         else {
-            Log.e(TAG, "Unknown intent action '"+action+"'");
+            throw  new Exception("Unknown intent action '"+action+"'");
         }
     }
 
@@ -284,13 +284,13 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     }
 
     @Override
-    public void linkModel(iCardsService model) {
-//        Log.d(TAG, "linkModel()");
+    public void linkCardsService(iCardsService model) {
+//        Log.d(TAG, "linkCardsService()");
         this.model = model;
     }
     @Override
-    public void unlinkModel() {
-//        Log.d(TAG, "unlinkModel()");
+    public void unlinkCardsService() {
+//        Log.d(TAG, "unlinkCardsService()");
         this.model = null;
     }
 
@@ -304,7 +304,8 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         TagsSingleton.getInstance().updateCardTags(
                 currentCard.getKey(),
                 oldTags,
-                newTags
+                newTags,
+                null
         );
 
         forgetCardData();

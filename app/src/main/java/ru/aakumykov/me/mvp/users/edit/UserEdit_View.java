@@ -15,7 +15,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
@@ -71,6 +70,8 @@ public class UserEdit_View extends BaseView implements
         presenter.unlinkView();
     }
 
+
+    // Обязательные методы
     @Override
     public void onServiceBounded() {
 
@@ -100,8 +101,18 @@ public class UserEdit_View extends BaseView implements
         }
     }
 
+    @Override
+    public void onUserLogin() {
+        // Он обязан быть уже залогиненным (!)
+    }
 
-    // Пользовательские методы
+    @Override
+    public void onUserLogout() {
+        closePage();
+    }
+
+
+    // Интерфейсные методы
     @Override
     public void fillUserForm(User user) {
         Log.d(TAG, "fillUserForm()");

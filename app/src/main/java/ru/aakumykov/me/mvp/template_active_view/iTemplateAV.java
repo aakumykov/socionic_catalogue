@@ -1,23 +1,20 @@
-package ru.aakumykov.me.mvp.login;
+package ru.aakumykov.me.mvp.template_active_view;
 
 import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 
-public interface iLogin {
+public interface iTemplateAV {
 
     interface View extends iBaseView {
-        void disableForm();
-        void enableForm();
-        void finishLogin(boolean byCancel);
+        void display();
     }
 
     interface Presenter {
-        void doLogin(String email, String password);
-        void cancelLogin();
+        void load();
 
         // TODO: вынести в общий интерфейс
-        void linkView(iLogin.View view);
+        void linkView(iTemplateAV.View view);
         void unlinkView();
 
         void linkCardsService(iCardsService model);

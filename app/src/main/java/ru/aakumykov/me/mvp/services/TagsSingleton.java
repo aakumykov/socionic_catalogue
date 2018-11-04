@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.MyUtils;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Tag;
 
@@ -183,12 +183,13 @@ public class TagsSingleton implements iTagsSingleton {
     public void updateCardTags(
             String cardKey,
             @Nullable HashMap<String,Boolean> oldTags,
-            @Nullable HashMap<String,Boolean> newTags
+            @Nullable HashMap<String,Boolean> newTags,
+            @Nullable final iTagsSingleton.UpdateCallbacks callbacks
     ) {
         Log.d(TAG, "updateCardTags(cardKey: "+cardKey+", oldTags: "+oldTags+", newTags: "+newTags+")");
 
-        if (null == oldTags) oldTags = new HashMap<String,Boolean>();
-        if (null == newTags) newTags = new HashMap<String,Boolean>();
+        if (null == oldTags) oldTags = new HashMap<>();
+        if (null == newTags) newTags = new HashMap<>();
 
         Map<String, Boolean> addedTags = MyUtils.mapDiff(newTags, oldTags);
         Map<String, Boolean> removedTags = MyUtils.mapDiff(oldTags, newTags);
@@ -206,10 +207,21 @@ public class TagsSingleton implements iTagsSingleton {
         Log.d(TAG, "updatePool: "+updatePool);
 
         tagsRef.updateChildren(updatePool)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        if (null != callbacks) {
+                            callbacks.onUpdateSuccess();
+                        }
+                    }
+                })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // TODO: сообщать, куда следует
+                        if (null != callbacks) {
+                            callbacks.onUpdateFail(e.getMessage());
+                        }
                         Log.e(TAG, e.getMessage());
                         e.printStackTrace();
                     }

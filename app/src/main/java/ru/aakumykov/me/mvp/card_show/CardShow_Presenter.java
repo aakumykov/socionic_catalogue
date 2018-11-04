@@ -7,12 +7,12 @@ import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
 
-public class CardView_Presenter implements
+public class CardShow_Presenter implements
         iCardShow.Presenter,
         iCardsService.CardCallbacks
 {
 
-    private final static String TAG = "CardView_Presenter";
+    private final static String TAG = "CardShow_Presenter";
     private iCardShow.View view;
     private iCardsService model;
     private iAuthService authService;
@@ -20,7 +20,7 @@ public class CardView_Presenter implements
     private Card currentCard;
 
 
-    CardView_Presenter() {}
+    CardShow_Presenter() {}
 
 
     // Получение карточки
@@ -75,11 +75,11 @@ public class CardView_Presenter implements
     }
 
     @Override
-    public void linkModel(iCardsService model) {
+    public void linkCardsService(iCardsService model) {
         this.model = model;
     }
     @Override
-    public void unlinkModel() {
+    public void unlinkCardsService() {
         this.model = null;
     }
 
@@ -88,7 +88,7 @@ public class CardView_Presenter implements
         this.authService = authService;
     }
     @Override
-    public void unlinkAuth() {
+    public void unlinkAuthService() {
         this.authService = null;
     }
 
@@ -113,7 +113,7 @@ public class CardView_Presenter implements
 
     @Override
     public void onDeleteSuccess(Card card) {
-        TagsSingleton.getInstance().updateCardTags(card.getKey(), card.getTags(), null);
+        TagsSingleton.getInstance().updateCardTags(card.getKey(), card.getTags(), null, null);
         view.closePage();
     }
 

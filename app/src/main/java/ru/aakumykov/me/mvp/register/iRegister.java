@@ -1,29 +1,29 @@
-package ru.aakumykov.me.mvp.login;
+package ru.aakumykov.me.mvp.register;
 
 import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.models.User;
 
-public interface iLogin {
+public interface iRegister {
 
     interface View extends iBaseView {
         void disableForm();
         void enableForm();
-        void finishLogin(boolean byCancel);
+        void goUserPage(User user);
     }
 
     interface Presenter {
-        void doLogin(String email, String password);
-        void cancelLogin();
+        void regUserWithEmail(String name, String email, String password);
 
         // TODO: вынести в общий интерфейс
-        void linkView(iLogin.View view);
+        void linkView(iRegister.View view);
         void unlinkView();
 
         void linkCardsService(iCardsService model);
         void unlinkCardsService();
 
-        void linkAuth(iAuthService authService);
+        void linkAuthService(iAuthService authService);
         void unlinkAuthService();
     }
 }

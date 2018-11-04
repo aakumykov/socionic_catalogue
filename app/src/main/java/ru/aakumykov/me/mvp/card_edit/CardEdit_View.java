@@ -33,7 +33,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.MyUtils;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Card;
 
@@ -89,22 +89,6 @@ public class CardEdit_View extends BaseView implements
         presenter = new CardEdit_Presenter();
     }
 
-    @Override
-    public void onServiceBounded() {
-//        Log.d(TAG, "onServiceBounded()");
-        presenter.linkView(this);
-        presenter.linkModel(getCardsService());
-        presenter.processInputIntent(getIntent());
-    }
-
-    @Override
-    public void onServiceUnbounded() {
-//        Log.d(TAG, "onServiceUnbounded()");
-        presenter.unlinkView();
-        presenter.unlinkModel();
-    }
-
-
     @OnClick({
         R.id.saveButton,
         R.id.cancelButton,
@@ -144,27 +128,10 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void onTagClick(int position, String text) {
-
-    }
-
-    @Override
-    public void onTagLongClick(int position, String text) {
-
-    }
-
-    @Override
-    public void onTagCrossClick(int position) {
-//        Log.d(TAG, "onTagCrossClick(), position: "+position);
-        tagsContainer.removeTag(position);
-    }
-
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.card_edit_menu, menu);
+        menuInflater.inflate(R.menu.save, menu);
         return true;
     }
 
@@ -179,6 +146,57 @@ public class CardEdit_View extends BaseView implements
                 break;
         }
         return true;
+    }
+
+
+    // Обязательные методы
+    @Override
+    public void onServiceBounded() {
+//        Log.d(TAG, "onServiceBounded()");
+        presenter.linkView(this);
+        presenter.linkCardsService(getCardsService());
+
+        try {
+            presenter.processInputIntent(getIntent());
+        } catch (Exception e) {
+            showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onServiceUnbounded() {
+//        Log.d(TAG, "onServiceUnbounded()");
+        presenter.unlinkView();
+        presenter.unlinkCardsService();
+    }
+
+    @Override
+    public void onUserLogin() {
+
+    }
+
+    @Override
+    public void onUserLogout() {
+        closePage();
+    }
+
+
+    // Нажатия меток
+    @Override
+    public void onTagClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagLongClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagCrossClick(int position) {
+//        Log.d(TAG, "onTagCrossClick(), position: "+position);
+        tagsContainer.removeTag(position);
     }
 
 
@@ -208,7 +226,6 @@ public class CardEdit_View extends BaseView implements
         displayCommonCardParts(card);
         showImage(card.getImageURL());
     }
-
 
 
     // Показ картинки
@@ -316,7 +333,7 @@ public class CardEdit_View extends BaseView implements
         Log.d(TAG, "onActivityResult(requestCode: "+requestCode+", resultCode: "+resultCode+", ...)");
 
 //        presenter.linkView(this);
-//        presenter.linkModel(cardsService);
+//        presenter.linkCardsService(cardsService);
 
         if (RESULT_CANCELED == resultCode) {
             Log.d(TAG, "Выбор картинки отменён");
@@ -388,6 +405,7 @@ public class CardEdit_View extends BaseView implements
     public void focusTagInput() {
         newTagInput.requestFocus();
     }
+
 
     // Активация / дизактивация формы
     @Override

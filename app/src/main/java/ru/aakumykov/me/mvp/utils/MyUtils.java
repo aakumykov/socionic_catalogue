@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp;
+package ru.aakumykov.me.mvp.utils;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
@@ -12,6 +12,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class MyUtils {
+
+//    private final static String TAG = "MyUtils";
+
     private MyUtils() {}
 
     public static void show(View view) {
@@ -20,6 +23,14 @@ public final class MyUtils {
 
     public static void hide(View view) {
         view.setVisibility(View.GONE);
+    }
+
+    public static void enable(View view) {
+        view.setEnabled(true);
+    }
+
+    public static void disable(View view) {
+        view.setEnabled(false);
     }
 
     public static String mime2ext(String mimeType) {
@@ -62,10 +73,26 @@ public final class MyUtils {
 
     public static String normalizeTag(String tagName) {
 
-        // trim spaces
+        // удаляю концевые пробелы
         tagName = tagName.replaceAll("^\\s+|\\s+$", "");
 
-        // convert number to non-numeric string
+        // удаляю концевые запрещённые символы (пока не работает с [], а может, и чем-то ещё)
+//        tagName = tagName.replace("^/+|/+$", "");
+//        tagName = tagName.replace("^\\.+|\\.+$", "");
+//        tagName = tagName.replace("^#+|#+$", "");
+//        tagName = tagName.replace("^$+|$+$", "");
+//        tagName = tagName.replace("^\\[*|\\[*$", "");
+//        tagName = tagName.replace("^\\]*|\\]*[m$", "");
+
+        // заменяю внутренние запрещённые символы
+        tagName = tagName.replace("/", "_");
+        tagName = tagName.replace(".", "_");
+        tagName = tagName.replace("#", "_");
+        tagName = tagName.replace("$", "_");
+        tagName = tagName.replace("[", "_");
+        tagName = tagName.replace("]", "_");
+
+        // преобразую число в строку
         if (tagName.matches("^[0-9]+$")) tagName = "_"+tagName+"_";
 
         return tagName;

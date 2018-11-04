@@ -14,7 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.MyUtils;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
@@ -45,14 +45,16 @@ public class UserShow_View extends BaseView implements
         setContentView(R.layout.user_show_activity);
         ButterKnife.bind(this);
 
+        setPageTitle(R.string.USER_page_title);
+
         presenter = new Users_Presenter();
 
-        Intent intent = getIntent();
-        String userId = intent.getStringExtra(Constants.USER_ID);
-        Log.d(TAG, "userId: "+userId);
-
         try {
+            Intent intent = getIntent();
+            String userId = intent.getStringExtra(Constants.USER_ID);
+            Log.d(TAG, "userId: "+userId);
             presenter.loadUser(userId, this);
+
         } catch (Exception e) {
             // TODO: всунуть сокрытие крутилки внутрь show*Message()
             hideProgressBar();
@@ -102,9 +104,9 @@ public class UserShow_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.user_show_menu, menu);
+        menuInflater.inflate(R.menu.edit_delete, menu);
+        super.onCreateOptionsMenu(menu);
         return true;
     }
 
@@ -128,8 +130,18 @@ public class UserShow_View extends BaseView implements
         return true;
     }
 
+    @Override
+    public void onUserLogin() {
 
-    // Пользовательские методы
+    }
+
+    @Override
+    public void onUserLogout() {
+        closePage();
+    }
+
+
+    // Интерфейсные методы
     @Override
     public void displayUser(User user) {
         Log.d(TAG, "displayUser(), "+user);
@@ -163,6 +175,7 @@ public class UserShow_View extends BaseView implements
     @Override
     public void onUserReadFail(String errorMsg) {
         currentUser = null;
+        hideProgressBar();
         showErrorMsg(R.string.error_displaying_user, errorMsg);
     }
 

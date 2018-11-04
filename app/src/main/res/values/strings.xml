@@ -13,8 +13,8 @@
     <string name="logout_success">Вы вышли из системы</string>
     <string name="logout_error">Ошибка выхода</string>
     <string name="logout">Выйти</string>
-    <string name="testEmail" translatable="false">user@example.com</string>
-    <string name="testPassword" translatable="false">Qwerty123!@#</string>
+    <string name="LOGIN_testEmail" translatable="false">user@example.com</string>
+    <string name="LOGIN_testPassword" translatable="false">123456</string>
     <string name="card_load_error">Ошибка загрузки карточки</string>
     <string name="card_load_canceled">Загрузка карточки отменена</string>
     <string name="opening_card">Открываю карточку</string>
@@ -53,8 +53,8 @@
     <string name="error_deleting_card">Ошибка удаления карточки</string>
     <string name="unknown_request_code">Неизвестный код операции</string>
     <string name="result_error">Ошибка операции</string>
-    <string name="card_deletion">Удаление карточки</string>
-    <string name="really_delete_card">Действительно удалить карточку?</string>
+    <string name="DIALOG_card_deletion">Удаление карточки</string>
+    <string name="DIALOG_really_delete_card">Действительно удалить карточку?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="error_updating_list">Ошибка обновления списка</string>
@@ -90,4 +90,33 @@
     <string name="TAG_SHOW_page_title">Метка «%1$s»</string>
     <string name="CARDS_LIST_page_title">Список карточек</string>
     <string name="CARD_SHOW_page_title">«%1$s», просмотр карточки</string>
+    <string name="DIALOG_deleted_card_name">Удалить карточку «%1$s»</string>
+    <string name="REGISTER_name">Псевдоним</string>
+    <string name="REGISTER_email" translatable="false">E-mail</string>
+    <string name="REGISTER_password">Пароль</string>
+    <string name="REGISTER_password_confirmation">Повторите пароль</string>
+    <string name="REGISTER_proceed">Зарегистрироваться</string>
+    <string name="REGISTER_cancel">Отказаться</string>
+    <string name="REGISTER_name_cannot_be_empty">Псевдоним не может быть пустым</string>
+    <string name="REGISTER_registration_failed">Ошибка регистрации</string>
+    <string name="REGISTER_passwords_mismatch">Пароли не совпадают</string>
+    <string name="REGISTER_registering_user">Регистрируем нового пользователя</string>
+    <string name="MENU_login">Войти</string>
+    <string name="MENU_logout">Выйти</string>
+    <string name="LOGIN_page_title">Вход в программу</string>
+    <string name="LOGIN_login_failed">Ошибка входа</string>
+    <string name="LOGIN_login_success">Успешный вход</string>
+    <string name="LOGIN_cancel">Не входить</string>
+    <string name="LOGIN_logging_in">Осуществляем вход</string>
+    <string name="LOGIN_login">Войти</string>
+    <string name="AUTH_error_logging_out">Ошибка выхода</string>
+    <string name="ERROR_creating_card">Ошибка создания карточки</string>
+    <string name="INFO_card_created">Карточка создана</string>
+    <string name="INFO_card_saved">Карточка сохранена</string>
+    <string name="INFO_operation_cancelled">Операция отменена</string>
+    <string name="ERROR_saving_card">Ошибка сохранения карточки</string>
+    <string name="LOGIN_register">Зарегистрироваться</string>
+    <string name="LOGIN_register_label">Впервые здесь?</string>
+    <string name="REGISTER_page_title">Регистрация</string>
+    <string name="USER_page_title">Профиль прользователя</string>
 </resources>

@@ -3,20 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/actionTags"
-        android:icon="@drawable/ic_tags"
-        android:title="@string/tags"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/actionUsers"
-        android:icon="@drawable/ic_users"
-        android:title="@string/users"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/actionCreateCard"
         android:icon="@drawable/ic_add"
         android:title="@string/add_card"
-        app:showAsAction="always">
+        app:showAsAction="ifRoom">
+
 
         <menu xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -36,5 +26,4 @@
         </menu>
 
     </item>
-
 </menu>
