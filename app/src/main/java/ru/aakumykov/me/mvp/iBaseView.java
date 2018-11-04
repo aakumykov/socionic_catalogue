@@ -10,7 +10,7 @@ public interface iBaseView {
     iCardsService getCardsService();
     iAuthService getAuthService();
 
-    boolean isUserLoggedIn();
+    boolean userLoggedIn();
 
     void showInfoMsg(int messageId);
     void showInfoMsg(String message);
