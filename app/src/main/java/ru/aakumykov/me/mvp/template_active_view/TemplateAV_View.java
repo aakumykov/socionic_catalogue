@@ -26,22 +26,8 @@ public class TemplateAV_View  extends BaseView implements
         presenter = new TemplateAV_Presenter();
     }
 
-    @Override
-    public void onServiceBounded() {
-        presenter.linkView(this);
-        presenter.linkCardsService(getCardsService());
-        presenter.linkAuth(getAuthService());
 
-        presenter.load();
-    }
-
-    @Override
-    public void onServiceUnbounded() {
-        presenter.unlinkView();
-        presenter.unlinkCardsService();
-        presenter.unlinkAuthService();
-    }
-
+    // Обязательные методы
     @Override
     public void onUserLogin() {
 

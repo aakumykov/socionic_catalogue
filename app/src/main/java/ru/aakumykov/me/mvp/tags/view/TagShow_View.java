@@ -71,14 +71,6 @@ public class TagShow_View extends BaseView implements
 
     // Обязательные методы
     @Override
-    public void onServiceBounded() {
-
-    }
-    @Override
-    public void onServiceUnbounded() {
-
-    }
-    @Override
     public void onUserLogin() {
 
     }

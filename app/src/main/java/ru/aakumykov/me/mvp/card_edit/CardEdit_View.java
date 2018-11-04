@@ -71,9 +71,6 @@ public class CardEdit_View extends BaseView implements
     private iCardEdit.Presenter presenter;
 
 
-    private iAuthSingleton as; // Временно
-
-
     // Системные методы
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +136,18 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.linkView(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.unlinkView();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionSave:
@@ -153,40 +162,6 @@ public class CardEdit_View extends BaseView implements
 
 
     // Обязательные методы
-    @Override
-    public void onServiceBounded() {
-        Log.d(TAG, "onServiceBounded()");
-
-        presenter.linkView(this);
-
-        presenter.linkCardsService(getCardsService());
-        as = getAuthService();
-
-        presenter.linkAuthService(as);
-
-//        try {
-//            presenter.processInputIntent(getIntent());
-//        }
-//        catch (IllegalAccessException e) {
-//            hideProgressBar();
-//            showErrorMsg(R.string.CARD_EDIT_edit_denied);
-//            e.printStackTrace();
-//        }
-//        catch (Exception e) {
-//            hideProgressBar();
-//            showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
-//            e.printStackTrace();
-//        }
-    }
-
-    @Override
-    public void onServiceUnbounded() {
-//        Log.d(TAG, "onServiceUnbounded()");
-        presenter.unlinkView();
-        presenter.unlinkCardsService();
-        presenter.unlinkAuthService();
-    }
-
     @Override
     public void onUserLogin() {
 

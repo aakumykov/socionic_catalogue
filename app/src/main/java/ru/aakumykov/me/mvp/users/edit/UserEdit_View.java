@@ -72,15 +72,6 @@ public class UserEdit_View extends BaseView implements
 
 
     // Обязательные методы
-    @Override
-    public void onServiceBounded() {
-
-    }
-    @Override
-    public void onServiceUnbounded() {
-
-    }
-
     @OnClick({R.id.saveButton, R.id.cancelButton})
     @Override
     public void onClick(View v) {

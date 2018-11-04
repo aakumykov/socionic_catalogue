@@ -48,20 +48,6 @@ public class Register_View extends BaseView implements
 
     // Обязательные методы
     @Override
-    public void onServiceBounded() {
-        presenter.linkView(this);
-        presenter.linkCardsService(getCardsService());
-        presenter.linkAuthService(getAuthService());
-    }
-
-    @Override
-    public void onServiceUnbounded() {
-        presenter.unlinkView();
-        presenter.unlinkCardsService();
-        presenter.unlinkAuthService();
-    }
-
-    @Override
     public void onUserLogin() {
         // TODO: что здесь?
     }
