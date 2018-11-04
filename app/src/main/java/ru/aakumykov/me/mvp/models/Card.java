@@ -9,6 +9,8 @@ import com.google.firebase.database.Exclude;
 import java.util.HashMap;
 import java.util.List;
 
+import ru.aakumykov.me.mvp.Constants;
+
 public class Card implements Parcelable {
 
     private String key;
@@ -127,7 +129,10 @@ public class Card implements Parcelable {
     public void setKey(String key) {
         this.key = key;
     }
-    public void setType(String type) {
+    public void setType(String type) throws IllegalArgumentException {
+        if (!type.equals(Constants.TEXT_CARD) && !type.equals(Constants.IMAGE_CARD)) {
+            throw new IllegalArgumentException("Unknown card type '"+type+"'");
+        }
         this.type = type;
     }
     public void setTitle(String title) {
