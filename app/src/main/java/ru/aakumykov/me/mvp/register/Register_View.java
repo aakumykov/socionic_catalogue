@@ -128,4 +128,9 @@ public class Register_View extends BaseView implements
         }
     }
 
+    // TODO: как _реально_ прервать рагистрацию, чтобы не создавать фантомных пользователей?
+    @OnClick(R.id.cancelButton)
+    void cancelRegister() {
+        closePage();
+    }
 }
