@@ -69,7 +69,7 @@ public abstract class BaseView extends AppCompatActivity implements
         cardsServiceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-//                Log.d(TAG, "onCardsServiceConnected()");
+                Log.d(TAG, "onCardsServiceConnected()");
 
                 CardsService.LocalBinder localBinder = (CardsService.LocalBinder) service;
                 cardsService = localBinder.getService();
@@ -92,7 +92,7 @@ public abstract class BaseView extends AppCompatActivity implements
         authServiceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-//                Log.d(TAG, "onAuthServiceConnected()");
+                Log.d(TAG, "onAuthServiceConnected()");
 
                 AuthService.LocalBinder localBinder = (AuthService.LocalBinder) service;
                 authService = localBinder.getService();
@@ -153,11 +153,9 @@ public abstract class BaseView extends AppCompatActivity implements
 //        menu.clear();
 
         if (userLoggedIn()) {
-            Log.d(TAG, "User is logged IN");
             menuInflater.inflate(R.menu.user_in, menu);
             menuInflater.inflate(R.menu.logout, menu);
         } else {
-            Log.d(TAG, "User is logged OUT");
             menuInflater.inflate(R.menu.user_out, menu);
             menuInflater.inflate(R.menu.login, menu);
         }

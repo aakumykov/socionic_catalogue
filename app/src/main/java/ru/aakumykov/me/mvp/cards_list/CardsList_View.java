@@ -30,6 +30,8 @@ import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 // Построен по принципу Active View
 
+// TODO: не исчезает крутилка пальцевого обновления
+
 public class CardsList_View extends BaseView implements
         iCardsList.View,
         ListView.OnItemClickListener,

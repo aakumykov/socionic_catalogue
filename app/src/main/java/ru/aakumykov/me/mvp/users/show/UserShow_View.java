@@ -95,7 +95,7 @@ public class UserShow_View extends BaseView implements
 
     @Override
     public void onServiceBounded() {
-
+        Log.d(TAG, "onServiceBounded()");
     }
     @Override
     public void onServiceUnbounded() {

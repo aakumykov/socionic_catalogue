@@ -33,6 +33,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Card;
@@ -70,19 +71,21 @@ public class CardEdit_View extends BaseView implements
     private iCardEdit.Presenter presenter;
 
 
+    private iAuthService as; // Временно
+
+
     // Системные методы
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate()");
-        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_edit_activity);
         ButterKnife.bind(this);
 
         disableForm();
+
         tagsContainer.setOnTagClickListener(this);
 
-        // Запрос разрешений
         CardEdit_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
 
         // Создание Презентатора
@@ -152,24 +155,28 @@ public class CardEdit_View extends BaseView implements
     // Обязательные методы
     @Override
     public void onServiceBounded() {
-//        Log.d(TAG, "onServiceBounded()");
-        presenter.linkView(this);
-        presenter.linkCardsService(getCardsService());
-        presenter.linkAuthService(getAuthService());
+        Log.d(TAG, "onServiceBounded()");
 
-        try {
-            presenter.processInputIntent(getIntent());
-        }
-        catch (IllegalAccessException e) {
-            hideProgressBar();
-            showErrorMsg(R.string.CARD_EDIT_edit_denied);
-            e.printStackTrace();
-        }
-        catch (Exception e) {
-            hideProgressBar();
-            showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
-            e.printStackTrace();
-        }
+        presenter.linkView(this);
+
+        presenter.linkCardsService(getCardsService());
+        as = getAuthService();
+
+        presenter.linkAuthService(as);
+
+//        try {
+//            presenter.processInputIntent(getIntent());
+//        }
+//        catch (IllegalAccessException e) {
+//            hideProgressBar();
+//            showErrorMsg(R.string.CARD_EDIT_edit_denied);
+//            e.printStackTrace();
+//        }
+//        catch (Exception e) {
+//            hideProgressBar();
+//            showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
+//            e.printStackTrace();
+//        }
     }
 
     @Override
