@@ -315,7 +315,7 @@ public abstract class BaseView extends AppCompatActivity implements
     }
 
     @Override
-    public void enableUpButton() {
+    public void activateUpButton() {
         ActionBar actionBar = getSupportActionBar();
         if (null != actionBar) actionBar.setDisplayHomeAsUpEnabled(true);
     }

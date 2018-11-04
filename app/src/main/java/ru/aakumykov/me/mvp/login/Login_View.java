@@ -36,7 +36,7 @@ public class Login_View extends BaseView implements
         ButterKnife.bind(this);
 
         setPageTitle(getResources().getString(R.string.LOGIN_page_title));
-        enableUpButton();
+        activateUpButton();
 
         presenter = new Login_Presenter();
     }
@@ -127,7 +127,6 @@ public class Login_View extends BaseView implements
         finish();
     }
 
-    // TODO: Проверить переходы назад
     @OnClick(R.id.registerButton)
     void goRegisterPage() {
         Intent intent = new Intent(this, Register_View.class);

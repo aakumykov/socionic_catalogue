@@ -27,7 +27,7 @@ public interface iBaseView {
 
     void setPageTitle(int titleId);
     void setPageTitle(String title);
-    void enableUpButton();
+    void activateUpButton();
 
     void closePage();
 }

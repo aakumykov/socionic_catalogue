@@ -40,10 +40,13 @@ public class Register_View extends BaseView implements
         ButterKnife.bind(this);
 
         setPageTitle(R.string.REGISTER_page_title);
+        activateUpButton();
 
         presenter = new Register_Presenter();
     }
 
+
+    // Обязательные методы
     @Override
     public void onServiceBounded() {
         presenter.linkView(this);
