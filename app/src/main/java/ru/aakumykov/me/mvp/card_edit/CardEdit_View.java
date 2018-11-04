@@ -155,10 +155,18 @@ public class CardEdit_View extends BaseView implements
 //        Log.d(TAG, "onServiceBounded()");
         presenter.linkView(this);
         presenter.linkCardsService(getCardsService());
+        presenter.linkAuthService(getAuthService());
 
         try {
             presenter.processInputIntent(getIntent());
-        } catch (Exception e) {
+        }
+        catch (IllegalAccessException e) {
+            hideProgressBar();
+            showErrorMsg(R.string.CARD_EDIT_edit_denied);
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            hideProgressBar();
             showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
             e.printStackTrace();
         }
@@ -169,6 +177,7 @@ public class CardEdit_View extends BaseView implements
 //        Log.d(TAG, "onServiceUnbounded()");
         presenter.unlinkView();
         presenter.unlinkCardsService();
+        presenter.unlinkAuthService();
     }
 
     @Override

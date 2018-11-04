@@ -27,7 +27,7 @@ public interface iCardsList {
         void linkCardsService(iCardsService model);
         void unlinkCardsService();
 
-        void linkAuth(iAuthService authService);
+        void linkAuthService(iAuthService authService);
         void unlinkAuthService();
     }
 }

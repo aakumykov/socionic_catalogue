@@ -8,12 +8,14 @@ import android.util.Log;
 import java.util.HashMap;
 
 import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
 
+// TODO: скрывать клавиатуру при сохранении
 
 public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel implements
         iCardEdit.Presenter,
@@ -23,7 +25,8 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
 
     private final static String TAG = "CardEdit_Presenter";
     private iCardEdit.View view;
-    private iCardsService model;
+    private iCardsService cardsService;
+    private iAuthService authService;
 
     private Card currentCard;
     private Uri localImageURI;
@@ -33,9 +36,47 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     private HashMap<String,Boolean> newTags;
 
 
+    // Обязательные методы
+    @Override
+    public void linkView(iCardEdit.View view) {
+//        Log.d(TAG, "linkView()");
+        if (null == this.view) this.view = view;
+    }
+    @Override
+    public void unlinkView() {
+//        Log.d(TAG, "unlinkView()");
+        this.view = null;
+    }
+
+    @Override
+    public void linkCardsService(iCardsService model) {
+//        Log.d(TAG, "linkCardsService()");
+        this.cardsService = model;
+    }
+    @Override
+    public void unlinkCardsService() {
+//        Log.d(TAG, "unlinkCardsService()");
+        this.cardsService = null;
+    }
+
+    @Override
+    public void linkAuthService(iAuthService authService) {
+        this.authService = authService;
+    }
+    @Override
+    public void unlinkAuthService() {
+        this.authService = null;
+    }
+
+
+    // Главные методы
     @Override
     public void processInputIntent(Intent intent) throws Exception {
         Log.d(TAG, "processInputIntent()");
+
+        if (!authService.isUserLoggedIn()) {
+            throw new IllegalAccessException("Unauthorized access");
+        }
 
         if (null == intent) {
             Log.e(TAG, "Intent == null");
@@ -66,8 +107,6 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         }
     }
 
-
-    // Да варианта работы
     @Override
     public void createCard(final Card cardDraft) {
         Log.d(TAG, "createCard(), "+cardDraft);
@@ -75,7 +114,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         view.hideWating();
         view.enableForm();
 
-        cardDraft.setKey(model.createKey());
+        cardDraft.setKey(cardsService.createKey());
 
         currentCard = cardDraft;
 
@@ -101,7 +140,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     public void editCard(String cardKey) {
         Log.d(TAG, "editCard("+cardKey+")");
 
-        model.loadCard(cardKey, new iCardsService.CardCallbacks() {
+        cardsService.loadCard(cardKey, new iCardsService.CardCallbacks() {
             @Override
             public void onLoadSuccess(Card card) {
 
@@ -163,7 +202,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
             try {
                 String remoteImagePath = constructImagePath();
                 view.disableForm();
-                model.uploadImage(localImageURI, localImageType, remoteImagePath, this);
+                cardsService.uploadImage(localImageURI, localImageType, remoteImagePath, this);
 
             } catch (Exception e) {
                 view.showErrorMsg(R.string.image_data_error);
@@ -185,7 +224,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     public void onCancelButtonClicked() {
         Log.d(TAG, "onCancelButtonClicked()");
         forgetCardData();
-        model.cancelUpload();
+        cardsService.cancelUpload();
         view.finishEdit(null);
     }
 
@@ -198,7 +237,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     @Override
     public void onImageDiscardClicked() {
         Log.d(TAG, "onImageDiscardClicked()");
-        model.cancelUpload();
+        cardsService.cancelUpload();
         view.removeImage();
         currentCard.setImageURL(null);
     }
@@ -268,30 +307,6 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     @Override
     public void onImageUploadCancel() {
         view.showErrorMsg(R.string.image_upload_cancelled);
-    }
-
-
-    // Служебные методы
-    @Override
-    public void linkView(iCardEdit.View view) {
-//        Log.d(TAG, "linkView()");
-        if (null == this.view) this.view = view;
-    }
-    @Override
-    public void unlinkView() {
-//        Log.d(TAG, "unlinkView()");
-        this.view = null;
-    }
-
-    @Override
-    public void linkCardsService(iCardsService model) {
-//        Log.d(TAG, "linkCardsService()");
-        this.model = model;
-    }
-    @Override
-    public void unlinkCardsService() {
-//        Log.d(TAG, "unlinkCardsService()");
-        this.model = null;
     }
 
 
@@ -390,7 +405,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         }
 
         view.disableForm();
-        model.updateCard(currentCard, this);
+        cardsService.updateCard(currentCard, this);
     }
 
     private String constructImagePath() throws Exception {

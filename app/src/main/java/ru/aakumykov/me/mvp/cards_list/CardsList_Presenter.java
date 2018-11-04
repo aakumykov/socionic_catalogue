@@ -19,7 +19,7 @@ public class CardsList_Presenter implements
 {
     private final static String TAG = "CardsList_Presenter";
     private iCardsList.View view;
-    private iCardsService model;
+    private iCardsService cardsService;
     private iAuthService authService;
     private Card currentCard;
 
@@ -36,15 +36,15 @@ public class CardsList_Presenter implements
 
     @Override
     public void linkCardsService(iCardsService model) {
-        this.model = model;
+        this.cardsService = model;
     }
     @Override
     public void unlinkCardsService() {
-        this.model = null;
+        this.cardsService = null;
     }
 
     @Override
-    public void linkAuth(iAuthService authService) {
+    public void linkAuthService(iAuthService authService) {
         this.authService = authService;
     }
     @Override
@@ -57,7 +57,7 @@ public class CardsList_Presenter implements
     @Override
     public void loadList() {
         Log.d(TAG, "loadList()");
-        model.loadList(this);
+        cardsService.loadList(this);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class CardsList_Presenter implements
         Log.d(TAG, "Удаление подтверждено");
         view.showProgressBar();
 //        view.showInfoMsg(R.string.deleting_card);
-        model.deleteCard(currentCard, this);
+        cardsService.deleteCard(currentCard, this);
     }
 
     @Override

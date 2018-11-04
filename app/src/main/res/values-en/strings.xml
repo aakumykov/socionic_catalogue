@@ -115,4 +115,5 @@
     <string name="LOGIN_register_label">First time here?</string>
     <string name="REGISTER_page_title">New account</string>
     <string name="USER_page_title">User\'s profile</string>
+    <string name="CARD_EDIT_edit_denied">Edit denied</string>
 </resources>

@@ -94,7 +94,7 @@ public class CardsList_View extends BaseView implements
     public void onServiceBounded() {
         presenter.linkView(this);
         presenter.linkCardsService(getCardsService());
-        presenter.linkAuth(getAuthService());
+        presenter.linkAuthService(getAuthService());
 
         showProgressBar();
         showInfoMsg(R.string.loading_cards_list);
