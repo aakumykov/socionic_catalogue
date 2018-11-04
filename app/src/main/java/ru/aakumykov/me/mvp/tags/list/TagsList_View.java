@@ -32,6 +32,8 @@ public class TagsList_View extends BaseView implements
     private TagsListAdapter tagsListAdapter;
 
 
+
+    // Системные методы
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +50,6 @@ public class TagsList_View extends BaseView implements
         presenter = new Tags_Presenter();
         presenter.onListPageReady();
     }
-
-
-    // Системные методы
     @Override
     protected void onStart() {
         super.onStart();
@@ -70,6 +69,15 @@ public class TagsList_View extends BaseView implements
 
     }
 
+    @Override
+    public void onUserLogin() {
+
+    }
+
+    @Override
+    public void onUserLogout() {
+
+    }
 
     // Обработчики
     @Override

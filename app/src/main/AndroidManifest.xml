@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".login.LoginView" android:noHistory="true" />
+        <activity android:name=".login.Login_View" android:noHistory="true" />
+
+        <activity android:name=".register.Register_View" android:noHistory="true" />
 
         <activity android:name=".cards_list.CardsList_View">
             <intent-filter>
@@ -61,8 +63,7 @@
         <activity android:name=".tags.view.TagShow_View"
             android:parentActivityName=".tags.list.TagsList_View" />
 
-        <activity android:name=".register.Register_View" android:noHistory="true" />
-        <activity android:name=".login.Login_View" />
+
 
     </application>
 

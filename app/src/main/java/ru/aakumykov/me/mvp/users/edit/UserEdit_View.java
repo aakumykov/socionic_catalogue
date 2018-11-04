@@ -70,6 +70,8 @@ public class UserEdit_View extends BaseView implements
         presenter.unlinkView();
     }
 
+
+    // Обязательные методы
     @Override
     public void onServiceBounded() {
 
@@ -99,8 +101,18 @@ public class UserEdit_View extends BaseView implements
         }
     }
 
+    @Override
+    public void onUserLogin() {
+        // Он обязан быть уже залогиненным (!)
+    }
 
-    // Пользовательские методы
+    @Override
+    public void onUserLogout() {
+        closePage();
+    }
+
+
+    // Интерфейсные методы
     @Override
     public void fillUserForm(User user) {
         Log.d(TAG, "fillUserForm()");

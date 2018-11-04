@@ -9,24 +9,29 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
+import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.login.Login_View;
+import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.AuthService;
+import ru.aakumykov.me.mvp.services.AuthStateListener;
 import ru.aakumykov.me.mvp.services.CardsService;
+import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 
 public abstract class BaseView extends AppCompatActivity implements
     iBaseView
 {
-
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.progressBar) ProgressBar progressBar;
 
@@ -44,8 +49,13 @@ public abstract class BaseView extends AppCompatActivity implements
     private boolean isCardsServiceBounded = false;
     private boolean isAuthServiceBounded = false;
 
+
+    // Абстрактные методы
     public abstract void onServiceBounded();
     public abstract void onServiceUnbounded();
+
+    public abstract void onUserLogin();
+    public abstract void onUserLogout();
 
 
     // Системные методы
@@ -98,6 +108,21 @@ public abstract class BaseView extends AppCompatActivity implements
                 isAuthServiceBounded = false;
             }
         };
+
+        // Слушатель изменений авторизации
+        iAuthStateListener authStateListener = new AuthStateListener(new iAuthStateListener.StateChangeCallbacks() {
+            @Override
+            public void onLoggedIn() {
+                invalidateOptionsMenu();
+                onUserLogin();
+            }
+
+            @Override
+            public void onLoggedOut() {
+                invalidateOptionsMenu();
+                onUserLogout();
+            }
+        });
     }
 
     @Override
@@ -118,6 +143,28 @@ public abstract class BaseView extends AppCompatActivity implements
             unbindService(authServiceConnection);
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuInflater menuInflater = getMenuInflater();
+
+//        menu.clear();
+
+        if (isUserLoggedIn()) {
+            Log.d(TAG, "User is logged IN");
+            menuInflater.inflate(R.menu.user_in, menu);
+            menuInflater.inflate(R.menu.logout, menu);
+        } else {
+            Log.d(TAG, "User is logged OUT");
+            menuInflater.inflate(R.menu.user_out, menu);
+            menuInflater.inflate(R.menu.login, menu);
+        }
+
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -127,12 +174,24 @@ public abstract class BaseView extends AppCompatActivity implements
                 this.finish();
                 break;
 
+            case R.id.actionUserProfile:
+                seeUserProfile();
+                break;
+
             case R.id.actionLogin:
-                doLogin();
+                login();
                 break;
 
             case R.id.actionLogout:
-                doLogout();
+                logout();
+                break;
+
+            case R.id.actionCreateTextCard:
+                createCard(Constants.TEXT_CARD);
+                break;
+
+            case R.id.actionCreateImageCard:
+                createCard(Constants.IMAGE_CARD);
                 break;
 
             default:
@@ -147,13 +206,23 @@ public abstract class BaseView extends AppCompatActivity implements
         Log.d(TAG, "onActivityResult()");
 
         switch (requestCode) {
+
             case Constants.CODE_LOGIN:
-                processLoginResult(resultCode, data);
                 break;
+
+            case Constants.CODE_CREATE_CARD:
+                onCardCreated(resultCode, data);
+                break;
+
+            case Constants.CODE_EDIT_CARD:
+                onCardEdited(resultCode, data);
+                break;
+
             default:
                 super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
 
     // Сообщения пользователю
     @Override
@@ -221,13 +290,13 @@ public abstract class BaseView extends AppCompatActivity implements
         return authService;
     }
 
-    @Override
-    public View getProgressBar() {
-        return progressBar;
-    }
-
 
     // Разное
+    @Override
+    public boolean isUserLoggedIn() {
+        return authService.isUserLoggedIn();
+    }
+
     @Override
     public void closePage() {
         Log.d(TAG, "closePage()");
@@ -251,24 +320,88 @@ public abstract class BaseView extends AppCompatActivity implements
     }
 
     @Override
-    public void enableUpButton() {
+    public void activateUpButton() {
         ActionBar actionBar = getSupportActionBar();
         if (null != actionBar) actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
 
     // Внутренние методы
-    void doLogin() {
-        Log.d(TAG, "doLogin()");
-        Intent intent = new Intent(this, Login_View.class);
-        startActivityForResult(intent, Constants.CODE_LOGIN);
+    private void login() {
+        // Можно и без result, потому что статус авторизации обрабатывается в
+        // AuthStateListener
+        if (!authService.isUserLoggedIn()) {
+            Log.d(TAG, "doLogin()");
+            Intent intent = new Intent(this, Login_View.class);
+            startActivityForResult(intent, Constants.CODE_LOGIN);
+        }
     }
 
-    void doLogout() {
-        Log.d(TAG, "doLogout()");
+    private void logout() {
+        Log.d(TAG, "logout()");
+        authService.logout(new iAuthService.LogoutCallbacks() {
+            @Override
+            public void onLogoutSuccess() {
+                showInfoMsg("Вы вышли");
+            }
+
+            @Override
+            public void onLogoutFail(String errorMsg) {
+                showErrorMsg(errorMsg);
+            }
+        });
     }
 
-    void processLoginResult(int resultCode, @Nullable Intent data) {
-        Log.d(TAG, "processLoginResult()");
+    private void seeUserProfile() {
+        Intent intent = new Intent(this, UserShow_View.class);
+        intent.putExtra(Constants.USER_ID, authService.currentUid());
+        startActivity(intent);
+    }
+
+    private void createCard(String cardType) {
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.setAction(Constants.ACTION_CREATE);
+
+        try {
+            Card cardDraft = new Card();
+            cardDraft.setType(cardType);
+            intent.putExtra(Constants.CARD, cardDraft);
+
+        } catch (Exception e) {
+            showErrorMsg(R.string.ERROR_creating_card, e.getMessage());
+            e.printStackTrace();
+        }
+
+        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+    }
+
+    private void onCardCreated(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                showInfoMsg(R.string.INFO_card_created);
+                break;
+            case RESULT_CANCELED:
+                showInfoMsg(R.string.INFO_operation_cancelled);
+                break;
+            default:
+                showErrorMsg(R.string.ERROR_creating_card);
+                Log.d(TAG, "data: "+data);
+                break;
+        }
+    }
+
+    private void onCardEdited(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                showInfoMsg(R.string.INFO_card_saved);
+                break;
+            case RESULT_CANCELED:
+                showInfoMsg(R.string.INFO_operation_cancelled);
+                break;
+            default:
+                showErrorMsg(R.string.ERROR_saving_card);
+                Log.d(TAG, "data: "+data);
+                break;
+        }
     }
 }

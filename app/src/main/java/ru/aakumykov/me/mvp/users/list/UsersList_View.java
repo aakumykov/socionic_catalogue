@@ -99,8 +99,18 @@ public class UsersList_View extends BaseView implements
 
     }
 
+    @Override
+    public void onUserLogin() {
 
-    // Пользовательские методы
+    }
+
+    @Override
+    public void onUserLogout() {
+
+    }
+
+
+    // Интерфейсные методы
     @Override
     public void displayList(List<User> list) {
         Log.d(TAG, "displayList()");

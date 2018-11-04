@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.models;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -8,6 +9,8 @@ import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
 import java.util.List;
+
+import ru.aakumykov.me.mvp.Constants;
 
 public class Card implements Parcelable {
 
@@ -26,10 +29,10 @@ public class Card implements Parcelable {
     public Card(String type, String title, String quote, String imageURL, String description,
                 HashMap<String,Boolean> tagsMap
     ) {
-        this.type = type;
+        setType(type);
         this.title = title;
         this.quote = quote;
-        this.imageURL = imageURL;
+        setImageURL(imageURL);
         this.description = description;
         this.tags = tagsMap;
     }
@@ -127,7 +130,10 @@ public class Card implements Parcelable {
     public void setKey(String key) {
         this.key = key;
     }
-    public void setType(String type) {
+    public void setType(String type) throws IllegalArgumentException {
+        if (!type.equals(Constants.TEXT_CARD) && !type.equals(Constants.IMAGE_CARD)) {
+            throw new IllegalArgumentException("Unknown card type '"+type+"'");
+        }
         this.type = type;
     }
     public void setTitle(String title) {
@@ -136,9 +142,10 @@ public class Card implements Parcelable {
     public void setQuote(String quote) {
         this.quote = quote;
     }
-    public void setImageURL(String imageURL) {
-        // TODO: проверять бы на корректность
-        this.imageURL = imageURL;
+    public void setImageURL(String imageURL) throws IllegalArgumentException {
+            Uri uri = Uri.parse(imageURL);
+            if (null == uri) throw new IllegalArgumentException("Error parsing imageURL");
+            this.imageURL = imageURL;
     }
     public void setDescription(String description) {
         this.description = description;

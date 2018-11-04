@@ -13,8 +13,8 @@
     <string name="logout_success">Вы вышли из системы</string>
     <string name="logout_error">Ошибка выхода</string>
     <string name="logout">Выйти</string>
-    <string name="testEmail" translatable="false">user@example.com</string>
-    <string name="testPassword" translatable="false">Qwerty123!@#</string>
+    <string name="LOGIN_testEmail" translatable="false">user@example.com</string>
+    <string name="LOGIN_testPassword" translatable="false">123456</string>
     <string name="card_load_error">Ошибка загрузки карточки</string>
     <string name="card_load_canceled">Загрузка карточки отменена</string>
     <string name="opening_card">Открываю карточку</string>
@@ -109,4 +109,14 @@
     <string name="LOGIN_cancel">Не входить</string>
     <string name="LOGIN_logging_in">Осуществляем вход</string>
     <string name="LOGIN_login">Войти</string>
+    <string name="AUTH_error_logging_out">Ошибка выхода</string>
+    <string name="ERROR_creating_card">Ошибка создания карточки</string>
+    <string name="INFO_card_created">Карточка создана</string>
+    <string name="INFO_card_saved">Карточка сохранена</string>
+    <string name="INFO_operation_cancelled">Операция отменена</string>
+    <string name="ERROR_saving_card">Ошибка сохранения карточки</string>
+    <string name="LOGIN_register">Зарегистрироваться</string>
+    <string name="LOGIN_register_label">Впервые здесь?</string>
+    <string name="REGISTER_page_title">Регистрация</string>
+    <string name="USER_page_title">Профиль прользователя</string>
 </resources>

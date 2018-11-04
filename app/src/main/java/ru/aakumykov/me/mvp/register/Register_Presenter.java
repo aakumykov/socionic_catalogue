@@ -2,9 +2,6 @@ package ru.aakumykov.me.mvp.register;
 
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
@@ -22,8 +19,11 @@ public class Register_Presenter implements
     // TODO: Модель-то бывает разная
     private iCardsService model;
     private iAuthService authService;
-
     private User userDraft;
+
+    Register_Presenter() {
+//        iAuthStateListener authStateListener = new AuthStateListener();
+    }
 
     // Интерфейсные методы
     @Override

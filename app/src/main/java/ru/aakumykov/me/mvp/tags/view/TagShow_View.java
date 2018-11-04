@@ -49,18 +49,11 @@ public class TagShow_View extends BaseView implements
         super.onStart();
         presenter.linkView(this);
     }
+
     @Override
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
-    }
-    @Override
-    public void onServiceBounded() {
-
-    }
-    @Override
-    public void onServiceUnbounded() {
-
     }
 
     @Override
@@ -75,7 +68,27 @@ public class TagShow_View extends BaseView implements
         }
     }
 
-    // Главные методы
+
+    // Обязательные методы
+    @Override
+    public void onServiceBounded() {
+
+    }
+    @Override
+    public void onServiceUnbounded() {
+
+    }
+    @Override
+    public void onUserLogin() {
+
+    }
+    @Override
+    public void onUserLogout() {
+
+    }
+
+
+    // Интерфейсныне методы
     @Override
     public void displayTag(final Tag tag) {
         Log.d(TAG, "displayTag(), "+tag);
@@ -113,6 +126,7 @@ public class TagShow_View extends BaseView implements
         intent.putExtra(Constants.TAG_FILTER, tagFilter);
         startActivity(intent);
     }
+
 
     // Внутренние методы
     private void processIntent() {

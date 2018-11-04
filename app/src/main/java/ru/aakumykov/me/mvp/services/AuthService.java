@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.models.User;
 
@@ -56,14 +57,15 @@ public class AuthService extends Service implements
 
 
     // Интерфейсные методы
+    // TODO: как быть с Гостем?
     @Override
-    public boolean isAuthorized() {
+    public boolean isUserLoggedIn() {
         return null != firebaseAuth.getCurrentUser();
     }
 
     @Override
-    public boolean isAdmin() {
-        return false;
+    public String currentUid() {
+        return firebaseAuth.getUid();
     }
 
     @Override
@@ -152,6 +154,31 @@ public class AuthService extends Service implements
                         e.printStackTrace();
                     }
                 });
+    }
+
+    // TODO: Exception ?
+    @Override
+    public void logout(LogoutCallbacks callbacks) {
+        FirebaseUser firebaseUser1 = firebaseAuth.getCurrentUser();
+
+        if (null != firebaseUser1) {
+
+            firebaseAuth.signOut();
+            FirebaseUser firebaseUser2 = firebaseAuth.getCurrentUser();
+
+            if (null == firebaseUser2) {
+                getResources().getString(R.string.AUTH_error_logging_out);
+                callbacks.onLogoutSuccess();
+            }
+            else {
+                Log.e(TAG, "firebaseUser != null: " + firebaseUser2);
+                callbacks.onLogoutFail(getResources().getString(R.string.AUTH_error_logging_out));
+            }
+        }
+        else {
+            // TODO: это временно
+            callbacks.onLogoutFail("А вы ещё не заходили!");
+        }
     }
 
     @Override

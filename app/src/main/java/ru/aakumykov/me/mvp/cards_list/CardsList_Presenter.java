@@ -23,6 +23,36 @@ public class CardsList_Presenter implements
     private iAuthService authService;
     private Card currentCard;
 
+
+    // Системные методы
+    @Override
+    public void linkView(iCardsList.View view) {
+        this.view = view;
+    }
+    @Override
+    public void unlinkView() {
+        this.view = null;
+    }
+
+    @Override
+    public void linkCardsService(iCardsService model) {
+        this.model = model;
+    }
+    @Override
+    public void unlinkCardsService() {
+        this.model = null;
+    }
+
+    @Override
+    public void linkAuth(iAuthService authService) {
+        this.authService = authService;
+    }
+    @Override
+    public void unlinkAuthService() {
+        this.authService = null;
+    }
+
+
     // Интерфейсные
     @Override
     public void loadList() {
@@ -99,35 +129,6 @@ public class CardsList_Presenter implements
         Log.d(TAG, "onDeleteError()");
         view.hideProgressBar();
         view.showErrorMsg(R.string.error_deleting_card, msg);
-    }
-
-
-    // Системные методы
-    @Override
-    public void linkView(iCardsList.View view) {
-        this.view = view;
-    }
-    @Override
-    public void unlinkView() {
-        this.view = null;
-    }
-
-    @Override
-    public void linkCardsService(iCardsService model) {
-        this.model = model;
-    }
-    @Override
-    public void unlinkCardsService() {
-        this.model = null;
-    }
-
-    @Override
-    public void linkAuth(iAuthService authService) {
-        this.authService = authService;
-    }
-    @Override
-    public void unlinkAuthService() {
-        this.authService = null;
     }
 
 

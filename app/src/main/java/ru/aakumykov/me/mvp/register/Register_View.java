@@ -39,11 +39,14 @@ public class Register_View extends BaseView implements
         setContentView(R.layout.register_activity);
         ButterKnife.bind(this);
 
-        setPageTitle("Register_View");
+        setPageTitle(R.string.REGISTER_page_title);
+        activateUpButton();
 
         presenter = new Register_Presenter();
     }
 
+
+    // Обязательные методы
     @Override
     public void onServiceBounded() {
         presenter.linkView(this);
@@ -56,6 +59,16 @@ public class Register_View extends BaseView implements
         presenter.unlinkView();
         presenter.unlinkCardsService();
         presenter.unlinkAuthService();
+    }
+
+    @Override
+    public void onUserLogin() {
+        // TODO: что здесь?
+    }
+
+    @Override
+    public void onUserLogout() {
+        // TODO: а здесь?
     }
 
 
@@ -115,4 +128,9 @@ public class Register_View extends BaseView implements
         }
     }
 
+    // TODO: как _реально_ прервать рагистрацию, чтобы не создавать фантомных пользователей?
+    @OnClick(R.id.cancelButton)
+    void cancelRegister() {
+        closePage();
+    }
 }
