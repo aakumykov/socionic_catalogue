@@ -87,6 +87,30 @@ public class CardEdit_View extends BaseView implements
 
         // Создание Презентатора
         presenter = new CardEdit_Presenter();
+
+        try {
+            presenter.processInputIntent(getIntent());
+        }
+        catch (IllegalAccessException e) {
+            showErrorMsg(R.string.CARD_EDIT_edit_denied, e.getMessage());
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            showErrorMsg(R.string.CARD_EDIT_editing_error, e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.linkView(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.unlinkView();
     }
 
     @OnClick({
@@ -133,18 +157,6 @@ public class CardEdit_View extends BaseView implements
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.save, menu);
         return true;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        presenter.linkView(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        presenter.unlinkView();
     }
 
     @Override

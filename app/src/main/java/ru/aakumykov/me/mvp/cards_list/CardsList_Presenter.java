@@ -10,6 +10,8 @@ import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.services.AuthSingleton;
+import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
 
 public class CardsList_Presenter implements
@@ -19,8 +21,8 @@ public class CardsList_Presenter implements
 {
     private final static String TAG = "CardsList_Presenter";
     private iCardsList.View view;
-    private iCardsSingleton cardsService;
-    private iAuthSingleton authService;
+    private iCardsSingleton cardsService = CardsSingleton.getInstance();
+    private iAuthSingleton authService = AuthSingleton.getInstance();
     private Card currentCard;
 
 
@@ -34,29 +36,12 @@ public class CardsList_Presenter implements
         this.view = null;
     }
 
-    @Override
-    public void linkCardsService(iCardsSingleton model) {
-        this.cardsService = model;
-    }
-    @Override
-    public void unlinkCardsService() {
-        this.cardsService = null;
-    }
-
-    @Override
-    public void linkAuthService(iAuthSingleton authService) {
-        this.authService = authService;
-    }
-    @Override
-    public void unlinkAuthService() {
-        this.authService = null;
-    }
-
 
     // Интерфейсные
     @Override
     public void loadList() {
         Log.d(TAG, "loadList()");
+        view.showProgressBar();
         cardsService.loadList(this);
     }
 

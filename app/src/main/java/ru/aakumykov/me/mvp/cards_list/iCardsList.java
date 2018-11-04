@@ -23,11 +23,5 @@ public interface iCardsList {
         // TODO: вынести в общий интерфейс
         void linkView(iCardsList.View view);
         void unlinkView();
-
-        void linkCardsService(iCardsSingleton model);
-        void unlinkCardsService();
-
-        void linkAuthService(iAuthSingleton authService);
-        void unlinkAuthService();
     }
 }

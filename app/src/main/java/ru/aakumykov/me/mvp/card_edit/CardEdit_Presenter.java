@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.card_edit;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -10,6 +11,8 @@ import java.util.HashMap;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
+import ru.aakumykov.me.mvp.services.AuthSingleton;
+import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Card;
@@ -25,8 +28,8 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
 
     private final static String TAG = "CardEdit_Presenter";
     private iCardEdit.View view;
-    private iCardsSingleton cardsService;
-    private iAuthSingleton authService;
+    private iCardsSingleton cardsService = CardsSingleton.getInstance();
+    private iAuthSingleton authService = AuthSingleton.getInstance();;
 
     private Card currentCard;
     private Uri localImageURI;
@@ -36,7 +39,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     private HashMap<String,Boolean> newTags;
 
 
-    // Обязательные методы
+    // Системные методы
     @Override
     public void linkView(iCardEdit.View view) {
 //        Log.d(TAG, "linkView()");
@@ -48,30 +51,10 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         this.view = null;
     }
 
-    @Override
-    public void linkCardsService(iCardsSingleton model) {
-//        Log.d(TAG, "linkCardsService()");
-        this.cardsService = model;
-    }
-    @Override
-    public void unlinkCardsService() {
-//        Log.d(TAG, "unlinkCardsService()");
-        this.cardsService = null;
-    }
-
-    @Override
-    public void linkAuthService(iAuthSingleton authService) {
-        this.authService = authService;
-    }
-    @Override
-    public void unlinkAuthService() {
-        this.authService = null;
-    }
-
 
     // Главные методы
     @Override
-    public void processInputIntent(Intent intent) throws Exception {
+    public void processInputIntent(@Nullable Intent intent) throws Exception {
         Log.d(TAG, "processInputIntent()");
 
         if (!authService.isUserLoggedIn()) {

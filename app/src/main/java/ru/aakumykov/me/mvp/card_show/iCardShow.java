@@ -1,6 +1,8 @@
 package ru.aakumykov.me.mvp.card_show;
 
+import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 
 import java.util.HashMap;
 
@@ -12,16 +14,12 @@ import ru.aakumykov.me.mvp.models.Card;
 public interface iCardShow {
 
     interface View extends iBaseView {
-        void showWaitScreen();
 
         void displayCard(Card card);
         void displayImage(Uri imageURI);
         void displayImageError();
 
         void showTags(HashMap<String,Boolean> tagsHash);
-
-        void showProgressMessage(int messageId); // убрать в BaseView
-        void hideProgressMessage(); // убрать в BaseView
 
         void goEditPage(Card card);
         void goList(String tagFilter);
@@ -30,7 +28,7 @@ public interface iCardShow {
     }
 
     interface Presenter {
-        void cardKeyRecieved(String key);
+        void processInputIntent(@Nullable Intent intent) throws Exception;
 
         void onTagClicked(String tagName);
 
@@ -40,11 +38,5 @@ public interface iCardShow {
 
         void linkView(iCardShow.View view);
         void unlinkView();
-
-        void linkCardsService(iCardsSingleton model);
-        void unlinkCardsService();
-
-        void linkAuth(iAuthSingleton authService);
-        void unlinkAuthService();
     }
 }

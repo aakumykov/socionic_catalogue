@@ -65,6 +65,20 @@ public class CardsList_View extends BaseView implements
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
         listView.setLongClickable(true);
+
+        presenter.loadList();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.linkView(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.unlinkView();
     }
 
     @Override

@@ -52,12 +52,6 @@ public interface iCardEdit {
         void linkView(iCardEdit.View view);
         void unlinkView();
 
-        void linkCardsService(iCardsSingleton model);
-        void unlinkCardsService();
-
-        void linkAuthService(iAuthSingleton authService);
-        void unlinkAuthService();
-
         void processInputIntent(final Intent intent) throws Exception;
 
         void createCard(Card cardDraft);
