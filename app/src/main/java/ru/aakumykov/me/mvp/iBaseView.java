@@ -1,11 +1,11 @@
 package ru.aakumykov.me.mvp;
 
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 
 public interface iBaseView {
 
-    iCardsService getCardsService();
+    iCardsSingleton getCardsService();
     iAuthSingleton getAuthService();
 
     boolean userLoggedIn();

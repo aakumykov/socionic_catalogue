@@ -1,10 +1,7 @@
 package ru.aakumykov.me.mvp;
 
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,15 +16,14 @@ import butterknife.BindView;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.login.Login_View;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.AuthStateListener;
-import ru.aakumykov.me.mvp.services.CardsService;
+import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
-
 
 public abstract class BaseView extends AppCompatActivity implements
     iBaseView
@@ -36,23 +32,10 @@ public abstract class BaseView extends AppCompatActivity implements
     @BindView(R.id.progressBar) ProgressBar progressBar;
 
     private final static String TAG = "BaseView";
-    private iCardsService cardsService;
+    private iCardsSingleton cardsService;
     private iAuthSingleton authService;
 
-//    private Intent cardsServiceIntent;
-//    private Intent authServiceIntent;
-//
-//    private ServiceConnection cardsServiceConnection;
-//    private ServiceConnection authServiceConnection;
-//
-//    private boolean isCardsServiceBounded = false;
-//    private boolean isAuthServiceBounded = false;
-
-
     // Абстрактные методы
-    public abstract void onServiceBounded();
-    public abstract void onServiceUnbounded();
-
     public abstract void onUserLogin();
     public abstract void onUserLogout();
 
@@ -63,6 +46,8 @@ public abstract class BaseView extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
 
         authService = AuthSingleton.getInstance();
+        cardsService = CardsSingleton.getInstance();
+        // TODO: storageSingleton
 
         // Слушатель изменений авторизации
         iAuthStateListener authStateListener = new AuthStateListener(new iAuthStateListener.StateChangeCallbacks() {
@@ -83,19 +68,11 @@ public abstract class BaseView extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-//        bindService(cardsServiceIntent, cardsServiceConnection, BIND_AUTO_CREATE);
-//        bindService(authServiceIntent, authServiceConnection, BIND_AUTO_CREATE);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
-//        if (isCardsServiceBounded)
-//            unbindService(cardsServiceConnection);
-//
-//        if (isAuthServiceBounded)
-//            unbindService(authServiceConnection);
     }
 
 
@@ -235,13 +212,13 @@ public abstract class BaseView extends AppCompatActivity implements
 
 
     // Геттеры
-//    public iCardsService getCardsService() {
-//        return cardsService;
-//    }
-//
-//    public iAuthSingleton getAuthService() {
-//        return authService;
-//    }
+    public iCardsSingleton getCardsService() {
+        return cardsService;
+    }
+
+    public iAuthSingleton getAuthService() {
+        return authService;
+    }
 
 
     // Разное

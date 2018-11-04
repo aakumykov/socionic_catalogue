@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
 
 public interface iCardShow {
@@ -41,7 +41,7 @@ public interface iCardShow {
         void linkView(iCardShow.View view);
         void unlinkView();
 
-        void linkCardsService(iCardsService model);
+        void linkCardsService(iCardsSingleton model);
         void unlinkCardsService();
 
         void linkAuth(iAuthSingleton authService);

@@ -2,7 +2,7 @@ package ru.aakumykov.me.mvp.template_active_view;
 
 import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 
 public interface iTemplateAV {
 
@@ -17,7 +17,7 @@ public interface iTemplateAV {
         void linkView(iTemplateAV.View view);
         void unlinkView();
 
-        void linkCardsService(iCardsService model);
+        void linkCardsService(iCardsSingleton model);
         void unlinkCardsService();
 
         void linkAuth(iAuthSingleton authService);

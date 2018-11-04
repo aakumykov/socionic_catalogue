@@ -6,7 +6,7 @@ import java.util.List;
 
 import ru.aakumykov.me.mvp.models.Card;
 
-public interface iCardsService {
+public interface iCardsSingleton {
 
     void loadList(ListCallbacks callbacks);
     void loadList(String tagFilter, ListCallbacks callbacks);

@@ -9,9 +9,9 @@ import java.util.HashMap;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
+import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
 
@@ -19,13 +19,13 @@ import ru.aakumykov.me.mvp.services.TagsSingleton;
 
 public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel implements
         iCardEdit.Presenter,
-        iCardsService.ImageUploadCallbacks,
-        iCardsService.SaveCardCallbacks
+        iCardsSingleton.ImageUploadCallbacks,
+        iCardsSingleton.SaveCardCallbacks
 {
 
     private final static String TAG = "CardEdit_Presenter";
     private iCardEdit.View view;
-    private iCardsService cardsService;
+    private iCardsSingleton cardsService;
     private iAuthSingleton authService;
 
     private Card currentCard;
@@ -49,7 +49,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     }
 
     @Override
-    public void linkCardsService(iCardsService model) {
+    public void linkCardsService(iCardsSingleton model) {
 //        Log.d(TAG, "linkCardsService()");
         this.cardsService = model;
     }
@@ -140,7 +140,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     public void editCard(String cardKey) {
         Log.d(TAG, "editCard("+cardKey+")");
 
-        cardsService.loadCard(cardKey, new iCardsService.CardCallbacks() {
+        cardsService.loadCard(cardKey, new iCardsSingleton.CardCallbacks() {
             @Override
             public void onLoadSuccess(Card card) {
 

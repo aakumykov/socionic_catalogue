@@ -33,7 +33,8 @@ public class AuthSingleton implements iAuthSingleton
     }
     private AuthSingleton() {}
     /* Одиночка */    
-    
+
+
     // Свойства
     private final static String TAG = "AuthSingleton";
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();

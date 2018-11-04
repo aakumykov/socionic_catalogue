@@ -2,7 +2,7 @@ package ru.aakumykov.me.mvp.register;
 
 import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.models.User;
 
 public interface iRegister {
@@ -20,7 +20,7 @@ public interface iRegister {
         void linkView(iRegister.View view);
         void unlinkView();
 
-        void linkCardsService(iCardsService model);
+        void linkCardsService(iCardsSingleton model);
         void unlinkCardsService();
 
         void linkAuthService(iAuthSingleton authService);

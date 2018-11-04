@@ -4,7 +4,7 @@ import android.util.Log;
 
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.models.User;
 
 // TODO: проверять имя пользователя
@@ -17,7 +17,7 @@ public class Register_Presenter implements
     private final static String TAG = "Register_Presenter";
     private iRegister.View view;
     // TODO: Модель-то бывает разная
-    private iCardsService model;
+    private iCardsSingleton model;
     private iAuthSingleton authService;
     private User userDraft;
 
@@ -58,7 +58,7 @@ public class Register_Presenter implements
     }
 
     @Override
-    public void linkCardsService(iCardsService model) {
+    public void linkCardsService(iCardsSingleton model) {
         this.model = model;
     }
     @Override

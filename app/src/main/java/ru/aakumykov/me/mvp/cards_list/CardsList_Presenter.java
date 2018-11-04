@@ -6,7 +6,7 @@ import java.util.List;
 
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
@@ -14,12 +14,12 @@ import ru.aakumykov.me.mvp.services.TagsSingleton;
 
 public class CardsList_Presenter implements
         iCardsList.Presenter,
-        iCardsService.ListCallbacks,
+        iCardsSingleton.ListCallbacks,
         iDialogCallbacks.Delete
 {
     private final static String TAG = "CardsList_Presenter";
     private iCardsList.View view;
-    private iCardsService cardsService;
+    private iCardsSingleton cardsService;
     private iAuthSingleton authService;
     private Card currentCard;
 
@@ -35,7 +35,7 @@ public class CardsList_Presenter implements
     }
 
     @Override
-    public void linkCardsService(iCardsService model) {
+    public void linkCardsService(iCardsSingleton model) {
         this.cardsService = model;
     }
     @Override

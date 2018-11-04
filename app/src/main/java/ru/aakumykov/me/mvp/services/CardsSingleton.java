@@ -30,68 +30,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
 
-public class CardsService extends Service implements
-        iCardsService
+public class CardsSingleton implements
+        iCardsSingleton
 {
-    // Внутренний класс
-    public class LocalBinder extends Binder {
-        public CardsService getService() {
-            return CardsService.this;
+    /* Одиночка */
+    private static volatile CardsSingleton ourInstance;
+    public synchronized static CardsSingleton getInstance() {
+        synchronized (CardsSingleton.class) {
+            if (null == ourInstance) ourInstance = new CardsSingleton();
+            return ourInstance;
         }
     }
-
+    private CardsSingleton() {}
+    /* Одиночка */
 
     // Свойства
-    private final static String TAG = "CardsService";
-    private final IBinder binder;
+    private final static String TAG = "CardsSingleton";
 
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference cardsRef;
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
-    private StorageReference imagesRef;
+    private DatabaseReference cardsRef = firebaseDatabase.getReference().child(Constants.CARDS_PATH);
+    private StorageReference imagesRef = firebaseStorage.getReference().child(Constants.IMAGES_PATH);
+
     private UploadTask uploadTask;
 
 
-    // Слежебные методы
-    public CardsService() {
-//        Log.d(TAG, "new CardsService()");
-
-        binder = new LocalBinder();
-
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        cardsRef = firebaseDatabase.getReference().child(Constants.CARDS_PATH);
-        imagesRef = FirebaseStorage.getInstance().getReference().child(Constants.IMAGES_PATH);
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-//        Log.d(TAG, "onBind()");
-        return binder;
-    }
-
-    @Override
-    public void onCreate() {
-//        Log.d(TAG, "onCreate()");
-        super.onCreate();
-
-        firebaseDatabase.goOnline(); // нужно ли?
-    }
-
-    @Override
-    public void onDestroy() {
-//        Log.d(TAG, "onDestroy()");
-        super.onDestroy();
-
-        cancelUpload();
-
-        firebaseDatabase.goOffline();
-    }
-
-
-    // Пользовательские методы
+    // Интерфейсные методы
     @Override
     public String createKey() {
         return cardsRef.push().getKey();

@@ -3,18 +3,18 @@ package ru.aakumykov.me.mvp.card_show;
 import android.util.Log;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
 
 public class CardShow_Presenter implements
         iCardShow.Presenter,
-        iCardsService.CardCallbacks
+        iCardsSingleton.CardCallbacks
 {
 
     private final static String TAG = "CardShow_Presenter";
     private iCardShow.View view;
-    private iCardsService model;
+    private iCardsSingleton model;
     private iAuthSingleton authService;
 
     private Card currentCard;
@@ -75,7 +75,7 @@ public class CardShow_Presenter implements
     }
 
     @Override
-    public void linkCardsService(iCardsService model) {
+    public void linkCardsService(iCardsSingleton model) {
         this.model = model;
     }
     @Override

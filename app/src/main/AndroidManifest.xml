@@ -42,7 +42,7 @@
         </activity>
 
         <service
-            android:name=".services.CardsService"
+            android:name=".services.CardsSingleton"
             android:enabled="true"
             android:exported="false" />
         <service
