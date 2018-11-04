@@ -45,7 +45,7 @@ public class CardsList_View extends BaseView implements
     private List<Card> cardsList;
     private CardsListAdapter cardsListAdapter;
     private Card currentCard;
-
+    private boolean firstRun = true;
 
     // Системные методы
     @Override
@@ -65,14 +65,18 @@ public class CardsList_View extends BaseView implements
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
         listView.setLongClickable(true);
-
-        presenter.loadList();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
+
+        if (firstRun) {
+            presenter.loadList();
+            firstRun = false;
+        }
+
     }
 
     @Override

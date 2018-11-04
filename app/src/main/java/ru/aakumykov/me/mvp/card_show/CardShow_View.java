@@ -63,16 +63,16 @@ public class CardShow_View extends BaseView implements
         tagsContainer.setOnTagClickListener(this);
 
         presenter = new CardShow_Presenter();
-
-        Intent intent = getIntent();
-
-        loadCard();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
+        if (firstRun) {
+            loadCard();
+            firstRun = false;
+        }
     }
 
     @Override
