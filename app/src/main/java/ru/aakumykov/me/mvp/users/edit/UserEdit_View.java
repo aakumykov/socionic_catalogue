@@ -100,12 +100,12 @@ public class UserEdit_View extends BaseView implements
     }
 
     @Override
-    public void processLogin() {
+    public void onUserLogin() {
 
     }
 
     @Override
-    public void processLogout() {
+    public void onUserLogout() {
 
     }
 

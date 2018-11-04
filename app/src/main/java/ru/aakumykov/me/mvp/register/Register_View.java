@@ -59,12 +59,12 @@ public class Register_View extends BaseView implements
     }
 
     @Override
-    public void processLogin() {
+    public void onUserLogin() {
         // TODO: что здесь?
     }
 
     @Override
-    public void processLogout() {
+    public void onUserLogout() {
         // TODO: а здесь?
     }
 

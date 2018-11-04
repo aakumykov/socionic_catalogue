@@ -53,8 +53,8 @@ public abstract class BaseView extends AppCompatActivity implements
     public abstract void onServiceBounded();
     public abstract void onServiceUnbounded();
 
-    public abstract void processLogin();
-    public abstract void processLogout();
+    public abstract void onUserLogin();
+    public abstract void onUserLogout();
 
 
     // Системные методы
@@ -113,13 +113,13 @@ public abstract class BaseView extends AppCompatActivity implements
             @Override
             public void onLoggedIn() {
                 invalidateOptionsMenu();
-                processLogin();
+                onUserLogin();
             }
 
             @Override
             public void onLoggedOut() {
                 invalidateOptionsMenu();
-                processLogout();
+                onUserLogout();
             }
         });
     }
