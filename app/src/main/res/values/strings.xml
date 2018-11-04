@@ -110,4 +110,9 @@
     <string name="LOGIN_logging_in">Осуществляем вход</string>
     <string name="LOGIN_login">Войти</string>
     <string name="AUTH_error_logging_out">Ошибка выхода</string>
+    <string name="ERROR_creating_card">Ошибка создания карточки</string>
+    <string name="INFO_card_created">Карточка создана</string>
+    <string name="INFO_card_saved">Карточка сохранена</string>
+    <string name="INFO_operation_cancelled">Операция отменена</string>
+    <string name="ERROR_saving_card">Ошибка сохранения карточки</string>
 </resources>

@@ -12,15 +12,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.interfaces.iAuthService;
 import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.login.Login_View;
+import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.AuthService;
 import ru.aakumykov.me.mvp.services.AuthStateListener;
 import ru.aakumykov.me.mvp.services.CardsService;
@@ -150,7 +151,7 @@ public abstract class BaseView extends AppCompatActivity implements
 
         menu.clear();
 
-        if (userLoggedIn()) {
+        if (isUserLoggedIn()) {
             Log.d(TAG, "User is logged IN");
             menuInflater.inflate(R.menu.user_in, menu);
             menuInflater.inflate(R.menu.logout, menu);
@@ -180,6 +181,14 @@ public abstract class BaseView extends AppCompatActivity implements
                 logout();
                 break;
 
+            case R.id.actionCreateTextCard:
+                createCard(Constants.TEXT_CARD);
+                break;
+
+            case R.id.actionCreateImageCard:
+                createCard(Constants.IMAGE_CARD);
+                break;
+
             default:
                 super.onOptionsItemSelected(item);
         }
@@ -192,8 +201,18 @@ public abstract class BaseView extends AppCompatActivity implements
         Log.d(TAG, "onActivityResult()");
 
         switch (requestCode) {
+
             case Constants.CODE_LOGIN:
                 break;
+
+            case Constants.CODE_CREATE_CARD:
+                onCardCreated(resultCode, data);
+                break;
+
+            case Constants.CODE_EDIT_CARD:
+                onCardEdited(resultCode, data);
+                break;
+
             default:
                 super.onActivityResult(requestCode, resultCode, data);
         }
@@ -266,15 +285,10 @@ public abstract class BaseView extends AppCompatActivity implements
         return authService;
     }
 
-    @Override
-    public View getProgressBar() {
-        return progressBar;
-    }
-
 
     // Разное
     @Override
-    public boolean userLoggedIn() {
+    public boolean isUserLoggedIn() {
         return authService.isUserLoggedIn();
     }
 
@@ -308,7 +322,7 @@ public abstract class BaseView extends AppCompatActivity implements
 
 
     // Внутренние методы
-    void login() {
+    private void login() {
         // Можно и без result, потому что статус авторизации обрабатывается в
         // AuthStateListener
         if (!authService.isUserLoggedIn()) {
@@ -318,7 +332,7 @@ public abstract class BaseView extends AppCompatActivity implements
         }
     }
 
-    void logout() {
+    private void logout() {
         Log.d(TAG, "logout()");
         authService.logout(new iAuthService.LogoutCallbacks() {
             @Override
@@ -333,4 +347,50 @@ public abstract class BaseView extends AppCompatActivity implements
         });
     }
 
+    private void createCard(String cardType) {
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.setAction(Constants.ACTION_CREATE);
+
+        try {
+            Card cardDraft = new Card();
+            cardDraft.setType(cardType);
+            intent.putExtra(Constants.CARD, cardDraft);
+
+        } catch (Exception e) {
+            showErrorMsg(R.string.ERROR_creating_card, e.getMessage());
+            e.printStackTrace();
+        }
+
+        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+    }
+
+    private void onCardCreated(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                showInfoMsg(R.string.INFO_card_created);
+                break;
+            case RESULT_CANCELED:
+                showInfoMsg(R.string.INFO_operation_cancelled);
+                break;
+            default:
+                showErrorMsg(R.string.ERROR_creating_card);
+                Log.d(TAG, "data: "+data);
+                break;
+        }
+    }
+
+    private void onCardEdited(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                showInfoMsg(R.string.INFO_card_saved);
+                break;
+            case RESULT_CANCELED:
+                showInfoMsg(R.string.INFO_operation_cancelled);
+                break;
+            default:
+                showErrorMsg(R.string.ERROR_saving_card);
+                Log.d(TAG, "data: "+data);
+                break;
+        }
+    }
 }

@@ -106,4 +106,9 @@
     <string name="LOGIN_logging_in">Making login</string>
     <string name="LOGIN_login">Log in</string>
     <string name="AUTH_error_logging_out">Logout error</string>
+    <string name="ERROR_creating_card">Error creating card</string>
+    <string name="INFO_card_created">Card created</string>
+    <string name="INFO_card_saved">Card saved</string>
+    <string name="INFO_operation_cancelled">Operation cancelled</string>
+    <string name="ERROR_saving_card">Error saving card</string>
 </resources>

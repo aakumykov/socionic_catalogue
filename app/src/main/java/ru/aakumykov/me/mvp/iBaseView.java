@@ -10,7 +10,7 @@ public interface iBaseView {
     iCardsService getCardsService();
     iAuthService getAuthService();
 
-    boolean userLoggedIn();
+    boolean isUserLoggedIn();
 
     void showInfoMsg(int messageId);
     void showInfoMsg(String message);
@@ -25,10 +25,9 @@ public interface iBaseView {
 
     void hideMsg();
 
-    void closePage();
     void setPageTitle(int titleId);
     void setPageTitle(String title);
     void enableUpButton();
 
-    View getProgressBar();
+    void closePage();
 }

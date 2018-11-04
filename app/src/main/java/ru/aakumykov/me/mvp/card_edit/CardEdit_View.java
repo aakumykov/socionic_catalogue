@@ -89,37 +89,6 @@ public class CardEdit_View extends BaseView implements
         presenter = new CardEdit_Presenter();
     }
 
-    @Override
-    public void onServiceBounded() {
-//        Log.d(TAG, "onServiceBounded()");
-        presenter.linkView(this);
-        presenter.linkCardsService(getCardsService());
-
-        try {
-            presenter.processInputIntent(getIntent());
-        } catch (Exception e) {
-            showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onServiceUnbounded() {
-//        Log.d(TAG, "onServiceUnbounded()");
-        presenter.unlinkView();
-        presenter.unlinkCardsService();
-    }
-
-    @Override
-    public void processLogin() {
-
-    }
-
-    @Override
-    public void processLogout() {
-
-    }
-
     @OnClick({
         R.id.saveButton,
         R.id.cancelButton,
@@ -159,23 +128,6 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void onTagClick(int position, String text) {
-
-    }
-
-    @Override
-    public void onTagLongClick(int position, String text) {
-
-    }
-
-    @Override
-    public void onTagCrossClick(int position) {
-//        Log.d(TAG, "onTagCrossClick(), position: "+position);
-        tagsContainer.removeTag(position);
-    }
-
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater menuInflater = getMenuInflater();
@@ -194,6 +146,57 @@ public class CardEdit_View extends BaseView implements
                 break;
         }
         return true;
+    }
+
+
+    // Обязательные методы
+    @Override
+    public void onServiceBounded() {
+//        Log.d(TAG, "onServiceBounded()");
+        presenter.linkView(this);
+        presenter.linkCardsService(getCardsService());
+
+        try {
+            presenter.processInputIntent(getIntent());
+        } catch (Exception e) {
+            showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onServiceUnbounded() {
+//        Log.d(TAG, "onServiceUnbounded()");
+        presenter.unlinkView();
+        presenter.unlinkCardsService();
+    }
+
+    @Override
+    public void processLogin() {
+
+    }
+
+    @Override
+    public void processLogout() {
+        closePage();
+    }
+
+
+    // Нажатия меток
+    @Override
+    public void onTagClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagLongClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagCrossClick(int position) {
+//        Log.d(TAG, "onTagCrossClick(), position: "+position);
+        tagsContainer.removeTag(position);
     }
 
 
@@ -223,7 +226,6 @@ public class CardEdit_View extends BaseView implements
         displayCommonCardParts(card);
         showImage(card.getImageURL());
     }
-
 
 
     // Показ картинки
@@ -403,6 +405,7 @@ public class CardEdit_View extends BaseView implements
     public void focusTagInput() {
         newTagInput.requestFocus();
     }
+
 
     // Активация / дизактивация формы
     @Override

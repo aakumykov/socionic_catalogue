@@ -66,6 +66,31 @@ public class CardsList_View extends BaseView implements
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        if (isUserLoggedIn()) {
+            MenuInflater menuInflater = getMenuInflater();
+            menuInflater.inflate(R.menu.create_card, menu);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            default:
+                super.onOptionsItemSelected(item);
+        }
+
+        return true;
+    }
+
+
+    // Обязательные методы
+    @Override
     public void onServiceBounded() {
         presenter.linkView(this);
         presenter.linkCardsService(getCardsService());
@@ -94,38 +119,7 @@ public class CardsList_View extends BaseView implements
     }
 
 
-    // Меню панели
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        if (userLoggedIn()) {
-            MenuInflater menuInflater = getMenuInflater();
-            menuInflater.inflate(R.menu.create_card, menu);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.actionCreateTextCard:
-//                onAddCardButton(Constants.TEXT_CARD);
-                break;
-
-            case R.id.actionCreateImageCard:
-//                onAddCardButton(Constants.IMAGE_CARD);
-                break;
-
-            default:
-                super.onOptionsItemSelected(item);
-        }
-
-        return true;
-    }
-
-
-    // Нажатия списка
+    // Нажатия в списке
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //        Log.d(TAG, "onItemClick(pos: "+position+", id: "+id+")");
