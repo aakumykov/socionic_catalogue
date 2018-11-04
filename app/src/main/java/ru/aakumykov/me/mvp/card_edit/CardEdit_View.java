@@ -33,7 +33,6 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Card;
@@ -69,6 +68,7 @@ public class CardEdit_View extends BaseView implements
 
     private final static String TAG = "CardEdit_View";
     private iCardEdit.Presenter presenter;
+    boolean firstRun = true;
 
 
     // Системные методы
@@ -87,24 +87,15 @@ public class CardEdit_View extends BaseView implements
 
         // Создание Презентатора
         presenter = new CardEdit_Presenter();
-
-        try {
-            presenter.processInputIntent(getIntent());
-        }
-        catch (IllegalAccessException e) {
-            showErrorMsg(R.string.CARD_EDIT_edit_denied, e.getMessage());
-            e.printStackTrace();
-        }
-        catch (Exception e) {
-            showErrorMsg(R.string.CARD_EDIT_editing_error, e.getMessage());
-            e.printStackTrace();
-        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
+        if (firstRun) {
+            loadCard();
+        }
     }
 
     @Override
@@ -456,6 +447,20 @@ public class CardEdit_View extends BaseView implements
     // TODO: контроль размера изображения
 
     // Внутренние методы
+    private void loadCard() {
+        try {
+            presenter.processInputIntent(getIntent());
+        }
+        catch (IllegalAccessException e) {
+            showErrorMsg(R.string.CARD_EDIT_edit_denied, e.getMessage());
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            showErrorMsg(R.string.CARD_EDIT_editing_error, e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private void displayCommonCardParts(Card card) {
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
