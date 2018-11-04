@@ -3,7 +3,7 @@ package ru.aakumykov.me.mvp.register;
 import android.util.Log;
 
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.interfaces.iAuthService;
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.User;
 
@@ -11,14 +11,14 @@ import ru.aakumykov.me.mvp.models.User;
 
 public class Register_Presenter implements
         iRegister.Presenter,
-        iAuthService.RegisterCallbacks,
-        iAuthService.CreateUserCallbacks
+        iAuthSingleton.RegisterCallbacks,
+        iAuthSingleton.CreateUserCallbacks
 {
     private final static String TAG = "Register_Presenter";
     private iRegister.View view;
     // TODO: Модель-то бывает разная
     private iCardsService model;
-    private iAuthService authService;
+    private iAuthSingleton authService;
     private User userDraft;
 
     Register_Presenter() {
@@ -67,7 +67,7 @@ public class Register_Presenter implements
     }
 
     @Override
-    public void linkAuthService(iAuthService authService) {
+    public void linkAuthService(iAuthSingleton authService) {
         this.authService = authService;
     }
     @Override

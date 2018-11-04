@@ -5,7 +5,7 @@ import android.util.Log;
 import java.util.List;
 
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.interfaces.iAuthService;
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
@@ -20,7 +20,7 @@ public class CardsList_Presenter implements
     private final static String TAG = "CardsList_Presenter";
     private iCardsList.View view;
     private iCardsService cardsService;
-    private iAuthService authService;
+    private iAuthSingleton authService;
     private Card currentCard;
 
 
@@ -44,7 +44,7 @@ public class CardsList_Presenter implements
     }
 
     @Override
-    public void linkAuthService(iAuthService authService) {
+    public void linkAuthService(iAuthSingleton authService) {
         this.authService = authService;
     }
     @Override

@@ -5,7 +5,7 @@ import android.net.Uri;
 import java.util.HashMap;
 
 import ru.aakumykov.me.mvp.iBaseView;
-import ru.aakumykov.me.mvp.interfaces.iAuthService;
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
@@ -44,7 +44,7 @@ public interface iCardShow {
         void linkCardsService(iCardsService model);
         void unlinkCardsService();
 
-        void linkAuth(iAuthService authService);
+        void linkAuth(iAuthSingleton authService);
         void unlinkAuthService();
     }
 }

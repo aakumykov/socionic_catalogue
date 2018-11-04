@@ -2,7 +2,7 @@ package ru.aakumykov.me.mvp.interfaces;
 
 import ru.aakumykov.me.mvp.models.User;
 
-public interface iAuthService {
+public interface iAuthSingleton {
 
     boolean isUserLoggedIn();
     String currentUid();
@@ -10,7 +10,7 @@ public interface iAuthService {
     void registerWithEmail(String email, String password, RegisterCallbacks callbacks) throws Exception;
     void createUser(String uid, User userDraft, CreateUserCallbacks callbacks) throws Exception;
     void login(String email, String password, LoginCallbacks callbacks) throws Exception;
-    void logout(LogoutCallbacks callbacks);
+    void logout();
     void cancelLogin();
 
 
@@ -29,8 +29,8 @@ public interface iAuthService {
         void onLoginFail(String errorMsg);
     }
 
-    interface LogoutCallbacks {
-        void onLogoutSuccess();
-        void onLogoutFail(String errorMsg);
-    }
+//    interface LogoutCallbacks {
+//        void onLogoutSuccess();
+//        void onLogoutFail(String errorMsg);
+//    }
 }

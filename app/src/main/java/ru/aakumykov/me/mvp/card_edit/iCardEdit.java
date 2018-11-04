@@ -4,10 +4,9 @@ import android.content.Intent;
 import android.net.Uri;
 
 import java.util.HashMap;
-import java.util.List;
 
 import ru.aakumykov.me.mvp.iBaseView;
-import ru.aakumykov.me.mvp.interfaces.iAuthService;
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 import ru.aakumykov.me.mvp.models.Card;
 
@@ -56,7 +55,7 @@ public interface iCardEdit {
         void linkCardsService(iCardsService model);
         void unlinkCardsService();
 
-        void linkAuthService(iAuthService authService);
+        void linkAuthService(iAuthSingleton authService);
         void unlinkAuthService();
 
         void processInputIntent(final Intent intent) throws Exception;

@@ -1,17 +1,17 @@
 package ru.aakumykov.me.mvp.login;
 
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.interfaces.iAuthService;
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 
 public class Login_Presenter implements
         iLogin.Presenter,
-        iAuthService.LoginCallbacks
+        iAuthSingleton.LoginCallbacks
 {
     private final static String TAG = "Login_Presenter";
     private iLogin.View view;
     private iCardsService model;
-    private iAuthService authService;
+    private iAuthSingleton authService;
 
 
     Login_Presenter() {
@@ -59,7 +59,7 @@ public class Login_Presenter implements
     }
 
     @Override
-    public void linkAuth(iAuthService authService) {
+    public void linkAuth(iAuthSingleton authService) {
         this.authService = authService;
     }
     @Override

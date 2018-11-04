@@ -20,11 +20,11 @@ public class AuthStateListener implements iAuthStateListener {
         FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 if (null == firebaseUser) {
                     callbacks.onLoggedOut();
                 } else {
-//                    if (firebaseUser instanceof FirebaseUser) {
                     callbacks.onLoggedIn();
                 }
             }

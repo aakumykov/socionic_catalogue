@@ -1,7 +1,7 @@
 package ru.aakumykov.me.mvp.login;
 
 import ru.aakumykov.me.mvp.iBaseView;
-import ru.aakumykov.me.mvp.interfaces.iAuthService;
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
 
 public interface iLogin {
@@ -23,7 +23,7 @@ public interface iLogin {
         void linkCardsService(iCardsService model);
         void unlinkCardsService();
 
-        void linkAuth(iAuthService authService);
+        void linkAuth(iAuthSingleton authService);
         void unlinkAuthService();
     }
 }

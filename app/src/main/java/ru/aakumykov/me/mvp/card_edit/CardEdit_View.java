@@ -33,7 +33,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.interfaces.iAuthService;
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Card;
@@ -71,7 +71,7 @@ public class CardEdit_View extends BaseView implements
     private iCardEdit.Presenter presenter;
 
 
-    private iAuthService as; // Временно
+    private iAuthSingleton as; // Временно
 
 
     // Системные методы

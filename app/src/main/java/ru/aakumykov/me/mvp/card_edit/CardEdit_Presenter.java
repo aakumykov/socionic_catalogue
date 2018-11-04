@@ -8,7 +8,7 @@ import android.util.Log;
 import java.util.HashMap;
 
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.interfaces.iAuthService;
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iCardsService;
@@ -26,7 +26,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     private final static String TAG = "CardEdit_Presenter";
     private iCardEdit.View view;
     private iCardsService cardsService;
-    private iAuthService authService;
+    private iAuthSingleton authService;
 
     private Card currentCard;
     private Uri localImageURI;
@@ -60,7 +60,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     }
 
     @Override
-    public void linkAuthService(iAuthService authService) {
+    public void linkAuthService(iAuthSingleton authService) {
         this.authService = authService;
     }
     @Override
