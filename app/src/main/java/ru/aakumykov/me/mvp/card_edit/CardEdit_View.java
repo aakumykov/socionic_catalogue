@@ -79,6 +79,8 @@ public class CardEdit_View extends BaseView implements
         setContentView(R.layout.card_edit_activity);
         ButterKnife.bind(this);
 
+        activateUpButton();
+
         disableForm();
 
         tagsContainer.setOnTagClickListener(this);
@@ -105,6 +107,11 @@ public class CardEdit_View extends BaseView implements
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @OnClick({
@@ -155,10 +162,13 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
+
             case R.id.actionSave:
                 presenter.onSaveButtonClicked();
                 break;
+
             default:
                 super.onOptionsItemSelected(item);
                 break;
@@ -329,8 +339,7 @@ public class CardEdit_View extends BaseView implements
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult(requestCode: "+requestCode+", resultCode: "+resultCode+", ...)");
 
-//        presenter.linkView(this);
-//        presenter.linkCardsService(cardsService);
+        presenter.linkView(this);
 
         if (RESULT_CANCELED == resultCode) {
             Log.d(TAG, "Выбор картинки отменён");
@@ -433,10 +442,12 @@ public class CardEdit_View extends BaseView implements
     @Override
     public void finishEdit(Card card) {
         Log.d(TAG, "finishEdit(), "+card);
+
         Intent intent = new Intent();
         int resultCode = (null != card) ? RESULT_OK : RESULT_CANCELED;
         setResult(resultCode, intent);
         intent.putExtra(Constants.CARD, card);
+
         finish();
     }
 

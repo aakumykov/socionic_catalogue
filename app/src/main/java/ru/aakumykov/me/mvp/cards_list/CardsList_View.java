@@ -72,10 +72,10 @@ public class CardsList_View extends BaseView implements
         super.onStart();
         presenter.linkView(this);
 
-        if (firstRun) {
+//        if (firstRun) {
             presenter.loadList();
             firstRun = false;
-        }
+//        }
 
     }
 
@@ -83,6 +83,11 @@ public class CardsList_View extends BaseView implements
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

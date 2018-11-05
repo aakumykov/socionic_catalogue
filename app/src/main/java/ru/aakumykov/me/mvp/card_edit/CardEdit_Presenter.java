@@ -210,7 +210,8 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         Log.d(TAG, "onImageDiscardClicked()");
         cardsService.cancelUpload();
         view.removeImage();
-        currentCard.setImageURL(null);
+//        currentCard.setImageURL(null);
+        currentCard.removeImageURL();
     }
 
     @Override
@@ -295,6 +296,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         );
 
         forgetCardData();
+
         view.finishEdit(card);
     }
 
@@ -393,6 +395,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         }
 
         view.disableForm();
+
         cardsService.updateCard(currentCard, this);
     }
 

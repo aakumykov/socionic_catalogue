@@ -22,6 +22,7 @@ public class Card implements Parcelable {
     private String description;
     private HashMap<String, Boolean> tags;
 
+
     public Card() {
 
     }
@@ -152,5 +153,9 @@ public class Card implements Parcelable {
     }
     public void setTags(HashMap<String, Boolean> tags) {
         this.tags = tags;
+    }
+
+    public void removeImageURL() {
+        this.imageURL = null;
     }
 }
