@@ -107,7 +107,7 @@
     <string name="LOGIN_login_failed">Ошибка входа</string>
     <string name="LOGIN_login_success">Успешный вход</string>
     <string name="LOGIN_cancel">Не входить</string>
-    <string name="LOGIN_logging_in">Осуществляем вход</string>
+    <string name="LOGIN_logging_in">Входим в программу</string>
     <string name="LOGIN_login">Войти</string>
     <string name="AUTH_error_logging_out">Ошибка выхода</string>
     <string name="ERROR_creating_card">Ошибка создания карточки</string>

@@ -42,6 +42,18 @@ public class Login_View extends BaseView implements
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.linkView(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.unlinkView();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
@@ -56,7 +68,6 @@ public class Login_View extends BaseView implements
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
 
     // Обязательные методы

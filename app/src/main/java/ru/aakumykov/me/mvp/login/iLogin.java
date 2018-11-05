@@ -19,11 +19,5 @@ public interface iLogin {
         // TODO: вынести в общий интерфейс
         void linkView(iLogin.View view);
         void unlinkView();
-
-        void linkCardsService(iCardsSingleton model);
-        void unlinkCardsService();
-
-        void linkAuth(iAuthSingleton authService);
-        void unlinkAuthService();
     }
 }
