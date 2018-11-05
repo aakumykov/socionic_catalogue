@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.card.edit;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +26,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
@@ -33,7 +36,7 @@ import ru.aakumykov.me.mvp.card.iCardEdit2;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
-
+@RuntimePermissions
 public class CardEdit2_View extends BaseView implements
     iCardEdit2.View
 {
@@ -67,6 +70,8 @@ public class CardEdit2_View extends BaseView implements
 
         setPageTitle(R.string.CARD_EDIT_page_title);
         activateUpButton();
+
+        CardEdit2_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
 
         presenter = new CardEdit2_Presenter();
     }
@@ -211,6 +216,8 @@ public class CardEdit2_View extends BaseView implements
     @Override
     public void showBrokenImage() {
         imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
+        MyUtils.show(imageView);
+        MyUtils.show(imageHolder);
 //        MyUtils.hide(discardImageButton);
     }
 
@@ -319,8 +326,14 @@ public class CardEdit2_View extends BaseView implements
         MyUtils.hide(imageProgressBar);
     }
 
-
     private void hideImageProgressBar() {
         MyUtils.hide(imageProgressBar);
+    }
+
+
+    // Другие
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    void checkPermissions() {
+
     }
 }
