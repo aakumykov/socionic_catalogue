@@ -53,7 +53,7 @@
 
         <activity android:name=".tags.view.TagShow_View"
             android:parentActivityName=".tags.list.TagsList_View" />
-
+        <activity android:name=".card.edit.CardEdit2_View" />
 
 
     </application>
