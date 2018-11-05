@@ -122,4 +122,5 @@
     <string name="CARD_SHOW_error_displaying_card">Error displaying card</string>
     <string name="CARD_EDIT_page_title">Card editing</string>
     <string name="CARD_EDIT_error_displaying_card">Error displaying card</string>
+    <string name="CARD_EDIT_error_selecting_image">Error selecting image</string>
 </resources>

@@ -13,13 +13,7 @@ public interface iCardEdit2 {
 
     interface View extends iBaseView {
         void displayCard(Card card);
-        void save();
-        void cancel();
-
-        void selectImage();
-//        void disableForm();
-//        void enableForm();
-        void finishEdit();
+        void finishEdit(); // нужен?
     }
 
     interface Presenter {

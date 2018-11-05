@@ -42,6 +42,7 @@ public class CardEdit2_View extends BaseView implements
     @BindView(R.id.quoteView) EditText quoteView;
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
     @BindView(R.id.imageView) ImageView imageView;
+    @BindView(R.id.imagePlaceholder) ImageView imagePlaceholder;
     @BindView(R.id.discardImageButton) ImageView discardImageButton;
     @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
     @BindView(R.id.descriptionView) EditText descriptionView;
@@ -133,7 +134,15 @@ public class CardEdit2_View extends BaseView implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case Constants.CODE_SELECT_IMAGE:
+                if (RESULT_OK == resultCode) processSelectedImage(data);
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+                break;
+        }
     }
 
 
@@ -160,8 +169,16 @@ public class CardEdit2_View extends BaseView implements
         }
     }
 
-    @OnClick(R.id.saveButton) @Override
-    public void save() {
+    @Override
+    public void finishEdit() {
+//        setResult();
+        finish();
+    }
+
+
+    // Методы нажатий
+    @OnClick(R.id.saveButton)
+    void save() {
         try {
             presenter.saveCard();
         } catch (Exception e) {
@@ -171,20 +188,35 @@ public class CardEdit2_View extends BaseView implements
     }
 
     @OnClick(R.id.cancelButton)
-    @Override
-    public void cancel() {
+    void cancel() {
         finishEdit();
     }
 
-    @Override
-    public void selectImage() {
-
+    @OnClick(R.id.discardImageButton)
+    void removeImage() {
+        MyUtils.hide(imageView);
+        MyUtils.hide(discardImageButton);
+        MyUtils.show(imagePlaceholder);
     }
 
-    @Override
-    public void finishEdit() {
-//        setResult();
-        finish();
+    @OnClick(R.id.imagePlaceholder)
+    public void selectImage() {
+        Log.d(TAG, "selectImage()");
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        if (null != intent.resolveActivity(getPackageManager())) {
+            startActivityForResult(
+                    Intent.createChooser(intent, getResources().getString(R.string.select_image)),
+                    Constants.CODE_SELECT_IMAGE
+            );
+        }
+        else {
+            showErrorMsg(R.string.CARD_EDIT_error_selecting_image);
+            Log.e(TAG, "Error resolving activity for Intent.ACTION_GET_CONTENT");
+        }
     }
 
 
@@ -206,6 +238,18 @@ public class CardEdit2_View extends BaseView implements
     }
 
 
+    private void processSelectedImage(Intent data) {
+        if (null == data) {
+            hideProgressBar();
+            showBrokenImage();
+            showErrorMsg(R.string.CARD_EDIT_error_selecting_image, "Intent data is null");
+            return;
+        }
+
+        Uri imageURI = data.getData();
+        displayImage(imageURI);
+    }
+
     private void displayImage(String imageURI) {
         try {
             Uri uri = Uri.parse(imageURI);
@@ -226,6 +270,7 @@ public class CardEdit2_View extends BaseView implements
                     @Override
                     public void onSuccess() {
                         MyUtils.hide(imageProgressBar);
+                        MyUtils.hide(imagePlaceholder);
                         MyUtils.show(imageView);
                         MyUtils.show(discardImageButton);
                     }
@@ -240,15 +285,10 @@ public class CardEdit2_View extends BaseView implements
                 });
     }
 
-    private void removeImage() {
-        imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_placeholder));
-        MyUtils.hide(discardImageButton);
-    }
-
 
     private void showBrokenImage() {
         imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
-        MyUtils.hide(discardImageButton);
+//        MyUtils.hide(discardImageButton);
     }
 
     private void showTags(HashMap<String,Boolean> tagsMap) {
