@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import ru.aakumykov.me.mvp.card.edit.CardEdit2_View;
-import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;

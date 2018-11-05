@@ -142,7 +142,7 @@ public class CardEdit2_View extends BaseView implements
     public void displayCard(Card card) {
 
         if (null == card) {
-            showErrorMsg(R.string.CARD_EDIT_error_editing_card);
+            showErrorMsg(R.string.CARD_EDIT_error_displaying_card);
             Log.e(TAG, "Card is null");
             return;
         }
@@ -186,7 +186,6 @@ public class CardEdit2_View extends BaseView implements
 //        setResult();
         finish();
     }
-
 
 
     // Внутренние методы

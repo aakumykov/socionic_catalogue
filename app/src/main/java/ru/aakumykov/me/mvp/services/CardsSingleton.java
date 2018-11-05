@@ -1,10 +1,6 @@
 package ru.aakumykov.me.mvp.services;
 
-import android.app.Service;
-import android.content.Intent;
 import android.net.Uri;
-import android.os.Binder;
-import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -66,7 +62,7 @@ public class CardsSingleton implements
     }
 
     @Override
-    public void loadCard(String key, final CardCallbacks callbacks) {
+    public void loadCard(String key, final LoadCallbacks callbacks) {
         Log.d(TAG, "loadCard("+key+")");
 
         DatabaseReference cardRef = cardsRef.child(key);
@@ -104,12 +100,6 @@ public class CardsSingleton implements
                     public void onFailure(@NonNull Exception e) {
                         callbacks.onCardSaveError(e.getMessage());
                         e.printStackTrace();
-                    }
-                })
-                .addOnCanceledListener(new OnCanceledListener() {
-                    @Override
-                    public void onCanceled() {
-                        callbacks.onCardSaveCancel();
                     }
                 });
     }
@@ -187,74 +177,4 @@ public class CardsSingleton implements
         });
     }
 
-
-    @Override
-    public void uploadImage(final Uri imageURI, final String mimeType, final String remotePath, final ImageUploadCallbacks callbacks) {
-        Log.d(TAG, "uploadImage()");
-
-        StorageMetadata metadata = new StorageMetadata.Builder()
-                .setContentType(mimeType)
-                .build();
-
-        final StorageReference imageRef = imagesRef.child(remotePath);
-
-        uploadTask = imageRef.putFile(imageURI, metadata);
-
-        uploadTask
-                .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        uploadTask = null;
-                    }
-                })
-                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        long totalBytes = taskSnapshot.getTotalByteCount();
-                        long uploadedBytes = taskSnapshot.getBytesTransferred();
-                        int progress = Math.round((uploadedBytes/totalBytes)*100);
-                        callbacks.onImageUploadProgress(progress);
-                    }
-                })
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        imageRef.getDownloadUrl()
-                                .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        callbacks.onImageUploadSuccess(uri);
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        /* Что за хрень?
-                                        Нужно ли здесь удалять файл? */
-                                        callbacks.onImageUploadError(e.getMessage());
-                                        e.printStackTrace();
-                                    }
-                                });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onImageUploadError(e.getMessage());
-                    }
-                })
-                .addOnCanceledListener(new OnCanceledListener() {
-                    @Override
-                    public void onCanceled() {
-                        callbacks.onImageUploadCancel();
-                    }
-                });
-    }
-
-    @Override
-    public void cancelUpload() {
-        Log.d(TAG, "cancelUpload()");
-        if (null != uploadTask && uploadTask.isInProgress()) uploadTask.cancel();
-    }
 }

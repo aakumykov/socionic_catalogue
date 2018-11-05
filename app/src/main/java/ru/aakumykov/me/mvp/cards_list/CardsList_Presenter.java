@@ -17,6 +17,7 @@ import ru.aakumykov.me.mvp.services.TagsSingleton;
 public class CardsList_Presenter implements
         iCardsList.Presenter,
         iCardsSingleton.ListCallbacks,
+        iCardsSingleton.DeleteCallbacks,
         iDialogCallbacks.Delete
 {
     private final static String TAG = "CardsList_Presenter";

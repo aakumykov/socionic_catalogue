@@ -15,7 +15,8 @@ import ru.aakumykov.me.mvp.services.TagsSingleton;
 
 public class CardShow_Presenter implements
         iCardShow.Presenter,
-        iCardsSingleton.CardCallbacks
+        iCardsSingleton.LoadCallbacks,
+        iCardsSingleton.DeleteCallbacks
 {
 
     private final static String TAG = "CardShow_Presenter";
@@ -96,11 +97,6 @@ public class CardShow_Presenter implements
     public void onLoadFailed(String msg) {
         this.currentCard = null;
         view.showErrorMsg(R.string.card_load_error);
-    }
-
-    @Override
-    public void onLoadCanceled() {
-        view.showErrorMsg(R.string.card_load_canceled);
     }
 
     @Override
