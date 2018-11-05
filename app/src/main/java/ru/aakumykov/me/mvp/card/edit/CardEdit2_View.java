@@ -139,6 +139,8 @@ public class CardEdit2_View extends BaseView implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
+        presenter.linkView(this);
+
         switch (requestCode) {
             case Constants.CODE_SELECT_IMAGE:
                 if (RESULT_OK == resultCode) presenter.processRecievedImage(data);
