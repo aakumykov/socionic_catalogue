@@ -179,7 +179,10 @@ public class CardEdit2_View extends BaseView implements
 
         if (null == imageURI) {
             hideProgressBar();
+            hideImageProgressBar();
+            showBrokenImage();
             showErrorMsg(R.string.CARD_EDIT_error_displaying_image);
+            return;
         }
 
         MyUtils.show(imageHolder);
@@ -316,4 +319,8 @@ public class CardEdit2_View extends BaseView implements
         MyUtils.hide(imageProgressBar);
     }
 
+
+    private void hideImageProgressBar() {
+        MyUtils.hide(imageProgressBar);
+    }
 }

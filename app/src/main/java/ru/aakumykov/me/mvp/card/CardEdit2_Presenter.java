@@ -109,6 +109,8 @@ public class CardEdit2_Presenter implements
     private void recieveData(Intent intent) {
         Log.d(TAG, "recieveData()");
 
+        Uri uri = intent.getData();
+
         String mimeType = MyUtils.getMimeTypeFromIntent(intent);
         if (null == mimeType) {
             view.showErrorMsg(R.string.CARD_EDIT_error_recieving_data, "No mime type supplied");
