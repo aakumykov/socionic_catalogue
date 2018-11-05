@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.card_edit;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,7 +35,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     private Card currentCard;
     private Uri localImageURI;
     private String localImageType;
-    private String newImageURI;
+    private String currentImageURL;
     private HashMap<String,Boolean> oldTags = new HashMap<>();
     private HashMap<String,Boolean> newTags;
 
@@ -54,16 +55,15 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
 
     // Главные методы
     @Override
-    public void processInputIntent(@Nullable Intent intent) throws Exception {
-        Log.d(TAG, "processInputIntent()");
+    public void loadCard(@Nullable Intent intent) throws Exception {
+        Log.d(TAG, "loadCard()");
 
         if (!authService.isUserLoggedIn()) {
             throw new IllegalAccessException("Unauthorized access");
         }
 
         if (null == intent) {
-            Log.e(TAG, "Intent == null");
-            return;
+            throw new IllegalArgumentException("Intent == null");
         }
 
         String action = intent.getAction();
@@ -120,7 +120,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     }
 
     @Override
-    public void editCard(String cardKey) {
+    public void editCard(final String cardKey) {
         Log.d(TAG, "editCard("+cardKey+")");
 
         cardsService.loadCard(cardKey, new iCardsSingleton.CardCallbacks() {
@@ -131,22 +131,10 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
                 view.enableForm();
 
                 currentCard = card;
+                currentImageURL = card.getImageURL();
                 oldTags = card.getTags();
 
-                switch (card.getType()) {
-
-                    case Constants.TEXT_CARD:
-                        view.displayTextCard(card);
-                        break;
-
-                    case Constants.IMAGE_CARD:
-                        view.displayImageCard(card);
-                        break;
-
-                    default:
-                        view.showErrorMsg(R.string.wrong_card_type);
-                        Log.e(TAG, "Unknown card type: "+card.getType());
-                }
+                displayCard(card);
             }
 
             @Override
@@ -270,7 +258,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     public void onImageUploadSuccess(Uri remoteImageURI) {
         Log.d(TAG, "onImageUploadSuccess(), "+remoteImageURI);
 
-        newImageURI = remoteImageURI.toString();
+        currentImageURL = remoteImageURI.toString();
 
         try {
             saveCompleteCard();
@@ -327,7 +315,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
     // TODO: единый метод обработки поступающих изображений
 
     // Внутренние методы
-   private Card makeCardDraft(final Intent intent) throws Exception {
+    private Card makeCardDraft(final Intent intent) throws Exception {
         Log.d(TAG, "makeCardDraft()");
 
         String type = intent.getType();
@@ -360,6 +348,23 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         }
     }
 
+    // TODO: проверка на null !
+    private void displayCard(@NonNull Card card) {
+        switch (card.getType()) {
+
+            case Constants.TEXT_CARD:
+                view.displayTextCard(card);
+                break;
+
+            case Constants.IMAGE_CARD:
+                view.displayImageCard(card);
+                break;
+
+            default:
+                view.showErrorMsg(R.string.wrong_card_type);
+                Log.e(TAG, "Unknown card type: "+card.getType());
+        }
+    }
 
     private void saveCompleteCard() throws Exception {
         Log.d(TAG, "saveCompleteCard()");
@@ -379,7 +384,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
                 break;
 
             case Constants.IMAGE_CARD:
-                currentCard.setImageURL(newImageURI);
+                currentCard.setImageURL(currentImageURL);
                 break;
 
             default:
@@ -408,7 +413,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
         currentCard = null;
         localImageURI = null;
         localImageType = null;
-        newImageURI = null;
+        currentImageURL = null;
     }
 
 }

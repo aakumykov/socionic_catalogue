@@ -52,7 +52,7 @@ public interface iCardEdit {
         void linkView(iCardEdit.View view);
         void unlinkView();
 
-        void processInputIntent(final Intent intent) throws Exception;
+        void loadCard(final Intent intent) throws Exception;
 
         void createCard(Card cardDraft);
         void editCard(String cardKey);

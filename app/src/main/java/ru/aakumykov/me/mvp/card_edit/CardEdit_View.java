@@ -92,9 +92,12 @@ public class CardEdit_View extends BaseView implements
     @Override
     protected void onStart() {
         super.onStart();
+
         presenter.linkView(this);
+
         if (firstRun) {
             loadCard();
+            firstRun = false;
         }
     }
 
@@ -449,10 +452,14 @@ public class CardEdit_View extends BaseView implements
     // Внутренние методы
     private void loadCard() {
         try {
-            presenter.processInputIntent(getIntent());
+            presenter.loadCard(getIntent());
         }
         catch (IllegalAccessException e) {
             showErrorMsg(R.string.CARD_EDIT_edit_denied, e.getMessage());
+            e.printStackTrace();
+        }
+        catch (IllegalArgumentException e) {
+            showErrorMsg(R.string.CARD_EDIT_editing_error, e.getMessage());
             e.printStackTrace();
         }
         catch (Exception e) {
