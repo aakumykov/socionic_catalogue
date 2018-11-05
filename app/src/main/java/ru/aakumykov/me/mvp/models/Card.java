@@ -3,6 +3,7 @@ package ru.aakumykov.me.mvp.models;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.firebase.database.Exclude;
@@ -140,7 +141,8 @@ public class Card implements Parcelable {
     public void setTitle(String title) {
         this.title = title;
     }
-    public void setQuote(String quote) {
+    public void setQuote(String quote) throws IllegalArgumentException {
+        if (TextUtils.isEmpty(quote)) throw new IllegalArgumentException("Quote cannot be empty");
         this.quote = quote;
     }
     public void setImageURL(String imageURL) throws IllegalArgumentException {

@@ -143,7 +143,7 @@ public class CardEdit2_View extends BaseView implements
 
         switch (requestCode) {
             case Constants.CODE_SELECT_IMAGE:
-                if (RESULT_OK == resultCode) presenter.processRecievedImage(data);
+                if (RESULT_OK == resultCode) presenter.processInputImage(data);
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
@@ -227,6 +227,21 @@ public class CardEdit2_View extends BaseView implements
     public void finishEdit() {
 //        setResult();
         finish();
+    }
+
+    @Override
+    public String getCardTitle() {
+        return titleView.getText().toString();
+    }
+
+    @Override
+    public String getCardQuote() {
+        return quoteView.getText().toString();
+    }
+
+    @Override
+    public String getCardDescription() {
+        return descriptionView.getText().toString();
     }
 
 

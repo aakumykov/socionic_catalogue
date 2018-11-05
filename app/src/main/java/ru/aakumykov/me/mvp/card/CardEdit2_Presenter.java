@@ -17,14 +17,16 @@ import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class CardEdit2_Presenter implements
         iCardEdit2.Presenter,
-        iCardsSingleton.LoadCallbacks
+        iCardsSingleton.LoadCallbacks,
+        iStorageSingleton.FileUploadCallbacks
 {
     private final static String TAG = "CardEdit2_Presenter";
     private iCardEdit2.View view;
     private iCardsSingleton cardsService = CardsSingleton.getInstance();
     private iAuthSingleton authService = AuthSingleton.getInstance();
-    protected iStorageSingleton storageService = StorageSingleton.getInstance();
-
+    private iStorageSingleton storageService = StorageSingleton.getInstance();
+    private Card currentCard;
+    private Uri newImageURI;
 
     // Интерфейсные методы
     @Override
@@ -58,8 +60,34 @@ public class CardEdit2_Presenter implements
     }
 
     @Override
+    public void processInputImage(Intent data) {
+        if (null == data) {
+            view.hideProgressBar();
+            view.showBrokenImage();
+            view.showErrorMsg(R.string.CARD_EDIT_error_receiving_image, "Intent data is null");
+            return;
+        }
+
+        Uri imageURI = data.getData();
+        if (null == imageURI) {
+            view.hideProgressBar();
+            view.showErrorMsg(R.string.CARD_EDIT_error_receiving_image, "imageURI is null");
+        }
+
+        newImageURI = imageURI;
+        view.displayImage(imageURI);
+    }
+
+    @Override
     public void saveCard() throws Exception {
 
+        currentCard.setTitle(view.getCardTitle());
+        currentCard.setQuote(view.getCardQuote());
+        currentCard.setDescription(view.getCardDescription());
+
+        String remoteImagePath;
+
+        storageService.uploadImage(newImageURI, remoteImagePath, this);
     }
 
 
@@ -76,16 +104,39 @@ public class CardEdit2_Presenter implements
 
 
     // Коллбеки
+    // --Загрузки карточки
     @Override
-    public void onLoadSuccess(Card card) {
+    public void onLoadSuccess(final Card card) {
         view.hideProgressBar();
         view.displayCard(card);
+        currentCard = card;
     }
 
     @Override
     public void onLoadFailed(String msg) {
         view.hideProgressBar();
         view.showErrorMsg(R.string.CARD_EDIT_error_loading_card);
+    }
+
+    // --Отправки изображения
+    @Override
+    public void onUploadProgress(int progress) {
+
+    }
+
+    @Override
+    public void onUploadSuccess(String downloadURL) {
+
+    }
+
+    @Override
+    public void onUploadFail(String errorMsg) {
+
+    }
+
+    @Override
+    public void onUploadCancel() {
+
     }
 
 
@@ -118,7 +169,7 @@ public class CardEdit2_Presenter implements
         }
 
         if (mimeType.startsWith("image/")) {
-            processRecievedImage(intent);
+            processInputImage(intent);
         }
         else if (mimeType.startsWith("text/plain")) {
             procesRecievedText(intent);
@@ -139,18 +190,5 @@ public class CardEdit2_Presenter implements
 
         view.hideProgressBar();
         view.displayQuote(text);
-    }
-
-    @Override
-    public void processRecievedImage(Intent data) {
-        if (null == data) {
-            view.hideProgressBar();
-            view.showBrokenImage();
-            view.showErrorMsg(R.string.CARD_EDIT_error_receiving_image, "Intent data is null");
-            return;
-        }
-
-        Uri imageURI = data.getData();
-        view.displayImage(imageURI);
     }
 }

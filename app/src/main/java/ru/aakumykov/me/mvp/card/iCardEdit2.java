@@ -19,6 +19,10 @@ public interface iCardEdit2 {
         void displayImage(Uri imageURI);
 
         void finishEdit(); // нужен?
+
+        String getCardTitle();
+        String getCardQuote();
+        String getCardDescription();
     }
 
     interface Presenter {
@@ -26,7 +30,7 @@ public interface iCardEdit2 {
         void unlinkView();
 
         void processInputIntent(Intent intent) throws Exception;
-        void processRecievedImage(Intent data);
+        void processInputImage(Intent data);
         void saveCard() throws Exception;
     }
 }
