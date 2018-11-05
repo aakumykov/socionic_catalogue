@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import ru.aakumykov.me.mvp.card.edit.CardEdit2_View;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
@@ -279,7 +280,7 @@ public abstract class BaseView extends AppCompatActivity implements
     }
 
     private void createCard(String cardType) {
-        Intent intent = new Intent(this, CardEdit_View.class);
+        Intent intent = new Intent(this, CardEdit2_View.class);
         intent.setAction(Constants.ACTION_CREATE);
 
         try {

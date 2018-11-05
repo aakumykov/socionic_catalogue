@@ -12,6 +12,7 @@ public final class Constants {
     public final static String CARD_KEY = "CARD_KEY";
 
     public final static String ACTION_CREATE = "ACTION_CREATE";
+    public final static String ACTION_EDIT = "ACTION_EDIT";
 
     public final static String TAG_FILTER = "TAG_FILTER";
     public final static String TAG_KEY = "TAG_KEY";

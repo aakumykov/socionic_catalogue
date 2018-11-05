@@ -26,6 +26,7 @@ import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.card.edit.CardEdit2_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
@@ -254,8 +255,8 @@ public class CardShow_View extends BaseView implements
     public void goEditPage(Card card) {
         Log.d(TAG, "goEditPage()");
 
-        Intent intent = new Intent(this, CardEdit_View.class);
-        intent.setAction(Intent.ACTION_EDIT);
+        Intent intent = new Intent(this, CardEdit2_View.class);
+        intent.setAction(Constants.ACTION_EDIT);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
 
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);

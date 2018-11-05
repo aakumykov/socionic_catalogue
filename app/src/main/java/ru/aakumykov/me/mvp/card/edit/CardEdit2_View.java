@@ -55,6 +55,7 @@ public class CardEdit2_View extends BaseView implements
 
     private final static String TAG = "CardEdit2_View";
     private iCardEdit2.Presenter presenter;
+    private boolean firstRun = true;
 
 
     // Системные методы
@@ -64,6 +65,7 @@ public class CardEdit2_View extends BaseView implements
         setContentView(R.layout.card_edit_activity);
         ButterKnife.bind(this);
 
+        setPageTitle(R.string.CARD_EDIT_page_title);
         activateUpButton();
 
         presenter = new CardEdit2_Presenter();
@@ -73,6 +75,17 @@ public class CardEdit2_View extends BaseView implements
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
+
+        if (firstRun) {
+            firstRun = false;
+
+            try {
+                presenter.processInputIntent(getIntent());
+            } catch (Exception e) {
+                showErrorMsg(R.string.CARD_EDIT_error_editing_card);
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -170,7 +183,8 @@ public class CardEdit2_View extends BaseView implements
 
     @Override
     public void finishEdit() {
-
+//        setResult();
+        finish();
     }
 
 

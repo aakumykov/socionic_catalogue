@@ -124,4 +124,5 @@
     <string name="CARD_EDIT_error_saving_card">Ошибка сохранения карточки</string>
     <string name="CARD_EDIT_error_loading_card">Ошибка загрузки карточки</string>
     <string name="CARD_SHOW_error_displaying_card">Ошибка отображения карточки</string>
+    <string name="CARD_EDIT_page_title">Правка карточки</string>
 </resources>
