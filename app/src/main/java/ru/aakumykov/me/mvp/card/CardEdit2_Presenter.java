@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.card;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 
 import ru.aakumykov.me.mvp.Constants;
@@ -12,6 +13,7 @@ import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.StorageSingleton;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class CardEdit2_Presenter implements
         iCardEdit2.Presenter,
@@ -57,8 +59,6 @@ public class CardEdit2_Presenter implements
 
     @Override
     public void saveCard() throws Exception {
-
-
 
     }
 
@@ -108,6 +108,47 @@ public class CardEdit2_Presenter implements
 
     private void recieveData(Intent intent) {
         Log.d(TAG, "recieveData()");
+
+        String mimeType = MyUtils.getMimeTypeFromIntent(intent);
+        if (null == mimeType) {
+            view.showErrorMsg(R.string.CARD_EDIT_error_recieving_data, "No mime type supplied");
+            return;
+        }
+
+        if (mimeType.startsWith("image/")) {
+            processRecievedImage(intent);
+        }
+        else if (mimeType.startsWith("text/plain")) {
+            procesRecievedText(intent);
+        }
+        else {
+            view.showErrorMsg(R.string.CARD_EDIT_unsupported_data_type, "Unsupported data type '"+mimeType+"'");
+        }
     }
 
+    private void procesRecievedText(Intent data) {
+        if (null == data) {
+            view.hideProgressBar();
+            view.showErrorMsg(R.string.CARD_EDIT_error_recieving_data, "Intent data is null");
+            return;
+        }
+
+        String text = data.getStringExtra(Intent.EXTRA_TEXT);
+
+        view.hideProgressBar();
+        view.displayQuote(text);
+    }
+
+    @Override
+    public void processRecievedImage(Intent data) {
+        if (null == data) {
+            view.hideProgressBar();
+            view.showBrokenImage();
+            view.showErrorMsg(R.string.CARD_EDIT_error_receiving_image, "Intent data is null");
+            return;
+        }
+
+        Uri imageURI = data.getData();
+        view.displayImage(imageURI);
+    }
 }

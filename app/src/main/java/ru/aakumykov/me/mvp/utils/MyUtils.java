@@ -98,16 +98,35 @@ public final class MyUtils {
         return tagName;
     }
 
-    public static String getMimeTypeFromIntent(@Nullable Intent intent) throws IllegalArgumentException {
+//    public static String getMimeTypeFromIntent(@Nullable Intent intent) throws IllegalArgumentException {
+//
+//        if (null == intent) throw new IllegalArgumentException("Supplied Intent is null");
+//
+//        ClipData clipData = intent.getClipData();
+//        if (null == clipData) throw new IllegalArgumentException("ClipData is null");
+//
+//        ClipDescription clipDescription = clipData.getDescription();
+//        if (null == clipDescription) throw new IllegalArgumentException("ClipDescription is null");
+//
+//        return clipDescription.getMimeType(0);
+//    }
 
-        if (null == intent) throw new IllegalArgumentException("Supplied Intent is null");
+    public static String getMimeTypeFromIntent(@Nullable Intent intent) {
+
+        if (null == intent) return null;
 
         ClipData clipData = intent.getClipData();
-        if (null == clipData) throw new IllegalArgumentException("ClipData is null");
+        if (null == clipData) return null;
 
         ClipDescription clipDescription = clipData.getDescription();
-        if (null == clipDescription) throw new IllegalArgumentException("ClipDescription is null");
+        if (null == clipDescription) return null;
 
-        return clipDescription.getMimeType(0);
+        String mimeType = clipDescription.getMimeType(0);
+
+        // TODO: проверять с помощью regexp-ов
+//        if (mimeType.matches("^[a-z]+\\/[^a-z0-9.+-]+$")) return mimeType;
+//        else
+
+        return mimeType;
     }
 }

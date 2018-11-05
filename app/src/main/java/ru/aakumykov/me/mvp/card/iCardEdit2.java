@@ -13,6 +13,11 @@ public interface iCardEdit2 {
 
     interface View extends iBaseView {
         void displayCard(Card card);
+        void showBrokenImage();
+
+        void displayQuote(String text);
+        void displayImage(Uri imageURI);
+
         void finishEdit(); // нужен?
     }
 
@@ -21,6 +26,7 @@ public interface iCardEdit2 {
         void unlinkView();
 
         void processInputIntent(Intent intent) throws Exception;
+        void processRecievedImage(Intent data);
         void saveCard() throws Exception;
     }
 }

@@ -126,5 +126,8 @@
     <string name="CARD_SHOW_error_displaying_card">Ошибка отображения карточки</string>
     <string name="CARD_EDIT_page_title">Правка карточки</string>
     <string name="CARD_EDIT_error_displaying_card">Ошибка отображения карточки</string>
-    <string name="CARD_EDIT_error_selecting_image">Ошибка выбора картинки</string>
+    <string name="CARD_EDIT_error_receiving_image">Ошибка выбора картинки</string>
+    <string name="CARD_EDIT_error_recieving_data">Ошибка получения данных</string>
+    <string name="CARD_EDIT_unsupported_data_type">Неподдерживаемый тип данных</string>
+    <string name="CARD_EDIT_error_displaying_image">Ошибка изображения</string>
 </resources>

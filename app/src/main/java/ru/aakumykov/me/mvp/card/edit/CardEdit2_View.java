@@ -17,7 +17,6 @@ import android.widget.ProgressBar;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -137,7 +136,7 @@ public class CardEdit2_View extends BaseView implements
 
         switch (requestCode) {
             case Constants.CODE_SELECT_IMAGE:
-                if (RESULT_OK == resultCode) processSelectedImage(data);
+                if (RESULT_OK == resultCode) presenter.processRecievedImage(data);
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
@@ -167,6 +166,49 @@ public class CardEdit2_View extends BaseView implements
                 showErrorMsg(R.string.CARD_EDIT_error_editing_card);
                 Log.e(TAG, "Unknown card type '"+card.getType()+"'");
         }
+    }
+
+    @Override
+    public void displayQuote(String text) {
+        quoteView.setText(text);
+        MyUtils.show(quoteView);
+    }
+
+    @Override
+    public void displayImage(Uri imageURI) {
+
+        if (null == imageURI) {
+            hideProgressBar();
+            showErrorMsg(R.string.CARD_EDIT_error_displaying_image);
+        }
+
+        MyUtils.show(imageHolder);
+        MyUtils.show(imageProgressBar);
+
+        Picasso.get().load(imageURI)
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        MyUtils.hide(imageProgressBar);
+                        MyUtils.hide(imagePlaceholder);
+                        MyUtils.show(imageView);
+                        MyUtils.show(discardImageButton);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        MyUtils.hide(imageProgressBar);
+                        showBrokenImage();
+                        showErrorMsg(R.string.error_loading_image);
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+    @Override
+    public void showBrokenImage() {
+        imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
+//        MyUtils.hide(discardImageButton);
     }
 
     @Override
@@ -214,7 +256,7 @@ public class CardEdit2_View extends BaseView implements
             );
         }
         else {
-            showErrorMsg(R.string.CARD_EDIT_error_selecting_image);
+            showErrorMsg(R.string.CARD_EDIT_error_receiving_image);
             Log.e(TAG, "Error resolving activity for Intent.ACTION_GET_CONTENT");
         }
     }
@@ -237,19 +279,6 @@ public class CardEdit2_View extends BaseView implements
         showTags(card.getTags());
     }
 
-
-    private void processSelectedImage(Intent data) {
-        if (null == data) {
-            hideProgressBar();
-            showBrokenImage();
-            showErrorMsg(R.string.CARD_EDIT_error_selecting_image, "Intent data is null");
-            return;
-        }
-
-        Uri imageURI = data.getData();
-        displayImage(imageURI);
-    }
-
     private void displayImage(String imageURI) {
         try {
             Uri uri = Uri.parse(imageURI);
@@ -260,37 +289,6 @@ public class CardEdit2_View extends BaseView implements
         }
     }
 
-    private void displayImage(Uri imageURI) {
-        hideMsg();
-        MyUtils.show(imageHolder);
-        MyUtils.show(imageProgressBar);
-
-        Picasso.get().load(imageURI)
-                .into(imageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        MyUtils.hide(imageProgressBar);
-                        MyUtils.hide(imagePlaceholder);
-                        MyUtils.show(imageView);
-                        MyUtils.show(discardImageButton);
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        MyUtils.hide(imageProgressBar);
-                        showBrokenImage();
-                        showErrorMsg(R.string.error_loading_image);
-                        e.printStackTrace();
-                    }
-                });
-    }
-
-
-    private void showBrokenImage() {
-        imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
-//        MyUtils.hide(discardImageButton);
-    }
-
     private void showTags(HashMap<String,Boolean> tagsMap) {
         Log.d(TAG, "showTags(), "+tagsMap);
         if (null != tagsMap) {
@@ -299,7 +297,6 @@ public class CardEdit2_View extends BaseView implements
             tagsContainer.setEnableCross(true);
         }
     }
-
 
     private void disableForm() {
         titleView.setEnabled(false);
