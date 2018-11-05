@@ -253,9 +253,11 @@ public class CardShow_View extends BaseView implements
     @Override
     public void goEditPage(Card card) {
         Log.d(TAG, "goEditPage()");
+
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.setAction(Intent.ACTION_EDIT);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
+
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 

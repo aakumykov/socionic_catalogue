@@ -226,10 +226,12 @@ public class CardsList_View extends BaseView implements
     // Внутренние методы
     private void editCard() {
         Log.d(TAG, "editCard()");
+
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.setAction(Intent.ACTION_EDIT);
         intent.putExtra(Constants.CARD_KEY, currentCard.getKey());
         startActivity(intent);
+
         currentCard = null;
     }
 

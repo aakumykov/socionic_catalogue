@@ -41,15 +41,6 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".services.CardsSingleton"
-            android:enabled="true"
-            android:exported="false" />
-        <service
-            android:name=".services.AuthSingleton"
-            android:enabled="true"
-            android:exported="false" />
-
         <activity android:name=".users.list.UsersList_View" />
 
         <activity

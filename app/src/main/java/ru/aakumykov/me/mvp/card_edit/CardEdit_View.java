@@ -79,15 +79,14 @@ public class CardEdit_View extends BaseView implements
         setContentView(R.layout.card_edit_activity);
         ButterKnife.bind(this);
 
+        CardEdit_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
+
+        tagsContainer.setOnTagClickListener(this);
+
         activateUpButton();
 
         disableForm();
 
-        tagsContainer.setOnTagClickListener(this);
-
-        CardEdit_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
-
-        // Создание Презентатора
         presenter = new CardEdit_Presenter();
     }
 

@@ -86,7 +86,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
             editCard(cardKey);
         }
         else {
-            throw  new Exception("Unknown intent action '"+action+"'");
+            throw new Exception("Unknown intent action '"+action+"'");
         }
     }
 
@@ -171,9 +171,12 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
             Log.d(TAG, "Новая картинка");
 
             try {
-                String remoteImagePath = constructImagePath();
                 view.disableForm();
-                cardsService.uploadImage(localImageURI, localImageType, remoteImagePath, this);
+
+                String remoteImagePath = constructImagePath();
+
+                cardsService.uploadImage(localImageURI, localImageType,
+                        remoteImagePath, this);
 
             } catch (Exception e) {
                 view.showErrorMsg(R.string.image_data_error);
@@ -263,6 +266,7 @@ public class CardEdit_Presenter extends android.arch.lifecycle.ViewModel impleme
 
         try {
             saveCompleteCard();
+
         } catch (Exception e) {
             view.showErrorMsg(R.string.error_saving_card);
             Log.e(TAG, e.getMessage());
