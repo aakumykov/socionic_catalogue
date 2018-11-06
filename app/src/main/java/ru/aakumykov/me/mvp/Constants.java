@@ -29,4 +29,6 @@ public final class Constants {
     public final static int CODE_SELECT_IMAGE = 25;
     public final static int CODE_EDIT_USER = 30;
 
+    public final static int TAG_IMAGE_URL = 100;
+
 }

@@ -182,7 +182,7 @@ public class CardEdit2_View extends BaseView implements
     }
 
     @Override
-    public void displayImage(Uri imageURI) {
+    public void displayImage(final Uri imageURI) {
 
         if (null == imageURI) {
             hideProgressBar();
@@ -203,6 +203,8 @@ public class CardEdit2_View extends BaseView implements
                         MyUtils.hide(imagePlaceholder);
                         MyUtils.show(imageView);
                         MyUtils.show(discardImageButton);
+
+                        imageView.setTag(Constants.TAG_IMAGE_URL, imageURI.toString());
                     }
 
                     @Override
@@ -244,6 +246,11 @@ public class CardEdit2_View extends BaseView implements
         return descriptionView.getText().toString();
     }
 
+    @Override
+    public String getCardImageURL() {
+        return (String) imageView.getTag(Constants.TAG_IMAGE_URL);
+    }
+
 
     // Методы нажатий
     @OnClick(R.id.saveButton)
@@ -266,6 +273,8 @@ public class CardEdit2_View extends BaseView implements
         MyUtils.hide(imageView);
         MyUtils.hide(discardImageButton);
         MyUtils.show(imagePlaceholder);
+
+        imageView.setTag(Constants.TAG_IMAGE_URL, null);
     }
 
     @OnClick(R.id.imagePlaceholder)

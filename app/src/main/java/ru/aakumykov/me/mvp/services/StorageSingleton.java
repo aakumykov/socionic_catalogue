@@ -34,10 +34,10 @@ public class StorageSingleton implements iStorageSingleton {
 
     // Интерфейсные методы
     @Override
-    public void uploadImage(Uri localImageURI, String remoteImagePath, final iStorageSingleton.FileUploadCallbacks callbacks) {
+    public void uploadImage(Uri localImageURI, String remoteImageName, final iStorageSingleton.FileUploadCallbacks callbacks) {
 
         // TODO: попробовать без "/"
-        final StorageReference theImageRef = imagesRef.child("/"+remoteImagePath);
+        final StorageReference theImageRef = imagesRef.child("/"+remoteImageName);
 
         UploadTask uploadTask = theImageRef.putFile(localImageURI);
 

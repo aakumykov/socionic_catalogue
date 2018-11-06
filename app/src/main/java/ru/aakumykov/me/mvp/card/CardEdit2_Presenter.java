@@ -25,8 +25,11 @@ public class CardEdit2_Presenter implements
     private iCardsSingleton cardsService = CardsSingleton.getInstance();
     private iAuthSingleton authService = AuthSingleton.getInstance();
     private iStorageSingleton storageService = StorageSingleton.getInstance();
+
+    private Card originalCard;
     private Card currentCard;
-    private Uri newImageURI;
+    private String selectedFileType;
+    private Uri selectedImageURI;
 
     // Интерфейсные методы
     @Override
@@ -74,7 +77,7 @@ public class CardEdit2_Presenter implements
             view.showErrorMsg(R.string.CARD_EDIT_error_receiving_image, "imageURI is null");
         }
 
-        newImageURI = imageURI;
+        selectedImageURI = imageURI;
         view.displayImage(imageURI);
     }
 
@@ -83,11 +86,21 @@ public class CardEdit2_Presenter implements
 
         currentCard.setTitle(view.getCardTitle());
         currentCard.setQuote(view.getCardQuote());
+        currentCard.setImageURL(view.getCardImageURL());
         currentCard.setDescription(view.getCardDescription());
 
-        String remoteImagePath;
+        if (null != selectedImageURI) {
 
-        storageService.uploadImage(newImageURI, remoteImagePath, this);
+            String remoteFileName = constructRemoteFileName();
+            if (null == remoteFileName) {
+                throw new Exception("Error constructing remote file Name");
+            }
+
+            storageService.uploadImage(selectedImageURI, remoteFileName, this);
+        }
+        else {
+
+        }
     }
 
 
@@ -109,6 +122,8 @@ public class CardEdit2_Presenter implements
     public void onLoadSuccess(final Card card) {
         view.hideProgressBar();
         view.displayCard(card);
+
+        originalCard = card; // Клонировать?
         currentCard = card;
     }
 
@@ -168,6 +183,8 @@ public class CardEdit2_Presenter implements
             return;
         }
 
+        selectedFileType = mimeType;
+
         if (mimeType.startsWith("image/")) {
             processInputImage(intent);
         }
@@ -191,4 +208,29 @@ public class CardEdit2_Presenter implements
         view.hideProgressBar();
         view.displayQuote(text);
     }
+
+    private String constructRemoteFileName() {
+
+        String cardKey = currentCard.getKey();
+        if (null == cardKey) {
+            Log.e(TAG, "currentCard key is null");
+            return null;
+        }
+
+        String fext = MyUtils.mime2ext(selectedFileType);
+        if (null == fext) {
+            Log.e(TAG, "File extention from selectedFileType is null");
+            return null;
+        }
+
+        return cardKey + "." + fext;
+    }
+
+    //    private void forgetCardData() {
+//        Log.d(TAG, "forgetCardData()");
+//        currentCard = null;
+//        localImageURI = null;
+//        localImageType = null;
+//        selectedImageURI = null;
+//    }
 }
