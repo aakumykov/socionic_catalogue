@@ -34,7 +34,7 @@ public class CardEdit2_Presenter implements
 
     // Интерфейсные методы
     @Override
-    public void processInputIntent(Intent intent) throws Exception {
+    public void prepareToWork(final Intent intent) throws Exception {
         view.showProgressBar();
 
         if (null == intent) {
@@ -49,6 +49,10 @@ public class CardEdit2_Presenter implements
                 break;
 
             case Constants.ACTION_EDIT:
+                // TODO: что будет, если editCard() бросит исключение?
+                // Ответ: исключение уйдёт наверх, как и нужно.
+                // TODO: а если более глубокий метод его бросит?
+                // Ответ: можно кидать исключение и ниже.
                 editCard(intent);
                 break;
 
@@ -64,7 +68,7 @@ public class CardEdit2_Presenter implements
     }
 
     @Override
-    public void processIncomingImage(Intent data) {
+    public void processIncomingData(Intent data) {
         if (null == data) {
             view.hideProgressBar();
             view.showBrokenImage();
@@ -227,7 +231,7 @@ public class CardEdit2_Presenter implements
         }
 
         if (mimeType.startsWith("image/")) {
-            processIncomingImage(intent);
+            processIncomingData(intent);
         }
         else if (mimeType.startsWith("text/plain")) {
             procesIncomingText(intent);
@@ -266,4 +270,5 @@ public class CardEdit2_Presenter implements
 
         return fname + "." + fext;
     }
+
 }

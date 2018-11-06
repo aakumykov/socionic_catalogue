@@ -85,8 +85,9 @@ public class CardEdit2_View extends BaseView implements
             firstRun = false;
 
             try {
-                presenter.processInputIntent(getIntent());
+                presenter.prepareToWork(getIntent());
             } catch (Exception e) {
+                hideProgressBar();
                 showErrorMsg(R.string.CARD_EDIT_error_editing_card);
                 e.printStackTrace();
             }
@@ -143,7 +144,7 @@ public class CardEdit2_View extends BaseView implements
 
         switch (requestCode) {
             case Constants.CODE_SELECT_IMAGE:
-                if (RESULT_OK == resultCode) presenter.processIncomingImage(data);
+                if (RESULT_OK == resultCode) presenter.processIncomingData(data);
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
