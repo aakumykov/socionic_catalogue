@@ -22,7 +22,6 @@ public interface iCardEdit2 {
 
         String getCardTitle();
         String getCardQuote();
-        String getCardImageURL();
         String getCardDescription();
     }
 
