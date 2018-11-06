@@ -143,7 +143,7 @@ public class CardEdit2_View extends BaseView implements
 
         switch (requestCode) {
             case Constants.CODE_SELECT_IMAGE:
-                if (RESULT_OK == resultCode) presenter.processInputImage(data);
+                if (RESULT_OK == resultCode) presenter.processIncomingImage(data);
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
@@ -224,8 +224,10 @@ public class CardEdit2_View extends BaseView implements
     }
 
     @Override
-    public void finishEdit() {
-//        setResult();
+    public void finishEdit(Card card) {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.CARD, card);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -244,6 +246,44 @@ public class CardEdit2_View extends BaseView implements
         return descriptionView.getText().toString();
     }
 
+    @Override
+    public void showImageProgressBar() {
+        MyUtils.show(imageProgressBar);
+    }
+
+    @Override
+    public void hideImageProgressBar() {
+        MyUtils.hide(imageProgressBar);
+    }
+
+    @Override
+    public void setImageUploadProgress(int progress) {
+//        imageProgressBar.setProgress(progress);
+        Log.d(TAG, "imageUploadProgress: "+progress);
+    }
+
+    @Override
+    public void disableForm() {
+        titleView.setEnabled(false);
+        quoteView.setEnabled(false);
+        descriptionView.setEnabled(false);
+        saveButton.setEnabled(false);
+
+        MyUtils.show(imageProgressBar);
+    }
+
+    @Override
+    public void enableForm() {
+        titleView.setEnabled(true);
+        quoteView.setEnabled(true);
+        descriptionView.setEnabled(true);
+        saveButton.setEnabled(true);
+
+        MyUtils.hide(imageProgressBar);
+    }
+
+
+
 
     // Методы нажатий
     @OnClick(R.id.saveButton)
@@ -258,7 +298,8 @@ public class CardEdit2_View extends BaseView implements
 
     @OnClick(R.id.cancelButton)
     void cancel() {
-        finishEdit();
+        setResult(RESULT_CANCELED);
+        finish();
     }
 
     @OnClick(R.id.discardImageButton)
@@ -266,6 +307,8 @@ public class CardEdit2_View extends BaseView implements
         MyUtils.hide(imageView);
         MyUtils.hide(discardImageButton);
         MyUtils.show(imagePlaceholder);
+
+        presenter.forgetSelectedFile();
     }
 
     @OnClick(R.id.imagePlaceholder)
@@ -325,27 +368,8 @@ public class CardEdit2_View extends BaseView implements
         }
     }
 
-    private void disableForm() {
-        titleView.setEnabled(false);
-        quoteView.setEnabled(false);
-        descriptionView.setEnabled(false);
-        saveButton.setEnabled(false);
 
-        MyUtils.show(imageProgressBar);
-    }
 
-    private void enableForm() {
-        titleView.setEnabled(true);
-        quoteView.setEnabled(true);
-        descriptionView.setEnabled(true);
-        saveButton.setEnabled(true);
-
-        MyUtils.hide(imageProgressBar);
-    }
-
-    private void hideImageProgressBar() {
-        MyUtils.hide(imageProgressBar);
-    }
 
 
     // Другие

@@ -34,8 +34,11 @@ public final class MyUtils {
     }
 
     public static String mime2ext(String mimeType) {
+        if (null == mimeType) return null;
+
         Pattern pattern = Pattern.compile("^image/([a-z]+)$");
         Matcher matcher = pattern.matcher(mimeType);
+
         if (matcher.matches()) {
             return matcher.group(1);
         } else {

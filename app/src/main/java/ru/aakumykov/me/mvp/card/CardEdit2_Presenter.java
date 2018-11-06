@@ -18,6 +18,7 @@ import ru.aakumykov.me.mvp.utils.MyUtils;
 public class CardEdit2_Presenter implements
         iCardEdit2.Presenter,
         iCardsSingleton.LoadCallbacks,
+        iCardsSingleton.SaveCardCallbacks,
         iStorageSingleton.FileUploadCallbacks
 {
     private final static String TAG = "CardEdit2_Presenter";
@@ -25,8 +26,11 @@ public class CardEdit2_Presenter implements
     private iCardsSingleton cardsService = CardsSingleton.getInstance();
     private iAuthSingleton authService = AuthSingleton.getInstance();
     private iStorageSingleton storageService = StorageSingleton.getInstance();
+
     private Card currentCard;
-    private Uri newImageURI;
+    private Uri localImageURI;
+    private String inputDataMimeType;
+
 
     // Интерфейсные методы
     @Override
@@ -60,7 +64,7 @@ public class CardEdit2_Presenter implements
     }
 
     @Override
-    public void processInputImage(Intent data) {
+    public void processIncomingImage(Intent data) {
         if (null == data) {
             view.hideProgressBar();
             view.showBrokenImage();
@@ -74,7 +78,11 @@ public class CardEdit2_Presenter implements
             view.showErrorMsg(R.string.CARD_EDIT_error_receiving_image, "imageURI is null");
         }
 
-        newImageURI = imageURI;
+        localImageURI = imageURI;
+
+        // TODO: исключение?
+        inputDataMimeType = MyUtils.getMimeTypeFromIntent(data);
+
         view.displayImage(imageURI);
     }
 
@@ -82,12 +90,38 @@ public class CardEdit2_Presenter implements
     public void saveCard() throws Exception {
 
         currentCard.setTitle(view.getCardTitle());
-        currentCard.setQuote(view.getCardQuote());
+
+        // В самой Card можно просто игнорировать цитату для текстовой карты...
+        if (Constants.TEXT_CARD.equals(currentCard.getType())) {
+            currentCard.setQuote(view.getCardQuote());
+        }
+
         currentCard.setDescription(view.getCardDescription());
 
-        String remoteImagePath;
+        String remoteFilePath = constructRemoteFilePath();
 
-        storageService.uploadImage(newImageURI, remoteImagePath, this);
+        /* Схема работы:
+         1) картинка отправляется на сервер;
+         2) карточке присваивается серверный адрес картинки;
+         3) локальный адрес стирается;
+         4) метод "сохранить" вызывается ешё раз. */
+        if (null != localImageURI) {
+            Log.d(TAG, "Отправляю картинку");
+            view.disableForm();
+            view.showImageProgressBar();
+            storageService.uploadImage(localImageURI, remoteFilePath, this);
+        }
+        else {
+            Log.d(TAG, "Сохраняю карточку");
+            view.disableForm();
+            cardsService.updateCard(currentCard, this);
+        }
+    }
+
+    @Override
+    public void forgetSelectedFile() {
+        inputDataMimeType = null;
+        localImageURI = null;
     }
 
 
@@ -118,25 +152,49 @@ public class CardEdit2_Presenter implements
         view.showErrorMsg(R.string.CARD_EDIT_error_loading_card);
     }
 
+    // --Сохранение карточки
+    @Override
+    public void onCardSaveSuccess(Card card) {
+        // TODO: обновить метки
+        view.finishEdit(card);
+    }
+
+    @Override
+    public void onCardSaveError(String message) {
+        view.enableForm();
+    }
+
     // --Отправки изображения
     @Override
     public void onUploadProgress(int progress) {
-
+        view.setImageUploadProgress(progress);
     }
 
     @Override
     public void onUploadSuccess(String downloadURL) {
+        currentCard.setImageURL(downloadURL);
 
+        view.hideImageProgressBar();
+        forgetSelectedFile();
+
+        try {
+            saveCard();
+        } catch (Exception e) {
+            view.showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onUploadFail(String errorMsg) {
-
+//        view.hideImageProgressBar();
+        view.enableForm();
     }
 
     @Override
     public void onUploadCancel() {
-
+//        view.hideImageProgressBar();
+//        view.enableForm();
     }
 
 
@@ -169,17 +227,17 @@ public class CardEdit2_Presenter implements
         }
 
         if (mimeType.startsWith("image/")) {
-            processInputImage(intent);
+            processIncomingImage(intent);
         }
         else if (mimeType.startsWith("text/plain")) {
-            procesRecievedText(intent);
+            procesIncomingText(intent);
         }
         else {
             view.showErrorMsg(R.string.CARD_EDIT_unsupported_data_type, "Unsupported data type '"+mimeType+"'");
         }
     }
 
-    private void procesRecievedText(Intent data) {
+    private void procesIncomingText(Intent data) {
         if (null == data) {
             view.hideProgressBar();
             view.showErrorMsg(R.string.CARD_EDIT_error_recieving_data, "Intent data is null");
@@ -190,5 +248,22 @@ public class CardEdit2_Presenter implements
 
         view.hideProgressBar();
         view.displayQuote(text);
+    }
+
+    private String constructRemoteFilePath() {
+
+        String fname = currentCard.getKey();
+        if (null == fname) {
+            Log.e(TAG, "fname == null");
+            return null;
+        }
+
+        String fext = MyUtils.mime2ext(inputDataMimeType);
+        if (null == fext) {
+            Log.e(TAG, "fext == null");
+            return null;
+        }
+
+        return fname + "." + fext;
     }
 }
