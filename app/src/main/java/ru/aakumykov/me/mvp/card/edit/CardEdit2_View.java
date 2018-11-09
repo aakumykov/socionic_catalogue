@@ -160,24 +160,14 @@ public class CardEdit2_View extends BaseView implements
         presenter.linkView(this);
 
         if (RESULT_OK == resultCode) {
-
-            switch (requestCode) {
-                case Constants.CODE_SELECT_IMAGE: {
-                    try {
-                        presenter.processInputIntent(Constants.INTENT_OF_SELECT, data);
-                    } catch (Exception e) {
-                        showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
-                    }
-                }
-                break;
-
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-                    break;
+            try {
+                presenter.processInputIntent(Constants.INTENT_OF_SELECT, data);
+            } catch (Exception e) {
+                showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
             }
         }
         else if (RESULT_CANCELED == resultCode) {
-            // Здесь ничего
+            Log.d(TAG, "Media selection cancelled");
         }
         else {
             showErrorMsg(R.string.CARD_EDIT_unknown_error);

@@ -33,60 +33,22 @@ public class CardEdit2_Presenter implements
 
 
     // Интерфейсные методы
-
-
     @Override
-    public void processInputIntent(String mode, Intent intent) throws Exception {
-
-        Log.d(TAG, "intent: "+intent);
-
-        String mimeType = MyUtils.getMimeTypeFromIntent(intent);
-        Uri dataURI = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-
-        switch (mode) {
-
-            case Constants.INTENT_OF_SEND:
-
-                break;
-
-            case Constants.INTENT_OF_SELECT:
-
-                break;
-
-            default:
-                throw new Exception("Unknown mode '"+mode+"'");
-        }
-    }
-
-    @Override
-    public void startToWork(final Intent intent) throws Exception {
+    public void processInputIntent(String mode, final Intent intent) throws Exception {
 
         if (null == intent) {
             throw new IllegalArgumentException("Intent is null");
         }
 
-        String action = intent.getAction();
-        switch (action+"") {
+        String mimeType = MyUtils.getMimeTypeFromIntent(intent);
+        Uri dataURI = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
 
-            case Constants.ACTION_CREATE:
-                createCard(intent);
-                break;
+        if (null == mimeType) {
+            throw new IllegalArgumentException("mimeType from Intent is null.");
+        }
 
-            case Constants.ACTION_EDIT:
-                // TODO: что будет, если editCard() бросит исключение?
-                // Ответ: исключение уйдёт наверх, как и нужно.
-                // TODO: а если более глубокий метод его бросит?
-                // Ответ: можно кидать исключение и ниже.
-                editCard(intent);
-                break;
-
-            case Intent.ACTION_SEND:
-//                recieveData(intent);
-                processInputIntent(Constants.INTENT_OF_SEND, intent);
-                break;
-
-            default:
-                throw new IllegalArgumentException("Unknown action '"+action+"'");
+        if (null == dataURI) {
+            throw new IllegalArgumentException("Data from Intent is null");
         }
 
 
