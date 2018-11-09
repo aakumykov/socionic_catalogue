@@ -33,9 +33,33 @@ public class CardEdit2_Presenter implements
 
 
     // Интерфейсные методы
+
+
     @Override
-    public void prepareToWork(final Intent intent) throws Exception {
-        view.showProgressBar();
+    public void processInputIntent(String mode, Intent intent) throws Exception {
+
+        Log.d(TAG, "intent: "+intent);
+
+        String mimeType = MyUtils.getMimeTypeFromIntent(intent);
+        Uri dataURI = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+
+        switch (mode) {
+
+            case Constants.INTENT_OF_SEND:
+
+                break;
+
+            case Constants.INTENT_OF_SELECT:
+
+                break;
+
+            default:
+                throw new Exception("Unknown mode '"+mode+"'");
+        }
+    }
+
+    @Override
+    public void startToWork(final Intent intent) throws Exception {
 
         if (null == intent) {
             throw new IllegalArgumentException("Intent is null");
@@ -57,7 +81,8 @@ public class CardEdit2_Presenter implements
                 break;
 
             case Intent.ACTION_SEND:
-                recieveData(intent);
+//                recieveData(intent);
+                processInputIntent(Constants.INTENT_OF_SEND, intent);
                 break;
 
             default:

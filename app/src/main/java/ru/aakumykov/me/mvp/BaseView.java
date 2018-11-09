@@ -18,7 +18,6 @@ import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.login.Login_View;
-import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.AuthStateListener;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
@@ -116,12 +115,8 @@ public abstract class BaseView extends AppCompatActivity implements
                 logout();
                 break;
 
-            case R.id.actionCreateTextCard:
-                createCard(Constants.TEXT_CARD);
-                break;
-
-            case R.id.actionCreateImageCard:
-                createCard(Constants.IMAGE_CARD);
+            case R.id.actionCreate:
+                createCard();
                 break;
 
             default:
@@ -278,20 +273,9 @@ public abstract class BaseView extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    private void createCard(String cardType) {
+    private void createCard() {
         Intent intent = new Intent(this, CardEdit2_View.class);
         intent.setAction(Constants.ACTION_CREATE);
-
-        try {
-            Card cardDraft = new Card();
-            cardDraft.setType(cardType);
-            intent.putExtra(Constants.CARD, cardDraft);
-
-        } catch (Exception e) {
-            showErrorMsg(R.string.ERROR_creating_card, e.getMessage());
-            e.printStackTrace();
-        }
-
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
     }
 

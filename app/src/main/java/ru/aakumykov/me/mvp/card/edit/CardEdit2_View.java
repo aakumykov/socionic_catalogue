@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -42,11 +43,19 @@ public class CardEdit2_View extends BaseView implements
 {
     @BindView(R.id.titleView) EditText titleView;
     @BindView(R.id.quoteView) EditText quoteView;
+
+    @BindView(R.id.modeLabel) TextView modeLabel;
+    @BindView(R.id.textModeSwitch) ImageView textModeSwitch;
+    @BindView(R.id.imageModeSwitch) ImageView imageModeSwitch;
+    @BindView(R.id.audioModeSwitch) ImageView audioModeSwitch;
+    @BindView(R.id.videoModeSwitch) ImageView videoModeSwitch;
+
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.imagePlaceholder) ImageView imagePlaceholder;
     @BindView(R.id.discardImageButton) ImageView discardImageButton;
     @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
+
     @BindView(R.id.descriptionView) EditText descriptionView;
 
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
@@ -85,7 +94,8 @@ public class CardEdit2_View extends BaseView implements
             firstRun = false;
 
             try {
-                presenter.prepareToWork(getIntent());
+                presenter.startToWork(getIntent());
+
             } catch (Exception e) {
                 hideProgressBar();
                 showErrorMsg(R.string.CARD_EDIT_error_editing_card);
@@ -142,13 +152,29 @@ public class CardEdit2_View extends BaseView implements
 
         presenter.linkView(this);
 
-        switch (requestCode) {
-            case Constants.CODE_SELECT_IMAGE:
-                if (RESULT_OK == resultCode) presenter.processIncomingData(data);
+        if (RESULT_OK == resultCode) {
+
+            switch (requestCode) {
+                case Constants.CODE_SELECT_IMAGE: {
+                    try {
+                        presenter.processInputIntent(Constants.INTENT_OF_SELECT, data);
+                    } catch (Exception e) {
+                        showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
+                    }
+                }
                 break;
+
             default:
                 super.onActivityResult(requestCode, resultCode, data);
-                break;
+                    break;
+            }
+        }
+        else if (RESULT_CANCELED == resultCode) {
+            // Здесь ничего
+        }
+        else {
+            showErrorMsg(R.string.CARD_EDIT_unknown_error);
+            Log.e(TAG, "Unknown result code ("+resultCode+")");
         }
     }
 
@@ -282,8 +308,6 @@ public class CardEdit2_View extends BaseView implements
 
         MyUtils.hide(imageProgressBar);
     }
-
-
 
 
     // Методы нажатий

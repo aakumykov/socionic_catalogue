@@ -3,27 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/actionCreate"
         android:icon="@drawable/ic_add"
-        android:title="@string/add_card"
-        app:showAsAction="ifRoom">
-
-
-        <menu xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
-
-            <item
-                android:id="@+id/actionCreateTextCard"
-                android:icon="@drawable/ic_text"
-                android:title="@string/text"
-                app:showAsAction="never" />
-
-            <item
-                android:id="@+id/actionCreateImageCard"
-                android:icon="@drawable/ic_image"
-                android:title="@string/image"
-                app:showAsAction="never" />
-
-        </menu>
-
-    </item>
+        android:title="@string/MENU_create_card"
+        app:showAsAction="ifRoom" />
 </menu>

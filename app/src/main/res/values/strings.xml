@@ -130,4 +130,9 @@
     <string name="CARD_EDIT_error_recieving_data">Ошибка получения данных</string>
     <string name="CARD_EDIT_unsupported_data_type">Неподдерживаемый тип данных</string>
     <string name="CARD_EDIT_error_displaying_image">Ошибка изображения</string>
+    <string name="CARD_EDIT_error_processing_data">Ошибка обработки данных</string>
+    <string name="CARD_EDIT_unknown_error">Неизвестная ошибка</string>
+    <string name="CARD_EDIT_described_object">Что добавляем?</string>
+    <string name="CARD_EDIT_card_name">Название карточки</string>
+    <string name="MENU_create_card">Создать карточку</string>
 </resources>
