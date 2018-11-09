@@ -29,4 +29,7 @@ public final class Constants {
     public final static int CODE_SELECT_IMAGE = 25;
     public final static int CODE_EDIT_USER = 30;
 
+    public final static String INTENT_OF_SEND = "INTENT_OF_SEND";
+    public final static String INTENT_OF_SELECT = "INTENT_OF_SELECT";
+
 }

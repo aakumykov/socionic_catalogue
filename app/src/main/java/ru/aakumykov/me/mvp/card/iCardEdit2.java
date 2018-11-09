@@ -37,7 +37,9 @@ public interface iCardEdit2 {
         void linkView(View view);
         void unlinkView();
 
-        void prepareToWork(Intent intent) throws Exception;
+        void processInputIntent(String mode, Intent intent) throws Exception;
+
+        void startToWork(Intent intent) throws Exception;
 
         void processIncomingData(Intent data);
 
