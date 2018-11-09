@@ -14,23 +14,28 @@ public interface iCardEdit2 {
     interface View extends iBaseView {
         void displayCard(Card card);
 
-        void showImageProgressBar();
-        void hideImageProgressBar();
-        void setImageUploadProgress(int progress);
-        void disableForm();
-        void enableForm();
-
+        void showModeSwitcher();
+        void hideModeSwitcher();
 
         void displayQuote(String text);
-
         void displayImage(Uri imageURI);
-        void showBrokenImage();
-
-        void finishEdit(Card card); // нужен?
+//        void displayAudio(Uri dataURI);
+//        void displayVideo(Uri dataURI);
 
         String getCardTitle();
         String getCardQuote();
         String getCardDescription();
+
+        void showImageProgressBar();
+        void hideImageProgressBar();
+
+        void setImageUploadProgress(int progress);
+        void showBrokenImage();
+
+        void disableForm();
+        void enableForm();
+
+        void finishEdit(Card card); // нужен?
     }
 
     interface Presenter {

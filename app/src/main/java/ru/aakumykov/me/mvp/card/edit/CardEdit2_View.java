@@ -12,7 +12,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -42,13 +44,17 @@ public class CardEdit2_View extends BaseView implements
     iCardEdit2.View
 {
     @BindView(R.id.titleView) EditText titleView;
-    @BindView(R.id.quoteView) EditText quoteView;
 
+    @BindView(R.id.modeSwitcher) LinearLayout modeSwitcher;
     @BindView(R.id.modeLabel) TextView modeLabel;
     @BindView(R.id.textModeSwitch) ImageView textModeSwitch;
     @BindView(R.id.imageModeSwitch) ImageView imageModeSwitch;
     @BindView(R.id.audioModeSwitch) ImageView audioModeSwitch;
     @BindView(R.id.videoModeSwitch) ImageView videoModeSwitch;
+
+    @BindView(R.id.mediaHolder) FrameLayout mediaHolder;
+
+    @BindView(R.id.quoteView) EditText quoteView;
 
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
     @BindView(R.id.imageView) ImageView imageView;
@@ -64,6 +70,7 @@ public class CardEdit2_View extends BaseView implements
 
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
+
 
     private final static String TAG = "CardEdit2_View";
     private iCardEdit2.Presenter presenter;
@@ -203,6 +210,18 @@ public class CardEdit2_View extends BaseView implements
     }
 
     @Override
+    public void showModeSwitcher() {
+        MyUtils.show(modeLabel);
+        MyUtils.show(modeSwitcher);
+    }
+
+    @Override
+    public void hideModeSwitcher() {
+        MyUtils.hide(modeLabel);
+        MyUtils.hide(modeSwitcher);
+    }
+
+    @Override
     public void displayQuote(String text) {
         quoteView.setText(text);
         MyUtils.show(quoteView);
@@ -311,6 +330,31 @@ public class CardEdit2_View extends BaseView implements
 
 
     // Методы нажатий
+    @OnClick(R.id.textModeSwitch)
+    void switchTextMode() {
+        hideModeSwitcher();
+        MyUtils.show(mediaHolder);
+        MyUtils.show(quoteView);
+    }
+
+    @OnClick(R.id.imageModeSwitch)
+    void switchImageMode() {
+        hideModeSwitcher();
+        MyUtils.show(mediaHolder);
+        MyUtils.show(imageHolder);
+        MyUtils.show(imagePlaceholder);
+    }
+
+    @OnClick(R.id.audioModeSwitch)
+    void switchAudioMode() {
+
+    }
+
+    @OnClick(R.id.videoModeSwitch)
+    void switchVideoMode() {
+
+    }
+
     @OnClick(R.id.saveButton)
     void save() {
         try {
@@ -392,8 +436,6 @@ public class CardEdit2_View extends BaseView implements
             tagsContainer.setEnableCross(true);
         }
     }
-
-
 
 
 
