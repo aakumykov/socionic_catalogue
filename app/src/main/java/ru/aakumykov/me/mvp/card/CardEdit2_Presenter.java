@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.card;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import ru.aakumykov.me.mvp.Constants;
@@ -34,7 +35,50 @@ public class CardEdit2_Presenter implements
 
     // Интерфейсные методы
     @Override
-    public void processInputIntent(String mode, final Intent intent) throws Exception {
+    public void makeStartDecision(@Nullable Intent intent) {
+        if (null == intent) {
+            view.showErrorMsg(R.string.CARD_EDIT_error_no_input_data);
+            return;
+        }
+
+        String action = intent.getAction();
+
+        switch (action+"") {
+
+            case Constants.ACTION_CREATE:
+                try {
+                    processCardCreation(true, intent);
+                } catch (Exception e) {
+                    view.showErrorMsg(R.string.CARD_EDIT_error_creating_card, e.getMessage());
+                    e.printStackTrace();
+                }
+                break;
+
+            case Intent.ACTION_SEND:
+                try {
+                    processCardCreation(false, intent);
+                } catch (Exception e) {
+                    view.showErrorMsg(R.string.CARD_EDIT_error_creating_card, e.getMessage());
+                    e.printStackTrace();
+                }
+                break;
+
+            case Constants.ACTION_EDIT:
+                try {
+                    processCardEdition(intent);
+                } catch (Exception e) {
+                    view.showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
+                    e.printStackTrace();
+                }
+                break;
+
+            default:
+                view.showErrorMsg(R.string.CARD_EDIT_error_unknown_action);
+        }
+    }
+
+    @Override
+    public void processInputIntent(String mode, final Intent intent) {
 
         if (null == intent) {
             throw new IllegalArgumentException("Intent is null");
@@ -52,29 +96,6 @@ public class CardEdit2_Presenter implements
         }
 
 
-    }
-
-    @Override
-    public void processIncomingData(Intent data) {
-        if (null == data) {
-            view.hideProgressBar();
-            view.showBrokenImage();
-            view.showErrorMsg(R.string.CARD_EDIT_error_receiving_image, "Intent data is null");
-            return;
-        }
-
-        Uri imageURI = data.getData();
-        if (null == imageURI) {
-            view.hideProgressBar();
-            view.showErrorMsg(R.string.CARD_EDIT_error_receiving_image, "imageURI is null");
-        }
-
-        localImageURI = imageURI;
-
-        // TODO: исключение?
-        inputDataMimeType = MyUtils.getMimeTypeFromIntent(data);
-
-        view.displayImage(imageURI);
     }
 
     @Override
@@ -190,8 +211,35 @@ public class CardEdit2_Presenter implements
 
 
     // Внутренние методы
-    private void createCard(Intent intent) {
-        Log.d(TAG, "createCard()");
+    private void processCardCreation(boolean fromScratch, @Nullable Intent intent) throws Exception {
+
+        if (!fromScratch) {
+
+            if (null == intent) {
+                throw new IllegalArgumentException("Intent is null");
+            }
+
+            String mimeType = MyUtils.getMimeTypeFromIntent(intent);
+            if (null == mimeType) {
+                throw new IllegalArgumentException("Intent's mimeType is null");
+            }
+
+            view.setPageTitle(R.string.CARD_EDIT_card_creation_title);
+
+            if (mimeType.startsWith("text/")) {
+                procesIncomingText(intent);
+            }
+            else if (mimeType.startsWith("image/")) {
+                procesIncomingImage(intent);
+            }
+            else {
+                throw new IllegalArgumentException("Unsupported data type '"+mimeType+"'");
+            }
+        }
+    }
+
+    private void processCardEdition(@Nullable Intent intent) {
+
     }
 
     private void editCard(Intent intent) throws Exception {
@@ -206,39 +254,26 @@ public class CardEdit2_Presenter implements
         cardsService.loadCard(cardKey, this);
     }
 
-    private void recieveData(Intent intent) {
-        Log.d(TAG, "recieveData()");
-
-        Uri uri = intent.getData();
-
-        String mimeType = MyUtils.getMimeTypeFromIntent(intent);
-        if (null == mimeType) {
-            view.showErrorMsg(R.string.CARD_EDIT_error_recieving_data, "No mime type supplied");
-            return;
-        }
-
-        if (mimeType.startsWith("image/")) {
-            processIncomingData(intent);
-        }
-        else if (mimeType.startsWith("text/plain")) {
-            procesIncomingText(intent);
-        }
-        else {
-            view.showErrorMsg(R.string.CARD_EDIT_unsupported_data_type, "Unsupported data type '"+mimeType+"'");
-        }
-    }
-
-    private void procesIncomingText(Intent data) {
-        if (null == data) {
-            view.hideProgressBar();
-            view.showErrorMsg(R.string.CARD_EDIT_error_recieving_data, "Intent data is null");
-            return;
-        }
+    private void procesIncomingText(Intent data) throws Exception {
 
         String text = data.getStringExtra(Intent.EXTRA_TEXT);
+        if (null == text) {
+            throw new Exception("Input text (Intent's extra text) is null");
+        }
 
         view.hideProgressBar();
         view.displayQuote(text);
+    }
+
+    private void procesIncomingImage(Intent data) throws Exception {
+
+        Uri imageURI = data.getParcelableExtra(Intent.EXTRA_STREAM);
+        if (null == imageURI) {
+            throw new Exception("Input image (Intent's extra stream) is null");
+        }
+
+        view.hideProgressBar();
+        view.displayImage(imageURI);
     }
 
     private String constructRemoteFilePath() {

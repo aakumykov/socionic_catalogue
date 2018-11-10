@@ -84,7 +84,7 @@ public class CardEdit2_View extends BaseView implements
         setContentView(R.layout.card_edit_activity);
         ButterKnife.bind(this);
 
-        setPageTitle(R.string.CARD_EDIT_page_title);
+        setPageTitle(R.string.CARD_EDIT_card_edition_title);
         activateUpButton();
 
         CardEdit2_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
@@ -99,15 +99,7 @@ public class CardEdit2_View extends BaseView implements
 
         if (firstRun) {
             firstRun = false;
-
-            try {
-                presenter.startToWork(getIntent());
-
-            } catch (Exception e) {
-                hideProgressBar();
-                showErrorMsg(R.string.CARD_EDIT_error_editing_card);
-                e.printStackTrace();
-            }
+            presenter.makeStartDecision(getIntent());
         }
     }
 
@@ -161,7 +153,7 @@ public class CardEdit2_View extends BaseView implements
 
         if (RESULT_OK == resultCode) {
             try {
-                presenter.processInputIntent(Constants.INTENT_OF_SELECT, data);
+                presenter.processInputIntent(Constants.MODE_SELECT, data);
             } catch (Exception e) {
                 showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
             }
@@ -220,16 +212,7 @@ public class CardEdit2_View extends BaseView implements
     @Override
     public void displayImage(Uri imageURI) {
 
-        if (null == imageURI) {
-            hideProgressBar();
-            hideImageProgressBar();
-            showBrokenImage();
-            showErrorMsg(R.string.CARD_EDIT_error_displaying_image);
-            return;
-        }
-
-        MyUtils.show(imageHolder);
-        MyUtils.show(imageProgressBar);
+        switchImageMode();
 
         Picasso.get().load(imageURI)
                 .into(imageView, new Callback() {

@@ -120,7 +120,7 @@
     <string name="CARD_EDIT_error_saving_card">Error saving card</string>
     <string name="CARD_EDIT_error_loading_card">Error loading card</string>
     <string name="CARD_SHOW_error_displaying_card">Error displaying card</string>
-    <string name="CARD_EDIT_page_title">Card editing</string>
+    <string name="CARD_EDIT_card_edition_title">Card editing</string>
     <string name="CARD_EDIT_error_displaying_card">Error displaying card</string>
     <string name="CARD_EDIT_error_receiving_image">Error selecting image</string>
     <string name="CARD_EDIT_error_recieving_data">Error recieving data</string>
@@ -131,4 +131,8 @@
     <string name="CARD_EDIT_card_name">Card name</string>
     <string name="CARD_EDIT_described_object">What to add?</string>
     <string name="MENU_create_card">Create card</string>
+    <string name="CARD_EDIT_error_no_input_data">No input data</string>
+    <string name="CARD_EDIT_error_unknown_action">Unknown action</string>
+    <string name="CARD_EDIT_error_creating_card">Error creating card</string>
+    <string name="CARD_EDIT_card_creation_title">Creating a card</string>
 </resources>

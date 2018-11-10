@@ -42,11 +42,11 @@ public interface iCardEdit2 {
         void linkView(View view);
         void unlinkView();
 
-        void processInputIntent(String mode, Intent intent) throws Exception;
+        void makeStartDecision(@Nullable Intent intent);
 
-        void startToWork(Intent intent) throws Exception;
+        void processInputIntent(String mode, Intent intent);
 
-        void processIncomingData(Intent data);
+//        void processIncomingData(Intent data);
 
         void saveCard() throws Exception;
 

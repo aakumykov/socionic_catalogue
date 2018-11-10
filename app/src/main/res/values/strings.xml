@@ -124,7 +124,7 @@
     <string name="CARD_EDIT_error_saving_card">Ошибка сохранения карточки</string>
     <string name="CARD_EDIT_error_loading_card">Ошибка загрузки карточки</string>
     <string name="CARD_SHOW_error_displaying_card">Ошибка отображения карточки</string>
-    <string name="CARD_EDIT_page_title">Правка карточки</string>
+    <string name="CARD_EDIT_card_edition_title">Правка карточки</string>
     <string name="CARD_EDIT_error_displaying_card">Ошибка отображения карточки</string>
     <string name="CARD_EDIT_error_receiving_image">Ошибка выбора картинки</string>
     <string name="CARD_EDIT_error_recieving_data">Ошибка получения данных</string>
@@ -135,4 +135,8 @@
     <string name="CARD_EDIT_described_object">Что добавляем?</string>
     <string name="CARD_EDIT_card_name">Название карточки</string>
     <string name="MENU_create_card">Создать карточку</string>
+    <string name="CARD_EDIT_error_no_input_data">Отсутствуют данные</string>
+    <string name="CARD_EDIT_error_unknown_action">Неизвестное действие</string>
+    <string name="CARD_EDIT_error_creating_card">Ошибка создания карточки</string>
+    <string name="CARD_EDIT_card_creation_title">Создание карточки</string>
 </resources>
