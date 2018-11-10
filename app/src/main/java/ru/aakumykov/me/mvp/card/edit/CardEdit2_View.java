@@ -205,8 +205,8 @@ public class CardEdit2_View extends BaseView implements
 
     @Override
     public void displayQuote(String text) {
+        switchTextMode();
         quoteView.setText(text);
-        MyUtils.show(quoteView);
     }
 
     @Override
@@ -308,6 +308,9 @@ public class CardEdit2_View extends BaseView implements
         hideModeSwitcher();
         MyUtils.show(mediaHolder);
         MyUtils.show(quoteView);
+
+        quoteView.requestFocus();
+
         // TODO: проверить с кривым типом
         presenter.setCardType(Constants.TEXT_CARD);
     }

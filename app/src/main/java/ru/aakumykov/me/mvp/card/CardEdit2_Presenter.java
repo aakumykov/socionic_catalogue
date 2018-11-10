@@ -100,20 +100,6 @@ public class CardEdit2_Presenter implements
 
     }
 
-    @Override
-    public void setCardType(String cardType) {
-        String[] typesList = {
-                Constants.TEXT_CARD,
-                Constants.IMAGE_CARD
-        };
-
-        if (Arrays.asList(typesList).contains(cardType)) {
-            currentCard.setType(cardType);
-        } else {
-            throw new IllegalArgumentException("Unknown card type '"+cardType+"'");
-        }
-    }
-
     // TODO: как бы проверять полную корректность при сохранении?
     @Override
     public void saveCard() throws Exception {
@@ -127,8 +113,6 @@ public class CardEdit2_Presenter implements
 
         currentCard.setDescription(view.getCardDescription());
 
-        String remoteFilePath = constructRemoteFilePath();
-
         /* Схема работы:
          1) картинка отправляется на сервер;
          2) карточке присваивается серверный адрес картинки;
@@ -136,6 +120,7 @@ public class CardEdit2_Presenter implements
          4) метод "сохранить" вызывается ешё раз. */
         if (null != localImageURI) {
             Log.d(TAG, "Отправляю картинку");
+            String remoteFilePath = constructRemoteFilePath();
             view.disableForm();
             view.showImageProgressBar();
             storageService.uploadImage(localImageURI, remoteFilePath, this);
@@ -151,6 +136,20 @@ public class CardEdit2_Presenter implements
     public void forgetSelectedFile() {
         inputDataMimeType = null;
         localImageURI = null;
+    }
+
+    @Override
+    public void setCardType(String cardType) {
+        String[] availableCardTypes = {
+                Constants.TEXT_CARD,
+                Constants.IMAGE_CARD
+        };
+
+        if (Arrays.asList(availableCardTypes).contains(cardType)) {
+            currentCard.setType(cardType);
+        } else {
+            throw new IllegalArgumentException("Unknown card type '"+cardType+"'");
+        }
     }
 
 
@@ -186,12 +185,12 @@ public class CardEdit2_Presenter implements
     @Override
     public void onCardSaveSuccess(Card card) {
         // TODO: обновить метки
-        view.finishEdit(card);
+//        view.finishEdit(card);
     }
 
     @Override
     public void onCardSaveError(String message) {
-        view.enableForm();
+//        view.enableForm();
     }
 
     // --Отправки изображения

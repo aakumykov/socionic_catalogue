@@ -88,20 +88,26 @@ public class CardsSingleton implements
 
         DatabaseReference cardRef = cardsRef.child(card.getKey());
 
-        cardRef.setValue(card)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onCardSaveSuccess(card);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onCardSaveError(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
+        cardRef.setValue(card);
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//
+//                    }
+//                })
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        callbacks.onCardSaveSuccess(card);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        callbacks.onCardSaveError(e.getMessage());
+//                        e.printStackTrace();
+//                    }
+//                });
     }
 
     @Override
