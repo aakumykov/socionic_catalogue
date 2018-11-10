@@ -308,6 +308,8 @@ public class CardEdit2_View extends BaseView implements
         hideModeSwitcher();
         MyUtils.show(mediaHolder);
         MyUtils.show(quoteView);
+        // TODO: проверить с кривым типом
+        presenter.setCardType(Constants.TEXT_CARD);
     }
 
     @OnClick(R.id.imageModeSwitch)
@@ -316,6 +318,7 @@ public class CardEdit2_View extends BaseView implements
         MyUtils.show(mediaHolder);
         MyUtils.show(imageHolder);
         MyUtils.show(imagePlaceholder);
+        presenter.setCardType(Constants.IMAGE_CARD);
     }
 
     @OnClick(R.id.audioModeSwitch)
@@ -333,6 +336,7 @@ public class CardEdit2_View extends BaseView implements
         try {
             presenter.saveCard();
         } catch (Exception e) {
+            enableForm();
             showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
             e.printStackTrace();
         }

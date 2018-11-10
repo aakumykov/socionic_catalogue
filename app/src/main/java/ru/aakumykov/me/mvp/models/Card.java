@@ -143,20 +143,21 @@ public class Card implements Parcelable {
     }
 
     public void setQuote(String quote) throws Exception {
-        switch (this.type) {
-            case Constants.TEXT_CARD:
-                if (TextUtils.isEmpty(quote))
-                    throw new IllegalArgumentException("Quote cannot be empty");
-                else
-                    this.quote = quote;
-                break;
-
-            case Constants.IMAGE_CARD:
-                throw new Exception("Quote cannot be set to IMAGE_CARD");
-
-            default:
-                throw new Exception("Unknown card type '"+this.type+"'");
-        }
+        this.quote = quote;
+//        switch (this.type) {
+//            case Constants.TEXT_CARD:
+//                if (TextUtils.isEmpty(quote))
+//                    throw new IllegalArgumentException("Quote cannot be empty");
+//                else
+//                    this.quote = quote;
+//                break;
+//
+//            case Constants.IMAGE_CARD:
+//                throw new Exception("Quote cannot be set to IMAGE_CARD");
+//
+//            default:
+//                throw new Exception("Unknown card type '"+this.type+"'");
+//        }
     }
 
     public void setImageURL(String imageURL) throws IllegalArgumentException {

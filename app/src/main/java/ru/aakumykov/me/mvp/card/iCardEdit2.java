@@ -48,6 +48,7 @@ public interface iCardEdit2 {
 
 //        void processIncomingData(Intent data);
 
+        void setCardType(String cardType);
         void saveCard() throws Exception;
 
         void forgetSelectedFile();

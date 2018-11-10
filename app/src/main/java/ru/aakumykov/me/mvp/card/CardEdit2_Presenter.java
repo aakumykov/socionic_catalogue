@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.util.Arrays;
+
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
@@ -99,11 +101,26 @@ public class CardEdit2_Presenter implements
     }
 
     @Override
+    public void setCardType(String cardType) {
+        String[] typesList = {
+                Constants.TEXT_CARD,
+                Constants.IMAGE_CARD
+        };
+
+        if (Arrays.asList(typesList).contains(cardType)) {
+            currentCard.setType(cardType);
+        } else {
+            throw new IllegalArgumentException("Unknown card type '"+cardType+"'");
+        }
+    }
+
+    // TODO: как бы проверять полную корректность при сохранении?
+    @Override
     public void saveCard() throws Exception {
 
         currentCard.setTitle(view.getCardTitle());
 
-        // В самой Card можно просто игнорировать цитату для текстовой карты...
+        // В самой Card можно просто игнорировать цитату для нетекстовой карты...
         if (Constants.TEXT_CARD.equals(currentCard.getType())) {
             currentCard.setQuote(view.getCardQuote());
         }
@@ -153,12 +170,14 @@ public class CardEdit2_Presenter implements
     // --Загрузки карточки
     @Override
     public void onLoadSuccess(final Card card) {
+        currentCard = card;
         view.hideProgressBar();
         view.displayCard(card);
     }
 
     @Override
     public void onLoadFailed(String msg) {
+        currentCard = null;
         view.hideProgressBar();
         view.showErrorMsg(R.string.CARD_EDIT_error_loading_card);
     }
@@ -210,9 +229,12 @@ public class CardEdit2_Presenter implements
 
 
     // Внутренние методы
-    private void processCardCreation(boolean fromScratch, Intent intent) throws Exception {
+    private void processCardCreation(boolean blankCard, Intent intent) throws Exception {
 
-        if (!fromScratch) {
+        currentCard = new Card();
+        currentCard.setKey(cardsService.createKey());
+
+        if (!blankCard) {
 
             if (null == intent) {
                 throw new IllegalArgumentException("Intent is null");

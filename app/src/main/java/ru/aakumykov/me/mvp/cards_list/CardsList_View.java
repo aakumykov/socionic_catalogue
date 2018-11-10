@@ -86,8 +86,10 @@ public class CardsList_View extends BaseView implements
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        presenter.linkView(this);
     }
 
     @Override
