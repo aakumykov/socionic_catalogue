@@ -36,6 +36,7 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.CardEdit2_Presenter;
 import ru.aakumykov.me.mvp.card.iCardEdit2;
+import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
@@ -210,7 +211,7 @@ public class CardEdit2_View extends BaseView implements
     }
 
     @Override
-    public void displayImage(Uri imageURI) {
+    public void displayImage(final Uri imageURI) {
 
         switchImageMode();
 
@@ -218,6 +219,7 @@ public class CardEdit2_View extends BaseView implements
                 .into(imageView, new Callback() {
                     @Override
                     public void onSuccess() {
+                        storeImageURI(imageURI);
                         MyUtils.hide(imageProgressBar);
                         MyUtils.hide(imagePlaceholder);
                         MyUtils.show(imageView);
@@ -226,6 +228,7 @@ public class CardEdit2_View extends BaseView implements
 
                     @Override
                     public void onError(Exception e) {
+                        clearImageURI();
                         MyUtils.hide(imageProgressBar);
                         showBrokenImage();
                         showErrorMsg(R.string.error_loading_image);
@@ -243,14 +246,6 @@ public class CardEdit2_View extends BaseView implements
     }
 
     @Override
-    public void finishEdit(Card card) {
-        Intent intent = new Intent();
-        intent.putExtra(Constants.CARD, card);
-        setResult(RESULT_OK, intent);
-        finish();
-    }
-
-    @Override
     public String getCardTitle() {
         return titleView.getText().toString();
     }
@@ -258,6 +253,11 @@ public class CardEdit2_View extends BaseView implements
     @Override
     public String getCardQuote() {
         return quoteView.getText().toString();
+    }
+
+    @Override
+    public Uri getCardImageURI() {
+        return (Uri) imageView.getTag(R.id.imageURI_tag);
     }
 
     @Override
@@ -299,6 +299,21 @@ public class CardEdit2_View extends BaseView implements
         saveButton.setEnabled(true);
 
         MyUtils.hide(imageProgressBar);
+    }
+
+    @Override
+    public void goCardShow(Card card) {
+        Intent intent = new Intent(this, CardShow_View.class);
+        intent.putExtra(Constants.CARD_KEY, card.getKey());
+        startActivity(intent);
+    }
+
+    @Override
+    public void finishEdit(Card card) {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.CARD, card);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
 
@@ -357,7 +372,8 @@ public class CardEdit2_View extends BaseView implements
         MyUtils.hide(discardImageButton);
         MyUtils.show(imagePlaceholder);
 
-        presenter.forgetSelectedFile();
+        clearImageURI();
+//        presenter.forgetSelectedFile();
     }
 
     @OnClick(R.id.imagePlaceholder)
@@ -419,6 +435,12 @@ public class CardEdit2_View extends BaseView implements
         }
     }
 
+    private void storeImageURI(Uri uri) {
+        imageView.setTag(R.id.imageURI_tag, uri);
+    }
+    private void clearImageURI() {
+        imageView.setTag(R.id.imageURI_tag, null);
+    }
 
 
     // Другие

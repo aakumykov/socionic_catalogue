@@ -30,9 +30,9 @@ public class CardEdit2_Presenter implements
     private iAuthSingleton authService = AuthSingleton.getInstance();
     private iStorageSingleton storageService = StorageSingleton.getInstance();
 
-    private Card currentCard;
-    private Uri localImageURI;
-    private String inputDataMimeType;
+    private Card currentCard = null;
+    private String mimeType = ""; // Надо бы её очищать
+    private boolean recieveExternalDataMode = false;
 
 
     // Интерфейсные методы
@@ -58,6 +58,7 @@ public class CardEdit2_Presenter implements
 
             case Intent.ACTION_SEND:
                 try {
+                    recieveExternalDataMode = true;
                     processCardCreation(false, intent);
                 } catch (Exception e) {
                     view.showErrorMsg(R.string.CARD_EDIT_error_creating_card, e.getMessage());
@@ -106,7 +107,7 @@ public class CardEdit2_Presenter implements
 
         currentCard.setTitle(view.getCardTitle());
 
-        // В самой Card можно просто игнорировать цитату для нетекстовой карты...
+        // TODO: В самой Card можно просто игнорировать цитату для нетекстовой карты...
         if (Constants.TEXT_CARD.equals(currentCard.getType())) {
             currentCard.setQuote(view.getCardQuote());
         }
@@ -118,11 +119,14 @@ public class CardEdit2_Presenter implements
          2) карточке присваивается серверный адрес картинки;
          3) локальный адрес стирается;
          4) метод "сохранить" вызывается ешё раз. */
+        Uri localImageURI = view.getCardImageURI();
+
         if (null != localImageURI) {
             Log.d(TAG, "Отправляю картинку");
-            String remoteFilePath = constructRemoteFilePath();
             view.disableForm();
             view.showImageProgressBar();
+
+            String remoteFilePath = makeRemoteFileName();
             storageService.uploadImage(localImageURI, remoteFilePath, this);
         }
         else {
@@ -130,12 +134,6 @@ public class CardEdit2_Presenter implements
             view.disableForm();
             cardsService.updateCard(currentCard, this);
         }
-    }
-
-    @Override
-    public void forgetSelectedFile() {
-        inputDataMimeType = null;
-        localImageURI = null;
     }
 
     @Override
@@ -185,7 +183,11 @@ public class CardEdit2_Presenter implements
     @Override
     public void onCardSaveSuccess(Card card) {
         // TODO: обновить метки
-//        view.finishEdit(card);
+        if (recieveExternalDataMode) {
+            view.goCardShow(card);
+        } else {
+            view.finishEdit(card);
+        }
     }
 
     @Override
@@ -201,10 +203,12 @@ public class CardEdit2_Presenter implements
 
     @Override
     public void onUploadSuccess(String downloadURL) {
+
+        localImageURI
         currentCard.setImageURL(downloadURL);
 
         view.hideImageProgressBar();
-        forgetSelectedFile();
+//        forgetSelectedFile();
 
         try {
             saveCard();
@@ -239,7 +243,7 @@ public class CardEdit2_Presenter implements
                 throw new IllegalArgumentException("Intent is null");
             }
 
-            String mimeType = MyUtils.getMimeTypeFromIntent(intent);
+            mimeType = MyUtils.getMimeTypeFromIntent(intent);
             if (null == mimeType) {
                 throw new IllegalArgumentException("Intent's mimeType is null");
             }
@@ -290,7 +294,7 @@ public class CardEdit2_Presenter implements
         view.displayImage(imageURI);
     }
 
-    private String constructRemoteFilePath() {
+    private String makeRemoteFileName() {
 
         String fname = currentCard.getKey();
         if (null == fname) {
@@ -298,7 +302,7 @@ public class CardEdit2_Presenter implements
             return null;
         }
 
-        String fext = MyUtils.mime2ext(inputDataMimeType);
+        String fext = MyUtils.mime2ext(mimeType);
         if (null == fext) {
             Log.e(TAG, "fext == null");
             return null;

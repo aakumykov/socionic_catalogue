@@ -13,6 +13,9 @@ import java.util.List;
 
 import ru.aakumykov.me.mvp.Constants;
 
+// TODO: как сделать так, чтобы графическая карточка не могла сохраниться без картинки?
+// И так далее...
+
 public class Card implements Parcelable {
 
     private String key;
