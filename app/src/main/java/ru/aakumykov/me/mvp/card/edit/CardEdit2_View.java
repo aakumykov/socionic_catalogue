@@ -376,13 +376,15 @@ public class CardEdit2_View extends BaseView implements
 
     // Внутренние методы
     private void displayTextCard(Card card) {
-        quoteView.setText(card.getQuote());
+        switchTextMode();
         displayCommonCardParts(card);
+        quoteView.setText(card.getQuote());
     }
 
     private void displayImageCard(Card card) {
-        displayImage(card.getImageURL());
+        switchImageMode();
         displayCommonCardParts(card);
+        displayImage(card.getImageURL());
     }
 
     private void displayCommonCardParts(Card card) {

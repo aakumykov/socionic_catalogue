@@ -155,7 +155,6 @@ public class CardEdit2_Presenter implements
     public void onLoadSuccess(final Card card) {
         view.hideProgressBar();
         view.displayCard(card);
-        currentCard = card;
     }
 
     @Override
@@ -211,7 +210,7 @@ public class CardEdit2_Presenter implements
 
 
     // Внутренние методы
-    private void processCardCreation(boolean fromScratch, @Nullable Intent intent) throws Exception {
+    private void processCardCreation(boolean fromScratch, Intent intent) throws Exception {
 
         if (!fromScratch) {
 
@@ -238,17 +237,11 @@ public class CardEdit2_Presenter implements
         }
     }
 
-    private void processCardEdition(@Nullable Intent intent) {
-
-    }
-
-    private void editCard(Intent intent) throws Exception {
-        Log.d(TAG, "editCard()");
+    private void processCardEdition(Intent intent) {
 
         String cardKey = intent.getStringExtra(Constants.CARD_KEY);
-
         if (null == cardKey) {
-            throw new IllegalArgumentException("There is no CARD_KEY in intent");
+            throw new IllegalArgumentException("There is no CARD_KEY in intent.");
         }
 
         cardsService.loadCard(cardKey, this);
