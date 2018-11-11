@@ -431,7 +431,7 @@ public class CardEdit2_View extends BaseView implements
         }
 
         newTagInput.setText("");
-//        newTagInput.requestFocus();
+        newTagInput.requestFocus();
     }
 
     // меток
