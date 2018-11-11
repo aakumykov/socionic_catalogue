@@ -87,7 +87,7 @@ public class CardEdit2_Presenter implements
 
         // Выделяю внешние данные
         Uri dataURI;
-        String mimeType = null;
+        String mimeType = "";
 
         if (Constants.MODE_SELECT.equals(mode)) {
             dataURI = intent.getData();
@@ -102,9 +102,9 @@ public class CardEdit2_Presenter implements
         }
 
         if (null == mimeType) throw new IllegalArgumentException("mimeType from Intent is null.");
-        if (null == dataURI) throw new IllegalArgumentException("Data from Intent is null");
 
-        // Если это процесс получения внешних данных...
+
+        // Подготавливаю форму в случае создания
         if (Constants.MODE_SEND.equals(mode)) {
             prepareCardCreation();
         }
