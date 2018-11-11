@@ -219,7 +219,7 @@ public class CardEdit2_View extends BaseView implements
                 .into(imageView, new Callback() {
                     @Override
                     public void onSuccess() {
-                        storeImageURI(imageURI);
+//                        storeImageURI(imageURI);
                         MyUtils.hide(imageProgressBar);
                         MyUtils.hide(imagePlaceholder);
                         MyUtils.show(imageView);
@@ -228,7 +228,7 @@ public class CardEdit2_View extends BaseView implements
 
                     @Override
                     public void onError(Exception e) {
-                        clearImageURI();
+//                        clearImageURI();
                         MyUtils.hide(imageProgressBar);
                         showBrokenImage();
                         showErrorMsg(R.string.error_loading_image);
@@ -255,10 +255,10 @@ public class CardEdit2_View extends BaseView implements
         return quoteView.getText().toString();
     }
 
-    @Override
-    public Uri getCardImageURI() {
-        return (Uri) imageView.getTag(R.id.imageURI_tag);
-    }
+//    @Override
+//    public Uri getCardImageURI() {
+//        return (Uri) imageView.getTag(R.id.imageURI_tag);
+//    }
 
     @Override
     public String getCardDescription() {
@@ -372,8 +372,8 @@ public class CardEdit2_View extends BaseView implements
         MyUtils.hide(discardImageButton);
         MyUtils.show(imagePlaceholder);
 
-        clearImageURI();
-//        presenter.forgetSelectedFile();
+//        clearImageURI();
+        presenter.forgetSelectedFile();
     }
 
     @OnClick(R.id.imagePlaceholder)
@@ -435,12 +435,12 @@ public class CardEdit2_View extends BaseView implements
         }
     }
 
-    private void storeImageURI(Uri uri) {
-        imageView.setTag(R.id.imageURI_tag, uri);
-    }
-    private void clearImageURI() {
-        imageView.setTag(R.id.imageURI_tag, null);
-    }
+//    private void storeImageURI(Uri uri) {
+//        imageView.setTag(R.id.imageURI_tag, uri);
+//    }
+//    private void clearImageURI() {
+//        imageView.setTag(R.id.imageURI_tag, null);
+//    }
 
 
     // Другие

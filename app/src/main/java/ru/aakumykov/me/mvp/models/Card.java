@@ -164,4 +164,29 @@ public class Card implements Parcelable {
     public void removeImageURL() {
         this.imageURL = null;
     }
+
+
+    // Служебное
+    @Exclude private Uri localImageURI;
+    @Exclude private String mimeType;
+
+    @Exclude public void setLocalImageURI(Uri uri) {
+        this.localImageURI = uri;
+    }
+    @Exclude public Uri getLocalImageURI() {
+        return this.localImageURI;
+    }
+    @Exclude public void clearLocalImageURI() {
+        this.localImageURI = null;
+    }
+
+    @Exclude public String getMimeType() {
+        return mimeType;
+    }
+    @Exclude public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+    @Exclude public void clearMimeType() {
+        this.mimeType = null;
+    }
 }

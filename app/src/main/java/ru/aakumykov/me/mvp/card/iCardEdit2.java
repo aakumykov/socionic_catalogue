@@ -24,7 +24,7 @@ public interface iCardEdit2 {
 
         String getCardTitle();
         String getCardQuote();
-        Uri getCardImageURI();
+//        Uri getCardImageURI();
         String getCardDescription();
 
         void showImageProgressBar();
@@ -54,6 +54,6 @@ public interface iCardEdit2 {
         void setCardType(String cardType);
         void saveCard() throws Exception;
 
-//        void forgetSelectedFile();
+        void forgetSelectedFile();
     }
 }

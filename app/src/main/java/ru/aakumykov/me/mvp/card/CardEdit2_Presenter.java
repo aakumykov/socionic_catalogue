@@ -31,8 +31,7 @@ public class CardEdit2_Presenter implements
     private iStorageSingleton storageService = StorageSingleton.getInstance();
 
     private Card currentCard = null;
-    private String mimeType = ""; // Надо бы её очищать
-    private boolean recieveExternalDataMode = false;
+    private boolean externalDataMode = false;
 
 
     // Интерфейсные методы
@@ -58,7 +57,7 @@ public class CardEdit2_Presenter implements
 
             case Intent.ACTION_SEND:
                 try {
-                    recieveExternalDataMode = true;
+                    externalDataMode = true;
                     processCardCreation(false, intent);
                 } catch (Exception e) {
                     view.showErrorMsg(R.string.CARD_EDIT_error_creating_card, e.getMessage());
@@ -105,6 +104,8 @@ public class CardEdit2_Presenter implements
     @Override
     public void saveCard() throws Exception {
 
+        view.disableForm();
+
         currentCard.setTitle(view.getCardTitle());
 
         // TODO: В самой Card можно просто игнорировать цитату для нетекстовой карты...
@@ -119,11 +120,10 @@ public class CardEdit2_Presenter implements
          2) карточке присваивается серверный адрес картинки;
          3) локальный адрес стирается;
          4) метод "сохранить" вызывается ешё раз. */
-        Uri localImageURI = view.getCardImageURI();
+        Uri localImageURI = currentCard.getLocalImageURI();
 
-        if (null != localImageURI) {
+        if (null != currentCard.getLocalImageURI()) {
             Log.d(TAG, "Отправляю картинку");
-            view.disableForm();
             view.showImageProgressBar();
 
             String remoteFilePath = makeRemoteFileName();
@@ -131,7 +131,6 @@ public class CardEdit2_Presenter implements
         }
         else {
             Log.d(TAG, "Сохраняю карточку");
-            view.disableForm();
             cardsService.updateCard(currentCard, this);
         }
     }
@@ -149,6 +148,13 @@ public class CardEdit2_Presenter implements
             throw new IllegalArgumentException("Unknown card type '"+cardType+"'");
         }
     }
+
+    @Override
+    public void forgetSelectedFile() {
+        currentCard.clearLocalImageURI();
+        currentCard.clearMimeType();
+    }
+
 
 
     // Обязательные методы
@@ -183,7 +189,7 @@ public class CardEdit2_Presenter implements
     @Override
     public void onCardSaveSuccess(Card card) {
         // TODO: обновить метки
-        if (recieveExternalDataMode) {
+        if (externalDataMode) {
             view.goCardShow(card);
         } else {
             view.finishEdit(card);
@@ -204,11 +210,12 @@ public class CardEdit2_Presenter implements
     @Override
     public void onUploadSuccess(String downloadURL) {
 
-        localImageURI
+        currentCard.clearLocalImageURI();
+        currentCard.clearMimeType();
+
         currentCard.setImageURL(downloadURL);
 
         view.hideImageProgressBar();
-//        forgetSelectedFile();
 
         try {
             saveCard();
@@ -243,10 +250,10 @@ public class CardEdit2_Presenter implements
                 throw new IllegalArgumentException("Intent is null");
             }
 
-            mimeType = MyUtils.getMimeTypeFromIntent(intent);
-            if (null == mimeType) {
+            String mimeType = MyUtils.getMimeTypeFromIntent(intent);
+            if (null == mimeType)
                 throw new IllegalArgumentException("Intent's mimeType is null");
-            }
+            currentCard.setMimeType(mimeType);
 
             view.setPageTitle(R.string.CARD_EDIT_card_creation_title);
 
@@ -286,9 +293,9 @@ public class CardEdit2_Presenter implements
     private void procesIncomingImage(Intent data) throws Exception {
 
         Uri imageURI = data.getParcelableExtra(Intent.EXTRA_STREAM);
-        if (null == imageURI) {
+        if (null == imageURI)
             throw new Exception("Input image (Intent's extra stream) is null");
-        }
+        currentCard.setLocalImageURI(imageURI);
 
         view.hideProgressBar();
         view.displayImage(imageURI);
@@ -302,7 +309,7 @@ public class CardEdit2_Presenter implements
             return null;
         }
 
-        String fext = MyUtils.mime2ext(mimeType);
+        String fext = MyUtils.mime2ext(currentCard.getMimeType());
         if (null == fext) {
             Log.e(TAG, "fext == null");
             return null;
