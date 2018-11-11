@@ -198,28 +198,6 @@ public class CardEdit2_Presenter implements
         }
     }
 
-//    @Override
-//    public void onAddTagButtonClicked() {
-//        Log.d(TAG, "onAddTagButtonClicked()");
-//
-//        String newTag = view.getNewTag();
-//
-//        if (!TextUtils.isEmpty(newTag)) {
-//
-//            newTag = MyUtils.normalizeTag(newTag);
-//
-//            HashMap<String,Boolean> existingTags = view.getCardTags();
-//
-//            if (!existingTags.containsKey(newTag)) {
-//                view.addTag(newTag);
-//            }
-//
-//            view.clearNewTag();
-//            view.focusTagInput();
-//        }
-//    }
-
-
     @Override
     public String processNewTag(String tagName) {
 
@@ -339,6 +317,7 @@ public class CardEdit2_Presenter implements
     private void prepareCardCreation() {
 
         view.setPageTitle(R.string.CARD_EDIT_card_creation_title);
+        view.showModeSwitcher();
 
         currentCard = new Card();
         currentCard.setKey(cardsService.createKey());
@@ -346,6 +325,7 @@ public class CardEdit2_Presenter implements
 
     private void prepareCardEdition(Intent intent) {
 
+        view.showProgressBar();
         view.setPageTitle(R.string.CARD_EDIT_card_edition_title);
 
         String cardKey = intent.getStringExtra(Constants.CARD_KEY);
