@@ -25,9 +25,7 @@ public interface iCardEdit2 {
 
         String getCardTitle();
         String getCardQuote();
-//        Uri getCardImageURI();
         String getCardDescription();
-        String getNewTag();
         HashMap<String,Boolean> getCardTags();
 
         void showImageProgressBar();
@@ -54,11 +52,11 @@ public interface iCardEdit2 {
 
         void processInputData(String mode, Intent intent) throws Exception;
 
-        void onAddTagButtonClicked();
+        String processNewTag(String tagName);
 
         void setCardType(String cardType);
         void saveCard() throws Exception;
 
-        void forgetSelectedFile();
+        void forgetCurrentData();
     }
 }

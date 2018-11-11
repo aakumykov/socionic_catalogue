@@ -3,10 +3,8 @@ package ru.aakumykov.me.mvp.card;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -17,7 +15,6 @@ import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.interfaces.iStorageSingleton;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
-import ru.aakumykov.me.mvp.models.Tag;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.StorageSingleton;
@@ -38,8 +35,8 @@ public class CardEdit2_Presenter implements
     private iTagsSingleton tagsService = TagsSingleton.getInstance();
 
     private Card currentCard = null;
-    private HashMap<String,Boolean> oldTags = new HashMap<>();
-    private HashMap<String,Boolean> newTags;
+    private HashMap<String,Boolean> oldTags = null;
+    private HashMap<String,Boolean> newTags = null;
 
     // Интерфейсные методы
     @Override
@@ -152,6 +149,7 @@ public class CardEdit2_Presenter implements
     public void saveCard() throws Exception {
 
         view.disableForm();
+        view.showProgressBar();
 
         currentCard.setTitle(view.getCardTitle());
 
@@ -161,6 +159,9 @@ public class CardEdit2_Presenter implements
         }
 
         currentCard.setDescription(view.getCardDescription());
+
+        newTags = view.getCardTags();
+        currentCard.setTags(newTags);
 
         /* Схема работы:
          1) картинка отправляется на сервер;
@@ -196,33 +197,42 @@ public class CardEdit2_Presenter implements
         }
     }
 
+//    @Override
+//    public void onAddTagButtonClicked() {
+//        Log.d(TAG, "onAddTagButtonClicked()");
+//
+//        String newTag = view.getNewTag();
+//
+//        if (!TextUtils.isEmpty(newTag)) {
+//
+//            newTag = MyUtils.normalizeTag(newTag);
+//
+//            HashMap<String,Boolean> existingTags = view.getCardTags();
+//
+//            if (!existingTags.containsKey(newTag)) {
+//                view.addTag(newTag);
+//            }
+//
+//            view.clearNewTag();
+//            view.focusTagInput();
+//        }
+//    }
+
+
     @Override
-    public void onAddTagButtonClicked() {
-        Log.d(TAG, "onAddTagButtonClicked()");
-
-        String newTag = view.getNewTag();
-
-        if (!TextUtils.isEmpty(newTag)) {
-
-            newTag = MyUtils.normalizeTag(newTag);
-
-            HashMap<String,Boolean> existingTags = view.getCardTags();
-
-            if (!existingTags.containsKey(newTag)) {
-                view.addTag(newTag);
-            }
-
-            view.clearNewTag();
-            view.focusTagInput();
-        }
+    public String processNewTag(String tagName) {
+        return MyUtils.normalizeTag(tagName);
     }
 
     @Override
-    public void forgetSelectedFile() {
+    public void forgetCurrentData() {
         currentCard.clearLocalImageURI();
         currentCard.clearMimeType();
-    }
 
+        currentCard = null;
+        newTags = new HashMap<>();
+        oldTags = null;
+    }
 
 
     // Обязательные методы
@@ -242,6 +252,8 @@ public class CardEdit2_Presenter implements
     @Override
     public void onLoadSuccess(final Card card) {
         currentCard = card;
+        oldTags = card.getTags();
+
         view.hideProgressBar();
         view.displayCard(card);
     }
@@ -256,18 +268,24 @@ public class CardEdit2_Presenter implements
     // --Сохранение карточки
     @Override
     public void onCardSaveSuccess(Card card) {
-        // TODO: обновить метки
-//        if (externalDataMode) {
-//            view.goCardShow(card);
-//        } else {
-//            view.finishEdit(card);
-//        }
-        view.goCardShow(card);
+
+        TagsSingleton.getInstance().updateCardTags(
+                currentCard.getKey(),
+                oldTags,
+                newTags,
+                null
+        );
+
+        forgetCurrentData();
+
+        view.hideProgressBar();
+        view.finishEdit(card);
     }
 
     @Override
     public void onCardSaveError(String message) {
-//        view.enableForm();
+        view.hideProgressBar();
+        view.enableForm();
     }
 
     // --Отправки изображения

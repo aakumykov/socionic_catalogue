@@ -194,7 +194,9 @@
                 app:tag_clickable="true"
                 app:tag_ripple_duration="400"
                 app:tag_theme="pure_teal"
-                app:vertical_interval="10dp" />
+                app:vertical_interval="10dp"
+                app:tag_text_size="@dimen/tag_font_size"
+                app:tag_enable_cross="true" />
 
 
                 <LinearLayout

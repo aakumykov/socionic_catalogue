@@ -163,8 +163,6 @@ public class CardEdit2_View extends BaseView implements
         presenter.linkView(this);
 
         if (RESULT_OK == resultCode) {
-//            SelectedFile selectedFile = new SelectedFile();
-//            selectedFile.setDataURI();
             try {
                 presenter.processInputData(Constants.MODE_SELECT, data);
             } catch (Exception e) {
@@ -273,15 +271,16 @@ public class CardEdit2_View extends BaseView implements
     }
 
     @Override
-    public String getNewTag() {
-        return newTagInput.getText().toString();
+    public HashMap<String,Boolean> getCardTags() {
+        HashMap<String,Boolean> map = new HashMap<>();
+        List<String> tagsList = tagsContainer.getTags();
+        for (String tagName : tagsList) {
+            map.put(tagName, true);
+        }
+        return map;
     }
 
-    @Override
-    public HashMap<String, Boolean> getCardTags() {
-        HashMap<String, Boolean> tagsMap = new HashMap();
-        return ;
-    }
+
 
     @Override
     public void showImageProgressBar() {
@@ -396,7 +395,7 @@ public class CardEdit2_View extends BaseView implements
         MyUtils.show(imagePlaceholder);
 
 //        clearImageURI();
-        presenter.forgetSelectedFile();
+        presenter.forgetCurrentData();
     }
 
     @OnClick(R.id.imagePlaceholder)
@@ -421,7 +420,16 @@ public class CardEdit2_View extends BaseView implements
 
     @OnClick(R.id.addTagButton)
     public void addTag() {
+        String newTag = newTagInput.getText().toString();
+        newTag = presenter.processNewTag(newTag);
 
+        // TODO: отображать ошибку или молча исправлять её?
+        if (null != newTag) {
+            tagsContainer.addTag(newTag);
+        }
+
+        newTagInput.setText("");
+//        newTagInput.requestFocus();
     }
 
 
