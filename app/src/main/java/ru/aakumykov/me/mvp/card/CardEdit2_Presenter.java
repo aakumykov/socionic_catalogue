@@ -87,14 +87,14 @@ public class CardEdit2_Presenter implements
 
         // Выделяю внешние данные
         Uri dataURI;
-        String mimeType = "";
+        String mimeType;
 
         if (Constants.MODE_SELECT.equals(mode)) {
             dataURI = intent.getData();
             mimeType = view.detectMimeType(dataURI);
         }
         else if (Constants.MODE_SEND.equals(mode)) {
-            dataURI = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+            dataURI = intent.getParcelableExtra(Intent.EXTRA_STREAM);
             /* При пересылке изображения и текста mimeType находится
             * в разных местах, а здесь я ещё не знаю, изображение это
             * или текст. Поэтому пробую 2 метода опрделения типа данных. */
@@ -279,7 +279,7 @@ public class CardEdit2_Presenter implements
 
 
     // Внутренние методы
-    private void prepareCardCreation() throws Exception {
+    private void prepareCardCreation() {
 
         view.setPageTitle(R.string.CARD_EDIT_card_creation_title);
 
