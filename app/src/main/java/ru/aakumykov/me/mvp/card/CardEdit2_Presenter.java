@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import ru.aakumykov.me.mvp.Constants;
@@ -12,10 +13,13 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.interfaces.iStorageSingleton;
+import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.models.Tag;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.StorageSingleton;
+import ru.aakumykov.me.mvp.services.TagsSingleton;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class CardEdit2_Presenter implements
@@ -29,9 +33,11 @@ public class CardEdit2_Presenter implements
     private iCardsSingleton cardsService = CardsSingleton.getInstance();
     private iAuthSingleton authService = AuthSingleton.getInstance();
     private iStorageSingleton storageService = StorageSingleton.getInstance();
+    private iTagsSingleton tagsService = TagsSingleton.getInstance();
 
     private Card currentCard = null;
-
+    private ArrayList<Tag> oldTags = new ArrayList<>();
+    private ArrayList<Tag> newTags = new ArrayList<>();
 
     // Интерфейсные методы
     @Override

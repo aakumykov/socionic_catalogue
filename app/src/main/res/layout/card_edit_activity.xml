@@ -181,20 +181,20 @@
             android:layout_marginTop="6dp"/>
 
             <co.lujun.androidtagview.TagContainerLayout
-                    android:id="@+id/tagsContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="0dp"
-                    android:padding="0dp"
-                    android:visibility="gone"
-                    app:container_background_color="@color/transparent"
-                    app:container_border_color="@color/transparent"
-                    app:container_enable_drag="false"
-                    app:horizontal_interval="10dp"
-                    app:tag_clickable="true"
-                    app:tag_ripple_duration="400"
-                    app:tag_theme="pure_teal"
-                    app:vertical_interval="10dp" />
+                android:id="@+id/tagsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="0dp"
+                android:visibility="visible"
+                app:container_background_color="@color/transparent"
+                app:container_border_color="@color/transparent"
+                app:container_enable_drag="false"
+                app:horizontal_interval="10dp"
+                app:tag_clickable="true"
+                app:tag_ripple_duration="400"
+                app:tag_theme="pure_teal"
+                app:vertical_interval="10dp" />
 
 
                 <LinearLayout

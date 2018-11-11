@@ -68,7 +68,7 @@ public class CardEdit2_View extends BaseView implements
 
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.newTagInput) EditText newTagInput;
-    @BindView(R.id.addTagButton) Button tagAddButton;
+    @BindView(R.id.addTagButton) Button addTagButton;
 
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
@@ -267,11 +267,6 @@ public class CardEdit2_View extends BaseView implements
         return quoteView.getText().toString();
     }
 
-//    @Override
-//    public Uri getCardImageURI() {
-//        return (Uri) imageView.getTag(R.id.imageURI_tag);
-//    }
-
     @Override
     public String getCardDescription() {
         return descriptionView.getText().toString();
@@ -333,6 +328,7 @@ public class CardEdit2_View extends BaseView implements
         ContentResolver cr = this.getContentResolver();
         return cr.getType(dataURI);
     }
+
 
     // Методы нажатий
     @OnClick(R.id.textModeSwitch)
@@ -411,6 +407,12 @@ public class CardEdit2_View extends BaseView implements
             Log.e(TAG, "Error resolving activity for Intent.ACTION_GET_CONTENT");
         }
     }
+
+    @OnClick(R.id.addTagButton)
+    public void addTag() {
+
+    }
+
 
 
     // Внутренние методы
