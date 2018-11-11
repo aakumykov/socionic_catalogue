@@ -132,10 +132,6 @@ public class CardShow_View extends BaseView implements
                 presenter.onDeleteButtonClicked();
                 break;
 
-            case android.R.id.home:
-                this.finish();
-                break;
-
             default:
                 super.onOptionsItemSelected(item);
         }
