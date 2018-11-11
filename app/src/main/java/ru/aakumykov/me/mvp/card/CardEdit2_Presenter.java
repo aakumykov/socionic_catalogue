@@ -48,7 +48,7 @@ public class CardEdit2_Presenter implements
 
             case Constants.ACTION_CREATE:
                 try {
-                    processCardCreation(true, intent);
+                    prepareCardCreation();
                 } catch (Exception e) {
                     view.showErrorMsg(R.string.CARD_EDIT_error_creating_card, e.getMessage());
                     e.printStackTrace();
@@ -58,7 +58,7 @@ public class CardEdit2_Presenter implements
             case Intent.ACTION_SEND:
                 try {
                     externalDataMode = true;
-                    processCardCreation(false, intent);
+                    processInputFile(Constants.MODE_SEND, intent);
                 } catch (Exception e) {
                     view.showErrorMsg(R.string.CARD_EDIT_error_creating_card, e.getMessage());
                     e.printStackTrace();
@@ -67,7 +67,7 @@ public class CardEdit2_Presenter implements
 
             case Constants.ACTION_EDIT:
                 try {
-                    processCardEdition(intent);
+                    prepareCardEdition(intent);
                 } catch (Exception e) {
                     view.showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
                     e.printStackTrace();
@@ -80,24 +80,56 @@ public class CardEdit2_Presenter implements
     }
 
     @Override
-    public void processInputIntent(String mode, final Intent intent) {
+    public void processInputFile(String mode, final Intent intent) throws Exception {
 
         if (null == intent) {
             throw new IllegalArgumentException("Intent is null");
         }
 
-        String mimeType = MyUtils.getMimeTypeFromIntent(intent);
-        Uri dataURI = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        // Выделяю внешние данные
+        Uri dataURI;
+        String mimeType = null;
 
-        if (null == mimeType) {
-            throw new IllegalArgumentException("mimeType from Intent is null.");
+        if (Constants.MODE_SELECT.equals(mode)) {
+            dataURI = intent.getData();
+            mimeType = view.detectMimeType(dataURI);
+        }
+        else if (Constants.MODE_SEND.equals(mode)) {
+            dataURI = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+            mimeType = MyUtils.getMimeTypeFromIntent(intent);
+        }
+        else {
+            throw new IllegalArgumentException("Unknown mode '"+mode+"'");
         }
 
-        if (null == dataURI) {
-            throw new IllegalArgumentException("Data from Intent is null");
+        if (null == mimeType) throw new IllegalArgumentException("mimeType from Intent is null.");
+        if (null == dataURI) throw new IllegalArgumentException("Data from Intent is null");
+
+        // Обрабатываю данные согласно типу
+        if (mimeType.startsWith("image/")) {
+            try {
+                procesIncomingImage(dataURI);
+            } catch (Exception e) {
+                view.showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        else if (mimeType.equals("text/plain")) {
+            try {
+                procesIncomingText(intent);
+            } catch (Exception e) {
+                view.showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        else {
+            throw new IllegalArgumentException("Unsupported mimeType '"+mimeType+"'");
         }
 
-
+        // Если это процесс получения внешних данных...
+        if (Constants.MODE_SEND.equals(mode)) {
+            prepareCardCreation();
+        }
     }
 
     // TODO: как бы проверять полную корректность при сохранении?
@@ -239,37 +271,17 @@ public class CardEdit2_Presenter implements
 
 
     // Внутренние методы
-    private void processCardCreation(boolean blankCard, Intent intent) throws Exception {
+    private void prepareCardCreation() throws Exception {
+
+        view.setPageTitle(R.string.CARD_EDIT_card_creation_title);
 
         currentCard = new Card();
         currentCard.setKey(cardsService.createKey());
-
-        if (!blankCard) {
-
-            if (null == intent) {
-                throw new IllegalArgumentException("Intent is null");
-            }
-
-            String mimeType = MyUtils.getMimeTypeFromIntent(intent);
-            if (null == mimeType)
-                throw new IllegalArgumentException("Intent's mimeType is null");
-            currentCard.setMimeType(mimeType);
-
-            view.setPageTitle(R.string.CARD_EDIT_card_creation_title);
-
-            if (mimeType.startsWith("text/")) {
-                procesIncomingText(intent);
-            }
-            else if (mimeType.startsWith("image/")) {
-                procesIncomingImage(intent);
-            }
-            else {
-                throw new IllegalArgumentException("Unsupported data type '"+mimeType+"'");
-            }
-        }
     }
 
-    private void processCardEdition(Intent intent) {
+    private void prepareCardEdition(Intent intent) {
+
+        view.setPageTitle(R.string.CARD_EDIT_card_edition_title);
 
         String cardKey = intent.getStringExtra(Constants.CARD_KEY);
         if (null == cardKey) {
@@ -279,9 +291,9 @@ public class CardEdit2_Presenter implements
         cardsService.loadCard(cardKey, this);
     }
 
-    private void procesIncomingText(Intent data) throws Exception {
+    private void procesIncomingText(Intent intent) throws Exception {
 
-        String text = data.getStringExtra(Intent.EXTRA_TEXT);
+        String text = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (null == text) {
             throw new Exception("Input text (Intent's extra text) is null");
         }
@@ -290,11 +302,8 @@ public class CardEdit2_Presenter implements
         view.displayQuote(text);
     }
 
-    private void procesIncomingImage(Intent data) throws Exception {
+    private void procesIncomingImage(Uri imageURI) throws Exception {
 
-        Uri imageURI = data.getParcelableExtra(Intent.EXTRA_STREAM);
-        if (null == imageURI)
-            throw new Exception("Input image (Intent's extra stream) is null");
         currentCard.setLocalImageURI(imageURI);
 
         view.hideProgressBar();

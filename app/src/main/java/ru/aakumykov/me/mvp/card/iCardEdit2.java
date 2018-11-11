@@ -39,6 +39,8 @@ public interface iCardEdit2 {
         void finishEdit(Card card); // нужен?
 
         void goCardShow(Card card);
+
+        String detectMimeType(Uri dataURI);
     }
 
     interface Presenter {
@@ -47,7 +49,7 @@ public interface iCardEdit2 {
 
         void makeStartDecision(@Nullable Intent intent);
 
-        void processInputIntent(String mode, Intent intent);
+        void processInputFile(String mode, Intent intent) throws Exception;
 
 //        void processIncomingData(Intent data);
 

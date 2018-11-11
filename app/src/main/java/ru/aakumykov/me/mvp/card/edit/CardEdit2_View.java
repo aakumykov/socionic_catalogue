@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.card.edit;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -85,7 +86,6 @@ public class CardEdit2_View extends BaseView implements
         setContentView(R.layout.card_edit_activity);
         ButterKnife.bind(this);
 
-        setPageTitle(R.string.CARD_EDIT_card_edition_title);
         activateUpButton();
 
         CardEdit2_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
@@ -153,8 +153,10 @@ public class CardEdit2_View extends BaseView implements
         presenter.linkView(this);
 
         if (RESULT_OK == resultCode) {
+//            SelectedFile selectedFile = new SelectedFile();
+//            selectedFile.setDataURI();
             try {
-                presenter.processInputIntent(Constants.MODE_SELECT, data);
+                presenter.processInputFile(Constants.MODE_SELECT, data);
             } catch (Exception e) {
                 showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
             }
@@ -316,6 +318,11 @@ public class CardEdit2_View extends BaseView implements
         finish();
     }
 
+    @Override
+    public String detectMimeType(Uri dataURI) {
+        ContentResolver cr = this.getContentResolver();
+        return cr.getType(dataURI);
+    }
 
     // Методы нажатий
     @OnClick(R.id.textModeSwitch)
