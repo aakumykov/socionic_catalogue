@@ -3,10 +3,12 @@ package ru.aakumykov.me.mvp.card;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
@@ -36,8 +38,8 @@ public class CardEdit2_Presenter implements
     private iTagsSingleton tagsService = TagsSingleton.getInstance();
 
     private Card currentCard = null;
-    private ArrayList<Tag> oldTags = new ArrayList<>();
-    private ArrayList<Tag> newTags = new ArrayList<>();
+    private HashMap<String,Boolean> oldTags = new HashMap<>();
+    private HashMap<String,Boolean> newTags;
 
     // Интерфейсные методы
     @Override
@@ -191,6 +193,27 @@ public class CardEdit2_Presenter implements
             currentCard.setType(cardType);
         } else {
             throw new IllegalArgumentException("Unknown card type '"+cardType+"'");
+        }
+    }
+
+    @Override
+    public void onAddTagButtonClicked() {
+        Log.d(TAG, "onAddTagButtonClicked()");
+
+        String newTag = view.getNewTag();
+
+        if (!TextUtils.isEmpty(newTag)) {
+
+            newTag = MyUtils.normalizeTag(newTag);
+
+            HashMap<String,Boolean> existingTags = view.getCardTags();
+
+            if (!existingTags.containsKey(newTag)) {
+                view.addTag(newTag);
+            }
+
+            view.clearNewTag();
+            view.focusTagInput();
         }
     }
 

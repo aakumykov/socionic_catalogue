@@ -273,6 +273,17 @@ public class CardEdit2_View extends BaseView implements
     }
 
     @Override
+    public String getNewTag() {
+        return newTagInput.getText().toString();
+    }
+
+    @Override
+    public HashMap<String, Boolean> getCardTags() {
+        HashMap<String, Boolean> tagsMap = new HashMap();
+        return ;
+    }
+
+    @Override
     public void showImageProgressBar() {
         MyUtils.show(imageProgressBar);
     }

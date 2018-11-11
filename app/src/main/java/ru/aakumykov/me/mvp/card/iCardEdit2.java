@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 
 import java.net.URI;
+import java.util.HashMap;
 
 import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.models.Card;
@@ -26,6 +27,8 @@ public interface iCardEdit2 {
         String getCardQuote();
 //        Uri getCardImageURI();
         String getCardDescription();
+        String getNewTag();
+        HashMap<String,Boolean> getCardTags();
 
         void showImageProgressBar();
         void hideImageProgressBar();
@@ -51,7 +54,7 @@ public interface iCardEdit2 {
 
         void processInputData(String mode, Intent intent) throws Exception;
 
-//        void processIncomingData(Intent data);
+        void onAddTagButtonClicked();
 
         void setCardType(String cardType);
         void saveCard() throws Exception;
