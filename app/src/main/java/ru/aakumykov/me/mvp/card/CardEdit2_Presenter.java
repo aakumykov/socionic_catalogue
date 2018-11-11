@@ -95,7 +95,8 @@ public class CardEdit2_Presenter implements
         }
         else if (Constants.MODE_SEND.equals(mode)) {
             dataURI = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-            mimeType = MyUtils.getMimeTypeFromIntent(intent);
+//            mimeType = MyUtils.getMimeTypeFromIntent(intent);
+            mimeType = view.detectMimeType(dataURI);
         }
         else {
             throw new IllegalArgumentException("Unknown mode '"+mode+"'");
