@@ -108,6 +108,7 @@ public class CardEdit2_Presenter implements
         if (Constants.MODE_SEND.equals(mode)) {
             prepareCardCreation();
         }
+        currentCard.setMimeType(mimeType);
 
         // Обрабатываю данные согласно типу
         if (mimeType.startsWith("image/")) {
@@ -310,18 +311,16 @@ public class CardEdit2_Presenter implements
         view.displayImage(imageURI);
     }
 
-    private String makeRemoteFileName() {
+    private String makeRemoteFileName() throws Exception {
 
         String fname = currentCard.getKey();
         if (null == fname) {
-            Log.e(TAG, "fname == null");
-            return null;
+            throw new Exception("There is no file name.");
         }
 
         String fext = MyUtils.mime2ext(currentCard.getMimeType());
         if (null == fext) {
-            Log.e(TAG, "fext == null");
-            return null;
+            throw new Exception("There is no file extension.");
         }
 
         return fname + "." + fext;

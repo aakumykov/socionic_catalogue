@@ -111,6 +111,16 @@ public class CardEdit2_View extends BaseView implements
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onUserLogin() {
 
     }
