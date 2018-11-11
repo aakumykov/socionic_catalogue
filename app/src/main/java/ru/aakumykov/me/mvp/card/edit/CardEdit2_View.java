@@ -30,6 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
+import co.lujun.androidtagview.TagView;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.BaseView;
@@ -43,7 +44,8 @@ import ru.aakumykov.me.mvp.utils.MyUtils;
 
 @RuntimePermissions
 public class CardEdit2_View extends BaseView implements
-    iCardEdit2.View
+    iCardEdit2.View,
+    TagView.OnTagClickListener
 {
     @BindView(R.id.titleView) EditText titleView;
 
@@ -89,6 +91,8 @@ public class CardEdit2_View extends BaseView implements
         activateUpButton();
 
         CardEdit2_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
+
+        tagsContainer.setOnTagClickListener(this);
 
         presenter = new CardEdit2_Presenter();
     }
@@ -280,8 +284,6 @@ public class CardEdit2_View extends BaseView implements
         return map;
     }
 
-
-
     @Override
     public void showImageProgressBar() {
         MyUtils.show(imageProgressBar);
@@ -432,6 +434,21 @@ public class CardEdit2_View extends BaseView implements
 //        newTagInput.requestFocus();
     }
 
+    // меток
+    @Override
+    public void onTagClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagLongClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagCrossClick(int position) {
+        tagsContainer.removeTag(position);
+    }
 
 
     // Внутренние методы
