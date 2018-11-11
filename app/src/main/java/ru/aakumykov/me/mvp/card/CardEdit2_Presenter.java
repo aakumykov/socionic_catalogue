@@ -31,7 +31,6 @@ public class CardEdit2_Presenter implements
     private iStorageSingleton storageService = StorageSingleton.getInstance();
 
     private Card currentCard = null;
-    private boolean externalDataMode = false;
 
 
     // Интерфейсные методы
@@ -57,7 +56,7 @@ public class CardEdit2_Presenter implements
 
             case Intent.ACTION_SEND:
                 try {
-                    externalDataMode = true;
+                    prepareCardCreation();
                     processInputFile(Constants.MODE_SEND, intent);
                 } catch (Exception e) {
                     view.showErrorMsg(R.string.CARD_EDIT_error_creating_card, e.getMessage());
@@ -105,6 +104,11 @@ public class CardEdit2_Presenter implements
         if (null == mimeType) throw new IllegalArgumentException("mimeType from Intent is null.");
         if (null == dataURI) throw new IllegalArgumentException("Data from Intent is null");
 
+        // Если это процесс получения внешних данных...
+        if (Constants.MODE_SEND.equals(mode)) {
+            prepareCardCreation();
+        }
+
         // Обрабатываю данные согласно типу
         if (mimeType.startsWith("image/")) {
             try {
@@ -124,11 +128,6 @@ public class CardEdit2_Presenter implements
         }
         else {
             throw new IllegalArgumentException("Unsupported mimeType '"+mimeType+"'");
-        }
-
-        // Если это процесс получения внешних данных...
-        if (Constants.MODE_SEND.equals(mode)) {
-            prepareCardCreation();
         }
     }
 
