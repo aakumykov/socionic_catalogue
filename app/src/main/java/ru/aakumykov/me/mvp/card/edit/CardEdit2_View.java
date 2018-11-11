@@ -426,8 +426,13 @@ public class CardEdit2_View extends BaseView implements
         newTag = presenter.processNewTag(newTag);
 
         // TODO: отображать ошибку или молча исправлять её?
+
+        /* Не добавлять пустую и дублирующую метку - очевидная логика,
+         * поэтому обрабатывается здесь, а не в презентере. */
         if (null != newTag) {
-            tagsContainer.addTag(newTag);
+            if (!getCardTags().containsKey(newTag)) {
+                tagsContainer.addTag(newTag);
+            }
         }
 
         newTagInput.setText("");

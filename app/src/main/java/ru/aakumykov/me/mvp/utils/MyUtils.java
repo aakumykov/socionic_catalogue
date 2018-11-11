@@ -7,12 +7,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.R;
 
 public final class MyUtils {
 
@@ -78,6 +82,22 @@ public final class MyUtils {
     }
 
     public static String normalizeTag(String tagName) {
+
+        // обрезаю черезмерно длинные
+        if (tagName.length() > Constants.TAG_MAX_LENGTH) {
+            tagName = tagName.substring(
+                    0,
+                    Math.min(tagName.length(),Constants.TAG_MAX_LENGTH)
+            );
+        }
+
+        // отпинываю слишком короткия
+        if (tagName.length() < Constants.TAG_MIN_LENGTH) {
+            return null;
+        }
+
+        // перевожу в нижний регистр
+        tagName = tagName.toLowerCase();
 
         // удаляю концевые пробелы
         tagName = tagName.replaceAll("^\\s+|\\s+$", "");

@@ -28,6 +28,8 @@ public final class Constants {
     public final static int CODE_EDIT_CARD = 20;
     public final static int CODE_SELECT_IMAGE = 25;
     public final static int CODE_EDIT_USER = 30;
+    public final static int TAG_MIN_LENGTH = 2;
+    public final static int TAG_MAX_LENGTH = 12;
 
     public final static String MODE_SEND = "MODE_SEND";
     public final static String MODE_SELECT = "MODE_SELECT";

@@ -3,6 +3,7 @@ package ru.aakumykov.me.mvp.card;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.Arrays;
@@ -221,7 +222,16 @@ public class CardEdit2_Presenter implements
 
     @Override
     public String processNewTag(String tagName) {
-        return MyUtils.normalizeTag(tagName);
+
+//        if (!TextUtils.isEmpty(tagName)) {
+            tagName = MyUtils.normalizeTag(tagName);
+            return tagName;
+//            if (!view.getCardTags().containsKey(tagName)) {
+//                return tagName;
+//            }
+//        }
+//
+//        return null;
     }
 
     @Override
