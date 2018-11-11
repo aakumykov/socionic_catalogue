@@ -221,11 +221,12 @@ public class CardEdit2_Presenter implements
     @Override
     public void onCardSaveSuccess(Card card) {
         // TODO: обновить метки
-        if (externalDataMode) {
-            view.goCardShow(card);
-        } else {
-            view.finishEdit(card);
-        }
+//        if (externalDataMode) {
+//            view.goCardShow(card);
+//        } else {
+//            view.finishEdit(card);
+//        }
+        view.goCardShow(card);
     }
 
     @Override
