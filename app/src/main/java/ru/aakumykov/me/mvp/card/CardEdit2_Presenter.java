@@ -78,6 +78,7 @@ public class CardEdit2_Presenter implements
         }
     }
 
+    // TODO: переименовать в ...InputData
     @Override
     public void processInputFile(String mode, final Intent intent) throws Exception {
 
@@ -95,8 +96,14 @@ public class CardEdit2_Presenter implements
         }
         else if (Constants.MODE_SEND.equals(mode)) {
             dataURI = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
-//            mimeType = MyUtils.getMimeTypeFromIntent(intent);
-            mimeType = view.detectMimeType(dataURI);
+            /* При пересылке изображения и текста mimeType находится
+            * в разных местах, а здесь я ещё не знаю, изображение это
+            * или текст. Поэтому пробую 2 метода опрделения типа данных. */
+            try {
+                mimeType = view.detectMimeType(dataURI);
+            } catch (Exception e) {
+                mimeType = MyUtils.getMimeTypeFromIntent(intent);
+            }
         }
         else {
             throw new IllegalArgumentException("Unknown mode '"+mode+"'");
