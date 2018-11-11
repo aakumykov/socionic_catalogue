@@ -57,7 +57,7 @@ public class CardEdit2_Presenter implements
             case Intent.ACTION_SEND:
                 try {
                     prepareCardCreation();
-                    processInputFile(Constants.MODE_SEND, intent);
+                    processInputData(Constants.MODE_SEND, intent);
                 } catch (Exception e) {
                     view.showErrorMsg(R.string.CARD_EDIT_error_creating_card, e.getMessage());
                     e.printStackTrace();
@@ -78,9 +78,8 @@ public class CardEdit2_Presenter implements
         }
     }
 
-    // TODO: переименовать в ...InputData
     @Override
-    public void processInputFile(String mode, final Intent intent) throws Exception {
+    public void processInputData(String mode, final Intent intent) throws Exception {
 
         if (null == intent) {
             throw new IllegalArgumentException("Intent is null");

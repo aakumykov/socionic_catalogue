@@ -49,7 +49,7 @@ public interface iCardEdit2 {
 
         void makeStartDecision(@Nullable Intent intent);
 
-        void processInputFile(String mode, Intent intent) throws Exception;
+        void processInputData(String mode, Intent intent) throws Exception;
 
 //        void processIncomingData(Intent data);
 

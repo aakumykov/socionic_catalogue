@@ -166,7 +166,7 @@ public class CardEdit2_View extends BaseView implements
 //            SelectedFile selectedFile = new SelectedFile();
 //            selectedFile.setDataURI();
             try {
-                presenter.processInputFile(Constants.MODE_SELECT, data);
+                presenter.processInputData(Constants.MODE_SELECT, data);
             } catch (Exception e) {
                 showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
             }
@@ -343,7 +343,6 @@ public class CardEdit2_View extends BaseView implements
 
         quoteView.requestFocus();
 
-        // TODO: проверить с кривым типом
         presenter.setCardType(Constants.TEXT_CARD);
     }
 
