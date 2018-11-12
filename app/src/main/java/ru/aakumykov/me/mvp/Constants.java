@@ -12,6 +12,7 @@ public final class Constants {
     public final static String CARD_KEY = "CARD_KEY";
 
     public final static String ACTION_CREATE = "ACTION_CREATE";
+    public final static String ACTION_EDIT = "ACTION_EDIT";
 
     public final static String TAG_FILTER = "TAG_FILTER";
     public final static String TAG_KEY = "TAG_KEY";
@@ -27,5 +28,11 @@ public final class Constants {
     public final static int CODE_EDIT_CARD = 20;
     public final static int CODE_SELECT_IMAGE = 25;
     public final static int CODE_EDIT_USER = 30;
+    public final static int TAG_MIN_LENGTH = 2;
+    public final static int TAG_MAX_LENGTH = 20;
+    public final static int TITLE_MAX_LENGTH = 70;
+
+    public final static String MODE_SEND = "MODE_SEND";
+    public final static String MODE_SELECT = "MODE_SELECT";
 
 }

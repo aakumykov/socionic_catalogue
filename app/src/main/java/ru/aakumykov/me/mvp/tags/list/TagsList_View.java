@@ -60,15 +60,9 @@ public class TagsList_View extends BaseView implements
         super.onStop();
         presenter.unlinkView();
     }
-    @Override
-    public void onServiceBounded() {
 
-    }
-    @Override
-    public void onServiceUnbounded() {
 
-    }
-
+    // Обязательные методы
     @Override
     public void onUserLogin() {
 

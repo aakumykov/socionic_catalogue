@@ -42,6 +42,18 @@ public class Login_View extends BaseView implements
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.linkView(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.unlinkView();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
@@ -58,22 +70,7 @@ public class Login_View extends BaseView implements
     }
 
 
-
     // Обязательные методы
-    @Override
-    public void onServiceBounded() {
-        presenter.linkView(this);
-        presenter.linkCardsService(getCardsService());
-        presenter.linkAuth(getAuthService());
-    }
-
-    @Override
-    public void onServiceUnbounded() {
-        presenter.unlinkView();
-        presenter.unlinkCardsService();
-        presenter.unlinkAuthService();
-    }
-
     @Override
     public void onUserLogin() {
         closePage(); // Если пользователь каким-то образом залогинился

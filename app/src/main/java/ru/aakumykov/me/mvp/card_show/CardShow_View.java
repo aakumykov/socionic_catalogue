@@ -26,9 +26,9 @@ import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.card.edit.CardEdit2_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.cards_list.CardsList_View;
 import ru.aakumykov.me.mvp.models.Card;
 
@@ -66,30 +66,20 @@ public class CardShow_View extends BaseView implements
     }
 
     @Override
-    public void onServiceBounded() {
+    protected void onStart() {
+        super.onStart();
         presenter.linkView(this);
-        presenter.linkCardsService(getCardsService());
-        presenter.linkAuth(getAuthService());
-        loadCard();
+        if (firstRun) {
+            loadCard();
+            firstRun = false;
+        }
     }
 
     @Override
-    public void onServiceUnbounded() {
+    protected void onStop() {
+        super.onStop();
         presenter.unlinkView();
-        presenter.unlinkCardsService();
-        presenter.unlinkAuthService();
     }
-
-    @Override
-    public void onUserLogin() {
-
-    }
-
-    @Override
-    public void onUserLogout() {
-
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -105,7 +95,7 @@ public class CardShow_View extends BaseView implements
                 case Constants.CODE_EDIT_CARD:
                     if (null != data) {
                         Card card = data.getParcelableExtra(Constants.CARD);
-                        presenter.cardKeyRecieved(card.getKey());
+                        displayCard(card);
                     } else {
                         showErrorMsg(R.string.error_displaying_card);
                         Log.e(TAG, "Intent data in activity result == null.");
@@ -119,7 +109,6 @@ public class CardShow_View extends BaseView implements
             }
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -143,10 +132,6 @@ public class CardShow_View extends BaseView implements
                 presenter.onDeleteButtonClicked();
                 break;
 
-            case android.R.id.home:
-                this.finish();
-                break;
-
             default:
                 super.onOptionsItemSelected(item);
         }
@@ -155,6 +140,19 @@ public class CardShow_View extends BaseView implements
     }
 
 
+    // Обязательные методы
+    @Override
+    public void onUserLogin() {
+
+    }
+
+    @Override
+    public void onUserLogout() {
+
+    }
+
+
+    // Меток методы
     @Override
     public void onTagClick(int position, String text) {
         Log.d(TAG, "onTagClick("+position+", "+text+")");
@@ -172,20 +170,18 @@ public class CardShow_View extends BaseView implements
     }
 
 
-    // Ожидание
-    @Override
-    public void showWaitScreen() {
-//        showInfoMsg(R.string.opening_card);
-        MyUtils.show(progressBar);
-    }
-
-
     // Карточка
     @Override
-    public void displayCard(Card card) {
+    public void displayCard(@Nullable Card card) {
         Log.d(TAG, "displayCard(), "+card);
 
-        hideWaitScreen();
+        hideProgressBar();
+        hideMsg();
+
+        if (null == card) {
+            showErrorMsg(R.string.CARD_SHOW_error_displaying_card);
+            return;
+        }
 
         String pageTitle = getResources().getString(R.string.CARD_SHOW_page_title, card.getTitle());
         setPageTitle(pageTitle);
@@ -249,27 +245,15 @@ public class CardShow_View extends BaseView implements
     }
 
 
-    // Индикатор ожидания
-    @Override
-    public void showProgressMessage(int messageId) {
-        showInfoMsg(messageId);
-        MyUtils.show(progressBar);
-    }
-
-    @Override
-    public void hideProgressMessage() {
-        hideMsg();
-        MyUtils.hide(progressBar);
-    }
-
-
     // Переходы
     @Override
     public void goEditPage(Card card) {
         Log.d(TAG, "goEditPage()");
-        Intent intent = new Intent(this, CardEdit_View.class);
-        intent.setAction(Intent.ACTION_EDIT);
-        intent.putExtra(Constants.CARD, card);
+
+        Intent intent = new Intent(this, CardEdit2_View.class);
+        intent.setAction(Constants.ACTION_EDIT);
+        intent.putExtra(Constants.CARD_KEY, card.getKey());
+
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
@@ -285,18 +269,15 @@ public class CardShow_View extends BaseView implements
     // Внутренние методы
     private void loadCard() {
         if (firstRun) {
-            Intent intent = getIntent();
-            String cardKey = intent.getStringExtra(Constants.CARD_KEY);
-
-            presenter.cardKeyRecieved(cardKey);
-
+            try {
+                presenter.processInputIntent(getIntent());
+            } catch (Exception e) {
+                hideProgressBar();
+                showErrorMsg(R.string.CARD_SHOW_error_displaying_card, e.getMessage());
+                e.printStackTrace();
+            }
             firstRun = false;
         }
-    }
-
-    private void hideWaitScreen() {
-        MyUtils.hide(messageView);
-        MyUtils.hide(progressBar);
     }
 
     private void displayImageCard(Card card) {

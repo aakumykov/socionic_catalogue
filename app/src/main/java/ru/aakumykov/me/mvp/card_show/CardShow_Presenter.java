@@ -1,33 +1,42 @@
 package ru.aakumykov.me.mvp.card_show;
 
+import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.util.Log;
+
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.interfaces.iAuthService;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
+import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.services.AuthSingleton;
+import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
 
 public class CardShow_Presenter implements
         iCardShow.Presenter,
-        iCardsService.CardCallbacks
+        iCardsSingleton.LoadCallbacks,
+        iCardsSingleton.DeleteCallbacks
 {
 
     private final static String TAG = "CardShow_Presenter";
     private iCardShow.View view;
-    private iCardsService model;
-    private iAuthService authService;
-
+    private iCardsSingleton cardsService = CardsSingleton.getInstance();
+    private iAuthSingleton authService = AuthSingleton.getInstance();
     private Card currentCard;
-
-
-    CardShow_Presenter() {}
 
 
     // Получение карточки
     @Override
-    public void cardKeyRecieved(String key) {
-        view.showWaitScreen();
-        model.loadCard(key, this);
+    public void processInputIntent(@Nullable Intent intent) throws Exception {
+
+        if (null == intent) throw new IllegalArgumentException("intent == null");
+
+        String cardKey = intent.getStringExtra(Constants.CARD_KEY);
+        if (null == cardKey) throw new Exception("Intent has no CARD_KEY");
+
+        view.showProgressBar();
+        cardsService.loadCard(cardKey, this);
     }
 
 
@@ -52,11 +61,13 @@ public class CardShow_Presenter implements
 
     @Override
     public void onDeleteConfirmed() {
-        view.showProgressMessage(R.string.deleting_card);
+        view.showProgressBar();
+        view.showInfoMsg(R.string.deleting_card);
+
         try {
-            model.deleteCard(currentCard, this);
+            cardsService.deleteCard(currentCard, this);
         } catch (Exception e) {
-            view.hideProgressMessage();
+            view.hideProgressBar();
             view.showErrorMsg(R.string.error_deleting_card);
         }
     }
@@ -74,24 +85,6 @@ public class CardShow_Presenter implements
         this.view = null;
     }
 
-    @Override
-    public void linkCardsService(iCardsService model) {
-        this.model = model;
-    }
-    @Override
-    public void unlinkCardsService() {
-        this.model = null;
-    }
-
-    @Override
-    public void linkAuth(iAuthService authService) {
-        this.authService = authService;
-    }
-    @Override
-    public void unlinkAuthService() {
-        this.authService = null;
-    }
-
 
     // Коллбеки
     @Override
@@ -107,11 +100,6 @@ public class CardShow_Presenter implements
     }
 
     @Override
-    public void onLoadCanceled() {
-        view.showErrorMsg(R.string.card_load_canceled);
-    }
-
-    @Override
     public void onDeleteSuccess(Card card) {
         TagsSingleton.getInstance().updateCardTags(card.getKey(), card.getTags(), null, null);
         view.closePage();
@@ -119,7 +107,7 @@ public class CardShow_Presenter implements
 
     @Override
     public void onDeleteError(String msg) {
-        view.hideProgressMessage();
+        view.hideProgressBar();
         view.showErrorMsg(R.string.error_deleting_card);
     }
 

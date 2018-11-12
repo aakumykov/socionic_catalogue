@@ -12,20 +12,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
+import ru.aakumykov.me.mvp.card.edit.CardEdit2_View;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 // Построен по принципу Active View
@@ -38,6 +43,9 @@ public class CardsList_View extends BaseView implements
         ListView.OnItemLongClickListener,
         PopupMenu.OnMenuItemClickListener
 {
+    @BindView(R.id.filterView) LinearLayout filterView;
+    @BindView(R.id.filterCloser) ImageView filterCloser;
+    @BindView(R.id.filterName) TextView filterName;
     @BindView(R.id.listView) ListView listView;
 
     private final static String TAG = "CardsList_View";
@@ -45,7 +53,7 @@ public class CardsList_View extends BaseView implements
     private List<Card> cardsList;
     private CardsListAdapter cardsListAdapter;
     private Card currentCard;
-
+    private boolean firstRun = true;
 
     // Системные методы
     @Override
@@ -65,6 +73,37 @@ public class CardsList_View extends BaseView implements
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
         listView.setLongClickable(true);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.linkView(this);
+
+        if (firstRun) {
+            firstRun = false;
+
+            String tagFilter = null;
+
+            try {
+                tagFilter = getIntent().getStringExtra(Constants.TAG_FILTER);
+            } catch (Exception e) {}
+
+            presenter.loadList(tagFilter);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.unlinkView();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        presenter.linkView(this);
     }
 
     @Override
@@ -93,24 +132,6 @@ public class CardsList_View extends BaseView implements
 
     // Обязательные методы
     @Override
-    public void onServiceBounded() {
-        presenter.linkView(this);
-        presenter.linkCardsService(getCardsService());
-        presenter.linkAuthService(getAuthService());
-
-        showProgressBar();
-        showInfoMsg(R.string.loading_cards_list);
-        presenter.loadList();
-    }
-
-    @Override
-    public void onServiceUnbounded() {
-        presenter.unlinkView();
-        presenter.unlinkCardsService();
-        presenter.unlinkAuthService();
-    }
-
-    @Override
     public void onUserLogin() {
     }
 
@@ -134,6 +155,15 @@ public class CardsList_View extends BaseView implements
     }
 
     @Override
+    public void displayTagFilter(String tagName) {
+        String text = getResources().getString(R.string.CARDS_LIST_tag_filter, tagName);
+        filterName.setText(text);
+        MyUtils.show(filterView);
+
+        activateUpButton();
+    }
+
+    @Override
     public void deleteCardRequest(iDialogCallbacks.Delete callbacks) {
         Log.d(TAG, "deleteCardRequest()");
 
@@ -149,6 +179,13 @@ public class CardsList_View extends BaseView implements
         yesNoDialog.show();
     }
 
+
+    // Нажатия
+    @OnClick(R.id.filterCloser)
+    void clearFilter() {
+        MyUtils.hide(filterView);
+        presenter.loadList(null);
+    }
 
     // Нажатия в списке
     @Override
@@ -221,10 +258,12 @@ public class CardsList_View extends BaseView implements
     // Внутренние методы
     private void editCard() {
         Log.d(TAG, "editCard()");
-        Intent intent = new Intent(this, CardEdit_View.class);
-        intent.setAction(Intent.ACTION_EDIT);
+
+        Intent intent = new Intent(this, CardEdit2_View.class);
+        intent.setAction(Constants.ACTION_EDIT);
         intent.putExtra(Constants.CARD_KEY, currentCard.getKey());
         startActivity(intent);
+
         currentCard = null;
     }
 

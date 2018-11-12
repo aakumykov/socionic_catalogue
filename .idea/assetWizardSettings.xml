@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/media/android/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_person_outline_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/media/android/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_close_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,10 +28,10 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_user_logged_out" />
+                            <entry key="color" value="bababa" />
+                            <entry key="outputName" value="ic_close2" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="$USER_HOME$/Загрузки/icons/logout.svg" />
+                            <entry key="sourceFile" value="$USER_HOME$/Загрузки/icons/T-libreoffice.svg" />
                           </map>
                         </option>
                       </PersistentState>

@@ -107,7 +107,7 @@
     <string name="LOGIN_login_failed">Ошибка входа</string>
     <string name="LOGIN_login_success">Успешный вход</string>
     <string name="LOGIN_cancel">Не входить</string>
-    <string name="LOGIN_logging_in">Осуществляем вход</string>
+    <string name="LOGIN_logging_in">Входим в программу</string>
     <string name="LOGIN_login">Войти</string>
     <string name="AUTH_error_logging_out">Ошибка выхода</string>
     <string name="ERROR_creating_card">Ошибка создания карточки</string>
@@ -120,4 +120,25 @@
     <string name="REGISTER_page_title">Регистрация</string>
     <string name="USER_page_title">Профиль прользователя</string>
     <string name="CARD_EDIT_edit_denied">Редактирование запрещено</string>
+    <string name="CARD_EDIT_editing_error">Ошибка редактирования</string>
+    <string name="CARD_EDIT_error_saving_card">Ошибка сохранения карточки</string>
+    <string name="CARD_EDIT_error_loading_card">Ошибка загрузки карточки</string>
+    <string name="CARD_SHOW_error_displaying_card">Ошибка отображения карточки</string>
+    <string name="CARD_EDIT_card_edition_title">Правка карточки</string>
+    <string name="CARD_EDIT_error_displaying_card">Ошибка отображения карточки</string>
+    <string name="CARD_EDIT_error_receiving_image">Ошибка выбора картинки</string>
+    <string name="CARD_EDIT_error_recieving_data">Ошибка получения данных</string>
+    <string name="CARD_EDIT_unsupported_data_type">Неподдерживаемый тип данных</string>
+    <string name="CARD_EDIT_error_displaying_image">Ошибка изображения</string>
+    <string name="CARD_EDIT_error_processing_data">Ошибка обработки данных</string>
+    <string name="CARD_EDIT_unknown_error">Неизвестная ошибка</string>
+    <string name="CARD_EDIT_described_object">Что добавляем?</string>
+    <string name="CARD_EDIT_card_name">Название карточки</string>
+    <string name="MENU_create_card">Создать карточку</string>
+    <string name="CARD_EDIT_error_no_input_data">Отсутствуют данные</string>
+    <string name="CARD_EDIT_error_unknown_action">Неизвестное действие</string>
+    <string name="CARD_EDIT_error_creating_card">Ошибка создания карточки</string>
+    <string name="CARD_EDIT_card_creation_title">Создание карточки</string>
+    <string name="CARDS_LIST_tag_filter">Карточки с меткой «%1$s»</string>
+    <string name="CARDS_LIST_tag_filter_close_button">Кнопка отключения фильтра по метке</string>
 </resources>

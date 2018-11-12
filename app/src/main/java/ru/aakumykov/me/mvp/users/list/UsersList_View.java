@@ -90,15 +90,8 @@ public class UsersList_View extends BaseView implements
         presenter.listItemClicked(userId);
     }
 
-    @Override
-    public void onServiceBounded() {
 
-    }
-    @Override
-    public void onServiceUnbounded() {
-
-    }
-
+    // Обязательные методы
     @Override
     public void onUserLogin() {
 

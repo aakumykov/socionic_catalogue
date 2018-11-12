@@ -5,4 +5,6 @@
 
     <dimen name="major_button_font_size">16sp</dimen>
     <dimen name="minor_button_font_size">14sp</dimen>
+
+    <dimen name="tag_font_size">16sp</dimen>
 </resources>

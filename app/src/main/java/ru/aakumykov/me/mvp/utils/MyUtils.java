@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 
 import java.util.HashMap;
@@ -11,9 +12,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ru.aakumykov.me.mvp.Constants;
+
 public final class MyUtils {
 
-//    private final static String TAG = "MyUtils";
+    private final static String TAG = "MyUtils";
 
     private MyUtils() {}
 
@@ -34,8 +37,11 @@ public final class MyUtils {
     }
 
     public static String mime2ext(String mimeType) {
+        if (null == mimeType) return null;
+
         Pattern pattern = Pattern.compile("^image/([a-z]+)$");
         Matcher matcher = pattern.matcher(mimeType);
+
         if (matcher.matches()) {
             return matcher.group(1);
         } else {
@@ -73,6 +79,23 @@ public final class MyUtils {
 
     public static String normalizeTag(String tagName) {
 
+        // обрезаю черезмерно длинные
+//        if (tagName.length() > Constants.TAG_MAX_LENGTH) {
+//            tagName = tagName.substring(
+//                    0,
+//                    Math.min(tagName.length(),Constants.TAG_MAX_LENGTH)
+//            );
+//        }
+        tagName = cutToLength(tagName, Constants.TAG_MAX_LENGTH);
+
+        // отпинываю слишком короткия
+        if (tagName.length() < Constants.TAG_MIN_LENGTH) {
+            return null;
+        }
+
+        // перевожу в нижний регистр
+        tagName = tagName.toLowerCase();
+
         // удаляю концевые пробелы
         tagName = tagName.replaceAll("^\\s+|\\s+$", "");
 
@@ -98,16 +121,49 @@ public final class MyUtils {
         return tagName;
     }
 
-    public static String getMimeTypeFromIntent(@Nullable Intent intent) throws IllegalArgumentException {
+//    public static String getMimeTypeFromIntent(@Nullable Intent intent) throws IllegalArgumentException {
+//
+//        if (null == intent) throw new IllegalArgumentException("Supplied Intent is null");
+//
+//        ClipData clipData = intent.getClipData();
+//        if (null == clipData) throw new IllegalArgumentException("ClipData is null");
+//
+//        ClipDescription clipDescription = clipData.getDescription();
+//        if (null == clipDescription) throw new IllegalArgumentException("ClipDescription is null");
+//
+//        return clipDescription.getMimeType(0);
+//    }
 
-        if (null == intent) throw new IllegalArgumentException("Supplied Intent is null");
+    public static String getMimeTypeFromIntent(@Nullable Intent intent) {
+
+        if (null == intent) return null;
 
         ClipData clipData = intent.getClipData();
-        if (null == clipData) throw new IllegalArgumentException("ClipData is null");
+        if (null == clipData) return null;
 
         ClipDescription clipDescription = clipData.getDescription();
-        if (null == clipDescription) throw new IllegalArgumentException("ClipDescription is null");
+        if (null == clipDescription) return null;
 
-        return clipDescription.getMimeType(0);
+        String mimeType = clipDescription.getMimeType(0);
+
+        // TODO: проверять с помощью regexp-ов
+//        if (mimeType.matches("^[a-z]+\\/[^a-z0-9.+-]+$")) return mimeType;
+//        else
+
+        return mimeType;
     }
+
+    public static String cutToLength(String text, Integer maxLength) {
+        if (null == text) {
+            Log.e(TAG, "You must supply input text.");
+            return null;
+        }
+        if (null == maxLength) {
+            Log.e(TAG, "You must supply maxLength.");
+            maxLength = text.length();
+        }
+        return text.substring(0, Math.min(text.length(), maxLength));
+    }
+
+//    public static String getStringIfExists
 }

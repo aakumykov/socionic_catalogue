@@ -1,10 +1,6 @@
 package ru.aakumykov.me.mvp.services;
 
-import android.app.Service;
-import android.content.Intent;
 import android.net.Uri;
-import android.os.Binder;
-import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -30,75 +26,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
 
-public class CardsService extends Service implements
-        iCardsService
+public class CardsSingleton implements
+        iCardsSingleton
 {
-    // Внутренний класс
-    public class LocalBinder extends Binder {
-        public CardsService getService() {
-            return CardsService.this;
+    /* Одиночка */
+    private static volatile CardsSingleton ourInstance;
+    public synchronized static CardsSingleton getInstance() {
+        synchronized (CardsSingleton.class) {
+            if (null == ourInstance) ourInstance = new CardsSingleton();
+            return ourInstance;
         }
     }
-
+    private CardsSingleton() {}
+    /* Одиночка */
 
     // Свойства
-    private final static String TAG = "CardsService";
-    private final IBinder binder;
+    private final static String TAG = "CardsSingleton";
 
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference cardsRef;
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 
-    private StorageReference imagesRef;
+    private DatabaseReference cardsRef = firebaseDatabase.getReference().child(Constants.CARDS_PATH);
+    private StorageReference imagesRef = firebaseStorage.getReference().child(Constants.IMAGES_PATH);
+
     private UploadTask uploadTask;
 
 
-    // Слежебные методы
-    public CardsService() {
-//        Log.d(TAG, "new CardsService()");
-
-        binder = new LocalBinder();
-
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        cardsRef = firebaseDatabase.getReference().child(Constants.CARDS_PATH);
-        imagesRef = FirebaseStorage.getInstance().getReference().child(Constants.IMAGES_PATH);
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-//        Log.d(TAG, "onBind()");
-        return binder;
-    }
-
-    @Override
-    public void onCreate() {
-//        Log.d(TAG, "onCreate()");
-        super.onCreate();
-
-        firebaseDatabase.goOnline(); // нужно ли?
-    }
-
-    @Override
-    public void onDestroy() {
-//        Log.d(TAG, "onDestroy()");
-        super.onDestroy();
-
-        cancelUpload();
-
-        firebaseDatabase.goOffline();
-    }
-
-
-    // Пользовательские методы
+    // Интерфейсные методы
     @Override
     public String createKey() {
         return cardsRef.push().getKey();
     }
 
     @Override
-    public void loadCard(String key, final CardCallbacks callbacks) {
+    public void loadCard(String key, final LoadCallbacks callbacks) {
         Log.d(TAG, "loadCard("+key+")");
 
         DatabaseReference cardRef = cardsRef.child(key);
@@ -136,12 +100,6 @@ public class CardsService extends Service implements
                     public void onFailure(@NonNull Exception e) {
                         callbacks.onCardSaveError(e.getMessage());
                         e.printStackTrace();
-                    }
-                })
-                .addOnCanceledListener(new OnCanceledListener() {
-                    @Override
-                    public void onCanceled() {
-                        callbacks.onCardSaveCancel();
                     }
                 });
     }
@@ -181,8 +139,8 @@ public class CardsService extends Service implements
             : cardsRef.orderByKey();
 
         // TODO: а где уходить в оффлайн?
-//        query.addListenerForSingleValueEvent(new ValueEventListener() {
-        query.addValueEventListener(new ValueEventListener() {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+//        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                Log.d(TAG, "onDataChange(), "+dataSnapshot);
@@ -219,74 +177,4 @@ public class CardsService extends Service implements
         });
     }
 
-
-    @Override
-    public void uploadImage(final Uri imageURI, final String mimeType, final String remotePath, final ImageUploadCallbacks callbacks) {
-        Log.d(TAG, "uploadImage()");
-
-        StorageMetadata metadata = new StorageMetadata.Builder()
-                .setContentType(mimeType)
-                .build();
-
-        final StorageReference imageRef = imagesRef.child(remotePath);
-
-        uploadTask = imageRef.putFile(imageURI, metadata);
-
-        uploadTask
-                .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        uploadTask = null;
-                    }
-                })
-                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        long totalBytes = taskSnapshot.getTotalByteCount();
-                        long uploadedBytes = taskSnapshot.getBytesTransferred();
-                        int progress = Math.round((uploadedBytes/totalBytes)*100);
-                        callbacks.onImageUploadProgress(progress);
-                    }
-                })
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                        imageRef.getDownloadUrl()
-                                .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        callbacks.onImageUploadSuccess(uri);
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        /* Что за хрень?
-                                        Нужно ли здесь удалять файл? */
-                                        callbacks.onImageUploadError(e.getMessage());
-                                        e.printStackTrace();
-                                    }
-                                });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onImageUploadError(e.getMessage());
-                    }
-                })
-                .addOnCanceledListener(new OnCanceledListener() {
-                    @Override
-                    public void onCanceled() {
-                        callbacks.onImageUploadCancel();
-                    }
-                });
-    }
-
-    @Override
-    public void cancelUpload() {
-        Log.d(TAG, "cancelUpload()");
-        if (null != uploadTask && uploadTask.isInProgress()) uploadTask.cancel();
-    }
 }

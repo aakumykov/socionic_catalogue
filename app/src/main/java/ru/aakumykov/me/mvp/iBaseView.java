@@ -1,14 +1,12 @@
 package ru.aakumykov.me.mvp;
 
-import android.view.View;
-
-import ru.aakumykov.me.mvp.interfaces.iAuthService;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
+import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 
 public interface iBaseView {
 
-    iCardsService getCardsService();
-    iAuthService getAuthService();
+    iCardsSingleton getCardsService();
+    iAuthSingleton getAuthService();
 
     boolean userLoggedIn();
 

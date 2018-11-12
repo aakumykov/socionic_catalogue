@@ -1,28 +1,33 @@
 package ru.aakumykov.me.mvp.cards_list;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.List;
 
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.interfaces.iAuthService;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
+import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.services.AuthSingleton;
+import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
 
 public class CardsList_Presenter implements
         iCardsList.Presenter,
-        iCardsService.ListCallbacks,
+        iCardsSingleton.ListCallbacks,
+        iCardsSingleton.DeleteCallbacks,
         iDialogCallbacks.Delete
 {
     private final static String TAG = "CardsList_Presenter";
     private iCardsList.View view;
-    private iCardsService cardsService;
-    private iAuthService authService;
-    private Card currentCard;
+    private iCardsSingleton cardsService = CardsSingleton.getInstance();
+    private iAuthSingleton authService = AuthSingleton.getInstance();
 
+    private Card currentCard = null;
+    private String tagFilter = null;
 
     // Системные методы
     @Override
@@ -34,30 +39,22 @@ public class CardsList_Presenter implements
         this.view = null;
     }
 
-    @Override
-    public void linkCardsService(iCardsService model) {
-        this.cardsService = model;
-    }
-    @Override
-    public void unlinkCardsService() {
-        this.cardsService = null;
-    }
-
-    @Override
-    public void linkAuthService(iAuthService authService) {
-        this.authService = authService;
-    }
-    @Override
-    public void unlinkAuthService() {
-        this.authService = null;
-    }
-
 
     // Интерфейсные
     @Override
-    public void loadList() {
+    public void loadList(@Nullable String tagFilter) {
         Log.d(TAG, "loadList()");
-        cardsService.loadList(this);
+
+        view.showProgressBar();
+
+        if (null != tagFilter) {
+            this.tagFilter = tagFilter;
+            cardsService.loadList(tagFilter,this);
+        }
+        else {
+            this.tagFilter = null;
+            cardsService.loadList(this);
+        }
     }
 
     @Override
@@ -71,6 +68,8 @@ public class CardsList_Presenter implements
     // Коллбеки
     @Override
     public void onListLoadSuccess(List<Card> list) {
+        if (null != tagFilter)
+            view.displayTagFilter(tagFilter);
         view.displayList(list);
     }
 

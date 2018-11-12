@@ -3,6 +3,7 @@ package ru.aakumykov.me.mvp.models;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.firebase.database.Exclude;
@@ -11,6 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.mvp.Constants;
+
+// TODO: как сделать так, чтобы графическая карточка не могла сохраниться без картинки?
+// И так далее...
 
 public class Card implements Parcelable {
 
@@ -21,6 +25,7 @@ public class Card implements Parcelable {
     private String imageURL;
     private String description;
     private HashMap<String, Boolean> tags;
+
 
     public Card() {
 
@@ -139,9 +144,11 @@ public class Card implements Parcelable {
     public void setTitle(String title) {
         this.title = title;
     }
-    public void setQuote(String quote) {
+
+    public void setQuote(String quote) throws Exception {
         this.quote = quote;
     }
+
     public void setImageURL(String imageURL) throws IllegalArgumentException {
             Uri uri = Uri.parse(imageURL);
             if (null == uri) throw new IllegalArgumentException("Error parsing imageURL");
@@ -152,5 +159,34 @@ public class Card implements Parcelable {
     }
     public void setTags(HashMap<String, Boolean> tags) {
         this.tags = tags;
+    }
+
+    public void removeImageURL() {
+        this.imageURL = null;
+    }
+
+
+    // Служебное
+    @Exclude private Uri localImageURI;
+    @Exclude private String mimeType;
+
+    @Exclude public void setLocalImageURI(Uri uri) {
+        this.localImageURI = uri;
+    }
+    @Exclude public Uri getLocalImageURI() {
+        return this.localImageURI;
+    }
+    @Exclude public void clearLocalImageURI() {
+        this.localImageURI = null;
+    }
+
+    @Exclude public String getMimeType() {
+        return mimeType;
+    }
+    @Exclude public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+    @Exclude public void clearMimeType() {
+        this.mimeType = null;
     }
 }

@@ -94,15 +94,6 @@ public class UserShow_View extends BaseView implements
     }
 
     @Override
-    public void onServiceBounded() {
-        Log.d(TAG, "onServiceBounded()");
-    }
-    @Override
-    public void onServiceUnbounded() {
-
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.edit_delete, menu);

@@ -1,10 +1,7 @@
 package ru.aakumykov.me.mvp;
 
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,18 +13,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
-import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
-import ru.aakumykov.me.mvp.interfaces.iAuthService;
+import ru.aakumykov.me.mvp.card.edit.CardEdit2_View;
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.login.Login_View;
-import ru.aakumykov.me.mvp.models.Card;
-import ru.aakumykov.me.mvp.services.AuthService;
+import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.AuthStateListener;
-import ru.aakumykov.me.mvp.services.CardsService;
+import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
-
 
 public abstract class BaseView extends AppCompatActivity implements
     iBaseView
@@ -36,24 +31,10 @@ public abstract class BaseView extends AppCompatActivity implements
     @BindView(R.id.progressBar) ProgressBar progressBar;
 
     private final static String TAG = "BaseView";
-
-    private Intent cardsServiceIntent;
-    private Intent authServiceIntent;
-
-    private ServiceConnection cardsServiceConnection;
-    private ServiceConnection authServiceConnection;
-
-    private iCardsService cardsService;
-    private iAuthService authService;
-
-    private boolean isCardsServiceBounded = false;
-    private boolean isAuthServiceBounded = false;
-
+    private iCardsSingleton cardsService;
+    private iAuthSingleton authService;
 
     // Абстрактные методы
-    public abstract void onServiceBounded();
-    public abstract void onServiceUnbounded();
-
     public abstract void onUserLogin();
     public abstract void onUserLogout();
 
@@ -63,51 +44,9 @@ public abstract class BaseView extends AppCompatActivity implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Соединение со службой карточек
-        cardsServiceIntent = new Intent(this, CardsService.class);
-
-        cardsServiceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                Log.d(TAG, "onCardsServiceConnected()");
-
-                CardsService.LocalBinder localBinder = (CardsService.LocalBinder) service;
-                cardsService = localBinder.getService();
-                isCardsServiceBounded = true;
-
-                onServiceBounded();
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-//                Log.d(TAG, "onCardsServiceDisconnected()");
-                onServiceUnbounded();
-                isCardsServiceBounded = false;
-            }
-        };
-
-        // Соединение со службой авторизации
-        authServiceIntent = new Intent(this, AuthService.class);
-
-        authServiceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                Log.d(TAG, "onAuthServiceConnected()");
-
-                AuthService.LocalBinder localBinder = (AuthService.LocalBinder) service;
-                authService = localBinder.getService();
-                isAuthServiceBounded = true;
-
-                onServiceBounded();
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-//                Log.d(TAG, "onAuthServiceDisconnected()");
-                onServiceUnbounded();
-                isAuthServiceBounded = false;
-            }
-        };
+        authService = AuthSingleton.getInstance();
+        cardsService = CardsSingleton.getInstance();
+        // TODO: storageSingleton
 
         // Слушатель изменений авторизации
         iAuthStateListener authStateListener = new AuthStateListener(new iAuthStateListener.StateChangeCallbacks() {
@@ -128,19 +67,11 @@ public abstract class BaseView extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        bindService(cardsServiceIntent, cardsServiceConnection, BIND_AUTO_CREATE);
-        bindService(authServiceIntent, authServiceConnection, BIND_AUTO_CREATE);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
-        if (isCardsServiceBounded)
-            unbindService(cardsServiceConnection);
-
-        if (isAuthServiceBounded)
-            unbindService(authServiceConnection);
     }
 
 
@@ -184,12 +115,8 @@ public abstract class BaseView extends AppCompatActivity implements
                 logout();
                 break;
 
-            case R.id.actionCreateTextCard:
-                createCard(Constants.TEXT_CARD);
-                break;
-
-            case R.id.actionCreateImageCard:
-                createCard(Constants.IMAGE_CARD);
+            case R.id.actionCreate:
+                createCard();
                 break;
 
             default:
@@ -280,11 +207,11 @@ public abstract class BaseView extends AppCompatActivity implements
 
 
     // Геттеры
-    public iCardsService getCardsService() {
+    public iCardsSingleton getCardsService() {
         return cardsService;
     }
 
-    public iAuthService getAuthService() {
+    public iAuthSingleton getAuthService() {
         return authService;
     }
 
@@ -337,17 +264,7 @@ public abstract class BaseView extends AppCompatActivity implements
 
     private void logout() {
         Log.d(TAG, "logout()");
-        authService.logout(new iAuthService.LogoutCallbacks() {
-            @Override
-            public void onLogoutSuccess() {
-                showInfoMsg("Вы вышли");
-            }
-
-            @Override
-            public void onLogoutFail(String errorMsg) {
-                showErrorMsg(errorMsg);
-            }
-        });
+        authService.logout();
     }
 
     private void seeUserProfile() {
@@ -356,20 +273,10 @@ public abstract class BaseView extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    private void createCard(String cardType) {
-        Intent intent = new Intent(this, CardEdit_View.class);
+    private void createCard() {
+        Intent intent = new Intent(this, CardEdit2_View.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         intent.setAction(Constants.ACTION_CREATE);
-
-        try {
-            Card cardDraft = new Card();
-            cardDraft.setType(cardType);
-            intent.putExtra(Constants.CARD, cardDraft);
-
-        } catch (Exception e) {
-            showErrorMsg(R.string.ERROR_creating_card, e.getMessage());
-            e.printStackTrace();
-        }
-
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
     }
 

@@ -1,15 +1,15 @@
 package ru.aakumykov.me.mvp.template_active_view;
 
-import ru.aakumykov.me.mvp.interfaces.iAuthService;
-import ru.aakumykov.me.mvp.interfaces.iCardsService;
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
+import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 
 public class TemplateAV_Presenter implements
         iTemplateAV.Presenter
 {
     private final static String TAG = "Register_Presenter";
     private iTemplateAV.View view;
-    private iCardsService model;
-    private iAuthService authService;
+    private iCardsSingleton model;
+    private iAuthSingleton authService;
 
 
     // Интерфейсные методы
@@ -30,7 +30,7 @@ public class TemplateAV_Presenter implements
     }
 
     @Override
-    public void linkCardsService(iCardsService model) {
+    public void linkCardsService(iCardsSingleton model) {
         this.model = model;
     }
     @Override
@@ -39,7 +39,7 @@ public class TemplateAV_Presenter implements
     }
 
     @Override
-    public void linkAuth(iAuthService authService) {
+    public void linkAuth(iAuthSingleton authService) {
         this.authService = authService;
     }
     @Override

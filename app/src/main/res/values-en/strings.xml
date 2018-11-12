@@ -116,4 +116,25 @@
     <string name="REGISTER_page_title">New account</string>
     <string name="USER_page_title">User\'s profile</string>
     <string name="CARD_EDIT_edit_denied">Edit denied</string>
+    <string name="CARD_EDIT_editing_error">Editing error</string>
+    <string name="CARD_EDIT_error_saving_card">Error saving card</string>
+    <string name="CARD_EDIT_error_loading_card">Error loading card</string>
+    <string name="CARD_SHOW_error_displaying_card">Error displaying card</string>
+    <string name="CARD_EDIT_card_edition_title">Card editing</string>
+    <string name="CARD_EDIT_error_displaying_card">Error displaying card</string>
+    <string name="CARD_EDIT_error_receiving_image">Error selecting image</string>
+    <string name="CARD_EDIT_error_recieving_data">Error recieving data</string>
+    <string name="CARD_EDIT_unsupported_data_type">Unsupported data type</string>
+    <string name="CARD_EDIT_error_displaying_image">Error displaying image</string>
+    <string name="CARD_EDIT_error_processing_data">Error processing data</string>
+    <string name="CARD_EDIT_unknown_error">Unknown error</string>
+    <string name="CARD_EDIT_card_name">Card name</string>
+    <string name="CARD_EDIT_described_object">What to add?</string>
+    <string name="MENU_create_card">Create card</string>
+    <string name="CARD_EDIT_error_no_input_data">No input data</string>
+    <string name="CARD_EDIT_error_unknown_action">Unknown action</string>
+    <string name="CARD_EDIT_error_creating_card">Error creating card</string>
+    <string name="CARD_EDIT_card_creation_title">Creating a card</string>
+    <string name="CARDS_LIST_tag_filter">Cards with tag «%1$s»</string>
+    <string name="CARDS_LIST_tag_filter_close_button">Tag filter close button</string>
 </resources>
