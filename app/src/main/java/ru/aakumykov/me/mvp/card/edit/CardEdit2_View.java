@@ -104,7 +104,7 @@ public class CardEdit2_View extends BaseView implements
 
         if (firstRun) {
             firstRun = false;
-            presenter.makeStartDecision(getIntent());
+            presenter.chooseStartVariant(getIntent());
         }
     }
 

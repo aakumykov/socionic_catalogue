@@ -39,9 +39,10 @@ public class CardEdit2_Presenter implements
     private HashMap<String,Boolean> oldTags = null;
     private HashMap<String,Boolean> newTags = null;
 
+
     // Интерфейсные методы
     @Override
-    public void makeStartDecision(@Nullable Intent intent) {
+    public void chooseStartVariant(@Nullable Intent intent) {
         if (null == intent) {
             view.showErrorMsg(R.string.CARD_EDIT_error_no_input_data);
             return;

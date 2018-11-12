@@ -48,7 +48,7 @@ public interface iCardEdit2 {
         void linkView(View view);
         void unlinkView();
 
-        void makeStartDecision(@Nullable Intent intent);
+        void chooseStartVariant(@Nullable Intent intent);
 
         void processInputData(String mode, Intent intent) throws Exception;
 
