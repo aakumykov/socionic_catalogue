@@ -150,7 +150,7 @@
                         android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_close" />
+                        app:srcCompat="@drawable/ic_close_rounded" />
 
                     <ProgressBar
                         android:id="@+id/imageProgressBar"

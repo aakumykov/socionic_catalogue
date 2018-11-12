@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/media/android/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/editor/ic_short_text_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/media/android/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_close_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -29,7 +29,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="bababa" />
-                            <entry key="outputName" value="ic_text" />
+                            <entry key="outputName" value="ic_close2" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="$USER_HOME$/Загрузки/icons/T-libreoffice.svg" />
                           </map>

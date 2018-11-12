@@ -154,6 +154,8 @@ public class CardsList_View extends BaseView implements
         String text = getResources().getString(R.string.CARDS_LIST_tag_filter, tagName);
         tagFilterView.setText(text);
         MyUtils.show(tagFilterView);
+
+        activateUpButton();
     }
 
     @Override
