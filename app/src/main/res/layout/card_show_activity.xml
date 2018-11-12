@@ -109,6 +109,17 @@
             app:vertical_interval="10dp"
             app:tag_text_size="@dimen/tag_font_size" />
 
+        <include
+            layout="@layout/comments_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            layout="@layout/comment_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+
     </LinearLayout>
 </ScrollView>
 

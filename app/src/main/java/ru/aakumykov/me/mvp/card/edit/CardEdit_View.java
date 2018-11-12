@@ -90,7 +90,7 @@ public class CardEdit_View extends BaseView implements
 
         activateUpButton();
 
-        CardEdit2_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
+        CardEdit_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
 
         tagsContainer.setOnTagClickListener(this);
 
