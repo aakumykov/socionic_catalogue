@@ -2,10 +2,13 @@ package ru.aakumykov.me.mvp.utils;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -165,5 +168,10 @@ public final class MyUtils {
         return text.substring(0, Math.min(text.length(), maxLength));
     }
 
-//    public static String getStringIfExists
+//    public static void hideKeyboard(Context ctx, EditText editText) {
+//        InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
+//        if (imm != null) {
+//            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+//        }
+//    }
 }

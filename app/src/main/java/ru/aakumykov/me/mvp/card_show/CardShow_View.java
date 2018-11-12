@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -48,6 +49,8 @@ public class CardShow_View extends BaseView implements
     @BindView(R.id.descriptionView) TextView descriptionView;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
 
+    @BindView(R.id.commentInput) EditText commentInput;
+
     private final static String TAG = "CardShow_View";
     private iCardShow.Presenter presenter;
     private boolean firstRun = true;
@@ -80,6 +83,12 @@ public class CardShow_View extends BaseView implements
         super.onStop();
         presenter.unlinkView();
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        MyUtils.hideKeyboard(this, commentInput);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
