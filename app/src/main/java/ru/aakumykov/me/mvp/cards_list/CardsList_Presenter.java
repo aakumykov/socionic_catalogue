@@ -51,7 +51,10 @@ public class CardsList_Presenter implements
             this.tagFilter = tagFilter;
             cardsService.loadList(tagFilter,this);
         }
-        else cardsService.loadList(this);
+        else {
+            this.tagFilter = null;
+            cardsService.loadList(this);
+        }
     }
 
     @Override
@@ -65,7 +68,8 @@ public class CardsList_Presenter implements
     // Коллбеки
     @Override
     public void onListLoadSuccess(List<Card> list) {
-        if (null != tagFilter) view.displayTagFilter(tagFilter);
+        if (null != tagFilter)
+            view.displayTagFilter(tagFilter);
         view.displayList(list);
     }
 

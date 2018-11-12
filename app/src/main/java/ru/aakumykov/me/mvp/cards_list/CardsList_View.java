@@ -12,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,6 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
@@ -40,7 +43,9 @@ public class CardsList_View extends BaseView implements
         ListView.OnItemLongClickListener,
         PopupMenu.OnMenuItemClickListener
 {
-    @BindView(R.id.tagFilterView) TextView tagFilterView;
+    @BindView(R.id.filterView) LinearLayout filterView;
+    @BindView(R.id.filterCloser) ImageView filterCloser;
+    @BindView(R.id.filterName) TextView filterName;
     @BindView(R.id.listView) ListView listView;
 
     private final static String TAG = "CardsList_View";
@@ -152,8 +157,8 @@ public class CardsList_View extends BaseView implements
     @Override
     public void displayTagFilter(String tagName) {
         String text = getResources().getString(R.string.CARDS_LIST_tag_filter, tagName);
-        tagFilterView.setText(text);
-        MyUtils.show(tagFilterView);
+        filterName.setText(text);
+        MyUtils.show(filterView);
 
         activateUpButton();
     }
@@ -174,6 +179,13 @@ public class CardsList_View extends BaseView implements
         yesNoDialog.show();
     }
 
+
+    // Нажатия
+    @OnClick(R.id.filterCloser)
+    void clearFilter() {
+        MyUtils.hide(filterView);
+        presenter.loadList(null);
+    }
 
     // Нажатия в списке
     @Override

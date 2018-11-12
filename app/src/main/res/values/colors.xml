@@ -20,4 +20,6 @@
     <color name="orange_swipe">#ffffbb33</color>
 
     <color name="selected_list_item_bg">#e1e1e1</color>
+
+    <color name="tag_filter">#92a4ff</color>
 </resources>
