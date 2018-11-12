@@ -10,7 +10,7 @@ import java.util.HashMap;
 import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.models.Card;
 
-public interface iCardEdit2 {
+public interface iCardEdit {
 
     interface View extends iBaseView {
         void displayCard(Card card);

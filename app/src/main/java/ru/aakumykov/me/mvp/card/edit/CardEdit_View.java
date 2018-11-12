@@ -36,15 +36,15 @@ import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.card.CardEdit2_Presenter;
-import ru.aakumykov.me.mvp.card.iCardEdit2;
+import ru.aakumykov.me.mvp.card.CardEdit_Presenter;
+import ru.aakumykov.me.mvp.card.iCardEdit;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 @RuntimePermissions
-public class CardEdit2_View extends BaseView implements
-    iCardEdit2.View,
+public class CardEdit_View extends BaseView implements
+    iCardEdit.View,
     TagView.OnTagClickListener
 {
     @BindView(R.id.titleView) EditText titleView;
@@ -76,8 +76,8 @@ public class CardEdit2_View extends BaseView implements
     @BindView(R.id.cancelButton) Button cancelButton;
 
 
-    private final static String TAG = "CardEdit2_View";
-    private iCardEdit2.Presenter presenter;
+    private final static String TAG = "CardEdit_View";
+    private iCardEdit.Presenter presenter;
     private boolean firstRun = true;
 
 
@@ -94,7 +94,7 @@ public class CardEdit2_View extends BaseView implements
 
         tagsContainer.setOnTagClickListener(this);
 
-        presenter = new CardEdit2_Presenter();
+        presenter = new CardEdit_Presenter();
     }
 
     @Override

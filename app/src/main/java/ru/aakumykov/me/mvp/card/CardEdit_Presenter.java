@@ -3,7 +3,6 @@ package ru.aakumykov.me.mvp.card;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.Arrays;
@@ -22,14 +21,14 @@ import ru.aakumykov.me.mvp.services.StorageSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
-public class CardEdit2_Presenter implements
-        iCardEdit2.Presenter,
+public class CardEdit_Presenter implements
+        iCardEdit.Presenter,
         iCardsSingleton.LoadCallbacks,
         iCardsSingleton.SaveCardCallbacks,
         iStorageSingleton.FileUploadCallbacks
 {
-    private final static String TAG = "CardEdit2_Presenter";
-    private iCardEdit2.View view;
+    private final static String TAG = "CardEdit_Presenter";
+    private iCardEdit.View view;
     private iCardsSingleton cardsService = CardsSingleton.getInstance();
     private iAuthSingleton authService = AuthSingleton.getInstance();
     private iStorageSingleton storageService = StorageSingleton.getInstance();
@@ -226,7 +225,7 @@ public class CardEdit2_Presenter implements
 
     // Обязательные методы
     @Override
-    public void linkView(iCardEdit2.View view) {
+    public void linkView(iCardEdit.View view) {
         this.view = view;
     }
 

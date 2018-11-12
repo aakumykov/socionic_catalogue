@@ -26,7 +26,7 @@ import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.card.edit.CardEdit2_View;
+import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
@@ -259,7 +259,7 @@ public class CardsList_View extends BaseView implements
     private void editCard() {
         Log.d(TAG, "editCard()");
 
-        Intent intent = new Intent(this, CardEdit2_View.class);
+        Intent intent = new Intent(this, CardEdit_View.class);
         intent.setAction(Constants.ACTION_EDIT);
         intent.putExtra(Constants.CARD_KEY, currentCard.getKey());
         startActivity(intent);
