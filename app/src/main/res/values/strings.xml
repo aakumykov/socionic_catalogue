@@ -139,4 +139,5 @@
     <string name="CARD_EDIT_error_unknown_action">Неизвестное действие</string>
     <string name="CARD_EDIT_error_creating_card">Ошибка создания карточки</string>
     <string name="CARD_EDIT_card_creation_title">Создание карточки</string>
+    <string name="CARDS_LIST_tag_filter">Карточки с меткой «%1$s»</string>
 </resources>

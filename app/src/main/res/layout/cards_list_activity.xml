@@ -24,6 +24,18 @@
         android:textSize="18sp"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/tagFilterView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/CARDS_LIST_tag_filter"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorPrimary"
+        android:textSize="17sp"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="2dp" />
+
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"

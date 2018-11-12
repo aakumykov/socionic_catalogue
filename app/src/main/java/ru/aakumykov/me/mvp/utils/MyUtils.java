@@ -164,4 +164,6 @@ public final class MyUtils {
         }
         return text.substring(0, Math.min(text.length(), maxLength));
     }
+
+//    public static String getStringIfExists
 }

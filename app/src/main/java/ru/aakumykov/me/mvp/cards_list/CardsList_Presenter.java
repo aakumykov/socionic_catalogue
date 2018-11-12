@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.cards_list;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.List;
@@ -24,8 +25,9 @@ public class CardsList_Presenter implements
     private iCardsList.View view;
     private iCardsSingleton cardsService = CardsSingleton.getInstance();
     private iAuthSingleton authService = AuthSingleton.getInstance();
-    private Card currentCard;
 
+    private Card currentCard = null;
+    private String tagFilter = null;
 
     // Системные методы
     @Override
@@ -40,10 +42,16 @@ public class CardsList_Presenter implements
 
     // Интерфейсные
     @Override
-    public void loadList() {
+    public void loadList(@Nullable String tagFilter) {
         Log.d(TAG, "loadList()");
+
         view.showProgressBar();
-        cardsService.loadList(this);
+
+        if (null != tagFilter) {
+            this.tagFilter = tagFilter;
+            cardsService.loadList(tagFilter,this);
+        }
+        else cardsService.loadList(this);
     }
 
     @Override
@@ -57,6 +65,7 @@ public class CardsList_Presenter implements
     // Коллбеки
     @Override
     public void onListLoadSuccess(List<Card> list) {
+        if (null != tagFilter) view.displayTagFilter(tagFilter);
         view.displayList(list);
     }
 

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ import ru.aakumykov.me.mvp.card.edit.CardEdit2_View;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 // Построен по принципу Active View
@@ -38,6 +40,7 @@ public class CardsList_View extends BaseView implements
         ListView.OnItemLongClickListener,
         PopupMenu.OnMenuItemClickListener
 {
+    @BindView(R.id.tagFilterView) TextView tagFilterView;
     @BindView(R.id.listView) ListView listView;
 
     private final static String TAG = "CardsList_View";
@@ -72,11 +75,17 @@ public class CardsList_View extends BaseView implements
         super.onStart();
         presenter.linkView(this);
 
-//        if (firstRun) {
-            presenter.loadList();
+        if (firstRun) {
             firstRun = false;
-//        }
 
+            String tagFilter = null;
+
+            try {
+                tagFilter = getIntent().getStringExtra(Constants.TAG_FILTER);
+            } catch (Exception e) {}
+
+            presenter.loadList(tagFilter);
+        }
     }
 
     @Override
@@ -138,6 +147,13 @@ public class CardsList_View extends BaseView implements
         cardsList.clear();
         cardsList.addAll(list);
         cardsListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void displayTagFilter(String tagName) {
+        String text = getResources().getString(R.string.CARDS_LIST_tag_filter, tagName);
+        tagFilterView.setText(text);
+        MyUtils.show(tagFilterView);
     }
 
     @Override
