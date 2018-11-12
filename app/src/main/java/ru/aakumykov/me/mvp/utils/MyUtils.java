@@ -2,12 +2,9 @@ package ru.aakumykov.me.mvp.utils;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import java.util.HashMap;
@@ -16,11 +13,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.R;
 
 public final class MyUtils {
 
-//    private final static String TAG = "MyUtils";
+    private final static String TAG = "MyUtils";
 
     private MyUtils() {}
 
@@ -84,12 +80,13 @@ public final class MyUtils {
     public static String normalizeTag(String tagName) {
 
         // обрезаю черезмерно длинные
-        if (tagName.length() > Constants.TAG_MAX_LENGTH) {
-            tagName = tagName.substring(
-                    0,
-                    Math.min(tagName.length(),Constants.TAG_MAX_LENGTH)
-            );
-        }
+//        if (tagName.length() > Constants.TAG_MAX_LENGTH) {
+//            tagName = tagName.substring(
+//                    0,
+//                    Math.min(tagName.length(),Constants.TAG_MAX_LENGTH)
+//            );
+//        }
+        tagName = cutToLength(tagName, Constants.TAG_MAX_LENGTH);
 
         // отпинываю слишком короткия
         if (tagName.length() < Constants.TAG_MIN_LENGTH) {
@@ -154,5 +151,17 @@ public final class MyUtils {
 //        else
 
         return mimeType;
+    }
+
+    public static String cutToLength(String text, Integer maxLength) {
+        if (null == text) {
+            Log.e(TAG, "You must supply input text.");
+            return null;
+        }
+        if (null == maxLength) {
+            Log.e(TAG, "You must supply maxLength.");
+            maxLength = text.length();
+        }
+        return text.substring(0, Math.min(text.length(), maxLength));
     }
 }

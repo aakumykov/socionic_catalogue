@@ -219,8 +219,14 @@ public class CardEdit2_View extends BaseView implements
     }
 
     @Override
+    public void displayTitle(String text) {
+        titleView.setText(text);
+    }
+
+    @Override
     public void displayQuote(String text) {
         switchTextMode();
+
         quoteView.setText(text);
     }
 

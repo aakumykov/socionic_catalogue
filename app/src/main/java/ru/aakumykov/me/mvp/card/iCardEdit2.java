@@ -18,6 +18,7 @@ public interface iCardEdit2 {
         void showModeSwitcher();
         void hideModeSwitcher();
 
+        void displayTitle(String text);
         void displayQuote(String text);
         void displayImage(Uri imageURI);
 //        void displayAudio(Uri dataURI);

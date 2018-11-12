@@ -344,7 +344,11 @@ public class CardEdit2_Presenter implements
             throw new Exception("Input text (Intent's extra text) is null");
         }
 
+        String autoTitle = MyUtils.cutToLength(text, Constants.TITLE_MAX_LENGTH);
+
         view.hideProgressBar();
+
+        view.displayTitle(autoTitle);
         view.displayQuote(text);
     }
 
