@@ -36,13 +36,13 @@ public class Comment implements Parcelable {
     public String toString() {
         return "Comment { "
                 +"key: "+key
-                +"text: "+text
-                +"cardId: "+cardId
-                +"parentId: "+parentId
-                +"userId: "+userId
-                +"createdAt: "+createdAt
-                +"editedAt: "+editedAt
-                +"rating: "+rating
+                +", text: "+text
+                +", cardId: "+cardId
+                +", parentId: "+parentId
+                +", userId: "+userId
+                +", createdAt: "+createdAt
+                +", editedAt: "+editedAt
+                +", rating: "+rating
             +" }";
     }
 

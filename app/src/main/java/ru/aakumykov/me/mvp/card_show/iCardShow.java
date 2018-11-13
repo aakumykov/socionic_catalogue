@@ -25,6 +25,10 @@ public interface iCardShow {
         void goList(String tagFilter);
 
         void showDeleteDialog();
+
+        void disableCommentForm();
+        void enableCommentForm();
+        void resetCommentForm();
     }
 
     interface Presenter {
@@ -35,6 +39,8 @@ public interface iCardShow {
         void onEditButtonClicked();
         void onDeleteButtonClicked();
         void onDeleteConfirmed();
+
+        void addComment(String text);
 
         void linkView(iCardShow.View view);
         void unlinkView();

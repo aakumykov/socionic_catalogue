@@ -8,21 +8,27 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
+import ru.aakumykov.me.mvp.interfaces.iCommentsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.models.Comment;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
+import ru.aakumykov.me.mvp.services.CommentsSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class CardShow_Presenter implements
         iCardShow.Presenter,
         iCardsSingleton.LoadCallbacks,
-        iCardsSingleton.DeleteCallbacks
+        iCardsSingleton.DeleteCallbacks,
+        iCommentsSingleton.CreateCallbacks
 {
 
     private final static String TAG = "CardShow_Presenter";
     private iCardShow.View view;
-    private iCardsSingleton cardsService = CardsSingleton.getInstance();
     private iAuthSingleton authService = AuthSingleton.getInstance();
+    private iCardsSingleton cardsService = CardsSingleton.getInstance();
+    private iCommentsSingleton commentsService = CommentsSingleton.getInstance();
     private Card currentCard;
 
 
@@ -39,6 +45,13 @@ public class CardShow_Presenter implements
         cardsService.loadCard(cardKey, this);
     }
 
+    // Добавление комментария
+    @Override
+    public void addComment(String text) {
+        view.disableCommentForm();
+        Comment comment = new Comment(text, currentCard.getKey(), null, authService.currentUid());
+        commentsService.createComment(comment, this);
+    }
 
     // Реакция на кнопки
     @Override
@@ -111,4 +124,16 @@ public class CardShow_Presenter implements
         view.showErrorMsg(R.string.error_deleting_card);
     }
 
+    @Override
+    public void onCommentCreateSuccess(Comment comment) {
+        view.showInfoMsg("Комментарий добавлен");
+        view.resetCommentForm();
+        view.enableCommentForm();
+    }
+
+    @Override
+    public void onCommentCreateError(String errorMsg) {
+        view.enableCommentForm();
+        view.showErrorMsg(errorMsg);
+    }
 }

@@ -18,8 +18,8 @@ public interface iCommentsSingleton {
     }
 
     interface CreateCallbacks {
-        void onCreateSuccess(Comment comment);
-        void onCreateError(String message);
+        void onCommentCreateSuccess(Comment comment);
+        void onCommentCreateError(String errorMsg);
     }
 
     interface DeleteCallbacks {

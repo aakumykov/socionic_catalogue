@@ -112,13 +112,13 @@ public class CommentsSingleton implements iCommentsSingleton {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        callbacks.onCreateSuccess(commentDraft);
+                        callbacks.onCommentCreateSuccess(commentDraft);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        callbacks.onCreateError(e.getMessage());
+                        callbacks.onCommentCreateError(e.getMessage());
                         e.printStackTrace();
                     }
                 });

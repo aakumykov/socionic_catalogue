@@ -364,4 +364,30 @@ public class CardShow_View extends BaseView implements
         MyUtils.show(commentForm);
         MyUtils.showKeyboard(this, commentInput);
     }
+
+    @OnClick(R.id.commentSend)
+    void sendComment() {
+        String commentText = commentInput.getText().toString();
+        presenter.addComment(commentText);
+    }
+
+    // Другое
+    @Override
+    public void disableCommentForm() {
+//        MyUtils.hideKeyboard(this, commentInput);
+        MyUtils.disable(commentInput);
+        MyUtils.disable(commentSend);
+    }
+
+    @Override
+    public void enableCommentForm() {
+        MyUtils.enable(commentInput);
+        MyUtils.enable(commentSend);
+    }
+
+    @Override
+    public void resetCommentForm() {
+        commentInput.setText(null);
+//        MyUtils.hideKeyboard(this, commentInput);
+    }
 }

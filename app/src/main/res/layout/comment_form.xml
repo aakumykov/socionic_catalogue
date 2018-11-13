@@ -12,7 +12,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:ems="10"
-        android:hint="@string/CARD_SHOW_add_comment" />
+        android:hint="@string/CARD_SHOW_add_comment"
+        android:inputType="textCapSentences|textMultiLine" />
 
     <ImageView
         android:id="@+id/commentSend"
