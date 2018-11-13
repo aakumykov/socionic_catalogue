@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.util.List;
+
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
@@ -21,7 +23,8 @@ public class CardShow_Presenter implements
         iCardShow.Presenter,
         iCardsSingleton.LoadCallbacks,
         iCardsSingleton.DeleteCallbacks,
-        iCommentsSingleton.CreateCallbacks
+        iCommentsSingleton.CreateCallbacks,
+        iCommentsSingleton.ListCallbacks
 {
 
     private final static String TAG = "CardShow_Presenter";
@@ -104,6 +107,8 @@ public class CardShow_Presenter implements
     public void onLoadSuccess(Card card) {
         this.currentCard = card;
         view.displayCard(card);
+
+        commentsService.loadList(this);
     }
 
     @Override
@@ -135,5 +140,15 @@ public class CardShow_Presenter implements
     public void onCommentCreateError(String errorMsg) {
         view.enableCommentForm();
         view.showErrorMsg(errorMsg);
+    }
+
+    @Override
+    public void onListLoadSuccess(List<Comment> list) {
+        view.attachComments(list);
+    }
+
+    @Override
+    public void onListLoadError(String errorMessage) {
+
     }
 }
