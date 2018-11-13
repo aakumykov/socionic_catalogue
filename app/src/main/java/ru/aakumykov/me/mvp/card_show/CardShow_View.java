@@ -5,10 +5,12 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.mvp.BaseView;
@@ -47,6 +50,8 @@ public class CardShow_View extends BaseView implements
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.descriptionView) TextView descriptionView;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
+
+    @BindView(R.id.commentInput) EditText commentInput;
 
     private final static String TAG = "CardShow_View";
     private iCardShow.Presenter presenter;
@@ -80,6 +85,12 @@ public class CardShow_View extends BaseView implements
         super.onStop();
         presenter.unlinkView();
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        MyUtils.hideKeyboard(this, commentInput);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -233,6 +244,7 @@ public class CardShow_View extends BaseView implements
         imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
     }
 
+
     // Метки
     @Override
     public void showTags(HashMap<String,Boolean> tagsHash) {
@@ -339,4 +351,16 @@ public class CardShow_View extends BaseView implements
 //        yesNoDialog.show();
     }
 
+
+    // Нажатия
+    @OnClick(R.id.commentInput)
+    void activateEditText() {
+//        commentInput.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        commentInput.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+//        commentInput.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+//        commentInput.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+//        commentInput.setTextIsSelectable(true);
+        commentInput.requestFocus();
+        MyUtils.showKeyboard(this, commentInput);
+    }
 }
