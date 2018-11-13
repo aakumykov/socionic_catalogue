@@ -40,9 +40,11 @@ public class CommentsSingleton implements iCommentsSingleton {
 
 
     @Override
-    public void loadList(final ListCallbacks callbacks) {
+    public void loadList(String cardId, final ListCallbacks callbacks) {
 
-        Query query = commentsRef.orderByChild(Comment.createdKey);
+        // TODO: что будет при кривом cardId? Бросать исключние?
+        Query query = commentsRef.orderByChild(Comment.key_cardId)
+                .equalTo(cardId);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -61,12 +63,12 @@ public class CommentsSingleton implements iCommentsSingleton {
                     }
                 }
 
-                callbacks.onListLoadSuccess(commentsList);
+                callbacks.onCommentsLoadSuccess(commentsList);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                callbacks.onListLoadError(databaseError.getMessage());
+                callbacks.onCommentsLoadError(databaseError.getMessage());
                 databaseError.toException().printStackTrace();
             }
         });

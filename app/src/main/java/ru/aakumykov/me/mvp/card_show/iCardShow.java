@@ -5,11 +5,13 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 
 import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.models.Comment;
 
 public interface iCardShow {
 
@@ -18,17 +20,18 @@ public interface iCardShow {
         void displayCard(Card card);
         void displayImage(Uri imageURI);
         void displayImageError();
+        void displayTags(HashMap<String,Boolean> tagsHash);
+        void displayComments(List<Comment> list);
+        void appendComment(Comment comment);
 
-        void showTags(HashMap<String,Boolean> tagsHash);
+        void showDeleteDialog();
 
         void goEditPage(Card card);
         void goList(String tagFilter);
 
-        void showDeleteDialog();
-
-//        void disableCommentForm();
-//        void enableCommentForm();
-//        void resetCommentForm();
+        void disableCommentForm();
+        void enableCommentForm();
+        void resetCommentForm();
     }
 
     interface Presenter {
@@ -40,7 +43,8 @@ public interface iCardShow {
         void onDeleteButtonClicked();
         void onDeleteConfirmed();
 
-        void addComment(String text);
+        void loadComments(String cardId);
+        void postComment(String text);
 
         void linkView(iCardShow.View view);
         void unlinkView();

@@ -6,12 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -58,13 +58,11 @@ public class CardShow_View extends BaseView implements
     @BindView(R.id.descriptionView) TextView descriptionView;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
 
-//    @BindView(R.id.commentsView) ListView commentsView;
-
     @BindView(R.id.commentsHolder) LinearLayout commentsHolder;
+    @BindView(R.id.commentFormHolder) View commentFormHolder;
     @BindView(R.id.addCommentButton) Button addCommentButton;
-//    @BindView(R.id.commentForm) LinearLayout commentForm;
-//    @BindView(R.id.commentInput) EditText commentInput;
-//    @BindView(R.id.commentSend) ImageView commentSend;
+    @BindView(R.id.commentInput) EditText commentInput;
+    @BindView(R.id.commentSend) ImageView commentSend;
 
     private final static String TAG = "CardShow_View";
     private iCardShow.Presenter presenter;
@@ -187,25 +185,7 @@ public class CardShow_View extends BaseView implements
     }
 
 
-    // Меток методы
-    @Override
-    public void onTagClick(int position, String text) {
-        Log.d(TAG, "onTagClick("+position+", "+text+")");
-        presenter.onTagClicked(text);
-    }
-
-    @Override
-    public void onTagLongClick(int position, String text) {
-
-    }
-
-    @Override
-    public void onTagCrossClick(int position) {
-
-    }
-
-
-    // Карточка
+    // Интерфейсные методы
     @Override
     public void displayCard(@Nullable Card card) {
         Log.d(TAG, "displayCard(), "+card);
@@ -236,8 +216,6 @@ public class CardShow_View extends BaseView implements
         }
     }
 
-
-    // Изображение
     @Override
     public void displayImage(Uri imageURI) {
         Log.d(TAG, "displayImage("+imageURI+")");
@@ -268,16 +246,52 @@ public class CardShow_View extends BaseView implements
         imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
     }
 
-
-    // Метки
     @Override
-    public void showTags(HashMap<String,Boolean> tagsHash) {
-//        Log.d(TAG, "showTags(), "+tagsHash);
+    public void displayTags(HashMap<String,Boolean> tagsHash) {
+//        Log.d(TAG, "displayTags(), "+tagsHash);
         if (null != tagsHash) {
             List<String> tagsList = new ArrayList<>(tagsHash.keySet());
             tagsContainer.setTags(tagsList);
             MyUtils.show(tagsContainer);
         }
+    }
+
+    @Override
+    public void displayComments(List<Comment> list) {
+
+        MyUtils.show(commentsHolder);
+
+        for (Comment aComment : list)
+            appendComment(aComment);
+    }
+
+    @Override
+    public void appendComment(Comment comment) {
+        try {
+            View commentRow = constructCommentItem(comment);
+            commentsHolder.addView(commentRow);
+        } catch (Exception e) {
+            showErrorMsg(R.string.CARD_SHOW_error_displaying_comments);
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Меток методы
+    @Override
+    public void onTagClick(int position, String text) {
+        Log.d(TAG, "onTagClick("+position+", "+text+")");
+        presenter.onTagClicked(text);
+    }
+
+    @Override
+    public void onTagLongClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagCrossClick(int position) {
+
     }
 
 
@@ -299,6 +313,39 @@ public class CardShow_View extends BaseView implements
         if (null != tagFilter)
             intent.putExtra(Constants.TAG_FILTER, tagFilter);
         startActivity(intent);
+    }
+
+
+    // Диалоги
+    @Override
+    public void showDeleteDialog() {
+
+//        YesNoDialog yesNoDialog = new YesNoDialog(
+//                this,
+//                R.string.DIALOG_card_deletion,
+//                R.string.DIALOG_really_delete_card,
+//                new iDialogCallbacks.onCheck() {
+//                    @Override
+//                    public boolean doCheck() {
+//                        return true;
+//                    }
+//                },
+//                new iDialogCallbacks.onYes() {
+//                    @Override
+//                    public void yesAction() {
+//                        //Log.d(TAG, "yesAction");
+//                        presenter.onDeleteConfirmed();
+//                    }
+//                },
+//                new iDialogCallbacks.onNo() {
+//                    @Override
+//                    public void noAction() {
+//                        //Log.d(TAG, "noAction");
+//                    }
+//                }
+//        );
+//
+//        yesNoDialog.show();
     }
 
 
@@ -339,95 +386,62 @@ public class CardShow_View extends BaseView implements
     private void displayCommonCard(Card card) {
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
-        showTags(card.getTags());
+        displayTags(card.getTags());
     }
 
+    private View constructCommentItem(Comment comment) throws Exception {
 
-    // Диалоги
-    @Override
-    public void showDeleteDialog() {
+        LinearLayout commentRow = (LinearLayout) getLayoutInflater()
+                    .inflate(R.layout.comments_list_item, null);
 
-//        YesNoDialog yesNoDialog = new YesNoDialog(
-//                this,
-//                R.string.DIALOG_card_deletion,
-//                R.string.DIALOG_really_delete_card,
-//                new iDialogCallbacks.onCheck() {
-//                    @Override
-//                    public boolean doCheck() {
-//                        return true;
-//                    }
-//                },
-//                new iDialogCallbacks.onYes() {
-//                    @Override
-//                    public void yesAction() {
-//                        //Log.d(TAG, "yesAction");
-//                        presenter.onDeleteConfirmed();
-//                    }
-//                },
-//                new iDialogCallbacks.onNo() {
-//                    @Override
-//                    public void noAction() {
-//                        //Log.d(TAG, "noAction");
-//                    }
-//                }
-//        );
-//
-//        yesNoDialog.show();
+        // Прикрутить ButterKnife...
+        ((TextView) commentRow.findViewById(R.id.commentText)).setText(comment.getText());
+
+        return commentRow;
     }
 
 
     // Нажатия
     @OnClick(R.id.addCommentButton)
     void activateEditText() {
-//        MyUtils.hide(addCommentButton);
-//        MyUtils.show(commentForm);
-//        MyUtils.showKeyboard(this, commentInput);
+        MyUtils.hide(addCommentButton);
+        MyUtils.show(commentFormHolder);
+        commentInput.requestFocus();
+        MyUtils.showKeyboard(this, commentInput);
 
-        Comment comment = new Comment("Комментарий-"+Math.random(), null, null, null);
-
-        LayoutInflater layoutInflater = getLayoutInflater();
-        LinearLayout commentRow =
-                (LinearLayout) layoutInflater.inflate(R.layout.comments_list_item, null);
-
-        TextView commentTextView = commentRow.findViewById(R.id.commentText);
-        commentTextView.setText(comment.getText());
-
-        commentsHolder.addView(commentRow);
-
-//        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-
-        scrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-            }
-        });
+//        scrollView.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+//            }
+//        });
     }
 
-//    @OnClick(R.id.commentSend)
-//    void sendComment() {
-//        String commentText = commentInput.getText().toString();
-//        presenter.addComment(commentText);
-//    }
+    @OnClick(R.id.commentSend)
+    void sendComment() {
+        String commentText = commentInput.getText().toString();
+        presenter.postComment(commentText);
+    }
 
 
     // Другое
-//    @Override
-//    public void disableCommentForm() {
-////        MyUtils.hideKeyboard(this, commentInput);
-//        MyUtils.disable(commentInput);
-//        MyUtils.disable(commentSend);
-//    }
-//
-//    @Override
-//    public void enableCommentForm() {
-//        MyUtils.enable(commentInput);
-//        MyUtils.enable(commentSend);
-//    }
-//
-//    @Override
-//    public void resetCommentForm() {
-//        commentInput.setText(null);
-////        MyUtils.hideKeyboard(this, commentInput);
-//    }
+    @Override
+    public void disableCommentForm() {
+//        MyUtils.hideKeyboard(this, commentInput);
+        MyUtils.disable(commentInput);
+        MyUtils.disable(commentSend);
+    }
+
+    @Override
+    public void enableCommentForm() {
+        MyUtils.enable(commentInput);
+        MyUtils.enable(commentSend);
+    }
+
+    @Override
+    public void resetCommentForm() {
+        commentInput.setText(null);
+        enableCommentForm();
+//        MyUtils.hideKeyboard(this, commentInput);
+    }
 }

@@ -100,8 +100,8 @@ public class CardsList_Presenter implements
 
 
     @Override
-    public void onDeleteSuccess(Card card) {
-        Log.d(TAG, "onDeleteSuccess()");
+    public void onCardDeleteSuccess(Card card) {
+        Log.d(TAG, "onCardDeleteSuccess()");
 
         view.hideProgressBar();
 
@@ -124,8 +124,8 @@ public class CardsList_Presenter implements
     }
 
     @Override
-    public void onDeleteError(String msg) {
-        Log.d(TAG, "onDeleteError()");
+    public void onCardDeleteError(String msg) {
+        Log.d(TAG, "onCardDeleteError()");
         view.hideProgressBar();
         view.showErrorMsg(R.string.error_deleting_card, msg);
     }

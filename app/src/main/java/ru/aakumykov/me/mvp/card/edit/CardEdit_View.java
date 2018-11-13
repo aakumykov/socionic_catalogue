@@ -492,7 +492,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     private void showTags(HashMap<String,Boolean> tagsMap) {
-        Log.d(TAG, "showTags(), "+tagsMap);
+        Log.d(TAG, "displayTags(), "+tagsMap);
         if (null != tagsMap) {
             List<String> tagsList = new ArrayList<>(tagsMap.keySet());
             tagsContainer.setTags(tagsList);

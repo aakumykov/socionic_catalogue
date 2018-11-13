@@ -6,15 +6,15 @@ import ru.aakumykov.me.mvp.models.Comment;
 
 public interface iCommentsSingleton {
 
-    void loadList(ListCallbacks callbacks);
+    void loadList(String cardId, ListCallbacks callbacks);
     void createComment(Comment commentDraft, CreateCallbacks callbacks);
     void updateComment(Comment comment, CreateCallbacks callbacks);
     void deleteComment(Comment comment, DeleteCallbacks callbacks);
 
 
     interface ListCallbacks {
-        void onListLoadSuccess(List<Comment> list);
-        void onListLoadError(String errorMessage);
+        void onCommentsLoadSuccess(List<Comment> list);
+        void onCommentsLoadError(String errorMessage);
     }
 
     interface CreateCallbacks {

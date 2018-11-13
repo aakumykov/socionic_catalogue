@@ -56,12 +56,12 @@ public class CardsSingleton implements
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Card card = dataSnapshot.getValue(Card.class);
-                callbacks.onLoadSuccess(card);
+                callbacks.onCardLoadSuccess(card);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                callbacks.onLoadFailed(databaseError.getMessage());
+                callbacks.onCardLoadFailed(databaseError.getMessage());
                 databaseError.toException().printStackTrace();
             }
         });
@@ -99,9 +99,9 @@ public class CardsSingleton implements
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if (null == databaseError) {
-                    callbacks.onDeleteSuccess(card);
+                    callbacks.onCardDeleteSuccess(card);
                 } else {
-                    callbacks.onDeleteError(databaseError.getMessage());
+                    callbacks.onCardDeleteError(databaseError.getMessage());
                     databaseError.toException().printStackTrace();
                 }
             }

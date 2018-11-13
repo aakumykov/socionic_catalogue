@@ -22,8 +22,8 @@ public interface iCardsSingleton {
     }
 
     interface LoadCallbacks {
-        void onLoadSuccess(Card card);
-        void onLoadFailed(String msg);
+        void onCardLoadSuccess(Card card);
+        void onCardLoadFailed(String msg);
     }
 
     interface SaveCardCallbacks {
@@ -32,7 +32,7 @@ public interface iCardsSingleton {
     }
 
     interface DeleteCallbacks {
-        void onDeleteSuccess(Card card);
-        void onDeleteError(String msg);
+        void onCardDeleteSuccess(Card card);
+        void onCardDeleteError(String msg);
     }
 }

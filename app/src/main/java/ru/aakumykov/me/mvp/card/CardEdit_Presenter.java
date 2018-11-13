@@ -238,7 +238,7 @@ public class CardEdit_Presenter implements
     // Коллбеки
     // --Загрузки карточки
     @Override
-    public void onLoadSuccess(final Card card) {
+    public void onCardLoadSuccess(final Card card) {
         currentCard = card;
         oldTags = card.getTags();
 
@@ -247,7 +247,7 @@ public class CardEdit_Presenter implements
     }
 
     @Override
-    public void onLoadFailed(String msg) {
+    public void onCardLoadFailed(String msg) {
         currentCard = null;
         view.hideProgressBar();
         view.showErrorMsg(R.string.CARD_EDIT_error_loading_card);

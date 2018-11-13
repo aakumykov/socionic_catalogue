@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.util.List;
+
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
@@ -21,7 +23,8 @@ public class CardShow_Presenter implements
         iCardShow.Presenter,
         iCardsSingleton.LoadCallbacks,
         iCardsSingleton.DeleteCallbacks,
-        iCommentsSingleton.CreateCallbacks
+        iCommentsSingleton.CreateCallbacks,
+        iCommentsSingleton.ListCallbacks
 {
 
     private final static String TAG = "CardShow_Presenter";
@@ -45,13 +48,19 @@ public class CardShow_Presenter implements
         cardsService.loadCard(cardKey, this);
     }
 
+    @Override
+    public void loadComments(String cardId) {
+        commentsService.loadList(cardId, this);
+    }
+
     // Добавление комментария
     @Override
-    public void addComment(String text) {
-//        view.disableCommentForm();
+    public void postComment(String text) {
+        view.disableCommentForm();
         Comment comment = new Comment(text, currentCard.getKey(), null, authService.currentUid());
         commentsService.createComment(comment, this);
     }
+
 
     // Реакция на кнопки
     @Override
@@ -101,39 +110,52 @@ public class CardShow_Presenter implements
 
     // Коллбеки
     @Override
-    public void onLoadSuccess(Card card) {
+    public void onCardLoadSuccess(Card card) {
         this.currentCard = card;
         view.displayCard(card);
+
+        loadComments(card.getKey());
     }
 
     @Override
-    public void onLoadFailed(String msg) {
+    public void onCardLoadFailed(String msg) {
         this.currentCard = null;
         view.showErrorMsg(R.string.card_load_error);
     }
 
     @Override
-    public void onDeleteSuccess(Card card) {
+    public void onCardDeleteSuccess(Card card) {
         TagsSingleton.getInstance().updateCardTags(card.getKey(), card.getTags(), null, null);
         view.closePage();
     }
 
     @Override
-    public void onDeleteError(String msg) {
+    public void onCardDeleteError(String msg) {
         view.hideProgressBar();
         view.showErrorMsg(R.string.error_deleting_card);
     }
 
+
     @Override
     public void onCommentCreateSuccess(Comment comment) {
         view.showInfoMsg("Комментарий добавлен");
-//        view.resetCommentForm();
-//        view.enableCommentForm();
+        view.appendComment(comment);
+        view.resetCommentForm();
     }
 
     @Override
     public void onCommentCreateError(String errorMsg) {
-//        view.enableCommentForm();
+        view.enableCommentForm();
         view.showErrorMsg(errorMsg);
+    }
+
+    @Override
+    public void onCommentsLoadSuccess(List<Comment> list) {
+        view.displayComments(list);
+    }
+
+    @Override
+    public void onCommentsLoadError(String errorMessage) {
+        view.showErrorMsg(R.string.CARD_SHOW_error_loading_comments);
     }
 }
