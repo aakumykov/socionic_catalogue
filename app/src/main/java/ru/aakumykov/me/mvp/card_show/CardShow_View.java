@@ -10,8 +10,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -51,7 +53,10 @@ public class CardShow_View extends BaseView implements
     @BindView(R.id.descriptionView) TextView descriptionView;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
 
+    @BindView(R.id.addCommentButton) Button addCommentButton;
+    @BindView(R.id.commentForm) LinearLayout commentForm;
     @BindView(R.id.commentInput) EditText commentInput;
+    @BindView(R.id.commentSend) ImageView commentSend;
 
     private final static String TAG = "CardShow_View";
     private iCardShow.Presenter presenter;
@@ -353,14 +358,10 @@ public class CardShow_View extends BaseView implements
 
 
     // Нажатия
-    @OnClick(R.id.commentInput)
+    @OnClick(R.id.addCommentButton)
     void activateEditText() {
-//        commentInput.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        commentInput.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-//        commentInput.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-//        commentInput.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-//        commentInput.setTextIsSelectable(true);
-        commentInput.requestFocus();
+        MyUtils.hide(addCommentButton);
+        MyUtils.show(commentForm);
         MyUtils.showKeyboard(this, commentInput);
     }
 }

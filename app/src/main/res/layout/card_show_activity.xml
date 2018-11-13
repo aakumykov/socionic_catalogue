@@ -109,6 +109,13 @@
             app:vertical_interval="10dp"
             app:tag_text_size="@dimen/tag_font_size" />
 
+        <Button
+            android:id="@+id/addCommentButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/CARD_SHOW_add_comment"
+            android:layout_marginTop="@dimen/first_button_margin_top" />
+
         <include
             layout="@layout/comments_list"
             android:layout_width="match_parent"
