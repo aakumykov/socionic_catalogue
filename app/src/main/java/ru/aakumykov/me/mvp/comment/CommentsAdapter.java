@@ -12,20 +12,19 @@ import java.util.List;
 
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Comment;
-import ru.aakumykov.me.mvp.models.Comment;
 
-public class CommentsListAdapter extends ArrayAdapter<Comment> {
+public class CommentsAdapter extends ArrayAdapter<Comment> {
 
     // TODO: реализовать ViewHolder
 
-    private final static String TAG = "CommentsListAdapter";
+    private final static String TAG = "CommentsAdapter";
     private LayoutInflater inflater;
     private int layout;
-    private List<Comment> cards;
+    private List<Comment> list;
 
-    CommentsListAdapter(Context context, int resource, List<Comment> cards) {
-        super(context, resource, cards);
-        this.cards = cards;
+    public CommentsAdapter(Context context, int resource, List<Comment> commentsList) {
+        super(context, resource, commentsList);
+        this.list = commentsList;
         this.layout = resource;
         this.inflater = LayoutInflater.from(context);
     }
@@ -34,10 +33,10 @@ public class CommentsListAdapter extends ArrayAdapter<Comment> {
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         View view = inflater.inflate(this.layout, parent, false);
-        TextView titleView = view.findViewById(R.id.titleView);
+        TextView commentTextView = view.findViewById(R.id.commentTextView);
 
-        Comment comment = cards.get(position);
-        titleView.setText(comment.getText());
+        Comment comment = list.get(position);
+        commentTextView.setText(comment.getText());
 
         return view;
     }

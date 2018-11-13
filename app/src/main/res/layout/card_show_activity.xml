@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".card_show.CardShow_View">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -109,23 +110,23 @@
             app:vertical_interval="10dp"
             app:tag_text_size="@dimen/tag_font_size" />
 
-        <Button
-            android:id="@+id/addCommentButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/CARD_SHOW_add_comment"
-            android:layout_marginTop="@dimen/first_button_margin_top" />
-
         <include
             layout="@layout/comments_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
 
         <include
             layout="@layout/comment_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp" />
+
+        <Button
+            android:id="@+id/addCommentButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/first_button_margin_top"
+            android:text="@string/CARD_SHOW_add_comment" />
 
     </LinearLayout>
 </ScrollView>
