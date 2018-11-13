@@ -6,15 +6,16 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
@@ -45,6 +46,8 @@ public class CardShow_View extends BaseView implements
         iCardShow.View,
         TagView.OnTagClickListener
 {
+    @BindView(R.id.scrollView) ScrollView scrollView;
+
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.titleView) TextView titleView;
@@ -55,12 +58,13 @@ public class CardShow_View extends BaseView implements
     @BindView(R.id.descriptionView) TextView descriptionView;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
 
-    @BindView(R.id.commentsView) ListView commentsView;
+//    @BindView(R.id.commentsView) ListView commentsView;
 
+    @BindView(R.id.commentsHolder) LinearLayout commentsHolder;
     @BindView(R.id.addCommentButton) Button addCommentButton;
-    @BindView(R.id.commentForm) LinearLayout commentForm;
-    @BindView(R.id.commentInput) EditText commentInput;
-    @BindView(R.id.commentSend) ImageView commentSend;
+//    @BindView(R.id.commentForm) LinearLayout commentForm;
+//    @BindView(R.id.commentInput) EditText commentInput;
+//    @BindView(R.id.commentSend) ImageView commentSend;
 
     private final static String TAG = "CardShow_View";
     private iCardShow.Presenter presenter;
@@ -79,13 +83,13 @@ public class CardShow_View extends BaseView implements
 
         tagsContainer.setOnTagClickListener(this);
 
-        commentsList = new ArrayList<>();
-            commentsList.add(new Comment("Комментарий-1", null, null, null));
-            commentsList.add(new Comment("Комментарий-2", null, null, null));
-            commentsList.add(new Comment("Комментарий-3", null, null, null));
-            commentsList.add(new Comment("Комментарий-4", null, null, null));
-                commentsAdapter = new CommentsAdapter(this, R.layout.comments_list_item, commentsList);
-                commentsView.setAdapter(commentsAdapter);
+//        commentsList = new ArrayList<>();
+//            commentsList.add(new Comment("Комментарий-1", null, null, null));
+//            commentsList.add(new Comment("Комментарий-2", null, null, null));
+//            commentsList.add(new Comment("Комментарий-3", null, null, null));
+//            commentsList.add(new Comment("Комментарий-4", null, null, null));
+//                commentsAdapter = new CommentsAdapter(this, R.layout.comments_list_item, commentsList);
+//                commentsView.setAdapter(commentsAdapter);
 
         presenter = new CardShow_Presenter();
     }
@@ -375,34 +379,55 @@ public class CardShow_View extends BaseView implements
     // Нажатия
     @OnClick(R.id.addCommentButton)
     void activateEditText() {
-        MyUtils.hide(addCommentButton);
-        MyUtils.show(commentForm);
-        MyUtils.showKeyboard(this, commentInput);
+//        MyUtils.hide(addCommentButton);
+//        MyUtils.show(commentForm);
+//        MyUtils.showKeyboard(this, commentInput);
+
+        Comment comment = new Comment("Комментарий-"+Math.random(), null, null, null);
+
+        LayoutInflater layoutInflater = getLayoutInflater();
+        LinearLayout commentRow =
+                (LinearLayout) layoutInflater.inflate(R.layout.comments_list_item, null);
+
+        TextView commentTextView = commentRow.findViewById(R.id.commentText);
+        commentTextView.setText(comment.getText());
+
+        commentsHolder.addView(commentRow);
+
+//        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        });
     }
 
-    @OnClick(R.id.commentSend)
-    void sendComment() {
-        String commentText = commentInput.getText().toString();
-        presenter.addComment(commentText);
-    }
+//    @OnClick(R.id.commentSend)
+//    void sendComment() {
+//        String commentText = commentInput.getText().toString();
+//        presenter.addComment(commentText);
+//    }
+
 
     // Другое
-    @Override
-    public void disableCommentForm() {
-//        MyUtils.hideKeyboard(this, commentInput);
-        MyUtils.disable(commentInput);
-        MyUtils.disable(commentSend);
-    }
-
-    @Override
-    public void enableCommentForm() {
-        MyUtils.enable(commentInput);
-        MyUtils.enable(commentSend);
-    }
-
-    @Override
-    public void resetCommentForm() {
-        commentInput.setText(null);
-//        MyUtils.hideKeyboard(this, commentInput);
-    }
+//    @Override
+//    public void disableCommentForm() {
+////        MyUtils.hideKeyboard(this, commentInput);
+//        MyUtils.disable(commentInput);
+//        MyUtils.disable(commentSend);
+//    }
+//
+//    @Override
+//    public void enableCommentForm() {
+//        MyUtils.enable(commentInput);
+//        MyUtils.enable(commentSend);
+//    }
+//
+//    @Override
+//    public void resetCommentForm() {
+//        commentInput.setText(null);
+////        MyUtils.hideKeyboard(this, commentInput);
+//    }
 }

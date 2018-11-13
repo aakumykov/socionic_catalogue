@@ -33,7 +33,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         View view = inflater.inflate(this.layout, parent, false);
-        TextView commentTextView = view.findViewById(R.id.commentTextView);
+        TextView commentTextView = view.findViewById(R.id.commentText);
 
         Comment comment = list.get(position);
         commentTextView.setText(comment.getText());

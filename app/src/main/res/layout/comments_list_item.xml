@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/commentAvatarView"
+        android:id="@+id/commentAvatar"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
@@ -14,7 +14,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/commentTextView"
+        android:id="@+id/commentText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="8"

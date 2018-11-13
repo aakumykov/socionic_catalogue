@@ -26,9 +26,9 @@ public interface iCardShow {
 
         void showDeleteDialog();
 
-        void disableCommentForm();
-        void enableCommentForm();
-        void resetCommentForm();
+//        void disableCommentForm();
+//        void enableCommentForm();
+//        void resetCommentForm();
     }
 
     interface Presenter {

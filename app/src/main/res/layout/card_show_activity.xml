@@ -3,6 +3,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".card_show.CardShow_View">
@@ -11,7 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" android:padding="8dp">
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/messageView"
@@ -33,22 +35,25 @@
             android:id="@+id/titleView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
             android:textSize="18sp"
-            android:textStyle="bold" android:layout_marginBottom="6dp"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/quoteView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
             android:textSize="18sp"
             android:textStyle="italic"
-            android:visibility="gone" android:layout_marginBottom="6dp" />
+            android:visibility="gone" />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/imageHolder"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:visibility="gone" android:layout_marginBottom="6dp">
+            android:layout_marginBottom="6dp"
+            android:visibility="gone">
 
             <ProgressBar
                 android:id="@+id/imageProgressBar"
@@ -91,7 +96,8 @@
             android:id="@+id/descriptionView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp" android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp"
+            android:textSize="18sp" />
 
         <co.lujun.androidtagview.TagContainerLayout
             android:id="@+id/tagsContainer"
@@ -100,26 +106,21 @@
             android:layout_margin="0dp"
             android:padding="0dp"
             android:visibility="invisible"
-            app:container_enable_drag="false"
-            app:container_border_color="@color/transparent"
             app:container_background_color="@color/transparent"
+            app:container_border_color="@color/transparent"
+            app:container_enable_drag="false"
             app:horizontal_interval="10dp"
             app:tag_clickable="true"
             app:tag_ripple_duration="400"
+            app:tag_text_size="@dimen/tag_font_size"
             app:tag_theme="pure_teal"
-            app:vertical_interval="10dp"
-            app:tag_text_size="@dimen/tag_font_size" />
+            app:vertical_interval="10dp" />
 
-        <include
-            layout="@layout/comments_list"
+        <LinearLayout
+            android:id="@+id/commentsHolder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <include
-            layout="@layout/comment_form"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
 
         <Button
             android:id="@+id/addCommentButton"

@@ -48,7 +48,7 @@ public class CardShow_Presenter implements
     // Добавление комментария
     @Override
     public void addComment(String text) {
-        view.disableCommentForm();
+//        view.disableCommentForm();
         Comment comment = new Comment(text, currentCard.getKey(), null, authService.currentUid());
         commentsService.createComment(comment, this);
     }
@@ -127,13 +127,13 @@ public class CardShow_Presenter implements
     @Override
     public void onCommentCreateSuccess(Comment comment) {
         view.showInfoMsg("Комментарий добавлен");
-        view.resetCommentForm();
-        view.enableCommentForm();
+//        view.resetCommentForm();
+//        view.enableCommentForm();
     }
 
     @Override
     public void onCommentCreateError(String errorMsg) {
-        view.enableCommentForm();
+//        view.enableCommentForm();
         view.showErrorMsg(errorMsg);
     }
 }
