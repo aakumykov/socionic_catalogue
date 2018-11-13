@@ -5,13 +5,11 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 
 import java.util.HashMap;
-import java.util.List;
 
 import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
-import ru.aakumykov.me.mvp.models.Comment;
 
 public interface iCardShow {
 
@@ -31,8 +29,6 @@ public interface iCardShow {
         void disableCommentForm();
         void enableCommentForm();
         void resetCommentForm();
-
-        void attachComments(List<Comment> list);
     }
 
     interface Presenter {

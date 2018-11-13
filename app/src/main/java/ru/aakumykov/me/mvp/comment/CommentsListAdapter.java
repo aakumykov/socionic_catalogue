@@ -23,7 +23,7 @@ public class CommentsListAdapter extends ArrayAdapter<Comment> {
     private int layout;
     private List<Comment> cards;
 
-    public CommentsListAdapter(Context context, int resource, List<Comment> cards) {
+    CommentsListAdapter(Context context, int resource, List<Comment> cards) {
         super(context, resource, cards);
         this.cards = cards;
         this.layout = resource;

@@ -80,7 +80,6 @@ public class CardShow_View extends BaseView implements
         tagsContainer.setOnTagClickListener(this);
 
         commentsListAdapter = new CommentsListAdapter(this, R.layout.comments_list_item, commentsList);
-        commentsListView.setAdapter(commentsListAdapter);
 
         presenter = new CardShow_Presenter();
     }
@@ -88,12 +87,10 @@ public class CardShow_View extends BaseView implements
     @Override
     protected void onStart() {
         super.onStart();
-
         presenter.linkView(this);
-
         if (firstRun) {
-            firstRun = false;
             loadCard();
+            firstRun = false;
         }
     }
 
@@ -401,11 +398,5 @@ public class CardShow_View extends BaseView implements
     public void resetCommentForm() {
         commentInput.setText(null);
 //        MyUtils.hideKeyboard(this, commentInput);
-    }
-
-    @Override
-    public void attachComments(List<Comment> list) {
-        this.commentsList.addAll(list);
-        commentsListAdapter.notifyDataSetChanged();
     }
 }
