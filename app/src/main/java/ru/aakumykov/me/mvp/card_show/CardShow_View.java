@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -32,6 +32,8 @@ import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
+import ru.aakumykov.me.mvp.comment.CommentsListAdapter;
+import ru.aakumykov.me.mvp.models.Comment;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.cards_list.CardsList_View;
@@ -53,6 +55,8 @@ public class CardShow_View extends BaseView implements
     @BindView(R.id.descriptionView) TextView descriptionView;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
 
+    @BindView(R.id.commentsListView) ListView commentsListView;
+
     @BindView(R.id.addCommentButton) Button addCommentButton;
     @BindView(R.id.commentForm) LinearLayout commentForm;
     @BindView(R.id.commentInput) EditText commentInput;
@@ -61,6 +65,9 @@ public class CardShow_View extends BaseView implements
     private final static String TAG = "CardShow_View";
     private iCardShow.Presenter presenter;
     private boolean firstRun = true;
+
+    private ArrayList<Comment> commentsList = new ArrayList<>();
+    private CommentsListAdapter commentsListAdapter;
 
 
     // Системные методы
@@ -71,6 +78,8 @@ public class CardShow_View extends BaseView implements
         ButterKnife.bind(this);
 
         tagsContainer.setOnTagClickListener(this);
+
+        commentsListAdapter = new CommentsListAdapter(this, R.layout.comments_list_item, commentsList);
 
         presenter = new CardShow_Presenter();
     }
