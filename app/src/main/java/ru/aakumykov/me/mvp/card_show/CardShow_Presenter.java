@@ -61,6 +61,14 @@ public class CardShow_Presenter implements
         commentsService.createComment(comment, this);
     }
 
+    private void postComment(Comment comment) {
+        commentsService.createComment(comment, this);
+    }
+
+    @Override
+    public void replyToComment(String commentId) {
+//        Comment comment
+    }
 
     // Реакция на кнопки
     @Override

@@ -21,6 +21,7 @@ public interface iCardShow {
         void displayImage(Uri imageURI);
         void displayImageError();
         void displayTags(HashMap<String,Boolean> tagsHash);
+
         void displayComments(List<Comment> list);
         void appendComment(Comment comment);
 
@@ -45,6 +46,7 @@ public interface iCardShow {
 
         void loadComments(String cardId);
         void postComment(String text);
+        void replyToComment(String commentId);
 
         void linkView(iCardShow.View view);
         void unlinkView();

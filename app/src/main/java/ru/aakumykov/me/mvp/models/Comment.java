@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class Comment implements Parcelable {
 
+    public final static int key_commentId = 10;
     public final static String key_createdAt = "createdAt";
     public final static String key_cardId = "cardId";
 

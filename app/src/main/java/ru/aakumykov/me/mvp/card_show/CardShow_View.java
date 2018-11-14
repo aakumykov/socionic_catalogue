@@ -65,6 +65,9 @@ public class CardShow_View extends BaseView implements
     @BindView(R.id.newCommentSend) ImageView newCommentSend;
     @BindView(R.id.addCommentButton) Button addCommentButton;
 
+    @BindView(R.id.commentReply) TextView commentReply;
+
+
     private final static String TAG = "CardShow_View";
     private iCardShow.Presenter presenter;
     private boolean firstRun = true;
@@ -395,8 +398,11 @@ public class CardShow_View extends BaseView implements
         LinearLayout commentRow = (LinearLayout) getLayoutInflater()
                     .inflate(R.layout.comments_list_item, null);
 
-        // Прикрутить ButterKnife...
-        ((TextView) commentRow.findViewById(R.id.commentText)).setText(comment.getText());
+        ((TextView) commentRow.findViewById(R.id.commentText))
+                .setText(comment.getText());
+
+        commentRow.findViewById(R.id.commentReply)
+                .setTag(Comment.key_commentId, comment.getKey());
 
         return commentRow;
     }
@@ -422,6 +428,11 @@ public class CardShow_View extends BaseView implements
     void sendComment() {
         String commentText = newCommentInput.getText().toString();
         presenter.postComment(commentText);
+    }
+
+    @OnClick(R.id.commentReply)
+    void replyToTomment(View view) {
+//        presenter.replyToComment(view.getTag(Comment.key_commentId));
     }
 
 
