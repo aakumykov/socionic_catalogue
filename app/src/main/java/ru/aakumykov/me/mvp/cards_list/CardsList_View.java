@@ -108,12 +108,13 @@ public class CardsList_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
 
         if (userLoggedIn()) {
             MenuInflater menuInflater = getMenuInflater();
             menuInflater.inflate(R.menu.create_card, menu);
         }
+
+        super.onCreateOptionsMenu(menu);
 
         return true;
     }

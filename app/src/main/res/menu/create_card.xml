@@ -6,5 +6,5 @@
         android:id="@+id/actionCreate"
         android:icon="@drawable/ic_add"
         android:title="@string/MENU_create_card"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>
