@@ -27,8 +27,8 @@ import ru.aakumykov.me.mvp.utils.MyUtils;
 public abstract class BaseView extends AppCompatActivity implements
     iBaseView
 {
-    @BindView(R.id.messageView) TextView messageView;
-    @BindView(R.id.progressBar) ProgressBar progressBar;
+//    @BindView(R.id.messageView) TextView messageView;
+//    @BindView(R.id.progressBar) ProgressBar progressBar;
 
     private final static String TAG = "BaseView";
     private iCardsSingleton cardsService;
@@ -44,12 +44,14 @@ public abstract class BaseView extends AppCompatActivity implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // TODO: убрать вообще?
         authService = AuthSingleton.getInstance();
         cardsService = CardsSingleton.getInstance();
         // TODO: storageSingleton
 
         // Слушатель изменений авторизации
-        iAuthStateListener authStateListener = new AuthStateListener(new iAuthStateListener.StateChangeCallbacks() {
+        iAuthStateListener authStateListener =
+                new AuthStateListener(new iAuthStateListener.StateChangeCallbacks() {
             @Override
             public void onLoggedIn() {
                 invalidateOptionsMenu();
@@ -185,24 +187,44 @@ public abstract class BaseView extends AppCompatActivity implements
     }
 
     private void showMsg(String text, int color) {
-        messageView.setText(text);
-        messageView.setTextColor(color);
-        MyUtils.show(messageView);
+        TextView messageView = findViewById(R.id.messageView);
+        if (null != messageView) {
+            messageView.setText(text);
+            messageView.setTextColor(color);
+            MyUtils.show(messageView);
+        } else {
+            Log.w(TAG, "messageView not found");
+        }
     }
 
     @Override
     public void hideMsg() {
-        MyUtils.hide(messageView);
+        TextView messageView = findViewById(R.id.messageView);
+        if (null != messageView) {
+            MyUtils.hide(messageView);
+        } else {
+            Log.w(TAG, "messageView not found");
+        }
     }
 
     @Override
     public void showProgressBar() {
-        MyUtils.show(progressBar);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        if (null != progressBar) {
+            MyUtils.show(progressBar);
+        } else {
+            Log.w(TAG, "progressBar not found");
+        }
     }
 
     @Override
     public void hideProgressBar() {
-        MyUtils.hide(progressBar);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        if (null != progressBar) {
+            MyUtils.hide(progressBar);
+        } else {
+            Log.w(TAG, "progressBar not found");
+        }
     }
 
 

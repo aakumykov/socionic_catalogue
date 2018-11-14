@@ -21,18 +21,20 @@ public interface iCardShow {
         void displayImage(Uri imageURI);
         void displayImageError();
         void displayTags(HashMap<String,Boolean> tagsHash);
-
         void displayComments(List<Comment> list);
         void appendComment(Comment comment);
+
+        void showCommentsThrobber();
+        void hideCommentsThrobber();
 
         void showDeleteDialog();
 
         void goEditPage(Card card);
         void goList(String tagFilter);
 
-//        void disableCommentForm();
-//        void enableCommentForm();
-//        void resetCommentForm();
+        void disableCommentForm();
+        void enableCommentForm();
+        void resetCommentForm();
     }
 
     interface Presenter {
