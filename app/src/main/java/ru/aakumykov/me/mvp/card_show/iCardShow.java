@@ -21,7 +21,6 @@ public interface iCardShow {
         void displayImage(Uri imageURI);
         void displayImageError();
         void displayTags(HashMap<String,Boolean> tagsHash);
-
         void displayComments(List<Comment> list);
         void appendComment(Comment comment);
 

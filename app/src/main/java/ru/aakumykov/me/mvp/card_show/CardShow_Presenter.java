@@ -122,7 +122,7 @@ public class CardShow_Presenter implements
         this.currentCard = card;
         view.displayCard(card);
 
-//        loadComments(card.getKey());
+        loadComments(card.getKey());
     }
 
     @Override

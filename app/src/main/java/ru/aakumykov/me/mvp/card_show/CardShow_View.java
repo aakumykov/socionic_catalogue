@@ -46,7 +46,7 @@ public class CardShow_View extends BaseView implements
         TagView.OnTagClickListener
 {
     private ListView mainListView;
-//    private LinearLayout cardHolder;
+
     private TextView titleView;
     private TextView quoteView;
     private ConstraintLayout imageHolder;
@@ -61,16 +61,11 @@ public class CardShow_View extends BaseView implements
     private ImageView sendCommentButton;
     private Button addCommentButton;
 
-//   private TextView commentReply;
-
-
     private final static String TAG = "CardShow_View";
-    private iCardShow.Presenter presenter;
     private boolean firstRun = true;
-
+    private iCardShow.Presenter presenter;
     private ArrayList<Comment> commentsList;
     private CommentsAdapter commentsAdapter;
-
 
     // Системные методы
     @Override
@@ -87,7 +82,6 @@ public class CardShow_View extends BaseView implements
         mainListView.addFooterView(footerView);
 
         // Подключаю элементы
-//        cardHolder = findViewById(R.id.cardHolder);
         titleView = findViewById(R.id.titleView);
         quoteView = findViewById(R.id.quoteView);
         imageHolder = findViewById(R.id.imageHolder);
@@ -205,6 +199,7 @@ public class CardShow_View extends BaseView implements
         }
     }
 
+
     // Обязательные методы
     @Override
     public void onUserLogin() {
@@ -290,16 +285,14 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public void displayComments(List<Comment> list) {
-
-//        MyUtils.show(commentsHolder);
-
-        for (Comment aComment : list)
-            appendComment(aComment);
+        commentsList.addAll(list);
     }
 
     @Override
     public void appendComment(Comment comment) {
         commentsList.add(comment);
+//        mainListView.setSelection(commentsList.size()-1);
+        mainListView.setSelection(commentsAdapter.getCount() - 1);
     }
 
 
