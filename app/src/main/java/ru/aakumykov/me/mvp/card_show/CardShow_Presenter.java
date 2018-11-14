@@ -17,7 +17,6 @@ import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.CommentsSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
-import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class CardShow_Presenter implements
         iCardShow.Presenter,
@@ -50,6 +49,7 @@ public class CardShow_Presenter implements
 
     @Override
     public void loadComments(String cardId) {
+        view.showCommentsThrobber();
         commentsService.loadList(cardId, this);
     }
 
@@ -159,6 +159,7 @@ public class CardShow_Presenter implements
 
     @Override
     public void onCommentsLoadSuccess(List<Comment> list) {
+        view.hideCommentsThrobber();
         view.displayComments(list);
     }
 

@@ -56,6 +56,8 @@ public class CardShow_View extends BaseView implements
 
     private TagContainerLayout tagsContainer;
 
+    private ProgressBar commentsThrobber;
+
     private LinearLayout commentForm;
     private EditText commentInput;
     private ImageView sendCommentButton;
@@ -89,6 +91,8 @@ public class CardShow_View extends BaseView implements
         imageView = findViewById(R.id.imageView);
         descriptionView = findViewById(R.id.descriptionView);
         tagsContainer = findViewById(R.id.tagsContainer);
+
+        commentsThrobber = findViewById(R.id.commentsThrobber);
 
         addCommentButton = findViewById(R.id.addCommentButton);
         commentForm = findViewById(R.id.commentForm);
@@ -281,6 +285,16 @@ public class CardShow_View extends BaseView implements
             tagsContainer.setTags(tagsList);
             MyUtils.show(tagsContainer);
         }
+    }
+
+    @Override
+    public void showCommentsThrobber() {
+        MyUtils.show(commentsThrobber);
+    }
+
+    @Override
+    public void hideCommentsThrobber() {
+        MyUtils.hide(commentsThrobber);
     }
 
     @Override

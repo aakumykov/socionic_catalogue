@@ -6,6 +6,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <ProgressBar
+        android:id="@+id/commentsThrobber"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/commentForm"
         android:layout_width="match_parent"

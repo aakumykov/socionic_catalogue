@@ -24,6 +24,9 @@ public interface iCardShow {
         void displayComments(List<Comment> list);
         void appendComment(Comment comment);
 
+        void showCommentsThrobber();
+        void hideCommentsThrobber();
+
         void showDeleteDialog();
 
         void goEditPage(Card card);
