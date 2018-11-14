@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -59,11 +60,11 @@ public class CardShow_View extends BaseView implements
     @BindView(R.id.descriptionView) TextView descriptionView;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
 
-    @BindView(R.id.commentsHolder) LinearLayout commentsHolder;
-    @BindView(R.id.newCommentForm) LinearLayout newCommentForm;
-    @BindView(R.id.newCommentInput) EditText newCommentInput;
-    @BindView(R.id.newCommentSend) ImageView newCommentSend;
-    @BindView(R.id.addCommentButton) Button addCommentButton;
+//    @BindView(R.id.commentsHolder) LinearLayout commentsHolder;
+//    @BindView(R.id.newCommentForm) LinearLayout newCommentForm;
+//    @BindView(R.id.newCommentInput) EditText newCommentInput;
+//    @BindView(R.id.newCommentSend) ImageView newCommentSend;
+//    @BindView(R.id.addCommentButton) Button addCommentButton;
 
     @BindView(R.id.commentReply) TextView commentReply;
 
@@ -79,19 +80,16 @@ public class CardShow_View extends BaseView implements
     // Системные методы
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.card_show_activity);
+        setContentView(R.layout.card_show2);
         ButterKnife.bind(this);
+
+        ListView listView = findViewById(R.id.cardMainListView);
+        View headerView = getLayoutInflater().inflate(R.layout.card_show_header, null);
+        listView.addHeaderView(headerView);
 
         tagsContainer.setOnTagClickListener(this);
 
-//        commentsList = new ArrayList<>();
-//            commentsList.add(new Comment("Комментарий-1", null, null, null));
-//            commentsList.add(new Comment("Комментарий-2", null, null, null));
-//            commentsList.add(new Comment("Комментарий-3", null, null, null));
-//            commentsList.add(new Comment("Комментарий-4", null, null, null));
-//                commentsAdapter = new CommentsAdapter(this, R.layout.comments_list_item, commentsList);
-//                commentsView.setAdapter(commentsAdapter);
+//        super.onCreate(savedInstanceState);
 
         presenter = new CardShow_Presenter();
     }
@@ -263,7 +261,7 @@ public class CardShow_View extends BaseView implements
     @Override
     public void displayComments(List<Comment> list) {
 
-        MyUtils.show(commentsHolder);
+//        MyUtils.show(commentsHolder);
 
         for (Comment aComment : list)
             appendComment(aComment);
@@ -273,7 +271,7 @@ public class CardShow_View extends BaseView implements
     public void appendComment(Comment comment) {
         try {
             View commentRow = constructCommentItem(comment);
-            commentsHolder.addView(commentRow);
+//            commentsHolder.addView(commentRow);
         } catch (Exception e) {
             showErrorMsg(R.string.CARD_SHOW_error_displaying_comments);
             Log.e(TAG, e.getMessage());
@@ -409,51 +407,51 @@ public class CardShow_View extends BaseView implements
 
 
     // Нажатия
-    @OnClick(R.id.addCommentButton)
-    void activateEditText() {
-        MyUtils.hide(addCommentButton);
-        MyUtils.show(newCommentForm);
-        newCommentInput.requestFocus();
-        MyUtils.showKeyboard(this, newCommentInput);
-
-//        scrollView.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-//            }
-//        });
-    }
-
-    @OnClick(R.id.newCommentSend)
-    void sendComment() {
-        String commentText = newCommentInput.getText().toString();
-        presenter.postComment(commentText);
-    }
-
-    @OnClick(R.id.commentReply)
-    void replyToTomment(View view) {
-//        presenter.replyToComment(view.getTag(Comment.key_commentId));
-    }
-
-
-    // Другое
-    @Override
-    public void disableCommentForm() {
-//        MyUtils.hideKeyboard(this, newCommentInput);
-        MyUtils.disable(newCommentInput);
-        MyUtils.disable(newCommentSend);
-    }
-
-    @Override
-    public void enableCommentForm() {
-        MyUtils.enable(newCommentInput);
-        MyUtils.enable(newCommentSend);
-    }
-
-    @Override
-    public void resetCommentForm() {
-        newCommentInput.setText(null);
-        enableCommentForm();
-//        MyUtils.hideKeyboard(this, newCommentInput);
-    }
+//    @OnClick(R.id.addCommentButton)
+//    void activateEditText() {
+//        MyUtils.hide(addCommentButton);
+//        MyUtils.show(newCommentForm);
+//        newCommentInput.requestFocus();
+//        MyUtils.showKeyboard(this, newCommentInput);
+//
+////        scrollView.post(new Runnable() {
+////            @Override
+////            public void run() {
+////                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+////            }
+////        });
+//    }
+//
+//    @OnClick(R.id.newCommentSend)
+//    void sendComment() {
+//        String commentText = newCommentInput.getText().toString();
+//        presenter.postComment(commentText);
+//    }
+//
+//    @OnClick(R.id.commentReply)
+//    void replyToTomment(View view) {
+////        presenter.replyToComment(view.getTag(Comment.key_commentId));
+//    }
+//
+//
+//    // Другое
+//    @Override
+//    public void disableCommentForm() {
+////        MyUtils.hideKeyboard(this, newCommentInput);
+//        MyUtils.disable(newCommentInput);
+//        MyUtils.disable(newCommentSend);
+//    }
+//
+//    @Override
+//    public void enableCommentForm() {
+//        MyUtils.enable(newCommentInput);
+//        MyUtils.enable(newCommentSend);
+//    }
+//
+//    @Override
+//    public void resetCommentForm() {
+//        newCommentInput.setText(null);
+//        enableCommentForm();
+////        MyUtils.hideKeyboard(this, newCommentInput);
+//    }
 }

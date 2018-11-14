@@ -30,9 +30,9 @@ public interface iCardShow {
         void goEditPage(Card card);
         void goList(String tagFilter);
 
-        void disableCommentForm();
-        void enableCommentForm();
-        void resetCommentForm();
+//        void disableCommentForm();
+//        void enableCommentForm();
+//        void resetCommentForm();
     }
 
     interface Presenter {
