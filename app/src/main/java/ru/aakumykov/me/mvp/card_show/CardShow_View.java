@@ -10,11 +10,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
@@ -44,26 +43,23 @@ public class CardShow_View extends BaseView implements
         iCardShow.View,
         TagView.OnTagClickListener
 {
-    @BindView(R.id.scrollView) ScrollView scrollView;
-    @BindView(R.id.cardHolder) LinearLayout cardHolder;
+    private ListView mainListView;
+    private LinearLayout cardHolder;
+    private TextView titleView;
+    private TextView quoteView;
+    private ConstraintLayout imageHolder;
+    private ProgressBar imageProgressBar;
+    private ImageView imageView;
+    private TextView descriptionView;
+    private TagContainerLayout tagsContainer;
 
-    @BindView(R.id.progressBar) ProgressBar progressBar;
-    @BindView(R.id.messageView) TextView messageView;
-    @BindView(R.id.titleView) TextView titleView;
-    @BindView(R.id.quoteView) TextView quoteView;
-    @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
-    @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
-    @BindView(R.id.imageView) ImageView imageView;
-    @BindView(R.id.descriptionView) TextView descriptionView;
-    @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
+//    private LinearLayout commentsHolder;
+//    private LinearLayout newCommentForm;
+//    private EditText newCommentInput;
+//    private ImageView newCommentSend;
+//    private Button addCommentButton;
 
-//    @BindView(R.id.commentsHolder) LinearLayout commentsHolder;
-//    @BindView(R.id.newCommentForm) LinearLayout newCommentForm;
-//    @BindView(R.id.newCommentInput) EditText newCommentInput;
-//    @BindView(R.id.newCommentSend) ImageView newCommentSend;
-//    @BindView(R.id.addCommentButton) Button addCommentButton;
-
-    @BindView(R.id.commentReply) TextView commentReply;
+//   private TextView commentReply;
 
 
     private final static String TAG = "CardShow_View";
@@ -77,16 +73,33 @@ public class CardShow_View extends BaseView implements
     // Системные методы
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.card_show2);
         ButterKnife.bind(this);
 
-        ListView listView = findViewById(R.id.cardMainListView);
+        // Собираю разметку из частей
+        mainListView = findViewById(R.id.mainListView);
         View headerView = getLayoutInflater().inflate(R.layout.card_show_header, null);
-        listView.addHeaderView(headerView);
+        View footerView = getLayoutInflater().inflate(R.layout.card_show_footer, null);
+        mainListView.addHeaderView(headerView);
+        mainListView.addFooterView(footerView);
+
+        // Подключаю элементы
+        cardHolder = findViewById(R.id.cardHolder);
+        titleView = findViewById(R.id.titleView);
+        quoteView = findViewById(R.id.quoteView);
+        imageHolder = findViewById(R.id.imageHolder);
+        imageProgressBar = findViewById(R.id.imageProgressBar);
+        imageView = findViewById(R.id.imageView);
+        descriptionView = findViewById(R.id.descriptionView);
+        tagsContainer = findViewById(R.id.tagsContainer);
+
+        // Присоединяю адаптер списка
+        commentsList = new ArrayList<>();
+        commentsAdapter = new CommentsAdapter(this, R.layout.comments_list_item, commentsList);
+        mainListView.setAdapter(commentsAdapter);
 
         tagsContainer.setOnTagClickListener(this);
-
-//        super.onCreate(savedInstanceState);
 
         presenter = new CardShow_Presenter();
     }
@@ -94,10 +107,12 @@ public class CardShow_View extends BaseView implements
     @Override
     protected void onStart() {
         super.onStart();
+
         presenter.linkView(this);
+
         if (firstRun) {
             loadCard();
-            firstRun = false;
+            firstRun = false; // эта строка должна быть ниже loadCard(), так как там тоже проверяется firstRun
         }
     }
 
@@ -106,12 +121,6 @@ public class CardShow_View extends BaseView implements
         super.onStop();
         presenter.unlinkView();
     }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        MyUtils.hideKeyboard(this, newCommentInput);
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

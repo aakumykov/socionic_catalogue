@@ -221,7 +221,7 @@ public abstract class BaseView extends AppCompatActivity implements
     public void hideProgressBar() {
         ProgressBar progressBar = findViewById(R.id.progressBar);
         if (null != progressBar) {
-            MyUtils.show(progressBar);
+            MyUtils.hide(progressBar);
         } else {
             Log.w(TAG, "progressBar not found");
         }
