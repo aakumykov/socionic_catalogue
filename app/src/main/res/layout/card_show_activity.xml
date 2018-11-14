@@ -9,6 +9,7 @@
     tools:context=".card_show.CardShow_View">
 
     <LinearLayout
+        android:id="@+id/cardHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -91,6 +92,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
+
         <TextView
             android:id="@+id/descriptionView"
             android:layout_width="match_parent"
@@ -118,26 +120,38 @@
         <LinearLayout
             android:id="@+id/commentsHolder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:id="@+id/commentsLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16sp" />
+            android:visibility="gone">
 
         </LinearLayout>
 
-        <include
-            android:id="@+id/commentFormHolder"
-            layout="@layout/comment_form"
+
+        <LinearLayout
+            android:id="@+id/newCommentForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/newCommentInput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/CARD_SHOW_add_comment"
+                android:inputType="textCapSentences|textMultiLine" />
+
+            <ImageView
+                android:id="@+id/newCommentSend"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="9"
+                android:contentDescription="@string/CARD_SHOW_send_comment_button"
+                app:srcCompat="@drawable/ic_comment_send" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/addCommentButton"

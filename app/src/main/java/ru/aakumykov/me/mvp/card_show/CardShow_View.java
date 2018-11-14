@@ -47,6 +47,7 @@ public class CardShow_View extends BaseView implements
         TagView.OnTagClickListener
 {
     @BindView(R.id.scrollView) ScrollView scrollView;
+    @BindView(R.id.cardHolder) LinearLayout cardHolder;
 
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
@@ -59,10 +60,10 @@ public class CardShow_View extends BaseView implements
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
 
     @BindView(R.id.commentsHolder) LinearLayout commentsHolder;
-    @BindView(R.id.commentFormHolder) View commentFormHolder;
+    @BindView(R.id.newCommentForm) LinearLayout newCommentForm;
+    @BindView(R.id.newCommentInput) EditText newCommentInput;
+    @BindView(R.id.newCommentSend) ImageView newCommentSend;
     @BindView(R.id.addCommentButton) Button addCommentButton;
-    @BindView(R.id.commentInput) EditText commentInput;
-    @BindView(R.id.commentSend) ImageView commentSend;
 
     private final static String TAG = "CardShow_View";
     private iCardShow.Presenter presenter;
@@ -111,7 +112,7 @@ public class CardShow_View extends BaseView implements
 //    @Override
 //    protected void onResume() {
 //        super.onResume();
-//        MyUtils.hideKeyboard(this, commentInput);
+//        MyUtils.hideKeyboard(this, newCommentInput);
 //    }
 
     @Override
@@ -405,9 +406,9 @@ public class CardShow_View extends BaseView implements
     @OnClick(R.id.addCommentButton)
     void activateEditText() {
         MyUtils.hide(addCommentButton);
-        MyUtils.show(commentFormHolder);
-        commentInput.requestFocus();
-        MyUtils.showKeyboard(this, commentInput);
+        MyUtils.show(newCommentForm);
+        newCommentInput.requestFocus();
+        MyUtils.showKeyboard(this, newCommentInput);
 
 //        scrollView.post(new Runnable() {
 //            @Override
@@ -417,9 +418,9 @@ public class CardShow_View extends BaseView implements
 //        });
     }
 
-    @OnClick(R.id.commentSend)
+    @OnClick(R.id.newCommentSend)
     void sendComment() {
-        String commentText = commentInput.getText().toString();
+        String commentText = newCommentInput.getText().toString();
         presenter.postComment(commentText);
     }
 
@@ -427,21 +428,21 @@ public class CardShow_View extends BaseView implements
     // Другое
     @Override
     public void disableCommentForm() {
-//        MyUtils.hideKeyboard(this, commentInput);
-        MyUtils.disable(commentInput);
-        MyUtils.disable(commentSend);
+//        MyUtils.hideKeyboard(this, newCommentInput);
+        MyUtils.disable(newCommentInput);
+        MyUtils.disable(newCommentSend);
     }
 
     @Override
     public void enableCommentForm() {
-        MyUtils.enable(commentInput);
-        MyUtils.enable(commentSend);
+        MyUtils.enable(newCommentInput);
+        MyUtils.enable(newCommentSend);
     }
 
     @Override
     public void resetCommentForm() {
-        commentInput.setText(null);
+        newCommentInput.setText(null);
         enableCommentForm();
-//        MyUtils.hideKeyboard(this, commentInput);
+//        MyUtils.hideKeyboard(this, newCommentInput);
     }
 }
