@@ -8,7 +8,7 @@ public interface iBaseView {
     iCardsSingleton getCardsService();
     iAuthSingleton getAuthService();
 
-    boolean userLoggedIn();
+    boolean isUserLoggedIn();
 
     void showInfoMsg(int messageId);
     void showInfoMsg(String message);

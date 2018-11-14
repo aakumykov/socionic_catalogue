@@ -83,7 +83,7 @@ public abstract class BaseView extends AppCompatActivity implements
 
 //        menu.clear();
 
-        if (userLoggedIn()) {
+        if (isUserLoggedIn()) {
             menuInflater.inflate(R.menu.user_in, menu);
             menuInflater.inflate(R.menu.logout, menu);
         } else {
@@ -218,7 +218,7 @@ public abstract class BaseView extends AppCompatActivity implements
 
     // Разное
     @Override
-    public boolean userLoggedIn() {
+    public boolean isUserLoggedIn() {
         return authService.isUserLoggedIn();
     }
 

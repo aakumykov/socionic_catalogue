@@ -131,7 +131,7 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void onUserLogout() {
-        if (!userLoggedIn()) closePage();
+        if (!isUserLoggedIn()) closePage();
     }
 
     @Override
