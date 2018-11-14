@@ -10,7 +10,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -41,23 +42,24 @@ import ru.aakumykov.me.mvp.models.Card;
 
 public class CardShow_View extends BaseView implements
         iCardShow.View,
+        View.OnClickListener,
         TagView.OnTagClickListener
 {
     private ListView mainListView;
-    private LinearLayout cardHolder;
+//    private LinearLayout cardHolder;
     private TextView titleView;
     private TextView quoteView;
     private ConstraintLayout imageHolder;
     private ProgressBar imageProgressBar;
     private ImageView imageView;
     private TextView descriptionView;
+
     private TagContainerLayout tagsContainer;
 
-//    private LinearLayout commentsHolder;
-//    private LinearLayout newCommentForm;
-//    private EditText newCommentInput;
-//    private ImageView newCommentSend;
-//    private Button addCommentButton;
+    private LinearLayout commentForm;
+    private EditText commentInput;
+    private ImageView sendCommentButton;
+    private Button addCommentButton;
 
 //   private TextView commentReply;
 
@@ -85,7 +87,7 @@ public class CardShow_View extends BaseView implements
         mainListView.addFooterView(footerView);
 
         // Подключаю элементы
-        cardHolder = findViewById(R.id.cardHolder);
+//        cardHolder = findViewById(R.id.cardHolder);
         titleView = findViewById(R.id.titleView);
         quoteView = findViewById(R.id.quoteView);
         imageHolder = findViewById(R.id.imageHolder);
@@ -93,6 +95,15 @@ public class CardShow_View extends BaseView implements
         imageView = findViewById(R.id.imageView);
         descriptionView = findViewById(R.id.descriptionView);
         tagsContainer = findViewById(R.id.tagsContainer);
+
+        addCommentButton = findViewById(R.id.addCommentButton);
+        commentForm = findViewById(R.id.commentForm);
+        commentInput = findViewById(R.id.commentInput);
+        sendCommentButton = findViewById(R.id.sendCommentButton);
+
+        // Устанавливаю обработчики нажатий
+        addCommentButton.setOnClickListener(this);
+        sendCommentButton.setOnClickListener(this);
 
         // Присоединяю адаптер списка
         commentsList = new ArrayList<>();
@@ -180,6 +191,19 @@ public class CardShow_View extends BaseView implements
         return true;
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.addCommentButton:
+                showCommentForm();
+                break;
+            case R.id.sendCommentButton:
+                sendComment();
+                break;
+            default:
+                break;
+        }
+    }
 
     // Обязательные методы
     @Override
@@ -275,15 +299,9 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public void appendComment(Comment comment) {
-        try {
-            View commentRow = constructCommentItem(comment);
-//            commentsHolder.addView(commentRow);
-        } catch (Exception e) {
-            showErrorMsg(R.string.CARD_SHOW_error_displaying_comments);
-            Log.e(TAG, e.getMessage());
-            e.printStackTrace();
-        }
+        commentsList.add(comment);
     }
+
 
     // Меток методы
     @Override
@@ -357,6 +375,26 @@ public class CardShow_View extends BaseView implements
     }
 
 
+    // Вспомогательные
+    @Override
+    public void enableCommentForm() {
+        MyUtils.enable(commentInput);
+        MyUtils.enable(sendCommentButton);
+    }
+
+    @Override
+    public void disableCommentForm() {
+        MyUtils.disable(commentInput);
+        MyUtils.disable(sendCommentButton);
+    }
+
+    @Override
+    public void resetCommentForm() {
+        commentInput.setText(null);
+        enableCommentForm();
+    }
+
+
     // Внутренние методы
     private void loadCard() {
         if (firstRun) {
@@ -411,53 +449,27 @@ public class CardShow_View extends BaseView implements
         return commentRow;
     }
 
+    private void showCommentForm() {
+        MyUtils.hide(addCommentButton);
+        MyUtils.show(commentForm);
+        commentInput.requestFocus();
+        MyUtils.showKeyboard(this, commentInput);
+    }
 
-    // Нажатия
-//    @OnClick(R.id.addCommentButton)
-//    void activateEditText() {
-//        MyUtils.hide(addCommentButton);
-//        MyUtils.show(newCommentForm);
-//        newCommentInput.requestFocus();
-//        MyUtils.showKeyboard(this, newCommentInput);
-//
-////        scrollView.post(new Runnable() {
-////            @Override
-////            public void run() {
-////                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-////            }
-////        });
-//    }
-//
-//    @OnClick(R.id.newCommentSend)
-//    void sendComment() {
-//        String commentText = newCommentInput.getText().toString();
-//        presenter.postComment(commentText);
-//    }
-//
+    void sendComment() {
+//        commentInput.clearFocus();
+//        MyUtils.hideKeyboard(this, commentInput);
+
+        disableCommentForm();
+
+        String commentText = commentInput.getText().toString();
+        presenter.postComment(commentText);
+    }
+
+
 //    @OnClick(R.id.commentReply)
 //    void replyToTomment(View view) {
 ////        presenter.replyToComment(view.getTag(Comment.key_commentId));
 //    }
 //
-//
-//    // Другое
-//    @Override
-//    public void disableCommentForm() {
-////        MyUtils.hideKeyboard(this, newCommentInput);
-//        MyUtils.disable(newCommentInput);
-//        MyUtils.disable(newCommentSend);
-//    }
-//
-//    @Override
-//    public void enableCommentForm() {
-//        MyUtils.enable(newCommentInput);
-//        MyUtils.enable(newCommentSend);
-//    }
-//
-//    @Override
-//    public void resetCommentForm() {
-//        newCommentInput.setText(null);
-//        enableCommentForm();
-////        MyUtils.hideKeyboard(this, newCommentInput);
-//    }
 }

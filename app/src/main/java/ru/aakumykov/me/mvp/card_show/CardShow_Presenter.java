@@ -148,7 +148,7 @@ public class CardShow_Presenter implements
     public void onCommentCreateSuccess(Comment comment) {
         view.showInfoMsg("Комментарий добавлен");
         view.appendComment(comment);
-//        view.resetCommentForm();
+        view.resetCommentForm();
     }
 
     @Override
