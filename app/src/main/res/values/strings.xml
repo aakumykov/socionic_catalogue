@@ -50,7 +50,7 @@
     <string name="image">Картинка</string>
     <string name="card_deleted">Карточка удалена</string>
     <string name="deleting_card">Удаляем карточку</string>
-    <string name="error_deleting_card">Ошибка удаления карточки</string>
+    <string name="CARD_SHOW_error_deleting_card">Ошибка удаления карточки</string>
     <string name="unknown_request_code">Неизвестный код операции</string>
     <string name="result_error">Ошибка операции</string>
     <string name="DIALOG_card_deletion">Удаление карточки</string>

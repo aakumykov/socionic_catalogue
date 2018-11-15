@@ -115,7 +115,7 @@ public class CardsList_Presenter implements
 
                     @Override
                     public void onUpdateFail(String errorMsg) {
-                        view.showErrorMsg(R.string.error_deleting_card, errorMsg);
+                        view.showErrorMsg(R.string.CARD_SHOW_error_deleting_card, errorMsg);
                     }
                 }
         );
@@ -125,7 +125,7 @@ public class CardsList_Presenter implements
     public void onCardDeleteError(String msg) {
         Log.d(TAG, "onCardDeleteError()");
         view.hideProgressBar();
-        view.showErrorMsg(R.string.error_deleting_card, msg);
+        view.showErrorMsg(R.string.CARD_SHOW_error_deleting_card, msg);
     }
 
 

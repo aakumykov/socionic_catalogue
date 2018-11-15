@@ -51,7 +51,7 @@ public interface iCardShow {
 //        void onEditCardConfirmed() throws Exception;
 
         void deleteCard(Card card);
-        void onCardDeleteConfirmed(Card card);
+        void onCardDeleteConfirmed(Card card) throws Exception;
 
         void onTagClicked(String tagName);
 

@@ -48,7 +48,7 @@
     <string name="image">Create image card</string>
     <string name="card_deleted">Card is deleted</string>
     <string name="deleting_card">Deleting card</string>
-    <string name="error_deleting_card">Error deleting card</string>
+    <string name="CARD_SHOW_error_deleting_card">Error deleting card</string>
     <string name="unknown_request_code">Unknown request code</string>
     <string name="result_error">Operation error</string>
     <string name="DIALOG_card_deletion">Card deletion</string>

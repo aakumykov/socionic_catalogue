@@ -77,6 +77,7 @@ public class CardShow_View extends BaseView implements
     private ArrayList<Comment> commentsList;
     private CommentsAdapter commentsAdapter;
 
+    private Card currentCard;
     private Comment currentComment;
 
 
@@ -192,7 +193,7 @@ public class CardShow_View extends BaseView implements
                 break;
 
             case R.id.actionDelete:
-                presenter.deleteCard();
+                presenter.deleteCard(currentCard);
                 break;
 
             default:
@@ -259,8 +260,11 @@ public class CardShow_View extends BaseView implements
 
     // Интерфейсные методы
     @Override
-    public void displayCard(@Nullable Card card) {
+    public void displayCard(@Nullable final Card card) {
         Log.d(TAG, "displayCard(), "+card);
+
+        // TODO: а где её очищать?
+        this.currentCard = card;
 
         hideProgressBar();
         hideMsg();
@@ -414,7 +418,12 @@ public class CardShow_View extends BaseView implements
 
                     @Override
                     public void deleteDialogYes() {
-
+                        try {
+                            presenter.onCardDeleteConfirmed(currentCard);
+                        } catch (Exception e) {
+                            showErrorMsg(R.string.CARD_SHOW_error_deleting_card);
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override

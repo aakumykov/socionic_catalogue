@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 import ru.aakumykov.me.mvp.Constants;
@@ -18,7 +17,6 @@ import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.CommentsSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
-import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class CardShow_Presenter implements
         iCardShow.Presenter,
@@ -91,7 +89,7 @@ public class CardShow_Presenter implements
         if (authService.currentUid().equals(comment.getUserId())) {
             commentsService.deleteComment(comment, this);
         } else {
-            throw new IllegalAccessException("Only author can delete ceoment.");
+            throw new IllegalAccessException("Unsufficient privileges to delete comment.");
         }
     }
 
@@ -137,13 +135,27 @@ public class CardShow_Presenter implements
         view.showProgressBar();
         view.showInfoMsg(R.string.deleting_card);
 
-        try {
-            cardsService.deleteCard(currentCard, this);
-        } catch (Exception e) {
-            view.hideProgressBar();
-            view.showErrorMsg(R.string.error_deleting_card);
-            e.printStackTrace();
+        if (authService.isUserLoggedIn()) {
+            // TODO: или Админ
+            if (authService.currentUid().equals(card.getUserId())) {
+
+                try {
+                    cardsService.deleteCard(currentCard, this);
+                } catch (Exception e) {
+                    view.hideProgressBar();
+                    view.showErrorMsg(R.string.CARD_SHOW_error_deleting_card);
+                    e.printStackTrace();
+                }
+
+            }
+            else {
+                /* Сделал эту сложную конструкцию, чтобы полнее отслеживать
+                * нарушения использования прав... */
+                throw new IllegalAccessException("Unsufficient privileges to delete card.");
+            }
         }
+        
+
     }
 
 
@@ -177,14 +189,19 @@ public class CardShow_Presenter implements
 
     @Override
     public void onCardDeleteSuccess(Card card) {
-        TagsSingleton.getInstance().updateCardTags(card.getKey(), card.getTags(), null, null);
+        TagsSingleton.getInstance().updateCardTags(
+                card.getKey(),
+                card.getTags(),
+                null,
+                null
+        );
         view.closePage();
     }
 
     @Override
     public void onCardDeleteError(String msg) {
         view.hideProgressBar();
-        view.showErrorMsg(R.string.error_deleting_card);
+        view.showErrorMsg(R.string.CARD_SHOW_error_deleting_card);
     }
 
 
