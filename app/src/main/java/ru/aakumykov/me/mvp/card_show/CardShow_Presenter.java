@@ -124,15 +124,16 @@ public class CardShow_Presenter implements
 
     @Override
     public void deleteCard(Card card) {
-//        if (authService.isUserLoggedIn()) {
-//            if (authService.currentUid().equals(card.getUid())) {
+        if (authService.isUserLoggedIn()) {
+            // TODO: или Админ
+            if (authService.currentUid().equals(card.getUserId())) {
                 view.showCardDeleteDialog();
-//            }
-//        }
+            }
+        }
     }
 
     @Override
-    public void onCardDeleteConfirmed(Card card) {
+    public void onCardDeleteConfirmed(Card card) throws Exception {
         view.showProgressBar();
         view.showInfoMsg(R.string.deleting_card);
 
