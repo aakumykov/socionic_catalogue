@@ -10,6 +10,7 @@ public interface iCardsSingleton {
     void loadList(String tagFilter, ListCallbacks callbacks);
 
     void loadCard(String key, LoadCallbacks callbacks);
+    void updateCommentsCounter(String cardId, int diffValue);
 
     String createKey();
     void updateCard(Card card, SaveCardCallbacks callbacks);

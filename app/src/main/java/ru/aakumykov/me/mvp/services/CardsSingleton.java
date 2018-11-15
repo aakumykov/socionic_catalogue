@@ -10,7 +10,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -45,6 +47,7 @@ public class CardsSingleton implements
     public String createKey() {
         return cardsRef.push().getKey();
     }
+
 
     @Override
     public void loadCard(String key, final LoadCallbacks callbacks) {
@@ -103,6 +106,40 @@ public class CardsSingleton implements
                 } else {
                     callbacks.onCardDeleteError(databaseError.getMessage());
                     databaseError.toException().printStackTrace();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void updateCommentsCounter(String cardId, final int diffValue) {
+
+        DatabaseReference thisCardRef = cardsRef.child(cardId);
+
+        thisCardRef.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                Card card = mutableData.getValue(Card.class);
+
+                if (null == card) {
+                    return Transaction.success(mutableData);
+                }
+
+                card.setCommentsCount(card.getCommentsCount()+diffValue);
+
+                mutableData.setValue(card);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                if (null != databaseError) {
+                    Log.e(TAG, databaseError.getMessage());
+                    databaseError.toException().printStackTrace();
+                }
+                if (null != dataSnapshot) {
+                    Log.e(TAG, "dataSnapshot: "+dataSnapshot);
                 }
             }
         });

@@ -149,6 +149,8 @@ public class CardShow_Presenter implements
         view.showInfoMsg("Комментарий добавлен");
         view.appendComment(comment);
         view.resetCommentForm();
+
+        cardsService.updateCommentsCounter(comment.getCardId(), 1);
     }
 
     @Override
