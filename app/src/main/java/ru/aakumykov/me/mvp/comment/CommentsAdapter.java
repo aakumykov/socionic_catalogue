@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -21,22 +22,29 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
     private LayoutInflater inflater;
     private int layout;
     private List<Comment> list;
+    private iComments.commentClickListener commentClickListener; // ОПАСНО, если адаптер живуч
 
-    public CommentsAdapter(Context context, int resource, List<Comment> commentsList) {
+    public CommentsAdapter(Context context, int resource, List<Comment> commentsList,
+                           iComments.commentClickListener commentClickListener) {
         super(context, resource, commentsList);
         this.list = commentsList;
         this.layout = resource;
         this.inflater = LayoutInflater.from(context);
+        this.commentClickListener = commentClickListener;
     }
 
     @NonNull
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
-        View view = inflater.inflate(this.layout, parent, false);
-        TextView commentTextView = view.findViewById(R.id.commentText);
-
         Comment comment = list.get(position);
+
+        View view = inflater.inflate(this.layout, parent, false);
+
+        TextView commentTextView = view.findViewById(R.id.commentText);
         commentTextView.setText(comment.getText());
+
+        ImageView commentMenu = view.findViewById(R.id.commentMenu);
+        commentMenu.setOnClickListener(commentClickListener);
 
         return view;
     }

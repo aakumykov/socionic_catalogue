@@ -36,6 +36,7 @@ import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.comment.CommentsAdapter;
+import ru.aakumykov.me.mvp.comment.iComments;
 import ru.aakumykov.me.mvp.models.Comment;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
@@ -49,7 +50,8 @@ public class CardShow_View extends BaseView implements
         View.OnClickListener,
         ListView.OnItemClickListener,
         PopupMenu.OnMenuItemClickListener,
-        TagView.OnTagClickListener
+        TagView.OnTagClickListener,
+        iComments.commentClickListener
 {
     private ListView mainListView;
 
@@ -111,7 +113,7 @@ public class CardShow_View extends BaseView implements
 
         // Присоединяю адаптер списка
         commentsList = new ArrayList<>();
-        commentsAdapter = new CommentsAdapter(this, R.layout.comments_list_item, commentsList);
+        commentsAdapter = new CommentsAdapter(this, R.layout.comments_list_item, commentsList, this);
         mainListView.setAdapter(commentsAdapter);
 
         mainListView.setOnItemClickListener(this);
@@ -226,6 +228,16 @@ public class CardShow_View extends BaseView implements
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         return true;
+    }
+
+    @Override
+    public void onCommentClicked(View view) {
+        switch (view.getId()) {
+            case R.id.commentMenu:
+                break;
+            default:
+                break;
+        }
     }
 
 
