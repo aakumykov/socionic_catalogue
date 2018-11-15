@@ -16,6 +16,7 @@ import ru.aakumykov.me.mvp.Constants;
 public class Card implements Parcelable {
 
     private String key;
+    private String userId;
     private String type;
     private String title;
     private String quote;
@@ -28,9 +29,16 @@ public class Card implements Parcelable {
 
     }
 
-    public Card(String type, String title, String quote, String imageURL, String description,
-                HashMap<String,Boolean> tagsMap
-    ) {
+    public Card(
+            String userId,
+            String type,
+            String title,
+            String quote,
+            String imageURL,
+            String description,
+            HashMap<String,Boolean> tagsMap
+    )
+    {
         setType(type);
         this.title = title;
         this.quote = quote;
@@ -44,6 +52,8 @@ public class Card implements Parcelable {
     @Override
     public String toString() {
         return "Card { key: "+getKey()+
+                ", userId: "+getUserId()+
+                ", type: "+getType()+
                 ", title: "+getTitle()+
                 ", quote: "+getQuote()+
                 ", imageURL: "+imageURL+
@@ -56,6 +66,7 @@ public class Card implements Parcelable {
     @Exclude
     public HashMap<String, Object> toMap() {
         HashMap<String,Object> map = new HashMap<>();
+         map.put("userId", userId);
          map.put("type", type);
          map.put("title", title);
          map.put("quote", quote);
@@ -72,6 +83,7 @@ public class Card implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         // важен порядок заполнения
         dest.writeString(this.key);
+        dest.writeString(this.userId);
         dest.writeString(this.type);
         dest.writeString(this.title);
         dest.writeString(this.quote);
@@ -84,6 +96,7 @@ public class Card implements Parcelable {
     protected Card(Parcel in) {
         // важен порядок считывания
         key = in.readString();
+        userId = in.readString();
         type = in.readString();
         title = in.readString();
         quote = in.readString();
@@ -112,6 +125,9 @@ public class Card implements Parcelable {
     /* Parcelable */
 
 
+    public String getUserId() {
+        return userId;
+    }
     public String getKey() {
         return key;
     }
@@ -135,6 +151,9 @@ public class Card implements Parcelable {
     }
     public int getCommentsCount() { return commentsCount; }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
     public void setKey(String key) {
         this.key = key;
     }
@@ -163,9 +182,9 @@ public class Card implements Parcelable {
     }
     public void setCommentsCount(int count) { this.commentsCount = count; }
 
-    public void removeImageURL() {
-        this.imageURL = null;
-    }
+//    public void removeImageURL() {
+//        this.imageURL = null;
+//    }
 
 
     // Служебное
