@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 import ru.aakumykov.me.mvp.Constants;
@@ -17,13 +18,15 @@ import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.CommentsSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class CardShow_Presenter implements
         iCardShow.Presenter,
         iCardsSingleton.LoadCallbacks,
         iCardsSingleton.DeleteCallbacks,
         iCommentsSingleton.CreateCallbacks,
-        iCommentsSingleton.ListCallbacks
+        iCommentsSingleton.ListCallbacks,
+        iCommentsSingleton.DeleteCallbacks
 {
 
     private final static String TAG = "CardShow_Presenter";
@@ -53,6 +56,7 @@ public class CardShow_Presenter implements
         commentsService.loadList(card.getKey(), this);
     }
 
+
     // Добавление комментария
     @Override
     public void postComment(String text) {
@@ -70,6 +74,27 @@ public class CardShow_Presenter implements
 //        Comment comment
     }
 
+
+    // Удаление комментария
+    @Override
+    public void deleteComment(Comment comment) {
+        if (authService.isUserLoggedIn()) {
+            if (authService.currentUid().equals(comment.getUserId())) {
+                view.showCommentDeleteDialog(comment);
+            }
+        }
+    }
+
+    @Override
+    public void onCommentDeleteConfirmed(Comment comment) throws Exception {
+        // TODO: переделать проверку по-правильному
+        if (authService.currentUid().equals(comment.getUserId())) {
+            commentsService.deleteComment(comment, this);
+        } else {
+            throw new IllegalAccessException("Only author can delete ceoment.");
+        }
+    }
+
     // Реакция на кнопки
     @Override
     public void onTagClicked(String tagName) {
@@ -84,13 +109,13 @@ public class CardShow_Presenter implements
     @Override
     public void onDeleteButtonClicked() {
         Log.d(TAG, "onDeleteButtonClicked()");
-//        if (authService.isAuthorized()) view.showDeleteDialog();
+//        if (authService.isAuthorized()) view.showCardDeleteDialog();
 //        else view.showErrorMsg(R.string.not_authorized);
-        view.showDeleteDialog();
+        view.showCardDeleteDialog();
     }
 
     @Override
-    public void onDeleteConfirmed() {
+    public void onCardDeleteConfirmed() {
         view.showProgressBar();
         view.showInfoMsg(R.string.deleting_card);
 
@@ -168,5 +193,17 @@ public class CardShow_Presenter implements
     @Override
     public void onCommentsLoadError(String errorMessage) {
         view.showErrorMsg(R.string.CARD_SHOW_error_loading_comments);
+    }
+
+    @Override
+    public void onDeleteSuccess(Comment comment) {
+        cardsService.updateCommentsCounter(currentCard.getKey(), -1);
+        // TODO: а можно сделать список "живым"...
+        view.removeComment(comment);
+    }
+
+    @Override
+    public void onDeleteError(String msg) {
+        view.showErrorMsg(R.string.COMMENT_delete_error, msg);
     }
 }

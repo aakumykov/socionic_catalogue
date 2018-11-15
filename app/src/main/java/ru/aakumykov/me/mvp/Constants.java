@@ -32,6 +32,7 @@ public final class Constants {
     public final static int TAG_MIN_LENGTH = 2;
     public final static int TAG_MAX_LENGTH = 20;
     public final static int TITLE_MAX_LENGTH = 70;
+    public final static int COMMENT_DELETE_DIALOG_TEXT_LENGTH = 20;
 
     public final static String MODE_SEND = "MODE_SEND";
     public final static String MODE_SELECT = "MODE_SELECT";

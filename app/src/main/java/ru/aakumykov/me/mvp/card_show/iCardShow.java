@@ -23,11 +23,13 @@ public interface iCardShow {
         void displayTags(HashMap<String,Boolean> tagsHash);
         void displayComments(List<Comment> list);
         void appendComment(Comment comment);
+        void removeComment(Comment comment);
 
         void showCommentsThrobber();
         void hideCommentsThrobber();
 
-        void showDeleteDialog();
+        void showCardDeleteDialog();
+        void showCommentDeleteDialog(Comment comment);
 
         void goEditPage(Card card);
         void goList(String tagFilter);
@@ -44,7 +46,8 @@ public interface iCardShow {
 
         void onEditButtonClicked();
         void onDeleteButtonClicked();
-        void onDeleteConfirmed();
+        void onCardDeleteConfirmed();
+        void onCommentDeleteConfirmed(Comment comment) throws Exception;
 
         void loadComments(Card card);
         void postComment(String text);
@@ -52,5 +55,7 @@ public interface iCardShow {
 
         void linkView(iCardShow.View view);
         void unlinkView();
+
+        void deleteComment(Comment comment);
     }
 }

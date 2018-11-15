@@ -1,7 +1,6 @@
 package ru.aakumykov.me.mvp.card_show;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -13,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,11 +35,13 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.comment.CommentsAdapter;
 import ru.aakumykov.me.mvp.comment.iComments;
+import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Comment;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.cards_list.CardsList_View;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 //TODO: уменьшение изображения
 
@@ -232,7 +232,7 @@ public class CardShow_View extends BaseView implements
 //                presenter.editComment(currentComment);
                 break;
             case R.id.actionDelete:
-//                presenter.deleteComment(currentComment);
+                presenter.deleteComment(currentComment);
                 break;
             case R.id.actionShare:
 //                presenter.shareComment(currentComment);
@@ -351,6 +351,10 @@ public class CardShow_View extends BaseView implements
 //        mainListView.setSelection(commentsAdapter.getCount() - 1);
     }
 
+    @Override
+    public void removeComment(Comment comment) {
+        commentsAdapter.remove(comment);
+    }
 
     // Меток методы
     @Override
@@ -393,7 +397,7 @@ public class CardShow_View extends BaseView implements
 
     // Диалоги
     @Override
-    public void showDeleteDialog() {
+    public void showCardDeleteDialog() {
 
 //        YesNoDialog yesNoDialog = new YesNoDialog(
 //                this,
@@ -409,7 +413,7 @@ public class CardShow_View extends BaseView implements
 //                    @Override
 //                    public void yesAction() {
 //                        //Log.d(TAG, "yesAction");
-//                        presenter.onDeleteConfirmed();
+//                        presenter.onCardDeleteConfirmed();
 //                    }
 //                },
 //                new iDialogCallbacks.onNo() {
@@ -421,6 +425,39 @@ public class CardShow_View extends BaseView implements
 //        );
 //
 //        yesNoDialog.show();
+    }
+
+    @Override
+    public void showCommentDeleteDialog(final Comment comment) {
+
+        YesNoDialog yesNoDialog = new YesNoDialog(
+                this,
+                R.string.COMMENT_comment_deletion,
+                MyUtils.cutToLength(comment.getText(), Constants.COMMENT_DELETE_DIALOG_TEXT_LENGTH),
+                new iDialogCallbacks.Delete() {
+                    @Override
+                    public boolean deleteDialogCheck() {
+                        return true;
+                    }
+
+                    @Override
+                    public void deleteDialogYes() {
+                        try {
+                            presenter.onCommentDeleteConfirmed(comment);
+                        } catch (Exception e) {
+                            showErrorMsg(R.string.COMMENT_delete_error, e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onDeleteDialogNo() {
+
+                    }
+                }
+        );
+
+        yesNoDialog.show();
     }
 
 
