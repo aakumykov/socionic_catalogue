@@ -308,7 +308,7 @@ public class CardShow_View extends BaseView implements
         commentsList.add(comment);
         commentsAdapter.notifyDataSetChanged();
 //        mainListView.setSelection(commentsList.size()-1);
-        mainListView.setSelection(commentsAdapter.getCount() - 1);
+//        mainListView.setSelection(commentsAdapter.getCount() - 1);
     }
 
 
