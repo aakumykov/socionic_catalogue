@@ -31,8 +31,8 @@ import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.models.Card;
-import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 
 // Построен по принципу Active View
 

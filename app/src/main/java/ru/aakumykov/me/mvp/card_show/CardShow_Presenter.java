@@ -95,6 +95,22 @@ public class CardShow_Presenter implements
         }
     }
 
+
+    // Изменение комментария
+    @Override
+    public void editComment(Comment comment) {
+        if (authService.isUserLoggedIn()) {
+            if (authService.currentUid().equals(comment.getUserId())) {
+                view.showCommentEditDialog(comment);
+            }
+        }
+    }
+
+    @Override
+    public void onEditCommentConfirmed(Comment comment) throws Exception {
+
+    }
+
     // Реакция на кнопки
     @Override
     public void onTagClicked(String tagName) {
@@ -102,13 +118,13 @@ public class CardShow_Presenter implements
     }
 
     @Override
-    public void onEditButtonClicked() {
+    public void editCard() {
         view.goEditPage(currentCard);
     }
 
     @Override
-    public void onDeleteButtonClicked() {
-        Log.d(TAG, "onDeleteButtonClicked()");
+    public void deleteCard() {
+        Log.d(TAG, "deleteCard()");
 //        if (authService.isAuthorized()) view.showCardDeleteDialog();
 //        else view.showErrorMsg(R.string.not_authorized);
         view.showCardDeleteDialog();

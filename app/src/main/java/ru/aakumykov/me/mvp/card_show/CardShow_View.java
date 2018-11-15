@@ -187,11 +187,11 @@ public class CardShow_View extends BaseView implements
         switch (item.getItemId()) {
 
             case R.id.actionEdit:
-                presenter.onEditButtonClicked();
+                presenter.editCard();
                 break;
 
             case R.id.actionDelete:
-                presenter.onDeleteButtonClicked();
+                presenter.deleteCard();
                 break;
 
             default:
@@ -425,6 +425,11 @@ public class CardShow_View extends BaseView implements
 //        );
 //
 //        yesNoDialog.show();
+    }
+
+    @Override
+    public void showCommentEditDialog(Comment comment) {
+
     }
 
     @Override

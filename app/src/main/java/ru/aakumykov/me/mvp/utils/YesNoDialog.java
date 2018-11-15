@@ -21,7 +21,7 @@ public class YesNoDialog {
     private iDialogCallbacks.Delete callbacks;
 
 
-    public <T> YesNoDialog (
+    public <T> YesNoDialog(
             final Context context,
             T title,
             @Nullable T msg,

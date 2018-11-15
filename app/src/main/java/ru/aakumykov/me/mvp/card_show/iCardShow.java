@@ -29,6 +29,7 @@ public interface iCardShow {
         void hideCommentsThrobber();
 
         void showCardDeleteDialog();
+        void showCommentEditDialog(Comment comment);
         void showCommentDeleteDialog(Comment comment);
 
         void goEditPage(Card card);
@@ -40,22 +41,29 @@ public interface iCardShow {
     }
 
     interface Presenter {
+
+        void linkView(iCardShow.View view);
+        void unlinkView();
+
         void processInputIntent(@Nullable Intent intent) throws Exception;
+
+        void editCard();
+//        void onEditCardConfirmed() throws Exception;
+
+        void deleteCard();
+        void onCardDeleteConfirmed();
 
         void onTagClicked(String tagName);
 
-        void onEditButtonClicked();
-        void onDeleteButtonClicked();
-        void onCardDeleteConfirmed();
-        void onCommentDeleteConfirmed(Comment comment) throws Exception;
 
         void loadComments(Card card);
         void postComment(String text);
         void replyToComment(String commentId);
 
-        void linkView(iCardShow.View view);
-        void unlinkView();
+        void editComment(Comment comment);
+        void onEditCommentConfirmed(Comment comment) throws Exception;
 
         void deleteComment(Comment comment);
+        void onCommentDeleteConfirmed(Comment comment) throws Exception;
     }
 }
