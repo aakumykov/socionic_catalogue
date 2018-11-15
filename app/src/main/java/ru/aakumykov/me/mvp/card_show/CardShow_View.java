@@ -73,7 +73,7 @@ public class CardShow_View extends BaseView implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.card_show2);
+        setContentView(R.layout.card_show_activity);
         ButterKnife.bind(this);
 
         // Собираю разметку из частей
