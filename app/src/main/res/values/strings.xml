@@ -148,4 +148,5 @@
     <string name="CARD_SHOW_error_loading_comments">Ошибка загрузки комментариев</string>
     <string name="COMMENT_reply">Ответить</string>
     <string name="COMMENT_more_actions">Дополнительные действия с комментарием</string>
+    <string name="CARDS_LIST_comments_count">Комментариев: %1$d</string>
 </resources>
