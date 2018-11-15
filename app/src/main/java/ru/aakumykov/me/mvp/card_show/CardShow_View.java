@@ -48,7 +48,7 @@ import ru.aakumykov.me.mvp.models.Card;
 public class CardShow_View extends BaseView implements
         iCardShow.View,
         View.OnClickListener,
-        ListView.OnItemClickListener,
+//        ListView.OnItemClickListener,
         PopupMenu.OnMenuItemClickListener,
         TagView.OnTagClickListener,
         iComments.commentClickListener
@@ -76,6 +76,9 @@ public class CardShow_View extends BaseView implements
     private iCardShow.Presenter presenter;
     private ArrayList<Comment> commentsList;
     private CommentsAdapter commentsAdapter;
+
+    private Comment currentComment;
+
 
     // Системные методы
     @Override
@@ -116,7 +119,7 @@ public class CardShow_View extends BaseView implements
         commentsAdapter = new CommentsAdapter(this, R.layout.comments_list_item, commentsList, this);
         mainListView.setAdapter(commentsAdapter);
 
-        mainListView.setOnItemClickListener(this);
+//        mainListView.setOnItemClickListener(this);
         tagsContainer.setOnTagClickListener(this);
 
         presenter = new CardShow_Presenter();
@@ -212,32 +215,32 @@ public class CardShow_View extends BaseView implements
         }
     }
 
+//    @Override
+//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//    }
+
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        int itemId = view.getId();
-        switch (view.getId()) {
-            case R.id.commentMenu:
-                Comment comment = commentsList.get(position);
-                showCommentMenu(view, comment);
-                break;
-            default:
-                break;
-        }
+    public void onCommentMenuClicked(View view, Comment comment) {
+        showCommentMenu(view, comment);
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
-        return true;
-    }
-
-    @Override
-    public void onCommentClicked(View view) {
-        switch (view.getId()) {
-            case R.id.commentMenu:
+        switch (menuItem.getItemId()) {
+            case R.id.actionEdit:
+//                presenter.editComment(currentComment);
+                break;
+            case R.id.actionDelete:
+//                presenter.deleteComment(currentComment);
+                break;
+            case R.id.actionShare:
+//                presenter.shareComment(currentComment);
                 break;
             default:
                 break;
         }
+        return true;
     }
 
 
@@ -512,11 +515,14 @@ public class CardShow_View extends BaseView implements
         presenter.postComment(commentText);
     }
 
-    private void showCommentMenu(final View v, Comment comment) {
+    private void showCommentMenu(final View v, final Comment comment) {
+
+        currentComment = comment;
 
         PopupMenu popupMenu = new PopupMenu(this, v);
 
         // TODO: сделать это по-нормальному
+        // TODO: логика-то во вьюхе не должна присутствовать!
         if (isUserLoggedIn()) {
             if (comment.getUserId().equals(getAuthService().currentUid()))
                 popupMenu.inflate(R.menu.edit);

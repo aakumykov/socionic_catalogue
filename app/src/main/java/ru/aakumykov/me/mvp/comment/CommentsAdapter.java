@@ -36,15 +36,20 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
     @NonNull
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
-        Comment comment = list.get(position);
+        final Comment comment = list.get(position);
 
-        View view = inflater.inflate(this.layout, parent, false);
+        final View view = inflater.inflate(this.layout, parent, false);
 
         TextView commentTextView = view.findViewById(R.id.commentText);
         commentTextView.setText(comment.getText());
 
         ImageView commentMenu = view.findViewById(R.id.commentMenu);
-        commentMenu.setOnClickListener(commentClickListener);
+        commentMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commentClickListener.onCommentMenuClicked(view, comment);
+            }
+        });
 
         return view;
     }
