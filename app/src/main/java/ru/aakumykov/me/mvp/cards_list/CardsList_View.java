@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.Gravity;
@@ -41,8 +42,10 @@ public class CardsList_View extends BaseView implements
         iCardsList.View,
         ListView.OnItemClickListener,
         ListView.OnItemLongClickListener,
-        PopupMenu.OnMenuItemClickListener
+        PopupMenu.OnMenuItemClickListener,
+        SwipeRefreshLayout.OnRefreshListener
 {
+    @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
     @BindView(R.id.filterView) LinearLayout filterView;
     @BindView(R.id.filterCloser) ImageView filterCloser;
     @BindView(R.id.filterName) TextView filterName;
@@ -64,6 +67,9 @@ public class CardsList_View extends BaseView implements
 
         setPageTitle(getResources().getString(R.string.CARDS_LIST_page_title));
 
+        swiperefreshLayout.setOnRefreshListener(this);
+        swiperefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
+
         presenter = new CardsList_Presenter();
 
         cardsList = new ArrayList<>();
@@ -82,14 +88,7 @@ public class CardsList_View extends BaseView implements
 
         if (firstRun) {
             firstRun = false;
-
-            String tagFilter = null;
-
-            try {
-                tagFilter = getIntent().getStringExtra(Constants.TAG_FILTER);
-            } catch (Exception e) {}
-
-            presenter.loadList(tagFilter);
+            loadList(true);
         }
     }
 
@@ -112,6 +111,7 @@ public class CardsList_View extends BaseView implements
         if (isUserLoggedIn()) {
             MenuInflater menuInflater = getMenuInflater();
             menuInflater.inflate(R.menu.create_card, menu);
+            menuInflater.inflate(R.menu.refresh, menu);
         }
 
         super.onCreateOptionsMenu(menu);
@@ -123,6 +123,10 @@ public class CardsList_View extends BaseView implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
+            case R.id.actionRefresh:
+                loadList(true);
+                break;
+
             default:
                 super.onOptionsItemSelected(item);
         }
@@ -130,6 +134,11 @@ public class CardsList_View extends BaseView implements
         return true;
     }
 
+    @Override
+    public void onRefresh() {
+        swiperefreshLayout.setRefreshing(true);
+        loadList(false);
+    }
 
     // Обязательные методы
     @Override
@@ -149,6 +158,7 @@ public class CardsList_View extends BaseView implements
 
         hideProgressBar();
         hideMsg();
+        swiperefreshLayout.setRefreshing(false);
 
         cardsList.clear();
         cardsList.addAll(list);
@@ -268,4 +278,14 @@ public class CardsList_View extends BaseView implements
         currentCard = null;
     }
 
+    private void loadList(boolean showProgressBar) {
+        String tagFilter = null;
+
+        try {
+            tagFilter = getIntent().getStringExtra(Constants.TAG_FILTER);
+        } catch (Exception e) {}
+
+        if (showProgressBar) showProgressBar();
+        presenter.loadList(tagFilter);
+    }
 }

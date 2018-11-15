@@ -45,8 +45,6 @@ public class CardsList_Presenter implements
     public void loadList(@Nullable String tagFilter) {
         Log.d(TAG, "loadList()");
 
-        view.showProgressBar();
-
         if (null != tagFilter) {
             this.tagFilter = tagFilter;
             cardsService.loadList(tagFilter,this);
