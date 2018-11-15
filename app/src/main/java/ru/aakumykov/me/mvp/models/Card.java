@@ -3,13 +3,10 @@ package ru.aakumykov.me.mvp.models;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
-import java.util.List;
 
 import ru.aakumykov.me.mvp.Constants;
 
@@ -25,7 +22,7 @@ public class Card implements Parcelable {
     private String imageURL;
     private String description;
     private HashMap<String, Boolean> tags;
-
+    private int commentsCount = 0;
 
     public Card() {
 
@@ -40,6 +37,7 @@ public class Card implements Parcelable {
         setImageURL(imageURL);
         this.description = description;
         this.tags = tagsMap;
+        this.commentsCount = 0;
     }
 
     @Exclude
@@ -51,6 +49,7 @@ public class Card implements Parcelable {
                 ", imageURL: "+imageURL+
                 ", description: "+getDescription()+
                 ", tags: "+ getTags()+
+                ", commentsCount: "+ getCommentsCount()+
             ",}";
     }
 
@@ -63,6 +62,7 @@ public class Card implements Parcelable {
          map.put("imageURL", imageURL);
          map.put("description", description);
          map.put("tags", tags);
+         map.put("commentsCount", commentsCount);
         return map;
     }
 
@@ -78,6 +78,7 @@ public class Card implements Parcelable {
         dest.writeString(this.imageURL);
         dest.writeString(this.description);
         dest.writeMap(this.tags);
+        dest.writeInt(this.commentsCount);
     }
 
     protected Card(Parcel in) {
@@ -89,6 +90,7 @@ public class Card implements Parcelable {
         imageURL = in.readString();
         description = in.readString();
         tags = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+        commentsCount = in.readInt();
     }
 
     @Override
@@ -131,6 +133,7 @@ public class Card implements Parcelable {
     public HashMap<String, Boolean> getTags() {
         return tags;
     }
+    public int getCommentsCount() { return commentsCount; }
 
     public void setKey(String key) {
         this.key = key;
@@ -144,11 +147,9 @@ public class Card implements Parcelable {
     public void setTitle(String title) {
         this.title = title;
     }
-
     public void setQuote(String quote) throws Exception {
         this.quote = quote;
     }
-
     public void setImageURL(String imageURL) throws IllegalArgumentException {
             Uri uri = Uri.parse(imageURL);
             if (null == uri) throw new IllegalArgumentException("Error parsing imageURL");
@@ -160,6 +161,7 @@ public class Card implements Parcelable {
     public void setTags(HashMap<String, Boolean> tags) {
         this.tags = tags;
     }
+    public void setCommentsCount(int count) { this.commentsCount = count; }
 
     public void removeImageURL() {
         this.imageURL = null;
