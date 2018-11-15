@@ -48,9 +48,9 @@ public class CardShow_Presenter implements
     }
 
     @Override
-    public void loadComments(String cardId) {
-        view.showCommentsThrobber();
-        commentsService.loadList(cardId, this);
+    public void loadComments(Card card) {
+        if (card.getCommentsCount() > 10) view.showCommentsThrobber();
+        commentsService.loadList(card.getKey(), this);
     }
 
     // Добавление комментария
@@ -122,7 +122,7 @@ public class CardShow_Presenter implements
         this.currentCard = card;
         view.displayCard(card);
 
-        loadComments(card.getKey());
+        loadComments(card);
     }
 
     @Override

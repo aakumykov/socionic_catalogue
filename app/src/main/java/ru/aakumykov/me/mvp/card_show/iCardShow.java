@@ -46,7 +46,7 @@ public interface iCardShow {
         void onDeleteButtonClicked();
         void onDeleteConfirmed();
 
-        void loadComments(String cardId);
+        void loadComments(Card card);
         void postComment(String text);
         void replyToComment(String commentId);
 

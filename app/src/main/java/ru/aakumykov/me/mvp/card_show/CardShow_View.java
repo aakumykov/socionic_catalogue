@@ -300,11 +300,13 @@ public class CardShow_View extends BaseView implements
     @Override
     public void displayComments(List<Comment> list) {
         commentsList.addAll(list);
+        commentsAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void appendComment(Comment comment) {
         commentsList.add(comment);
+        commentsAdapter.notifyDataSetChanged();
 //        mainListView.setSelection(commentsList.size()-1);
         mainListView.setSelection(commentsAdapter.getCount() - 1);
     }
