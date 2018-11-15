@@ -177,6 +177,7 @@ public class CardShow_View extends BaseView implements
         if (isUserLoggedIn()) {
             MenuInflater menuInflater = getMenuInflater();
             menuInflater.inflate(R.menu.edit, menu);
+            menuInflater.inflate(R.menu.delete, menu);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -399,32 +400,31 @@ public class CardShow_View extends BaseView implements
     @Override
     public void showCardDeleteDialog() {
 
-//        YesNoDialog yesNoDialog = new YesNoDialog(
-//                this,
-//                R.string.DIALOG_card_deletion,
-//                R.string.DIALOG_really_delete_card,
-//                new iDialogCallbacks.onCheck() {
-//                    @Override
-//                    public boolean doCheck() {
-//                        return true;
-//                    }
-//                },
-//                new iDialogCallbacks.onYes() {
-//                    @Override
-//                    public void yesAction() {
-//                        //Log.d(TAG, "yesAction");
-//                        presenter.onCardDeleteConfirmed();
-//                    }
-//                },
-//                new iDialogCallbacks.onNo() {
-//                    @Override
-//                    public void noAction() {
-//                        //Log.d(TAG, "noAction");
-//                    }
-//                }
-//        );
-//
-//        yesNoDialog.show();
+        YesNoDialog yesNoDialog = new YesNoDialog(
+                this,
+                R.string.DIALOG_card_deletion,
+                R.string.DIALOG_really_delete_card,
+                new iDialogCallbacks.Delete() {
+                    @Override
+                    public boolean deleteDialogCheck() {
+                        // TODO: можно же здесь делать
+                        // что-то вроде presenter.isAdmin()...
+                        return true;
+                    }
+
+                    @Override
+                    public void deleteDialogYes() {
+
+                    }
+
+                    @Override
+                    public void onDeleteDialogNo() {
+
+                    }
+                }
+        );
+
+        yesNoDialog.show();
     }
 
     @Override

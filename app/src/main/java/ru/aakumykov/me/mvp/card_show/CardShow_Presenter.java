@@ -123,15 +123,16 @@ public class CardShow_Presenter implements
     }
 
     @Override
-    public void deleteCard() {
-        Log.d(TAG, "deleteCard()");
-//        if (authService.isAuthorized()) view.showCardDeleteDialog();
-//        else view.showErrorMsg(R.string.not_authorized);
-        view.showCardDeleteDialog();
+    public void deleteCard(Card card) {
+//        if (authService.isUserLoggedIn()) {
+//            if (authService.currentUid().equals(card.getUid())) {
+                view.showCardDeleteDialog();
+//            }
+//        }
     }
 
     @Override
-    public void onCardDeleteConfirmed() {
+    public void onCardDeleteConfirmed(Card card) {
         view.showProgressBar();
         view.showInfoMsg(R.string.deleting_card);
 
@@ -140,6 +141,7 @@ public class CardShow_Presenter implements
         } catch (Exception e) {
             view.hideProgressBar();
             view.showErrorMsg(R.string.error_deleting_card);
+            e.printStackTrace();
         }
     }
 
