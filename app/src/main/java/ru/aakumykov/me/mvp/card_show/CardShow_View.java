@@ -1,15 +1,19 @@
 package ru.aakumykov.me.mvp.card_show;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,6 +47,8 @@ import ru.aakumykov.me.mvp.models.Card;
 public class CardShow_View extends BaseView implements
         iCardShow.View,
         View.OnClickListener,
+        ListView.OnItemClickListener,
+        PopupMenu.OnMenuItemClickListener,
         TagView.OnTagClickListener
 {
     private ListView mainListView;
@@ -108,6 +114,7 @@ public class CardShow_View extends BaseView implements
         commentsAdapter = new CommentsAdapter(this, R.layout.comments_list_item, commentsList);
         mainListView.setAdapter(commentsAdapter);
 
+        mainListView.setOnItemClickListener(this);
         tagsContainer.setOnTagClickListener(this);
 
         presenter = new CardShow_Presenter();
@@ -164,7 +171,7 @@ public class CardShow_View extends BaseView implements
     public boolean onCreateOptionsMenu(Menu menu) {
         if (isUserLoggedIn()) {
             MenuInflater menuInflater = getMenuInflater();
-            menuInflater.inflate(R.menu.edit_delete, menu);
+            menuInflater.inflate(R.menu.edit, menu);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -201,6 +208,24 @@ public class CardShow_View extends BaseView implements
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        int itemId = view.getId();
+        switch (view.getId()) {
+            case R.id.commentMenu:
+                Comment comment = commentsList.get(position);
+                showCommentMenu(view, comment);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        return true;
     }
 
 
@@ -465,7 +490,7 @@ public class CardShow_View extends BaseView implements
         MyUtils.showKeyboard(this, commentInput);
     }
 
-    void sendComment() {
+    private void sendComment() {
 //        commentInput.clearFocus();
 //        MyUtils.hideKeyboard(this, commentInput);
 
@@ -475,6 +500,34 @@ public class CardShow_View extends BaseView implements
         presenter.postComment(commentText);
     }
 
+    private void showCommentMenu(final View v, Comment comment) {
+
+        PopupMenu popupMenu = new PopupMenu(this, v);
+
+        // TODO: сделать это по-нормальному
+        if (isUserLoggedIn()) {
+            if (comment.getUserId().equals(getAuthService().currentUid()))
+                popupMenu.inflate(R.menu.edit);
+
+            if (getAuthService().isAdmin(getAuthService().currentUid()))
+                popupMenu.inflate(R.menu.delete);
+        }
+
+        popupMenu.inflate(R.menu.share);
+
+//        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+//            @Override
+//            public void onDismiss(PopupMenu popupMenu) {
+//                v.setBackground(oldBackground);
+//            }
+//        });
+
+        popupMenu.setOnMenuItemClickListener(this);
+
+        popupMenu.setGravity(Gravity.END);
+
+        popupMenu.show();
+    }
 
 //    @OnClick(R.id.commentReply)
 //    void replyToTomment(View view) {

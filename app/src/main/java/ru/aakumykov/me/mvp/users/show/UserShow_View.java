@@ -96,7 +96,7 @@ public class UserShow_View extends BaseView implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.edit_delete, menu);
+        menuInflater.inflate(R.menu.edit, menu);
         super.onCreateOptionsMenu(menu);
         return true;
     }

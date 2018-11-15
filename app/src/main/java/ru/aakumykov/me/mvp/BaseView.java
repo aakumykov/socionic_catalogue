@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import butterknife.BindView;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
@@ -243,6 +245,11 @@ public abstract class BaseView extends AppCompatActivity implements
     public boolean isUserLoggedIn() {
         return authService.isUserLoggedIn();
     }
+
+//    @Override
+//    public FirebaseUser getCurrentUser() {
+//        return authService.;
+//    }
 
     @Override
     public void closePage() {

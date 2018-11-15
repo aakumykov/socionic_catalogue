@@ -146,4 +146,5 @@
     <string name="COMMENT_more_actions">More actions with comment</string>
     <string name="CARDS_LIST_comments_count">Comments: %1$d</string>
     <string name="MENU_refresh">Refresh</string>
+    <string name="MENU_share">Share</string>
 </resources>

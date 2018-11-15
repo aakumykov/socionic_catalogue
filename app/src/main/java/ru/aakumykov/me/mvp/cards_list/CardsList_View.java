@@ -231,7 +231,8 @@ public class CardsList_View extends BaseView implements
 
         PopupMenu popupMenu = new PopupMenu(this, v);
 
-        popupMenu.inflate(R.menu.edit_delete);
+        popupMenu.inflate(R.menu.edit);
+        popupMenu.inflate(R.menu.delete);
 
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override

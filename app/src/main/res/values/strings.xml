@@ -150,4 +150,5 @@
     <string name="COMMENT_more_actions">Дополнительные действия с комментарием</string>
     <string name="CARDS_LIST_comments_count">Комментариев: %1$d</string>
     <string name="MENU_refresh">Обновить</string>
+    <string name="MENU_share">Поделиться</string>
 </resources>

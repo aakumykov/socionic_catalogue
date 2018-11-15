@@ -1,7 +1,10 @@
 package ru.aakumykov.me.mvp;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
+import ru.aakumykov.me.mvp.models.User;
 
 public interface iBaseView {
 
@@ -9,6 +12,7 @@ public interface iBaseView {
     iAuthSingleton getAuthService();
 
     boolean isUserLoggedIn();
+//    FirebaseUser getCurrentUser();
 
     void showInfoMsg(int messageId);
     void showInfoMsg(String message);
