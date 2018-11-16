@@ -58,6 +58,7 @@ public class CardsList_View extends BaseView implements
     private Card currentCard;
     private boolean firstRun = true;
 
+
     // Системные методы
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -139,6 +140,7 @@ public class CardsList_View extends BaseView implements
         swiperefreshLayout.setRefreshing(true);
         loadList(false);
     }
+
 
     // Обязательные методы
     @Override
