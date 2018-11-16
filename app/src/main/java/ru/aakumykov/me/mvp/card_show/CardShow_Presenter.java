@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.card_show;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.List;
@@ -105,8 +106,29 @@ public class CardShow_Presenter implements
     }
 
     @Override
-    public void onEditCommentConfirmed(Comment comment) throws Exception {
+    public void onEditCommentConfirmed(final Comment comment) throws Exception {
+        // TODO: контроль длины
+        if (authService.isUserLoggedIn()) {
+            if (authService.currentUid().equals(comment.getUserId())) {
 
+                if (!TextUtils.isEmpty(comment.getText())) {
+
+                    commentsService.updateComment(comment, new iCommentsSingleton.CreateCallbacks() {
+                        @Override
+                        public void onCommentCreateSuccess(Comment comment) {
+//                            view
+                        }
+
+                        @Override
+                        public void onCommentCreateError(String errorMsg) {
+                            view.showErrorMsg(R.string.COMMENT_save_error);
+                        }
+                    });
+
+                }
+
+            }
+        }
     }
 
     // Реакция на кнопки
