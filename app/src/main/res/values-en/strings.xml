@@ -149,4 +149,8 @@
     <string name="MENU_share">Share</string>
     <string name="COMMENT_comment_deletion">Delete comment?</string>
     <string name="COMMENT_delete_error">Error deleting comment</string>
+    <string name="COMMENT_save_error">Comment save error</string>
+    <string name="DIALOG_delete_card">Delete card?</string>
+    <string name="DIALOG_edit_comment">Comment edit</string>
+    <string name="DIALOG_input_text">Input some text</string>
 </resources>

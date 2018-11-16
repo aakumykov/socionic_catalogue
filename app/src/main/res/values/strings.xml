@@ -153,4 +153,8 @@
     <string name="MENU_share">Поделиться</string>
     <string name="COMMENT_comment_deletion">Удалить комментарий?</string>
     <string name="COMMENT_delete_error">Ошибка удаления комментария</string>
+    <string name="COMMENT_save_error">Ошибка сохранения комментария</string>
+    <string name="DIALOG_delete_card">Удалить карточку?</string>
+    <string name="DIALOG_edit_comment">Изменение комментария</string>
+    <string name="DIALOG_input_text">Введите текст</string>
 </resources>

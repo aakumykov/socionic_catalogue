@@ -36,7 +36,9 @@ import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.comment.CommentsAdapter;
 import ru.aakumykov.me.mvp.comment.iComments;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
+import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Comment;
+import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.cards_list.CardsList_View;
@@ -231,7 +233,7 @@ public class CardShow_View extends BaseView implements
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.actionEdit:
-//                presenter.editComment(currentComment);
+                presenter.editComment(currentComment);
                 break;
             case R.id.actionDelete:
                 presenter.deleteComment(currentComment);
@@ -437,8 +439,19 @@ public class CardShow_View extends BaseView implements
     }
 
     @Override
-    public void showCommentEditDialog(Comment comment) {
-
+    public void showCommentEditDialog(final Comment comment) {
+        MyDialogs.commentEditDialog(this, comment.getText(), new iMyDialogs.Edit() {
+            @Override
+            public void onDialogWithStringYes(String text) {
+                comment.setText(text);
+                try {
+                    presenter.onEditCommentConfirmed(comment);
+                } catch (Exception e) {
+                    showErrorMsg(R.string.COMMENT_save_error);
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
