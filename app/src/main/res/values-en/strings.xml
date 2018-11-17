@@ -155,4 +155,5 @@
     <string name="DIALOG_input_text">Input some text</string>
     <string name="COMMENT_saved">Comment saved</string>
     <string name="COMMENT_added">Comment added</string>
+    <string name="COMMENT_cannot_be_empty">Cannot be empty</string>
 </resources>

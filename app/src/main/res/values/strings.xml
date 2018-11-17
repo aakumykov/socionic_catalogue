@@ -159,4 +159,5 @@
     <string name="DIALOG_input_text">Введите текст</string>
     <string name="COMMENT_saved">Комментарий сохранён</string>
     <string name="COMMENT_added">Комментарий добавлен</string>
+    <string name="COMMENT_cannot_be_empty">Не может быть пустым</string>
 </resources>

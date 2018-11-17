@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -38,50 +40,44 @@ public class MyDialogs {
     ) {
         String title = activity.getString(R.string.DIALOG_edit_comment);
 
-        View view = activity.getLayoutInflater().inflate(R.layout.edit_dialog, null);
-         EditText editText = view.findViewById(R.id.editText);
-         editText.setText(initialText);
+        final View view = activity.getLayoutInflater().inflate(R.layout.edit_dialog, null);
+        final EditText editText = view.findViewById(R.id.editText);
+        final TextView dialogErrorView = view.findViewById(R.id.dialogErrorView);
+
+        editText.setText(initialText);
 
         final AlertDialog alertDialog = basicDialog(
                 activity,
                 title,
                 null,
-                null,
-                null,
+                R.string.yes,
+                R.string.no,
                 null,
                 null,
                 view,
                 null
         );
 
-        alertDialog.setButton(
-                DialogInterface.BUTTON_POSITIVE,
-                activity.getString(R.string.yes),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            EditText editText = alertDialog.findViewById(R.id.editText);
-                            String text = editText.getText().toString();
-                            callbacks.onDialogWithStringYes(text);
-                        } catch (Exception e) {
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
 
-                            e.printStackTrace();
+                Button yesButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+                yesButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String newText = editText.getText().toString();
+                        if (TextUtils.isEmpty(newText)) {
+                            dialogErrorView.setText(view.getResources().getString(R.string.COMMENT_cannot_be_empty));
+                        } else {
+                            dialog.dismiss();
+                            callbacks.onDialogWithStringYes(newText);
                         }
                     }
-                }
-        );
+                });
 
-        alertDialog.setButton(
-                DialogInterface.BUTTON_NEGATIVE,
-                activity.getString(R.string.no),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                }
-        );
+            }
+        });
 
         alertDialog.show();
     }
@@ -108,13 +104,9 @@ public class MyDialogs {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (null != callbacks) {
-                        if (null != view) {
-                            TextView errorView = view.findViewById(R.id.dialogErrorView);
-                            errorView.setText("Неправильно!");
+                        if (callbacks.onCheckInDialog()) {
+                            callbacks.onYesInDialog();
                         }
-//                        if (callbacks.onCheckInDialog()) {
-//                            callbacks.onYesInDialog();
-//                        }
                     }
                 }
             });
