@@ -321,6 +321,8 @@ public class CardEdit_Presenter implements
 
         currentCard = new Card();
         currentCard.setKey(cardsService.createKey());
+        // TODO: нужно единообразие аутентификационных вещей!
+        currentCard.setUserId(authService.currentUid());
     }
 
     private void prepareCardEdition(Intent intent) {
