@@ -16,6 +16,7 @@ import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 
 public class MyDialogs {
 
+    // Диалог удаления карточки
     public static void cardDeleteDialog(Activity activity, String message, iMyDialogs.Delete callbacks) {
 
         String title = activity.getString(R.string.DIALOG_delete_card);
@@ -33,6 +34,8 @@ public class MyDialogs {
         ).show();
     }
 
+
+    // Диалог изменения комментария
     public static void commentEditDialog(
             Activity activity,
             String initialText,
@@ -82,6 +85,8 @@ public class MyDialogs {
         alertDialog.show();
     }
 
+
+    // Внутренние методы
     private static AlertDialog basicDialog(
             final Activity activity,
             String title,
