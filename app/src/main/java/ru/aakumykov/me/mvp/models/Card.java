@@ -24,6 +24,7 @@ public class Card implements Parcelable {
     private String description;
     private HashMap<String, Boolean> tags;
     private int commentsCount = 0;
+    private HashMap<String, Boolean> commentsKeys;
 
     public Card() {
 
@@ -60,6 +61,7 @@ public class Card implements Parcelable {
                 ", description: "+getDescription()+
                 ", tags: "+ getTags()+
                 ", commentsCount: "+ getCommentsCount()+
+                ", commentsKeys: "+ getCommentsKeys()+
             ",}";
     }
 
@@ -74,6 +76,7 @@ public class Card implements Parcelable {
          map.put("description", description);
          map.put("tags", tags);
          map.put("commentsCount", commentsCount);
+         map.put("commentsKeys", commentsKeys);
         return map;
     }
 
@@ -91,6 +94,7 @@ public class Card implements Parcelable {
         dest.writeString(this.description);
         dest.writeMap(this.tags);
         dest.writeInt(this.commentsCount);
+        dest.writeMap(this.commentsKeys);
     }
 
     protected Card(Parcel in) {
@@ -104,6 +108,7 @@ public class Card implements Parcelable {
         description = in.readString();
         tags = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         commentsCount = in.readInt();
+        commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
     }
 
     @Override
@@ -125,6 +130,7 @@ public class Card implements Parcelable {
     /* Parcelable */
 
 
+    // Геттеры
     public String getUserId() {
         return userId;
     }
@@ -150,7 +156,10 @@ public class Card implements Parcelable {
         return tags;
     }
     public int getCommentsCount() { return commentsCount; }
+    public HashMap<String, Boolean> getCommentsKeys() { return commentsKeys; }
 
+
+    // Сеттеры
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -181,13 +190,12 @@ public class Card implements Parcelable {
         this.tags = tags;
     }
     public void setCommentsCount(int count) { this.commentsCount = count; }
+    public void setCommentsKeys(HashMap<String, Boolean> commentsKeys) {
+        this.commentsKeys = commentsKeys;
+    }
 
-//    public void removeImageURL() {
-//        this.imageURL = null;
-//    }
 
-
-    // Служебное
+    // Служебные
     @Exclude private Uri localImageURI;
     @Exclude private String mimeType;
 
