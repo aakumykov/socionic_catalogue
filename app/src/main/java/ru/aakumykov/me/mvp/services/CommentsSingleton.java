@@ -116,11 +116,19 @@ public class CommentsSingleton implements iCommentsSingleton {
     }
 
     // Внутренние методы
-    private void createComment(String key, final Comment commentDraft, final CreateCallbacks callbacks) {
+    private void createComment(String commentKey, final Comment commentDraft, final CreateCallbacks callbacks) {
 
-        DatabaseReference commentRef = commentsRef.child(commentDraft.getKey());
+        HashMap<String,Object> updatePool = new HashMap<>();
 
-        commentRef.setValue(commentDraft)
+        String commentPath = Constants.COMMENTS_PATH+"/"+commentKey;
+        updatePool.put(commentPath, commentDraft);
+
+        String commentInCardPath = Constants.CARDS_PATH + "/" + commentDraft.getCardId() +
+                "/commentsKeys/" + commentKey;
+        updatePool.put(commentInCardPath, true);
+
+        firebaseDatabase.getReference().child("/")
+                .updateChildren(updatePool)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
