@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
 
@@ -209,6 +211,26 @@ public abstract class BaseView extends AppCompatActivity implements
         }
     }
 
+
+    // Тосты
+    @Override
+    public void showToast(int stringResourceId) {
+        String msg = getString(stringResourceId);
+        showToast(msg);
+    }
+
+    @Override
+    public void showToast(String msg) {
+        showToastReal(this, msg, Toast.LENGTH_SHORT);
+    }
+
+    private void showToastReal(Context context, String message, int length) {
+        Toast toast = Toast.makeText(context, message, length);
+        toast.show();
+    }
+
+
+    // Строка прогресса
     @Override
     public void showProgressBar() {
         ProgressBar progressBar = findViewById(R.id.progressBar);

@@ -22,6 +22,9 @@ public interface iBaseView {
     void showErrorMsg(String message);
     void showErrorMsg(int userMessageId, String consoleMessage);
 
+    void showToast(int stringResourceId);
+    void showToast(String msg);
+
     void showProgressBar();
     void hideProgressBar();
 
