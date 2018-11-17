@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
@@ -97,6 +98,7 @@ public class MyDialogs {
             final iMyDialogs.StandardCallbacks callbacks
     )
     {
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity)
                 .setTitle(title);
 
@@ -106,9 +108,13 @@ public class MyDialogs {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (null != callbacks) {
-                        if (callbacks.onCheckInDialog()) {
-                            callbacks.onYesInDialog();
+                        if (null != view) {
+                            TextView errorView = view.findViewById(R.id.dialogErrorView);
+                            errorView.setText("Неправильно!");
                         }
+//                        if (callbacks.onCheckInDialog()) {
+//                            callbacks.onYesInDialog();
+//                        }
                     }
                 }
             });
