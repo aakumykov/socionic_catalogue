@@ -21,9 +21,11 @@ public class MyDialogs {
                 activity,
                 title,
                 message,
-                null,
                 R.string.yes,
                 R.string.no,
+                R.string.cancel,
+                null,
+                null,
                 callbacks
         ).show();
     }
@@ -35,6 +37,10 @@ public class MyDialogs {
     ) {
         String title = activity.getString(R.string.DIALOG_edit_comment);
 
+        View view = activity.getLayoutInflater().inflate(R.layout.edit_dialog, null);
+         EditText editText = view.findViewById(R.id.editText);
+         editText.setText(initialText);
+
         final AlertDialog alertDialog = basicDialog(
                 activity,
                 title,
@@ -42,13 +48,10 @@ public class MyDialogs {
                 null,
                 null,
                 null,
+                null,
+                view,
                 null
         );
-
-        View view = activity.getLayoutInflater().inflate(R.layout.edit_dialog, null);
-        EditText editText = view.findViewById(R.id.editText);
-        editText.setText(initialText);
-        alertDialog.setView(view);
 
         alertDialog.setButton(
                 DialogInterface.BUTTON_POSITIVE,
@@ -56,9 +59,14 @@ public class MyDialogs {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        EditText editText = alertDialog.findViewById(R.id.editText);
-                        String text = editText.getText().toString();
-                        callbacks.onDialogWithStringYes(text);
+                        try {
+                            EditText editText = alertDialog.findViewById(R.id.editText);
+                            String text = editText.getText().toString();
+                            callbacks.onDialogWithStringYes(text);
+                        } catch (Exception e) {
+
+                            e.printStackTrace();
+                        }
                     }
                 }
         );
@@ -81,36 +89,18 @@ public class MyDialogs {
             final Activity activity,
             String title,
             @Nullable String message,
-            @Nullable Integer iconId,
-//            @Nullable Integer layoutId,
             @Nullable Integer yesButtonId, // Для варианта
             @Nullable Integer noButtonId,  // с одной кнопкой
+            @Nullable Integer cancelButtonId,  // с одной кнопкой
+            @Nullable Integer iconId,
+            final @Nullable View view,
             final iMyDialogs.StandardCallbacks callbacks
     )
     {
-        final View dialogView;
-
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity)
                 .setTitle(title);
 
-        dialogBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                Log.d("TAG", "диалог ОТМЕНЁН");
-            }
-        });
-
-        if (null != message)
-                dialogBuilder.setMessage(message);
-
-        if (null != iconId)
-            dialogBuilder.setIcon(iconId);
-
-//        if (null != layoutId) {
-//            dialogView = activity.getLayoutInflater().inflate(layoutId, null);
-//            dialogBuilder.setView(dialogView);
-//        }
-
+        // Кнопка "Да"
         if (null != yesButtonId) {
             dialogBuilder.setPositiveButton(yesButtonId, new DialogInterface.OnClickListener() {
                 @Override
@@ -124,6 +114,7 @@ public class MyDialogs {
             });
         }
 
+        // Кнопка "Нет"
         if (null != noButtonId) {
             dialogBuilder.setNegativeButton(noButtonId, new DialogInterface.OnClickListener() {
                 @Override
@@ -133,6 +124,39 @@ public class MyDialogs {
                     }
                 }
             });
+        }
+
+        // Кнопка "Отмена"
+        if (null != cancelButtonId) {
+            dialogBuilder.setNeutralButton(cancelButtonId, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (null != callbacks) {
+                        callbacks.onCancelInDialog();
+                    }
+                }
+            });
+        }
+
+        // Реакция на отмену (кнопкой Отмена или только стрелкой?)
+        dialogBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                Log.d("TAG", "диалог ОТМЕНЁН");
+            }
+        });
+
+        // Сообщение
+        if (null != message)
+                dialogBuilder.setMessage(message);
+
+        // Картинка
+        if (null != iconId)
+            dialogBuilder.setIcon(iconId);
+
+        // Пользовательская разметка
+        if (null != view) {
+            dialogBuilder.setView(view);
         }
 
         return dialogBuilder.create();
