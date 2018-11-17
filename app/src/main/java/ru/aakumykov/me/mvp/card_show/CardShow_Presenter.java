@@ -1,6 +1,5 @@
 package ru.aakumykov.me.mvp.card_show;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -19,7 +18,6 @@ import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.CommentsSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
-import ru.aakumykov.me.mvp.utils.MyToast;
 
 public class CardShow_Presenter implements
         iCardShow.Presenter,
