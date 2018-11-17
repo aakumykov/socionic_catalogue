@@ -71,12 +71,22 @@ public class CardShow_Presenter implements
 
     // Удаление комментария
     @Override
-    public void deleteCommentConfirmed(Comment comment) throws Exception {
+    public void deleteCommentConfirmed(Comment comment) {
         // TODO: переделать проверку по-правильному
-        if (authService.currentUid().equals(comment.getUserId())) {
+        if (!authService.isUserLoggedIn())
+            return;
+
+        // TODO: эта проверка без проверки на залогиненность...
+        if (!authService.currentUid().equals(comment.getUserId())) {
+            view.showErrorMsg(R.string.action_denied);
+            return;
+        }
+
+        try {
             commentsService.deleteComment(comment, this);
-        } else {
-            throw new IllegalAccessException("Unsufficient privileges to delete comment.");
+        } catch (Exception e) {
+            view.showErrorMsg(R.string.COMMENT_delete_error);
+            e.printStackTrace();
         }
     }
 
@@ -179,6 +189,13 @@ public class CardShow_Presenter implements
                 null,
                 null
         );
+
+        try {
+            commentsService.deleteCommentsForCard(currentCard.getKey());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         view.closePage();
     }
 

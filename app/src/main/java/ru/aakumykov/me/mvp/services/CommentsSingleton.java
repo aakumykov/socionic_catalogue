@@ -14,6 +14,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.interfaces.iCommentsSingleton;
@@ -39,6 +41,7 @@ public class CommentsSingleton implements iCommentsSingleton {
     private DatabaseReference commentsRef = firebaseDatabase.getReference().child(Constants.COMMENTS_PATH);
 
 
+    // Интерфейсные методы
     @Override
     public void loadList(String cardId, final ListCallbacks callbacks) {
 
@@ -105,7 +108,14 @@ public class CommentsSingleton implements iCommentsSingleton {
         });
     }
 
+    @Override
+    public void deleteCommentsForCard(String cardId) {
+        Map<String,Boolean> updatePool = new HashMap<>();
 
+        // TODO: вот для чего нужно хранить ключи комментов в карточке
+    }
+
+    // Внутренние методы
     private void createComment(String key, final Comment commentDraft, final CreateCallbacks callbacks) {
 
         DatabaseReference commentRef = commentsRef.child(commentDraft.getKey());

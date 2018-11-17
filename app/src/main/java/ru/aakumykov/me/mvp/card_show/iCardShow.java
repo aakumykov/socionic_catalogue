@@ -21,6 +21,7 @@ public interface iCardShow {
         void displayImage(Uri imageURI);
         void displayImageError();
         void displayTags(HashMap<String,Boolean> tagsHash);
+
         void displayComments(List<Comment> list);
         void appendComment(Comment comment);
         void removeComment(Comment comment);
@@ -28,16 +29,12 @@ public interface iCardShow {
         void showCommentsThrobber();
         void hideCommentsThrobber();
 
-        void showCardDeleteDialog();
-        void showCommentEditDialog(Comment comment);
-        void showCommentDeleteDialog(Comment comment);
-
-        void goEditPage(Card card);
-        void goList(String tagFilter);
-
         void disableCommentForm();
         void enableCommentForm();
         void resetCommentForm();
+
+        void goEditPage(Card card); // не нужно?
+        void goList(String tagFilter);
     }
 
     interface Presenter {
@@ -54,6 +51,6 @@ public interface iCardShow {
 
         void cardDeleteConfirmed(Card card);
         void editCommentConfirmed(Comment comment);
-        void deleteCommentConfirmed(Comment comment) throws Exception;
+        void deleteCommentConfirmed(Comment comment);
     }
 }

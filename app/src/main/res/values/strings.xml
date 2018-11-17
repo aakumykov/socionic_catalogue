@@ -161,4 +161,6 @@
     <string name="COMMENT_added">Комментарий добавлен</string>
     <string name="COMMENT_cannot_be_empty">Не может быть пустым</string>
     <string name="action_denied">Действие запрещено</string>
+    <string name="DIALOG_delete_comment">Удалить комментарий?</string>
+    <string name="COMMENT_delete_message_template" translatable="false">%1$s ...</string>
 </resources>

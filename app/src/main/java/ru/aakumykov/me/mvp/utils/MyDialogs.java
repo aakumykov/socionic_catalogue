@@ -85,6 +85,22 @@ public class MyDialogs {
         alertDialog.show();
     }
 
+    public static void commentDeleteDialog(Activity activity, String message, iMyDialogs.Delete callbacks) {
+
+        String title = activity.getString(R.string.DIALOG_delete_comment);
+
+        basicDialog(
+                activity,
+                title,
+                message,
+                R.string.yes,
+                R.string.no,
+                null,
+                null,
+                null,
+                callbacks
+        ).show();
+    }
 
     // Внутренние методы
     private static AlertDialog basicDialog(

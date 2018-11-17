@@ -10,6 +10,7 @@ public interface iCommentsSingleton {
     void createComment(Comment commentDraft, CreateCallbacks callbacks);
     void updateComment(Comment comment, CreateCallbacks callbacks);
     void deleteComment(Comment comment, DeleteCallbacks callbacks);
+    void deleteCommentsForCard(String cardId);
 
 
     interface ListCallbacks {

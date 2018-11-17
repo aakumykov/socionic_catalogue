@@ -232,12 +232,11 @@ public class CardShow_View extends BaseView implements
         switch (menuItem.getItemId()) {
 
             case R.id.actionEdit:
-                // TODO: showCommentDeleteDialog
-                showCommentEditDialog(currentComment);
+                editComment();
                 break;
 
             case R.id.actionDelete:
-                showCommentDeleteDialog(currentComment);
+                deleteComment();
                 break;
 
             case R.id.actionShare:
@@ -407,92 +406,6 @@ public class CardShow_View extends BaseView implements
     }
 
 
-    // Диалоги
-    @Override
-    public void showCardDeleteDialog() {
-
-        YesNoDialog yesNoDialog = new YesNoDialog(
-                this,
-                R.string.DIALOG_card_deletion,
-                R.string.DIALOG_really_delete_card,
-                new iDialogCallbacks.Delete() {
-                    @Override
-                    public boolean deleteDialogCheck() {
-                        // TODO: можно же здесь делать
-                        // что-то вроде presenter.isAdmin()...
-                        return true;
-                    }
-
-                    @Override
-                    public void deleteDialogYes() {
-                        try {
-                            presenter.cardDeleteConfirmed(currentCard);
-                        } catch (Exception e) {
-                            showErrorMsg(R.string.CARD_SHOW_error_deleting_card);
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onDeleteDialogNo() {
-
-                    }
-                }
-        );
-
-        yesNoDialog.show();
-    }
-
-    @Override
-    public void showCommentEditDialog(final Comment comment) {
-        MyDialogs.commentEditDialog(this, comment.getText(), new iMyDialogs.Edit() {
-            @Override
-            public void onDialogWithStringYes(String text) {
-                comment.setText(text);
-                try {
-                    presenter.editCommentConfirmed(comment);
-                } catch (Exception e) {
-                    showErrorMsg(R.string.COMMENT_save_error);
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    @Override
-    public void showCommentDeleteDialog(final Comment comment) {
-
-        YesNoDialog yesNoDialog = new YesNoDialog(
-                this,
-                R.string.COMMENT_comment_deletion,
-                MyUtils.cutToLength(comment.getText(), Constants.COMMENT_DELETE_DIALOG_TEXT_LENGTH),
-                new iDialogCallbacks.Delete() {
-                    @Override
-                    public boolean deleteDialogCheck() {
-                        return true;
-                    }
-
-                    @Override
-                    public void deleteDialogYes() {
-                        try {
-                            presenter.deleteCommentConfirmed(comment);
-                        } catch (Exception e) {
-                            showErrorMsg(R.string.COMMENT_delete_error, e.getMessage());
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onDeleteDialogNo() {
-
-                    }
-                }
-        );
-
-        yesNoDialog.show();
-    }
-
-
     // Вспомогательные
     @Override
     public void enableCommentForm() {
@@ -616,20 +529,8 @@ public class CardShow_View extends BaseView implements
         popupMenu.show();
     }
 
-
     private void editCard() {
-
-        MyDialogs.commentEditDialog(
-                this,
-                currentComment.getText(),
-                new iMyDialogs.StringInputCallback() {
-                    @Override
-                    public void onDialogWithStringYes(String text) {
-                        currentComment.setText(text);
-                        presenter.editCommentConfirmed(currentComment);
-                    }
-                }
-        );
+        goEditPage(currentCard);
     }
 
     private void deleteCard() {
@@ -661,5 +562,50 @@ public class CardShow_View extends BaseView implements
         );
 
     }
-//
+
+    private void editComment() {
+        MyDialogs.commentEditDialog(
+                this,
+                currentComment.getText(),
+                new iMyDialogs.StringInputCallback() {
+                    @Override
+                    public void onDialogWithStringYes(String text) {
+                        currentComment.setText(text);
+                        presenter.editCommentConfirmed(currentComment);
+                    }
+                }
+        );
+    }
+
+    private void deleteComment() {
+
+        String commentPiece = MyUtils.cutToLength(currentComment.getText(), Constants.DIALOG_MESSAGE_LENGTH);
+        String message = getString(R.string.COMMENT_delete_message_template, commentPiece);
+
+        MyDialogs.commentDeleteDialog(
+                this,
+                message,
+                new iMyDialogs.Delete() {
+                    @Override
+                    public void onCancelInDialog() {
+
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        presenter.deleteCommentConfirmed(currentComment);
+                    }
+                }
+        );
+    }
 }
