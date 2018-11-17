@@ -68,11 +68,6 @@ public class CardShow_Presenter implements
         commentsService.createComment(comment, this);
     }
 
-    @Override
-    public void replyToComment(String commentId) {
-//        Comment comment
-    }
-
 
     // Удаление комментария
     @Override
@@ -88,30 +83,36 @@ public class CardShow_Presenter implements
 
     // Изменение комментария
     @Override
-    public void editCommentConfirmed(final Comment comment) throws Exception {
+    public void editCommentConfirmed(final Comment comment) {
         // TODO: контроль длины
-        if (authService.isUserLoggedIn()) {
-            if (authService.currentUid().equals(comment.getUserId())) {
 
-                if (!TextUtils.isEmpty(comment.getText())) {
+        if (!authService.isUserLoggedIn())
+            return;
 
-                    commentsService.updateComment(comment, new iCommentsSingleton.CreateCallbacks() {
-                        @Override
-                        public void onCommentSaveSuccess(Comment comment) {
+        if (!authService.currentUid().equals(comment.getUserId())) {
+            view.showErrorMsg(R.string.action_denied);
+        }
+
+        if (!TextUtils.isEmpty(comment.getText())) {
+            try {
+                commentsService.updateComment(comment, new iCommentsSingleton.CreateCallbacks() {
+                    @Override
+                    public void onCommentSaveSuccess(Comment comment) {
 //                            view
-                        }
+                    }
 
-                        @Override
-                        public void onCommentSaveError(String errorMsg) {
-                            view.showErrorMsg(R.string.COMMENT_save_error);
-                        }
-                    });
-
-                }
-
+                    @Override
+                    public void onCommentSaveError(String errorMsg) {
+                        view.showErrorMsg(R.string.COMMENT_save_error);
+                    }
+                });
+            } catch (Exception e) {
+                view.showErrorMsg(R.string.COMMENT_save_error);
+                e.printStackTrace();
             }
         }
     }
+
 
     // Реакция на кнопки
     @Override
@@ -120,46 +121,25 @@ public class CardShow_Presenter implements
     }
 
     @Override
-    public void editCard() {
-        view.goEditPage(currentCard);
-    }
-
-    @Override
-    public void deleteCard(Card card) {
-        if (authService.isUserLoggedIn()) {
-            // TODO: или Админ
-            if (authService.currentUid().equals(card.getUserId())) {
-                view.showCardDeleteDialog();
-            }
-        }
-    }
-
-    @Override
-    public void onCardDeleteConfirmed(Card card) throws Exception {
+    public void cardDeleteConfirmed(Card card) {
         view.showProgressBar();
         view.showInfoMsg(R.string.deleting_card);
 
-        if (authService.isUserLoggedIn()) {
-            // TODO: или Админ
-            if (authService.currentUid().equals(card.getUserId())) {
+        if (!authService.isUserLoggedIn()) return;
 
-                try {
-                    cardsService.deleteCard(currentCard, this);
-                } catch (Exception e) {
-                    view.hideProgressBar();
-                    view.showErrorMsg(R.string.CARD_SHOW_error_deleting_card);
-                    e.printStackTrace();
-                }
-
-            }
-            else {
-                /* Сделал эту сложную конструкцию, чтобы полнее отслеживать
-                * нарушения использования прав... */
-                throw new IllegalAccessException("Unsufficient privileges to delete card.");
-            }
+        // TODO: "или Админ"
+        if (!authService.currentUid().equals(card.getUserId())) {
+            view.showErrorMsg(R.string.action_denied);
+            return;
         }
-        
 
+        try {
+            cardsService.deleteCard(currentCard, this);
+        } catch (Exception e) {
+            view.hideProgressBar();
+            view.showErrorMsg(R.string.CARD_SHOW_error_deleting_card);
+            e.printStackTrace();
+        }
     }
 
 

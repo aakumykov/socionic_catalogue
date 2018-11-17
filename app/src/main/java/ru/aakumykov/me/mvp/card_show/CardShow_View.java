@@ -83,6 +83,8 @@ public class CardShow_View extends BaseView implements
     private Comment currentComment;
 
 
+    // TODO: удаление комментариев вместе с карточкой
+
     // Системные методы
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,11 +193,11 @@ public class CardShow_View extends BaseView implements
         switch (item.getItemId()) {
 
             case R.id.actionEdit:
-                presenter.editCard();
+                editCard();
                 break;
 
             case R.id.actionDelete:
-                presenter.deleteCard(currentCard);
+                deleteCard();
                 break;
 
             default:
@@ -424,7 +426,7 @@ public class CardShow_View extends BaseView implements
                     @Override
                     public void deleteDialogYes() {
                         try {
-                            presenter.onCardDeleteConfirmed(currentCard);
+                            presenter.cardDeleteConfirmed(currentCard);
                         } catch (Exception e) {
                             showErrorMsg(R.string.CARD_SHOW_error_deleting_card);
                             e.printStackTrace();
@@ -614,9 +616,50 @@ public class CardShow_View extends BaseView implements
         popupMenu.show();
     }
 
-//    @OnClick(R.id.commentReply)
-//    void replyToTomment(View view) {
-////        presenter.replyToComment(view.getTag(Comment.key_commentId));
-//    }
+
+    private void editCard() {
+
+        MyDialogs.commentEditDialog(
+                this,
+                currentComment.getText(),
+                new iMyDialogs.StringInputCallback() {
+                    @Override
+                    public void onDialogWithStringYes(String text) {
+                        currentComment.setText(text);
+                        presenter.editCommentConfirmed(currentComment);
+                    }
+                }
+        );
+    }
+
+    private void deleteCard() {
+
+        MyDialogs.cardDeleteDialog(
+                this,
+                currentCard.getTitle(),
+                new iMyDialogs.Delete() {
+                    @Override
+                    public void onCancelInDialog() {
+
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        presenter.cardDeleteConfirmed(currentCard);
+                    }
+                }
+        );
+
+    }
 //
 }

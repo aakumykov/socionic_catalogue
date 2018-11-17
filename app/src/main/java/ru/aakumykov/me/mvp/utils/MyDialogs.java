@@ -27,7 +27,7 @@ public class MyDialogs {
                 message,
                 R.string.yes,
                 R.string.no,
-                R.string.cancel,
+                null,
                 null,
                 null,
                 callbacks

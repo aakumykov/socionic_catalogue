@@ -46,21 +46,14 @@ public interface iCardShow {
         void unlinkView();
 
         void processInputIntent(@Nullable Intent intent) throws Exception;
+        void loadComments(Card card);
 
-        void editCard();
-//        void onEditCardConfirmed() throws Exception;
-
-        void deleteCard(Card card);
-        void onCardDeleteConfirmed(Card card) throws Exception;
+        void postComment(String text);
 
         void onTagClicked(String tagName);
 
-
-        void loadComments(Card card);
-        void postComment(String text);
-        void replyToComment(String commentId);
-
-        void editCommentConfirmed(Comment comment) throws Exception;
+        void cardDeleteConfirmed(Card card);
+        void editCommentConfirmed(Comment comment);
         void deleteCommentConfirmed(Comment comment) throws Exception;
     }
 }
