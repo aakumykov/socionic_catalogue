@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.card_show;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -18,6 +19,7 @@ import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.CommentsSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
+import ru.aakumykov.me.mvp.utils.MyToast;
 
 public class CardShow_Presenter implements
         iCardShow.Presenter,
@@ -76,16 +78,7 @@ public class CardShow_Presenter implements
 
     // Удаление комментария
     @Override
-    public void deleteComment(Comment comment) {
-        if (authService.isUserLoggedIn()) {
-            if (authService.currentUid().equals(comment.getUserId())) {
-                view.showCommentDeleteDialog(comment);
-            }
-        }
-    }
-
-    @Override
-    public void onCommentDeleteConfirmed(Comment comment) throws Exception {
+    public void deleteCommentConfirmed(Comment comment) throws Exception {
         // TODO: переделать проверку по-правильному
         if (authService.currentUid().equals(comment.getUserId())) {
             commentsService.deleteComment(comment, this);
@@ -97,16 +90,7 @@ public class CardShow_Presenter implements
 
     // Изменение комментария
     @Override
-    public void editComment(Comment comment) {
-        if (authService.isUserLoggedIn()) {
-            if (authService.currentUid().equals(comment.getUserId())) {
-                view.showCommentEditDialog(comment);
-            }
-        }
-    }
-
-    @Override
-    public void onEditCommentConfirmed(final Comment comment) throws Exception {
+    public void editCommentConfirmed(final Comment comment) throws Exception {
         // TODO: контроль длины
         if (authService.isUserLoggedIn()) {
             if (authService.currentUid().equals(comment.getUserId())) {
@@ -115,12 +99,12 @@ public class CardShow_Presenter implements
 
                     commentsService.updateComment(comment, new iCommentsSingleton.CreateCallbacks() {
                         @Override
-                        public void onCommentCreateSuccess(Comment comment) {
+                        public void onCommentSaveSuccess(Comment comment) {
 //                            view
                         }
 
                         @Override
-                        public void onCommentCreateError(String errorMsg) {
+                        public void onCommentSaveError(String errorMsg) {
                             view.showErrorMsg(R.string.COMMENT_save_error);
                         }
                     });
@@ -228,8 +212,9 @@ public class CardShow_Presenter implements
 
 
     @Override
-    public void onCommentCreateSuccess(Comment comment) {
-        view.showInfoMsg("Комментарий добавлен");
+    public void onCommentSaveSuccess(Comment comment) {
+        view.showToast( R.string.COMMENT_saved);
+
         view.appendComment(comment);
         view.resetCommentForm();
 
@@ -237,7 +222,7 @@ public class CardShow_Presenter implements
     }
 
     @Override
-    public void onCommentCreateError(String errorMsg) {
+    public void onCommentSaveError(String errorMsg) {
 //        view.enableCommentForm();
         view.showErrorMsg(errorMsg);
     }

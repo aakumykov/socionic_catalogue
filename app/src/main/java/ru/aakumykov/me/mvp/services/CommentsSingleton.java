@@ -114,13 +114,13 @@ public class CommentsSingleton implements iCommentsSingleton {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        callbacks.onCommentCreateSuccess(commentDraft);
+                        callbacks.onCommentSaveSuccess(commentDraft);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        callbacks.onCommentCreateError(e.getMessage());
+                        callbacks.onCommentSaveError(e.getMessage());
                         e.printStackTrace();
                     }
                 });

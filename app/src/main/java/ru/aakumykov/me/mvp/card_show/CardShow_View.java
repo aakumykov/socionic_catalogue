@@ -219,11 +219,6 @@ public class CardShow_View extends BaseView implements
         }
     }
 
-//    @Override
-//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//    }
-
     @Override
     public void onCommentMenuClicked(View view, Comment comment) {
         showCommentMenu(view, comment);
@@ -231,19 +226,26 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
+
         switch (menuItem.getItemId()) {
+
             case R.id.actionEdit:
-                presenter.editComment(currentComment);
+                // TODO: showCommentDeleteDialog
+                showCommentEditDialog(currentComment);
                 break;
+
             case R.id.actionDelete:
-                presenter.deleteComment(currentComment);
+                showCommentDeleteDialog(currentComment);
                 break;
+
             case R.id.actionShare:
 //                presenter.shareComment(currentComment);
                 break;
+
             default:
                 break;
         }
+
         return true;
     }
 
@@ -363,6 +365,7 @@ public class CardShow_View extends BaseView implements
         commentsAdapter.remove(comment);
     }
 
+
     // Меток методы
     @Override
     public void onTagClick(int position, String text) {
@@ -445,7 +448,7 @@ public class CardShow_View extends BaseView implements
             public void onDialogWithStringYes(String text) {
                 comment.setText(text);
                 try {
-                    presenter.onEditCommentConfirmed(comment);
+                    presenter.editCommentConfirmed(comment);
                 } catch (Exception e) {
                     showErrorMsg(R.string.COMMENT_save_error);
                     e.printStackTrace();
@@ -470,7 +473,7 @@ public class CardShow_View extends BaseView implements
                     @Override
                     public void deleteDialogYes() {
                         try {
-                            presenter.onCommentDeleteConfirmed(comment);
+                            presenter.deleteCommentConfirmed(comment);
                         } catch (Exception e) {
                             showErrorMsg(R.string.COMMENT_delete_error, e.getMessage());
                             e.printStackTrace();

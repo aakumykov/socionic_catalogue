@@ -157,4 +157,6 @@
     <string name="DIALOG_delete_card">Удалить карточку?</string>
     <string name="DIALOG_edit_comment">Изменение комментария</string>
     <string name="DIALOG_input_text">Введите текст</string>
+    <string name="COMMENT_saved">Комментарий сохранён</string>
+    <string name="COMMENT_added">Комментарий добавлен</string>
 </resources>

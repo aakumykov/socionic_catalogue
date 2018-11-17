@@ -153,4 +153,6 @@
     <string name="DIALOG_delete_card">Delete card?</string>
     <string name="DIALOG_edit_comment">Comment edit</string>
     <string name="DIALOG_input_text">Input some text</string>
+    <string name="COMMENT_saved">Comment saved</string>
+    <string name="COMMENT_added">Comment added</string>
 </resources>

@@ -60,10 +60,7 @@ public interface iCardShow {
         void postComment(String text);
         void replyToComment(String commentId);
 
-        void editComment(Comment comment);
-        void onEditCommentConfirmed(Comment comment) throws Exception;
-
-        void deleteComment(Comment comment);
-        void onCommentDeleteConfirmed(Comment comment) throws Exception;
+        void editCommentConfirmed(Comment comment) throws Exception;
+        void deleteCommentConfirmed(Comment comment) throws Exception;
     }
 }
