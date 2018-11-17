@@ -4,8 +4,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +40,7 @@ public class CommentsSingleton implements iCommentsSingleton {
     // Свойства
     private final static String TAG = "CommentsSingleton";
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference commentsRef = firebaseDatabase.getReference().child(Constants.COMMENTS_PATH);
 
 
@@ -93,19 +96,30 @@ public class CommentsSingleton implements iCommentsSingleton {
     @Override
     public void deleteComment(final Comment comment, final DeleteCallbacks callbacks) {
 
-        DatabaseReference thisCommentRef = commentsRef.child(comment.getKey());
+        HashMap<String,Object> updatePool = new HashMap<>();
 
-        thisCommentRef.removeValue(new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                if (null == databaseError) {
-                    callbacks.onDeleteSuccess(comment);
-                } else {
-                    callbacks.onDeleteError(databaseError.getMessage());
-                    databaseError.toException().printStackTrace();
-                }
-            }
-        });
+        String commentPath = Constants.COMMENTS_PATH+"/"+comment.getKey();
+        updatePool.put(commentPath, null);
+
+        String commentInCardPath = Constants.CARDS_PATH+"/"+comment.getCardId()+
+                "/commentsKeys/"+comment.getKey();
+        updatePool.put(commentInCardPath, null);
+
+        databaseRef.child("/")
+                .updateChildren(updatePool)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        callbacks.onDeleteSuccess(comment);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onDeleteError(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
     }
 
     @Override
