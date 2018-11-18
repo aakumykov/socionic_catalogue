@@ -11,7 +11,7 @@ public interface iCommentsSingleton {
     void createComment(Comment commentDraft, CreateCallbacks callbacks);
     void updateComment(Comment comment, CreateCallbacks callbacks);
     void deleteComment(Comment comment, DeleteCallbacks callbacks);
-    void deleteCommentsForCard(Card card) throws Exception;
+    void deleteCommentsForCard(String cardId) throws Exception;
 
 
     interface ListCallbacks {

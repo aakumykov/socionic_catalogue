@@ -108,7 +108,7 @@ public class CardsList_Presenter implements
         );
 
         try {
-            commentsService.deleteCommentsForCard(card);
+            commentsService.deleteCommentsForCard(card.getKey());
         } catch (Exception e) {
             view.showErrorMsg(R.string.CARDS_LIST_error_deleting_card, e.getMessage());
             e.printStackTrace();
