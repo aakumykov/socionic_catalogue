@@ -17,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ru.aakumykov.me.mvp.Constants;
@@ -40,8 +41,8 @@ public class CommentsSingleton implements iCommentsSingleton {
     // Свойства
     private final static String TAG = "CommentsSingleton";
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference commentsRef = firebaseDatabase.getReference().child(Constants.COMMENTS_PATH);
+    private DatabaseReference rootRef = firebaseDatabase.getReference().child("/");
+    private DatabaseReference commentsRef = rootRef.child(Constants.COMMENTS_PATH);
 
 
     // Интерфейсные методы
@@ -105,8 +106,7 @@ public class CommentsSingleton implements iCommentsSingleton {
                 "/commentsKeys/"+comment.getKey();
         updatePool.put(commentInCardPath, null);
 
-        databaseRef.child("/")
-                .updateChildren(updatePool)
+        rootRef.updateChildren(updatePool)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -124,9 +124,41 @@ public class CommentsSingleton implements iCommentsSingleton {
 
     @Override
     public void deleteCommentsForCard(String cardId) {
-        Map<String,Boolean> updatePool = new HashMap<>();
 
-        // TODO: вот для чего нужно хранить ключи комментов в карточке
+        Query commentsQuery = commentsRef
+                .orderByChild("cardId")
+                .equalTo(cardId);
+
+        commentsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> keysList = new ArrayList<>();
+
+                for (DataSnapshot oneSnapshot : dataSnapshot.getChildren()) {
+
+                    try {
+                        String snapshotKey = oneSnapshot.getKey();
+                        Comment comment = oneSnapshot.getValue(Comment.class);
+                        if (null != comment) {
+                            String commentKey = comment.getKey();
+                            keysList.add(commentKey);
+                        }
+
+                        deleteCommentsForCard_continue(keysList);
+
+                    } catch (Exception e) {
+                        Log.e(TAG, e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, databaseError.getMessage());
+                databaseError.toException().printStackTrace();
+            }
+        });
     }
 
     // Внутренние методы
@@ -153,6 +185,23 @@ public class CommentsSingleton implements iCommentsSingleton {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         callbacks.onCommentSaveError(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+    private void deleteCommentsForCard_continue(final List<String> keysList) {
+
+        HashMap<String,Object> updatePool = new HashMap<>();
+
+        for (String key : keysList)
+            updatePool.put(Constants.COMMENTS_PATH+"/"+key, null);
+
+        rootRef.updateChildren(updatePool)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, e.getMessage());
                         e.printStackTrace();
                     }
                 });
