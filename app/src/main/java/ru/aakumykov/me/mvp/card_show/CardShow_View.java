@@ -58,6 +58,8 @@ public class CardShow_View extends BaseView implements
 {
     private ListView mainListView;
 
+    private LinearLayout commentLayout;
+
     private TextView titleView;
     private TextView quoteView;
     private ConstraintLayout imageHolder;
@@ -101,6 +103,7 @@ public class CardShow_View extends BaseView implements
         mainListView.addFooterView(footerView);
 
         // Подключаю элементы
+        commentLayout = findViewById(R.id.commentLayout);
         titleView = findViewById(R.id.titleView);
         quoteView = findViewById(R.id.quoteView);
         imageHolder = findViewById(R.id.imageHolder);
@@ -426,6 +429,15 @@ public class CardShow_View extends BaseView implements
         enableCommentForm();
     }
 
+    @Override
+    public void showCommentInProgress() {
+//        commentLayout.setAlpha(0.5f);
+    }
+
+    @Override
+    public void hideCommentInProgress() {
+//        commentLayout.setAlpha(1.0f);
+    }
 
     // Внутренние методы
     private void loadCard() {

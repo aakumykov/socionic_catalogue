@@ -22,16 +22,19 @@ public interface iCardShow {
         void displayImageError();
         void displayTags(HashMap<String,Boolean> tagsHash);
 
+        void showCommentsThrobber();
+        void hideCommentsThrobber();
+
         void displayComments(List<Comment> list);
         void appendComment(Comment comment);
         void removeComment(Comment comment);
 
-        void showCommentsThrobber();
-        void hideCommentsThrobber();
-
         void disableCommentForm();
         void enableCommentForm();
         void resetCommentForm();
+
+        void showCommentInProgress();
+        void hideCommentInProgress();
 
         void goEditPage(Card card); // не нужно?
         void goList(String tagFilter);

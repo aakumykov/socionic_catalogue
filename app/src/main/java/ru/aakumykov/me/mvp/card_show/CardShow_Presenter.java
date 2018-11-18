@@ -107,6 +107,7 @@ public class CardShow_Presenter implements
 
         if (!TextUtils.isEmpty(comment.getText())) {
             try {
+                view.showCommentInProgress();
                 commentsService.updateComment(comment, new iCommentsSingleton.CreateCallbacks() {
                     @Override
                     public void onCommentSaveSuccess(Comment comment) {
@@ -118,6 +119,7 @@ public class CardShow_Presenter implements
                         view.showErrorMsg(R.string.COMMENT_save_error);
                     }
                 });
+
             } catch (Exception e) {
                 view.showErrorMsg(R.string.COMMENT_save_error);
                 e.printStackTrace();
@@ -210,17 +212,17 @@ public class CardShow_Presenter implements
 
     @Override
     public void onCommentSaveSuccess(Comment comment) {
+        view.hideCommentInProgress();
         view.showToast( R.string.COMMENT_saved);
-
         view.appendComment(comment);
         view.resetCommentForm();
-
         cardsService.updateCommentsCounter(comment.getCardId(), 1);
     }
 
     @Override
     public void onCommentSaveError(String errorMsg) {
-//        view.enableCommentForm();
+        view.hideCommentInProgress();
+        view.enableCommentForm();
         view.showErrorMsg(errorMsg);
     }
 

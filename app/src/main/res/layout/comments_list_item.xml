@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/commentLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingTop="8dp">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,16 +42,17 @@
         android:id="@+id/commentText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
         android:gravity="top|start"
         android:padding="6dp"
-        android:textSize="@dimen/comment_text_size"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="8dp" />
+        android:textSize="@dimen/comment_text_size" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal" android:paddingBottom="8dp">
+        android:orientation="horizontal"
+        android:paddingBottom="8dp">
 
         <ImageView
             android:id="@+id/rateUp"
