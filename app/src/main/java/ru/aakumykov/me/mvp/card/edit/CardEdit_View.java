@@ -311,6 +311,10 @@ public class CardEdit_View extends BaseView implements
         titleView.setEnabled(false);
         quoteView.setEnabled(false);
         descriptionView.setEnabled(false);
+
+        newTagInput.setEnabled(false);
+        addTagButton.setEnabled(false);
+
         saveButton.setEnabled(false);
 
         MyUtils.show(imageProgressBar);
@@ -321,6 +325,10 @@ public class CardEdit_View extends BaseView implements
         titleView.setEnabled(true);
         quoteView.setEnabled(true);
         descriptionView.setEnabled(true);
+
+        newTagInput.setEnabled(false);
+        addTagButton.setEnabled(false);
+
         saveButton.setEnabled(true);
 
         MyUtils.hide(imageProgressBar);

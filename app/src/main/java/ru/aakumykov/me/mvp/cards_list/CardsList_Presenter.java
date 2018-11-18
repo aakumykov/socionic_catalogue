@@ -8,23 +8,25 @@ import java.util.List;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
+import ru.aakumykov.me.mvp.interfaces.iCommentsSingleton;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
+import ru.aakumykov.me.mvp.services.CommentsSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
 
 public class CardsList_Presenter implements
         iCardsList.Presenter,
         iCardsSingleton.ListCallbacks,
-        iCardsSingleton.DeleteCallbacks,
-        iDialogCallbacks.Delete
+        iCardsSingleton.DeleteCallbacks
 {
     private final static String TAG = "CardsList_Presenter";
     private iCardsList.View view;
-    private iCardsSingleton cardsService = CardsSingleton.getInstance();
     private iAuthSingleton authService = AuthSingleton.getInstance();
+    private iCardsSingleton cardsService = CardsSingleton.getInstance();
+    private iCommentsSingleton commentsService = CommentsSingleton.getInstance();
 
     private Card currentCard = null;
     private String tagFilter = null;
@@ -56,10 +58,15 @@ public class CardsList_Presenter implements
     }
 
     @Override
-    public void deleteCard(final Card card) {
-        Log.d(TAG, "deleteCard()");
+    public void deleteCardConfigmed(final Card card) {
         this.currentCard = card;
-        view.deleteCardRequest(this);
+
+        try {
+            cardsService.deleteCard(card, this);
+        } catch (Exception e) {
+            onCardDeleteError(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 
@@ -74,26 +81,6 @@ public class CardsList_Presenter implements
     @Override
     public void onListLoadFail(String errorMessage) {
 
-    }
-
-
-    @Override
-    public boolean deleteDialogCheck() {
-        return true;
-    }
-
-    @Override
-    public void deleteDialogYes() {
-        Log.d(TAG, "Удаление подтверждено");
-        view.showProgressBar();
-//        view.showInfoMsg(R.string.deleting_card);
-        cardsService.deleteCard(currentCard, this);
-    }
-
-    @Override
-    public void onDeleteDialogNo() {
-        Log.d(TAG, "Удаление отклонено");
-        this.currentCard = null;
     }
 
 
@@ -119,13 +106,20 @@ public class CardsList_Presenter implements
                     }
                 }
         );
+
+        try {
+            commentsService.deleteCommentsForCard(card);
+        } catch (Exception e) {
+            view.showErrorMsg(R.string.CARDS_LIST_error_deleting_card, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onCardDeleteError(String msg) {
         Log.d(TAG, "onCardDeleteError()");
         view.hideProgressBar();
-        view.showErrorMsg(R.string.CARD_SHOW_error_deleting_card, msg);
+        view.showErrorMsg(R.string.CARDS_LIST_error_deleting_card, msg);
     }
 
 

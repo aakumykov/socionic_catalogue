@@ -17,10 +17,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.interfaces.iCommentsSingleton;
+import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.models.Comment;
 
 
@@ -40,8 +42,8 @@ public class CommentsSingleton implements iCommentsSingleton {
     // Свойства
     private final static String TAG = "CommentsSingleton";
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference commentsRef = firebaseDatabase.getReference().child(Constants.COMMENTS_PATH);
+    private DatabaseReference rootRef = firebaseDatabase.getReference().child("/");
+    private DatabaseReference commentsRef = rootRef.child(Constants.COMMENTS_PATH);
 
 
     // Интерфейсные методы
@@ -105,8 +107,7 @@ public class CommentsSingleton implements iCommentsSingleton {
                 "/commentsKeys/"+comment.getKey();
         updatePool.put(commentInCardPath, null);
 
-        databaseRef.child("/")
-                .updateChildren(updatePool)
+        rootRef.updateChildren(updatePool)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -123,10 +124,29 @@ public class CommentsSingleton implements iCommentsSingleton {
     }
 
     @Override
-    public void deleteCommentsForCard(String cardId) {
-        Map<String,Boolean> updatePool = new HashMap<>();
+    public void deleteCommentsForCard(final Card card) throws Exception {
+        Map<String,Object> updatePool = new HashMap<>();
 
-        // TODO: вот для чего нужно хранить ключи комментов в карточке
+        HashMap<String,Boolean> commentsKeys = card.getCommentsKeys();
+        List<String> commentsList = new ArrayList<>(commentsKeys.keySet());
+        for(String key : commentsList) {
+            updatePool.put(Constants.COMMENTS_PATH+"/"+key, null);
+        }
+
+        rootRef.updateChildren(updatePool)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Error deleting comments for card "+card);
+                        e.printStackTrace();
+                    }
+                });
     }
 
     // Внутренние методы

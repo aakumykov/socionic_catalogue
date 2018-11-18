@@ -158,4 +158,5 @@
     <string name="COMMENT_cannot_be_empty">Cannot be empty</string>
     <string name="action_denied">Action denied</string>
     <string name="DIALOG_delete_comment">Delete comment?</string>
+    <string name="CARDS_LIST_error_deleting_card">Error deleting card</string>
 </resources>
