@@ -48,6 +48,9 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
         TextView commentAuthorView = view.findViewById(R.id.commentAuthor);
         commentAuthorView.setText(comment.getUserName());
 
+        TextView commentRatingView = view.findViewById(R.id.commentRating);
+        commentRatingView.setText( ""+comment.getRating() );
+
         ImageView commentMenu = view.findViewById(R.id.commentMenu);
         commentMenu.setOnClickListener(new View.OnClickListener() {
             @Override
