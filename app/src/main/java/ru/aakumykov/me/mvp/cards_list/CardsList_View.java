@@ -102,9 +102,19 @@ public class CardsList_View extends BaseView implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
         presenter.linkView(this);
+
+        switch (requestCode) {
+            case Constants.CODE_CREATE_CARD:
+                // TODO: как отображать ошибку?
+                if (RESULT_OK==resultCode) processCardCreationResult(data);
+                break;
+            case Constants.CODE_EDIT_CARD:
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -175,6 +185,12 @@ public class CardsList_View extends BaseView implements
         MyUtils.show(filterView);
 
         activateUpButton();
+    }
+
+    @Override
+    public void addListItem(Card card) {
+        cardsList.add(card);
+        cardsListAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -304,5 +320,21 @@ public class CardsList_View extends BaseView implements
 
         if (showProgressBar) showProgressBar();
         presenter.loadList(tagFilter);
+    }
+
+    private void processCardCreationResult(Intent data) {
+
+        if (null != data) {
+
+            Card card = data.getParcelableExtra(Constants.CARD);
+
+            if (null != card) {
+                showToast(R.string.INFO_card_created);
+                addListItem(card);
+
+            } else {
+                showErrorMsg(R.string.CARDS_LIST_error_creating_card);
+            }
+        }
     }
 }

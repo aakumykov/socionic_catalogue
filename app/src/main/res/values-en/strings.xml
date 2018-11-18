@@ -160,4 +160,5 @@
     <string name="DIALOG_delete_comment">Delete comment?</string>
     <string name="CARDS_LIST_error_deleting_card">Error deleting card</string>
     <string name="error_deleting_card_tags">Error deleting card tags</string>
+    <string name="CARDS_LIST_error_creating_card">Error creating card</string>
 </resources>
