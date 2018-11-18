@@ -159,5 +159,4 @@
     <string name="action_denied">Action denied</string>
     <string name="DIALOG_delete_comment">Delete comment?</string>
     <string name="CARDS_LIST_error_deleting_card">Error deleting card</string>
-    <string name="CARDS_LIST_list_error">List error</string>
 </resources>

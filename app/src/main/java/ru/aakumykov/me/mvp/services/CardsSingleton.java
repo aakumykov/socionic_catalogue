@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,7 +40,7 @@ public class CardsSingleton implements
     private final static String TAG = "CardsSingleton";
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference cardsRef = firebaseDatabase.getReference().child(Constants.CARDS_PATH);
-    private ChildEventListener childEventListener;
+
 
     // Интерфейсные методы
     @Override
@@ -157,88 +156,47 @@ public class CardsSingleton implements
     public void loadList(@Nullable String tagFilter, final ListCallbacks callbacks) {
         Log.d(TAG, "loadList(tagFilter: "+ tagFilter +", ...)");
 
-        ChildEventListener childEventListener = new ChildEventListener() {
+        Query query = (null != tagFilter)
+            ? cardsRef.orderByChild("tags/"+tagFilter).equalTo(true)
+            : cardsRef.orderByKey();
+
+        // TODO: а где уходить в оффлайн?
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+//        query.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Card card = dataSnapshot.getValue(Card.class);
-                if (null != card) {
-                    callbacks.onListChildAdded(card);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                Log.d(TAG, "onDataChange(), "+dataSnapshot);
+
+                List<Card> list = new ArrayList<>();
+
+                for (DataSnapshot snapshotPiece : dataSnapshot.getChildren()) {
+                    try {
+                        Card card = snapshotPiece.getValue(Card.class);
+
+                        if (null != card) {
+                            card.setKey(snapshotPiece.getKey());
+                            list.add(card);
+                        } else {
+                           callbacks.onListLoadFail("Card from snapshotPiece is null");
+                           Log.d(TAG, "snapshotPiece: "+snapshotPiece);
+                        }
+
+                    } catch (Exception e) {
+                        // Здесь бы сообщение пользователю, но оно затрётся инфой
+                        Log.e(TAG, e.getMessage()+", snapshotPiece: "+snapshotPiece);
+                        e.printStackTrace();
+                    }
                 }
-            }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                Card card = dataSnapshot.getValue(Card.class);
-                if (null != card) {
-                    callbacks.onListChildRemoved(card);
-                }
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                callbacks.onListLoadSuccess(list);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                callbacks.onListChildError(databaseError.getMessage());
+                callbacks.onListLoadFail(databaseError.getMessage());
                 databaseError.toException().printStackTrace();
             }
-        };
-
-//        Query query = (null != tagFilter)
-//            ? cardsRef.orderByChild("tags/"+tagFilter).equalTo(true)
-//            : cardsRef.orderByKey();
-
-        // TODO: а где уходить в оффлайн?
-//        query.addListenerForSingleValueEvent(new ValueEventListener() {
-////        query.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                List<Card> list = new ArrayList<>();
-//
-//                for (DataSnapshot snapshotPiece : dataSnapshot.getChildren()) {
-//                    try {
-//                        Card card = snapshotPiece.getValue(Card.class);
-//
-//                        if (null != card) {
-//                            card.setKey(snapshotPiece.getKey());
-//                            list.add(card);
-//                        } else {
-//                           callbacks.onListLoadFail("Card from snapshotPiece is null");
-//                           Log.d(TAG, "snapshotPiece: "+snapshotPiece);
-//                        }
-//
-//                    } catch (Exception e) {
-//                        // Здесь бы сообщение пользователю, но оно затрётся инфой
-//                        Log.e(TAG, e.getMessage()+", snapshotPiece: "+snapshotPiece);
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//                callbacks.onListLoadSuccess(list);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                callbacks.onListLoadFail(databaseError.getMessage());
-//                databaseError.toException().printStackTrace();
-//            }
-//        });
-        cardsRef
-//        query
-         .addChildEventListener();
+        });
     }
 
-
-    @Override
-    public void detachListener() {
-        cardsRef.removeEventListener(childEventListener);
-    }
 }

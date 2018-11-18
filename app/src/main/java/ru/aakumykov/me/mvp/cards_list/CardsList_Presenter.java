@@ -28,7 +28,6 @@ public class CardsList_Presenter implements
     private iCardsSingleton cardsService = CardsSingleton.getInstance();
     private iCommentsSingleton commentsService = CommentsSingleton.getInstance();
 
-    private List<Card> cardsList;
     private Card currentCard = null;
     private String tagFilter = null;
 
@@ -42,18 +41,11 @@ public class CardsList_Presenter implements
         this.view = null;
     }
 
-    @Override
-    public void detachDBListener() {
-        cardsService.detachListener();
-    }
 
     // Интерфейсные
     @Override
-    public void loadList(List<Card> list, @Nullable String tagFilter) {
-
-        this.cardsList = list;
-
-        // TODO: где, по-хорошему, обрабатывать ошибки: здесь или во view?
+    public void loadList(@Nullable String tagFilter) {
+        Log.d(TAG, "loadList()");
 
         if (null != tagFilter) {
             this.tagFilter = tagFilter;
@@ -79,48 +71,19 @@ public class CardsList_Presenter implements
 
 
     // Коллбеки
-//    @Override
-//    public void onListLoadSuccess(List<Card> list) {
-//        if (null != tagFilter)
-//            view.displayTagFilter(tagFilter);
-//        view.displayList(list);
-//    }
-//
-//    @Override
-//    public void onListLoadFail(String errorMessage) {
-//
-//    }
-    // Списка
     @Override
-    public void onListChildAdded(Card card) {
-//        view.hideProgressBar();
-        this.cardsList.add(card);
-        view.notifyListChanged();
+    public void onListLoadSuccess(List<Card> list) {
+        if (null != tagFilter)
+            view.displayTagFilter(tagFilter);
+        view.displayList(list);
     }
 
     @Override
-    public void onListChildChanged(Card card, @Nullable String oldTitle) {
-        view.notifyListChanged();
+    public void onListLoadFail(String errorMessage) {
+
     }
 
-    @Override
-    public void onListChildRemoved(Card card) {
-        this.cardsList.remove(card);
-        view.notifyListChanged();
-    }
 
-    @Override
-    public void onListChildMoved(Card card, @Nullable String oldTitle) {
-        view.notifyListChanged();
-    }
-
-    @Override
-    public void onListChildError(String errorMsg) {
-        view.showErrorMsg(R.string.CARDS_LIST_list_error, errorMsg);
-        Log.e(TAG, errorMsg);
-    }
-
-    // Удаления из списка (тогда не нужны)
     @Override
     public void onCardDeleteSuccess(Card card) {
         Log.d(TAG, "onCardDeleteSuccess()");
