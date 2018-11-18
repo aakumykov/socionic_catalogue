@@ -20,17 +20,19 @@ public class Comment implements Parcelable {
     private String cardId;
     private String parentId;
     private String userId;
+    private String userName;
     private String createdAt;
     private String editedAt;
     private int rating = 0;
     
     public Comment(){}
     
-    public Comment(String text, String cardId, String parentId, String userId) {
+    public Comment(String text, String cardId, String parentId, String userId, String userName) {
         this.text = text;
         this.cardId = cardId;
         this.parentId = parentId;
         this.userId = userId;
+        this.userName = userName;
     }
     
 
@@ -42,6 +44,7 @@ public class Comment implements Parcelable {
                 +", cardId: "+cardId
                 +", parentId: "+parentId
                 +", userId: "+userId
+                +", userName: "+userName
                 +", createdAt: "+createdAt
                 +", editedAt: "+editedAt
                 +", rating: "+rating
@@ -56,6 +59,7 @@ public class Comment implements Parcelable {
             map.put("cardId", cardId);
             map.put("parentId", parentId);
             map.put("userId", userId);
+            map.put("userName", userName);
             map.put("createdAt", createdAt);
             map.put("editedAt", editedAt);
             map.put("rating", rating);
@@ -89,6 +93,7 @@ public class Comment implements Parcelable {
         dest.writeString(cardId);
         dest.writeString(parentId);
         dest.writeString(userId);
+        dest.writeString(userName);
         dest.writeString(createdAt);
         dest.writeString(editedAt);
         dest.writeInt(rating);
@@ -101,6 +106,7 @@ public class Comment implements Parcelable {
         cardId = in.readString();
         parentId = in.readString();
         userId = in.readString();
+        userName = in.readString();
         createdAt = in.readString();
         editedAt = in.readString();
         rating = in.readInt();
@@ -112,7 +118,6 @@ public class Comment implements Parcelable {
     public String getKey() {
         return key;
     }
-
     public void setKey(String key) {
         this.key = key;
     }
@@ -120,7 +125,6 @@ public class Comment implements Parcelable {
     public String getText() {
         return text;
     }
-
     public void setText(String text) {
         this.text = text;
     }
@@ -128,7 +132,6 @@ public class Comment implements Parcelable {
     public String getCardId() {
         return cardId;
     }
-
     public void setCardId(String cardId) {
         this.cardId = cardId;
     }
@@ -136,7 +139,6 @@ public class Comment implements Parcelable {
     public String getParentId() {
         return parentId;
     }
-
     public void setParentId(String parentId) {
         this.parentId = parentId;
     }
@@ -144,15 +146,20 @@ public class Comment implements Parcelable {
     public String getUserId() {
         return userId;
     }
-
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getCreatedAt() {
         return createdAt;
     }
-
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
@@ -160,7 +167,6 @@ public class Comment implements Parcelable {
     public String getEditedAt() {
         return editedAt;
     }
-
     public void setEditedAt(String editedAt) {
         this.editedAt = editedAt;
     }
@@ -168,7 +174,6 @@ public class Comment implements Parcelable {
     public int getRating() {
         return rating;
     }
-
     public void setRating(int rating) {
         this.rating = rating;
     }
