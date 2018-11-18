@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/DIALOG_input_text"
-        android:inputType="textMultiLine|textPersonName" />
+        android:inputType="textCapSentences|textMultiLine" />
 
     <TextView
         android:id="@+id/dialogErrorView"
