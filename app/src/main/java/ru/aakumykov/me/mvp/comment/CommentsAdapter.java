@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import ru.aakumykov.me.mvp.R;
@@ -42,6 +44,9 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 
         TextView commentTextView = view.findViewById(R.id.commentText);
         commentTextView.setText(comment.getText());
+
+        TextView commentAuthorView = view.findViewById(R.id.commentAuthor);
+        commentAuthorView.setText(comment.getUserName());
 
         ImageView commentMenu = view.findViewById(R.id.commentMenu);
         commentMenu.setOnClickListener(new View.OnClickListener() {

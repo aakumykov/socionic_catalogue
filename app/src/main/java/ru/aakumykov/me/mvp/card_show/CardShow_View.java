@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.Gravity;
@@ -502,6 +503,10 @@ public class CardShow_View extends BaseView implements
         currentComment = comment;
 
         PopupMenu popupMenu = new PopupMenu(this, v);
+//        popupMenu.setGravity(GravityCompat.START);
+        popupMenu.setGravity(GravityCompat.END);
+//        popupMenu.setGravity(GravityCompat.RELATIVE_HORIZONTAL_GRAVITY_MASK);
+//        popupMenu.setGravity(GravityCompat.RELATIVE_LAYOUT_DIRECTION);
 
         // TODO: сделать это по-нормальному
         // TODO: логика-то во вьюхе не должна присутствовать!
