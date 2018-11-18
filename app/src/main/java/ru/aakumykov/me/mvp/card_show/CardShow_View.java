@@ -51,7 +51,6 @@ import ru.aakumykov.me.mvp.utils.YesNoDialog;
 public class CardShow_View extends BaseView implements
         iCardShow.View,
         View.OnClickListener,
-//        ListView.OnItemClickListener,
         PopupMenu.OnMenuItemClickListener,
         TagView.OnTagClickListener,
         iComments.commentClickListener
@@ -84,6 +83,7 @@ public class CardShow_View extends BaseView implements
 
     private Card currentCard;
     private Comment currentComment;
+    private View currentCommentView;
 
 
     // TODO: удаление комментариев вместе с карточкой
@@ -125,7 +125,8 @@ public class CardShow_View extends BaseView implements
 
         // Присоединяю адаптер списка
         commentsList = new ArrayList<>();
-        commentsAdapter = new CommentsAdapter(this, R.layout.comments_list_item, commentsList, this);
+        commentsAdapter = new CommentsAdapter(this, R.layout.comments_list_item,
+                commentsList, this);
         mainListView.setAdapter(commentsAdapter);
 
 //        mainListView.setOnItemClickListener(this);
@@ -431,12 +432,12 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public void showCommentInProgress() {
-//        commentLayout.setAlpha(0.5f);
+        currentCommentView.setAlpha(0.5f);
     }
 
     @Override
     public void hideCommentInProgress() {
-//        commentLayout.setAlpha(1.0f);
+        currentCommentView.setAlpha(1.0f);
     }
 
     // Внутренние методы
@@ -513,12 +514,9 @@ public class CardShow_View extends BaseView implements
     private void showCommentMenu(final View v, final Comment comment) {
 
         currentComment = comment;
+        currentCommentView = v;
 
         PopupMenu popupMenu = new PopupMenu(this, v);
-//        popupMenu.setGravity(GravityCompat.START);
-        popupMenu.setGravity(GravityCompat.END);
-//        popupMenu.setGravity(GravityCompat.RELATIVE_HORIZONTAL_GRAVITY_MASK);
-//        popupMenu.setGravity(GravityCompat.RELATIVE_LAYOUT_DIRECTION);
 
         // TODO: сделать это по-нормальному
         // TODO: логика-то во вьюхе не должна присутствовать!

@@ -212,10 +212,10 @@ public class CardShow_Presenter implements
 
     @Override
     public void onCommentSaveSuccess(Comment comment) {
-        view.hideCommentInProgress();
         view.showToast( R.string.COMMENT_saved);
-        view.appendComment(comment);
+        view.hideCommentInProgress();
         view.resetCommentForm();
+        view.appendComment(comment);
         cardsService.updateCommentsCounter(comment.getCardId(), 1);
     }
 
