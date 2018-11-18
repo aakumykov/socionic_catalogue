@@ -83,6 +83,11 @@ public class AuthSingleton implements iAuthSingleton
     }
 
     @Override
+    public String userName() {
+        return "*пользователь*";
+    }
+
+    @Override
     public boolean isAdmin(String userId) {
         return true;
     }

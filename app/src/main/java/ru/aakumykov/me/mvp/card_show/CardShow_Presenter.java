@@ -60,7 +60,9 @@ public class CardShow_Presenter implements
     @Override
     public void postComment(String text) {
 //        view.disableCommentForm();
-        Comment comment = new Comment(text, currentCard.getKey(), null, authService.currentUid());
+        Comment comment = new Comment(text, currentCard.getKey(), null,
+                authService.currentUid(), authService.userName());
+
         commentsService.createComment(comment, this);
     }
 

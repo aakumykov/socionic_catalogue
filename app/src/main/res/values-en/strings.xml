@@ -162,4 +162,5 @@
     <string name="error_deleting_card_tags">Error deleting card tags</string>
     <string name="CARDS_LIST_error_creating_card">Error creating card</string>
     <string name="CARD_SHOW_data_error">Data error</string>
+    <string name="COMMENT_author">Comment author</string>
 </resources>
