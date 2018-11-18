@@ -94,7 +94,7 @@ public class CardsSingleton implements
 
     @Override
     public void deleteCard(final Card card, final  DeleteCallbacks callbacks) {
-        Log.d(TAG, "deleteCard(), "+card);
+        Log.d(TAG, "deleteCardConfigmed(), "+card);
 
         DatabaseReference cardRef = cardsRef.child(card.getKey());
 

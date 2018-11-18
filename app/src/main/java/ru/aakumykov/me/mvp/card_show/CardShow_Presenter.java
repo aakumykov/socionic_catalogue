@@ -191,7 +191,7 @@ public class CardShow_Presenter implements
         );
 
         try {
-            commentsService.deleteCommentsForCard(currentCard.getKey());
+            commentsService.deleteCommentsForCard(currentCard);
         } catch (Exception e) {
             e.printStackTrace();
         }

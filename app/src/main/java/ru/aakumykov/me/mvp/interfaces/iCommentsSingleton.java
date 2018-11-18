@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.interfaces;
 
 import java.util.List;
 
+import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.models.Comment;
 
 public interface iCommentsSingleton {
@@ -10,7 +11,7 @@ public interface iCommentsSingleton {
     void createComment(Comment commentDraft, CreateCallbacks callbacks);
     void updateComment(Comment comment, CreateCallbacks callbacks);
     void deleteComment(Comment comment, DeleteCallbacks callbacks);
-    void deleteCommentsForCard(String cardId);
+    void deleteCommentsForCard(Card card) throws Exception;
 
 
     interface ListCallbacks {

@@ -30,8 +30,9 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
+import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Card;
-import ru.aakumykov.me.mvp.utils.YesNoDialog;
+import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 // Построен по принципу Active View
@@ -176,22 +177,6 @@ public class CardsList_View extends BaseView implements
         activateUpButton();
     }
 
-    @Override
-    public void deleteCardRequest(iDialogCallbacks.Delete callbacks) {
-        Log.d(TAG, "deleteCardRequest()");
-
-        String cardName = currentCard.getTitle();
-
-        YesNoDialog yesNoDialog = new YesNoDialog(
-                this,
-                getResources().getString(R.string.DIALOG_deleted_card_name, cardName),
-                null,
-                callbacks
-        );
-
-        yesNoDialog.show();
-    }
-
 
     // Нажатия
     @OnClick(R.id.filterCloser)
@@ -260,7 +245,7 @@ public class CardsList_View extends BaseView implements
                 return true;
 
             case R.id.actionDelete:
-                presenter.deleteCard(currentCard);
+                deleteCard();
                 return true;
 
             default:
@@ -271,14 +256,37 @@ public class CardsList_View extends BaseView implements
 
     // Внутренние методы
     private void editCard() {
-        Log.d(TAG, "editCard()");
-
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.setAction(Constants.ACTION_EDIT);
         intent.putExtra(Constants.CARD_KEY, currentCard.getKey());
         startActivity(intent);
-
         currentCard = null;
+    }
+
+    private void deleteCard() {
+        String cardName = currentCard.getTitle();
+
+        MyDialogs.cardDeleteDialog(this, cardName, new iMyDialogs.Delete() {
+            @Override
+            public void onCancelInDialog() {
+
+            }
+
+            @Override
+            public void onNoInDialog() {
+
+            }
+
+            @Override
+            public boolean onCheckInDialog() {
+                return true;
+            }
+
+            @Override
+            public void onYesInDialog() {
+                presenter.deleteCardConfigmed(currentCard);
+            }
+        });
     }
 
     private void loadList(boolean showProgressBar) {
