@@ -17,6 +17,7 @@ public interface iCardsList {
         void displayTagFilter(String text);
 
         void addListItem(Card card);
+        void updateListItem(int index, Card card);
         void removeListItem(Card card);
     }
 

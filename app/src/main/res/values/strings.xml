@@ -166,4 +166,5 @@
     <string name="CARDS_LIST_error_deleting_card">Ошибка удаления карточки</string>
     <string name="error_deleting_card_tags">Ошибка удаления меток карточки</string>
     <string name="CARDS_LIST_error_creating_card">Ошибка создания карточки</string>
+    <string name="CARD_SHOW_data_error">Ошибка данных</string>
 </resources>

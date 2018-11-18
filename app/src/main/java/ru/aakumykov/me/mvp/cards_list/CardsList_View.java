@@ -111,6 +111,7 @@ public class CardsList_View extends BaseView implements
                 if (RESULT_OK==resultCode) processCardCreationResult(data);
                 break;
             case Constants.CODE_EDIT_CARD:
+                if (RESULT_OK==resultCode) processCardEditionResult(data);
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
@@ -190,6 +191,12 @@ public class CardsList_View extends BaseView implements
     @Override
     public void addListItem(Card card) {
         cardsList.add(card);
+        cardsListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateListItem(int index, Card card) {
+        cardsList.set(index, card);
         cardsListAdapter.notifyDataSetChanged();
     }
 
@@ -281,12 +288,13 @@ public class CardsList_View extends BaseView implements
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.setAction(Constants.ACTION_EDIT);
         intent.putExtra(Constants.CARD_KEY, currentCard.getKey());
-        startActivity(intent);
-        currentCard = null;
+        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+//        currentCard = null;
     }
 
     private void deleteCard() {
         String cardName = currentCard.getTitle();
+//        currentCard = null;
 
         MyDialogs.cardDeleteDialog(this, cardName, new iMyDialogs.Delete() {
             @Override
@@ -335,6 +343,24 @@ public class CardsList_View extends BaseView implements
             } else {
                 showErrorMsg(R.string.CARDS_LIST_error_creating_card);
             }
+
+        } else {
+            showErrorMsg(R.string.CARD_SHOW_data_error);
+        }
+    }
+
+    private void processCardEditionResult(Intent data) {
+
+        if (null != data) {
+
+            Card newCard = data.getParcelableExtra(Constants.CARD);
+
+            Integer oldCardIndex = cardsList.indexOf(currentCard);
+
+            updateListItem(oldCardIndex, newCard);
+
+        } else {
+            showErrorMsg(R.string.CARD_SHOW_data_error);
         }
     }
 }
