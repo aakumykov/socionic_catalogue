@@ -334,7 +334,8 @@ public abstract class BaseView extends AppCompatActivity implements
     private void onCardCreated(int resultCode, @Nullable Intent data) {
         switch (resultCode) {
             case RESULT_OK:
-                showInfoMsg(R.string.INFO_card_created);
+//                showInfoMsg(R.string.INFO_card_created);
+                showToast(R.string.INFO_card_created);
                 break;
             case RESULT_CANCELED:
                 showInfoMsg(R.string.INFO_operation_cancelled);

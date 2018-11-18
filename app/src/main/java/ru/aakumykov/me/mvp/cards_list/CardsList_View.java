@@ -72,8 +72,6 @@ public class CardsList_View extends BaseView implements
         swiperefreshLayout.setOnRefreshListener(this);
         swiperefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
 
-        presenter = new CardsList_Presenter();
-
         cardsList = new ArrayList<>();
         cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
         listView.setAdapter(cardsListAdapter);
@@ -81,6 +79,8 @@ public class CardsList_View extends BaseView implements
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
         listView.setLongClickable(true);
+
+        presenter = new CardsList_Presenter();
     }
 
     @Override
@@ -98,6 +98,7 @@ public class CardsList_View extends BaseView implements
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
+        presenter.detachDBListener();
     }
 
     @Override
@@ -177,12 +178,17 @@ public class CardsList_View extends BaseView implements
         activateUpButton();
     }
 
+    @Override
+    public void notifyListChanged() {
+        cardsListAdapter.notifyDataSetChanged();
+    }
+
 
     // Нажатия
     @OnClick(R.id.filterCloser)
     void clearFilter() {
         MyUtils.hide(filterView);
-        presenter.loadList(null);
+        presenter.loadList(cardsList, null);
     }
 
     // Нажатия в списке
@@ -292,11 +298,13 @@ public class CardsList_View extends BaseView implements
     private void loadList(boolean showProgressBar) {
         String tagFilter = null;
 
+        // TODO: где, по-хорошему, обрабатывать ошибки: здесь или в presenter?
+
         try {
             tagFilter = getIntent().getStringExtra(Constants.TAG_FILTER);
         } catch (Exception e) {}
 
         if (showProgressBar) showProgressBar();
-        presenter.loadList(tagFilter);
+        presenter.loadList(cardsList, tagFilter);
     }
 }
