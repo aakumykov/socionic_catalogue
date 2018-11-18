@@ -15,6 +15,7 @@ public interface iCardsList {
     interface View extends iBaseView {
         void displayList(List<Card> list);
         void displayTagFilter(String text);
+        void removeListItem(Card card);
     }
 
     interface Presenter {

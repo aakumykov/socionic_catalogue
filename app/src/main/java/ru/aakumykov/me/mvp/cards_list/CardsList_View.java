@@ -177,6 +177,12 @@ public class CardsList_View extends BaseView implements
         activateUpButton();
     }
 
+    @Override
+    public void removeListItem(Card card) {
+        cardsList.remove(card);
+        cardsListAdapter.notifyDataSetChanged();
+    }
+
 
     // Нажатия
     @OnClick(R.id.filterCloser)

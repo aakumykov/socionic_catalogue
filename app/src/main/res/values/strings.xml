@@ -164,4 +164,5 @@
     <string name="DIALOG_delete_comment">Удалить комментарий?</string>
     <string name="COMMENT_delete_message_template" translatable="false">%1$s ...</string>
     <string name="CARDS_LIST_error_deleting_card">Ошибка удаления карточки</string>
+    <string name="error_deleting_card_tags">Ошибка удаления меток карточки</string>
 </resources>

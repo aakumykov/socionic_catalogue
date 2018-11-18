@@ -26,6 +26,7 @@ public class CardsList_Presenter implements
     private iCardsList.View view;
     private iAuthSingleton authService = AuthSingleton.getInstance();
     private iCardsSingleton cardsService = CardsSingleton.getInstance();
+    private iTagsSingleton tagsService = TagsSingleton.getInstance();
     private iCommentsSingleton commentsService = CommentsSingleton.getInstance();
 
     private Card currentCard = null;
@@ -89,20 +90,22 @@ public class CardsList_Presenter implements
         Log.d(TAG, "onCardDeleteSuccess()");
 
         view.hideProgressBar();
+        view.showToast(R.string.card_deleted);
+        view.removeListItem(card);
 
-        TagsSingleton.getInstance().updateCardTags(
+        tagsService.updateCardTags(
                 currentCard.getKey(),
                 currentCard.getTags(),
                 null,
                 new iTagsSingleton.UpdateCallbacks() {
                     @Override
                     public void onUpdateSuccess() {
-                        view.showInfoMsg(R.string.card_deleted);
+
                     }
 
                     @Override
                     public void onUpdateFail(String errorMsg) {
-                        view.showErrorMsg(R.string.CARD_SHOW_error_deleting_card, errorMsg);
+                        view.showErrorMsg(R.string.error_deleting_card_tags, errorMsg);
                     }
                 }
         );
