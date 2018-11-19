@@ -2,6 +2,8 @@ package ru.aakumykov.me.mvp.register;
 
 import android.util.Log;
 
+import java.util.concurrent.TimeUnit;
+
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
@@ -59,8 +61,8 @@ public class Register_Presenter implements
     // Коллбеки
     @Override
     public void onRegSucsess(String userId) {
-//        view.hideProgressBar();
-        view.showInfoMsg(R.string.REGISTER_succes);
+
+        view.showInfoMsg(R.string.REGISTER_crating_new_user);
 
         usersService.createUser(userId, new iUsersSingleton.CreateCallbacks() {
             @Override
@@ -72,7 +74,9 @@ public class Register_Presenter implements
 
             @Override
             public void onUserCreateFail(String errorMsg) {
+                view.hideProgressBar();
                 view.showErrorMsg(R.string.REGISTER_error_creating_user, errorMsg);
+//                onRegFail(errorMsg);
             }
         });
     }
@@ -81,7 +85,7 @@ public class Register_Presenter implements
     public void onRegFail(String errorMessage) {
         Log.d(TAG, "onRegFail(), "+errorMessage);
         view.hideProgressBar();
-        view.showErrorMsg(errorMessage);
+        view.showErrorMsg(R.string.REGISTER_registration_failed, errorMessage);
         view.enableForm();
     }
 

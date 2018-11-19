@@ -36,7 +36,6 @@ public class UsersSingleton implements iUsersSingleton {
     /* Одиночка */
 
     private final static String TAG = "UsersSingleton";
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference usersRef = firebaseDatabase.getReference().child(Constants.USERS_PATH);
 
@@ -72,8 +71,46 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void createUser(String uid, CreateCallbacks callbacks) {
+    public void createUser(final String userId, final CreateCallbacks callbacks) {
 
+        final User user = new User(userId);
+        final DatabaseReference newUserRef = usersRef.child(userId);
+
+        // Проверяю на дубликат
+        newUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                // Создаю, если пусто
+                if (null == dataSnapshot.getValue()) {
+
+                    newUserRef.setValue(user)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    callbacks.onUserCreateSuccess(user);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    callbacks.onUserCreateFail(e.getMessage());
+                                    e.printStackTrace();
+                                }
+                            });
+
+                } else {
+                    callbacks.onUserCreateFail("User with id '"+userId+"' already exists.");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callbacks.onUserCreateFail(databaseError.getMessage());
+                databaseError.toException().printStackTrace();
+            }
+        });
     }
 
     @Override

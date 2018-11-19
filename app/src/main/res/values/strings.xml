@@ -170,4 +170,5 @@
     <string name="COMMENT_author">Автор комментария</string>
     <string name="REGISTER_succes">Успешная регистрация</string>
     <string name="REGISTER_error_creating_user">Ошибка создания пользователя</string>
+    <string name="REGISTER_crating_new_user">Создаём нового пользователя</string>
 </resources>
