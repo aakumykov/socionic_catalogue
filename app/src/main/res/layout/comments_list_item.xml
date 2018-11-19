@@ -24,7 +24,7 @@
             android:id="@+id/commentAuthor"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="8"
+            android:layout_weight="18"
             android:contentDescription="@string/COMMENT_author"
             android:gravity="center_vertical|start"
             android:textColor="@color/colorPrimary" />
@@ -32,7 +32,7 @@
         <ImageView
             android:id="@+id/commentMenu"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:contentDescription="@string/COMMENT_more_actions"
             app:srcCompat="@drawable/ic_comment_more" />
@@ -42,8 +42,10 @@
         android:id="@+id/commentText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:gravity="top|start"
         android:padding="6dp"
         android:textSize="@dimen/comment_text_size" />
@@ -52,33 +54,45 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:paddingBottom="8dp">
+        android:paddingBottom="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <TextView
+            android:id="@+id/commentReply"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:text="@string/COMMENT_reply" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="26" />
 
         <ImageView
             android:id="@+id/rateUp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             app:srcCompat="@drawable/ic_thumb_up" />
 
         <TextView
             android:id="@+id/commentRating"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:paddingStart="4dp"
             android:paddingEnd="4dp" />
 
         <ImageView
             android:id="@+id/rateDown"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             app:srcCompat="@drawable/ic_thumb_down" />
 
-        <TextView
-            android:id="@+id/commentReply"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical|end"
-            android:text="@string/COMMENT_reply" />
     </LinearLayout>
 
 </LinearLayout>
