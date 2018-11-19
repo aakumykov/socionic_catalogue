@@ -9,13 +9,18 @@ import ru.aakumykov.me.mvp.models.User;
 public interface iUsersSingleton {
 
     void createUser(String name, String about);
-    void getUser(String id, UserCallbacks callbacks);
+    void getUser(String id, ReadCallbacks callbacks);
     void saveUser(User user, SaveCallbacks callbacks);
     void deleteUser(User user, DeleteCallbacks callbacks);
     void listUsers(ListCallbacks callbacks);
 
 
-    interface UserCallbacks {
+    interface CreateCallbacks {
+        void onUserCreateSuccess(User user);
+        void onUserCreateFail(String errorMsg);
+    }
+
+    interface ReadCallbacks {
         void onUserReadSuccess(User user);
         void onUserReadFail(String errorMsg);
     }

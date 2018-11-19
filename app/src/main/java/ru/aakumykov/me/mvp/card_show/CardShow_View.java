@@ -521,10 +521,10 @@ public class CardShow_View extends BaseView implements
         // TODO: сделать это по-нормальному
         // TODO: логика-то во вьюхе не должна присутствовать!
         if (isUserLoggedIn()) {
-            if (comment.getUserId().equals(getAuthService().currentUid()))
+            if (comment.getUserId().equals(getAuthService().currentUserId()))
                 popupMenu.inflate(R.menu.edit);
 
-            if (getAuthService().isAdmin(getAuthService().currentUid()))
+            if (getAuthService().userIsAdmin(getAuthService().currentUserId()))
                 popupMenu.inflate(R.menu.delete);
         }
 

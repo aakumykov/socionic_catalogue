@@ -61,7 +61,7 @@ public class CardShow_Presenter implements
     public void postComment(String text) {
 //        view.disableCommentForm();
         Comment comment = new Comment(text, currentCard.getKey(), null,
-                authService.currentUid(), authService.userName());
+                authService.currentUserId(), authService.currentUserName());
 
         commentsService.createComment(comment, this);
     }
@@ -79,7 +79,7 @@ public class CardShow_Presenter implements
             return;
 
         // TODO: эта проверка без проверки на залогиненность...
-        if (!authService.currentUid().equals(comment.getUserId())) {
+        if (!authService.currentUserId().equals(comment.getUserId())) {
             view.showErrorMsg(R.string.action_denied);
             return;
         }
@@ -101,7 +101,7 @@ public class CardShow_Presenter implements
         if (!authService.isUserLoggedIn())
             return;
 
-        if (!authService.currentUid().equals(comment.getUserId())) {
+        if (!authService.currentUserId().equals(comment.getUserId())) {
             view.showErrorMsg(R.string.action_denied);
         }
 
@@ -142,7 +142,7 @@ public class CardShow_Presenter implements
         if (!authService.isUserLoggedIn()) return;
 
         // TODO: "или Админ"
-        if (!authService.currentUid().equals(card.getUserId())) {
+        if (!authService.currentUserId().equals(card.getUserId())) {
             view.showErrorMsg(R.string.action_denied);
             return;
         }

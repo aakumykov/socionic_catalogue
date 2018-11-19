@@ -16,6 +16,7 @@ import ru.aakumykov.me.mvp.models.User;
 public class AuthStateListener implements iAuthStateListener {
 
     private final static String TAG = "AuthStateListener";
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     public AuthStateListener(final iAuthStateListener.StateChangeCallbacks callbacks) {
         Log.d(TAG, "new AuthStateListener()");
@@ -24,9 +25,9 @@ public class AuthStateListener implements iAuthStateListener {
         final iUsersSingleton usersService = UsersSingleton.getInstance();
 
 
-        FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            public void onAuthStateChanged(@NonNull FirebaseAuth fba) {
 
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
@@ -34,7 +35,7 @@ public class AuthStateListener implements iAuthStateListener {
 
                     callbacks.onLoggedIn();
 
-                    usersService.getUser(firebaseUser.getUid(), new iUsersSingleton.UserCallbacks() {
+                    usersService.getUser(firebaseUser.getUid(), new iUsersSingleton.ReadCallbacks() {
                         @Override
                         public void onUserReadSuccess(User user) {
                             authService.storeCurrentUser(user);

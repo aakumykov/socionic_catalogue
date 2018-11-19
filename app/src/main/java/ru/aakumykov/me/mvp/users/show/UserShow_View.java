@@ -24,7 +24,7 @@ import ru.aakumykov.me.mvp.users.iUsers;
 
 public class UserShow_View extends BaseView implements
         iUsers.ShowView,
-        iUsersSingleton.UserCallbacks
+        iUsersSingleton.ReadCallbacks
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.nameLabel) TextView nameLabel;

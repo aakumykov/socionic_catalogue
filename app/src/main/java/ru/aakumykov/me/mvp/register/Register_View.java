@@ -45,16 +45,28 @@ public class Register_View extends BaseView implements
         presenter = new Register_Presenter();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.linkView(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.unlinkView();
+    }
+
 
     // Обязательные методы
     @Override
     public void onUserLogin() {
-        // TODO: что здесь?
+        closePage();
     }
 
     @Override
     public void onUserLogout() {
-        // TODO: а здесь?
+        closePage();
     }
 
 

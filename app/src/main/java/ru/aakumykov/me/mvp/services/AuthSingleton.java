@@ -108,13 +108,11 @@ public class AuthSingleton implements iAuthSingleton
     }
 
     @Override
-    public String currentUserId() throws Exception {
+    public String currentUserId() /*throws Exception*/ {
         String firebaseUid = firebaseAuth.getUid();
-        String userId = getCurrentUser().getKey();
-
-        if (!firebaseUid.equals(userId)) throw new Exception("Firebase user id != program user uid");
-
-        return userId;
+//        String userId = getCurrentUser().getKey();
+//        if (!firebaseUid.equals(userId)) throw new Exception("Firebase user id != program user uid");
+        return firebaseUid;
     }
 
     @Override

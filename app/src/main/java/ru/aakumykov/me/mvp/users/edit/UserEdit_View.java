@@ -24,7 +24,7 @@ import ru.aakumykov.me.mvp.users.iUsers;
 
 public class UserEdit_View extends BaseView implements
         iUsers.EditView,
-        iUsersSingleton.UserCallbacks,
+        iUsersSingleton.ReadCallbacks,
         iUsersSingleton.SaveCallbacks,
         View.OnClickListener
 {

@@ -42,8 +42,8 @@ public interface iUsers {
         void loadList(iUsersSingleton.ListCallbacks callbacks);
         void listItemClicked(String key);
 
-        void loadUser(String userId, iUsersSingleton.UserCallbacks callbacks) throws Exception;
-        void prepareUserEdit(String userId, iUsersSingleton.UserCallbacks callbacks) throws Exception;
+        void loadUser(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception;
+        void prepareUserEdit(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception;
         void saveUser(User user);
 //        void deleteUser(User user);
     }

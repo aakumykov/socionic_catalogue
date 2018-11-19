@@ -77,7 +77,7 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void getUser(final String userId, final iUsersSingleton.UserCallbacks callbacks) {
+    public void getUser(final String userId, final ReadCallbacks callbacks) {
         Log.d(TAG, "getUser("+userId+", callbacks)");
 
         usersRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -131,7 +131,7 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void deleteUser(User user) {
+    public void deleteUser(User user, DeleteCallbacks callbacks) {
 
     }
 }

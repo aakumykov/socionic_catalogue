@@ -11,7 +11,7 @@ public interface iAuthSingleton {
 
     User currentUser();
     String currentUserName();
-    String currentUserId() throws Exception;
+    String currentUserId()/* throws Exception*/;
     boolean isUserLoggedIn();
     boolean userIsAdmin(String userId);
 

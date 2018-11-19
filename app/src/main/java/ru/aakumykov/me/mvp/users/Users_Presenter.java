@@ -100,7 +100,7 @@ public class Users_Presenter implements
     }
 
     @Override
-    public void loadUser(String userId, iUsersSingleton.UserCallbacks callbacks) throws Exception {
+    public void loadUser(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception {
         Log.d(TAG, "loadUser("+userId+")");
         if (null == userId) {
             throw new Exception("userId == null");
@@ -109,7 +109,7 @@ public class Users_Presenter implements
     }
 
     @Override
-    public void prepareUserEdit(String userId, iUsersSingleton.UserCallbacks callbacks) throws Exception {
+    public void prepareUserEdit(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception {
         Log.d(TAG, "prepareUserEdit("+userId+")");
         usersSingleton.getUser(userId, callbacks);
     }

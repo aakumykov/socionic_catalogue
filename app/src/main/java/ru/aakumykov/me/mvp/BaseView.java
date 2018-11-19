@@ -319,9 +319,14 @@ public abstract class BaseView extends AppCompatActivity implements
     }
 
     private void seeUserProfile() {
-        Intent intent = new Intent(this, UserShow_View.class);
-        intent.putExtra(Constants.USER_ID, authService.currentUid());
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(this, UserShow_View.class);
+            intent.putExtra(Constants.USER_ID, authService.currentUserId());
+            startActivity(intent);
+        } catch (Exception e) {
+            showErrorMsg(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void createCard() {

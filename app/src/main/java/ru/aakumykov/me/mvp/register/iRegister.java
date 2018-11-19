@@ -19,11 +19,5 @@ public interface iRegister {
         // TODO: вынести в общий интерфейс
         void linkView(iRegister.View view);
         void unlinkView();
-
-        void linkCardsService(iCardsSingleton model);
-        void unlinkCardsService();
-
-        void linkAuthService(iAuthSingleton authService);
-        void unlinkAuthService();
     }
 }
