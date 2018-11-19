@@ -168,5 +168,6 @@
     <string name="CARDS_LIST_error_creating_card">Ошибка создания карточки</string>
     <string name="CARD_SHOW_data_error">Ошибка данных</string>
     <string name="COMMENT_author">Автор комментария</string>
-    <string name="REGISTER_succes">Регистрация успешна</string>
+    <string name="REGISTER_succes">Успешная регистрация</string>
+    <string name="REGISTER_error_creating_user">Ошибка создания пользователя</string>
 </resources>

@@ -14,18 +14,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseUser;
-
-import butterknife.BindView;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
-import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
-import ru.aakumykov.me.mvp.interfaces.iAuthStateSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.login.Login_View;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
-import ru.aakumykov.me.mvp.services.AuthStateListener;
-import ru.aakumykov.me.mvp.services.AuthStateSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
@@ -39,7 +32,6 @@ public abstract class BaseView extends AppCompatActivity implements
     private final static String TAG = "BaseView";
     private iCardsSingleton cardsService;
     private iAuthSingleton authService;
-    private iAuthStateSingleton authStateSingleton;
 
     // Абстрактные методы
     public abstract void onUserLogin();
@@ -54,31 +46,17 @@ public abstract class BaseView extends AppCompatActivity implements
         // TODO: убрать вообще?
         authService = AuthSingleton.getInstance();
         cardsService = CardsSingleton.getInstance();
-        authStateSingleton = AuthStateSingleton.getInstance();
         // TODO: storageSingleton
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        authStateSingleton.registerListener(new iAuthStateSingleton.iAuthStateSingletonCallbacks() {
-            @Override
-            public void onAuthIn() {
-                onUserLogin();
-            }
-
-            @Override
-            public void onAuthOut() {
-                onUserLogout();
-            }
-        });
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        authStateSingleton.unregiserListener();
     }
 
 

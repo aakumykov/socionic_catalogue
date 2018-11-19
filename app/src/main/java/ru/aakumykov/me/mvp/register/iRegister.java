@@ -10,7 +10,7 @@ public interface iRegister {
     interface View extends iBaseView {
         void disableForm();
         void enableForm();
-        void goUserPage(User user);
+        void goUserEditPage(User user);
     }
 
     interface Presenter {

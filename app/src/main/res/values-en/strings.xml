@@ -164,4 +164,5 @@
     <string name="CARD_SHOW_data_error">Data error</string>
     <string name="COMMENT_author">Comment author</string>
     <string name="REGISTER_succes">Registration success</string>
+    <string name="REGISTER_error_creating_user">Error creating user</string>
 </resources>

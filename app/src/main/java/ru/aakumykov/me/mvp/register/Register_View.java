@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.users.edit.UserEdit_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.User;
@@ -90,9 +91,10 @@ public class Register_View extends BaseView implements
     }
 
     @Override
-    public void goUserPage(User user) {
-        Intent intent = new Intent(this, UserShow_View.class);
-        intent.putExtra(Constants.USER_ID, user.getKey());
+    public void goUserEditPage(User user) {
+        Intent intent = new Intent(this, UserEdit_View.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.putExtra(Constants.USER, user);
         startActivity(intent);
     }
 

@@ -72,7 +72,7 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void createUser(String name, String about) {
+    public void createUser(String uid, CreateCallbacks callbacks) {
 
     }
 

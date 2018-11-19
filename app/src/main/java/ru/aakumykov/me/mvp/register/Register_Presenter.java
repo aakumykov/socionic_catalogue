@@ -4,7 +4,6 @@ import android.util.Log;
 
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
-import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
@@ -62,6 +61,20 @@ public class Register_Presenter implements
     public void onRegSucsess(String userId) {
 //        view.hideProgressBar();
         view.showInfoMsg(R.string.REGISTER_succes);
+
+        usersService.createUser(userId, new iUsersSingleton.CreateCallbacks() {
+            @Override
+            public void onUserCreateSuccess(User user) {
+                // TODO: внимательно с этим методом
+                authService.storeCurrentUser(user);
+                view.goUserEditPage(user);
+            }
+
+            @Override
+            public void onUserCreateFail(String errorMsg) {
+                view.showErrorMsg(R.string.REGISTER_error_creating_user, errorMsg);
+            }
+        });
     }
 
     @Override
@@ -76,7 +89,7 @@ public class Register_Presenter implements
     public void onUserCreateSuccess(User user) {
         Log.d(TAG, "onCommentSaveSuccess(), "+user);
         view.showInfoMsg("Пользователь создан");
-        view.goUserPage(user);
+        view.goUserEditPage(user);
     }
 
     @Override
