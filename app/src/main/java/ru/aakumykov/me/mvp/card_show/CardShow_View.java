@@ -432,12 +432,12 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public void showCommentInProgress() {
-        currentCommentView.setAlpha(0.5f);
+        if (null != currentCommentView) currentCommentView.setAlpha(0.5f);
     }
 
     @Override
     public void hideCommentInProgress() {
-        currentCommentView.setAlpha(1.0f);
+        if (null != currentCommentView) currentCommentView.setAlpha(1.0f);
     }
 
     // Внутренние методы
