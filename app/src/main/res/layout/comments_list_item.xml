@@ -64,7 +64,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical|start"
-            android:text="@string/COMMENT_reply" />
+            android:text="@string/COMMENT_reply"
+            android:textColor="@color/colorPrimary" />
 
         <Space
             android:layout_width="wrap_content"
