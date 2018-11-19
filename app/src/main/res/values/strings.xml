@@ -50,7 +50,7 @@
     <string name="image">Картинка</string>
     <string name="card_deleted">Карточка удалена</string>
     <string name="deleting_card">Удаляем карточку</string>
-    <string name="error_deleting_card">Ошибка удаления карточки</string>
+    <string name="CARD_SHOW_error_deleting_card">Ошибка удаления карточки</string>
     <string name="unknown_request_code">Неизвестный код операции</string>
     <string name="result_error">Ошибка операции</string>
     <string name="DIALOG_card_deletion">Удаление карточки</string>
@@ -141,4 +141,31 @@
     <string name="CARD_EDIT_card_creation_title">Создание карточки</string>
     <string name="CARDS_LIST_tag_filter">Карточки с меткой «%1$s»</string>
     <string name="CARDS_LIST_tag_filter_close_button">Кнопка отключения фильтра по метке</string>
+    <string name="COMMENT_avatar">Изображение пользователя</string>
+    <string name="CARD_SHOW_add_comment">Добавить комментарий</string>
+    <string name="CARD_SHOW_send_comment_button">Кнопка отправки комментария</string>
+    <string name="CARD_SHOW_error_displaying_comments">Ошибка отображения комментариев</string>
+    <string name="CARD_SHOW_error_loading_comments">Ошибка загрузки комментариев</string>
+    <string name="COMMENT_reply">Ответить</string>
+    <string name="COMMENT_more_actions">Дополнительные действия с комментарием</string>
+    <string name="CARDS_LIST_comments_count">Комментариев: %1$d</string>
+    <string name="MENU_refresh">Обновить</string>
+    <string name="MENU_share">Поделиться</string>
+    <string name="COMMENT_comment_deletion">Удалить комментарий?</string>
+    <string name="COMMENT_delete_error">Ошибка удаления комментария</string>
+    <string name="COMMENT_save_error">Ошибка сохранения комментария</string>
+    <string name="DIALOG_delete_card">Удалить карточку?</string>
+    <string name="DIALOG_edit_comment">Изменение комментария</string>
+    <string name="DIALOG_input_text">Введите текст</string>
+    <string name="COMMENT_saved">Комментарий сохранён</string>
+    <string name="COMMENT_added">Комментарий добавлен</string>
+    <string name="COMMENT_cannot_be_empty">Не может быть пустым</string>
+    <string name="action_denied">Действие запрещено</string>
+    <string name="DIALOG_delete_comment">Удалить комментарий?</string>
+    <string name="COMMENT_delete_message_template" translatable="false">%1$s ...</string>
+    <string name="CARDS_LIST_error_deleting_card">Ошибка удаления карточки</string>
+    <string name="error_deleting_card_tags">Ошибка удаления меток карточки</string>
+    <string name="CARDS_LIST_error_creating_card">Ошибка создания карточки</string>
+    <string name="CARD_SHOW_data_error">Ошибка данных</string>
+    <string name="COMMENT_author">Автор комментария</string>
 </resources>

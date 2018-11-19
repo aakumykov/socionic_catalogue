@@ -90,7 +90,7 @@ public class CardEdit_View extends BaseView implements
 
         activateUpButton();
 
-        CardEdit2_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
+        CardEdit_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
 
         tagsContainer.setOnTagClickListener(this);
 
@@ -131,7 +131,7 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void onUserLogout() {
-        if (!userLoggedIn()) closePage();
+        if (!isUserLoggedIn()) closePage();
     }
 
     @Override
@@ -311,6 +311,10 @@ public class CardEdit_View extends BaseView implements
         titleView.setEnabled(false);
         quoteView.setEnabled(false);
         descriptionView.setEnabled(false);
+
+        newTagInput.setEnabled(false);
+        addTagButton.setEnabled(false);
+
         saveButton.setEnabled(false);
 
         MyUtils.show(imageProgressBar);
@@ -321,6 +325,10 @@ public class CardEdit_View extends BaseView implements
         titleView.setEnabled(true);
         quoteView.setEnabled(true);
         descriptionView.setEnabled(true);
+
+        newTagInput.setEnabled(false);
+        addTagButton.setEnabled(false);
+
         saveButton.setEnabled(true);
 
         MyUtils.hide(imageProgressBar);
@@ -492,7 +500,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     private void showTags(HashMap<String,Boolean> tagsMap) {
-        Log.d(TAG, "showTags(), "+tagsMap);
+        Log.d(TAG, "displayTags(), "+tagsMap);
         if (null != tagsMap) {
             List<String> tagsList = new ArrayList<>(tagsMap.keySet());
             tagsContainer.setTags(tagsList);

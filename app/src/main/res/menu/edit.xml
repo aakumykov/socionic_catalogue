@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/actionCreate"
-        android:icon="@drawable/ic_add"
-        android:title="@string/MENU_create_card"
-        app:showAsAction="always" />
+        android:id="@+id/actionEdit"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/edit"
+        app:showAsAction="never" />
 </menu>

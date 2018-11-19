@@ -105,7 +105,7 @@ public class Register_Presenter implements
 
     @Override
     public void onCreateSuccess(User user) {
-        Log.d(TAG, "onCreateSuccess(), "+user);
+        Log.d(TAG, "onCommentSaveSuccess(), "+user);
         view.showInfoMsg("Пользователь создан");
         view.goUserPage(user);
     }

@@ -5,6 +5,7 @@ public final class Constants {
 
     public final static String CARDS_PATH = "/cards";
     public final static String TAGS_PATH = "/tags";
+    public final static String COMMENTS_PATH = "/comments";
     public final static String IMAGES_PATH = "/images";
     public final static String USERS_PATH = "/users";
 
@@ -31,6 +32,7 @@ public final class Constants {
     public final static int TAG_MIN_LENGTH = 2;
     public final static int TAG_MAX_LENGTH = 20;
     public final static int TITLE_MAX_LENGTH = 70;
+    public final static int DIALOG_MESSAGE_LENGTH = 40;
 
     public final static String MODE_SEND = "MODE_SEND";
     public final static String MODE_SELECT = "MODE_SELECT";

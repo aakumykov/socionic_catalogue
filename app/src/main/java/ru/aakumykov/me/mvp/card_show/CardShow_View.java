@@ -5,11 +5,19 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -20,38 +28,65 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
+import ru.aakumykov.me.mvp.comment.CommentsAdapter;
+import ru.aakumykov.me.mvp.comment.iComments;
+import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
+import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
+import ru.aakumykov.me.mvp.models.Comment;
+import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.cards_list.CardsList_View;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 //TODO: уменьшение изображения
 
 public class CardShow_View extends BaseView implements
         iCardShow.View,
-        TagView.OnTagClickListener
+        View.OnClickListener,
+        PopupMenu.OnMenuItemClickListener,
+        TagView.OnTagClickListener,
+        iComments.commentClickListener
 {
-    @BindView(R.id.progressBar) ProgressBar progressBar;
-    @BindView(R.id.messageView) TextView messageView;
-    @BindView(R.id.titleView) TextView titleView;
-    @BindView(R.id.quoteView) TextView quoteView;
-    @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
-    @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
-    @BindView(R.id.imageView) ImageView imageView;
-    @BindView(R.id.descriptionView) TextView descriptionView;
-    @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
+    private ListView mainListView;
+
+    private LinearLayout commentLayout;
+
+    private TextView titleView;
+    private TextView quoteView;
+    private ConstraintLayout imageHolder;
+    private ProgressBar imageProgressBar;
+    private ImageView imageView;
+    private TextView descriptionView;
+
+    private TagContainerLayout tagsContainer;
+
+    private ProgressBar commentsThrobber;
+
+    private LinearLayout commentForm;
+    private EditText commentInput;
+    private ImageView sendCommentButton;
+    private Button addCommentButton;
 
     private final static String TAG = "CardShow_View";
-    private iCardShow.Presenter presenter;
     private boolean firstRun = true;
+    private iCardShow.Presenter presenter;
+    private ArrayList<Comment> commentsList;
+    private CommentsAdapter commentsAdapter;
 
+    private Card currentCard;
+    private Comment currentComment;
+    private View currentCommentView;
+
+
+    // TODO: удаление комментариев вместе с карточкой
 
     // Системные методы
     @Override
@@ -60,6 +95,41 @@ public class CardShow_View extends BaseView implements
         setContentView(R.layout.card_show_activity);
         ButterKnife.bind(this);
 
+        // Собираю разметку из частей
+        mainListView = findViewById(R.id.mainListView);
+        View headerView = getLayoutInflater().inflate(R.layout.card_show_header, null);
+        View footerView = getLayoutInflater().inflate(R.layout.card_show_footer, null);
+        mainListView.addHeaderView(headerView);
+        mainListView.addFooterView(footerView);
+
+        // Подключаю элементы
+        commentLayout = findViewById(R.id.commentLayout);
+        titleView = findViewById(R.id.titleView);
+        quoteView = findViewById(R.id.quoteView);
+        imageHolder = findViewById(R.id.imageHolder);
+        imageProgressBar = findViewById(R.id.imageProgressBar);
+        imageView = findViewById(R.id.imageView);
+        descriptionView = findViewById(R.id.descriptionView);
+        tagsContainer = findViewById(R.id.tagsContainer);
+
+        commentsThrobber = findViewById(R.id.commentsThrobber);
+
+        addCommentButton = findViewById(R.id.addCommentButton);
+        commentForm = findViewById(R.id.commentForm);
+        commentInput = findViewById(R.id.commentInput);
+        sendCommentButton = findViewById(R.id.sendCommentButton);
+
+        // Устанавливаю обработчики нажатий
+        addCommentButton.setOnClickListener(this);
+        sendCommentButton.setOnClickListener(this);
+
+        // Присоединяю адаптер списка
+        commentsList = new ArrayList<>();
+        commentsAdapter = new CommentsAdapter(this, R.layout.comments_list_item,
+                commentsList, this);
+        mainListView.setAdapter(commentsAdapter);
+
+//        mainListView.setOnItemClickListener(this);
         tagsContainer.setOnTagClickListener(this);
 
         presenter = new CardShow_Presenter();
@@ -68,10 +138,12 @@ public class CardShow_View extends BaseView implements
     @Override
     protected void onStart() {
         super.onStart();
+
         presenter.linkView(this);
+
         if (firstRun) {
             loadCard();
-            firstRun = false;
+            firstRun = false; // эта строка должна быть ниже loadCard(), так как там тоже проверяется firstRun
         }
     }
 
@@ -112,9 +184,10 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (userLoggedIn()) {
+        if (isUserLoggedIn()) {
             MenuInflater menuInflater = getMenuInflater();
-            menuInflater.inflate(R.menu.edit_delete, menu);
+            menuInflater.inflate(R.menu.edit, menu);
+            menuInflater.inflate(R.menu.delete, menu);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -125,15 +198,58 @@ public class CardShow_View extends BaseView implements
         switch (item.getItemId()) {
 
             case R.id.actionEdit:
-                presenter.onEditButtonClicked();
+                editCard();
                 break;
 
             case R.id.actionDelete:
-                presenter.onDeleteButtonClicked();
+                deleteCard();
                 break;
 
             default:
                 super.onOptionsItemSelected(item);
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.addCommentButton:
+                showCommentForm();
+                break;
+            case R.id.sendCommentButton:
+                sendComment();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onCommentMenuClicked(View view, Comment comment) {
+        showCommentMenu(view, comment);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+
+        switch (menuItem.getItemId()) {
+
+            case R.id.actionEdit:
+                editComment();
+                break;
+
+            case R.id.actionDelete:
+                deleteComment();
+                break;
+
+            case R.id.actionShare:
+//                presenter.shareComment(currentComment);
+                break;
+
+            default:
+                break;
         }
 
         return true;
@@ -152,28 +268,13 @@ public class CardShow_View extends BaseView implements
     }
 
 
-    // Меток методы
+    // Интерфейсные методы
     @Override
-    public void onTagClick(int position, String text) {
-        Log.d(TAG, "onTagClick("+position+", "+text+")");
-        presenter.onTagClicked(text);
-    }
-
-    @Override
-    public void onTagLongClick(int position, String text) {
-
-    }
-
-    @Override
-    public void onTagCrossClick(int position) {
-
-    }
-
-
-    // Карточка
-    @Override
-    public void displayCard(@Nullable Card card) {
+    public void displayCard(@Nullable final Card card) {
         Log.d(TAG, "displayCard(), "+card);
+
+        // TODO: а где её очищать?
+        this.currentCard = card;
 
         hideProgressBar();
         hideMsg();
@@ -201,8 +302,6 @@ public class CardShow_View extends BaseView implements
         }
     }
 
-
-    // Изображение
     @Override
     public void displayImage(Uri imageURI) {
         Log.d(TAG, "displayImage("+imageURI+")");
@@ -233,15 +332,61 @@ public class CardShow_View extends BaseView implements
         imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
     }
 
-    // Метки
     @Override
-    public void showTags(HashMap<String,Boolean> tagsHash) {
-//        Log.d(TAG, "showTags(), "+tagsHash);
+    public void displayTags(HashMap<String,Boolean> tagsHash) {
+//        Log.d(TAG, "displayTags(), "+tagsHash);
         if (null != tagsHash) {
             List<String> tagsList = new ArrayList<>(tagsHash.keySet());
             tagsContainer.setTags(tagsList);
             MyUtils.show(tagsContainer);
         }
+    }
+
+    @Override
+    public void showCommentsThrobber() {
+        MyUtils.show(commentsThrobber);
+    }
+
+    @Override
+    public void hideCommentsThrobber() {
+        MyUtils.hide(commentsThrobber);
+    }
+
+    @Override
+    public void displayComments(List<Comment> list) {
+        commentsList.addAll(list);
+        commentsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void appendComment(Comment comment) {
+        commentsList.add(comment);
+        commentsAdapter.notifyDataSetChanged();
+//        mainListView.setSelection(commentsList.size()-1);
+//        mainListView.setSelection(commentsAdapter.getCount() - 1);
+    }
+
+    @Override
+    public void removeComment(Comment comment) {
+        commentsAdapter.remove(comment);
+    }
+
+
+    // Меток методы
+    @Override
+    public void onTagClick(int position, String text) {
+        Log.d(TAG, "onTagClick("+position+", "+text+")");
+        presenter.onTagClicked(text);
+    }
+
+    @Override
+    public void onTagLongClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagCrossClick(int position) {
+
     }
 
 
@@ -265,6 +410,35 @@ public class CardShow_View extends BaseView implements
         startActivity(intent);
     }
 
+
+    // Вспомогательные
+    @Override
+    public void enableCommentForm() {
+        MyUtils.enable(commentInput);
+        MyUtils.enable(sendCommentButton);
+    }
+
+    @Override
+    public void disableCommentForm() {
+        MyUtils.disable(commentInput);
+        MyUtils.disable(sendCommentButton);
+    }
+
+    @Override
+    public void resetCommentForm() {
+        commentInput.setText(null);
+        enableCommentForm();
+    }
+
+    @Override
+    public void showCommentInProgress() {
+        currentCommentView.setAlpha(0.5f);
+    }
+
+    @Override
+    public void hideCommentInProgress() {
+        currentCommentView.setAlpha(1.0f);
+    }
 
     // Внутренние методы
     private void loadCard() {
@@ -303,40 +477,150 @@ public class CardShow_View extends BaseView implements
     private void displayCommonCard(Card card) {
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
-        showTags(card.getTags());
+        displayTags(card.getTags());
     }
 
+    private View constructCommentItem(Comment comment) throws Exception {
 
-    // Диалоги
-    @Override
-    public void showDeleteDialog() {
+        LinearLayout commentRow = (LinearLayout) getLayoutInflater()
+                    .inflate(R.layout.comments_list_item, null);
 
-//        YesNoDialog yesNoDialog = new YesNoDialog(
-//                this,
-//                R.string.DIALOG_card_deletion,
-//                R.string.DIALOG_really_delete_card,
-//                new iDialogCallbacks.onCheck() {
-//                    @Override
-//                    public boolean doCheck() {
-//                        return true;
-//                    }
-//                },
-//                new iDialogCallbacks.onYes() {
-//                    @Override
-//                    public void yesAction() {
-//                        //Log.d(TAG, "yesAction");
-//                        presenter.onDeleteConfirmed();
-//                    }
-//                },
-//                new iDialogCallbacks.onNo() {
-//                    @Override
-//                    public void noAction() {
-//                        //Log.d(TAG, "noAction");
-//                    }
-//                }
-//        );
-//
-//        yesNoDialog.show();
+        ((TextView) commentRow.findViewById(R.id.commentText))
+                .setText(comment.getText());
+
+        commentRow.findViewById(R.id.commentReply)
+                .setTag(Comment.key_commentId, comment.getKey());
+
+        return commentRow;
     }
 
+    private void showCommentForm() {
+        MyUtils.hide(addCommentButton);
+        MyUtils.show(commentForm);
+        commentInput.requestFocus();
+        MyUtils.showKeyboard(this, commentInput);
+    }
+
+    private void sendComment() {
+//        commentInput.clearFocus();
+//        MyUtils.hideKeyboard(this, commentInput);
+
+        disableCommentForm();
+
+        String commentText = commentInput.getText().toString();
+        presenter.postComment(commentText);
+    }
+
+    private void showCommentMenu(final View v, final Comment comment) {
+
+        currentComment = comment;
+        currentCommentView = v;
+
+        PopupMenu popupMenu = new PopupMenu(this, v);
+
+        // TODO: сделать это по-нормальному
+        // TODO: логика-то во вьюхе не должна присутствовать!
+        if (isUserLoggedIn()) {
+            if (comment.getUserId().equals(getAuthService().currentUid()))
+                popupMenu.inflate(R.menu.edit);
+
+            if (getAuthService().isAdmin(getAuthService().currentUid()))
+                popupMenu.inflate(R.menu.delete);
+        }
+
+        popupMenu.inflate(R.menu.share);
+
+//        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+//            @Override
+//            public void onDismiss(PopupMenu popupMenu) {
+//                v.setBackground(oldBackground);
+//            }
+//        });
+
+        popupMenu.setOnMenuItemClickListener(this);
+
+        popupMenu.setGravity(Gravity.END);
+
+        popupMenu.show();
+    }
+
+    private void editCard() {
+        goEditPage(currentCard);
+    }
+
+    private void deleteCard() {
+
+        MyDialogs.cardDeleteDialog(
+                this,
+                currentCard.getTitle(),
+                new iMyDialogs.Delete() {
+                    @Override
+                    public void onCancelInDialog() {
+
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        presenter.cardDeleteConfirmed(currentCard);
+                    }
+                }
+        );
+
+    }
+
+    private void editComment() {
+        MyDialogs.commentEditDialog(
+                this,
+                currentComment.getText(),
+                new iMyDialogs.StringInputCallback() {
+                    @Override
+                    public void onDialogWithStringYes(String text) {
+                        currentComment.setText(text);
+                        presenter.editCommentConfirmed(currentComment);
+                    }
+                }
+        );
+    }
+
+    private void deleteComment() {
+
+        String commentPiece = MyUtils.cutToLength(currentComment.getText(), Constants.DIALOG_MESSAGE_LENGTH);
+        String message = getString(R.string.COMMENT_delete_message_template, commentPiece);
+
+        MyDialogs.commentDeleteDialog(
+                this,
+                message,
+                new iMyDialogs.Delete() {
+                    @Override
+                    public void onCancelInDialog() {
+
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        presenter.deleteCommentConfirmed(currentComment);
+                    }
+                }
+        );
+    }
 }

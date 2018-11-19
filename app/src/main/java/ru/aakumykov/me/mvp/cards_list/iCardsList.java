@@ -15,13 +15,16 @@ public interface iCardsList {
     interface View extends iBaseView {
         void displayList(List<Card> list);
         void displayTagFilter(String text);
-        void deleteCardRequest(iDialogCallbacks.Delete callbacks);
+
+        void addListItem(Card card);
+        void updateListItem(int index, Card card);
+        void removeListItem(Card card);
     }
 
     interface Presenter {
 
         void loadList(@Nullable String tagFilter);
-        void deleteCard(final Card card);
+        void deleteCardConfigmed(final Card card);
 
         // TODO: вынести в общий интерфейс
         void linkView(iCardsList.View view);

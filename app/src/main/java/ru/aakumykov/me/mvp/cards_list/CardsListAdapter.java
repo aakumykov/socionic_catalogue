@@ -34,10 +34,20 @@ public class CardsListAdapter extends ArrayAdapter<Card> {
     public View getView(int position, View convertView, @NonNull  ViewGroup parent) {
 
         View view = inflater.inflate(this.layout, parent, false);
-        TextView titleView = view.findViewById(R.id.titleView);
 
         Card card = cards.get(position);
+
+        // Title
+        TextView titleView = view.findViewById(R.id.titleView);
         titleView.setText(card.getTitle());
+
+        // Comments count
+        int cc = card.getCommentsCount();
+        if (cc > 0) {
+            TextView commentsCountView = view.findViewById(R.id.commentsCountView);
+            String ccText = view.getResources().getString(R.string.CARDS_LIST_comments_count, cc);
+            commentsCountView.setText(ccText);
+        }
 
         return view;
     }

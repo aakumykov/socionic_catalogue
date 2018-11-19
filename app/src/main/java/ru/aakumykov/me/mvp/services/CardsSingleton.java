@@ -1,26 +1,19 @@
 package ru.aakumykov.me.mvp.services;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnCanceledListener;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageMetadata;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,14 +38,8 @@ public class CardsSingleton implements
 
     // Свойства
     private final static String TAG = "CardsSingleton";
-
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-
     private DatabaseReference cardsRef = firebaseDatabase.getReference().child(Constants.CARDS_PATH);
-    private StorageReference imagesRef = firebaseStorage.getReference().child(Constants.IMAGES_PATH);
-
-    private UploadTask uploadTask;
 
 
     // Интерфейсные методы
@@ -60,6 +47,7 @@ public class CardsSingleton implements
     public String createKey() {
         return cardsRef.push().getKey();
     }
+
 
     @Override
     public void loadCard(String key, final LoadCallbacks callbacks) {
@@ -71,12 +59,12 @@ public class CardsSingleton implements
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Card card = dataSnapshot.getValue(Card.class);
-                callbacks.onLoadSuccess(card);
+                callbacks.onCardLoadSuccess(card);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                callbacks.onLoadFailed(databaseError.getMessage());
+                callbacks.onCardLoadFailed(databaseError.getMessage());
                 databaseError.toException().printStackTrace();
             }
         });
@@ -106,7 +94,7 @@ public class CardsSingleton implements
 
     @Override
     public void deleteCard(final Card card, final  DeleteCallbacks callbacks) {
-        Log.d(TAG, "deleteCard(), "+card);
+        Log.d(TAG, "deleteCardConfigmed(), "+card);
 
         DatabaseReference cardRef = cardsRef.child(card.getKey());
 
@@ -114,10 +102,44 @@ public class CardsSingleton implements
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 if (null == databaseError) {
-                    callbacks.onDeleteSuccess(card);
+                    callbacks.onCardDeleteSuccess(card);
                 } else {
-                    callbacks.onDeleteError(databaseError.getMessage());
+                    callbacks.onCardDeleteError(databaseError.getMessage());
                     databaseError.toException().printStackTrace();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void updateCommentsCounter(String cardId, final int diffValue) {
+
+        DatabaseReference thisCardRef = cardsRef.child(cardId);
+
+        thisCardRef.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                Card card = mutableData.getValue(Card.class);
+
+                if (null == card) {
+                    return Transaction.success(mutableData);
+                }
+
+                card.setCommentsCount(card.getCommentsCount()+diffValue);
+
+                mutableData.setValue(card);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                if (null != databaseError) {
+                    Log.e(TAG, databaseError.getMessage());
+                    databaseError.toException().printStackTrace();
+                }
+                if (null != dataSnapshot) {
+                    Log.e(TAG, "dataSnapshot: "+dataSnapshot);
                 }
             }
         });

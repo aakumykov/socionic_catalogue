@@ -10,6 +10,7 @@ public interface iCardsSingleton {
     void loadList(String tagFilter, ListCallbacks callbacks);
 
     void loadCard(String key, LoadCallbacks callbacks);
+    void updateCommentsCounter(String cardId, int diffValue);
 
     String createKey();
     void updateCard(Card card, SaveCardCallbacks callbacks);
@@ -22,8 +23,8 @@ public interface iCardsSingleton {
     }
 
     interface LoadCallbacks {
-        void onLoadSuccess(Card card);
-        void onLoadFailed(String msg);
+        void onCardLoadSuccess(Card card);
+        void onCardLoadFailed(String msg);
     }
 
     interface SaveCardCallbacks {
@@ -32,7 +33,7 @@ public interface iCardsSingleton {
     }
 
     interface DeleteCallbacks {
-        void onDeleteSuccess(Card card);
-        void onDeleteError(String msg);
+        void onCardDeleteSuccess(Card card);
+        void onCardDeleteError(String msg);
     }
 }

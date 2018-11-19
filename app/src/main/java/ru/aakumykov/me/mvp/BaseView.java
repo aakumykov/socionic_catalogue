@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
@@ -27,8 +31,8 @@ import ru.aakumykov.me.mvp.utils.MyUtils;
 public abstract class BaseView extends AppCompatActivity implements
     iBaseView
 {
-    @BindView(R.id.messageView) TextView messageView;
-    @BindView(R.id.progressBar) ProgressBar progressBar;
+//    @BindView(R.id.messageView) TextView messageView;
+//    @BindView(R.id.progressBar) ProgressBar progressBar;
 
     private final static String TAG = "BaseView";
     private iCardsSingleton cardsService;
@@ -44,12 +48,14 @@ public abstract class BaseView extends AppCompatActivity implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // TODO: убрать вообще?
         authService = AuthSingleton.getInstance();
         cardsService = CardsSingleton.getInstance();
         // TODO: storageSingleton
 
         // Слушатель изменений авторизации
-        iAuthStateListener authStateListener = new AuthStateListener(new iAuthStateListener.StateChangeCallbacks() {
+        iAuthStateListener authStateListener =
+                new AuthStateListener(new iAuthStateListener.StateChangeCallbacks() {
             @Override
             public void onLoggedIn() {
                 invalidateOptionsMenu();
@@ -83,7 +89,7 @@ public abstract class BaseView extends AppCompatActivity implements
 
 //        menu.clear();
 
-        if (userLoggedIn()) {
+        if (isUserLoggedIn()) {
             menuInflater.inflate(R.menu.user_in, menu);
             menuInflater.inflate(R.menu.logout, menu);
         } else {
@@ -185,24 +191,64 @@ public abstract class BaseView extends AppCompatActivity implements
     }
 
     private void showMsg(String text, int color) {
-        messageView.setText(text);
-        messageView.setTextColor(color);
-        MyUtils.show(messageView);
+        TextView messageView = findViewById(R.id.messageView);
+        if (null != messageView) {
+            messageView.setText(text);
+            messageView.setTextColor(color);
+            MyUtils.show(messageView);
+        } else {
+            Log.w(TAG, "messageView not found");
+        }
     }
 
     @Override
     public void hideMsg() {
-        MyUtils.hide(messageView);
+        TextView messageView = findViewById(R.id.messageView);
+        if (null != messageView) {
+            MyUtils.hide(messageView);
+        } else {
+            Log.w(TAG, "messageView not found");
+        }
+    }
+
+
+    // Тосты
+    @Override
+    public void showToast(int stringResourceId) {
+        String msg = getString(stringResourceId);
+        showToast(msg);
     }
 
     @Override
+    public void showToast(String msg) {
+        showToastReal(this, msg, Toast.LENGTH_SHORT);
+    }
+
+    private void showToastReal(Context context, String message, int length) {
+        Toast toast = Toast.makeText(context, message, length);
+        toast.show();
+    }
+
+
+    // Строка прогресса
+    @Override
     public void showProgressBar() {
-        MyUtils.show(progressBar);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        if (null != progressBar) {
+            MyUtils.show(progressBar);
+        } else {
+            Log.w(TAG, "progressBar not found");
+        }
     }
 
     @Override
     public void hideProgressBar() {
-        MyUtils.hide(progressBar);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        if (null != progressBar) {
+            MyUtils.hide(progressBar);
+        } else {
+            Log.w(TAG, "progressBar not found");
+        }
     }
 
 
@@ -218,9 +264,14 @@ public abstract class BaseView extends AppCompatActivity implements
 
     // Разное
     @Override
-    public boolean userLoggedIn() {
+    public boolean isUserLoggedIn() {
         return authService.isUserLoggedIn();
     }
+
+//    @Override
+//    public FirebaseUser getCurrentUser() {
+//        return authService.;
+//    }
 
     @Override
     public void closePage() {
@@ -283,7 +334,7 @@ public abstract class BaseView extends AppCompatActivity implements
     private void onCardCreated(int resultCode, @Nullable Intent data) {
         switch (resultCode) {
             case RESULT_OK:
-                showInfoMsg(R.string.INFO_card_created);
+                showToast(R.string.INFO_card_created);
                 break;
             case RESULT_CANCELED:
                 showInfoMsg(R.string.INFO_operation_cancelled);

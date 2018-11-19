@@ -6,6 +6,8 @@ public interface iAuthSingleton {
 
     boolean isUserLoggedIn();
     String currentUid();
+    String userName();
+    boolean isAdmin(String userId);
 
     void registerWithEmail(String email, String password, RegisterCallbacks callbacks) throws Exception;
     void createUser(String uid, User userDraft, CreateUserCallbacks callbacks) throws Exception;

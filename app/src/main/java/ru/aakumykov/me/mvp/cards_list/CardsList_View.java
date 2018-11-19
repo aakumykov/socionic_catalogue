@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.Gravity;
@@ -29,9 +30,10 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
+import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
-import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 // Построен по принципу Active View
 
@@ -41,8 +43,10 @@ public class CardsList_View extends BaseView implements
         iCardsList.View,
         ListView.OnItemClickListener,
         ListView.OnItemLongClickListener,
-        PopupMenu.OnMenuItemClickListener
+        PopupMenu.OnMenuItemClickListener,
+        SwipeRefreshLayout.OnRefreshListener
 {
+    @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
     @BindView(R.id.filterView) LinearLayout filterView;
     @BindView(R.id.filterCloser) ImageView filterCloser;
     @BindView(R.id.filterName) TextView filterName;
@@ -55,6 +59,7 @@ public class CardsList_View extends BaseView implements
     private Card currentCard;
     private boolean firstRun = true;
 
+
     // Системные методы
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +68,9 @@ public class CardsList_View extends BaseView implements
         ButterKnife.bind(this);
 
         setPageTitle(getResources().getString(R.string.CARDS_LIST_page_title));
+
+        swiperefreshLayout.setOnRefreshListener(this);
+        swiperefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
 
         presenter = new CardsList_Presenter();
 
@@ -82,14 +90,7 @@ public class CardsList_View extends BaseView implements
 
         if (firstRun) {
             firstRun = false;
-
-            String tagFilter = null;
-
-            try {
-                tagFilter = getIntent().getStringExtra(Constants.TAG_FILTER);
-            } catch (Exception e) {}
-
-            presenter.loadList(tagFilter);
+            loadList(true);
         }
     }
 
@@ -101,19 +102,32 @@ public class CardsList_View extends BaseView implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
         presenter.linkView(this);
+
+        switch (requestCode) {
+            case Constants.CODE_CREATE_CARD:
+                // TODO: как отображать ошибку?
+                if (RESULT_OK==resultCode) processCardCreationResult(data);
+                break;
+            case Constants.CODE_EDIT_CARD:
+                if (RESULT_OK==resultCode) processCardEditionResult(data);
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
 
-        if (userLoggedIn()) {
+        if (isUserLoggedIn()) {
             MenuInflater menuInflater = getMenuInflater();
             menuInflater.inflate(R.menu.create_card, menu);
+            menuInflater.inflate(R.menu.refresh, menu);
         }
+
+        super.onCreateOptionsMenu(menu);
 
         return true;
     }
@@ -122,11 +136,21 @@ public class CardsList_View extends BaseView implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
+            case R.id.actionRefresh:
+                loadList(true);
+                break;
+
             default:
                 super.onOptionsItemSelected(item);
         }
 
         return true;
+    }
+
+    @Override
+    public void onRefresh() {
+        swiperefreshLayout.setRefreshing(true);
+        loadList(false);
     }
 
 
@@ -148,6 +172,7 @@ public class CardsList_View extends BaseView implements
 
         hideProgressBar();
         hideMsg();
+        swiperefreshLayout.setRefreshing(false);
 
         cardsList.clear();
         cardsList.addAll(list);
@@ -164,19 +189,21 @@ public class CardsList_View extends BaseView implements
     }
 
     @Override
-    public void deleteCardRequest(iDialogCallbacks.Delete callbacks) {
-        Log.d(TAG, "deleteCardRequest()");
+    public void addListItem(Card card) {
+        cardsList.add(card);
+        cardsListAdapter.notifyDataSetChanged();
+    }
 
-        String cardName = currentCard.getTitle();
+    @Override
+    public void updateListItem(int index, Card card) {
+        cardsList.set(index, card);
+        cardsListAdapter.notifyDataSetChanged();
+    }
 
-        YesNoDialog yesNoDialog = new YesNoDialog(
-                this,
-                getResources().getString(R.string.DIALOG_deleted_card_name, cardName),
-                null,
-                callbacks
-        );
-
-        yesNoDialog.show();
+    @Override
+    public void removeListItem(Card card) {
+        cardsList.remove(card);
+        cardsListAdapter.notifyDataSetChanged();
     }
 
 
@@ -205,7 +232,7 @@ public class CardsList_View extends BaseView implements
 //        Log.d(TAG, "onItemLongClick(pos: "+position+", id: "+id+")");
         currentCard = cardsList.get(position);
 
-        if (userLoggedIn()) {
+        if (isUserLoggedIn()) {
             Drawable oldBackground = view.getBackground();
             view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
             showPopupMenu(view, oldBackground);
@@ -220,7 +247,8 @@ public class CardsList_View extends BaseView implements
 
         PopupMenu popupMenu = new PopupMenu(this, v);
 
-        popupMenu.inflate(R.menu.edit_delete);
+        popupMenu.inflate(R.menu.edit);
+        popupMenu.inflate(R.menu.delete);
 
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
@@ -246,7 +274,7 @@ public class CardsList_View extends BaseView implements
                 return true;
 
             case R.id.actionDelete:
-                presenter.deleteCard(currentCard);
+                deleteCard();
                 return true;
 
             default:
@@ -257,14 +285,82 @@ public class CardsList_View extends BaseView implements
 
     // Внутренние методы
     private void editCard() {
-        Log.d(TAG, "editCard()");
-
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.setAction(Constants.ACTION_EDIT);
         intent.putExtra(Constants.CARD_KEY, currentCard.getKey());
-        startActivity(intent);
-
-        currentCard = null;
+        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+//        currentCard = null;
     }
 
+    private void deleteCard() {
+        String cardName = currentCard.getTitle();
+//        currentCard = null;
+
+        MyDialogs.cardDeleteDialog(this, cardName, new iMyDialogs.Delete() {
+            @Override
+            public void onCancelInDialog() {
+
+            }
+
+            @Override
+            public void onNoInDialog() {
+
+            }
+
+            @Override
+            public boolean onCheckInDialog() {
+                return true;
+            }
+
+            @Override
+            public void onYesInDialog() {
+                presenter.deleteCardConfigmed(currentCard);
+            }
+        });
+    }
+
+    private void loadList(boolean showProgressBar) {
+        String tagFilter = null;
+
+        try {
+            tagFilter = getIntent().getStringExtra(Constants.TAG_FILTER);
+        } catch (Exception e) {}
+
+        if (showProgressBar) showProgressBar();
+        presenter.loadList(tagFilter);
+    }
+
+    private void processCardCreationResult(Intent data) {
+
+        if (null != data) {
+
+            Card card = data.getParcelableExtra(Constants.CARD);
+
+            if (null != card) {
+                showToast(R.string.INFO_card_created);
+                addListItem(card);
+
+            } else {
+                showErrorMsg(R.string.CARDS_LIST_error_creating_card);
+            }
+
+        } else {
+            showErrorMsg(R.string.CARD_SHOW_data_error);
+        }
+    }
+
+    private void processCardEditionResult(Intent data) {
+
+        if (null != data) {
+
+            Card newCard = data.getParcelableExtra(Constants.CARD);
+
+            Integer oldCardIndex = cardsList.indexOf(currentCard);
+
+            updateListItem(oldCardIndex, newCard);
+
+        } else {
+            showErrorMsg(R.string.CARD_SHOW_data_error);
+        }
+    }
 }
