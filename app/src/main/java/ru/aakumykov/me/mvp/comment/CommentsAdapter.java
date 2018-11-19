@@ -9,12 +9,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Comment;
+import ru.aakumykov.me.mvp.utils.MyDialogs;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class CommentsAdapter extends ArrayAdapter<Comment> {
 
@@ -45,6 +45,9 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
         TextView commentTextView = view.findViewById(R.id.commentText);
         commentTextView.setText(comment.getText());
 
+        ImageView commentReplyMark = view.findViewById(R.id.commentReplyMark);
+        if (null != comment.getParentId()) MyUtils.show(commentReplyMark);
+
         TextView commentAuthorView = view.findViewById(R.id.commentAuthor);
         commentAuthorView.setText(comment.getUserName());
 
@@ -55,7 +58,15 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
         commentMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                commentClickListener.onCommentMenuClicked(view, comment);
+                commentClickListener.onCommentMenuClicked(v, comment);
+            }
+        });
+
+        TextView commentReply = view.findViewById(R.id.commentReply);
+        commentReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commentClickListener.onCommentReplyClicked(v, comment);
             }
         });
 

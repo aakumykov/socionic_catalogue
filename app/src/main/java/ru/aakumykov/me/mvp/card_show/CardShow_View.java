@@ -83,6 +83,7 @@ public class CardShow_View extends BaseView implements
 
     private Card currentCard;
     private Comment currentComment;
+    private Comment parentComment;
     private View currentCommentView;
 
 
@@ -229,6 +230,12 @@ public class CardShow_View extends BaseView implements
     @Override
     public void onCommentMenuClicked(View view, Comment comment) {
         showCommentMenu(view, comment);
+    }
+
+    @Override
+    public void onCommentReplyClicked(View view, final Comment comment) {
+        parentComment = comment;
+        showCommentForm();
     }
 
     @Override
@@ -426,7 +433,12 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public void resetCommentForm() {
+        currentComment = null;
+        currentCommentView = null;
+        parentComment = null;
+
         commentInput.setText(null);
+
         enableCommentForm();
     }
 
@@ -508,7 +520,12 @@ public class CardShow_View extends BaseView implements
         disableCommentForm();
 
         String commentText = commentInput.getText().toString();
-        presenter.postComment(commentText);
+
+        if (null != parentComment) {
+            presenter.postCommentReply(commentText, parentComment.getKey());
+        } else {
+            presenter.postComment(commentText);
+        }
     }
 
     private void showCommentMenu(final View v, final Comment comment) {

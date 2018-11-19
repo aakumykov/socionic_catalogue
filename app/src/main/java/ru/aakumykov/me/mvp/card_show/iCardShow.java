@@ -49,6 +49,7 @@ public interface iCardShow {
         void loadComments(Card card);
 
         void postComment(String text);
+        void postCommentReply(String text, String parentId);
 
         void onTagClicked(String tagName);
 
