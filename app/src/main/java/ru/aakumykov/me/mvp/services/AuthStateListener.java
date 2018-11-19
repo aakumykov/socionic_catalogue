@@ -6,7 +6,10 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
+import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
+import ru.aakumykov.me.mvp.models.User;
 
 // TODO: как обрабатывать reauthenticate ?
 
@@ -17,15 +20,35 @@ public class AuthStateListener implements iAuthStateListener {
     public AuthStateListener(final iAuthStateListener.StateChangeCallbacks callbacks) {
         Log.d(TAG, "new AuthStateListener()");
 
+        final iAuthSingleton authService = AuthSingleton.getInstance();
+        final iUsersSingleton usersService = UsersSingleton.getInstance();
+
+
         FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                if (null == firebaseUser) {
-                    callbacks.onLoggedOut();
-                } else {
+
+                if (null != firebaseUser) {
+
                     callbacks.onLoggedIn();
+
+                    usersService.getUser(firebaseUser.getUid(), new iUsersSingleton.UserCallbacks() {
+                        @Override
+                        public void onUserReadSuccess(User user) {
+                            authService.storeCurrentUser(user);
+                        }
+
+                        @Override
+                        public void onUserReadFail(String errorMsg) {
+                            authService.clearCurrentUser();
+                        }
+                    });
+
+                } else {
+                    callbacks.onLoggedOut();
+                    authService.clearCurrentUser();
                 }
             }
         });
