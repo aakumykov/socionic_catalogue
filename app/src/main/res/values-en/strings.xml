@@ -66,7 +66,7 @@
     <string name="error_displaying_user">Error displaying user</string>
     <string name="data_loading_data">Error loading data</string>
     <string name="error_loading_data">Error loading data</string>
-    <string name="user_saving_error">User saving error</string>
+    <string name="USER_EDIT_user_saving_error">User saving error</string>
     <string name="saving_user">Saving user</string>
     <string name="error_saving_user">Error saving user</string>
     <string name="user_saved">User saved</string>
@@ -96,7 +96,7 @@
     <string name="REGISTER_name_cannot_be_empty">Nickname cannot be empty</string>
     <string name="REGISTER_registration_failed">Registration failed</string>
     <string name="REGISTER_passwords_mismatch">Passwords mismatch</string>
-    <string name="REGISTER_registering_user">Registering new user</string>
+    <string name="REGISTER_registering_user">Registering</string>
     <string name="MENU_login">Login</string>
     <string name="MENU_logout">Logout</string>
     <string name="LOGIN_page_title">Login into app</string>
@@ -166,4 +166,6 @@
     <string name="REGISTER_succes">Registration success</string>
     <string name="REGISTER_error_creating_user">Error creating user</string>
     <string name="REGISTER_crating_new_user">Creating new user</string>
+    <string name="USER_EDIT_error_loading_data">Error loading data</string>
+    <string name="USER_EDIT_page_title">Editing user profile</string>
 </resources>

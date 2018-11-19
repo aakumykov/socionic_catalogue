@@ -21,6 +21,7 @@ import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.users.Users_Presenter;
 import ru.aakumykov.me.mvp.users.iUsers;
 
+// TODO: выбрасывание со страницы при разлогинивании
 
 public class UserEdit_View extends BaseView implements
         iUsers.EditView,
@@ -46,6 +47,9 @@ public class UserEdit_View extends BaseView implements
         setContentView(R.layout.user_edit_activity);
         ButterKnife.bind(this);
 
+        activateUpButton();
+        setPageTitle(R.string.USER_EDIT_page_title);
+
         presenter = new Users_Presenter();
 
         Intent intent = getIntent();
@@ -54,7 +58,8 @@ public class UserEdit_View extends BaseView implements
         try {
             presenter.prepareUserEdit(userId, this);
         } catch (Exception e) {
-
+            hideProgressBar();
+            showErrorMsg(R.string.USER_EDIT_error_loading_data);
         }
     }
 
@@ -133,7 +138,7 @@ public class UserEdit_View extends BaseView implements
     @Override
     public void onUserReadFail(String errorMsg) {
         currentUser = null;
-        showErrorMsg(R.string.error_loading_data);
+        showErrorMsg(R.string.USER_EDIT_error_loading_data);
     }
 
     @Override
@@ -151,7 +156,7 @@ public class UserEdit_View extends BaseView implements
     public void onUserSaveFail(String errorMsg) {
         hideProgressBar();
         enableEditForm();
-        showErrorMsg(R.string.user_saving_error, errorMsg);
+        showErrorMsg(R.string.USER_EDIT_user_saving_error, errorMsg);
     }
 
 

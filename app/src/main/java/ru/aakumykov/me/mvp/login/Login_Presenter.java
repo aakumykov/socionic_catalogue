@@ -59,6 +59,6 @@ public class Login_Presenter implements
     public void onLoginFail(String errorMsg) {
         view.hideProgressBar();
         view.enableForm();
-        view.showErrorMsg(R.string.LOGIN_login_failed, errorMsg);
+        view.showErrorMsg(errorMsg);
     }
 }

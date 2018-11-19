@@ -101,7 +101,6 @@ public class Users_Presenter implements
 
     @Override
     public void loadUser(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception {
-        Log.d(TAG, "loadUser("+userId+")");
         if (null == userId) {
             throw new Exception("userId == null");
         }

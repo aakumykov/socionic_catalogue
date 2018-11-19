@@ -77,7 +77,7 @@ public class UserShow_View extends BaseView implements
                 processActivityResult(requestCode, data);
                 break;
             default:
-                showErrorMsg(R.string.user_saving_error, "Unknown resultCode: "+resultCode);
+                showErrorMsg(R.string.USER_EDIT_user_saving_error, "Unknown resultCode: "+resultCode);
         }
     }
 
@@ -190,11 +190,11 @@ public class UserShow_View extends BaseView implements
             if (null != user) {
                 displayUser(user);
             } else {
-                showErrorMsg(R.string.user_saving_error, "User from activity result data == null");
+                showErrorMsg(R.string.USER_EDIT_user_saving_error, "User from activity result data == null");
             }
 
         } else {
-            showErrorMsg(R.string.user_saving_error, "Activity result data == null");
+            showErrorMsg(R.string.USER_EDIT_user_saving_error, "Activity result data == null");
         }
     }
 }

@@ -94,7 +94,7 @@ public class Register_View extends BaseView implements
     public void goUserEditPage(User user) {
         Intent intent = new Intent(this, UserEdit_View.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        intent.putExtra(Constants.USER, user);
+        intent.putExtra(Constants.USER_ID, user.getKey());
         startActivity(intent);
     }
 
