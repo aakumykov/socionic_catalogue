@@ -16,9 +16,11 @@ import android.widget.Toast;
 
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
+import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.login.Login_View;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
+import ru.aakumykov.me.mvp.services.AuthStateListener;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
@@ -47,6 +49,22 @@ public abstract class BaseView extends AppCompatActivity implements
         authService = AuthSingleton.getInstance();
         cardsService = CardsSingleton.getInstance();
         // TODO: storageSingleton
+
+        // Слушатель изменений авторизации
+        iAuthStateListener authStateListener =
+                new AuthStateListener(new iAuthStateListener.StateChangeCallbacks() {
+            @Override
+            public void onLoggedIn() {
+                invalidateOptionsMenu();
+//                onUserLogin();
+            }
+
+            @Override
+            public void onLoggedOut() {
+                invalidateOptionsMenu();
+//                onUserLogout();
+            }
+        });
     }
 
     @Override
