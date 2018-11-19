@@ -173,4 +173,5 @@
     <string name="REGISTER_crating_new_user">Создаём нового пользователя</string>
     <string name="USER_EDIT_error_loading_data">Ошибка загрузки данных</string>
     <string name="USER_EDIT_page_title">Изменение профиля пользователя</string>
+    <string name="COMMENT_show_quote">Показать цитату</string>
 </resources>

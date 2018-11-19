@@ -17,23 +17,34 @@
             android:id="@+id/commentAvatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             app:srcCompat="@drawable/ic_person" />
 
         <TextView
             android:id="@+id/commentAuthor"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="18"
             android:contentDescription="@string/COMMENT_author"
             android:gravity="center_vertical|start"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp" />
+
+        <TextView
+            android:id="@+id/commentParentQuote"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="25"
+            android:gravity="center_vertical|start"
+            android:text="@string/COMMENT_show_quote"
+            android:textColor="@color/light_grey"
+            android:visibility="invisible"
+            android:paddingStart="20dp"
+            android:paddingLeft="20dp" />
 
         <ImageView
             android:id="@+id/commentMenu"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:contentDescription="@string/COMMENT_more_actions"
             app:srcCompat="@drawable/ic_comment_more" />
     </LinearLayout>

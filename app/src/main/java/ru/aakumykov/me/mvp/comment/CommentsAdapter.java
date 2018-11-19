@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import ru.aakumykov.me.mvp.R;
@@ -45,8 +47,14 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
         TextView commentTextView = view.findViewById(R.id.commentText);
         commentTextView.setText(comment.getText());
 
-        ImageView commentReplyMark = view.findViewById(R.id.commentReplyMark);
-        if (null != comment.getParentId()) MyUtils.show(commentReplyMark);
+        // Если это ответ...
+        if (null != comment.getParentId()) {
+            ImageView commentReplyMark = view.findViewById(R.id.commentReplyMark);
+            TextView commentParentQuote = view.findViewById(R.id.commentParentQuote);
+            MyUtils.show(commentReplyMark);
+            MyUtils.show(commentParentQuote);
+        }
+
 
         TextView commentAuthorView = view.findViewById(R.id.commentAuthor);
         commentAuthorView.setText(comment.getUserName());
