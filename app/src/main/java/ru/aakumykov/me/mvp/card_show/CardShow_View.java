@@ -522,7 +522,7 @@ public class CardShow_View extends BaseView implements
         String commentText = commentInput.getText().toString();
 
         if (null != parentComment) {
-            presenter.postCommentReply(commentText, parentComment.getKey());
+            presenter.postCommentReply(commentText, parentComment);
         } else {
             presenter.postComment(commentText);
         }

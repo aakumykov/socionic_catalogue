@@ -59,15 +59,27 @@ public class CardShow_Presenter implements
     // Добавление комментария
     @Override
     public void postComment(String text) {
-        Comment comment = new Comment(text, currentCard.getKey(), null,
-                authService.currentUserId(), authService.currentUserName());
+        Comment comment = new Comment(
+                text,
+                currentCard.getKey(),
+                null,
+                null,
+                authService.currentUserId(),
+                authService.currentUserName()
+        );
         postComment(comment);
     }
 
     @Override
-    public void postCommentReply(String text, String parentId) {
-        Comment comment = new Comment(text, currentCard.getKey(), parentId,
-                authService.currentUserId(), authService.currentUserName());
+    public void postCommentReply(String replyText, final Comment parentComment) {
+        Comment comment = new Comment(
+                replyText,
+                currentCard.getKey(),
+                parentComment.getKey(),
+                parentComment.getText(),
+                authService.currentUserId(),
+                authService.currentUserName()
+        );
         postComment(comment);
     }
 
