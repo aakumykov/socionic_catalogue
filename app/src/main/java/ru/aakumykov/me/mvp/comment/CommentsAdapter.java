@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.comment;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,9 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Comment;
-import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class CommentsAdapter extends ArrayAdapter<Comment> {
@@ -44,13 +45,13 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 
         final View view = inflater.inflate(this.layout, parent, false);
 
-        TextView commentTextView = view.findViewById(R.id.commentText);
+        final TextView commentTextView = view.findViewById(R.id.commentText);
         commentTextView.setText(comment.getText());
 
         // Если это ответ...
         if (null != comment.getParentId()) {
             ImageView commentReplyMark = view.findViewById(R.id.commentReplyMark);
-            TextView commentParentQuote = view.findViewById(R.id.commentParentQuote);
+            TextView commentParentQuote = view.findViewById(R.id.parentComment);
             MyUtils.show(commentReplyMark);
             MyUtils.show(commentParentQuote);
         }
@@ -58,6 +59,19 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 
         TextView commentAuthorView = view.findViewById(R.id.commentAuthor);
         commentAuthorView.setText(comment.getUserName());
+
+        TextView parentCommentView = view.findViewById(R.id.parentComment);
+        parentCommentView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String initialText = v.getResources().getString(R.string.COMMENT_show_quote);
+                TextView textView = (TextView)v;
+                String text = textView.getText().toString();
+
+                if (text.equals(initialText)) textView.setText(comment.getParentText());
+                else textView.setText(initialText);
+            }
+        });
 
         TextView commentRatingView = view.findViewById(R.id.commentRating);
         commentRatingView.setText( ""+comment.getRating() );
