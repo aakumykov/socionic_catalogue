@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.comment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import java.util.List;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Comment;
+import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class CommentsAdapter extends ArrayAdapter<Comment> {
@@ -24,6 +26,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
     // TODO: реализовать ViewHolder
 
     private final static String TAG = "CommentsAdapter";
+    private Context context;
     private LayoutInflater inflater;
     private int layout;
     private List<Comment> list;
@@ -32,6 +35,8 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
     public CommentsAdapter(Context context, int resource, List<Comment> commentsList,
                            iComments.commentClickListener commentClickListener) {
         super(context, resource, commentsList);
+
+        this.context = context;
         this.list = commentsList;
         this.layout = resource;
         this.inflater = LayoutInflater.from(context);
@@ -57,8 +62,22 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
         }
 
 
+        ImageView commentAvatar = view.findViewById(R.id.commentAvatar);
+        commentAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                seeCommentAuthorProfile(comment);
+            }
+        });
+
         TextView commentAuthorView = view.findViewById(R.id.commentAuthor);
         commentAuthorView.setText(comment.getUserName());
+        commentAuthorView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                seeCommentAuthorProfile(comment);
+            }
+        });
 
         TextView parentCommentView = view.findViewById(R.id.parentComment);
         parentCommentView.setOnClickListener(new View.OnClickListener() {
@@ -94,5 +113,12 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 
         return view;
     }
-    
+
+
+    // TODO: после рагистрации текущий пользователь не имеет имени (в комментах не появляется иени).
+    private void seeCommentAuthorProfile(Comment comment) {
+        Intent intent = new Intent(context, UserShow_View.class);
+        intent.putExtra(Constants.USER_ID, comment.getUserId());
+        context.startActivity(intent);
+    }
 }

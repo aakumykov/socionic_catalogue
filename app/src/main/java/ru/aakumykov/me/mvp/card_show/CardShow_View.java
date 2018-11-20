@@ -7,7 +7,6 @@ import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.PopupMenu;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -40,8 +39,6 @@ import ru.aakumykov.me.mvp.comment.iComments;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Comment;
-import ru.aakumykov.me.mvp.models.User;
-import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
@@ -55,7 +52,8 @@ public class CardShow_View extends BaseView implements
         iCardShow.View,
         View.OnClickListener,
         PopupMenu.OnMenuItemClickListener,
-        TagView.OnTagClickListener
+        TagView.OnTagClickListener,
+        iComments.commentClickListener
 {
     private ListView mainListView;
 
@@ -229,47 +227,16 @@ public class CardShow_View extends BaseView implements
         }
     }
 
-    iComments.commentClickListener commentClickListener = new iComments.commentClickListener() {
-        @Override
-        public void onCommentClicked(View view, Comment comment) {
+    @Override
+    public void onCommentMenuClicked(View view, Comment comment) {
+        showCommentMenu(view, comment);
+    }
 
-        }
-
-        @Override
-        public void onClick(View v) {
-
-            switch (v.getId()) {
-                case R.id.commentAvatar:
-                    seeUserProfile(currentComment.getUserId());
-                    break;
-
-                case R.id.commentAuthor:
-                    seeUserProfile(currentComment.getUserId());
-                    break;
-
-                case R.id.parentComment:
-                    toggleParentComment(v, currentComment);
-                    break;
-
-                case R.id.commentMenu:
-                    onCommentMenuClicked(v, currentComment);
-                    break;
-
-                case R.id.commentReply:
-                    onCommentReplyClicked(currentComment);
-                    break;
-
-                case R.id.commentRateUp:
-                    break;
-
-                case R.id.commentRateDown:
-                    break;
-
-                default:
-                    break;
-            }
-        }
-    };
+    @Override
+    public void onCommentReplyClicked(View view, final Comment comment) {
+        parentComment = comment;
+        showCommentForm();
+    }
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -485,7 +452,6 @@ public class CardShow_View extends BaseView implements
         if (null != currentCommentView) currentCommentView.setAlpha(1.0f);
     }
 
-
     // Внутренние методы
     private void loadCard() {
         if (firstRun) {
@@ -674,36 +640,4 @@ public class CardShow_View extends BaseView implements
                 }
         );
     }
-
-
-    private void toggleParentComment(final View view, final Comment comment) {
-        String initialText = getResources().getString(R.string.COMMENT_show_quote);
-        TextView textView = (TextView)view;
-        String text = textView.getText().toString();
-
-        if (text.equals(initialText)) textView.setText(comment.getParentText());
-        else textView.setText(initialText);
-    }
-
-    private void seeUserProfile(String userId) {
-        Intent intent = new Intent(this, UserShow_View.class);
-        intent.putExtra(Constants.USER_ID, userId);
-        startActivity(intent);
-    }
-
-    private void onCommentMenuClicked(View view, Comment comment) {
-        showCommentMenu(view, comment);
-    }
-
-    private void onCommentReplyClicked(final Comment comment) {
-        User currentUser = getAuthService().currentUser();
-
-        if (TextUtils.isEmpty(currentUser.getName())) {
-            // Напомнить о заполнении профиля
-        } else {
-            parentComment = comment;
-            showCommentForm();
-        }
-    }
-
 }
