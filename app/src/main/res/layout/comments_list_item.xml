@@ -98,7 +98,7 @@
             android:layout_weight="26" />
 
         <ImageView
-            android:id="@+id/rateUp"
+            android:id="@+id/commentRateUp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -113,7 +113,7 @@
             android:paddingEnd="4dp" />
 
         <ImageView
-            android:id="@+id/rateDown"
+            android:id="@+id/commentRateDown"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
