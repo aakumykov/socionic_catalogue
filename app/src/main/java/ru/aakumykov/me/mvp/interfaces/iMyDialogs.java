@@ -32,4 +32,5 @@ public interface iMyDialogs {
     interface StringInputCallback {
         void onDialogWithStringYes(String text);
     }
+
 }
