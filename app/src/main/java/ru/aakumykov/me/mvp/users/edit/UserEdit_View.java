@@ -105,6 +105,16 @@ public class UserEdit_View extends BaseView implements
         return aboutInput.getText().toString();
     }
 
+    @Override
+    public void finishEdit(User user, boolean isSuccessfull) {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.USER, user);
+
+        if (isSuccessfull) setResult(RESULT_OK, intent);
+        else setResult(RESULT_CANCELED, intent);
+
+        finish();
+    }
 
     // Нажатия
     @OnClick(R.id.saveButton)

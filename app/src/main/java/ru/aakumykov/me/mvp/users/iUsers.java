@@ -28,6 +28,8 @@ public interface iUsers {
 
         void enableEditForm();
         void disableEditForm();
+
+        void finishEdit(User user, boolean isSuccessfull);
     }
 
     interface Presenter {

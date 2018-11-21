@@ -24,7 +24,7 @@ public class AuthStateListener implements iAuthStateListener {
         final iAuthSingleton authService = AuthSingleton.getInstance();
         final iUsersSingleton usersService = UsersSingleton.getInstance();
 
-
+        // TODO: сильно часто вызывается. Разобраться.
         firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth fba) {

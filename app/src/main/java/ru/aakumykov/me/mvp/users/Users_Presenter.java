@@ -150,7 +150,7 @@ public class Users_Presenter implements
     public void onUserSaveSuccess(User user) {
         authService.storeCurrentUser(user);
         editView.hideProgressBar();
-        editView.closePage();
+        editView.finishEdit(user, true);
     }
 
     @Override
