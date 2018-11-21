@@ -34,6 +34,8 @@ public interface iUsers {
         void linkView(View view) throws IllegalArgumentException;
         void unlinkView();
 
+        void updateUser(String name, String about);
+
         void userEditClicked();
         void userDeleteClicked(String userId);
         void saveButtonClicked(String userId, iUsersSingleton.SaveCallbacks callbacks);
@@ -43,7 +45,7 @@ public interface iUsers {
         void listItemClicked(String key);
 
         void loadUser(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception;
-        void prepareUserEdit(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception;
+        void prepareUserEdit(String userId);
         void saveUser(User user);
 //        void deleteUser(User user);
     }

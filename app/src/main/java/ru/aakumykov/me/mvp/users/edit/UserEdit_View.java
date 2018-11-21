@@ -24,10 +24,7 @@ import ru.aakumykov.me.mvp.users.iUsers;
 // TODO: выбрасывание со страницы при разлогинивании
 
 public class UserEdit_View extends BaseView implements
-        iUsers.EditView,
-        iUsersSingleton.ReadCallbacks,
-        iUsersSingleton.SaveCallbacks,
-        View.OnClickListener
+        iUsers.EditView
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
@@ -56,7 +53,7 @@ public class UserEdit_View extends BaseView implements
         String userId = intent.getStringExtra(Constants.USER_ID);
 
         try {
-            presenter.prepareUserEdit(userId, this);
+            presenter.prepareUserEdit(userId);
         } catch (Exception e) {
             hideProgressBar();
             showErrorMsg(R.string.USER_EDIT_error_loading_data);
@@ -77,31 +74,12 @@ public class UserEdit_View extends BaseView implements
 
 
     // Обязательные методы
-    @OnClick({R.id.saveButton, R.id.cancelButton})
-    @Override
-    public void onClick(View v) {
-        Log.d(TAG, "onClick()");
-
-        switch (v.getId()) {
-
-            case R.id.saveButton:
-                presenter.saveButtonClicked(currentUser.getKey(), this);
-                break;
-
-            case R.id.cancelButton:
-                presenter.cancelButtonClicked();
-                break;
-
-            default:
-                Log.e(TAG, "Clicked button with unknown id: "+v.getId());
-        }
-    }
-
     @Override
     public void onUserLogin() {
         // Он обязан быть уже залогиненным (!)
     }
 
+    // TODO: подключено ли это (я менял)?
     @Override
     public void onUserLogout() {
         closePage();
@@ -128,35 +106,17 @@ public class UserEdit_View extends BaseView implements
     }
 
 
-    // Коллбеки
-    @Override
-    public void onUserReadSuccess(User user) {
-        currentUser = user;
-        fillUserForm(user);
+    // Нажатия
+    @OnClick(R.id.saveButton)
+    void saveUser() {
+        String name = nameInput.getText().toString();
+        String about = aboutInput.getText().toString();
+        presenter.updateUser(name, about);
     }
 
-    @Override
-    public void onUserReadFail(String errorMsg) {
-        currentUser = null;
-        showErrorMsg(R.string.USER_EDIT_error_loading_data);
-    }
-
-    @Override
-    public void onUserSaveSuccess(User user) {
-        Log.d(TAG, "onUserSaveSuccess(), "+user);
-
-        Intent intent = new Intent();
-        intent.putExtra(Constants.USER, user);
-        setResult(RESULT_OK, intent);
-
-        closePage();
-    }
-
-    @Override
-    public void onUserSaveFail(String errorMsg) {
-        hideProgressBar();
-        enableEditForm();
-        showErrorMsg(R.string.USER_EDIT_user_saving_error, errorMsg);
+    @OnClick(R.id.cancelButton)
+    void cancelEdit() {
+        presenter.cancelButtonClicked();
     }
 
 

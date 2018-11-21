@@ -3,19 +3,24 @@ package ru.aakumykov.me.mvp.users;
 import android.util.Log;
 
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
+import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
 
 public class Users_Presenter implements
-        iUsers.Presenter
+        iUsers.Presenter,
+        iUsersSingleton.ReadCallbacks,
+        iUsersSingleton.SaveCallbacks
 {
 
     private final static String TAG = "Users_Presenter";
     private iUsers.ShowView showView;
     private iUsers.ListView listView;
     private iUsers.EditView editView;
-    private UsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iUsersSingleton usersService = UsersSingleton.getInstance();
+    private iAuthSingleton authService = AuthSingleton.getInstance();
     private User currentUser;
 
     // Системные методы
@@ -50,6 +55,13 @@ public class Users_Presenter implements
 
     // Пользовательские методы
     @Override
+    public void updateUser(String name, String about) {
+        currentUser.setName(name);
+        currentUser.setAbout(about);
+        usersService.saveUser(currentUser, this);
+    }
+
+    @Override
     public void userEditClicked() {
         showView.goUserEdit();
     }
@@ -77,7 +89,7 @@ public class Users_Presenter implements
         editView.showProgressBar();
         editView.disableEditForm();
 
-        usersSingleton.saveUser(user, callbacks);
+        usersService.saveUser(user, callbacks);
     }
 
     @Override
@@ -90,7 +102,7 @@ public class Users_Presenter implements
     @Override
     public void loadList(iUsersSingleton.ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
-        usersSingleton.listUsers(callbacks);
+        usersService.listUsers(callbacks);
     }
 
     @Override
@@ -104,18 +116,46 @@ public class Users_Presenter implements
         if (null == userId) {
             throw new Exception("userId == null");
         }
-        usersSingleton.getUser(userId, callbacks);
+        usersService.getUser(userId, callbacks);
     }
 
     @Override
-    public void prepareUserEdit(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception {
+    public void prepareUserEdit(String userId)  {
         Log.d(TAG, "prepareUserEdit("+userId+")");
-        usersSingleton.getUser(userId, callbacks);
+        usersService.getUser(userId, this);
     }
 
     @Override
     public void saveUser(User user) {
         Log.d(TAG, "saveUser(), "+user);
 
+    }
+
+
+    // Методы обратного вызова
+    @Override
+    public void onUserReadSuccess(final User user) {
+        currentUser = user;
+        editView.hideProgressBar();
+        editView.fillUserForm(user);
+    }
+
+    @Override
+    public void onUserReadFail(String errorMsg) {
+        editView.hideProgressBar();
+        editView.showErrorMsg(R.string.USER_EDIT_error_loading_data, errorMsg);
+    }
+
+    @Override
+    public void onUserSaveSuccess(User user) {
+        authService.storeCurrentUser(user);
+        editView.hideProgressBar();
+        editView.closePage();
+    }
+
+    @Override
+    public void onUserSaveFail(String errorMsg) {
+        editView.hideProgressBar();
+        editView.showErrorMsg(R.string.USER_EDIT_user_saving_error, errorMsg);
     }
 }
