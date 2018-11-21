@@ -59,7 +59,7 @@ public class AuthSingleton implements iAuthSingleton
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        callbacks.onRegSucsess(authResult.getUser().getUid());
+                        callbacks.onRegSucsess(authResult.getUser().getUid(), authResult.getUser().getEmail());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

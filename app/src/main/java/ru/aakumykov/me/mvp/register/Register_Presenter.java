@@ -41,7 +41,8 @@ public class Register_Presenter implements
         catch (Exception e) {
             view.hideProgressBar();
             view.enableForm();
-            view.showErrorMsg(R.string.REGISTER_registration_failed, e.getMessage());
+//            view.showErrorMsg(R.string.REGISTER_registration_failed, e.getMessage());
+            view.showErrorMsg(e.getMessage());
             e.printStackTrace();
         }
     }
@@ -60,11 +61,11 @@ public class Register_Presenter implements
 
     // Коллбеки
     @Override
-    public void onRegSucsess(String userId) {
+    public void onRegSucsess(String userId, String email) {
 
         view.showInfoMsg(R.string.REGISTER_crating_new_user);
 
-        usersService.createUser(userId, new iUsersSingleton.CreateCallbacks() {
+        usersService.createUser(userId, email, new iUsersSingleton.CreateCallbacks() {
             @Override
             public void onUserCreateSuccess(User user) {
                 // TODO: внимательно с этим методом
@@ -85,7 +86,8 @@ public class Register_Presenter implements
     public void onRegFail(String errorMessage) {
         Log.d(TAG, "onRegFail(), "+errorMessage);
         view.hideProgressBar();
-        view.showErrorMsg(R.string.REGISTER_registration_failed, errorMessage);
+//        view.showErrorMsg(R.string.REGISTER_registration_failed, errorMessage);
+        view.showErrorMsg(errorMessage);
         view.enableForm();
     }
 

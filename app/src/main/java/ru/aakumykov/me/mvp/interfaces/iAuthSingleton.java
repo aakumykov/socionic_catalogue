@@ -20,7 +20,7 @@ public interface iAuthSingleton {
 
 
     interface RegisterCallbacks {
-        void onRegSucsess(String userId);
+        void onRegSucsess(String userId, String email);
         void onRegFail(String errorMessage);
     }
 

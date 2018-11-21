@@ -13,7 +13,7 @@
     <string name="logout_success">Вы вышли из системы</string>
     <string name="logout_error">Ошибка выхода</string>
     <string name="logout">Выйти</string>
-    <string name="LOGIN_testEmail" translatable="false">qwerty@mail.site</string>
+    <string name="LOGIN_testEmail" translatable="false">qwerty@mail.ru</string>
     <string name="LOGIN_testPassword" translatable="false">123456</string>
     <string name="card_load_error">Ошибка загрузки карточки</string>
     <string name="card_load_canceled">Загрузка карточки отменена</string>
