@@ -14,7 +14,7 @@ public interface iRegister {
     }
 
     interface Presenter {
-        void regUserWithEmail(String name, String email, String password);
+        void regUserWithEmail(String email, String password);
 
         // TODO: вынести в общий интерфейс
         void linkView(iRegister.View view);

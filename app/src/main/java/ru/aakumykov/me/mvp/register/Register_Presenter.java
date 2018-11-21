@@ -30,7 +30,7 @@ public class Register_Presenter implements
 
     // Интерфейсные методы
     @Override
-    public void regUserWithEmail(final String name, String email, String password) {
+    public void regUserWithEmail(String email, String password) {
         Log.d(TAG, "regUserWithEmail()");
 
         view.showProgressBar();

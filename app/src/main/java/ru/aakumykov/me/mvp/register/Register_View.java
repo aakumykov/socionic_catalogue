@@ -23,7 +23,6 @@ import ru.aakumykov.me.mvp.users.show.UserShow_View;
 public class Register_View extends BaseView implements
         iRegister.View
 {
-    @BindView(R.id.nameInput) EditText nameInput;
     @BindView(R.id.emailInput) EditText emailInput;
     @BindView(R.id.passwordInput1) EditText passwordInput1;
     @BindView(R.id.passwordInput2) EditText passwordInput2;
@@ -74,7 +73,6 @@ public class Register_View extends BaseView implements
     // Интерфейсные методы
     @Override
     public void disableForm() {
-        MyUtils.disable(nameInput);
         MyUtils.disable(emailInput);
         MyUtils.disable(passwordInput1);
         MyUtils.disable(passwordInput2);
@@ -83,7 +81,6 @@ public class Register_View extends BaseView implements
 
     @Override
     public void enableForm() {
-        MyUtils.enable(nameInput);
         MyUtils.enable(emailInput);
         MyUtils.enable(passwordInput1);
         MyUtils.enable(passwordInput2);
@@ -104,7 +101,6 @@ public class Register_View extends BaseView implements
     void register() {
         Log.d(TAG, "register()");
 
-        String name = nameInput.getText().toString();
         String email = emailInput.getText().toString();
         String password1 = passwordInput1.getText().toString();
         String password2 = passwordInput2.getText().toString();
@@ -115,7 +111,7 @@ public class Register_View extends BaseView implements
             disableForm();
 
             try {
-                presenter.regUserWithEmail(name, email, password1);
+                presenter.regUserWithEmail(email, password1);
             } catch (Exception e) {
                 hideProgressBar();
                 enableForm();
