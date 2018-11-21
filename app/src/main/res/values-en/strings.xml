@@ -171,4 +171,6 @@
     <string name="COMMENT_show_quote">Show quote</string>
     <string name="USER_EDIT_data_error">Data error</string>
     <string name="DIALOG_setup_user_name">Create user name first</string>
+    <string name="USER_EDIT_you_are_not_logged_in">You are not logged in</string>
+    <string name="USER_EDIT_you_cannot_edit_other_user">You cannot edit other user</string>
 </resources>

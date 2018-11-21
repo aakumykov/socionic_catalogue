@@ -176,4 +176,6 @@
     <string name="COMMENT_show_quote">Показать цитату</string>
     <string name="USER_EDIT_data_error">Ошибка данных</string>
     <string name="DIALOG_setup_user_name">Сначала создайте себе имя</string>
+    <string name="USER_EDIT_you_are_not_logged_in">Вы не вошли в программу</string>
+    <string name="USER_EDIT_you_cannot_edit_other_user">Нельзя редактировать другого пользователя</string>
 </resources>

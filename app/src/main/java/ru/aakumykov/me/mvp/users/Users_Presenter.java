@@ -55,9 +55,15 @@ public class Users_Presenter implements
 
     // Пользовательские методы
     @Override
-    public void updateUser(String name, String about) {
-        currentUser.setName(name);
-        currentUser.setAbout(about);
+    public void updateUser(String newName, String newAbout) {
+
+        if (!authService.isUserLoggedIn()) {
+            editView.showErrorMsg(R.string.USER_EDIT_you_are_not_logged_in);
+            return;
+        }
+
+        currentUser.setName(newName);
+        currentUser.setAbout(newAbout);
         usersService.saveUser(currentUser, this);
     }
 

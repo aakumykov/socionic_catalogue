@@ -36,7 +36,7 @@ public interface iUsers {
         void linkView(View view) throws IllegalArgumentException;
         void unlinkView();
 
-        void updateUser(String name, String about);
+        void updateUser(String newName, String newAbout);
 
         void userEditClicked();
         void userDeleteClicked(String userId);
