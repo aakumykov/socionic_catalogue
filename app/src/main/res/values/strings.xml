@@ -175,4 +175,5 @@
     <string name="USER_EDIT_page_title">Изменение профиля пользователя</string>
     <string name="COMMENT_show_quote">Показать цитату</string>
     <string name="USER_EDIT_data_error">Ошибка данных</string>
+    <string name="DIALOG_setup_user_name">Сначала создайте себе имя</string>
 </resources>

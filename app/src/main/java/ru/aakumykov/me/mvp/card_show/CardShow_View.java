@@ -7,6 +7,7 @@ import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.PopupMenu;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -39,6 +40,8 @@ import ru.aakumykov.me.mvp.comment.iComments;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Comment;
+import ru.aakumykov.me.mvp.models.User;
+import ru.aakumykov.me.mvp.users.edit.UserEdit_View;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
@@ -234,8 +237,42 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public void onCommentReplyClicked(View view, final Comment comment) {
-        parentComment = comment;
-        showCommentForm();
+        // TODO: эта логика должна быть в презентере
+        final User user = getAuthService().currentUser();
+
+        if (TextUtils.isEmpty(user.getName())) {
+
+            String message = getString(R.string.DIALOG_setup_user_name);
+
+            MyDialogs.goToPageDialog(this, message, new iMyDialogs.StandardCallbacks() {
+                @Override
+                public void onCancelInDialog() {
+
+                }
+
+                @Override
+                public void onNoInDialog() {
+
+                }
+
+                @Override
+                public boolean onCheckInDialog() {
+                    return true;
+                }
+
+                @Override
+                public void onYesInDialog() {
+                    Intent intent = new Intent(CardShow_View.this, UserEdit_View.class);
+                    intent.putExtra(Constants.USER_ID, user.getKey());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivityForResult(intent, Constants.CODE_USER_EDIT);
+                }
+            });
+        }
+        else {
+            parentComment = comment;
+            showCommentForm();
+        }
     }
 
     @Override
