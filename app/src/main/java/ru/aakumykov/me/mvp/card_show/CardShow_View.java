@@ -178,6 +178,10 @@ public class CardShow_View extends BaseView implements
                     }
                     break;
 
+                case Constants.CODE_FORCE_SETUP_USER_NAME:
+                    proceedPostComment(data);
+                    break;
+
                 default:
                     /*showErrorMsg(R.string.unknown_request_code,
                             "Unknown request code: "+requestCode);*/
@@ -238,38 +242,8 @@ public class CardShow_View extends BaseView implements
     @Override
     public void onCommentReplyClicked(View view, final Comment comment) {
         // TODO: эта логика должна быть в презентере
-        final User user = getAuthService().currentUser();
 
-        if (TextUtils.isEmpty(user.getName())) {
-
-            String message = getString(R.string.DIALOG_setup_user_name);
-
-            MyDialogs.goToPageDialog(this, message, new iMyDialogs.StandardCallbacks() {
-                @Override
-                public void onCancelInDialog() {
-
-                }
-
-                @Override
-                public void onNoInDialog() {
-
-                }
-
-                @Override
-                public boolean onCheckInDialog() {
-                    return true;
-                }
-
-                @Override
-                public void onYesInDialog() {
-                    Intent intent = new Intent(CardShow_View.this, UserEdit_View.class);
-                    intent.putExtra(Constants.USER_ID, user.getKey());
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    startActivityForResult(intent, Constants.CODE_USER_EDIT);
-                }
-            });
-        }
-        else {
+        if (forceSetupUserName(comment)) {
             parentComment = comment;
             showCommentForm();
         }
@@ -676,5 +650,59 @@ public class CardShow_View extends BaseView implements
                     }
                 }
         );
+    }
+
+    private boolean forceSetupUserName(@Nullable final Comment parentComment) {
+
+        final User user = getAuthService().currentUser();
+
+        if (!TextUtils.isEmpty(user.getName())) {
+            return true;
+        }
+        else {
+
+            String message = getString(R.string.DIALOG_setup_user_name);
+
+            MyDialogs.goToPageDialog(this, message, new iMyDialogs.StandardCallbacks() {
+                @Override
+                public void onCancelInDialog() {
+
+                }
+
+                @Override
+                public void onNoInDialog() {
+
+                }
+
+                @Override
+                public boolean onCheckInDialog() {
+                    return true;
+                }
+
+                @Override
+                public void onYesInDialog() {
+                    Intent intent = new Intent(CardShow_View.this, UserEdit_View.class);
+                    String userId = user.getKey();
+                    intent.putExtra(Constants.USER_ID, userId);
+                    intent.putExtra(Constants.PARENT_COMMENT, parentComment);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivityForResult(intent, Constants.CODE_FORCE_SETUP_USER_NAME);
+                }
+            });
+
+            return false;
+        }
+    }
+
+    private void proceedPostComment(Intent data) {
+
+        if (null == data) {
+            // TODO: Исключение бы сюда... или это предсказуемые данные?
+            showErrorMsg(R.string.data_error, "Intent data is null");
+            return;
+        }
+
+        this.parentComment = data.getParcelableExtra(Constants.PARENT_COMMENT);
+        showCommentForm();
     }
 }
