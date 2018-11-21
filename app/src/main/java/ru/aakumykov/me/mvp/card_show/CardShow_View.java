@@ -178,9 +178,9 @@ public class CardShow_View extends BaseView implements
                     }
                     break;
 
-                case Constants.CODE_FORCE_SETUP_USER_NAME:
-                    proceedPostComment(data);
-                    break;
+//                case Constants.CODE_FORCE_SETUP_USER_NAME:
+//                    proceedPostComment(data);
+//                    break;
 
                 default:
                     /*showErrorMsg(R.string.unknown_request_code,
@@ -684,7 +684,6 @@ public class CardShow_View extends BaseView implements
                     Intent intent = new Intent(CardShow_View.this, UserEdit_View.class);
                     String userId = user.getKey();
                     intent.putExtra(Constants.USER_ID, userId);
-                    intent.putExtra(Constants.PARENT_COMMENT, parentComment);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     startActivityForResult(intent, Constants.CODE_FORCE_SETUP_USER_NAME);
                 }
