@@ -176,8 +176,8 @@ public class CardShow_View extends BaseView implements
                     break;
 
                 default:
-                    showErrorMsg(R.string.unknown_request_code);
-                    Log.d(TAG, "Unknown request code: "+requestCode);
+                    /*showErrorMsg(R.string.unknown_request_code,
+                            "Unknown request code: "+requestCode);*/
                     break;
             }
         }
