@@ -21,6 +21,7 @@ public class Card implements Parcelable {
     private String title;
     private String quote;
     private String imageURL;
+    private String videoURL;
     private String description;
     private HashMap<String, Boolean> tags;
     private int commentsCount = 0;
@@ -36,6 +37,7 @@ public class Card implements Parcelable {
             String title,
             String quote,
             String imageURL,
+            String videoURL,
             String description,
             HashMap<String,Boolean> tagsMap
     )
@@ -44,6 +46,7 @@ public class Card implements Parcelable {
         this.title = title;
         this.quote = quote;
         setImageURL(imageURL);
+        setVideoURL(videoURL);
         this.description = description;
         this.tags = tagsMap;
         this.commentsCount = 0;
@@ -58,6 +61,7 @@ public class Card implements Parcelable {
                 ", title: "+getTitle()+
                 ", quote: "+getQuote()+
                 ", imageURL: "+imageURL+
+                ", videoURL: "+videoURL+
                 ", description: "+getDescription()+
                 ", tags: "+ getTags()+
                 ", commentsCount: "+ getCommentsCount()+
@@ -73,6 +77,7 @@ public class Card implements Parcelable {
          map.put("title", title);
          map.put("quote", quote);
          map.put("imageURL", imageURL);
+         map.put("videoURL", videoURL);
          map.put("description", description);
          map.put("tags", tags);
          map.put("commentsCount", commentsCount);
@@ -91,6 +96,7 @@ public class Card implements Parcelable {
         dest.writeString(this.title);
         dest.writeString(this.quote);
         dest.writeString(this.imageURL);
+        dest.writeString(this.videoURL);
         dest.writeString(this.description);
         dest.writeMap(this.tags);
         dest.writeInt(this.commentsCount);
@@ -105,6 +111,7 @@ public class Card implements Parcelable {
         title = in.readString();
         quote = in.readString();
         imageURL = in.readString();
+        videoURL = in.readString();
         description = in.readString();
         tags = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         commentsCount = in.readInt();
@@ -149,6 +156,9 @@ public class Card implements Parcelable {
     public String getImageURL() {
         return imageURL;
     }
+    public String getVideoURL() {
+        return videoURL;
+    }
     public String getDescription() {
         return description;
     }
@@ -182,6 +192,11 @@ public class Card implements Parcelable {
             Uri uri = Uri.parse(imageURL);
             if (null == uri) throw new IllegalArgumentException("Error parsing imageURL");
             this.imageURL = imageURL;
+    }
+    public void setVideoURL(String videoURL) throws IllegalArgumentException {
+            Uri uri = Uri.parse(videoURL);
+            if (null == uri) throw new IllegalArgumentException("Error parsing videoURL");
+            this.videoURL = videoURL;
     }
     public void setDescription(String description) {
         this.description = description;
