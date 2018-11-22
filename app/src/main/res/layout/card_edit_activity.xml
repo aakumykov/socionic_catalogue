@@ -107,6 +107,14 @@
                     android:textStyle="italic"
                     android:visibility="gone" />
 
+                <EditText
+                    android:id="@+id/videoStringInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/CARD_EDIT_video_code"
+                    android:singleLine="true" />
+
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/imageHolder"
                     android:layout_width="match_parent"

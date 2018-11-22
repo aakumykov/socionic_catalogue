@@ -26,6 +26,7 @@ public interface iCardEdit {
 
         String getCardTitle();
         String getCardQuote();
+        String getCardVideoCode();
         String getCardDescription();
         HashMap<String,Boolean> getCardTags();
 

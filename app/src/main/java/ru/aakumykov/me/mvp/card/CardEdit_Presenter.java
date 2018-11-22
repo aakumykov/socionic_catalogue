@@ -7,6 +7,8 @@ import android.util.Log;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
@@ -155,8 +157,19 @@ public class CardEdit_Presenter implements
         currentCard.setTitle(view.getCardTitle());
 
         // TODO: В самой Card можно просто игнорировать цитату для нетекстовой карты...
-        if (Constants.TEXT_CARD.equals(currentCard.getType())) {
+        if (currentCard.getType().equals(Constants.TEXT_CARD)) {
             currentCard.setQuote(view.getCardQuote());
+        }
+
+        if (currentCard.getType().equals(Constants.VIDEO_CARD)) {
+            String rawVideoCode = view.getCardVideoCode();
+
+            String videoCode = extractYoutubeVideoCode(rawVideoCode);
+            if (null == videoCode) {
+                throw new Exception("Invalid video string: '"+rawVideoCode+"'");
+            }
+
+            currentCard.setVideoCode(videoCode);
         }
 
         currentCard.setDescription(view.getCardDescription());
@@ -188,7 +201,8 @@ public class CardEdit_Presenter implements
     public void setCardType(String cardType) {
         String[] availableCardTypes = {
                 Constants.TEXT_CARD,
-                Constants.IMAGE_CARD
+                Constants.IMAGE_CARD,
+                Constants.VIDEO_CARD
         };
 
         if (Arrays.asList(availableCardTypes).contains(cardType)) {
@@ -376,4 +390,17 @@ public class CardEdit_Presenter implements
         return fname + "." + fext;
     }
 
+
+    private String extractYoutubeVideoCode(String youtubeVideoString) {
+        youtubeVideoString = youtubeVideoString.trim();
+
+        Pattern p = Pattern.compile("/([\\w-]+)$|^([\\w-]+)$|/watch\\?v=([\\w-]+)$");
+        Matcher m = p.matcher(youtubeVideoString);
+
+        if (m.find()) {
+            return m.group(1);
+        } else {
+            return null;
+        }
+    }
 }

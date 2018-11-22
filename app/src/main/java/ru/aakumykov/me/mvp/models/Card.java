@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import ru.aakumykov.me.mvp.Constants;
@@ -21,7 +22,7 @@ public class Card implements Parcelable {
     private String title;
     private String quote;
     private String imageURL;
-    private String videoURL;
+    private String videoCode;
     private String description;
     private HashMap<String, Boolean> tags;
     private int commentsCount = 0;
@@ -37,7 +38,7 @@ public class Card implements Parcelable {
             String title,
             String quote,
             String imageURL,
-            String videoURL,
+            String videoCode,
             String description,
             HashMap<String,Boolean> tagsMap
     )
@@ -46,7 +47,7 @@ public class Card implements Parcelable {
         this.title = title;
         this.quote = quote;
         setImageURL(imageURL);
-        setVideoURL(videoURL);
+        setVideoCode(videoCode);
         this.description = description;
         this.tags = tagsMap;
         this.commentsCount = 0;
@@ -61,7 +62,7 @@ public class Card implements Parcelable {
                 ", title: "+getTitle()+
                 ", quote: "+getQuote()+
                 ", imageURL: "+imageURL+
-                ", videoURL: "+videoURL+
+                ", videoCode: "+ videoCode +
                 ", description: "+getDescription()+
                 ", tags: "+ getTags()+
                 ", commentsCount: "+ getCommentsCount()+
@@ -77,7 +78,7 @@ public class Card implements Parcelable {
          map.put("title", title);
          map.put("quote", quote);
          map.put("imageURL", imageURL);
-         map.put("videoURL", videoURL);
+         map.put("videoCode", videoCode);
          map.put("description", description);
          map.put("tags", tags);
          map.put("commentsCount", commentsCount);
@@ -96,7 +97,7 @@ public class Card implements Parcelable {
         dest.writeString(this.title);
         dest.writeString(this.quote);
         dest.writeString(this.imageURL);
-        dest.writeString(this.videoURL);
+        dest.writeString(this.videoCode);
         dest.writeString(this.description);
         dest.writeMap(this.tags);
         dest.writeInt(this.commentsCount);
@@ -111,7 +112,7 @@ public class Card implements Parcelable {
         title = in.readString();
         quote = in.readString();
         imageURL = in.readString();
-        videoURL = in.readString();
+        videoCode = in.readString();
         description = in.readString();
         tags = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         commentsCount = in.readInt();
@@ -156,8 +157,8 @@ public class Card implements Parcelable {
     public String getImageURL() {
         return imageURL;
     }
-    public String getVideoURL() {
-        return videoURL;
+    public String getVideoCode() {
+        return videoCode;
     }
     public String getDescription() {
         return description;
@@ -177,10 +178,17 @@ public class Card implements Parcelable {
         this.key = key;
     }
     public void setType(String type) throws IllegalArgumentException {
-        if (!type.equals(Constants.TEXT_CARD) && !type.equals(Constants.IMAGE_CARD)) {
+        String[] availableCardTypes = {
+                Constants.TEXT_CARD,
+                Constants.IMAGE_CARD,
+                Constants.VIDEO_CARD
+        };
+
+        if (Arrays.asList(availableCardTypes).contains(type)) {
+            this.type = type;
+        } else {
             throw new IllegalArgumentException("Unknown card type '"+type+"'");
         }
-        this.type = type;
     }
     public void setTitle(String title) {
         this.title = title;
@@ -193,10 +201,10 @@ public class Card implements Parcelable {
             if (null == uri) throw new IllegalArgumentException("Error parsing imageURL");
             this.imageURL = imageURL;
     }
-    public void setVideoURL(String videoURL) throws IllegalArgumentException {
-            Uri uri = Uri.parse(videoURL);
-            if (null == uri) throw new IllegalArgumentException("Error parsing videoURL");
-            this.videoURL = videoURL;
+    public void setVideoCode(String videoCode) throws IllegalArgumentException {
+            Uri uri = Uri.parse(videoCode);
+            if (null == uri) throw new IllegalArgumentException("Error parsing videoCode");
+            this.videoCode = videoCode;
     }
     public void setDescription(String description) {
         this.description = description;

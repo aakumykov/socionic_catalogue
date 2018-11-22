@@ -60,6 +60,8 @@ public class CardEdit_View extends BaseView implements
 
     @BindView(R.id.quoteView) EditText quoteView;
 
+    @BindView(R.id.videoStringInput) EditText videoStringInput;
+
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.imagePlaceholder) ImageView imagePlaceholder;
@@ -276,6 +278,11 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
+    public String getCardVideoCode() {
+        return videoStringInput.getText().toString();
+    }
+
+    @Override
     public String getCardDescription() {
         return descriptionView.getText().toString();
     }
@@ -384,15 +391,23 @@ public class CardEdit_View extends BaseView implements
 
     @OnClick(R.id.videoModeSwitch)
     void switchVideoMode() {
+        hideModeSwitcher();
+        MyUtils.show(mediaHolder);
+        MyUtils.show(videoStringInput);
 
+        videoStringInput.requestFocus();
+
+        presenter.setCardType(Constants.VIDEO_CARD);
     }
 
     @OnClick(R.id.saveButton)
     void save() {
+        // TODO: показывать причину ошибки сохранения
         try {
             presenter.saveCard();
         } catch (Exception e) {
             enableForm();
+            hideProgressBar();
             showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
             e.printStackTrace();
         }

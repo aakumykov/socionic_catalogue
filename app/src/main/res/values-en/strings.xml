@@ -173,4 +173,5 @@
     <string name="DIALOG_setup_user_name">Create user name first</string>
     <string name="USER_EDIT_you_are_not_logged_in">You are not logged in</string>
     <string name="USER_EDIT_you_cannot_edit_other_user">You cannot edit other user</string>
+    <string name="CARD_EDIT_video_code">Video id or URL</string>
 </resources>
