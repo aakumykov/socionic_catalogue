@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.youtube.player.YouTubePlayerView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -48,6 +49,7 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.cards_list.CardsList_View;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
+import ru.aakumykov.me.mvp.yt_player.YTPlayer;
 
 //TODO: уменьшение изображения
 
@@ -67,7 +69,7 @@ public class CardShow_View extends BaseView implements
     private ConstraintLayout imageHolder;
     private ProgressBar imageProgressBar;
     private ImageView imageView;
-    private TextView videoView;
+    private YouTubePlayerView videoView;
     private TextView descriptionView;
 
     private TagContainerLayout tagsContainer;
@@ -90,6 +92,7 @@ public class CardShow_View extends BaseView implements
     private Comment parentComment;
     private View currentCommentView;
 
+    private YTPlayer ytPlayer;
 
     // TODO: удаление комментариев вместе с карточкой
 
@@ -137,6 +140,8 @@ public class CardShow_View extends BaseView implements
 
 //        mainListView.setOnItemClickListener(this);
         tagsContainer.setOnTagClickListener(this);
+
+        ytPlayer = new YTPlayer(videoView);
 
         presenter = new CardShow_Presenter();
     }
@@ -506,7 +511,7 @@ public class CardShow_View extends BaseView implements
 
     private void displayVideoCard(Card card) {
         displayCommonCard(card);
-        videoView.setText(card.getVideoCode());
+        ytPlayer.setVideo(card.getVideoCode());
         MyUtils.show(videoView);
     }
 

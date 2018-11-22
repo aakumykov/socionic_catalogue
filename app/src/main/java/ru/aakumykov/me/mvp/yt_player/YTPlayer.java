@@ -17,21 +17,15 @@ public class YTPlayer implements
     private String videoId;
     private boolean isInitialized = false;
 
-    YTPlayer(final YouTubePlayerView ytpv) {
+    public YTPlayer(final YouTubePlayerView ytpv) {
         youTubePlayerView = ytpv;
 
     }
 
     // Интерфейсные методы
     @Override
-    public void showPlayer() {
-        MyUtils.show(youTubePlayerView);
-    }
-
-    @Override
-    public void play(String videoId) {
+    public void setVideo(String videoId) {
         this.videoId = videoId;
-        this.youTubePlayerView.initialize(Config.YOUTUBE_API_KEY, this);
     }
 
     // Системные методы
@@ -39,7 +33,7 @@ public class YTPlayer implements
     public void onInitializationSuccess(YouTubePlayer.Provider provider,
                                         YouTubePlayer youTubePlayer, boolean wasRestored) {
         // TODO: обрабатывать 'wasRestored'
-        youTubePlayer.loadVideo(this.videoId);
+        youTubePlayer.cueVideo(this.videoId);
     }
 
     @Override
