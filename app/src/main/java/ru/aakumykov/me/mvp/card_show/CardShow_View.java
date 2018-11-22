@@ -22,6 +22,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -34,6 +37,7 @@ import butterknife.ButterKnife;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.comment.CommentsAdapter;
@@ -93,6 +97,7 @@ public class CardShow_View extends BaseView implements
     private View currentCommentView;
 
     private YTPlayer ytPlayer;
+    private YouTubePlayerFragment youTubePlayerFragment;
 
     // TODO: удаление комментариев вместе с карточкой
 
@@ -117,7 +122,7 @@ public class CardShow_View extends BaseView implements
         imageHolder = findViewById(R.id.imageHolder);
         imageProgressBar = findViewById(R.id.imageProgressBar);
         imageView = findViewById(R.id.imageView);
-        videoView = findViewById(R.id.videoView);
+//        videoView = findViewById(R.id.youtube_fragment);
         descriptionView = findViewById(R.id.descriptionView);
         tagsContainer = findViewById(R.id.tagsContainer);
 
@@ -142,6 +147,9 @@ public class CardShow_View extends BaseView implements
         tagsContainer.setOnTagClickListener(this);
 
         ytPlayer = new YTPlayer(videoView);
+
+        youTubePlayerFragment =
+                (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
 
         presenter = new CardShow_Presenter();
     }
@@ -509,10 +517,26 @@ public class CardShow_View extends BaseView implements
         displayCommonCard(card);
     }
 
-    private void displayVideoCard(Card card) {
+    private void displayVideoCard(final Card card) {
         displayCommonCard(card);
-        ytPlayer.setVideo(card.getVideoCode());
-        MyUtils.show(videoView);
+//        ytPlayer.setVideo(card.getVideoCode());
+//        MyUtils.show(videoView);
+
+        youTubePlayerFragment.initialize(Config.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider,
+                                                YouTubePlayer youTubePlayer, boolean wasRestored) {
+                if (!wasRestored) {
+                    youTubePlayer.cueVideo(card.getVideoCode());
+                }
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider,
+                                                YouTubeInitializationResult youTubeInitializationResult) {
+                showErrorMsg("Ошибка настройки видео");
+            }
+        });
     }
 
     private void displayCommonCard(Card card) {
