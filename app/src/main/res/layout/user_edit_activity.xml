@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/name"
-        android:inputType="textPersonName"
+        android:inputType="textCapSentences|textPersonName"
         android:singleLine="true" />
 
     <EditText

@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.users.edit.UserEdit_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.User;
@@ -22,7 +23,6 @@ import ru.aakumykov.me.mvp.users.show.UserShow_View;
 public class Register_View extends BaseView implements
         iRegister.View
 {
-    @BindView(R.id.nameInput) EditText nameInput;
     @BindView(R.id.emailInput) EditText emailInput;
     @BindView(R.id.passwordInput1) EditText passwordInput1;
     @BindView(R.id.passwordInput2) EditText passwordInput2;
@@ -45,23 +45,34 @@ public class Register_View extends BaseView implements
         presenter = new Register_Presenter();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.linkView(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.unlinkView();
+    }
+
 
     // Обязательные методы
     @Override
     public void onUserLogin() {
-        // TODO: что здесь?
+        closePage();
     }
 
     @Override
     public void onUserLogout() {
-        // TODO: а здесь?
+        closePage();
     }
 
 
     // Интерфейсные методы
     @Override
     public void disableForm() {
-        MyUtils.disable(nameInput);
         MyUtils.disable(emailInput);
         MyUtils.disable(passwordInput1);
         MyUtils.disable(passwordInput2);
@@ -70,7 +81,6 @@ public class Register_View extends BaseView implements
 
     @Override
     public void enableForm() {
-        MyUtils.enable(nameInput);
         MyUtils.enable(emailInput);
         MyUtils.enable(passwordInput1);
         MyUtils.enable(passwordInput2);
@@ -78,8 +88,9 @@ public class Register_View extends BaseView implements
     }
 
     @Override
-    public void goUserPage(User user) {
-        Intent intent = new Intent(this, UserShow_View.class);
+    public void goUserEditPage(User user) {
+        Intent intent = new Intent(this, UserEdit_View.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         intent.putExtra(Constants.USER_ID, user.getKey());
         startActivity(intent);
     }
@@ -90,7 +101,6 @@ public class Register_View extends BaseView implements
     void register() {
         Log.d(TAG, "register()");
 
-        String name = nameInput.getText().toString();
         String email = emailInput.getText().toString();
         String password1 = passwordInput1.getText().toString();
         String password2 = passwordInput2.getText().toString();
@@ -101,7 +111,7 @@ public class Register_View extends BaseView implements
             disableForm();
 
             try {
-                presenter.regUserWithEmail(name, email, password1);
+                presenter.regUserWithEmail(email, password1);
             } catch (Exception e) {
                 hideProgressBar();
                 enableForm();

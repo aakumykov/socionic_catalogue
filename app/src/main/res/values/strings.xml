@@ -13,7 +13,7 @@
     <string name="logout_success">Вы вышли из системы</string>
     <string name="logout_error">Ошибка выхода</string>
     <string name="logout">Выйти</string>
-    <string name="LOGIN_testEmail" translatable="false">user@example.com</string>
+    <string name="LOGIN_testEmail" translatable="false">qwerty@mail.ru</string>
     <string name="LOGIN_testPassword" translatable="false">123456</string>
     <string name="card_load_error">Ошибка загрузки карточки</string>
     <string name="card_load_canceled">Загрузка карточки отменена</string>
@@ -68,7 +68,7 @@
     <string name="error_displaying_user">Ошибка отображения пользователя</string>
     <string name="data_loading_data">Ошибка загрузки данных</string>
     <string name="error_loading_data">Ошибка загрузки данных</string>
-    <string name="user_saving_error">Ошибка сохранения пользователя</string>
+    <string name="USER_EDIT_user_saving_error">Ошибка сохранения пользователя</string>
     <string name="saving_user">Сохранение пользователя</string>
     <string name="error_saving_user">Ошибка сохранения пользователя</string>
     <string name="user_saved">Пользователь сохранён</string>
@@ -100,7 +100,7 @@
     <string name="REGISTER_name_cannot_be_empty">Псевдоним не может быть пустым</string>
     <string name="REGISTER_registration_failed">Ошибка регистрации</string>
     <string name="REGISTER_passwords_mismatch">Пароли не совпадают</string>
-    <string name="REGISTER_registering_user">Регистрируем нового пользователя</string>
+    <string name="REGISTER_registering_user">Регистрируемся</string>
     <string name="MENU_login">Войти</string>
     <string name="MENU_logout">Выйти</string>
     <string name="LOGIN_page_title">Вход в программу</string>
@@ -168,4 +168,14 @@
     <string name="CARDS_LIST_error_creating_card">Ошибка создания карточки</string>
     <string name="CARD_SHOW_data_error">Ошибка данных</string>
     <string name="COMMENT_author">Автор комментария</string>
+    <string name="REGISTER_succes">Успешная регистрация</string>
+    <string name="REGISTER_error_creating_user">Ошибка создания пользователя</string>
+    <string name="REGISTER_crating_new_user">Создаём нового пользователя</string>
+    <string name="USER_EDIT_error_loading_data">Ошибка загрузки данных</string>
+    <string name="USER_EDIT_page_title">Изменение профиля пользователя</string>
+    <string name="COMMENT_show_quote">Показать цитату</string>
+    <string name="USER_EDIT_data_error">Ошибка данных</string>
+    <string name="DIALOG_setup_user_name">Сначала создайте себе имя</string>
+    <string name="USER_EDIT_you_are_not_logged_in">Вы не вошли в программу</string>
+    <string name="USER_EDIT_you_cannot_edit_other_user">Нельзя редактировать другого пользователя</string>
 </resources>

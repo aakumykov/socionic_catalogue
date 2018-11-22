@@ -59,15 +59,28 @@ public class CardShow_Presenter implements
     // Добавление комментария
     @Override
     public void postComment(String text) {
-//        view.disableCommentForm();
-        Comment comment = new Comment(text, currentCard.getKey(), null,
-                authService.currentUid(), authService.userName());
-
-        commentsService.createComment(comment, this);
+        Comment comment = new Comment(
+                text,
+                currentCard.getKey(),
+                null,
+                null,
+                authService.currentUserId(),
+                authService.currentUserName()
+        );
+        postComment(comment);
     }
 
-    private void postComment(Comment comment) {
-        commentsService.createComment(comment, this);
+    @Override
+    public void postCommentReply(String replyText, final Comment parentComment) {
+        Comment comment = new Comment(
+                replyText,
+                currentCard.getKey(),
+                parentComment.getKey(),
+                parentComment.getText(),
+                authService.currentUserId(),
+                authService.currentUserName()
+        );
+        postComment(comment);
     }
 
 
@@ -79,7 +92,7 @@ public class CardShow_Presenter implements
             return;
 
         // TODO: эта проверка без проверки на залогиненность...
-        if (!authService.currentUid().equals(comment.getUserId())) {
+        if (!authService.currentUserId().equals(comment.getUserId())) {
             view.showErrorMsg(R.string.action_denied);
             return;
         }
@@ -101,7 +114,7 @@ public class CardShow_Presenter implements
         if (!authService.isUserLoggedIn())
             return;
 
-        if (!authService.currentUid().equals(comment.getUserId())) {
+        if (!authService.currentUserId().equals(comment.getUserId())) {
             view.showErrorMsg(R.string.action_denied);
         }
 
@@ -142,7 +155,7 @@ public class CardShow_Presenter implements
         if (!authService.isUserLoggedIn()) return;
 
         // TODO: "или Админ"
-        if (!authService.currentUid().equals(card.getUserId())) {
+        if (!authService.currentUserId().equals(card.getUserId())) {
             view.showErrorMsg(R.string.action_denied);
             return;
         }
@@ -247,5 +260,11 @@ public class CardShow_Presenter implements
     @Override
     public void onDeleteError(String msg) {
         view.showErrorMsg(R.string.COMMENT_delete_error, msg);
+    }
+
+
+    // Внутренние методы
+    private void postComment(Comment comment) {
+        commentsService.createComment(comment, this);
     }
 }

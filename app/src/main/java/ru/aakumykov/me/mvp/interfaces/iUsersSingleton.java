@@ -8,18 +8,19 @@ import ru.aakumykov.me.mvp.models.User;
 
 public interface iUsersSingleton {
 
-    void listUsers(ListCallbacks callbacks);
-    void createUser(String name, String about);
-    void getUser(String id, UserCallbacks callbacks);
+    void createUser(String userId, String email, CreateCallbacks callbacks);
+    void getUser(String id, ReadCallbacks callbacks);
     void saveUser(User user, SaveCallbacks callbacks);
-    void deleteUser(User user);
+    void deleteUser(User user, DeleteCallbacks callbacks);
+    void listUsers(ListCallbacks callbacks);
 
-    interface ListCallbacks {
-        void onListRecieved(List<User> usersList);
-        void onListFail(String errorMsg);
+
+    interface CreateCallbacks {
+        void onUserCreateSuccess(User user);
+        void onUserCreateFail(String errorMsg);
     }
 
-    interface UserCallbacks {
+    interface ReadCallbacks {
         void onUserReadSuccess(User user);
         void onUserReadFail(String errorMsg);
     }
@@ -27,5 +28,15 @@ public interface iUsersSingleton {
     interface SaveCallbacks {
         void onUserSaveSuccess(User user);
         void onUserSaveFail(String errorMsg);
+    }
+
+    interface DeleteCallbacks {
+        void onUserDeleteSuccess(User user);
+        void onUserDeleteFail(String errorMsg);
+    }
+
+    interface ListCallbacks {
+        void onListRecieved(List<User> usersList);
+        void onListFail(String errorMsg);
     }
 }

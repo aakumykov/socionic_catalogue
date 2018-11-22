@@ -85,6 +85,8 @@ public class MyDialogs {
         alertDialog.show();
     }
 
+
+    // Диалог удаления комментария
     public static void commentDeleteDialog(Activity activity, String message, iMyDialogs.Delete callbacks) {
 
         String title = activity.getString(R.string.DIALOG_delete_comment);
@@ -101,6 +103,26 @@ public class MyDialogs {
                 callbacks
         ).show();
     }
+
+
+    // Диалог перехода на страницу
+    public static void goToPageDialog(Activity activity, String message, iMyDialogs.StandardCallbacks callbacks) {
+
+        basicDialog(
+                activity,
+                null,
+                message,
+                R.string.yes,
+                R.string.no,
+                null,
+                null,
+                null,
+                callbacks
+        ).show();
+
+    }
+
+
 
     // Внутренние методы
     private static AlertDialog basicDialog(

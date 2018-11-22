@@ -19,6 +19,7 @@ public class Comment implements Parcelable {
 
     private String cardId;
     private String parentId;
+    private String parentText;
     private String userId;
     private String userName;
     private String createdAt;
@@ -27,10 +28,11 @@ public class Comment implements Parcelable {
     
     public Comment(){}
     
-    public Comment(String text, String cardId, String parentId, String userId, String userName) {
+    public Comment(String text, String cardId, String parentId, String parentText, String userId, String userName) {
         this.text = text;
         this.cardId = cardId;
         this.parentId = parentId;
+        this.parentText = parentText;
         this.userId = userId;
         this.userName = userName;
     }
@@ -43,6 +45,7 @@ public class Comment implements Parcelable {
                 +", text: "+text
                 +", cardId: "+cardId
                 +", parentId: "+parentId
+                +", parentText: "+parentText
                 +", userId: "+userId
                 +", userName: "+userName
                 +", createdAt: "+createdAt
@@ -58,6 +61,7 @@ public class Comment implements Parcelable {
             map.put("text", text);
             map.put("cardId", cardId);
             map.put("parentId", parentId);
+            map.put("parentText", parentText);
             map.put("userId", userId);
             map.put("userName", userName);
             map.put("createdAt", createdAt);
@@ -92,6 +96,7 @@ public class Comment implements Parcelable {
         dest.writeString(text);
         dest.writeString(cardId);
         dest.writeString(parentId);
+        dest.writeString(parentText);
         dest.writeString(userId);
         dest.writeString(userName);
         dest.writeString(createdAt);
@@ -141,6 +146,13 @@ public class Comment implements Parcelable {
     }
     public void setParentId(String parentId) {
         this.parentId = parentId;
+    }
+
+    public String getParentText() {
+        return parentText;
+    }
+    public void setParentText(String parentText) {
+        this.parentText = parentText;
     }
 
     public String getUserId() {

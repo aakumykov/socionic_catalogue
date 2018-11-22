@@ -14,9 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseUser;
-
-import butterknife.BindView;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
@@ -59,13 +56,13 @@ public abstract class BaseView extends AppCompatActivity implements
             @Override
             public void onLoggedIn() {
                 invalidateOptionsMenu();
-                onUserLogin();
+//                onUserLogin();
             }
 
             @Override
             public void onLoggedOut() {
                 invalidateOptionsMenu();
-                onUserLogout();
+//                onUserLogout();
             }
         });
     }
@@ -319,9 +316,14 @@ public abstract class BaseView extends AppCompatActivity implements
     }
 
     private void seeUserProfile() {
-        Intent intent = new Intent(this, UserShow_View.class);
-        intent.putExtra(Constants.USER_ID, authService.currentUid());
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(this, UserShow_View.class);
+            intent.putExtra(Constants.USER_ID, authService.currentUserId());
+            startActivity(intent);
+        } catch (Exception e) {
+            showErrorMsg(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void createCard() {

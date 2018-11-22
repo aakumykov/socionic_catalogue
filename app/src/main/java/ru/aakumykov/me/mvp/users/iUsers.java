@@ -28,11 +28,15 @@ public interface iUsers {
 
         void enableEditForm();
         void disableEditForm();
+
+        void finishEdit(User user, boolean isSuccessfull);
     }
 
     interface Presenter {
         void linkView(View view) throws IllegalArgumentException;
         void unlinkView();
+
+        void updateUser(String newName, String newAbout);
 
         void userEditClicked();
         void userDeleteClicked(String userId);
@@ -42,8 +46,8 @@ public interface iUsers {
         void loadList(iUsersSingleton.ListCallbacks callbacks);
         void listItemClicked(String key);
 
-        void loadUser(String userId, iUsersSingleton.UserCallbacks callbacks) throws Exception;
-        void prepareUserEdit(String userId, iUsersSingleton.UserCallbacks callbacks) throws Exception;
+        void loadUser(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception;
+        void prepareUserEdit(String userId);
         void saveUser(User user);
 //        void deleteUser(User user);
     }

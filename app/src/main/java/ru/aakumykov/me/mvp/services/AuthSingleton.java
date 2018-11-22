@@ -17,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
+import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
 
 // TODO: разобраться с гостевым пользователем
@@ -31,18 +32,45 @@ public class AuthSingleton implements iAuthSingleton
             return ourInstance;
         }
     }
-    private AuthSingleton() {}
+    private AuthSingleton() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        usersService = UsersSingleton.getInstance();
+    }
     /* Одиночка */    
 
 
     // Свойства
     private final static String TAG = "AuthSingleton";
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private DatabaseReference usersRef = FirebaseDatabase.getInstance()
-            .getReference().child(Constants.USERS_PATH);
+    private FirebaseAuth firebaseAuth;
+    private iUsersSingleton usersService;
+    private User currentUser;
 
 
     // Интерфейсные методы
+
+    // Регистрация, вход, выход
+    @Override
+    public void registerWithEmail(String email, String password,
+            final iAuthSingleton.RegisterCallbacks callbacks) throws Exception
+    {
+        Log.d(TAG, "registerWithEmail("+email+", ***)");
+
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        callbacks.onRegSucsess(authResult.getUser().getUid(), authResult.getUser().getEmail());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onRegFail(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+    }
+
     @Override
     public void login(String email, String password, final LoginCallbacks callbacks) throws Exception {
 
@@ -63,13 +91,33 @@ public class AuthSingleton implements iAuthSingleton
     }
 
     @Override
-    public void logout() {
-            firebaseAuth.signOut();
+    public void cancelLogin() {
+        firebaseAuth.signOut();
     }
 
     @Override
-    public void cancelLogin() {
+    public void logout() {
         firebaseAuth.signOut();
+    }
+
+
+    // Параметры текущего пользователя
+    @Override
+    public User currentUser() {
+        return this.currentUser;
+    }
+
+    @Override
+    public String currentUserId() /*throws Exception*/ {
+        String firebaseUid = firebaseAuth.getUid();
+//        String userId = getCurrentUser().getKey();
+//        if (!firebaseUid.equals(userId)) throw new Exception("Firebase user id != program user uid");
+        return firebaseUid;
+    }
+
+    @Override
+    public String currentUserName() {
+        return currentUser.getName();
     }
 
     @Override
@@ -78,88 +126,26 @@ public class AuthSingleton implements iAuthSingleton
     }
 
     @Override
-    public String currentUid() {
-        return firebaseAuth.getUid();
-    }
-
-    @Override
-    public String userName() {
-        return "*пользователь*";
-    }
-
-    @Override
-    public boolean isAdmin(String userId) {
+    public boolean userIsAdmin(String userId) {
         return true;
     }
 
-    @Override
-    public void registerWithEmail(
-            String email,
-            String password,
-            final iAuthSingleton.RegisterCallbacks callbacks) throws Exception
-    {
-        Log.d(TAG, "registerWithEmail("+email+", ***)");
 
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                callbacks.onRegSucsess(authResult.getUser().getUid());
-            }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                callbacks.onRegFail(e.getMessage());
-                e.printStackTrace();
-            }
-        });
+    // Служебные
+    @Override
+    public void storeCurrentUser(final User user) {
+        this.currentUser = user;
     }
 
     @Override
-    public void createUser(final String uid, final User userDraft,
-                           final CreateUserCallbacks callbacks)  throws Exception
-    {
-        Log.d(TAG, "createUser("+uid+"), "+userDraft);
-
-        // Проверяю на существование
-        usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (null == dataSnapshot.getValue()) {
-                    Log.d(TAG, "Ключа "+uid+" в ветке /users нет.");
-
-                    // Если данных нет, значит ключа такого нет
-                    usersRef.child(uid).setValue(userDraft)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    User newUser = userDraft;
-                                         newUser.setKey(uid);
-                                    callbacks.onCreateSuccess(newUser);
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    callbacks.onCreateFail(e.getMessage());
-                                    e.printStackTrace();
-                                }
-                            });
-
-                } else {
-                    Log.e(TAG, "Ключ "+uid+" в ветке /users УЖЕ ЕСТЬ.");
-                    callbacks.onCreateFail("Key already exists");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                callbacks.onCreateFail(databaseError.getMessage());
-                databaseError.toException().printStackTrace();
-            }
-        });
+    public void clearCurrentUser() {
+        this.currentUser = null;
     }
 
+
+    // Внутренние
+    private User getCurrentUser() {
+        return this.currentUser;
+    }
 }
 

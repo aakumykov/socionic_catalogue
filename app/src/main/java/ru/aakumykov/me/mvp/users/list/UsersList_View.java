@@ -120,7 +120,7 @@ public class UsersList_View extends BaseView implements
 
     @Override
     public void goUserPage(String userId) {
-        Log.d(TAG, "goUserPage("+userId+")");
+        Log.d(TAG, "goUserEditPage("+userId+")");
         Intent intent = new Intent(this, UserShow_View.class);
         intent.putExtra(Constants.USER_ID, userId);
         startActivity(intent);

@@ -24,7 +24,7 @@ import ru.aakumykov.me.mvp.users.iUsers;
 
 public class UserShow_View extends BaseView implements
         iUsers.ShowView,
-        iUsersSingleton.UserCallbacks
+        iUsersSingleton.ReadCallbacks
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.nameLabel) TextView nameLabel;
@@ -35,6 +35,7 @@ public class UserShow_View extends BaseView implements
     private final static String TAG = "UserShow_View";
     private iUsers.Presenter presenter;
 
+    // Где должен базироваться currentUser: во вьюхе или презентере?
     private User currentUser;
 
 
@@ -71,13 +72,23 @@ public class UserShow_View extends BaseView implements
         presenter.linkView(this);
 
         switch (resultCode) {
+            case RESULT_OK:
+                break;
             case RESULT_CANCELED:
                 return;
-            case RESULT_OK:
-                processActivityResult(requestCode, data);
-                break;
             default:
-                showErrorMsg(R.string.user_saving_error, "Unknown resultCode: "+resultCode);
+                showErrorMsg(R.string.USER_EDIT_user_saving_error, "Unknown resultCode: "+resultCode);
+                return;
+        }
+
+        switch (requestCode) {
+            case Constants.CODE_USER_EDIT:
+                displayEditedUser(data);
+                break;
+//            case Constants.CODE_USER_DELETE:
+//                break;
+            default:
+                break;
         }
     }
 
@@ -110,7 +121,7 @@ public class UserShow_View extends BaseView implements
                 closePage();
                 break;
             case R.id.actionEdit:
-                presenter.userEditClicked();
+                editUser();
                 break;
             case R.id.actionDelete:
                 presenter.userDeleteClicked(currentUser.getKey());
@@ -134,8 +145,10 @@ public class UserShow_View extends BaseView implements
 
     // Интерфейсные методы
     @Override
-    public void displayUser(User user) {
+    public void displayUser(final User user) {
         Log.d(TAG, "displayUser(), "+user);
+
+        currentUser = user;
 
         hideProgressBar();
 
@@ -152,7 +165,7 @@ public class UserShow_View extends BaseView implements
     public void goUserEdit() {
         Intent intent = new Intent(this, UserEdit_View.class);
         intent.putExtra(Constants.USER_ID, currentUser.getKey());
-        startActivityForResult(intent, Constants.CODE_EDIT_USER);
+        startActivityForResult(intent, Constants.CODE_USER_EDIT);
     }
 
 
@@ -172,29 +185,50 @@ public class UserShow_View extends BaseView implements
 
 
     // Внутренние методы
-    private void processActivityResult(int requestCode, @Nullable Intent data) {
-        Log.d(TAG, "processActivityResult()");
-
-//        switch (requestCode) {
-//            case Constants.CODE_EDIT_USER:
-//                break;
-//            default:
-//                showErrorMsg(R.string.internal_error, "Unknowm request code: "+requestCode);
-//                break;
+//    private void processActivityResult(int requestCode, @Nullable Intent data) {
+//        Log.d(TAG, "processActivityResult()");
+//
+////        switch (requestCode) {
+////            case Constants.CODE_USER_EDIT:
+////                break;
+////            default:
+////                showErrorMsg(R.string.internal_error, "Unknowm request code: "+requestCode);
+////                break;
+////        }
+//
+//        if (null != data) {
+//
+//            User user = data.getParcelableExtra(Constants.USER);
+//
+//            if (null != user) {
+//                displayUser(user);
+//            } else {
+//                showErrorMsg(R.string.USER_EDIT_user_saving_error, "User from activity result data == null");
+//            }
+//
+//        } else {
+//            showErrorMsg(R.string.USER_EDIT_user_saving_error, "Activity result data == null");
 //        }
+//    }
 
-        if (null != data) {
+    private void editUser() {
+        Intent intent = new Intent(this, UserEdit_View.class);
+        intent.putExtra(Constants.USER_ID, currentUser.getKey());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivityForResult(intent, Constants.CODE_USER_EDIT);
+    }
 
-            User user = data.getParcelableExtra(Constants.USER);
-
-            if (null != user) {
-                displayUser(user);
-            } else {
-                showErrorMsg(R.string.user_saving_error, "User from activity result data == null");
-            }
-
-        } else {
-            showErrorMsg(R.string.user_saving_error, "Activity result data == null");
+    private void displayEditedUser(Intent data) {
+        if (null == data) {
+            showErrorMsg(R.string.USER_EDIT_data_error, "Intent data is null");
+            return;
         }
+
+        User user = data.getParcelableExtra(Constants.USER);
+        if (null == user) {
+            showErrorMsg(R.string.USER_EDIT_data_error, "User from intent is null.");
+        }
+
+        displayUser(user);
     }
 }

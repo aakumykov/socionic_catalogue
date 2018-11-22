@@ -2,35 +2,38 @@ package ru.aakumykov.me.mvp.register;
 
 import android.util.Log;
 
+import java.util.concurrent.TimeUnit;
+
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
-import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
+import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
+import ru.aakumykov.me.mvp.services.AuthSingleton;
+import ru.aakumykov.me.mvp.services.UsersSingleton;
 
 // TODO: проверять имя пользователя
 
 public class Register_Presenter implements
         iRegister.Presenter,
         iAuthSingleton.RegisterCallbacks,
-        iAuthSingleton.CreateUserCallbacks
+        iUsersSingleton.CreateCallbacks
 {
     private final static String TAG = "Register_Presenter";
-    private iRegister.View view;
-    // TODO: Модель-то бывает разная
-    private iCardsSingleton model;
     private iAuthSingleton authService;
-    private User userDraft;
+    private iUsersSingleton usersService;
+    private iRegister.View view;
 
     Register_Presenter() {
-//        iAuthStateListener authStateListener = new AuthStateListener();
+        authService = AuthSingleton.getInstance();
+        usersService = UsersSingleton.getInstance();
     }
 
     // Интерфейсные методы
     @Override
-    public void regUserWithEmail(final String name, String email, String password) {
+    public void regUserWithEmail(String email, String password) {
         Log.d(TAG, "regUserWithEmail()");
 
-        userDraft = new User(name, email, null);
+        view.showProgressBar();
 
         try {
             authService.registerWithEmail(email, password, this);
@@ -38,12 +41,10 @@ public class Register_Presenter implements
         catch (Exception e) {
             view.hideProgressBar();
             view.enableForm();
-            view.showErrorMsg(R.string.REGISTER_registration_failed, e.getMessage());
+//            view.showErrorMsg(R.string.REGISTER_registration_failed, e.getMessage());
+            view.showErrorMsg(e.getMessage());
             e.printStackTrace();
         }
-
-        // Для проверки
-//        authService.createUser("58lQdvxNDlSDE7iot0yqtxrNOg53", userDraft, this);
     }
 
 
@@ -57,61 +58,48 @@ public class Register_Presenter implements
         this.view = null;
     }
 
-    @Override
-    public void linkCardsService(iCardsSingleton model) {
-        this.model = model;
-    }
-    @Override
-    public void unlinkCardsService() {
-        this.model = null;
-    }
-
-    @Override
-    public void linkAuthService(iAuthSingleton authService) {
-        this.authService = authService;
-    }
-    @Override
-    public void unlinkAuthService() {
-        this.authService = null;
-    }
-
 
     // Коллбеки
     @Override
-    public void onRegSucsess(String userId) {
-        Log.d(TAG, "onRegSucsess(), "+userId);
-        view.hideProgressBar();
-        view.showInfoMsg("userId: "+userId);
+    public void onRegSucsess(String userId, String email) {
 
-        try {
-            authService.createUser(userId, userDraft, this);
-        }
-        catch (Exception e) {
-            view.hideProgressBar();
-            view.enableForm();
-            view.showErrorMsg(e.getMessage());
-            e.printStackTrace();
-        }
+        view.showInfoMsg(R.string.REGISTER_crating_new_user);
+
+        usersService.createUser(userId, email, new iUsersSingleton.CreateCallbacks() {
+            @Override
+            public void onUserCreateSuccess(User user) {
+                // TODO: внимательно с этим методом
+                authService.storeCurrentUser(user);
+                view.goUserEditPage(user);
+            }
+
+            @Override
+            public void onUserCreateFail(String errorMsg) {
+                view.hideProgressBar();
+                view.showErrorMsg(R.string.REGISTER_error_creating_user, errorMsg);
+//                onRegFail(errorMsg);
+            }
+        });
     }
 
     @Override
     public void onRegFail(String errorMessage) {
         Log.d(TAG, "onRegFail(), "+errorMessage);
         view.hideProgressBar();
+//        view.showErrorMsg(R.string.REGISTER_registration_failed, errorMessage);
         view.showErrorMsg(errorMessage);
         view.enableForm();
     }
 
-
     @Override
-    public void onCreateSuccess(User user) {
+    public void onUserCreateSuccess(User user) {
         Log.d(TAG, "onCommentSaveSuccess(), "+user);
         view.showInfoMsg("Пользователь создан");
-        view.goUserPage(user);
+        view.goUserEditPage(user);
     }
 
     @Override
-    public void onCreateFail(String errorMessage) {
+    public void onUserCreateFail(String errorMessage) {
         Log.d(TAG, "onCreateFail(), "+errorMessage);
         view.hideProgressBar();
         view.showErrorMsg(errorMessage);

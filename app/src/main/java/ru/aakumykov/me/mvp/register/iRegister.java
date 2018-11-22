@@ -10,20 +10,14 @@ public interface iRegister {
     interface View extends iBaseView {
         void disableForm();
         void enableForm();
-        void goUserPage(User user);
+        void goUserEditPage(User user);
     }
 
     interface Presenter {
-        void regUserWithEmail(String name, String email, String password);
+        void regUserWithEmail(String email, String password);
 
         // TODO: вынести в общий интерфейс
         void linkView(iRegister.View view);
         void unlinkView();
-
-        void linkCardsService(iCardsSingleton model);
-        void unlinkCardsService();
-
-        void linkAuthService(iAuthSingleton authService);
-        void unlinkAuthService();
     }
 }

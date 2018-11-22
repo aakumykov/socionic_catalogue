@@ -7,6 +7,7 @@ import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.PopupMenu;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -39,6 +40,8 @@ import ru.aakumykov.me.mvp.comment.iComments;
 import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Comment;
+import ru.aakumykov.me.mvp.models.User;
+import ru.aakumykov.me.mvp.users.edit.UserEdit_View;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
@@ -83,6 +86,7 @@ public class CardShow_View extends BaseView implements
 
     private Card currentCard;
     private Comment currentComment;
+    private Comment parentComment;
     private View currentCommentView;
 
 
@@ -174,9 +178,13 @@ public class CardShow_View extends BaseView implements
                     }
                     break;
 
+//                case Constants.CODE_FORCE_SETUP_USER_NAME:
+//                    proceedPostComment(data);
+//                    break;
+
                 default:
-                    showErrorMsg(R.string.unknown_request_code);
-                    Log.d(TAG, "Unknown request code: "+requestCode);
+                    /*showErrorMsg(R.string.unknown_request_code,
+                            "Unknown request code: "+requestCode);*/
                     break;
             }
         }
@@ -229,6 +237,16 @@ public class CardShow_View extends BaseView implements
     @Override
     public void onCommentMenuClicked(View view, Comment comment) {
         showCommentMenu(view, comment);
+    }
+
+    @Override
+    public void onCommentReplyClicked(View view, final Comment comment) {
+        // TODO: эта логика должна быть в презентере
+
+        if (forceSetupUserName(comment)) {
+            parentComment = comment;
+            showCommentForm();
+        }
     }
 
     @Override
@@ -426,18 +444,23 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public void resetCommentForm() {
+        currentComment = null;
+        currentCommentView = null;
+        parentComment = null;
+
         commentInput.setText(null);
+
         enableCommentForm();
     }
 
     @Override
     public void showCommentInProgress() {
-        currentCommentView.setAlpha(0.5f);
+        if (null != currentCommentView) currentCommentView.setAlpha(0.5f);
     }
 
     @Override
     public void hideCommentInProgress() {
-        currentCommentView.setAlpha(1.0f);
+        if (null != currentCommentView) currentCommentView.setAlpha(1.0f);
     }
 
     // Внутренние методы
@@ -508,7 +531,12 @@ public class CardShow_View extends BaseView implements
         disableCommentForm();
 
         String commentText = commentInput.getText().toString();
-        presenter.postComment(commentText);
+
+        if (null != parentComment) {
+            presenter.postCommentReply(commentText, parentComment);
+        } else {
+            presenter.postComment(commentText);
+        }
     }
 
     private void showCommentMenu(final View v, final Comment comment) {
@@ -521,10 +549,10 @@ public class CardShow_View extends BaseView implements
         // TODO: сделать это по-нормальному
         // TODO: логика-то во вьюхе не должна присутствовать!
         if (isUserLoggedIn()) {
-            if (comment.getUserId().equals(getAuthService().currentUid()))
+            if (comment.getUserId().equals(getAuthService().currentUserId()))
                 popupMenu.inflate(R.menu.edit);
 
-            if (getAuthService().isAdmin(getAuthService().currentUid()))
+            if (getAuthService().userIsAdmin(getAuthService().currentUserId()))
                 popupMenu.inflate(R.menu.delete);
         }
 
@@ -622,5 +650,58 @@ public class CardShow_View extends BaseView implements
                     }
                 }
         );
+    }
+
+    private boolean forceSetupUserName(@Nullable final Comment parentComment) {
+
+        final User user = getAuthService().currentUser();
+
+        if (!TextUtils.isEmpty(user.getName())) {
+            return true;
+        }
+        else {
+
+            String message = getString(R.string.DIALOG_setup_user_name);
+
+            MyDialogs.goToPageDialog(this, message, new iMyDialogs.StandardCallbacks() {
+                @Override
+                public void onCancelInDialog() {
+
+                }
+
+                @Override
+                public void onNoInDialog() {
+
+                }
+
+                @Override
+                public boolean onCheckInDialog() {
+                    return true;
+                }
+
+                @Override
+                public void onYesInDialog() {
+                    Intent intent = new Intent(CardShow_View.this, UserEdit_View.class);
+                    String userId = user.getKey();
+                    intent.putExtra(Constants.USER_ID, userId);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivityForResult(intent, Constants.CODE_FORCE_SETUP_USER_NAME);
+                }
+            });
+
+            return false;
+        }
+    }
+
+    private void proceedPostComment(Intent data) {
+
+        if (null == data) {
+            // TODO: Исключение бы сюда... или это предсказуемые данные?
+            showErrorMsg(R.string.data_error, "Intent data is null");
+            return;
+        }
+
+        this.parentComment = data.getParcelableExtra(Constants.PARENT_COMMENT);
+        showCommentForm();
     }
 }

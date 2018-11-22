@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.widget.TextView;
 
 import com.google.firebase.database.Exclude;
 
@@ -18,7 +19,12 @@ public class User implements Parcelable {
     private String about;
 
     public User() {}
-    
+
+    public User(String userId) throws IllegalArgumentException {
+        if (TextUtils.isEmpty(userId)) throw new IllegalArgumentException("userId cannot be empty");
+        this.key = userId;
+    }
+
     public User(String name, String email, @Nullable String about) throws  IllegalArgumentException {
         if (TextUtils.isEmpty(name)) throw new IllegalArgumentException("Name cannot be empty.");
         this.name = name;
@@ -86,10 +92,10 @@ public class User implements Parcelable {
     /* Parcelable */
 
 
+
     public String getKey() {
         return key;
     }
-
     public void setKey(String key) {
         this.key = key;
     }
@@ -97,7 +103,6 @@ public class User implements Parcelable {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -105,7 +110,6 @@ public class User implements Parcelable {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -113,7 +117,6 @@ public class User implements Parcelable {
     public String getAbout() {
         return about;
     }
-
     public void setAbout(String about) {
         this.about = about;
     }

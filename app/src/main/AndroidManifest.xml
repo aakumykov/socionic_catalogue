@@ -34,7 +34,7 @@
             android:name=".users.show.UserShow_View"
             android:parentActivityName=".users.list.UsersList_View" />
 
-        <activity android:name=".users.edit.UserEdit_View" />
+        <activity android:name=".users.edit.UserEdit_View" android:noHistory="true" />
 
         <activity android:name=".tags.list.TagsList_View" />
 

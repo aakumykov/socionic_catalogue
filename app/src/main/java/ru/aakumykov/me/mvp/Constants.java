@@ -24,11 +24,15 @@ public final class Constants {
     public final static String TEXT_CARD = "TEXT_CARD";
     public final static String IMAGE_CARD = "IMAGE_CARD";
 
+    public final static String PARENT_COMMENT = "PARENT_COMMENT";
+
     public final static int CODE_LOGIN = 5;
     public final static int CODE_CREATE_CARD = 15;
     public final static int CODE_EDIT_CARD = 20;
     public final static int CODE_SELECT_IMAGE = 25;
-    public final static int CODE_EDIT_USER = 30;
+    public final static int CODE_USER_EDIT = 30;
+    public final static int CODE_FORCE_SETUP_USER_NAME = 40;
+
     public final static int TAG_MIN_LENGTH = 2;
     public final static int TAG_MAX_LENGTH = 20;
     public final static int TITLE_MAX_LENGTH = 70;
