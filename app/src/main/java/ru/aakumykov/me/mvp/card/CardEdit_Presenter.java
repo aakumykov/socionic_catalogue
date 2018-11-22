@@ -397,6 +397,8 @@ public class CardEdit_Presenter implements
         Pattern p = Pattern.compile("/([\\w-]+)$|^([\\w-]+)$|/watch\\?v=([\\w-]+)$");
         Matcher m = p.matcher(youtubeVideoString);
 
+//        Matcher m = Pattern.compile("/([\\w-]+)$|^([\\w-]+)$|/watch\\?v=([\\w-]+)$").matcher(youtubeVideoString);
+
         if (m.find()) {
             return m.group(1);
         } else {

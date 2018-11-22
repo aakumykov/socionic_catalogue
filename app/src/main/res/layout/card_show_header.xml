@@ -73,12 +73,18 @@
     </android.support.constraint.ConstraintLayout>
 
     <TextView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/descriptionView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:textSize="18sp"
-        android:textIsSelectable="true" />
+        android:textIsSelectable="true"
+        android:textSize="18sp" />
 
     <co.lujun.androidtagview.TagContainerLayout
         android:id="@+id/tagsContainer"

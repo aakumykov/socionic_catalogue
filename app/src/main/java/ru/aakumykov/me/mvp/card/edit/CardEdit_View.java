@@ -202,6 +202,9 @@ public class CardEdit_View extends BaseView implements
             case Constants.IMAGE_CARD:
                 displayImageCard(card);
                 break;
+            case Constants.VIDEO_CARD:
+                displayVideoCard(card);
+                break;
             default:
                 showErrorMsg(R.string.CARD_EDIT_error_editing_card);
                 Log.e(TAG, "Unknown card type '"+card.getType()+"'");
@@ -498,6 +501,12 @@ public class CardEdit_View extends BaseView implements
         displayImage(card.getImageURL());
     }
 
+    private void displayVideoCard(Card card) {
+        switchVideoMode();
+        displayCommonCardParts(card);
+        displayVideo(card.getVideoCode());
+    }
+
     private void displayCommonCardParts(Card card) {
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
@@ -512,6 +521,12 @@ public class CardEdit_View extends BaseView implements
             showErrorMsg(R.string.error_loading_image);
             showBrokenImage();
         }
+    }
+
+    private void displayVideo(String videoCode) {
+        videoStringInput.setText(videoCode);
+        MyUtils.show(mediaHolder);
+        MyUtils.show(videoStringInput);
     }
 
     private void showTags(HashMap<String,Boolean> tagsMap) {

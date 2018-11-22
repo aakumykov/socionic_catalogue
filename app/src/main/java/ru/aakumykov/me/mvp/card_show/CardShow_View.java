@@ -67,6 +67,7 @@ public class CardShow_View extends BaseView implements
     private ConstraintLayout imageHolder;
     private ProgressBar imageProgressBar;
     private ImageView imageView;
+    private TextView videoView;
     private TextView descriptionView;
 
     private TagContainerLayout tagsContainer;
@@ -113,6 +114,7 @@ public class CardShow_View extends BaseView implements
         imageHolder = findViewById(R.id.imageHolder);
         imageProgressBar = findViewById(R.id.imageProgressBar);
         imageView = findViewById(R.id.imageView);
+        videoView = findViewById(R.id.videoView);
         descriptionView = findViewById(R.id.descriptionView);
         tagsContainer = findViewById(R.id.tagsContainer);
 
@@ -314,6 +316,10 @@ public class CardShow_View extends BaseView implements
                 displayTextCard(card);
                 break;
 
+            case Constants.VIDEO_CARD:
+                displayVideoCard(card);
+                break;
+
             default:
                 showErrorMsg(R.string.wrong_card_type);
                 break;
@@ -463,6 +469,7 @@ public class CardShow_View extends BaseView implements
         if (null != currentCommentView) currentCommentView.setAlpha(1.0f);
     }
 
+
     // Внутренние методы
     private void loadCard() {
         if (firstRun) {
@@ -495,6 +502,12 @@ public class CardShow_View extends BaseView implements
         quoteView.setText(card.getQuote());
         MyUtils.show(quoteView);
         displayCommonCard(card);
+    }
+
+    private void displayVideoCard(Card card) {
+        displayCommonCard(card);
+        videoView.setText(card.getVideoCode());
+        MyUtils.show(videoView);
     }
 
     private void displayCommonCard(Card card) {
