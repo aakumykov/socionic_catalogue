@@ -361,6 +361,10 @@ public class CardEdit_Presenter implements
 
         String autoTitle = MyUtils.cutToLength(text, Constants.TITLE_MAX_LENGTH);
 
+        if (text.matches("youtu")) {
+            currentCard.setType(Constants.VIDEO_CARD);
+        }
+
         view.hideProgressBar();
 
         view.displayTitle(autoTitle);
