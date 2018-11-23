@@ -120,8 +120,14 @@
                     android:layout_height="wrap_content" />
             </FrameLayout>
 
+            <Button
+                android:id="@+id/removeVideoButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/CARD_EDIT_remove_this_video" />
+
             <EditText
-                android:id="@+id/videoStringInput"
+                android:id="@+id/videoCodeInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"

@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.text.Layout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -66,7 +65,8 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.quoteView) EditText quoteView;
 
     @BindView(R.id.youtubePlayerHolder) FrameLayout youtubePlayerHolder;
-    @BindView(R.id.videoStringInput) EditText videoStringInput;
+    @BindView(R.id.videoCodeInput) EditText videoCodeInput;
+    @BindView(R.id.removeVideoButton) Button removeVideoButton;
 
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
     @BindView(R.id.imageView) ImageView imageView;
@@ -283,7 +283,7 @@ public class CardEdit_View extends BaseView implements
     @Override
     public void displayVideoString(String videoCode) {
         switchVideoMode();
-        videoStringInput.setText(videoCode);
+        videoCodeInput.setText(videoCode);
     }
 
     @Override
@@ -298,7 +298,7 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public String getCardVideoCode() {
-        return videoStringInput.getText().toString();
+        return videoCodeInput.getText().toString();
     }
 
     @Override
@@ -413,9 +413,17 @@ public class CardEdit_View extends BaseView implements
     void switchVideoMode() {
         hideModeSwitcher();
         MyUtils.show(mediaHolder);
-        MyUtils.show(videoStringInput);
+//        MyUtils.show(videoCodeInput);
         titleView.requestFocus();
         presenter.setCardType(Constants.VIDEO_CARD);
+    }
+
+    @OnClick(R.id.removeVideoButton)
+    void removeVideo() {
+        MyUtils.hide(youtubePlayerHolder);
+        MyUtils.hide(removeVideoButton);
+        videoCodeInput.setText("");
+        MyUtils.show(videoCodeInput);
     }
 
     @OnClick(R.id.saveButton)
@@ -539,10 +547,10 @@ public class CardEdit_View extends BaseView implements
     }
 
     private void displayVideo(String videoCode) {
-        videoStringInput.setText(videoCode);
+        videoCodeInput.setText(videoCode);
 
         MyUtils.show(mediaHolder);
-        MyUtils.show(videoStringInput);
+//        MyUtils.show(videoCodeInput);
 
         showYoutubePlayer(videoCode);
     }
