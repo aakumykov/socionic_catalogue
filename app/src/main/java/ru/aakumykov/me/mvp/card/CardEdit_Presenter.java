@@ -7,8 +7,6 @@ import android.util.Log;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
@@ -21,6 +19,7 @@ import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.StorageSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
+import ru.aakumykov.me.mvp.utils.MVPUtils;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class CardEdit_Presenter implements
@@ -86,64 +85,89 @@ public class CardEdit_Presenter implements
         }
     }
 
+//    public void processInputDataOLD(String mode, final Intent intent) throws Exception {
+//
+//        if (null == intent) {
+//            throw new IllegalArgumentException("Intent is null");
+//        }
+//
+//        // Выделяю внешние данные
+//        Uri dataURI;
+//        String mimeType;
+//
+//        if (Constants.MODE_SELECT.equals(mode)) {
+//            dataURI = intent.getData();
+//            mimeType = view.detectMimeType(dataURI);
+//        }
+//        else if (Constants.MODE_SEND.equals(mode)) {
+//            dataURI = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+//            /* При пересылке изображения и текста mimeType находится
+//            * в разных местах, а здесь я ещё не знаю, изображение это
+//            * или текст. Поэтому пробую 2 метода опрделения типа данных. */
+//            try {
+//                mimeType = view.detectMimeType(dataURI);
+//            } catch (Exception e) {
+//                mimeType = MyUtils.getMimeTypeFromIntent(intent);
+//            }
+//        }
+//        else {
+//            throw new IllegalArgumentException("Unknown mode '"+mode+"'");
+//        }
+//
+//        if (null == mimeType) throw new IllegalArgumentException("Cannot detect mimeType.");
+//        else currentCard.setMimeType(mimeType);
+//
+//        // Подготавливаю форму в случае создания
+//        if (Constants.MODE_SEND.equals(mode)) {
+//            prepareCardCreation();
+//        }
+//
+//        // Обрабатываю данные согласно типу
+//
+//        if (mimeType.startsWith("image/")) {
+//            try {
+//                processIncomingImage(dataURI);
+//            } catch (Exception e) {
+//                view.showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
+//                e.printStackTrace();
+//            }
+//        }
+//        else if (mimeType.equals("text/plain")) {
+//
+//
+//
+////            try {
+////                procesIncomingText(intent);
+////            } catch (Exception e) {
+////                view.showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
+////                e.printStackTrace();
+////            }
+//        }
+//        else {
+//            throw new IllegalArgumentException("Unsupported mimeType '"+mimeType+"'");
+//        }
+//    }
+
     @Override
-    public void processInputData(String mode, final Intent intent) throws Exception {
+    public void processInputData(String mode, Intent intent) throws Exception {
+        String inputDataMode = MVPUtils.detectInputDataMode(intent);
 
-        if (null == intent) {
-            throw new IllegalArgumentException("Intent is null");
-        }
-
-        // Выделяю внешние данные
-        Uri dataURI;
-        String mimeType;
-
-        if (Constants.MODE_SELECT.equals(mode)) {
-            dataURI = intent.getData();
-            mimeType = view.detectMimeType(dataURI);
-        }
-        else if (Constants.MODE_SEND.equals(mode)) {
-            dataURI = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-            /* При пересылке изображения и текста mimeType находится
-            * в разных местах, а здесь я ещё не знаю, изображение это
-            * или текст. Поэтому пробую 2 метода опрделения типа данных. */
-            try {
-                mimeType = view.detectMimeType(dataURI);
-            } catch (Exception e) {
-                mimeType = MyUtils.getMimeTypeFromIntent(intent);
-            }
-        }
-        else {
-            throw new IllegalArgumentException("Unknown mode '"+mode+"'");
-        }
-
-        if (null == mimeType) throw new IllegalArgumentException("mimeType from Intent is null.");
-
-
-        // Подготавливаю форму в случае создания
-        if (Constants.MODE_SEND.equals(mode)) {
-            prepareCardCreation();
-        }
-        currentCard.setMimeType(mimeType);
-
-        // Обрабатываю данные согласно типу
-        if (mimeType.startsWith("image/")) {
-            try {
-                procesIncomingImage(dataURI);
-            } catch (Exception e) {
-                view.showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
-                e.printStackTrace();
-            }
-        }
-        else if (mimeType.equals("text/plain")) {
-            try {
+        switch (inputDataMode) {
+            case "TEXT":
+                currentCard.setType(Constants.TEXT_CARD);
                 procesIncomingText(intent);
-            } catch (Exception e) {
-                view.showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
-                e.printStackTrace();
-            }
-        }
-        else {
-            throw new IllegalArgumentException("Unsupported mimeType '"+mimeType+"'");
+                break;
+            case "IMAGE":
+                currentCard.setType(Constants.IMAGE_CARD);
+                processIncomingImage(intent);
+                break;
+            case "YOUTUBE_VIDEO":
+                currentCard.setType(Constants.VIDEO_CARD);
+                String link = intent.getStringExtra(Intent.EXTRA_TEXT);
+                processYoutubeVideo(link);
+                break;
+            default:
+                view.showErrorMsg(R.string.CARD_EDIT_unknown_data_mode);
         }
     }
 
@@ -164,7 +188,7 @@ public class CardEdit_Presenter implements
         if (currentCard.getType().equals(Constants.VIDEO_CARD)) {
             String rawVideoCode = view.getCardVideoCode();
 
-            String videoCode = extractYoutubeVideoCode(rawVideoCode);
+            String videoCode = MVPUtils.extractYoutubeVideoCode(rawVideoCode);
             if (null == videoCode) {
                 throw new Exception("Invalid video string: '"+rawVideoCode+"'");
             }
@@ -356,27 +380,37 @@ public class CardEdit_Presenter implements
 
         String text = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (null == text) {
-            throw new Exception("Input text (Intent's extra text) is null");
+            throw new IllegalArgumentException("Intent.EXTRA_TEXT is null.");
         }
 
         String autoTitle = MyUtils.cutToLength(text, Constants.TITLE_MAX_LENGTH);
 
-        if (text.matches("youtu")) {
-            currentCard.setType(Constants.VIDEO_CARD);
-        }
-
         view.hideProgressBar();
-
         view.displayTitle(autoTitle);
         view.displayQuote(text);
     }
 
-    private void procesIncomingImage(Uri imageURI) throws Exception {
+    private void processIncomingImage(Intent intent) throws Exception {
+
+        Uri imageURI = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        if (null == imageURI) {
+            throw new IllegalArgumentException("Intent.EXTRA_STREAM is null.");
+        }
 
         currentCard.setLocalImageURI(imageURI);
 
         view.hideProgressBar();
         view.displayImage(imageURI);
+    }
+
+    private void processYoutubeVideo(String link) throws Exception {
+
+        if (null == link) {
+            throw new IllegalArgumentException("Video link is null");
+        }
+
+//        currentCard.setVideoCode(videoCode);
+        view.displayVideoString(link);
     }
 
     private String makeRemoteFileName() throws Exception {
@@ -395,18 +429,4 @@ public class CardEdit_Presenter implements
     }
 
 
-    private String extractYoutubeVideoCode(String youtubeVideoString) {
-        youtubeVideoString = youtubeVideoString.trim();
-
-        Pattern p = Pattern.compile("/([\\w-]+)$|^([\\w-]+)$|/watch\\?v=([\\w-]+)$");
-        Matcher m = p.matcher(youtubeVideoString);
-
-//        Matcher m = Pattern.compile("/([\\w-]+)$|^([\\w-]+)$|/watch\\?v=([\\w-]+)$").matcher(youtubeVideoString);
-
-        if (m.find()) {
-            return m.group(1);
-        } else {
-            return null;
-        }
-    }
 }

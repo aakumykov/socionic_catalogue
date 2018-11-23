@@ -21,6 +21,7 @@ public interface iCardEdit {
         void displayTitle(String text);
         void displayQuote(String text);
         void displayImage(Uri imageURI);
+        void displayVideoString(String videoCode);
 //        void displayAudio(Uri dataURI);
 //        void displayVideo(Uri dataURI);
 

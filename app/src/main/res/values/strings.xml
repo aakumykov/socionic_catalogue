@@ -179,4 +179,5 @@
     <string name="USER_EDIT_you_are_not_logged_in">Вы не вошли в программу</string>
     <string name="USER_EDIT_you_cannot_edit_other_user">Нельзя редактировать другого пользователя</string>
     <string name="CARD_EDIT_video_code">Код или URL видео</string>
+    <string name="CARD_EDIT_unknown_data_mode">Тип данных не поддерживается</string>
 </resources>

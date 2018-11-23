@@ -271,6 +271,12 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
+    public void displayVideoString(String videoCode) {
+        switchVideoMode();
+        videoStringInput.setText(videoCode);
+    }
+
+    @Override
     public String getCardTitle() {
         return titleView.getText().toString();
     }
@@ -359,6 +365,7 @@ public class CardEdit_View extends BaseView implements
         finish();
     }
 
+    // TODO: перенести в Utils
     @Override
     public String detectMimeType(Uri dataURI) {
         ContentResolver cr = this.getContentResolver();
@@ -398,7 +405,7 @@ public class CardEdit_View extends BaseView implements
         MyUtils.show(mediaHolder);
         MyUtils.show(videoStringInput);
 
-        videoStringInput.requestFocus();
+        titleView.requestFocus();
 
         presenter.setCardType(Constants.VIDEO_CARD);
     }

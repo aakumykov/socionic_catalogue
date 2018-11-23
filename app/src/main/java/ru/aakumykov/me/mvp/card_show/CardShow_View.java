@@ -96,7 +96,7 @@ public class CardShow_View extends BaseView implements
     private Comment parentComment;
     private View currentCommentView;
 
-    private YTPlayer ytPlayer;
+//    private YTPlayer ytPlayer;
     private YouTubePlayerFragment youTubePlayerFragment;
 
     // TODO: удаление комментариев вместе с карточкой
@@ -146,7 +146,7 @@ public class CardShow_View extends BaseView implements
 //        mainListView.setOnItemClickListener(this);
         tagsContainer.setOnTagClickListener(this);
 
-        ytPlayer = new YTPlayer(videoView);
+//        ytPlayer = new YTPlayer(videoView);
 
         youTubePlayerFragment =
                 (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
