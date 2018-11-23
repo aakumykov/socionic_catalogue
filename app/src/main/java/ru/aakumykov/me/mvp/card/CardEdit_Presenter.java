@@ -409,8 +409,12 @@ public class CardEdit_Presenter implements
             throw new IllegalArgumentException("Video link is null");
         }
 
-//        currentCard.setVideoCode(videoCode);
-        view.displayVideoString(link);
+        String videoCode = MVPUtils.extractYoutubeVideoCode(link);
+        if (null == videoCode) {
+            throw new IllegalArgumentException("Where is no video code in link '"+link+"");
+        }
+
+        view.displayVideo(link);
     }
 
     private String makeRemoteFileName() throws Exception {

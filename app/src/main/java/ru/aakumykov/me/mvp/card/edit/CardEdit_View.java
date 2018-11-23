@@ -273,17 +273,22 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
+    public void displayVideo(String videoCode) {
+        switchVideoMode();
+
+        videoCodeInput.setText(videoCode);
+
+        MyUtils.show(mediaHolder);
+
+        showYoutubePlayer(videoCode);
+    }
+
+    @Override
     public void showBrokenImage() {
         imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
         MyUtils.show(imageView);
         MyUtils.show(imageHolder);
 //        MyUtils.hide(discardImageButton);
-    }
-
-    @Override
-    public void displayVideoString(String videoCode) {
-        switchVideoMode();
-        videoCodeInput.setText(videoCode);
     }
 
     @Override
@@ -413,7 +418,6 @@ public class CardEdit_View extends BaseView implements
     void switchVideoMode() {
         hideModeSwitcher();
         MyUtils.show(mediaHolder);
-//        MyUtils.show(videoCodeInput);
         titleView.requestFocus();
         presenter.setCardType(Constants.VIDEO_CARD);
     }
@@ -544,15 +548,6 @@ public class CardEdit_View extends BaseView implements
             showErrorMsg(R.string.error_loading_image);
             showBrokenImage();
         }
-    }
-
-    private void displayVideo(String videoCode) {
-        videoCodeInput.setText(videoCode);
-
-        MyUtils.show(mediaHolder);
-//        MyUtils.show(videoCodeInput);
-
-        showYoutubePlayer(videoCode);
     }
 
     private void showYoutubePlayer(final String videoCode) {

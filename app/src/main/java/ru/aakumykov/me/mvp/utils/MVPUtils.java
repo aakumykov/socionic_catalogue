@@ -63,7 +63,7 @@ public class MVPUtils {
     }
 
     public static String extractYoutubeVideoCode(String link) {
-        link = link.trim();
+        link = ""+link.trim();
 
         Map<String,String> patternsMap = new HashMap<>();
         patternsMap.put("simpleVideoCode", "^([\\w-]+)$");
