@@ -96,7 +96,7 @@ public class CardShow_View extends BaseView implements
     private Comment parentComment;
     private View currentCommentView;
 
-    private YouTubePlayer youTubePlayer;
+//    private YTPlayer ytPlayer;
     private YouTubePlayerFragment youTubePlayerFragment;
 
     // TODO: удаление комментариев вместе с карточкой
@@ -287,22 +287,6 @@ public class CardShow_View extends BaseView implements
 
         return true;
     }
-
-//    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putInt("videoPosition", youTubePlayer.getCurrentTimeMillis());
-//    }
-//
-//    @Override
-//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//
-//        if (null != savedInstanceState) {
-//            Integer videoPosition = savedInstanceState.getInt("videoPosition");
-////            youTubePlayer.seekToMillis(videoPosition);
-//        }
-//    }
 
 
     // Обязательные методы
@@ -539,17 +523,11 @@ public class CardShow_View extends BaseView implements
 //        MyUtils.show(videoView);
 
         youTubePlayerFragment.initialize(Config.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
-
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider,
                                                 YouTubePlayer youTubePlayer, boolean wasRestored) {
-
-                CardShow_View.this.youTubePlayer = youTubePlayer;
-
                 if (!wasRestored) {
                     youTubePlayer.cueVideo(card.getVideoCode());
-                } else {
-                    Log.d(TAG, "Проигрыватель Youtube восстановлен...");
                 }
             }
 
