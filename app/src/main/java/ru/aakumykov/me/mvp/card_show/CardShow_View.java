@@ -96,8 +96,8 @@ public class CardShow_View extends BaseView implements
     private Comment parentComment;
     private View currentCommentView;
 
-//    private YTPlayer ytPlayer;
     private YouTubePlayerFragment youTubePlayerFragment;
+    private YouTubePlayer youTubePlayer;
 
     // TODO: удаление комментариев вместе с карточкой
 
@@ -287,6 +287,22 @@ public class CardShow_View extends BaseView implements
 
         return true;
     }
+
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        int videoPosition = youTubePlayer.getCurrentTimeMillis();
+//        Log.d("STATE SAVE", "videoPosition: "+videoPosition);
+//        outState.putInt("videoPosition", videoPosition);
+//    }
+//
+//    @Override
+//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//        int videoPosition = savedInstanceState.getInt("videoPosition");
+//        Log.d("STATE RESTORE", "videoPosition: "+videoPosition);
+////        youTubePlayer.seekToMillis(videoPosition);
+//    }
 
 
     // Обязательные методы
@@ -523,9 +539,13 @@ public class CardShow_View extends BaseView implements
 //        MyUtils.show(videoView);
 
         youTubePlayerFragment.initialize(Config.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
+
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider,
                                                 YouTubePlayer youTubePlayer, boolean wasRestored) {
+
+                youTubePlayer.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION|YouTubePlayer.FULLSCREEN_FLAG_ALWAYS_FULLSCREEN_IN_LANDSCAPE);
+
                 if (!wasRestored) {
                     youTubePlayer.cueVideo(card.getVideoCode());
                 }
