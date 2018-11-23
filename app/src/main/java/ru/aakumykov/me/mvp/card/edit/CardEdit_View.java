@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -34,6 +38,7 @@ import co.lujun.androidtagview.TagView;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.CardEdit_Presenter;
@@ -56,10 +61,11 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.audioModeSwitch) ImageView audioModeSwitch;
     @BindView(R.id.videoModeSwitch) ImageView videoModeSwitch;
 
-    @BindView(R.id.mediaHolder) FrameLayout mediaHolder;
+    @BindView(R.id.mediaHolder) LinearLayout mediaHolder;
 
     @BindView(R.id.quoteView) EditText quoteView;
 
+    @BindView(R.id.youtubePlayerHolder) FrameLayout youtubePlayerHolder;
     @BindView(R.id.videoStringInput) EditText videoStringInput;
 
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
@@ -81,6 +87,7 @@ public class CardEdit_View extends BaseView implements
     private final static String TAG = "CardEdit_View";
     private iCardEdit.Presenter presenter;
     private boolean firstRun = true;
+    private YouTubePlayerFragment youTubePlayerFragment;
 
 
     // Системные методы
@@ -95,6 +102,9 @@ public class CardEdit_View extends BaseView implements
         CardEdit_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
 
         tagsContainer.setOnTagClickListener(this);
+
+        youTubePlayerFragment =
+                (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
 
         presenter = new CardEdit_Presenter();
     }
@@ -404,9 +414,7 @@ public class CardEdit_View extends BaseView implements
         hideModeSwitcher();
         MyUtils.show(mediaHolder);
         MyUtils.show(videoStringInput);
-
         titleView.requestFocus();
-
         presenter.setCardType(Constants.VIDEO_CARD);
     }
 
@@ -532,8 +540,31 @@ public class CardEdit_View extends BaseView implements
 
     private void displayVideo(String videoCode) {
         videoStringInput.setText(videoCode);
+
         MyUtils.show(mediaHolder);
         MyUtils.show(videoStringInput);
+
+        showYoutubePlayer(videoCode);
+    }
+
+    private void showYoutubePlayer(final String videoCode) {
+
+        youTubePlayerFragment.initialize(Config.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
+
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
+                MyUtils.show(youtubePlayerHolder);
+
+                if (!wasRestored) {
+                    youTubePlayer.cueVideo(videoCode);
+                }
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+            }
+        });
     }
 
     private void showTags(HashMap<String,Boolean> tagsMap) {
@@ -544,13 +575,6 @@ public class CardEdit_View extends BaseView implements
             tagsContainer.setEnableCross(true);
         }
     }
-
-//    private void storeImageURI(Uri uri) {
-//        imageView.setTag(R.id.imageURI_tag, uri);
-//    }
-//    private void clearImageURI() {
-//        imageView.setTag(R.id.imageURI_tag, null);
-//    }
 
 
     // Другие

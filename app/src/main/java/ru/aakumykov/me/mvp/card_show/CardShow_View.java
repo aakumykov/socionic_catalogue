@@ -97,9 +97,7 @@ public class CardShow_View extends BaseView implements
     private View currentCommentView;
 
     private YouTubePlayerFragment youTubePlayerFragment;
-    private YouTubePlayer youTubePlayer;
 
-    // TODO: удаление комментариев вместе с карточкой
 
     // Системные методы
     @Override
