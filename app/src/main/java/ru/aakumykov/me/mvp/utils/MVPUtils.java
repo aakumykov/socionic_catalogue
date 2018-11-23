@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.utils;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +10,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MVPUtils {
+
+    private final static String TAG = "MVPUtils";
+    private static Map<String,String> regexMap = new HashMap<>();
+
+
+    /* Все регулярные выражения для применения к URL/видео-кодам YouTube
+     * обязаны выделять код видео в ПЕРВОЙ группе. */
+    static {
+        regexMap.put("youtube1", "^https?://youtube\\.com/watch\\?v=([^=?&]+)");
+        regexMap.put("youtube2", "^https?://www\\.youtube\\.com/watch\\?v=([^=?&]+)");
+        regexMap.put("youtube3", "^https?://youtu.be/([^/]+)$");
+    }
 
     private MVPUtils(){}
 
@@ -40,11 +53,6 @@ public class MVPUtils {
 
         text = text.trim();
 
-        Map<String,String> regexMap = new HashMap<>();
-        regexMap.put("youtube1", "^https?://youtube\\.com/watch\\?v=([^=?&]+)");
-        regexMap.put("youtube2", "^https?://www\\.youtube\\.com/watch\\?v=([^=?&]+)");
-        regexMap.put("youtube3", "^https?://youtu.be/([^/]+)$");
-
         for(Map.Entry<String,String> entry : regexMap.entrySet()) {
             String key = entry.getKey();
             String regex = entry.getValue();
@@ -57,14 +65,17 @@ public class MVPUtils {
     public static String extractYoutubeVideoCode(String link) {
         link = link.trim();
 
-        Pattern p = Pattern.compile("/([\\w-]+)$|^([\\w-]+)$|/watch\\?v=([\\w-]+)$");
-        Matcher m = p.matcher(link);
+        Map<String,String> patternsMap = new HashMap<>();
+        patternsMap.put("simpleVideoCode", "^([\\w-]+)$");
+        patternsMap.putAll(regexMap);
 
-        if (m.find()) {
-            return m.group(1);
-        } else {
-            return null;
+        for (Map.Entry<String,String> entry : patternsMap.entrySet()) {
+            Pattern p = Pattern.compile(entry.getValue());
+            Matcher m = p.matcher(link);
+            if (m.find()) return m.group(1);
         }
+
+        return null;
     }
 
 }
