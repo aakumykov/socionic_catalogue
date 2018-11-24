@@ -34,6 +34,50 @@ public class MyDialogs {
         ).show();
     }
 
+    // Диалог добавления код видео
+    public static void addVideoDialog(Activity activity, final iMyDialogs.StringInputCallback callbacks) {
+        String title = activity.getString(R.string.CARD_EDIT_video_code);
+
+        final View view = activity.getLayoutInflater().inflate(R.layout.edit_dialog, null);
+        final EditText editText = view.findViewById(R.id.editText);
+        final TextView dialogErrorView = view.findViewById(R.id.dialogErrorView);
+
+        final AlertDialog alertDialog = basicDialog(
+                activity,
+                title,
+                null,
+                R.string.yes,
+                R.string.no,
+                null,
+                null,
+                view,
+                null
+        );
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(final DialogInterface dialog) {
+
+                Button yesButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+
+                yesButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String newText = editText.getText().toString();
+                        if (TextUtils.isEmpty(newText)) {
+                            dialogErrorView.setText(view.getResources().getString(R.string.COMMENT_cannot_be_empty));
+                        } else {
+                            dialog.dismiss();
+                            callbacks.onDialogWithStringYes(newText);
+                        }
+                    }
+                });
+            }
+        });
+
+        alertDialog.show();
+    }
 
     // Диалог изменения комментария
     public static void commentEditDialog(
@@ -121,7 +165,6 @@ public class MyDialogs {
         ).show();
 
     }
-
 
 
     // Внутренние методы

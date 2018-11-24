@@ -43,7 +43,9 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.CardEdit_Presenter;
 import ru.aakumykov.me.mvp.card.iCardEdit;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
+import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 @RuntimePermissions
@@ -65,8 +67,9 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.quoteView) EditText quoteView;
 
     @BindView(R.id.youtubePlayerHolder) FrameLayout youtubePlayerHolder;
-    @BindView(R.id.videoCodeInput) EditText videoCodeInput;
+    @BindView(R.id.addVideoButton) Button addVideoButton;
     @BindView(R.id.removeVideoButton) Button removeVideoButton;
+    @BindView(R.id.videoCodeView) TextView videoCodeView;
 
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
     @BindView(R.id.imageView) ImageView imageView;
@@ -276,8 +279,6 @@ public class CardEdit_View extends BaseView implements
     public void displayVideo(String videoCode) {
         switchVideoMode();
 
-        videoCodeInput.setText(videoCode);
-
         MyUtils.show(mediaHolder);
 
         showYoutubePlayer(videoCode);
@@ -303,7 +304,7 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public String getCardVideoCode() {
-        return videoCodeInput.getText().toString();
+        return videoCodeView.getText().toString();
     }
 
     @Override
@@ -418,7 +419,8 @@ public class CardEdit_View extends BaseView implements
     void switchVideoMode() {
         hideModeSwitcher();
         MyUtils.show(mediaHolder);
-        MyUtils.show(videoCodeInput);
+        MyUtils.show(addVideoButton);
+        MyUtils.show(removeVideoButton);
         titleView.requestFocus();
         presenter.setCardType(Constants.VIDEO_CARD);
     }
@@ -427,8 +429,18 @@ public class CardEdit_View extends BaseView implements
     void removeVideo() {
         MyUtils.hide(youtubePlayerHolder);
         MyUtils.hide(removeVideoButton);
-        videoCodeInput.setText("");
-        MyUtils.show(videoCodeInput);
+        MyUtils.show(videoCodeView);
+    }
+
+    @OnClick(R.id.addVideoButton)
+    void addVideo() {
+        MyDialogs.addVideoDialog(this, new iMyDialogs.StringInputCallback() {
+            @Override
+            public void onDialogWithStringYes(String text) {
+                videoCodeView.setText(text);
+                MyUtils.hide(addVideoButton);
+            }
+        });
     }
 
     @OnClick(R.id.saveButton)

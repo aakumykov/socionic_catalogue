@@ -182,4 +182,5 @@
     <string name="CARD_EDIT_unknown_data_mode">Тип данных не поддерживается</string>
     <string name="CARD_EDIT_remove_this_video">Удалить это видео</string>
     <string name="CARD_SHOW_rating_update_error">Ошибка изменения рейтинга</string>
+    <string name="CARD_EDIT_add_video">Добавить видео</string>
 </resources>

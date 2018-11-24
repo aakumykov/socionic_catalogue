@@ -127,13 +127,18 @@
                 android:text="@string/CARD_EDIT_remove_this_video"
                 android:visibility="gone" />
 
-            <EditText
-                android:id="@+id/videoCodeInput"
+            <Button
+                android:id="@+id/addVideoButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/CARD_EDIT_video_code"
-                android:singleLine="true"
+                android:text="@string/CARD_EDIT_add_video"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/videoCodeView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:visibility="gone" />
 
             <android.support.constraint.ConstraintLayout
