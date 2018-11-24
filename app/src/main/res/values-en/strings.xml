@@ -176,4 +176,5 @@
     <string name="CARD_EDIT_video_code">Video id or URL</string>
     <string name="CARD_EDIT_unknown_data_mode">Unsupported data type</string>
     <string name="CARD_EDIT_remove_this_video">Remove this video</string>
+    <string name="CARD_SHOW_rating_update_error">Error rating update</string>
 </resources>

@@ -38,6 +38,10 @@ public interface iCardShow {
 
         void goEditPage(Card card); // не нужно?
         void goList(String tagFilter);
+
+        void onCardRatedUp(int newRating);
+        void onCardRatedDown(int newRating);
+        void onCardRateError();
     }
 
     interface Presenter {
@@ -56,5 +60,8 @@ public interface iCardShow {
         void cardDeleteConfirmed(Card card);
         void editCommentConfirmed(Comment comment);
         void deleteCommentConfirmed(Comment comment);
+
+        void rateCardUp();
+        void rateCardDown();
     }
 }

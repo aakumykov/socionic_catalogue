@@ -27,7 +27,7 @@ public class Card implements Parcelable {
     private HashMap<String, Boolean> tags;
     private int commentsCount = 0;
     private HashMap<String, Boolean> commentsKeys;
-    private int rating = 0;
+    private Integer rating = 0;
 
     public Card() {
 
@@ -172,7 +172,10 @@ public class Card implements Parcelable {
     }
     public int getCommentsCount() { return commentsCount; }
     public HashMap<String, Boolean> getCommentsKeys() { return commentsKeys; }
-    public int getRating() { return rating; }
+    public int getRating() {
+        if (null == this.rating) return 0;
+        else return rating;
+    }
 
     // Сеттеры
     public void setUserId(String userId) {

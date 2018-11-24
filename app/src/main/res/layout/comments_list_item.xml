@@ -102,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_thumb_up" />
+            app:srcCompat="@drawable/ic_thumb_up_neutral" />
 
         <TextView
             android:id="@+id/commentRating"
@@ -117,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_thumb_down" />
+            app:srcCompat="@drawable/ic_thumb_down_neutral" />
 
     </LinearLayout>
 
