@@ -57,4 +57,7 @@ dependencies {
 
     // Saripaar
 //    implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
+
+    // YoutubePlayer
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 }

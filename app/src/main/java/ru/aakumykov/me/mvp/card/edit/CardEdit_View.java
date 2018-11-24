@@ -19,6 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -34,6 +37,7 @@ import co.lujun.androidtagview.TagView;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.CardEdit_Presenter;
@@ -56,9 +60,13 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.audioModeSwitch) ImageView audioModeSwitch;
     @BindView(R.id.videoModeSwitch) ImageView videoModeSwitch;
 
-    @BindView(R.id.mediaHolder) FrameLayout mediaHolder;
+    @BindView(R.id.mediaHolder) LinearLayout mediaHolder;
 
     @BindView(R.id.quoteView) EditText quoteView;
+
+    @BindView(R.id.youtubePlayerHolder) FrameLayout youtubePlayerHolder;
+    @BindView(R.id.videoCodeInput) EditText videoCodeInput;
+    @BindView(R.id.removeVideoButton) Button removeVideoButton;
 
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
     @BindView(R.id.imageView) ImageView imageView;
@@ -79,6 +87,7 @@ public class CardEdit_View extends BaseView implements
     private final static String TAG = "CardEdit_View";
     private iCardEdit.Presenter presenter;
     private boolean firstRun = true;
+    private YouTubePlayerFragment youTubePlayerFragment;
 
 
     // Системные методы
@@ -93,6 +102,9 @@ public class CardEdit_View extends BaseView implements
         CardEdit_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
 
         tagsContainer.setOnTagClickListener(this);
+
+        youTubePlayerFragment =
+                (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
 
         presenter = new CardEdit_Presenter();
     }
@@ -200,6 +212,9 @@ public class CardEdit_View extends BaseView implements
             case Constants.IMAGE_CARD:
                 displayImageCard(card);
                 break;
+            case Constants.VIDEO_CARD:
+                displayVideoCard(card);
+                break;
             default:
                 showErrorMsg(R.string.CARD_EDIT_error_editing_card);
                 Log.e(TAG, "Unknown card type '"+card.getType()+"'");
@@ -258,6 +273,17 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
+    public void displayVideo(String videoCode) {
+        switchVideoMode();
+
+        videoCodeInput.setText(videoCode);
+
+        MyUtils.show(mediaHolder);
+
+        showYoutubePlayer(videoCode);
+    }
+
+    @Override
     public void showBrokenImage() {
         imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
         MyUtils.show(imageView);
@@ -273,6 +299,11 @@ public class CardEdit_View extends BaseView implements
     @Override
     public String getCardQuote() {
         return quoteView.getText().toString();
+    }
+
+    @Override
+    public String getCardVideoCode() {
+        return videoCodeInput.getText().toString();
     }
 
     @Override
@@ -349,6 +380,7 @@ public class CardEdit_View extends BaseView implements
         finish();
     }
 
+    // TODO: перенести в Utils
     @Override
     public String detectMimeType(Uri dataURI) {
         ContentResolver cr = this.getContentResolver();
@@ -384,15 +416,28 @@ public class CardEdit_View extends BaseView implements
 
     @OnClick(R.id.videoModeSwitch)
     void switchVideoMode() {
+        hideModeSwitcher();
+        MyUtils.show(mediaHolder);
+        titleView.requestFocus();
+        presenter.setCardType(Constants.VIDEO_CARD);
+    }
 
+    @OnClick(R.id.removeVideoButton)
+    void removeVideo() {
+        MyUtils.hide(youtubePlayerHolder);
+        MyUtils.hide(removeVideoButton);
+        videoCodeInput.setText("");
+        MyUtils.show(videoCodeInput);
     }
 
     @OnClick(R.id.saveButton)
     void save() {
+        // TODO: показывать причину ошибки сохранения
         try {
             presenter.saveCard();
         } catch (Exception e) {
             enableForm();
+            hideProgressBar();
             showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
             e.printStackTrace();
         }
@@ -483,6 +528,12 @@ public class CardEdit_View extends BaseView implements
         displayImage(card.getImageURL());
     }
 
+    private void displayVideoCard(Card card) {
+        switchVideoMode();
+        displayCommonCardParts(card);
+        displayVideo(card.getVideoCode());
+    }
+
     private void displayCommonCardParts(Card card) {
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
@@ -499,6 +550,26 @@ public class CardEdit_View extends BaseView implements
         }
     }
 
+    private void showYoutubePlayer(final String videoCode) {
+
+        youTubePlayerFragment.initialize(Config.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
+
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
+                MyUtils.show(youtubePlayerHolder);
+
+                if (!wasRestored) {
+                    youTubePlayer.cueVideo(videoCode);
+                }
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+            }
+        });
+    }
+
     private void showTags(HashMap<String,Boolean> tagsMap) {
         Log.d(TAG, "displayTags(), "+tagsMap);
         if (null != tagsMap) {
@@ -507,13 +578,6 @@ public class CardEdit_View extends BaseView implements
             tagsContainer.setEnableCross(true);
         }
     }
-
-//    private void storeImageURI(Uri uri) {
-//        imageView.setTag(R.id.imageURI_tag, uri);
-//    }
-//    private void clearImageURI() {
-//        imageView.setTag(R.id.imageURI_tag, null);
-//    }
 
 
     // Другие

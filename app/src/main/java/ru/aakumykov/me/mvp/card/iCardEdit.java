@@ -21,11 +21,12 @@ public interface iCardEdit {
         void displayTitle(String text);
         void displayQuote(String text);
         void displayImage(Uri imageURI);
+        public void displayVideo(String videoCode);
 //        void displayAudio(Uri dataURI);
-//        void displayVideo(Uri dataURI);
 
         String getCardTitle();
         String getCardQuote();
+        String getCardVideoCode();
         String getCardDescription();
         HashMap<String,Boolean> getCardTags();
 

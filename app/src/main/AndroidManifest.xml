@@ -52,6 +52,24 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="http"  android:host="www.youtube.com" android:pathPrefix="/watch" />
+                <data android:scheme="https" android:host="www.youtube.com" android:pathPrefix="/watch" />
+                <data android:scheme="http"  android:host="youtube.com" android:pathPrefix="/watch" />
+                <data android:scheme="https" android:host="youtube.com" android:pathPrefix="/watch" />
+            </intent-filter>
+
+            <!-- separate intent-filter to avoid host/pathPrefix "bleeding" -->
+            <!-- https://stackoverflow.com/questions/31002909/android-deeplink-pathprefix-attribute-is-being-ignored -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="http"  android:host="youtu.be" />
+                <data android:scheme="https" android:host="youtu.be" />
+            </intent-filter>
         </activity>
 
 

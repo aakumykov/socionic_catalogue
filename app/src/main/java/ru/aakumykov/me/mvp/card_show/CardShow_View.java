@@ -22,6 +22,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
+import com.google.android.youtube.player.YouTubePlayerView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -33,6 +37,7 @@ import butterknife.ButterKnife;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.comment.CommentsAdapter;
@@ -48,6 +53,7 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.cards_list.CardsList_View;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.utils.YesNoDialog;
+import ru.aakumykov.me.mvp.yt_player.YTPlayer;
 
 //TODO: уменьшение изображения
 
@@ -67,6 +73,7 @@ public class CardShow_View extends BaseView implements
     private ConstraintLayout imageHolder;
     private ProgressBar imageProgressBar;
     private ImageView imageView;
+    private YouTubePlayerView videoView;
     private TextView descriptionView;
 
     private TagContainerLayout tagsContainer;
@@ -89,8 +96,8 @@ public class CardShow_View extends BaseView implements
     private Comment parentComment;
     private View currentCommentView;
 
+    private YouTubePlayerFragment youTubePlayerFragment;
 
-    // TODO: удаление комментариев вместе с карточкой
 
     // Системные методы
     @Override
@@ -113,6 +120,7 @@ public class CardShow_View extends BaseView implements
         imageHolder = findViewById(R.id.imageHolder);
         imageProgressBar = findViewById(R.id.imageProgressBar);
         imageView = findViewById(R.id.imageView);
+//        videoView = findViewById(R.id.youtube_fragment);
         descriptionView = findViewById(R.id.descriptionView);
         tagsContainer = findViewById(R.id.tagsContainer);
 
@@ -135,6 +143,11 @@ public class CardShow_View extends BaseView implements
 
 //        mainListView.setOnItemClickListener(this);
         tagsContainer.setOnTagClickListener(this);
+
+//        ytPlayer = new YTPlayer(videoView);
+
+        youTubePlayerFragment =
+                (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
 
         presenter = new CardShow_Presenter();
     }
@@ -273,6 +286,22 @@ public class CardShow_View extends BaseView implements
         return true;
     }
 
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        int videoPosition = youTubePlayer.getCurrentTimeMillis();
+//        Log.d("STATE SAVE", "videoPosition: "+videoPosition);
+//        outState.putInt("videoPosition", videoPosition);
+//    }
+//
+//    @Override
+//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//        int videoPosition = savedInstanceState.getInt("videoPosition");
+//        Log.d("STATE RESTORE", "videoPosition: "+videoPosition);
+////        youTubePlayer.seekToMillis(videoPosition);
+//    }
+
 
     // Обязательные методы
     @Override
@@ -312,6 +341,10 @@ public class CardShow_View extends BaseView implements
 
             case Constants.TEXT_CARD:
                 displayTextCard(card);
+                break;
+
+            case Constants.VIDEO_CARD:
+                displayVideoCard(card);
                 break;
 
             default:
@@ -463,6 +496,7 @@ public class CardShow_View extends BaseView implements
         if (null != currentCommentView) currentCommentView.setAlpha(1.0f);
     }
 
+
     // Внутренние методы
     private void loadCard() {
         if (firstRun) {
@@ -495,6 +529,32 @@ public class CardShow_View extends BaseView implements
         quoteView.setText(card.getQuote());
         MyUtils.show(quoteView);
         displayCommonCard(card);
+    }
+
+    private void displayVideoCard(final Card card) {
+        displayCommonCard(card);
+//        ytPlayer.setVideo(card.getVideoCode());
+//        MyUtils.show(videoView);
+
+        youTubePlayerFragment.initialize(Config.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
+
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider,
+                                                YouTubePlayer youTubePlayer, boolean wasRestored) {
+
+//                youTubePlayer.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION|YouTubePlayer.FULLSCREEN_FLAG_ALWAYS_FULLSCREEN_IN_LANDSCAPE);
+
+                if (!wasRestored) {
+                    youTubePlayer.cueVideo(card.getVideoCode());
+                }
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider,
+                                                YouTubeInitializationResult youTubeInitializationResult) {
+                showErrorMsg("Ошибка настройки видео");
+            }
+        });
     }
 
     private void displayCommonCard(Card card) {
