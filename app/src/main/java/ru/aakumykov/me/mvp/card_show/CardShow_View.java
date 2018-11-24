@@ -443,6 +443,24 @@ public class CardShow_View extends BaseView implements
         showCardRating(newRating);
     }
 
+//    @Override
+//    public void onCardRatedUp(int newRating) {
+//        Drawable upColoredIcon = getResources().getDrawable(R.drawable.ic_thumb_up_colored);
+//        Drawable downNeutralIcon = getResources().getDrawable(R.drawable.ic_thumb_down_neutral);
+//        cardRateUpButton.setImageDrawable(upColoredIcon);
+//        cardRateDownButton.setImageDrawable(downNeutralIcon);
+//        showCardRating(newRating);
+//    }
+//
+//    @Override
+//    public void onCardRatedDown(int newRating) {
+//        Drawable downColoredIcon = getResources().getDrawable(R.drawable.ic_thumb_down_colored);
+//        Drawable upNeutralIcon = getResources().getDrawable(R.drawable.ic_thumb_up_neutral);
+//        cardRateDownButton.setImageDrawable(downColoredIcon);
+//        cardRateUpButton.setImageDrawable(upNeutralIcon);
+//        showCardRating(newRating);
+//    }
+
     @Override
     public void onCardRateError() {
         showToast(R.string.CARD_SHOW_rating_update_error);
