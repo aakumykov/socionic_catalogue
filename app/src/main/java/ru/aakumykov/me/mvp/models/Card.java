@@ -27,11 +27,11 @@ public class Card implements Parcelable {
     private String videoCode;
     private String description;
     private HashMap<String, Boolean> tags;
-    private int commentsCount = 0;
+    private int commentsCount;
     private HashMap<String, Boolean> commentsKeys;
-    private Integer rating = 0;
-    private List<String> rateUpList = new ArrayList<>();
-    private List<String> rateDownList = new ArrayList<>();
+    private Integer rating;
+    private List<String> rateUpList;
+    private List<String> rateDownList;
 
     public Card() {
 
@@ -55,12 +55,17 @@ public class Card implements Parcelable {
         setVideoCode(videoCode);
         this.description = description;
         this.tags = tagsMap;
+        this.commentsCount = 0;
+        this.rating = 0;
+        this.rateUpList = new ArrayList<>();
+        this.rateDownList = new ArrayList<>();
     }
 
     @Exclude
     @Override
     public String toString() {
-        return "Card { key: "+getKey()+
+        return "Card { "+
+                "  key: "+getKey()+
                 ", userId: "+getUserId()+
                 ", type: "+getType()+
                 ", title: "+getTitle()+
@@ -72,7 +77,9 @@ public class Card implements Parcelable {
                 ", commentsCount: "+getCommentsCount()+
                 ", commentsKeys: "+getCommentsKeys()+
                 ", rating: "+getRating()+
-            ",}";
+                ", rateUpList: "+rateUpList+
+                ", rateDownList: "+rateDownList+
+            " }";
     }
 
     @Exclude

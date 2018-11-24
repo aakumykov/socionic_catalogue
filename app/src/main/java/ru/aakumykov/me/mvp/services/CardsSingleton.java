@@ -230,7 +230,7 @@ public class CardsSingleton implements
 
                 if (null == card) return Transaction.success(mutableData);
 
-                if (ratingDifference > 1) card.rateUp(byUserId);
+                if (ratingDifference > 0) card.rateUp(byUserId);
                 else card.rateDown(byUserId);
 
                 mutableData.setValue(card);
