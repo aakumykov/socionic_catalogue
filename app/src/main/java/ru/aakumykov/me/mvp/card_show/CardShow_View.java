@@ -1,11 +1,11 @@
 package ru.aakumykov.me.mvp.card_show;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.util.Log;
@@ -42,7 +42,6 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.comment.CommentsAdapter;
 import ru.aakumykov.me.mvp.comment.iComments;
-import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Comment;
 import ru.aakumykov.me.mvp.models.User;
@@ -52,8 +51,6 @@ import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.cards_list.CardsList_View;
 import ru.aakumykov.me.mvp.models.Card;
-import ru.aakumykov.me.mvp.utils.YesNoDialog;
-import ru.aakumykov.me.mvp.yt_player.YTPlayer;
 
 //TODO: уменьшение изображения
 
@@ -75,11 +72,13 @@ public class CardShow_View extends BaseView implements
     private ImageView imageView;
     private YouTubePlayerView videoView;
     private TextView descriptionView;
-
     private TagContainerLayout tagsContainer;
+    private TextView cardRatingView;
+    private ImageView cardRateUpButton;
+    private ImageView cardRateDownButton;
+    private ProgressBar cardRatingThrobber;
 
     private ProgressBar commentsThrobber;
-
     private LinearLayout commentForm;
     private EditText commentInput;
     private ImageView sendCommentButton;
@@ -120,12 +119,14 @@ public class CardShow_View extends BaseView implements
         imageHolder = findViewById(R.id.imageHolder);
         imageProgressBar = findViewById(R.id.imageProgressBar);
         imageView = findViewById(R.id.imageView);
-//        videoView = findViewById(R.id.youtube_fragment);
         descriptionView = findViewById(R.id.descriptionView);
         tagsContainer = findViewById(R.id.tagsContainer);
+        cardRatingView = findViewById(R.id.cardRatingView);
+        cardRateUpButton = findViewById(R.id.cardRateUpButton);
+        cardRateDownButton = findViewById(R.id.cardRateDownButton);
+        cardRatingThrobber = findViewById(R.id.cardRatingThrobber);
 
         commentsThrobber = findViewById(R.id.commentsThrobber);
-
         addCommentButton = findViewById(R.id.addCommentButton);
         commentForm = findViewById(R.id.commentForm);
         commentInput = findViewById(R.id.commentInput);
@@ -134,6 +135,8 @@ public class CardShow_View extends BaseView implements
         // Устанавливаю обработчики нажатий
         addCommentButton.setOnClickListener(this);
         sendCommentButton.setOnClickListener(this);
+        cardRateUpButton.setOnClickListener(this);
+        cardRateDownButton.setOnClickListener(this);
 
         // Присоединяю адаптер списка
         commentsList = new ArrayList<>();
@@ -241,6 +244,12 @@ public class CardShow_View extends BaseView implements
                 break;
             case R.id.sendCommentButton:
                 sendComment();
+                break;
+            case R.id.cardRateUpButton:
+                rateCardUp();
+                break;
+            case R.id.cardRateDownButton:
+                rateCardDown();
                 break;
             default:
                 break;
@@ -422,6 +431,42 @@ public class CardShow_View extends BaseView implements
         commentsAdapter.remove(comment);
     }
 
+    @Override
+    public void onCardRatedUp(int newRating) {
+        colorizeCardRatingAsUp();
+        showCardRating(newRating);
+    }
+
+    @Override
+    public void onCardRatedDown(int newRating) {
+        colorizeCardRatingAsDown();
+        showCardRating(newRating);
+    }
+
+//    @Override
+//    public void onCardRatedUp(int newRating) {
+//        Drawable upColoredIcon = getResources().getDrawable(R.drawable.ic_thumb_up_colored);
+//        Drawable downNeutralIcon = getResources().getDrawable(R.drawable.ic_thumb_down_neutral);
+//        cardRateUpButton.setImageDrawable(upColoredIcon);
+//        cardRateDownButton.setImageDrawable(downNeutralIcon);
+//        showCardRating(newRating);
+//    }
+//
+//    @Override
+//    public void onCardRatedDown(int newRating) {
+//        Drawable downColoredIcon = getResources().getDrawable(R.drawable.ic_thumb_down_colored);
+//        Drawable upNeutralIcon = getResources().getDrawable(R.drawable.ic_thumb_up_neutral);
+//        cardRateDownButton.setImageDrawable(downColoredIcon);
+//        cardRateUpButton.setImageDrawable(upNeutralIcon);
+//        showCardRating(newRating);
+//    }
+
+    @Override
+    public void onCardRateError() {
+        showToast(R.string.CARD_SHOW_rating_update_error);
+        MyUtils.hide(cardRatingThrobber);
+        MyUtils.show(cardRatingView);
+    }
 
     // Меток методы
     @Override
@@ -514,7 +559,7 @@ public class CardShow_View extends BaseView implements
     private void displayImageCard(Card card) {
         Log.d(TAG, "displayImageCard(), "+card);
 
-        displayCommonCard(card);
+        displayCommonCardParts(card);
 
         try {
             Uri imageURI = Uri.parse(card.getImageURL());
@@ -528,11 +573,11 @@ public class CardShow_View extends BaseView implements
         Log.d(TAG, "displayTextCard(), "+card);
         quoteView.setText(card.getQuote());
         MyUtils.show(quoteView);
-        displayCommonCard(card);
+        displayCommonCardParts(card);
     }
 
     private void displayVideoCard(final Card card) {
-        displayCommonCard(card);
+        displayCommonCardParts(card);
 //        ytPlayer.setVideo(card.getVideoCode());
 //        MyUtils.show(videoView);
 
@@ -557,10 +602,11 @@ public class CardShow_View extends BaseView implements
         });
     }
 
-    private void displayCommonCard(Card card) {
+    private void displayCommonCardParts(Card card) {
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
         displayTags(card.getTags());
+        showCardRating(card.getRating());
     }
 
     private View constructCommentItem(Comment comment) throws Exception {
@@ -763,5 +809,56 @@ public class CardShow_View extends BaseView implements
 
         this.parentComment = data.getParcelableExtra(Constants.PARENT_COMMENT);
         showCommentForm();
+    }
+
+    private void rateCardUp() {
+        MyUtils.hide(cardRatingView);
+        MyUtils.show(cardRatingThrobber);
+        presenter.rateCardUp();
+    }
+
+    private void rateCardDown() {
+        MyUtils.hide(cardRatingView);
+        MyUtils.show(cardRatingThrobber);
+        presenter.rateCardDown();
+    }
+
+    private void showCardRating(int value) {
+        MyUtils.hide(cardRatingThrobber);
+        MyUtils.show(cardRatingView);
+        cardRatingView.setText(String.valueOf(value));
+
+        String currentUserId = getAuthService().currentUserId();
+
+        if (currentCard.isRatedUpBy(currentUserId)) {
+            colorizeCardRatingAsUp();
+        }
+
+        if (currentCard.isRatedDownBy(currentUserId)) {
+            colorizeCardRatingAsDown();
+        }
+    }
+
+    private void colorizeCardRatingAsUp() {
+//        Drawable upNeutralIcon = getResources().getDrawable(R.drawable.ic_thumb_up_neutral);
+//        Drawable downColoredIcon = getResources().getDrawable(R.drawable.ic_thumb_down_colored);
+//        cardRateUpButton.invalidateDrawable(upNeutralIcon);
+//        cardRateDownButton.invalidateDrawable(downColoredIcon);
+
+        Drawable upColoredIcon = getResources().getDrawable(R.drawable.ic_thumb_up_colored);
+        Drawable downNeutralIcon = getResources().getDrawable(R.drawable.ic_thumb_down_neutral);
+
+        cardRateUpButton.invalidate();
+        cardRateDownButton.invalidate();
+
+        cardRateUpButton.setImageDrawable(upColoredIcon);
+        cardRateDownButton.setImageDrawable(downNeutralIcon);
+    }
+
+    private void colorizeCardRatingAsDown() {
+        Drawable upNeutralIcon = getResources().getDrawable(R.drawable.ic_thumb_up_neutral);
+        Drawable downColoredIcon = getResources().getDrawable(R.drawable.ic_thumb_down_colored);
+        cardRateUpButton.setImageDrawable(upNeutralIcon);
+        cardRateDownButton.setImageDrawable(downColoredIcon);
     }
 }

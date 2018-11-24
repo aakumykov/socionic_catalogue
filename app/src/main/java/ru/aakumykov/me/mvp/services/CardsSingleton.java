@@ -70,6 +70,7 @@ public class CardsSingleton implements
         });
     }
 
+
     @Override
     public void updateCard(final Card card, final SaveCardCallbacks callbacks) {
         Log.d(TAG, "updateCard(), "+card);
@@ -92,6 +93,7 @@ public class CardsSingleton implements
                 });
     }
 
+
     @Override
     public void deleteCard(final Card card, final  DeleteCallbacks callbacks) {
         Log.d(TAG, "deleteCardConfigmed(), "+card);
@@ -110,6 +112,7 @@ public class CardsSingleton implements
             }
         });
     }
+
 
     @Override
     public void updateCommentsCounter(String cardId, final int diffValue) {
@@ -147,10 +150,23 @@ public class CardsSingleton implements
 
 
     @Override
+    public void rateUp(String cardId, String byUserId, final RatingCallbacks callbacks) {
+        changeRating(cardId, byUserId,1, callbacks);
+    }
+
+
+    @Override
+    public void rateDown(String cardId, String byUserId, RatingCallbacks callbacks) {
+        changeRating(cardId, byUserId, -1, callbacks);
+    }
+
+
+    @Override
     public void loadList(ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
         loadList(null, callbacks);
     }
+
 
     @Override
     public void loadList(@Nullable String tagFilter, final ListCallbacks callbacks) {
@@ -199,4 +215,51 @@ public class CardsSingleton implements
         });
     }
 
+
+    // Внутренние методы
+    private void changeRating(final String cardId, final String byUserId, final int ratingDifference, final RatingCallbacks callbacks) {
+
+        DatabaseReference theCardRef = cardsRef.child(cardId);
+
+        theCardRef.runTransaction(new Transaction.Handler() {
+
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                Card card = mutableData.getValue(Card.class);
+
+                if (null == card) return Transaction.success(mutableData);
+
+                if (ratingDifference > 0) card.rateUp(byUserId);
+                else card.rateDown(byUserId);
+
+                mutableData.setValue(card);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
+                if (null == databaseError && null != dataSnapshot) {
+
+                    Card card = dataSnapshot.getValue(Card.class);
+
+                    if (null != card) {
+                        if (ratingDifference > 0) callbacks.onRetedUp(card.getRating());
+                        else callbacks.onRatedDown(card.getRating());
+                    } else {
+                        Log.e(TAG, "Card from dataSnapshot is null");
+                    }
+
+                } else {
+                    String errorMsg = "Unknown error during rating update of card ("+cardId+").";
+                    if (null != databaseError) {
+                        errorMsg = databaseError.getMessage();
+                        databaseError.toException().printStackTrace();
+                    }
+                    callbacks.onRateFail(errorMsg);
+                }
+            }
+        });
+    }
 }

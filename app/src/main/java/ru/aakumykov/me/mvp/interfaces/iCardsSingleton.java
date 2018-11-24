@@ -16,6 +16,9 @@ public interface iCardsSingleton {
     void updateCard(Card card, SaveCardCallbacks callbacks);
     void deleteCard(Card card, DeleteCallbacks callbacks);
 
+    void rateUp(String cardId, String byUserId, RatingCallbacks callbacks);
+    void rateDown(String cardId, String byUserId, RatingCallbacks callbacks);
+
 
     interface ListCallbacks {
         void onListLoadSuccess(List<Card> list);
@@ -35,5 +38,11 @@ public interface iCardsSingleton {
     interface DeleteCallbacks {
         void onCardDeleteSuccess(Card card);
         void onCardDeleteError(String msg);
+    }
+
+    interface RatingCallbacks {
+        void onRetedUp(int newRating);
+        void onRatedDown(int newRating);
+        void onRateFail(String errorMsg);
     }
 }

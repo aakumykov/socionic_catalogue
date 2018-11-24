@@ -6,8 +6,10 @@ import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import ru.aakumykov.me.mvp.Constants;
 
@@ -27,6 +29,9 @@ public class Card implements Parcelable {
     private HashMap<String, Boolean> tags;
     private int commentsCount = 0;
     private HashMap<String, Boolean> commentsKeys;
+    private Integer rating = 0;
+    private List<String> rateUpList = new ArrayList<>();
+    private List<String> rateDownList = new ArrayList<>();
 
     public Card() {
 
@@ -51,23 +56,30 @@ public class Card implements Parcelable {
         this.description = description;
         this.tags = tagsMap;
         this.commentsCount = 0;
+        this.rating = 0;
+        this.rateUpList = new ArrayList<>();
+        this.rateDownList = new ArrayList<>();
     }
 
     @Exclude
     @Override
     public String toString() {
-        return "Card { key: "+getKey()+
+        return "Card { "+
+                "  key: "+getKey()+
                 ", userId: "+getUserId()+
                 ", type: "+getType()+
                 ", title: "+getTitle()+
                 ", quote: "+getQuote()+
                 ", imageURL: "+imageURL+
-                ", videoCode: "+ videoCode +
+                ", videoCode: "+videoCode +
                 ", description: "+getDescription()+
                 ", tags: "+ getTags()+
-                ", commentsCount: "+ getCommentsCount()+
-                ", commentsKeys: "+ getCommentsKeys()+
-            ",}";
+                ", commentsCount: "+getCommentsCount()+
+                ", commentsKeys: "+getCommentsKeys()+
+                ", rating: "+getRating()+
+                ", rateUpList: "+rateUpList+
+                ", rateDownList: "+rateDownList+
+            " }";
     }
 
     @Exclude
@@ -83,6 +95,9 @@ public class Card implements Parcelable {
          map.put("tags", tags);
          map.put("commentsCount", commentsCount);
          map.put("commentsKeys", commentsKeys);
+         map.put("rating", rating);
+         map.put("rateUpList", rateUpList);
+         map.put("rateDownList", rateDownList);
         return map;
     }
 
@@ -102,6 +117,9 @@ public class Card implements Parcelable {
         dest.writeMap(this.tags);
         dest.writeInt(this.commentsCount);
         dest.writeMap(this.commentsKeys);
+        dest.writeInt(this.rating);
+        dest.writeList(this.rateUpList);
+        dest.writeList(this.rateDownList);
     }
 
     protected Card(Parcel in) {
@@ -117,6 +135,9 @@ public class Card implements Parcelable {
         tags = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         commentsCount = in.readInt();
         commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+        rating = in.readInt();
+        in.readStringList(rateUpList);
+        in.readStringList(rateDownList);
     }
 
     @Override
@@ -168,6 +189,16 @@ public class Card implements Parcelable {
     }
     public int getCommentsCount() { return commentsCount; }
     public HashMap<String, Boolean> getCommentsKeys() { return commentsKeys; }
+    public int getRating() {
+        if (null == this.rating) return 0;
+        else return rating;
+    }
+    public List<String> getRateUpList() {
+        return rateUpList;
+    }
+    public List<String> getRateDownList() {
+        return rateDownList;
+    }
 
 
     // Сеттеры
@@ -216,7 +247,14 @@ public class Card implements Parcelable {
     public void setCommentsKeys(HashMap<String, Boolean> commentsKeys) {
         this.commentsKeys = commentsKeys;
     }
-
+    // Этот метод не публичный
+    private void setRating(int ratingValue) { this.rating = ratingValue; }
+    public void setRateUpList(List<String> rateUpList) {
+        this.rateUpList = rateUpList;
+    }
+    public void setRateDownList(List<String> rateDownList) {
+        this.rateDownList = rateDownList;
+    }
 
     // Служебные
     @Exclude private Uri localImageURI;
@@ -240,5 +278,27 @@ public class Card implements Parcelable {
     }
     @Exclude public void clearMimeType() {
         this.mimeType = null;
+    }
+
+    @Exclude public void rateUp(String userId) {
+        if (!rateUpList.contains(userId)) {
+            rateUpList.add(userId);
+            setRating(rating+1);
+        }
+        rateDownList.remove(userId);
+    }
+    @Exclude public void rateDown(String userId) {
+        if (!rateDownList.contains(userId)) {
+            rateDownList.add(userId);
+            setRating(rating-1);
+        }
+        rateUpList.remove(userId);
+    }
+
+    @Exclude public boolean isRatedUpBy(String userId) {
+        return getRateUpList().contains(userId);
+    }
+    @Exclude public boolean isRatedDownBy(String userId) {
+        return getRateDownList().contains(userId);
     }
 }
