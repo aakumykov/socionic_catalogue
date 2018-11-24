@@ -27,11 +27,11 @@ public class Card implements Parcelable {
     private String videoCode;
     private String description;
     private HashMap<String, Boolean> tags;
-    private int commentsCount;
+    private int commentsCount = 0;
     private HashMap<String, Boolean> commentsKeys;
-    private Integer rating;
-    private List<String> rateUpList;
-    private List<String> rateDownList;
+    private Integer rating = 0;
+    private List<String> rateUpList = new ArrayList<>();
+    private List<String> rateDownList = new ArrayList<>();
 
     public Card() {
 
@@ -193,6 +193,13 @@ public class Card implements Parcelable {
         if (null == this.rating) return 0;
         else return rating;
     }
+    public List<String> getRateUpList() {
+        return rateUpList;
+    }
+    public List<String> getRateDownList() {
+        return rateDownList;
+    }
+
 
     // Сеттеры
     public void setUserId(String userId) {
@@ -242,7 +249,12 @@ public class Card implements Parcelable {
     }
     // Этот метод не публичный
     private void setRating(int ratingValue) { this.rating = ratingValue; }
-
+    public void setRateUpList(List<String> rateUpList) {
+        this.rateUpList = rateUpList;
+    }
+    public void setRateDownList(List<String> rateDownList) {
+        this.rateDownList = rateDownList;
+    }
 
     // Служебные
     @Exclude private Uri localImageURI;
@@ -270,13 +282,13 @@ public class Card implements Parcelable {
 
     @Exclude public void rateUp(String userId) {
         setRating(rating+1);
-        if (!rateUpList.contains(userId)) rateUpList.add(userId);
-        rateDownList.remove(userId);
+        if (!getRateUpList().contains(userId)) getRateUpList().add(userId);
+        getRateDownList().remove(userId);
     }
     @Exclude public void rateDown(String userId) {
         setRating(rating-1);
-        if (!rateDownList.contains(userId)) rateDownList.add(userId);
-        rateUpList.remove(userId);
+        if (!getRateDownList().contains(userId)) getRateDownList().add(userId);
+        getRateUpList().remove(userId);
     }
 
 }
