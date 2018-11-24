@@ -433,19 +433,13 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public void onCardRatedUp(int newRating) {
-        Drawable upColoredIcon = getResources().getDrawable(R.drawable.ic_thumb_up_colored);
-        Drawable downNeutralIcon = getResources().getDrawable(R.drawable.ic_thumb_down_neutral);
-        cardRateUpButton.setImageDrawable(upColoredIcon);
-        cardRateDownButton.setImageDrawable(downNeutralIcon);
+        colorizeCardRatingAsUp();
         showCardRating(newRating);
     }
 
     @Override
     public void onCardRatedDown(int newRating) {
-        Drawable downColoredIcon = getResources().getDrawable(R.drawable.ic_thumb_down_colored);
-        Drawable upNeutralIcon = getResources().getDrawable(R.drawable.ic_thumb_up_neutral);
-        cardRateDownButton.setImageDrawable(downColoredIcon);
-        cardRateUpButton.setImageDrawable(upNeutralIcon);
+        colorizeCardRatingAsDown();
         showCardRating(newRating);
     }
 
@@ -815,5 +809,38 @@ public class CardShow_View extends BaseView implements
         MyUtils.hide(cardRatingThrobber);
         MyUtils.show(cardRatingView);
         cardRatingView.setText(String.valueOf(value));
+
+        String currentUserId = getAuthService().currentUserId();
+
+        if (currentCard.isRatedUpBy(currentUserId)) {
+            colorizeCardRatingAsUp();
+        }
+
+        if (currentCard.isRatedDownBy(currentUserId)) {
+            colorizeCardRatingAsDown();
+        }
+    }
+
+    private void colorizeCardRatingAsUp() {
+//        Drawable upNeutralIcon = getResources().getDrawable(R.drawable.ic_thumb_up_neutral);
+//        Drawable downColoredIcon = getResources().getDrawable(R.drawable.ic_thumb_down_colored);
+//        cardRateUpButton.invalidateDrawable(upNeutralIcon);
+//        cardRateDownButton.invalidateDrawable(downColoredIcon);
+
+        Drawable upColoredIcon = getResources().getDrawable(R.drawable.ic_thumb_up_colored);
+        Drawable downNeutralIcon = getResources().getDrawable(R.drawable.ic_thumb_down_neutral);
+
+        cardRateUpButton.invalidate();
+        cardRateDownButton.invalidate();
+
+        cardRateUpButton.setImageDrawable(upColoredIcon);
+        cardRateDownButton.setImageDrawable(downNeutralIcon);
+    }
+
+    private void colorizeCardRatingAsDown() {
+        Drawable upNeutralIcon = getResources().getDrawable(R.drawable.ic_thumb_up_neutral);
+        Drawable downColoredIcon = getResources().getDrawable(R.drawable.ic_thumb_down_colored);
+        cardRateUpButton.setImageDrawable(upNeutralIcon);
+        cardRateDownButton.setImageDrawable(downColoredIcon);
     }
 }

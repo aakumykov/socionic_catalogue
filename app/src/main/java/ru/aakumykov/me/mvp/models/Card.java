@@ -295,4 +295,10 @@ public class Card implements Parcelable {
         rateUpList.remove(userId);
     }
 
+    @Exclude public boolean isRatedUpBy(String userId) {
+        return getRateUpList().contains(userId);
+    }
+    @Exclude public boolean isRatedDownBy(String userId) {
+        return getRateDownList().contains(userId);
+    }
 }
