@@ -150,14 +150,14 @@ public class CardsSingleton implements
 
 
     @Override
-    public void rateUp(String cardId, final RatingCallbacks callbacks) {
-        changeRating(cardId, 1, callbacks);
+    public void rateUp(String cardId, String byUserId, final RatingCallbacks callbacks) {
+        changeRating(cardId, byUserId,1, callbacks);
     }
 
 
     @Override
-    public void rateDown(String cardId, RatingCallbacks callbacks) {
-        changeRating(cardId, -1, callbacks);
+    public void rateDown(String cardId, String byUserId, RatingCallbacks callbacks) {
+        changeRating(cardId, byUserId, -1, callbacks);
     }
 
 
@@ -217,7 +217,7 @@ public class CardsSingleton implements
 
 
     // Внутренние методы
-    private void changeRating(final String cardId, final int ratingDifference, final RatingCallbacks callbacks) {
+    private void changeRating(final String cardId, final String byUserId, final int ratingDifference, final RatingCallbacks callbacks) {
 
         DatabaseReference theCardRef = cardsRef.child(cardId);
 
@@ -230,7 +230,8 @@ public class CardsSingleton implements
 
                 if (null == card) return Transaction.success(mutableData);
 
-                card.setRating(card.getRating()  + ratingDifference);
+                if (ratingDifference > 1) card.rateUp(byUserId);
+                else card.rateDown(byUserId);
 
                 mutableData.setValue(card);
                 return Transaction.success(mutableData);

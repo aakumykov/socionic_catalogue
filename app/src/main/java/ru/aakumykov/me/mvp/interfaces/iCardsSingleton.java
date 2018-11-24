@@ -16,8 +16,8 @@ public interface iCardsSingleton {
     void updateCard(Card card, SaveCardCallbacks callbacks);
     void deleteCard(Card card, DeleteCallbacks callbacks);
 
-    void rateUp(String cardId, RatingCallbacks callbacks);
-    void rateDown(String cardId, RatingCallbacks callbacks);
+    void rateUp(String cardId, String byUserId, RatingCallbacks callbacks);
+    void rateDown(String cardId, String byUserId, RatingCallbacks callbacks);
 
 
     interface ListCallbacks {

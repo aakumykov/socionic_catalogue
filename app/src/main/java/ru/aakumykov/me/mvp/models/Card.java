@@ -6,8 +6,10 @@ import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import ru.aakumykov.me.mvp.Constants;
 
@@ -28,6 +30,8 @@ public class Card implements Parcelable {
     private int commentsCount = 0;
     private HashMap<String, Boolean> commentsKeys;
     private Integer rating = 0;
+    private List<String> rateUpList = new ArrayList<>();
+    private List<String> rateDownList = new ArrayList<>();
 
     public Card() {
 
@@ -85,6 +89,8 @@ public class Card implements Parcelable {
          map.put("commentsCount", commentsCount);
          map.put("commentsKeys", commentsKeys);
          map.put("rating", rating);
+         map.put("rateUpList", rateUpList);
+         map.put("rateDownList", rateDownList);
         return map;
     }
 
@@ -105,6 +111,8 @@ public class Card implements Parcelable {
         dest.writeInt(this.commentsCount);
         dest.writeMap(this.commentsKeys);
         dest.writeInt(this.rating);
+        dest.writeList(this.rateUpList);
+        dest.writeList(this.rateDownList);
     }
 
     protected Card(Parcel in) {
@@ -121,6 +129,8 @@ public class Card implements Parcelable {
         commentsCount = in.readInt();
         commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         rating = in.readInt();
+        in.readStringList(rateUpList);
+        in.readStringList(rateDownList);
     }
 
     @Override
@@ -223,7 +233,8 @@ public class Card implements Parcelable {
     public void setCommentsKeys(HashMap<String, Boolean> commentsKeys) {
         this.commentsKeys = commentsKeys;
     }
-    public void setRating(int ratingValue) { this.rating = ratingValue; }
+    // Этот метод не публичный
+    private void setRating(int ratingValue) { this.rating = ratingValue; }
 
 
     // Служебные
@@ -249,4 +260,16 @@ public class Card implements Parcelable {
     @Exclude public void clearMimeType() {
         this.mimeType = null;
     }
+
+    @Exclude public void rateUp(String userId) {
+        setRating(rating+1);
+        if (!rateUpList.contains(userId)) rateUpList.add(userId);
+        rateDownList.remove(userId);
+    }
+    @Exclude public void rateDown(String userId) {
+        setRating(rating-1);
+        if (!rateDownList.contains(userId)) rateDownList.add(userId);
+        rateUpList.remove(userId);
+    }
+
 }

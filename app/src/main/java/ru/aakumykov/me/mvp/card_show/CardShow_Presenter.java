@@ -58,7 +58,7 @@ public class CardShow_Presenter implements
     // Изменение рейтинга
     @Override
     public void rateCardUp() {
-        cardsService.rateUp(currentCard.getKey(), new iCardsSingleton.RatingCallbacks() {
+        cardsService.rateUp(currentCard.getKey(), authService.currentUserId(), new iCardsSingleton.RatingCallbacks() {
             @Override
             public void onRetedUp(int newRating) {
                 view.onCardRatedUp(newRating);
@@ -79,7 +79,7 @@ public class CardShow_Presenter implements
 
     @Override
     public void rateCardDown() {
-        cardsService.rateDown(currentCard.getKey(), new iCardsSingleton.RatingCallbacks() {
+        cardsService.rateDown(currentCard.getKey(), authService.currentUserId(), new iCardsSingleton.RatingCallbacks() {
             @Override
             public void onRetedUp(int newRating) {
                 // не используется
