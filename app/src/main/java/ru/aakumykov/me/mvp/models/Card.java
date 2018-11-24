@@ -27,6 +27,7 @@ public class Card implements Parcelable {
     private HashMap<String, Boolean> tags;
     private int commentsCount = 0;
     private HashMap<String, Boolean> commentsKeys;
+    private int rating = 0;
 
     public Card() {
 
@@ -50,7 +51,6 @@ public class Card implements Parcelable {
         setVideoCode(videoCode);
         this.description = description;
         this.tags = tagsMap;
-        this.commentsCount = 0;
     }
 
     @Exclude
@@ -62,11 +62,12 @@ public class Card implements Parcelable {
                 ", title: "+getTitle()+
                 ", quote: "+getQuote()+
                 ", imageURL: "+imageURL+
-                ", videoCode: "+ videoCode +
+                ", videoCode: "+videoCode +
                 ", description: "+getDescription()+
                 ", tags: "+ getTags()+
-                ", commentsCount: "+ getCommentsCount()+
-                ", commentsKeys: "+ getCommentsKeys()+
+                ", commentsCount: "+getCommentsCount()+
+                ", commentsKeys: "+getCommentsKeys()+
+                ", rating: "+getRating()+
             ",}";
     }
 
@@ -83,6 +84,7 @@ public class Card implements Parcelable {
          map.put("tags", tags);
          map.put("commentsCount", commentsCount);
          map.put("commentsKeys", commentsKeys);
+         map.put("rating", rating);
         return map;
     }
 
@@ -102,6 +104,7 @@ public class Card implements Parcelable {
         dest.writeMap(this.tags);
         dest.writeInt(this.commentsCount);
         dest.writeMap(this.commentsKeys);
+        dest.writeInt(this.rating);
     }
 
     protected Card(Parcel in) {
@@ -117,6 +120,7 @@ public class Card implements Parcelable {
         tags = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         commentsCount = in.readInt();
         commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+        rating = in.readInt();
     }
 
     @Override
@@ -168,7 +172,7 @@ public class Card implements Parcelable {
     }
     public int getCommentsCount() { return commentsCount; }
     public HashMap<String, Boolean> getCommentsKeys() { return commentsKeys; }
-
+    public int getRating() { return rating; }
 
     // Сеттеры
     public void setUserId(String userId) {
@@ -216,6 +220,7 @@ public class Card implements Parcelable {
     public void setCommentsKeys(HashMap<String, Boolean> commentsKeys) {
         this.commentsKeys = commentsKeys;
     }
+    public void setRating(int ratingValue) { this.rating = ratingValue; }
 
 
     // Служебные
