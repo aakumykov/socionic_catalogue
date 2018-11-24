@@ -418,6 +418,7 @@ public class CardEdit_View extends BaseView implements
     void switchVideoMode() {
         hideModeSwitcher();
         MyUtils.show(mediaHolder);
+        MyUtils.show(videoCodeInput);
         titleView.requestFocus();
         presenter.setCardType(Constants.VIDEO_CARD);
     }

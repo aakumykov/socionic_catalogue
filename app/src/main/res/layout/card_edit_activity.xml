@@ -124,7 +124,8 @@
                 android:id="@+id/removeVideoButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/CARD_EDIT_remove_this_video" />
+                android:text="@string/CARD_EDIT_remove_this_video"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/videoCodeInput"
