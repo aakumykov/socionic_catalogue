@@ -282,13 +282,13 @@ public class Card implements Parcelable {
 
     @Exclude public void rateUp(String userId) {
         setRating(rating+1);
-        if (!getRateUpList().contains(userId)) getRateUpList().add(userId);
-        getRateDownList().remove(userId);
+        if (!rateUpList.contains(userId)) rateUpList.add(userId);
+        rateDownList.remove(userId);
     }
     @Exclude public void rateDown(String userId) {
         setRating(rating-1);
-        if (!getRateDownList().contains(userId)) getRateDownList().add(userId);
-        getRateUpList().remove(userId);
+        if (!rateDownList.contains(userId)) rateDownList.add(userId);
+        rateUpList.remove(userId);
     }
 
 }
