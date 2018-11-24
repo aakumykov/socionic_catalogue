@@ -58,44 +58,54 @@ public class CardShow_Presenter implements
     // Изменение рейтинга
     @Override
     public void rateCardUp() {
-        cardsService.rateUp(currentCard.getKey(), authService.currentUserId(), new iCardsSingleton.RatingCallbacks() {
-            @Override
-            public void onRetedUp(int newRating) {
-                view.onCardRatedUp(newRating);
-            }
+        if (authService.isUserLoggedIn()) {
 
-            @Override
-            public void onRatedDown(int newRating) {
-                // не используется
-            }
+            view.showCardRatingThrobber();
 
-            @Override
-            public void onRateFail(String errorMsg) {
-                view.onCardRateError();
-                Log.e(TAG, errorMsg);
-            }
-        });
+            cardsService.rateUp(currentCard.getKey(), authService.currentUserId(), new iCardsSingleton.RatingCallbacks() {
+                @Override
+                public void onRetedUp(int newRating) {
+                    view.onCardRatedUp(newRating);
+                }
+
+                @Override
+                public void onRatedDown(int newRating) {
+                    // не используется
+                }
+
+                @Override
+                public void onRateFail(String errorMsg) {
+                    view.onCardRateError();
+                    Log.e(TAG, errorMsg);
+                }
+            });
+        }
     }
 
     @Override
     public void rateCardDown() {
-        cardsService.rateDown(currentCard.getKey(), authService.currentUserId(), new iCardsSingleton.RatingCallbacks() {
-            @Override
-            public void onRetedUp(int newRating) {
-                // не используется
-            }
+        if (authService.isUserLoggedIn()) {
 
-            @Override
-            public void onRatedDown(int newRating) {
-                view.onCardRatedDown(newRating);
-            }
+            view.showCardRatingThrobber();
 
-            @Override
-            public void onRateFail(String errorMsg) {
-                view.onCardRateError();
-                Log.e(TAG, errorMsg);
-            }
-        });
+            cardsService.rateDown(currentCard.getKey(), authService.currentUserId(), new iCardsSingleton.RatingCallbacks() {
+                @Override
+                public void onRetedUp(int newRating) {
+                    // не используется
+                }
+
+                @Override
+                public void onRatedDown(int newRating) {
+                    view.onCardRatedDown(newRating);
+                }
+
+                @Override
+                public void onRateFail(String errorMsg) {
+                    view.onCardRateError();
+                    Log.e(TAG, errorMsg);
+                }
+            });
+        }
     }
 
 

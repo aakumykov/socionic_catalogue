@@ -246,10 +246,10 @@ public class CardShow_View extends BaseView implements
                 sendComment();
                 break;
             case R.id.cardRateUpButton:
-                rateCardUp();
+                presenter.rateCardUp();
                 break;
             case R.id.cardRateDownButton:
-                rateCardDown();
+                presenter.rateCardDown();
                 break;
             default:
                 break;
@@ -431,16 +431,40 @@ public class CardShow_View extends BaseView implements
         commentsAdapter.remove(comment);
     }
 
+
+    @Override
+    public void showCardRatingThrobber() {
+        MyUtils.hide(cardRatingView);
+        MyUtils.show(cardRatingThrobber);
+    }
+
+    @Override
+    public void showCardRating(int value) {
+        MyUtils.hide(cardRatingThrobber);
+        MyUtils.show(cardRatingView);
+        cardRatingView.setText(String.valueOf(value));
+
+        String currentUserId = getAuthService().currentUserId();
+
+        if (currentCard.isRatedUpBy(currentUserId)) {
+            colorizeCardRatingAsUp();
+        }
+
+        if (currentCard.isRatedDownBy(currentUserId)) {
+            colorizeCardRatingAsDown();
+        }
+    }
+
     @Override
     public void onCardRatedUp(int newRating) {
-        colorizeCardRatingAsUp();
         showCardRating(newRating);
+        colorizeCardRatingAsUp();
     }
 
     @Override
     public void onCardRatedDown(int newRating) {
-        colorizeCardRatingAsDown();
         showCardRating(newRating);
+        colorizeCardRatingAsDown();
     }
 
 //    @Override
@@ -809,34 +833,6 @@ public class CardShow_View extends BaseView implements
 
         this.parentComment = data.getParcelableExtra(Constants.PARENT_COMMENT);
         showCommentForm();
-    }
-
-    private void rateCardUp() {
-        MyUtils.hide(cardRatingView);
-        MyUtils.show(cardRatingThrobber);
-        presenter.rateCardUp();
-    }
-
-    private void rateCardDown() {
-        MyUtils.hide(cardRatingView);
-        MyUtils.show(cardRatingThrobber);
-        presenter.rateCardDown();
-    }
-
-    private void showCardRating(int value) {
-        MyUtils.hide(cardRatingThrobber);
-        MyUtils.show(cardRatingView);
-        cardRatingView.setText(String.valueOf(value));
-
-        String currentUserId = getAuthService().currentUserId();
-
-        if (currentCard.isRatedUpBy(currentUserId)) {
-            colorizeCardRatingAsUp();
-        }
-
-        if (currentCard.isRatedDownBy(currentUserId)) {
-            colorizeCardRatingAsDown();
-        }
     }
 
     private void colorizeCardRatingAsUp() {

@@ -39,6 +39,9 @@ public interface iCardShow {
         void goEditPage(Card card); // не нужно?
         void goList(String tagFilter);
 
+        void showCardRatingThrobber();
+        void showCardRating(int ratingValue);
+
         void onCardRatedUp(int newRating);
         void onCardRatedDown(int newRating);
         void onCardRateError();
