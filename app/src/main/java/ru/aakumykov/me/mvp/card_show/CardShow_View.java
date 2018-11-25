@@ -610,7 +610,8 @@ public class CardShow_View extends BaseView implements
                     @Override
                     public void onReady() {
                         youTubePlayer = initializedYouTubePlayer;
-                        youTubePlayer.cueVideo(card.getVideoCode(), 0.0f);
+//                        youTubePlayer.cueVideo(card.getVideoCode(), 0.0f);
+                        youTubePlayer.cueVideo("BgfcToAjfdc", 0.0f);
                         MyUtils.hide(videoPlayerThrobber);
                         MyUtils.show(youTubePlayerView);
                     }
