@@ -170,12 +170,6 @@ public class CardShow_View extends BaseView implements
         presenter.unlinkView();
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        youTubePlayerView.release();
-//    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.d(TAG, "onActivityResult("+requestCode+", "+requestCode+", ...), "+data);
@@ -615,7 +609,7 @@ public class CardShow_View extends BaseView implements
                     @Override
                     public void onReady() {
                         youTubePlayer = initializedYouTubePlayer;
-                        youTubePlayer.cueVideo(card.getVideoCode(), 0f);
+                        youTubePlayer.cueVideo(card.getVideoCode(), 0.0f);
                         MyUtils.hide(videoPlayerThrobber);
                         MyUtils.show(youTubePlayerView);
                     }

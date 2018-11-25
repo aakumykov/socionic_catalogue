@@ -178,7 +178,7 @@
     <string name="DIALOG_setup_user_name">Сначала создайте себе имя</string>
     <string name="USER_EDIT_you_are_not_logged_in">Вы не вошли в программу</string>
     <string name="USER_EDIT_you_cannot_edit_other_user">Нельзя редактировать другого пользователя</string>
-    <string name="CARD_EDIT_insert_video_code">Вставьте ссылку или код видео на YouTube</string>
+    <string name="CARD_EDIT_video_code">Код или URL видео</string>
     <string name="CARD_EDIT_unknown_data_mode">Тип данных не поддерживается</string>
     <string name="CARD_EDIT_remove_this_video">Удалить это видео</string>
     <string name="CARD_SHOW_rating_update_error">Ошибка изменения рейтинга</string>

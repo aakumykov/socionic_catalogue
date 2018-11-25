@@ -36,7 +36,7 @@ public class MyDialogs {
 
     // Диалог добавления код видео
     public static void addVideoDialog(Activity activity, final iMyDialogs.StringInputCallback callbacks) {
-        String title = activity.getString(R.string.CARD_EDIT_insert_video_code);
+        String title = activity.getString(R.string.CARD_EDIT_video_code);
 
         final View view = activity.getLayoutInflater().inflate(R.layout.edit_dialog, null);
         final EditText editText = view.findViewById(R.id.editText);
