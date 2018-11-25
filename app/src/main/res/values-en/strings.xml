@@ -173,7 +173,7 @@
     <string name="DIALOG_setup_user_name">Create user name first</string>
     <string name="USER_EDIT_you_are_not_logged_in">You are not logged in</string>
     <string name="USER_EDIT_you_cannot_edit_other_user">You cannot edit other user</string>
-    <string name="CARD_EDIT_video_code">Video id or URL</string>
+    <string name="CARD_EDIT_insert_video_code">Insert link or code of YouTube video</string>
     <string name="CARD_EDIT_unknown_data_mode">Unsupported data type</string>
     <string name="CARD_EDIT_remove_this_video">Remove this video</string>
     <string name="CARD_SHOW_rating_update_error">Error rating update</string>

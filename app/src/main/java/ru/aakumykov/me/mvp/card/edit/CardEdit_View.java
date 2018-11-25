@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
@@ -13,15 +14,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerFragment;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -37,7 +38,6 @@ import co.lujun.androidtagview.TagView;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.BaseView;
-import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.CardEdit_Presenter;
@@ -66,7 +66,8 @@ public class CardEdit_View extends BaseView implements
 
     @BindView(R.id.quoteView) EditText quoteView;
 
-    @BindView(R.id.youtubePlayerHolder) FrameLayout youtubePlayerHolder;
+    @BindView(R.id.videoPlayerThrobber) ProgressBar videoPlayerThrobber;
+    @BindView(R.id.youTubePlayerView) YouTubePlayerView youTubePlayerView;
     @BindView(R.id.addVideoButton) Button addVideoButton;
     @BindView(R.id.removeVideoButton) Button removeVideoButton;
     @BindView(R.id.videoCodeView) TextView videoCodeView;
@@ -90,7 +91,7 @@ public class CardEdit_View extends BaseView implements
     private final static String TAG = "CardEdit_View";
     private iCardEdit.Presenter presenter;
     private boolean firstRun = true;
-    private YouTubePlayerFragment youTubePlayerFragment;
+    private YouTubePlayer youTubePlayer;
 
 
     // Системные методы
@@ -105,9 +106,6 @@ public class CardEdit_View extends BaseView implements
         CardEdit_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
 
         tagsContainer.setOnTagClickListener(this);
-
-        youTubePlayerFragment =
-                (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
 
         presenter = new CardEdit_Presenter();
     }
@@ -138,6 +136,12 @@ public class CardEdit_View extends BaseView implements
     protected void onResume() {
         super.onResume();
     }
+
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        youTubePlayerView.release();
+//    }
 
     @Override
     public void onUserLogin() {
@@ -419,17 +423,17 @@ public class CardEdit_View extends BaseView implements
     void switchVideoMode() {
         hideModeSwitcher();
         MyUtils.show(mediaHolder);
-        MyUtils.show(addVideoButton);
-        MyUtils.show(removeVideoButton);
+//        MyUtils.show(addVideoButton);
+//        MyUtils.show(removeVideoButton);
         titleView.requestFocus();
         presenter.setCardType(Constants.VIDEO_CARD);
     }
 
     @OnClick(R.id.removeVideoButton)
     void removeVideo() {
-        MyUtils.hide(youtubePlayerHolder);
+        MyUtils.hide(youTubePlayerView);
         MyUtils.hide(removeVideoButton);
-        MyUtils.show(videoCodeView);
+        MyUtils.show(addVideoButton);
     }
 
     @OnClick(R.id.addVideoButton)
@@ -439,6 +443,7 @@ public class CardEdit_View extends BaseView implements
             public void onDialogWithStringYes(String text) {
                 videoCodeView.setText(text);
                 MyUtils.hide(addVideoButton);
+                showYoutubePlayer(text);
             }
         });
     }
@@ -565,22 +570,24 @@ public class CardEdit_View extends BaseView implements
 
     private void showYoutubePlayer(final String videoCode) {
 
-        youTubePlayerFragment.initialize(Config.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
+        MyUtils.show(videoPlayerThrobber);
 
+        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
             @Override
-            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
-                MyUtils.show(youtubePlayerHolder);
-
-                if (!wasRestored) {
-                    youTubePlayer.cueVideo(videoCode);
-                }
+            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
+                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady() {
+                        youTubePlayer = initializedYouTubePlayer;
+                        youTubePlayer.cueVideo(videoCode, 0f);
+                        MyUtils.hide(videoPlayerThrobber);
+                        MyUtils.show(youTubePlayerView);
+                        MyUtils.show(removeVideoButton);
+                    }
+                });
             }
+        }, true);
 
-            @Override
-            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-
-            }
-        });
     }
 
     private void showTags(HashMap<String,Boolean> tagsMap) {

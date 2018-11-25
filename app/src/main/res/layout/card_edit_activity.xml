@@ -107,24 +107,25 @@
                 android:textStyle="italic"
                 android:visibility="gone" />
 
-            <FrameLayout
-                android:id="@+id/youtubePlayerHolder"
+            <TextView
+                android:id="@+id/videoCodeView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone">
+                android:text="TextView"
+                android:visibility="gone" />
 
-                <fragment
-                    android:id="@+id/youtube_fragment"
-                    android:name="com.google.android.youtube.player.YouTubePlayerFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </FrameLayout>
-
-            <Button
-                android:id="@+id/removeVideoButton"
+            <ProgressBar
+                android:id="@+id/videoPlayerThrobber"
+                style="?android:attr/progressBarStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/CARD_EDIT_remove_this_video"
+                android:indeterminate="true"
+                android:visibility="gone" />
+
+            <com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView
+                android:id="@+id/youTubePlayerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:visibility="gone" />
 
             <Button
@@ -134,11 +135,11 @@
                 android:text="@string/CARD_EDIT_add_video"
                 android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/videoCodeView"
+            <Button
+                android:id="@+id/removeVideoButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:text="@string/CARD_EDIT_remove_this_video"
                 android:visibility="gone" />
 
             <android.support.constraint.ConstraintLayout
