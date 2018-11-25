@@ -98,6 +98,7 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
+        youTubePlayerView.release();
     }
 
     @Override
