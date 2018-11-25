@@ -13,6 +13,7 @@ import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.utils.MVPUtils;
 
 
+
 public class CardEdit2_Presenter implements iCardEdit2.Presenter {
 
     private iCardsSingleton cardsService = CardsSingleton.getInstance();
