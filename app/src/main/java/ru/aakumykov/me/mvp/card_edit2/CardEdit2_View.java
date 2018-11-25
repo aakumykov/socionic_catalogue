@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -64,7 +65,8 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
-    iCardEdit2.Presenter presenter;
+    private iCardEdit2.Presenter presenter;
+    private boolean firstRun = true;
 
 
     // Системные методы
@@ -79,19 +81,17 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
         setPageTitle(R.string.CARD_EDIT_page_title);
 
         presenter = new CardEdit2_Presenter();
-
-        try {
-            presenter.processInputIntent(getIntent());
-        } catch (Exception e) {
-            showErrorMsg(R.string.CARD_EDIT_error_editing_card);
-            e.printStackTrace();
-        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
+
+        if (firstRun) {
+            presenter.processInputIntent(getIntent());
+            firstRun = false;
+        }
     }
 
     @Override
@@ -103,22 +103,21 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-
-    // Обязательные методы
-    @Override
-    public void onUserLogin() {
-
-    }
-
-    @Override
-    public void onUserLogout() {
-
+        presenter.linkView(this);
     }
 
 
     // Интерфейсные методы
+    @Override
+    public void showModeSwitcher() {
+        MyUtils.show(modeSwitcher);
+    }
+
+    @Override
+    public void hideModeSwitcher() {
+        MyUtils.hide(modeSwitcher);
+    }
+
     @Override
     public void switchTextMode(@Nullable Card card) {
         MyUtils.hide(modeSwitcher);
@@ -157,6 +156,16 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
+
+    // Обязательные методы
+    @Override
+    public void onUserLogin() {
+
+    }
+    @Override
+    public void onUserLogout() {
+
+    }
 
 
     // Нажатия
@@ -233,11 +242,20 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
         MyUtils.show(videoPlayerThrobber);
 
         youTubePlayerView.initialize(new YouTubePlayerInitListener() {
+
             @Override
-            public void onInitSuccess(@NonNull YouTubePlayer youTubePlayer) {
-                youTubePlayer.cueVideo(card.getVideoCode(), 0f);
-                MyUtils.hide(videoPlayerThrobber);
-                MyUtils.show(youTubePlayerView);
+            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
+                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
+
+                    @Override
+                    public void onReady() {
+                        String videoCode = card.getVideoCode();
+                        initializedYouTubePlayer.cueVideo(videoCode, 0f);
+                        MyUtils.hide(videoPlayerThrobber);
+                        MyUtils.show(youTubePlayerView);
+                    }
+
+                });
             }
         }, true);
     }

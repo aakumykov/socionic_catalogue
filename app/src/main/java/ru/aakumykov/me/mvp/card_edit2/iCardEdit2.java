@@ -11,6 +11,8 @@ import ru.aakumykov.me.mvp.models.Card;
 public interface iCardEdit2 {
 
     interface View extends iBaseView {
+        void showModeSwitcher();
+        void hideModeSwitcher();
         void switchTextMode(@Nullable Card card);
         void switchImageMode(@Nullable Card card);
         void switchVideoMode(@Nullable Card card);
@@ -22,7 +24,7 @@ public interface iCardEdit2 {
         void unlinkView();
 
         // Выбрасываю исключение ради получения доп. инфы об ошибке
-        void processInputIntent(@Nullable Intent intent) throws Exception;
+        void processInputIntent(@Nullable Intent intent);
         void saveCard();
     }
 }
