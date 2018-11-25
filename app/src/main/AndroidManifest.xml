@@ -11,67 +11,90 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".login.Login_View" android:noHistory="true" />
-
-        <activity android:name=".register.Register_View" android:noHistory="true" />
-
+        <activity
+            android:name=".login.Login_View"
+            android:noHistory="true" />
+        <activity
+            android:name=".register.Register_View"
+            android:noHistory="true" />
         <activity android:name=".cards_list.CardsList_View">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-
         <activity
             android:name=".card_show.CardShow_View"
             android:parentActivityName=".cards_list.CardsList_View" />
-
         <activity android:name=".users.list.UsersList_View" />
-
         <activity
             android:name=".users.show.UserShow_View"
             android:parentActivityName=".users.list.UsersList_View" />
-
-        <activity android:name=".users.edit.UserEdit_View" android:noHistory="true" />
-
+        <activity
+            android:name=".users.edit.UserEdit_View"
+            android:noHistory="true" />
         <activity android:name=".tags.list.TagsList_View" />
-
-        <activity android:name=".tags.view.TagShow_View"
+        <activity
+            android:name=".tags.view.TagShow_View"
             android:parentActivityName=".tags.list.TagsList_View" />
-
         <activity android:name=".card.edit.CardEdit_View">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="http"  android:host="www.youtube.com" android:pathPrefix="/watch" />
-                <data android:scheme="https" android:host="www.youtube.com" android:pathPrefix="/watch" />
-                <data android:scheme="http"  android:host="youtube.com" android:pathPrefix="/watch" />
-                <data android:scheme="https" android:host="youtube.com" android:pathPrefix="/watch" />
+
+                <data
+                    android:host="www.youtube.com"
+                    android:pathPrefix="/watch"
+                    android:scheme="http" />
+                <data
+                    android:host="www.youtube.com"
+                    android:pathPrefix="/watch"
+                    android:scheme="https" />
+                <data
+                    android:host="youtube.com"
+                    android:pathPrefix="/watch"
+                    android:scheme="http" />
+                <data
+                    android:host="youtube.com"
+                    android:pathPrefix="/watch"
+                    android:scheme="https" />
             </intent-filter>
 
             <!-- separate intent-filter to avoid host/pathPrefix "bleeding" -->
             <!-- https://stackoverflow.com/questions/31002909/android-deeplink-pathprefix-attribute-is-being-ignored -->
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="http"  android:host="youtu.be" />
-                <data android:scheme="https" android:host="youtu.be" />
+
+                <data
+                    android:host="youtu.be"
+                    android:scheme="http" />
+                <data
+                    android:host="youtu.be"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
 
+        <activity android:name=".YoutubeVideo">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
     </application>
 
