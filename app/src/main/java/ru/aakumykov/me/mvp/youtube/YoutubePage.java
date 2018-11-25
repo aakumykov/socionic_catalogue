@@ -14,6 +14,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.utils.YouTubePlayerTracker;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +32,9 @@ public class YoutubePage extends BaseView {
     @BindView(R.id.removeButton) Button removeButton;
 
     private YouTubePlayer youTubePlayer;
+    private YouTubePlayerTracker youTubePlayerTracker;
+    private float videoPosition = 0;
+    private String oldVideoCode = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,8 @@ public class YoutubePage extends BaseView {
         Toast.makeText(this, "onCreate()", Toast.LENGTH_SHORT).show();
 
         activateUpButton();
+
+        youTubePlayerTracker = new YouTubePlayerTracker();
     }
 
     @Override
@@ -83,7 +89,19 @@ public class YoutubePage extends BaseView {
                     @Override
                     public void onReady() {
                         youTubePlayer = initializedYouTubePlayer;
-                        youTubePlayer.loadVideo(videoCode, 0f);
+
+                        youTubePlayer.addListener(youTubePlayerTracker);
+
+                        // TODO: попробовать NULL и '' код видео
+                        youTubePlayer.cueVideo(videoCode, 0f);
+
+                        if (videoCode.equals(oldVideoCode)) {
+                            youTubePlayer.seekTo(videoPosition);
+                        } else {
+                            oldVideoCode = videoCode;
+                        }
+
+                        youTubePlayer.play();
                     }
                 });
             }
@@ -92,6 +110,7 @@ public class YoutubePage extends BaseView {
 
     @OnClick(R.id.removeButton)
     void removeVideo() {
+        videoPosition = youTubePlayerTracker.getCurrentSecond();
         youTubePlayer.pause();
         youTubePlayerView.setVisibility(VideoView.GONE);
 
