@@ -178,4 +178,6 @@
     <string name="CARD_EDIT_remove_this_video">Remove this video</string>
     <string name="CARD_SHOW_rating_update_error">Error rating update</string>
     <string name="CARD_EDIT_add_video">Add video</string>
+    <string name="CARD_EDIT_page_title">Card edition</string>
+    <string name="CARD_tags">Tags</string>
 </resources>
