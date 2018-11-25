@@ -17,15 +17,9 @@
         <activity
             android:name=".register.Register_View"
             android:noHistory="true" />
-
         <activity android:name=".cards_list.CardsList_View">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-
         <activity
             android:name=".card_show.CardShow_View"
             android:parentActivityName=".cards_list.CardsList_View" />
@@ -91,6 +85,14 @@
                 <data
                     android:host="youtu.be"
                     android:scheme="https" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".YoutubeVideo">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
