@@ -18,7 +18,11 @@
             android:name=".register.Register_View"
             android:noHistory="true" />
         <activity android:name=".cards_list.CardsList_View">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".card_show.CardShow_View"
@@ -88,12 +92,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".YoutubeVideo">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".youtube.YoutubePage">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
     </application>

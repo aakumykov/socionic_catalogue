@@ -24,6 +24,7 @@ import ru.aakumykov.me.mvp.services.AuthStateListener;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
+import ru.aakumykov.me.mvp.youtube.YoutubePage;
 
 public abstract class BaseView extends AppCompatActivity implements
     iBaseView
@@ -84,7 +85,7 @@ public abstract class BaseView extends AppCompatActivity implements
 
         MenuInflater menuInflater = getMenuInflater();
 
-//        menu.clear();
+        menuInflater.inflate(R.menu.youtube, menu);
 
         if (isUserLoggedIn()) {
             menuInflater.inflate(R.menu.user_in, menu);
@@ -120,6 +121,10 @@ public abstract class BaseView extends AppCompatActivity implements
 
             case R.id.actionCreate:
                 createCard();
+                break;
+
+            case R.id.actionYoutube:
+                goYoutubePage();
                 break;
 
             default:
@@ -361,5 +366,10 @@ public abstract class BaseView extends AppCompatActivity implements
                 Log.d(TAG, "data: "+data);
                 break;
         }
+    }
+
+    private void goYoutubePage() {
+        Intent intent = new Intent(this, YoutubePage.class);
+        startActivity(intent);
     }
 }

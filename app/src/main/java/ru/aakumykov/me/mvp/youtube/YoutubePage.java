@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp;
+package ru.aakumykov.me.mvp.youtube;
 
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,18 +15,14 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.utils.MVPUtils;
-import ru.aakumykov.me.mvp.utils.MyUtils;
 
-public class YoutubeVideo extends AppCompatActivity {
+public class YoutubePage extends BaseView {
 
     @BindView(R.id.videoPlayerThrobber) ProgressBar videoPlayerThrobber;
     @BindView(R.id.youtube_player_view) YouTubePlayerView youTubePlayerView;
@@ -39,20 +35,12 @@ public class YoutubeVideo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_youtube_video);
+        setContentView(R.layout.youtube_video);
         ButterKnife.bind(this);
 
-        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
-            @Override
-            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
-                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
-                    @Override
-                    public void onReady() {
-                        youTubePlayer = initializedYouTubePlayer;
-                    }
-                });
-            }
-        }, true);
+        Toast.makeText(this, "onCreate()", Toast.LENGTH_SHORT).show();
+
+        activateUpButton();
     }
 
     @Override
@@ -62,6 +50,17 @@ public class YoutubeVideo extends AppCompatActivity {
         Toast.makeText(this, "onDestroy()", Toast.LENGTH_SHORT).show();
     }
 
+
+    @Override
+    public void onUserLogin() {
+
+    }
+    @Override
+    public void onUserLogout() {
+
+    }
+
+
     @OnClick(R.id.videoCodeInput)
     void onClickEditVield() {
         videoCodeInput.selectAll();
@@ -69,14 +68,26 @@ public class YoutubeVideo extends AppCompatActivity {
 
     @OnClick(R.id.playButton)
     void playVideo() {
-        String videoCode = MVPUtils.extractYoutubeVideoCode(videoCodeInput.getText().toString());
-
-        youTubePlayer.loadVideo(videoCode, 0f);
-        youTubePlayerView.setVisibility(View.VISIBLE);
+        final String videoCode = MVPUtils.extractYoutubeVideoCode(videoCodeInput.getText().toString());
 
         videoCodeInput.setVisibility(View.GONE);
         playButton.setVisibility(View.GONE);
+
+        youTubePlayerView.setVisibility(View.VISIBLE);
         removeButton.setVisibility(View.VISIBLE);
+
+        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
+            @Override
+            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
+                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady() {
+                        youTubePlayer = initializedYouTubePlayer;
+                        youTubePlayer.loadVideo(videoCode, 0f);
+                    }
+                });
+            }
+        }, true);
     }
 
     @OnClick(R.id.removeButton)
