@@ -19,9 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerFragment;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -66,7 +64,6 @@ public class CardEdit_View extends BaseView implements
 
     @BindView(R.id.quoteView) EditText quoteView;
 
-    @BindView(R.id.youtubePlayerHolder) FrameLayout youtubePlayerHolder;
     @BindView(R.id.addVideoButton) Button addVideoButton;
     @BindView(R.id.removeVideoButton) Button removeVideoButton;
     @BindView(R.id.videoCodeView) TextView videoCodeView;
@@ -90,7 +87,6 @@ public class CardEdit_View extends BaseView implements
     private final static String TAG = "CardEdit_View";
     private iCardEdit.Presenter presenter;
     private boolean firstRun = true;
-    private YouTubePlayerFragment youTubePlayerFragment;
 
 
     // Системные методы
@@ -105,9 +101,6 @@ public class CardEdit_View extends BaseView implements
         CardEdit_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
 
         tagsContainer.setOnTagClickListener(this);
-
-        youTubePlayerFragment =
-                (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
 
         presenter = new CardEdit_Presenter();
     }
@@ -427,7 +420,6 @@ public class CardEdit_View extends BaseView implements
 
     @OnClick(R.id.removeVideoButton)
     void removeVideo() {
-        MyUtils.hide(youtubePlayerHolder);
         MyUtils.hide(removeVideoButton);
         MyUtils.show(videoCodeView);
     }
@@ -565,22 +557,6 @@ public class CardEdit_View extends BaseView implements
 
     private void showYoutubePlayer(final String videoCode) {
 
-        youTubePlayerFragment.initialize(Config.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
-
-            @Override
-            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
-                MyUtils.show(youtubePlayerHolder);
-
-                if (!wasRestored) {
-                    youTubePlayer.cueVideo(videoCode);
-                }
-            }
-
-            @Override
-            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-
-            }
-        });
     }
 
     private void showTags(HashMap<String,Boolean> tagsMap) {

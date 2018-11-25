@@ -107,19 +107,6 @@
                 android:textStyle="italic"
                 android:visibility="gone" />
 
-            <FrameLayout
-                android:id="@+id/youtubePlayerHolder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
-
-                <fragment
-                    android:id="@+id/youtube_fragment"
-                    android:name="com.google.android.youtube.player.YouTubePlayerFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </FrameLayout>
-
             <Button
                 android:id="@+id/removeVideoButton"
                 android:layout_width="match_parent"
