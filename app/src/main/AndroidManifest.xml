@@ -18,11 +18,11 @@
             android:name=".register.Register_View"
             android:noHistory="true" />
         <activity android:name=".cards_list.CardsList_View">
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
         <activity
             android:name=".card_show.CardShow_View"
@@ -95,11 +95,11 @@
         <activity android:name=".youtube.YoutubePage"/>
 
         <activity android:name=".card_edit2.CardEdit2_View" >
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
     </application>

@@ -75,9 +75,17 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
         ButterKnife.bind(this);
 
         activateUpButton();
+
         setPageTitle(R.string.CARD_EDIT_page_title);
 
         presenter = new CardEdit2_Presenter();
+
+        try {
+            presenter.processInputIntent(getIntent());
+        } catch (Exception e) {
+            showErrorMsg(R.string.CARD_EDIT_error_editing_card);
+            e.printStackTrace();
+        }
     }
 
     @Override

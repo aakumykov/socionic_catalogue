@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.card_edit2;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -20,6 +21,8 @@ public interface iCardEdit2 {
         void linkView(iCardEdit2.View view);
         void unlinkView();
 
+        // Выбрасываю исключение ради получения доп. инфы об ошибке
+        void processInputIntent(@Nullable Intent intent) throws Exception;
         void saveCard();
     }
 }
