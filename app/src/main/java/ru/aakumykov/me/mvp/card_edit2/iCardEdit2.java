@@ -13,6 +13,7 @@ public interface iCardEdit2 {
         void switchTextMode(@Nullable Card card);
         void switchImageMode(@Nullable Card card);
         void switchVideoMode(@Nullable Card card);
+        void switchAudioMode(@Nullable Card card);
     }
 
     interface Presenter {

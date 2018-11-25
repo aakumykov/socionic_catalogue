@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.card_edit2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.text.Layout;
@@ -11,7 +12,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -44,6 +49,10 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
 
     // Разметка для видео
     @BindView(R.id.videoHolder) LinearLayout videoHolder;
+    @BindView(R.id.videoPlayerThrobber) ProgressBar videoPlayerThrobber;
+    @BindView(R.id.youTubePlayerView) YouTubePlayerView youTubePlayerView;
+    @BindView(R.id.addVideoButton) Button addVideoButton;
+    @BindView(R.id.removeVideoButton) Button removeVideoButton;
 
     // Разметка показа меток
     @BindView(R.id.tagsViewHolder) LinearLayout tagsViewHolder;
@@ -127,8 +136,19 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
         MyUtils.hide(modeSwitcher);
         MyUtils.show(videoHolder);
 
-
+        if (null == card) {
+            MyUtils.show(addVideoButton);
+        } else {
+            fillVideoCardForm(card);
+        }
     }
+
+    @Override
+    public void switchAudioMode(@Nullable Card card) {
+        String msg = getResources().getString(R.string.not_yet_implamented);
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
 
 
     // Нажатия
@@ -145,6 +165,7 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
                 switchVideoMode(null);
                 break;
             case R.id.audioModeSwitch:
+                switchAudioMode(null);
                 break;
             default:
                 break;
@@ -169,11 +190,14 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
 
 
     // Внутренние методы
-    private void fillTextCardForm(Card card) {
+    private void fillTextCardForm(final Card card) {
         quoteInput.setText(card.getQuote());
+        fillCommonCardParts(card);
     }
 
-    private void fillImageCardForm(Card card) {
+    private void fillImageCardForm(final Card card) {
+        fillCommonCardParts(card);
+
         MyUtils.hide(imagePlaceholder);
         MyUtils.show(imageProgressBar);
 
@@ -195,7 +219,22 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
                 });
     }
 
-    private void fullCommonCardParts(Card card) {
+    private void fillVideoCardForm(final Card card) {
+        fillCommonCardParts(card);
+
+        MyUtils.show(videoPlayerThrobber);
+
+        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
+            @Override
+            public void onInitSuccess(@NonNull YouTubePlayer youTubePlayer) {
+                youTubePlayer.cueVideo(card.getVideoCode(), 0f);
+                MyUtils.hide(videoPlayerThrobber);
+                MyUtils.show(youTubePlayerView);
+            }
+        }, true);
+    }
+
+    private void fillCommonCardParts(final Card card) {
         titleInput.setText(card.getTitle());
         descriptionInput.setText(card.getDescription());
         List<String> tags = new ArrayList<>(card.getTags().keySet());
