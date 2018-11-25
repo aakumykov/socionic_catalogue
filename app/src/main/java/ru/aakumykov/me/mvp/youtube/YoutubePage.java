@@ -25,10 +25,7 @@ import ru.aakumykov.me.mvp.utils.MVPUtils;
 public class YoutubePage extends BaseView {
 
     @BindView(R.id.videoPlayerThrobber) ProgressBar videoPlayerThrobber;
-    @BindView(R.id.youtube_player_view) YouTubePlayerView youTubePlayerView;
-    @BindView(R.id.videoCodeInput) EditText videoCodeInput;
-    @BindView(R.id.playButton) Button playButton;
-    @BindView(R.id.removeButton) Button removeButton;
+    @BindView(R.id.youTubePlayerView) YouTubePlayerView youTubePlayerView;
 
     private YouTubePlayer youTubePlayer;
 
@@ -41,6 +38,8 @@ public class YoutubePage extends BaseView {
         Toast.makeText(this, "onCreate()", Toast.LENGTH_SHORT).show();
 
         activateUpButton();
+
+        playVideo();
     }
 
     @Override
@@ -60,22 +59,7 @@ public class YoutubePage extends BaseView {
 
     }
 
-
-    @OnClick(R.id.videoCodeInput)
-    void onClickEditVield() {
-        videoCodeInput.selectAll();
-    }
-
-    @OnClick(R.id.playButton)
     void playVideo() {
-        final String videoCode = MVPUtils.extractYoutubeVideoCode(videoCodeInput.getText().toString());
-
-        videoCodeInput.setVisibility(View.GONE);
-        playButton.setVisibility(View.GONE);
-
-        youTubePlayerView.setVisibility(View.VISIBLE);
-        removeButton.setVisibility(View.VISIBLE);
-
         youTubePlayerView.initialize(new YouTubePlayerInitListener() {
             @Override
             public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
@@ -83,22 +67,13 @@ public class YoutubePage extends BaseView {
                     @Override
                     public void onReady() {
                         youTubePlayer = initializedYouTubePlayer;
-                        youTubePlayer.loadVideo(videoCode, 0f);
+                        youTubePlayer.loadVideo("BgfcToAjfdc", 0f);
                     }
                 });
             }
         }, true);
     }
 
-    @OnClick(R.id.removeButton)
-    void removeVideo() {
-        youTubePlayer.pause();
-        youTubePlayerView.setVisibility(VideoView.GONE);
-
-        removeButton.setVisibility(View.GONE);
-        videoCodeInput.setVisibility(View.VISIBLE);
-        playButton.setVisibility(View.VISIBLE);
-    }
 
 
 }
