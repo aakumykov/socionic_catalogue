@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
@@ -20,6 +21,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -64,6 +67,7 @@ public class CardEdit_View extends BaseView implements
 
     @BindView(R.id.quoteView) EditText quoteView;
 
+    @BindView(R.id.youTubePlayerView) YouTubePlayerView youTubePlayerView;
     @BindView(R.id.addVideoButton) Button addVideoButton;
     @BindView(R.id.removeVideoButton) Button removeVideoButton;
     @BindView(R.id.videoCodeView) TextView videoCodeView;
@@ -103,6 +107,13 @@ public class CardEdit_View extends BaseView implements
         tagsContainer.setOnTagClickListener(this);
 
         presenter = new CardEdit_Presenter();
+
+        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
+            @Override
+            public void onInitSuccess(@NonNull YouTubePlayer youTubePlayer) {
+                youTubePlayer.cueVideo("BgfcToAjfdc", 0f);
+            }
+        },true);
     }
 
     @Override

@@ -107,6 +107,11 @@
                 android:textStyle="italic"
                 android:visibility="gone" />
 
+            <com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView
+                android:id="@+id/youTubePlayerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <Button
                 android:id="@+id/removeVideoButton"
                 android:layout_width="match_parent"
