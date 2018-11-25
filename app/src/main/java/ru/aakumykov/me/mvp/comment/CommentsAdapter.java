@@ -3,15 +3,12 @@ package ru.aakumykov.me.mvp.comment;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -48,21 +45,21 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 
         final Comment comment = list.get(position);
 
-        final View view = inflater.inflate(this.layout, parent, false);
+        final View commentItemView = inflater.inflate(this.layout, parent, false);
 
-        final TextView commentTextView = view.findViewById(R.id.commentText);
+        final TextView commentTextView = commentItemView.findViewById(R.id.commentText);
         commentTextView.setText(comment.getText());
 
         // Если это ответ...
         if (null != comment.getParentId()) {
-            ImageView commentReplyMark = view.findViewById(R.id.commentReplyMark);
-            TextView commentParentQuote = view.findViewById(R.id.parentComment);
+            ImageView commentReplyMark = commentItemView.findViewById(R.id.commentReplyMark);
+            TextView commentParentQuote = commentItemView.findViewById(R.id.parentComment);
             MyUtils.show(commentReplyMark);
             MyUtils.show(commentParentQuote);
         }
 
 
-        ImageView commentAvatar = view.findViewById(R.id.commentAvatar);
+        ImageView commentAvatar = commentItemView.findViewById(R.id.commentAvatar);
         commentAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +67,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             }
         });
 
-        TextView commentAuthorView = view.findViewById(R.id.commentAuthor);
+        TextView commentAuthorView = commentItemView.findViewById(R.id.commentAuthor);
         commentAuthorView.setText(comment.getUserName());
         commentAuthorView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +76,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             }
         });
 
-        TextView parentCommentView = view.findViewById(R.id.parentComment);
+        TextView parentCommentView = commentItemView.findViewById(R.id.parentComment);
         parentCommentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,10 +89,10 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             }
         });
 
-        TextView commentRatingView = view.findViewById(R.id.commentRating);
+        TextView commentRatingView = commentItemView.findViewById(R.id.commentRatingView);
         commentRatingView.setText( ""+comment.getRating() );
 
-        ImageView commentMenu = view.findViewById(R.id.commentMenu);
+        ImageView commentMenu = commentItemView.findViewById(R.id.commentMenu);
         commentMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,7 +100,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             }
         });
 
-        TextView commentReply = view.findViewById(R.id.commentReply);
+        TextView commentReply = commentItemView.findViewById(R.id.commentReply);
         commentReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,9 +108,30 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             }
         });
 
-        return view;
+
+        ImageView commentRateUpButton = commentItemView.findViewById(R.id.commentRateUpButton);
+        commentRateUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commentClickListener.onCommentRateUpClicked(comment);
+            }
+        });
+
+        ImageView commentRateDownButton = commentItemView.findViewById(R.id.commentRateDownButton);
+        commentRateDownButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commentClickListener.onCommentRateDownClicked(comment);
+            }
+        });
+
+        return commentItemView;
     }
 
+    public void commentRatingChanged(Comment comment, Comment oldComment) {
+        int index = list.indexOf(oldComment);
+        list.set(index, comment);
+    }
 
     // TODO: после рагистрации текущий пользователь не имеет имени (в комментах не появляется иени).
     private void seeCommentAuthorProfile(Comment comment) {

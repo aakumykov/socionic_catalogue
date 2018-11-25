@@ -12,7 +12,8 @@ public interface iCommentsSingleton {
     void updateComment(Comment comment, CreateCallbacks callbacks);
     void deleteComment(Comment comment, DeleteCallbacks callbacks);
     void deleteCommentsForCard(String cardId) throws Exception;
-
+    void rateUp(String commentId, String userId, RatingCallbacks callbacks);
+    void rateDown(String commentId, String userId, RatingCallbacks callbacks);
 
     interface ListCallbacks {
         void onCommentsLoadSuccess(List<Comment> list);
@@ -27,5 +28,11 @@ public interface iCommentsSingleton {
     interface DeleteCallbacks {
         void onDeleteSuccess(Comment commentd);
         void onDeleteError(String msg);
+    }
+
+    interface RatingCallbacks {
+        void onRetedUp(Comment comment);
+        void onRatedDown(Comment comment);
+        void onRateFail(String errorMsg);
     }
 }

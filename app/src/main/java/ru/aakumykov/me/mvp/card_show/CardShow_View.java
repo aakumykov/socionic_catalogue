@@ -44,6 +44,7 @@ import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.cards_list.CardsList_View;
 import ru.aakumykov.me.mvp.comment.CommentsAdapter;
 import ru.aakumykov.me.mvp.comment.iComments;
+import ru.aakumykov.me.mvp.interfaces.iCommentsSingleton;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.models.Comment;
@@ -267,6 +268,53 @@ public class CardShow_View extends BaseView implements
             parentComment = comment;
             showCommentForm();
         }
+    }
+
+    // TODO: КРИВО!!! Сюда влезла служба!
+    @Override
+    public void onCommentRateUpClicked(final Comment comment) {
+        final Comment oldComment = comment;
+
+        presenter.rateCommentUp(comment, new iCommentsSingleton.RatingCallbacks() {
+            @Override
+            public void onRetedUp(Comment comment) {
+                commentsAdapter.commentRatingChanged(comment, oldComment);
+                commentsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onRatedDown(Comment comment) {
+                // не используется
+            }
+
+            @Override
+            public void onRateFail(String errorMsg) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onCommentRateDownClicked(final Comment comment) {
+        final Comment oldComment = comment;
+
+        presenter.rateCommentDown(comment, new iCommentsSingleton.RatingCallbacks() {
+            @Override
+            public void onRetedUp(Comment comment) {
+                // не используется
+            }
+
+            @Override
+            public void onRatedDown(Comment comment) {
+                commentsAdapter.commentRatingChanged(comment, oldComment);
+                commentsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onRateFail(String errorMsg) {
+
+            }
+        });
     }
 
     @Override

@@ -98,25 +98,33 @@
             android:layout_weight="26" />
 
         <ImageView
-            android:id="@+id/rateUp"
+            android:id="@+id/commentRateUpButton"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_thumb_up_neutral" />
 
-        <TextView
-            android:id="@+id/commentRating"
-            android:layout_width="wrap_content"
+        <ProgressBar
+            android:id="@+id/commentRatingThrobber"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="20dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp" />
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:visibility="gone"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp" />
+
+        <TextView
+            android:id="@+id/commentRatingView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp" />
 
         <ImageView
-            android:id="@+id/rateDown"
+            android:id="@+id/commentRateDownButton"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_thumb_down_neutral" />
 
     </LinearLayout>
