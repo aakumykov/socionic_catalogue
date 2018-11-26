@@ -661,8 +661,6 @@ public class CardShow_View extends BaseView implements
     private void displayVideoCard(final Card card) {
         displayCommonCardParts(card);
 
-//        MyUtils.show(videoPlayerThrobber);
-
         youTubePlayerView = new YouTubePlayerView(this);
         int playerWidth = MyUtils.getScreenWidth(this);
         int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9/16);
@@ -679,8 +677,6 @@ public class CardShow_View extends BaseView implements
                     public void onReady() {
                         youTubePlayer = initializedYouTubePlayer;
                         youTubePlayer.cueVideo(card.getVideoCode(), 0.0f);
-//                        youTubePlayer.cueVideo("BgfcToAjfdc", 0.0f);
-//                        MyUtils.hide(videoPlayerThrobber);
                         MyUtils.show(youTubePlayerView);
                     }
                 });

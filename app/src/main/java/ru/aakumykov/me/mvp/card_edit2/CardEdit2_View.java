@@ -56,8 +56,8 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
 
     // Разметка для видео
     @BindView(R.id.videoHolder) LinearLayout videoHolder;
-    @BindView(R.id.videoPlayerThrobber) ProgressBar videoPlayerThrobber;
-    @BindView(R.id.videoPlayerHolder) FrameLayout videoPlayerHolder;
+//    @BindView(R.id.videoPlayerThrobber) ProgressBar videoPlayerThrobber;
+//    @BindView(R.id.videoPlayerHolder) FrameLayout videoPlayerHolder;
     @BindView(R.id.addVideoButton) Button addVideoButton;
     @BindView(R.id.removeVideoButton) Button removeVideoButton;
 
@@ -77,9 +77,10 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
 
     private boolean firstRun = true;
     private iCardEdit2.Presenter presenter;
+
+    private FrameLayout videoPlayerHolder;
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayer;
-
 
     // Системные методы
     @Override
@@ -91,6 +92,9 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
         activateUpButton();
 
         setPageTitle(R.string.CARD_EDIT_page_title);
+
+        videoPlayerHolder = findViewById(R.id.videoPlayerHolder);
+        youTubePlayerView = findViewById(R.id.youTubePlayerView);
 
         presenter = new CardEdit2_Presenter();
     }
@@ -215,15 +219,9 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
 
     @OnClick(R.id.removeVideoButton)
     void removeVideo() {
-
-//        View ytpv = findViewById(R.id.youtube_video_player_id);
-//        if (null != ytpv) {
+//        youTubePlayerView.release();
         videoPlayerHolder.removeAllViews();
-//        }
-
-        MyUtils.hide(videoPlayerThrobber);
         MyUtils.hide(removeVideoButton);
-
         MyUtils.show(addVideoButton);
     }
 
@@ -290,7 +288,31 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
 
     private void fillVideoCardForm(final Card card) {
         fillCommonCardParts(card);
-        displayVideo(videoCodeView.getText().toString());
+//        displayVideo(videoCodeView.getText().toString());
+
+        youTubePlayerView = new YouTubePlayerView(this);
+        int playerWidth = MyUtils.getScreenWidth(this);
+        int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9/16);
+        youTubePlayerView.setMinimumWidth(playerWidth);
+        youTubePlayerView.setMinimumHeight(playerHeight);
+
+        videoPlayerHolder.addView(youTubePlayerView);
+
+        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
+            @Override
+            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
+                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady() {
+                        youTubePlayer = initializedYouTubePlayer;
+//                        initializedYouTubePlayer.loadVideo("jkPGW7ilY-s", 0f);
+//                        youTubePlayer.loadVideo("jkPGW7ilY-s", 0.0f);
+                        youTubePlayer.loadVideo(card.getVideoCode(), 0.0f);
+                        MyUtils.show(youTubePlayerView);
+                    }
+                });
+            }
+        }, true);
     }
 
     private void fillCommonCardParts(final Card card) {
