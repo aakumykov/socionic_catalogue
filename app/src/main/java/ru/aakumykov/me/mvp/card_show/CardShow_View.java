@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -96,6 +97,7 @@ public class CardShow_View extends BaseView implements
     private View currentCommentView;
 
     private ProgressBar videoPlayerThrobber;
+    private FrameLayout videoPlayerHolder;
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayer;
 
@@ -149,6 +151,7 @@ public class CardShow_View extends BaseView implements
         tagsContainer.setOnTagClickListener(this);
 
         videoPlayerThrobber = findViewById(R.id.videoPlayerThrobber);
+        videoPlayerHolder = findViewById(R.id.videoPlayerHolder);
         youTubePlayerView = findViewById(R.id.youTubePlayerView);
 
         presenter = new CardShow_Presenter();
@@ -170,6 +173,12 @@ public class CardShow_View extends BaseView implements
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
+        youTubePlayerView.release();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         youTubePlayerView.release();
     }
 
@@ -652,7 +661,15 @@ public class CardShow_View extends BaseView implements
     private void displayVideoCard(final Card card) {
         displayCommonCardParts(card);
 
-        MyUtils.show(videoPlayerThrobber);
+//        MyUtils.show(videoPlayerThrobber);
+
+        youTubePlayerView = new YouTubePlayerView(this);
+        int playerWidth = MyUtils.getScreenWidth(this);
+        int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9/16);
+        youTubePlayerView.setMinimumWidth(playerWidth);
+        youTubePlayerView.setMinimumHeight(playerHeight);
+
+        videoPlayerHolder.addView(youTubePlayerView);
 
         youTubePlayerView.initialize(new YouTubePlayerInitListener() {
             @Override
@@ -663,7 +680,7 @@ public class CardShow_View extends BaseView implements
                         youTubePlayer = initializedYouTubePlayer;
                         youTubePlayer.cueVideo(card.getVideoCode(), 0.0f);
 //                        youTubePlayer.cueVideo("BgfcToAjfdc", 0.0f);
-                        MyUtils.hide(videoPlayerThrobber);
+//                        MyUtils.hide(videoPlayerThrobber);
                         MyUtils.show(youTubePlayerView);
                     }
                 });
