@@ -240,7 +240,7 @@ public class CardEdit_Presenter implements
     public String processNewTag(String tagName) {
 
 //        if (!TextUtils.isEmpty(tagName)) {
-            tagName = MyUtils.normalizeTag(tagName);
+            tagName = MVPUtils.normalizeTag(tagName);
             return tagName;
 //            if (!view.getCardTags().containsKey(tagName)) {
 //                return tagName;

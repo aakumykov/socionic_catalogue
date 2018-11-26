@@ -83,49 +83,7 @@ public final class MyUtils {
         return difference;
     }
 
-    public static String normalizeTag(String tagName) {
 
-        // обрезаю черезмерно длинные
-//        if (tagName.length() > Constants.TAG_MAX_LENGTH) {
-//            tagName = tagName.substring(
-//                    0,
-//                    Math.min(tagName.length(),Constants.TAG_MAX_LENGTH)
-//            );
-//        }
-        tagName = cutToLength(tagName, Constants.TAG_MAX_LENGTH);
-
-        // отпинываю слишком короткия
-        if (tagName.length() < Constants.TAG_MIN_LENGTH) {
-            return null;
-        }
-
-        // перевожу в нижний регистр
-        tagName = tagName.toLowerCase();
-
-        // удаляю концевые пробелы
-        tagName = tagName.replaceAll("^\\s+|\\s+$", "");
-
-        // удаляю концевые запрещённые символы (пока не работает с [], а может, и чем-то ещё)
-//        tagName = tagName.replace("^/+|/+$", "");
-//        tagName = tagName.replace("^\\.+|\\.+$", "");
-//        tagName = tagName.replace("^#+|#+$", "");
-//        tagName = tagName.replace("^$+|$+$", "");
-//        tagName = tagName.replace("^\\[*|\\[*$", "");
-//        tagName = tagName.replace("^\\]*|\\]*[m$", "");
-
-        // заменяю внутренние запрещённые символы
-        tagName = tagName.replace("/", "_");
-        tagName = tagName.replace(".", "_");
-        tagName = tagName.replace("#", "_");
-        tagName = tagName.replace("$", "_");
-        tagName = tagName.replace("[", "_");
-        tagName = tagName.replace("]", "_");
-
-        // преобразую число в строку
-        if (tagName.matches("^[0-9]+$")) tagName = "_"+tagName+"_";
-
-        return tagName;
-    }
 
 //    public static String getMimeTypeFromIntent(@Nullable Intent intent) throws IllegalArgumentException {
 //

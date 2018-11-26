@@ -3,12 +3,14 @@ package ru.aakumykov.me.mvp.card_edit2;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
+import ru.aakumykov.me.mvp.utils.MVPUtils;
 
 
 public class CardEdit2_Presenter implements iCardEdit2.Presenter {
@@ -46,6 +48,13 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
             default:
                 throw new IllegalArgumentException("Unknown action '"+action+"'");
         }
+    }
+
+    @Override
+    public void processTag(String tagName) {
+        tagName = MVPUtils.normalizeTag(tagName );
+        if (!TextUtils.isEmpty(tagName))
+            editView.addTag(tagName);
     }
 
     @Override

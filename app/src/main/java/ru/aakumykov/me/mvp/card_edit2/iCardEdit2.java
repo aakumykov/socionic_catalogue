@@ -15,6 +15,7 @@ public interface iCardEdit2 {
     interface View extends iBaseView {
         void showModeSwitcher();
         void hideModeSwitcher();
+
         void switchTextMode(@Nullable Card card);
         void switchImageMode(@Nullable Card card);
         void switchVideoMode(@Nullable Card card);
@@ -29,6 +30,8 @@ public interface iCardEdit2 {
         void disableForm();
         void enableForm();
 
+        void addTag(String tagName);
+
         void finishEdit(Card updatedCard);
     }
 
@@ -36,7 +39,8 @@ public interface iCardEdit2 {
         void linkView(iCardEdit2.View view);
         void unlinkView();
 
-        // Выбрасываю исключение ради получения доп. инфы об ошибке
+        void processTag(String tagName);
+
         void processInputIntent(@Nullable Intent intent);
         void saveCard();
     }

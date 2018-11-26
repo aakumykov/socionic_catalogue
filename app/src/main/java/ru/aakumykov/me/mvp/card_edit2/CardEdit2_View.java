@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -268,6 +269,12 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
     }
 
     @Override
+    public void addTag(String tagName) {
+        tagsContainer.addTag(tagName);
+        newTagInput.setText("");
+    }
+
+    @Override
     public void finishEdit(Card updatedCard) {
         Intent intent = new Intent();
         intent.putExtra(Constants.CARD, updatedCard);
@@ -350,6 +357,11 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
             showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    @OnClick(R.id.addTagButton)
+    void addTagClicked() {
+        presenter.processTag(newTagInput.getText().toString());
     }
 
 
