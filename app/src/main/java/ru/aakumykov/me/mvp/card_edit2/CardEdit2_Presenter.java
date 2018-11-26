@@ -4,21 +4,30 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
+
+import java.util.HashMap;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
+import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
+import ru.aakumykov.me.mvp.services.TagsSingleton;
 import ru.aakumykov.me.mvp.utils.MVPUtils;
-import ru.aakumykov.me.mvp.utils.MyUtils;
 
 
 public class CardEdit2_Presenter implements iCardEdit2.Presenter {
 
-    private iCardsSingleton cardsService = CardsSingleton.getInstance();
+    private final static String TAG = "CardEdit2_Presenter";
     private iCardEdit2.View editView;
+    private iCardsSingleton cardsService = CardsSingleton.getInstance();
+    private iTagsSingleton tagsService = TagsSingleton.getInstance();
+
     private Card currentCard;
+    private HashMap<String,Boolean> oldTags = null;
+
 
     // Интерфейсные методы
     @Override
@@ -73,16 +82,32 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
         if (currentCard.getType().equals(Constants.VIDEO_CARD))
             currentCard.setVideoCode(editView.getVideoCode());
 
-//        currentCard.setTags(editView.getCardTags());
-
         editView.showProgressBar();
         editView.disableForm();
 
         cardsService.updateCard(currentCard, new iCardsSingleton.SaveCardCallbacks() {
+
             @Override
             public void onCardSaveSuccess(Card card) {
                 editView.showToast(R.string.CARD_EDIT_card_saved);
-                editView.finishEdit(card);
+
+                final Card savedCard = card;
+
+                HashMap<String,Boolean> newTags = editView.getCardTags();
+                tagsService.updateCardTags(currentCard.getKey(), oldTags, newTags, new iTagsSingleton.UpdateCallbacks() {
+                    @Override
+                    public void onUpdateSuccess() {
+                        editView.showToast(R.string.CARD_EDIT_tags_are_saved);
+                        editView.finishEdit(savedCard);
+                    }
+
+                    @Override
+                    public void onUpdateFail(String errorMsg) {
+                        Log.e(TAG, errorMsg);
+                        editView.showErrorMsg(R.string.CARD_EDIT_error_saving_tags, errorMsg);
+                        editView.finishEdit(savedCard);
+                    }
+                });
             }
 
             @Override
@@ -120,6 +145,7 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
 
     private void loadCard(@NonNull Intent intent) {
 
+        editView.disableForm();
 
         String cardId = intent.getStringExtra(Constants.CARD_KEY);
         if (null == cardId) {
@@ -132,7 +158,6 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
 
                 @Override
                 public void onCardLoadSuccess(Card card) {
-                    currentCard = card;
                     try {
                         editView.hideProgressBar();
                         processLoadedCard(card);
@@ -157,6 +182,11 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
 
         if (null == card)
             throw new IllegalArgumentException("Card is null.");
+
+        currentCard = card;
+        oldTags = card.getTags();
+
+        editView.enableForm();
 
         switch (card.getType()) {
 

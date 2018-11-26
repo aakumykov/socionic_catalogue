@@ -232,13 +232,14 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
         return descriptionInput.getText().toString();
     }
 
-//    @Override
-//    public HashMap<String, Boolean> getCardTags() {
-//        HashMap<String,Boolean> tagsMap = new HashMap<>();
-//        for(String tagName : tagsContainer.getTags()) {
-//            tagsMap.put(tagName, true);
-//        }
-//    }
+    @Override
+    public HashMap<String, Boolean> getCardTags() {
+        HashMap<String,Boolean> tagsMap = new HashMap<>();
+        for(String tagName : tagsContainer.getTags()) {
+            tagsMap.put(tagName, true);
+        }
+        return tagsMap;
+    }
 
 
     @Override
@@ -364,6 +365,12 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
             showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    @OnClick(R.id.cancelButton)
+    void cancelEdit() {
+        setResult(RESULT_CANCELED);
+        closePage();
     }
 
     @OnClick(R.id.addTagButton)
