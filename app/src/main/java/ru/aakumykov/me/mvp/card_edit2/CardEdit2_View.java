@@ -288,7 +288,17 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
 
     private void fillVideoCardForm(final Card card) {
         fillCommonCardParts(card);
-//        displayVideo(videoCodeView.getText().toString());
+        displayVideo(card.getVideoCode());
+    }
+
+    private void fillCommonCardParts(final Card card) {
+        titleInput.setText(card.getTitle());
+        descriptionInput.setText(card.getDescription());
+        List<String> tags = new ArrayList<>(card.getTags().keySet());
+        tagsContainer.setTags(tags);
+    }
+
+    private void displayVideo(final String videoCode) {
 
         youTubePlayerView = new YouTubePlayerView(this);
         int playerWidth = MyUtils.getScreenWidth(this);
@@ -305,51 +315,9 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
                     @Override
                     public void onReady() {
                         youTubePlayer = initializedYouTubePlayer;
-//                        initializedYouTubePlayer.loadVideo("jkPGW7ilY-s", 0f);
-//                        youTubePlayer.loadVideo("jkPGW7ilY-s", 0.0f);
-                        youTubePlayer.loadVideo(card.getVideoCode(), 0.0f);
+                        youTubePlayer.loadVideo(videoCode, 0.0f);
                         MyUtils.show(youTubePlayerView);
                     }
-                });
-            }
-        }, true);
-    }
-
-    private void fillCommonCardParts(final Card card) {
-        titleInput.setText(card.getTitle());
-        descriptionInput.setText(card.getDescription());
-        List<String> tags = new ArrayList<>(card.getTags().keySet());
-        tagsContainer.setTags(tags);
-    }
-
-    private void displayVideo(final String videoCode) {
-
-//        MyUtils.show(videoPlayerThrobber);
-
-        youTubePlayerView = new YouTubePlayerView(this);
-        youTubePlayerView.setId(R.id.youtube_video_player_id);
-          int playerWidth = MyUtils.getScreenWidth(this);
-          int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9/16);
-        youTubePlayerView.setMinimumWidth(playerWidth);
-        youTubePlayerView.setMinimumHeight(playerHeight);
-
-        videoPlayerHolder.addView(youTubePlayerView);
-
-        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
-
-            @Override
-            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
-                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
-
-                    @Override
-                    public void onReady() {
-//                        MyUtils.hide(videoPlayerThrobber);
-                        MyUtils.show(removeVideoButton);
-
-                        youTubePlayer = initializedYouTubePlayer;
-                        youTubePlayer.cueVideo(videoCode, 0f);
-                    }
-
                 });
             }
         }, true);
