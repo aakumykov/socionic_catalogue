@@ -88,8 +88,8 @@ public class CardEdit2_View extends BaseView implements
     private iCardEdit2.Presenter presenter;
 
     private FrameLayout videoPlayerHolder;
-//    private YouTubePlayerView youTubePlayerView;
-//    private YouTubePlayer youTubePlayer;
+    private YouTubePlayerView youTubePlayerView;
+    private YouTubePlayer youTubePlayer;
 
     // Системные методы
     @Override
@@ -103,7 +103,7 @@ public class CardEdit2_View extends BaseView implements
         setPageTitle(R.string.CARD_EDIT_page_title);
 
         videoPlayerHolder = findViewById(R.id.videoPlayerHolder);
-//        youTubePlayerView = findViewById(R.id.youTubePlayerView);
+        youTubePlayerView = findViewById(R.id.youTubePlayerView);
 
         tagsContainer.setOnTagClickListener(this);
         tagsContainer.setIsTagViewClickable(true);
@@ -132,7 +132,8 @@ public class CardEdit2_View extends BaseView implements
     protected void onDestroy() {
         super.onDestroy();
         showToast("CardEdit2_View.destroy()");
-//        if (null != youTubePlayerView) youTubePlayerView.release();
+        if (null != youTubePlayerView)
+            youTubePlayerView.release();
     }
 
     @Override
@@ -362,7 +363,7 @@ public class CardEdit2_View extends BaseView implements
 
     @OnClick(R.id.removeVideoButton)
     void removeVideo() {
-//        youTubePlayerView.release();
+        youTubePlayerView.release();
         videoPlayerHolder.removeAllViews();
         clearVideoCode();
         MyUtils.hide(removeVideoButton);
@@ -456,30 +457,30 @@ public class CardEdit2_View extends BaseView implements
 
     private void displayVideo(final String videoCode) {
 
-//        youTubePlayerView = new YouTubePlayerView(this);
-//        int playerWidth = MyUtils.getScreenWidth(this);
-//        int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9/16);
-//        youTubePlayerView.setMinimumWidth(playerWidth);
-//        youTubePlayerView.setMinimumHeight(playerHeight);
-//
-//        videoPlayerHolder.addView(youTubePlayerView);
-//
-//        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
-//            @Override
-//            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
-//                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
-//                    @Override
-//                    public void onReady() {
-//                        youTubePlayer = initializedYouTubePlayer;
-//                        youTubePlayer.loadVideo(videoCode, 0.0f);
-//
-//                        MyUtils.show(videoPlayerHolder);
-//                        MyUtils.show(youTubePlayerView);
-//                        MyUtils.show(removeVideoButton);
-//                    }
-//                });
-//            }
-//        }, true);
+        youTubePlayerView = new YouTubePlayerView(this);
+        int playerWidth = MyUtils.getScreenWidth(this);
+        int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9/16);
+        youTubePlayerView.setMinimumWidth(playerWidth);
+        youTubePlayerView.setMinimumHeight(playerHeight);
+
+        videoPlayerHolder.addView(youTubePlayerView);
+
+        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
+            @Override
+            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
+                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady() {
+                        youTubePlayer = initializedYouTubePlayer;
+                        youTubePlayer.loadVideo(videoCode, 0.0f);
+
+                        MyUtils.show(videoPlayerHolder);
+                        MyUtils.show(youTubePlayerView);
+                        MyUtils.show(removeVideoButton);
+                    }
+                });
+            }
+        }, true);
     }
 
 
