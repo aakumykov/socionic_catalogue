@@ -224,7 +224,7 @@ public class Card implements Parcelable {
     public void setTitle(String title) {
         this.title = title;
     }
-    public void setQuote(String quote) throws Exception {
+    public void setQuote(String quote) {
         this.quote = quote;
     }
     public void setImageURL(String imageURL) throws IllegalArgumentException {

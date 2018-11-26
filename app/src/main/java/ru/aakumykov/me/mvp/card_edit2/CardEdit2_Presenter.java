@@ -15,7 +15,7 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
 
     private iCardsSingleton cardsService = CardsSingleton.getInstance();
     private iCardEdit2.View editView;
-
+    private Card currentCard;
 
     // Интерфейсные методы
     @Override
@@ -51,6 +51,30 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
     @Override
     public void saveCard() {
 
+        currentCard.setTitle(editView.getCardTitle());
+        currentCard.setQuote(editView.getCardQuote());
+        currentCard.setDescription(editView.getCardDescription());
+        if (currentCard.getType().equals(Constants.VIDEO_CARD))
+            currentCard.setVideoCode(editView.getVideoCode());
+
+//        currentCard.setTags(editView.getCardTags());
+
+        editView.showProgressBar();
+        editView.disableForm();
+
+        cardsService.updateCard(currentCard, new iCardsSingleton.SaveCardCallbacks() {
+            @Override
+            public void onCardSaveSuccess(Card card) {
+                editView.showToast(R.string.CARD_EDIT_card_saved);
+                editView.finishEdit(card);
+            }
+
+            @Override
+            public void onCardSaveError(String message) {
+                editView.showErrorMsg(R.string.CARD_EDIT_error_saving_card, message);
+                editView.enableForm();
+            }
+        });
     }
 
 
@@ -89,6 +113,7 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
 
                 @Override
                 public void onCardLoadSuccess(Card card) {
+                    currentCard = card;
                     try {
                         editView.hideProgressBar();
                         processLoadedCard(card);

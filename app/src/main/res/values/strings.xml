@@ -187,4 +187,5 @@
     <string name="CARD_tags">Метки</string>
     <string name="not_yet_implamented">Ещё не реализовано</string>
     <string name="CARD_EDIT_unsupported_card_type">Неподдерживаемый тип карточки</string>
+    <string name="CARD_EDIT_card_saved">Карточка сохранена</string>
 </resources>

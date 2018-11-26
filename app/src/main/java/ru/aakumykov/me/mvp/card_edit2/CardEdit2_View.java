@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +27,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,6 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Card;
@@ -67,6 +71,8 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
 
     // Разметка ввода меток
     @BindView(R.id.tagsInputHolder) LinearLayout tagsInputHolder;
+    @BindView(R.id.newTagInput) EditText newTagInput;
+    @BindView(R.id.addTagButton) Button addTagButton;
 
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
@@ -121,6 +127,25 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
         super.onDestroy();
         showToast("CardEdit2_View.destroy()");
         youTubePlayerView.release();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+//        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.save, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionSave:
+                saveCard();
+                break;
+            default:
+                super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
     @Override
@@ -179,6 +204,77 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public String getCardTitle() {
+        return titleInput.getText().toString();
+    }
+
+    @Override
+    public String getCardQuote() {
+        return quoteInput.getText().toString();
+    }
+
+    @Override
+    public String getVideoCode() {
+        return videoCodeView.getText().toString();
+    }
+
+    @Override
+    public String getCardDescription() {
+        return descriptionInput.getText().toString();
+    }
+
+//    @Override
+//    public HashMap<String, Boolean> getCardTags() {
+//        HashMap<String,Boolean> tagsMap = new HashMap<>();
+//        for(String tagName : tagsContainer.getTags()) {
+//            tagsMap.put(tagName, true);
+//        }
+//    }
+
+
+    @Override
+    public void disableForm() {
+        MyUtils.disable(titleInput);
+        MyUtils.disable(quoteInput);
+
+        MyUtils.disable(descriptionInput);
+        MyUtils.disable(discardImageButton);
+        MyUtils.disable(addVideoButton);
+        MyUtils.disable(removeVideoButton);
+
+        MyUtils.disable(newTagInput);
+        MyUtils.disable(addTagButton);
+
+        MyUtils.disable(saveButton);
+//        MyUtils.disable();
+    }
+
+    @Override
+    public void enableForm() {
+        MyUtils.enable(titleInput);
+        MyUtils.enable(quoteInput);
+
+        MyUtils.enable(descriptionInput);
+        MyUtils.enable(discardImageButton);
+        MyUtils.enable(addVideoButton);
+        MyUtils.enable(removeVideoButton);
+
+        MyUtils.enable(newTagInput);
+        MyUtils.enable(addTagButton);
+
+        MyUtils.enable(saveButton);
+//        MyUtils.disable();
+    }
+
+    @Override
+    public void finishEdit(Card updatedCard) {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.CARD, updatedCard);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
 
     // Обязательные методы
     @Override
@@ -221,6 +317,7 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
     void removeVideo() {
         youTubePlayerView.release();
         videoPlayerHolder.removeAllViews();
+        clearVideoCode();
         MyUtils.hide(removeVideoButton);
         MyUtils.show(addVideoButton);
     }
@@ -328,10 +425,6 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
     // Манипуляции с кодом видео
     private void storeVideoCode(String videoCode) {
         videoCodeView.setText(videoCode);
-    }
-
-    private String getVideoCode() {
-        return videoCodeView.getText().toString();
     }
 
     private void clearVideoCode() {
