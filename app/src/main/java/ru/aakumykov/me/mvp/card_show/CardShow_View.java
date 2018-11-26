@@ -142,7 +142,8 @@ public class CardShow_View extends BaseView implements
 
         // Присоединяю адаптер списка
         commentsList = new ArrayList<>();
-        commentsAdapter = new CommentsAdapter(this, R.layout.comments_list_item, commentsList, this);
+        commentsAdapter = new CommentsAdapter(this, getAuthService().currentUser(),
+                R.layout.comments_list_item, commentsList,this);
         mainListView.setAdapter(commentsAdapter);
 
         tagsContainer.setOnTagClickListener(this);
@@ -278,7 +279,8 @@ public class CardShow_View extends BaseView implements
         presenter.rateCommentUp(comment, new iCommentsSingleton.RatingCallbacks() {
             @Override
             public void onRetedUp(Comment comment) {
-                commentsAdapter.commentRatingChanged(comment, oldComment);
+                int index = commentsList.indexOf(oldComment);
+                commentsList.set(index, comment);
                 commentsAdapter.notifyDataSetChanged();
             }
 
@@ -306,7 +308,8 @@ public class CardShow_View extends BaseView implements
 
             @Override
             public void onRatedDown(Comment comment) {
-                commentsAdapter.commentRatingChanged(comment, oldComment);
+                int index = commentsList.indexOf(oldComment);
+                commentsList.set(index, comment);
                 commentsAdapter.notifyDataSetChanged();
             }
 

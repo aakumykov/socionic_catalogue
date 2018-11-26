@@ -15,6 +15,7 @@ import java.util.List;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Comment;
+import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
@@ -26,15 +27,22 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
     private Context context;
     private LayoutInflater inflater;
     private int layout;
-    private List<Comment> list;
+    private List<Comment> commentList;
+    private User currentUser;
     private iComments.commentClickListener commentClickListener; // ОПАСНО, если адаптер живуч
 
-    public CommentsAdapter(Context context, int resource, List<Comment> commentsList,
-                           iComments.commentClickListener commentClickListener) {
+    public CommentsAdapter(
+            Context context,
+            User currentUser,
+            int resource,
+            List<Comment> commentsList,
+            iComments.commentClickListener commentClickListener
+    ) {
         super(context, resource, commentsList);
 
         this.context = context;
-        this.list = commentsList;
+        this.currentUser = currentUser;
+        this.commentList = commentsList;
         this.layout = resource;
         this.inflater = LayoutInflater.from(context);
         this.commentClickListener = commentClickListener;
@@ -43,7 +51,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
     @NonNull
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
-        final Comment comment = list.get(position);
+        final Comment comment = commentList.get(position);
 
         final View commentItemView = inflater.inflate(this.layout, parent, false);
 
@@ -89,6 +97,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             }
         });
 
+
         TextView commentRatingView = commentItemView.findViewById(R.id.commentRatingView);
         commentRatingView.setText( ""+comment.getRating() );
 
@@ -125,18 +134,30 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             }
         });
 
+        colorizeRatingButtons(commentRateUpButton, commentRateDownButton, comment);
+
         return commentItemView;
     }
 
-    public void commentRatingChanged(Comment comment, Comment oldComment) {
-        int index = list.indexOf(oldComment);
-        list.set(index, comment);
-    }
+
 
     // TODO: после рагистрации текущий пользователь не имеет имени (в комментах не появляется иени).
     private void seeCommentAuthorProfile(Comment comment) {
         Intent intent = new Intent(context, UserShow_View.class);
         intent.putExtra(Constants.USER_ID, comment.getUserId());
         context.startActivity(intent);
+    }
+
+    private void colorizeRatingButtons(ImageView rateUpImage, ImageView rateDownImage, final Comment comment) {
+        List<String> rateUpList = comment.getRateUpList();
+        List<String> rateDownList = comment.getRateDownList();
+
+        if (rateUpList.contains(currentUser.getKey())) {
+            rateUpImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_thumb_up_colored));
+        }
+
+        if (rateDownList.contains(currentUser.getKey())) {
+            rateDownImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_thumb_down_colored));
+        }
     }
 }
