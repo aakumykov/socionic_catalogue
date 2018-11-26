@@ -101,7 +101,7 @@ public class CardEdit2_Presenter implements
     @Override
     public void onCardSaveSuccess(Card card) {
 
-        TagsSingleton.getInstance().updateCardTags(
+        tagsService.updateCardTags(
                 currentCard.getKey(),
                 oldTags,
                 newTags,
