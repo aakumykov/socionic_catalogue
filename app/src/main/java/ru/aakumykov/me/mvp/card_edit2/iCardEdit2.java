@@ -39,6 +39,8 @@ public interface iCardEdit2 {
         void linkView(iCardEdit2.View view);
         void unlinkView();
 
+        void setCardType(String cardType);
+
         void processTag(String tagName);
 
         void processInputIntent(@Nullable Intent intent);

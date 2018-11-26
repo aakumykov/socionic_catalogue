@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,7 +19,14 @@ public class MVPUtils {
 
     private final static String TAG = "MVPUtils";
     private static Map<String,String> regexMap = new HashMap<>();
+    private static List<String> correctCardTypes = new ArrayList<>();
 
+    static {
+        correctCardTypes.add(Constants.TEXT_CARD);
+        correctCardTypes.add(Constants.IMAGE_CARD);
+        correctCardTypes.add(Constants.VIDEO_CARD);
+        correctCardTypes.add(Constants.AUDIO_CARD);
+    }
 
     /* Все регулярные выражения для применения к URL/видео-кодам YouTube
      * обязаны выделять код видео в ПЕРВОЙ группе. */
@@ -122,5 +133,9 @@ public class MVPUtils {
         if (tagName.matches("^[0-9]+$")) tagName = "_"+tagName+"_";
 
         return tagName;
+    }
+
+    public static boolean isCorrectCardType(String cardType) {
+        return correctCardTypes.contains(cardType);
     }
 }

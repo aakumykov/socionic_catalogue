@@ -23,6 +23,7 @@ public final class Constants {
 
     public final static String TEXT_CARD = "TEXT_CARD";
     public final static String IMAGE_CARD = "IMAGE_CARD";
+    public final static String AUDIO_CARD = "AUDIO_CARD";
     public final static String VIDEO_CARD = "VIDEO_CARD";
 
     public final static String PARENT_COMMENT = "PARENT_COMMENT";

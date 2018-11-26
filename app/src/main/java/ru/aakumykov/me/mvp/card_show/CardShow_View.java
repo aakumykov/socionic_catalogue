@@ -173,13 +173,13 @@ public class CardShow_View extends BaseView implements
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
-        youTubePlayerView.release();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        youTubePlayerView.release();
+        if (null != youTubePlayerView)
+            youTubePlayerView.release();
     }
 
     @Override

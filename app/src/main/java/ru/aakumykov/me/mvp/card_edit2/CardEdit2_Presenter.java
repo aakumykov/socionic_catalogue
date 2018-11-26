@@ -11,6 +11,7 @@ import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.utils.MVPUtils;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 
 
 public class CardEdit2_Presenter implements iCardEdit2.Presenter {
@@ -48,6 +49,12 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
             default:
                 throw new IllegalArgumentException("Unknown action '"+action+"'");
         }
+    }
+
+    @Override
+    public void setCardType(String cardType) {
+        if (MVPUtils.isCorrectCardType(cardType))
+            currentCard.setType(cardType);
     }
 
     @Override
@@ -100,6 +107,9 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
 
     // Внутренние методы
     private void continueWithCardCreation(@NonNull Intent intent) {
+        currentCard = new Card();
+        currentCard.setKey(cardsService.createKey());
+
         editView.hideProgressBar();
         editView.showModeSwitcher();
     }

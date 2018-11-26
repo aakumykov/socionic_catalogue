@@ -127,7 +127,8 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
     protected void onDestroy() {
         super.onDestroy();
         showToast("CardEdit2_View.destroy()");
-        youTubePlayerView.release();
+        if (null != youTubePlayerView)
+            youTubePlayerView.release();
     }
 
     @Override
@@ -172,6 +173,8 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
         MyUtils.hide(modeSwitcher);
         MyUtils.show(quoteInput);
 
+        presenter.setCardType(Constants.TEXT_CARD);
+
         if (null == card) quoteInput.requestFocus();
         else fillTextCardForm(card);
     }
@@ -180,6 +183,8 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
     public void switchImageMode(@Nullable Card card) {
         MyUtils.hide(modeSwitcher);
         MyUtils.show(imageHolder);
+
+        presenter.setCardType(Constants.IMAGE_CARD);
 
         if (null == card) {
             MyUtils.show(imagePlaceholder);
@@ -192,6 +197,8 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
         MyUtils.hide(modeSwitcher);
         MyUtils.show(videoHolder);
 
+        presenter.setCardType(Constants.VIDEO_CARD);
+
         if (null == card) {
             MyUtils.show(addVideoButton);
         } else {
@@ -203,6 +210,8 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
     public void switchAudioMode(@Nullable Card card) {
         String msg = getResources().getString(R.string.not_yet_implamented);
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+
+//        presenter.setCardType(Constants.AUDIO_CARD);
     }
 
     @Override
