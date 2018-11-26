@@ -35,6 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
+import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
@@ -44,7 +45,10 @@ import ru.aakumykov.me.mvp.utils.MVPUtils;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
-public class CardEdit2_View extends BaseView implements iCardEdit2.View {
+public class CardEdit2_View extends BaseView implements
+        iCardEdit2.View,
+        TagView.OnTagClickListener
+{
 
     @BindView(R.id.titleInput) EditText titleInput;
     @BindView(R.id.quoteInput) EditText quoteInput;
@@ -100,6 +104,9 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
 
         videoPlayerHolder = findViewById(R.id.videoPlayerHolder);
         youTubePlayerView = findViewById(R.id.youTubePlayerView);
+
+        tagsContainer.setOnTagClickListener(this);
+        tagsContainer.setIsTagViewClickable(true);
 
         presenter = new CardEdit2_Presenter();
     }
@@ -241,7 +248,6 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
         return tagsMap;
     }
 
-
     @Override
     public void disableForm() {
         MyUtils.disable(titleInput);
@@ -288,6 +294,23 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
         intent.putExtra(Constants.CARD, updatedCard);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+
+    // Методы обратного вызова
+    @Override
+    public void onTagClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagLongClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagCrossClick(int position) {
+        tagsContainer.removeTag(position);
     }
 
 
