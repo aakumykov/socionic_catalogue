@@ -16,6 +16,7 @@ import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
 import ru.aakumykov.me.mvp.utils.MVPUtils;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 
 
 public class CardEdit2_Presenter implements
@@ -141,7 +142,35 @@ public class CardEdit2_Presenter implements
     }
 
     private void continueWithRecievedData(@NonNull Intent intent) {
+
         editView.hideProgressBar();
+
+        currentCard = new Card();
+        currentCard.setKey(cardsService.createKey());
+
+        switch (MVPUtils.detectInputDataMode(intent)) {
+
+            case "TEXT":
+                try {
+                    procesIncomingText(intent);
+                } catch (Exception e) {
+                    editView.showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
+                    e.printStackTrace();
+                }
+                break;
+
+            case "IMAGE":
+//                processIncomingImage(intent);
+                break;
+
+            case "YOUTUBE_VIDEO":
+//                String link = intent.getStringExtra(Intent.EXTRA_TEXT);
+//                processYoutubeVideo(link);
+                break;
+
+            default:
+                editView.showErrorMsg(R.string.CARD_EDIT_unknown_data_mode);
+        }
     }
 
     private void loadCard(@NonNull Intent intent) {
@@ -207,4 +236,21 @@ public class CardEdit2_Presenter implements
                 throw new IllegalArgumentException("Unsupported card type '"+card.getType()+"'");
         }
     }
+
+    // Для полученных данных
+    private void procesIncomingText(Intent intent) throws Exception {
+
+        editView.switchTextMode(currentCard);
+
+        String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (null == text) {
+            throw new IllegalArgumentException("Intent.EXTRA_TEXT is null.");
+        }
+
+        String autoTitle = MyUtils.cutToLength(text, Constants.TITLE_MAX_LENGTH);
+
+        editView.setCardTitle(autoTitle);
+        editView.setCardQuote(text);
+    }
+
 }

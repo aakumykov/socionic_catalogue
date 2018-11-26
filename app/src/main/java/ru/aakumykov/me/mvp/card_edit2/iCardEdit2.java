@@ -27,6 +27,9 @@ public interface iCardEdit2 {
         String getCardDescription();
         HashMap<String,Boolean> getCardTags();
 
+        void setCardTitle(String title);
+        void setCardQuote(String quote);
+
         void disableForm();
         void enableForm();
 

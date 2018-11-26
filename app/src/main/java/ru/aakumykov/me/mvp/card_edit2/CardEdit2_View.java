@@ -249,6 +249,16 @@ public class CardEdit2_View extends BaseView implements
     }
 
     @Override
+    public void setCardTitle(String title) {
+        titleInput.setText(title);
+    }
+
+    @Override
+    public void setCardQuote(String quote) {
+        quoteInput.setText(quote);
+    }
+
+    @Override
     public void disableForm() {
         MyUtils.disable(titleInput);
         MyUtils.disable(quoteInput);
