@@ -18,7 +18,10 @@ import ru.aakumykov.me.mvp.services.TagsSingleton;
 import ru.aakumykov.me.mvp.utils.MVPUtils;
 
 
-public class CardEdit2_Presenter implements iCardEdit2.Presenter {
+public class CardEdit2_Presenter implements
+        iCardEdit2.Presenter,
+        iCardsSingleton.SaveCardCallbacks
+{
 
     private final static String TAG = "CardEdit2_Presenter";
     private iCardEdit2.View editView;
@@ -27,6 +30,7 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
 
     private Card currentCard;
     private HashMap<String,Boolean> oldTags = null;
+    private HashMap<String,Boolean> newTags = null;
 
 
     // Интерфейсные методы
@@ -82,41 +86,38 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
         if (currentCard.getType().equals(Constants.VIDEO_CARD))
             currentCard.setVideoCode(editView.getVideoCode());
 
+        newTags = editView.getCardTags();
+        // Как-то это не очень: здесь устанавливаю, потом  в другом месте обновляю...
+        currentCard.setTags(newTags);
+
         editView.showProgressBar();
         editView.disableForm();
 
-        cardsService.updateCard(currentCard, new iCardsSingleton.SaveCardCallbacks() {
-
-            @Override
-            public void onCardSaveSuccess(Card card) {
-                editView.showToast(R.string.CARD_EDIT_card_saved);
-
-                final Card savedCard = card;
-
-                HashMap<String,Boolean> newTags = editView.getCardTags();
-                tagsService.updateCardTags(currentCard.getKey(), oldTags, newTags, new iTagsSingleton.UpdateCallbacks() {
-                    @Override
-                    public void onUpdateSuccess() {
-//                        editView.showToast(R.string.CARD_EDIT_tags_are_saved);
-//                        editView.finishEdit(savedCard);
-                    }
-
-                    @Override
-                    public void onUpdateFail(String errorMsg) {
-                        Log.e(TAG, errorMsg);
-//                        editView.showErrorMsg(R.string.CARD_EDIT_error_saving_tags, errorMsg);
-//                        editView.finishEdit(savedCard);
-                    }
-                });
-            }
-
-            @Override
-            public void onCardSaveError(String message) {
-                editView.showErrorMsg(R.string.CARD_EDIT_error_saving_card, message);
-                editView.enableForm();
-            }
-        });
+        cardsService.updateCard(currentCard, this);
     }
+
+
+    // Методы оратного вызова
+    @Override
+    public void onCardSaveSuccess(Card card) {
+
+        TagsSingleton.getInstance().updateCardTags(
+                currentCard.getKey(),
+                oldTags,
+                newTags,
+                null
+        );
+
+        editView.hideProgressBar();
+        editView.finishEdit(card);
+    }
+
+    @Override
+    public void onCardSaveError(String message) {
+        editView.showErrorMsg(R.string.CARD_EDIT_error_saving_card);
+        editView.enableForm();
+    }
+
 
 
     // Обязательные методы
