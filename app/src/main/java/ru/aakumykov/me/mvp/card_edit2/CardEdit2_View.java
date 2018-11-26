@@ -219,7 +219,7 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
 
     @OnClick(R.id.removeVideoButton)
     void removeVideo() {
-//        youTubePlayerView.release();
+        youTubePlayerView.release();
         videoPlayerHolder.removeAllViews();
         MyUtils.hide(removeVideoButton);
         MyUtils.show(addVideoButton);
@@ -317,6 +317,7 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
                         youTubePlayer = initializedYouTubePlayer;
                         youTubePlayer.loadVideo(videoCode, 0.0f);
                         MyUtils.show(youTubePlayerView);
+                        MyUtils.show(removeVideoButton);
                     }
                 });
             }
