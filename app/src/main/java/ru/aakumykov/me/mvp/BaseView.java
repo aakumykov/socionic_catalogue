@@ -176,21 +176,23 @@ public abstract class BaseView extends AppCompatActivity implements
     }
 
     @Override
+    public void showErrorMsg(int messageId, String consoleMessage) {
+        showErrorMsg(messageId);
+        Log.e(TAG, consoleMessage);
+    }
+
+    @Override
     public void showErrorMsg(int messageId) {
+        hideProgressBar();
         String message = getResources().getString(messageId);
         showErrorMsg(message);
     }
 
     @Override
     public void showErrorMsg(String message) {
+        hideProgressBar();
         showMsg(message, getResources().getColor(R.color.error));
         Log.e(TAG, message);
-    }
-
-    @Override
-    public void showErrorMsg(int messageId, String consoleMessage) {
-        showErrorMsg(messageId);
-        Log.e(TAG, consoleMessage);
     }
 
     private void showMsg(String text, int color) {

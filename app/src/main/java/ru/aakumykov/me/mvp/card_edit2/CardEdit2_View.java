@@ -1,17 +1,20 @@
 package ru.aakumykov.me.mvp.card_edit2;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.text.Layout;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
@@ -30,7 +33,10 @@ import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.utils.MVPUtils;
+import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class CardEdit2_View extends BaseView implements iCardEdit2.View {
@@ -51,7 +57,7 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
     // Разметка для видео
     @BindView(R.id.videoHolder) LinearLayout videoHolder;
     @BindView(R.id.videoPlayerThrobber) ProgressBar videoPlayerThrobber;
-    @BindView(R.id.youTubePlayerView) YouTubePlayerView youTubePlayerView;
+    @BindView(R.id.videoPlayerHolder) FrameLayout videoPlayerHolder;
     @BindView(R.id.addVideoButton) Button addVideoButton;
     @BindView(R.id.removeVideoButton) Button removeVideoButton;
 
@@ -65,8 +71,14 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
-    private iCardEdit2.Presenter presenter;
+    // Используется для хранения кода видео
+    @BindView(R.id.videoCodeView) TextView videoCodeView;
+
+
     private boolean firstRun = true;
+    private iCardEdit2.Presenter presenter;
+    private YouTubePlayerView youTubePlayerView;
+    private YouTubePlayer youTubePlayer;
 
 
     // Системные методы
@@ -98,6 +110,12 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        showToast("CardEdit2_View.destroy()");
         youTubePlayerView.release();
     }
 
@@ -195,6 +213,39 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
 
     }
 
+    @OnClick(R.id.removeVideoButton)
+    void removeVideo() {
+
+//        View ytpv = findViewById(R.id.youtube_video_player_id);
+//        if (null != ytpv) {
+        videoPlayerHolder.removeAllViews();
+//        }
+
+        MyUtils.hide(videoPlayerThrobber);
+        MyUtils.hide(removeVideoButton);
+
+        MyUtils.show(addVideoButton);
+    }
+
+    @OnClick(R.id.addVideoButton)
+    void addVideo() {
+        // TODO: проверка на пустоту, да и на формат...
+        MyDialogs.addVideoDialog(
+                this,
+                new iMyDialogs.StringInputCallback() {
+                    @Override
+                    public void onDialogWithStringYes(String text) {
+                        storeVideoCode( MVPUtils.extractYoutubeVideoCode(text) );
+                        displayVideo(getVideoCode());
+
+                        MyUtils.hide(addVideoButton);
+                        // TODO: это нужно делать после появления видео
+                        MyUtils.show(removeVideoButton);
+                    }
+                }
+        );
+    }
+
     @OnClick(R.id.saveButton)
     void saveCard() {
         // Нужно ли здесь перехватывать исключения?
@@ -209,8 +260,8 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
 
     // Внутренние методы
     private void fillTextCardForm(final Card card) {
-        quoteInput.setText(card.getQuote());
         fillCommonCardParts(card);
+        quoteInput.setText(card.getQuote());
     }
 
     private void fillImageCardForm(final Card card) {
@@ -239,8 +290,28 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
 
     private void fillVideoCardForm(final Card card) {
         fillCommonCardParts(card);
+        displayVideo(videoCodeView.getText().toString());
+    }
 
-        MyUtils.show(videoPlayerThrobber);
+    private void fillCommonCardParts(final Card card) {
+        titleInput.setText(card.getTitle());
+        descriptionInput.setText(card.getDescription());
+        List<String> tags = new ArrayList<>(card.getTags().keySet());
+        tagsContainer.setTags(tags);
+    }
+
+    private void displayVideo(final String videoCode) {
+
+//        MyUtils.show(videoPlayerThrobber);
+
+        youTubePlayerView = new YouTubePlayerView(this);
+        youTubePlayerView.setId(R.id.youtube_video_player_id);
+          int playerWidth = MyUtils.getScreenWidth(this);
+          int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9/16);
+        youTubePlayerView.setMinimumWidth(playerWidth);
+        youTubePlayerView.setMinimumHeight(playerHeight);
+
+        videoPlayerHolder.addView(youTubePlayerView);
 
         youTubePlayerView.initialize(new YouTubePlayerInitListener() {
 
@@ -250,10 +321,11 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
 
                     @Override
                     public void onReady() {
-                        String videoCode = card.getVideoCode();
-                        initializedYouTubePlayer.cueVideo(videoCode, 0f);
-                        MyUtils.hide(videoPlayerThrobber);
-                        MyUtils.show(youTubePlayerView);
+//                        MyUtils.hide(videoPlayerThrobber);
+                        MyUtils.show(removeVideoButton);
+
+                        youTubePlayer = initializedYouTubePlayer;
+                        youTubePlayer.cueVideo(videoCode, 0f);
                     }
 
                 });
@@ -261,10 +333,17 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
         }, true);
     }
 
-    private void fillCommonCardParts(final Card card) {
-        titleInput.setText(card.getTitle());
-        descriptionInput.setText(card.getDescription());
-        List<String> tags = new ArrayList<>(card.getTags().keySet());
-        tagsContainer.setTags(tags);
+
+    // Манипуляции с кодом видео
+    private void storeVideoCode(String videoCode) {
+        videoCodeView.setText(videoCode);
+    }
+
+    private String getVideoCode() {
+        return videoCodeView.getText().toString();
+    }
+
+    private void clearVideoCode() {
+        videoCodeView.setText("");
     }
 }

@@ -3,15 +3,12 @@ package ru.aakumykov.me.mvp.card_edit2;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
-import ru.aakumykov.me.mvp.utils.MVPUtils;
-
 
 
 public class CardEdit2_Presenter implements iCardEdit2.Presenter {
@@ -24,6 +21,8 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
     @Override
     public void processInputIntent(@Nullable Intent intent) {
 
+        editView.showProgressBar();
+
         if (null == intent) {
             editView.showErrorMsg(R.string.CARD_EDIT_error_no_input_data);
             return;
@@ -31,15 +30,19 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
 
         String action = intent.getAction();
         switch (action+"") {
+
             case Constants.ACTION_CREATE:
-                proceedWithCardCreation(intent);
+                continueWithCardCreation(intent);
                 break;
+
             case Intent.ACTION_SEND:
-                processRecievedData(intent);
+                continueWithRecievedData(intent);
                 break;
+
             case Constants.ACTION_EDIT:
                 loadCard(intent);
                 break;
+
             default:
                 throw new IllegalArgumentException("Unknown action '"+action+"'");
         }
@@ -63,15 +66,17 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
 
 
     // Внутренние методы
-    private void proceedWithCardCreation(@NonNull Intent intent) {
+    private void continueWithCardCreation(@NonNull Intent intent) {
+        editView.hideProgressBar();
         editView.showModeSwitcher();
     }
 
-    private void processRecievedData(@NonNull Intent intent) {
-
+    private void continueWithRecievedData(@NonNull Intent intent) {
+        editView.hideProgressBar();
     }
 
     private void loadCard(@NonNull Intent intent) {
+
 
         String cardId = intent.getStringExtra(Constants.CARD_KEY);
         if (null == cardId) {
@@ -85,6 +90,7 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
                 @Override
                 public void onCardLoadSuccess(Card card) {
                     try {
+                        editView.hideProgressBar();
                         processLoadedCard(card);
                     } catch (Exception e) {
                         editView.showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());

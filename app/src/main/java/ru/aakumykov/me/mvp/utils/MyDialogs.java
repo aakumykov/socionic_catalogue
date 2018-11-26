@@ -34,11 +34,12 @@ public class MyDialogs {
         ).show();
     }
 
+    // TODO: сделать единый диалог ввода строки
     // Диалог добавления код видео
     public static void addVideoDialog(Activity activity, final iMyDialogs.StringInputCallback callbacks) {
         String title = activity.getString(R.string.CARD_EDIT_video_code);
 
-        final View view = activity.getLayoutInflater().inflate(R.layout.edit_dialog, null);
+        final View view = activity.getLayoutInflater().inflate(R.layout.dialog_text_input, null);
         final EditText editText = view.findViewById(R.id.editText);
         final TextView dialogErrorView = view.findViewById(R.id.dialogErrorView);
 
@@ -87,7 +88,7 @@ public class MyDialogs {
     ) {
         String title = activity.getString(R.string.DIALOG_edit_comment);
 
-        final View view = activity.getLayoutInflater().inflate(R.layout.edit_dialog, null);
+        final View view = activity.getLayoutInflater().inflate(R.layout.dialog_text_input, null);
         final EditText editText = view.findViewById(R.id.editText);
         final TextView dialogErrorView = view.findViewById(R.id.dialogErrorView);
 

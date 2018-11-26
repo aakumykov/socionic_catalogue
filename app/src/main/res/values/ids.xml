@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item type="id" name="imageURI_tag" />
+    <item type="id" name="youtube_video_player_id" />
 </resources>
