@@ -42,6 +42,7 @@ import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
+import ru.aakumykov.me.mvp.card_edit2.CardEdit2_View;
 import ru.aakumykov.me.mvp.cards_list.CardsList_View;
 import ru.aakumykov.me.mvp.comment.CommentsAdapter;
 import ru.aakumykov.me.mvp.comment.iComments;
@@ -573,10 +574,14 @@ public class CardShow_View extends BaseView implements
     public void goEditPage(Card card) {
         Log.d(TAG, "goEditPage()");
 
-        Intent intent = new Intent(this, CardEdit_View.class);
+//        Intent intent = new Intent(this, CardEdit_View.class);
+//        intent.setAction(Constants.ACTION_EDIT);
+//        intent.putExtra(Constants.CARD_KEY, card.getKey());
+//        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+
+        Intent intent = new Intent(this, CardEdit2_View.class);
         intent.setAction(Constants.ACTION_EDIT);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
-
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
