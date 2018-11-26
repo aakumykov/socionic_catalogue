@@ -97,15 +97,15 @@ public class CardEdit2_Presenter implements iCardEdit2.Presenter {
                 tagsService.updateCardTags(currentCard.getKey(), oldTags, newTags, new iTagsSingleton.UpdateCallbacks() {
                     @Override
                     public void onUpdateSuccess() {
-                        editView.showToast(R.string.CARD_EDIT_tags_are_saved);
-                        editView.finishEdit(savedCard);
+//                        editView.showToast(R.string.CARD_EDIT_tags_are_saved);
+//                        editView.finishEdit(savedCard);
                     }
 
                     @Override
                     public void onUpdateFail(String errorMsg) {
                         Log.e(TAG, errorMsg);
-                        editView.showErrorMsg(R.string.CARD_EDIT_error_saving_tags, errorMsg);
-                        editView.finishEdit(savedCard);
+//                        editView.showErrorMsg(R.string.CARD_EDIT_error_saving_tags, errorMsg);
+//                        editView.finishEdit(savedCard);
                     }
                 });
             }
