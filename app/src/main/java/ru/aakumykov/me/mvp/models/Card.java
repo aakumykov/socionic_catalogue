@@ -185,6 +185,7 @@ public class Card implements Parcelable {
         return description;
     }
     public HashMap<String, Boolean> getTags() {
+        if (null == tags) this.tags = new HashMap<>();
         return tags;
     }
     public int getCommentsCount() { return commentsCount; }
