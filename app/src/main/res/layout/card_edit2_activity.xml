@@ -186,7 +186,7 @@
             android:id="@+id/videoPlayerHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/addVideoButton"
@@ -235,7 +235,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:padding="0dp"
-            android:visibility="visible"
             app:container_background_color="@color/transparent"
             app:container_border_color="@color/transparent"
             app:container_enable_drag="false"

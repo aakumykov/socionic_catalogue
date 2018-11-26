@@ -61,8 +61,6 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
 
     // Разметка для видео
     @BindView(R.id.videoHolder) LinearLayout videoHolder;
-//    @BindView(R.id.videoPlayerThrobber) ProgressBar videoPlayerThrobber;
-//    @BindView(R.id.videoPlayerHolder) FrameLayout videoPlayerHolder;
     @BindView(R.id.addVideoButton) Button addVideoButton;
     @BindView(R.id.removeVideoButton) Button removeVideoButton;
 
@@ -412,6 +410,7 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
     private void fillCommonCardParts(final Card card) {
         titleInput.setText(card.getTitle());
         descriptionInput.setText(card.getDescription());
+
         List<String> tags = new ArrayList<>(card.getTags().keySet());
         tagsContainer.setTags(tags);
     }
@@ -434,6 +433,8 @@ public class CardEdit2_View extends BaseView implements iCardEdit2.View {
                     public void onReady() {
                         youTubePlayer = initializedYouTubePlayer;
                         youTubePlayer.loadVideo(videoCode, 0.0f);
+
+                        MyUtils.show(videoPlayerHolder);
                         MyUtils.show(youTubePlayerView);
                         MyUtils.show(removeVideoButton);
                     }
