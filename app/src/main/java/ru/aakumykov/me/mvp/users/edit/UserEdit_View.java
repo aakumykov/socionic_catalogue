@@ -1,33 +1,42 @@
 package ru.aakumykov.me.mvp.users.edit;
 
+import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.users.Users_Presenter;
 import ru.aakumykov.me.mvp.users.iUsers;
 
 // TODO: выбрасывание со страницы при разлогинивании
 
+@RuntimePermissions
 public class UserEdit_View extends BaseView implements
         iUsers.EditView
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
+    @BindView(R.id.avatarView) ImageView avatarView;
     @BindView(R.id.nameInput) EditText nameInput;
     @BindView(R.id.aboutInput) EditText aboutInput;
     @BindView(R.id.saveButton) Button saveButton;
@@ -46,6 +55,8 @@ public class UserEdit_View extends BaseView implements
 
         activateUpButton();
         setPageTitle(R.string.USER_EDIT_page_title);
+
+        UserEdit_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
 
         presenter = new Users_Presenter();
 
@@ -70,6 +81,19 @@ public class UserEdit_View extends BaseView implements
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        presenter.linkView(this);
+
+        if (RESULT_OK == resultCode)
+        {
+            if (Constants.CODE_SELECT_IMAGE == requestCode) {
+                presenter.processSelectedImage(data);
+            }
+        }
     }
 
 
@@ -116,7 +140,13 @@ public class UserEdit_View extends BaseView implements
         finish();
     }
 
+
     // Нажатия
+    @OnClick(R.id.avatarView)
+    void selectAvatar() {
+        selectImage();
+    }
+
     @OnClick(R.id.saveButton)
     void saveUser() {
         String name = nameInput.getText().toString();
@@ -143,5 +173,49 @@ public class UserEdit_View extends BaseView implements
         nameInput.setEnabled(false);
         aboutInput.setEnabled(false);
         saveButton.setEnabled(false);
+    }
+
+    @Override
+    public void displayAvatar(Uri imageURI) {
+        Picasso.get()
+                .load(imageURI)
+                .into(avatarView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
+
+    }
+
+
+    // Внутренние методы
+    public void selectImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        if (null != intent.resolveActivity(getPackageManager())) {
+            startActivityForResult(
+                    Intent.createChooser(intent, getResources().getString(R.string.select_image)),
+                    Constants.CODE_SELECT_IMAGE
+            );
+        }
+        else {
+            showErrorMsg(R.string.USER_EDIT_error_selecting_image);
+            Log.e(TAG, "Error resolving activity for Intent.ACTION_GET_CONTENT");
+        }
+    }
+
+
+    // TODO: делать это во время выбора
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    void checkPermissions() {
+
     }
 }

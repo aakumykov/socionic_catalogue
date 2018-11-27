@@ -121,7 +121,7 @@ public class UserShow_View extends BaseView implements
                 closePage();
                 break;
             case R.id.actionEdit:
-                editUser();
+                goUserEdit();
                 break;
             case R.id.actionDelete:
                 presenter.userDeleteClicked(currentUser.getKey());
@@ -210,13 +210,6 @@ public class UserShow_View extends BaseView implements
 //            showErrorMsg(R.string.USER_EDIT_user_saving_error, "Activity result data == null");
 //        }
 //    }
-
-    private void editUser() {
-        Intent intent = new Intent(this, UserEdit_View.class);
-        intent.putExtra(Constants.USER_ID, currentUser.getKey());
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivityForResult(intent, Constants.CODE_USER_EDIT);
-    }
 
     private void displayEditedUser(Intent data) {
         if (null == data) {

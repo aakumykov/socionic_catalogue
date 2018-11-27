@@ -1,5 +1,8 @@
 package ru.aakumykov.me.mvp.users;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import ru.aakumykov.me.mvp.R;
@@ -137,6 +140,27 @@ public class Users_Presenter implements
 
     }
 
+    @Override
+    public void processSelectedImage(@Nullable Intent data) {
+        if (null == data) {
+            editView.showErrorMsg(R.string.USER_EDIT_error_selecting_image);
+            return;
+        }
+
+        Uri imageURI = data.getParcelableExtra(Intent.EXTRA_STREAM);
+
+        if (null == imageURI) {
+
+            imageURI = data.getData();
+
+            if (null == imageURI) {
+                editView.showErrorMsg(R.string.USER_EDIT_no_image_data);
+                return;
+            }
+        }
+
+        editView.displayAvatar(imageURI);
+    }
 
     // Методы обратного вызова
     @Override

@@ -1,5 +1,9 @@
 package ru.aakumykov.me.mvp.users;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.Nullable;
+
 import java.util.List;
 
 import ru.aakumykov.me.mvp.iBaseView;
@@ -29,6 +33,8 @@ public interface iUsers {
         void enableEditForm();
         void disableEditForm();
 
+        void displayAvatar(Uri imageURI);
+
         void finishEdit(User user, boolean isSuccessfull);
     }
 
@@ -50,6 +56,8 @@ public interface iUsers {
         void prepareUserEdit(String userId);
         void saveUser(User user);
 //        void deleteUser(User user);
+
+        void processSelectedImage(@Nullable Intent intent);
     }
 
 }

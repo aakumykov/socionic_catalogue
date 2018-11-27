@@ -190,4 +190,6 @@
     <string name="CARD_EDIT_card_saved">Карточка сохранена</string>
     <string name="CARD_EDIT_error_saving_tags">Ошибка сохранения меток</string>
     <string name="CARD_EDIT_tags_are_saved">Метки сохранены</string>
+    <string name="USER_EDIT_error_selecting_image">Ошибка выбора изображения</string>
+    <string name="USER_EDIT_no_image_data">Ошибка данных</string>
 </resources>
