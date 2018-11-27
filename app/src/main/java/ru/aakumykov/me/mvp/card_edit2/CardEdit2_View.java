@@ -87,6 +87,7 @@ public class CardEdit2_View extends BaseView implements
     private boolean firstRun = true;
     private iCardEdit2.Presenter presenter;
 
+    // TODO: переделать на ButterKnife
     private FrameLayout videoPlayerHolder;
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayer;
