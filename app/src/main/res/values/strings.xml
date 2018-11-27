@@ -193,4 +193,6 @@
     <string name="USER_EDIT_error_selecting_image">Ошибка выбора изображения</string>
     <string name="USER_EDIT_no_image_data">Ошибка данных</string>
     <string name="USER_EDIT_name_cannot_be_empty">Имя не может быть пустым</string>
+    <string name="USER_SHOW_name">Имя</string>
+    <string name="USER_SHOW_about">О себе</string>
 </resources>

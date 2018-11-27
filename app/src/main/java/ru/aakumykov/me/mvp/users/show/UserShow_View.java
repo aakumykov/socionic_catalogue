@@ -7,8 +7,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +35,8 @@ public class UserShow_View extends BaseView implements
     @BindView(R.id.nameView) TextView nameView;
 //    @BindView(R.id.aboutLabel) TextView aboutLabel;
     @BindView(R.id.aboutView) TextView aboutView;
+    @BindView(R.id.avatarView) ImageView avatarView;
+    @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
 
     private final static String TAG = "UserShow_View";
     private iUsers.Presenter presenter;
@@ -53,7 +59,6 @@ public class UserShow_View extends BaseView implements
         try {
             Intent intent = getIntent();
             String userId = intent.getStringExtra(Constants.USER_ID);
-            Log.d(TAG, "userId: "+userId);
             presenter.loadUser(userId, this);
 
         } catch (Exception e) {
@@ -159,6 +164,24 @@ public class UserShow_View extends BaseView implements
         MyUtils.show(nameView);
 //        MyUtils.show(aboutLabel);
         MyUtils.show(aboutView);
+
+        showAvatarThrobber();
+
+        Picasso.get()
+                .load(user.getAvatarURL())
+                .into(avatarView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        hideAvatarThrobber();
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        hideAvatarThrobber();
+                        showErrorMsg(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
     }
 
     @Override
@@ -185,6 +208,7 @@ public class UserShow_View extends BaseView implements
 
 
     // Внутренние методы
+
 //    private void processActivityResult(int requestCode, @Nullable Intent data) {
 //        Log.d(TAG, "processActivityResult()");
 //
@@ -210,6 +234,14 @@ public class UserShow_View extends BaseView implements
 //            showErrorMsg(R.string.USER_EDIT_user_saving_error, "Activity result data == null");
 //        }
 //    }
+
+    private void showAvatarThrobber() {
+        MyUtils.show(avatarThrobber);
+    }
+
+    private void hideAvatarThrobber() {
+        MyUtils.hide(avatarThrobber);
+    }
 
     private void displayEditedUser(Intent data) {
         if (null == data) {
