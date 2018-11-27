@@ -77,7 +77,7 @@ public class UserShow_View extends BaseView implements
             case RESULT_CANCELED:
                 return;
             default:
-                showErrorMsg(R.string.USER_EDIT_user_saving_error, "Unknown resultCode: "+resultCode);
+                showErrorMsg(R.string.USER_EDIT_error_saving_user, "Unknown resultCode: "+resultCode);
                 return;
         }
 

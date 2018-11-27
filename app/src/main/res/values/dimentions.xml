@@ -9,4 +9,7 @@
     <dimen name="tag_font_size">16sp</dimen>
 
     <dimen name="comment_text_size">16sp</dimen>
+
+    <dimen name="avatar_width">512sp</dimen>
+    <dimen name="avatar_height">512sp</dimen>
 </resources>

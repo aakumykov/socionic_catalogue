@@ -66,7 +66,7 @@
     <string name="error_displaying_user">Error displaying user</string>
     <string name="data_loading_data">Error loading data</string>
     <string name="error_loading_data">Error loading data</string>
-    <string name="USER_EDIT_user_saving_error">User saving error</string>
+    <string name="USER_EDIT_error_saving_user">User saving error</string>
     <string name="saving_user">Saving user</string>
     <string name="error_saving_user">Error saving user</string>
     <string name="user_saved">User saved</string>
@@ -187,4 +187,5 @@
     <string name="CARD_EDIT_tags_are_saved">Tags are saved</string>
     <string name="USER_EDIT_error_selecting_image">Error selecting image</string>
     <string name="USER_EDIT_no_image_data">Image data error</string>
+    <string name="USER_EDIT_name_cannot_be_empty">Name cannot be empty</string>
 </resources>

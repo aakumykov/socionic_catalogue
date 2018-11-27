@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,6 +28,7 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.users.Users_Presenter;
 import ru.aakumykov.me.mvp.users.iUsers;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 
 // TODO: выбрасывание со страницы при разлогинивании
 
@@ -36,15 +38,20 @@ public class UserEdit_View extends BaseView implements
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
+
+    @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
     @BindView(R.id.avatarView) ImageView avatarView;
+    @BindView(R.id.avatarURL) TextView avatarURL;
+
     @BindView(R.id.nameInput) EditText nameInput;
     @BindView(R.id.aboutInput) EditText aboutInput;
+
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
     private final static String TAG = "UserEdit_View";
     private iUsers.Presenter presenter;
-    private User currentUser;
+
 
     // Системные методы
     @Override
@@ -149,9 +156,7 @@ public class UserEdit_View extends BaseView implements
 
     @OnClick(R.id.saveButton)
     void saveUser() {
-        String name = nameInput.getText().toString();
-        String about = aboutInput.getText().toString();
-        presenter.updateUser(name, about);
+        presenter.saveProfile();
     }
 
     @OnClick(R.id.cancelButton)
@@ -176,13 +181,14 @@ public class UserEdit_View extends BaseView implements
     }
 
     @Override
-    public void displayAvatar(Uri imageURI) {
+    public void displayAvatar(final Uri imageURI) {
         Picasso.get()
                 .load(imageURI)
+                .resizeDimen(R.dimen.avatar_width, R.dimen.avatar_height)
                 .into(avatarView, new Callback() {
                     @Override
                     public void onSuccess() {
-
+                        storeImageURI(imageURI);
                     }
 
                     @Override
@@ -191,6 +197,26 @@ public class UserEdit_View extends BaseView implements
                     }
                 });
 
+    }
+
+    @Override
+    public void storeImageURI(Uri imageURI) {
+        avatarURL.setTag(R.id.avatar_uri, imageURI);
+    }
+
+    @Override
+    public Uri getImageURI() {
+        return (Uri) avatarURL.getTag(R.id.avatar_uri);
+    }
+
+    @Override
+    public void showAvatarThrobber() {
+        MyUtils.show(avatarThrobber);
+    }
+
+    @Override
+    public void hideAvatarThrobber() {
+        MyUtils.hide(avatarThrobber);
     }
 
 

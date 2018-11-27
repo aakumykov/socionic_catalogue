@@ -3,13 +3,17 @@ package ru.aakumykov.me.mvp.users;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
+import ru.aakumykov.me.mvp.interfaces.iStorageSingleton;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
+import ru.aakumykov.me.mvp.services.StorageSingleton;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
 
 public class Users_Presenter implements
@@ -24,6 +28,7 @@ public class Users_Presenter implements
     private iUsers.EditView editView;
     private iUsersSingleton usersService = UsersSingleton.getInstance();
     private iAuthSingleton authService = AuthSingleton.getInstance();
+    private iStorageSingleton storageService = StorageSingleton.getInstance();
     private User currentUser;
 
     // Системные методы
@@ -135,9 +140,43 @@ public class Users_Presenter implements
     }
 
     @Override
-    public void saveUser(User user) {
-        Log.d(TAG, "saveUser(), "+user);
+    public void saveProfile() {
+        String name = editView.getName();
+        if (TextUtils.isEmpty(name)) {
+            editView.showErrorMsg(R.string.USER_EDIT_name_cannot_be_empty);
+            return;
+        }
 
+        currentUser.setName(name);
+        currentUser.setAbout(editView.getAbout());
+
+        Uri imageURI = editView.getImageURI();
+
+        editView.showAvatarThrobber();
+
+        storageService.uploadImage(imageURI, Constants.AVATARS_PATH, new iStorageSingleton.FileUploadCallbacks() {
+            @Override
+            public void onUploadProgress(int progress) {
+
+            }
+
+            @Override
+            public void onUploadSuccess(String downloadURL) {
+                editView.hideAvatarThrobber();
+                currentUser.setAvatarURL(downloadURL);
+                saveUser();
+            }
+
+            @Override
+            public void onUploadFail(String errorMsg) {
+                editView.hideAvatarThrobber();
+            }
+
+            @Override
+            public void onUploadCancel() {
+                editView.hideAvatarThrobber();
+            }
+        });
     }
 
     @Override
@@ -161,6 +200,7 @@ public class Users_Presenter implements
 
         editView.displayAvatar(imageURI);
     }
+
 
     // Методы обратного вызова
     @Override
@@ -186,6 +226,26 @@ public class Users_Presenter implements
     @Override
     public void onUserSaveFail(String errorMsg) {
         editView.hideProgressBar();
-        editView.showErrorMsg(R.string.USER_EDIT_user_saving_error, errorMsg);
+        editView.showErrorMsg(R.string.USER_EDIT_error_saving_user, errorMsg);
+    }
+
+
+    // Внутренние методы
+    private void saveUser() {
+        editView.showProgressBar();
+        editView.disableEditForm();
+
+        usersService.saveUser(currentUser, new iUsersSingleton.SaveCallbacks() {
+            @Override
+            public void onUserSaveSuccess(User user) {
+                editView.finishEdit(user, true);
+            }
+
+            @Override
+            public void onUserSaveFail(String errorMsg) {
+                editView.showErrorMsg(R.string.USER_EDIT_error_saving_user, errorMsg);
+                editView.enableEditForm();
+            }
+        });
     }
 }

@@ -33,7 +33,12 @@ public interface iUsers {
         void enableEditForm();
         void disableEditForm();
 
+        void showAvatarThrobber();
+        void hideAvatarThrobber();
+
         void displayAvatar(Uri imageURI);
+        void storeImageURI(Uri imageURI);
+        Uri getImageURI();
 
         void finishEdit(User user, boolean isSuccessfull);
     }
@@ -54,7 +59,7 @@ public interface iUsers {
 
         void loadUser(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception;
         void prepareUserEdit(String userId);
-        void saveUser(User user);
+        void saveProfile();
 //        void deleteUser(User user);
 
         void processSelectedImage(@Nullable Intent intent);
