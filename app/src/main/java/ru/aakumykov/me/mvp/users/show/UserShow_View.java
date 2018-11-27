@@ -27,9 +27,9 @@ public class UserShow_View extends BaseView implements
         iUsersSingleton.ReadCallbacks
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
-    @BindView(R.id.nameLabel) TextView nameLabel;
+//    @BindView(R.id.nameLabel) TextView nameLabel;
     @BindView(R.id.nameView) TextView nameView;
-    @BindView(R.id.aboutLabel) TextView aboutLabel;
+//    @BindView(R.id.aboutLabel) TextView aboutLabel;
     @BindView(R.id.aboutView) TextView aboutView;
 
     private final static String TAG = "UserShow_View";
@@ -155,9 +155,9 @@ public class UserShow_View extends BaseView implements
         nameView.setText(user.getName());
         aboutView.setText(user.getAbout());
 
-        MyUtils.show(nameLabel);
+//        MyUtils.show(nameLabel);
         MyUtils.show(nameView);
-        MyUtils.show(aboutLabel);
+//        MyUtils.show(aboutLabel);
         MyUtils.show(aboutView);
     }
 
