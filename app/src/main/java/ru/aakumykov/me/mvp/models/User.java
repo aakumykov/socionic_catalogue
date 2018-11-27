@@ -17,6 +17,7 @@ public class User implements Parcelable {
     private String name;
     private String email;
     private String about;
+    private String avatarURL;
 
     public User() {}
 
@@ -25,7 +26,13 @@ public class User implements Parcelable {
         this.key = userId;
     }
 
-    public User(String name, String email, @Nullable String about) throws  IllegalArgumentException {
+    public User(
+            String name,
+            String email,
+            @Nullable String about,
+            @Nullable String avatarURL
+    ) throws  IllegalArgumentException
+    {
         if (TextUtils.isEmpty(name)) throw new IllegalArgumentException("Name cannot be empty.");
         this.name = name;
 
@@ -34,6 +41,8 @@ public class User implements Parcelable {
         this.email = email;
 
         if (null != about) this.about = about;
+
+        if (null != avatarURL) this.avatarURL = avatarURL;
     }
 
 
@@ -41,7 +50,13 @@ public class User implements Parcelable {
     @Override
     @Exclude
     public String toString() {
-        return "User { key: "+key+", name: "+name+", email: "+email+", about: "+about+" }";
+        return "User { "+
+                "key: "+key+
+                ", name: "+name+
+                ", email: "+email+
+                ", about: "+about+
+                ", avatarURL: "+avatarURL+
+                " }";
     }
 
     @Exclude
@@ -51,6 +66,7 @@ public class User implements Parcelable {
         map.put("name", name);
         map.put("email", email);
         map.put("about", about);
+        map.put("avatarURL", avatarURL);
         return map;
     }
 
@@ -80,6 +96,7 @@ public class User implements Parcelable {
         dest.writeString(name);
         dest.writeString(email);
         dest.writeString(about);
+        dest.writeString(avatarURL);
     }
 
     private User(Parcel in) {
@@ -88,6 +105,7 @@ public class User implements Parcelable {
         name = in.readString();
         email = in.readString();
         about = in.readString();
+        avatarURL = in.readString();
     }
     /* Parcelable */
 
@@ -119,5 +137,12 @@ public class User implements Parcelable {
     }
     public void setAbout(String about) {
         this.about = about;
+    }
+
+    public String getAvatarURL() {
+        return avatarURL;
+    }
+    public void setAvatarURL(String avatarURL) {
+        this.avatarURL = avatarURL;
     }
 }
