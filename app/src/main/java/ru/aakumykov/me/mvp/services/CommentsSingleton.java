@@ -12,9 +12,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -161,6 +164,20 @@ public class CommentsSingleton implements iCommentsSingleton {
         });
     }
 
+    @Override
+    public void rateUp(String commentId, String byUserId, final RatingCallbacks callbacks) {
+        changeRating(commentId, byUserId,1, callbacks);
+    }
+
+
+    @Override
+    public void rateDown(String commentId, String byUserId, RatingCallbacks callbacks) {
+        changeRating(commentId, byUserId, -1, callbacks);
+    }
+
+
+
+
     // Внутренние методы
     private void createComment(String commentKey, final Comment commentDraft, final CreateCallbacks callbacks) {
 
@@ -169,9 +186,9 @@ public class CommentsSingleton implements iCommentsSingleton {
         String commentPath = Constants.COMMENTS_PATH+"/"+commentKey;
         updatePool.put(commentPath, commentDraft);
 
-        String commentInCardPath = Constants.CARDS_PATH + "/" + commentDraft.getCardId() +
+        String commentInsdeCardPath = Constants.CARDS_PATH + "/" + commentDraft.getCardId() +
                 "/commentsKeys/" + commentKey;
-        updatePool.put(commentInCardPath, true);
+        updatePool.put(commentInsdeCardPath, true);
 
         firebaseDatabase.getReference().child("/")
                 .updateChildren(updatePool)
@@ -205,5 +222,52 @@ public class CommentsSingleton implements iCommentsSingleton {
                         e.printStackTrace();
                     }
                 });
+    }
+
+    // Внутренние методы
+    private void changeRating(final String commentId, final String byUserId, final int ratingDifference, final RatingCallbacks callbacks) {
+
+        DatabaseReference theCommentRef = commentsRef.child(commentId);
+
+        theCommentRef.runTransaction(new Transaction.Handler() {
+
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                Comment comment = mutableData.getValue(Comment.class);
+
+                if (null == comment) return Transaction.success(mutableData);
+
+                if (ratingDifference > 0) comment.rateUp(byUserId);
+                else comment.rateDown(byUserId);
+
+                mutableData.setValue(comment);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
+                if (null == databaseError && null != dataSnapshot) {
+
+                    Comment comment = dataSnapshot.getValue(Comment.class);
+
+                    if (null != comment) {
+                        if (ratingDifference > 0) callbacks.onRetedUp(comment);
+                        else callbacks.onRatedDown(comment);
+                    } else {
+                        Log.e(TAG, "Card from dataSnapshot is null");
+                    }
+
+                } else {
+                    String errorMsg = "Unknown error during rating update of card ("+commentId+").";
+                    if (null != databaseError) {
+                        errorMsg = databaseError.getMessage();
+                        databaseError.toException().printStackTrace();
+                    }
+                    callbacks.onRateFail(errorMsg);
+                }
+            }
+        });
     }
 }

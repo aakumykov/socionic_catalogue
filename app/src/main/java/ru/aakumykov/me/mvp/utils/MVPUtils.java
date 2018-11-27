@@ -4,16 +4,29 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ru.aakumykov.me.mvp.Constants;
 
 public class MVPUtils {
 
     private final static String TAG = "MVPUtils";
     private static Map<String,String> regexMap = new HashMap<>();
+    private static List<String> correctCardTypes = new ArrayList<>();
 
+    static {
+        correctCardTypes.add(Constants.TEXT_CARD);
+        correctCardTypes.add(Constants.IMAGE_CARD);
+        correctCardTypes.add(Constants.VIDEO_CARD);
+        correctCardTypes.add(Constants.AUDIO_CARD);
+    }
 
     /* Все регулярные выражения для применения к URL/видео-кодам YouTube
      * обязаны выделять код видео в ПЕРВОЙ группе. */
@@ -78,4 +91,51 @@ public class MVPUtils {
         return null;
     }
 
+    public static String normalizeTag(String tagName) {
+
+        // обрезаю черезмерно длинные
+//        if (tagName.length() > Constants.TAG_MAX_LENGTH) {
+//            tagName = tagName.substring(
+//                    0,
+//                    Math.min(tagName.length(),Constants.TAG_MAX_LENGTH)
+//            );
+//        }
+        tagName = MyUtils.cutToLength(tagName, Constants.TAG_MAX_LENGTH);
+
+        // отпинываю слишком короткия
+        if (tagName.length() < Constants.TAG_MIN_LENGTH) {
+            return null;
+        }
+
+        // перевожу в нижний регистр
+        tagName = tagName.toLowerCase();
+
+        // удаляю концевые пробелы
+        tagName = tagName.replaceAll("^\\s+|\\s+$", "");
+
+        // удаляю концевые запрещённые символы (пока не работает с [], а может, и чем-то ещё)
+//        tagName = tagName.replace("^/+|/+$", "");
+//        tagName = tagName.replace("^\\.+|\\.+$", "");
+//        tagName = tagName.replace("^#+|#+$", "");
+//        tagName = tagName.replace("^$+|$+$", "");
+//        tagName = tagName.replace("^\\[*|\\[*$", "");
+//        tagName = tagName.replace("^\\]*|\\]*[m$", "");
+
+        // заменяю внутренние запрещённые символы
+        tagName = tagName.replace("/", "_");
+        tagName = tagName.replace(".", "_");
+        tagName = tagName.replace("#", "_");
+        tagName = tagName.replace("$", "_");
+        tagName = tagName.replace("[", "_");
+        tagName = tagName.replace("]", "_");
+
+        // преобразую число в строку
+        if (tagName.matches("^[0-9]+$")) tagName = "_"+tagName+"_";
+
+        return tagName;
+    }
+
+    public static boolean isCorrectCardType(String cardType) {
+        return correctCardTypes.contains(cardType);
+    }
 }

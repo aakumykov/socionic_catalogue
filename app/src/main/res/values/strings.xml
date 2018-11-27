@@ -28,7 +28,7 @@
     <string name="quote">Цитата</string>
     <string name="description">Описание</string>
     <string name="save">Сохранить</string>
-    <string name="cancel">Отмена</string>
+    <string name="cancel">Отменить</string>
     <string name="edit">Изменить</string>
     <string name="delete">Удалить</string>
     <string name="saving_cancel">Сохранение отменено</string>
@@ -183,4 +183,11 @@
     <string name="CARD_EDIT_remove_this_video">Удалить это видео</string>
     <string name="CARD_SHOW_rating_update_error">Ошибка изменения рейтинга</string>
     <string name="CARD_EDIT_add_video">Добавить видео</string>
+    <string name="CARD_EDIT_page_title">Правка карточки</string>
+    <string name="CARD_tags">Метки</string>
+    <string name="not_yet_implamented">Ещё не реализовано</string>
+    <string name="CARD_EDIT_unsupported_card_type">Неподдерживаемый тип карточки</string>
+    <string name="CARD_EDIT_card_saved">Карточка сохранена</string>
+    <string name="CARD_EDIT_error_saving_tags">Ошибка сохранения меток</string>
+    <string name="CARD_EDIT_tags_are_saved">Метки сохранены</string>
 </resources>

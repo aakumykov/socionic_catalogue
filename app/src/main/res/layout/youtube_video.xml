@@ -82,14 +82,9 @@
     <FrameLayout
         android:id="@+id/videoPlayerHolder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="visible" />
+        android:layout_height="wrap_content">
 
-    <!--<com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView
-        android:id="@+id/youTubePlayerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />-->
+    </FrameLayout>
 
     <TextView
         android:id="@+id/descriptionView"

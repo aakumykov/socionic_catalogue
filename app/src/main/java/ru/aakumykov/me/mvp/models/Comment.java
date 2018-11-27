@@ -5,7 +5,9 @@ import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Comment implements Parcelable {
@@ -24,7 +26,9 @@ public class Comment implements Parcelable {
     private String userName;
     private String createdAt;
     private String editedAt;
-    private int rating = 0;
+    private Integer rating = 0;
+    private List<String> rateUpList = new ArrayList<>();
+    private List<String> rateDownList = new ArrayList<>();
     
     public Comment(){}
     
@@ -35,6 +39,9 @@ public class Comment implements Parcelable {
         this.parentText = parentText;
         this.userId = userId;
         this.userName = userName;
+        this.rating = 0;
+        this.rateUpList = new ArrayList<>();
+        this.rateDownList = new ArrayList<>();
     }
     
 
@@ -51,6 +58,8 @@ public class Comment implements Parcelable {
                 +", createdAt: "+createdAt
                 +", editedAt: "+editedAt
                 +", rating: "+rating
+                +", rateUpList: "+rateUpList
+                +", rateDownList: "+rateDownList
             +" }";
     }
 
@@ -67,6 +76,8 @@ public class Comment implements Parcelable {
             map.put("createdAt", createdAt);
             map.put("editedAt", editedAt);
             map.put("rating", rating);
+            map.put("rateUpList", rateUpList);
+            map.put("rateDownList", rateDownList);
         return map;
     }
 
@@ -102,6 +113,8 @@ public class Comment implements Parcelable {
         dest.writeString(createdAt);
         dest.writeString(editedAt);
         dest.writeInt(rating);
+        dest.writeList(this.rateUpList);
+        dest.writeList(this.rateDownList);
     }
 
     private Comment(Parcel in) {
@@ -115,6 +128,8 @@ public class Comment implements Parcelable {
         createdAt = in.readString();
         editedAt = in.readString();
         rating = in.readInt();
+        in.readStringList(rateUpList);
+        in.readStringList(rateDownList);
     }
     /* Parcelable */
 
@@ -184,9 +199,48 @@ public class Comment implements Parcelable {
     }
 
     public int getRating() {
-        return rating;
+        if (null == this.rating) return 0;
+        else return rating;
     }
     public void setRating(int rating) {
         this.rating = rating;
     }
+
+    public List<String> getRateUpList() {
+        return rateUpList;
+    }
+    public void setRateUpList(List<String> rateUpList) {
+        this.rateUpList = rateUpList;
+    }
+
+    public List<String> getRateDownList() {
+        return rateDownList;
+    }
+    public void setRateDownList(List<String> rateDownList) {
+        this.rateDownList = rateDownList;
+    }
+
+
+    @Exclude public void rateUp(String userId) {
+        if (!rateUpList.contains(userId)) {
+            rateUpList.add(userId);
+            setRating(rating+1);
+        }
+        rateDownList.remove(userId);
+    }
+    @Exclude public void rateDown(String userId) {
+        if (!rateDownList.contains(userId)) {
+            rateDownList.add(userId);
+            setRating(rating-1);
+        }
+        rateUpList.remove(userId);
+    }
+
+    @Exclude public boolean isRatedUpBy(String userId) {
+        return getRateUpList().contains(userId);
+    }
+    @Exclude public boolean isRatedDownBy(String userId) {
+        return getRateDownList().contains(userId);
+    }
+
 }

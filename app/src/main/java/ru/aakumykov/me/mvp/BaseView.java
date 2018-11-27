@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
+import ru.aakumykov.me.mvp.card_edit2.CardEdit2_View;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
@@ -24,6 +26,7 @@ import ru.aakumykov.me.mvp.services.AuthStateListener;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
+import ru.aakumykov.me.mvp.youtube.YoutubePage;
 
 public abstract class BaseView extends AppCompatActivity implements
     iBaseView
@@ -44,6 +47,8 @@ public abstract class BaseView extends AppCompatActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         // TODO: убрать вообще?
         authService = AuthSingleton.getInstance();
@@ -84,7 +89,7 @@ public abstract class BaseView extends AppCompatActivity implements
 
         MenuInflater menuInflater = getMenuInflater();
 
-//        menu.clear();
+        menuInflater.inflate(R.menu.youtube, menu);
 
         if (isUserLoggedIn()) {
             menuInflater.inflate(R.menu.user_in, menu);
@@ -120,6 +125,10 @@ public abstract class BaseView extends AppCompatActivity implements
 
             case R.id.actionCreate:
                 createCard();
+                break;
+
+            case R.id.actionYoutube:
+                goYoutubePage();
                 break;
 
             default:
@@ -170,21 +179,23 @@ public abstract class BaseView extends AppCompatActivity implements
     }
 
     @Override
+    public void showErrorMsg(int messageId, String consoleMessage) {
+        showErrorMsg(messageId);
+        Log.e(TAG, consoleMessage);
+    }
+
+    @Override
     public void showErrorMsg(int messageId) {
+        hideProgressBar();
         String message = getResources().getString(messageId);
         showErrorMsg(message);
     }
 
     @Override
     public void showErrorMsg(String message) {
+        hideProgressBar();
         showMsg(message, getResources().getColor(R.color.error));
         Log.e(TAG, message);
-    }
-
-    @Override
-    public void showErrorMsg(int messageId, String consoleMessage) {
-        showErrorMsg(messageId);
-        Log.e(TAG, consoleMessage);
     }
 
     private void showMsg(String text, int color) {
@@ -327,7 +338,7 @@ public abstract class BaseView extends AppCompatActivity implements
     }
 
     private void createCard() {
-        Intent intent = new Intent(this, CardEdit_View.class);
+        Intent intent = new Intent(this, CardEdit2_View.class);
 //        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         intent.setAction(Constants.ACTION_CREATE);
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
@@ -361,5 +372,10 @@ public abstract class BaseView extends AppCompatActivity implements
                 Log.d(TAG, "data: "+data);
                 break;
         }
+    }
+
+    private void goYoutubePage() {
+        Intent intent = new Intent(this, YoutubePage.class);
+        startActivity(intent);
     }
 }

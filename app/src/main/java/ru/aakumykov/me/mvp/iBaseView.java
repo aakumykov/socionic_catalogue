@@ -8,11 +8,9 @@ import ru.aakumykov.me.mvp.models.User;
 
 public interface iBaseView {
 
-    iCardsSingleton getCardsService();
     iAuthSingleton getAuthService();
 
     boolean isUserLoggedIn();
-//    FirebaseUser getCurrentUser();
 
     void showInfoMsg(int messageId);
     void showInfoMsg(String message);

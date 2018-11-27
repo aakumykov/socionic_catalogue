@@ -9,6 +9,7 @@ import java.util.List;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.comment.iComments;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCommentsSingleton;
@@ -18,6 +19,7 @@ import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.CommentsSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
+
 
 public class CardShow_Presenter implements
         iCardShow.Presenter,
@@ -193,6 +195,23 @@ public class CardShow_Presenter implements
         }
     }
 
+
+    // Оценка комментария
+
+
+    @Override
+    public void rateCommentUp(Comment comment, iCommentsSingleton.RatingCallbacks callbacks) {
+        if (authService.isUserLoggedIn()) {
+            commentsService.rateUp(comment.getKey(), authService.currentUserId(), callbacks);
+        }
+    }
+
+    @Override
+    public void rateCommentDown(Comment comment, iCommentsSingleton.RatingCallbacks callbacks) {
+        if (authService.isUserLoggedIn()) {
+            commentsService.rateDown(comment.getKey(), authService.currentUserId(), callbacks);
+        }
+    }
 
     // Реакция на кнопки
     @Override

@@ -3,9 +3,10 @@ package ru.aakumykov.me.mvp.card_show;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,16 +17,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerFragment;
-import com.google.android.youtube.player.YouTubePlayerView;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -37,20 +39,21 @@ import butterknife.ButterKnife;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.mvp.BaseView;
-import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
+import ru.aakumykov.me.mvp.card_edit2.CardEdit2_View;
+import ru.aakumykov.me.mvp.cards_list.CardsList_View;
 import ru.aakumykov.me.mvp.comment.CommentsAdapter;
 import ru.aakumykov.me.mvp.comment.iComments;
+import ru.aakumykov.me.mvp.interfaces.iCommentsSingleton;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
+import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.models.Comment;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.users.edit.UserEdit_View;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
-import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.cards_list.CardsList_View;
-import ru.aakumykov.me.mvp.models.Card;
 
 //TODO: уменьшение изображения
 
@@ -70,7 +73,6 @@ public class CardShow_View extends BaseView implements
     private ConstraintLayout imageHolder;
     private ProgressBar imageProgressBar;
     private ImageView imageView;
-    private YouTubePlayerView videoView;
     private TextView descriptionView;
     private TagContainerLayout tagsContainer;
     private TextView cardRatingView;
@@ -95,7 +97,10 @@ public class CardShow_View extends BaseView implements
     private Comment parentComment;
     private View currentCommentView;
 
-    private YouTubePlayerFragment youTubePlayerFragment;
+    private ProgressBar videoPlayerThrobber;
+    private FrameLayout videoPlayerHolder;
+    private YouTubePlayerView youTubePlayerView;
+    private YouTubePlayer youTubePlayer;
 
 
     // Системные методы
@@ -140,17 +145,15 @@ public class CardShow_View extends BaseView implements
 
         // Присоединяю адаптер списка
         commentsList = new ArrayList<>();
-        commentsAdapter = new CommentsAdapter(this, R.layout.comments_list_item,
-                commentsList, this);
+        commentsAdapter = new CommentsAdapter(this, getAuthService().currentUser(),
+                R.layout.comments_list_item, commentsList,this);
         mainListView.setAdapter(commentsAdapter);
 
-//        mainListView.setOnItemClickListener(this);
         tagsContainer.setOnTagClickListener(this);
 
-//        ytPlayer = new YTPlayer(videoView);
-
-        youTubePlayerFragment =
-                (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
+        videoPlayerThrobber = findViewById(R.id.videoPlayerThrobber);
+        videoPlayerHolder = findViewById(R.id.videoPlayerHolder);
+        youTubePlayerView = findViewById(R.id.youTubePlayerView);
 
         presenter = new CardShow_Presenter();
     }
@@ -171,6 +174,13 @@ public class CardShow_View extends BaseView implements
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != youTubePlayerView)
+            youTubePlayerView.release();
     }
 
     @Override
@@ -269,6 +279,55 @@ public class CardShow_View extends BaseView implements
             parentComment = comment;
             showCommentForm();
         }
+    }
+
+    // TODO: КРИВО!!! Сюда влезла служба!
+    @Override
+    public void onCommentRateUpClicked(final Comment comment) {
+        final Comment oldComment = comment;
+
+        presenter.rateCommentUp(comment, new iCommentsSingleton.RatingCallbacks() {
+            @Override
+            public void onRetedUp(Comment comment) {
+                int index = commentsList.indexOf(oldComment);
+                commentsList.set(index, comment);
+                commentsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onRatedDown(Comment comment) {
+                // не используется
+            }
+
+            @Override
+            public void onRateFail(String errorMsg) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onCommentRateDownClicked(final Comment comment) {
+        final Comment oldComment = comment;
+
+        presenter.rateCommentDown(comment, new iCommentsSingleton.RatingCallbacks() {
+            @Override
+            public void onRetedUp(Comment comment) {
+                // не используется
+            }
+
+            @Override
+            public void onRatedDown(Comment comment) {
+                int index = commentsList.indexOf(oldComment);
+                commentsList.set(index, comment);
+                commentsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onRateFail(String errorMsg) {
+
+            }
+        });
     }
 
     @Override
@@ -515,10 +574,14 @@ public class CardShow_View extends BaseView implements
     public void goEditPage(Card card) {
         Log.d(TAG, "goEditPage()");
 
-        Intent intent = new Intent(this, CardEdit_View.class);
+//        Intent intent = new Intent(this, CardEdit_View.class);
+//        intent.setAction(Constants.ACTION_EDIT);
+//        intent.putExtra(Constants.CARD_KEY, card.getKey());
+//        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+
+        Intent intent = new Intent(this, CardEdit2_View.class);
         intent.setAction(Constants.ACTION_EDIT);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
-
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
@@ -602,28 +665,28 @@ public class CardShow_View extends BaseView implements
 
     private void displayVideoCard(final Card card) {
         displayCommonCardParts(card);
-//        ytPlayer.setVideo(card.getVideoCode());
-//        MyUtils.show(videoView);
 
-        youTubePlayerFragment.initialize(Config.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
+        youTubePlayerView = new YouTubePlayerView(this);
+        int playerWidth = MyUtils.getScreenWidth(this);
+        int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9/16);
+        youTubePlayerView.setMinimumWidth(playerWidth);
+        youTubePlayerView.setMinimumHeight(playerHeight);
 
+        videoPlayerHolder.addView(youTubePlayerView);
+
+        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
             @Override
-            public void onInitializationSuccess(YouTubePlayer.Provider provider,
-                                                YouTubePlayer youTubePlayer, boolean wasRestored) {
-
-//                youTubePlayer.setFullscreenControlFlags(YouTubePlayer.FULLSCREEN_FLAG_CONTROL_ORIENTATION|YouTubePlayer.FULLSCREEN_FLAG_ALWAYS_FULLSCREEN_IN_LANDSCAPE);
-
-                if (!wasRestored) {
-                    youTubePlayer.cueVideo(card.getVideoCode());
-                }
+            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
+                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady() {
+                        youTubePlayer = initializedYouTubePlayer;
+                        youTubePlayer.cueVideo(card.getVideoCode(), 0.0f);
+                        MyUtils.show(youTubePlayerView);
+                    }
+                });
             }
-
-            @Override
-            public void onInitializationFailure(YouTubePlayer.Provider provider,
-                                                YouTubeInitializationResult youTubeInitializationResult) {
-                showErrorMsg("Ошибка настройки видео");
-            }
-        });
+        }, true);
     }
 
     private void displayCommonCardParts(Card card) {

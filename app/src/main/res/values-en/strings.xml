@@ -178,4 +178,11 @@
     <string name="CARD_EDIT_remove_this_video">Remove this video</string>
     <string name="CARD_SHOW_rating_update_error">Error rating update</string>
     <string name="CARD_EDIT_add_video">Add video</string>
+    <string name="CARD_EDIT_page_title">Card edition</string>
+    <string name="CARD_tags">Tags</string>
+    <string name="not_yet_implamented">Not yet implementer</string>
+    <string name="CARD_EDIT_unsupported_card_type">Unsupported card type</string>
+    <string name="CARD_EDIT_card_saved">Card saved</string>
+    <string name="CARD_EDIT_error_saving_tags">Error saving tags</string>
+    <string name="CARD_EDIT_tags_are_saved">Tags are saved</string>
 </resources>

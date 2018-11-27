@@ -185,6 +185,7 @@ public class Card implements Parcelable {
         return description;
     }
     public HashMap<String, Boolean> getTags() {
+        if (null == tags) this.tags = new HashMap<>();
         return tags;
     }
     public int getCommentsCount() { return commentsCount; }
@@ -224,7 +225,7 @@ public class Card implements Parcelable {
     public void setTitle(String title) {
         this.title = title;
     }
-    public void setQuote(String quote) throws Exception {
+    public void setQuote(String quote) {
         this.quote = quote;
     }
     public void setImageURL(String imageURL) throws IllegalArgumentException {

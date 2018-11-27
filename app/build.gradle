@@ -5,7 +5,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "ru.aakumykov.me.mvp"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -58,6 +58,6 @@ dependencies {
     // Saripaar
 //    implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
 
-    // YoutubePlayer
-    implementation files('libs/YouTubeAndroidPlayerApi.jar')
+    // android-youutbe-player
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:8.0.1'
 }
