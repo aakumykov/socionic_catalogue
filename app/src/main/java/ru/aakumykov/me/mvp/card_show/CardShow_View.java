@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
 import android.util.Log;
@@ -502,16 +503,6 @@ public class CardShow_View extends BaseView implements
         MyUtils.hide(cardRatingThrobber);
         MyUtils.show(cardRatingView);
         cardRatingView.setText(String.valueOf(value));
-
-        String currentUserId = getAuthService().currentUserId();
-
-        if (currentCard.isRatedUpBy(currentUserId)) {
-            colorizeCardRatingAsUp();
-        }
-
-        if (currentCard.isRatedDownBy(currentUserId)) {
-            colorizeCardRatingAsDown();
-        }
     }
 
     @Override
@@ -886,30 +877,9 @@ public class CardShow_View extends BaseView implements
         }
     }
 
-    private void proceedPostComment(Intent data) {
-
-        if (null == data) {
-            // TODO: Исключение бы сюда... или это предсказуемые данные?
-            showErrorMsg(R.string.data_error, "Intent data is null");
-            return;
-        }
-
-        this.parentComment = data.getParcelableExtra(Constants.PARENT_COMMENT);
-        showCommentForm();
-    }
-
     private void colorizeCardRatingAsUp() {
-//        Drawable upNeutralIcon = getResources().getDrawable(R.drawable.ic_thumb_up_neutral);
-//        Drawable downColoredIcon = getResources().getDrawable(R.drawable.ic_thumb_down_colored);
-//        cardRateUpButton.invalidateDrawable(upNeutralIcon);
-//        cardRateDownButton.invalidateDrawable(downColoredIcon);
-
         Drawable upColoredIcon = getResources().getDrawable(R.drawable.ic_thumb_up_colored);
         Drawable downNeutralIcon = getResources().getDrawable(R.drawable.ic_thumb_down_neutral);
-
-        cardRateUpButton.invalidate();
-        cardRateDownButton.invalidate();
-
         cardRateUpButton.setImageDrawable(upColoredIcon);
         cardRateDownButton.setImageDrawable(downNeutralIcon);
     }

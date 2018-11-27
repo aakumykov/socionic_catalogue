@@ -27,11 +27,11 @@ public class Card implements Parcelable {
     private String videoCode;
     private String description;
     private HashMap<String, Boolean> tags;
-    private int commentsCount = 0;
+    private int commentsCount;
     private HashMap<String, Boolean> commentsKeys;
-    private Integer rating = 0;
-    private List<String> rateUpList = new ArrayList<>();
-    private List<String> rateDownList = new ArrayList<>();
+    private Integer rating;
+    private HashMap<String, Boolean> rateUpList;
+    private HashMap<String, Boolean> rateDownList;
 
     public Card() {
 
@@ -44,8 +44,7 @@ public class Card implements Parcelable {
             String quote,
             String imageURL,
             String videoCode,
-            String description,
-            HashMap<String,Boolean> tagsMap
+            String description
     )
     {
         setType(type);
@@ -54,11 +53,12 @@ public class Card implements Parcelable {
         setImageURL(imageURL);
         setVideoCode(videoCode);
         this.description = description;
-        this.tags = tagsMap;
+
+        this.tags = new HashMap<>();
         this.commentsCount = 0;
         this.rating = 0;
-        this.rateUpList = new ArrayList<>();
-        this.rateDownList = new ArrayList<>();
+        this.rateUpList = new HashMap<>();
+        this.rateDownList = new HashMap<>();
     }
 
     @Exclude
@@ -73,12 +73,14 @@ public class Card implements Parcelable {
                 ", imageURL: "+imageURL+
                 ", videoCode: "+videoCode +
                 ", description: "+getDescription()+
-                ", tags: "+ getTags()+
+                ", tags: "+tags.keySet().toString()+
                 ", commentsCount: "+getCommentsCount()+
                 ", commentsKeys: "+getCommentsKeys()+
                 ", rating: "+getRating()+
-                ", rateUpList: "+rateUpList+
-                ", rateDownList: "+rateDownList+
+//                ", rateUpList: "+getRateUpList()+
+//                ", rateDownList: "+getRateDownList()+
+                ", rateUpList: "+rateUpList.keySet().toString()+
+                ", rateDownList: "+rateDownList.keySet().toString()+
             " }";
     }
 
@@ -118,8 +120,8 @@ public class Card implements Parcelable {
         dest.writeInt(this.commentsCount);
         dest.writeMap(this.commentsKeys);
         dest.writeInt(this.rating);
-        dest.writeList(this.rateUpList);
-        dest.writeList(this.rateDownList);
+        dest.writeMap(this.rateUpList);
+        dest.writeMap(this.rateDownList);
     }
 
     protected Card(Parcel in) {
@@ -136,8 +138,8 @@ public class Card implements Parcelable {
         commentsCount = in.readInt();
         commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         rating = in.readInt();
-        in.readStringList(rateUpList);
-        in.readStringList(rateDownList);
+        rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+        rateDownList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
     }
 
     @Override
@@ -191,16 +193,16 @@ public class Card implements Parcelable {
     public int getCommentsCount() { return commentsCount; }
     public HashMap<String, Boolean> getCommentsKeys() { return commentsKeys; }
     public int getRating() {
-        if (null == this.rating) return 0;
-        else return rating;
+        return rating;
     }
-    public List<String> getRateUpList() {
+    public HashMap<String, Boolean> getRateUpList() {
+        if (null == rateUpList) this.rateUpList = new HashMap<>();
         return rateUpList;
     }
-    public List<String> getRateDownList() {
+    public HashMap<String, Boolean> getRateDownList() {
+        if (null == rateDownList) this.rateDownList = new HashMap<>();
         return rateDownList;
     }
-
 
     // Сеттеры
     public void setUserId(String userId) {
@@ -242,7 +244,7 @@ public class Card implements Parcelable {
         this.description = description;
     }
     public void setTags(HashMap<String, Boolean> tags) {
-        this.tags = tags;
+        this.tags.putAll(tags);
     }
     public void setCommentsCount(int count) { this.commentsCount = count; }
     public void setCommentsKeys(HashMap<String, Boolean> commentsKeys) {
@@ -250,11 +252,13 @@ public class Card implements Parcelable {
     }
     // Этот метод не публичный
     private void setRating(int ratingValue) { this.rating = ratingValue; }
-    public void setRateUpList(List<String> rateUpList) {
-        this.rateUpList = rateUpList;
+    public void setRateUpList(List<String> list) {
+        for (String key : list)
+            this.rateUpList.put(key, true);
     }
-    public void setRateDownList(List<String> rateDownList) {
-        this.rateDownList = rateDownList;
+    public void setRateDownList(List<String> list) {
+        for (String key : list)
+            this.rateDownList.put(key, true);
     }
 
     // Служебные
@@ -282,24 +286,26 @@ public class Card implements Parcelable {
     }
 
     @Exclude public void rateUp(String userId) {
-        if (!rateUpList.contains(userId)) {
-            rateUpList.add(userId);
+        if (!isRatedUpBy(userId)) {
+            rateUpList.put(userId, true);
             setRating(rating+1);
         }
-        rateDownList.remove(userId);
+        if (isRatedDownBy(userId)) rateDownList.remove(userId);
     }
     @Exclude public void rateDown(String userId) {
-        if (!rateDownList.contains(userId)) {
-            rateDownList.add(userId);
+        if (!isRatedDownBy(userId)) {
+            rateDownList.put(userId, true);
             setRating(rating-1);
         }
-        rateUpList.remove(userId);
+        if (isRatedUpBy(userId)) rateUpList.remove(userId);
     }
 
     @Exclude public boolean isRatedUpBy(String userId) {
-        return getRateUpList().contains(userId);
+        if (null == rateUpList) return false;
+        return rateUpList.containsKey(userId);
     }
     @Exclude public boolean isRatedDownBy(String userId) {
-        return getRateDownList().contains(userId);
+        if (null == rateDownList) return false;
+        return rateDownList.containsKey(userId);
     }
 }
