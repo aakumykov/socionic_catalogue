@@ -35,7 +35,7 @@ public interface iUsers {
 
         String getName();
         String getAbout();
-        Uri getImageURI();
+        byte[] getImageData() throws Exception;
 
         void storeImageURI(Uri imageURI);
 
@@ -55,11 +55,6 @@ public interface iUsers {
         void linkView(View view) throws IllegalArgumentException;
         void unlinkView();
 
-        void updateUser(String newName, String newAbout);
-
-        void userEditClicked();
-        void userDeleteClicked(String userId);
-        void saveButtonClicked(String userId, iUsersSingleton.SaveCallbacks callbacks);
         void cancelButtonClicked();
 
         void loadList(iUsersSingleton.ListCallbacks callbacks);
@@ -67,8 +62,8 @@ public interface iUsers {
 
         void loadUser(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception;
         void prepareUserEdit(String userId);
+
         void saveProfile();
-//        void deleteUser(User user);
 
         void processSelectedImage(@Nullable Intent intent);
     }

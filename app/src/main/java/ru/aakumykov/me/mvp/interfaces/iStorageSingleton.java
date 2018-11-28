@@ -5,6 +5,7 @@ import android.net.Uri;
 public interface iStorageSingleton {
 
     void uploadImage(Uri localImageURI, String remoteImagePath, FileUploadCallbacks callbacks);
+    void uploadImage(byte[] imageByteArray, String remoteImagePath, FileUploadCallbacks callbacks);
     void deleteImage(String remoteImagePath, FileDeleteCallbacks callbacks);
 
     interface FileUploadCallbacks {

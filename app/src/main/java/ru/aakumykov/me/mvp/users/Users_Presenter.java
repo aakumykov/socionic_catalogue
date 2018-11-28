@@ -74,55 +74,10 @@ public class Users_Presenter implements
 
     // Пользовательские методы
     @Override
-    public void updateUser(String newName, String newAbout) {
-
-        if (!authService.isUserLoggedIn()) {
-            editView.showErrorMsg(R.string.USER_EDIT_you_are_not_logged_in);
-            return;
-        }
-
-        currentUser.setName(newName);
-        currentUser.setAbout(newAbout);
-        usersService.saveUser(currentUser, this);
-    }
-
-    @Override
-    public void userEditClicked() {
-        showView.goUserEdit();
-    }
-
-    @Override
-    public void userDeleteClicked(String userId) {
-
-    }
-
-    @Override
-    public void saveButtonClicked(String userId, iUsersSingleton.SaveCallbacks callbacks) {
-        Log.d(TAG, "saveButtonClicked("+userId+", callbacks)");
-
-        // TODO: привязка этого пользователя к пользователю Firebase!
-//        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-//        String currentUserId = currentUser.getUid();
-
-        // TODO: проверочку бы здесь! Важно ведь.
-        User user = new User();
-        user.setKey(userId);
-        user.setName(editView.getName());
-        user.setAbout(editView.getAbout());
-
-        editView.showInfoMsg(R.string.saving_user);
-        editView.showProgressBar();
-        editView.disableEditForm();
-
-        usersService.saveUser(user, callbacks);
-    }
-
-    @Override
     public void cancelButtonClicked() {
         Log.d(TAG, "cancelButtonClicked()");
         editView.closePage();
     }
-
 
     @Override
     public void loadList(iUsersSingleton.ListCallbacks callbacks) {
@@ -152,6 +107,7 @@ public class Users_Presenter implements
 
     @Override
     public void saveProfile() {
+
         String name = editView.getName();
         if (TextUtils.isEmpty(name)) {
             editView.showErrorMsg(R.string.USER_EDIT_name_cannot_be_empty);
@@ -161,36 +117,44 @@ public class Users_Presenter implements
         currentUser.setName(name);
         currentUser.setAbout(editView.getAbout());
 
-        Uri imageURI = editView.getImageURI();
+        try {
+            byte[] imageByteArray = editView.getImageData();
+            String remoteFileName = Constants.AVATARS_PATH+"/"+authService.currentUserId()+".jpg";
 
-        editView.showAvatarThrobber();
-        editView.disableEditForm();
+            editView.showAvatarThrobber();
+            editView.disableEditForm();
 
-        storageService.uploadImage(imageURI, Constants.AVATARS_PATH, new iStorageSingleton.FileUploadCallbacks() {
-            @Override
-            public void onUploadProgress(int progress) {
+            storageService.uploadImage(imageByteArray, remoteFileName, new iStorageSingleton.FileUploadCallbacks() {
+                @Override
+                public void onUploadProgress(int progress) {
 
-            }
+                }
 
-            @Override
-            public void onUploadSuccess(String downloadURL) {
-                editView.hideAvatarThrobber();
-                currentUser.setAvatarURL(downloadURL);
-                saveUser();
-            }
+                @Override
+                public void onUploadSuccess(String downloadURL) {
+                    editView.hideAvatarThrobber();
+                    currentUser.setAvatarURL(downloadURL);
+                    saveUser();
+                }
 
-            @Override
-            public void onUploadFail(String errorMsg) {
-                editView.hideAvatarThrobber();
-                editView.enableEditForm();
-            }
+                @Override
+                public void onUploadFail(String errorMsg) {
+                    editView.hideAvatarThrobber();
+                    editView.enableEditForm();
+                }
 
-            @Override
-            public void onUploadCancel() {
-                editView.hideAvatarThrobber();
-                editView.enableEditForm();
-            }
-        });
+                @Override
+                public void onUploadCancel() {
+                    editView.hideAvatarThrobber();
+                    editView.enableEditForm();
+                }
+            });
+
+        } catch (Exception e) {
+            editView.showErrorMsg(R.string.USER_EDIT_error_processing_avatar, e.getMessage());
+            e.printStackTrace();
+            return;
+        }
     }
 
     @Override
@@ -214,6 +178,8 @@ public class Users_Presenter implements
         }
 
         editView.displayAvatar(imageURI.toString(), true);
+
+
     }
 
 

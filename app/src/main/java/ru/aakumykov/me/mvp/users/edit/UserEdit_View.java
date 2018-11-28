@@ -141,7 +141,8 @@ public class UserEdit_View extends BaseView implements
             Uri uri = Uri.parse(imageURI);
             showAvatarThrobber();
 
-            MVPUtils.loadImageWithResizeInto(avatarView, uri, justSelected, new iMVPUtils.ImageLoadWithResizeCallbacks() {
+            MVPUtils.loadImageWithResizeInto(uri, avatarView, justSelected,
+                    new iMVPUtils.ImageLoadWithResizeCallbacks() {
                 @Override
                 public void onImageLoadWithResizeSuccess(FileInfo fileInfo) {
                     hideAvatarThrobber();
@@ -174,6 +175,11 @@ public class UserEdit_View extends BaseView implements
     }
 
     @Override
+    public byte[] getImageData() throws Exception {
+        return MVPUtils.imageView2Bitmap(avatarView);
+    }
+
+    @Override
     public void finishEdit(User user, boolean isSuccessfull) {
         Intent intent = new Intent();
         intent.putExtra(Constants.USER, user);
@@ -183,8 +189,6 @@ public class UserEdit_View extends BaseView implements
 
         finish();
     }
-
-
 
 
     // Нажатия
@@ -214,6 +218,7 @@ public class UserEdit_View extends BaseView implements
 
     @OnClick(R.id.cancelButton)
     void cancelEdit() {
+        // TODO: останавливать отправку картинки... Но как?
         presenter.cancelButtonClicked();
     }
 
@@ -236,11 +241,6 @@ public class UserEdit_View extends BaseView implements
     @Override
     public void storeImageURI(Uri imageURI) {
         avatarURL.setTag(R.id.avatar_uri, imageURI);
-    }
-
-    @Override
-    public Uri getImageURI() {
-        return (Uri) avatarURL.getTag(R.id.avatar_uri);
     }
 
     @Override

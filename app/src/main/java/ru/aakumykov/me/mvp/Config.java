@@ -9,4 +9,5 @@ public final class Config {
     public final static int AVATAR_MAX_WIDTH = 256;
     public final static int AVATAR_MAX_HEIGHT = 455;
 
+    public static final int JPEG_QUALITY = 90;
 }

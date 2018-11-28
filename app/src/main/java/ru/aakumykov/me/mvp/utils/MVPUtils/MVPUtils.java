@@ -3,6 +3,8 @@ package ru.aakumykov.me.mvp.utils.MVPUtils;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
@@ -11,6 +13,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -147,22 +150,22 @@ public class MVPUtils {
     }
 
     public static void loadImageWithResizeInto(
-            final ImageView imageView,
             final Uri imageURI,
+            final ImageView targetImageView,
             final boolean unprocessedYet,
             final iMVPUtils.ImageLoadWithResizeCallbacks callbacks
 
     ) throws Exception
     {
         Picasso.get().load(imageURI)
-                .into(imageView, new Callback() {
+                .into(targetImageView, new Callback() {
 
             @Override
             public void onSuccess() {
 
                 // Изменение размера картинки, если это первая загрузка "с диска"
                 if (unprocessedYet) {
-                    Drawable drawable = imageView.getDrawable();
+                    Drawable drawable = targetImageView.getDrawable();
                     int initialWidth = drawable.getIntrinsicWidth();
                     int initialHeight = drawable.getIntrinsicHeight();
 
@@ -179,10 +182,10 @@ public class MVPUtils {
 
                     Picasso.get().load(imageURI)
                             .resize(destWidth, destHeight)
-                            .into(imageView, new Callback() {
+                            .into(targetImageView, new Callback() {
                                 @Override
                                 public void onSuccess() {
-                                    Drawable drawable = imageView.getDrawable();
+                                    Drawable drawable = targetImageView.getDrawable();
                                     int width = drawable.getIntrinsicWidth();
                                     int height = drawable.getIntrinsicHeight();
 
@@ -198,7 +201,7 @@ public class MVPUtils {
                             });
                 }
                 else {
-                    Drawable drawable = imageView.getDrawable();
+                    Drawable drawable = targetImageView.getDrawable();
                     int width = drawable.getIntrinsicWidth();
                     int height = drawable.getIntrinsicHeight();
                     callbacks.onImageLoadWithResizeSuccess(new FileInfo(width, height));
@@ -219,5 +222,10 @@ public class MVPUtils {
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
     }
 
-
+    public static byte[] imageView2Bitmap(ImageView imageView) throws Exception {
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, Config.JPEG_QUALITY, baos);
+        return baos.toByteArray();
+    }
 }

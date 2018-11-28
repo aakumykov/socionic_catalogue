@@ -134,7 +134,7 @@ public class UserShow_View extends BaseView implements
                 goUserEdit();
                 break;
             case R.id.actionDelete:
-                presenter.userDeleteClicked(currentUser.getKey());
+//                presenter.userDeleteClicked(currentUser.getKey());
                 break;
             default:
                 super.onOptionsItemSelected(item);
