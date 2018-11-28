@@ -25,6 +25,7 @@ import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.StorageSingleton;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
 import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.mvp.utils.MVPUtils.iMVPUtils;
 
 public class Users_Presenter implements
         iUsers.Presenter,
@@ -200,40 +201,19 @@ public class Users_Presenter implements
             return;
         }
 
+        // Первый способ получить содержимое
         Uri imageURI = data.getParcelableExtra(Intent.EXTRA_STREAM);
 
+        // Второй способ получить содержимое
         if (null == imageURI) {
-
             imageURI = data.getData();
-
             if (null == imageURI) {
                 editView.showErrorMsg(R.string.USER_EDIT_no_image_data);
                 return;
             }
         }
 
-//        ContentResolver contentResolver =  editView.getContentResolver();
-//        String mimeType = contentResolver.getType(imageURI);
-//        String fileExtension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
-//
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inJustDecodeBounds = true;
-//
-//        String path = imageURI.getPath();
-//
-//        try {
-//            InputStream inputStream = contentResolver.openInputStream(imageURI);
-//            BitmapFactory.decodeStream(inputStream);
-//            int width = options.outWidth;
-//            int height = options.outHeight;
-//            int space = width * height;
-//
-//        } catch (Exception e) {}
-
-        String ext = MVPUtils.uri2ext(editView.getApplicationContext(), imageURI);
-
-        editView.storeImageURI(imageURI);
-        editView.displayAvatar(imageURI.toString());
+        editView.displayAvatar(imageURI.toString(), true);
     }
 
 

@@ -155,10 +155,13 @@ public class MVPUtils {
 
     ) throws Exception
     {
-        Picasso.get().load(imageURI).into(imageView, new Callback() {
+        Picasso.get().load(imageURI)
+                .into(imageView, new Callback() {
+
             @Override
             public void onSuccess() {
 
+                // Изменение размера картинки, если это первая загрузка "с диска"
                 if (unprocessedYet) {
                     Drawable drawable = imageView.getDrawable();
                     int initialWidth = drawable.getIntrinsicWidth();

@@ -17,6 +17,14 @@ public class FileInfo {
         this.height = height;
     }
 
+    @Override
+    public String toString() {
+        return "FileInfo {"+
+                "width: "+width+
+                ", height: "+height+
+                " }";
+    }
+
     public Integer getWidth() {
         return width;
     }
