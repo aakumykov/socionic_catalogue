@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -29,6 +31,9 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.users.Users_Presenter;
 import ru.aakumykov.me.mvp.users.iUsers;
+import ru.aakumykov.me.mvp.utils.MVPUtils.FileInfo;
+import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.mvp.utils.MVPUtils.iMVPUtils;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 // TODO: выбрасывание со страницы при разлогинивании
@@ -127,38 +132,32 @@ public class UserEdit_View extends BaseView implements
         aboutInput.setText(user.getAbout());
 
         String avatarURL = user.getAvatarURL();
-        if (!TextUtils.isEmpty(avatarURL)) displayAvatar(avatarURL);
+        if (!TextUtils.isEmpty(avatarURL)) displayAvatar(avatarURL, false);
     }
 
     @Override
-    public void displayAvatar(String imageURI) {
+    public void displayAvatar(String imageURI, boolean justSelected) {
         try {
             Uri uri = Uri.parse(imageURI);
             showAvatarThrobber();
 
-            Picasso.get()
-                    .load(uri)
-                    .resize(512, 0)
-                    .into(avatarView, new Callback() {
+            MVPUtils.loadImageWithResizeInto(this, avatarView, uri, justSelected, new iMVPUtils.ImageLoadWithResizeCallbacks() {
                 @Override
-                public void onSuccess() {
+                public void onImageLoadWithResizeSuccess(FileInfo fileInfo) {
                     hideAvatarThrobber();
-
-                    Drawable drawable = avatarView.getDrawable();
-                    int intrinsicWidth = drawable.getIntrinsicWidth();
-                    int intrinsicHeight = drawable.getIntrinsicHeight();
-                    Rect rect = drawable.getBounds();
-
+                    Log.d(TAG, fileInfo.toString());
                 }
 
                 @Override
-                public void onError(Exception e) {
+                public void onImageLoadWithResizeFail(String errorMsg) {
                     hideAvatarThrobber();
                     showImageIsBroken(avatarView);
+                    Log.e(TAG, errorMsg);
                 }
             });
 
         } catch (Exception e) {
+            hideAvatarThrobber();
             showImageIsBroken(avatarView);
             e.printStackTrace();
         }

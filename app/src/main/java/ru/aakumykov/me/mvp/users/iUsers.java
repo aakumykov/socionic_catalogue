@@ -31,7 +31,7 @@ public interface iUsers {
 
     interface EditView  extends iBaseView, View {
         void fillUserForm(User user);
-        void displayAvatar(String imageURL);
+        void displayAvatar(String imageURL, boolean justSelected);
 
         String getName();
         String getAbout();
