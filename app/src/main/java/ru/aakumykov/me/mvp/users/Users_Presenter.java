@@ -157,6 +157,7 @@ public class Users_Presenter implements
         Uri imageURI = editView.getImageURI();
 
         editView.showAvatarThrobber();
+        editView.disableEditForm();
 
         storageService.uploadImage(imageURI, Constants.AVATARS_PATH, new iStorageSingleton.FileUploadCallbacks() {
             @Override
@@ -174,17 +175,20 @@ public class Users_Presenter implements
             @Override
             public void onUploadFail(String errorMsg) {
                 editView.hideAvatarThrobber();
+                editView.enableEditForm();
             }
 
             @Override
             public void onUploadCancel() {
                 editView.hideAvatarThrobber();
+                editView.enableEditForm();
             }
         });
     }
 
     @Override
     public void processSelectedImage(@Nullable Intent data) {
+
         if (null == data) {
             editView.showErrorMsg(R.string.USER_EDIT_error_selecting_image);
             return;
