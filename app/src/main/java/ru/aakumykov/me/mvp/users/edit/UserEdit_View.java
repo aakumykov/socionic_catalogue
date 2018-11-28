@@ -141,7 +141,7 @@ public class UserEdit_View extends BaseView implements
             Uri uri = Uri.parse(imageURI);
             showAvatarThrobber();
 
-            MVPUtils.loadImageWithResizeInto(this, avatarView, uri, justSelected, new iMVPUtils.ImageLoadWithResizeCallbacks() {
+            MVPUtils.loadImageWithResizeInto(avatarView, uri, justSelected, new iMVPUtils.ImageLoadWithResizeCallbacks() {
                 @Override
                 public void onImageLoadWithResizeSuccess(FileInfo fileInfo) {
                     hideAvatarThrobber();

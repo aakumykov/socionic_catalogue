@@ -147,7 +147,6 @@ public class MVPUtils {
     }
 
     public static void loadImageWithResizeInto(
-            Context context,
             final ImageView imageView,
             final Uri imageURI,
             final boolean unprocessedYet,
@@ -219,4 +218,6 @@ public class MVPUtils {
         String mimeType = contentResolver.getType(uri);
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
     }
+
+
 }
