@@ -31,9 +31,7 @@ public class UserShow_View extends BaseView implements
         iUsersSingleton.ReadCallbacks
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
-//    @BindView(R.id.nameLabel) TextView nameLabel;
     @BindView(R.id.nameView) TextView nameView;
-//    @BindView(R.id.aboutLabel) TextView aboutLabel;
     @BindView(R.id.aboutView) TextView aboutView;
     @BindView(R.id.avatarView) ImageView avatarView;
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
@@ -53,6 +51,8 @@ public class UserShow_View extends BaseView implements
         ButterKnife.bind(this);
 
         setPageTitle(R.string.USER_page_title);
+
+        showProgressBar();
 
         presenter = new Users_Presenter();
 

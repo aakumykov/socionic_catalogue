@@ -205,6 +205,7 @@ public class Users_Presenter implements
     // Методы обратного вызова
     @Override
     public void onUserReadSuccess(final User user) {
+        editView.hideProgressBar();
         currentUser = user;
         editView.hideProgressBar();
         editView.fillUserForm(user);
@@ -212,6 +213,7 @@ public class Users_Presenter implements
 
     @Override
     public void onUserReadFail(String errorMsg) {
+        editView.hideProgressBar();
         editView.hideProgressBar();
         editView.showErrorMsg(R.string.USER_EDIT_error_loading_data, errorMsg);
     }
