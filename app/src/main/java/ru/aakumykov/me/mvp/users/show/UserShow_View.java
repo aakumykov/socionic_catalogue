@@ -115,9 +115,6 @@ public class UserShow_View extends BaseView implements
     public boolean onCreateOptionsMenu(Menu menu) {
         if (isUserLoggedIn()) {
             getMenuInflater().inflate(R.menu.edit, menu);
-            getMenuInflater().inflate(R.menu.logout, menu);
-        } else {
-            getMenuInflater().inflate(R.menu.login, menu);
         }
         return true;
     }

@@ -103,7 +103,7 @@
     <string name="LOGIN_login_failed">Login failed</string>
     <string name="LOGIN_login_success">Login success</string>
     <string name="LOGIN_cancel">Cancel</string>
-    <string name="LOGIN_logging_in">Making login</string>
+    <string name="LOGIN_logging_in">Logging in</string>
     <string name="LOGIN_login">Log in</string>
     <string name="AUTH_error_logging_out">Logout error</string>
     <string name="ERROR_creating_card">Error creating card</string>
