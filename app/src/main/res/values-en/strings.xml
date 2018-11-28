@@ -66,7 +66,7 @@
     <string name="error_displaying_user">Error displaying user</string>
     <string name="data_loading_data">Error loading data</string>
     <string name="error_loading_data">Error loading data</string>
-    <string name="USER_EDIT_error_saving_user">User saving error</string>
+    <string name="USER_EDIT_error_saving_user">Error saving user</string>
     <string name="saving_user">Saving user</string>
     <string name="error_saving_user">Error saving user</string>
     <string name="user_saved">User saved</string>

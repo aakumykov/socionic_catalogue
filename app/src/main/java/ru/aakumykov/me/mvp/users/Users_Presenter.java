@@ -40,7 +40,9 @@ public class Users_Presenter implements
     private iUsersSingleton usersService = UsersSingleton.getInstance();
     private iAuthSingleton authService = AuthSingleton.getInstance();
     private iStorageSingleton storageService = StorageSingleton.getInstance();
+
     private User currentUser;
+    private String editedUserId;
 
     // Системные методы
     @Override
@@ -74,6 +76,31 @@ public class Users_Presenter implements
 
     // Пользовательские методы
     @Override
+    public void prepareUserEdit(String userId) throws Exception {
+        if (authService.isUserLoggedIn())
+        {
+            if (authService.currentUserId().equals(userId))
+            {
+                usersService.getUser(userId, this);
+            }
+            else {
+                throw new IllegalAccessException("Cannot edit profile of another user.");
+            }
+        }
+        else {
+            throw new IllegalAccessException("You must be logged in.");
+        }
+    }
+
+    @Override
+    public void loadUser(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception {
+        if (null == userId) {
+            throw new Exception("userId == null");
+        }
+        usersService.getUser(userId, callbacks);
+    }
+
+    @Override
     public void cancelButtonClicked() {
         Log.d(TAG, "cancelButtonClicked()");
         editView.closePage();
@@ -92,21 +119,15 @@ public class Users_Presenter implements
     }
 
     @Override
-    public void loadUser(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception {
-        if (null == userId) {
-            throw new Exception("userId == null");
+    public void saveProfile() throws Exception {
+
+        if (!authService.isUserLoggedIn()) {
+            throw new IllegalAccessException("You is not logged in.");
         }
-        usersService.getUser(userId, callbacks);
-    }
 
-    @Override
-    public void prepareUserEdit(String userId)  {
-        Log.d(TAG, "prepareUserEdit("+userId+")");
-        usersService.getUser(userId, this);
-    }
-
-    @Override
-    public void saveProfile() {
+        if (!authService.currentUserId().equals(editedUserId)) {
+            throw new IllegalAccessException("Cannot save profile of another user.");
+        }
 
         String name = editView.getName();
         if (TextUtils.isEmpty(name)) {
@@ -186,8 +207,9 @@ public class Users_Presenter implements
     // Методы обратного вызова
     @Override
     public void onUserReadSuccess(final User user) {
-        editView.hideProgressBar();
         currentUser = user;
+        editedUserId = user.getKey();
+
         editView.hideProgressBar();
         editView.fillUserForm(user);
     }

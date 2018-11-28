@@ -55,17 +55,19 @@ public interface iUsers {
         void linkView(View view) throws IllegalArgumentException;
         void unlinkView();
 
-        void cancelButtonClicked();
-
-        void loadList(iUsersSingleton.ListCallbacks callbacks);
-        void listItemClicked(String key);
+        void prepareUserEdit(String userId) throws Exception;
 
         void loadUser(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception;
-        void prepareUserEdit(String userId);
-
-        void saveProfile();
 
         void processSelectedImage(@Nullable Intent intent);
+
+        void loadList(iUsersSingleton.ListCallbacks callbacks);
+
+        void listItemClicked(String key);
+
+        void saveProfile() throws Exception;
+
+        void cancelButtonClicked();
     }
 
 }

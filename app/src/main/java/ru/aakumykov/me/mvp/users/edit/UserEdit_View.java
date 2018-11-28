@@ -121,7 +121,7 @@ public class UserEdit_View extends BaseView implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionSave:
-                presenter.saveProfile();
+                saveUser();
                 break;
             default:
                 super.onOptionsItemSelected(item);
@@ -233,7 +233,12 @@ public class UserEdit_View extends BaseView implements
 
     @OnClick(R.id.saveButton)
     void saveUser() {
-        presenter.saveProfile();
+        try {
+            presenter.saveProfile();
+        } catch (Exception e) {
+            showErrorMsg(R.string.USER_EDIT_error_saving_user, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @OnClick(R.id.cancelButton)
