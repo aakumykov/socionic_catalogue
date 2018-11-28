@@ -197,4 +197,5 @@
     <string name="USER_SHOW_about">О себе</string>
     <string name="DESCRIPTION_user_avatar">Аватар пользователя</string>
     <string name="USER_EDIT_error_processing_avatar">Ошибка обработки аватара</string>
+    <string name="DESCRIPTION_comment_author_avatar">Аватар автора комментария</string>
 </resources>

@@ -192,4 +192,5 @@
     <string name="USER_SHOW_about">About</string>
     <string name="DESCRIPTION_user_avatar">User avatar</string>
     <string name="USER_EDIT_error_processing_avatar">Error processing avatar</string>
+    <string name="DESCRIPTION_comment_author_avatar">Comment\'s author avatar</string>
 </resources>
