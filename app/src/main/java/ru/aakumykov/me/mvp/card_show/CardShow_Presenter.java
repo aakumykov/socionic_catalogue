@@ -120,7 +120,8 @@ public class CardShow_Presenter implements
                 null,
                 null,
                 authService.currentUserId(),
-                authService.currentUserName()
+                authService.currentUserName(),
+                null
         );
         postComment(comment);
     }
@@ -133,7 +134,8 @@ public class CardShow_Presenter implements
                 parentComment.getKey(),
                 parentComment.getText(),
                 authService.currentUserId(),
-                authService.currentUserName()
+                authService.currentUserName(),
+                null
         );
         postComment(comment);
     }

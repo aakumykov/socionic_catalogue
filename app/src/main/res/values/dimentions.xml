@@ -14,4 +14,8 @@
 
     <dimen name="avatar_width">512sp</dimen>
     <dimen name="avatar_height">512sp</dimen>
+
+    <dimen name="comment_avatar_width">30dp</dimen>
+    <dimen name="comment_avatar_height">30dp</dimen>
+
 </resources>
