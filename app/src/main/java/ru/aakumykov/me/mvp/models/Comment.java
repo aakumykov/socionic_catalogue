@@ -24,6 +24,7 @@ public class Comment implements Parcelable {
     private String parentText;
     private String userId;
     private String userName;
+    private String userAvatar;
     private String createdAt;
     private String editedAt;
     private Integer rating = 0;
@@ -32,13 +33,15 @@ public class Comment implements Parcelable {
     
     public Comment(){}
     
-    public Comment(String text, String cardId, String parentId, String parentText, String userId, String userName) {
+    public Comment(String text, String cardId, String parentId,
+                   String parentText, String userId, String userName, String userAvatar) {
         this.text = text;
         this.cardId = cardId;
         this.parentId = parentId;
         this.parentText = parentText;
         this.userId = userId;
         this.userName = userName;
+        this.userAvatar = userAvatar;
         this.rating = 0;
         this.rateUpList = new ArrayList<>();
         this.rateDownList = new ArrayList<>();
@@ -55,6 +58,7 @@ public class Comment implements Parcelable {
                 +", parentText: "+parentText
                 +", userId: "+userId
                 +", userName: "+userName
+                +", userAvatar: "+userAvatar
                 +", createdAt: "+createdAt
                 +", editedAt: "+editedAt
                 +", rating: "+rating
@@ -73,6 +77,7 @@ public class Comment implements Parcelable {
             map.put("parentText", parentText);
             map.put("userId", userId);
             map.put("userName", userName);
+            map.put("userAvatar", userAvatar);
             map.put("createdAt", createdAt);
             map.put("editedAt", editedAt);
             map.put("rating", rating);
@@ -110,6 +115,7 @@ public class Comment implements Parcelable {
         dest.writeString(parentText);
         dest.writeString(userId);
         dest.writeString(userName);
+        dest.writeString(userAvatar);
         dest.writeString(createdAt);
         dest.writeString(editedAt);
         dest.writeInt(rating);
@@ -125,6 +131,7 @@ public class Comment implements Parcelable {
         parentId = in.readString();
         userId = in.readString();
         userName = in.readString();
+        userAvatar = in.readString();
         createdAt = in.readString();
         editedAt = in.readString();
         rating = in.readInt();
@@ -182,6 +189,13 @@ public class Comment implements Parcelable {
     }
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserAvatar() {
+        return userAvatar;
+    }
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
     }
 
     public String getCreatedAt() {
