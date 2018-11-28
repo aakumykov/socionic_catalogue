@@ -111,9 +111,12 @@ public class UserShow_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.edit, menu);
-        super.onCreateOptionsMenu(menu);
+        if (isUserLoggedIn()) {
+            getMenuInflater().inflate(R.menu.edit, menu);
+            getMenuInflater().inflate(R.menu.logout, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.login, menu);
+        }
         return true;
     }
 
@@ -144,7 +147,7 @@ public class UserShow_View extends BaseView implements
 
     @Override
     public void onUserLogout() {
-        closePage();
+
     }
 
 
