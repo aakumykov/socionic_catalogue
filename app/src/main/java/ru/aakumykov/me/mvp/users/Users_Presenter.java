@@ -1,14 +1,19 @@
 package ru.aakumykov.me.mvp.users;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import java.io.InputStream;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
@@ -19,6 +24,7 @@ import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.StorageSingleton;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
+import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
 
 public class Users_Presenter implements
         iUsers.Presenter,
@@ -206,6 +212,26 @@ public class Users_Presenter implements
             }
         }
 
+//        ContentResolver contentResolver =  editView.getContentResolver();
+//        String mimeType = contentResolver.getType(imageURI);
+//        String fileExtension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
+//
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        options.inJustDecodeBounds = true;
+//
+//        String path = imageURI.getPath();
+//
+//        try {
+//            InputStream inputStream = contentResolver.openInputStream(imageURI);
+//            BitmapFactory.decodeStream(inputStream);
+//            int width = options.outWidth;
+//            int height = options.outHeight;
+//            int space = width * height;
+//
+//        } catch (Exception e) {}
+
+        String ext = MVPUtils.uri2ext(editView.getApplicationContext(), imageURI);
+
         editView.storeImageURI(imageURI);
         editView.displayAvatar(imageURI.toString());
     }
@@ -258,5 +284,12 @@ public class Users_Presenter implements
                 editView.enableEditForm();
             }
         });
+    }
+
+    private void detectImageWidthAndHeight(Uri imageURI) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+
+//        BitmapFactory.decodeFile(imageURI)
     }
 }

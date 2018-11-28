@@ -1,5 +1,7 @@
 package ru.aakumykov.me.mvp.users;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
@@ -13,7 +15,9 @@ import ru.aakumykov.me.mvp.models.User;
 
 public interface iUsers {
 
-    interface View {} // Это объединение нужно для работы linkView / unlinkView
+    interface View {
+
+    } // Это объединение нужно для работы linkView / unlinkView
 
     interface ListView  extends iBaseView, View {
         void displayList(List<User> list);
@@ -42,6 +46,9 @@ public interface iUsers {
         void disableEditForm();
 
         void finishEdit(User user, boolean isSuccessfull);
+
+        ContentResolver getContentResolver();
+        Context getApplicationContext();
     }
 
     interface Presenter {

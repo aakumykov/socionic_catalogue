@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.users.edit;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -134,10 +135,20 @@ public class UserEdit_View extends BaseView implements
         try {
             Uri uri = Uri.parse(imageURI);
             showAvatarThrobber();
-            Picasso.get().load(uri).into(avatarView, new Callback() {
+
+            Picasso.get()
+                    .load(uri)
+                    .resize(512, 0)
+                    .into(avatarView, new Callback() {
                 @Override
                 public void onSuccess() {
                     hideAvatarThrobber();
+
+                    Drawable drawable = avatarView.getDrawable();
+                    int intrinsicWidth = drawable.getIntrinsicWidth();
+                    int intrinsicHeight = drawable.getIntrinsicHeight();
+                    Rect rect = drawable.getBounds();
+
                 }
 
                 @Override
@@ -175,10 +186,26 @@ public class UserEdit_View extends BaseView implements
     }
 
 
+
+
     // Нажатия
     @OnClick(R.id.avatarView)
     void selectAvatar() {
-        selectImage();
+        Intent intent = new Intent();
+        intent.setType("image/*");
+//        intent.setType("*/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        if (null != intent.resolveActivity(getPackageManager())) {
+            startActivityForResult(
+                    Intent.createChooser(intent, getResources().getString(R.string.select_image)),
+                    Constants.CODE_SELECT_IMAGE
+            );
+        }
+        else {
+            showErrorMsg(R.string.USER_EDIT_error_selecting_image);
+            Log.e(TAG, "Error resolving activity for Intent.ACTION_GET_CONTENT");
+        }
     }
 
     @OnClick(R.id.saveButton)
@@ -236,23 +263,6 @@ public class UserEdit_View extends BaseView implements
 
 
     // Внутренние методы
-    private void selectImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-
-        if (null != intent.resolveActivity(getPackageManager())) {
-            startActivityForResult(
-                    Intent.createChooser(intent, getResources().getString(R.string.select_image)),
-                    Constants.CODE_SELECT_IMAGE
-            );
-        }
-        else {
-            showErrorMsg(R.string.USER_EDIT_error_selecting_image);
-            Log.e(TAG, "Error resolving activity for Intent.ACTION_GET_CONTENT");
-        }
-    }
-
     private void showImageIsBroken(ImageView imageView) {
         Drawable brokenImage = imageView.getContext().getResources().getDrawable(R.drawable.ic_image_broken);
         imageView.setImageDrawable(brokenImage);
