@@ -2,12 +2,12 @@ package ru.aakumykov.me.mvp.users.edit;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -124,6 +124,33 @@ public class UserEdit_View extends BaseView implements
         hideProgressBar();
         nameInput.setText(user.getName());
         aboutInput.setText(user.getAbout());
+
+        String avatarURL = user.getAvatarURL();
+        if (!TextUtils.isEmpty(avatarURL)) displayAvatar(avatarURL);
+    }
+
+    @Override
+    public void displayAvatar(String imageURI) {
+        try {
+            Uri uri = Uri.parse(imageURI);
+            showAvatarThrobber();
+            Picasso.get().load(uri).into(avatarView, new Callback() {
+                @Override
+                public void onSuccess() {
+                    hideAvatarThrobber();
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    hideAvatarThrobber();
+                    showImageIsBroken(avatarView);
+                }
+            });
+
+        } catch (Exception e) {
+            showImageIsBroken(avatarView);
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -181,25 +208,6 @@ public class UserEdit_View extends BaseView implements
     }
 
     @Override
-    public void displayAvatar(final Uri imageURI) {
-        Picasso.get()
-                .load(imageURI)
-                .resizeDimen(R.dimen.avatar_width, R.dimen.avatar_height)
-                .into(avatarView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        storeImageURI(imageURI);
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-
-                    }
-                });
-
-    }
-
-    @Override
     public void storeImageURI(Uri imageURI) {
         avatarURL.setTag(R.id.avatar_uri, imageURI);
     }
@@ -220,8 +228,15 @@ public class UserEdit_View extends BaseView implements
     }
 
 
+    // TODO: делать это во время выбора
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    void checkPermissions() {
+
+    }
+
+
     // Внутренние методы
-    public void selectImage() {
+    private void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -238,10 +253,8 @@ public class UserEdit_View extends BaseView implements
         }
     }
 
-
-    // TODO: делать это во время выбора
-    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-    void checkPermissions() {
-
+    private void showImageIsBroken(ImageView imageView) {
+        Drawable brokenImage = imageView.getContext().getResources().getDrawable(R.drawable.ic_image_broken);
+        imageView.setImageDrawable(brokenImage);
     }
 }

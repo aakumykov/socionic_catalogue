@@ -3,6 +3,7 @@ package ru.aakumykov.me.mvp.users;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -26,19 +27,19 @@ public interface iUsers {
 
     interface EditView  extends iBaseView, View {
         void fillUserForm(User user);
+        void displayAvatar(String imageURL);
 
         String getName();
         String getAbout();
+        Uri getImageURI();
 
-        void enableEditForm();
-        void disableEditForm();
+        void storeImageURI(Uri imageURI);
 
         void showAvatarThrobber();
         void hideAvatarThrobber();
 
-        void displayAvatar(Uri imageURI);
-        void storeImageURI(Uri imageURI);
-        Uri getImageURI();
+        void enableEditForm();
+        void disableEditForm();
 
         void finishEdit(User user, boolean isSuccessfull);
     }

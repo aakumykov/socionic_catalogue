@@ -1,6 +1,8 @@
 package ru.aakumykov.me.mvp.users.show;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -169,22 +171,7 @@ public class UserShow_View extends BaseView implements
         MyUtils.show(aboutView);
 
         showAvatarThrobber();
-
-        Picasso.get()
-                .load(user.getAvatarURL())
-                .into(avatarView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        hideAvatarThrobber();
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        hideAvatarThrobber();
-                        showErrorMsg(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
+        displayAvatar(user.getAvatarURL());
     }
 
     @Override
@@ -258,5 +245,33 @@ public class UserShow_View extends BaseView implements
         }
 
         displayUser(user);
+    }
+
+    private void displayAvatar(String imageURI) {
+        try {
+            Uri uri = Uri.parse(imageURI);
+            showAvatarThrobber();
+            Picasso.get().load(uri).into(avatarView, new Callback() {
+                @Override
+                public void onSuccess() {
+                    hideAvatarThrobber();
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    hideAvatarThrobber();
+                    showImageIsBroken(avatarView);
+                }
+            });
+
+        } catch (Exception e) {
+            showImageIsBroken(avatarView);
+            e.printStackTrace();
+        }
+    }
+
+    private void showImageIsBroken(ImageView imageView) {
+        Drawable brokenImage = imageView.getContext().getResources().getDrawable(R.drawable.ic_image_broken);
+        imageView.setImageDrawable(brokenImage);
     }
 }

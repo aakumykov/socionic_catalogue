@@ -5,6 +5,10 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
@@ -198,7 +202,8 @@ public class Users_Presenter implements
             }
         }
 
-        editView.displayAvatar(imageURI);
+        editView.storeImageURI(imageURI);
+        editView.displayAvatar(imageURI.toString());
     }
 
 
