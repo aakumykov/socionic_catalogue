@@ -195,4 +195,8 @@
     <string name="DESCRIPTION_comment_author_avatar">Comment\'s author avatar</string>
     <string name="DIALOG_MESSAGE_incorrect_youtube_video_link">Incorrect Youtube video link</string>
     <string name="CARD_EDIT_error_processing_image">Error processing image</string>
+    <string name="CARD_EDIT_error_saving_image">Error saving image</string>
+    <string name="CARD_EDIT_image_upload_cancelled">Image upload cancelled</string>
+    <string name="CARD_EDIT_uploading_image">Uploading image</string>
+    <string name="CARD_EDIT_saving_card">Saving card</string>
 </resources>

@@ -3,6 +3,7 @@ package ru.aakumykov.me.mvp.card;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.Arrays;
@@ -126,6 +127,8 @@ public class CardEdit_Presenter implements
             }
         }
 
+        currentCard.setImageURL("");
+
         view.displayImage(imageURI.toString(), true);
     }
 
@@ -137,6 +140,9 @@ public class CardEdit_Presenter implements
         view.showProgressBar();
 
         currentCard.setTitle(view.getCardTitle());
+        currentCard.setDescription(view.getCardDescription());
+         newTags = view.getCardTags(); // Новые метки сохраняются для последующего обновления БД
+        currentCard.setTags(newTags);
 
         // TODO: В самой Card можно просто игнорировать цитату для нетекстовой карты...
         if (currentCard.getType().equals(Constants.TEXT_CARD)) {
@@ -144,40 +150,67 @@ public class CardEdit_Presenter implements
         }
 
         if (currentCard.getType().equals(Constants.VIDEO_CARD)) {
-            String rawVideoCode = view.getCardVideoCode();
-
-            String videoCode = MVPUtils.extractYoutubeVideoCode(rawVideoCode);
-            if (null == videoCode) {
-                throw new Exception("Invalid video string: '"+rawVideoCode+"'");
-            }
-
+            String videoCode = view.getCardVideoCode();
             currentCard.setVideoCode(videoCode);
         }
 
-        currentCard.setDescription(view.getCardDescription());
+        if (currentCard.getType().equals(Constants.IMAGE_CARD)) {
 
-        newTags = view.getCardTags();
-        currentCard.setTags(newTags);
+            /* Если картинка была изменена, imageURL в currentCard стирается,
+             * а после отправки картинки на сервер, устанавливается.
+             * При повторном вызове, ориентируясь на это, выгрузка картинки будет пропущена.*/
 
-        /* Схема работы:
-         1) картинка отправляется на сервер;
-         2) карточке присваивается серверный адрес картинки;
-         3) локальный адрес стирается;
-         4) метод "сохранить" вызывается ешё раз. */
-        Uri localImageURI = currentCard.getLocalImageURI();
+            if (TextUtils.isEmpty(currentCard.getImageURL())) {
+                // Здесь сохраняется изображение
 
-        if (null != currentCard.getLocalImageURI()) {
-            Log.d(TAG, "Отправляю картинку");
-            view.showImageProgressBar();
+                String remoteImageFileName = authService.currentUserId()+".jpg";
+                view.showInfoMsg(R.string.CARD_EDIT_uploading_image);
+                view.showImageProgressBar();
+                view.disableForm();
 
-            String remoteFilePath = makeRemoteFileName();
-            storageService.uploadImage(localImageURI, remoteFilePath, this);
+                try {
+                    storageService.uploadImage(view.getImageData(), remoteImageFileName, this);
+
+                } catch (Exception e) {
+                    view.hideImageProgressBar();
+                    view.enableForm();
+
+                    view.showErrorMsg(R.string.CARD_EDIT_error_saving_image, e.getMessage());
+                    e.printStackTrace();
+                    return;
+                }
+
+            }
+            else  {
+                // Здесь сохраняется карточка
+                view.showInfoMsg(R.string.CARD_EDIT_saving_card);
+                cardsService.updateCard(currentCard, this);
+            }
         }
-        else {
-            Log.d(TAG, "Сохраняю карточку");
-            cardsService.updateCard(currentCard, this);
-        }
+
+
+
+//        /* Схема работы:
+//         1) картинка отправляется на сервер;
+//         2) карточке присваивается серверный адрес картинки;
+//         3) локальный адрес стирается;
+//         4) метод "сохранить" вызывается ешё раз. */
+//        Uri localImageURI = currentCard.getLocalImageURI();
+//
+//        if (null != currentCard.getLocalImageURI()) {
+//            Log.d(TAG, "Отправляю картинку");
+//            view.showImageProgressBar();
+//
+//            String remoteFilePath = makeRemoteFileName();
+//            storageService.uploadImage(localImageURI, remoteFilePath, this);
+//        }
+//        else {
+//            Log.d(TAG, "Сохраняю карточку");
+//            cardsService.updateCard(currentCard, this);
+//        }
     }
+
+
 
     @Override
     public void setCardType(String cardType) {
@@ -206,16 +239,6 @@ public class CardEdit_Presenter implements
 //        }
 //
 //        return null;
-    }
-
-    @Override
-    public void forgetCurrentData() {
-        currentCard.clearLocalImageURI();
-        currentCard.clearMimeType();
-
-        currentCard = null;
-        newTags = new HashMap<>();
-        oldTags = null;
     }
 
 
@@ -260,8 +283,6 @@ public class CardEdit_Presenter implements
                 null
         );
 
-        forgetCurrentData();
-
         view.hideProgressBar();
         view.finishEdit(card);
     }
@@ -280,13 +301,9 @@ public class CardEdit_Presenter implements
 
     @Override
     public void onUploadSuccess(String downloadURL) {
-
-        currentCard.clearLocalImageURI();
-        currentCard.clearMimeType();
+        view.hideImageProgressBar();
 
         currentCard.setImageURL(downloadURL);
-
-        view.hideImageProgressBar();
 
         try {
             saveCard();
@@ -298,14 +315,16 @@ public class CardEdit_Presenter implements
 
     @Override
     public void onUploadFail(String errorMsg) {
-//        view.hideImageProgressBar();
+        view.hideImageProgressBar();
         view.enableForm();
+        view.showErrorMsg(R.string.CARD_EDIT_error_saving_image, errorMsg);
     }
 
     @Override
     public void onUploadCancel() {
-//        view.hideImageProgressBar();
-//        view.enableForm();
+        view.hideImageProgressBar();
+        view.enableForm();
+        view.showErrorMsg(R.string.CARD_EDIT_image_upload_cancelled);
     }
 
 

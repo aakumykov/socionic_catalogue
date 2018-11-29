@@ -24,8 +24,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -254,33 +252,6 @@ public class CardEdit_View extends BaseView implements
         quoteView.setText(text);
     }
 
-//    @Override
-//    public void displayImage(final Uri imageURI) {
-//
-//        switchImageMode();
-//
-//        Picasso.get().load(imageURI)
-//                .into(imageView, new Callback() {
-//                    @Override
-//                    public void onSuccess() {
-////                        storeImageURI(imageURI);
-//                        MyUtils.hide(imageProgressBar);
-//                        MyUtils.hide(imagePlaceholder);
-//                        MyUtils.show(imageView);
-//                        MyUtils.show(discardImageButton);
-//                    }
-//
-//                    @Override
-//                    public void onError(Exception e) {
-////                        clearImageURI();
-//                        MyUtils.hide(imageProgressBar);
-//                        showBrokenImage();
-//                        showErrorMsg(R.string.error_loading_image);
-//                        e.printStackTrace();
-//                    }
-//                });
-//    }
-
     @Override
     public void displayImage(String imageURI, boolean unprocessedYet) {
 
@@ -302,10 +273,12 @@ public class CardEdit_View extends BaseView implements
                         public void onImageLoadWithResizeSuccess(FileInfo fileInfo) {
                             hideImageProgressBar();
 
+                            MyUtils.hide(imagePlaceholder);
+
                             MyUtils.show(mediaHolder);
                             MyUtils.show(imageHolder);
                             MyUtils.show(imageView);
-                            MyUtils.hide(imagePlaceholder);
+                            MyUtils.show(discardImageButton);
                         }
 
                         @Override
@@ -355,10 +328,9 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void showBrokenImage() {
-        imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
-        MyUtils.show(imageView);
-        MyUtils.show(imageHolder);
-//        MyUtils.hide(discardImageButton);
+        MyUtils.hide(imageView);
+        imagePlaceholder.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
+        MyUtils.hide(imagePlaceholder);
     }
 
     @Override
@@ -384,6 +356,11 @@ public class CardEdit_View extends BaseView implements
             map.put(tagName, true);
         }
         return map;
+    }
+
+    @Override
+    public byte[] getImageData() throws Exception {
+        return MVPUtils.imageView2Bitmap(imageView);
     }
 
     @Override
@@ -551,10 +528,9 @@ public class CardEdit_View extends BaseView implements
     void removeImage() {
         MyUtils.hide(imageView);
         MyUtils.hide(discardImageButton);
-        MyUtils.show(imagePlaceholder);
 
-//        clearImageURI();
-        presenter.forgetCurrentData();
+        imagePlaceholder.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_placeholder));
+        MyUtils.show(imagePlaceholder);
     }
 
     @OnClick(R.id.imagePlaceholder)

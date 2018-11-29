@@ -31,6 +31,8 @@ public interface iCardEdit {
 
         HashMap<String,Boolean> getCardTags();
 
+        byte[] getImageData() throws Exception;
+
         void storeCardVideoCode(String videoCode);
         String getCardVideoCode();
 
@@ -65,7 +67,5 @@ public interface iCardEdit {
 
         void setCardType(String cardType);
         void saveCard() throws Exception;
-
-        void forgetCurrentData();
     }
 }
