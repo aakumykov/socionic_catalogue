@@ -288,7 +288,8 @@ public class CardEdit_View extends BaseView implements
                         }
                     }
             );
-        } catch (Exception e) {
+
+        }catch (Exception e) {
             hideImageProgressBar();
             showBrokenImage();
             e.printStackTrace();
@@ -330,7 +331,7 @@ public class CardEdit_View extends BaseView implements
     public void showBrokenImage() {
         MyUtils.hide(imageView);
         imagePlaceholder.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
-        MyUtils.hide(imagePlaceholder);
+        MyUtils.show(imagePlaceholder);
     }
 
     @Override
