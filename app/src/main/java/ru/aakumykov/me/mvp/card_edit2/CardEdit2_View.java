@@ -368,7 +368,7 @@ public class CardEdit2_View extends BaseView implements
     @OnClick(R.id.addVideoButton)
     void addVideo() {
         // TODO: проверка на пустоту, да и на формат...
-        MyDialogs.addVideoDialog(
+        MyDialogs.addYoutubeVideoDialog(
                 this,
                 new iMyDialogs.StringInputCallback() {
                     @Override

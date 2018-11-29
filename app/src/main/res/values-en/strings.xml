@@ -155,7 +155,7 @@
     <string name="DIALOG_input_text">Input some text</string>
     <string name="COMMENT_saved">Comment saved</string>
     <string name="COMMENT_added">Comment added</string>
-    <string name="COMMENT_cannot_be_empty">Cannot be empty</string>
+    <string name="DIALOG_MESSAGE_cannot_be_empty">Cannot be empty</string>
     <string name="action_denied">Action denied</string>
     <string name="DIALOG_delete_comment">Delete comment?</string>
     <string name="CARDS_LIST_error_deleting_card">Error deleting card</string>
@@ -193,4 +193,5 @@
     <string name="DESCRIPTION_user_avatar">User avatar</string>
     <string name="USER_EDIT_error_processing_avatar">Error processing avatar</string>
     <string name="DESCRIPTION_comment_author_avatar">Comment\'s author avatar</string>
+    <string name="DIALOG_MESSAGE_incorrect_youtube_video_link">Incorrect Youtube video link</string>
 </resources>

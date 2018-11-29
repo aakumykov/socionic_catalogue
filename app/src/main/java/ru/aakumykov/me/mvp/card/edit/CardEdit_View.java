@@ -39,7 +39,6 @@ import co.lujun.androidtagview.TagView;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.BaseView;
-import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.CardEdit_Presenter;
@@ -450,7 +449,7 @@ public class CardEdit_View extends BaseView implements
 
     @OnClick(R.id.addVideoButton)
     void addVideo() {
-        MyDialogs.addVideoDialog(this, new iMyDialogs.StringInputCallback() {
+        MyDialogs.addYoutubeVideoDialog(this, new iMyDialogs.StringInputCallback() {
             @Override
             public void onDialogWithStringYes(String text) {
                 videoCodeView.setText(text);

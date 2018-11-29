@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
+import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
 
 public class MyDialogs {
 
@@ -36,7 +37,7 @@ public class MyDialogs {
 
     // TODO: сделать единый диалог ввода строки
     // Диалог добавления код видео
-    public static void addVideoDialog(Activity activity, final iMyDialogs.StringInputCallback callbacks) {
+    public static void addYoutubeVideoDialog(Activity activity, final iMyDialogs.StringInputCallback callbacks) {
         String title = activity.getString(R.string.CARD_EDIT_video_code);
 
         final View view = activity.getLayoutInflater().inflate(R.layout.dialog_text_input, null);
@@ -66,9 +67,18 @@ public class MyDialogs {
                     @Override
                     public void onClick(View v) {
                         String newText = editText.getText().toString();
+
                         if (TextUtils.isEmpty(newText)) {
-                            dialogErrorView.setText(view.getResources().getString(R.string.COMMENT_cannot_be_empty));
-                        } else {
+                            showErrorMessage(view, R.string.DIALOG_MESSAGE_cannot_be_empty);
+                            return;
+                        }
+
+                        if (!MVPUtils.isYoutubeLink(newText)) {
+                            showErrorMessage(view, R.string.DIALOG_MESSAGE_incorrect_youtube_video_link);
+                            return;
+                        }
+
+                        else {
                             dialog.dismiss();
                             callbacks.onDialogWithStringYes(newText);
                         }
@@ -116,7 +126,7 @@ public class MyDialogs {
                     public void onClick(View v) {
                         String newText = editText.getText().toString();
                         if (TextUtils.isEmpty(newText)) {
-                            dialogErrorView.setText(view.getResources().getString(R.string.COMMENT_cannot_be_empty));
+                            dialogErrorView.setText(view.getResources().getString(R.string.DIALOG_MESSAGE_cannot_be_empty));
                         } else {
                             dialog.dismiss();
                             callbacks.onDialogWithStringYes(newText);
@@ -245,5 +255,12 @@ public class MyDialogs {
         }
 
         return dialogBuilder.create();
+    }
+
+    private static void showErrorMessage(View view, int stringResourceId) {
+        TextView dialogErrorView = view.findViewById(R.id.dialogErrorView);
+        if (null != dialogErrorView) {
+            dialogErrorView.setText(view.getResources().getString(stringResourceId));
+        }
     }
 }
