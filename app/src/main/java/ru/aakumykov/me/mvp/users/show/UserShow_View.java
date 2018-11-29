@@ -1,14 +1,20 @@
 package ru.aakumykov.me.mvp.users.show;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,10 +33,10 @@ public class UserShow_View extends BaseView implements
         iUsersSingleton.ReadCallbacks
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
-    @BindView(R.id.nameLabel) TextView nameLabel;
     @BindView(R.id.nameView) TextView nameView;
-    @BindView(R.id.aboutLabel) TextView aboutLabel;
     @BindView(R.id.aboutView) TextView aboutView;
+    @BindView(R.id.avatarView) ImageView avatarView;
+    @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
 
     private final static String TAG = "UserShow_View";
     private iUsers.Presenter presenter;
@@ -48,12 +54,13 @@ public class UserShow_View extends BaseView implements
 
         setPageTitle(R.string.USER_page_title);
 
+        showProgressBar();
+
         presenter = new Users_Presenter();
 
         try {
             Intent intent = getIntent();
             String userId = intent.getStringExtra(Constants.USER_ID);
-            Log.d(TAG, "userId: "+userId);
             presenter.loadUser(userId, this);
 
         } catch (Exception e) {
@@ -77,7 +84,7 @@ public class UserShow_View extends BaseView implements
             case RESULT_CANCELED:
                 return;
             default:
-                showErrorMsg(R.string.USER_EDIT_user_saving_error, "Unknown resultCode: "+resultCode);
+                showErrorMsg(R.string.USER_EDIT_error_saving_user, "Unknown resultCode: "+resultCode);
                 return;
         }
 
@@ -106,9 +113,9 @@ public class UserShow_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.edit, menu);
-        super.onCreateOptionsMenu(menu);
+        if (isUserLoggedIn()) {
+            getMenuInflater().inflate(R.menu.edit, menu);
+        }
         return true;
     }
 
@@ -121,10 +128,10 @@ public class UserShow_View extends BaseView implements
                 closePage();
                 break;
             case R.id.actionEdit:
-                editUser();
+                goUserEdit();
                 break;
             case R.id.actionDelete:
-                presenter.userDeleteClicked(currentUser.getKey());
+//                presenter.userDeleteClicked(currentUser.getKey());
                 break;
             default:
                 super.onOptionsItemSelected(item);
@@ -139,7 +146,7 @@ public class UserShow_View extends BaseView implements
 
     @Override
     public void onUserLogout() {
-        closePage();
+
     }
 
 
@@ -155,10 +162,13 @@ public class UserShow_View extends BaseView implements
         nameView.setText(user.getName());
         aboutView.setText(user.getAbout());
 
-        MyUtils.show(nameLabel);
+//        MyUtils.show(nameLabel);
         MyUtils.show(nameView);
-        MyUtils.show(aboutLabel);
+//        MyUtils.show(aboutLabel);
         MyUtils.show(aboutView);
+
+        showAvatarThrobber();
+        displayAvatar(user.getAvatarURL());
     }
 
     @Override
@@ -185,6 +195,7 @@ public class UserShow_View extends BaseView implements
 
 
     // Внутренние методы
+
 //    private void processActivityResult(int requestCode, @Nullable Intent data) {
 //        Log.d(TAG, "processActivityResult()");
 //
@@ -211,11 +222,12 @@ public class UserShow_View extends BaseView implements
 //        }
 //    }
 
-    private void editUser() {
-        Intent intent = new Intent(this, UserEdit_View.class);
-        intent.putExtra(Constants.USER_ID, currentUser.getKey());
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivityForResult(intent, Constants.CODE_USER_EDIT);
+    private void showAvatarThrobber() {
+        MyUtils.show(avatarThrobber);
+    }
+
+    private void hideAvatarThrobber() {
+        MyUtils.hide(avatarThrobber);
     }
 
     private void displayEditedUser(Intent data) {
@@ -230,5 +242,33 @@ public class UserShow_View extends BaseView implements
         }
 
         displayUser(user);
+    }
+
+    private void displayAvatar(String imageURI) {
+        try {
+            Uri uri = Uri.parse(imageURI);
+            showAvatarThrobber();
+            Picasso.get().load(uri).into(avatarView, new Callback() {
+                @Override
+                public void onSuccess() {
+                    hideAvatarThrobber();
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    hideAvatarThrobber();
+                    showImageIsBroken(avatarView);
+                }
+            });
+
+        } catch (Exception e) {
+            showImageIsBroken(avatarView);
+            e.printStackTrace();
+        }
+    }
+
+    private void showImageIsBroken(ImageView imageView) {
+        Drawable brokenImage = imageView.getContext().getResources().getDrawable(R.drawable.ic_image_broken);
+        imageView.setImageDrawable(brokenImage);
     }
 }

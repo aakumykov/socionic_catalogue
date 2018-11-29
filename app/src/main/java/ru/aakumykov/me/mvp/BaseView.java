@@ -56,18 +56,20 @@ public abstract class BaseView extends AppCompatActivity implements
         // TODO: storageSingleton
 
         // Слушатель изменений авторизации
-        iAuthStateListener authStateListener =
-                new AuthStateListener(new iAuthStateListener.StateChangeCallbacks() {
+        iAuthStateListener authStateListener = new AuthStateListener(new iAuthStateListener.StateChangeCallbacks() {
+
+            // Осторожно с этими методами!
             @Override
             public void onLoggedIn() {
                 invalidateOptionsMenu();
-//                onUserLogin();
+                onUserLogin();
             }
 
+            // Осторожно с этими методами!
             @Override
             public void onLoggedOut() {
                 invalidateOptionsMenu();
-//                onUserLogout();
+                onUserLogout();
             }
         });
     }

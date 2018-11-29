@@ -11,12 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".login.Login_View"
             android:noHistory="true" />
+
         <activity
             android:name=".register.Register_View"
             android:noHistory="true" />
+
         <activity android:name=".cards_list.CardsList_View">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,20 +27,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".card_show.CardShow_View"
             android:parentActivityName=".cards_list.CardsList_View" />
         <activity android:name=".users.list.UsersList_View" />
+
         <activity
             android:name=".users.show.UserShow_View"
             android:parentActivityName=".users.list.UsersList_View" />
-        <activity
-            android:name=".users.edit.UserEdit_View"
-            android:noHistory="true" />
+
+        <activity android:name=".users.edit.UserEdit_View" />
+
         <activity android:name=".tags.list.TagsList_View" />
+
         <activity
             android:name=".tags.view.TagShow_View"
             android:parentActivityName=".tags.list.TagsList_View" />
+
         <activity android:name=".card.edit.CardEdit_View">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />

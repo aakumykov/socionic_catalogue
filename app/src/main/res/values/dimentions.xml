@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="top_message_font_size">16sp</dimen>
+
     <dimen name="first_button_margin_top">10dp</dimen>
     <dimen name="subsequent_button_margin_top">3dp</dimen>
 
@@ -9,4 +11,11 @@
     <dimen name="tag_font_size">16sp</dimen>
 
     <dimen name="comment_text_size">16sp</dimen>
+
+    <dimen name="avatar_width">512sp</dimen>
+    <dimen name="avatar_height">512sp</dimen>
+
+    <dimen name="comment_avatar_width">30dp</dimen>
+    <dimen name="comment_avatar_height">30dp</dimen>
+
 </resources>

@@ -140,7 +140,7 @@ public class UsersSingleton implements iUsersSingleton {
 
     @Override
     public void saveUser(final User user, final SaveCallbacks callbacks) {
-        Log.d(TAG, "saveUser(), "+user);
+        Log.d(TAG, "saveProfile(), "+user);
 
         DatabaseReference userRef = usersRef.child(user.getKey());
 

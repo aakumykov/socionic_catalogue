@@ -3,12 +3,16 @@ package ru.aakumykov.me.mvp.comment;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -67,13 +71,15 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
         }
 
 
-        ImageView commentAvatar = commentItemView.findViewById(R.id.commentAvatar);
-        commentAvatar.setOnClickListener(new View.OnClickListener() {
+        ImageView commentAvatarView = commentItemView.findViewById(R.id.commentAvatar);
+        commentAvatarView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 seeCommentAuthorProfile(comment);
             }
         });
+        String userAvatar = comment.getUserAvatar();
+        if (!TextUtils.isEmpty(userAvatar)) displayAvatar(userAvatar, commentAvatarView);
 
         TextView commentAuthorView = commentItemView.findViewById(R.id.commentAuthor);
         commentAuthorView.setText(comment.getUserName());
@@ -159,5 +165,17 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
         if (rateDownList.contains(currentUser.getKey())) {
             rateDownImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_thumb_down_colored));
         }
+    }
+
+    private void displayAvatar(String avatarURL, ImageView imageView) {
+        Picasso.get()
+                .load(avatarURL)
+                .into(imageView);
+    }
+
+    private void displayAvatar(int drawableResourceId, ImageView imageView) {
+        Picasso.get()
+                .load(drawableResourceId)
+                .into(imageView);
     }
 }

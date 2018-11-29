@@ -68,7 +68,7 @@
     <string name="error_displaying_user">Ошибка отображения пользователя</string>
     <string name="data_loading_data">Ошибка загрузки данных</string>
     <string name="error_loading_data">Ошибка загрузки данных</string>
-    <string name="USER_EDIT_user_saving_error">Ошибка сохранения пользователя</string>
+    <string name="USER_EDIT_error_saving_user">Ошибка сохранения пользователя</string>
     <string name="saving_user">Сохранение пользователя</string>
     <string name="error_saving_user">Ошибка сохранения пользователя</string>
     <string name="user_saved">Пользователь сохранён</string>
@@ -190,4 +190,12 @@
     <string name="CARD_EDIT_card_saved">Карточка сохранена</string>
     <string name="CARD_EDIT_error_saving_tags">Ошибка сохранения меток</string>
     <string name="CARD_EDIT_tags_are_saved">Метки сохранены</string>
+    <string name="USER_EDIT_error_selecting_image">Ошибка выбора изображения</string>
+    <string name="USER_EDIT_no_image_data">Ошибка данных</string>
+    <string name="USER_EDIT_name_cannot_be_empty">Имя не может быть пустым</string>
+    <string name="USER_SHOW_name">Имя</string>
+    <string name="USER_SHOW_about">О себе</string>
+    <string name="DESCRIPTION_user_avatar">Аватар пользователя</string>
+    <string name="USER_EDIT_error_processing_avatar">Ошибка обработки аватара</string>
+    <string name="DESCRIPTION_comment_author_avatar">Аватар автора комментария</string>
 </resources>

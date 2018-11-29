@@ -66,7 +66,7 @@
     <string name="error_displaying_user">Error displaying user</string>
     <string name="data_loading_data">Error loading data</string>
     <string name="error_loading_data">Error loading data</string>
-    <string name="USER_EDIT_user_saving_error">User saving error</string>
+    <string name="USER_EDIT_error_saving_user">Error saving user</string>
     <string name="saving_user">Saving user</string>
     <string name="error_saving_user">Error saving user</string>
     <string name="user_saved">User saved</string>
@@ -103,7 +103,7 @@
     <string name="LOGIN_login_failed">Login failed</string>
     <string name="LOGIN_login_success">Login success</string>
     <string name="LOGIN_cancel">Cancel</string>
-    <string name="LOGIN_logging_in">Making login</string>
+    <string name="LOGIN_logging_in">Logging in</string>
     <string name="LOGIN_login">Log in</string>
     <string name="AUTH_error_logging_out">Logout error</string>
     <string name="ERROR_creating_card">Error creating card</string>
@@ -185,4 +185,12 @@
     <string name="CARD_EDIT_card_saved">Card saved</string>
     <string name="CARD_EDIT_error_saving_tags">Error saving tags</string>
     <string name="CARD_EDIT_tags_are_saved">Tags are saved</string>
+    <string name="USER_EDIT_error_selecting_image">Error selecting image</string>
+    <string name="USER_EDIT_no_image_data">Image data error</string>
+    <string name="USER_EDIT_name_cannot_be_empty">Name cannot be empty</string>
+    <string name="USER_SHOW_name">Name</string>
+    <string name="USER_SHOW_about">About</string>
+    <string name="DESCRIPTION_user_avatar">User avatar</string>
+    <string name="USER_EDIT_error_processing_avatar">Error processing avatar</string>
+    <string name="DESCRIPTION_comment_author_avatar">Comment\'s author avatar</string>
 </resources>

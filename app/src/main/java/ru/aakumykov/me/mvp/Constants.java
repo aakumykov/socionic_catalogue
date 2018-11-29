@@ -8,6 +8,7 @@ public final class Constants {
     public final static String COMMENTS_PATH = "/comments";
     public final static String IMAGES_PATH = "/images";
     public final static String USERS_PATH = "/users";
+    public final static String AVATARS_PATH = "/avatars";
 
     public final static String CARD = "CARD";
     public final static String CARD_KEY = "CARD_KEY";

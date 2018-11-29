@@ -1,19 +1,29 @@
-package ru.aakumykov.me.mvp.utils;
+package ru.aakumykov.me.mvp.utils.MVPUtils;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
+import android.webkit.MimeTypeMap;
+import android.widget.ImageView;
 
-import java.lang.reflect.Array;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class MVPUtils {
 
@@ -137,5 +147,85 @@ public class MVPUtils {
 
     public static boolean isCorrectCardType(String cardType) {
         return correctCardTypes.contains(cardType);
+    }
+
+    public static void loadImageWithResizeInto(
+            final Uri imageURI,
+            final ImageView targetImageView,
+            final boolean unprocessedYet,
+            final iMVPUtils.ImageLoadWithResizeCallbacks callbacks
+
+    ) throws Exception
+    {
+        Picasso.get().load(imageURI)
+                .into(targetImageView, new Callback() {
+
+            @Override
+            public void onSuccess() {
+
+                // Изменение размера картинки, если это первая загрузка "с диска"
+                if (unprocessedYet) {
+                    Drawable drawable = targetImageView.getDrawable();
+                    int initialWidth = drawable.getIntrinsicWidth();
+                    int initialHeight = drawable.getIntrinsicHeight();
+
+                    int destWidth = 0;
+                    int destHeight = 0;
+
+                    if (initialWidth >= initialHeight) {
+                        destWidth = (initialWidth > Config.AVATAR_MAX_WIDTH) ? Config.AVATAR_MAX_WIDTH : initialWidth;
+                        destHeight = 0;
+                    } else {
+                        destWidth = 0;
+                        destHeight = (initialHeight > Config.AVATAR_MAX_HEIGHT) ? Config.AVATAR_MAX_HEIGHT : initialHeight;
+                    }
+
+                    Picasso.get().load(imageURI)
+                            .resize(destWidth, destHeight)
+                            .into(targetImageView, new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    Drawable drawable = targetImageView.getDrawable();
+                                    int width = drawable.getIntrinsicWidth();
+                                    int height = drawable.getIntrinsicHeight();
+
+                                    FileInfo fileInfo = new FileInfo(width, height);
+
+                                    callbacks.onImageLoadWithResizeSuccess(fileInfo);
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+
+                                }
+                            });
+                }
+                else {
+                    Drawable drawable = targetImageView.getDrawable();
+                    int width = drawable.getIntrinsicWidth();
+                    int height = drawable.getIntrinsicHeight();
+                    callbacks.onImageLoadWithResizeSuccess(new FileInfo(width, height));
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                callbacks.onImageLoadWithResizeFail(e.getMessage());
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public static String uri2ext(Context context, Uri uri) {
+        ContentResolver contentResolver =  context.getContentResolver();
+        String mimeType = contentResolver.getType(uri);
+        return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
+    }
+
+    public static byte[] imageView2Bitmap(ImageView imageView) throws Exception {
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, Config.JPEG_QUALITY, baos);
+        return baos.toByteArray();
     }
 }

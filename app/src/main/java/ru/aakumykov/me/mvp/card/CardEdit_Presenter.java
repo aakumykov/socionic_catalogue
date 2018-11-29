@@ -19,7 +19,7 @@ import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.StorageSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
-import ru.aakumykov.me.mvp.utils.MVPUtils;
+import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class CardEdit_Presenter implements

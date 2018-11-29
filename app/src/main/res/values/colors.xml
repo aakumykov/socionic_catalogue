@@ -28,4 +28,5 @@
     <color name="rating_up">#a7ffb0</color>
     <color name="rating_down">#f7b8b8</color>
     <color name="rating_neutral">@color/light_grey</color>
+
 </resources>

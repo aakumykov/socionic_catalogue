@@ -1,13 +1,31 @@
 package ru.aakumykov.me.mvp.users;
 
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
+import android.widget.ImageView;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import java.io.InputStream;
+
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
+import ru.aakumykov.me.mvp.interfaces.iStorageSingleton;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
+import ru.aakumykov.me.mvp.services.StorageSingleton;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
+import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.mvp.utils.MVPUtils.iMVPUtils;
 
 public class Users_Presenter implements
         iUsers.Presenter,
@@ -21,7 +39,10 @@ public class Users_Presenter implements
     private iUsers.EditView editView;
     private iUsersSingleton usersService = UsersSingleton.getInstance();
     private iAuthSingleton authService = AuthSingleton.getInstance();
+    private iStorageSingleton storageService = StorageSingleton.getInstance();
+
     private User currentUser;
+    private String editedUserId;
 
     // Системные методы
     @Override
@@ -55,47 +76,28 @@ public class Users_Presenter implements
 
     // Пользовательские методы
     @Override
-    public void updateUser(String newName, String newAbout) {
-
-        if (!authService.isUserLoggedIn()) {
-            editView.showErrorMsg(R.string.USER_EDIT_you_are_not_logged_in);
-            return;
+    public void prepareUserEdit(String userId) throws Exception {
+        if (authService.isUserLoggedIn())
+        {
+            if (authService.currentUserId().equals(userId))
+            {
+                usersService.getUser(userId, this);
+            }
+            else {
+                throw new IllegalAccessException("Cannot edit profile of another user.");
+            }
         }
-
-        currentUser.setName(newName);
-        currentUser.setAbout(newAbout);
-        usersService.saveUser(currentUser, this);
+        else {
+            throw new IllegalAccessException("You must be logged in.");
+        }
     }
 
     @Override
-    public void userEditClicked() {
-        showView.goUserEdit();
-    }
-
-    @Override
-    public void userDeleteClicked(String userId) {
-
-    }
-
-    @Override
-    public void saveButtonClicked(String userId, iUsersSingleton.SaveCallbacks callbacks) {
-        Log.d(TAG, "saveButtonClicked("+userId+", callbacks)");
-
-        // TODO: привязка этого пользователя к пользователю Firebase!
-//        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-//        String currentUserId = currentUser.getUid();
-
-        // TODO: проверочку бы здесь! Важно ведь.
-        User user = new User();
-        user.setKey(userId);
-        user.setName(editView.getName());
-        user.setAbout(editView.getAbout());
-
-        editView.showInfoMsg(R.string.saving_user);
-        editView.showProgressBar();
-        editView.disableEditForm();
-
-        usersService.saveUser(user, callbacks);
+    public void loadUser(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception {
+        if (null == userId) {
+            throw new Exception("userId == null");
+        }
+        usersService.getUser(userId, callbacks);
     }
 
     @Override
@@ -103,7 +105,6 @@ public class Users_Presenter implements
         Log.d(TAG, "cancelButtonClicked()");
         editView.closePage();
     }
-
 
     @Override
     public void loadList(iUsersSingleton.ListCallbacks callbacks) {
@@ -118,22 +119,87 @@ public class Users_Presenter implements
     }
 
     @Override
-    public void loadUser(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception {
-        if (null == userId) {
-            throw new Exception("userId == null");
+    public void saveProfile() throws Exception {
+
+        if (!authService.isUserLoggedIn()) {
+            throw new IllegalAccessException("You is not logged in.");
         }
-        usersService.getUser(userId, callbacks);
+
+        if (!authService.currentUserId().equals(editedUserId)) {
+            throw new IllegalAccessException("Cannot save profile of another user.");
+        }
+
+        String name = editView.getName();
+        if (TextUtils.isEmpty(name)) {
+            editView.showErrorMsg(R.string.USER_EDIT_name_cannot_be_empty);
+            return;
+        }
+
+        currentUser.setName(name);
+        currentUser.setAbout(editView.getAbout());
+
+        try {
+            byte[] imageByteArray = editView.getImageData();
+            String remoteFileName = Constants.AVATARS_PATH+"/"+authService.currentUserId()+".jpg";
+
+            editView.showAvatarThrobber();
+            editView.disableEditForm();
+
+            storageService.uploadImage(imageByteArray, remoteFileName, new iStorageSingleton.FileUploadCallbacks() {
+                @Override
+                public void onUploadProgress(int progress) {
+
+                }
+
+                @Override
+                public void onUploadSuccess(String downloadURL) {
+                    editView.hideAvatarThrobber();
+                    currentUser.setAvatarURL(downloadURL);
+                    saveUser();
+                }
+
+                @Override
+                public void onUploadFail(String errorMsg) {
+                    editView.hideAvatarThrobber();
+                    editView.enableEditForm();
+                }
+
+                @Override
+                public void onUploadCancel() {
+                    editView.hideAvatarThrobber();
+                    editView.enableEditForm();
+                }
+            });
+
+        } catch (Exception e) {
+            editView.showErrorMsg(R.string.USER_EDIT_error_processing_avatar, e.getMessage());
+            e.printStackTrace();
+            return;
+        }
     }
 
     @Override
-    public void prepareUserEdit(String userId)  {
-        Log.d(TAG, "prepareUserEdit("+userId+")");
-        usersService.getUser(userId, this);
-    }
+    public void processSelectedImage(@Nullable Intent data) {
 
-    @Override
-    public void saveUser(User user) {
-        Log.d(TAG, "saveUser(), "+user);
+        if (null == data) {
+            editView.showErrorMsg(R.string.USER_EDIT_error_selecting_image);
+            return;
+        }
+
+        // Первый способ получить содержимое
+        Uri imageURI = data.getParcelableExtra(Intent.EXTRA_STREAM);
+
+        // Второй способ получить содержимое
+        if (null == imageURI) {
+            imageURI = data.getData();
+            if (null == imageURI) {
+                editView.showErrorMsg(R.string.USER_EDIT_no_image_data);
+                return;
+            }
+        }
+
+        editView.displayAvatar(imageURI.toString(), true);
+
 
     }
 
@@ -142,12 +208,15 @@ public class Users_Presenter implements
     @Override
     public void onUserReadSuccess(final User user) {
         currentUser = user;
+        editedUserId = user.getKey();
+
         editView.hideProgressBar();
         editView.fillUserForm(user);
     }
 
     @Override
     public void onUserReadFail(String errorMsg) {
+        editView.hideProgressBar();
         editView.hideProgressBar();
         editView.showErrorMsg(R.string.USER_EDIT_error_loading_data, errorMsg);
     }
@@ -162,6 +231,33 @@ public class Users_Presenter implements
     @Override
     public void onUserSaveFail(String errorMsg) {
         editView.hideProgressBar();
-        editView.showErrorMsg(R.string.USER_EDIT_user_saving_error, errorMsg);
+        editView.showErrorMsg(R.string.USER_EDIT_error_saving_user, errorMsg);
+    }
+
+
+    // Внутренние методы
+    private void saveUser() {
+        editView.showProgressBar();
+        editView.disableEditForm();
+
+        usersService.saveUser(currentUser, new iUsersSingleton.SaveCallbacks() {
+            @Override
+            public void onUserSaveSuccess(User user) {
+                editView.finishEdit(user, true);
+            }
+
+            @Override
+            public void onUserSaveFail(String errorMsg) {
+                editView.showErrorMsg(R.string.USER_EDIT_error_saving_user, errorMsg);
+                editView.enableEditForm();
+            }
+        });
+    }
+
+    private void detectImageWidthAndHeight(Uri imageURI) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+
+//        BitmapFactory.decodeFile(imageURI)
     }
 }

@@ -36,11 +36,43 @@ public class StorageSingleton implements iStorageSingleton {
     @Override
     public void uploadImage(Uri localImageURI, String remoteImagePath, final iStorageSingleton.FileUploadCallbacks callbacks) {
 
-        // TODO: попробовать без "/"
+        final StorageReference theImageRef = imagesRef.child("/"+remoteImagePath);
+        UploadTask uploadTask = theImageRef.putFile(localImageURI);
+        doUpload(uploadTask, theImageRef, callbacks);
+    }
+
+    @Override
+    public void uploadImage(byte[] imageByteArray, String remoteImagePath, final iStorageSingleton.FileUploadCallbacks callbacks) {
+
+        final StorageReference theImageRef = imagesRef.child("/"+remoteImagePath);
+        UploadTask uploadTask = theImageRef.putBytes(imageByteArray);
+        doUpload(uploadTask, theImageRef, callbacks);
+    }
+
+    @Override
+    public void deleteImage(String remoteImagePath, final iStorageSingleton.FileDeleteCallbacks callbacks) {
+
         final StorageReference theImageRef = imagesRef.child("/"+remoteImagePath);
 
-        UploadTask uploadTask = theImageRef.putFile(localImageURI);
+        theImageRef.delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onDeleteSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onDeleteFail(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+    }
 
+
+    // Внутренние методы
+    private void doUpload(final UploadTask uploadTask, final StorageReference storageReference, final iStorageSingleton.FileUploadCallbacks callbacks) {
         uploadTask
                 .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -56,7 +88,7 @@ public class StorageSingleton implements iStorageSingleton {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                         // Получаю ссылку для скачивания
-                        theImageRef.getDownloadUrl()
+                        storageReference.getDownloadUrl()
                                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
@@ -86,33 +118,9 @@ public class StorageSingleton implements iStorageSingleton {
                     }
                 });
     }
-
-    @Override
-    public void deleteImage(String remoteImagePath, final iStorageSingleton.FileDeleteCallbacks callbacks) {
-
-        final StorageReference theImageRef = imagesRef.child("/"+remoteImagePath);
-
-        theImageRef.delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onDeleteSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onDeleteFail(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
-    }
-
-
-    // Внутренние методы
-    private void uploadFile(Uri localFileURI, String remoteFilePath, iStorageSingleton.FileUploadCallbacks callbacks) {
-
-    }
+//    private void uploadFile(Uri localFileURI, String remoteFilePath, iStorageSingleton.FileUploadCallbacks callbacks) {
+//
+//    }
 
     private void deleteFile(String remoteFilePath, iStorageSingleton.FileDeleteCallbacks callbacks) {
 
