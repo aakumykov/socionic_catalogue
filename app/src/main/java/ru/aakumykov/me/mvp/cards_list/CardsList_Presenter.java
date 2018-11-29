@@ -76,7 +76,10 @@ public class CardsList_Presenter implements
     public void onListLoadSuccess(List<Card> list) {
         if (null != tagFilter)
             view.displayTagFilter(tagFilter);
-        view.displayList(list);
+
+        // При уходе со страницы view исчезает
+        if (null != view)
+            view.displayList(list);
     }
 
     @Override
