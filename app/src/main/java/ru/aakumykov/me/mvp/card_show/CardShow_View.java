@@ -128,7 +128,6 @@ public class CardShow_View extends BaseView implements
 
         videoPlayerThrobber = findViewById(R.id.videoPlayerThrobber);
         videoPlayerHolder = findViewById(R.id.videoPlayerHolder);
-        youTubePlayerView = findViewById(R.id.youTubePlayerView);
 
         descriptionView = findViewById(R.id.descriptionView);
 
@@ -583,7 +582,7 @@ public class CardShow_View extends BaseView implements
 //        intent.putExtra(Constants.CARD_KEY, card.getKey());
 //        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
 
-        Intent intent = new Intent(this, CardEdit2_View.class);
+        Intent intent = new Intent(this, CardEdit_View.class);
         intent.setAction(Constants.ACTION_EDIT);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);

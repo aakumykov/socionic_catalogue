@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -67,7 +68,7 @@ public class CardEdit_View extends BaseView implements
 
     @BindView(R.id.quoteView) EditText quoteView;
 
-    @BindView(R.id.youTubePlayerView) YouTubePlayerView youTubePlayerView;
+    @BindView(R.id.videoPlayerHolder) FrameLayout videoPlayerHolder;
     @BindView(R.id.addVideoButton) Button addVideoButton;
     @BindView(R.id.removeVideoButton) Button removeVideoButton;
     @BindView(R.id.videoCodeView) TextView videoCodeView;
@@ -87,6 +88,8 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
+    private YouTubePlayerView youTubePlayerView;
+    private YouTubePlayer youTubePlayer;
 
     private final static String TAG = "CardEdit_View";
     private iCardEdit.Presenter presenter;
@@ -107,13 +110,6 @@ public class CardEdit_View extends BaseView implements
         tagsContainer.setOnTagClickListener(this);
 
         presenter = new CardEdit_Presenter();
-
-        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
-            @Override
-            public void onInitSuccess(@NonNull YouTubePlayer youTubePlayer) {
-                youTubePlayer.cueVideo("BgfcToAjfdc", 0f);
-            }
-        },true);
     }
 
     @Override
@@ -280,12 +276,32 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void displayVideo(String videoCode) {
-        switchVideoMode();
+    public void displayVideo(final String videoCode) {
+        MyUtils.hide(addVideoButton);
+        MyUtils.show(removeVideoButton);
 
-        MyUtils.show(mediaHolder);
+        int playerWidth = MyUtils.getScreenWidth(this);
+        int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9/16);
 
-        showYoutubePlayer(videoCode);
+        youTubePlayerView = new YouTubePlayerView(this);
+        youTubePlayerView.setMinimumWidth(playerWidth);
+        youTubePlayerView.setMinimumHeight(playerHeight);
+
+        videoPlayerHolder.addView(youTubePlayerView);
+
+        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
+            @Override
+            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
+                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady() {
+                        youTubePlayer = initializedYouTubePlayer;
+                        youTubePlayer.cueVideo(videoCode, 0.0f);
+                        MyUtils.show(youTubePlayerView);
+                    }
+                });
+            }
+        }, true);
     }
 
     @Override
@@ -397,6 +413,7 @@ public class CardEdit_View extends BaseView implements
     @OnClick(R.id.textModeSwitch)
     void switchTextMode() {
         hideModeSwitcher();
+
         MyUtils.show(mediaHolder);
         MyUtils.show(quoteView);
 
@@ -408,9 +425,11 @@ public class CardEdit_View extends BaseView implements
     @OnClick(R.id.imageModeSwitch)
     void switchImageMode() {
         hideModeSwitcher();
+
         MyUtils.show(mediaHolder);
         MyUtils.show(imageHolder);
         MyUtils.show(imagePlaceholder);
+
         presenter.setCardType(Constants.IMAGE_CARD);
     }
 
@@ -422,17 +441,11 @@ public class CardEdit_View extends BaseView implements
     @OnClick(R.id.videoModeSwitch)
     void switchVideoMode() {
         hideModeSwitcher();
+
         MyUtils.show(mediaHolder);
         MyUtils.show(addVideoButton);
-        MyUtils.show(removeVideoButton);
-        titleView.requestFocus();
-        presenter.setCardType(Constants.VIDEO_CARD);
-    }
 
-    @OnClick(R.id.removeVideoButton)
-    void removeVideo() {
-        MyUtils.hide(removeVideoButton);
-        MyUtils.show(videoCodeView);
+        presenter.setCardType(Constants.VIDEO_CARD);
     }
 
     @OnClick(R.id.addVideoButton)
@@ -441,9 +454,24 @@ public class CardEdit_View extends BaseView implements
             @Override
             public void onDialogWithStringYes(String text) {
                 videoCodeView.setText(text);
-                MyUtils.hide(addVideoButton);
+                displayVideo(text);
             }
         });
+    }
+
+    @OnClick(R.id.removeVideoButton)
+    void removeVideo() {
+        // youTubePlayer может ещё быть не инициализированным
+        if (null != youTubePlayer) youTubePlayer.pause();
+
+        youTubePlayerView.release();
+
+        videoPlayerHolder.removeAllViews();
+
+        videoCodeView.setText("");
+
+        MyUtils.show(addVideoButton);
+        MyUtils.hide(removeVideoButton);
     }
 
     @OnClick(R.id.saveButton)
@@ -564,10 +592,6 @@ public class CardEdit_View extends BaseView implements
             showErrorMsg(R.string.error_loading_image);
             showBrokenImage();
         }
-    }
-
-    private void showYoutubePlayer(final String videoCode) {
-
     }
 
     private void showTags(HashMap<String,Boolean> tagsMap) {

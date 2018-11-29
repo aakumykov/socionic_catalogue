@@ -62,6 +62,7 @@ public class CardEdit2_View extends BaseView implements
 
     // Разметка для видео
     @BindView(R.id.videoHolder) LinearLayout videoHolder;
+    @BindView(R.id.videoPlayerHolder) FrameLayout videoPlayerHolder;
     @BindView(R.id.addVideoButton) Button addVideoButton;
     @BindView(R.id.removeVideoButton) Button removeVideoButton;
 
@@ -85,7 +86,6 @@ public class CardEdit2_View extends BaseView implements
     private iCardEdit2.Presenter presenter;
 
     // TODO: переделать на ButterKnife
-    private FrameLayout videoPlayerHolder;
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayer;
 
@@ -99,9 +99,6 @@ public class CardEdit2_View extends BaseView implements
         activateUpButton();
 
         setPageTitle(R.string.CARD_EDIT_page_title);
-
-        videoPlayerHolder = findViewById(R.id.videoPlayerHolder);
-        youTubePlayerView = findViewById(R.id.youTubePlayerView);
 
         tagsContainer.setOnTagClickListener(this);
         tagsContainer.setIsTagViewClickable(true);
@@ -454,14 +451,15 @@ public class CardEdit2_View extends BaseView implements
     }
 
     private void displayVideo(final String videoCode) {
-
-        youTubePlayerView = new YouTubePlayerView(this);
         int playerWidth = MyUtils.getScreenWidth(this);
         int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9/16);
+
+        youTubePlayerView = new YouTubePlayerView(this);
         youTubePlayerView.setMinimumWidth(playerWidth);
         youTubePlayerView.setMinimumHeight(playerHeight);
 
         videoPlayerHolder.addView(youTubePlayerView);
+        MyUtils.show(videoPlayerHolder);
 
         youTubePlayerView.initialize(new YouTubePlayerInitListener() {
             @Override
@@ -470,10 +468,9 @@ public class CardEdit2_View extends BaseView implements
                     @Override
                     public void onReady() {
                         youTubePlayer = initializedYouTubePlayer;
-                        youTubePlayer.loadVideo(videoCode, 0.0f);
+                        youTubePlayer.cueVideo(videoCode, 0.0f);
 
-                        MyUtils.show(videoPlayerHolder);
-                        MyUtils.show(youTubePlayerView);
+//                        MyUtils.show(youTubePlayerView);
                         MyUtils.show(removeVideoButton);
                     }
                 });
