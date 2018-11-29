@@ -64,7 +64,7 @@ public class CardEdit_Presenter implements
             case Intent.ACTION_SEND:
                 try {
                     prepareCardCreation();
-                    processInputData(Constants.MODE_SEND, intent);
+                    processRecievedData(Constants.MODE_SEND, intent);
                 } catch (Exception e) {
                     view.showErrorMsg(R.string.CARD_EDIT_error_creating_card, e.getMessage());
                     e.printStackTrace();
@@ -85,71 +85,9 @@ public class CardEdit_Presenter implements
         }
     }
 
-//    public void processInputDataOLD(String mode, final Intent intent) throws Exception {
-//
-//        if (null == intent) {
-//            throw new IllegalArgumentException("Intent is null");
-//        }
-//
-//        // Выделяю внешние данные
-//        Uri dataURI;
-//        String mimeType;
-//
-//        if (Constants.MODE_SELECT.equals(mode)) {
-//            dataURI = intent.getData();
-//            mimeType = view.detectMimeType(dataURI);
-//        }
-//        else if (Constants.MODE_SEND.equals(mode)) {
-//            dataURI = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-//            /* При пересылке изображения и текста mimeType находится
-//            * в разных местах, а здесь я ещё не знаю, изображение это
-//            * или текст. Поэтому пробую 2 метода опрделения типа данных. */
-//            try {
-//                mimeType = view.detectMimeType(dataURI);
-//            } catch (Exception e) {
-//                mimeType = MyUtils.getMimeTypeFromIntent(intent);
-//            }
-//        }
-//        else {
-//            throw new IllegalArgumentException("Unknown mode '"+mode+"'");
-//        }
-//
-//        if (null == mimeType) throw new IllegalArgumentException("Cannot detect mimeType.");
-//        else currentCard.setMimeType(mimeType);
-//
-//        // Подготавливаю форму в случае создания
-//        if (Constants.MODE_SEND.equals(mode)) {
-//            prepareCardCreation();
-//        }
-//
-//        // Обрабатываю данные согласно типу
-//
-//        if (mimeType.startsWith("image/")) {
-//            try {
-//                processIncomingImage(dataURI);
-//            } catch (Exception e) {
-//                view.showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
-//                e.printStackTrace();
-//            }
-//        }
-//        else if (mimeType.equals("text/plain")) {
-//
-//
-//
-////            try {
-////                procesIncomingText(intent);
-////            } catch (Exception e) {
-////                view.showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
-////                e.printStackTrace();
-////            }
-//        }
-//        else {
-//            throw new IllegalArgumentException("Unsupported mimeType '"+mimeType+"'");
-//        }
-//    }
-
     @Override
-    public void processInputData(String mode, Intent intent) throws Exception {
+    public void processRecievedData(String mode, Intent intent) throws Exception {
+
         String inputDataMode = MVPUtils.detectInputDataMode(intent);
 
         switch (inputDataMode) {
@@ -163,8 +101,7 @@ public class CardEdit_Presenter implements
                 break;
             case "YOUTUBE_VIDEO":
                 currentCard.setType(Constants.VIDEO_CARD);
-                String link = intent.getStringExtra(Intent.EXTRA_TEXT);
-                processYoutubeVideo(link);
+                processYoutubeVideo(intent);
                 break;
             default:
                 view.showErrorMsg(R.string.CARD_EDIT_unknown_data_mode);
@@ -403,8 +340,9 @@ public class CardEdit_Presenter implements
         view.displayImage(imageURI);
     }
 
-    private void processYoutubeVideo(String link) throws Exception {
+    private void processYoutubeVideo(Intent intent) throws Exception {
 
+        String link = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (null == link) {
             throw new IllegalArgumentException("Video link is null");
         }
@@ -414,7 +352,7 @@ public class CardEdit_Presenter implements
             throw new IllegalArgumentException("Where is no video code in link '"+link+"");
         }
 
-        view.displayVideo(link);
+        view.displayVideo(videoCode);
     }
 
     private String makeRemoteFileName() throws Exception {

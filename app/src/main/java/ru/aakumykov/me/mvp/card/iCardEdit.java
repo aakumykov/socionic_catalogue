@@ -26,9 +26,12 @@ public interface iCardEdit {
 
         String getCardTitle();
         String getCardQuote();
-        String getCardVideoCode();
         String getCardDescription();
+
         HashMap<String,Boolean> getCardTags();
+
+        void storeCardVideoCode(String videoCode);
+        String getCardVideoCode();
 
         void showImageProgressBar();
         void hideImageProgressBar();
@@ -52,7 +55,7 @@ public interface iCardEdit {
 
         void chooseStartVariant(@Nullable Intent intent);
 
-        void processInputData(String mode, Intent intent) throws Exception;
+        void processRecievedData(String mode, Intent intent) throws Exception;
 
         String processNewTag(String tagName);
 

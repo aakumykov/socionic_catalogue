@@ -182,7 +182,7 @@ public class CardEdit_View extends BaseView implements
 
         if (RESULT_OK == resultCode) {
             try {
-                presenter.processInputData(Constants.MODE_SELECT, data);
+                presenter.processRecievedData(Constants.MODE_SELECT, data);
             } catch (Exception e) {
                 showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
             }
@@ -276,6 +276,8 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void displayVideo(final String videoCode) {
+        prepareVideoMode();
+
         MyUtils.hide(addVideoButton);
         MyUtils.show(removeVideoButton);
 
@@ -322,11 +324,6 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public String getCardVideoCode() {
-        return videoCodeView.getText().toString();
-    }
-
-    @Override
     public String getCardDescription() {
         return descriptionView.getText().toString();
     }
@@ -339,6 +336,16 @@ public class CardEdit_View extends BaseView implements
             map.put(tagName, true);
         }
         return map;
+    }
+
+    @Override
+    public void storeCardVideoCode(String videoCode) {
+        videoCodeView.setText(videoCode);
+    }
+
+    @Override
+    public String getCardVideoCode() {
+        return videoCodeView.getText().toString();
     }
 
     @Override
@@ -384,6 +391,10 @@ public class CardEdit_View extends BaseView implements
 
         MyUtils.hide(imageProgressBar);
     }
+
+
+
+
 
     @Override
     public void goCardShow(Card card) {
@@ -439,13 +450,8 @@ public class CardEdit_View extends BaseView implements
 
     @OnClick(R.id.videoModeSwitch)
     void switchVideoMode() {
-        hideModeSwitcher();
-
-        MyUtils.show(mediaHolder);
-//        MyUtils.show(addVideoButton);
+        prepareVideoMode();
         addVideo();
-
-        presenter.setCardType(Constants.VIDEO_CARD);
     }
 
     @OnClick(R.id.addVideoButton)
@@ -453,7 +459,7 @@ public class CardEdit_View extends BaseView implements
         MyDialogs.addYoutubeVideoDialog(this, new iMyDialogs.StringInputCallback() {
             @Override
             public void onDialogWithStringYes(String text) {
-                videoCodeView.setText(text);
+                storeCardVideoCode(text);
                 displayVideo(text);
             }
         });
@@ -560,6 +566,13 @@ public class CardEdit_View extends BaseView implements
 
 
     // Внутренние методы
+    private void prepareVideoMode() {
+        hideModeSwitcher();
+        MyUtils.show(mediaHolder);
+        MyUtils.show(addVideoButton);
+        presenter.setCardType(Constants.VIDEO_CARD);
+    }
+
     private void displayTextCard(Card card) {
         switchTextMode();
         displayCommonCardParts(card);
@@ -573,9 +586,9 @@ public class CardEdit_View extends BaseView implements
     }
 
     private void displayVideoCard(Card card) {
-        switchVideoMode();
         displayCommonCardParts(card);
         displayVideo(card.getVideoCode());
+        storeCardVideoCode(card.getVideoCode());
     }
 
     private void displayCommonCardParts(Card card) {
