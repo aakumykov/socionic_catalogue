@@ -73,20 +73,20 @@
                 app:srcCompat="@drawable/ic_card_edit_image" />
 
             <ImageView
-                android:id="@+id/audioModeSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/red_swipe"
-                app:srcCompat="@drawable/ic_card_edit_audio" />
-
-            <ImageView
                 android:id="@+id/videoModeSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/info"
                 app:srcCompat="@drawable/ic_card_edit_video" />
+
+            <ImageView
+                android:id="@+id/audioModeSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/red_swipe"
+                app:srcCompat="@drawable/ic_card_edit_audio" />
         </LinearLayout>
 
         <LinearLayout
