@@ -117,15 +117,23 @@ public class CardShow_View extends BaseView implements
         mainListView.addHeaderView(headerView);
         mainListView.addFooterView(footerView);
 
-        // Подключаю элементы
+        // Подключаю элементы интерфейса
         commentLayout = findViewById(R.id.commentLayout);
         titleView = findViewById(R.id.titleView);
         quoteView = findViewById(R.id.quoteView);
+
         imageHolder = findViewById(R.id.imageHolder);
         imageProgressBar = findViewById(R.id.imageProgressBar);
         imageView = findViewById(R.id.imageView);
+
+        videoPlayerThrobber = findViewById(R.id.videoPlayerThrobber);
+        videoPlayerHolder = findViewById(R.id.videoPlayerHolder);
+        youTubePlayerView = findViewById(R.id.youTubePlayerView);
+
         descriptionView = findViewById(R.id.descriptionView);
+
         tagsContainer = findViewById(R.id.tagsContainer);
+
         cardRatingView = findViewById(R.id.cardRatingView);
         cardRateUpButton = findViewById(R.id.cardRateUpButton);
         cardRateDownButton = findViewById(R.id.cardRateDownButton);
@@ -150,10 +158,6 @@ public class CardShow_View extends BaseView implements
         mainListView.setAdapter(commentsAdapter);
 
         tagsContainer.setOnTagClickListener(this);
-
-        videoPlayerThrobber = findViewById(R.id.videoPlayerThrobber);
-        videoPlayerHolder = findViewById(R.id.videoPlayerHolder);
-        youTubePlayerView = findViewById(R.id.youTubePlayerView);
 
         presenter = new CardShow_Presenter();
     }
@@ -666,9 +670,10 @@ public class CardShow_View extends BaseView implements
     private void displayVideoCard(final Card card) {
         displayCommonCardParts(card);
 
-        youTubePlayerView = new YouTubePlayerView(this);
         int playerWidth = MyUtils.getScreenWidth(this);
         int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9/16);
+
+        youTubePlayerView = new YouTubePlayerView(this);
         youTubePlayerView.setMinimumWidth(playerWidth);
         youTubePlayerView.setMinimumHeight(playerHeight);
 
