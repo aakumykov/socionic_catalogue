@@ -108,6 +108,27 @@ public class CardEdit_Presenter implements
         }
     }
 
+    @Override
+    public void processIncomingImage(@Nullable Intent data) throws Exception {
+
+        if (null == data) {
+            throw new Exception("Intent is null");
+        }
+
+        // Первый способ получить содержимое
+        Uri imageURI = data.getParcelableExtra(Intent.EXTRA_STREAM);
+        if (null == imageURI) {
+
+            // Второй способ получить содержимое
+            imageURI = data.getData();
+            if (null == imageURI) {
+                throw new Exception("Where is no image data in intent");
+            }
+        }
+
+        view.displayImage(imageURI.toString(), true);
+    }
+
     // TODO: как бы проверять полную корректность при сохранении?
     @Override
     public void saveCard() throws Exception {
@@ -325,19 +346,6 @@ public class CardEdit_Presenter implements
         view.hideProgressBar();
         view.displayTitle(autoTitle);
         view.displayQuote(text);
-    }
-
-    private void processIncomingImage(Intent intent) throws Exception {
-
-        Uri imageURI = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-        if (null == imageURI) {
-            throw new IllegalArgumentException("Intent.EXTRA_STREAM is null.");
-        }
-
-        currentCard.setLocalImageURI(imageURI);
-
-        view.hideProgressBar();
-        view.displayImage(imageURI);
     }
 
     private void processYoutubeVideo(Intent intent) throws Exception {

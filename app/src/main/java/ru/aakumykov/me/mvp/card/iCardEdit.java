@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.card;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
@@ -20,7 +21,7 @@ public interface iCardEdit {
 
         void displayTitle(String text);
         void displayQuote(String text);
-        void displayImage(Uri imageURI);
+        void displayImage(String imageURI, boolean unprocessedYet);
         void displayVideo(String videoCode);
 //        void displayAudio(Uri dataURI);
 
@@ -47,6 +48,8 @@ public interface iCardEdit {
         void goCardShow(Card card);
 
         String detectMimeType(Uri dataURI);
+
+        Context getApplicationContext();
     }
 
     interface Presenter {
@@ -56,6 +59,7 @@ public interface iCardEdit {
         void chooseStartVariant(@Nullable Intent intent);
 
         void processRecievedData(String mode, Intent intent) throws Exception;
+        void processIncomingImage(@Nullable Intent data) throws Exception;
 
         String processNewTag(String tagName);
 

@@ -199,4 +199,5 @@
     <string name="USER_EDIT_error_processing_avatar">Ошибка обработки аватара</string>
     <string name="DESCRIPTION_comment_author_avatar">Аватар автора комментария</string>
     <string name="DIALOG_MESSAGE_incorrect_youtube_video_link">Некорректная ссылка на Youtube-видео</string>
+    <string name="CARD_EDIT_error_processing_image">Ошибка обработки картинки</string>
 </resources>

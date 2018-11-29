@@ -39,6 +39,7 @@ import co.lujun.androidtagview.TagView;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.CardEdit_Presenter;
@@ -46,6 +47,9 @@ import ru.aakumykov.me.mvp.card.iCardEdit;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.utils.MVPUtils.FileInfo;
+import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.mvp.utils.MVPUtils.iMVPUtils;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
@@ -181,18 +185,21 @@ public class CardEdit_View extends BaseView implements
         presenter.linkView(this);
 
         if (RESULT_OK == resultCode) {
-            try {
-                presenter.processRecievedData(Constants.MODE_SELECT, data);
-            } catch (Exception e) {
-                showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
+
+            switch (requestCode) {
+                case Constants.CODE_SELECT_IMAGE:
+                    try {
+                        presenter.processIncomingImage(data);
+                    } catch (Exception e) {
+                        showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
+                        e.printStackTrace();
+                    }
+                    break;
+
+                default:
+                    break;
             }
-        }
-        else if (RESULT_CANCELED == resultCode) {
-            Log.d(TAG, "Media selection cancelled");
-        }
-        else {
-            showErrorMsg(R.string.CARD_EDIT_unknown_error);
-            Log.e(TAG, "Unknown result code ("+resultCode+")");
+
         }
     }
 
@@ -247,31 +254,72 @@ public class CardEdit_View extends BaseView implements
         quoteView.setText(text);
     }
 
+//    @Override
+//    public void displayImage(final Uri imageURI) {
+//
+//        switchImageMode();
+//
+//        Picasso.get().load(imageURI)
+//                .into(imageView, new Callback() {
+//                    @Override
+//                    public void onSuccess() {
+////                        storeImageURI(imageURI);
+//                        MyUtils.hide(imageProgressBar);
+//                        MyUtils.hide(imagePlaceholder);
+//                        MyUtils.show(imageView);
+//                        MyUtils.show(discardImageButton);
+//                    }
+//
+//                    @Override
+//                    public void onError(Exception e) {
+////                        clearImageURI();
+//                        MyUtils.hide(imageProgressBar);
+//                        showBrokenImage();
+//                        showErrorMsg(R.string.error_loading_image);
+//                        e.printStackTrace();
+//                    }
+//                });
+//    }
+
     @Override
-    public void displayImage(final Uri imageURI) {
+    public void displayImage(String imageURI, boolean unprocessedYet) {
 
-        switchImageMode();
+        hideModeSwitcher();
 
-        Picasso.get().load(imageURI)
-                .into(imageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-//                        storeImageURI(imageURI);
-                        MyUtils.hide(imageProgressBar);
-                        MyUtils.hide(imagePlaceholder);
-                        MyUtils.show(imageView);
-                        MyUtils.show(discardImageButton);
+        showImageProgressBar();
+
+        try {
+            Uri uri = Uri.parse(imageURI);
+
+            MVPUtils.loadImageWithResizeInto(
+                    uri,
+                    imageView,
+                    unprocessedYet,
+                    Config.MAX_CARD_IMAGE_WIDTH,
+                    Config.MAX_CARD_IMAGE_HEIGHT,
+                    new iMVPUtils.ImageLoadWithResizeCallbacks() {
+                        @Override
+                        public void onImageLoadWithResizeSuccess(FileInfo fileInfo) {
+                            hideImageProgressBar();
+
+                            MyUtils.show(mediaHolder);
+                            MyUtils.show(imageHolder);
+                            MyUtils.show(imageView);
+                            MyUtils.hide(imagePlaceholder);
+                        }
+
+                        @Override
+                        public void onImageLoadWithResizeFail(String errorMsg) {
+                            hideImageProgressBar();
+                            showBrokenImage();
+                        }
                     }
-
-                    @Override
-                    public void onError(Exception e) {
-//                        clearImageURI();
-                        MyUtils.hide(imageProgressBar);
-                        showBrokenImage();
-                        showErrorMsg(R.string.error_loading_image);
-                        e.printStackTrace();
-                    }
-                });
+            );
+        } catch (Exception e) {
+            hideImageProgressBar();
+            showBrokenImage();
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -582,7 +630,7 @@ public class CardEdit_View extends BaseView implements
     private void displayImageCard(Card card) {
         switchImageMode();
         displayCommonCardParts(card);
-        displayImage(card.getImageURL());
+        displayImage(card.getImageURL(), false);
     }
 
     private void displayVideoCard(Card card) {
@@ -597,16 +645,6 @@ public class CardEdit_View extends BaseView implements
         showTags(card.getTags());
     }
 
-    private void displayImage(String imageURI) {
-        try {
-            Uri uri = Uri.parse(imageURI);
-            displayImage(uri);
-        } catch (Exception e) {
-            showErrorMsg(R.string.error_loading_image);
-            showBrokenImage();
-        }
-    }
-
     private void showTags(HashMap<String,Boolean> tagsMap) {
         Log.d(TAG, "displayTags(), "+tagsMap);
         if (null != tagsMap) {
@@ -615,7 +653,6 @@ public class CardEdit_View extends BaseView implements
             tagsContainer.setEnableCross(true);
         }
     }
-
 
     // Другие
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)

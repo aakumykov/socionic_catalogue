@@ -153,6 +153,8 @@ public class MVPUtils {
             final Uri imageURI,
             final ImageView targetImageView,
             final boolean unprocessedYet,
+            final Integer targetWidth,
+            final Integer targetHeight,
             final iMVPUtils.ImageLoadWithResizeCallbacks callbacks
 
     ) throws Exception
@@ -173,11 +175,11 @@ public class MVPUtils {
                     int destHeight = 0;
 
                     if (initialWidth >= initialHeight) {
-                        destWidth = (initialWidth > Config.AVATAR_MAX_WIDTH) ? Config.AVATAR_MAX_WIDTH : initialWidth;
+                        destWidth = (initialWidth > targetWidth) ? targetWidth : initialWidth;
                         destHeight = 0;
                     } else {
                         destWidth = 0;
-                        destHeight = (initialHeight > Config.AVATAR_MAX_HEIGHT) ? Config.AVATAR_MAX_HEIGHT : initialHeight;
+                        destHeight = (initialHeight > targetHeight) ? targetHeight : initialHeight;
                     }
 
                     Picasso.get().load(imageURI)

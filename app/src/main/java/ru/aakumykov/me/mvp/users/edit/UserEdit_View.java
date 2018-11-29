@@ -28,6 +28,7 @@ import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.User;
@@ -161,21 +162,26 @@ public class UserEdit_View extends BaseView implements
             Uri uri = Uri.parse(imageURI);
             showAvatarThrobber();
 
-            MVPUtils.loadImageWithResizeInto(uri, avatarView, justSelected,
+            MVPUtils.loadImageWithResizeInto(
+                    uri,
+                    avatarView,
+                    justSelected,
+                    Config.AVATAR_MAX_WIDTH,
+                    Config.AVATAR_MAX_HEIGHT,
                     new iMVPUtils.ImageLoadWithResizeCallbacks() {
-                @Override
-                public void onImageLoadWithResizeSuccess(FileInfo fileInfo) {
-                    hideAvatarThrobber();
-                    Log.d(TAG, fileInfo.toString());
-                }
+                        @Override
+                        public void onImageLoadWithResizeSuccess(FileInfo fileInfo) {
+                            hideAvatarThrobber();
+                        }
 
-                @Override
-                public void onImageLoadWithResizeFail(String errorMsg) {
-                    hideAvatarThrobber();
-                    showImageIsBroken(avatarView);
-                    Log.e(TAG, errorMsg);
-                }
-            });
+                        @Override
+                        public void onImageLoadWithResizeFail(String errorMsg) {
+                            hideAvatarThrobber();
+                            showImageIsBroken(avatarView);
+                            Log.e(TAG, errorMsg);
+                        }
+                    }
+            );
 
         } catch (Exception e) {
             hideAvatarThrobber();
