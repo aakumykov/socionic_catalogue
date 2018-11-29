@@ -452,6 +452,7 @@ public class CardShow_View extends BaseView implements
     @Override
     public void displayImageError() {
         imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_broken));
+        MyUtils.show(imageView);
     }
 
     @Override
@@ -649,6 +650,7 @@ public class CardShow_View extends BaseView implements
     private void displayImageCard(Card card) {
         Log.d(TAG, "displayImageCard(), "+card);
 
+        MyUtils.show(imageHolder);
         displayCommonCardParts(card);
 
         try {
