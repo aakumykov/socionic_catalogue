@@ -107,7 +107,7 @@ public class Login_View extends BaseView implements
     }
 
 
-    // Обработчики нажатий
+    // Нажатия
     @OnClick(R.id.loginButton)
     void login() {
         String email = emailInput.getText().toString();
@@ -129,7 +129,7 @@ public class Login_View extends BaseView implements
     @OnClick(R.id.registerButton)
     void goRegisterPage() {
         Intent intent = new Intent(this, Register_View.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
 }

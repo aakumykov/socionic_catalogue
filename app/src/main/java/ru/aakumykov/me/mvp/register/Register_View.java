@@ -61,12 +61,12 @@ public class Register_View extends BaseView implements
     // Обязательные методы
     @Override
     public void onUserLogin() {
-        closePage();
+        // TODO: делать здесь что-нибудь
     }
 
     @Override
     public void onUserLogout() {
-        closePage();
+
     }
 
 
