@@ -179,35 +179,13 @@ public class CardEdit_Presenter implements
                     e.printStackTrace();
                     return;
                 }
-
-            }
-            else  {
-                // Здесь сохраняется карточка
-                view.showInfoMsg(R.string.CARD_EDIT_saving_card);
-                cardsService.updateCard(currentCard, this);
             }
         }
-
-
-
-//        /* Схема работы:
-//         1) картинка отправляется на сервер;
-//         2) карточке присваивается серверный адрес картинки;
-//         3) локальный адрес стирается;
-//         4) метод "сохранить" вызывается ешё раз. */
-//        Uri localImageURI = currentCard.getLocalImageURI();
-//
-//        if (null != currentCard.getLocalImageURI()) {
-//            Log.d(TAG, "Отправляю картинку");
-//            view.showImageProgressBar();
-//
-//            String remoteFilePath = makeRemoteFileName();
-//            storageService.uploadImage(localImageURI, remoteFilePath, this);
-//        }
-//        else {
-//            Log.d(TAG, "Сохраняю карточку");
-//            cardsService.updateCard(currentCard, this);
-//        }
+        else  {
+            // Здесь сохраняется карточка
+            view.showInfoMsg(R.string.CARD_EDIT_saving_card);
+            cardsService.updateCard(currentCard, this);
+        }
     }
 
 
