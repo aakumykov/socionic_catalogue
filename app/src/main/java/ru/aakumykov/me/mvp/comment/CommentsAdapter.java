@@ -104,9 +104,11 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
         });
 
 
+        // Показ оценки комментария
         TextView commentRatingView = commentItemView.findViewById(R.id.commentRatingView);
         commentRatingView.setText( ""+comment.getRating() );
 
+        // Вызов меню комментария
         ImageView commentMenu = commentItemView.findViewById(R.id.commentMenu);
         commentMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +117,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             }
         });
 
+        // Ответ на комментарий
         TextView commentReply = commentItemView.findViewById(R.id.commentReply);
         commentReply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,23 +126,27 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             }
         });
 
-
+        // Положительная оценка комментария
         ImageView commentRateUpButton = commentItemView.findViewById(R.id.commentRateUpButton);
         commentRateUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                commentClickListener.onCommentRateUpClicked(comment);
+                if (!comment.isRatedUpBy(currentUser.getKey()))
+                    commentClickListener.onCommentRateUpClicked(comment);
             }
         });
 
+        // Отрицательная оценка комментария
         ImageView commentRateDownButton = commentItemView.findViewById(R.id.commentRateDownButton);
         commentRateDownButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                commentClickListener.onCommentRateDownClicked(comment);
+                if (!comment.isRatedDownBy(currentUser.getKey()))
+                    commentClickListener.onCommentRateDownClicked(comment);
             }
         });
 
+        // Раскраска кнопок оценки комментария
         colorizeRatingButtons(commentRateUpButton, commentRateDownButton, comment);
 
         return commentItemView;

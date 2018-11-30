@@ -141,9 +141,9 @@ public class CardsSingleton implements
                     Log.e(TAG, databaseError.getMessage());
                     databaseError.toException().printStackTrace();
                 }
-                if (null != dataSnapshot) {
-                    Log.e(TAG, "dataSnapshot: "+dataSnapshot);
-                }
+//                if (null != dataSnapshot) {
+//                    Log.e(TAG, "dataSnapshot: "+dataSnapshot);
+//                }
             }
         });
     }
