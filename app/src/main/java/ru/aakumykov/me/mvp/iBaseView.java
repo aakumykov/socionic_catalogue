@@ -22,6 +22,7 @@ public interface iBaseView {
 
     void showToast(int stringResourceId);
     void showToast(String msg);
+    void showLongToast(String msg);
 
     void showProgressBar();
     void hideProgressBar();

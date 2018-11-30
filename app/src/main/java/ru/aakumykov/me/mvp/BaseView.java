@@ -234,6 +234,11 @@ public abstract class BaseView extends AppCompatActivity implements
         showToastReal(this, msg, Toast.LENGTH_SHORT);
     }
 
+    @Override
+    public void showLongToast(String msg) {
+        showToastReal(this, msg, Toast.LENGTH_LONG);
+    }
+
     private void showToastReal(Context context, String message, int length) {
         Toast toast = Toast.makeText(context, message, length);
         toast.show();

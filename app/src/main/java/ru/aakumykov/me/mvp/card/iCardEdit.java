@@ -61,7 +61,8 @@ public interface iCardEdit {
         void chooseStartVariant(@Nullable Intent intent);
 
         void processRecievedData(String mode, Intent intent) throws Exception;
-        void processIncomingImage(@Nullable Intent data) throws Exception;
+        void processLinkToImage(@Nullable Intent intent) throws Exception;
+        void processIncomingImage(@Nullable Intent intent) throws Exception;
 
         String processNewTag(String tagName);
 

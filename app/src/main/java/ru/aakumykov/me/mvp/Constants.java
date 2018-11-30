@@ -27,6 +27,13 @@ public final class Constants {
     public final static String AUDIO_CARD = "AUDIO_CARD";
     public final static String VIDEO_CARD = "VIDEO_CARD";
 
+    public final static String TYPE_TEXT = "TYPE_TEXT";
+    public final static String TYPE_IMAGE_DATA = "TYPE_IMAGE_DATA";
+    public final static String TYPE_IMAGE_LINK = "TYPE_IMAGE_LINK";
+    public final static String TYPE_YOUTUBE_VIDEO = "TYPE_YOUTUBE_VIDEO";
+    public final static String TYPE_AUDIO = "TYPE_AUDIO";
+    public final static String TYPE_UNKNOWN = "TYPE_UNKNOWN";
+
     public final static String PARENT_COMMENT = "PARENT_COMMENT";
 
     public final static int CODE_LOGIN = 5;

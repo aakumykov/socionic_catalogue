@@ -149,7 +149,7 @@ public class CardEdit2_Presenter implements
 
         switch (MVPUtils.detectInputDataMode(intent)) {
 
-            case "TEXT":
+            case Constants.TYPE_TEXT:
                 try {
                     procesIncomingText(intent);
                 } catch (Exception e) {
@@ -158,11 +158,11 @@ public class CardEdit2_Presenter implements
                 }
                 break;
 
-            case "IMAGE":
+            case Constants.TYPE_IMAGE_DATA:
 //                processIncomingImage(intent);
                 break;
 
-            case "YOUTUBE_VIDEO":
+            case Constants.TYPE_YOUTUBE_VIDEO:
 //                String link = intent.getStringExtra(Intent.EXTRA_TEXT);
 //                processYoutubeVideo(link);
                 break;

@@ -28,7 +28,8 @@ import ru.aakumykov.me.mvp.utils.MyUtils;
 public class MVPUtils {
 
     private final static String TAG = "MVPUtils";
-    private static Map<String,String> regexMap = new HashMap<>();
+    private static Map<String,String> youtubePatterns = new HashMap<>();
+    private static Map<String,String> imagePatterns = new HashMap<>();
     private static List<String> correctCardTypes = new ArrayList<>();
 
     static {
@@ -38,15 +39,24 @@ public class MVPUtils {
         correctCardTypes.add(Constants.AUDIO_CARD);
     }
 
-    /* Все регулярные выражения для применения к URL/видео-кодам YouTube
-     * обязаны выделять код видео в ПЕРВОЙ группе. */
     static {
-        regexMap.put("youtube1", "^https?://youtube\\.com/watch\\?v=([^=?&]+)");
-        regexMap.put("youtube2", "^https?://www\\.youtube\\.com/watch\\?v=([^=?&]+)");
-        regexMap.put("youtube3", "^https?://youtu.be/([^/]+)$");
+        /* Все регулярные выражения для применения к URL/видео-кодам YouTube
+         * обязаны выделять код видео в _первой_ группе. */
+        youtubePatterns.put("youtube1", "^https?://youtube\\.com/watch\\?v=([^=?&]+)");
+        youtubePatterns.put("youtube2", "^https?://www\\.youtube\\.com/watch\\?v=([^=?&]+)");
+        youtubePatterns.put("youtube3", "^https?://youtu.be/([^/]+)$");
+    }
+
+    static {
+        String prefix = "^https?://.+";
+        imagePatterns.put("jpg", prefix +"\\.jpe?g$");
+        imagePatterns.put("png", prefix +"\\.png$");
+        imagePatterns.put("gif", prefix +"\\.gif$");
+        imagePatterns.put("bmp", prefix +"\\.bmp$");
     }
 
     private MVPUtils(){}
+
 
     public static String detectInputDataMode(Intent intent) {
 
@@ -56,32 +66,41 @@ public class MVPUtils {
         String type = intent.getType() + ""; // для превращения NULL в пустую строку
 
         if (type.equals("text/plain")) {
-            String extraText = intent.getStringExtra(Intent.EXTRA_TEXT);
 
-            if (MVPUtils.isYoutubeLink(extraText)) {
-                return "YOUTUBE_VIDEO";
-            } else {
-                return "TEXT";
+            String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+            if (isLinkToImage(text)) {
+                return Constants.TYPE_IMAGE_LINK;
+            }
+            else if (MVPUtils.isYoutubeLink(text)) {
+                return Constants.TYPE_YOUTUBE_VIDEO;
+            }
+            else {
+                return Constants.TYPE_TEXT;
             }
         }
         else if (type.startsWith("image/")) {
-            return "IMAGE";
+            return Constants.TYPE_IMAGE_DATA;
         }
         else {
-            return "UNKNOWN";
+            return Constants.TYPE_UNKNOWN;
         }
     }
 
     public static boolean isYoutubeLink(String text) {
-
         text = text.trim();
-
-        for(Map.Entry<String,String> entry : regexMap.entrySet()) {
-            String key = entry.getKey();
+        for (Map.Entry<String,String> entry : youtubePatterns.entrySet()) {
             String regex = entry.getValue();
             if (text.matches(regex)) return true;
         }
+        return false;
+    }
 
+    private static boolean isLinkToImage(String text) {
+        text = text.trim().toLowerCase();
+        for (Map.Entry<String,String> entry : imagePatterns.entrySet()) {
+            if (text.matches(entry.getValue())) return true;
+        }
         return false;
     }
 
@@ -90,7 +109,7 @@ public class MVPUtils {
 
         Map<String,String> patternsMap = new HashMap<>();
         patternsMap.put("simpleVideoCode", "^([\\w-]+)$");
-        patternsMap.putAll(regexMap);
+        patternsMap.putAll(youtubePatterns);
 
         for (Map.Entry<String,String> entry : patternsMap.entrySet()) {
             Pattern p = Pattern.compile(entry.getValue());

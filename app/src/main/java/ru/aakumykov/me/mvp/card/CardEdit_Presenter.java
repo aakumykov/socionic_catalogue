@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -92,43 +91,63 @@ public class CardEdit_Presenter implements
         String inputDataMode = MVPUtils.detectInputDataMode(intent);
 
         switch (inputDataMode) {
-            case "TEXT":
+
+            case Constants.TYPE_TEXT:
                 currentCard.setType(Constants.TEXT_CARD);
                 procesIncomingText(intent);
                 break;
-            case "IMAGE":
+
+            case Constants.TYPE_IMAGE_LINK:
+                currentCard.setType(Constants.IMAGE_CARD);
+                processLinkToImage(intent);
+                break;
+
+            case Constants.TYPE_IMAGE_DATA:
                 currentCard.setType(Constants.IMAGE_CARD);
                 processIncomingImage(intent);
                 break;
-            case "YOUTUBE_VIDEO":
+
+            case Constants.TYPE_YOUTUBE_VIDEO:
                 currentCard.setType(Constants.VIDEO_CARD);
                 processYoutubeVideo(intent);
                 break;
+
             default:
                 view.showErrorMsg(R.string.CARD_EDIT_unknown_data_mode);
         }
     }
 
     @Override
-    public void processIncomingImage(@Nullable Intent data) throws Exception {
+    public void processLinkToImage(Intent intent) throws Exception {
+        String textLinkToImage = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (null == textLinkToImage) {
+            throw new Exception("No EXTRA_TEXT in intent");
+        }
 
-        if (null == data) {
+        currentCard.setImageURL("");
+        view.displayImage(textLinkToImage, true);
+    }
+
+    @Override
+    public void processIncomingImage(@Nullable Intent intent) throws Exception {
+
+        if (null == intent) {
             throw new Exception("Intent is null");
         }
 
         // Первый способ получить содержимое
-        Uri imageURI = data.getParcelableExtra(Intent.EXTRA_STREAM);
+        Uri imageURI = intent.getParcelableExtra(Intent.EXTRA_STREAM);
         if (null == imageURI) {
 
             // Второй способ получить содержимое
-            imageURI = data.getData();
+            imageURI = intent.getData();
             if (null == imageURI) {
                 throw new Exception("Where is no image data in intent");
             }
+            view.showLongToast("imageURI получен вторым способом: "+imageURI);
         }
 
         currentCard.setImageURL("");
-
         view.displayImage(imageURI.toString(), true);
     }
 
