@@ -167,8 +167,8 @@ public class UserShow_View extends BaseView implements
 //        MyUtils.show(aboutLabel);
         MyUtils.show(aboutView);
 
-        showAvatarThrobber();
-        displayAvatar(user.getAvatarURL());
+        if (user.hasAvatar())
+            displayAvatar(user.getAvatarURL());
     }
 
     @Override
@@ -262,6 +262,7 @@ public class UserShow_View extends BaseView implements
             });
 
         } catch (Exception e) {
+            hideAvatarThrobber();
             showImageIsBroken(avatarView);
             e.printStackTrace();
         }

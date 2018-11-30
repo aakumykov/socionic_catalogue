@@ -152,8 +152,8 @@ public class UserEdit_View extends BaseView implements
         nameInput.setText(user.getName());
         aboutInput.setText(user.getAbout());
 
-        String avatarURL = user.getAvatarURL();
-        if (!TextUtils.isEmpty(avatarURL)) displayAvatar(avatarURL, false);
+        if (user.hasAvatar())
+            displayAvatar(user.getAvatarURL(), false);
     }
 
     @Override

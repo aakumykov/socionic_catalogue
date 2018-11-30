@@ -110,7 +110,6 @@ public class User implements Parcelable {
     /* Parcelable */
 
 
-
     public String getKey() {
         return key;
     }
@@ -144,5 +143,10 @@ public class User implements Parcelable {
     }
     public void setAvatarURL(String avatarURL) {
         this.avatarURL = avatarURL;
+    }
+
+
+    @Exclude public boolean hasAvatar() {
+        return !TextUtils.isEmpty(getAvatarURL());
     }
 }

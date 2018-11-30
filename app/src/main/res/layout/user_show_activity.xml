@@ -32,7 +32,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_image_placeholder" />
+            app:srcCompat="@drawable/ic_avatar_placeholder" />
 
         <ProgressBar
             android:id="@+id/avatarThrobber"
