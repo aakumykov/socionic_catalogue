@@ -155,6 +155,11 @@ public class CardEdit_Presenter implements
     @Override
     public void saveCard() throws Exception {
 
+        if (null == currentCard.getType()) {
+            view.showErrorMsg(R.string.CARD_EDIT_select_card_type);
+            return;
+        }
+
         view.disableForm();
         view.showProgressBar();
 
@@ -163,12 +168,11 @@ public class CardEdit_Presenter implements
          newTags = view.getCardTags(); // Новые метки сохраняются для последующего обновления БД
         currentCard.setTags(newTags);
 
-        // TODO: В самой Card можно просто игнорировать цитату для нетекстовой карты...
-        if (currentCard.getType().equals(Constants.TEXT_CARD)) {
+        if (currentCard.isTextCard()) {
             currentCard.setQuote(view.getCardQuote());
         }
 
-        if (currentCard.getType().equals(Constants.VIDEO_CARD)) {
+        if (currentCard.isVideoCard()) {
             String videoCode = view.getCardVideoCode();
             currentCard.setVideoCode(videoCode);
         }

@@ -204,4 +204,5 @@
     <string name="CARD_EDIT_image_upload_cancelled">Сохранение картинки отменено</string>
     <string name="CARD_EDIT_uploading_image">Сохраняем картинку</string>
     <string name="CARD_EDIT_saving_card">Сохраняем карточку</string>
+    <string name="CARD_EDIT_select_card_type">Выберите тип карточки</string>
 </resources>
