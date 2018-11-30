@@ -154,7 +154,7 @@ public class CardEdit_Presenter implements
             currentCard.setVideoCode(videoCode);
         }
 
-        if (currentCard.getType().equals(Constants.IMAGE_CARD)) {
+        if (currentCard.isImageCard() && !currentCard.hasImageURL()) {
 
             /* Если картинка была изменена, imageURL в currentCard стирается,
              * а после отправки картинки на сервер, устанавливается.
@@ -163,13 +163,14 @@ public class CardEdit_Presenter implements
             if (TextUtils.isEmpty(currentCard.getImageURL())) {
                 // Здесь сохраняется изображение
 
-                String remoteImageFileName = authService.currentUserId()+".jpg";
+                String remoteImageFileName = currentCard.getKey()+".jpg";
                 view.showInfoMsg(R.string.CARD_EDIT_uploading_image);
                 view.showImageProgressBar();
                 view.disableForm();
 
                 try {
                     storageService.uploadImage(view.getImageData(), remoteImageFileName, this);
+                    return;
 
                 } catch (Exception e) {
                     view.hideImageProgressBar();
@@ -181,11 +182,10 @@ public class CardEdit_Presenter implements
                 }
             }
         }
-        else  {
-            // Здесь сохраняется карточка
-            view.showInfoMsg(R.string.CARD_EDIT_saving_card);
-            cardsService.updateCard(currentCard, this);
-        }
+
+        // Сохранение собственно карточки
+        view.showInfoMsg(R.string.CARD_EDIT_saving_card);
+        cardsService.updateCard(currentCard, this);
     }
 
 

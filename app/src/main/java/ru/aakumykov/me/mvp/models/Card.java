@@ -3,6 +3,7 @@ package ru.aakumykov.me.mvp.models;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.google.firebase.database.Exclude;
 
@@ -301,5 +302,22 @@ public class Card implements Parcelable {
     }
     @Exclude public boolean isRatedDownBy(String userId) {
         return getRateDownList().contains(userId);
+    }
+
+    @Exclude public boolean isTextCard() {
+        return getType().equals(Constants.TEXT_CARD);
+    }
+    @Exclude public boolean isImageCard() {
+        return getType().equals(Constants.IMAGE_CARD);
+    }
+    @Exclude public boolean isVideoCard() {
+        return getType().equals(Constants.VIDEO_CARD);
+    }
+    @Exclude public boolean isAudioCard() {
+        return getType().equals(Constants.AUDIO_CARD);
+    }
+
+    @Exclude public boolean hasImageURL() {
+        return !TextUtils.isEmpty(getImageURL());
     }
 }
