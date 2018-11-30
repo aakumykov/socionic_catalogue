@@ -61,7 +61,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/comment_text_padding_bottom"
+        android:paddingStart="@dimen/comment_text_padding_left"
+        android:paddingEnd="@dimen/comment_text_padding_right">
 
         <ImageView
             android:id="@+id/commentReplyMark"
@@ -90,20 +93,6 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingBottom="8dp">
-
-        <TextView
-            android:id="@+id/commentReply"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical|start"
-            android:text="@string/COMMENT_reply"
-            android:textColor="@color/colorPrimary" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="26" />
 
         <ImageView
             android:id="@+id/commentRateUpButton"
@@ -134,6 +123,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_thumb_down_neutral" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="26" />
+
+        <TextView
+            android:id="@+id/commentReply"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:text="@string/COMMENT_reply"
+            android:textColor="@color/colorPrimary" />
 
     </LinearLayout>
 

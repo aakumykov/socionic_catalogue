@@ -18,4 +18,8 @@
     <dimen name="comment_avatar_width">30dp</dimen>
     <dimen name="comment_avatar_height">30dp</dimen>
 
+    <dimen name="comment_text_padding_left">15dp</dimen>
+    <dimen name="comment_text_padding_right">15dp</dimen>
+    <dimen name="comment_text_padding_bottom">10dp</dimen>
+
 </resources>
