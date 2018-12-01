@@ -145,7 +145,7 @@ public class Users_Presenter implements
         currentUser.setName(name);
         currentUser.setAbout(editView.getAbout());
 
-        if (imageSelected) {
+        if (!currentUser.hasAvatar() && imageSelected) {
             try {
                 byte[] imageByteArray = editView.getImageData();
                 String remoteFileName = Constants.AVATARS_PATH + "/" + authService.currentUserId() + ".jpg";
@@ -186,6 +186,8 @@ public class Users_Presenter implements
             }
         }
 
+        setImageSelected(true);
+        currentUser.setAvatarURL("");
         editView.displayAvatar(imageURI.toString(), true);
     }
 

@@ -34,6 +34,7 @@ public class UserShow_View extends BaseView implements
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.nameView) TextView nameView;
+    @BindView(R.id.emailView) TextView emailView;
     @BindView(R.id.aboutView) TextView aboutView;
     @BindView(R.id.avatarView) ImageView avatarView;
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
@@ -160,6 +161,7 @@ public class UserShow_View extends BaseView implements
         hideProgressBar();
 
         nameView.setText(user.getName());
+        emailView.setText(user.getEmail());
         aboutView.setText(user.getAbout());
 
 //        MyUtils.show(nameLabel);
@@ -195,33 +197,6 @@ public class UserShow_View extends BaseView implements
 
 
     // Внутренние методы
-
-//    private void processActivityResult(int requestCode, @Nullable Intent data) {
-//        Log.d(TAG, "processActivityResult()");
-//
-////        switch (requestCode) {
-////            case Constants.CODE_USER_EDIT:
-////                break;
-////            default:
-////                showErrorMsg(R.string.internal_error, "Unknowm request code: "+requestCode);
-////                break;
-////        }
-//
-//        if (null != data) {
-//
-//            User user = data.getParcelableExtra(Constants.USER);
-//
-//            if (null != user) {
-//                displayUser(user);
-//            } else {
-//                showErrorMsg(R.string.USER_EDIT_user_saving_error, "User from activity result data == null");
-//            }
-//
-//        } else {
-//            showErrorMsg(R.string.USER_EDIT_user_saving_error, "Activity result data == null");
-//        }
-//    }
-
     private void showAvatarThrobber() {
         MyUtils.show(avatarThrobber);
     }

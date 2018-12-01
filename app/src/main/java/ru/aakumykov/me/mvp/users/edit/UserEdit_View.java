@@ -171,7 +171,6 @@ public class UserEdit_View extends BaseView implements
                         @Override
                         public void onImageLoadWithResizeSuccess(FileInfo fileInfo) {
                             hideAvatarThrobber();
-                            presenter.setImageSelected(true);
                         }
 
                         @Override
