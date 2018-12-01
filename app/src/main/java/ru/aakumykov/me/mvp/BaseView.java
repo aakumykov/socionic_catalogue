@@ -62,6 +62,7 @@ public abstract class BaseView extends AppCompatActivity implements
             @Override
             public void onLoggedIn() {
                 invalidateOptionsMenu();
+                showToast(R.string.you_are_logged_in);
                 onUserLogin();
             }
 
@@ -69,6 +70,7 @@ public abstract class BaseView extends AppCompatActivity implements
             @Override
             public void onLoggedOut() {
                 invalidateOptionsMenu();
+                showToast(R.string.you_are_logged_out);
                 onUserLogout();
             }
         });
