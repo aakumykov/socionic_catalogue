@@ -149,4 +149,5 @@ public class User implements Parcelable {
     @Exclude public boolean hasAvatar() {
         return !TextUtils.isEmpty(getAvatarURL());
     }
+
 }

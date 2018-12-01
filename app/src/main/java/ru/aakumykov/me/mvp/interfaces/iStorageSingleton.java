@@ -9,10 +9,10 @@ public interface iStorageSingleton {
     void deleteImage(String remoteImagePath, FileDeleteCallbacks callbacks);
 
     interface FileUploadCallbacks {
-        void onUploadProgress(int progress);
-        void onUploadSuccess(String downloadURL);
-        void onUploadFail(String errorMsg);
-        void onUploadCancel();
+        void onFileUploadProgress(int progress);
+        void onFileUploadSuccess(String downloadURL);
+        void onFileUploadFail(String errorMsg);
+        void onFileUploadCancel();
     }
 
     interface FileDeleteCallbacks {

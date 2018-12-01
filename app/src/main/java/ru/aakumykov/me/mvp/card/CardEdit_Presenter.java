@@ -296,12 +296,12 @@ public class CardEdit_Presenter implements
 
     // --Отправки изображения
     @Override
-    public void onUploadProgress(int progress) {
+    public void onFileUploadProgress(int progress) {
         view.setImageUploadProgress(progress);
     }
 
     @Override
-    public void onUploadSuccess(String downloadURL) {
+    public void onFileUploadSuccess(String downloadURL) {
         view.hideImageProgressBar();
 
         currentCard.setImageURL(downloadURL);
@@ -315,14 +315,14 @@ public class CardEdit_Presenter implements
     }
 
     @Override
-    public void onUploadFail(String errorMsg) {
+    public void onFileUploadFail(String errorMsg) {
         view.hideImageProgressBar();
         view.enableForm();
         view.showErrorMsg(R.string.CARD_EDIT_error_saving_image, errorMsg);
     }
 
     @Override
-    public void onUploadCancel() {
+    public void onFileUploadCancel() {
         view.hideImageProgressBar();
         view.enableForm();
         view.showErrorMsg(R.string.CARD_EDIT_image_upload_cancelled);

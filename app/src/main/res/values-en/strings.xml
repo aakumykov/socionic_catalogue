@@ -201,4 +201,8 @@
     <string name="CARD_EDIT_saving_card">Saving card</string>
     <string name="CARD_EDIT_select_card_type">Select card type</string>
     <string name="DIALOG_login_first">Log in first</string>
+    <string name="USER_EDIT_saving_avatar">Saving avatar</string>
+    <string name="USER_EDIT_saving_profile">Saving profile</string>
+    <string name="USER_EDIT_error_saving_avatar">Error saving avatar</string>
+    <string name="USER_EDIT_error_saving_profile">Error saving profile</string>
 </resources>

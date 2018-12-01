@@ -206,4 +206,8 @@
     <string name="CARD_EDIT_saving_card">Сохраняем карточку</string>
     <string name="CARD_EDIT_select_card_type">Выберите тип карточки</string>
     <string name="DIALOG_login_first">Сначала войдите в приложение</string>
+    <string name="USER_EDIT_saving_avatar">Сохраняем аватар</string>
+    <string name="USER_EDIT_saving_profile">Сохраняем профиль</string>
+    <string name="USER_EDIT_error_saving_avatar">Ошибка сохранения аватара</string>
+    <string name="USER_EDIT_error_saving_profile">Ошибка сохранения профиля</string>
 </resources>

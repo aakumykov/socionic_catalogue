@@ -50,7 +50,6 @@ public class UserEdit_View extends BaseView implements
 
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
     @BindView(R.id.avatarView) ImageView avatarView;
-    @BindView(R.id.avatarURL) TextView avatarURL;
 
     @BindView(R.id.nameInput) EditText nameInput;
     @BindView(R.id.aboutInput) EditText aboutInput;
@@ -172,6 +171,7 @@ public class UserEdit_View extends BaseView implements
                         @Override
                         public void onImageLoadWithResizeSuccess(FileInfo fileInfo) {
                             hideAvatarThrobber();
+                            presenter.setImageSelected(true);
                         }
 
                         @Override
@@ -267,11 +267,6 @@ public class UserEdit_View extends BaseView implements
         nameInput.setEnabled(false);
         aboutInput.setEnabled(false);
         saveButton.setEnabled(false);
-    }
-
-    @Override
-    public void storeImageURI(Uri imageURI) {
-        avatarURL.setTag(R.id.avatar_uri, imageURI);
     }
 
     @Override

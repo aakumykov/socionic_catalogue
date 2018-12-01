@@ -37,8 +37,6 @@ public interface iUsers {
         String getAbout();
         byte[] getImageData() throws Exception;
 
-        void storeImageURI(Uri imageURI);
-
         void showAvatarThrobber();
         void hideAvatarThrobber();
 
@@ -56,6 +54,8 @@ public interface iUsers {
         void unlinkView();
 
         void prepareUserEdit(String userId) throws Exception;
+
+        void setImageSelected(boolean isSelected);
 
         void loadUser(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception;
 

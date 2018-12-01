@@ -532,6 +532,8 @@ public class CardEdit_View extends BaseView implements
 
         imagePlaceholder.setImageDrawable(getResources().getDrawable(R.drawable.ic_image_placeholder));
         MyUtils.show(imagePlaceholder);
+
+//        imageView.setTag(Constants.)
     }
 
     @OnClick(R.id.imagePlaceholder)

@@ -80,7 +80,7 @@ public class StorageSingleton implements iStorageSingleton {
                         Long totalBytes = taskSnapshot.getTotalByteCount();
                         Long uploadedBytes = taskSnapshot.getBytesTransferred();
                         int progress = Math.round((uploadedBytes / totalBytes) * 100);
-                        callbacks.onUploadProgress(progress);
+                        callbacks.onFileUploadProgress(progress);
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -92,13 +92,13 @@ public class StorageSingleton implements iStorageSingleton {
                                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        callbacks.onUploadSuccess(uri.toString());
+                                        callbacks.onFileUploadSuccess(uri.toString());
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        callbacks.onUploadFail(e.getMessage());
+                                        callbacks.onFileUploadFail(e.getMessage());
                                         e.printStackTrace();
                                     }
                                 });
@@ -107,14 +107,14 @@ public class StorageSingleton implements iStorageSingleton {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        callbacks.onUploadFail(e.getMessage());
+                        callbacks.onFileUploadFail(e.getMessage());
                         e.printStackTrace();
                     }
                 })
                 .addOnCanceledListener(new OnCanceledListener() {
                     @Override
                     public void onCanceled() {
-                        callbacks.onUploadCancel();
+                        callbacks.onFileUploadCancel();
                     }
                 });
     }

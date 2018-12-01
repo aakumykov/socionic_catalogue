@@ -30,7 +30,8 @@ import ru.aakumykov.me.mvp.utils.MVPUtils.iMVPUtils;
 public class Users_Presenter implements
         iUsers.Presenter,
         iUsersSingleton.ReadCallbacks,
-        iUsersSingleton.SaveCallbacks
+        iUsersSingleton.SaveCallbacks,
+        iStorageSingleton.FileUploadCallbacks
 {
 
     private final static String TAG = "Users_Presenter";
@@ -43,6 +44,7 @@ public class Users_Presenter implements
 
     private User currentUser;
     private String editedUserId;
+    private boolean imageSelected = false;
 
     // Системные методы
     @Override
@@ -93,6 +95,11 @@ public class Users_Presenter implements
     }
 
     @Override
+    public void setImageSelected(boolean isSelected) {
+        imageSelected = isSelected;
+    }
+
+    @Override
     public void loadUser(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception {
         if (null == userId) {
             throw new Exception("userId == null");
@@ -138,43 +145,24 @@ public class Users_Presenter implements
         currentUser.setName(name);
         currentUser.setAbout(editView.getAbout());
 
-        try {
-            byte[] imageByteArray = editView.getImageData();
-            String remoteFileName = Constants.AVATARS_PATH+"/"+authService.currentUserId()+".jpg";
+        if (imageSelected) {
+            try {
+                byte[] imageByteArray = editView.getImageData();
+                String remoteFileName = Constants.AVATARS_PATH + "/" + authService.currentUserId() + ".jpg";
 
-            editView.showAvatarThrobber();
-            editView.disableEditForm();
+                editView.showAvatarThrobber();
+                editView.disableEditForm();
+                editView.showInfoMsg(R.string.USER_EDIT_saving_avatar);
 
-            storageService.uploadImage(imageByteArray, remoteFileName, new iStorageSingleton.FileUploadCallbacks() {
-                @Override
-                public void onUploadProgress(int progress) {
+                storageService.uploadImage(imageByteArray, remoteFileName, this);
 
-                }
-
-                @Override
-                public void onUploadSuccess(String downloadURL) {
-                    editView.hideAvatarThrobber();
-                    currentUser.setAvatarURL(downloadURL);
-                    saveUser();
-                }
-
-                @Override
-                public void onUploadFail(String errorMsg) {
-                    editView.hideAvatarThrobber();
-                    editView.enableEditForm();
-                }
-
-                @Override
-                public void onUploadCancel() {
-                    editView.hideAvatarThrobber();
-                    editView.enableEditForm();
-                }
-            });
-
-        } catch (Exception e) {
-            editView.showErrorMsg(R.string.USER_EDIT_error_processing_avatar, e.getMessage());
-            e.printStackTrace();
-            return;
+            } catch (Exception e) {
+                onFileUploadFail(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        else {
+            saveUser();
         }
     }
 
@@ -199,8 +187,6 @@ public class Users_Presenter implements
         }
 
         editView.displayAvatar(imageURI.toString(), true);
-
-
     }
 
 
@@ -222,6 +208,31 @@ public class Users_Presenter implements
     }
 
     @Override
+    public void onFileUploadProgress(int progress) {
+
+    }
+
+    @Override
+    public void onFileUploadSuccess(String downloadURL) {
+        editView.hideAvatarThrobber();
+        currentUser.setAvatarURL(downloadURL);
+        saveUser();
+    }
+
+    @Override
+    public void onFileUploadFail(String errorMsg) {
+        editView.showErrorMsg(R.string.USER_EDIT_error_saving_avatar);
+        editView.hideAvatarThrobber();
+        editView.enableEditForm();
+    }
+
+    @Override
+    public void onFileUploadCancel() {
+        editView.hideAvatarThrobber();
+        editView.enableEditForm();
+    }
+
+    @Override
     public void onUserSaveSuccess(User user) {
         authService.storeCurrentUser(user);
         editView.hideProgressBar();
@@ -231,7 +242,8 @@ public class Users_Presenter implements
     @Override
     public void onUserSaveFail(String errorMsg) {
         editView.hideProgressBar();
-        editView.showErrorMsg(R.string.USER_EDIT_error_saving_user, errorMsg);
+        editView.enableEditForm();
+        editView.showErrorMsg(R.string.USER_EDIT_error_saving_profile, errorMsg);
     }
 
 
@@ -239,19 +251,25 @@ public class Users_Presenter implements
     private void saveUser() {
         editView.showProgressBar();
         editView.disableEditForm();
+        editView.showInfoMsg(R.string.USER_EDIT_saving_profile);
 
-        usersService.saveUser(currentUser, new iUsersSingleton.SaveCallbacks() {
-            @Override
-            public void onUserSaveSuccess(User user) {
-                editView.finishEdit(user, true);
-            }
+        try {
+            usersService.saveUser(currentUser, new iUsersSingleton.SaveCallbacks() {
+                @Override
+                public void onUserSaveSuccess(User user) {
+                    editView.finishEdit(user, true);
+                }
 
-            @Override
-            public void onUserSaveFail(String errorMsg) {
-                editView.showErrorMsg(R.string.USER_EDIT_error_saving_user, errorMsg);
-                editView.enableEditForm();
-            }
-        });
+                @Override
+                public void onUserSaveFail(String errorMsg) {
+                    editView.showErrorMsg(R.string.USER_EDIT_error_saving_user, errorMsg);
+                    editView.enableEditForm();
+                }
+            });
+        } catch (Exception e) {
+            onUserSaveFail(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void detectImageWidthAndHeight(Uri imageURI) {
