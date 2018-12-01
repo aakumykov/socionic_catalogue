@@ -42,7 +42,6 @@ import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
-import ru.aakumykov.me.mvp.card_edit2.CardEdit2_View;
 import ru.aakumykov.me.mvp.cards_list.CardsList_View;
 import ru.aakumykov.me.mvp.comment.CommentsAdapter;
 import ru.aakumykov.me.mvp.comment.iComments;
@@ -278,7 +277,10 @@ public class CardShow_View extends BaseView implements
     public void onCommentReplyClicked(View view, final Comment comment) {
         // TODO: эта логика должна быть в презентере
 
-        if (forceSetupUserName(comment)) {
+        if (!getAuthService().isUserLoggedIn()) {
+            showToast(R.string.DIALOG_login_first);
+        }
+        else if (forceSetupUserName(comment)) {
             parentComment = comment;
             showCommentForm();
         }
@@ -698,8 +700,13 @@ public class CardShow_View extends BaseView implements
     private void displayCommonCardParts(Card card) {
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
+
         displayTags(card.getTags());
         showCardRating(card.getRating());
+
+//        if (getAuthService().isUserLoggedIn()) {
+            MyUtils.show(addCommentButton);
+//        }
     }
 
     private View constructCommentItem(Comment comment) throws Exception {
@@ -717,10 +724,14 @@ public class CardShow_View extends BaseView implements
     }
 
     private void showCommentForm() {
-        MyUtils.hide(addCommentButton);
-        MyUtils.show(commentForm);
-        commentInput.requestFocus();
-        MyUtils.showKeyboard(this, commentInput);
+        if (getAuthService().isUserLoggedIn()) {
+            MyUtils.hide(addCommentButton);
+            MyUtils.show(commentForm);
+            commentInput.requestFocus();
+            MyUtils.showKeyboard(this, commentInput);
+        } else {
+            showToast(R.string.DIALOG_login_first);
+        }
     }
 
     private void sendComment() {
@@ -855,7 +866,7 @@ public class CardShow_View extends BaseView implements
 
         final User user = getAuthService().currentUser();
 
-        if (!TextUtils.isEmpty(user.getName())) {
+        if (null != user && !TextUtils.isEmpty(user.getName())) {
             return true;
         }
         else {

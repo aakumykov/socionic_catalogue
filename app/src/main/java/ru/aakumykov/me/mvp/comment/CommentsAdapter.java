@@ -126,28 +126,29 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             }
         });
 
-        // Положительная оценка комментария
-        ImageView commentRateUpButton = commentItemView.findViewById(R.id.commentRateUpButton);
-        commentRateUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!comment.isRatedUpBy(currentUser.getKey()))
-                    commentClickListener.onCommentRateUpClicked(comment);
-            }
-        });
+        // Оценка комментария
+        if (null != currentUser) {
 
-        // Отрицательная оценка комментария
-        ImageView commentRateDownButton = commentItemView.findViewById(R.id.commentRateDownButton);
-        commentRateDownButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!comment.isRatedDownBy(currentUser.getKey()))
-                    commentClickListener.onCommentRateDownClicked(comment);
-            }
-        });
+            ImageView commentRateUpButton = commentItemView.findViewById(R.id.commentRateUpButton);
+            commentRateUpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!comment.isRatedUpBy(currentUser.getKey()))
+                        commentClickListener.onCommentRateUpClicked(comment);
+                }
+            });
 
-        // Раскраска кнопок оценки комментария
-        colorizeRatingButtons(commentRateUpButton, commentRateDownButton, comment);
+            ImageView commentRateDownButton = commentItemView.findViewById(R.id.commentRateDownButton);
+            commentRateDownButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!comment.isRatedDownBy(currentUser.getKey()))
+                        commentClickListener.onCommentRateDownClicked(comment);
+                }
+            });
+
+            colorizeRatingButtons(commentRateUpButton, commentRateDownButton, comment);
+        }
 
         return commentItemView;
     }

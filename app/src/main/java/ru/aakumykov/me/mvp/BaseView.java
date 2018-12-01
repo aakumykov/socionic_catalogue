@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -234,6 +235,7 @@ public abstract class BaseView extends AppCompatActivity implements
 
     private void showToastReal(Context context, String message, int length) {
         Toast toast = Toast.makeText(context, message, length);
+        toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 

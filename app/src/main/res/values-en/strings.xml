@@ -200,4 +200,5 @@
     <string name="CARD_EDIT_uploading_image">Uploading image</string>
     <string name="CARD_EDIT_saving_card">Saving card</string>
     <string name="CARD_EDIT_select_card_type">Select card type</string>
+    <string name="DIALOG_login_first">Log in first</string>
 </resources>

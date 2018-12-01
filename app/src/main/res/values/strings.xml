@@ -205,4 +205,5 @@
     <string name="CARD_EDIT_uploading_image">Сохраняем картинку</string>
     <string name="CARD_EDIT_saving_card">Сохраняем карточку</string>
     <string name="CARD_EDIT_select_card_type">Выберите тип карточки</string>
+    <string name="DIALOG_login_first">Сначала войдите в приложение</string>
 </resources>
