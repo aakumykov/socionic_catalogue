@@ -162,6 +162,9 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
     }
 
     private void colorizeRatingButtons(ImageView rateUpImage, ImageView rateDownImage, final Comment comment) {
+        // Для незалогиненных не раскрашиваем
+        if (null == currentUser) return;
+
         List<String> rateUpList = comment.getRateUpList();
         List<String> rateDownList = comment.getRateDownList();
 
