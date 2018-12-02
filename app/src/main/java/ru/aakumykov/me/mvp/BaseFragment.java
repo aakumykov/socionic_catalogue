@@ -1,16 +1,19 @@
 package ru.aakumykov.me.mvp;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
@@ -115,20 +118,31 @@ public abstract class BaseFragment extends Fragment implements iBaseView
     }
 
 
+    // Тосты
     @Override
     public void showToast(int stringResourceId) {
-
+        String msg = getString(stringResourceId);
+        showToast(msg);
     }
+
     @Override
     public void showToast(String msg) {
-
+        showToastReal(getContext(), msg, Toast.LENGTH_SHORT);
     }
+
     @Override
     public void showLongToast(String msg) {
+        showToastReal(getContext(), msg, Toast.LENGTH_LONG);
+    }
 
+    private void showToastReal(Context context, String message, int length) {
+        Toast toast = Toast.makeText(context, message, length);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
 
+    // Строка прогресса
     @Override
     public void showProgressBar() {
         ProgressBar progressBar = getRooView().findViewById(R.id.progressBar);
@@ -149,6 +163,7 @@ public abstract class BaseFragment extends Fragment implements iBaseView
     }
 
 
+    // Служебные страничные
     @Override
     public void setPageTitle(int titleId) {
 
@@ -157,18 +172,17 @@ public abstract class BaseFragment extends Fragment implements iBaseView
     public void setPageTitle(String title) {
 
     }
-
     @Override
     public void activateUpButton() {
 
     }
-
     @Override
     public void closePage() {
 
     }
 
 
+    // Вспомогательные
     public void setRootView(View view) {
         this.rooView = view;
     }

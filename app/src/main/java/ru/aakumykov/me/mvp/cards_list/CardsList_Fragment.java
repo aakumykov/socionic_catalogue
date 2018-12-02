@@ -1,21 +1,15 @@
 package ru.aakumykov.me.mvp.cards_list;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +30,9 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
-import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.start_page.iPageConfigurator;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
@@ -103,6 +97,14 @@ public class CardsList_Fragment extends BaseFragment implements
     public void onStop() {
         super.onStop();
         presenter.unlinkView();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        iPageConfigurator pageConfigurator = (iPageConfigurator) getActivity();
+        if (null != pageConfigurator)
+            pageConfigurator.setPageTitle(R.string.CARDS_LIST_page_title);
     }
 
     @Override

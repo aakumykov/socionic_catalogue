@@ -6,7 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,8 +17,9 @@ import ru.aakumykov.me.mvp.TagsListFragment;
 
 
 public class StartPage extends BaseView implements
-    ViewPager.OnPageChangeListener,
-    TabLayout.OnTabSelectedListener
+        ViewPager.OnPageChangeListener,
+        TabLayout.OnTabSelectedListener,
+        iPageConfigurator
 {
     @BindView(R.id.viewPager) ViewPager viewPager;
     @BindView(R.id.tabLayout) TabLayout tabLayout;
@@ -86,5 +87,14 @@ public class StartPage extends BaseView implements
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
+    }
+
+
+    @Override
+    public void setPageTitle(int titleId) {
+        String title = getResources().getString(titleId);
+        ActionBar actionBar = getSupportActionBar();
+        if (null != actionBar)
+            actionBar.setTitle(title);
     }
 }

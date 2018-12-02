@@ -72,16 +72,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
