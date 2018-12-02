@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.aakumykov.me.mvp.CardsListFragment;
+import ru.aakumykov.me.mvp.cards_list.CardsList_Fragment;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.TagsListFragment;
 
@@ -25,7 +25,7 @@ public class StartPage extends AppCompatActivity implements
     private FragmentManager fragmentManager;
     private StartPage_PagerAdapter startPagePagerAdapter;
 
-//    private CardsListFragment cardsListFragment;
+//    private CardsList_Fragment cardsListFragment;
 //    private TagsListFragment tagsListFragment;
 
     @Override
@@ -34,7 +34,7 @@ public class StartPage extends AppCompatActivity implements
         setContentView(R.layout.start_page_activity);
         ButterKnife.bind(this);
 
-        Fragment[] fragments = { new CardsListFragment(), new TagsListFragment() };
+        Fragment[] fragments = { new CardsList_Fragment(), new TagsListFragment() };
 
         fragmentManager = getSupportFragmentManager();
         startPagePagerAdapter = new StartPage_PagerAdapter(fragmentManager, fragments);
