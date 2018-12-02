@@ -10,12 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.cards_list.CardsList_Fragment;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.TagsListFragment;
 
 
-public class StartPage extends AppCompatActivity implements
+public class StartPage extends BaseView implements
     ViewPager.OnPageChangeListener,
     TabLayout.OnTabSelectedListener
 {
@@ -24,9 +25,6 @@ public class StartPage extends AppCompatActivity implements
 
     private FragmentManager fragmentManager;
     private StartPage_PagerAdapter startPagePagerAdapter;
-
-//    private CardsList_Fragment cardsListFragment;
-//    private TagsListFragment tagsListFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +40,16 @@ public class StartPage extends AppCompatActivity implements
 
         viewPager.addOnPageChangeListener(this);
         tabLayout.addOnTabSelectedListener(this);
+    }
+
+    @Override
+    public void onUserLogin() {
+
+    }
+
+    @Override
+    public void onUserLogout() {
+
     }
 
 

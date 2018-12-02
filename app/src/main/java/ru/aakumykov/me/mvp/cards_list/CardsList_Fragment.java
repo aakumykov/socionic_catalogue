@@ -1,5 +1,8 @@
 package ru.aakumykov.me.mvp.cards_list;
 
+import android.app.ActionBar;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -48,7 +51,6 @@ public class CardsList_Fragment extends BaseFragment implements
         AdapterView.OnItemLongClickListener,
         PopupMenu.OnMenuItemClickListener
 {
-
     @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
     @BindView(R.id.filterView) LinearLayout filterView;
     @BindView(R.id.filterCloser) ImageView filterCloser;
@@ -72,8 +74,6 @@ public class CardsList_Fragment extends BaseFragment implements
         swiperefreshLayout.setOnRefreshListener(this);
         swiperefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
 
-        presenter = new CardsList_Presenter();
-
         cardsList = new ArrayList<>();
         cardsListAdapter = new CardsListAdapter(getContext(), R.layout.cards_list_item, cardsList);
         listView.setAdapter(cardsListAdapter);
@@ -82,6 +82,9 @@ public class CardsList_Fragment extends BaseFragment implements
         listView.setOnItemLongClickListener(this);
         listView.setLongClickable(true);
 
+        presenter = new CardsList_Presenter();
+
+        setRootView(rootView);
         return rootView;
     }
 
@@ -91,8 +94,8 @@ public class CardsList_Fragment extends BaseFragment implements
         presenter.linkView(this);
 
         if (firstRun) {
-            firstRun = false;
             loadList(true);
+            firstRun = false;
         }
     }
 
