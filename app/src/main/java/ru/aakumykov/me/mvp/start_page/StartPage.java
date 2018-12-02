@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.cards_list.CardsList_Fragment;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.TagsListFragment;
+import ru.aakumykov.me.mvp.TagsList_Fragment;
 
 
 public class StartPage extends BaseView implements
@@ -33,7 +33,7 @@ public class StartPage extends BaseView implements
         setContentView(R.layout.start_page_activity);
         ButterKnife.bind(this);
 
-        Fragment[] fragments = { new CardsList_Fragment(), new TagsListFragment() };
+        Fragment[] fragments = { new CardsList_Fragment(), new TagsList_Fragment() };
 
         fragmentManager = getSupportFragmentManager();
         startPagePagerAdapter = new StartPage_PagerAdapter(fragmentManager, fragments);

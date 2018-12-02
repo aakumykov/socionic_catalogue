@@ -215,4 +215,5 @@
     <string name="you_are_logged_in">Вы вошли в программу</string>
     <string name="START_PAGE_tab_cards">Карточки</string>
     <string name="START_PAGE_tab_tags">Метки</string>
+    <string name="TAGS_LIST_page_title">Список меток</string>
 </resources>

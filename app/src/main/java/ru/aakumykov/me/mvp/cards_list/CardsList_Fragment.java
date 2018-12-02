@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.cards_list;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -78,6 +79,10 @@ public class CardsList_Fragment extends BaseFragment implements
 
         presenter = new CardsList_Presenter();
 
+//        iPageConfigurator pageConfigurator = (iPageConfigurator) getActivity();
+//        if (null != pageConfigurator)
+//            pageConfigurator.setPageTitle(R.string.CARDS_LIST_page_title);
+
         setRootView(rootView);
         return rootView;
     }
@@ -100,11 +105,9 @@ public class CardsList_Fragment extends BaseFragment implements
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        iPageConfigurator pageConfigurator = (iPageConfigurator) getActivity();
-        if (null != pageConfigurator)
-            pageConfigurator.setPageTitle(R.string.CARDS_LIST_page_title);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
     }
 
     @Override
