@@ -329,7 +329,8 @@ public class CardsList_View extends BaseView implements
         presenter.loadList(tagFilter);
     }
 
-    private void processCardCreationResult(Intent data) {
+    @Override
+    public void processCardCreationResult(Intent data) {
 
         if (null != data) {
 
@@ -348,7 +349,8 @@ public class CardsList_View extends BaseView implements
         }
     }
 
-    private void processCardEditionResult(Intent data) {
+    @Override
+    public void processCardEditionResult(Intent data) {
 
         if (null != data) {
 

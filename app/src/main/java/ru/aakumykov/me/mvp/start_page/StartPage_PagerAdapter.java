@@ -3,24 +3,28 @@ package ru.aakumykov.me.mvp.start_page;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.util.ArrayMap;
 import android.util.SparseArray;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class StartPage_PagerAdapter extends FragmentPagerAdapter {
 
-    private SparseArray<Fragment> fragmentsMap = new SparseArray<>();
+    private ArrayMap<Integer,Fragment> fragmentsMap = new ArrayMap<Integer,Fragment>();
 
-    public StartPage_PagerAdapter(FragmentManager fm, Fragment[] fragments) {
+    StartPage_PagerAdapter(FragmentManager fm, Map<Integer,Fragment> fragmentsMap) {
         super(fm);
-        for (int i=0; i<fragments.length; i++) {
-            Fragment f = fragments[i];
-            fragmentsMap.append(i, f);
-        }
+        this.fragmentsMap.putAll(fragmentsMap);
     }
 
     @Override
     public Fragment getItem(int i) {
-        return fragmentsMap.get(i);
+        int key = fragmentsMap.keyAt(i);
+        Fragment f = fragmentsMap.valueAt(i);
+        Fragment fByIndex = fragmentsMap.get(key);
+        return f;
     }
 
     @Override

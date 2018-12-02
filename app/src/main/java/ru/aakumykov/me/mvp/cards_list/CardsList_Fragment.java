@@ -110,24 +110,6 @@ public class CardsList_Fragment extends BaseFragment implements
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        presenter.linkView(this);
-
-        switch (requestCode) {
-            case Constants.CODE_CREATE_CARD:
-                // TODO: как отображать ошибку?
-                if (RESULT_OK==resultCode) processCardCreationResult(data);
-                break;
-            case Constants.CODE_EDIT_CARD:
-                if (RESULT_OK==resultCode) processCardEditionResult(data);
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //
@@ -340,7 +322,8 @@ public class CardsList_Fragment extends BaseFragment implements
         presenter.loadList(tagFilter);
     }
 
-    private void processCardCreationResult(Intent data) {
+    @Override
+    public void processCardCreationResult(Intent data) {
 
         if (null != data) {
 
@@ -359,7 +342,8 @@ public class CardsList_Fragment extends BaseFragment implements
         }
     }
 
-    private void processCardEditionResult(Intent data) {
+    @Override
+    public void processCardEditionResult(Intent data) {
 
         if (null != data) {
 
