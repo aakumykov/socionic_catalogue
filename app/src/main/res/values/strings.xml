@@ -213,4 +213,6 @@
     <string name="USER_SHOW_email">Электронная почта</string>
     <string name="you_are_logged_out">Вы вышли из программы</string>
     <string name="you_are_logged_in">Вы вошли в программу</string>
+    <string name="START_PAGE_tab_cards">Карточки</string>
+    <string name="START_PAGE_tab_tags">Метки</string>
 </resources>
