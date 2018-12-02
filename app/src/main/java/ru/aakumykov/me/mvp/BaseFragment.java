@@ -45,17 +45,20 @@ public abstract class BaseFragment extends Fragment implements iBaseView
         authService = AuthSingleton.getInstance();
         cardsService = CardsSingleton.getInstance();
 
+        Log.d(TAG, "authService: "+authService);
+        Log.d(TAG, "cardsService: "+cardsService);
+
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public iAuthSingleton getAuthService() {
-        return null;
+        return authService;
     }
 
     @Override
     public boolean isUserLoggedIn() {
-        return false;
+        return authService.isUserLoggedIn();
     }
 
 

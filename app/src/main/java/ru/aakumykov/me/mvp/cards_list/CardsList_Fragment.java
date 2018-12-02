@@ -63,6 +63,8 @@ public class CardsList_Fragment extends BaseFragment implements
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         View rootView = inflater.inflate(R.layout.cards_list, container, false);
         ButterKnife.bind(this, rootView);
 
