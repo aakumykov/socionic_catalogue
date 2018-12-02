@@ -21,8 +21,8 @@ public class StartPage extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private PagerAdapter pagerAdapter;
 
-//    private CardsFragment cardsFragment;
-//    private TagsFragment tagsFragment;
+//    private CardsListFragment cardsListFragment;
+//    private TagsListFragment tagsListFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
