@@ -7,7 +7,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,7 +19,7 @@ import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.cards_list.CardsList_Fragment;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.TagsList_Fragment;
+import ru.aakumykov.me.mvp.tags.list.TagsList_Fragment;
 
 
 public class StartPage extends BaseView implements

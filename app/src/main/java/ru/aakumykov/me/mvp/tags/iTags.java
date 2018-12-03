@@ -36,7 +36,7 @@ public interface iTags {
 
         void onTagClicked(Tag tag);
 
-        void onListPageReady();
+        void loadList();
         void onShowPageReady(String tagKey);
         void onEditPageReady(String tagKey);
     }

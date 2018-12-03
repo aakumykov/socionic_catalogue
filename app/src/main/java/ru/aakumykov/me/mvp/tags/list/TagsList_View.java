@@ -2,7 +2,6 @@ package ru.aakumykov.me.mvp.tags.list;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -37,7 +36,7 @@ public class TagsList_View extends BaseView implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tags_list_activity);
+        setContentView(R.layout.tags_list);
         ButterKnife.bind(this);
 
         setPageTitle(R.string.TAGS_LIST_tags_list);
@@ -48,7 +47,7 @@ public class TagsList_View extends BaseView implements
         listView.setOnItemClickListener(this);
 
         presenter = new Tags_Presenter();
-        presenter.onListPageReady();
+        presenter.loadList();
     }
     @Override
     protected void onStart() {

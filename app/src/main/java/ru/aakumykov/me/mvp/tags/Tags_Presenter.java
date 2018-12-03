@@ -52,8 +52,8 @@ public class Tags_Presenter implements
     }
 
     @Override
-    public void onListPageReady() {
-        Log.d(TAG, "onListPageReady()");
+    public void loadList() {
+        Log.d(TAG, "loadList()");
         tagsSingleton.listTags(this);
     }
 
