@@ -36,7 +36,7 @@
         <activity android:name=".tags.list.TagsList_View" />
 
         <activity
-            android:name=".tags.view.TagShow_View"
+            android:name=".tags.show.TagShow_View"
             android:parentActivityName=".tags.list.TagsList_View" />
 
         <activity android:name=".card.edit.CardEdit_View">

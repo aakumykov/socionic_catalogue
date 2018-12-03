@@ -17,7 +17,7 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Tag;
 import ru.aakumykov.me.mvp.tags.Tags_Presenter;
 import ru.aakumykov.me.mvp.tags.iTags;
-import ru.aakumykov.me.mvp.tags.view.TagShow_View;
+import ru.aakumykov.me.mvp.tags.show.TagShow_View;
 
 public class TagsList_View extends BaseView implements
         iTags.ListView,

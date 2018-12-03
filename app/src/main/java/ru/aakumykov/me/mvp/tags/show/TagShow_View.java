@@ -1,10 +1,11 @@
-package ru.aakumykov.me.mvp.tags.view;
+package ru.aakumykov.me.mvp.tags.show;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -26,7 +27,7 @@ public class TagShow_View extends BaseView implements
         View.OnClickListener
 {
     @BindView(R.id.nameView) TextView nameView;
-    @BindView(R.id.linkToCardsView) TextView linkToCardsView;
+    @BindView(R.id.viewCardsButton) Button viewCardsButton;
 
     private final static String TAG = "TagShow_View";
     private iTags.Presenter presenter;
@@ -60,9 +61,11 @@ public class TagShow_View extends BaseView implements
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.linkToCardsView:
+
+            case R.id.viewCardsButton:
                 goCardsListPage(currentTag.getKey());
                 break;
+
             default:
                 break;
         }
@@ -103,11 +106,12 @@ public class TagShow_View extends BaseView implements
                         cardsCount,
                         cardsCount
                 );
-        linkToCardsView.setText(linkText);
-        MyUtils.show(linkToCardsView);
+
+        viewCardsButton.setText(linkText);
+        MyUtils.show(viewCardsButton);
 
         if (cardsCount > 0) {
-            linkToCardsView.setOnClickListener(this);
+            viewCardsButton.setOnClickListener(this);
         }
     }
 
