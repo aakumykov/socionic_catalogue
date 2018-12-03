@@ -79,7 +79,7 @@
     <string name="add">Add</string>
     <string name="new_tag">New tag</string>
     <string name="tag_name">Tag name</string>
-    <string name="tag_counter">Tag counter</string>
+    <string name="cards_count_with_tag">Cards count with tag</string>
     <string name="tag">Tag</string>
     <string name="error_loading_tag">Error loading tag</string>
     <string name="CARD_EDIT_error_editing_card">Error editing card</string>
@@ -211,4 +211,5 @@
     <string name="START_PAGE_tab_cards">Cards</string>
     <string name="START_PAGE_tab_tags">Tags</string>
     <string name="TAGS_LIST_page_title">Tags list</string>
+    <string name="TAGS_LIST_cards_with_tag">Cards: %d</string>
 </resources>

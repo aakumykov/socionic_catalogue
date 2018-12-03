@@ -2,7 +2,6 @@ package ru.aakumykov.me.mvp.tags.list;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.models.Tag;
 
 public class TagsListAdapter extends ArrayAdapter<Tag> {
@@ -39,10 +37,11 @@ public class TagsListAdapter extends ArrayAdapter<Tag> {
         TextView counterView = view.findViewById(R.id.counterView);
 
         Tag oneTag = tagsList.get(position);
-//        Log.d(TAG, "oneTag: "+oneTag);
 
         nameView.setText(oneTag.getName());
-        counterView.setText( String.valueOf( oneTag.getCards().size() ) );
+        counterView.setText(
+                getContext().getResources().getString(R.string.TAGS_LIST_cards_with_tag, oneTag.getCardsCount())
+        );
 
         return view;
     }
