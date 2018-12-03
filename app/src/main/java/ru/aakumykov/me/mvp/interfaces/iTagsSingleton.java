@@ -22,6 +22,7 @@ public interface iTagsSingleton {
                         @Nullable UpdateCallbacks callbacks
     );
 
+    void getTagsList();
 
     interface TagCallbacks {
         void onTagSuccess(Tag tag);

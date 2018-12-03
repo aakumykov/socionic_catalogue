@@ -54,6 +54,7 @@ public class Tags_Presenter implements
     @Override
     public void loadList() {
         Log.d(TAG, "loadList()");
+//        tagsSingleton.getTagsList();
         tagsSingleton.listTags(this);
     }
 
@@ -72,13 +73,14 @@ public class Tags_Presenter implements
     // Коллбеки
     @Override
     public void onTagsListSuccess(List<Tag> list) {
-//        Log.d(TAG, "onTagsListSuccess(), "+list);
         listView.hideProgressBar();
+        listView.hideSwipeRefresh();
         listView.displayTags(list);
     }
 
     @Override
     public void onTagsListFail(String errorMsg) {
+        listView.hideSwipeRefresh();
         listView.showErrorMsg(R.string.error_loading_tags);
     }
 
