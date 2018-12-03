@@ -49,6 +49,7 @@ public class TagsList_Fragment extends BaseFragment implements
 
         tagsListAdapter = new TagsListAdapter(getContext(), R.layout.tags_list_item, tagsList);
         listView.setAdapter(tagsListAdapter);
+        listView.setOnItemClickListener(this);
 
         presenter = new Tags_Presenter();
 
@@ -77,7 +78,7 @@ public class TagsList_Fragment extends BaseFragment implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Tag tag = tagsList.get(position);
-        presenter.onTagClicked(tag);
+        goShowPage(tag.getKey());
     }
 
 
