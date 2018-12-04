@@ -16,49 +16,32 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
-import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
-import ru.aakumykov.me.mvp.services.AuthStateListener;
-import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
-public abstract class BaseFragment extends Fragment implements iBaseView
+public abstract class BaseFragment extends Fragment implements iBaseFragment
 {
     private final static String TAG = "BaseFragment";
     private iCardsSingleton cardsService;
     private iAuthSingleton authService;
-
     private View rooView;
 
-    // Абстрактные методы
-    public abstract void onUserLogin();
-    public abstract void onUserLogout();
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        // TODO: переместить на уровень всего приложения
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
-        // TODO: убрать вообще?
         authService = AuthSingleton.getInstance();
-        cardsService = CardsSingleton.getInstance();
-
-        Log.d(TAG, "authService: "+authService);
-        Log.d(TAG, "cardsService: "+cardsService);
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
-    public iAuthSingleton getAuthService() {
+    public iAuthSingleton auth() {
         return authService;
-    }
-
-    @Override
-    public boolean isUserLoggedIn() {
-        return authService.isUserLoggedIn();
     }
 
 
@@ -155,6 +138,7 @@ public abstract class BaseFragment extends Fragment implements iBaseView
             Log.w(TAG, "progressBar not found");
         }
     }
+
     @Override
     public void hideProgressBar() {
         ProgressBar progressBar = getRooView().findViewById(R.id.progressBar);
@@ -163,25 +147,6 @@ public abstract class BaseFragment extends Fragment implements iBaseView
         } else {
             Log.w(TAG, "progressBar not found");
         }
-    }
-
-
-    // Служебные страничные
-    @Override
-    public void setPageTitle(int titleId) {
-
-    }
-    @Override
-    public void setPageTitle(String title) {
-
-    }
-    @Override
-    public void activateUpButton() {
-
-    }
-    @Override
-    public void closePage() {
-
     }
 
 

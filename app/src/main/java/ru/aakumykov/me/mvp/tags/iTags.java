@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
+import ru.aakumykov.me.mvp.iBaseFragment;
 import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
@@ -14,8 +15,13 @@ public interface iTags {
 
     interface View {}
 
-
     interface ListView extends iBaseView, View {
+        void displayTags(List<Tag> list);
+        void goShowPage(String tagId);
+        void hideSwipeRefresh();
+    }
+
+    interface ListFragment extends iBaseFragment, View {
         void displayTags(List<Tag> list);
         void goShowPage(String tagId);
         void hideSwipeRefresh();

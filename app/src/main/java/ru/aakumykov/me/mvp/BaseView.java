@@ -44,12 +44,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // TODO: переместить на уровень всего приложения
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
-        // TODO: убрать вообще?
         authService = AuthSingleton.getInstance();
-        cardsService = CardsSingleton.getInstance();
-        // TODO: storageSingleton
 
         // Слушатель изменений авторизации
         iAuthStateListener authStateListener = new AuthStateListener(new iAuthStateListener.StateChangeCallbacks() {
@@ -72,6 +70,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         });
     }
 
+    @Override
+    public iAuthSingleton auth() {
+        return authService;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -79,7 +81,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         MenuInflater menuInflater = getMenuInflater();
 
-        if (isUserLoggedIn()) {
+        if (auth().isUserLoggedIn()) {
             menuInflater.inflate(R.menu.user_in, menu);
             menuInflater.inflate(R.menu.logout, menu);
         } else {
@@ -250,53 +252,30 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
 
-    // Геттеры
-    public iCardsSingleton getCardsService() {
-        return cardsService;
-    }
-
-    public iAuthSingleton getAuthService() {
-        return authService;
-    }
-
-
     // Разное
     @Override
-    public boolean isUserLoggedIn() {
-        return authService.isUserLoggedIn();
-    }
-
-//    @Override
-//    public FirebaseUser getCurrentUser() {
-//        return authService.;
-//    }
-
-    @Override
-    public void closePage() {
-        Log.d(TAG, "closePage()");
-        finish();
-    }
-
-    @Override
     public void setPageTitle(int titleId) {
-        Log.d(TAG, "setPageTitle("+titleId+")");
         String title = getResources().getString(titleId);
-        setPageTitle(title);
+        setTitle(title);
     }
 
     @Override
     public void setPageTitle(String title) {
-        Log.d(TAG, "setPageTitle("+title+")");
         ActionBar actionBar = getSupportActionBar();
-        if (null != actionBar) {
+        if (null != actionBar)
             actionBar.setTitle(title);
-        }
     }
 
     @Override
     public void activateUpButton() {
         ActionBar actionBar = getSupportActionBar();
         if (null != actionBar) actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public void closePage() {
+        Log.d(TAG, "closePage()");
+        finish();
     }
 
 
