@@ -223,8 +223,7 @@ public class CardsSingleton implements
 
         theCardRef.runTransaction(new Transaction.Handler() {
 
-            @NonNull
-            @Override
+            @NonNull @Override
             public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
                 Card card = mutableData.getValue(Card.class);
 

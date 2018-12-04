@@ -18,6 +18,7 @@ public interface iTags {
     interface ListView extends iBaseView, View {
         void displayTags(List<Tag> list);
         void goShowPage(String tagId);
+        void hideSwipeRefresh();
     }
 
     interface ShowView extends iBaseView, View {
@@ -36,7 +37,7 @@ public interface iTags {
 
         void onTagClicked(Tag tag);
 
-        void onListPageReady();
+        void loadList();
         void onShowPageReady(String tagKey);
         void onEditPageReady(String tagKey);
     }

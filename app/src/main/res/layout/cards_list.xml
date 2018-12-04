@@ -12,7 +12,6 @@
         android:orientation="vertical"
         tools:context=".cards_list.CardsList_View">
 
-
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"

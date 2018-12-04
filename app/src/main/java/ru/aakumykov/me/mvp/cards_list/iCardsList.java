@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.cards_list;
 
+import android.content.Intent;
 import android.support.annotation.Nullable;
 
 import java.util.List;
@@ -19,6 +20,9 @@ public interface iCardsList {
         void addListItem(Card card);
         void updateListItem(int index, Card card);
         void removeListItem(Card card);
+
+        void processCardCreationResult(Intent data);
+        void processCardEditionResult(Intent data);
     }
 
     interface Presenter {

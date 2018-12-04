@@ -20,13 +20,7 @@
             android:name=".register.Register_View"
             android:noHistory="true" />
 
-        <activity android:name=".cards_list.CardsList_View">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".cards_list.CardsList_View"></activity>
 
         <activity
             android:name=".card_show.CardShow_View"
@@ -42,7 +36,7 @@
         <activity android:name=".tags.list.TagsList_View" />
 
         <activity
-            android:name=".tags.view.TagShow_View"
+            android:name=".tags.show.TagShow_View"
             android:parentActivityName=".tags.list.TagsList_View" />
 
         <activity android:name=".card.edit.CardEdit_View">
@@ -99,14 +93,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".youtube.YoutubePage"/>
+        <activity android:name=".card_edit2.CardEdit2_View" />
 
-        <activity android:name=".card_edit2.CardEdit2_View" >
-            <!--<intent-filter>
+        <activity android:name=".start_page.StartPage">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
 
     </application>

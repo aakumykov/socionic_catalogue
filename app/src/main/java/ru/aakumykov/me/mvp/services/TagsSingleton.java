@@ -12,6 +12,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -38,8 +39,8 @@ public class TagsSingleton implements iTagsSingleton {
     /* Одиночка */
 
     private final static String TAG = "TagsSingleton";
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference tagsRef = firebaseDatabase.getReference().child(Constants.TAGS_PATH);
+    private DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference tagsRef = dbRef.child(Constants.TAGS_PATH);
 
 
     @Override
@@ -226,5 +227,26 @@ public class TagsSingleton implements iTagsSingleton {
                         e.printStackTrace();
                     }
                 });
+    }
+
+
+    @Override
+    public void getTagsList() {
+        DatabaseReference tagsCountRef = dbRef.child("/tags_count");
+
+        tagsCountRef.orderByChild("value")
+        .addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot oneSnapshot : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "oneSnapshot: "+oneSnapshot);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

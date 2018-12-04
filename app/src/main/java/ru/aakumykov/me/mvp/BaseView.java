@@ -28,12 +28,8 @@ import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
-public abstract class BaseView extends AppCompatActivity implements
-    iBaseView
+public abstract class BaseView extends AppCompatActivity implements iBaseView
 {
-//    @BindView(R.id.messageView) TextView messageView;
-//    @BindView(R.id.progressBar) ProgressBar progressBar;
-
     private final static String TAG = "BaseView";
     private iCardsSingleton cardsService;
     private iAuthSingleton authService;
@@ -74,16 +70,6 @@ public abstract class BaseView extends AppCompatActivity implements
                 onUserLogout();
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
 

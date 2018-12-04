@@ -81,7 +81,7 @@
     <string name="add">Добавить</string>
     <string name="new_tag">Новая метка</string>
     <string name="tag_name">Имя метки</string>
-    <string name="tag_counter">Счётчик метки</string>
+    <string name="cards_count_with_tag">Число карточек с меткой</string>
     <string name="tag">Метка</string>
     <string name="error_loading_tag">Ошибка получения метки</string>
     <string name="CARD_EDIT_error_editing_card">Ошибка редактирования карточки</string>
@@ -213,4 +213,8 @@
     <string name="USER_SHOW_email">Электронная почта</string>
     <string name="you_are_logged_out">Вы вышли из программы</string>
     <string name="you_are_logged_in">Вы вошли в программу</string>
+    <string name="START_PAGE_tab_cards">Карточки</string>
+    <string name="START_PAGE_tab_tags">Метки</string>
+    <string name="TAGS_LIST_page_title">Список меток</string>
+    <string name="TAGS_LIST_cards_with_tag">Карточек: %d</string>
 </resources>

@@ -12,8 +12,8 @@ public class Tag implements Parcelable {
 
     private String key;
     private String name;
-    private HashMap<String,Boolean> cards;
-    private Integer counter;
+    private HashMap<String,Boolean> cards = new HashMap<>();
+    private Integer counter = 0;
 
     public Tag() {}
 
@@ -101,5 +101,10 @@ public class Tag implements Parcelable {
     }
     public void setCounter(Integer counter) {
         this.counter = counter;
+    }
+
+
+    @Exclude public int getCardsCount() {
+        return getCards().size();
     }
 }

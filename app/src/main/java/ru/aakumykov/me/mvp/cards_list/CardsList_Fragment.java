@@ -1,17 +1,19 @@
 package ru.aakumykov.me.mvp.cards_list;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,26 +26,25 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.BaseFragment;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.start_page.iPageConfigurator;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
-// Построен по принципу Active View
+import static android.app.Activity.RESULT_OK;
 
-// TODO: не исчезает крутилка пальцевого обновления
-
-public class CardsList_View extends BaseView implements
+public class CardsList_Fragment extends BaseFragment implements
         iCardsList.View,
-        ListView.OnItemClickListener,
-        ListView.OnItemLongClickListener,
-        PopupMenu.OnMenuItemClickListener,
-        SwipeRefreshLayout.OnRefreshListener
+        SwipeRefreshLayout.OnRefreshListener,
+        AdapterView.OnItemClickListener,
+        AdapterView.OnItemLongClickListener,
+        PopupMenu.OnMenuItemClickListener
 {
     @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
     @BindView(R.id.filterView) LinearLayout filterView;
@@ -51,7 +52,7 @@ public class CardsList_View extends BaseView implements
     @BindView(R.id.filterName) TextView filterName;
     @BindView(R.id.listView) ListView listView;
 
-    private final static String TAG = "CardsList_View";
+    private final static String TAG = "CardsList_Fragment";
     private iCardsList.Presenter presenter;
     private List<Card> cardsList;
     private CardsListAdapter cardsListAdapter;
@@ -59,92 +60,86 @@ public class CardsList_View extends BaseView implements
     private boolean firstRun = true;
 
 
-    // Системные методы
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.cards_list);
-        ButterKnife.bind(this);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
-        setPageTitle(getResources().getString(R.string.CARDS_LIST_page_title));
+        View rootView = inflater.inflate(R.layout.cards_list, container, false);
+        ButterKnife.bind(this, rootView);
 
         swiperefreshLayout.setOnRefreshListener(this);
         swiperefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
 
-        presenter = new CardsList_Presenter();
-
         cardsList = new ArrayList<>();
-        cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
+        cardsListAdapter = new CardsListAdapter(getContext(), R.layout.cards_list_item, cardsList);
         listView.setAdapter(cardsListAdapter);
 
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
         listView.setLongClickable(true);
+
+        presenter = new CardsList_Presenter();
+
+//        iPageConfigurator pageConfigurator = (iPageConfigurator) getActivity();
+//        if (null != pageConfigurator)
+//            pageConfigurator.setPageTitle(R.string.CARDS_LIST_page_title);
+
+        setRootView(rootView);
+        return rootView;
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         presenter.linkView(this);
 
         if (firstRun) {
-            firstRun = false;
             loadList(true);
+            firstRun = false;
         }
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         presenter.unlinkView();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
-        presenter.linkView(this);
-
-        switch (requestCode) {
-            case Constants.CODE_CREATE_CARD:
-                // TODO: как отображать ошибку?
-                if (RESULT_OK==resultCode) processCardCreationResult(data);
-                break;
-            case Constants.CODE_EDIT_CARD:
-                if (RESULT_OK==resultCode) processCardEditionResult(data);
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-        }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        if (isUserLoggedIn()) {
-            MenuInflater menuInflater = getMenuInflater();
-            menuInflater.inflate(R.menu.create_card, menu);
-            menuInflater.inflate(R.menu.refresh, menu);
-        }
-
-        super.onCreateOptionsMenu(menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.actionRefresh:
-                loadList(true);
-                break;
-
-            default:
-                super.onOptionsItemSelected(item);
-        }
-
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//
+//        if (isUserLoggedIn()) {
+//            MenuInflater menuInflater = getMenuInflater();
+//            menuInflater.inflate(R.menu.create_card, menu);
+//            menuInflater.inflate(R.menu.refresh, menu);
+//        }
+//
+//        super.onCreateOptionsMenu(menu);
+//
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//
+//            case R.id.actionRefresh:
+//                loadList(true);
+//                break;
+//
+//            default:
+//                super.onOptionsItemSelected(item);
+//        }
+//
+//        return true;
+//    }
 
     @Override
     public void onRefresh() {
@@ -221,7 +216,7 @@ public class CardsList_View extends BaseView implements
         // TODO: где контролировать эти данные?
         Card card = cardsList.get(position);
 
-        Intent intent = new Intent(this, CardShow_View.class);
+        Intent intent = new Intent(getContext(), CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
         startActivity(intent);
     }
@@ -244,7 +239,7 @@ public class CardsList_View extends BaseView implements
     // Выслывающее меню
     private void showPopupMenu(final View v, final Drawable oldBackground) {
 
-        PopupMenu popupMenu = new PopupMenu(this, v);
+        PopupMenu popupMenu = new PopupMenu(getContext(), v);
 
         popupMenu.inflate(R.menu.edit);
         popupMenu.inflate(R.menu.delete);
@@ -284,7 +279,7 @@ public class CardsList_View extends BaseView implements
 
     // Внутренние методы
     private void editCard() {
-        Intent intent = new Intent(this, CardEdit_View.class);
+        Intent intent = new Intent(getContext(), CardEdit_View.class);
         intent.setAction(Constants.ACTION_EDIT);
         intent.putExtra(Constants.CARD_KEY, currentCard.getKey());
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
@@ -295,7 +290,7 @@ public class CardsList_View extends BaseView implements
         String cardName = currentCard.getTitle();
 //        currentCard = null;
 
-        MyDialogs.cardDeleteDialog(this, cardName, new iMyDialogs.Delete() {
+        MyDialogs.cardDeleteDialog(getActivity(), cardName, new iMyDialogs.Delete() {
             @Override
             public void onCancelInDialog() {
 
@@ -322,7 +317,7 @@ public class CardsList_View extends BaseView implements
         String tagFilter = null;
 
         try {
-            tagFilter = getIntent().getStringExtra(Constants.TAG_FILTER);
+            tagFilter = getActivity().getIntent().getStringExtra(Constants.TAG_FILTER);
         } catch (Exception e) {}
 
         if (showProgressBar) showProgressBar();
