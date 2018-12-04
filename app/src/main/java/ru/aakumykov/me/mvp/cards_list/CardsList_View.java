@@ -120,7 +120,7 @@ public class CardsList_View extends BaseView implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        if (isUserLoggedIn()) {
+        if (auth().isUserLoggedIn()) {
             MenuInflater menuInflater = getMenuInflater();
             menuInflater.inflate(R.menu.create_card, menu);
             menuInflater.inflate(R.menu.refresh, menu);
@@ -231,7 +231,7 @@ public class CardsList_View extends BaseView implements
 //        Log.d(TAG, "onItemLongClick(pos: "+position+", id: "+id+")");
         currentCard = cardsList.get(position);
 
-        if (isUserLoggedIn()) {
+        if (auth().isUserLoggedIn()) {
             Drawable oldBackground = view.getBackground();
             view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
             showPopupMenu(view, oldBackground);

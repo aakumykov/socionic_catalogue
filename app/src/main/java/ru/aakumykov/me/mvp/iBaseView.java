@@ -8,9 +8,7 @@ import ru.aakumykov.me.mvp.models.User;
 
 public interface iBaseView {
 
-    iAuthSingleton getAuthService();
-
-    boolean isUserLoggedIn();
+    iAuthSingleton auth();
 
     void showInfoMsg(int messageId);
     void showInfoMsg(String message);

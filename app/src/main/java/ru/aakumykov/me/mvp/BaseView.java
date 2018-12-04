@@ -58,7 +58,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             @Override
             public void onLoggedIn() {
                 invalidateOptionsMenu();
-                showToast(R.string.you_are_logged_in);
+                showToast("onLoggedIn()");
                 onUserLogin();
             }
 
@@ -66,7 +66,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             @Override
             public void onLoggedOut() {
                 invalidateOptionsMenu();
-                showToast(R.string.you_are_logged_out);
+                showToast("onLoggedOut()");
                 onUserLogout();
             }
         });
@@ -79,7 +79,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         MenuInflater menuInflater = getMenuInflater();
 
-        if (isUserLoggedIn()) {
+        if (auth().isUserLoggedIn()) {
             menuInflater.inflate(R.menu.user_in, menu);
             menuInflater.inflate(R.menu.logout, menu);
         } else {
@@ -255,22 +255,12 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         return cardsService;
     }
 
-    public iAuthSingleton getAuthService() {
+    public iAuthSingleton auth() {
         return authService;
     }
 
 
     // Разное
-    @Override
-    public boolean isUserLoggedIn() {
-        return authService.isUserLoggedIn();
-    }
-
-//    @Override
-//    public FirebaseUser getCurrentUser() {
-//        return authService.;
-//    }
-
     @Override
     public void closePage() {
         Log.d(TAG, "closePage()");

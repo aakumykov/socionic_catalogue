@@ -226,7 +226,7 @@ public class CardsList_Fragment extends BaseFragment implements
 //        Log.d(TAG, "onItemLongClick(pos: "+position+", id: "+id+")");
         currentCard = cardsList.get(position);
 
-        if (isUserLoggedIn()) {
+        if (auth().isUserLoggedIn()) {
             Drawable oldBackground = view.getBackground();
             view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
             showPopupMenu(view, oldBackground);
