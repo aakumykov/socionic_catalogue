@@ -151,7 +151,7 @@ public class CardShow_View extends BaseView implements
 
         // Присоединяю адаптер списка
         commentsList = new ArrayList<>();
-        commentsAdapter = new CommentsAdapter(this, auth().currentUser(),
+        commentsAdapter = new CommentsAdapter(this, getAuthService().currentUser(),
                 R.layout.comments_list_item, commentsList,this);
         mainListView.setAdapter(commentsAdapter);
 
@@ -220,7 +220,7 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (auth().isUserLoggedIn()) {
+        if (isUserLoggedIn()) {
             MenuInflater menuInflater = getMenuInflater();
             menuInflater.inflate(R.menu.edit, menu);
             menuInflater.inflate(R.menu.delete, menu);
@@ -277,7 +277,7 @@ public class CardShow_View extends BaseView implements
     public void onCommentReplyClicked(View view, final Comment comment) {
         // TODO: эта логика должна быть в презентере
 
-        if (!auth().isUserLoggedIn()) {
+        if (!getAuthService().isUserLoggedIn()) {
             showToast(R.string.DIALOG_login_first);
         }
         else if (forceSetupUserName(comment)) {
@@ -509,7 +509,7 @@ public class CardShow_View extends BaseView implements
         MyUtils.show(cardRatingView);
         cardRatingView.setText(String.valueOf(value));
 
-        String currentUserId = auth().currentUserId();
+        String currentUserId = getAuthService().currentUserId();
 
         if (currentCard.isRatedUpBy(currentUserId)) {
             colorizeCardRatingAsUp();
@@ -704,7 +704,7 @@ public class CardShow_View extends BaseView implements
         displayTags(card.getTags());
         showCardRating(card.getRating());
 
-//        if (auth().isUserLoggedIn()) {
+//        if (getAuthService().isUserLoggedIn()) {
             MyUtils.show(addCommentButton);
 //        }
     }
@@ -724,7 +724,7 @@ public class CardShow_View extends BaseView implements
     }
 
     private void showCommentForm() {
-        if (auth().isUserLoggedIn()) {
+        if (getAuthService().isUserLoggedIn()) {
             MyUtils.hide(addCommentButton);
             MyUtils.show(commentForm);
             commentInput.requestFocus();
@@ -758,11 +758,11 @@ public class CardShow_View extends BaseView implements
 
         // TODO: сделать это по-нормальному
         // TODO: логика-то во вьюхе не должна присутствовать!
-        if (auth().isUserLoggedIn()) {
-            if (comment.getUserId().equals(auth().currentUserId()))
+        if (isUserLoggedIn()) {
+            if (comment.getUserId().equals(getAuthService().currentUserId()))
                 popupMenu.inflate(R.menu.edit);
 
-            if (auth().userIsAdmin(auth().currentUserId()))
+            if (getAuthService().userIsAdmin(getAuthService().currentUserId()))
                 popupMenu.inflate(R.menu.delete);
         }
 
@@ -864,7 +864,7 @@ public class CardShow_View extends BaseView implements
 
     private boolean forceSetupUserName(@Nullable final Comment parentComment) {
 
-        final User user = auth().currentUser();
+        final User user = getAuthService().currentUser();
 
         if (null != user && !TextUtils.isEmpty(user.getName())) {
             return true;

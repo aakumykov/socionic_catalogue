@@ -27,7 +27,7 @@ import ru.aakumykov.me.mvp.tags.iTags;
 import ru.aakumykov.me.mvp.tags.show.TagShow_View;
 
 public class TagsList_Fragment extends BaseFragment implements
-        iTags.ListFragment,
+        iTags.ListView,
         AdapterView.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener
 {
@@ -115,5 +115,16 @@ public class TagsList_Fragment extends BaseFragment implements
         swiperefreshLayout.setRefreshing(false);
     }
 
+
+    // Обязательные методы
+    @Override
+    public void onUserLogin() {
+
+    }
+
+    @Override
+    public void onUserLogout() {
+
+    }
 
 }

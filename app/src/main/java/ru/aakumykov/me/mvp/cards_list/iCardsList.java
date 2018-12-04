@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
-import ru.aakumykov.me.mvp.iBaseFragment;
 import ru.aakumykov.me.mvp.iBaseView;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
@@ -14,7 +13,7 @@ import ru.aakumykov.me.mvp.models.Card;
 
 public interface iCardsList {
 
-    interface View extends iBaseFragment {
+    interface View extends iBaseView {
         void displayList(List<Card> list);
         void displayTagFilter(String text);
 

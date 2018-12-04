@@ -114,7 +114,7 @@ public class UserShow_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (auth().isUserLoggedIn()) {
+        if (isUserLoggedIn()) {
             getMenuInflater().inflate(R.menu.edit, menu);
         }
         return true;

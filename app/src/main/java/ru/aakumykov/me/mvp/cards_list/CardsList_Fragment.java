@@ -148,6 +148,17 @@ public class CardsList_Fragment extends BaseFragment implements
     }
 
 
+    // Обязательные методы
+    @Override
+    public void onUserLogin() {
+    }
+
+    @Override
+    public void onUserLogout() {
+
+    }
+
+
     // Интерфейсные методы
     @Override
     public void displayList(final List<Card> list) {
@@ -167,6 +178,8 @@ public class CardsList_Fragment extends BaseFragment implements
         String text = getResources().getString(R.string.CARDS_LIST_tag_filter, tagName);
         filterName.setText(text);
         MyUtils.show(filterView);
+
+        activateUpButton();
     }
 
     @Override
@@ -213,7 +226,7 @@ public class CardsList_Fragment extends BaseFragment implements
 //        Log.d(TAG, "onItemLongClick(pos: "+position+", id: "+id+")");
         currentCard = cardsList.get(position);
 
-        if (auth().isUserLoggedIn()) {
+        if (isUserLoggedIn()) {
             Drawable oldBackground = view.getBackground();
             view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
             showPopupMenu(view, oldBackground);
