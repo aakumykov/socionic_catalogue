@@ -2,11 +2,12 @@ package ru.aakumykov.me.mvp.users.edit;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +16,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -195,7 +201,7 @@ public class UserEdit_View extends BaseView implements
 
     @Override
     public byte[] getImageData() throws Exception {
-        return MVPUtils.imageView2Bytes(avatarView);
+        return MVPUtils.imageView2Bitmap(avatarView);
     }
 
     @Override
