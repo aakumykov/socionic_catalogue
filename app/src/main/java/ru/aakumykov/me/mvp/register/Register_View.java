@@ -3,7 +3,6 @@ package ru.aakumykov.me.mvp.register;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -16,8 +15,6 @@ import ru.aakumykov.me.mvp.users.edit.UserEdit_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.User;
-import ru.aakumykov.me.mvp.users.show.UserShow_View;
-import ru.aakumykov.me.mvp.utils.Translator;
 
 // TODO: no-history
 
@@ -25,8 +22,8 @@ public class Register_View extends BaseView implements
         iRegister.View
 {
     @BindView(R.id.emailInput) EditText emailInput;
-    @BindView(R.id.passwordInput1) EditText passwordInput1;
-    @BindView(R.id.passwordInput2) EditText passwordInput2;
+    @BindView(R.id.passwordInput1) EditText passwordInput;
+    @BindView(R.id.passwordInput2) EditText passwordConfirmationInput;
     @BindView(R.id.registerButton) Button registerButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
@@ -73,18 +70,48 @@ public class Register_View extends BaseView implements
 
     // Интерфейсные методы
     @Override
+    public String getEmail() {
+        return emailInput.getText().toString();
+    }
+
+    @Override
+    public String getPassword() {
+        return passwordInput.getText().toString();
+    }
+
+    @Override
+    public String getPasswordConfirmation() {
+        return passwordConfirmationInput.getText().toString();
+    }
+
+    @Override
+    public void focusEmail() {
+        emailInput.requestFocus();
+    }
+
+    @Override
+    public void focusPassword() {
+        passwordInput.requestFocus();
+    }
+
+    @Override
+    public void focusPasswordConfigmation() {
+        passwordConfirmationInput.requestFocus();
+    }
+
+    @Override
     public void disableForm() {
         MyUtils.disable(emailInput);
-        MyUtils.disable(passwordInput1);
-        MyUtils.disable(passwordInput2);
+        MyUtils.disable(passwordInput);
+        MyUtils.disable(passwordConfirmationInput);
         MyUtils.disable(registerButton);
     }
 
     @Override
     public void enableForm() {
         MyUtils.enable(emailInput);
-        MyUtils.enable(passwordInput1);
-        MyUtils.enable(passwordInput2);
+        MyUtils.enable(passwordInput);
+        MyUtils.enable(passwordConfirmationInput);
         MyUtils.enable(registerButton);
     }
 
@@ -100,18 +127,7 @@ public class Register_View extends BaseView implements
     // Обработчики нажатий
     @OnClick(R.id.registerButton)
     void register() {
-        String email = emailInput.getText().toString();
-        String password1 = passwordInput1.getText().toString();
-        String password2 = passwordInput2.getText().toString();
-
-        if (password1.equals(password2)) {
-            showProgressBar();
-            showInfoMsg(R.string.REGISTER_registering_user);
-            disableForm();
-            presenter.regUserWithEmail(email, password1);
-        } else {
-            showErrorMsg(R.string.REGISTER_passwords_mismatch);
-        }
+        presenter.regUserWithEmail();
     }
 
     // TODO: как _реально_ прервать рагистрацию, чтобы не создавать фантомных пользователей?

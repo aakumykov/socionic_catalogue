@@ -1,6 +1,12 @@
 package ru.aakumykov.me.mvp.register;
 
+import android.content.res.Configuration;
+import android.text.TextUtils;
 import android.util.Log;
+
+import org.w3c.dom.Text;
+
+import java.util.Locale;
 
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
@@ -29,18 +35,46 @@ public class Register_Presenter implements
 
     // Интерфейсные методы
     @Override
-    public void regUserWithEmail(String email, String password) {
-        Log.d(TAG, "regUserWithEmail()");
+    public void regUserWithEmail() {
+        String email = view.getEmail();
+        String password = view.getPassword();
+        String passwordConfirmation = view.getPasswordConfirmation();
 
-        view.showProgressBar();
+        if (TextUtils.isEmpty(email)) {
+            view.showErrorMsg(R.string.REGISTER_enter_email);
+            view.focusEmail();
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            view.showErrorMsg(R.string.REGISTER_enter_password);
+            view.focusPassword();
+            return;
+        }
+
+        if (TextUtils.isEmpty(passwordConfirmation)) {
+            view.showErrorMsg(R.string.REGISTER_enter_password_confirmation);
+            view.focusPasswordConfigmation();
+            return;
+        }
+
+        // Случай двух пустых паролей обрабатывается выше
+        if (!password.equals(passwordConfirmation)) {
+            view.showErrorMsg(R.string.REGISTER_passwords_mismatch);
+            view.focusPasswordConfigmation();
+            return;
+        }
 
         try {
+            view.showProgressBar();
+            view.showInfoMsg(R.string.REGISTER_registering_user);
+
             authService.registerWithEmail(email, password, this);
         }
         catch (Exception e) {
             view.hideProgressBar();
             view.enableForm();
-            view.showErrorMsg( Translator.translate( e.getMessage() ) );
+            view.showErrorMsg(Translator.translate(e.getMessage()));
             e.printStackTrace();
         }
     }

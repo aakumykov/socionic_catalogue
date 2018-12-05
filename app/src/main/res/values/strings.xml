@@ -217,4 +217,7 @@
     <string name="START_PAGE_tab_tags">Метки</string>
     <string name="TAGS_LIST_page_title">Список меток</string>
     <string name="TAGS_LIST_cards_with_tag">Карточек: %d</string>
+    <string name="REGISTER_enter_password">Введите пароль</string>
+    <string name="REGISTER_enter_password_confirmation">Повторите пароль</string>
+    <string name="REGISTER_enter_email">Введите Email</string>
 </resources>
