@@ -188,6 +188,33 @@ public class CardsList_View extends BaseView implements
     }
 
     @Override
+    public void deleteCardQuestion() {
+        String cardName = currentCard.getTitle();
+
+        MyDialogs.cardDeleteDialog(this, cardName, new iMyDialogs.Delete() {
+            @Override
+            public void onCancelInDialog() {
+
+            }
+
+            @Override
+            public void onNoInDialog() {
+
+            }
+
+            @Override
+            public boolean onCheckInDialog() {
+                return true;
+            }
+
+            @Override
+            public void onYesInDialog() {
+                presenter.deleteCardConfigmed(currentCard);
+            }
+        });
+    }
+
+    @Override
     public void addListItem(Card card) {
         cardsList.add(card);
         cardsListAdapter.notifyDataSetChanged();
@@ -273,7 +300,7 @@ public class CardsList_View extends BaseView implements
                 return true;
 
             case R.id.actionDelete:
-                deleteCard();
+                presenter.deleteCardRequest(currentCard);
                 return true;
 
             default:
@@ -289,33 +316,6 @@ public class CardsList_View extends BaseView implements
         intent.putExtra(Constants.CARD_KEY, currentCard.getKey());
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
 //        currentCard = null;
-    }
-
-    private void deleteCard() {
-        String cardName = currentCard.getTitle();
-//        currentCard = null;
-
-        MyDialogs.cardDeleteDialog(this, cardName, new iMyDialogs.Delete() {
-            @Override
-            public void onCancelInDialog() {
-
-            }
-
-            @Override
-            public void onNoInDialog() {
-
-            }
-
-            @Override
-            public boolean onCheckInDialog() {
-                return true;
-            }
-
-            @Override
-            public void onYesInDialog() {
-                presenter.deleteCardConfigmed(currentCard);
-            }
-        });
     }
 
     private void loadList(boolean showProgressBar) {

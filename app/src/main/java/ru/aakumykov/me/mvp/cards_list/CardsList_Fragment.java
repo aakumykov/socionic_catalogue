@@ -267,7 +267,7 @@ public class CardsList_Fragment extends BaseFragment implements
                 return true;
 
             case R.id.actionDelete:
-                deleteCard();
+                presenter.deleteCardRequest(currentCard);
                 return true;
 
             default:
@@ -280,14 +280,14 @@ public class CardsList_Fragment extends BaseFragment implements
     private void editCard() {
         Intent intent = new Intent(getContext(), CardEdit_View.class);
         intent.setAction(Constants.ACTION_EDIT);
+        intent.putExtra(Constants.CARD, currentCard);
         intent.putExtra(Constants.CARD_KEY, currentCard.getKey());
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
-//        currentCard = null;
     }
 
-    private void deleteCard() {
+    @Override
+    public void deleteCardQuestion() {
         String cardName = currentCard.getTitle();
-//        currentCard = null;
 
         MyDialogs.cardDeleteDialog(getActivity(), cardName, new iMyDialogs.Delete() {
             @Override

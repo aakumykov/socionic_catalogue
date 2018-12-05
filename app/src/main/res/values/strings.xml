@@ -220,4 +220,6 @@
     <string name="REGISTER_enter_password">Введите пароль</string>
     <string name="REGISTER_enter_password_confirmation">Повторите пароль</string>
     <string name="REGISTER_enter_email">Введите Email</string>
+    <string name="CARD_EDIT_you_cannot_edit_this_card">Вы не можете редактировать эту карточку</string>
+    <string name="CARDS_LIST_you_cannot_delete_this_card">Вы не можете удалить эту карточку</string>
 </resources>
