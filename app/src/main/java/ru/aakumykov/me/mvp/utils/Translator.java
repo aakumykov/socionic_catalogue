@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.utils;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Translator {
@@ -12,6 +13,8 @@ public class Translator {
         dic.put("Given String is empty or null", "Пустая строка");
         dic.put("The email address is already in use", "Email уже используется");
         dic.put("A network error", "Ошибка сети");
+        dic.put("The given password is invalid. [ Password should be at least 6 characters ]",
+                "Пароль должен иметь 6 и более знаков");
 //        dic.put("", "");
 //        dic.put("", "");
     }
@@ -19,7 +22,11 @@ public class Translator {
     private Translator() {}
 
     public static String translate(String translatedString) {
-        for (Map.Entry<String,String> entry : dic.entrySet()) {
+
+        String lang = Locale.getDefault().getLanguage();
+        if (!lang.equals("ru")) return translatedString;
+
+        for (Map.Entry<String, String> entry : dic.entrySet()) {
             if (translatedString.startsWith(entry.getKey())) return entry.getValue();
         }
         return translatedString;
