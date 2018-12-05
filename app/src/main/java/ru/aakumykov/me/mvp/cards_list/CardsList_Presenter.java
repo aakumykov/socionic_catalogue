@@ -43,6 +43,8 @@ public class CardsList_Presenter implements
     }
 
 
+    // TODO: обрабатывать ошибку, когда нет интернета (сейчас бесконечно крутится строка ожидания)
+
     // Интерфейсные
     @Override
     public void loadList(@Nullable String tagFilter) {

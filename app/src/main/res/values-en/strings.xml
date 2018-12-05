@@ -165,7 +165,7 @@
     <string name="COMMENT_author">Comment author</string>
     <string name="REGISTER_succes">Registration success</string>
     <string name="REGISTER_error_creating_user">Error creating user</string>
-    <string name="REGISTER_crating_new_user">Creating new user</string>
+    <string name="REGISTER_creating_user">Creating new user</string>
     <string name="USER_EDIT_error_loading_data">Error loading data</string>
     <string name="USER_EDIT_page_title">Editing user profile</string>
     <string name="COMMENT_show_quote">Show quote</string>

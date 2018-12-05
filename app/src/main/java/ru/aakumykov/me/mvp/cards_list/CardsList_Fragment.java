@@ -60,8 +60,7 @@ public class CardsList_Fragment extends BaseFragment implements
     private boolean firstRun = true;
 
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
@@ -318,7 +317,9 @@ public class CardsList_Fragment extends BaseFragment implements
 
         try {
             tagFilter = getActivity().getIntent().getStringExtra(Constants.TAG_FILTER);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            hideProgressBar();
+        }
 
         if (showProgressBar) showProgressBar();
         presenter.loadList(tagFilter);

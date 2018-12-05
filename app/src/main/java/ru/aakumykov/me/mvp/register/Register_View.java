@@ -17,6 +17,7 @@ import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.users.show.UserShow_View;
+import ru.aakumykov.me.mvp.utils.Translator;
 
 // TODO: no-history
 
@@ -99,8 +100,6 @@ public class Register_View extends BaseView implements
     // Обработчики нажатий
     @OnClick(R.id.registerButton)
     void register() {
-        Log.d(TAG, "register()");
-
         String email = emailInput.getText().toString();
         String password1 = passwordInput1.getText().toString();
         String password2 = passwordInput2.getText().toString();
@@ -109,16 +108,7 @@ public class Register_View extends BaseView implements
             showProgressBar();
             showInfoMsg(R.string.REGISTER_registering_user);
             disableForm();
-
-            try {
-                presenter.regUserWithEmail(email, password1);
-            } catch (Exception e) {
-                hideProgressBar();
-                enableForm();
-                showErrorMsg(e.getMessage());
-                e.printStackTrace();
-            }
-
+            presenter.regUserWithEmail(email, password1);
         } else {
             showErrorMsg(R.string.REGISTER_passwords_mismatch);
         }

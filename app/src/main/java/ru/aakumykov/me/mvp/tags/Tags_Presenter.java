@@ -73,25 +73,31 @@ public class Tags_Presenter implements
     // Коллбеки
     @Override
     public void onTagsListSuccess(List<Tag> list) {
-        listView.hideProgressBar();
-        listView.hideSwipeRefresh();
-        listView.displayTags(list);
+        if (null != listView) {
+            listView.hideProgressBar();
+            listView.hideSwipeRefresh();
+            listView.displayTags(list);
+        }
     }
 
     @Override
     public void onTagsListFail(String errorMsg) {
-        listView.hideSwipeRefresh();
-        listView.showErrorMsg(R.string.error_loading_tags);
+        if (null != listView) {
+            listView.hideSwipeRefresh();
+            listView.showErrorMsg(R.string.error_loading_tags);
+        }
     }
 
     @Override
     public void onTagSuccess(Tag tag) {
-        showView.displayTag(tag);
+        if (null != showView)
+            showView.displayTag(tag);
     }
 
     @Override
     public void onTagFail(String errorMsg) {
-        showView.showErrorMsg(R.string.error_loading_tag);
+        if (null != showView)
+            showView.showErrorMsg(R.string.error_loading_tag);
         Log.e(TAG, errorMsg);
     }
 }
