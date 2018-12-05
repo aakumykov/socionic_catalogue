@@ -361,7 +361,7 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public byte[] getImageData() throws Exception {
-        return MVPUtils.imageView2Bitmap(imageView);
+        return MVPUtils.imageView2Bytes(imageView);
     }
 
     @Override

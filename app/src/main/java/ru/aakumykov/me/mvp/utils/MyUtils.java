@@ -5,6 +5,8 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -156,4 +158,5 @@ public final class MyUtils {
         display.getSize(size);
         return size.y;
     }
+
 }

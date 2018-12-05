@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 
 import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.utils.BitmapResize;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class MVPUtils {
@@ -243,8 +244,16 @@ public class MVPUtils {
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
     }
 
-    public static byte[] imageView2Bitmap(ImageView imageView) throws Exception {
+    public static byte[] imageView2Bytes(ImageView imageView) throws Exception {
         Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, Config.JPEG_QUALITY, baos);
+        return baos.toByteArray();
+    }
+
+    public static byte[] imageView2CommentAvatarBytes(ImageView imageView) throws Exception {
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        bitmap = BitmapResize.getScaledDownBitmap(bitmap, 48, false);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, Config.JPEG_QUALITY, baos);
         return baos.toByteArray();
