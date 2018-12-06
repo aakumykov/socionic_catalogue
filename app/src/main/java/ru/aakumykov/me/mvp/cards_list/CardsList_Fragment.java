@@ -33,11 +33,8 @@ import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Card;
-import ru.aakumykov.me.mvp.start_page.iPageConfigurator;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
-
-import static android.app.Activity.RESULT_OK;
 
 public class CardsList_Fragment extends BaseFragment implements
         iCardsList.View,
@@ -64,7 +61,7 @@ public class CardsList_Fragment extends BaseFragment implements
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View rootView = inflater.inflate(R.layout.cards_list, container, false);
+        View rootView = inflater.inflate(R.layout.cards_list_fragment, container, false);
         ButterKnife.bind(this, rootView);
 
         swiperefreshLayout.setOnRefreshListener(this);

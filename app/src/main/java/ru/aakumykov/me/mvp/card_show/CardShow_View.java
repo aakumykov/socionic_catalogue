@@ -42,7 +42,6 @@ import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
-import ru.aakumykov.me.mvp.cards_list.CardsListWithFragment;
 import ru.aakumykov.me.mvp.cards_list.CardsList_View;
 import ru.aakumykov.me.mvp.comment.CommentsAdapter;
 import ru.aakumykov.me.mvp.comment.iComments;
@@ -599,7 +598,7 @@ public class CardShow_View extends BaseView implements
     @Override
     public void goList(@Nullable String tagFilter) {
 //        Intent intent = new Intent(this, CardsList_View.class);
-        Intent intent = new Intent(this, CardsListWithFragment.class);
+        Intent intent = new Intent(this, CardsList_View.class);
         if (null != tagFilter)
             intent.putExtra(Constants.TAG_FILTER, tagFilter);
         startActivity(intent);
