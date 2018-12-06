@@ -46,6 +46,7 @@ public class CardEdit2_View extends BaseView implements
         iCardEdit2.View,
         TagView.OnTagClickListener
 {
+    // TODO: подтверждение отмены создания/правки
 
     @BindView(R.id.titleInput) EditText titleInput;
     @BindView(R.id.quoteInput) EditText quoteInput;

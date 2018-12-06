@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.interfaces;
 
+import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.models.User;
 
 public interface iAuthSingleton {
@@ -13,7 +14,9 @@ public interface iAuthSingleton {
     String currentUserName();
     String currentUserId()/* throws Exception*/;
     boolean isUserLoggedIn();
+    boolean isAdmin();
     boolean userIsAdmin(String userId);
+    boolean isCardOwner(Card card);
 
     void storeCurrentUser(User user);
     void clearCurrentUser();

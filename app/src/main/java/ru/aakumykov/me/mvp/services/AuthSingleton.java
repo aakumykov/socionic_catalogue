@@ -18,6 +18,7 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
+import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.models.User;
 
 // TODO: разобраться с гостевым пользователем
@@ -126,10 +127,19 @@ public class AuthSingleton implements iAuthSingleton
     }
 
     @Override
-    public boolean userIsAdmin(String userId) {
-        return true;
+    public boolean isAdmin() {
+        return false;
     }
 
+    @Override
+    public boolean userIsAdmin(String userId) {
+        return false;
+    }
+
+    @Override
+    public boolean isCardOwner(Card card) {
+        return card.getUserId().equals(currentUserId());
+    }
 
     // Служебные
     @Override

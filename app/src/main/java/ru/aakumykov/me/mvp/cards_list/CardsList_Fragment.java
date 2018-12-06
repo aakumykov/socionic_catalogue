@@ -225,7 +225,7 @@ public class CardsList_Fragment extends BaseFragment implements
         if (auth().isUserLoggedIn()) {
             Drawable oldBackground = view.getBackground();
             view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
-            showPopupMenu(view, oldBackground);
+            showPopupMenu(view, currentCard, oldBackground);
         }
 
         return true;
@@ -233,12 +233,16 @@ public class CardsList_Fragment extends BaseFragment implements
 
 
     // Выслывающее меню
-    private void showPopupMenu(final View v, final Drawable oldBackground) {
+    private void showPopupMenu(final View v, final Card card, final Drawable oldBackground) {
 
         PopupMenu popupMenu = new PopupMenu(getContext(), v);
 
-        popupMenu.inflate(R.menu.edit);
-        popupMenu.inflate(R.menu.delete);
+        if (auth().isAdmin() || auth().isCardOwner(card)) {
+            popupMenu.inflate(R.menu.edit);
+            popupMenu.inflate(R.menu.delete);
+        }
+
+        popupMenu.inflate(R.menu.share);
 
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
@@ -264,7 +268,7 @@ public class CardsList_Fragment extends BaseFragment implements
                 return true;
 
             case R.id.actionDelete:
-                presenter.deleteCardRequest(currentCard);
+                deleteCardQuestion();
                 return true;
 
             default:
@@ -282,31 +286,30 @@ public class CardsList_Fragment extends BaseFragment implements
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
-    @Override
-    public void deleteCardQuestion() {
+    private void deleteCardQuestion() {
         String cardName = currentCard.getTitle();
 
         MyDialogs.cardDeleteDialog(getActivity(), cardName, new iMyDialogs.Delete() {
-            @Override
-            public void onCancelInDialog() {
+                @Override
+                public void onCancelInDialog() {
 
-            }
+                }
 
-            @Override
-            public void onNoInDialog() {
+                @Override
+                public void onNoInDialog() {
 
-            }
+                }
 
-            @Override
-            public boolean onCheckInDialog() {
-                return true;
-            }
+                @Override
+                public boolean onCheckInDialog() {
+                    return true;
+                }
 
-            @Override
-            public void onYesInDialog() {
-                presenter.deleteCardConfigmed(currentCard);
-            }
-        });
+                @Override
+                public void onYesInDialog() {
+                    presenter.deleteCard(currentCard);
+                }
+            });
     }
 
     private void loadList(boolean showProgressBar) {
