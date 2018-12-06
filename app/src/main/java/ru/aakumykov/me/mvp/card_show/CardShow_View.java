@@ -104,6 +104,8 @@ public class CardShow_View extends BaseView implements
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayer;
 
+    private boolean optionsMenuFirstTimeCreated = true;
+
 
     // Системные методы
     @Override
@@ -223,12 +225,37 @@ public class CardShow_View extends BaseView implements
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (auth().isUserLoggedIn()) {
-            MenuInflater menuInflater = getMenuInflater();
-            menuInflater.inflate(R.menu.edit, menu);
-            menuInflater.inflate(R.menu.delete, menu);
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+
+        invalidateOptionsMenu();
+
+        menuInflater.inflate(R.menu.share, menu);
+
+        if (!optionsMenuFirstTimeCreated) {
+            if (auth().isAdmin() || auth().isCardOwner(currentCard)) {
+                menuInflater.inflate(R.menu.edit, menu);
+                menuInflater.inflate(R.menu.delete, menu);
+            }
+            optionsMenuFirstTimeCreated = false;
         }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+//        MenuInflater menuInflater = getMenuInflater();
+//
+//        if (auth().isAdmin() || auth().isCardOwner(currentCard)) {
+//            menuInflater.inflate(R.menu.edit, menu);
+//            menuInflater.inflate(R.menu.delete, menu);
+//        }
+//
+//        menuInflater.inflate(R.menu.share, menu);
+//
         return super.onCreateOptionsMenu(menu);
     }
 
