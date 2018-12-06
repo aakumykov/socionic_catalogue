@@ -217,4 +217,6 @@
     <string name="REGISTER_enter_email">Enter email address</string>
     <string name="CARD_EDIT_you_cannot_edit_this_card">You cannot edit this card</string>
     <string name="CARDS_LIST_you_cannot_delete_this_card">You cannot delete this card</string>
+    <string name="CARD_SHOW_author">Author: %s</string>
+    <string name="CARDS_LIST_author">By %s</string>
 </resources>

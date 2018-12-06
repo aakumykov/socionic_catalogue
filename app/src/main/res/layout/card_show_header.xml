@@ -93,6 +93,12 @@
         android:textIsSelectable="true"
         android:textSize="18sp" />
 
+    <TextView
+        android:id="@+id/authorView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="viewEnd" />
+
     <co.lujun.androidtagview.TagContainerLayout
         android:id="@+id/tagsContainer"
         android:layout_width="match_parent"

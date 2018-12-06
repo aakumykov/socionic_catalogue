@@ -222,4 +222,6 @@
     <string name="REGISTER_enter_email">Введите Email</string>
     <string name="CARD_EDIT_you_cannot_edit_this_card">Вы не можете редактировать эту карточку</string>
     <string name="CARDS_LIST_you_cannot_delete_this_card">Вы не можете удалить эту карточку</string>
+    <string name="CARD_SHOW_author">Автор: %s</string>
+    <string name="CARDS_LIST_author">От %s</string>
 </resources>

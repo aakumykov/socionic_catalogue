@@ -41,6 +41,9 @@ public class CardsListAdapter extends ArrayAdapter<Card> {
         TextView titleView = view.findViewById(R.id.titleView);
         titleView.setText(card.getTitle());
 
+        TextView authorView  = view.findViewById(R.id.authorView);
+        authorView.setText(view.getResources().getString(R.string.CARDS_LIST_author, card.getUserName()));
+
         // Comments count
         int cc = card.getCommentsCount();
         if (cc > 0) {
