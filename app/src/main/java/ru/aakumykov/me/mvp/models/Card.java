@@ -21,6 +21,7 @@ public class Card implements Parcelable {
 
     private String key;
     private String userId;
+    private String userName;
     private String type;
     private String title;
     private String quote;
@@ -38,29 +39,30 @@ public class Card implements Parcelable {
 
     }
 
-    public Card(
-            String userId,
-            String type,
-            String title,
-            String quote,
-            String imageURL,
-            String videoCode,
-            String description,
-            HashMap<String,Boolean> tagsMap
-    )
-    {
-        setType(type);
-        this.title = title;
-        this.quote = quote;
-        setImageURL(imageURL);
-        setVideoCode(videoCode);
-        this.description = description;
-        this.tags = tagsMap;
-        this.commentsCount = 0;
-        this.rating = 0;
-        this.rateUpList = new ArrayList<>();
-        this.rateDownList = new ArrayList<>();
-    }
+//    public Card(
+//            String userId,
+//            String userName,
+//            String type,
+//            String title,
+//            String quote,
+//            String imageURL,
+//            String videoCode,
+//            String description,
+//            HashMap<String,Boolean> tagsMap
+//    )
+//    {
+//        setType(type);
+//        this.title = title;
+//        this.quote = quote;
+//        setImageURL(imageURL);
+//        setVideoCode(videoCode);
+//        this.description = description;
+//        this.tags = tagsMap;
+//        this.commentsCount = 0;
+//        this.rating = 0;
+//        this.rateUpList = new ArrayList<>();
+//        this.rateDownList = new ArrayList<>();
+//    }
 
     @Exclude
     @Override
@@ -68,6 +70,7 @@ public class Card implements Parcelable {
         return "Card { "+
                 "  key: "+getKey()+
                 ", userId: "+getUserId()+
+                ", userName: "+getUserName()+
                 ", type: "+getType()+
                 ", title: "+getTitle()+
                 ", quote: "+getQuote()+
@@ -87,6 +90,7 @@ public class Card implements Parcelable {
     public HashMap<String, Object> toMap() {
         HashMap<String,Object> map = new HashMap<>();
          map.put("userId", userId);
+         map.put("userName", userName);
          map.put("type", type);
          map.put("title", title);
          map.put("quote", quote);
@@ -109,6 +113,7 @@ public class Card implements Parcelable {
         // важен порядок заполнения
         dest.writeString(this.key);
         dest.writeString(this.userId);
+        dest.writeString(this.userName);
         dest.writeString(this.type);
         dest.writeString(this.title);
         dest.writeString(this.quote);
@@ -127,6 +132,7 @@ public class Card implements Parcelable {
         // важен порядок считывания
         key = in.readString();
         userId = in.readString();
+        userName = in.readString();
         type = in.readString();
         title = in.readString();
         quote = in.readString();
@@ -164,6 +170,7 @@ public class Card implements Parcelable {
     public String getUserId() {
         return userId;
     }
+    public String getUserName() { return userName; }
     public String getKey() {
         return key;
     }
@@ -207,6 +214,7 @@ public class Card implements Parcelable {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+    public void setUserName(String userName) { this.userName = userName; }
     public void setKey(String key) {
         this.key = key;
     }
