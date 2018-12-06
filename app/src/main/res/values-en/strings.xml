@@ -165,7 +165,7 @@
     <string name="COMMENT_author">Comment author</string>
     <string name="REGISTER_succes">Registration success</string>
     <string name="REGISTER_error_creating_user">Error creating user</string>
-    <string name="REGISTER_crating_new_user">Creating new user</string>
+    <string name="REGISTER_creating_user">Creating new user</string>
     <string name="USER_EDIT_error_loading_data">Error loading data</string>
     <string name="USER_EDIT_page_title">Editing user profile</string>
     <string name="COMMENT_show_quote">Show quote</string>
@@ -212,4 +212,11 @@
     <string name="START_PAGE_tab_tags">Tags</string>
     <string name="TAGS_LIST_page_title">Tags list</string>
     <string name="TAGS_LIST_cards_with_tag">Cards: %d</string>
+    <string name="REGISTER_enter_password">Enter password</string>
+    <string name="REGISTER_enter_password_confirmation">Enter password confirmation</string>
+    <string name="REGISTER_enter_email">Enter email address</string>
+    <string name="CARD_EDIT_you_cannot_edit_this_card">You cannot edit this card</string>
+    <string name="CARDS_LIST_you_cannot_delete_this_card">You cannot delete this card</string>
+    <string name="CARD_SHOW_author">Author: %s</string>
+    <string name="CARDS_LIST_author">By %s</string>
 </resources>

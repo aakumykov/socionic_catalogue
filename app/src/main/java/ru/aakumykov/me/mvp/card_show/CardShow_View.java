@@ -73,6 +73,9 @@ public class CardShow_View extends BaseView implements
     private ProgressBar imageProgressBar;
     private ImageView imageView;
     private TextView descriptionView;
+
+    private TextView authorView;
+
     private TagContainerLayout tagsContainer;
     private TextView cardRatingView;
     private ImageView cardRateUpButton;
@@ -129,6 +132,7 @@ public class CardShow_View extends BaseView implements
         videoPlayerHolder = findViewById(R.id.videoPlayerHolder);
 
         descriptionView = findViewById(R.id.descriptionView);
+        authorView = findViewById(R.id.authorView);
 
         tagsContainer = findViewById(R.id.tagsContainer);
 
@@ -151,7 +155,7 @@ public class CardShow_View extends BaseView implements
 
         // Присоединяю адаптер списка
         commentsList = new ArrayList<>();
-        commentsAdapter = new CommentsAdapter(this, getAuthService().currentUser(),
+        commentsAdapter = new CommentsAdapter(this, auth().currentUser(),
                 R.layout.comments_list_item, commentsList,this);
         mainListView.setAdapter(commentsAdapter);
 
@@ -220,7 +224,7 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (isUserLoggedIn()) {
+        if (auth().isUserLoggedIn()) {
             MenuInflater menuInflater = getMenuInflater();
             menuInflater.inflate(R.menu.edit, menu);
             menuInflater.inflate(R.menu.delete, menu);
@@ -277,7 +281,7 @@ public class CardShow_View extends BaseView implements
     public void onCommentReplyClicked(View view, final Comment comment) {
         // TODO: эта логика должна быть в презентере
 
-        if (!getAuthService().isUserLoggedIn()) {
+        if (!auth().isUserLoggedIn()) {
             showToast(R.string.DIALOG_login_first);
         }
         else if (forceSetupUserName(comment)) {
@@ -509,7 +513,7 @@ public class CardShow_View extends BaseView implements
         MyUtils.show(cardRatingView);
         cardRatingView.setText(String.valueOf(value));
 
-        String currentUserId = getAuthService().currentUserId();
+        String currentUserId = auth().currentUserId();
 
         if (currentCard.isRatedUpBy(currentUserId)) {
             colorizeCardRatingAsUp();
@@ -593,6 +597,7 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public void goList(@Nullable String tagFilter) {
+//        Intent intent = new Intent(this, CardsList_View.class);
         Intent intent = new Intent(this, CardsList_View.class);
         if (null != tagFilter)
             intent.putExtra(Constants.TAG_FILTER, tagFilter);
@@ -700,11 +705,12 @@ public class CardShow_View extends BaseView implements
     private void displayCommonCardParts(Card card) {
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
+        authorView.setText( getString(R.string.CARD_SHOW_author, card.getUserName()));
 
         displayTags(card.getTags());
         showCardRating(card.getRating());
 
-//        if (getAuthService().isUserLoggedIn()) {
+//        if (auth().isUserLoggedIn()) {
             MyUtils.show(addCommentButton);
 //        }
     }
@@ -724,7 +730,7 @@ public class CardShow_View extends BaseView implements
     }
 
     private void showCommentForm() {
-        if (getAuthService().isUserLoggedIn()) {
+        if (auth().isUserLoggedIn()) {
             MyUtils.hide(addCommentButton);
             MyUtils.show(commentForm);
             commentInput.requestFocus();
@@ -758,11 +764,11 @@ public class CardShow_View extends BaseView implements
 
         // TODO: сделать это по-нормальному
         // TODO: логика-то во вьюхе не должна присутствовать!
-        if (isUserLoggedIn()) {
-            if (comment.getUserId().equals(getAuthService().currentUserId()))
+        if (auth().isUserLoggedIn()) {
+            if (comment.getUserId().equals(auth().currentUserId()))
                 popupMenu.inflate(R.menu.edit);
 
-            if (getAuthService().userIsAdmin(getAuthService().currentUserId()))
+            if (auth().userIsAdmin(auth().currentUserId()))
                 popupMenu.inflate(R.menu.delete);
         }
 
@@ -864,7 +870,7 @@ public class CardShow_View extends BaseView implements
 
     private boolean forceSetupUserName(@Nullable final Comment parentComment) {
 
-        final User user = getAuthService().currentUser();
+        final User user = auth().currentUser();
 
         if (null != user && !TextUtils.isEmpty(user.getName())) {
             return true;

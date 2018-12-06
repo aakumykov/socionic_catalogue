@@ -1,8 +1,12 @@
 package ru.aakumykov.me.mvp.register;
 
+import android.content.res.Configuration;
+import android.text.TextUtils;
 import android.util.Log;
 
-import java.util.concurrent.TimeUnit;
+import org.w3c.dom.Text;
+
+import java.util.Locale;
 
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
@@ -10,6 +14,7 @@ import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
+import ru.aakumykov.me.mvp.utils.Translator;
 
 // TODO: проверять имя пользователя
 
@@ -30,19 +35,46 @@ public class Register_Presenter implements
 
     // Интерфейсные методы
     @Override
-    public void regUserWithEmail(String email, String password) {
-        Log.d(TAG, "regUserWithEmail()");
+    public void regUserWithEmail() {
+        String email = view.getEmail();
+        String password = view.getPassword();
+        String passwordConfirmation = view.getPasswordConfirmation();
 
-        view.showProgressBar();
+        if (TextUtils.isEmpty(email)) {
+            view.showErrorMsg(R.string.REGISTER_enter_email);
+            view.focusEmail();
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            view.showErrorMsg(R.string.REGISTER_enter_password);
+            view.focusPassword();
+            return;
+        }
+
+        if (TextUtils.isEmpty(passwordConfirmation)) {
+            view.showErrorMsg(R.string.REGISTER_enter_password_confirmation);
+            view.focusPasswordConfigmation();
+            return;
+        }
+
+        // Случай двух пустых паролей обрабатывается выше
+        if (!password.equals(passwordConfirmation)) {
+            view.showErrorMsg(R.string.REGISTER_passwords_mismatch);
+            view.focusPasswordConfigmation();
+            return;
+        }
 
         try {
+            view.showProgressBar();
+            view.showInfoMsg(R.string.REGISTER_registering_user);
+
             authService.registerWithEmail(email, password, this);
         }
         catch (Exception e) {
             view.hideProgressBar();
             view.enableForm();
-//            view.showErrorMsg(R.string.REGISTER_registration_failed, e.getMessage());
-            view.showErrorMsg(e.getMessage());
+            view.showErrorMsg(Translator.translate(e.getMessage()));
             e.printStackTrace();
         }
     }
@@ -62,32 +94,15 @@ public class Register_Presenter implements
     // Коллбеки
     @Override
     public void onRegSucsess(String userId, String email) {
-
-        view.showInfoMsg(R.string.REGISTER_crating_new_user);
-
-        usersService.createUser(userId, email, new iUsersSingleton.CreateCallbacks() {
-            @Override
-            public void onUserCreateSuccess(User user) {
-                // TODO: внимательно с этим методом
-                authService.storeCurrentUser(user);
-                view.goUserEditPage(user);
-            }
-
-            @Override
-            public void onUserCreateFail(String errorMsg) {
-                view.hideProgressBar();
-                view.showErrorMsg(R.string.REGISTER_error_creating_user, errorMsg);
-//                onRegFail(errorMsg);
-            }
-        });
+        view.showInfoMsg(R.string.REGISTER_creating_user);
+        usersService.createUser(userId, email, this);
     }
 
     @Override
     public void onRegFail(String errorMessage) {
         Log.d(TAG, "onRegFail(), "+errorMessage);
         view.hideProgressBar();
-//        view.showErrorMsg(R.string.REGISTER_registration_failed, errorMessage);
-        view.showErrorMsg(errorMessage);
+        view.showErrorMsg(Translator.translate(errorMessage));
         view.enableForm();
     }
 
@@ -102,7 +117,7 @@ public class Register_Presenter implements
     public void onUserCreateFail(String errorMessage) {
         Log.d(TAG, "onCreateFail(), "+errorMessage);
         view.hideProgressBar();
-        view.showErrorMsg(errorMessage);
+        view.showErrorMsg(R.string.REGISTER_error_creating_user, errorMessage);
         view.enableForm();
     }
 

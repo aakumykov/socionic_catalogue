@@ -43,6 +43,8 @@ public class CardsList_Presenter implements
     }
 
 
+    // TODO: обрабатывать ошибку, когда нет интернета (сейчас бесконечно крутится строка ожидания)
+
     // Интерфейсные
     @Override
     public void loadList(@Nullable String tagFilter) {
@@ -59,7 +61,22 @@ public class CardsList_Presenter implements
     }
 
     @Override
+    public void deleteCardRequest(Card card) {
+        if (!card.getUserId().equals(authService.currentUserId())) {
+            view.showErrorMsg(R.string.CARDS_LIST_you_cannot_delete_this_card);
+            return;
+        }
+
+        view.deleteCardQuestion();
+    }
+
+    @Override
     public void deleteCardConfigmed(final Card card) {
+        if (!card.getUserId().equals(authService.currentUserId())) {
+            view.showErrorMsg(R.string.CARDS_LIST_you_cannot_delete_this_card);
+            return;
+        }
+
         this.currentCard = card;
 
         try {

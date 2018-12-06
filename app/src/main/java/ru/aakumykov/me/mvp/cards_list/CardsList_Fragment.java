@@ -33,11 +33,8 @@ import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Card;
-import ru.aakumykov.me.mvp.start_page.iPageConfigurator;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
-
-import static android.app.Activity.RESULT_OK;
 
 public class CardsList_Fragment extends BaseFragment implements
         iCardsList.View,
@@ -60,12 +57,11 @@ public class CardsList_Fragment extends BaseFragment implements
     private boolean firstRun = true;
 
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View rootView = inflater.inflate(R.layout.cards_list, container, false);
+        View rootView = inflater.inflate(R.layout.cards_list_fragment, container, false);
         ButterKnife.bind(this, rootView);
 
         swiperefreshLayout.setOnRefreshListener(this);
@@ -226,7 +222,7 @@ public class CardsList_Fragment extends BaseFragment implements
 //        Log.d(TAG, "onItemLongClick(pos: "+position+", id: "+id+")");
         currentCard = cardsList.get(position);
 
-        if (isUserLoggedIn()) {
+        if (auth().isUserLoggedIn()) {
             Drawable oldBackground = view.getBackground();
             view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
             showPopupMenu(view, oldBackground);
@@ -268,7 +264,7 @@ public class CardsList_Fragment extends BaseFragment implements
                 return true;
 
             case R.id.actionDelete:
-                deleteCard();
+                presenter.deleteCardRequest(currentCard);
                 return true;
 
             default:
@@ -281,14 +277,14 @@ public class CardsList_Fragment extends BaseFragment implements
     private void editCard() {
         Intent intent = new Intent(getContext(), CardEdit_View.class);
         intent.setAction(Constants.ACTION_EDIT);
+        intent.putExtra(Constants.CARD, currentCard);
         intent.putExtra(Constants.CARD_KEY, currentCard.getKey());
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
-//        currentCard = null;
     }
 
-    private void deleteCard() {
+    @Override
+    public void deleteCardQuestion() {
         String cardName = currentCard.getTitle();
-//        currentCard = null;
 
         MyDialogs.cardDeleteDialog(getActivity(), cardName, new iMyDialogs.Delete() {
             @Override
@@ -318,7 +314,9 @@ public class CardsList_Fragment extends BaseFragment implements
 
         try {
             tagFilter = getActivity().getIntent().getStringExtra(Constants.TAG_FILTER);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            hideProgressBar();
+        }
 
         if (showProgressBar) showProgressBar();
         presenter.loadList(tagFilter);

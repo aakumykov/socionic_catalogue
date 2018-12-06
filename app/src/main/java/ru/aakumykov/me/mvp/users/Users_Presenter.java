@@ -148,13 +148,13 @@ public class Users_Presenter implements
         if (!currentUser.hasAvatar() && imageSelected) {
             try {
                 byte[] imageByteArray = editView.getImageData();
-                String remoteFileName = Constants.AVATARS_PATH + "/" + authService.currentUserId() + ".jpg";
+                String fileName = authService.currentUserId() + ".jpg";
 
                 editView.showAvatarThrobber();
                 editView.disableEditForm();
                 editView.showInfoMsg(R.string.USER_EDIT_saving_avatar);
 
-                storageService.uploadImage(imageByteArray, remoteFileName, this);
+                storageService.uploadAvatar(imageByteArray, fileName, this);
 
             } catch (Exception e) {
                 onFileUploadFail(e.getMessage());

@@ -186,13 +186,13 @@ public class CardEdit_Presenter implements
             if (TextUtils.isEmpty(currentCard.getImageURL())) {
                 // Здесь сохраняется изображение
 
-                String remoteImageFileName = currentCard.getKey()+".jpg";
+                String fileName = currentCard.getKey()+".jpg";
                 view.showInfoMsg(R.string.CARD_EDIT_uploading_image);
                 view.showImageProgressBar();
                 view.disableForm();
 
                 try {
-                    storageService.uploadImage(view.getImageData(), remoteImageFileName, this);
+                    storageService.uploadImage(view.getImageData(), fileName, this);
                     return;
 
                 } catch (Exception e) {
@@ -339,9 +339,18 @@ public class CardEdit_Presenter implements
         currentCard.setKey(cardsService.createKey());
         // TODO: нужно единообразие аутентификационных вещей!
         currentCard.setUserId(authService.currentUserId());
+        currentCard.setUserName(authService.currentUserName());
     }
 
     private void prepareCardEdition(Intent intent) {
+
+        Card card = intent.getParcelableExtra(Constants.CARD);
+        if (!card.getUserId().equals(authService.currentUserId())) {
+            // TODO: этого сообщения не видно на странице списка. Как бы его передавать?...
+            view.showErrorMsg(R.string.CARD_EDIT_you_cannot_edit_this_card);
+            view.closePage();
+            return;
+        }
 
         view.showProgressBar();
         view.setPageTitle(R.string.CARD_EDIT_card_edition_title);

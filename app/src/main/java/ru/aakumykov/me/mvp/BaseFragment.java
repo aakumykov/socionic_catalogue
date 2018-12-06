@@ -52,13 +52,8 @@ public abstract class BaseFragment extends Fragment implements iBaseView
     }
 
     @Override
-    public iAuthSingleton getAuthService() {
+    public iAuthSingleton auth() {
         return authService;
-    }
-
-    @Override
-    public boolean isUserLoggedIn() {
-        return authService.isUserLoggedIn();
     }
 
 

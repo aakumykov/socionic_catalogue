@@ -77,7 +77,7 @@ public class StartPage extends BaseView implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        if (isUserLoggedIn()) {
+        if (auth().isUserLoggedIn()) {
             MenuInflater menuInflater = getMenuInflater();
             menuInflater.inflate(R.menu.create_card, menu);
             menuInflater.inflate(R.menu.refresh, menu);

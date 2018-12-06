@@ -18,6 +18,7 @@ public class User implements Parcelable {
     private String email;
     private String about;
     private String avatarURL;
+    private boolean emailVerified = false;
 
     public User() {}
 
@@ -56,6 +57,7 @@ public class User implements Parcelable {
                 ", email: "+email+
                 ", about: "+about+
                 ", avatarURL: "+avatarURL+
+                ", emailVerified: "+emailVerified+
                 " }";
     }
 
@@ -67,6 +69,7 @@ public class User implements Parcelable {
         map.put("email", email);
         map.put("about", about);
         map.put("avatarURL", avatarURL);
+        map.put("emailVerified", emailVerified);
         return map;
     }
 
@@ -97,6 +100,7 @@ public class User implements Parcelable {
         dest.writeString(email);
         dest.writeString(about);
         dest.writeString(avatarURL);
+        dest.writeString(String.valueOf(emailVerified));
     }
 
     private User(Parcel in) {
@@ -106,6 +110,7 @@ public class User implements Parcelable {
         email = in.readString();
         about = in.readString();
         avatarURL = in.readString();
+        emailVerified = in.readString().equals("1");
     }
     /* Parcelable */
 
@@ -145,6 +150,12 @@ public class User implements Parcelable {
         this.avatarURL = avatarURL;
     }
 
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+    public void setEmailVerified(boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
 
     @Exclude public boolean hasAvatar() {
         return !TextUtils.isEmpty(getAvatarURL());

@@ -30,6 +30,7 @@ public class StorageSingleton implements iStorageSingleton {
     private final static String TAG = "StorageSingleton";
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     private StorageReference imagesRef = firebaseStorage.getReference().child(Constants.IMAGES_PATH);
+    private StorageReference avatarsRef = firebaseStorage.getReference().child(Constants.AVATARS_PATH);
 
 
     // Интерфейсные методы
@@ -42,9 +43,16 @@ public class StorageSingleton implements iStorageSingleton {
     }
 
     @Override
-    public void uploadImage(byte[] imageByteArray, String remoteImagePath, final iStorageSingleton.FileUploadCallbacks callbacks) {
+    public void uploadImage(byte[] imageByteArray, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
 
-        final StorageReference theImageRef = imagesRef.child("/"+remoteImagePath);
+        final StorageReference theImageRef = imagesRef.child("/"+fileName);
+        UploadTask uploadTask = theImageRef.putBytes(imageByteArray);
+        doUpload(uploadTask, theImageRef, callbacks);
+    }
+
+    @Override
+    public void uploadAvatar(byte[] imageByteArray, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
+        final StorageReference theImageRef = avatarsRef.child("/"+fileName);
         UploadTask uploadTask = theImageRef.putBytes(imageByteArray);
         doUpload(uploadTask, theImageRef, callbacks);
     }
