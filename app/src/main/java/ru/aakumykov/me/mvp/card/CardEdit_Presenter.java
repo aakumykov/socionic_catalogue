@@ -20,6 +20,7 @@ import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.StorageSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
+import ru.aakumykov.me.mvp.utils.BitmapReader;
 import ru.aakumykov.me.mvp.utils.ImageResizer;
 import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.mvp.utils.MyUtils;
@@ -152,11 +153,11 @@ public class CardEdit_Presenter implements
         }
 
         currentCard.setImageURL("");
-        view.displayImage(imageURI.toString(), true);
+//        view.displayImage(imageURI.toString(), true);
 
-//        String mimeType = view.detectMimeType(imageURI);
-//        Bitmap imageBitmap = ImageResizer.getScaledDownBitmap()
-//        view.displayImageBitmap(imageBitmap);
+        String mimeType = view.detectMimeType(imageURI);
+        Bitmap imageBitmap = BitmapReader.getThumbnail(view.getApplicationContext(), imageURI);
+        view.displayImageBitmap(imageBitmap);
     }
 
     // TODO: как бы проверять полную корректность при сохранении?

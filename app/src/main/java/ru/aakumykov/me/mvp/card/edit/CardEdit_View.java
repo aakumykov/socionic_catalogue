@@ -301,7 +301,9 @@ public class CardEdit_View extends BaseView implements
     public void displayImageBitmap(Bitmap bitmap) {
         imageView.setImageBitmap(bitmap);
 
+        hideModeSwitcher();
         MyUtils.hide(imagePlaceholder);
+        MyUtils.hide(imageProgressBar);
 
         MyUtils.show(mediaHolder);
         MyUtils.show(imageHolder);
