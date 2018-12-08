@@ -144,8 +144,12 @@ public class CardEdit_Presenter implements
             if (null == imageURI) {
                 throw new Exception("Where is no image data in intent");
             }
-            view.showLongToast("imageURI получен вторым способом: "+imageURI);
+            view.showLongToast("imageURI получен ВТОРЫМ способом: "+imageURI);
+        } else {
+            view.showLongToast("imageURI получен ПЕРВЫМ способом: "+imageURI);
         }
+
+        String mimeType = view.detectMimeType(imageURI);
 
         currentCard.setImageURL("");
         view.displayImage(imageURI.toString(), true);
