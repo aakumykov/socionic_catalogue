@@ -3,6 +3,7 @@ package ru.aakumykov.me.mvp.card.edit;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -294,6 +295,18 @@ public class CardEdit_View extends BaseView implements
             showBrokenImage();
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void displayImageBitmap(Bitmap bitmap) {
+        imageView.setImageBitmap(bitmap);
+
+        MyUtils.hide(imagePlaceholder);
+
+        MyUtils.show(mediaHolder);
+        MyUtils.show(imageHolder);
+        MyUtils.show(imageView);
+        MyUtils.show(discardImageButton);
     }
 
     @Override

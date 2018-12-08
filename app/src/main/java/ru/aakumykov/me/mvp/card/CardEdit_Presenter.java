@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.card;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -19,6 +20,7 @@ import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.StorageSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
+import ru.aakumykov.me.mvp.utils.ImageResizer;
 import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
@@ -149,10 +151,12 @@ public class CardEdit_Presenter implements
             view.showLongToast("imageURI получен ПЕРВЫМ способом: "+imageURI);
         }
 
-        String mimeType = view.detectMimeType(imageURI);
-
         currentCard.setImageURL("");
         view.displayImage(imageURI.toString(), true);
+
+//        String mimeType = view.detectMimeType(imageURI);
+//        Bitmap imageBitmap = ImageResizer.getScaledDownBitmap()
+//        view.displayImageBitmap(imageBitmap);
     }
 
     // TODO: как бы проверять полную корректность при сохранении?

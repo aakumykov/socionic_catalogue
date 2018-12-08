@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.card;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
@@ -22,6 +23,7 @@ public interface iCardEdit {
         void displayTitle(String text);
         void displayQuote(String text);
         void displayImage(String imageURI, boolean unprocessedYet);
+        void displayImageBitmap(Bitmap bitmap);
         void displayVideo(String videoCode);
 //        void displayAudio(Uri dataURI);
 
