@@ -243,10 +243,32 @@ public class MVPUtils {
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
     }
 
-    public static byte[] imageView2Bitmap(ImageView imageView) throws Exception {
+    public static byte[] imageView2Bitmap(ImageView imageView, String mimeType) throws Exception {
+
         Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, Config.JPEG_QUALITY, baos);
+
+        Bitmap.CompressFormat compressFormat = null;
+
+        switch (mimeType) {
+
+            case "image/png":
+                compressFormat = Bitmap.CompressFormat.PNG;
+                break;
+
+            case "image/gif":
+                break;
+
+            default: // будут кодироваться в JPEG
+                compressFormat = Bitmap.CompressFormat.JPEG;
+                break;
+
+        }
+
+        if (null != compressFormat) {
+            bitmap.compress(compressFormat, Config.JPEG_QUALITY, baos);
+        }
+
         return baos.toByteArray();
     }
 }

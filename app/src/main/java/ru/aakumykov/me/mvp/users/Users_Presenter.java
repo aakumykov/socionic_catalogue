@@ -187,6 +187,7 @@ public class Users_Presenter implements
         }
 
         setImageSelected(true);
+        mimeType =
         currentUser.setAvatarURL("");
         editView.displayAvatar(imageURI.toString(), true);
     }
