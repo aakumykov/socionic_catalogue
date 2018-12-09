@@ -41,7 +41,7 @@ public class CardEdit_Presenter implements
     private Card currentCard = null;
     private HashMap<String,Boolean> oldTags = null;
     private HashMap<String,Boolean> newTags = null;
-    private String mimeType;
+
 
     // Интерфейсные методы
     @Override
@@ -152,12 +152,12 @@ public class CardEdit_Presenter implements
             view.showLongToast("imageURI получен ПЕРВЫМ способом: "+imageURI);
         }
 
-        mimeType = view.detectMimeType(imageURI);
         currentCard.setImageURL("");
-        view.displayImage(imageURI.toString(), true);
+//        view.displayImage(imageURI.toString(), true);
 
-//        Bitmap imageBitmap = BitmapReader.getThumbnail(view.getApplicationContext(), imageURI);
-//        view.displayImageBitmap(imageBitmap);
+        String mimeType = view.detectMimeType(imageURI);
+        Bitmap imageBitmap = BitmapReader.getThumbnail(view.getApplicationContext(), imageURI);
+        view.displayImageBitmap(imageBitmap);
     }
 
     // TODO: как бы проверять полную корректность при сохранении?
