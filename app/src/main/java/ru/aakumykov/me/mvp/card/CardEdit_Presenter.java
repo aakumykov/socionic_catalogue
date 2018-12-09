@@ -5,6 +5,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -153,11 +158,25 @@ public class CardEdit_Presenter implements
         }
 
         currentCard.setImageURL("");
-//        view.displayImage(imageURI.toString(), true);
+        view.displayImage(imageURI.toString(), true);
 
-        String mimeType = view.detectMimeType(imageURI);
-        Bitmap imageBitmap = BitmapReader.getThumbnail(view.getApplicationContext(), imageURI);
-        view.displayImageBitmap(imageBitmap);
+//        String mimeType = view.detectMimeType(imageURI);
+//        Bitmap imageBitmap = BitmapReader.getThumbnail(view.getApplicationContext(), imageURI);
+//        view.displayImageBitmap(imageBitmap);
+    }
+
+    private void processImageByPicasso(String imageURL, final ImageView targetView) {
+        Picasso.get().load(imageURL).into(targetView, new Callback() {
+            @Override
+            public void onSuccess() {
+//                targetView.getDrawable().
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
     }
 
     // TODO: как бы проверять полную корректность при сохранении?
