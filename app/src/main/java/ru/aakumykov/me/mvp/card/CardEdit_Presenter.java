@@ -211,10 +211,9 @@ public class CardEdit_Presenter implements
                 view.disableForm();
 
                 Bitmap imageBitmap = view.getImageBitmap();
-                byte[] imageBytes = MVPUtils.compressImage(imageBitmap, imageType);
 
                 try {
-                    storageService.uploadImage(imageBytes, fileName, this);
+                    storageService.uploadImage(imageBitmap, imageType, fileName, this);
                     return;
 
                 } catch (Exception e) {

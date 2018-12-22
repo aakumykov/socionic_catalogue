@@ -1,9 +1,11 @@
 package ru.aakumykov.me.mvp.interfaces;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 public interface iStorageSingleton {
 
+    void uploadImage(Bitmap bitmap, String imageType, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks);
     void uploadImage(Uri localImageURI, String remoteImagePath, FileUploadCallbacks callbacks);
     void uploadImage(byte[] imageByteArray, String remoteImagePath, FileUploadCallbacks callbacks);
     void uploadAvatar(byte[] imageByteArray, String remoteImagePath, FileUploadCallbacks callbacks);
