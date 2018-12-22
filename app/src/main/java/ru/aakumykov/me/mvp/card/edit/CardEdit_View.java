@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -375,8 +376,9 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public byte[] getImageData() throws Exception {
-        return MVPUtils.imageView2Bitmap(imageView);
+    public Bitmap getImageBitmap() {
+        return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+
     }
 
     @Override

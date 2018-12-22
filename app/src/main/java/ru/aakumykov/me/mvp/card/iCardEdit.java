@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public interface iCardEdit {
 
         HashMap<String,Boolean> getCardTags();
 
-        byte[] getImageData() throws Exception;
+        Bitmap getImageBitmap();
 
         void storeCardVideoCode(String videoCode);
         String getCardVideoCode();

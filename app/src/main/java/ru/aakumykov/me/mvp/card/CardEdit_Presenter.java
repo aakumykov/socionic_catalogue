@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
@@ -46,7 +47,7 @@ public class CardEdit_Presenter implements
     private Card currentCard = null;
     private HashMap<String,Boolean> oldTags = null;
     private HashMap<String,Boolean> newTags = null;
-
+    private String imageType;
 
     // Интерфейсные методы
     @Override
@@ -133,6 +134,7 @@ public class CardEdit_Presenter implements
         }
 
         currentCard.setImageURL("");
+        imageType = MyUtils.detectImageType(view.getApplicationContext(), textLinkToImage);
         view.displayImage(textLinkToImage, true);
     }
 
@@ -145,38 +147,27 @@ public class CardEdit_Presenter implements
 
         // Первый способ получить содержимое
         Uri imageURI = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-        if (null == imageURI) {
 
+        if (null == imageURI) {
             // Второй способ получить содержимое
             imageURI = intent.getData();
+
             if (null == imageURI) {
                 throw new Exception("Where is no image data in intent");
             }
-            view.showLongToast("imageURI получен ВТОРЫМ способом: "+imageURI);
+            view.showToast("imageURI получен ВТОРЫМ способом: "+imageURI);
+
         } else {
-            view.showLongToast("imageURI получен ПЕРВЫМ способом: "+imageURI);
+            view.showToast("imageURI получен ПЕРВЫМ способом: "+imageURI);
         }
 
         currentCard.setImageURL("");
+        imageType = MyUtils.detectImageType(view.getApplicationContext(), imageURI);
         view.displayImage(imageURI.toString(), true);
 
 //        String mimeType = view.detectMimeType(imageURI);
 //        Bitmap imageBitmap = BitmapReader.getThumbnail(view.getApplicationContext(), imageURI);
 //        view.displayImageBitmap(imageBitmap);
-    }
-
-    private void processImageByPicasso(String imageURL, final ImageView targetView) {
-        Picasso.get().load(imageURL).into(targetView, new Callback() {
-            @Override
-            public void onSuccess() {
-//                targetView.getDrawable().
-            }
-
-            @Override
-            public void onError(Exception e) {
-
-            }
-        });
     }
 
     // TODO: как бы проверять полную корректность при сохранении?
@@ -214,13 +205,16 @@ public class CardEdit_Presenter implements
             if (TextUtils.isEmpty(currentCard.getImageURL())) {
                 // Здесь сохраняется изображение
 
-                String fileName = currentCard.getKey()+".jpg";
+                String fileName = currentCard.getKey()+"."+imageType;
                 view.showInfoMsg(R.string.CARD_EDIT_uploading_image);
                 view.showImageProgressBar();
                 view.disableForm();
 
+                Bitmap imageBitmap = view.getImageBitmap();
+                byte[] imageBytes = MVPUtils.compressImage(imageBitmap, imageType);
+
                 try {
-                    storageService.uploadImage(view.getImageData(), fileName, this);
+                    storageService.uploadImage(imageBytes, fileName, this);
                     return;
 
                 } catch (Exception e) {

@@ -3,14 +3,17 @@ package ru.aakumykov.me.mvp.utils;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 
 import java.util.HashMap;
@@ -18,6 +21,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
 
 public final class MyUtils {
@@ -52,6 +56,25 @@ public final class MyUtils {
             return matcher.group(1);
         } else {
             return null;
+        }
+    }
+
+    public static String detectImageType(Context context, Uri uri) {
+        ContentResolver contentResolver = context.getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+    public static String detectImageType(Context context, String imageURL) {
+        imageURL = imageURL.trim();
+
+        Pattern pattern = Pattern.compile("\\.([a-z]+)$");
+        Matcher matcher = pattern.matcher(imageURL);
+
+        if (matcher.matches()) {
+            return matcher.group(1);
+        } else {
+            return Config.DEFAULT_IMAGE_TYPE;
         }
     }
 

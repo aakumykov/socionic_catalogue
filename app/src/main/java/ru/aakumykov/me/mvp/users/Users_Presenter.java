@@ -146,20 +146,20 @@ public class Users_Presenter implements
         currentUser.setAbout(editView.getAbout());
 
         if (!currentUser.hasAvatar() && imageSelected) {
-            try {
-                byte[] imageByteArray = editView.getImageData();
-                String fileName = authService.currentUserId() + ".jpg";
-
-                editView.showAvatarThrobber();
-                editView.disableEditForm();
-                editView.showInfoMsg(R.string.USER_EDIT_saving_avatar);
-
-                storageService.uploadAvatar(imageByteArray, fileName, this);
-
-            } catch (Exception e) {
-                onFileUploadFail(e.getMessage());
-                e.printStackTrace();
-            }
+//            try {
+//                byte[] imageByteArray = editView.getImageData();
+//                String fileName = authService.currentUserId() + ".jpg"; // дублирование замечено!
+//
+//                editView.showAvatarThrobber();
+//                editView.disableEditForm();
+//                editView.showInfoMsg(R.string.USER_EDIT_saving_avatar);
+//
+//                storageService.uploadAvatar(imageByteArray, fileName, this);
+//
+//            } catch (Exception e) {
+//                onFileUploadFail(e.getMessage());
+//                e.printStackTrace();
+//            }
         }
         else {
             saveUser();
