@@ -122,7 +122,7 @@ public class CardEdit_View extends BaseView implements
 
         if (firstRun) {
             firstRun = false;
-            presenter.chooseStartVariant(getIntent());
+            presenter.beginWork(getIntent());
         }
     }
 

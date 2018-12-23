@@ -10,6 +10,7 @@ public interface iAuthSingleton {
     void logout();
     void cancelLogin(); // TODO: сделать при нажатии кнопки отмена, уходе со страницы
 
+    void restoreCurrentUser(UserRestoreCallbacks callbacks);
     User currentUser();
     String currentUserName();
     String currentUserId()/* throws Exception*/;
@@ -32,4 +33,8 @@ public interface iAuthSingleton {
         void onLoginFail(String errorMsg);
     }
 
+    interface UserRestoreCallbacks {
+        void onUserRestoreSuccess();
+        void onUserRestoreFail(String errorMsg);
+    }
 }

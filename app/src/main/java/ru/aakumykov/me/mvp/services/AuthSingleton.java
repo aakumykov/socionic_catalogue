@@ -102,6 +102,23 @@ public class AuthSingleton implements iAuthSingleton
     }
 
 
+    @Override
+    public void restoreCurrentUser(final iAuthSingleton.UserRestoreCallbacks callbacks) {
+        usersService.getUser(currentUserId(), new iUsersSingleton.ReadCallbacks() {
+            @Override
+            public void onUserReadSuccess(User user) {
+                storeCurrentUser(user);
+                callbacks.onUserRestoreSuccess();
+            }
+
+            @Override
+            public void onUserReadFail(String errorMsg) {
+                callbacks.onUserRestoreFail(errorMsg);
+            }
+        });
+    }
+
+
     // Параметры текущего пользователя
     @Override
     public User currentUser() {

@@ -51,7 +51,22 @@ public class CardEdit_Presenter implements
 
     // Интерфейсные методы
     @Override
-    public void chooseStartVariant(@Nullable Intent intent) {
+    public void beginWork(@Nullable final Intent intent) {
+        authService.restoreCurrentUser(new iAuthSingleton.UserRestoreCallbacks() {
+            @Override
+            public void onUserRestoreSuccess() {
+                chooseStartVariant(intent);
+            }
+
+            @Override
+            public void onUserRestoreFail(String errorMsg) {
+                view.showErrorMsg(errorMsg);
+            }
+        });
+    }
+
+    private void chooseStartVariant(@Nullable Intent intent) {
+
         if (null == intent) {
             view.showErrorMsg(R.string.CARD_EDIT_error_no_input_data);
             return;

@@ -61,7 +61,7 @@ public interface iCardEdit {
         void linkView(View view);
         void unlinkView();
 
-        void chooseStartVariant(@Nullable Intent intent);
+        void beginWork(@Nullable Intent intent);
 
         void processRecievedData(String mode, Intent intent) throws Exception;
         void processLinkToImage(@Nullable Intent intent) throws Exception;
