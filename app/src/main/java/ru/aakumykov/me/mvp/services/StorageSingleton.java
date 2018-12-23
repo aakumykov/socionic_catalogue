@@ -45,18 +45,19 @@ public class StorageSingleton implements iStorageSingleton {
         uploadFile(imageBytesArray, Constants.IMAGES_PATH, fileName, callbacks);
     }
     
-    @Override
-    public void uploadImage(Uri localImageURI, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
-        uploadFile(localImageURI, Constants.IMAGES_PATH, fileName, callbacks);
-    }
+//    @Override
+//    public void uploadImage(Uri localImageURI, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
+//        uploadFile(localImageURI, Constants.IMAGES_PATH, fileName, callbacks);
+//    }
+//
+//    @Override
+//    public void uploadImage(byte[] imageBytesArray, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
+//        uploadFile(imageBytesArray, Constants.IMAGES_PATH, fileName, callbacks);
+//    }
 
     @Override
-    public void uploadImage(byte[] imageBytesArray, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
-        uploadFile(imageBytesArray, Constants.IMAGES_PATH, fileName, callbacks);
-    }
-
-    @Override
-    public void uploadAvatar(byte[] imageBytesArray, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
+    public void uploadAvatar(Bitmap imageBitmap, String imageType, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
+        byte[] imageBytesArray = MVPUtils.compressImage(imageBitmap, imageType);
         uploadFile(imageBytesArray, Constants.AVATARS_PATH, fileName, callbacks);
     }
 
