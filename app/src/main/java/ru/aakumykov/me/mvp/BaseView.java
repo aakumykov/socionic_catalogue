@@ -58,7 +58,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             @Override
             public void onLoggedIn() {
                 invalidateOptionsMenu();
-                showToast("onLoggedIn()");
+//                showToast("onLoggedIn()");
                 onUserLogin();
             }
 
@@ -66,7 +66,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             @Override
             public void onLoggedOut() {
                 invalidateOptionsMenu();
-                showToast("onLoggedOut()");
+//                showToast("onLoggedOut()");
                 onUserLogout();
             }
         });

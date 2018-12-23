@@ -150,6 +150,7 @@ public class CardEdit_Presenter implements
 
         currentCard.setImageURL("");
         imageType = MyUtils.detectImageType(view.getApplicationContext(), textLinkToImage);
+        view.showToast(imageType);
         view.displayImage(textLinkToImage, true);
     }
 
@@ -170,14 +171,15 @@ public class CardEdit_Presenter implements
             if (null == imageURI) {
                 throw new Exception("Where is no image data in intent");
             }
-            view.showToast("imageURI получен ВТОРЫМ способом: "+imageURI);
+//            view.showToast("imageURI получен ВТОРЫМ способом: "+imageURI);
 
         } else {
-            view.showToast("imageURI получен ПЕРВЫМ способом: "+imageURI);
+//            view.showToast("imageURI получен ПЕРВЫМ способом: "+imageURI);
         }
 
         currentCard.setImageURL("");
         imageType = MyUtils.detectImageType(view.getApplicationContext(), imageURI);
+        view.showToast(imageType);
         view.displayImage(imageURI.toString(), true);
 
 //        String mimeType = view.detectMimeType(imageURI);

@@ -67,9 +67,10 @@ public final class MyUtils {
 
     public static String detectImageType(Context context, String imageURL) {
         imageURL = imageURL.trim();
+        imageURL = imageURL.toLowerCase();
 
-        Pattern pattern = Pattern.compile("\\.([a-z]+)$");
-        Matcher matcher = pattern.matcher(imageURL);
+        Pattern pattern = Pattern.compile("^.+\\.([a-z]+)$");
+        Matcher matcher = pattern.matcher(imageURL); // запомни, РВ должно соответствовать строке целиком!
 
         if (matcher.matches()) {
             return matcher.group(1);
