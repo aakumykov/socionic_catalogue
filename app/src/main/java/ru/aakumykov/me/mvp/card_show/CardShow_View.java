@@ -51,6 +51,7 @@ import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.models.Comment;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.users.edit.UserEdit_View;
+import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
@@ -148,6 +149,7 @@ public class CardShow_View extends BaseView implements
         sendCommentButton = findViewById(R.id.sendCommentButton);
 
         // Устанавливаю обработчики нажатий
+        authorView.setOnClickListener(this);
         addCommentButton.setOnClickListener(this);
         sendCommentButton.setOnClickListener(this);
         cardRateUpButton.setOnClickListener(this);
@@ -279,6 +281,9 @@ public class CardShow_View extends BaseView implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.authorView:
+                showAuthor();
+                break;
             case R.id.addCommentButton:
                 showCommentForm();
                 break;
@@ -966,5 +971,11 @@ public class CardShow_View extends BaseView implements
         Drawable downColoredIcon = getResources().getDrawable(R.drawable.ic_thumb_down_colored);
         cardRateUpButton.setImageDrawable(upNeutralIcon);
         cardRateDownButton.setImageDrawable(downColoredIcon);
+    }
+
+    private void showAuthor() {
+        Intent intent = new Intent(this, UserShow_View.class);
+        intent.putExtra(Constants.USER_ID, currentCard.getUserId());
+        startActivity(intent);
     }
 }
