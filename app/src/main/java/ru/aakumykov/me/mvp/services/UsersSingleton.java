@@ -14,6 +14,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
@@ -37,6 +39,7 @@ public class UsersSingleton implements iUsersSingleton {
 
     private final static String TAG = "UsersSingleton";
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference rootRef = firebaseDatabase.getReference().child("/");
     private DatabaseReference usersRef = firebaseDatabase.getReference().child(Constants.USERS_PATH);
 
 
@@ -140,13 +143,16 @@ public class UsersSingleton implements iUsersSingleton {
 
     @Override
     public void saveUser(final User user, final SaveCallbacks callbacks) {
-        Log.d(TAG, "saveProfile(), "+user);
+        Map<String, Object> updatePool = new HashMap<>();
 
-        DatabaseReference userRef = usersRef.child(user.getKey());
+        updatePool.put(Constants.USERS_PATH+"/"+user.getKey(), user);
 
-        //TODO: транзакция
-        //TODO: update вместо save
-        userRef.setValue(user)
+        for(Map.Entry entry : user.getCommentsKeys().entrySet()) {
+            updatePool.put(Constants.COMMENTS_PATH+"/"+entry.getKey()+"/"+"userName", user.getName());
+            updatePool.put(Constants.COMMENTS_PATH+"/"+entry.getKey()+"/"+"userAvatar", user.getAvatarURL());
+        }
+
+        rootRef.updateChildren(updatePool)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
