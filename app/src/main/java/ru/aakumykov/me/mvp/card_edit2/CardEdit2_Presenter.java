@@ -93,7 +93,7 @@ public class CardEdit2_Presenter implements
         editView.showProgressBar();
         editView.disableForm();
 
-        cardsService.updateCard(currentCard, this);
+        cardsService.saveCard(currentCard, this);
     }
 
 

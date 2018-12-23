@@ -16,7 +16,9 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
@@ -39,6 +41,7 @@ public class CardsSingleton implements
     // Свойства
     private final static String TAG = "CardsSingleton";
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference rootRef = firebaseDatabase.getReference("/");
     private DatabaseReference cardsRef = firebaseDatabase.getReference().child(Constants.CARDS_PATH);
 
 
@@ -72,12 +75,15 @@ public class CardsSingleton implements
 
 
     @Override
-    public void updateCard(final Card card, final SaveCardCallbacks callbacks) {
-        Log.d(TAG, "updateCard(), "+card);
+    public void saveCard(final Card card, final SaveCardCallbacks callbacks) {
 
-        DatabaseReference cardRef = cardsRef.child(card.getKey());
+        Map<String,Object> updatePool = new HashMap<>();
 
-        cardRef.setValue(card)
+        updatePool.put(Constants.CARDS_PATH+"/"+card.getKey(), card);
+
+        updatePool.put(Constants.USERS_PATH+"/"+card.getUserId()+"/cardsKeys/"+card.getKey(), true);
+
+        rootRef.updateChildren(updatePool)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

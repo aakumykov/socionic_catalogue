@@ -5,16 +5,10 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.ImageView;
-
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
 import java.util.HashMap;
 
-import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
@@ -26,8 +20,6 @@ import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.StorageSingleton;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
-import ru.aakumykov.me.mvp.utils.BitmapReader;
-import ru.aakumykov.me.mvp.utils.ImageResizer;
 import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
@@ -246,7 +238,7 @@ public class CardEdit_Presenter implements
 
         // Сохранение собственно карточки
         view.showInfoMsg(R.string.CARD_EDIT_saving_card);
-        cardsService.updateCard(currentCard, this);
+        cardsService.saveCard(currentCard, this);
     }
 
 
