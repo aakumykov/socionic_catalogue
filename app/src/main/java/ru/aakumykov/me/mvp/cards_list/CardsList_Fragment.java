@@ -51,11 +51,19 @@ public class CardsList_Fragment extends BaseFragment implements
 
     private final static String TAG = "CardsList_Fragment";
     private iCardsList.Presenter presenter;
-    private List<Card> cardsList;
-    private CardsListAdapter cardsListAdapter;
     private Card currentCard;
     private boolean firstRun = true;
 
+    private List<Card> cardsList;
+    private CardsListAdapter cardsListAdapter;
+
+
+    // Системные методы
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+    }
 
     @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,10 +85,6 @@ public class CardsList_Fragment extends BaseFragment implements
 
         presenter = new CardsList_Presenter();
 
-//        iPageConfigurator pageConfigurator = (iPageConfigurator) getActivity();
-//        if (null != pageConfigurator)
-//            pageConfigurator.setPageTitle(R.string.CARDS_LIST_page_title);
-
         setRootView(rootView);
         return rootView;
     }
@@ -100,12 +104,6 @@ public class CardsList_Fragment extends BaseFragment implements
     public void onStop() {
         super.onStop();
         presenter.unlinkView();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
     }
 
 //    @Override
@@ -335,6 +333,10 @@ public class CardsList_Fragment extends BaseFragment implements
             if (null != card) {
                 showToast(R.string.INFO_card_created);
                 addListItem(card);
+//                int position = cardsListAdapter.getPosition(card);
+//                int count = cardsListAdapter.getCount();
+//                int size = listView.getChildCount();
+//                listView.smoothScrollToPosition(position);
 
             } else {
                 showErrorMsg(R.string.CARDS_LIST_error_creating_card);
