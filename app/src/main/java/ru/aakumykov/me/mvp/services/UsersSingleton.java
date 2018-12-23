@@ -145,11 +145,24 @@ public class UsersSingleton implements iUsersSingleton {
     public void saveUser(final User user, final SaveCallbacks callbacks) {
         Map<String, Object> updatePool = new HashMap<>();
 
+        // Сохраняю (обновляю) собственно пользователя
         updatePool.put(Constants.USERS_PATH+"/"+user.getKey(), user);
 
-        for(Map.Entry entry : user.getCommentsKeys().entrySet()) {
-            updatePool.put(Constants.COMMENTS_PATH+"/"+entry.getKey()+"/"+"userName", user.getName());
-            updatePool.put(Constants.COMMENTS_PATH+"/"+entry.getKey()+"/"+"userAvatar", user.getAvatarURL());
+        // Обновляю имя в его карточках
+        Map<String,Boolean> userCards = user.getCardsKeys();
+        if (null != userCards) {
+            for (Map.Entry entry : userCards.entrySet()) {
+                updatePool.put(Constants.CARDS_PATH + "/" + entry.getKey() + "/userName", user.getName());
+            }
+        }
+
+        // Обновляю имя и аватар в его комментариях
+        Map<String,Boolean> userComments = user.getCommentsKeys();
+        if (null != userComments) {
+            for (Map.Entry entry : userComments.entrySet()) {
+                updatePool.put(Constants.COMMENTS_PATH + "/" + entry.getKey() + "/userName", user.getName());
+                updatePool.put(Constants.COMMENTS_PATH + "/" + entry.getKey() + "/userAvatar", user.getAvatarURL());
+            }
         }
 
         rootRef.updateChildren(updatePool)

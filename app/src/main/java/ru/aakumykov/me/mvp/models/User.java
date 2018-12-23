@@ -19,6 +19,7 @@ public class User implements Parcelable {
     private String about;
     private String avatarURL;
     private boolean emailVerified = false;
+    private HashMap<String, Boolean> cardsKeys;
     private HashMap<String, Boolean> commentsKeys;
 
     public User() {}
@@ -59,6 +60,7 @@ public class User implements Parcelable {
                 ", about: "+about+
                 ", avatarURL: "+avatarURL+
                 ", emailVerified: "+emailVerified+
+                ", cardsKeys: "+cardsKeys+
                 ", commentsKeys: "+commentsKeys+
                 " }";
     }
@@ -72,6 +74,7 @@ public class User implements Parcelable {
         map.put("about", about);
         map.put("avatarURL", avatarURL);
         map.put("emailVerified", emailVerified);
+        map.put("cardsKeys", cardsKeys);
         map.put("commentsKeys", commentsKeys);
         return map;
     }
@@ -104,6 +107,7 @@ public class User implements Parcelable {
         dest.writeString(about);
         dest.writeString(avatarURL);
         dest.writeString(String.valueOf(emailVerified));
+        dest.writeMap(this.cardsKeys);
         dest.writeMap(this.commentsKeys);
     }
 
@@ -115,6 +119,7 @@ public class User implements Parcelable {
         about = in.readString();
         avatarURL = in.readString();
         emailVerified = in.readString().equals("1");
+        cardsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
     }
     /* Parcelable */
@@ -167,6 +172,13 @@ public class User implements Parcelable {
     }
     public void setCommentsKeys(HashMap<String, Boolean> commentsKeys) {
         this.commentsKeys = commentsKeys;
+    }
+
+    public HashMap<String, Boolean> getCardsKeys() {
+        return cardsKeys;
+    }
+    public void setCardsKeys(HashMap<String, Boolean> cardsKeys) {
+        this.cardsKeys = cardsKeys;
     }
 
     @Exclude public boolean hasAvatar() {
