@@ -19,6 +19,7 @@ public class User implements Parcelable {
     private String about;
     private String avatarURL;
     private boolean emailVerified = false;
+    private HashMap<String, Boolean> commentsKeys;
 
     public User() {}
 
@@ -58,6 +59,7 @@ public class User implements Parcelable {
                 ", about: "+about+
                 ", avatarURL: "+avatarURL+
                 ", emailVerified: "+emailVerified+
+                ", commentsKeys: "+commentsKeys+
                 " }";
     }
 
@@ -70,6 +72,7 @@ public class User implements Parcelable {
         map.put("about", about);
         map.put("avatarURL", avatarURL);
         map.put("emailVerified", emailVerified);
+        map.put("commentsKeys", commentsKeys);
         return map;
     }
 
@@ -101,6 +104,7 @@ public class User implements Parcelable {
         dest.writeString(about);
         dest.writeString(avatarURL);
         dest.writeString(String.valueOf(emailVerified));
+        dest.writeMap(this.commentsKeys);
     }
 
     private User(Parcel in) {
@@ -111,6 +115,7 @@ public class User implements Parcelable {
         about = in.readString();
         avatarURL = in.readString();
         emailVerified = in.readString().equals("1");
+        commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
     }
     /* Parcelable */
 
@@ -157,8 +162,14 @@ public class User implements Parcelable {
         this.emailVerified = emailVerified;
     }
 
+    public HashMap<String, Boolean> getCommentsKeys() {
+        return commentsKeys;
+    }
+    public void setCommentsKeys(HashMap<String, Boolean> commentsKeys) {
+        this.commentsKeys = commentsKeys;
+    }
+
     @Exclude public boolean hasAvatar() {
         return !TextUtils.isEmpty(getAvatarURL());
     }
-
 }
