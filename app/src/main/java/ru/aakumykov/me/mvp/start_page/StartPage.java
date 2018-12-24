@@ -41,7 +41,7 @@ public class StartPage extends BaseView implements
     private TagsList_Fragment tagsListFragment;
     private FragmentManager fragmentManager;
     private StartPage_PagerAdapter startPagePagerAdapter;
-
+    private Spinner spinner;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -141,6 +141,7 @@ public class StartPage extends BaseView implements
     public void onPageSelected(int i) {
         TabLayout.Tab tab = tabLayout.getTabAt(i);
         if (null != tab) tab.select();
+        spinner.setSelection(i);
     }
 
     @Override
@@ -154,6 +155,7 @@ public class StartPage extends BaseView implements
     public void onTabSelected(TabLayout.Tab tab) {
         int position = tab.getPosition();
         viewPager.setCurrentItem(position);
+        spinner.setSelection(position);
     }
 
     @Override
@@ -178,8 +180,9 @@ public class StartPage extends BaseView implements
 
         MenuItem menuItem = menu.findItem(R.id.spinner);
         View view = menuItem.getActionView();
+
         if (view instanceof Spinner) {
-            Spinner spinner = (Spinner) menuItem.getActionView();
+            spinner = (Spinner) menuItem.getActionView();
             spinner.setAdapter(adapter);
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
