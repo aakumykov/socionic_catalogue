@@ -2,8 +2,10 @@ package ru.aakumykov.me.mvp.card;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -22,6 +24,7 @@ public interface iCardEdit {
         void displayTitle(String text);
         void displayQuote(String text);
         void displayImage(String imageURI, boolean unprocessedYet);
+        void displayImageBitmap(Bitmap bitmap);
         void displayVideo(String videoCode);
 //        void displayAudio(Uri dataURI);
 
@@ -31,7 +34,7 @@ public interface iCardEdit {
 
         HashMap<String,Boolean> getCardTags();
 
-        byte[] getImageData() throws Exception;
+        Bitmap getImageBitmap();
 
         void storeCardVideoCode(String videoCode);
         String getCardVideoCode();
@@ -58,7 +61,7 @@ public interface iCardEdit {
         void linkView(View view);
         void unlinkView();
 
-        void chooseStartVariant(@Nullable Intent intent);
+        void beginWork(@Nullable Intent intent);
 
         void processRecievedData(String mode, Intent intent) throws Exception;
         void processLinkToImage(@Nullable Intent intent) throws Exception;

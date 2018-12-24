@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.card;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -38,11 +39,26 @@ public class CardEdit_Presenter implements
     private Card currentCard = null;
     private HashMap<String,Boolean> oldTags = null;
     private HashMap<String,Boolean> newTags = null;
-
+    private String imageType;
 
     // Интерфейсные методы
     @Override
-    public void chooseStartVariant(@Nullable Intent intent) {
+    public void beginWork(@Nullable final Intent intent) {
+        authService.restoreCurrentUser(new iAuthSingleton.UserRestoreCallbacks() {
+            @Override
+            public void onUserRestoreSuccess() {
+                chooseStartVariant(intent);
+            }
+
+            @Override
+            public void onUserRestoreFail(String errorMsg) {
+                view.showErrorMsg(errorMsg);
+            }
+        });
+    }
+
+    private void chooseStartVariant(@Nullable Intent intent) {
+
         if (null == intent) {
             view.showErrorMsg(R.string.CARD_EDIT_error_no_input_data);
             return;
@@ -125,6 +141,8 @@ public class CardEdit_Presenter implements
         }
 
         currentCard.setImageURL("");
+        imageType = MyUtils.detectImageType(view.getApplicationContext(), textLinkToImage);
+        view.showToast(imageType);
         view.displayImage(textLinkToImage, true);
     }
 
@@ -137,18 +155,28 @@ public class CardEdit_Presenter implements
 
         // Первый способ получить содержимое
         Uri imageURI = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-        if (null == imageURI) {
 
+        if (null == imageURI) {
             // Второй способ получить содержимое
             imageURI = intent.getData();
+
             if (null == imageURI) {
                 throw new Exception("Where is no image data in intent");
             }
-            view.showLongToast("imageURI получен вторым способом: "+imageURI);
+//            view.showToast("imageURI получен ВТОРЫМ способом: "+imageURI);
+
+        } else {
+//            view.showToast("imageURI получен ПЕРВЫМ способом: "+imageURI);
         }
 
         currentCard.setImageURL("");
+        imageType = MyUtils.detectImageType(view.getApplicationContext(), imageURI);
+        view.showToast(imageType);
         view.displayImage(imageURI.toString(), true);
+
+//        String mimeType = view.detectMimeType(imageURI);
+//        Bitmap imageBitmap = BitmapReader.getThumbnail(view.getApplicationContext(), imageURI);
+//        view.displayImageBitmap(imageBitmap);
     }
 
     // TODO: как бы проверять полную корректность при сохранении?
@@ -186,13 +214,15 @@ public class CardEdit_Presenter implements
             if (TextUtils.isEmpty(currentCard.getImageURL())) {
                 // Здесь сохраняется изображение
 
-                String fileName = currentCard.getKey()+".jpg";
+                String fileName = currentCard.getKey()+"."+imageType;
                 view.showInfoMsg(R.string.CARD_EDIT_uploading_image);
                 view.showImageProgressBar();
                 view.disableForm();
 
+                Bitmap imageBitmap = view.getImageBitmap();
+
                 try {
-                    storageService.uploadImage(view.getImageData(), fileName, this);
+                    storageService.uploadImage(imageBitmap, imageType, fileName, this);
                     return;
 
                 } catch (Exception e) {
@@ -208,7 +238,7 @@ public class CardEdit_Presenter implements
 
         // Сохранение собственно карточки
         view.showInfoMsg(R.string.CARD_EDIT_saving_card);
-        cardsService.updateCard(currentCard, this);
+        cardsService.saveCard(currentCard, this);
     }
 
 
@@ -259,6 +289,14 @@ public class CardEdit_Presenter implements
     // --Загрузки карточки
     @Override
     public void onCardLoadSuccess(final Card card) {
+
+        if (!authService.isCardOwner(card)) {
+            // TODO: этого сообщения не видно на странице списка. Как бы его передавать?...
+            view.showErrorMsg(R.string.CARD_EDIT_you_cannot_edit_this_card);
+            view.closePage();
+            return;
+        }
+
         currentCard = card;
         oldTags = card.getTags();
 
@@ -343,14 +381,6 @@ public class CardEdit_Presenter implements
     }
 
     private void prepareCardEdition(Intent intent) {
-
-        Card card = intent.getParcelableExtra(Constants.CARD);
-        if (!card.getUserId().equals(authService.currentUserId())) {
-            // TODO: этого сообщения не видно на странице списка. Как бы его передавать?...
-            view.showErrorMsg(R.string.CARD_EDIT_you_cannot_edit_this_card);
-            view.closePage();
-            return;
-        }
 
         view.showProgressBar();
         view.setPageTitle(R.string.CARD_EDIT_card_edition_title);

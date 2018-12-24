@@ -3,6 +3,8 @@ package ru.aakumykov.me.mvp.card.edit;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -120,7 +122,7 @@ public class CardEdit_View extends BaseView implements
 
         if (firstRun) {
             firstRun = false;
-            presenter.chooseStartVariant(getIntent());
+            presenter.beginWork(getIntent());
         }
     }
 
@@ -297,6 +299,20 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
+    public void displayImageBitmap(Bitmap bitmap) {
+        imageView.setImageBitmap(bitmap);
+
+        hideModeSwitcher();
+        MyUtils.hide(imagePlaceholder);
+        MyUtils.hide(imageProgressBar);
+
+        MyUtils.show(mediaHolder);
+        MyUtils.show(imageHolder);
+        MyUtils.show(imageView);
+        MyUtils.show(discardImageButton);
+    }
+
+    @Override
     public void displayVideo(final String videoCode) {
         prepareVideoMode();
 
@@ -360,8 +376,9 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public byte[] getImageData() throws Exception {
-        return MVPUtils.imageView2Bitmap(imageView);
+    public Bitmap getImageBitmap() {
+        return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+
     }
 
     @Override

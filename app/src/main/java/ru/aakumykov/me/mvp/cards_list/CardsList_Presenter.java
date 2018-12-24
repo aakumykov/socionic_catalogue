@@ -61,18 +61,9 @@ public class CardsList_Presenter implements
     }
 
     @Override
-    public void deleteCardRequest(Card card) {
-        if (!card.getUserId().equals(authService.currentUserId())) {
-            view.showErrorMsg(R.string.CARDS_LIST_you_cannot_delete_this_card);
-            return;
-        }
+    public void deleteCard(final Card card) {
 
-        view.deleteCardQuestion();
-    }
-
-    @Override
-    public void deleteCardConfigmed(final Card card) {
-        if (!card.getUserId().equals(authService.currentUserId())) {
+        if (!authService.isCardOwner(card) && !authService.isAdmin()) {
             view.showErrorMsg(R.string.CARDS_LIST_you_cannot_delete_this_card);
             return;
         }

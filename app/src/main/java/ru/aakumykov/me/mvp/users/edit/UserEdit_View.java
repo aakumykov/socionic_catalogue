@@ -2,7 +2,9 @@ package ru.aakumykov.me.mvp.users.edit;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -200,8 +202,9 @@ public class UserEdit_View extends BaseView implements
     }
 
     @Override
-    public byte[] getImageData() throws Exception {
-        return MVPUtils.imageView2Bitmap(avatarView);
+    public Bitmap getImageBitmap() {
+        return ((BitmapDrawable) avatarView.getDrawable()).getBitmap();
+
     }
 
     @Override

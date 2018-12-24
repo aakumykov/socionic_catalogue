@@ -243,10 +243,21 @@ public class MVPUtils {
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
     }
 
-    public static byte[] imageView2Bitmap(ImageView imageView) throws Exception {
-        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+    public static byte[] compressImage(Bitmap bitmap, String imageType) {
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, Config.JPEG_QUALITY, baos);
+        Bitmap.CompressFormat compressFormat = Bitmap.CompressFormat.JPEG;
+
+        switch (imageType) {
+            case "png":
+                compressFormat = Bitmap.CompressFormat.PNG;
+                break;
+            case "webp":
+                // TODO: проверить
+                compressFormat = Bitmap.CompressFormat.WEBP;
+        }
+
+        bitmap.compress(compressFormat, Config.DEFAULT_JPEG_QUALITY, baos);
         return baos.toByteArray();
     }
 }

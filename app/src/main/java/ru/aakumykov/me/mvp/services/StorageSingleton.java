@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.services;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
@@ -13,6 +14,7 @@ import com.google.firebase.storage.UploadTask;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.interfaces.iStorageSingleton;
+import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
 
 public class StorageSingleton implements iStorageSingleton {
 
@@ -29,32 +31,34 @@ public class StorageSingleton implements iStorageSingleton {
 
     private final static String TAG = "StorageSingleton";
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+    private StorageReference rootRef = firebaseStorage.getReference().child("/");
     private StorageReference imagesRef = firebaseStorage.getReference().child(Constants.IMAGES_PATH);
     private StorageReference avatarsRef = firebaseStorage.getReference().child(Constants.AVATARS_PATH);
 
 
     // Интерфейсные методы
     @Override
-    public void uploadImage(Uri localImageURI, String remoteImagePath, final iStorageSingleton.FileUploadCallbacks callbacks) {
+    public void uploadImage(Bitmap imageBitmap, String imageType, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
 
-        final StorageReference theImageRef = imagesRef.child("/"+remoteImagePath);
-        UploadTask uploadTask = theImageRef.putFile(localImageURI);
-        doUpload(uploadTask, theImageRef, callbacks);
+        byte[] imageBytesArray = MVPUtils.compressImage(imageBitmap, imageType);
+
+        uploadFile(imageBytesArray, Constants.IMAGES_PATH, fileName, callbacks);
     }
+    
+//    @Override
+//    public void uploadImage(Uri localImageURI, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
+//        uploadFile(localImageURI, Constants.IMAGES_PATH, fileName, callbacks);
+//    }
+//
+//    @Override
+//    public void uploadImage(byte[] imageBytesArray, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
+//        uploadFile(imageBytesArray, Constants.IMAGES_PATH, fileName, callbacks);
+//    }
 
     @Override
-    public void uploadImage(byte[] imageByteArray, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
-
-        final StorageReference theImageRef = imagesRef.child("/"+fileName);
-        UploadTask uploadTask = theImageRef.putBytes(imageByteArray);
-        doUpload(uploadTask, theImageRef, callbacks);
-    }
-
-    @Override
-    public void uploadAvatar(byte[] imageByteArray, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
-        final StorageReference theImageRef = avatarsRef.child("/"+fileName);
-        UploadTask uploadTask = theImageRef.putBytes(imageByteArray);
-        doUpload(uploadTask, theImageRef, callbacks);
+    public void uploadAvatar(Bitmap imageBitmap, String imageType, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
+        byte[] imageBytesArray = MVPUtils.compressImage(imageBitmap, imageType);
+        uploadFile(imageBytesArray, Constants.AVATARS_PATH, fileName, callbacks);
     }
 
     @Override
@@ -80,6 +84,20 @@ public class StorageSingleton implements iStorageSingleton {
 
 
     // Внутренние методы
+    private void uploadFile(Uri fileURI, String remoteDirectoryName, String remoteFileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
+
+        final StorageReference fileRef = rootRef.child(remoteDirectoryName+"/"+remoteFileName);
+        UploadTask uploadTask = fileRef.putFile(fileURI);
+        doUpload(uploadTask, fileRef, callbacks);
+    }
+    
+    private void uploadFile(byte[] fileBytesArray, String remoteDirectoryName, String remoteFileName, iStorageSingleton.FileUploadCallbacks callbacks) {
+        
+        final StorageReference fileRef = rootRef.child(remoteDirectoryName+"/"+remoteFileName);
+        UploadTask uploadTask = fileRef.putBytes(fileBytesArray);
+        doUpload(uploadTask, fileRef, callbacks);
+    }
+    
     private void doUpload(final UploadTask uploadTask, final StorageReference storageReference, final iStorageSingleton.FileUploadCallbacks callbacks) {
         uploadTask
                 .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -126,10 +144,7 @@ public class StorageSingleton implements iStorageSingleton {
                     }
                 });
     }
-//    private void uploadFile(Uri localFileURI, String remoteFilePath, iStorageSingleton.FileUploadCallbacks callbacks) {
-//
-//    }
-
+    
     private void deleteFile(String remoteFilePath, iStorageSingleton.FileDeleteCallbacks callbacks) {
 
     }

@@ -17,8 +17,6 @@ public interface iCardsList {
         void displayList(List<Card> list);
         void displayTagFilter(String text);
 
-        void deleteCardQuestion();
-
         void addListItem(Card card);
         void updateListItem(int index, Card card);
         void removeListItem(Card card);
@@ -30,8 +28,7 @@ public interface iCardsList {
     interface Presenter {
 
         void loadList(@Nullable String tagFilter);
-        void deleteCardRequest(Card card);
-        void deleteCardConfigmed(final Card card);
+        void deleteCard(final Card card);
 
         // TODO: вынести в общий интерфейс
         void linkView(iCardsList.View view);

@@ -13,7 +13,7 @@ public interface iCardsSingleton {
     void updateCommentsCounter(String cardId, int diffValue);
 
     String createKey();
-    void updateCard(Card card, SaveCardCallbacks callbacks);
+    void saveCard(Card card, SaveCardCallbacks callbacks);
     void deleteCard(Card card, DeleteCallbacks callbacks);
 
     void rateUp(String cardId, String byUserId, RatingCallbacks callbacks);

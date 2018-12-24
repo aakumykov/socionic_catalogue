@@ -190,6 +190,10 @@ public class CommentsSingleton implements iCommentsSingleton {
                 "/commentsKeys/" + commentKey;
         updatePool.put(commentInsdeCardPath, true);
 
+        String commentInsideUserPath = Constants.USERS_PATH + "/" + commentDraft.getUserId() +
+                "/commentsKeys/" + commentKey;
+        updatePool.put(commentInsideUserPath, true);
+
         firebaseDatabase.getReference().child("/")
                 .updateChildren(updatePool)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

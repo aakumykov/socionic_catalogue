@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.users;
 
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ import ru.aakumykov.me.mvp.services.StorageSingleton;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
 import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.mvp.utils.MVPUtils.iMVPUtils;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class Users_Presenter implements
         iUsers.Presenter,
@@ -45,6 +47,7 @@ public class Users_Presenter implements
     private User currentUser;
     private String editedUserId;
     private boolean imageSelected = false;
+    private String imageType;
 
     // Системные методы
     @Override
@@ -147,14 +150,14 @@ public class Users_Presenter implements
 
         if (!currentUser.hasAvatar() && imageSelected) {
             try {
-                byte[] imageByteArray = editView.getImageData();
-                String fileName = authService.currentUserId() + ".jpg";
+                Bitmap imageBitmap = editView.getImageBitmap();
+                String fileName = authService.currentUserId() + "."+imageType;
 
                 editView.showAvatarThrobber();
                 editView.disableEditForm();
                 editView.showInfoMsg(R.string.USER_EDIT_saving_avatar);
 
-                storageService.uploadAvatar(imageByteArray, fileName, this);
+                storageService.uploadAvatar(imageBitmap, imageType, fileName, this);
 
             } catch (Exception e) {
                 onFileUploadFail(e.getMessage());
@@ -188,6 +191,7 @@ public class Users_Presenter implements
 
         setImageSelected(true);
         currentUser.setAvatarURL("");
+        imageType = MyUtils.detectImageType(editView.getApplicationContext(), imageURI);
         editView.displayAvatar(imageURI.toString(), true);
     }
 

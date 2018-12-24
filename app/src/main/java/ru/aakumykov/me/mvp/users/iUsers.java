@@ -3,6 +3,7 @@ package ru.aakumykov.me.mvp.users;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
@@ -35,7 +36,7 @@ public interface iUsers {
 
         String getName();
         String getAbout();
-        byte[] getImageData() throws Exception;
+        Bitmap getImageBitmap();
 
         void showAvatarThrobber();
         void hideAvatarThrobber();

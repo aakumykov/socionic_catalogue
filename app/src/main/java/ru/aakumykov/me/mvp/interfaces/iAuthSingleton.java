@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.interfaces;
 
+import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.models.User;
 
 public interface iAuthSingleton {
@@ -9,11 +10,14 @@ public interface iAuthSingleton {
     void logout();
     void cancelLogin(); // TODO: сделать при нажатии кнопки отмена, уходе со страницы
 
+    void restoreCurrentUser(UserRestoreCallbacks callbacks);
     User currentUser();
     String currentUserName();
     String currentUserId()/* throws Exception*/;
     boolean isUserLoggedIn();
+    boolean isAdmin();
     boolean userIsAdmin(String userId);
+    boolean isCardOwner(Card card);
 
     void storeCurrentUser(User user);
     void clearCurrentUser();
@@ -29,4 +33,8 @@ public interface iAuthSingleton {
         void onLoginFail(String errorMsg);
     }
 
+    interface UserRestoreCallbacks {
+        void onUserRestoreSuccess();
+        void onUserRestoreFail(String errorMsg);
+    }
 }
