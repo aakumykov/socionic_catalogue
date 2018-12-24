@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -168,7 +169,7 @@ public class StartPage extends BaseView implements
 
     // Внутренние методы
     private void setupSpinner(Menu menu) {
-        List<String> list = new ArrayList<>();
+        final List<String> list = new ArrayList<>();
         list.add("Карточки");
         list.add("Метки");
 
@@ -180,6 +181,24 @@ public class StartPage extends BaseView implements
         if (view instanceof Spinner) {
             Spinner spinner = (Spinner) menuItem.getActionView();
             spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    switch (position) {
+                        case 0:
+                            viewPager.setCurrentItem(position);
+                            break;
+                        case 1:
+                            viewPager.setCurrentItem(position);
+                            break;
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         }
     }
 }
