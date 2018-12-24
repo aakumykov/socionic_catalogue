@@ -224,4 +224,5 @@
     <string name="CARDS_LIST_you_cannot_delete_this_card">Вы не можете удалить эту карточку</string>
     <string name="CARD_SHOW_author">Автор: %s</string>
     <string name="CARDS_LIST_author">От %s</string>
+    <string name="MENU_spinner">Выпадающий список</string>
 </resources>
