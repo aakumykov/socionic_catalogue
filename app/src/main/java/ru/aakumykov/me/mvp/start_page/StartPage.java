@@ -6,12 +6,19 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,27 +41,6 @@ public class StartPage extends BaseView implements
     private FragmentManager fragmentManager;
     private StartPage_PagerAdapter startPagePagerAdapter;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.start_page_activity);
-        ButterKnife.bind(this);
-
-        cardsListFragment = new CardsList_Fragment();
-        tagsListFragment = new TagsList_Fragment();
-
-        // Заготовка для установки заголовка страницы. Но как её использовать?
-        HashMap<Integer,Fragment> fragmentsMap = new HashMap<>();
-        fragmentsMap.put(R.string.CARDS_LIST_page_title, cardsListFragment);
-        fragmentsMap.put(R.string.TAGS_LIST_page_title, tagsListFragment);
-
-        fragmentManager = getSupportFragmentManager();
-        startPagePagerAdapter = new StartPage_PagerAdapter(fragmentManager, fragmentsMap);
-        viewPager.setAdapter(startPagePagerAdapter);
-
-        viewPager.addOnPageChangeListener(this);
-        tabLayout.addOnTabSelectedListener(this);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -74,8 +60,39 @@ public class StartPage extends BaseView implements
         }
     }
 
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.start_page_activity);
+        ButterKnife.bind(this);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (null != actionBar)
+            actionBar.setDisplayShowTitleEnabled(false);
+
+        cardsListFragment = new CardsList_Fragment();
+        tagsListFragment = new TagsList_Fragment();
+
+        // Заготовка для установки заголовка страницы. Но как её использовать?
+        HashMap<Integer,Fragment> fragmentsMap = new HashMap<>();
+        fragmentsMap.put(R.string.CARDS_LIST_page_title, cardsListFragment);
+        fragmentsMap.put(R.string.TAGS_LIST_page_title, tagsListFragment);
+
+        fragmentManager = getSupportFragmentManager();
+        startPagePagerAdapter = new StartPage_PagerAdapter(fragmentManager, fragmentsMap);
+        viewPager.setAdapter(startPagePagerAdapter);
+
+        viewPager.addOnPageChangeListener(this);
+        tabLayout.addOnTabSelectedListener(this);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        // эта  строчка обязана предшествовать методу setupSpinner()
+        getMenuInflater().inflate(R.menu.spinner_menu, menu);
+        setupSpinner(menu);
 
         if (auth().isUserLoggedIn()) {
             MenuInflater menuInflater = getMenuInflater();
@@ -148,4 +165,21 @@ public class StartPage extends BaseView implements
 
     }
 
+
+    // Внутренние методы
+    private void setupSpinner(Menu menu) {
+        List<String> list = new ArrayList<>();
+        list.add("Карточки");
+        list.add("Метки");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        MenuItem menuItem = menu.findItem(R.id.spinner);
+        View view = menuItem.getActionView();
+        if (view instanceof Spinner) {
+            Spinner spinner = (Spinner) menuItem.getActionView();
+            spinner.setAdapter(adapter);
+        }
+    }
 }
