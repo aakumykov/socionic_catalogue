@@ -172,8 +172,8 @@ public class StartPage extends BaseView implements
         list.add("Карточки");
         list.add("Метки");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, list);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
 
         MenuItem menuItem = menu.findItem(R.id.spinner);
         View view = menuItem.getActionView();
