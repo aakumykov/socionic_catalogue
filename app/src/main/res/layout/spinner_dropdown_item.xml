@@ -11,4 +11,5 @@
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
     android:singleLine="true"
-    android:textColor="@color/colorPrimary" />
+    android:textColor="@color/colorPrimary"
+    android:textSize="18sp" />

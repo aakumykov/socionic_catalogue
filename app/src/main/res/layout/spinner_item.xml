@@ -7,4 +7,5 @@
     android:ellipsize="marquee"
     android:singleLine="true"
     android:textAlignment="inherit"
-    android:textColor="@color/white" />
+    android:textColor="@color/white"
+    android:textSize="18sp" />
