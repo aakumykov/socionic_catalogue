@@ -614,7 +614,7 @@ public class CardEdit_View extends BaseView implements
         hideModeSwitcher();
         MyUtils.show(mediaHolder);
         MyUtils.show(addVideoButton);
-        presenter.setCardType(Constants.VIDEO_CARD);
+        presenter.setCardType(Constants.VIDEO_CARD); // TODO: дубликат установки типа карточки
     }
 
     private void displayTextCard(Card card) {

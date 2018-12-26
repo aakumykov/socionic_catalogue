@@ -419,6 +419,7 @@ public class CardEdit_Presenter implements
             throw new IllegalArgumentException("Where is no video code in link '"+link+"");
         }
 
+        view.storeCardVideoCode(videoCode);
         view.displayVideo(videoCode);
     }
 
