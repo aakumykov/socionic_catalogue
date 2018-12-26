@@ -143,8 +143,8 @@ public class Card implements Parcelable {
         commentsCount = in.readInt();
         commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         rating = in.readInt();
-        in.readStringList(rateUpList);
-        in.readStringList(rateDownList);
+//        in.readStringList(rateUpList);
+//        in.readStringList(rateDownList);
     }
 
     @Override
