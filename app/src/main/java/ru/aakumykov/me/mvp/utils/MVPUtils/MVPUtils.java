@@ -45,6 +45,7 @@ public class MVPUtils {
         youtubePatterns.put("youtube1", "^https?://youtube\\.com/watch\\?v=([^=?&]+)");
         youtubePatterns.put("youtube2", "^https?://www\\.youtube\\.com/watch\\?v=([^=?&]+)");
         youtubePatterns.put("youtube3", "^https?://youtu.be/([^/]+)$");
+        youtubePatterns.put("youtube4", "^([\\w-]{11})$");
     }
 
     static {
@@ -107,11 +108,7 @@ public class MVPUtils {
     public static String extractYoutubeVideoCode(String link) {
         link = ""+link.trim();
 
-        Map<String,String> patternsMap = new HashMap<>();
-        patternsMap.put("simpleVideoCode", "^([\\w-]+)$");
-        patternsMap.putAll(youtubePatterns);
-
-        for (Map.Entry<String,String> entry : patternsMap.entrySet()) {
+        for (Map.Entry<String,String> entry : youtubePatterns.entrySet()) {
             Pattern p = Pattern.compile(entry.getValue());
             Matcher m = p.matcher(link);
             if (m.find()) return m.group(1);

@@ -502,8 +502,9 @@ public class CardEdit_View extends BaseView implements
         MyDialogs.addYoutubeVideoDialog(this, new iMyDialogs.StringInputCallback() {
             @Override
             public void onDialogWithStringYes(String text) {
-                storeCardVideoCode(text);
-                displayVideo(text);
+                String videoCode = MVPUtils.extractYoutubeVideoCode(text);
+                storeCardVideoCode(videoCode);
+                displayVideo(videoCode);
             }
         });
     }
