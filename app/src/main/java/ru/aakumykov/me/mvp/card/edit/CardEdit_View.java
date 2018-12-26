@@ -476,14 +476,8 @@ public class CardEdit_View extends BaseView implements
     }
 
     @OnClick(R.id.imageModeSwitch)
-    void switchImageMode() {
-        hideModeSwitcher();
-
-        MyUtils.show(mediaHolder);
-        MyUtils.show(imageHolder);
-        MyUtils.show(imagePlaceholder);
-
-        presenter.setCardType(Constants.IMAGE_CARD);
+    void onImageModeSwitch() {
+        switchImageMode(true);
     }
 
     @OnClick(R.id.audioModeSwitch)
@@ -611,6 +605,18 @@ public class CardEdit_View extends BaseView implements
 
 
     // Внутренние методы
+    private void switchImageMode(boolean startSelectingImage) {
+        hideModeSwitcher();
+
+        MyUtils.show(mediaHolder);
+        MyUtils.show(imageHolder);
+        MyUtils.show(imagePlaceholder);
+
+        presenter.setCardType(Constants.IMAGE_CARD);
+
+        if (startSelectingImage) selectImage();
+    }
+
     private void prepareVideoMode() {
         hideModeSwitcher();
         MyUtils.show(mediaHolder);
@@ -625,7 +631,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     private void displayImageCard(Card card) {
-        switchImageMode();
+        switchImageMode(false);
         displayCommonCardParts(card);
         displayImage(card.getImageURL(), false);
     }
