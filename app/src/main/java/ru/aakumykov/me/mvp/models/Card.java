@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.aakumykov.me.mvp.Constants;
 
@@ -30,10 +31,10 @@ public class Card implements Parcelable {
     private String description;
     private HashMap<String, Boolean> tags;
     private int commentsCount = 0;
-    private HashMap<String, Boolean> commentsKeys;
+    private HashMap<String, Boolean> commentsKeys = new HashMap<>();
     private Integer rating = 0;
-    private List<String> rateUpList = new ArrayList<>();
-    private List<String> rateDownList = new ArrayList<>();
+    private HashMap<String, Boolean> rateUpList = new HashMap<>();
+    private HashMap<String, Boolean> rateDownList = new HashMap<>();
 
     public Card() {
 
@@ -124,8 +125,8 @@ public class Card implements Parcelable {
         dest.writeInt(this.commentsCount);
         dest.writeMap(this.commentsKeys);
         dest.writeInt(this.rating);
-        dest.writeList(this.rateUpList);
-        dest.writeList(this.rateDownList);
+        dest.writeMap(this.rateUpList);
+        dest.writeMap(this.rateDownList);
     }
 
     protected Card(Parcel in) {
@@ -143,8 +144,8 @@ public class Card implements Parcelable {
         commentsCount = in.readInt();
         commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         rating = in.readInt();
-        in.readStringList(rateUpList);
-        in.readStringList(rateDownList);
+        rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+        rateDownList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
     }
 
     @Override
@@ -203,10 +204,12 @@ public class Card implements Parcelable {
         else return rating;
     }
     public List<String> getRateUpList() {
-        return rateUpList;
+        List<String> list = new ArrayList(rateUpList.keySet());
+        return list;
     }
     public List<String> getRateDownList() {
-        return rateDownList;
+        List<String> list = new ArrayList(rateDownList.keySet());
+        return list;
     }
 
 
@@ -260,10 +263,16 @@ public class Card implements Parcelable {
     // Этот метод не публичный
     private void setRating(int ratingValue) { this.rating = ratingValue; }
     public void setRateUpList(List<String> rateUpList) {
-        this.rateUpList = rateUpList;
+        Map<String,Boolean> map = new HashMap<>();
+        for (int i=0; i<rateUpList.size(); i++)
+            map.put(rateUpList.get(i), true);
+        this.rateUpList.putAll(map);
     }
     public void setRateDownList(List<String> rateDownList) {
-        this.rateDownList = rateDownList;
+        Map<String,Boolean> map = new HashMap<>();
+        for (int i=0; i<rateDownList.size(); i++)
+            map.put(rateDownList.get(i), true);
+        this.rateDownList.putAll(map);
     }
 
     // Служебные
@@ -291,15 +300,15 @@ public class Card implements Parcelable {
     }
 
     @Exclude public void rateUp(String userId) {
-        if (!rateUpList.contains(userId)) {
-            rateUpList.add(userId);
+        if (!rateUpList.containsKey(userId)) {
+            rateUpList.put(userId, true);
             setRating(rating+1);
         }
         rateDownList.remove(userId);
     }
     @Exclude public void rateDown(String userId) {
-        if (!rateDownList.contains(userId)) {
-            rateDownList.add(userId);
+        if (!rateDownList.containsKey(userId)) {
+            rateDownList.put(userId, true);
             setRating(rating-1);
         }
         rateUpList.remove(userId);
