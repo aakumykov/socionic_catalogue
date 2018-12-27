@@ -32,11 +32,13 @@ import ru.aakumykov.me.mvp.tags.list.TagsList_Fragment;
 
 public class StartPage extends BaseView implements
         ViewPager.OnPageChangeListener,
-        TabLayout.OnTabSelectedListener
+        TabLayout.OnTabSelectedListener,
+        iPageSwitcher
 {
     @BindView(R.id.viewPager) ViewPager viewPager;
     @BindView(R.id.tabLayout) TabLayout tabLayout;
 
+    private HashMap<Integer,Fragment> fragmentsMap;
     private CardsList_Fragment cardsListFragment;
     private TagsList_Fragment tagsListFragment;
     private FragmentManager fragmentManager;
@@ -61,7 +63,6 @@ public class StartPage extends BaseView implements
         }
     }
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +77,7 @@ public class StartPage extends BaseView implements
         tagsListFragment = new TagsList_Fragment();
 
         // Заготовка для установки заголовка страницы. Но как её использовать?
-        HashMap<Integer,Fragment> fragmentsMap = new HashMap<>();
+        fragmentsMap = new HashMap<>();
         fragmentsMap.put(R.string.CARDS_LIST_page_title, cardsListFragment);
         fragmentsMap.put(R.string.TAGS_LIST_page_title, tagsListFragment);
 
@@ -128,6 +129,20 @@ public class StartPage extends BaseView implements
     @Override
     public void onUserLogout() {
 
+    }
+
+
+    // Методы iPageSwitcher
+    @Override
+    public void showCardsList(@Nullable String tagFilter) {
+        viewPager.setCurrentItem(0);
+        CardsList_Fragment cardsListFragment = (CardsList_Fragment) fragmentsMap.get(R.string.CARDS_LIST_page_title);
+        cardsListFragment.showCardsWithTag(tagFilter);
+    }
+
+    @Override
+    public void showTagsList() {
+        viewPager.setCurrentItem(1);
     }
 
 

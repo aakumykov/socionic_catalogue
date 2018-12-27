@@ -31,4 +31,5 @@ public class StartPage_PagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return fragmentsMap.size();
     }
+
 }

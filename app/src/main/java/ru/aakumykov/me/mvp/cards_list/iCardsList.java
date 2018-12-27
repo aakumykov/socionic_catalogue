@@ -14,8 +14,11 @@ import ru.aakumykov.me.mvp.models.Card;
 public interface iCardsList {
 
     interface View extends iBaseView {
+
         void displayList(List<Card> list);
         void displayTagFilter(String text);
+
+        void showCardsWithTag(String tagName);
 
         void addListItem(Card card);
         void updateListItem(int index, Card card);

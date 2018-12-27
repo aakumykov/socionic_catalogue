@@ -175,11 +175,11 @@ public class CardsSingleton implements
 
 
     @Override
-    public void loadList(@Nullable String tagFilter, final ListCallbacks callbacks) {
-        Log.d(TAG, "loadList(tagFilter: "+ tagFilter +", ...)");
+    public void loadList(@Nullable String tagName, final ListCallbacks callbacks) {
+        Log.d(TAG, "loadList(tagName: "+ tagName +", ...)");
 
-        Query query = (null != tagFilter)
-            ? cardsRef.orderByChild("tags/"+tagFilter).equalTo(true)
+        Query query = (null != tagName)
+            ? cardsRef.orderByChild("tags/"+tagName).equalTo(true)
             : cardsRef.orderByKey();
 
         // TODO: а где уходить в оффлайн?
