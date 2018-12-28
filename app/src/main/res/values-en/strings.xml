@@ -220,4 +220,6 @@
     <string name="CARD_SHOW_author">Author: %s</string>
     <string name="CARDS_LIST_author">By %s</string>
     <string name="MENU_spinner">Dropdown list</string>
+    <string name="MENU_cards">Cards</string>
+    <string name="MENU_tags">Tags</string>
 </resources>

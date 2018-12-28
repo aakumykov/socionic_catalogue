@@ -225,4 +225,6 @@
     <string name="CARD_SHOW_author">Автор: %s</string>
     <string name="CARDS_LIST_author">От %s</string>
     <string name="MENU_spinner">Выпадающий список</string>
+    <string name="MENU_cards">Карточки</string>
+    <string name="MENU_tags">Метки</string>
 </resources>

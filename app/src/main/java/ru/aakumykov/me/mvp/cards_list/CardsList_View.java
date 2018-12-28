@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -101,34 +102,16 @@ public class CardsList_View extends BaseView implements
         presenter.unlinkView();
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//
-//        if (isUserLoggedIn()) {
-//            MenuInflater menuInflater = getMenuInflater();
-//            menuInflater.inflate(R.menu.create_card, menu);
-//            menuInflater.inflate(R.menu.refresh, menu);
-//        }
-//
-//        super.onCreateOptionsMenu(menu);
-//
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//
-//            case R.id.actionRefresh:
-//                loadList(true);
-//                break;
-//
-//            default:
-//                super.onOptionsItemSelected(item);
-//        }
-//
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.tags, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onRefresh() {

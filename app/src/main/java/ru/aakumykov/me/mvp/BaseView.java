@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
-import ru.aakumykov.me.mvp.card_edit2.CardEdit2_View;
+import ru.aakumykov.me.mvp.cards_list.CardsList_View;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
@@ -25,6 +25,7 @@ import ru.aakumykov.me.mvp.login.Login_View;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.AuthStateListener;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
+import ru.aakumykov.me.mvp.tags.list.TagsList_View;
 import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
@@ -113,6 +114,14 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
             case R.id.actionCreate:
                 createCard();
+                break;
+
+            case R.id.actionCards:
+                goCardsList();
+                break;
+
+            case R.id.actionTags:
+                goTagsList();
                 break;
 
             default:
@@ -352,5 +361,15 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 Log.d(TAG, "data: "+data);
                 break;
         }
+    }
+
+    private void goCardsList() {
+        Intent intent = new Intent(this, CardsList_View.class);
+        startActivity(intent);
+    }
+
+    private void goTagsList() {
+        Intent intent = new Intent(this, TagsList_View.class);
+        startActivity(intent);
     }
 }
