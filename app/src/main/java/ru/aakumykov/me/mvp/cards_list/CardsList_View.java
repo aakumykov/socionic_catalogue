@@ -61,7 +61,14 @@ public class CardsList_View extends BaseView implements
         ButterKnife.bind(this);
 
         setTitle(R.string.CARDS_LIST_page_title);
-//        activateUpButton();
+
+        Intent intent = getIntent();
+        if (null != intent) {
+            this.tagFilter = intent.getStringExtra(Constants.TAG_FILTER);
+            if (null != this.tagFilter) {
+                activateUpButton();
+            }
+        }
         
         swiperefreshLayout.setOnRefreshListener(this);
         swiperefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
@@ -162,12 +169,6 @@ public class CardsList_View extends BaseView implements
         MyUtils.show(filterView);
 
         activateUpButton();
-    }
-
-    @Override
-    public void showCardsWithTag(String tagName) {
-        this.tagFilter = tagName;
-        loadList(true);
     }
 
     @Override

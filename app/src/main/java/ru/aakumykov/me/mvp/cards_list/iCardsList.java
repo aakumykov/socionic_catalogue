@@ -18,8 +18,6 @@ public interface iCardsList {
         void displayList(List<Card> list);
         void displayTagFilter(String text);
 
-        void showCardsWithTag(String tagName);
-
         void addListItem(Card card);
         void updateListItem(int index, Card card);
         void removeListItem(Card card);
