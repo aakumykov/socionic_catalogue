@@ -49,10 +49,11 @@ public class CardsList_Fragment extends BaseFragment implements
     @BindView(R.id.filterName) TextView filterName;
     @BindView(R.id.listView) ListView listView;
 
-    private final static String TAG = "CardsList_Fragment";
+    public final static String TAG = "CardsList_Fragment";
     private iCardsList.Presenter presenter;
     private Card currentCard;
     private boolean firstRun = true;
+    private String tagFilter;
 
     private List<Card> cardsList;
     private CardsListAdapter cardsListAdapter;
@@ -174,6 +175,12 @@ public class CardsList_Fragment extends BaseFragment implements
         MyUtils.show(filterView);
 
         activateUpButton();
+    }
+
+    @Override
+    public void showCardsWithTag(String tagName) {
+        this.tagFilter = tagName;
+        loadList(true);
     }
 
     @Override
@@ -311,15 +318,8 @@ public class CardsList_Fragment extends BaseFragment implements
     }
 
     private void loadList(boolean showProgressBar) {
-        String tagFilter = null;
-
-        try {
-            tagFilter = getActivity().getIntent().getStringExtra(Constants.TAG_FILTER);
-        } catch (Exception e) {
-            hideProgressBar();
-        }
-
-        if (showProgressBar) showProgressBar();
+        if (showProgressBar)
+            showProgressBar();
         presenter.loadList(tagFilter);
     }
 

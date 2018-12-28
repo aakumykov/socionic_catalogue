@@ -1,5 +1,6 @@
 package ru.aakumykov.me.mvp.tags.list;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +23,8 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Tag;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
+import ru.aakumykov.me.mvp.start_page.StartPage;
+import ru.aakumykov.me.mvp.start_page.iPageSwitcher;
 import ru.aakumykov.me.mvp.tags.Tags_Presenter;
 import ru.aakumykov.me.mvp.tags.iTags;
 import ru.aakumykov.me.mvp.tags.show.TagShow_View;
@@ -34,17 +37,37 @@ public class TagsList_Fragment extends BaseFragment implements
     private final static String TAG = "TagsList_Fragment";
 
     @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
+    @BindView(R.id.listView) ListView listView;
 
     private iTagsSingleton tagsService = TagsSingleton.getInstance();
     private List<Tag> tagsList = new ArrayList<>();
     private TagsListAdapter tagsListAdapter;
-    @BindView(R.id.listView) ListView listView;
 
     private iTags.Presenter presenter;
     private boolean firstRun = true;
 
+    private iPageSwitcher pageSwitcher;
+
 
     // Системные методы
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof iPageSwitcher) {
+            pageSwitcher = (iPageSwitcher) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement iPageSwitcher");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        pageSwitcher = null;
+    }
+
+
     @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -85,7 +108,8 @@ public class TagsList_Fragment extends BaseFragment implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Tag tag = tagsList.get(position);
-        goShowPage(tag.getKey());
+//        goShowPage(tag.getKey());
+        listCardsWithTag(tag.getName());
     }
 
     @Override
@@ -127,4 +151,9 @@ public class TagsList_Fragment extends BaseFragment implements
 
     }
 
+
+    // Внутренние методы
+    private void listCardsWithTag(String tagName) {
+        pageSwitcher.showCardsList(tagName);
+    }
 }
