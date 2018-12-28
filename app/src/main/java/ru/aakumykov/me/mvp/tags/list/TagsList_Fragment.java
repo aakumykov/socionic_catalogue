@@ -23,8 +23,6 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Tag;
 import ru.aakumykov.me.mvp.services.TagsSingleton;
-import ru.aakumykov.me.mvp.start_page.StartPage;
-import ru.aakumykov.me.mvp.start_page.iPageSwitcher;
 import ru.aakumykov.me.mvp.tags.Tags_Presenter;
 import ru.aakumykov.me.mvp.tags.iTags;
 import ru.aakumykov.me.mvp.tags.show.TagShow_View;
@@ -46,25 +44,16 @@ public class TagsList_Fragment extends BaseFragment implements
     private iTags.Presenter presenter;
     private boolean firstRun = true;
 
-    private iPageSwitcher pageSwitcher;
-
 
     // Системные методы
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof iPageSwitcher) {
-            pageSwitcher = (iPageSwitcher) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement iPageSwitcher");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        pageSwitcher = null;
     }
 
 
@@ -154,6 +143,5 @@ public class TagsList_Fragment extends BaseFragment implements
 
     // Внутренние методы
     private void listCardsWithTag(String tagName) {
-        pageSwitcher.showCardsList(tagName);
     }
 }
