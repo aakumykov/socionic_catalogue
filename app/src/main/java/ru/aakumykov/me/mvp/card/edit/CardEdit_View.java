@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -54,6 +55,7 @@ import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.mvp.utils.MVPUtils.iMVPUtils;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
+import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 @RuntimePermissions
 public class CardEdit_View extends BaseView implements
@@ -525,14 +527,39 @@ public class CardEdit_View extends BaseView implements
 
     @OnClick(R.id.saveButton)
     void save() {
-        // TODO: показывать причину ошибки сохранения
-        try {
-            presenter.saveCard();
-        } catch (Exception e) {
-            enableForm();
-            hideProgressBar();
-            showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
-            e.printStackTrace();
+
+        final String tag = newTagInput.getText().toString();
+
+        if (!TextUtils.isEmpty(tag)) {
+            MyDialogs.forgottenTagDialog(
+                    this,
+                    getString(R.string.CARD_EDIT_forgotten_tag_dialog_message, tag),
+                    new iMyDialogs.StandardCallbacks() {
+                        @Override
+                        public void onCancelInDialog() {
+
+                        }
+
+                        @Override
+                        public void onNoInDialog() {
+                            saveCardReal();
+                        }
+
+                        @Override
+                        public boolean onCheckInDialog() {
+                            return true;
+                        }
+
+                        @Override
+                        public void onYesInDialog() {
+                            presenter.processTagInput(tag, new iCardEdit.TagProcessCallbacks() {
+                                @Override
+                                public void onTagProcessed() {
+                                    saveCardReal();
+                                }
+                            });
+                        }
+                    });
         }
     }
 
@@ -677,6 +704,18 @@ public class CardEdit_View extends BaseView implements
         };
 
         newTagInput.addTextChangedListener(textWatcher);
+    }
+
+    private void saveCardReal() {
+        // TODO: показывать причину ошибки сохранения...
+        try {
+            presenter.saveCard();
+        } catch (Exception e) {
+            enableForm();
+            hideProgressBar();
+            showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 

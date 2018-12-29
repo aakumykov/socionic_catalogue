@@ -264,6 +264,12 @@ public class CardEdit_Presenter implements
         }
     }
 
+    @Override
+    public void processTagInput(String tag, iCardEdit.TagProcessCallbacks callbacks) {
+        processTagInput(tag);
+        callbacks.onTagProcessed();
+    }
+
 
     // Обязательные методы
     @Override

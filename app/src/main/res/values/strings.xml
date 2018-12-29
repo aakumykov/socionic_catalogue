@@ -228,4 +228,6 @@
     <string name="MENU_cards">Карточки</string>
     <string name="MENU_tags">Метки</string>
     <string name="MENU_profile">Профиль</string>
+    <string name="CARD_EDIT_forgotten_tag_dialog_title">Забытая метка</string>
+    <string name="CARD_EDIT_forgotten_tag_dialog_message">Добавить метку «%1$s»?</string>
 </resources>

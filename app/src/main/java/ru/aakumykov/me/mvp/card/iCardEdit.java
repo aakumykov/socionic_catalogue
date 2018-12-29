@@ -15,6 +15,10 @@ import ru.aakumykov.me.mvp.models.Card;
 
 public interface iCardEdit {
 
+    interface TagProcessCallbacks {
+        void onTagProcessed();
+    }
+
     interface View extends iBaseView {
         void displayCard(Card card);
 
@@ -70,6 +74,7 @@ public interface iCardEdit {
         void processIncomingImage(@Nullable Intent intent) throws Exception;
 
         void processTagInput(String tag);
+        void processTagInput(String tag, TagProcessCallbacks callbacks);
 
         void setCardType(String cardType);
         void saveCard() throws Exception;

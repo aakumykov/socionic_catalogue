@@ -223,4 +223,6 @@
     <string name="MENU_cards">Cards</string>
     <string name="MENU_tags">Tags</string>
     <string name="MENU_profile">Profile</string>
+    <string name="CARD_EDIT_forgotten_tag_dialog_title">Forgotten tag</string>
+    <string name="CARD_EDIT_forgotten_tag_dialog_message">Add tag «%1$s»?</string>
 </resources>
