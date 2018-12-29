@@ -177,6 +177,24 @@ public class MyDialogs {
 
     }
 
+    // Диалог вопроса о недобавленной метке
+    public static void forgottenTagDialog(Activity activity, String message, iMyDialogs.StandardCallbacks callbacks) {
+        String title = activity.getString(R.string.CARD_EDIT_forgotten_tag_dialog_title);
+
+        basicDialog(
+                activity,
+                null,
+                message,
+                R.string.yes,
+                R.string.no,
+                null,
+                null,
+                null,
+                callbacks
+        ).show();
+    }
+
+
 
     // Внутренние методы
     private static AlertDialog basicDialog(
