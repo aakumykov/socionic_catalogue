@@ -489,7 +489,7 @@ public class CardEdit_View extends BaseView implements
 
     @OnClick(R.id.audioModeSwitch)
     void switchAudioMode() {
-
+        showToast(R.string.INFO_not_implemented_yet);
     }
 
     @OnClick(R.id.videoModeSwitch)
