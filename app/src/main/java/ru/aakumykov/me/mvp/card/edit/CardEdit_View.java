@@ -560,6 +560,8 @@ public class CardEdit_View extends BaseView implements
                             });
                         }
                     });
+        } else {
+            saveCardReal();
         }
     }
 
