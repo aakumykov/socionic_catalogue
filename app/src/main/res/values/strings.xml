@@ -227,4 +227,5 @@
     <string name="MENU_spinner">Выпадающий список</string>
     <string name="MENU_cards">Карточки</string>
     <string name="MENU_tags">Метки</string>
+    <string name="MENU_profile">Профиль</string>
 </resources>

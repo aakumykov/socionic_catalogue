@@ -222,4 +222,5 @@
     <string name="MENU_spinner">Dropdown list</string>
     <string name="MENU_cards">Cards</string>
     <string name="MENU_tags">Tags</string>
+    <string name="MENU_profile">Profile</string>
 </resources>

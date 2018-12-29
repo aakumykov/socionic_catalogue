@@ -81,10 +81,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         MenuInflater menuInflater = getMenuInflater();
 
         if (auth().isUserLoggedIn()) {
-            menuInflater.inflate(R.menu.user_in, menu);
+            menuInflater.inflate(R.menu.profile, menu);
             menuInflater.inflate(R.menu.logout, menu);
         } else {
-            menuInflater.inflate(R.menu.user_out, menu);
+//            menuInflater.inflate(R.menu.user_out, menu);
             menuInflater.inflate(R.menu.login, menu);
         }
 
@@ -100,7 +100,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 this.finish();
                 break;
 
-            case R.id.actionUserProfile:
+            case R.id.actionProfile:
                 seeUserProfile();
                 break;
 
