@@ -96,6 +96,7 @@ public class TagsList_View extends BaseView implements
     // Интерфейсные методы
     @Override
     public void displayTags(List<Tag> list) {
+        tagsList.clear();
         tagsList.addAll(list);
         tagsListAdapter.notifyDataSetChanged();
     }
