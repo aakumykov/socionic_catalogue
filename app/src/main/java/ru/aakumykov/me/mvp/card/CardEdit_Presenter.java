@@ -241,8 +241,6 @@ public class CardEdit_Presenter implements
         cardsService.saveCard(currentCard, this);
     }
 
-
-
     @Override
     public void setCardType(String cardType) {
         String[] availableCardTypes = {
@@ -259,17 +257,11 @@ public class CardEdit_Presenter implements
     }
 
     @Override
-    public String processNewTag(String tagName) {
-
-//        if (!TextUtils.isEmpty(tagName)) {
-            tagName = MVPUtils.normalizeTag(tagName);
-            return tagName;
-//            if (!view.getCardTags().containsKey(tagName)) {
-//                return tagName;
-//            }
-//        }
-//
-//        return null;
+    public void processTagInput(String tag) {
+        tag = MVPUtils.normalizeTag(tag);
+        if (null != tag) {
+            view.addTag(tag);
+        }
     }
 
 

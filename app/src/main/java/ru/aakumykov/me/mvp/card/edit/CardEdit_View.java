@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -113,6 +115,8 @@ public class CardEdit_View extends BaseView implements
         tagsContainer.setOnTagClickListener(this);
 
         presenter = new CardEdit_Presenter();
+
+        setTagWatcher();
     }
 
     @Override
@@ -382,6 +386,11 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
+    public void addTag(String tag) {
+        tagsContainer.addTag(tag);
+    }
+
+    @Override
     public void storeCardVideoCode(String videoCode) {
         videoCodeView.setText(videoCode);
     }
@@ -434,10 +443,6 @@ public class CardEdit_View extends BaseView implements
 
         MyUtils.hide(imageProgressBar);
     }
-
-
-
-
 
     @Override
     public void goCardShow(Card card) {
@@ -570,19 +575,8 @@ public class CardEdit_View extends BaseView implements
 
     @OnClick(R.id.addTagButton)
     public void addTag() {
-        String newTag = newTagInput.getText().toString();
-        newTag = presenter.processNewTag(newTag);
-
-        // TODO: отображать ошибку или молча исправлять её?
-
-        /* Не добавлять пустую и дублирующую метку - очевидная логика,
-         * поэтому обрабатывается здесь, а не в презентере. */
-        if (null != newTag) {
-            if (!getCardTags().containsKey(newTag)) {
-                tagsContainer.addTag(newTag);
-            }
-        }
-
+        String text = newTagInput.getText().toString();
+        presenter.processTagInput(text);
         newTagInput.setText("");
         newTagInput.requestFocus();
     }
@@ -656,6 +650,35 @@ public class CardEdit_View extends BaseView implements
             tagsContainer.setEnableCross(true);
         }
     }
+
+    private void setTagWatcher() {
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String text = s.toString();
+                int commaIndex = text.toString().indexOf(",");
+                if (commaIndex > -1) {
+                    String tag = text.substring(0, commaIndex);
+                    presenter.processTagInput(tag);
+
+                    String restText = text.substring(commaIndex+1, text.length());
+                    newTagInput.setText(restText);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        };
+
+        newTagInput.addTextChangedListener(textWatcher);
+    }
+
 
     // Другие
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)

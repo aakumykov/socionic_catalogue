@@ -36,6 +36,8 @@ public interface iCardEdit {
 
         Bitmap getImageBitmap();
 
+        void addTag(String tag);
+
         void storeCardVideoCode(String videoCode);
         String getCardVideoCode();
 
@@ -67,7 +69,7 @@ public interface iCardEdit {
         void processLinkToImage(@Nullable Intent intent) throws Exception;
         void processIncomingImage(@Nullable Intent intent) throws Exception;
 
-        String processNewTag(String tagName);
+        void processTagInput(String tag);
 
         void setCardType(String cardType);
         void saveCard() throws Exception;
