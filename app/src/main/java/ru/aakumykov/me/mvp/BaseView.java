@@ -339,7 +339,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 showToast(R.string.INFO_card_created);
                 break;
             case RESULT_CANCELED:
-                showInfoMsg(R.string.INFO_operation_cancelled);
+                showToast(R.string.INFO_operation_cancelled);
                 break;
             default:
                 showErrorMsg(R.string.ERROR_creating_card);
@@ -351,10 +351,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void onCardEdited(int resultCode, @Nullable Intent data) {
         switch (resultCode) {
             case RESULT_OK:
-                showInfoMsg(R.string.INFO_card_saved);
+                showToast(R.string.INFO_card_saved);
                 break;
             case RESULT_CANCELED:
-                showInfoMsg(R.string.INFO_operation_cancelled);
+                showToast(R.string.INFO_operation_cancelled);
                 break;
             default:
                 showErrorMsg(R.string.ERROR_saving_card);
