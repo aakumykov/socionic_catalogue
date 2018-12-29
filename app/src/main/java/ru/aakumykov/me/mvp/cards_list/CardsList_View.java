@@ -8,6 +8,7 @@ import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -104,7 +105,11 @@ public class CardsList_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.tags, menu);
+        MenuInflater menuInflater = getMenuInflater();
+
+        menuInflater.inflate(R.menu.create_card, menu);
+        menuInflater.inflate(R.menu.tags, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
