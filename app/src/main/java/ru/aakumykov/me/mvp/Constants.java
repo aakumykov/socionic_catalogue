@@ -44,7 +44,7 @@ public final class Constants {
     public final static int CODE_FORCE_SETUP_USER_NAME = 40;
 
     public final static int TAG_MIN_LENGTH = 2;
-    public final static int TAG_MAX_LENGTH = 20;
+    public final static int TAG_MAX_LENGTH = 40;
     public final static int TITLE_MAX_LENGTH = 70;
     public final static int DIALOG_MESSAGE_LENGTH = 40;
 
