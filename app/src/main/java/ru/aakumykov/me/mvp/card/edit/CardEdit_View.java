@@ -49,7 +49,9 @@ import ru.aakumykov.me.mvp.card.CardEdit_Presenter;
 import ru.aakumykov.me.mvp.card.iCardEdit;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
+import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.models.Tag;
 import ru.aakumykov.me.mvp.utils.MVPUtils.FileInfo;
 import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.mvp.utils.MVPUtils.iMVPUtils;
@@ -101,6 +103,7 @@ public class CardEdit_View extends BaseView implements
     private final static String TAG = "CardEdit_View";
     private iCardEdit.Presenter presenter;
     private boolean firstRun = true;
+    private List<String> tagsList = new ArrayList<>();
 
 
     // Системные методы
@@ -128,7 +131,20 @@ public class CardEdit_View extends BaseView implements
 
         if (firstRun) {
             firstRun = false;
+
             presenter.beginWork(getIntent());
+
+            presenter.loadTagsList(new iCardEdit.TagsListCallbacks() {
+                @Override
+                public void onTagsListSuccess(List<String> list) {
+                    tagsList.addAll(list);
+                }
+
+                @Override
+                public void onTagsListFail(String errorMsg) {
+                    showErrorMsg(R.string.CARD_EDIT_error_loading_tags_list, errorMsg);
+                }
+            });
         }
     }
 
@@ -610,7 +626,8 @@ public class CardEdit_View extends BaseView implements
         newTagInput.requestFocus();
     }
 
-    // меток
+
+    // Методы нажатий меток
     @Override
     public void onTagClick(int position, String text) {
 

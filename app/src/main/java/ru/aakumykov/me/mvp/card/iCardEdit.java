@@ -9,8 +9,10 @@ import android.widget.ImageView;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 
 import ru.aakumykov.me.mvp.iBaseView;
+import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
 
 public interface iCardEdit {
@@ -18,6 +20,12 @@ public interface iCardEdit {
     interface TagProcessCallbacks {
         void onTagProcessed();
     }
+
+    interface TagsListCallbacks {
+        void onTagsListSuccess(List<String> list);
+        void onTagsListFail(String errorMsg);
+    }
+
 
     interface View extends iBaseView {
         void displayCard(Card card);
@@ -72,6 +80,8 @@ public interface iCardEdit {
         void processRecievedData(String mode, Intent intent) throws Exception;
         void processLinkToImage(@Nullable Intent intent) throws Exception;
         void processIncomingImage(@Nullable Intent intent) throws Exception;
+
+        void loadTagsList(TagsListCallbacks callbacks);
 
         void processTagInput(String tag);
         void processTagInput(String tag, TagProcessCallbacks callbacks);

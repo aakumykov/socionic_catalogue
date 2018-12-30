@@ -45,7 +45,7 @@ public interface iTagsSingleton {
     }
 
     interface ListCallbacks {
-        void onTagsListSuccess(List<Tag> list);
+        void onTagsListSuccess(List<Tag> tagsList);
         void onTagsListFail(String errorMsg);
     }
 }
