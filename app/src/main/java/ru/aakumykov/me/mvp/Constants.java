@@ -47,6 +47,7 @@ public final class Constants {
     public final static int TAG_MAX_LENGTH = 40;
     public final static int TITLE_MAX_LENGTH = 70;
     public final static int DIALOG_MESSAGE_LENGTH = 40;
+    public final static String TAG_NUMBER_BRACE = "*";
 
     public final static String MODE_SEND = "MODE_SEND";
     public final static String MODE_SELECT = "MODE_SELECT";

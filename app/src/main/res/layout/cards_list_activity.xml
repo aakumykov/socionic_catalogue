@@ -26,6 +26,7 @@
         android:id="@+id/messageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
         android:gravity="center_horizontal"
         android:textSize="18sp"
         android:visibility="gone"
@@ -33,7 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/filterView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,20 +49,33 @@
             android:id="@+id/filterName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingStart="10dp"
             android:paddingTop="6dp"
+            android:paddingEnd="30dp"
             android:paddingBottom="6dp"
+            android:text="метка-хуетка"
+            android:textAlignment="center"
             android:textColor="@color/tag_filter"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/filterCloser"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="6dp"
-            android:layout_marginLeft="6dp"
             android:contentDescription="@string/CARDS_LIST_tag_filter_close_button"
+            app:layout_constraintBottom_toBottomOf="@+id/filterName"
+            app:layout_constraintEnd_toEndOf="@+id/filterName"
+            app:layout_constraintTop_toTopOf="@+id/filterName"
             app:srcCompat="@drawable/ic_cards_list_filter_closer" />
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swiperefresh"

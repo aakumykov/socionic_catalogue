@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.PopupMenu;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -43,7 +45,7 @@ public class CardsList_View extends BaseView implements
         PopupMenu.OnMenuItemClickListener
 {
     @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
-    @BindView(R.id.filterView) LinearLayout filterView;
+    @BindView(R.id.filterView) ConstraintLayout filterView;
     @BindView(R.id.filterCloser) ImageView filterCloser;
     @BindView(R.id.filterName) TextView filterName;
     @BindView(R.id.listView) ListView listView;
