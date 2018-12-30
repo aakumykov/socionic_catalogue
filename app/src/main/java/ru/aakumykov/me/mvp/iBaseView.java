@@ -31,5 +31,6 @@ public interface iBaseView {
     void setPageTitle(String title);
     void activateUpButton();
 
+    void goCreateCard();
     void closePage();
 }

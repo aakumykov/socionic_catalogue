@@ -22,7 +22,6 @@ import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.login.Login_View;
-import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.AuthStateListener;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
@@ -114,7 +113,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 break;
 
             case R.id.actionCreate:
-                createCard();
+                goCreateCard();
                 break;
 
             case R.id.actionCards:
@@ -268,6 +267,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     // Разное
     @Override
+    public void goCreateCard() {
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.setAction(Constants.ACTION_CREATE);
+        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+    }
+
+    @Override
     public void closePage() {
         Log.d(TAG, "closePage()");
         finish();
@@ -321,13 +327,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             showErrorMsg(e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    private void createCard() {
-        Intent intent = new Intent(this, CardEdit_View.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        intent.setAction(Constants.ACTION_CREATE);
-        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
     }
 
     private void onCardEdited(int resultCode, @Nullable Intent data) {

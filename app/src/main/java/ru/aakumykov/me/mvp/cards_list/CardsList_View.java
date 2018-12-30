@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
@@ -46,6 +47,7 @@ public class CardsList_View extends BaseView implements
     @BindView(R.id.filterCloser) ImageView filterCloser;
     @BindView(R.id.filterName) TextView filterName;
     @BindView(R.id.listView) ListView listView;
+    @BindView(R.id.floatingActionButton) FloatingActionButton floatingActionButton;
 
     public final static String TAG = "CardsList_Fragment";
     private iCardsList.Presenter presenter;
@@ -109,7 +111,7 @@ public class CardsList_View extends BaseView implements
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
 
-        menuInflater.inflate(R.menu.create_card, menu);
+//        menuInflater.inflate(R.menu.create_card, menu);
         menuInflater.inflate(R.menu.tags, menu);
 
         return super.onCreateOptionsMenu(menu);
@@ -198,6 +200,11 @@ public class CardsList_View extends BaseView implements
         MyUtils.hide(filterView);
         this.tagFilter = null;
         presenter.loadList(null);
+    }
+
+    @OnClick(R.id.floatingActionButton)
+    void addCard() {
+        goCreateCard();
     }
 
     // Нажатия в списке
