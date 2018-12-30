@@ -17,7 +17,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,19 +50,15 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.CardEdit_Presenter;
 import ru.aakumykov.me.mvp.card.TagAutocompleteAdapter;
-import ru.aakumykov.me.mvp.card.TagAutocompleteAdapter2;
 import ru.aakumykov.me.mvp.card.iCardEdit;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
-import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
-import ru.aakumykov.me.mvp.models.Tag;
 import ru.aakumykov.me.mvp.utils.MVPUtils.FileInfo;
 import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.mvp.utils.MVPUtils.iMVPUtils;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
-import ru.aakumykov.me.mvp.utils.YesNoDialog;
 
 @RuntimePermissions
 public class CardEdit_View extends BaseView implements
@@ -736,19 +733,20 @@ public class CardEdit_View extends BaseView implements
     private void setTagAutocomplete() {
         autoCompleteTextView.setThreshold(1);
 
-//        tagAutocompleteAdapter = new TagAutocompleteAdapter(
-//                this,
-//                R.layout.tag_autocomplete_item,
-//                tagsList
-//        );
-//        autoCompleteTextView.setAdapter(tagAutocompleteAdapter);
-
-        TagAutocompleteAdapter2 tagAutocompleteAdapter2 = new TagAutocompleteAdapter2(
+        tagAutocompleteAdapter = new TagAutocompleteAdapter(
                 this,
                 R.layout.tag_autocomplete_item,
                 tagsList
         );
-        autoCompleteTextView.setAdapter(tagAutocompleteAdapter2);
+
+        autoCompleteTextView.setAdapter(tagAutocompleteAdapter);
+
+//        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//            }
+//        });
     }
 
     private void saveCardReal() {
