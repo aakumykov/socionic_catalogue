@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -46,6 +48,8 @@ import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.CardEdit_Presenter;
+import ru.aakumykov.me.mvp.card.TagAutocompleteAdapter;
+import ru.aakumykov.me.mvp.card.TagAutocompleteAdapter2;
 import ru.aakumykov.me.mvp.card.iCardEdit;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
@@ -64,6 +68,7 @@ public class CardEdit_View extends BaseView implements
     iCardEdit.View,
     TagView.OnTagClickListener
 {
+    @BindView(R.id.autoCompleteTextView) AutoCompleteTextView autoCompleteTextView;
     @BindView(R.id.titleView) EditText titleView;
 
     @BindView(R.id.modeSwitcher) LinearLayout modeSwitcher;
@@ -103,7 +108,9 @@ public class CardEdit_View extends BaseView implements
     private final static String TAG = "CardEdit_View";
     private iCardEdit.Presenter presenter;
     private boolean firstRun = true;
+
     private List<String> tagsList = new ArrayList<>();
+    private TagAutocompleteAdapter tagAutocompleteAdapter;
 
 
     // Системные методы
@@ -138,6 +145,7 @@ public class CardEdit_View extends BaseView implements
                 @Override
                 public void onTagsListSuccess(List<String> list) {
                     tagsList.addAll(list);
+                    setTagAutocomplete();
                 }
 
                 @Override
@@ -723,6 +731,24 @@ public class CardEdit_View extends BaseView implements
         };
 
         newTagInput.addTextChangedListener(textWatcher);
+    }
+
+    private void setTagAutocomplete() {
+        autoCompleteTextView.setThreshold(1);
+
+//        tagAutocompleteAdapter = new TagAutocompleteAdapter(
+//                this,
+//                R.layout.tag_autocomplete_item,
+//                tagsList
+//        );
+//        autoCompleteTextView.setAdapter(tagAutocompleteAdapter);
+
+        TagAutocompleteAdapter2 tagAutocompleteAdapter2 = new TagAutocompleteAdapter2(
+                this,
+                R.layout.tag_autocomplete_item,
+                tagsList
+        );
+        autoCompleteTextView.setAdapter(tagAutocompleteAdapter2);
     }
 
     private void saveCardReal() {
