@@ -48,13 +48,15 @@
             android:id="@+id/filterName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
             android:textColor="@color/tag_filter"
             android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/filterCloser"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="6dp"
             android:layout_marginLeft="6dp"
             android:contentDescription="@string/CARDS_LIST_tag_filter_close_button"
