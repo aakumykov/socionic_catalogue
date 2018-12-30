@@ -15,11 +15,11 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="height" value="320" />
-                            <entry key="outputName" value="ic_cards2" />
+                            <entry key="height" value="380" />
+                            <entry key="outputName" value="ic_card3" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="$USER_HOME$/Загрузки/id-card.svg" />
-                            <entry key="width" value="500" />
+                            <entry key="sourceFile" value="$USER_HOME$/Загрузки/icons/id-card.svg" />
+                            <entry key="width" value="530" />
                           </map>
                         </option>
                       </PersistentState>
