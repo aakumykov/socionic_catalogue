@@ -65,7 +65,6 @@ public class CardEdit_View extends BaseView implements
     iCardEdit.View,
     TagView.OnTagClickListener
 {
-    @BindView(R.id.autoCompleteTextView) AutoCompleteTextView autoCompleteTextView;
     @BindView(R.id.titleView) EditText titleView;
 
     @BindView(R.id.modeSwitcher) LinearLayout modeSwitcher;
@@ -93,7 +92,7 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.descriptionView) EditText descriptionView;
 
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
-    @BindView(R.id.newTagInput) EditText newTagInput;
+    @BindView(R.id.newTagInput) AutoCompleteTextView newTagInput;
     @BindView(R.id.addTagButton) Button addTagButton;
 
     @BindView(R.id.saveButton) Button saveButton;
@@ -716,7 +715,6 @@ public class CardEdit_View extends BaseView implements
                 if (commaIndex > -1) {
                     String tag = text.substring(0, commaIndex);
                     presenter.processTagInput(tag);
-
                     String restText = text.substring(commaIndex+1, text.length());
                     newTagInput.setText(restText);
                 }
@@ -731,7 +729,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     private void setTagAutocomplete() {
-        autoCompleteTextView.setThreshold(1);
+        newTagInput.setThreshold(1);
 
         tagAutocompleteAdapter = new TagAutocompleteAdapter(
                 this,
@@ -739,14 +737,16 @@ public class CardEdit_View extends BaseView implements
                 tagsList
         );
 
-        autoCompleteTextView.setAdapter(tagAutocompleteAdapter);
+        newTagInput.setAdapter(tagAutocompleteAdapter);
 
-//        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//            }
-//        });
+        newTagInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                addTag(tagsList.get(position));
+                newTagInput.setText("");
+//                newTagInput.requestFocus();
+            }
+        });
     }
 
     private void saveCardReal() {
