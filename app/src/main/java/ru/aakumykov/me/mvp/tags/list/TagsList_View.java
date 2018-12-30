@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -71,7 +72,11 @@ public class TagsList_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.cards, menu);
+        MenuInflater menuInflater = getMenuInflater();
+
+        menuInflater.inflate(R.menu.create_card, menu);
+        menuInflater.inflate(R.menu.cards, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
