@@ -3,6 +3,7 @@ package ru.aakumykov.me.mvp.cards_list;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
@@ -57,6 +58,7 @@ public class CardsList_View extends BaseView implements
 
 
     // Системные методы
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cards_list_activity);
@@ -124,6 +126,18 @@ public class CardsList_View extends BaseView implements
         loadList(false);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        switch (requestCode) {
+
+            case Constants.CODE_CREATE_CARD:
+                onCardCreated(resultCode, data);
+                break;
+
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
     // Обязательные методы
     @Override
@@ -335,5 +349,28 @@ public class CardsList_View extends BaseView implements
         }
     }
 
-    
+    private void onCardCreated(int resultCode, @Nullable Intent data) {
+
+        switch (resultCode) {
+            case RESULT_OK:
+                showToast(R.string.INFO_card_created);
+                if (null != data) {
+                    Card card = data.getParcelableExtra(Constants.CARD);
+                    if (null != card) {
+                        cardsList.add(card);
+                        cardsListAdapter.notifyDataSetChanged();
+                    }
+                }
+                break;
+
+            case RESULT_CANCELED:
+                showToast(R.string.INFO_operation_cancelled);
+                break;
+
+            default:
+                showErrorMsg(R.string.ERROR_creating_card);
+                Log.d(TAG, "data: "+data);
+                break;
+        }
+    }
 }

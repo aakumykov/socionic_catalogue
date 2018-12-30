@@ -43,7 +43,7 @@ public class TagsList_View extends BaseView implements
         setContentView(R.layout.tags_list);
         ButterKnife.bind(this);
 
-        setPageTitle(R.string.TAGS_LIST_tags_list);
+        setPageTitle(R.string.TAGS_LIST_page_title);
 
         swiperefreshLayout.setOnRefreshListener(this);
         swiperefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);

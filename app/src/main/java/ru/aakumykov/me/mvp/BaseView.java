@@ -22,6 +22,7 @@ import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.login.Login_View;
+import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.AuthStateListener;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
@@ -138,10 +139,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         switch (requestCode) {
 
             case Constants.CODE_LOGIN:
-                break;
-
-            case Constants.CODE_CREATE_CARD:
-                onCardCreated(resultCode, data);
                 break;
 
             case Constants.CODE_EDIT_CARD:
@@ -333,21 +330,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
     }
 
-    private void onCardCreated(int resultCode, @Nullable Intent data) {
-        switch (resultCode) {
-            case RESULT_OK:
-                showToast(R.string.INFO_card_created);
-                break;
-            case RESULT_CANCELED:
-                showToast(R.string.INFO_operation_cancelled);
-                break;
-            default:
-                showErrorMsg(R.string.ERROR_creating_card);
-                Log.d(TAG, "data: "+data);
-                break;
-        }
-    }
-
     private void onCardEdited(int resultCode, @Nullable Intent data) {
         switch (resultCode) {
             case RESULT_OK:
@@ -372,4 +354,5 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         Intent intent = new Intent(this, TagsList_View.class);
         startActivity(intent);
     }
+
 }
