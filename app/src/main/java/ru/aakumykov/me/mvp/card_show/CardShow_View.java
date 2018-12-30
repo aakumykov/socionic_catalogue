@@ -593,8 +593,7 @@ public class CardShow_View extends BaseView implements
     // Меток методы
     @Override
     public void onTagClick(int position, String text) {
-        Log.d(TAG, "onTagClick("+position+", "+text+")");
-        presenter.onTagClicked(text);
+        goList(text);
     }
 
     @Override
@@ -626,7 +625,6 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public void goList(@Nullable String tagFilter) {
-//        Intent intent = new Intent(this, CardsList_View.class);
         Intent intent = new Intent(this, CardsList_View.class);
         if (null != tagFilter)
             intent.putExtra(Constants.TAG_FILTER, tagFilter);

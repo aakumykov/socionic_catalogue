@@ -7,11 +7,14 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -31,6 +34,7 @@ public class MVPUtils {
     private static Map<String,String> youtubePatterns = new HashMap<>();
     private static Map<String,String> imagePatterns = new HashMap<>();
     private static List<String> correctCardTypes = new ArrayList<>();
+    private static final List<String> upperCaseTags = new ArrayList<>();
 
     static {
         correctCardTypes.add(Constants.TEXT_CARD);
@@ -54,6 +58,17 @@ public class MVPUtils {
         imagePatterns.put("png", prefix +"\\.png$");
         imagePatterns.put("gif", prefix +"\\.gif$");
         imagePatterns.put("bmp", prefix +"\\.bmp$");
+    }
+
+    static {
+        upperCaseTags.add("БЛ");
+        upperCaseTags.add("ЧИ");
+        upperCaseTags.add("БЭ");
+        upperCaseTags.add("ЧС");
+        upperCaseTags.add("ЧЭ");
+        upperCaseTags.add("БС");
+        upperCaseTags.add("ЧЛ");
+        upperCaseTags.add("БИ");
     }
 
     private MVPUtils(){}
@@ -117,27 +132,29 @@ public class MVPUtils {
         return null;
     }
 
-    public static String normalizeTag(String tagName) {
+    public static String normalizeTag(String tag) {
 
-        // обрезаю черезмерно длинные
-//        if (tagName.length() > Constants.TAG_MAX_LENGTH) {
-//            tagName = tagName.substring(
-//                    0,
-//                    Math.min(tagName.length(),Constants.TAG_MAX_LENGTH)
-//            );
-//        }
-        tagName = MyUtils.cutToLength(tagName, Constants.TAG_MAX_LENGTH);
+        // удаляю концевые пробелы
+        tag = tag.trim();
+        if (TextUtils.isEmpty(tag))
+            return null;
 
-        // отпинываю слишком короткия
-        if (tagName.length() < Constants.TAG_MIN_LENGTH) {
+        // отклоняю слишком короткие
+        if (tag.length() < Constants.TAG_MIN_LENGTH) {
             return null;
         }
 
-        // перевожу в нижний регистр
-        tagName = tagName.toLowerCase();
+        // укорачиваю черезмерно длинные
+        tag = MyUtils.cutToLength(tag, Constants.TAG_MAX_LENGTH);
 
-        // удаляю концевые пробелы
-        tagName = tagName.replaceAll("^\\s+|\\s+$", "");
+        // перевожу в нижний регистр
+        if (!upperCaseTags.contains(tag)) {
+            tag = tag.toLowerCase();
+        }
+
+        // ещё раз удаляю концевые пробелы
+//        tag = tag.replaceAll("^\\s+|\\s+$", "");
+        tag = tag.trim();
 
         // удаляю концевые запрещённые символы (пока не работает с [], а может, и чем-то ещё)
 //        tagName = tagName.replace("^/+|/+$", "");
@@ -148,17 +165,17 @@ public class MVPUtils {
 //        tagName = tagName.replace("^\\]*|\\]*[m$", "");
 
         // заменяю внутренние запрещённые символы
-        tagName = tagName.replace("/", "_");
-        tagName = tagName.replace(".", "_");
-        tagName = tagName.replace("#", "_");
-        tagName = tagName.replace("$", "_");
-        tagName = tagName.replace("[", "_");
-        tagName = tagName.replace("]", "_");
+        tag = tag.replace("/", "_");
+        tag = tag.replace(".", "_");
+        tag = tag.replace("#", "_");
+        tag = tag.replace("$", "_");
+        tag = tag.replace("[", "_");
+        tag = tag.replace("]", "_");
 
         // преобразую число в строку
-        if (tagName.matches("^[0-9]+$")) tagName = "_"+tagName+"_";
+        if (tag.matches("^\\d+$")) tag = Constants.TAG_NUMBER_BRACE+tag+Constants.TAG_NUMBER_BRACE;
 
-        return tagName;
+        return tag;
     }
 
     public static boolean isCorrectCardType(String cardType) {

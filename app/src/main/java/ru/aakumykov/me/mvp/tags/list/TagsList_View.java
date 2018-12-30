@@ -3,6 +3,9 @@ package ru.aakumykov.me.mvp.tags.list;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -41,7 +44,7 @@ public class TagsList_View extends BaseView implements
         setContentView(R.layout.tags_list);
         ButterKnife.bind(this);
 
-        setPageTitle(R.string.TAGS_LIST_tags_list);
+        setPageTitle(R.string.TAGS_LIST_page_title);
 
         swiperefreshLayout.setOnRefreshListener(this);
         swiperefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
@@ -68,6 +71,21 @@ public class TagsList_View extends BaseView implements
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+
+//        menuInflater.inflate(R.menu.create_card, menu);
+        menuInflater.inflate(R.menu.cards, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Tag tag = tagsList.get(position);
         presenter.onTagClicked(tag);
@@ -83,6 +101,7 @@ public class TagsList_View extends BaseView implements
     // Интерфейсные методы
     @Override
     public void displayTags(List<Tag> list) {
+        tagsList.clear();
         tagsList.addAll(list);
         tagsListAdapter.notifyDataSetChanged();
     }

@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
-import ru.aakumykov.me.mvp.card_edit2.CardEdit2_View;
+import ru.aakumykov.me.mvp.cards_list.CardsList_View;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iAuthStateListener;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
@@ -25,6 +25,7 @@ import ru.aakumykov.me.mvp.login.Login_View;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.AuthStateListener;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
+import ru.aakumykov.me.mvp.tags.list.TagsList_View;
 import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
@@ -80,10 +81,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         MenuInflater menuInflater = getMenuInflater();
 
         if (auth().isUserLoggedIn()) {
-            menuInflater.inflate(R.menu.user_in, menu);
+            menuInflater.inflate(R.menu.profile, menu);
             menuInflater.inflate(R.menu.logout, menu);
         } else {
-            menuInflater.inflate(R.menu.user_out, menu);
+//            menuInflater.inflate(R.menu.user_out, menu);
             menuInflater.inflate(R.menu.login, menu);
         }
 
@@ -99,7 +100,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 this.finish();
                 break;
 
-            case R.id.actionUserProfile:
+            case R.id.actionProfile:
                 seeUserProfile();
                 break;
 
@@ -112,7 +113,15 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 break;
 
             case R.id.actionCreate:
-                createCard();
+                goCreateCard();
+                break;
+
+            case R.id.actionCards:
+                goCardsList();
+                break;
+
+            case R.id.actionTags:
+                goTagsList();
                 break;
 
             default:
@@ -129,10 +138,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         switch (requestCode) {
 
             case Constants.CODE_LOGIN:
-                break;
-
-            case Constants.CODE_CREATE_CARD:
-                onCardCreated(resultCode, data);
                 break;
 
             case Constants.CODE_EDIT_CARD:
@@ -262,6 +267,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     // Разное
     @Override
+    public void goCreateCard() {
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.setAction(Constants.ACTION_CREATE);
+        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+    }
+
+    @Override
     public void closePage() {
         Log.d(TAG, "closePage()");
         finish();
@@ -317,35 +329,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         }
     }
 
-    private void createCard() {
-        Intent intent = new Intent(this, CardEdit_View.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        intent.setAction(Constants.ACTION_CREATE);
-        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
-    }
-
-    private void onCardCreated(int resultCode, @Nullable Intent data) {
-        switch (resultCode) {
-            case RESULT_OK:
-                showToast(R.string.INFO_card_created);
-                break;
-            case RESULT_CANCELED:
-                showInfoMsg(R.string.INFO_operation_cancelled);
-                break;
-            default:
-                showErrorMsg(R.string.ERROR_creating_card);
-                Log.d(TAG, "data: "+data);
-                break;
-        }
-    }
-
     private void onCardEdited(int resultCode, @Nullable Intent data) {
         switch (resultCode) {
             case RESULT_OK:
-                showInfoMsg(R.string.INFO_card_saved);
+                showToast(R.string.INFO_card_saved);
                 break;
             case RESULT_CANCELED:
-                showInfoMsg(R.string.INFO_operation_cancelled);
+                showToast(R.string.INFO_operation_cancelled);
                 break;
             default:
                 showErrorMsg(R.string.ERROR_saving_card);
@@ -353,4 +343,15 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 break;
         }
     }
+
+    private void goCardsList() {
+        Intent intent = new Intent(this, CardsList_View.class);
+        startActivity(intent);
+    }
+
+    private void goTagsList() {
+        Intent intent = new Intent(this, TagsList_View.class);
+        startActivity(intent);
+    }
+
 }

@@ -220,4 +220,11 @@
     <string name="CARD_SHOW_author">Author: %s</string>
     <string name="CARDS_LIST_author">By %s</string>
     <string name="MENU_spinner">Dropdown list</string>
+    <string name="MENU_cards">Cards</string>
+    <string name="MENU_tags">Tags</string>
+    <string name="MENU_profile">Profile</string>
+    <string name="CARD_EDIT_forgotten_tag_dialog_title">Forgotten tag</string>
+    <string name="CARD_EDIT_forgotten_tag_dialog_message">Add tag «%1$s»?</string>
+    <string name="INFO_not_implemented_yet">Not implemented yet</string>
+    <string name="CARD_EDIT_error_loading_tags_list">Error loading tags list</string>
 </resources>

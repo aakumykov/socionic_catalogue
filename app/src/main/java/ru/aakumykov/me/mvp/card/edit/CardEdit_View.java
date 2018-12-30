@@ -10,10 +10,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -43,6 +49,7 @@ import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.CardEdit_Presenter;
+import ru.aakumykov.me.mvp.card.TagAutocompleteAdapter;
 import ru.aakumykov.me.mvp.card.iCardEdit;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
@@ -85,7 +92,7 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.descriptionView) EditText descriptionView;
 
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
-    @BindView(R.id.newTagInput) EditText newTagInput;
+    @BindView(R.id.newTagInput) AutoCompleteTextView newTagInput;
     @BindView(R.id.addTagButton) Button addTagButton;
 
     @BindView(R.id.saveButton) Button saveButton;
@@ -97,6 +104,9 @@ public class CardEdit_View extends BaseView implements
     private final static String TAG = "CardEdit_View";
     private iCardEdit.Presenter presenter;
     private boolean firstRun = true;
+
+    private List<String> tagsList = new ArrayList<>();
+    private TagAutocompleteAdapter tagAutocompleteAdapter;
 
 
     // Системные методы
@@ -113,6 +123,8 @@ public class CardEdit_View extends BaseView implements
         tagsContainer.setOnTagClickListener(this);
 
         presenter = new CardEdit_Presenter();
+
+        setTagWatcher();
     }
 
     @Override
@@ -122,7 +134,21 @@ public class CardEdit_View extends BaseView implements
 
         if (firstRun) {
             firstRun = false;
+
             presenter.beginWork(getIntent());
+
+            presenter.loadTagsList(new iCardEdit.TagsListCallbacks() {
+                @Override
+                public void onTagsListSuccess(List<String> list) {
+                    tagsList.addAll(list);
+                    setTagAutocomplete();
+                }
+
+                @Override
+                public void onTagsListFail(String errorMsg) {
+                    showErrorMsg(R.string.CARD_EDIT_error_loading_tags_list, errorMsg);
+                }
+            });
         }
     }
 
@@ -382,6 +408,11 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
+    public void addTag(String tag) {
+        tagsContainer.addTag(tag);
+    }
+
+    @Override
     public void storeCardVideoCode(String videoCode) {
         videoCodeView.setText(videoCode);
     }
@@ -435,10 +466,6 @@ public class CardEdit_View extends BaseView implements
         MyUtils.hide(imageProgressBar);
     }
 
-
-
-
-
     @Override
     public void goCardShow(Card card) {
         Intent intent = new Intent(this, CardShow_View.class);
@@ -482,7 +509,7 @@ public class CardEdit_View extends BaseView implements
 
     @OnClick(R.id.audioModeSwitch)
     void switchAudioMode() {
-
+        showToast(R.string.INFO_not_implemented_yet);
     }
 
     @OnClick(R.id.videoModeSwitch)
@@ -520,14 +547,41 @@ public class CardEdit_View extends BaseView implements
 
     @OnClick(R.id.saveButton)
     void save() {
-        // TODO: показывать причину ошибки сохранения
-        try {
-            presenter.saveCard();
-        } catch (Exception e) {
-            enableForm();
-            hideProgressBar();
-            showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
-            e.printStackTrace();
+
+        final String tag = newTagInput.getText().toString();
+
+        if (!TextUtils.isEmpty(tag)) {
+            MyDialogs.forgottenTagDialog(
+                    this,
+                    getString(R.string.CARD_EDIT_forgotten_tag_dialog_message, tag),
+                    new iMyDialogs.StandardCallbacks() {
+                        @Override
+                        public void onCancelInDialog() {
+
+                        }
+
+                        @Override
+                        public void onNoInDialog() {
+                            saveCardReal();
+                        }
+
+                        @Override
+                        public boolean onCheckInDialog() {
+                            return true;
+                        }
+
+                        @Override
+                        public void onYesInDialog() {
+                            presenter.processTagInput(tag, new iCardEdit.TagProcessCallbacks() {
+                                @Override
+                                public void onTagProcessed() {
+                                    saveCardReal();
+                                }
+                            });
+                        }
+                    });
+        } else {
+            saveCardReal();
         }
     }
 
@@ -570,24 +624,14 @@ public class CardEdit_View extends BaseView implements
 
     @OnClick(R.id.addTagButton)
     public void addTag() {
-        String newTag = newTagInput.getText().toString();
-        newTag = presenter.processNewTag(newTag);
-
-        // TODO: отображать ошибку или молча исправлять её?
-
-        /* Не добавлять пустую и дублирующую метку - очевидная логика,
-         * поэтому обрабатывается здесь, а не в презентере. */
-        if (null != newTag) {
-            if (!getCardTags().containsKey(newTag)) {
-                tagsContainer.addTag(newTag);
-            }
-        }
-
+        String text = newTagInput.getText().toString();
+        presenter.processTagInput(text);
         newTagInput.setText("");
         newTagInput.requestFocus();
     }
 
-    // меток
+
+    // Методы нажатий меток
     @Override
     public void onTagClick(int position, String text) {
 
@@ -656,6 +700,67 @@ public class CardEdit_View extends BaseView implements
             tagsContainer.setEnableCross(true);
         }
     }
+
+    private void setTagWatcher() {
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String text = s.toString();
+                int commaIndex = text.toString().indexOf(",");
+                if (commaIndex > -1) {
+                    String tag = text.substring(0, commaIndex);
+                    presenter.processTagInput(tag);
+                    String restText = text.substring(commaIndex+1, text.length());
+                    newTagInput.setText(restText);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        };
+
+        newTagInput.addTextChangedListener(textWatcher);
+    }
+
+    private void setTagAutocomplete() {
+        newTagInput.setThreshold(1);
+
+        tagAutocompleteAdapter = new TagAutocompleteAdapter(
+                this,
+                R.layout.tag_autocomplete_item,
+                tagsList
+        );
+
+        newTagInput.setAdapter(tagAutocompleteAdapter);
+
+        newTagInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                addTag(tagsList.get(position));
+                newTagInput.setText("");
+//                newTagInput.requestFocus();
+            }
+        });
+    }
+
+    private void saveCardReal() {
+        // TODO: показывать причину ошибки сохранения...
+        try {
+            presenter.saveCard();
+        } catch (Exception e) {
+            enableForm();
+            hideProgressBar();
+            showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 
     // Другие
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)

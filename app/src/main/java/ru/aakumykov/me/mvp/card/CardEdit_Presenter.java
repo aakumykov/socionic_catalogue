@@ -6,8 +6,10 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
@@ -16,6 +18,7 @@ import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.interfaces.iStorageSingleton;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
+import ru.aakumykov.me.mvp.models.Tag;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
 import ru.aakumykov.me.mvp.services.StorageSingleton;
@@ -241,8 +244,6 @@ public class CardEdit_Presenter implements
         cardsService.saveCard(currentCard, this);
     }
 
-
-
     @Override
     public void setCardType(String cardType) {
         String[] availableCardTypes = {
@@ -259,17 +260,38 @@ public class CardEdit_Presenter implements
     }
 
     @Override
-    public String processNewTag(String tagName) {
+    public void loadTagsList(final iCardEdit.TagsListCallbacks callbacks) {
+        tagsService.listTags(new iTagsSingleton.ListCallbacks() {
 
-//        if (!TextUtils.isEmpty(tagName)) {
-            tagName = MVPUtils.normalizeTag(tagName);
-            return tagName;
-//            if (!view.getCardTags().containsKey(tagName)) {
-//                return tagName;
-//            }
-//        }
-//
-//        return null;
+            @Override
+            public void onTagsListSuccess(List<Tag> tagsList) {
+                List<String> list = new ArrayList<>();
+                for (int i=0; i<tagsList.size(); i++) {
+                    String tag = tagsList.get(i).getName();
+                    if (!list.contains(tag)) list.add(tag);
+                }
+                callbacks.onTagsListSuccess(list);
+            }
+
+            @Override
+            public void onTagsListFail(String errorMsg) {
+                callbacks.onTagsListFail(errorMsg);
+            }
+        });
+    }
+
+    @Override
+    public void processTagInput(String tag) {
+        tag = MVPUtils.normalizeTag(tag);
+        if (null != tag) {
+            view.addTag(tag);
+        }
+    }
+
+    @Override
+    public void processTagInput(String tag, iCardEdit.TagProcessCallbacks callbacks) {
+        processTagInput(tag);
+        callbacks.onTagProcessed();
     }
 
 
@@ -286,7 +308,7 @@ public class CardEdit_Presenter implements
 
 
     // Коллбеки
-    // --Загрузки карточки
+    // --Получение карточки
     @Override
     public void onCardLoadSuccess(final Card card) {
 
