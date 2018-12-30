@@ -74,7 +74,7 @@ public class TagsList_View extends BaseView implements
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
 
-        menuInflater.inflate(R.menu.create_card, menu);
+//        menuInflater.inflate(R.menu.create_card, menu);
         menuInflater.inflate(R.menu.cards, menu);
 
         return super.onCreateOptionsMenu(menu);
