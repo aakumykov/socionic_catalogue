@@ -182,6 +182,7 @@ public class CardsList_View extends BaseView implements
     @OnClick(R.id.filterCloser)
     void clearFilter() {
         MyUtils.hide(filterView);
+        this.tagFilter = null;
         presenter.loadList(null);
     }
 
