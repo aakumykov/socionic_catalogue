@@ -146,11 +146,12 @@ public class CardsList_View extends BaseView implements
     // Обязательные методы
     @Override
     public void onUserLogin() {
+        MyUtils.show(floatingActionButton);
     }
 
     @Override
     public void onUserLogout() {
-
+        MyUtils.hide(floatingActionButton);
     }
 
 
