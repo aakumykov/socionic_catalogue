@@ -232,4 +232,5 @@
     <string name="CARD_EDIT_forgotten_tag_dialog_message">Добавить метку «%1$s»?</string>
     <string name="INFO_not_implemented_yet">Ещё не реализовано</string>
     <string name="CARD_EDIT_error_loading_tags_list">Ошибка получения списка меток</string>
+    <string name="CARD_EDIT_you_must_be_logged_in">Вы должны зайти в программу</string>
 </resources>

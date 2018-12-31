@@ -47,6 +47,12 @@ public class CardEdit_Presenter implements
     // Интерфейсные методы
     @Override
     public void beginWork(@Nullable final Intent intent) {
+
+        if (!authService.isUserLoggedIn()) {
+            view.showToast(R.string.CARD_EDIT_you_must_be_logged_in);
+            return;
+        }
+
         authService.restoreCurrentUser(new iAuthSingleton.UserRestoreCallbacks() {
             @Override
             public void onUserRestoreSuccess() {
