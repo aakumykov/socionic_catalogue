@@ -227,5 +227,5 @@
     <string name="CARD_EDIT_forgotten_tag_dialog_message">Add tag «%1$s»?</string>
     <string name="INFO_not_implemented_yet">Not implemented yet</string>
     <string name="CARD_EDIT_error_loading_tags_list">Error loading tags list</string>
-    <string name="CARD_EDIT_you_must_be_logged_in">You must be logged in</string>
+    <string name="INFO_you_must_be_logged_in">You must be logged in</string>
 </resources>

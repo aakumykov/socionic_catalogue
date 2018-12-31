@@ -9,7 +9,6 @@ import java.util.List;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.comment.iComments;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCommentsSingleton;
@@ -114,6 +113,12 @@ public class CardShow_Presenter implements
     // Добавление комментария
     @Override
     public void postComment(String text) {
+
+        if (!authService.isUserLoggedIn()) {
+            view.showToast(R.string.INFO_you_must_be_logged_in);
+            return;
+        }
+
         Comment comment = new Comment(
                 text,
                 currentCard.getKey(),
@@ -123,6 +128,7 @@ public class CardShow_Presenter implements
                 authService.currentUserName(),
                 authService.currentUser().getAvatarURL()
         );
+
         postComment(comment);
     }
 
