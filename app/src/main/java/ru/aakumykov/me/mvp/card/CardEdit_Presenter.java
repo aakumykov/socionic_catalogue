@@ -357,6 +357,7 @@ public class CardEdit_Presenter implements
     @Override
     public void onCardSaveError(String message) {
         view.hideProgressBar();
+        view.showErrorMsg(R.string.CARD_EDIT_error_saving_card, message);
         view.enableForm();
     }
 
