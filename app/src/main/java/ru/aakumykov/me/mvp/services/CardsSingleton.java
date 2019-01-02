@@ -61,6 +61,7 @@ public class CardsSingleton implements
         cardRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Object obj = dataSnapshot.getValue();
                 Card card = dataSnapshot.getValue(Card.class);
                 callbacks.onCardLoadSuccess(card);
             }

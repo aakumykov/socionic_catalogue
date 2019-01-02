@@ -7,10 +7,8 @@ import android.text.TextUtils;
 
 import com.google.firebase.database.Exclude;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import ru.aakumykov.me.mvp.Constants;
@@ -30,10 +28,10 @@ public class Card implements Parcelable {
     private String videoCode;
     private String description;
     private HashMap<String, Boolean> tags;
+    private HashMap<String, Boolean> rateUpList;
     private int commentsCount = 0;
     private HashMap<String, Boolean> commentsKeys/* = new HashMap<>()*/;
     private Integer rating = 0;
-    private HashMap<String, Boolean> rateUpList/* = new HashMap<>()*/;
     private HashMap<String, Boolean> rateDownList/* = new HashMap<>()*/;
 
     public Card() {
@@ -43,7 +41,7 @@ public class Card implements Parcelable {
     @Exclude
     @Override
     public String toString() {
-        return "Card { "+
+        return "Card {"+
                 "  key: "+getKey()+
                 ", userId: "+getUserId()+
                 ", userName: "+getUserName()+
@@ -54,10 +52,10 @@ public class Card implements Parcelable {
                 ", videoCode: "+videoCode +
                 ", description: "+getDescription()+
                 ", tags: "+ getTags()+
+                ", rateUpList: "+ getRateUpList()+
                 ", commentsCount: "+getCommentsCount()+
                 ", commentsKeys: "+getCommentsKeys()+
                 ", rating: "+getRating()+
-                ", rateUpList: "+rateUpList+
                 ", rateDownList: "+rateDownList+
             " }";
     }
@@ -77,7 +75,7 @@ public class Card implements Parcelable {
 //         map.put("commentsCount", commentsCount);
 //         map.put("commentsKeys", commentsKeys);
 //         map.put("rating", rating);
-//         map.put("rateUpList", rateUpList);
+//         map.put("rateUpList_OLD", rateUpList_OLD);
 //         map.put("rateDownList", rateDownList);
 //        return map;
 //    }
@@ -97,10 +95,10 @@ public class Card implements Parcelable {
         dest.writeString(this.videoCode);
         dest.writeString(this.description);
         dest.writeMap(this.tags);
+        dest.writeMap(this.rateUpList);
         dest.writeInt(this.commentsCount);
         dest.writeMap(this.commentsKeys);
         dest.writeInt(this.rating);
-        dest.writeMap(this.rateUpList);
         dest.writeMap(this.rateDownList);
     }
 
@@ -116,10 +114,10 @@ public class Card implements Parcelable {
         videoCode = in.readString();
         description = in.readString();
         tags = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+        rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         commentsCount = in.readInt();
         commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         rating = in.readInt();
-        rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         rateDownList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
     }
 
@@ -172,6 +170,10 @@ public class Card implements Parcelable {
         if (null == tags) this.tags = new HashMap<>();
         return tags;
     }
+    public HashMap<String, Boolean> getRateUpList() {
+        if (null == rateUpList) this.rateUpList = new HashMap<>();
+        return rateUpList;
+    }
     public int getCommentsCount() { return commentsCount; }
     public HashMap<String, Boolean> getCommentsKeys() { return commentsKeys; }
     public int getRating() {
@@ -223,6 +225,9 @@ public class Card implements Parcelable {
     public void setTags(HashMap<String, Boolean> tags) {
         this.tags = tags;
     }
+    public void setRateUpList(HashMap<String, Boolean> rateUpList) {
+        this.rateUpList = rateUpList;
+    }
     public void setCommentsCount(int count) { this.commentsCount = count; }
     public void setCommentsKeys(HashMap<String, Boolean> commentsKeys) {
         this.commentsKeys = commentsKeys;
@@ -236,29 +241,28 @@ public class Card implements Parcelable {
     @Exclude public boolean isRatedDownBy(String userId) {
         return (null != rateDownList && rateDownList.containsKey(userId));
     }
+
     @Exclude public void rateUp(String userId) {
         if (!isRatedUpBy(userId)) {
-            getRateUpList().put(userId, true);
+            if (null == this.rateUpList)
+                this.rateUpList = new HashMap<>();
+            this.rateUpList.put(userId, true);
             setRating(rating+1);
         }
-        getRateDownList().remove(userId);
+        if (null != this.rateDownList) this.rateDownList.remove(userId);
     }
     @Exclude public void rateDown(String userId) {
         if (!isRatedDownBy(userId)) {
-            getRateDownList().put(userId, true);
+            if (null == this.rateDownList)
+                this.rateDownList = new HashMap<>();
+            this.rateDownList.put(userId, true);
             setRating(rating-1);
         }
-        getRateUpList().remove(userId);
+        if (null != this.rateUpList) this.rateUpList.remove(userId);
     }
-    @Exclude public void setRateUpList(Map<String,Boolean> rateUpMap) {
-        this.rateUpList.putAll(rateUpMap);
-    }
+
     @Exclude public void setRateDownList(Map<String,Boolean> rateDownMap) {
         this.rateDownList.putAll(rateDownMap);
-    }
-    @Exclude public Map<String,Boolean> getRateUpList() {
-        if (null == this.rateUpList) this.rateUpList = new HashMap<>();
-        return this.rateUpList;
     }
     @Exclude public Map<String,Boolean> getRateDownList() {
         if (null == this.rateDownList) this.rateDownList = new HashMap<>();
