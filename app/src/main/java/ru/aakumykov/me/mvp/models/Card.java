@@ -31,39 +31,14 @@ public class Card implements Parcelable {
     private String description;
     private HashMap<String, Boolean> tags;
     private int commentsCount = 0;
-    private HashMap<String, Boolean> commentsKeys = new HashMap<>();
+    private HashMap<String, Boolean> commentsKeys/* = new HashMap<>()*/;
     private Integer rating = 0;
-    private HashMap<String, Boolean> rateUpList = new HashMap<>();
-    private HashMap<String, Boolean> rateDownList = new HashMap<>();
+    private HashMap<String, Boolean> rateUpList/* = new HashMap<>()*/;
+    private HashMap<String, Boolean> rateDownList/* = new HashMap<>()*/;
 
     public Card() {
 
     }
-
-//    public Card(
-//            String userId,
-//            String userName,
-//            String type,
-//            String title,
-//            String quote,
-//            String imageURL,
-//            String videoCode,
-//            String description,
-//            HashMap<String,Boolean> tagsMap
-//    )
-//    {
-//        setType(type);
-//        this.title = title;
-//        this.quote = quote;
-//        setImageURL(imageURL);
-//        setVideoCode(videoCode);
-//        this.description = description;
-//        this.tags = tagsMap;
-//        this.commentsCount = 0;
-//        this.rating = 0;
-//        this.rateUpList = new ArrayList<>();
-//        this.rateDownList = new ArrayList<>();
-//    }
 
     @Exclude
     @Override
@@ -87,25 +62,25 @@ public class Card implements Parcelable {
             " }";
     }
 
-    @Exclude
-    public HashMap<String, Object> toMap() {
-        HashMap<String,Object> map = new HashMap<>();
-         map.put("userId", userId);
-         map.put("userName", userName);
-         map.put("type", type);
-         map.put("title", title);
-         map.put("quote", quote);
-         map.put("imageURL", imageURL);
-         map.put("videoCode", videoCode);
-         map.put("description", description);
-         map.put("tags", tags);
-         map.put("commentsCount", commentsCount);
-         map.put("commentsKeys", commentsKeys);
-         map.put("rating", rating);
-         map.put("rateUpList", rateUpList);
-         map.put("rateDownList", rateDownList);
-        return map;
-    }
+//    @Exclude
+//    public HashMap<String, Object> toMap() {
+//        HashMap<String,Object> map = new HashMap<>();
+//         map.put("userId", userId);
+//         map.put("userName", userName);
+//         map.put("type", type);
+//         map.put("title", title);
+//         map.put("quote", quote);
+//         map.put("imageURL", imageURL);
+//         map.put("videoCode", videoCode);
+//         map.put("description", description);
+//         map.put("tags", tags);
+//         map.put("commentsCount", commentsCount);
+//         map.put("commentsKeys", commentsKeys);
+//         map.put("rating", rating);
+//         map.put("rateUpList", rateUpList);
+//         map.put("rateDownList", rateDownList);
+//        return map;
+//    }
 
 
     /* Parcelable */
@@ -203,14 +178,6 @@ public class Card implements Parcelable {
         if (null == this.rating) return 0;
         else return rating;
     }
-    public List<String> getRateUpList() {
-        List<String> list = new ArrayList(rateUpList.keySet());
-        return list;
-    }
-    public List<String> getRateDownList() {
-        List<String> list = new ArrayList(rateDownList.keySet());
-        return list;
-    }
 
 
     // Сеттеры
@@ -260,20 +227,47 @@ public class Card implements Parcelable {
     public void setCommentsKeys(HashMap<String, Boolean> commentsKeys) {
         this.commentsKeys = commentsKeys;
     }
-    // Этот метод не публичный
-    private void setRating(int ratingValue) { this.rating = ratingValue; }
-    public void setRateUpList(List<String> rateUpList) {
-        Map<String,Boolean> map = new HashMap<>();
-        for (int i=0; i<rateUpList.size(); i++)
-            map.put(rateUpList.get(i), true);
-        this.rateUpList.putAll(map);
+
+
+    // Рейтинг
+    @Exclude public boolean isRatedUpBy(String userId) {
+        return (null != rateUpList && rateUpList.containsKey(userId));
     }
-    public void setRateDownList(List<String> rateDownList) {
-        Map<String,Boolean> map = new HashMap<>();
-        for (int i=0; i<rateDownList.size(); i++)
-            map.put(rateDownList.get(i), true);
-        this.rateDownList.putAll(map);
+    @Exclude public boolean isRatedDownBy(String userId) {
+        return (null != rateDownList && rateDownList.containsKey(userId));
     }
+    @Exclude public void rateUp(String userId) {
+        if (!isRatedUpBy(userId)) {
+            getRateUpList().put(userId, true);
+            setRating(rating+1);
+        }
+        getRateDownList().remove(userId);
+    }
+    @Exclude public void rateDown(String userId) {
+        if (!isRatedDownBy(userId)) {
+            getRateDownList().put(userId, true);
+            setRating(rating-1);
+        }
+        getRateUpList().remove(userId);
+    }
+    @Exclude public void setRateUpList(Map<String,Boolean> rateUpMap) {
+        this.rateUpList.putAll(rateUpMap);
+    }
+    @Exclude public void setRateDownList(Map<String,Boolean> rateDownMap) {
+        this.rateDownList.putAll(rateDownMap);
+    }
+    @Exclude public Map<String,Boolean> getRateUpList() {
+        if (null == this.rateUpList) this.rateUpList = new HashMap<>();
+        return this.rateUpList;
+    }
+    @Exclude public Map<String,Boolean> getRateDownList() {
+        if (null == this.rateDownList) this.rateDownList = new HashMap<>();
+        return this.rateDownList;
+    }
+    @Exclude private void setRating(int ratingValue) {
+        this.rating = ratingValue;
+    }
+
 
     // Служебные
     @Exclude private Uri localImageURI;
@@ -297,28 +291,6 @@ public class Card implements Parcelable {
     }
     @Exclude public void clearMimeType() {
         this.mimeType = null;
-    }
-
-    @Exclude public void rateUp(String userId) {
-        if (!rateUpList.containsKey(userId)) {
-            rateUpList.put(userId, true);
-            setRating(rating+1);
-        }
-        rateDownList.remove(userId);
-    }
-    @Exclude public void rateDown(String userId) {
-        if (!rateDownList.containsKey(userId)) {
-            rateDownList.put(userId, true);
-            setRating(rating-1);
-        }
-        rateUpList.remove(userId);
-    }
-
-    @Exclude public boolean isRatedUpBy(String userId) {
-        return getRateUpList().contains(userId);
-    }
-    @Exclude public boolean isRatedDownBy(String userId) {
-        return getRateDownList().contains(userId);
     }
 
     @Exclude public boolean isTextCard() {
