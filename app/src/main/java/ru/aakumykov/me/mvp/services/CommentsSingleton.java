@@ -194,8 +194,7 @@ public class CommentsSingleton implements iCommentsSingleton {
                 "/commentsKeys/" + commentKey;
         updatePool.put(commentInsideUserPath, true);
 
-        firebaseDatabase.getReference().child("/")
-                .updateChildren(updatePool)
+        rootRef.updateChildren(updatePool)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
