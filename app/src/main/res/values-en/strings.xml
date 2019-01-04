@@ -228,4 +228,5 @@
     <string name="INFO_not_implemented_yet">Not implemented yet</string>
     <string name="CARD_EDIT_error_loading_tags_list">Error loading tags list</string>
     <string name="INFO_you_must_be_logged_in">You must be logged in</string>
+    <string name="DATA_RECIEVER_page_title">Data reciever</string>
 </resources>
