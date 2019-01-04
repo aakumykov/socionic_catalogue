@@ -1,27 +1,22 @@
-package ru.aakumykov.me.mvp.data_reciever;
+package ru.aakumykov.me.mvp.external_data_receiver;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
-import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
-import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 
-public class DataReciever extends BaseView {
+public class ExternalDataReceiver extends BaseView {
 
-    public static final String TAG = "DataReciever";
+    public static final String TAG = "ExternalDataReceiver";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.data_reciever_activity);
 
-        setPageTitle(R.string.DATA_RECIEVER_page_title);
+        setPageTitle(R.string.EXTERNAL_DATA_RECIEVER_page_title);
 
         try {
             makeStartDecision();
