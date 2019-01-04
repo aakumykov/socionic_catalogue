@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MVP</string>
+    <string name="app_name">Соционический каталог</string>
     <string name="name">Имя</string>
     <string name="password">Пароль</string>
     <string name="login">Войти</string>

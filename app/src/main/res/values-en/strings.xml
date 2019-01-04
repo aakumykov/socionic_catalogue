@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MVP</string>
+    <string name="app_name">Socionic catalogue</string>
     <string name="name">Name</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
