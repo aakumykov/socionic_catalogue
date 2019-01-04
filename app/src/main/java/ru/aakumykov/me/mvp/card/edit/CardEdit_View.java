@@ -474,11 +474,19 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void finishEdit(Card card) {
+    public void finishEdit(Card card, boolean showAfterFinish) {
+
         Intent intent = new Intent();
-        intent.putExtra(Constants.CARD, card);
-        setResult(RESULT_OK, intent);
-        finish();
+
+        if (showAfterFinish) {
+            intent.setClass(this, CardShow_View.class);
+            intent.putExtra(Constants.CARD_KEY, card.getKey());
+            startActivity(intent);
+        } else {
+            intent.putExtra(Constants.CARD, card);
+            setResult(RESULT_OK, intent);
+            finish();
+        }
     }
 
     // TODO: перенести в Utils

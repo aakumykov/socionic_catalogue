@@ -233,4 +233,5 @@
     <string name="INFO_not_implemented_yet">Ещё не реализовано</string>
     <string name="CARD_EDIT_error_loading_tags_list">Ошибка получения списка меток</string>
     <string name="INFO_you_must_be_logged_in">Вы должны зайти в программу</string>
+    <string name="DATA_RECIEVER_page_title">Получатель данных</string>
 </resources>
