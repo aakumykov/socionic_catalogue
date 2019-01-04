@@ -79,7 +79,8 @@ public class MVPUtils {
         if (null == intent)
             return "NULL";
 
-        String type = intent.getType() + ""; // для превращения NULL в пустую строку
+        String type = intent.getType() + "";
+        String extraText = intent.getStringExtra(Intent.EXTRA_TEXT) + "";
 
         if (type.equals("text/plain")) {
 
@@ -94,6 +95,9 @@ public class MVPUtils {
             else {
                 return Constants.TYPE_TEXT;
             }
+        }
+        else if (type.startsWith("image/") && isLinkToImage(extraText)) {
+            return Constants.TYPE_IMAGE_LINK;
         }
         else if (type.startsWith("image/")) {
             return Constants.TYPE_IMAGE_DATA;
