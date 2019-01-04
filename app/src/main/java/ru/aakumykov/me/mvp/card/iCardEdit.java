@@ -62,7 +62,7 @@ public interface iCardEdit {
         void disableForm();
         void enableForm();
 
-        void finishEdit(Card card); // нужен?
+        void finishEdit(Card card, boolean showAfterFinish);
 
         void goCardShow(Card card);
 

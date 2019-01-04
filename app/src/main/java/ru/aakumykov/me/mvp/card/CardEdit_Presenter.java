@@ -43,6 +43,7 @@ public class CardEdit_Presenter implements
     private HashMap<String,Boolean> oldTags = null;
     private HashMap<String,Boolean> newTags = null;
     private String imageType;
+    private boolean goForwardMode = false;
 
     // Интерфейсные методы
     @Override
@@ -72,6 +73,8 @@ public class CardEdit_Presenter implements
             view.showErrorMsg(R.string.CARD_EDIT_error_no_input_data);
             return;
         }
+
+        goForwardMode = (0 != (intent.getFlags() & Intent.FLAG_ACTIVITY_NO_HISTORY));
 
         String action = intent.getAction();
 
@@ -343,6 +346,8 @@ public class CardEdit_Presenter implements
     @Override
     public void onCardSaveSuccess(Card card) {
 
+        // TODO: как бы сохранять карточку и метки разом?
+
         TagsSingleton.getInstance().updateCardTags(
                 currentCard.getKey(),
                 oldTags,
@@ -351,7 +356,7 @@ public class CardEdit_Presenter implements
         );
 
         view.hideProgressBar();
-        view.finishEdit(card);
+        view.finishEdit(card, goForwardMode);
     }
 
     @Override
