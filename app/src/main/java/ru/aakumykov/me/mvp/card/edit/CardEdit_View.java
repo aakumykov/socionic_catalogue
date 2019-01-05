@@ -66,6 +66,7 @@ public class CardEdit_View extends BaseView implements
     TagView.OnTagClickListener
 {
     @BindView(R.id.titleView) EditText titleView;
+    @BindView(R.id.contentWaitProgressBar) ProgressBar contentWaitProgressBar;
 
     @BindView(R.id.modeSwitcher) LinearLayout modeSwitcher;
     @BindView(R.id.modeLabel) TextView modeLabel;
@@ -134,9 +135,7 @@ public class CardEdit_View extends BaseView implements
 
         if (firstRun) {
             firstRun = false;
-
             presenter.beginWork(getIntent());
-
             presenter.loadTagsList(new iCardEdit.TagsListCallbacks() {
                 @Override
                 public void onTagsListSuccess(List<String> list) {

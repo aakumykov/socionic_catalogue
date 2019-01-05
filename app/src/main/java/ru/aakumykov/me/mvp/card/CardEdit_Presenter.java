@@ -82,7 +82,7 @@ public class CardEdit_Presenter implements
 
             case Constants.ACTION_CREATE:
                 try {
-                    prepareCardCreation();
+                    prepareCardCreation(true);
                 } catch (Exception e) {
                     view.showErrorMsg(R.string.CARD_EDIT_error_creating_card, e.getMessage());
                     e.printStackTrace();
@@ -91,7 +91,7 @@ public class CardEdit_Presenter implements
 
             case Intent.ACTION_SEND:
                 try {
-                    prepareCardCreation();
+                    prepareCardCreation(false);
                     processRecievedData(Constants.MODE_SEND, intent);
                 } catch (Exception e) {
                     view.showErrorMsg(R.string.CARD_EDIT_error_creating_card, e.getMessage());
@@ -185,10 +185,6 @@ public class CardEdit_Presenter implements
         imageType = MyUtils.detectImageType(view.getApplicationContext(), imageURI);
         view.showToast(imageType);
         view.displayImage(imageURI.toString(), true);
-
-//        String mimeType = view.detectMimeType(imageURI);
-//        Bitmap imageBitmap = BitmapReader.getThumbnail(view.getApplicationContext(), imageURI);
-//        view.displayImageBitmap(imageBitmap);
     }
 
     // TODO: как бы проверять полную корректность при сохранении?
@@ -402,10 +398,12 @@ public class CardEdit_Presenter implements
 
 
     // Внутренние методы
-    private void prepareCardCreation() {
+    private void prepareCardCreation(boolean fromScratch) {
 
         view.setPageTitle(R.string.CARD_EDIT_card_creation_title);
-        view.showModeSwitcher();
+
+        if (fromScratch)
+            view.showModeSwitcher();
 
         currentCard = new Card();
         currentCard.setKey(cardsService.createKey());
