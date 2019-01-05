@@ -56,9 +56,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundImage" value="$USER_HOME$/Изображения/icons/для программы/transparent-pixel.png" />
-                                      <entry key="backgroundLayerName" value="ic_launcher_background" />
-                                      <entry key="foregroundImage" value="$USER_HOME$/Изображения/icons/для программы/512.png" />
-                                      <entry key="outputName" value="ic_my_launcher" />
+                                      <entry key="foregroundImage" value="$USER_HOME$/Изображения/icons/для программы/socio-cat-2.png" />
+                                      <entry key="outputName" value="ic_green_launcher" />
                                     </map>
                                   </option>
                                 </PersistentState>
