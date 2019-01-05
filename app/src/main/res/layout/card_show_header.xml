@@ -96,8 +96,10 @@
         android:id="@+id/authorView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Автор"
         android:textAlignment="viewEnd"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="@color/colorPrimary"
+        android:paddingBottom="16dp"/>
 
     <co.lujun.androidtagview.TagContainerLayout
         android:id="@+id/tagsContainer"
