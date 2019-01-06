@@ -8,7 +8,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.PopupMenu;
-import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -17,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,6 +30,7 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
+import ru.aakumykov.me.mvp.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
@@ -114,6 +113,7 @@ public class CardsList_View extends BaseView implements
         MenuInflater menuInflater = getMenuInflater();
 
 //        menuInflater.inflate(R.menu.create_card, menu);
+        menuInflater.inflate(R.menu.grid_view, menu);
         menuInflater.inflate(R.menu.tags, menu);
 
         return super.onCreateOptionsMenu(menu);
@@ -121,7 +121,14 @@ public class CardsList_View extends BaseView implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.actionGridView:
+                goGridView();
+                break;
+            default:
+                super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
     @Override
@@ -384,5 +391,10 @@ public class CardsList_View extends BaseView implements
                 Log.d(TAG, "data: "+data);
                 break;
         }
+    }
+
+    private void goGridView() {
+        Intent intent = new Intent(this, CardsGrid_View.class);
+        startActivity(intent);
     }
 }

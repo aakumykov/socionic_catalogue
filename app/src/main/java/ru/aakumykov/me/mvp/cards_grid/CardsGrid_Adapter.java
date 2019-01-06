@@ -50,27 +50,29 @@ public class CardsGrid_Adapter extends ArrayAdapter<Card> {
 
         viewHolder.titleView.setText(card.getTitle());
 
-        if (card.isTextCard())
+        if (card.isTextCard()) {
             viewHolder.quoteView.setText(card.getQuote());
-
-        if (card.isImageCard()) {
-
-            MyUtils.show(viewHolder.imageView);
-
-            Picasso.get()
-                    .load(card.getImageURL())
-                    .into(viewHolder.imageView, new Callback() {
-                        @Override
-                        public void onSuccess() {
-
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-
-                        }
-                    });
+            MyUtils.show(viewHolder.quoteView);
         }
+
+//        if (card.isImageCard()) {
+//
+//            MyUtils.show(viewHolder.imageView);
+//
+//            Picasso.get()
+//                    .load(card.getImageURL())
+//                    .into(viewHolder.imageView, new Callback() {
+//                        @Override
+//                        public void onSuccess() {
+//
+//                        }
+//
+//                        @Override
+//                        public void onError(Exception e) {
+//
+//                        }
+//                    });
+//        }
 
 
         return convertView;

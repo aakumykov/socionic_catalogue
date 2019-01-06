@@ -232,4 +232,6 @@
     <string name="CARDS_LIST_loading_list">Loading cards list</string>
     <string name="CARDS_GRID_loading_cards">Loading cards</string>
     <string name="CARDS_GRID_page_title">Cards</string>
+    <string name="MENU_grid_view">Grid view</string>
+    <string name="MENU_list_view">List view</string>
 </resources>
