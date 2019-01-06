@@ -314,8 +314,10 @@ public class CardsList_View extends BaseView implements
     }
 
     private void loadList(boolean showProgressBar) {
-        if (showProgressBar)
+        if (showProgressBar) {
+            showInfoMsg(R.string.CARDS_LIST_loading_list);
             showProgressBar();
+        }
         presenter.loadList(tagFilter);
     }
 
