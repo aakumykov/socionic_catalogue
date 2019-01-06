@@ -2,10 +2,10 @@ package ru.aakumykov.me.mvp.cards_grid;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,42 +21,40 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
-public class CardsGrid_Adapter extends ArrayAdapter<Card> {
+
+public class CardsGrid_RecyclerAdapter extends RecyclerView.Adapter<CardsGrid_RecyclerAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
-    private int layout;
-    private List<Card> list;
+    private List<Card> cardList;
 
-    CardsGrid_Adapter(Context context, int resource, List<Card> list) {
-        super(context, resource, list);
-        this.list = list;
-        this.layout = resource;
+    CardsGrid_RecyclerAdapter(Context context, List<Card> cardList) {
+        this.cardList = cardList;
         this.inflater = LayoutInflater.from(context);
     }
 
-    @NonNull
-    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+    @NonNull @Override
+    public CardsGrid_RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        ViewHolder viewHolder;
-        if(convertView==null){
-            convertView = inflater.inflate(this.layout, parent, false);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
-        }
-        else{
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
+        View view = inflater.inflate(R.layout.cards_grid_item, parent, false);
 
-        Card card = list.get(position);
+        return new ViewHolder(view);
+    }
 
+    @Override
+    public void onBindViewHolder(@NonNull CardsGrid_RecyclerAdapter.ViewHolder viewHolder, int position) {
+        Card card = cardList.get(position);
+
+        // Название
         viewHolder.titleView.setText(card.getTitle());
 
+        // Цитата
         if (card.isTextCard()) {
             String quote = MyUtils.cutToLength(card.getQuote(), Constants.CARDS_GRID_QUOTE_MAX_LENGTH);
             viewHolder.quoteView.setText(quote);
             MyUtils.show(viewHolder.quoteView);
         }
 
+        // Картинка
         if (card.isImageCard()) {
 
             MyUtils.show(viewHolder.imageView);
@@ -75,17 +73,20 @@ public class CardsGrid_Adapter extends ArrayAdapter<Card> {
                         }
                     });
         }
-
-
-        return convertView;
     }
 
-    static class ViewHolder {
+    @Override
+    public int getItemCount() {
+        return cardList.size();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.titleView) TextView titleView;
         @BindView(R.id.quoteView) TextView quoteView;
         @BindView(R.id.imageView) ImageView imageView;
 
         ViewHolder(View view){
+            super(view);
             ButterKnife.bind(this, view);
         }
     }

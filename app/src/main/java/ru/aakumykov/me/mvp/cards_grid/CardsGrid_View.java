@@ -3,10 +3,10 @@ package ru.aakumykov.me.mvp.cards_grid;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -25,11 +25,13 @@ public class CardsGrid_View extends BaseView implements iCardsGrid.View {
 
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
-    @BindView(R.id.cardsGridView) GridView gridView;
+//    @BindView(R.id.cardsGridView) GridView gridView;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
     private iCardsGrid.Presenter presenter;
     private List<Card> cardsList = new ArrayList<>();
-    private CardsGrid_Adapter gridAdapter;
+//    private CardsGrid_ArrayAdapter dataAdapter;
+    private CardsGrid_RecyclerAdapter dataAdapter;
     private boolean firstRun = true;
 
 
@@ -37,14 +39,19 @@ public class CardsGrid_View extends BaseView implements iCardsGrid.View {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cards_grid_activity);
+//        setContentView(R.layout.cards_grid_activity);
+        setContentView(R.layout.cards_grid_recycler_activity);
         ButterKnife.bind(this);
 
         setPageTitle(R.string.CARDS_GRID_page_title);
 
         presenter = new CardsGrid_Presenter();
-        gridAdapter = new CardsGrid_Adapter(this, R.layout.cards_grid_item, cardsList);
-        gridView.setAdapter(gridAdapter);
+
+//        dataAdapter = new CardsGrid_ArrayAdapter(this, R.layout.cards_grid_item, cardsList);
+        dataAdapter = new CardsGrid_RecyclerAdapter(this, cardsList);
+
+//        gridView.setAdapter(dataAdapter);
+        recyclerView.setAdapter(dataAdapter);
     }
 
     @Override
@@ -104,7 +111,7 @@ public class CardsGrid_View extends BaseView implements iCardsGrid.View {
         hideMsg();
 
         this.cardsList.addAll(list);
-        gridAdapter.notifyDataSetChanged();
+        dataAdapter.notifyDataSetChanged();
     }
 
 
