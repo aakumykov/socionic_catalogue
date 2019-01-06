@@ -3,6 +3,7 @@ package ru.aakumykov.me.mvp.cards_grid;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
@@ -31,11 +33,11 @@ public class CardsGrid_View extends BaseView implements
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.floatingActionButton) FloatingActionButton floatingActionButton;
 
     private iCardsGrid.Presenter presenter;
     private List<Card> cardsList = new ArrayList<>();
     private CardsGrid_Adapter dataAdapter;
-    private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private boolean firstRun = true;
 
 
@@ -43,14 +45,14 @@ public class CardsGrid_View extends BaseView implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cards_grid_activity);
+        setContentView(R.layout.cards_grid_activity2);
         ButterKnife.bind(this);
 
         setPageTitle(R.string.CARDS_GRID_page_title);
 
         presenter = new CardsGrid_Presenter();
 
-        staggeredGridLayoutManager = new StaggeredGridLayoutManager(
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(
                 2,
                 StaggeredGridLayoutManager.VERTICAL);
 //        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -84,12 +86,12 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public void onUserLogin() {
-
+        MyUtils.show(floatingActionButton);
     }
 
     @Override
     public void onUserLogout() {
-
+        MyUtils.hide(floatingActionButton);
     }
 
     @Override
@@ -134,6 +136,14 @@ public class CardsGrid_View extends BaseView implements
             showErrorMsg(R.string.CARDS_GRID_error_no_such_card);
         }
     }
+
+
+    // События
+    @OnClick(R.id.floatingActionButton)
+    void fabClicked() {
+        goCreateCard();
+    }
+
 
     // Внутренние методы
     private void loadList() {
