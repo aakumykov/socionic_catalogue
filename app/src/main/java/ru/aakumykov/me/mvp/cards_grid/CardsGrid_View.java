@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,13 +26,12 @@ public class CardsGrid_View extends BaseView implements iCardsGrid.View {
 
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
-//    @BindView(R.id.cardsGridView) GridView gridView;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
     private iCardsGrid.Presenter presenter;
     private List<Card> cardsList = new ArrayList<>();
-//    private CardsGrid_ArrayAdapter dataAdapter;
     private CardsGrid_RecyclerAdapter dataAdapter;
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private boolean firstRun = true;
 
 
@@ -39,7 +39,6 @@ public class CardsGrid_View extends BaseView implements iCardsGrid.View {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.cards_grid_activity);
         setContentView(R.layout.cards_grid_recycler_activity);
         ButterKnife.bind(this);
 
@@ -47,10 +46,15 @@ public class CardsGrid_View extends BaseView implements iCardsGrid.View {
 
         presenter = new CardsGrid_Presenter();
 
-//        dataAdapter = new CardsGrid_ArrayAdapter(this, R.layout.cards_grid_item, cardsList);
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(
+                2,
+                StaggeredGridLayoutManager.VERTICAL);
+//        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+
         dataAdapter = new CardsGrid_RecyclerAdapter(this, cardsList);
 
-//        gridView.setAdapter(dataAdapter);
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.setAdapter(dataAdapter);
     }
 
