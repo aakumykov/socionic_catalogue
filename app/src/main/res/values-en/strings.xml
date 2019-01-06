@@ -234,4 +234,5 @@
     <string name="CARDS_GRID_page_title">Cards</string>
     <string name="MENU_grid_view">Grid view</string>
     <string name="MENU_list_view">List view</string>
+    <string name="CARDS_GRID_error_no_such_card">No such card</string>
 </resources>

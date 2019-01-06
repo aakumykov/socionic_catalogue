@@ -17,13 +17,17 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.cards_list.CardsList_View;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
-public class CardsGrid_View extends BaseView implements iCardsGrid.View {
-
+public class CardsGrid_View extends BaseView implements
+        iCardsGrid.View,
+        CardsGrid_Adapter.iOnItemClickListener
+{
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
@@ -61,7 +65,9 @@ public class CardsGrid_View extends BaseView implements iCardsGrid.View {
     @Override
     protected void onStart() {
         super.onStart();
+
         presenter.linkView(this);
+        dataAdapter.bindClickListener(this);
 
         if (firstRun) {
             loadList();
@@ -73,6 +79,7 @@ public class CardsGrid_View extends BaseView implements iCardsGrid.View {
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
+        dataAdapter.unbindClickListener();
     }
 
     @Override
@@ -118,6 +125,15 @@ public class CardsGrid_View extends BaseView implements iCardsGrid.View {
         dataAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onItemClick(int position) {
+        Card card = cardsList.get(position);
+        if (null != card) {
+            showCard(card.getKey());
+        } else {
+            showErrorMsg(R.string.CARDS_GRID_error_no_such_card);
+        }
+    }
 
     // Внутренние методы
     private void loadList() {
@@ -128,6 +144,12 @@ public class CardsGrid_View extends BaseView implements iCardsGrid.View {
 
     private void goListView() {
         Intent intent = new Intent(this, CardsList_View.class);
+        startActivity(intent);
+    }
+
+    private void showCard(String cardKey) {
+        Intent intent = new Intent(this, CardShow_View.class);
+        intent.putExtra(Constants.CARD_KEY, cardKey);
         startActivity(intent);
     }
 }
