@@ -16,6 +16,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.utils.MyUtils;
@@ -51,28 +52,29 @@ public class CardsGrid_Adapter extends ArrayAdapter<Card> {
         viewHolder.titleView.setText(card.getTitle());
 
         if (card.isTextCard()) {
-            viewHolder.quoteView.setText(card.getQuote());
+            String quote = MyUtils.cutToLength(card.getQuote(), Constants.CARDS_GRID_QUOTE_MAX_LENGTH);
+            viewHolder.quoteView.setText(quote);
             MyUtils.show(viewHolder.quoteView);
         }
 
-//        if (card.isImageCard()) {
-//
-//            MyUtils.show(viewHolder.imageView);
-//
-//            Picasso.get()
-//                    .load(card.getImageURL())
-//                    .into(viewHolder.imageView, new Callback() {
-//                        @Override
-//                        public void onSuccess() {
-//
-//                        }
-//
-//                        @Override
-//                        public void onError(Exception e) {
-//
-//                        }
-//                    });
-//        }
+        if (card.isImageCard()) {
+
+            MyUtils.show(viewHolder.imageView);
+
+            Picasso.get()
+                    .load(card.getImageURL())
+                    .into(viewHolder.imageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
+        }
 
 
         return convertView;
