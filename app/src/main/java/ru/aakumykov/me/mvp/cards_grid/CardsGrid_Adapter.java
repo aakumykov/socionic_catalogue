@@ -67,12 +67,14 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
             String quote = MyUtils.cutToLength(card.getQuote(), Constants.CARDS_GRID_QUOTE_MAX_LENGTH);
             viewHolder.quoteView.setText(quote);
             MyUtils.show(viewHolder.quoteView);
+            MyUtils.hide(viewHolder.imageView);
         }
 
         // Картинка
         if (card.isImageCard()) {
 
             MyUtils.show(viewHolder.imageView);
+            MyUtils.hide(viewHolder.quoteView);
 
             Picasso.get()
                     .load(card.getImageURL())
