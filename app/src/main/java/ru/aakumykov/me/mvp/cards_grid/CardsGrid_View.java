@@ -30,7 +30,7 @@ public class CardsGrid_View extends BaseView implements iCardsGrid.View {
 
     private iCardsGrid.Presenter presenter;
     private List<Card> cardsList = new ArrayList<>();
-    private CardsGrid_RecyclerAdapter dataAdapter;
+    private CardsGrid_Adapter dataAdapter;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private boolean firstRun = true;
 
@@ -39,7 +39,7 @@ public class CardsGrid_View extends BaseView implements iCardsGrid.View {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cards_grid_recycler_activity);
+        setContentView(R.layout.cards_grid_activity);
         ButterKnife.bind(this);
 
         setPageTitle(R.string.CARDS_GRID_page_title);
@@ -52,7 +52,7 @@ public class CardsGrid_View extends BaseView implements iCardsGrid.View {
 //        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
 
-        dataAdapter = new CardsGrid_RecyclerAdapter(this, cardsList);
+        dataAdapter = new CardsGrid_Adapter(this, cardsList);
 
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.setAdapter(dataAdapter);

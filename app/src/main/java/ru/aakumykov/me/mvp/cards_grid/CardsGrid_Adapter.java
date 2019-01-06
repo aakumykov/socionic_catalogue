@@ -22,18 +22,18 @@ import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 
-public class CardsGrid_RecyclerAdapter extends RecyclerView.Adapter<CardsGrid_RecyclerAdapter.ViewHolder> {
+public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.ViewHolder> {
 
     private LayoutInflater inflater;
     private List<Card> cardList;
 
-    CardsGrid_RecyclerAdapter(Context context, List<Card> cardList) {
+    CardsGrid_Adapter(Context context, List<Card> cardList) {
         this.cardList = cardList;
         this.inflater = LayoutInflater.from(context);
     }
 
     @NonNull @Override
-    public CardsGrid_RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CardsGrid_Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = inflater.inflate(R.layout.cards_grid_item, parent, false);
 
@@ -41,7 +41,7 @@ public class CardsGrid_RecyclerAdapter extends RecyclerView.Adapter<CardsGrid_Re
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CardsGrid_RecyclerAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull CardsGrid_Adapter.ViewHolder viewHolder, int position) {
         Card card = cardList.get(position);
 
         // Название
