@@ -95,6 +95,7 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+        <activity android:name=".cards_grid.CardsGrid_View" />
 
     </application>
 

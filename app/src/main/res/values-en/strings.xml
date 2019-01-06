@@ -230,4 +230,6 @@
     <string name="INFO_you_must_be_logged_in">You must be logged in</string>
     <string name="EXTERNAL_DATA_RECIEVER_page_title">External data receiver</string>
     <string name="CARDS_LIST_loading_list">Loading cards list</string>
+    <string name="CARDS_GRID_loading_cards">Loading cards</string>
+    <string name="CARDS_GRID_page_title">Cards</string>
 </resources>
