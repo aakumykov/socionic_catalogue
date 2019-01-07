@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
@@ -28,8 +29,10 @@ import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class CardsGrid_View extends BaseView implements
         iCardsGrid.View,
-        CardsGrid_Adapter.iOnItemClickListener
+        CardsGrid_Adapter.iOnItemClickListener,
+        SwipeRefreshLayout.OnRefreshListener
 {
+    @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
@@ -45,21 +48,21 @@ public class CardsGrid_View extends BaseView implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cards_grid_activity2);
+        setContentView(R.layout.cards_grid_activity);
         ButterKnife.bind(this);
 
         setPageTitle(R.string.CARDS_GRID_page_title);
+
+        swiperefreshLayout.setOnRefreshListener(this);
+        swiperefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
 
         presenter = new CardsGrid_Presenter();
 
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(
                 2,
                 StaggeredGridLayoutManager.VERTICAL);
-//        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-
+//        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         dataAdapter = new CardsGrid_Adapter(this, cardsList);
-
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.setAdapter(dataAdapter);
     }
@@ -72,7 +75,7 @@ public class CardsGrid_View extends BaseView implements
         dataAdapter.bindClickListener(this);
 
         if (firstRun) {
-            loadList();
+            loadList(true);
             firstRun = false;
         }
     }
@@ -116,12 +119,19 @@ public class CardsGrid_View extends BaseView implements
         return true;
     }
 
+    @Override
+    public void onRefresh() {
+        swiperefreshLayout.setRefreshing(true);
+        loadList(false);
+    }
+
 
     // Интерфейсные методы
     @Override
     public void displayList(List<Card> list) {
         hideProgressBar();
         hideMsg();
+        swiperefreshLayout.setRefreshing(false);
 
         this.cardsList.addAll(list);
         dataAdapter.notifyDataSetChanged();
@@ -146,9 +156,11 @@ public class CardsGrid_View extends BaseView implements
 
 
     // Внутренние методы
-    private void loadList() {
-        MyUtils.show(progressBar);
-        showInfoMsg(R.string.CARDS_GRID_loading_cards);
+    private void loadList(boolean showMessage) {
+        if (showMessage) {
+            MyUtils.show(progressBar);
+            showInfoMsg(R.string.CARDS_GRID_loading_cards);
+        }
         presenter.loadCards();
     }
 

@@ -278,4 +278,6 @@ public class MVPUtils {
         bitmap.compress(compressFormat, Config.DEFAULT_JPEG_QUALITY, baos);
         return baos.toByteArray();
     }
+
+
 }
