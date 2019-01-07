@@ -55,6 +55,7 @@ import ru.aakumykov.me.mvp.models.Comment;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.users.edit.UserEdit_View;
 import ru.aakumykov.me.mvp.users.show.UserShow_View;
+import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
@@ -699,19 +700,7 @@ public class CardShow_View extends BaseView implements
     }
 
     private void displayTextCard(Card card) {
-        String quote = card.getQuote();
-
-        SpannableString spannableQuote = new SpannableString(quote);
-
-        int logicIndex = quote.indexOf("(БЛ)");
-        if (logicIndex > -1) {
-            spannableQuote.setSpan(
-                    new ImageSpan(this, R.drawable.aspect_logic),
-                    logicIndex,
-                    logicIndex+4,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            );
-        }
+        SpannableString spannableQuote = MVPUtils.aspects2images(this, card.getQuote());
 
         quoteView.setText(spannableQuote);
 
