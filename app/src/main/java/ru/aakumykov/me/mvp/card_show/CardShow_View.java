@@ -8,7 +8,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.PopupMenu;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -696,9 +699,24 @@ public class CardShow_View extends BaseView implements
     }
 
     private void displayTextCard(Card card) {
-        Log.d(TAG, "displayTextCard(), "+card);
-        quoteView.setText(card.getQuote());
+        String quote = card.getQuote();
+
+        SpannableString spannableQuote = new SpannableString(quote);
+
+        int logicIndex = quote.indexOf("(БЛ)");
+        if (logicIndex > -1) {
+            spannableQuote.setSpan(
+                    new ImageSpan(this, R.drawable.aspect_logic),
+                    logicIndex,
+                    logicIndex+4,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
+        }
+
+        quoteView.setText(spannableQuote);
+
         MyUtils.show(quoteView);
+
         displayCommonCardParts(card);
     }
 
