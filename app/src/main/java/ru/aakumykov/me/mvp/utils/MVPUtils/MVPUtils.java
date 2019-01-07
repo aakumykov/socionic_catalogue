@@ -307,17 +307,22 @@ public class MVPUtils {
 
         SpannableString spannableString = new SpannableString(inputText);
 
-        for (Map.Entry<String,Integer> entry: aspectsMap.entrySet()) {
+        for (String borders : aspectsBorders) {
+            String leftBorder = borders.substring(0,1);
+            String rightBorder = borders.substring(1, 1);
 
-            String aspectText = entry.getKey();
-            ImageSpan imageSpan = new ImageSpan(context, entry.getValue());
+            for (Map.Entry<String, Integer> entry : aspectsMap.entrySet()) {
 
-            int index = inputText.indexOf(aspectText);
-            while (index > -1) {
-                int indexEnd = index + 2;
-                spannableString.setSpan(imageSpan, index, indexEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                index = inputText.indexOf(aspectText, indexEnd);
-            };
+                String aspectText = leftBorder + entry.getKey() + rightBorder;
+                ImageSpan imageSpan = new ImageSpan(context, entry.getValue());
+
+                int index = inputText.indexOf(aspectText);
+                while (index > -1) {
+                    int indexEnd = index + aspectText.length() + 1;
+                    spannableString.setSpan(imageSpan, index, indexEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    index = inputText.indexOf(aspectText, indexEnd);
+                }
+            }
         }
 
         return spannableString;
