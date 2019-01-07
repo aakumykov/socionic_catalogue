@@ -19,7 +19,7 @@
     <color name="blue_swipe">#00ddff</color>
     <color name="green_swipe">#99cc00</color>
     <color name="red_swipe">#ff4444</color>
-    <color name="orange_swipe">#ffffbb33</color>
+    <color name="orange_swipe">#ffbb33</color>
 
     <color name="selected_list_item_bg">#e1e1e1</color>
 

@@ -8,7 +8,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.PopupMenu;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -52,6 +55,7 @@ import ru.aakumykov.me.mvp.models.Comment;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.users.edit.UserEdit_View;
 import ru.aakumykov.me.mvp.users.show.UserShow_View;
+import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
@@ -696,9 +700,12 @@ public class CardShow_View extends BaseView implements
     }
 
     private void displayTextCard(Card card) {
-        Log.d(TAG, "displayTextCard(), "+card);
-        quoteView.setText(card.getQuote());
+        SpannableString spannableQuote = MVPUtils.aspects2images(this, card.getQuote());
+
+        quoteView.setText(spannableQuote);
+
         MyUtils.show(quoteView);
+
         displayCommonCardParts(card);
     }
 

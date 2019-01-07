@@ -7,7 +7,10 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 
@@ -26,6 +29,7 @@ import java.util.regex.Pattern;
 
 import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class MVPUtils {
@@ -35,6 +39,9 @@ public class MVPUtils {
     private static Map<String,String> imagePatterns = new HashMap<>();
     private static List<String> correctCardTypes = new ArrayList<>();
     private static final List<String> upperCaseTags = new ArrayList<>();
+
+    private static final Map<String,Integer> aspectsMap = new HashMap<>();
+    private static final List<String> aspectsBorders = new ArrayList<>();
 
     static {
         correctCardTypes.add(Constants.TEXT_CARD);
@@ -70,6 +77,23 @@ public class MVPUtils {
         upperCaseTags.add("ЧЛ");
         upperCaseTags.add("БИ");
     }
+
+    static {
+        aspectsMap.put("ЧЭ", R.drawable.aspect_emotion);
+        aspectsMap.put("ЧС", R.drawable.aspect_force);
+        aspectsMap.put("ЧИ", R.drawable.aspect_intuition);
+        aspectsMap.put("БЛ", R.drawable.aspect_logic);
+        aspectsMap.put("ЧЛ", R.drawable.aspect_practice);
+        aspectsMap.put("БЭ", R.drawable.aspect_relation);
+        aspectsMap.put("БС", R.drawable.aspect_sence);
+        aspectsMap.put("БИ", R.drawable.aspect_time);
+
+        aspectsBorders.add("()");
+        aspectsBorders.add("[]");
+        aspectsBorders.add("**");
+        aspectsBorders.add("\"\"");
+    }
+
 
     private MVPUtils(){}
 
@@ -277,5 +301,25 @@ public class MVPUtils {
 
         bitmap.compress(compressFormat, Config.DEFAULT_JPEG_QUALITY, baos);
         return baos.toByteArray();
+    }
+
+    public static SpannableString aspects2images(Context context, String inputText) {
+
+        SpannableString spannableString = new SpannableString(inputText);
+
+        for (Map.Entry<String,Integer> entry: aspectsMap.entrySet()) {
+
+            String aspectText = entry.getKey();
+            ImageSpan imageSpan = new ImageSpan(context, entry.getValue());
+
+            int index = inputText.indexOf(aspectText);
+            while (index > -1) {
+                int indexEnd = index + 2;
+                spannableString.setSpan(imageSpan, index, indexEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                index = inputText.indexOf(aspectText, indexEnd);
+            };
+        }
+
+        return spannableString;
     }
 }

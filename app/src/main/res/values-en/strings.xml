@@ -16,7 +16,7 @@
     <string name="card_load_error">Error loading card</string>
     <string name="card_load_canceled">Card loading cancelled</string>
     <string name="opening_card">Opening card</string>
-    <string name="loading_cards_list">Loading cards list</string>
+    <string name="loading_cards_list">Loading cardList list</string>
     <string name="image_placeholder">Image stub</string>
     <string name="wrong_card_type">Unknown card type</string>
     <string name="error_loading_image">Error loading image</string>
@@ -229,5 +229,10 @@
     <string name="CARD_EDIT_error_loading_tags_list">Error loading tags list</string>
     <string name="INFO_you_must_be_logged_in">You must be logged in</string>
     <string name="EXTERNAL_DATA_RECIEVER_page_title">External data receiver</string>
-    <string name="CARDS_LIST_loading_list">Loading cards list</string>
+    <string name="CARDS_LIST_loading_list">Loading cardList list</string>
+    <string name="CARDS_GRID_loading_cards">Loading cardList</string>
+    <string name="CARDS_GRID_page_title">Cards</string>
+    <string name="MENU_grid_view">Grid view</string>
+    <string name="MENU_list_view">List view</string>
+    <string name="CARDS_GRID_error_no_such_card">No such card</string>
 </resources>

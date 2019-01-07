@@ -56,6 +56,7 @@ public class CardShow_Presenter implements
         commentsService.loadList(card.getKey(), this);
     }
 
+
     // Изменение рейтинга
     @Override
     public void rateCardUp() {
@@ -205,8 +206,6 @@ public class CardShow_Presenter implements
 
 
     // Оценка комментария
-
-
     @Override
     public void rateCommentUp(Comment comment, iCommentsSingleton.RatingCallbacks callbacks) {
         if (authService.isUserLoggedIn()) {
@@ -220,6 +219,7 @@ public class CardShow_Presenter implements
             commentsService.rateDown(comment.getKey(), authService.currentUserId(), callbacks);
         }
     }
+
 
     // Реакция на кнопки
     @Override
