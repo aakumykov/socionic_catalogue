@@ -54,6 +54,7 @@ public class UserEdit_View extends BaseView implements
     @BindView(R.id.avatarView) ImageView avatarView;
 
     @BindView(R.id.nameInput) EditText nameInput;
+    @BindView(R.id.emailInput) EditText emailInput;
     @BindView(R.id.aboutInput) EditText aboutInput;
 
     @BindView(R.id.saveButton) Button saveButton;
@@ -150,7 +151,9 @@ public class UserEdit_View extends BaseView implements
     public void fillUserForm(User user) {
         Log.d(TAG, "fillUserForm()");
         hideProgressBar();
+
         nameInput.setText(user.getName());
+        emailInput.setText(user.getEmail());
         aboutInput.setText(user.getAbout());
 
         if (user.hasAvatar())
