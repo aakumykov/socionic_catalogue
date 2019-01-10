@@ -133,7 +133,7 @@ public class Card implements Parcelable {
         return key;
     }
     public String getType() {
-        return type;
+        return type + "";
     }
     public String getTitle() {
         return title;
@@ -289,16 +289,18 @@ public class Card implements Parcelable {
     }
 
     @Exclude public boolean isTextCard() {
-        return getType().equals(Constants.TEXT_CARD);
+        // TODO: метод вызывает исключение, если данные повреждены
+//        return getType().equals(Constants.TEXT_CARD);
+        return Constants.TEXT_CARD.equals(getType()); // Устойчивый к отсутствию данных вариант.
     }
     @Exclude public boolean isImageCard() {
-        return getType().equals(Constants.IMAGE_CARD);
+        return Constants.IMAGE_CARD.equals(getType());
     }
     @Exclude public boolean isVideoCard() {
-        return getType().equals(Constants.VIDEO_CARD);
+        return Constants.VIDEO_CARD.equals(getType());
     }
     @Exclude public boolean isAudioCard() {
-        return getType().equals(Constants.AUDIO_CARD);
+        return Constants.AUDIO_CARD.equals(getType());
     }
 
     @Exclude public boolean hasImageURL() {
