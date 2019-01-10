@@ -245,6 +245,7 @@ public class UserEdit_View extends BaseView implements
     @OnClick(R.id.saveButton)
     void saveUser() {
         try {
+            hideMsg();
             presenter.saveProfile();
         } catch (Exception e) {
             showErrorMsg(R.string.USER_EDIT_error_saving_user, e.getMessage());

@@ -263,6 +263,7 @@ public class Users_Presenter implements
             usersService.saveUser(currentUser, new iUsersSingleton.SaveCallbacks() {
                 @Override
                 public void onUserSaveSuccess(User user) {
+                    editView.showToast(R.string.USER_EDIT_profile_saved);
                     editView.finishEdit(user, true);
                 }
 

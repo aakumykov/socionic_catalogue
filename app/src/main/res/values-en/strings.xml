@@ -239,4 +239,5 @@
     <string name="DIALOG_do_login">Login</string>
     <string name="DIALOG_do_not_login">Do not login</string>
     <string name="CARD_SHOW_edition_is_cancelled">Edition is cancelled</string>
+    <string name="USER_EDIT_profile_saved">Profile saved</string>
 </resources>

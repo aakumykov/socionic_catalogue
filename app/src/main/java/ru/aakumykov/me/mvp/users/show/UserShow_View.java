@@ -175,9 +175,11 @@ public class UserShow_View extends BaseView implements
 
     @Override
     public void goUserEdit() {
-        Intent intent = new Intent(this, UserEdit_View.class);
-        intent.putExtra(Constants.USER_ID, currentUser.getKey());
-        startActivityForResult(intent, Constants.CODE_USER_EDIT);
+        if (null != currentUser) {
+            Intent intent = new Intent(this, UserEdit_View.class);
+            intent.putExtra(Constants.USER_ID, currentUser.getKey());
+            startActivityForResult(intent, Constants.CODE_USER_EDIT);
+        }
     }
 
 
