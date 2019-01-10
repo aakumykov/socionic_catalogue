@@ -169,7 +169,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public void showErrorMsg(int messageId, String consoleMessage) {
-        showErrorMsg(messageId);
+        String msg = (Config.DEBUG_MODE) ? consoleMessage : getResources().getString(messageId);
+        showErrorMsg(msg);
         Log.e(TAG, consoleMessage);
     }
 
@@ -183,15 +184,24 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     public void showErrorMsg(String message) {
         hideProgressBar();
-        showMsg(message, getResources().getColor(R.color.error));
+        showMsg(message, getResources().getColor(R.color.error), getResources().getColor(R.color.error_background));
         Log.e(TAG, message);
     }
 
     private void showMsg(String text, int color) {
+        showMsg(text, color, null);
+    }
+
+    private void showMsg(String text, int textColor, @Nullable Integer backgroundColor) {
         TextView messageView = findViewById(R.id.messageView);
+
+        if (null == backgroundColor)
+            backgroundColor = getResources().getColor(R.color.background_default);
+
         if (null != messageView) {
             messageView.setText(text);
-            messageView.setTextColor(color);
+            messageView.setTextColor(textColor);
+            messageView.setBackgroundColor(backgroundColor);
             MyUtils.show(messageView);
         } else {
             Log.w(TAG, "messageView not found");

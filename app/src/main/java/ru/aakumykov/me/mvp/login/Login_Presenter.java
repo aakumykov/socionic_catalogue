@@ -1,5 +1,9 @@
 package ru.aakumykov.me.mvp.login;
 
+import android.content.Intent;
+import android.support.annotation.Nullable;
+
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
@@ -46,6 +50,15 @@ public class Login_Presenter implements
         view.finishLogin(true);
     }
 
+    @Override
+    public void processInputIntent(@Nullable Intent intent) {
+        if (null != intent) {
+            String action = intent.getAction() + "";
+            if (action.equals(Constants.ACTION_LOGIN_FOR_COMMENT)) {
+
+            }
+        }
+    }
 
     // Методы обратного вызова
     @Override

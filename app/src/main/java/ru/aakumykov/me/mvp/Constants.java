@@ -15,6 +15,7 @@ public final class Constants {
 
     public final static String ACTION_CREATE = "ACTION_CREATE";
     public final static String ACTION_EDIT = "ACTION_EDIT";
+    public final static String ACTION_LOGIN_FOR_COMMENT = "ACTION_LOGIN_FOR_COMMENT";
 
     public final static String TAG_FILTER = "TAG_FILTER";
     public final static String TAG_KEY = "TAG_KEY";
@@ -42,6 +43,7 @@ public final class Constants {
     public final static int CODE_SELECT_IMAGE = 25;
     public final static int CODE_USER_EDIT = 30;
     public final static int CODE_FORCE_SETUP_USER_NAME = 40;
+    public final static int CODE_LOGIN_FOR_COMMENT = 50;
 
     public final static int TAG_MIN_LENGTH = 2;
     public final static int TAG_MAX_LENGTH = 40;

@@ -13,7 +13,11 @@
     <color name="undefined">#a4a4a4</color>
     <color name="info">#92a4ff</color>
     <color name="warning">#FF7140</color>
-    <color name="error">@color/colorAccent</color>
+    <color name="error">#ff4081</color>
+    <color name="error_background">#ffe2ec</color>
+
+    <!--<color name="text_default">#5c5c5c</color>-->
+    <color name="background_default">@color/white</color>
 
     <!-- Цвета крутилки на протягивании -->
     <color name="blue_swipe">#00ddff</color>

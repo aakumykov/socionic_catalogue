@@ -4,6 +4,8 @@ public final class Config {
 
     private Config() {}
 
+    public final static boolean DEBUG_MODE = true;
+
     public final static String YOUTUBE_API_KEY = "AIzaSyDmoNN5aMSvJflpt6bjQdTWfPc7CHtz3i4";
 
     public static final int AVATAR_MAX_WIDTH = 256;

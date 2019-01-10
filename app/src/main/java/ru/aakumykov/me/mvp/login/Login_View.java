@@ -45,6 +45,7 @@ public class Login_View extends BaseView implements
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
+        presenter.processInputIntent(getIntent());
     }
 
     @Override

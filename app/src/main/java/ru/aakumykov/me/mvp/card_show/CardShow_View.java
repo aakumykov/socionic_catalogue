@@ -50,6 +50,7 @@ import ru.aakumykov.me.mvp.comment.CommentsAdapter;
 import ru.aakumykov.me.mvp.comment.iComments;
 import ru.aakumykov.me.mvp.interfaces.iCommentsSingleton;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
+import ru.aakumykov.me.mvp.login.Login_View;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.models.Comment;
 import ru.aakumykov.me.mvp.models.User;
@@ -197,34 +198,22 @@ public class CardShow_View extends BaseView implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.d(TAG, "onActivityResult("+requestCode+", "+requestCode+", ...), "+data);
         super.onActivityResult(requestCode, resultCode, data);
 
         presenter.linkView(this); // обязательно
 
-        if (RESULT_OK == resultCode) {
+        switch (requestCode) {
 
-            switch (requestCode) {
+            case Constants.CODE_EDIT_CARD:
+                processEditionResult(resultCode, data);
+                break;
 
-                case Constants.CODE_EDIT_CARD:
-                    if (null != data) {
-                        Card card = data.getParcelableExtra(Constants.CARD);
-                        displayCard(card);
-                    } else {
-                        showErrorMsg(R.string.error_displaying_card);
-                        Log.e(TAG, "Intent data in activity result == null.");
-                    }
-                    break;
+            case Constants.CODE_LOGIN_FOR_COMMENT:
+                processLoginForComment(resultCode, data);
+                break;
 
-//                case Constants.CODE_FORCE_SETUP_USER_NAME:
-//                    proceedPostComment(data);
-//                    break;
-
-                default:
-                    /*showErrorMsg(R.string.unknown_request_code,
-                            "Unknown request code: "+requestCode);*/
-                    break;
-            }
+            default:
+                break;
         }
     }
 
@@ -594,6 +583,7 @@ public class CardShow_View extends BaseView implements
         MyUtils.show(cardRatingView);
     }
 
+
     // Меток методы
     @Override
     public void onTagClick(int position, String text) {
@@ -764,13 +754,39 @@ public class CardShow_View extends BaseView implements
     }
 
     private void showCommentForm() {
+
         if (auth().isUserLoggedIn()) {
+
             MyUtils.hide(addCommentButton);
             MyUtils.show(commentForm);
             commentInput.requestFocus();
             MyUtils.showKeyboard(this, commentInput);
+
         } else {
-            showToast(R.string.DIALOG_login_first);
+//            showToast(R.string.DIALOG_login_first);
+            MyDialogs.loginRequiredDialog(this, new iMyDialogs.StandardCallbacks() {
+                @Override
+                public void onCancelInDialog() {
+
+                }
+
+                @Override
+                public void onNoInDialog() {
+
+                }
+
+                @Override
+                public boolean onCheckInDialog() {
+                    return true;
+                }
+
+                @Override
+                public void onYesInDialog() {
+                    Intent intent = new Intent(CardShow_View.this, Login_View.class);
+                    intent.setAction(Constants.ACTION_LOGIN_FOR_COMMENT);
+                    startActivityForResult(intent, Constants.CODE_LOGIN_FOR_COMMENT);
+                }
+            });
         }
     }
 
@@ -982,5 +998,47 @@ public class CardShow_View extends BaseView implements
         Intent intent = new Intent(this, UserShow_View.class);
         intent.putExtra(Constants.USER_ID, currentCard.getUserId());
         startActivity(intent);
+    }
+
+    private void processEditionResult(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+
+            case RESULT_OK:
+                if (null != data) {
+                    Card card = data.getParcelableExtra(Constants.CARD);
+                    displayCard(card);
+                } else {
+                    showErrorMsg(R.string.error_displaying_card);
+                    Log.e(TAG, "Intent data in activity result == null.");
+                }
+                break;
+
+            case RESULT_CANCELED:
+                showToast(R.string.CARD_SHOW_edition_is_cancelled);
+                break;
+
+            default:
+                showErrorMsg(R.string.error_saving_card);
+                break;
+        }
+    }
+
+    private void processLoginForComment(int resultCode, @Nullable Intent data) {
+
+        switch (resultCode) {
+
+            case RESULT_OK:
+                showCommentForm();
+                break;
+
+            case RESULT_CANCELED:
+                showToast(R.string.login_canceled);
+                break;
+
+            default:
+                showErrorMsg(R.string.login_error);
+                break;
+        }
+
     }
 }

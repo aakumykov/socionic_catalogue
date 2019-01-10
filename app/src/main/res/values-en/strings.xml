@@ -235,4 +235,8 @@
     <string name="MENU_grid_view">Grid view</string>
     <string name="MENU_list_view">List view</string>
     <string name="CARDS_GRID_error_no_such_card">No such card</string>
+    <string name="DIALOG_login_required">Login required</string>
+    <string name="DIALOG_do_login">Login</string>
+    <string name="DIALOG_do_not_login">Do not login</string>
+    <string name="CARD_SHOW_edition_is_cancelled">Edition is cancelled</string>
 </resources>

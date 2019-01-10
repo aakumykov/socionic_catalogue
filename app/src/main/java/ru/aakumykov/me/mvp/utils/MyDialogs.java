@@ -35,6 +35,26 @@ public class MyDialogs {
         ).show();
     }
 
+
+    // Диалог необходимости входа
+    public static void loginRequiredDialog(Activity activity, iMyDialogs.StandardCallbacks callbacks) {
+        String title = activity.getString(R.string.DIALOG_login_required);
+
+        AlertDialog alertDialog = basicDialog(
+                activity,
+                title,
+                null,
+                R.string.DIALOG_do_login,
+                R.string.DIALOG_do_not_login,
+                null,
+                R.drawable.ic_login, // TODO: не видать
+                null,
+                callbacks
+        );
+
+        alertDialog.show();
+    }
+
     // TODO: сделать единый диалог ввода строки
     // Диалог добавления код видео
     public static void addYoutubeVideoDialog(Activity activity, final iMyDialogs.StringInputCallback callbacks) {
