@@ -34,6 +34,7 @@ public class StorageSingleton implements iStorageSingleton {
     private StorageReference rootRef = firebaseStorage.getReference().child("/");
     private StorageReference imagesRef = firebaseStorage.getReference().child(Constants.IMAGES_PATH);
     private StorageReference avatarsRef = firebaseStorage.getReference().child(Constants.AVATARS_PATH);
+    private String fileName;
 
 
     // Интерфейсные методы
@@ -92,7 +93,9 @@ public class StorageSingleton implements iStorageSingleton {
     }
     
     private void uploadFile(byte[] fileBytesArray, String remoteDirectoryName, String remoteFileName, iStorageSingleton.FileUploadCallbacks callbacks) {
-        
+
+        this.fileName = remoteFileName;
+
         final StorageReference fileRef = rootRef.child(remoteDirectoryName+"/"+remoteFileName);
         UploadTask uploadTask = fileRef.putBytes(fileBytesArray);
         doUpload(uploadTask, fileRef, callbacks);
@@ -118,7 +121,7 @@ public class StorageSingleton implements iStorageSingleton {
                                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        callbacks.onFileUploadSuccess(uri.toString());
+                                        callbacks.onFileUploadSuccess(fileName, uri.toString());
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {

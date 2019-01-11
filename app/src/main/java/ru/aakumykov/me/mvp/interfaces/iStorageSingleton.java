@@ -13,7 +13,7 @@ public interface iStorageSingleton {
 
     interface FileUploadCallbacks {
         void onFileUploadProgress(int progress);
-        void onFileUploadSuccess(String downloadURL);
+        void onFileUploadSuccess(String fileName, String downloadURL);
         void onFileUploadFail(String errorMsg);
         void onFileUploadCancel();
     }
