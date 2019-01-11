@@ -9,7 +9,6 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCommentsSingleton;
-import ru.aakumykov.me.mvp.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.mvp.interfaces.iStorageSingleton;
 import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
@@ -98,7 +97,6 @@ public class CardsList_Presenter implements
 
     }
 
-
     @Override
     public void onCardDeleteSuccess(Card card) {
         Log.d(TAG, "onCardDeleteSuccess()");
@@ -107,6 +105,26 @@ public class CardsList_Presenter implements
         view.showToast(R.string.card_deleted);
         view.removeListItem(card);
 
+        deleteCardTags(card);
+        deleteCardComments(card);
+        deleteCardImage(card);
+    }
+
+    @Override
+    public void onCardDeleteError(String msg) {
+        Log.d(TAG, "onCardDeleteError()");
+        view.hideProgressBar();
+        view.showErrorMsg(R.string.CARDS_LIST_error_deleting_card, msg);
+    }
+
+
+    // Внутренние методы
+    private void performDeleteCard(Card card) {
+        Log.d(TAG, "performDeleteCard(), "+card);
+
+    }
+
+    private void deleteCardTags(Card card){
         try {
             tagsService.updateCardTags(
                     currentCard.getKey(),
@@ -124,36 +142,53 @@ public class CardsList_Presenter implements
                         }
                     }
             );
+
+            storageService.deleteImage(card.getFileName(), new iStorageSingleton.FileDeletionCallbacks() {
+                @Override
+                public void onDeleteSuccess() {
+
+                }
+
+                @Override
+                public void onDeleteFail(String errorMSg) {
+
+                }
+            });
+
+            commentsService.deleteCommentsForCard(card.getKey());
+
+
         } catch (Exception e) {
             view.showErrorMsg(R.string.error_updating_card_tags, e.getMessage());
             e.printStackTrace();
         }
+    }
 
-//        try {
-//            storageService.deleteImage();
-//        } catch (Exception e) {
-//
-//        }
-
+    private void deleteCardComments(Card card) {
         try {
             commentsService.deleteCommentsForCard(card.getKey());
         } catch (Exception e) {
-            view.showErrorMsg(R.string.CARDS_LIST_error_deleting_card, e.getMessage());
+            view.showErrorMsg(R.string.error_deleting_card_comments, e.getMessage());
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void onCardDeleteError(String msg) {
-        Log.d(TAG, "onCardDeleteError()");
-        view.hideProgressBar();
-        view.showErrorMsg(R.string.CARDS_LIST_error_deleting_card, msg);
-    }
+    private void deleteCardImage(Card card) {
+        try {
+            storageService.deleteImage(card.getFileName(), new iStorageSingleton.FileDeletionCallbacks() {
+                @Override
+                public void onDeleteSuccess() {
 
+                }
 
-    // Внутренние методы
-    private void performDeleteCard(Card card) {
-        Log.d(TAG, "performDeleteCard(), "+card);
+                @Override
+                public void onDeleteFail(String errorMSg) {
 
+                }
+            });
+        } catch (Exception e) {
+            view.showErrorMsg(R.string.error_deleting_card_image, e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

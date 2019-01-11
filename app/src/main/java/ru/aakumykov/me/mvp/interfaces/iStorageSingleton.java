@@ -1,7 +1,6 @@
 package ru.aakumykov.me.mvp.interfaces;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 
 public interface iStorageSingleton {
 
@@ -9,7 +8,8 @@ public interface iStorageSingleton {
 //    void uploadImage(Uri localImageURI, String remoteImagePath, FileUploadCallbacks callbacks);
 //    void uploadImage(byte[] imageByteArray, String remoteImagePath, FileUploadCallbacks callbacks);
     void uploadAvatar(Bitmap bitmap, String imageType, String remoteImagePath, FileUploadCallbacks callbacks);
-    void deleteImage(String remoteImagePath, FileDeleteCallbacks callbacks);
+    void deleteImage(String imageFileName, FileDeletionCallbacks callbacks);
+    void deleteAvatar(String avatarFileName, FileDeletionCallbacks callbacks);
 
     interface FileUploadCallbacks {
         void onFileUploadProgress(int progress);
@@ -18,7 +18,7 @@ public interface iStorageSingleton {
         void onFileUploadCancel();
     }
 
-    interface FileDeleteCallbacks {
+    interface FileDeletionCallbacks {
         void onDeleteSuccess();
         void onDeleteFail(String errorMSg);
     }

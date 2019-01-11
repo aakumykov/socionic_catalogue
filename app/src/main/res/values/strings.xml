@@ -246,4 +246,6 @@
     <string name="CARD_SHOW_edition_is_cancelled">Редактирование отменено</string>
     <string name="USER_EDIT_profile_saved">Профиль сохранён</string>
     <string name="error_updating_card_tags">Ошибка обновления меток карточки</string>
+    <string name="error_deleting_card_image">Ошибка удаления изображения</string>
+    <string name="error_deleting_card_comments">Ошибка удаления комментариев к карточке</string>
 </resources>
