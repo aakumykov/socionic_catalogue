@@ -99,8 +99,6 @@ public class CardsList_Presenter implements
 
     @Override
     public void onCardDeleteSuccess(Card card) {
-        Log.d(TAG, "onCardDeleteSuccess()");
-
         view.hideProgressBar();
         view.showToast(R.string.card_deleted);
         view.removeListItem(card);
