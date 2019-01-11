@@ -35,7 +35,6 @@ public class MyDialogs {
         ).show();
     }
 
-
     // Диалог необходимости входа
     public static void loginRequiredDialog(Activity activity, iMyDialogs.StandardCallbacks callbacks) {
         String title = activity.getString(R.string.DIALOG_login_required);
@@ -52,6 +51,24 @@ public class MyDialogs {
                 callbacks
         );
 
+        alertDialog.show();
+    }
+
+    // Диалог необходимости установки имени пользователя
+    public static void userNameRequiredDialog(Activity activity, iMyDialogs.StandardCallbacks callbacks) {
+        String title = activity.getResources().getString(R.string.DIALOG_user_name_required_title);
+        String message = activity.getResources().getString(R.string.DIALOG_user_name_required_message);
+        AlertDialog alertDialog = basicDialog(
+                activity,
+                title,
+                message,
+                R.string.yes,
+                R.string.no,
+                null,
+                R.drawable.ic_person,
+                null,
+                callbacks
+        );
         alertDialog.show();
     }
 

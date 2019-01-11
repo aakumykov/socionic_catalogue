@@ -243,4 +243,6 @@
     <string name="error_updating_card_tags">Error updating card\'s tags</string>
     <string name="error_deleting_card_image">Error deleting card\'s image</string>
     <string name="error_deleting_card_comments">Error deleting card\'s comments</string>
+    <string name="DIALOG_user_name_required_title">User name required</string>
+    <string name="DIALOG_user_name_required_message">You must set user name to add comment</string>
 </resources>
