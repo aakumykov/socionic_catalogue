@@ -17,6 +17,7 @@ public class User implements Parcelable {
     private String name;
     private String email;
     private String about;
+    private String avatarFileName;
     private String avatarURL;
     private boolean emailVerified = false;
     private HashMap<String, Boolean> cardsKeys;
@@ -29,26 +30,6 @@ public class User implements Parcelable {
         this.key = userId;
     }
 
-    public User(
-            String name,
-            String email,
-            @Nullable String about,
-            @Nullable String avatarURL
-    ) throws  IllegalArgumentException
-    {
-        if (TextUtils.isEmpty(name)) throw new IllegalArgumentException("Name cannot be empty.");
-        this.name = name;
-
-        // TODO: проверять REGEXP-ом
-        if (TextUtils.isEmpty(email)) throw new IllegalArgumentException("Email cannot be empty.");
-        this.email = email;
-
-        if (null != about) this.about = about;
-
-        if (null != avatarURL) this.avatarURL = avatarURL;
-    }
-
-
     // Преобразователи
     @Override
     @Exclude
@@ -58,6 +39,7 @@ public class User implements Parcelable {
                 ", name: "+name+
                 ", email: "+email+
                 ", about: "+about+
+                ", avatarFileName: "+avatarFileName+
                 ", avatarURL: "+avatarURL+
                 ", emailVerified: "+emailVerified+
                 ", cardsKeys: "+cardsKeys+
@@ -72,6 +54,7 @@ public class User implements Parcelable {
         map.put("name", name);
         map.put("email", email);
         map.put("about", about);
+        map.put("avatarFileName", avatarFileName);
         map.put("avatarURL", avatarURL);
         map.put("emailVerified", emailVerified);
         map.put("cardsKeys", cardsKeys);
@@ -105,6 +88,7 @@ public class User implements Parcelable {
         dest.writeString(name);
         dest.writeString(email);
         dest.writeString(about);
+        dest.writeString(avatarFileName);
         dest.writeString(avatarURL);
         dest.writeString(String.valueOf(emailVerified));
         dest.writeMap(this.cardsKeys);
@@ -117,6 +101,7 @@ public class User implements Parcelable {
         name = in.readString();
         email = in.readString();
         about = in.readString();
+        avatarFileName = in.readString();
         avatarURL = in.readString();
         emailVerified = in.readString().equals("1");
         cardsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
@@ -151,6 +136,13 @@ public class User implements Parcelable {
     }
     public void setAbout(String about) {
         this.about = about;
+    }
+
+    public String getAvatarFileName() {
+        return avatarFileName;
+    }
+    public void setAvatarFileName(String avatarFileName) {
+        this.avatarFileName = avatarFileName;
     }
 
     public String getAvatarURL() {
