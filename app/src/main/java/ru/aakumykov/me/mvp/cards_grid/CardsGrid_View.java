@@ -88,6 +88,20 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case Constants.CODE_CREATE_CARD:
+                addCardToList(data);
+                break;
+            default:
+                showErrorMsg(R.string.unknown_request_code);
+                break;
+        }
+    }
+
+    @Override
     public void onUserLogin() {
         MyUtils.show(floatingActionButton);
     }
@@ -167,6 +181,16 @@ public class CardsGrid_View extends BaseView implements
     private void goListView() {
         Intent intent = new Intent(this, CardsList_View.class);
         startActivity(intent);
+    }
+
+    private void addCardToList(@Nullable Intent data) {
+        if (null != data) {
+            Card card = data.getParcelableExtra(Constants.CARD);
+            if (null != card) {
+                cardsList.add(card);
+                dataAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     private void showCard(String cardKey) {
