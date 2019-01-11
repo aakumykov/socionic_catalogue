@@ -25,6 +25,7 @@ public class Card implements Parcelable {
     private String title;
     private String quote;
     private String imageURL;
+    private String fileName;
     private String videoCode;
     private String description;
     private HashMap<String, Boolean> tags;
@@ -33,14 +34,12 @@ public class Card implements Parcelable {
     private int commentsCount = 0;
     private HashMap<String, Boolean> commentsKeys/* = new HashMap<>()*/;
     private Integer rating = 0;
-    private HashMap<String, Boolean> rate2DownList/* = new HashMap<>()*/;
 
     public Card() {
 
     }
 
-    @Exclude
-    @Override
+    @Exclude @Override
     public String toString() {
         return "Card {"+
                 "  key: "+getKey()+
@@ -50,6 +49,7 @@ public class Card implements Parcelable {
                 ", title: "+getTitle()+
                 ", quote: "+getQuote()+
                 ", imageURL: "+imageURL+
+                ", fileName: "+fileName+
                 ", videoCode: "+videoCode +
                 ", description: "+getDescription()+
                 ", tags: "+ getTags()+
@@ -58,7 +58,6 @@ public class Card implements Parcelable {
                 ", commentsCount: "+getCommentsCount()+
                 ", commentsKeys: "+getCommentsKeys()+
                 ", rating: "+getRating()+
-                ", rate2DownList: "+ rate2DownList +
             " }";
     }
 
@@ -74,6 +73,7 @@ public class Card implements Parcelable {
         dest.writeString(this.title);
         dest.writeString(this.quote);
         dest.writeString(this.imageURL);
+        dest.writeString(this.fileName);
         dest.writeString(this.videoCode);
         dest.writeString(this.description);
         dest.writeMap(this.tags);
@@ -82,7 +82,6 @@ public class Card implements Parcelable {
         dest.writeInt(this.commentsCount);
         dest.writeMap(this.commentsKeys);
         dest.writeInt(this.rating);
-        dest.writeMap(this.rate2DownList);
     }
 
     protected Card(Parcel in) {
@@ -94,6 +93,7 @@ public class Card implements Parcelable {
         title = in.readString();
         quote = in.readString();
         imageURL = in.readString();
+        fileName = in.readString();
         videoCode = in.readString();
         description = in.readString();
         tags = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
@@ -102,7 +102,6 @@ public class Card implements Parcelable {
         commentsCount = in.readInt();
         commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         rating = in.readInt();
-        rate2DownList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
     }
 
     @Override
@@ -143,6 +142,9 @@ public class Card implements Parcelable {
     }
     public String getImageURL() {
         return imageURL;
+    }
+    public String getFileName() {
+        return fileName;
     }
     public String getVideoCode() {
         return videoCode;
@@ -202,6 +204,9 @@ public class Card implements Parcelable {
             if (null == uri) throw new IllegalArgumentException("Error parsing imageURL");
             this.imageURL = imageURL;
     }
+    public void setFileName(String fileName) throws IllegalArgumentException {
+            this.fileName = fileName;
+    }
     public void setVideoCode(String videoCode) throws IllegalArgumentException {
             Uri uri = Uri.parse(videoCode);
             if (null == uri) throw new IllegalArgumentException("Error parsing videoCode");
@@ -252,13 +257,6 @@ public class Card implements Parcelable {
         if (null != this.rateUpList) this.rateUpList.remove(userId);
     }
 
-    @Exclude public void setRate2DownList(Map<String,Boolean> rateDownMap) {
-        this.rate2DownList.putAll(rateDownMap);
-    }
-    @Exclude public Map<String,Boolean> getRate2DownList() {
-        if (null == this.rate2DownList) this.rate2DownList = new HashMap<>();
-        return this.rate2DownList;
-    }
     @Exclude private void setRating(int ratingValue) {
         this.rating = ratingValue;
     }
