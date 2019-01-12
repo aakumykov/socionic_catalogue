@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
@@ -41,6 +42,10 @@ public class CardsGrid_View extends BaseView implements
     private iCardsGrid.Presenter presenter;
     private List<Card> cardsList = new ArrayList<>();
     private CardsGrid_Adapter dataAdapter;
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
+    private LinearLayoutManager linearLayoutManager;
+
+    private boolean gridMode = true;
     private boolean firstRun = true;
 
 
@@ -58,10 +63,9 @@ public class CardsGrid_View extends BaseView implements
 
         presenter = new CardsGrid_Presenter();
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(
-                2,
-                StaggeredGridLayoutManager.VERTICAL);
-//        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        linearLayoutManager = new LinearLayoutManager(this);
+
         dataAdapter = new CardsGrid_Adapter(this, cardsList);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.setAdapter(dataAdapter);
@@ -114,7 +118,9 @@ public class CardsGrid_View extends BaseView implements
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
 
-        menuInflater.inflate(R.menu.list_view, menu);
+        if (gridMode) menuInflater.inflate(R.menu.list_view, menu);
+        else  menuInflater.inflate(R.menu.grid_view, menu);
+
         menuInflater.inflate(R.menu.tags, menu);
 
         return super.onCreateOptionsMenu(menu);
@@ -122,13 +128,21 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
+
             case R.id.actionListView:
-                goListView();
+                activateListView();
                 break;
+
+            case R.id.actionGridView:
+                activateGridView();
+                break;
+
             default:
                 super.onOptionsItemSelected(item);
         }
+
         return true;
     }
 
@@ -197,5 +211,21 @@ public class CardsGrid_View extends BaseView implements
         Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, cardKey);
         startActivity(intent);
+    }
+
+    private void activateListView() {
+        gridMode = false;
+        dataAdapter.activateListLayout(); // TODO: попробовать передвинуть строку
+        recyclerView.setLayoutManager(linearLayoutManager);
+        invalidateOptionsMenu();
+        dataAdapter.notifyDataSetChanged();
+    }
+
+    private void activateGridView() {
+        gridMode = true;
+        dataAdapter.activateGridLayout();
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);
+        invalidateOptionsMenu();
+        dataAdapter.notifyDataSetChanged();
     }
 }

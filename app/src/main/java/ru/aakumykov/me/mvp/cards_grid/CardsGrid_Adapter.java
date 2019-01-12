@@ -32,6 +32,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
     private LayoutInflater inflater;
     private List<Card> cardList;
     private iOnItemClickListener onItemClickListener;
+    private boolean gridMode = true;
 
     CardsGrid_Adapter(Context context, List<Card> cardList) {
         this.cardList = cardList;
@@ -42,7 +43,10 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
     @NonNull @Override
     public CardsGrid_Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = inflater.inflate(R.layout.cards_grid_item, parent, false);
+        View view = (gridMode) ?
+                inflater.inflate(R.layout.cards_grid_item, parent, false)
+                :
+                inflater.inflate(R.layout.cards_list_item, parent, false);
 
         return new ViewHolder(view);
     }
@@ -117,5 +121,13 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
 
     void unbindClickListener() {
         this.onItemClickListener = null;
+    }
+
+    public void activateListLayout() {
+        gridMode = false;
+    }
+
+    public void activateGridLayout() {
+        gridMode = true;
     }
 }
