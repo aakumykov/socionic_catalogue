@@ -56,7 +56,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundImage" value="$USER_HOME$/Изображения/icons/для программы/transparent-pixel.png" />
-                                      <entry key="foregroundImage" value="$USER_HOME$/Изображения/icons/3d-иконка/2.png" />
+                                      <entry key="foregroundImage" value="$USER_HOME$/Изображения/icons/3d-иконка/4.png" />
                                       <entry key="outputName" value="ic_launcher_4" />
                                     </map>
                                   </option>
