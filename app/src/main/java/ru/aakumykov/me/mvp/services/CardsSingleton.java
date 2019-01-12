@@ -44,7 +44,6 @@ public class CardsSingleton implements
     private DatabaseReference rootRef = firebaseDatabase.getReference("/");
     private DatabaseReference cardsRef = firebaseDatabase.getReference().child(Constants.CARDS_PATH);
 
-
     // Интерфейсные методы
     @Override
     public String createKey() {
@@ -103,21 +102,29 @@ public class CardsSingleton implements
 
     @Override
     public void deleteCard(final Card card, final  DeleteCallbacks callbacks) {
-        Log.d(TAG, "deleteCardConfigmed(), "+card);
 
-        DatabaseReference cardRef = cardsRef.child(card.getKey());
+        String cardKey = card.getKey();
+        String userId = card.getUserId();
 
-        cardRef.removeValue(new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                if (null == databaseError) {
-                    callbacks.onCardDeleteSuccess(card);
-                } else {
-                    callbacks.onCardDeleteError(databaseError.getMessage());
-                    databaseError.toException().printStackTrace();
-                }
-            }
-        });
+        Map<String,Object> updatePool = new HashMap<>();
+
+        updatePool.put(Constants.CARDS_PATH+"/"+cardKey, null);
+        updatePool.put(Constants.USERS_PATH+"/"+userId+"/cardsKeys/"+cardKey, null);
+
+        rootRef.updateChildren(updatePool)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onCardDeleteSuccess(card);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onCardDeleteError(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
     }
 
 

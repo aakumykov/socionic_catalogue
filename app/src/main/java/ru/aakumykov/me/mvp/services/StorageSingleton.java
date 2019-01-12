@@ -32,8 +32,9 @@ public class StorageSingleton implements iStorageSingleton {
     private final static String TAG = "StorageSingleton";
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     private StorageReference rootRef = firebaseStorage.getReference().child("/");
-    private StorageReference imagesRef = firebaseStorage.getReference().child(Constants.IMAGES_PATH);
-    private StorageReference avatarsRef = firebaseStorage.getReference().child(Constants.AVATARS_PATH);
+//    private StorageReference imagesRef = firebaseStorage.getReference().child(Constants.IMAGES_PATH);
+//    private StorageReference avatarsRef = firebaseStorage.getReference().child(Constants.AVATARS_PATH);
+    private String fileName;
 
 
     // Интерфейсные методы
@@ -44,16 +45,6 @@ public class StorageSingleton implements iStorageSingleton {
 
         uploadFile(imageBytesArray, Constants.IMAGES_PATH, fileName, callbacks);
     }
-    
-//    @Override
-//    public void uploadImage(Uri localImageURI, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
-//        uploadFile(localImageURI, Constants.IMAGES_PATH, fileName, callbacks);
-//    }
-//
-//    @Override
-//    public void uploadImage(byte[] imageBytesArray, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
-//        uploadFile(imageBytesArray, Constants.IMAGES_PATH, fileName, callbacks);
-//    }
 
     @Override
     public void uploadAvatar(Bitmap imageBitmap, String imageType, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
@@ -62,24 +53,16 @@ public class StorageSingleton implements iStorageSingleton {
     }
 
     @Override
-    public void deleteImage(String remoteImagePath, final iStorageSingleton.FileDeleteCallbacks callbacks) {
+    public void deleteImage(String imageFileName, final FileDeletionCallbacks callbacks) {
 
-        final StorageReference theImageRef = imagesRef.child("/"+remoteImagePath);
+        String filePath = "/" + Constants.IMAGES_PATH +"/"+ imageFileName;
+        deleteFile(filePath, callbacks);
+    }
 
-        theImageRef.delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onDeleteSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onDeleteFail(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
+    @Override
+    public void deleteAvatar(String avatarFileName, FileDeletionCallbacks callbacks) {
+        String filePath = "/" + Constants.AVATARS_PATH +"/"+ avatarFileName;
+        deleteFile(filePath, callbacks);
     }
 
 
@@ -92,7 +75,9 @@ public class StorageSingleton implements iStorageSingleton {
     }
     
     private void uploadFile(byte[] fileBytesArray, String remoteDirectoryName, String remoteFileName, iStorageSingleton.FileUploadCallbacks callbacks) {
-        
+
+        this.fileName = remoteFileName;
+
         final StorageReference fileRef = rootRef.child(remoteDirectoryName+"/"+remoteFileName);
         UploadTask uploadTask = fileRef.putBytes(fileBytesArray);
         doUpload(uploadTask, fileRef, callbacks);
@@ -118,7 +103,7 @@ public class StorageSingleton implements iStorageSingleton {
                                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        callbacks.onFileUploadSuccess(uri.toString());
+                                        callbacks.onFileUploadSuccess(fileName, uri.toString());
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -144,8 +129,25 @@ public class StorageSingleton implements iStorageSingleton {
                     }
                 });
     }
-    
-    private void deleteFile(String remoteFilePath, iStorageSingleton.FileDeleteCallbacks callbacks) {
+
+    private void deleteFile(String filePath, final iStorageSingleton.FileDeletionCallbacks callbacks) {
+
+        StorageReference fileRef = rootRef.child(filePath);
+
+        fileRef.delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onDeleteSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onDeleteFail(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
 
     }
 }

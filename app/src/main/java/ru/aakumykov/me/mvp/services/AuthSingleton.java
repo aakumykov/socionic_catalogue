@@ -161,6 +161,7 @@ public class AuthSingleton implements iAuthSingleton
     // Служебные
     @Override
     public void storeCurrentUser(final User user) {
+        // TODO: проверять на null, бросать исключение?
         this.currentUser = user;
     }
 

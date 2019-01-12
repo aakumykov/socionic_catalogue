@@ -219,8 +219,9 @@ public class Users_Presenter implements
     }
 
     @Override
-    public void onFileUploadSuccess(String downloadURL) {
+    public void onFileUploadSuccess(String fileName, String downloadURL) {
         editView.hideAvatarThrobber();
+        currentUser.setAvatarFileName(fileName);
         currentUser.setAvatarURL(downloadURL);
         saveUser();
     }

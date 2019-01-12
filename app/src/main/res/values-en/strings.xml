@@ -240,4 +240,9 @@
     <string name="DIALOG_do_not_login">Do not login</string>
     <string name="CARD_SHOW_edition_is_cancelled">Edition is cancelled</string>
     <string name="USER_EDIT_profile_saved">Profile saved</string>
+    <string name="error_updating_card_tags">Error updating card\'s tags</string>
+    <string name="error_deleting_card_image">Error deleting card\'s image</string>
+    <string name="error_deleting_card_comments">Error deleting card\'s comments</string>
+    <string name="DIALOG_user_name_required_title">User name required</string>
+    <string name="DIALOG_user_name_required_message">You must set user name to add comment</string>
 </resources>

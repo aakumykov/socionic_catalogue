@@ -212,6 +212,14 @@ public class CardShow_View extends BaseView implements
                 processLoginForComment(resultCode, data);
                 break;
 
+            case Constants.CODE_FORCE_SETUP_USER_NAME:
+                if (null != data) {
+                    User user = data.getParcelableExtra(Constants.USER);
+                    auth().storeCurrentUser(user);
+                }
+                addComment();
+                break;
+
             default:
                 break;
         }
@@ -273,22 +281,29 @@ public class CardShow_View extends BaseView implements
 
     @Override
     public void onClick(View v) {
+
         switch (v.getId()) {
+
             case R.id.authorView:
                 showAuthor();
                 break;
+
             case R.id.addCommentButton:
-                showCommentForm();
+                addComment();
                 break;
+
             case R.id.sendCommentButton:
                 sendComment();
                 break;
+
             case R.id.cardRateUpButton:
                 presenter.rateCardUp();
                 break;
+
             case R.id.cardRateDownButton:
                 presenter.rateCardDown();
                 break;
+
             default:
                 break;
         }
@@ -753,17 +768,41 @@ public class CardShow_View extends BaseView implements
         return commentRow;
     }
 
-    private void showCommentForm() {
+    private void addComment() {
 
         if (auth().isUserLoggedIn()) {
 
-            MyUtils.hide(addCommentButton);
-            MyUtils.show(commentForm);
-            commentInput.requestFocus();
-            MyUtils.showKeyboard(this, commentInput);
+            final User user = auth().currentUser();
 
-        } else {
-//            showToast(R.string.DIALOG_login_first);
+            if (!TextUtils.isEmpty(user.getName())) {
+                showCommentForm();
+            } else {
+                MyDialogs.userNameRequiredDialog(this, new iMyDialogs.StandardCallbacks() {
+                    @Override
+                    public void onCancelInDialog() {
+
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        Intent intent = new Intent(CardShow_View.this, UserEdit_View.class);
+                        intent.putExtra(Constants.USER_ID, user.getKey());
+                        startActivityForResult(intent, Constants.CODE_FORCE_SETUP_USER_NAME);
+                    }
+                });
+            }
+        }
+        else {
             MyDialogs.loginRequiredDialog(this, new iMyDialogs.StandardCallbacks() {
                 @Override
                 public void onCancelInDialog() {
@@ -788,6 +827,13 @@ public class CardShow_View extends BaseView implements
                 }
             });
         }
+    }
+
+    private void showCommentForm() {
+        MyUtils.hide(addCommentButton);
+        MyUtils.show(commentForm);
+        commentInput.requestFocus();
+        MyUtils.showKeyboard(this, commentInput);
     }
 
     private void sendComment() {

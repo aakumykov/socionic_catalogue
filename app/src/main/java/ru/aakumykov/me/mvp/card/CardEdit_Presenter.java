@@ -369,9 +369,10 @@ public class CardEdit_Presenter implements
     }
 
     @Override
-    public void onFileUploadSuccess(String downloadURL) {
+    public void onFileUploadSuccess(String fileName, String downloadURL) {
         view.hideImageProgressBar();
 
+        currentCard.setFileName(fileName);
         currentCard.setImageURL(downloadURL);
 
         try {
