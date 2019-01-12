@@ -96,7 +96,6 @@ public class CardsGrid_View extends BaseView implements
                 addCardToList(data);
                 break;
             default:
-                showErrorMsg(R.string.unknown_request_code);
                 break;
         }
     }
@@ -147,7 +146,8 @@ public class CardsGrid_View extends BaseView implements
         hideMsg();
         swiperefreshLayout.setRefreshing(false);
 
-        this.cardsList.addAll(list);
+        cardsList.clear();
+        cardsList.addAll(list);
         dataAdapter.notifyDataSetChanged();
     }
 
