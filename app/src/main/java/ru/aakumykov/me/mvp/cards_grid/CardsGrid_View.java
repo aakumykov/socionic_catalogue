@@ -215,17 +215,25 @@ public class CardsGrid_View extends BaseView implements
 
     private void activateListView() {
         gridMode = false;
-        dataAdapter.activateListLayout(); // TODO: попробовать передвинуть строку
+
+        recyclerView.setAdapter(null);
+        recyclerView.setLayoutManager(null);
+        recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager(linearLayoutManager);
-        invalidateOptionsMenu();
         dataAdapter.notifyDataSetChanged();
+
+        invalidateOptionsMenu();
     }
 
     private void activateGridView() {
         gridMode = true;
-        dataAdapter.activateGridLayout();
+
+        recyclerView.setAdapter(null);
+        recyclerView.setLayoutManager(null);
+        recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
-        invalidateOptionsMenu();
         dataAdapter.notifyDataSetChanged();
+
+        invalidateOptionsMenu();
     }
 }
