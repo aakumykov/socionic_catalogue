@@ -4,15 +4,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:indeterminate="true"
-        android:visibility="gone" />
-
     <TextView
         android:id="@+id/messageView"
         android:layout_width="match_parent"
@@ -20,6 +11,15 @@
         android:layout_weight="1"
         android:gravity="center_horizontal"
         android:textSize="@dimen/top_message_font_size"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:indeterminate="true"
         android:visibility="gone" />
 
 </LinearLayout>

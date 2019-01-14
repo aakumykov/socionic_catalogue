@@ -10,6 +10,8 @@ public interface iBaseView {
 
     iAuthSingleton auth();
 
+    void showProgressMessage(int messageId);
+
     void showInfoMsg(int messageId);
     void showInfoMsg(String message);
     void showInfoMsg(int messageId, String consoleMessage);

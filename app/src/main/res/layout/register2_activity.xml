@@ -53,9 +53,9 @@
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="@string/REGISTER2_do_register"
-        android:textSize="@dimen/major_button_font_size"
-        android:layout_marginTop="10dp"/>
+        android:textSize="@dimen/major_button_font_size" />
 
     <Button
         android:id="@+id/cancelButton"

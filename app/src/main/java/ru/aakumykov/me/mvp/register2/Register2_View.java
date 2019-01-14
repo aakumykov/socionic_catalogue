@@ -105,6 +105,26 @@ public class Register2_View extends BaseView implements
     }
 
     @Override
+    public void disableNameInput() {
+        MyUtils.disable(nameInput);
+    }
+
+    @Override
+    public void enableNameInput() {
+        MyUtils.enable(nameInput);
+    }
+
+    @Override
+    public void disableEmailInput() {
+        MyUtils.disable(emailInput);
+    }
+
+    @Override
+    public void enableEmailInput() {
+        MyUtils.enable(emailInput);
+    }
+
+    @Override
     public void disableForm() {
         MyUtils.disable(nameInput);
         MyUtils.disable(emailInput);
@@ -132,10 +152,6 @@ public class Register2_View extends BaseView implements
     // Нажатия
     @OnClick(R.id.registerButton)
     public void register() {
-        disableForm();
-        showProgressBar();
-        showInfoMsg(R.string.REGISTER2_registering_user);
-
         presenter.registerUser(new iRegister2.RegistrationCallbacks() {
             @Override
             public void onRegisrtationSuccess() {

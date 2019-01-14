@@ -257,4 +257,8 @@
     <string name="REGISTER2_password_confirmation">Подтверждение пароля</string>
     <string name="REGISTER2_do_register">Зарегистрироваться</string>
     <string name="REGISTER2_do_not_register">Не регистрироваться</string>
+    <string name="REGISTER2_cannot_be_empty">Не может быть пустым</string>
+    <string name="REGISTER2_checking_user_name">Проверяю имя пользователя</string>
+    <string name="REGISTER2_name_already_exists">Имя уже занято</string>
+    <string name="REGISTER2_error">Произошла ошибка</string>
 </resources>

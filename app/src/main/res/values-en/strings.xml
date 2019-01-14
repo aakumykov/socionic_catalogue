@@ -252,4 +252,8 @@
     <string name="REGISTER2_password_confirmation">Password configmation</string>
     <string name="REGISTER2_do_register">Do register</string>
     <string name="REGISTER2_do_not_register">Do not register</string>
+    <string name="REGISTER2_cannot_be_empty">Cannot be empty</string>
+    <string name="REGISTER2_checking_user_name">Checking user name</string>
+    <string name="REGISTER2_name_already_exists">Name is already taken</string>
+    <string name="REGISTER2_error">An error occurred</string>
 </resources>

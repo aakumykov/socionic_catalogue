@@ -14,6 +14,9 @@ public interface iUsersSingleton {
     void deleteUser(User user, DeleteCallbacks callbacks);
     void listUsers(ListCallbacks callbacks);
 
+    void checkNameExists(String name, CheckExistanceCallbacks callbacks);
+    void checkEmailExists(String email, CheckExistanceCallbacks callbacks);
+
 
     interface CreateCallbacks {
         void onUserCreateSuccess(User user);
@@ -38,5 +41,12 @@ public interface iUsersSingleton {
     interface ListCallbacks {
         void onListRecieved(List<User> usersList);
         void onListFail(String errorMsg);
+    }
+
+    interface CheckExistanceCallbacks {
+        void onCheckComplete();
+        void onExists();
+        void onNotExists();
+        void onCheckFail(String errorMsg);
     }
 }
