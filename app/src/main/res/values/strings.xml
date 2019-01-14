@@ -250,4 +250,11 @@
     <string name="error_deleting_card_comments">Ошибка удаления комментариев к карточке</string>
     <string name="DIALOG_user_name_required_title">Установите имя пользователя</string>
     <string name="DIALOG_user_name_required_message">Чтобы добавить комментарий, вам нужно придумать имя пользователя</string>
+    <string name="REGISTER2_you_are_already_registered">Вы уже зарегистрированы</string>
+    <string name="REGISTER2_user_name">Имя пользователя</string>
+    <string name="REGISTER2_email">Адрес электронной почты</string>
+    <string name="REGISTER2_password">Пароль</string>
+    <string name="REGISTER2_password_confirmation">Подтверждение пароля</string>
+    <string name="REGISTER2_do_register">Зарегистрироваться</string>
+    <string name="REGISTER2_do_not_register">Не регистрироваться</string>
 </resources>
