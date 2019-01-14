@@ -254,6 +254,7 @@
     <string name="REGISTER2_do_not_register">Do not register</string>
     <string name="REGISTER2_cannot_be_empty">Cannot be empty</string>
     <string name="REGISTER2_checking_user_name">Checking user name</string>
-    <string name="REGISTER2_name_already_exists">Name is already taken</string>
+    <string name="REGISTER2_name_already_used">Name is already used</string>
     <string name="REGISTER2_error">An error occurred</string>
+    <string name="REGISTER2_email_already_used">Email is already used</string>
 </resources>

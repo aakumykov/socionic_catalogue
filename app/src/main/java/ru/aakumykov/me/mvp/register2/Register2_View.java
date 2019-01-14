@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,15 +19,21 @@ import ru.aakumykov.me.mvp.utils.MyUtils;
 public class Register2_View extends BaseView implements
     iRegister2.View
 {
+    @BindView(R.id.nameThrobber) ProgressBar nameThrobber;
     @BindView(R.id.nameInput) EditText nameInput;
+
+    @BindView(R.id.emailThrobber) ProgressBar emailThrobber;
     @BindView(R.id.emailInput) EditText emailInput;
+
     @BindView(R.id.password1Input) EditText password1Input;
     @BindView(R.id.password2Input) EditText password2Input;
+
     @BindView(R.id.registerButton) Button registerButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
     private iRegister2.Presenter presenter;
     private boolean firstRun = true;
+
 
     // Системные методы
     @Override
@@ -107,21 +114,25 @@ public class Register2_View extends BaseView implements
     @Override
     public void disableNameInput() {
         MyUtils.disable(nameInput);
+        MyUtils.show(nameThrobber);
     }
 
     @Override
     public void enableNameInput() {
         MyUtils.enable(nameInput);
+        MyUtils.hide(nameThrobber);
     }
 
     @Override
     public void disableEmailInput() {
         MyUtils.disable(emailInput);
+        MyUtils.show(emailThrobber);
     }
 
     @Override
     public void enableEmailInput() {
         MyUtils.enable(emailInput);
+        MyUtils.hide(emailThrobber);
     }
 
     @Override

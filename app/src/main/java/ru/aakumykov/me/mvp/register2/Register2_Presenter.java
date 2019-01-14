@@ -55,20 +55,17 @@ public class Register2_Presenter implements iRegister2.Presenter {
             return;
         }
 
-        view.showProgressMessage(R.string.REGISTER2_checking_user_name);
         view.disableNameInput();
 
         usersService.checkNameExists(name, new iUsersSingleton.CheckExistanceCallbacks() {
             @Override
             public void onCheckComplete() {
-                view.hideProgressBar();
-                view.hideMsg();
                 view.enableNameInput();
             }
 
             @Override
             public void onExists() {
-                view.showNameError(R.string.REGISTER2_name_already_exists);
+                view.showNameError(R.string.REGISTER2_name_already_used);
             }
 
             @Override
@@ -86,6 +83,34 @@ public class Register2_Presenter implements iRegister2.Presenter {
     private void checkEmail() {
         String email = view.getEmail();
 
+        if (TextUtils.isEmpty(email)) {
+            view.showEmailError(R.string.REGISTER2_cannot_be_empty);
+            return;
+        }
+
+        view.disableEmailInput();
+
+        usersService.checkEmailExists(email, new iUsersSingleton.CheckExistanceCallbacks() {
+            @Override
+            public void onCheckComplete() {
+                view.enableEmailInput();
+            }
+
+            @Override
+            public void onExists() {
+                view.showEmailError(R.string.REGISTER2_email_already_used);
+            }
+
+            @Override
+            public void onNotExists() {
+
+            }
+
+            @Override
+            public void onCheckFail(String errorMsg) {
+                view.showErrorMsg(R.string.REGISTER2_error, errorMsg);
+            }
+        });
     }
 
     private void checkPassword() {
