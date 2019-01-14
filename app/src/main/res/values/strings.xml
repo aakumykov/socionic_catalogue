@@ -99,7 +99,7 @@
     <string name="REGISTER_cancel">Отказаться</string>
     <string name="REGISTER_name_cannot_be_empty">Псевдоним не может быть пустым</string>
     <string name="REGISTER2_registration_failed">Ошибка регистрации</string>
-    <string name="REGISTER_passwords_mismatch">Пароли не совпадают</string>
+    <string name="REGISTER2_passwords_mismatch">Пароли не совпадают</string>
     <string name="REGISTER2_registering_user">Регистрируемся</string>
     <string name="MENU_login">Войти</string>
     <string name="MENU_logout">Выйти</string>
@@ -262,4 +262,6 @@
     <string name="REGISTER2_name_already_used">Имя уже используется</string>
     <string name="REGISTER2_error">Произошла ошибка</string>
     <string name="REGISTER2_email_already_used">Email уже используется</string>
+    <string name="REGISTER2_password_too_short">Пароль слишком короткий</string>
+    <string name="REGISTER2_incorrect_email">Некорректный email</string>
 </resources>

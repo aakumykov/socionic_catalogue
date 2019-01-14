@@ -23,7 +23,8 @@ public interface iRegister2 {
 
         void showNameError(int messageId);
         void showEmailError(int messageId);
-        void showPasswordError(int messageId);
+        void showPassword1Error(int messageId);
+        void showPassword2Error(int messageId);
 
         void disableForm();
         void enableForm();

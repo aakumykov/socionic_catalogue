@@ -95,7 +95,7 @@
     <string name="REGISTER_cancel">Cancel</string>
     <string name="REGISTER_name_cannot_be_empty">Nickname cannot be empty</string>
     <string name="REGISTER2_registration_failed">Registration failed</string>
-    <string name="REGISTER_passwords_mismatch">Passwords mismatch</string>
+    <string name="REGISTER2_passwords_mismatch">Passwords mismatch</string>
     <string name="REGISTER2_registering_user">Registering</string>
     <string name="MENU_login">Login</string>
     <string name="MENU_logout">Logout</string>
@@ -257,4 +257,6 @@
     <string name="REGISTER2_name_already_used">Name is already used</string>
     <string name="REGISTER2_error">An error occurred</string>
     <string name="REGISTER2_email_already_used">Email is already used</string>
+    <string name="REGISTER2_password_too_short">Password too short</string>
+    <string name="REGISTER2_incorrect_email">Incorrect email</string>
 </resources>

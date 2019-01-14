@@ -55,7 +55,7 @@ public class Register_Presenter implements
 
         // Случай двух пустых паролей обрабатывается выше
         if (!password.equals(passwordConfirmation)) {
-            view.showErrorMsg(R.string.REGISTER_passwords_mismatch);
+            view.showErrorMsg(R.string.REGISTER2_passwords_mismatch);
             view.focusPasswordConfigmation();
             return;
         }

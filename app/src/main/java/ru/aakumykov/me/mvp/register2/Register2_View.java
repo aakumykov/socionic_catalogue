@@ -107,8 +107,13 @@ public class Register2_View extends BaseView implements
     }
 
     @Override
-    public void showPasswordError(int messageId) {
+    public void showPassword1Error(int messageId) {
         showInputError(password1Input, messageId);
+    }
+
+    @Override
+    public void showPassword2Error(int messageId) {
+        showInputError(password2Input, messageId);
     }
 
     @Override
