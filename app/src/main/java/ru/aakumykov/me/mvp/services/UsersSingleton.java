@@ -193,7 +193,8 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void checkNameExists(String name, CheckExistanceCallbacks callbacks) {
+    public void checkNameExists(String name, final CheckExistanceCallbacks callbacks) {
+
         Query query =rootRef.child(Constants.USERS_PATH).orderByChild("name").equalTo(name);
         checkExistance(query, callbacks);
     }
@@ -201,6 +202,7 @@ public class UsersSingleton implements iUsersSingleton {
     @Override
     public void checkEmailExists(String email, CheckExistanceCallbacks callbacks) {
         Query query =usersRef.orderByChild("email").equalTo(email);
+//        Query query = rootRef.child(Constants.USERS_PATH).orderByChild("email").equalTo(email);
         checkExistance(query, callbacks);
     }
 
@@ -210,8 +212,9 @@ public class UsersSingleton implements iUsersSingleton {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 callbacks.onCheckComplete();
-                if (0 == dataSnapshot.getChildrenCount()) callbacks.onExists();
-                else callbacks.onNotExists();
+
+                if (0L == dataSnapshot.getChildrenCount()) callbacks.onNotExists();
+                else callbacks.onExists();
             }
 
             @Override
