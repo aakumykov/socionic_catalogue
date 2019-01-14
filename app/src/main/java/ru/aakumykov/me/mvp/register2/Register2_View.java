@@ -1,12 +1,10 @@
 package ru.aakumykov.me.mvp.register2;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -14,6 +12,7 @@ import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.cards_grid.CardsGrid_View;
+import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class Register2_View extends BaseView implements
@@ -26,6 +25,8 @@ public class Register2_View extends BaseView implements
     @BindView(R.id.registerButton) Button registerButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
+    private iRegister2.Presenter presenter;
+    private boolean firstRun = true;
 
     // Системные методы
     @Override
@@ -33,6 +34,25 @@ public class Register2_View extends BaseView implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register2_activity);
         ButterKnife.bind(this);
+
+        setPageTitle(R.string.REGISTER2_page_title);
+
+        presenter = new Register2_Presenter();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.linkView(this);
+        if (firstRun) {
+            firstRun = false;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.unlinkView();
     }
 
     @Override
@@ -85,6 +105,24 @@ public class Register2_View extends BaseView implements
     }
 
     @Override
+    public void disableForm() {
+        MyUtils.disable(nameInput);
+        MyUtils.disable(emailInput);
+        MyUtils.disable(password1Input);
+        MyUtils.disable(password2Input);
+        MyUtils.disable(registerButton);
+    }
+
+    @Override
+    public void enableForm() {
+        MyUtils.enable(nameInput);
+        MyUtils.enable(emailInput);
+        MyUtils.enable(password1Input);
+        MyUtils.enable(password2Input);
+        MyUtils.enable(registerButton);
+    }
+
+    @Override
     public void finishAndGoToApp() {
         Intent intent = new Intent(this, CardsGrid_View.class);
         startActivity(intent);
@@ -94,7 +132,23 @@ public class Register2_View extends BaseView implements
     // Нажатия
     @OnClick(R.id.registerButton)
     public void register() {
+        disableForm();
+        showProgressBar();
+        showInfoMsg(R.string.REGISTER2_registering_user);
 
+        presenter.registerUser(new iRegister2.RegistrationCallbacks() {
+            @Override
+            public void onRegisrtationSuccess() {
+                showToast(R.string.REGISTER2_succes);
+                finishAndGoToApp();
+            }
+
+            @Override
+            public void onRegisrtationFail(String errorMsg) {
+                showErrorMsg(R.string.REGISTER2_registration_failed, errorMsg);
+                enableForm();
+            }
+        });
     }
 
 

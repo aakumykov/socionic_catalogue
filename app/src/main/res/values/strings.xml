@@ -98,9 +98,9 @@
     <string name="REGISTER_proceed">Зарегистрироваться</string>
     <string name="REGISTER_cancel">Отказаться</string>
     <string name="REGISTER_name_cannot_be_empty">Псевдоним не может быть пустым</string>
-    <string name="REGISTER_registration_failed">Ошибка регистрации</string>
+    <string name="REGISTER2_registration_failed">Ошибка регистрации</string>
     <string name="REGISTER_passwords_mismatch">Пароли не совпадают</string>
-    <string name="REGISTER_registering_user">Регистрируемся</string>
+    <string name="REGISTER2_registering_user">Регистрируемся</string>
     <string name="MENU_login">Войти</string>
     <string name="MENU_logout">Выйти</string>
     <string name="LOGIN_page_title">Вход в программу</string>
@@ -117,7 +117,7 @@
     <string name="ERROR_saving_card">Ошибка сохранения карточки</string>
     <string name="LOGIN_register">Зарегистрироваться</string>
     <string name="LOGIN_register_label">Впервые здесь?</string>
-    <string name="REGISTER_page_title">Регистрация</string>
+    <string name="REGISTER2_page_title">Регистрация</string>
     <string name="USER_page_title">Профиль прользователя</string>
     <string name="CARD_EDIT_edit_denied">Редактирование запрещено</string>
     <string name="CARD_EDIT_editing_error">Ошибка редактирования</string>
@@ -168,7 +168,7 @@
     <string name="CARDS_LIST_error_creating_card">Ошибка создания карточки</string>
     <string name="CARD_SHOW_data_error">Ошибка данных</string>
     <string name="COMMENT_author">Автор комментария</string>
-    <string name="REGISTER_succes">Успешная регистрация</string>
+    <string name="REGISTER2_succes">Успешная регистрация</string>
     <string name="REGISTER_error_creating_user">Ошибка создания пользователя</string>
     <string name="REGISTER_creating_user">Создаём нового пользователя</string>
     <string name="USER_EDIT_error_loading_data">Ошибка загрузки данных</string>

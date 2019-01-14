@@ -1,12 +1,7 @@
 package ru.aakumykov.me.mvp.register;
 
-import android.content.res.Configuration;
 import android.text.TextUtils;
 import android.util.Log;
-
-import org.w3c.dom.Text;
-
-import java.util.Locale;
 
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
@@ -67,7 +62,7 @@ public class Register_Presenter implements
 
         try {
             view.showProgressBar();
-            view.showInfoMsg(R.string.REGISTER_registering_user);
+            view.showInfoMsg(R.string.REGISTER2_registering_user);
 
             authService.registerWithEmail(email, password, this);
         }

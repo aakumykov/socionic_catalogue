@@ -94,9 +94,9 @@
     <string name="REGISTER_proceed">SignUp</string>
     <string name="REGISTER_cancel">Cancel</string>
     <string name="REGISTER_name_cannot_be_empty">Nickname cannot be empty</string>
-    <string name="REGISTER_registration_failed">Registration failed</string>
+    <string name="REGISTER2_registration_failed">Registration failed</string>
     <string name="REGISTER_passwords_mismatch">Passwords mismatch</string>
-    <string name="REGISTER_registering_user">Registering</string>
+    <string name="REGISTER2_registering_user">Registering</string>
     <string name="MENU_login">Login</string>
     <string name="MENU_logout">Logout</string>
     <string name="LOGIN_page_title">Login into app</string>
@@ -113,7 +113,7 @@
     <string name="ERROR_saving_card">Error saving card</string>
     <string name="LOGIN_register">SignUp</string>
     <string name="LOGIN_register_label">First time here?</string>
-    <string name="REGISTER_page_title">New account</string>
+    <string name="REGISTER2_page_title">New account</string>
     <string name="USER_page_title">User\'s profile</string>
     <string name="CARD_EDIT_edit_denied">Edit denied</string>
     <string name="CARD_EDIT_editing_error">Editing error</string>
@@ -163,7 +163,7 @@
     <string name="CARDS_LIST_error_creating_card">Error creating card</string>
     <string name="CARD_SHOW_data_error">Data error</string>
     <string name="COMMENT_author">Comment author</string>
-    <string name="REGISTER_succes">Registration success</string>
+    <string name="REGISTER2_succes">Registration success</string>
     <string name="REGISTER_error_creating_user">Error creating user</string>
     <string name="REGISTER_creating_user">Creating new user</string>
     <string name="USER_EDIT_error_loading_data">Error loading data</string>

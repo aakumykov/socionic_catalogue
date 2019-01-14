@@ -2,6 +2,11 @@ package ru.aakumykov.me.mvp.register2;
 
 public interface iRegister2 {
 
+    interface RegistrationCallbacks {
+        void onRegisrtationSuccess();
+        void onRegisrtationFail(String errorMsg);
+    }
+
     interface View {
         String getName();
         String getEmail();
@@ -12,6 +17,9 @@ public interface iRegister2 {
         void showEmailError(int messageId);
         void showPasswordError(int messageId);
 
+        void disableForm();
+        void enableForm();
+
         void finishAndGoToApp();
     }
 
@@ -19,6 +27,6 @@ public interface iRegister2 {
         void linkView(iRegister2.View view);
         void unlinkView();
 
-        void processRegistration();
+        void registerUser(RegistrationCallbacks callbacks);
     }
 }
