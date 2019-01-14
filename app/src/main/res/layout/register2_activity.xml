@@ -19,15 +19,6 @@
         android:singleLine="true"
         android:textAlignment="center" />
 
-    <TextView
-        android:id="@+id/nameErrorView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textColor="@color/error"
-        android:textStyle="italic"
-        android:visibility="gone" />
-
     <EditText
         android:id="@+id/emailInput"
         android:layout_width="match_parent"
@@ -37,15 +28,6 @@
         android:inputType="textEmailAddress"
         android:singleLine="true"
         android:textAlignment="center" />
-
-    <TextView
-        android:id="@+id/emailErrorView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textColor="@color/error"
-        android:textStyle="italic"
-        android:visibility="gone" />
 
     <EditText
         android:id="@+id/password1Input"
@@ -66,15 +48,6 @@
         android:inputType="textPassword"
         android:singleLine="true"
         android:textAlignment="center" />
-
-    <TextView
-        android:id="@+id/passwordErrorView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textColor="@color/error"
-        android:textStyle="italic"
-        android:visibility="gone" />
 
     <Button
         android:id="@+id/registerButton"

@@ -8,9 +8,9 @@ public interface iRegister2 {
         String getPassword1();
         String getPassword2();
 
-        void showNameError();
-        void showEmailError();
-        void showPasswordError();
+        void showNameError(int messageId);
+        void showEmailError(int messageId);
+        void showPasswordError(int messageId);
 
         void finishAndGoToApp();
     }

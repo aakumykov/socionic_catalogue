@@ -23,11 +23,6 @@ public class Register2_View extends BaseView implements
     @BindView(R.id.emailInput) EditText emailInput;
     @BindView(R.id.password1Input) EditText password1Input;
     @BindView(R.id.password2Input) EditText password2Input;
-
-    @BindView(R.id.nameErrorView) TextView nameErrorView;
-    @BindView(R.id.emailErrorView) TextView emailErrorView;
-    @BindView(R.id.passwordErrorView) TextView passwordErrorView;
-
     @BindView(R.id.registerButton) Button registerButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
@@ -75,18 +70,18 @@ public class Register2_View extends BaseView implements
     }
 
     @Override
-    public void showNameError() {
-
+    public void showNameError(int messageId) {
+        showInputError(nameInput, messageId);
     }
 
     @Override
-    public void showEmailError() {
-
+    public void showEmailError(int messageId) {
+        showInputError(emailInput, messageId);
     }
 
     @Override
-    public void showPasswordError() {
-
+    public void showPasswordError(int messageId) {
+        showInputError(password1Input, messageId);
     }
 
     @Override
@@ -99,25 +94,17 @@ public class Register2_View extends BaseView implements
     // Нажатия
     @OnClick(R.id.registerButton)
     public void register() {
-        showInputError(nameInput, nameErrorView, "Просто будет ошибка");
+
     }
 
 
     // Внутренние методы
-    private <T> void showInputError(EditText textInput, TextView errorView, T  msg) {
+    private <T> void showInputError(EditText textInput, T  msg) {
         String errorMsg = "";
         if (msg instanceof Integer) errorMsg = getResources().getString((Integer)msg);
         else errorMsg = String.valueOf(msg);
 
-        int errorColor = getResources().getColor(R.color.error);
-        int errorBgColor = getResources().getColor(R.color.error_background);
-
         textInput.requestFocus();
         textInput.setError(errorMsg);
-
-        errorView.setTextColor(errorColor);
-        errorView.setBackgroundColor(errorBgColor);
-        errorView.setText(errorMsg);
-        MyUtils.show(errorView);
     }
 }
