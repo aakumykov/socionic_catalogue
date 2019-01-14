@@ -85,7 +85,7 @@
         android:layout_marginTop="10dp"/>
 
     <Button
-        android:id="@+id/cancelButton"
+        android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/REGISTER2_do_not_register"

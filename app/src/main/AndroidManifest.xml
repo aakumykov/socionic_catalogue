@@ -91,13 +91,16 @@
         </activity>
 
         <activity android:name=".cards_grid.CardsGrid_View">
+
+        </activity>
+
+        <activity android:name=".register2.Register2_View">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".register2.Register2_View" />
 
     </application>
 
