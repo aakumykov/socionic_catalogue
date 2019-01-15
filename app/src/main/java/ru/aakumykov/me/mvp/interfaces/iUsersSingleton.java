@@ -1,5 +1,7 @@
 package ru.aakumykov.me.mvp.interfaces;
 
+import android.content.Context;
+
 import java.util.List;
 
 import ru.aakumykov.me.mvp.models.User;
@@ -16,6 +18,8 @@ public interface iUsersSingleton {
 
     void checkNameExists(String name, CheckExistanceCallbacks callbacks);
     void checkEmailExists(String email, CheckExistanceCallbacks callbacks);
+
+    void sendEmailVerificationLink(Context context, SendEmailVerificationLinkCallbacks callbacks);
 
 
     interface CreateCallbacks {
@@ -48,5 +52,10 @@ public interface iUsersSingleton {
         void onExists();
         void onNotExists();
         void onCheckFail(String errorMsg);
+    }
+
+    interface SendEmailVerificationLinkCallbacks {
+        void onEmailVerificationLinkSendSuccess();
+        void onEmailVerificationLinkSendFail(String errorMsg);
     }
 }
