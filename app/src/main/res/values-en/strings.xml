@@ -260,4 +260,9 @@
     <string name="REGISTER2_password_too_short">Password too short</string>
     <string name="REGISTER2_incorrect_email">Incorrect email</string>
     <string name="REGISTER2_registration_error">Sign up error</string>
+    <string name="REGISTER2_email_confirmation">Email confirmation</string>
+    <string name="REGISTER2_check_your_email">Check your email</string>
+    <string name="REGISTER2_registration_confirm_success">Sign up complete</string>
+    <string name="REGISTER2_registration_confirm_error">Registration confirm error</string>
+    <string name="unknown_intent_action">Unknown action</string>
 </resources>

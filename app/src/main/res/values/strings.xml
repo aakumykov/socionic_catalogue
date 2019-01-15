@@ -265,4 +265,9 @@
     <string name="REGISTER2_password_too_short">Пароль слишком короткий</string>
     <string name="REGISTER2_incorrect_email">Некорректный email</string>
     <string name="REGISTER2_registration_error">Ошибка регистрации</string>
+    <string name="REGISTER2_email_confirmation">Подтверждение электронной почты</string>
+    <string name="REGISTER2_check_your_email">Проверьте свою электронную почту</string>
+    <string name="REGISTER2_registration_confirm_success">Регистрация успешно завершена</string>
+    <string name="REGISTER2_registration_confirm_error">Ошибка завершения регистрации</string>
+    <string name="unknown_intent_action">Неизвестное действие</string>
 </resources>

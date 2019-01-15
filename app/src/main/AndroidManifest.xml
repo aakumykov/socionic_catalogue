@@ -18,7 +18,7 @@
         <activity
             android:name=".register.Register_View"
             android:noHistory="true" />
-        <activity android:name=".cards_list.CardsList_View"/>
+        <activity android:name=".cards_list.CardsList_View" />
         <activity
             android:name=".card_show.CardShow_View"
             android:parentActivityName=".cards_list.CardsList_View" />
@@ -31,12 +31,11 @@
         <activity
             android:name=".tags.show.TagShow_View"
             android:parentActivityName=".tags.list.TagsList_View" />
-
-        <activity android:name=".card.edit.CardEdit_View"/>
-
+        <activity android:name=".card.edit.CardEdit_View" />
         <activity android:name=".card_edit2.CardEdit2_View" />
-
-        <activity android:name=".external_data_receiver.ExternalDataReceiver" android:noHistory="true">
+        <activity
+            android:name=".external_data_receiver.ExternalDataReceiver"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -89,7 +88,6 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-
         <activity android:name=".cards_grid.CardsGrid_View">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -97,9 +95,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".register2.Register2_View" android:noHistory="true"/>
-
+        <activity
+            android:name=".register2.Register2_View"
+            android:noHistory="true" />
+        <activity android:name=".register_confirmation.RegisterConfirmation_View"></activity>
     </application>
 
 </manifest>
