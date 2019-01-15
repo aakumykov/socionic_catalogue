@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp.register2;
+package ru.aakumykov.me.mvp.register;
 
 import android.text.TextUtils;
 
@@ -16,19 +16,19 @@ import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
 
-public class Register2_Presenter implements iRegister2.Presenter {
+public class Register_Presenter implements iRegister.Presenter {
 
     private iAuthSingleton authService = AuthSingleton.getInstance();
     private iUsersSingleton usersService = UsersSingleton.getInstance();
     private Map<String,Boolean> formCheckResults = new HashMap<>();
-    private iRegister2.View view;
+    private iRegister.View view;
 
-    Register2_Presenter() {}
+    Register_Presenter() {}
 
 
     // Системные методы
     @Override
-    public void linkView(iRegister2.View view) {
+    public void linkView(iRegister.View view) {
         this.view = view;
     }
 

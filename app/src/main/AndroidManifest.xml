@@ -93,7 +93,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".register2.Register2_View"
+            android:name=".register.Register_View"
             android:noHistory="true" />
         <activity android:name=".register_confirmation.RegisterConfirmation_View"></activity>
     </application>

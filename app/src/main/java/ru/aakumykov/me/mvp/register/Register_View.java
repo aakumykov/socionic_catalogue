@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp.register2;
+package ru.aakumykov.me.mvp.register;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,13 +13,11 @@ import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.cards_grid.CardsGrid_View;
-import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
-public class Register2_View extends BaseView implements
-    iRegister2.View
+public class Register_View extends BaseView implements
+    iRegister.View
 {
     @BindView(R.id.nameThrobber) ProgressBar nameThrobber;
     @BindView(R.id.nameInput) EditText nameInput;
@@ -33,7 +31,7 @@ public class Register2_View extends BaseView implements
     @BindView(R.id.registerButton) Button registerButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
-    private iRegister2.Presenter presenter;
+    private iRegister.Presenter presenter;
     private boolean firstRun = true;
 
 
@@ -52,7 +50,7 @@ public class Register2_View extends BaseView implements
         setPageTitle(R.string.REGISTER2_page_title);
         activateUpButton();
 
-        presenter = new Register2_Presenter();
+        presenter = new Register_Presenter();
     }
 
     @Override

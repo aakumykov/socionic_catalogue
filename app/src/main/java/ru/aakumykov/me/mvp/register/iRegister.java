@@ -1,8 +1,8 @@
-package ru.aakumykov.me.mvp.register2;
+package ru.aakumykov.me.mvp.register;
 
 import ru.aakumykov.me.mvp.iBaseView;
 
-public interface iRegister2 {
+public interface iRegister {
 
     interface RegistrationCallbacks {
         void onRegisrtationSuccess();
@@ -33,7 +33,7 @@ public interface iRegister2 {
     }
 
     interface Presenter {
-        void linkView(iRegister2.View view);
+        void linkView(iRegister.View view);
         void unlinkView();
 
         void registerUser();
