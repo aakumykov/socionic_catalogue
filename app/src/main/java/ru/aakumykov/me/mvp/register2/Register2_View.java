@@ -170,6 +170,10 @@ public class Register2_View extends BaseView implements
     // Нажатия
     @OnClick(R.id.registerButton)
     public void register() {
+
+        disableForm();
+        showProgressMessage(R.string.REGISTER2_registering_user);
+
         presenter.registerUser(new iRegister2.RegistrationCallbacks() {
             @Override
             public void onRegisrtationSuccess() {
@@ -183,6 +187,11 @@ public class Register2_View extends BaseView implements
                 enableForm();
             }
         });
+    }
+
+    @OnClick(R.id.cancelButton)
+    void cancelRegistration() {
+        finish();
     }
 
 

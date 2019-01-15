@@ -213,8 +213,7 @@ public class Register2_Presenter implements iRegister2.Presenter {
         usersService.createUser(userId, name, email, new iUsersSingleton.CreateCallbacks() {
             @Override public void onUserCreateSuccess(User user) {
                 authService.storeCurrentUser(user);
-                view.showToast(R.string.REGISTER2_succes);
-                view.finishAndGoToApp();
+                callbacks.onRegisrtationSuccess();
             }
 
             @Override public void onUserCreateFail(String errorMsg) {

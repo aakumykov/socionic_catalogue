@@ -251,7 +251,7 @@
     <string name="REGISTER2_password">Password</string>
     <string name="REGISTER2_password_confirmation">Password configmation</string>
     <string name="REGISTER2_do_register">Do register</string>
-    <string name="REGISTER2_do_not_register">Do not register</string>
+    <string name="REGISTER2_do_not_register">Cancel</string>
     <string name="REGISTER2_cannot_be_empty">Cannot be empty</string>
     <string name="REGISTER2_checking_user_name">Checking user name</string>
     <string name="REGISTER2_name_already_used">Name is already used</string>
