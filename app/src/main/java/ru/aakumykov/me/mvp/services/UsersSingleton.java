@@ -6,11 +6,11 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -74,10 +74,11 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void createUser(final String userId, String email, final CreateCallbacks callbacks) {
+    public void createUser(final String userId, final String name, String email, final CreateCallbacks callbacks) {
 
         final User user = new User(userId);
          user.setEmail(email);
+         user.setName(name);
         final DatabaseReference newUserRef = usersRef.child(userId);
 
         // Проверяю на дубликат
@@ -190,5 +191,39 @@ public class UsersSingleton implements iUsersSingleton {
     @Override
     public void deleteUser(User user, DeleteCallbacks callbacks) {
 
+    }
+
+    @Override
+    public void checkNameExists(String name, final CheckExistanceCallbacks callbacks) {
+
+        Query query =rootRef.child(Constants.USERS_PATH).orderByChild("name").equalTo(name);
+        checkExistance(query, callbacks);
+    }
+
+    @Override
+    public void checkEmailExists(String email, CheckExistanceCallbacks callbacks) {
+        Query query =usersRef.orderByChild("email").equalTo(email);
+//        Query query = rootRef.child(Constants.USERS_PATH).orderByChild("email").equalTo(email);
+        checkExistance(query, callbacks);
+    }
+
+    private void checkExistance(Query query, final CheckExistanceCallbacks callbacks) {
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                callbacks.onCheckComplete();
+
+                if (0L == dataSnapshot.getChildrenCount()) callbacks.onNotExists();
+                else callbacks.onExists();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callbacks.onCheckComplete();
+                callbacks.onCheckFail(databaseError.getMessage());
+                databaseError.toException().printStackTrace();
+            }
+        });
     }
 }

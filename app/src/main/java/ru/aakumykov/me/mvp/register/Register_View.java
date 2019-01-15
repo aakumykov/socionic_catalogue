@@ -37,7 +37,7 @@ public class Register_View extends BaseView implements
         setContentView(R.layout.register_activity);
         ButterKnife.bind(this);
 
-        setPageTitle(R.string.REGISTER_page_title);
+        setPageTitle(R.string.REGISTER2_page_title);
         activateUpButton();
 
         presenter = new Register_Presenter();

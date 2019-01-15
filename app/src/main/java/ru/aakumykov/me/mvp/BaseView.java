@@ -151,6 +151,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
 
     // Сообщения пользователю
+
+    @Override
+    public void showProgressMessage(int messageId) {
+        showInfoMsg(messageId);
+        showProgressBar();
+    }
+
     @Override
     public void showInfoMsg(int messageId) {
         showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));

@@ -35,7 +35,7 @@ public class AuthSingleton implements iAuthSingleton
     }
     private AuthSingleton() {
         firebaseAuth = FirebaseAuth.getInstance();
-        usersService = UsersSingleton.getInstance();
+//        usersService = UsersSingleton.getInstance(); // КРУГОВАЯ ЗАВИСИМОСТЬ!!!
     }
     /* Одиночка */    
 
@@ -43,7 +43,7 @@ public class AuthSingleton implements iAuthSingleton
     // Свойства
     private final static String TAG = "AuthSingleton";
     private FirebaseAuth firebaseAuth;
-    private iUsersSingleton usersService;
+//    private iUsersSingleton usersService; // КРУГОВАЯ ЗАВИСИМОСТЬ!!!
     private User currentUser;
 
 
@@ -104,18 +104,18 @@ public class AuthSingleton implements iAuthSingleton
 
     @Override
     public void restoreCurrentUser(final iAuthSingleton.UserRestoreCallbacks callbacks) {
-        usersService.getUser(currentUserId(), new iUsersSingleton.ReadCallbacks() {
-            @Override
-            public void onUserReadSuccess(User user) {
-                storeCurrentUser(user);
-                callbacks.onUserRestoreSuccess();
-            }
-
-            @Override
-            public void onUserReadFail(String errorMsg) {
-                callbacks.onUserRestoreFail(errorMsg);
-            }
-        });
+//        usersService.getUser(currentUserId(), new iUsersSingleton.ReadCallbacks() {
+//            @Override
+//            public void onUserReadSuccess(User user) {
+//                storeCurrentUser(user);
+//                callbacks.onUserRestoreSuccess();
+//            }
+//
+//            @Override
+//            public void onUserReadFail(String errorMsg) {
+//                callbacks.onUserRestoreFail(errorMsg);
+//            }
+//        });
     }
 
 

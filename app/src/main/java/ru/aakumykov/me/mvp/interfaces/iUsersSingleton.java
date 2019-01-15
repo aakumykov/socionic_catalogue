@@ -8,11 +8,14 @@ import ru.aakumykov.me.mvp.models.User;
 
 public interface iUsersSingleton {
 
-    void createUser(String userId, String email, CreateCallbacks callbacks);
+    void createUser(String userId, String userName, String email, CreateCallbacks callbacks);
     void getUser(String id, ReadCallbacks callbacks);
     void saveUser(User user, SaveCallbacks callbacks);
     void deleteUser(User user, DeleteCallbacks callbacks);
     void listUsers(ListCallbacks callbacks);
+
+    void checkNameExists(String name, CheckExistanceCallbacks callbacks);
+    void checkEmailExists(String email, CheckExistanceCallbacks callbacks);
 
 
     interface CreateCallbacks {
@@ -38,5 +41,12 @@ public interface iUsersSingleton {
     interface ListCallbacks {
         void onListRecieved(List<User> usersList);
         void onListFail(String errorMsg);
+    }
+
+    interface CheckExistanceCallbacks {
+        void onCheckComplete();
+        void onExists();
+        void onNotExists();
+        void onCheckFail(String errorMsg);
     }
 }

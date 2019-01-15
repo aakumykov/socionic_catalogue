@@ -1,12 +1,7 @@
 package ru.aakumykov.me.mvp.register;
 
-import android.content.res.Configuration;
 import android.text.TextUtils;
 import android.util.Log;
-
-import org.w3c.dom.Text;
-
-import java.util.Locale;
 
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
@@ -60,14 +55,14 @@ public class Register_Presenter implements
 
         // Случай двух пустых паролей обрабатывается выше
         if (!password.equals(passwordConfirmation)) {
-            view.showErrorMsg(R.string.REGISTER_passwords_mismatch);
+            view.showErrorMsg(R.string.REGISTER2_passwords_mismatch);
             view.focusPasswordConfigmation();
             return;
         }
 
         try {
             view.showProgressBar();
-            view.showInfoMsg(R.string.REGISTER_registering_user);
+            view.showInfoMsg(R.string.REGISTER2_registering_user);
 
             authService.registerWithEmail(email, password, this);
         }
@@ -95,7 +90,7 @@ public class Register_Presenter implements
     @Override
     public void onRegSucsess(String userId, String email) {
         view.showInfoMsg(R.string.REGISTER_creating_user);
-        usersService.createUser(userId, email, this);
+        usersService.createUser(userId, "userName", email, this);
     }
 
     @Override

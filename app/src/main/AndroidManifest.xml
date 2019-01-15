@@ -98,6 +98,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".register2.Register2_View" android:noHistory="true"/>
+
     </application>
 
 </manifest>

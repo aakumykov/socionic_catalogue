@@ -94,9 +94,9 @@
     <string name="REGISTER_proceed">SignUp</string>
     <string name="REGISTER_cancel">Cancel</string>
     <string name="REGISTER_name_cannot_be_empty">Nickname cannot be empty</string>
-    <string name="REGISTER_registration_failed">Registration failed</string>
-    <string name="REGISTER_passwords_mismatch">Passwords mismatch</string>
-    <string name="REGISTER_registering_user">Registering</string>
+    <string name="REGISTER2_registration_failed">Registration failed</string>
+    <string name="REGISTER2_passwords_mismatch">Passwords mismatch</string>
+    <string name="REGISTER2_registering_user">Registering</string>
     <string name="MENU_login">Login</string>
     <string name="MENU_logout">Logout</string>
     <string name="LOGIN_page_title">Login into app</string>
@@ -113,7 +113,7 @@
     <string name="ERROR_saving_card">Error saving card</string>
     <string name="LOGIN_register">SignUp</string>
     <string name="LOGIN_register_label">First time here?</string>
-    <string name="REGISTER_page_title">New account</string>
+    <string name="REGISTER2_page_title">New account</string>
     <string name="USER_page_title">User\'s profile</string>
     <string name="CARD_EDIT_edit_denied">Edit denied</string>
     <string name="CARD_EDIT_editing_error">Editing error</string>
@@ -163,7 +163,7 @@
     <string name="CARDS_LIST_error_creating_card">Error creating card</string>
     <string name="CARD_SHOW_data_error">Data error</string>
     <string name="COMMENT_author">Comment author</string>
-    <string name="REGISTER_succes">Registration success</string>
+    <string name="REGISTER2_registration_succes">Registration success</string>
     <string name="REGISTER_error_creating_user">Error creating user</string>
     <string name="REGISTER_creating_user">Creating new user</string>
     <string name="USER_EDIT_error_loading_data">Error loading data</string>
@@ -245,4 +245,19 @@
     <string name="error_deleting_card_comments">Error deleting card\'s comments</string>
     <string name="DIALOG_user_name_required_title">User name required</string>
     <string name="DIALOG_user_name_required_message">You must set user name to add comment</string>
+    <string name="REGISTER2_you_are_already_registered">You are already registered</string>
+    <string name="REGISTER2_user_name">User name</string>
+    <string name="REGISTER2_email">Email</string>
+    <string name="REGISTER2_password">Password</string>
+    <string name="REGISTER2_password_confirmation">Password configmation</string>
+    <string name="REGISTER2_do_register">Do register</string>
+    <string name="REGISTER2_do_not_register">Cancel</string>
+    <string name="REGISTER2_cannot_be_empty">Cannot be empty</string>
+    <string name="REGISTER2_checking_user_name">Checking user name</string>
+    <string name="REGISTER2_name_already_used">Name is already used</string>
+    <string name="REGISTER2_error">An error occurred</string>
+    <string name="REGISTER2_email_already_used">Email is already used</string>
+    <string name="REGISTER2_password_too_short">Password too short</string>
+    <string name="REGISTER2_incorrect_email">Incorrect email</string>
+    <string name="REGISTER2_registration_error">Sign up error</string>
 </resources>
