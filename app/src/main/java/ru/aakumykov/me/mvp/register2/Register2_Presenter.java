@@ -40,11 +40,11 @@ public class Register2_Presenter implements iRegister2.Presenter {
 
     // Интерфейсные методы
     @Override
-    public void registerUser(iRegister2.RegistrationCallbacks callbacks) {
+    public void registerUser() {
         checkFields();
 
         if (formIsValid()) {
-            registrationStep1(callbacks);
+            registrationStep1();
         }
     }
 
@@ -72,6 +72,9 @@ public class Register2_Presenter implements iRegister2.Presenter {
             @Override
             public void onCheckComplete() {
                 view.enableNameInput();
+                if (formIsValid()) {
+                    registrationStep1();
+                }
             }
 
             @Override
@@ -118,6 +121,9 @@ public class Register2_Presenter implements iRegister2.Presenter {
             @Override
             public void onCheckComplete() {
                 view.enableEmailInput();
+                if (formIsValid()) {
+                    registrationStep1();
+                }
             }
 
             @Override
@@ -183,7 +189,7 @@ public class Register2_Presenter implements iRegister2.Presenter {
         return (resultsSize == formSize);
     }
 
-    private void registrationStep1(final iRegister2.RegistrationCallbacks callbacks) {
+    private void registrationStep1() {
 
         final String userName = view.getName();
         final String userEmail = view.getEmail();
@@ -194,30 +200,33 @@ public class Register2_Presenter implements iRegister2.Presenter {
 
                 @Override public void onRegSucsess(String userId, String email) {
                     // TODO: здесь нужен только userId
-                    registrationStep2(userId, userName, userEmail, callbacks);
+                    registrationStep2(userId, userName, userEmail);
                 }
 
-                @Override public void onRegFail(String errorMessage) {
-                    callbacks.onRegisrtationFail(errorMessage);
+                @Override public void onRegFail(String errorMsg) {
+                    view.enableForm();
+                    view.showErrorMsg(R.string.REGISTER2_registration_error, errorMsg);
                 }
             });
         } catch (Exception e) {
-            callbacks.onRegisrtationFail(e.getMessage());
+            view.enableForm();
+            view.showErrorMsg(R.string.REGISTER2_registration_error, e.getMessage());
             e.printStackTrace();
         }
 
     }
 
-    private void registrationStep2(String userId, String name, String email, final iRegister2.RegistrationCallbacks callbacks) {
+    private void registrationStep2(String userId, String name, String email) {
 
         usersService.createUser(userId, name, email, new iUsersSingleton.CreateCallbacks() {
             @Override public void onUserCreateSuccess(User user) {
                 authService.storeCurrentUser(user);
-                callbacks.onRegisrtationSuccess();
+//                view.finishAndGoToApp();
             }
 
             @Override public void onUserCreateFail(String errorMsg) {
-                callbacks.onRegisrtationFail(errorMsg);
+                view.enableForm();
+                view.showErrorMsg(R.string.REGISTER2_registration_error, errorMsg);
             }
         });
     }

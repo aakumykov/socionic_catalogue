@@ -162,6 +162,7 @@ public class Register2_View extends BaseView implements
 
     @Override
     public void finishAndGoToApp() {
+        showToast(R.string.REGISTER2_registration_succes);
         Intent intent = new Intent(this, CardsGrid_View.class);
         startActivity(intent);
     }
@@ -170,23 +171,7 @@ public class Register2_View extends BaseView implements
     // Нажатия
     @OnClick(R.id.registerButton)
     public void register() {
-
-        disableForm();
-        showProgressMessage(R.string.REGISTER2_registering_user);
-
-        presenter.registerUser(new iRegister2.RegistrationCallbacks() {
-            @Override
-            public void onRegisrtationSuccess() {
-                showToast(R.string.REGISTER2_succes);
-                finishAndGoToApp();
-            }
-
-            @Override
-            public void onRegisrtationFail(String errorMsg) {
-                showErrorMsg(R.string.REGISTER2_registration_failed, errorMsg);
-                enableForm();
-            }
-        });
+        presenter.registerUser();
     }
 
     @OnClick(R.id.cancelButton)
