@@ -12,6 +12,7 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
+import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
 
@@ -43,7 +44,7 @@ public class Register2_Presenter implements iRegister2.Presenter {
         checkFields();
 
         if (formIsValid()) {
-            doRegistration(callbacks);
+            registrationStep1(callbacks);
         }
     }
 
@@ -55,6 +56,8 @@ public class Register2_Presenter implements iRegister2.Presenter {
     }
 
     private void checkName(){
+        if (formCheckResults.containsKey("name") && formCheckResults.get("name")) return;
+
         String name = view.getName();
 
         if (TextUtils.isEmpty(name)) {
@@ -91,6 +94,8 @@ public class Register2_Presenter implements iRegister2.Presenter {
     }
 
     private void checkEmail() {
+        if (formCheckResults.containsKey("email") && formCheckResults.get("email")) return;
+
         String email = view.getEmail();
 
         if (TextUtils.isEmpty(email)) {
@@ -178,7 +183,43 @@ public class Register2_Presenter implements iRegister2.Presenter {
         return (resultsSize == formSize);
     }
 
-    private void doRegistration(iRegister2.RegistrationCallbacks callbacks) {
-        view.showToast("РЕГИСТРАЦИЯ ПОШЛА");
+    private void registrationStep1(final iRegister2.RegistrationCallbacks callbacks) {
+
+        final String userName = view.getName();
+        final String userEmail = view.getEmail();
+        final String userPassword = view.getPassword1();
+
+        try {
+            authService.registerWithEmail(userEmail, userPassword, new iAuthSingleton.RegisterCallbacks() {
+
+                @Override public void onRegSucsess(String userId, String email) {
+                    // TODO: здесь нужен только userId
+                    registrationStep2(userId, userName, userEmail, callbacks);
+                }
+
+                @Override public void onRegFail(String errorMessage) {
+                    callbacks.onRegisrtationFail(errorMessage);
+                }
+            });
+        } catch (Exception e) {
+            callbacks.onRegisrtationFail(e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
+    private void registrationStep2(String userId, String name, String email, final iRegister2.RegistrationCallbacks callbacks) {
+
+        usersService.createUser(userId, name, email, new iUsersSingleton.CreateCallbacks() {
+            @Override public void onUserCreateSuccess(User user) {
+                authService.storeCurrentUser(user);
+                view.showToast(R.string.REGISTER2_succes);
+                view.finishAndGoToApp();
+            }
+
+            @Override public void onUserCreateFail(String errorMsg) {
+                callbacks.onRegisrtationFail(errorMsg);
+            }
+        });
     }
 }

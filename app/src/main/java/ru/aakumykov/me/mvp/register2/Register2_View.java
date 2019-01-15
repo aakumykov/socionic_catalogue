@@ -42,8 +42,12 @@ public class Register2_View extends BaseView implements
         setContentView(R.layout.register2_activity);
         ButterKnife.bind(this);
 
-        setPageTitle(R.string.REGISTER2_page_title);
+        if (auth().isUserLoggedIn()) {
+            showToast(R.string.REGISTER2_you_are_already_registered);
+            finish();
+        }
 
+        setPageTitle(R.string.REGISTER2_page_title);
         presenter = new Register2_Presenter();
     }
 
@@ -64,9 +68,7 @@ public class Register2_View extends BaseView implements
 
     @Override
     public void onUserLogin() {
-        showToast(R.string.REGISTER2_you_are_already_registered);
-        Intent intent = new Intent(this, CardsGrid_View.class);
-        startActivity(intent);
+
     }
 
     @Override

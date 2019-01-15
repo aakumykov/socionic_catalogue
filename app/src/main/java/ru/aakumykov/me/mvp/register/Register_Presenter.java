@@ -90,7 +90,7 @@ public class Register_Presenter implements
     @Override
     public void onRegSucsess(String userId, String email) {
         view.showInfoMsg(R.string.REGISTER_creating_user);
-        usersService.createUser(userId, email, this);
+        usersService.createUser(userId, "userName", email, this);
     }
 
     @Override

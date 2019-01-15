@@ -74,10 +74,11 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void createUser(final String userId, String email, final CreateCallbacks callbacks) {
+    public void createUser(final String userId, final String name, String email, final CreateCallbacks callbacks) {
 
         final User user = new User(userId);
          user.setEmail(email);
+         user.setName(name);
         final DatabaseReference newUserRef = usersRef.child(userId);
 
         // Проверяю на дубликат
