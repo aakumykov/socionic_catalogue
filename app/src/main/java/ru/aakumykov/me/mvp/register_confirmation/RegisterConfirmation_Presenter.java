@@ -12,13 +12,21 @@ public class RegisterConfirmation_Presenter implements iRegisterConfirmation.Pre
 
     @Override
     public void processInputIntent(@Nullable Intent intent) {
+
         if (null != intent) {
+
             String action = intent.getAction() + "";
+
             switch (action) {
+
                 case Constants.ACTION_REGISTRATION_CONFIRM_REQUEST:
+                    view.showNeedsConfirmationMessage();
                     break;
+
                 case Constants.ACTION_REGISTRATION_CONFIRM_RESPONSE:
+                    processEmailConfirmation();
                     break;
+
                 default:
                     view.showErrorMsg(R.string.unknown_intent_action);
             }
@@ -33,5 +41,10 @@ public class RegisterConfirmation_Presenter implements iRegisterConfirmation.Pre
     @Override
     public void unlinkView() {
         this.view = null;
+    }
+
+
+    private void processEmailConfirmation() {
+
     }
 }

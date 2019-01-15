@@ -13,6 +13,7 @@ import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.register_confirmation.RegisterConfirmation_View;
 import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
@@ -165,9 +166,12 @@ public class Register_View extends BaseView implements
     @Override
     public void finishAndGoToApp() {
         showToast(R.string.REGISTER2_registration_succes);
-//        Intent intent = new Intent(this, CardsGrid_View.class);
-        Intent intent = new Intent(this, UserShow_View.class);
-        intent.putExtra(Constants.USER_ID, auth().currentUserId());
+
+        auth().logout();
+
+        Intent intent = new Intent(this, RegisterConfirmation_View.class);
+        intent.setAction(Constants.ACTION_REGISTRATION_CONFIRM_REQUEST);
+
         startActivity(intent);
     }
 
