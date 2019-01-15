@@ -36,6 +36,6 @@ public interface iRegister2 {
         void linkView(iRegister2.View view);
         void unlinkView();
 
-        void registerUser(RegistrationCallbacks callbacks);
+        void registerUser();
     }
 }

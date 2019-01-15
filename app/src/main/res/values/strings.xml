@@ -168,7 +168,7 @@
     <string name="CARDS_LIST_error_creating_card">Ошибка создания карточки</string>
     <string name="CARD_SHOW_data_error">Ошибка данных</string>
     <string name="COMMENT_author">Автор комментария</string>
-    <string name="REGISTER2_succes">Успешная регистрация</string>
+    <string name="REGISTER2_registration_succes">Успешная регистрация</string>
     <string name="REGISTER_error_creating_user">Ошибка создания пользователя</string>
     <string name="REGISTER_creating_user">Создаём нового пользователя</string>
     <string name="USER_EDIT_error_loading_data">Ошибка загрузки данных</string>
@@ -264,4 +264,5 @@
     <string name="REGISTER2_email_already_used">Email уже используется</string>
     <string name="REGISTER2_password_too_short">Пароль слишком короткий</string>
     <string name="REGISTER2_incorrect_email">Некорректный email</string>
+    <string name="REGISTER2_registration_error">Ошибка регистрации</string>
 </resources>
