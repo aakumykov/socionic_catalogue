@@ -163,7 +163,7 @@
     <string name="CARDS_LIST_error_creating_card">Error creating card</string>
     <string name="CARD_SHOW_data_error">Data error</string>
     <string name="COMMENT_author">Comment author</string>
-    <string name="REGISTER2_registration_succes">Registration success</string>
+    <string name="REGISTER2_succes">Registration success</string>
     <string name="REGISTER_error_creating_user">Error creating user</string>
     <string name="REGISTER_creating_user">Creating new user</string>
     <string name="USER_EDIT_error_loading_data">Error loading data</string>
@@ -259,5 +259,4 @@
     <string name="REGISTER2_email_already_used">Email is already used</string>
     <string name="REGISTER2_password_too_short">Password too short</string>
     <string name="REGISTER2_incorrect_email">Incorrect email</string>
-    <string name="REGISTER2_registration_error">Sign up error</string>
 </resources>
