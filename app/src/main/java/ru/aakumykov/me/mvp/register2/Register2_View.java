@@ -48,6 +48,8 @@ public class Register2_View extends BaseView implements
         }
 
         setPageTitle(R.string.REGISTER2_page_title);
+        activateUpButton();
+
         presenter = new Register2_Presenter();
     }
 

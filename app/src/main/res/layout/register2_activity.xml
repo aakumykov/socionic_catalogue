@@ -61,6 +61,7 @@
                 android:hint="@string/REGISTER2_email"
                 android:inputType="textEmailAddress"
                 android:singleLine="true"
+                android:text="@yandex.ru"
                 android:textAlignment="center" />
         </LinearLayout>
 
@@ -72,6 +73,7 @@
             android:hint="@string/REGISTER2_password"
             android:inputType="textPassword"
             android:singleLine="true"
+            android:text="123456"
             android:textAlignment="center" />
 
         <EditText
@@ -82,6 +84,7 @@
             android:hint="@string/REGISTER2_password_confirmation"
             android:inputType="textPassword"
             android:singleLine="true"
+            android:text="123456"
             android:textAlignment="center" />
 
         <Button

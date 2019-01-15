@@ -42,10 +42,6 @@ public class Register2_Presenter implements iRegister2.Presenter {
     @Override
     public void registerUser() {
         checkFields();
-
-        if (formIsValid()) {
-            registrationStep1();
-        }
     }
 
     // Внутренние методы
@@ -56,13 +52,11 @@ public class Register2_Presenter implements iRegister2.Presenter {
     }
 
     private void checkName(){
-        if (formCheckResults.containsKey("name") && formCheckResults.get("name")) return;
-
         String name = view.getName();
 
         if (TextUtils.isEmpty(name)) {
+            setNameIsValid(false);
             view.showNameError(R.string.REGISTER2_cannot_be_empty);
-            formCheckResults.put("email", false);
             return;
         }
 
@@ -72,46 +66,42 @@ public class Register2_Presenter implements iRegister2.Presenter {
             @Override
             public void onCheckComplete() {
                 view.enableNameInput();
-                if (formIsValid()) {
-                    registrationStep1();
-                }
             }
 
             @Override
             public void onExists() {
+                setNameIsValid(false);
                 view.showNameError(R.string.REGISTER2_name_already_used);
-                formCheckResults.put("name", false);
             }
 
             @Override
             public void onNotExists() {
-                formCheckResults.put("name", true);
+                setNameIsValid(true);
+                startRegister();
             }
 
             @Override
             public void onCheckFail(String errorMsg) {
+                setNameIsValid(false);
                 view.showErrorMsg(R.string.REGISTER2_error, errorMsg);
-                formCheckResults.put("name", false);
             }
         });
     }
 
     private void checkEmail() {
-        if (formCheckResults.containsKey("email") && formCheckResults.get("email")) return;
-
         String email = view.getEmail();
 
         if (TextUtils.isEmpty(email)) {
+            setEmailIsValid(false);
             view.showEmailError(R.string.REGISTER2_cannot_be_empty);
-            formCheckResults.put("email", false);
             return;
         }
 
         Pattern pattern = Pattern.compile("^([a-z0-9+_]+[.-]?)*[a-z0-9]+@([a-z0-9]+[.-]?)*[a-z0-9]+\\.[a-z]+$");
         Matcher matcher = pattern.matcher(email);
         if (!matcher.matches()) {
+            setEmailIsValid(false);
             view.showEmailError(R.string.REGISTER2_incorrect_email);
-            formCheckResults.put("email", false);
             return;
         }
 
@@ -121,26 +111,24 @@ public class Register2_Presenter implements iRegister2.Presenter {
             @Override
             public void onCheckComplete() {
                 view.enableEmailInput();
-                if (formIsValid()) {
-                    registrationStep1();
-                }
             }
 
             @Override
             public void onExists() {
+                setEmailIsValid(false);
                 view.showEmailError(R.string.REGISTER2_email_already_used);
-                formCheckResults.put("email", false);
             }
 
             @Override
             public void onNotExists() {
-                formCheckResults.put("email", true);
+                setEmailIsValid(true);
+                startRegister();
             }
 
             @Override
             public void onCheckFail(String errorMsg) {
+                setEmailIsValid(false);
                 view.showErrorMsg(R.string.REGISTER2_error, errorMsg);
-                formCheckResults.put("email", false);
             }
         });
     }
@@ -177,6 +165,14 @@ public class Register2_Presenter implements iRegister2.Presenter {
         formCheckResults.put("password", true);
     }
 
+    private void setNameIsValid(boolean validity) {
+        formCheckResults.put("name", validity);
+    }
+
+    private void setEmailIsValid(boolean validity) {
+        formCheckResults.put("email", validity);
+    }
+
     private boolean formIsValid() {
         Set<Map.Entry<String,Boolean>> entrySet = formCheckResults.entrySet();
         int formSize = entrySet.size();
@@ -187,6 +183,13 @@ public class Register2_Presenter implements iRegister2.Presenter {
             else resultsSize -= 1;
         }
         return (resultsSize == formSize);
+    }
+
+
+    private void startRegister() {
+        if (formIsValid()) {
+            registrationStep1();
+        }
     }
 
     private void registrationStep1() {
@@ -221,7 +224,7 @@ public class Register2_Presenter implements iRegister2.Presenter {
         usersService.createUser(userId, name, email, new iUsersSingleton.CreateCallbacks() {
             @Override public void onUserCreateSuccess(User user) {
                 authService.storeCurrentUser(user);
-//                view.finishAndGoToApp();
+                view.finishAndGoToApp();
             }
 
             @Override public void onUserCreateFail(String errorMsg) {
