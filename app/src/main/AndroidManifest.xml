@@ -12,9 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_4_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".login.Login_View"
-            android:noHistory="true" />
+
+        <activity android:name=".login.Login_View" />
+
         <activity android:name=".cards_list.CardsList_View" />
         <activity
             android:name=".card_show.CardShow_View"

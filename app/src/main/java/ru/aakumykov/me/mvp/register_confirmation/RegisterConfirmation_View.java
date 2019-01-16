@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.register_confirmation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -31,7 +32,7 @@ public class RegisterConfirmation_View extends BaseView implements
         ButterKnife.bind(this);
 
         setPageTitle(R.string.REGISTER2_email_confirmation);
-        activateUpButton();
+//        activateUpButton();
 
         presenter = new RegisterConfirmation_Presenter();
     }
@@ -59,52 +60,60 @@ public class RegisterConfirmation_View extends BaseView implements
         presenter.unlinkView();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+
 
     // Интерфейсные методы
     @Override
-    public void showNeedsConfirmationMessage() {
-        textView.setText(R.string.REGISTER_CONFIRMATION_check_your_email);
+    public void showEmailNeedsConfirmation(String email) {
+        String msg = getResources().getString(R.string.REGISTER_CONFIRMATION_check_your_email, email);
+        textView.setText(msg);
         showOkButton(R.string.REGISTER_CONFIRMATION_ok);
     }
 
     @Override
-    public void showConfirmationSuccessMessage() {
+    public void showConfirmationSuccess() {
         textView.setText(R.string.REGISTER_CONFIRMATION_registration_confirm_success);
         showOkButton(R.string.REGISTER_CONFIRMATION_ok);
     }
 
     @Override
-    public void showConfirmationErrorMessage() {
-        textView.setText(R.string.REGISTER_CONFIRMATION_registration_confirm_error);
-        showOkButton(R.string.REGISTER_CONFIRMATION_continue);
-    }
-
-    @Override
-    public void showEmailConfirmNotification() {
-        textView.setText(R.string.REGISTER_CONFIRMATION_you_need_to_confirm_email);
-        sendLetterButton.setText(R.string.REGISTER_CONFIRMATION_send_letter_again);
+    public void showConfirmationError() {
+        showErrorMsg(R.string.REGISTER_CONFIRMATION_registration_confirm_error);
         MyUtils.show(sendLetterButton);
-    }
-
-    public void goMainPage(){
-        Intent intent = new Intent(this, CardsGrid_View.class);
-        startActivity(intent);
-    }
-
-    public void showOkButton() {
-        MyUtils.show(okButton);
-    }
-
-    public void showLeaveButton() {
         MyUtils.show(leavePageButton);
     }
 
-    public void hideLeaveButton() {
+
+    @Override
+    public void notifyEmailNeedsConfirmation() {
+        textView.setText(R.string.REGISTER_CONFIRMATION_you_need_to_confirm_email);
+        sendLetterButton.setText(R.string.REGISTER_CONFIRMATION_send_letter_again);
+        MyUtils.show(sendLetterButton);
+        MyUtils.show(leavePageButton);
+    }
+
+    @Override
+    public void showEmailSending() {
+        showProgressMessage(R.string.REGISTER_CONFIRMATION_sending_confirmation_message);
+        MyUtils.hide(sendLetterButton);
         MyUtils.hide(leavePageButton);
     }
 
-    public void hideSendButton() {
-        MyUtils.hide(sendLetterButton);
+    @Override
+    public void showEmailSendSuccess() {
+        showToast(R.string.REGISTER_CONFIRMATION_email_sended);
+        goMainPage();
+    }
+
+    @Override
+    public void showEmailSendError() {
+        showErrorMsg(R.string.REGISTER_CONFIRMATION_error_sending_email);
+        MyUtils.show(sendLetterButton);
+        MyUtils.show(leavePageButton);
     }
 
 
@@ -131,4 +140,10 @@ public class RegisterConfirmation_View extends BaseView implements
         okButton.setText(getResources().getString(messageId));
         MyUtils.show(okButton);
     }
+
+    private void goMainPage(){
+        Intent intent = new Intent(this, CardsGrid_View.class);
+        startActivity(intent);
+    }
+
 }

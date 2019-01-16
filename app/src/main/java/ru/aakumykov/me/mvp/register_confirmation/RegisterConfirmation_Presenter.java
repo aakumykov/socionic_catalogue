@@ -38,15 +38,15 @@ public class RegisterConfirmation_Presenter implements iRegisterConfirmation.Pre
             switch (action) {
 
                 case Constants.ACTION_REGISTRATION_CONFIRM_REQUEST:
-                    view.showNeedsConfirmationMessage();
+                    showNeedsEmailConfirmation(intent);
+                    break;
+
+                case Constants.ACTION_REGISTRATION_CONFIRM_NOTIFICATION:
+                    notifyNeedsEmailConfirmation(intent);
                     break;
 
                 case Constants.ACTION_REGISTRATION_CONFIRM_RESPONSE:
                     processEmailConfirmation();
-                    break;
-
-                case Constants.ACTION_REGISTRATION_CONFIRM_NOTIFICATION:
-                    processEmailConfirmationNotification(intent);
                     break;
 
                 default:
@@ -58,36 +58,39 @@ public class RegisterConfirmation_Presenter implements iRegisterConfirmation.Pre
     @Override
     public void sendEmailConfirmation() {
 
-        view.hideMsg();
-        view.hideLeaveButton();
-        view.showProgressMessage(R.string.REGISTER_CONFIRMATION_sending_confirmation_message);
+        view.showEmailSending();
 
         usersService.sendEmailVerificationLink(Constants.PACKAGE_NAME, new iUsersSingleton.SendEmailVerificationLinkCallbacks() {
             @Override
             public void onEmailVerificationLinkSendSuccess() {
-                view.hideProgressBar();
-                view.showInfoMsg(R.string.REGISTER_CONFIRMATION_email_sended);
-                view.showOkButton();
+                view.showEmailSendSuccess();
             }
 
             @Override
             public void onEmailVerificationLinkSendFail(String errorMsg) {
-                view.showErrorMsg(R.string.REGISTER_CONFIRMATION_error_sending_email, errorMsg);
-                view.showLeaveButton();
+                view.showEmailSendError();
             }
         });
     }
 
 
     // Внутренния методы
+    private void showNeedsEmailConfirmation(@NonNull Intent intent) {
+        String email = intent.getStringExtra(Constants.USER_EMAIL);
+        if (null != email) {
+            view.showEmailNeedsConfirmation(email);
+        }
+    }
+
     private void processEmailConfirmation() {
 
     }
 
-    private void processEmailConfirmationNotification(@NonNull Intent intent) {
+    private void notifyNeedsEmailConfirmation(@NonNull Intent intent) {
         String userId = intent.getStringExtra(Constants.USER_ID);
         if (null != userId) {
             this.userId = userId;
+            view.notifyEmailNeedsConfirmation();
         }
     }
 }

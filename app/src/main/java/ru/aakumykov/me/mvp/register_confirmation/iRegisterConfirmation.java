@@ -8,15 +8,15 @@ import ru.aakumykov.me.mvp.iBaseView;
 interface iRegisterConfirmation {
 
     interface View extends iBaseView {
-        void showNeedsConfirmationMessage();
-        void showConfirmationSuccessMessage();
-        void showConfirmationErrorMessage();
-        void showEmailConfirmNotification();
-        void goMainPage();
-        void showOkButton();
-        void showLeaveButton();
-        void hideLeaveButton();
-        void hideSendButton();
+        void showEmailNeedsConfirmation(String email);
+
+        void showConfirmationSuccess();
+        void showConfirmationError();
+
+        void notifyEmailNeedsConfirmation();
+         void showEmailSending();
+         void showEmailSendSuccess();
+         void showEmailSendError();
     }
 
     interface Presenter {
