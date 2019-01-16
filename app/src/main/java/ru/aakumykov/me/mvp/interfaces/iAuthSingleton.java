@@ -29,7 +29,7 @@ public interface iAuthSingleton {
     }
 
     interface LoginCallbacks {
-        void onLoginSuccess();
+        void onLoginSuccess(User user);
         void onLoginFail(String errorMsg);
     }
 

@@ -1,6 +1,5 @@
 package ru.aakumykov.me.mvp.users;
 
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,15 +7,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
-import android.webkit.MimeTypeMap;
-import android.widget.ImageView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-
-import java.io.InputStream;
-
-import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iStorageSingleton;
@@ -25,8 +16,6 @@ import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.StorageSingleton;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
-import ru.aakumykov.me.mvp.utils.MVPUtils.MVPUtils;
-import ru.aakumykov.me.mvp.utils.MVPUtils.iMVPUtils;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class Users_Presenter implements
@@ -86,7 +75,7 @@ public class Users_Presenter implements
         {
             if (authService.currentUserId().equals(userId))
             {
-                usersService.getUser(userId, this);
+                usersService.getUserById(userId, this);
             }
             else {
                 throw new IllegalAccessException("Cannot edit profile of another user.");
@@ -107,7 +96,7 @@ public class Users_Presenter implements
         if (null == userId) {
             throw new Exception("userId == null");
         }
-        usersService.getUser(userId, callbacks);
+        usersService.getUserById(userId, callbacks);
     }
 
     @Override

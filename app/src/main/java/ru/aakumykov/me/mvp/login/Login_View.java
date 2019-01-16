@@ -12,7 +12,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.register.Register_View;
+import ru.aakumykov.me.mvp.register_confirmation.RegisterConfirmation_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 
@@ -105,6 +107,12 @@ public class Login_View extends BaseView implements
         if (byCancel) setResult(RESULT_CANCELED);
         else setResult(RESULT_OK);
         finish();
+    }
+
+    @Override public void notifyCnfirmEmail() {
+        Intent intent = new Intent(this, RegisterConfirmation_View.class);
+        intent.setAction(Constants.ACTION_REGISTRATION_CONFIRM_REQUEST);
+        startActivity(intent);
     }
 
 

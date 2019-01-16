@@ -7,8 +7,11 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
+import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
+import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.CardsSingleton;
+import ru.aakumykov.me.mvp.services.UsersSingleton;
 
 public class Login_Presenter implements
         iLogin.Presenter,
@@ -60,12 +63,19 @@ public class Login_Presenter implements
         }
     }
 
+
     // Методы обратного вызова
     @Override
     public void onLoginSuccess() {
-        view.hideProgressBar();
-        view.showInfoMsg(R.string.LOGIN_login_success);
-        view.finishLogin(false);
+        User user = authService.currentUser();
+        if (user.isEmailVerified()) {
+            view.hideProgressBar();
+            view.showInfoMsg(R.string.LOGIN_login_success);
+            view.finishLogin(false);
+        } else {
+            authService.logout();
+            view.notifyCnfirmEmail();
+        }
     }
 
     @Override

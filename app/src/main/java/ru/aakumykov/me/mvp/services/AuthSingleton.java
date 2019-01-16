@@ -79,6 +79,7 @@ public class AuthSingleton implements iAuthSingleton
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
+
                         callbacks.onLoginSuccess();
                     }
                 })
@@ -104,7 +105,7 @@ public class AuthSingleton implements iAuthSingleton
 
     @Override
     public void restoreCurrentUser(final iAuthSingleton.UserRestoreCallbacks callbacks) {
-//        usersService.getUser(currentUserId(), new iUsersSingleton.ReadCallbacks() {
+//        usersService.getUserById(currentUserId(), new iUsersSingleton.ReadCallbacks() {
 //            @Override
 //            public void onUserReadSuccess(User user) {
 //                storeCurrentUser(user);
