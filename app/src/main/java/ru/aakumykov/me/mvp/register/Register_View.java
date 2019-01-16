@@ -14,7 +14,6 @@ import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.register_confirmation.RegisterConfirmation_View;
-import ru.aakumykov.me.mvp.users.show.UserShow_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class Register_View extends BaseView implements
@@ -40,7 +39,7 @@ public class Register_View extends BaseView implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register2_activity);
+        setContentView(R.layout.register_activity);
         ButterKnife.bind(this);
 
         if (auth().isUserLoggedIn()) {

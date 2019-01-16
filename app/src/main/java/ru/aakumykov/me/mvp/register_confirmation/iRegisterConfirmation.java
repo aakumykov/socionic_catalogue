@@ -11,10 +11,17 @@ interface iRegisterConfirmation {
         void showNeedsConfirmationMessage();
         void showConfirmationSuccessMessage();
         void showConfirmationErrorMessage();
+        void showEmailConfirmNotification();
+        void goMainPage();
+        void showOkButton();
+        void showLeaveButton();
+        void hideLeaveButton();
+        void hideSendButton();
     }
 
     interface Presenter {
         void processInputIntent(@Nullable Intent intent);
+        void sendEmailConfirmation();
 
         void linkView(View view);
         void unlinkView();

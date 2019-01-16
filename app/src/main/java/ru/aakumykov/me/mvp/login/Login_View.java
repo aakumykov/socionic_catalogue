@@ -109,9 +109,9 @@ public class Login_View extends BaseView implements
         finish();
     }
 
-    @Override public void notifyCnfirmEmail() {
+    @Override public void notifyToConfirmEmail() {
         Intent intent = new Intent(this, RegisterConfirmation_View.class);
-        intent.setAction(Constants.ACTION_REGISTRATION_CONFIRM_REQUEST);
+        intent.setAction(Constants.ACTION_REGISTRATION_CONFIRM_NOTIFICATION);
         startActivity(intent);
     }
 

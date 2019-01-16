@@ -7,17 +7,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
-import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.models.User;
 
@@ -79,8 +70,7 @@ public class AuthSingleton implements iAuthSingleton
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-
-                        callbacks.onLoginSuccess();
+                        callbacks.onLoginSuccess(authResult.getUser().getUid());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

@@ -3,6 +3,8 @@ package ru.aakumykov.me.mvp;
 public final class Constants {
     private Constants() {}
 
+    public final static String  PACKAGE_NAME = "ru.aakumykov.me.mvp";
+
     public final static String CARDS_PATH = "/cards";
     public final static String TAGS_PATH = "/tags";
     public final static String COMMENTS_PATH = "/comments";
@@ -18,6 +20,7 @@ public final class Constants {
     public final static String ACTION_LOGIN_FOR_COMMENT = "ACTION_LOGIN_FOR_COMMENT";
     public final static String ACTION_REGISTRATION_CONFIRM_REQUEST = "ACTION_REGISTRATION_CONFIRM_REQUEST";
     public final static String ACTION_REGISTRATION_CONFIRM_RESPONSE = "ACTION_REGISTRATION_CONFIRM_RESPONSE";
+    public final static String ACTION_REGISTRATION_CONFIRM_NOTIFICATION = "ACTION_REGISTRATION_CONFIRM_NOTIFICATION";
 
     public final static String TAG_FILTER = "TAG_FILTER";
     public final static String TAG_KEY = "TAG_KEY";

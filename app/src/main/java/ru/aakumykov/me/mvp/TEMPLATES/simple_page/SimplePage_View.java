@@ -55,16 +55,16 @@ public class SimplePage_View extends BaseView implements
     // Интерфейсные методы
     @Override
     public void showNeedsConfirmationMessage() {
-        textView.setText(R.string.REGISTER2_check_your_email);
+        textView.setText(R.string.REGISTER_CONFIRMATION_check_your_email);
     }
 
     @Override
     public void showConfirmationSuccessMessage() {
-        textView.setText(R.string.REGISTER2_registration_confirm_success);
+        textView.setText(R.string.REGISTER_CONFIRMATION_registration_confirm_success);
     }
 
     @Override
     public void showConfirmationErrorMessage() {
-        textView.setText(R.string.REGISTER2_registration_confirm_error);
+        textView.setText(R.string.REGISTER_CONFIRMATION_registration_confirm_error);
     }
 }

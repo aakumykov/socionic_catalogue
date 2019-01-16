@@ -261,8 +261,18 @@
     <string name="REGISTER2_incorrect_email">Incorrect email</string>
     <string name="REGISTER2_registration_error">Sign up error</string>
     <string name="REGISTER2_email_confirmation">Email confirmation</string>
-    <string name="REGISTER2_check_your_email">Check your email</string>
-    <string name="REGISTER2_registration_confirm_success">Sign up complete</string>
-    <string name="REGISTER2_registration_confirm_error">Registration confirm error</string>
+    <string name="REGISTER_CONFIRMATION_check_your_email">A message has been sent to the address «%1$s». Check it to complete the registration.</string>
+    <string name="REGISTER_CONFIRMATION_registration_confirm_success">Sign up complete</string>
+    <string name="REGISTER_CONFIRMATION_registration_confirm_error">Registration confirm error</string>
     <string name="unknown_intent_action">Unknown action</string>
+    <string name="LOGIN_login_error">Login error</string>
+    <string name="REGISTER_CONFIRMATION_you_need_to_confirm_email">Confirm your email address to sign in</string>
+    <string name="REGISTER_CONFIRMATION_got_it">Got it</string>
+    <string name="REGISTER_CONFIRMATION_ok">Ok</string>
+    <string name="REGISTER_CONFIRMATION_continue">Continue</string>
+    <string name="REGISTER_CONFIRMATION_send_letter_again">Send letter again</string>
+    <string name="REGISTER_CONFIRMATION_sending_confirmation_message">Sending email</string>
+    <string name="REGISTER_CONFIRMATION_error_sending_email">Error sending email</string>
+    <string name="REGISTER_CONFIRMATION_leave_page">Try later</string>
+    <string name="REGISTER_CONFIRMATION_email_sended">Email sended!</string>
 </resources>

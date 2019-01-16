@@ -85,6 +85,7 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+
         <activity android:name=".cards_grid.CardsGrid_View">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -92,10 +93,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".register.Register_View"
-            android:noHistory="true" />
-        <activity android:name=".register_confirmation.RegisterConfirmation_View"></activity>
+
+        <activity android:name=".register.Register_View" android:noHistory="true" />
+
+        <activity android:name=".register_confirmation.RegisterConfirmation_View" android:noHistory="true"/>
+
     </application>
 
 </manifest>

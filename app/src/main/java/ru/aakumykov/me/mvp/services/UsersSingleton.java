@@ -1,6 +1,5 @@
 package ru.aakumykov.me.mvp.services;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -256,8 +255,7 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void sendEmailVerificationLink(Context context, final SendEmailVerificationLinkCallbacks callbacks) {
-        String packageName = context.getPackageName();
+    public void sendEmailVerificationLink(String packageName, final SendEmailVerificationLinkCallbacks callbacks) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
