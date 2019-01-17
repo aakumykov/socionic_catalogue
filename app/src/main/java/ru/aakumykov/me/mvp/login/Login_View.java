@@ -76,7 +76,7 @@ public class Login_View extends BaseView implements
     // Обязательные методы
     @Override
     public void onUserLogin() {
-        closePage(); // Если пользователь каким-то образом залогинился
+        //closePage(); // Если пользователь каким-то образом залогинился
     }
 
     @Override
@@ -109,9 +109,10 @@ public class Login_View extends BaseView implements
         finish();
     }
 
-    @Override public void notifyToConfirmEmail() {
+    @Override public void notifyToConfirmEmail(String userId) {
         Intent intent = new Intent(this, RegisterConfirmation_View.class);
         intent.setAction(Constants.ACTION_REGISTRATION_CONFIRM_NOTIFICATION);
+        intent.putExtra(Constants.USER_ID, userId);
         startActivity(intent);
     }
 

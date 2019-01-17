@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp.login;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
@@ -64,19 +65,19 @@ public class Login_Presenter implements
 
     // Методы обратного вызова
     @Override
-    public void onLoginSuccess(String userId) {
+    public void onLoginSuccess(final String userId) {
 
         usersService.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
 
                 if (user.isEmailVerified()) {
-//                    view.hideProgressBar();
-//                    view.showToast(R.string.LOGIN_login_success);
-//                    view.finishLogin(false);
+                    view.hideProgressBar();
+                    view.showToast(R.string.LOGIN_login_success);
+                    view.finishLogin(false);
                 } else {
                     authService.logout();
-                    view.notifyToConfirmEmail();
+                    view.notifyToConfirmEmail(userId);
                 }
             }
 
