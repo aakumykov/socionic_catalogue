@@ -12,8 +12,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.register.Register_View;
-import ru.aakumykov.me.mvp.register2.Register2_View;
+import ru.aakumykov.me.mvp.register_confirmation.RegisterConfirmation_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 
@@ -75,7 +76,7 @@ public class Login_View extends BaseView implements
     // Обязательные методы
     @Override
     public void onUserLogin() {
-        closePage(); // Если пользователь каким-то образом залогинился
+        //closePage(); // Если пользователь каким-то образом залогинился
     }
 
     @Override
@@ -108,6 +109,13 @@ public class Login_View extends BaseView implements
         finish();
     }
 
+    @Override public void notifyToConfirmEmail(String userId) {
+        Intent intent = new Intent(this, RegisterConfirmation_View.class);
+        intent.setAction(Constants.ACTION_REGISTRATION_CONFIRM_NOTIFICATION);
+        intent.putExtra(Constants.USER_ID, userId);
+        startActivity(intent);
+    }
+
 
     // Нажатия
     @OnClick(R.id.loginButton)
@@ -130,7 +138,7 @@ public class Login_View extends BaseView implements
 
     @OnClick(R.id.registerButton)
     void goRegisterPage() {
-        Intent intent = new Intent(this, Register2_View.class);
+        Intent intent = new Intent(this, Register_View.class);
 //        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }

@@ -6,6 +6,9 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.ActionCodeSettings;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -119,8 +122,8 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void getUser(final String userId, final ReadCallbacks callbacks) {
-        Log.d(TAG, "getUser("+userId+", callbacks)");
+    public void getUserById(final String userId, final ReadCallbacks callbacks) {
+        Log.d(TAG, "getUserById("+userId+", callbacks)");
 
         usersRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -136,6 +139,30 @@ public class UsersSingleton implements iUsersSingleton {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                callbacks.onUserReadFail(databaseError.getMessage());
+                databaseError.toException().printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void getUserByEmail(String email, final iUsersSingleton.ReadCallbacks callbacks) {
+        Query query =usersRef.orderByChild("email").equalTo(email);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long count = dataSnapshot.getChildrenCount();
+                if (0 == count) callbacks.onUserReadSuccess(null);
+                else {
+                    for (DataSnapshot oneSnapshot : dataSnapshot.getChildren()) {
+                        User user = oneSnapshot.getValue(User.class);
+                        callbacks.onUserReadSuccess(user);
+                        break;
+                    }
+                }
+            }
+
+            @Override public void onCancelled(@NonNull DatabaseError databaseError) {
                 callbacks.onUserReadFail(databaseError.getMessage());
                 databaseError.toException().printStackTrace();
             }
@@ -226,4 +253,6 @@ public class UsersSingleton implements iUsersSingleton {
             }
         });
     }
+
+
 }

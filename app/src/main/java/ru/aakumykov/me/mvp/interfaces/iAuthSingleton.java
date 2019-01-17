@@ -22,6 +22,8 @@ public interface iAuthSingleton {
     void storeCurrentUser(User user);
     void clearCurrentUser();
 
+    void sendEmailVerificationLink(String packageName, SendEmailVerificationLinkCallbacks callbacks);
+
 
     interface RegisterCallbacks {
         void onRegSucsess(String userId, String email);
@@ -29,7 +31,7 @@ public interface iAuthSingleton {
     }
 
     interface LoginCallbacks {
-        void onLoginSuccess();
+        void onLoginSuccess(String userId);
         void onLoginFail(String errorMsg);
     }
 
@@ -37,4 +39,10 @@ public interface iAuthSingleton {
         void onUserRestoreSuccess();
         void onUserRestoreFail(String errorMsg);
     }
+
+    interface SendEmailVerificationLinkCallbacks {
+        void onEmailVerificationLinkSendSuccess();
+        void onEmailVerificationLinkSendFail(String errorMsg);
+    }
+
 }

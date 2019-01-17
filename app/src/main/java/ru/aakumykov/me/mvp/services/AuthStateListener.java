@@ -35,7 +35,7 @@ public class AuthStateListener implements iAuthStateListener {
 
                     callbacks.onLoggedIn();
 
-                    usersService.getUser(firebaseUser.getUid(), new iUsersSingleton.ReadCallbacks() {
+                    usersService.getUserById(firebaseUser.getUid(), new iUsersSingleton.ReadCallbacks() {
                         @Override
                         public void onUserReadSuccess(User user) {
                             authService.storeCurrentUser(user);

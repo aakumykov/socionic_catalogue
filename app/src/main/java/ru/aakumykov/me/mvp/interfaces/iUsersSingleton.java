@@ -9,11 +9,11 @@ import ru.aakumykov.me.mvp.models.User;
 public interface iUsersSingleton {
 
     void createUser(String userId, String userName, String email, CreateCallbacks callbacks);
-    void getUser(String id, ReadCallbacks callbacks);
+    void getUserById(String id, ReadCallbacks callbacks);
+    void getUserByEmail(String email, ReadCallbacks callbacks);
     void saveUser(User user, SaveCallbacks callbacks);
     void deleteUser(User user, DeleteCallbacks callbacks);
     void listUsers(ListCallbacks callbacks);
-
     void checkNameExists(String name, CheckExistanceCallbacks callbacks);
     void checkEmailExists(String email, CheckExistanceCallbacks callbacks);
 

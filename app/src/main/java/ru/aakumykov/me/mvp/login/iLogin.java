@@ -13,6 +13,7 @@ public interface iLogin {
         void disableForm();
         void enableForm();
         void finishLogin(boolean byCancel);
+        void notifyToConfirmEmail(String userId);
     }
 
     interface Presenter {

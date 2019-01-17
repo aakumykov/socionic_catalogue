@@ -31,6 +31,7 @@ import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public abstract class BaseView extends AppCompatActivity implements iBaseView
 {
+    public static String PACKAGE_NAME;
     private final static String TAG = "BaseView";
     private iCardsSingleton cardsService;
     private iAuthSingleton authService;
@@ -44,6 +45,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        PACKAGE_NAME = getApplicationContext().getPackageName();
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 

@@ -3,6 +3,8 @@ package ru.aakumykov.me.mvp;
 public final class Constants {
     private Constants() {}
 
+    public final static String  PACKAGE_NAME = "ru.aakumykov.me.mvp";
+
     public final static String CARDS_PATH = "/cards";
     public final static String TAGS_PATH = "/tags";
     public final static String COMMENTS_PATH = "/comments";
@@ -16,12 +18,16 @@ public final class Constants {
     public final static String ACTION_CREATE = "ACTION_CREATE";
     public final static String ACTION_EDIT = "ACTION_EDIT";
     public final static String ACTION_LOGIN_FOR_COMMENT = "ACTION_LOGIN_FOR_COMMENT";
+    public final static String ACTION_REGISTRATION_CONFIRM_REQUEST = "ACTION_REGISTRATION_CONFIRM_REQUEST";
+    public final static String ACTION_REGISTRATION_CONFIRM_RESPONSE = "ACTION_REGISTRATION_CONFIRM_RESPONSE";
+    public final static String ACTION_REGISTRATION_CONFIRM_NOTIFICATION = "ACTION_REGISTRATION_CONFIRM_NOTIFICATION";
 
     public final static String TAG_FILTER = "TAG_FILTER";
     public final static String TAG_KEY = "TAG_KEY";
 
     public final static String USER = "USER";
     public final static String USER_ID = "USER_ID";
+    public final static String USER_EMAIL = "USER_EMAIL";
 
     public final static String TEXT_CARD = "TEXT_CARD";
     public final static String IMAGE_CARD = "IMAGE_CARD";

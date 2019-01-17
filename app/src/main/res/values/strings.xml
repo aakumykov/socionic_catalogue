@@ -13,7 +13,6 @@
     <string name="logout_success">Вы вышли из системы</string>
     <string name="logout_error">Ошибка выхода</string>
     <string name="logout">Выйти</string>
-    <string name="LOGIN_testEmail" translatable="false">user@mail.ru</string>
     <string name="LOGIN_testPassword" translatable="false">123456</string>
     <string name="card_load_error">Ошибка загрузки карточки</string>
     <string name="card_load_canceled">Загрузка карточки отменена</string>
@@ -115,7 +114,7 @@
     <string name="INFO_card_saved">Карточка сохранена</string>
     <string name="INFO_operation_cancelled">Операция отменена</string>
     <string name="ERROR_saving_card">Ошибка сохранения карточки</string>
-    <string name="LOGIN_register">Регистрирация</string>
+    <string name="LOGIN_register">Зарегистрироваться</string>
     <string name="LOGIN_register_label">Впервые здесь?</string>
     <string name="REGISTER2_page_title">Регистрация</string>
     <string name="USER_page_title">Профиль прользователя</string>
@@ -255,7 +254,7 @@
     <string name="REGISTER2_email">Адрес электронной почты</string>
     <string name="REGISTER2_password">Пароль</string>
     <string name="REGISTER2_password_confirmation">Подтверждение пароля</string>
-    <string name="REGISTER2_do_register">Зарегистрироваться</string>
+    <string name="REGISTER2_do_register">Регистрирация</string>
     <string name="REGISTER2_do_not_register">Передумать</string>
     <string name="REGISTER2_cannot_be_empty">Не может быть пустым</string>
     <string name="REGISTER2_checking_user_name">Проверяю имя пользователя</string>
@@ -265,4 +264,20 @@
     <string name="REGISTER2_password_too_short">Пароль слишком короткий</string>
     <string name="REGISTER2_incorrect_email">Некорректный email</string>
     <string name="REGISTER2_registration_error">Ошибка регистрации</string>
+    <string name="REGISTER_CONFIRMATION_page_title">Завершение регистрации</string>
+    <string name="REGISTER_CONFIRMATION_check_your_email">На адрес «%1$s» отправлено сообщение. Проверьте его для завершения регистрации.</string>
+    <string name="REGISTER_CONFIRMATION_registration_confirm_success">Регистрация успешно завершена</string>
+    <string name="REGISTER_CONFIRMATION_registration_confirm_error">Ошибка завершения регистрации</string>
+    <string name="unknown_intent_action">Неизвестное действие</string>
+    <string name="LOGIN_login_error">Ошибка входа</string>
+    <string name="REGISTER_CONFIRMATION_you_need_to_confirm_email">Чтобы войти, подтвердите адрес электронной почты.</string>
+    <string name="REGISTER_CONFIRMATION_got_it">Понятно</string>
+    <string name="REGISTER_CONFIRMATION_ok">Хорошо</string>
+    <string name="REGISTER_CONFIRMATION_continue">Продолжить</string>
+    <string name="REGISTER_CONFIRMATION_send_letter_again">Выслать письмо ещё раз</string>
+    <string name="REGISTER_CONFIRMATION_sending_confirmation_message">Письмо отправляется</string>
+    <string name="REGISTER_CONFIRMATION_error_sending_email">Ошибка отправки письма</string>
+    <string name="REGISTER_CONFIRMATION_leave_page">Попробовать позже</string>
+    <string name="REGISTER_CONFIRMATION_email_sended">Письмо отправлено!</string>
+    <string name="REGISTER_CONFIRMATION_error_no_required_data">Недостаточно данных</string>
 </resources>

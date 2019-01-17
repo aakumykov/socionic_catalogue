@@ -6,9 +6,10 @@ import android.support.annotation.Nullable;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
-import ru.aakumykov.me.mvp.interfaces.iCardsSingleton;
+import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
+import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
-import ru.aakumykov.me.mvp.services.CardsSingleton;
+import ru.aakumykov.me.mvp.services.UsersSingleton;
 
 public class Login_Presenter implements
         iLogin.Presenter,
@@ -16,8 +17,8 @@ public class Login_Presenter implements
 {
     private final static String TAG = "Login_Presenter";
     private iLogin.View view;
-    private iCardsSingleton cardsService = CardsSingleton.getInstance();
     private iAuthSingleton authService = AuthSingleton.getInstance();
+    private iUsersSingleton usersService = UsersSingleton.getInstance();
 
     // Обязательные методы
     @Override
@@ -60,12 +61,30 @@ public class Login_Presenter implements
         }
     }
 
+
     // Методы обратного вызова
     @Override
-    public void onLoginSuccess() {
-        view.hideProgressBar();
-        view.showInfoMsg(R.string.LOGIN_login_success);
-        view.finishLogin(false);
+    public void onLoginSuccess(final String userId) {
+
+        usersService.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
+            @Override
+            public void onUserReadSuccess(User user) {
+
+                if (user.isEmailVerified()) {
+                    view.hideProgressBar();
+                    view.showToast(R.string.LOGIN_login_success);
+                    view.finishLogin(false);
+                } else {
+                    view.notifyToConfirmEmail(userId);
+                }
+            }
+
+            @Override
+            public void onUserReadFail(String errorMsg) {
+                view.showErrorMsg(R.string.LOGIN_login_error, errorMsg);
+                authService.logout();
+            }
+        });
     }
 
     @Override

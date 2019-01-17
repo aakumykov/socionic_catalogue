@@ -5,30 +5,35 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
-import ru.aakumykov.me.mvp.users.edit.UserEdit_View;
-import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.models.User;
-
-// TODO: no-history
+import ru.aakumykov.me.mvp.register_confirmation.RegisterConfirmation_View;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class Register_View extends BaseView implements
-        iRegister.View
+    iRegister.View
 {
+    @BindView(R.id.nameThrobber) ProgressBar nameThrobber;
+    @BindView(R.id.nameInput) EditText nameInput;
+
+    @BindView(R.id.emailThrobber) ProgressBar emailThrobber;
     @BindView(R.id.emailInput) EditText emailInput;
-    @BindView(R.id.passwordInput1) EditText passwordInput;
-    @BindView(R.id.passwordInput2) EditText passwordConfirmationInput;
+
+    @BindView(R.id.password1Input) EditText password1Input;
+    @BindView(R.id.password2Input) EditText password2Input;
+
     @BindView(R.id.registerButton) Button registerButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
-    private final static String TAG = "Register_View";
     private iRegister.Presenter presenter;
+    private boolean firstRun = true;
+
 
     // Системные методы
     @Override
@@ -36,6 +41,11 @@ public class Register_View extends BaseView implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity);
         ButterKnife.bind(this);
+
+        if (auth().isUserLoggedIn()) {
+            showToast(R.string.REGISTER2_you_are_already_registered);
+            finish();
+        }
 
         setPageTitle(R.string.REGISTER2_page_title);
         activateUpButton();
@@ -47,6 +57,9 @@ public class Register_View extends BaseView implements
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
+        if (firstRun) {
+            firstRun = false;
+        }
     }
 
     @Override
@@ -55,11 +68,9 @@ public class Register_View extends BaseView implements
         presenter.unlinkView();
     }
 
-
-    // Обязательные методы
     @Override
     public void onUserLogin() {
-        // TODO: делать здесь что-нибудь
+
     }
 
     @Override
@@ -70,69 +81,120 @@ public class Register_View extends BaseView implements
 
     // Интерфейсные методы
     @Override
+    public String getName() {
+        return nameInput.getText().toString();
+    }
+
+    @Override
     public String getEmail() {
         return emailInput.getText().toString();
     }
 
     @Override
-    public String getPassword() {
-        return passwordInput.getText().toString();
+    public String getPassword1() {
+        return password1Input.getText().toString();
     }
 
     @Override
-    public String getPasswordConfirmation() {
-        return passwordConfirmationInput.getText().toString();
+    public String getPassword2() {
+        return password2Input.getText().toString();
     }
 
     @Override
-    public void focusEmail() {
-        emailInput.requestFocus();
+    public void showNameError(int messageId) {
+        showInputError(nameInput, messageId);
     }
 
     @Override
-    public void focusPassword() {
-        passwordInput.requestFocus();
+    public void showEmailError(int messageId) {
+        showInputError(emailInput, messageId);
     }
 
     @Override
-    public void focusPasswordConfigmation() {
-        passwordConfirmationInput.requestFocus();
+    public void showPassword1Error(int messageId) {
+        showInputError(password1Input, messageId);
+    }
+
+    @Override
+    public void showPassword2Error(int messageId) {
+        showInputError(password2Input, messageId);
+    }
+
+    @Override
+    public void disableNameInput() {
+        MyUtils.disable(nameInput);
+        MyUtils.show(nameThrobber);
+    }
+
+    @Override
+    public void enableNameInput() {
+        MyUtils.enable(nameInput);
+        MyUtils.hide(nameThrobber);
+    }
+
+    @Override
+    public void disableEmailInput() {
+        MyUtils.disable(emailInput);
+        MyUtils.show(emailThrobber);
+    }
+
+    @Override
+    public void enableEmailInput() {
+        MyUtils.enable(emailInput);
+        MyUtils.hide(emailThrobber);
     }
 
     @Override
     public void disableForm() {
+        MyUtils.disable(nameInput);
         MyUtils.disable(emailInput);
-        MyUtils.disable(passwordInput);
-        MyUtils.disable(passwordConfirmationInput);
+        MyUtils.disable(password1Input);
+        MyUtils.disable(password2Input);
         MyUtils.disable(registerButton);
     }
 
     @Override
     public void enableForm() {
+        MyUtils.enable(nameInput);
         MyUtils.enable(emailInput);
-        MyUtils.enable(passwordInput);
-        MyUtils.enable(passwordConfirmationInput);
+        MyUtils.enable(password1Input);
+        MyUtils.enable(password2Input);
         MyUtils.enable(registerButton);
     }
 
     @Override
-    public void goUserEditPage(User user) {
-        Intent intent = new Intent(this, UserEdit_View.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        intent.putExtra(Constants.USER_ID, user.getKey());
+    public void finishRegistration(String email) {
+        showToast(R.string.REGISTER2_registration_succes);
+
+        auth().logout();
+
+        Intent intent = new Intent(this, RegisterConfirmation_View.class);
+        intent.putExtra(Constants.USER_EMAIL, email);
+        intent.setAction(Constants.ACTION_REGISTRATION_CONFIRM_REQUEST);
+
         startActivity(intent);
     }
 
 
-    // Обработчики нажатий
+    // Нажатия
     @OnClick(R.id.registerButton)
-    void register() {
-        presenter.regUserWithEmail();
+    public void register() {
+        presenter.registerUser();
     }
 
-    // TODO: как _реально_ прервать рагистрацию, чтобы не создавать фантомных пользователей?
     @OnClick(R.id.cancelButton)
-    void cancelRegister() {
-        closePage();
+    void cancelRegistration() {
+        finish();
+    }
+
+
+    // Внутренние методы
+    private <T> void showInputError(EditText textInput, T  msg) {
+        String errorMsg = "";
+        if (msg instanceof Integer) errorMsg = getResources().getString((Integer)msg);
+        else errorMsg = String.valueOf(msg);
+
+        textInput.requestFocus();
+        textInput.setError(errorMsg);
     }
 }
