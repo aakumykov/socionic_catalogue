@@ -15,6 +15,7 @@ import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class Register_Presenter implements iRegister.Presenter {
 
@@ -98,9 +99,7 @@ public class Register_Presenter implements iRegister.Presenter {
             return;
         }
 
-        Pattern pattern = Pattern.compile("^([a-z0-9+_]+[.-]?)*[a-z0-9]+@([a-z0-9]+[.-]?)*[a-z0-9]+\\.[a-z]+$");
-        Matcher matcher = pattern.matcher(email);
-        if (!matcher.matches()) {
+        if (MyUtils.isEmailCorrect(email)) {
             setEmailIsValid(false);
             view.showEmailError(R.string.REGISTER2_incorrect_email);
             return;
