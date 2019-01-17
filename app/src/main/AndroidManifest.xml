@@ -98,6 +98,8 @@
 
         <activity android:name=".register_confirmation.RegisterConfirmation_View" android:noHistory="true"/>
 
+        <activity android:name=".reset_password.ResetPassword_View" android:noHistory="true" />
+
     </application>
 
 </manifest>

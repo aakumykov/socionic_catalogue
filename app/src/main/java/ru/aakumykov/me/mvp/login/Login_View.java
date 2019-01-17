@@ -15,6 +15,7 @@ import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.register.Register_View;
 import ru.aakumykov.me.mvp.register_confirmation.RegisterConfirmation_View;
+import ru.aakumykov.me.mvp.reset_password.ResetPassword_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 import ru.aakumykov.me.mvp.R;
 
@@ -24,6 +25,7 @@ public class Login_View extends BaseView implements
     @BindView(R.id.passwordInput) EditText passwordInput;
     @BindView(R.id.loginButton) Button loginButton;
     @BindView(R.id.cancelButton) Button cancelButton;
+    @BindView(R.id.resetPasswordButton) Button resetPasswordButton;
     @BindView(R.id.registerButton) Button registerButton;
 
     private final static String TAG = "Login_View";
@@ -134,6 +136,12 @@ public class Login_View extends BaseView implements
     void cancelLogin() {
         setResult(RESULT_CANCELED);
         finish();
+    }
+
+    @OnClick(R.id.resetPasswordButton)
+    void resetPassword() {
+        Intent intent = new Intent(this, ResetPassword_View.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.registerButton)
