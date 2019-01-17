@@ -3,10 +3,14 @@ package ru.aakumykov.me.mvp.services;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.models.Card;
@@ -148,6 +152,44 @@ public class AuthSingleton implements iAuthSingleton
     public boolean isCardOwner(Card card) {
         return card.getUserId().equals(currentUserId());
     }
+
+    @Override
+    public void sendEmailVerificationLink(String packageName, final SendEmailVerificationLinkCallbacks callbacks) {
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        String url = "http://example.org/verify?uid=" + user.getUid();
+
+        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
+                .setUrl(url)
+                // The default for this is populated with the current android package name.
+                .setAndroidPackageName(packageName, true, null)
+                .setHandleCodeInApp(true) // TODO: попрорбовать разные значения
+                .build();
+
+        user.sendEmailVerification(actionCodeSettings)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        logout();
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onEmailVerificationLinkSendSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onEmailVerificationLinkSendFail(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+
+    }
+
 
     // Служебные
     @Override

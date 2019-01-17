@@ -163,12 +163,13 @@ public class Register_View extends BaseView implements
     }
 
     @Override
-    public void finishAndGoToApp() {
+    public void finishRegistration(String email) {
         showToast(R.string.REGISTER2_registration_succes);
 
         auth().logout();
 
         Intent intent = new Intent(this, RegisterConfirmation_View.class);
+        intent.putExtra(Constants.USER_EMAIL, email);
         intent.setAction(Constants.ACTION_REGISTRATION_CONFIRM_REQUEST);
 
         startActivity(intent);

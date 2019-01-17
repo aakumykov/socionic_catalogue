@@ -29,7 +29,7 @@ public interface iRegister {
         void disableForm();
         void enableForm();
 
-        void finishAndGoToApp();
+        void finishRegistration(String email);
     }
 
     interface Presenter {

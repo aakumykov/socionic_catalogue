@@ -2,7 +2,6 @@ package ru.aakumykov.me.mvp.login;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
@@ -76,7 +75,6 @@ public class Login_Presenter implements
                     view.showToast(R.string.LOGIN_login_success);
                     view.finishLogin(false);
                 } else {
-                    authService.logout();
                     view.notifyToConfirmEmail(userId);
                 }
             }

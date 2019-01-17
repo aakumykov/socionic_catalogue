@@ -264,7 +264,7 @@
     <string name="REGISTER2_password_too_short">Пароль слишком короткий</string>
     <string name="REGISTER2_incorrect_email">Некорректный email</string>
     <string name="REGISTER2_registration_error">Ошибка регистрации</string>
-    <string name="REGISTER2_email_confirmation">Подтверждение электронной почты</string>
+    <string name="REGISTER_CONFIRMATION_page_title">Завершение регистрации</string>
     <string name="REGISTER_CONFIRMATION_check_your_email">На адрес «%1$s» отправлено сообщение. Проверьте его для завершения регистрации.</string>
     <string name="REGISTER_CONFIRMATION_registration_confirm_success">Регистрация успешно завершена</string>
     <string name="REGISTER_CONFIRMATION_registration_confirm_error">Ошибка завершения регистрации</string>
@@ -279,4 +279,5 @@
     <string name="REGISTER_CONFIRMATION_error_sending_email">Ошибка отправки письма</string>
     <string name="REGISTER_CONFIRMATION_leave_page">Попробовать позже</string>
     <string name="REGISTER_CONFIRMATION_email_sended">Письмо отправлено!</string>
+    <string name="REGISTER_CONFIRMATION_error_no_required_data">Недостаточно данных</string>
 </resources>

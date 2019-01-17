@@ -8,12 +8,12 @@ import ru.aakumykov.me.mvp.iBaseView;
 interface iRegisterConfirmation {
 
     interface View extends iBaseView {
-        void showEmailNeedsConfirmation(String email);
+        void showEmailConfirmationInfo(String email);
 
         void showConfirmationSuccess();
         void showConfirmationError();
 
-        void notifyEmailNeedsConfirmation();
+        void showEmailConfirmationNotification();
          void showEmailSending();
          void showEmailSendSuccess();
          void showEmailSendError();

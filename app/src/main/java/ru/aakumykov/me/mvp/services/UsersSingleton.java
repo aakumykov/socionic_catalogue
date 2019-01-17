@@ -254,34 +254,5 @@ public class UsersSingleton implements iUsersSingleton {
         });
     }
 
-    @Override
-    public void sendEmailVerificationLink(String packageName, final SendEmailVerificationLinkCallbacks callbacks) {
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        String url = "http://example.org/verify?uid=" + user.getUid();
-
-        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
-                .setUrl(url)
-                // The default for this is populated with the current android package name.
-                .setAndroidPackageName(packageName, true, null)
-                .setHandleCodeInApp(true) // TODO: попрорбовать разные значения
-                .build();
-
-        user.sendEmailVerification(actionCodeSettings)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onEmailVerificationLinkSendSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onEmailVerificationLinkSendFail(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
-
-    }
 }

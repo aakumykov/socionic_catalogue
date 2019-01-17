@@ -13,6 +13,7 @@
     <color name="undefined">#a4a4a4</color>
     <color name="info">#92a4ff</color>
     <color name="warning">#FF7140</color>
+    <color name="alert">#EC407A</color>
     <color name="error">#ff4081</color>
     <color name="error_background">#ffe2ec</color>
 

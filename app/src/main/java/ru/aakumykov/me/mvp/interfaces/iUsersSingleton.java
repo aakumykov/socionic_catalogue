@@ -14,11 +14,8 @@ public interface iUsersSingleton {
     void saveUser(User user, SaveCallbacks callbacks);
     void deleteUser(User user, DeleteCallbacks callbacks);
     void listUsers(ListCallbacks callbacks);
-
     void checkNameExists(String name, CheckExistanceCallbacks callbacks);
     void checkEmailExists(String email, CheckExistanceCallbacks callbacks);
-
-    void sendEmailVerificationLink(String packageName, SendEmailVerificationLinkCallbacks callbacks);
 
 
     interface CreateCallbacks {
@@ -51,10 +48,5 @@ public interface iUsersSingleton {
         void onExists();
         void onNotExists();
         void onCheckFail(String errorMsg);
-    }
-
-    interface SendEmailVerificationLinkCallbacks {
-        void onEmailVerificationLinkSendSuccess();
-        void onEmailVerificationLinkSendFail(String errorMsg);
     }
 }

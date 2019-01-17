@@ -31,7 +31,7 @@ public class RegisterConfirmation_View extends BaseView implements
         setContentView(R.layout.register_confirmation_activity);
         ButterKnife.bind(this);
 
-        setPageTitle(R.string.REGISTER2_email_confirmation);
+        setPageTitle(R.string.REGISTER_CONFIRMATION_page_title);
 //        activateUpButton();
 
         presenter = new RegisterConfirmation_Presenter();
@@ -68,7 +68,7 @@ public class RegisterConfirmation_View extends BaseView implements
 
     // Интерфейсные методы
     @Override
-    public void showEmailNeedsConfirmation(String email) {
+    public void showEmailConfirmationInfo(String email) {
         String msg = getResources().getString(R.string.REGISTER_CONFIRMATION_check_your_email, email);
         textView.setText(msg);
         showOkButton(R.string.REGISTER_CONFIRMATION_ok);
@@ -89,7 +89,7 @@ public class RegisterConfirmation_View extends BaseView implements
 
 
     @Override
-    public void notifyEmailNeedsConfirmation() {
+    public void showEmailConfirmationNotification() {
         textView.setText(R.string.REGISTER_CONFIRMATION_you_need_to_confirm_email);
         sendLetterButton.setText(R.string.REGISTER_CONFIRMATION_send_letter_again);
         MyUtils.show(sendLetterButton);
@@ -105,7 +105,8 @@ public class RegisterConfirmation_View extends BaseView implements
 
     @Override
     public void showEmailSendSuccess() {
-        showToast(R.string.REGISTER_CONFIRMATION_email_sended);
+//        showToast(R.string.REGISTER_CONFIRMATION_email_sended);
+        showInfoMsg(R.string.REGISTER_CONFIRMATION_email_sended);
         goMainPage();
     }
 

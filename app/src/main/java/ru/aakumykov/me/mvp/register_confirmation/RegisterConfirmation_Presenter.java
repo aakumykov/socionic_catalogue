@@ -6,13 +6,16 @@ import android.support.annotation.Nullable;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
+import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
 
 public class RegisterConfirmation_Presenter implements iRegisterConfirmation.Presenter {
 
     private iRegisterConfirmation.View view;
     private iUsersSingleton usersService = UsersSingleton.getInstance();
+    private iAuthSingleton authService = AuthSingleton.getInstance();
     private String userId;
 
     // Системныя методы
@@ -42,7 +45,7 @@ public class RegisterConfirmation_Presenter implements iRegisterConfirmation.Pre
                     break;
 
                 case Constants.ACTION_REGISTRATION_CONFIRM_NOTIFICATION:
-                    notifyNeedsEmailConfirmation(intent);
+                    notifyNeedsEmailConfirmation();
                     break;
 
                 case Constants.ACTION_REGISTRATION_CONFIRM_RESPONSE:
@@ -60,7 +63,7 @@ public class RegisterConfirmation_Presenter implements iRegisterConfirmation.Pre
 
         view.showEmailSending();
 
-        usersService.sendEmailVerificationLink(Constants.PACKAGE_NAME, new iUsersSingleton.SendEmailVerificationLinkCallbacks() {
+        authService.sendEmailVerificationLink(Constants.PACKAGE_NAME, new iAuthSingleton.SendEmailVerificationLinkCallbacks() {
             @Override
             public void onEmailVerificationLinkSendSuccess() {
                 view.showEmailSendSuccess();
@@ -78,7 +81,9 @@ public class RegisterConfirmation_Presenter implements iRegisterConfirmation.Pre
     private void showNeedsEmailConfirmation(@NonNull Intent intent) {
         String email = intent.getStringExtra(Constants.USER_EMAIL);
         if (null != email) {
-            view.showEmailNeedsConfirmation(email);
+            view.showEmailConfirmationInfo(email);
+        } else {
+            view.showErrorMsg(R.string.REGISTER_CONFIRMATION_error_no_required_data);
         }
     }
 
@@ -86,11 +91,7 @@ public class RegisterConfirmation_Presenter implements iRegisterConfirmation.Pre
 
     }
 
-    private void notifyNeedsEmailConfirmation(@NonNull Intent intent) {
-        String userId = intent.getStringExtra(Constants.USER_ID);
-        if (null != userId) {
-            this.userId = userId;
-            view.notifyEmailNeedsConfirmation();
-        }
+    private void notifyNeedsEmailConfirmation() {
+        view.showEmailConfirmationNotification();
     }
 }

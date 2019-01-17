@@ -23,6 +23,7 @@
         android:paddingBottom="20dp"
         android:text="сообщение"
         android:textAlignment="center"
+        android:textColor="@color/alert"
         android:textSize="20sp"
         android:textStyle="italic" />
 

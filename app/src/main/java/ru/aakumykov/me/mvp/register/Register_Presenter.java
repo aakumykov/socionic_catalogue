@@ -44,6 +44,7 @@ public class Register_Presenter implements iRegister.Presenter {
         checkFields();
     }
 
+
     // Внутренние методы
     private void checkFields() {
         checkName();
@@ -185,7 +186,6 @@ public class Register_Presenter implements iRegister.Presenter {
         return (resultsSize == formSize);
     }
 
-
     private void startRegister() {
         if (formIsValid()) {
             registrationStep1();
@@ -219,12 +219,13 @@ public class Register_Presenter implements iRegister.Presenter {
 
     }
 
-    private void registrationStep2(String userId, String name, String email) {
+    private void registrationStep2(String userId, String name, final String email) {
 
         usersService.createUser(userId, name, email, new iUsersSingleton.CreateCallbacks() {
+
             @Override public void onUserCreateSuccess(User user) {
                 authService.storeCurrentUser(user);
-                view.finishAndGoToApp();
+                view.finishRegistration(email);
             }
 
             @Override public void onUserCreateFail(String errorMsg) {

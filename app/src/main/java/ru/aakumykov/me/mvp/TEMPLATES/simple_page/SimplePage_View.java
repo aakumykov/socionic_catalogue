@@ -22,7 +22,7 @@ public class SimplePage_View extends BaseView implements
         setContentView(R.layout.register_confirmation_activity);
         ButterKnife.bind(this);
 
-        setPageTitle(R.string.REGISTER2_email_confirmation);
+        setPageTitle(R.string.REGISTER_CONFIRMATION_page_title);
         activateUpButton();
 
         presenter = new SimplePage_Presenter();
