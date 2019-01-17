@@ -190,6 +190,23 @@ public class AuthSingleton implements iAuthSingleton
 
     }
 
+    @Override
+    public void resetPasswordEmail(String email, final ResetPasswordCallbacks callbacks) {
+        firebaseAuth.sendPasswordResetEmail(email)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onEmailSendSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onEmailSendFail(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+    }
 
     // Служебные
     @Override

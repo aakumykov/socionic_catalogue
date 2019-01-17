@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 
 import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.R;
 
 public final class MyUtils {
 
@@ -179,5 +180,11 @@ public final class MyUtils {
         Point size = new Point();
         display.getSize(size);
         return size.y;
+    }
+
+    public static boolean isEmailCorrect(String email) {
+        Pattern pattern = Pattern.compile("^([a-z0-9+_]+[.-]?)*[a-z0-9]+@([a-z0-9]+[.-]?)*[a-z0-9]+\\.[a-z]+$");
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }

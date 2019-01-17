@@ -23,7 +23,7 @@ public interface iAuthSingleton {
     void clearCurrentUser();
 
     void sendEmailVerificationLink(String packageName, SendEmailVerificationLinkCallbacks callbacks);
-
+    void resetPasswordEmail(String email, ResetPasswordCallbacks callbacks);
 
     interface RegisterCallbacks {
         void onRegSucsess(String userId, String email);
@@ -45,4 +45,8 @@ public interface iAuthSingleton {
         void onEmailVerificationLinkSendFail(String errorMsg);
     }
 
+    interface ResetPasswordCallbacks {
+        void onEmailSendSuccess();
+        void onEmailSendFail(String errorMsg);
+    }
 }
