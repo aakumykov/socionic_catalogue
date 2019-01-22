@@ -12,6 +12,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.models.Card;
 import ru.aakumykov.me.mvp.models.User;
@@ -154,17 +155,44 @@ public class AuthSingleton implements iAuthSingleton
     }
 
     @Override
+    public void sendSignInLinkToEmail(String email, final SendSignInLinkToEmailCallbacks callbacks) {
+
+        String url = "http://sociocat.example.org/verify";
+
+        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
+                .setUrl(url)
+                .setAndroidPackageName(Constants.PACKAGE_NAME, true, null)
+                .setHandleCodeInApp(true)
+                .build();
+
+        firebaseAuth.sendSignInLinkToEmail(email, actionCodeSettings)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onSendSignInLinkToEmailSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onSendSignInLinkToEmailFail(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+    @Override
     public void sendEmailVerificationLink(String packageName, final SendEmailVerificationLinkCallbacks callbacks) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        String url = "http://example.org/verify?uid=" + user.getUid();
+        String url = "http://sociocat.example.org/verify?uid=" + user.getUid();
 
         ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
                 .setUrl(url)
                 // The default for this is populated with the current android package name.
                 .setAndroidPackageName(packageName, true, null)
-                .setHandleCodeInApp(true) // TODO: попрорбовать разные значения
+                .setHandleCodeInApp(false)
                 .build();
 
         user.sendEmailVerification(actionCodeSettings)

@@ -3,6 +3,7 @@ package ru.aakumykov.me.mvp.register;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -76,6 +77,11 @@ public class Register_View extends BaseView implements
     @Override
     public void onUserLogout() {
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
     }
 
 
@@ -166,13 +172,13 @@ public class Register_View extends BaseView implements
     public void finishRegistration(String email) {
         showToast(R.string.REGISTER2_registration_succes);
 
-        auth().logout();
+//        auth().logout();
 
-        Intent intent = new Intent(this, RegisterConfirmation_View.class);
-        intent.putExtra(Constants.USER_EMAIL, email);
-        intent.setAction(Constants.ACTION_REGISTRATION_CONFIRM_REQUEST);
+//        Intent intent = new Intent(this, RegisterConfirmation_View.class);
+//        intent.putExtra(Constants.USER_EMAIL, email);
+//        intent.setAction(Constants.ACTION_REGISTRATION_CONFIRM_REQUEST);
 
-        startActivity(intent);
+//        startActivity(intent);
     }
 
 

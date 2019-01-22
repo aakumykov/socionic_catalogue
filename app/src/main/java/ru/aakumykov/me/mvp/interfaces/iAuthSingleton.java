@@ -22,6 +22,7 @@ public interface iAuthSingleton {
     void storeCurrentUser(User user);
     void clearCurrentUser();
 
+    void sendSignInLinkToEmail(String email, SendSignInLinkToEmailCallbacks callbacks);
     void sendEmailVerificationLink(String packageName, SendEmailVerificationLinkCallbacks callbacks);
     void resetPasswordEmail(String email, ResetPasswordCallbacks callbacks);
 
@@ -38,6 +39,11 @@ public interface iAuthSingleton {
     interface UserRestoreCallbacks {
         void onUserRestoreSuccess();
         void onUserRestoreFail(String errorMsg);
+    }
+
+    interface SendSignInLinkToEmailCallbacks {
+        void onSendSignInLinkToEmailSuccess();
+        void onSendSignInLinkToEmailFail(String errorMsg);
     }
 
     interface SendEmailVerificationLinkCallbacks {
