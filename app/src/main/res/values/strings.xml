@@ -290,4 +290,7 @@
     <string name="RESET_PASSWORD_email_sended">Письмо отправлено</string>
     <string name="LOGIN_reset_password">Забыли пароль?</string>
     <string name="cannot_be_empty">Не может быть пустым</string>
+    <string name="DLP_page_title">Обработка динамической ссылки</string>
+    <string name="DLP_error_processing_link">Ошибка обработки инамической ссылки</string>
+    <string name="DLP_go_homepage">На главную страницу</string>
 </resources>

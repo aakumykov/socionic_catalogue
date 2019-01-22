@@ -286,4 +286,7 @@
     <string name="RESET_PASSWORD_email_sended">Email sended</string>
     <string name="LOGIN_reset_password">Forgot password?</string>
     <string name="cannot_be_empty">Cannot be empty</string>
+    <string name="DLP_page_title">Dynamic link processing</string>
+    <string name="DLP_error_processing_link">Error processing dynamic link</string>
+    <string name="DLP_go_homepage">Go home page</string>
 </resources>
