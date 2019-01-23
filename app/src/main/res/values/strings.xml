@@ -293,4 +293,9 @@
     <string name="DLP_page_title">Обработка динамической ссылки</string>
     <string name="DLP_error_processing_link">Ошибка обработки инамической ссылки</string>
     <string name="DLP_go_homepage">На главную страницу</string>
+    <string name="REGISTER2_error_checking_form">Ошибка проверки формы</string>
+    <string name="REGISTER2_complete_dialog_title">Почти готово</string>
+    <string name="REGISTER2_complete_dialog_message">Проверьте электронную почту для завершения регистрации</string>
+    <string name="REGISTER2_got_it">Понятно</string>
+    <string name="DLP_email_verified">Регистрация завершена!</string>
 </resources>

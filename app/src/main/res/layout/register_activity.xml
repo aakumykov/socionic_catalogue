@@ -73,6 +73,7 @@
             android:ems="10"
             android:hint="@string/REGISTER2_password"
             android:inputType="textPassword"
+            android:selectAllOnFocus="true"
             android:singleLine="true"
             android:text="123456"
             android:textAlignment="center" />
@@ -84,6 +85,7 @@
             android:ems="10"
             android:hint="@string/REGISTER2_password_confirmation"
             android:inputType="textPassword"
+            android:selectAllOnFocus="true"
             android:singleLine="true"
             android:text="123456"
             android:textAlignment="center" />

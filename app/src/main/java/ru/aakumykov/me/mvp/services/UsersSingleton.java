@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.services;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCanceledListener;
@@ -13,7 +14,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -234,6 +237,40 @@ public class UsersSingleton implements iUsersSingleton {
         checkExistance(query, callbacks);
     }
 
+    @Override
+    public void setEmailVerified(String userId, final boolean isVerified, final EmailVerificationCallbacks callbacks) {
+        DatabaseReference emailVerifiedRef = usersRef.child(userId).child("emailVerified");
+
+        emailVerifiedRef.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                Boolean emailVerified = mutableData.getValue(Boolean.class);
+
+                if (null == emailVerified) return Transaction.success(mutableData);
+
+                mutableData.setValue(isVerified);
+
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                if (null == databaseError) {
+                    if (null != dataSnapshot) {
+                        callbacks.OnEmailVerificationSuccess();
+                    } else {
+                        callbacks.OnEmailVerificationFail("dataSnapshot is NULL");
+                    }
+                } else {
+                    callbacks.OnEmailVerificationFail(databaseError.getMessage());
+                    databaseError.toException().printStackTrace();
+                }
+            }
+        });
+    }
+
+
     private void checkExistance(Query query, final CheckExistanceCallbacks callbacks) {
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -253,6 +290,4 @@ public class UsersSingleton implements iUsersSingleton {
             }
         });
     }
-
-
 }

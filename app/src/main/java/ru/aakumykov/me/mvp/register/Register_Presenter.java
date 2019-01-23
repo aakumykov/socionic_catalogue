@@ -1,5 +1,7 @@
 package ru.aakumykov.me.mvp.register;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import java.util.HashMap;
@@ -13,6 +15,7 @@ import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
+import ru.aakumykov.me.mvp.utils.MySharedPreferences;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class Register_Presenter implements iRegister.Presenter {
@@ -126,7 +129,7 @@ public class Register_Presenter implements iRegister.Presenter {
             @Override
             public void onCheckFail(String errorMsg) {
                 setEmailIsValid(false);
-                view.showErrorMsg(R.string.REGISTER2_error, errorMsg);
+                view.showErrorMsg(R.string.REGISTER2_error_checking_form, errorMsg);
             }
         });
     }
@@ -209,8 +212,7 @@ public class Register_Presenter implements iRegister.Presenter {
                 }
             });
         } catch (Exception e) {
-            view.enableForm();
-            view.showErrorMsg(R.string.REGISTER2_registration_error, e.getMessage());
+            onErrorOccured(e.getMessage());
             e.printStackTrace();
         }
 
@@ -225,8 +227,7 @@ public class Register_Presenter implements iRegister.Presenter {
             }
 
             @Override public void onUserCreateFail(String errorMsg) {
-                view.enableForm();
-                view.showErrorMsg(R.string.REGISTER2_registration_error, errorMsg);
+                onErrorOccured(errorMsg);
             }
         });
     }
@@ -237,20 +238,37 @@ public class Register_Presenter implements iRegister.Presenter {
             authService.sendSignInLinkToEmail(email, new iAuthSingleton.SendSignInLinkToEmailCallbacks() {
                 @Override
                 public void onSendSignInLinkToEmailSuccess() {
+//                    MySharedPreferences mySharedPreferences =
+//                            new MySharedPreferences(view.getAppContext(), Constants.SHARED_PREFERENCES_EMAIL);
+//                    mySharedPreferences.store("email", email);
+
+                    SharedPreferences sharedPreferences = view.getAppContext().getSharedPreferences(
+                            Constants.SHARED_PREFERENCES_EMAIL,
+                            Context.MODE_PRIVATE
+                    );
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email", email);
+                    editor.apply();
+
+                    authService.logout();
                     view.finishRegistration(email);
                 }
 
                 @Override
                 public void onSendSignInLinkToEmailFail(String errorMsg) {
-                    view.enableForm();
-                    view.showErrorMsg(R.string.REGISTER2_registration_error, errorMsg);
+                    onErrorOccured(errorMsg);
                 }
             });
 
         } catch (Exception e) {
-            view.enableForm();
-            view.showErrorMsg(R.string.REGISTER2_registration_error, e.getMessage());
+            onErrorOccured(e.getMessage());
+            e.printStackTrace();
         }
 
+    }
+
+    private void onErrorOccured(String errorMsg) {
+        view.showErrorMsg(R.string.REGISTER2_registration_error, errorMsg);
+        view.enableForm();
     }
 }

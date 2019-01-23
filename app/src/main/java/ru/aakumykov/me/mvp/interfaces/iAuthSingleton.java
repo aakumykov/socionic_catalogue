@@ -46,6 +46,8 @@ public interface iAuthSingleton {
         void onSendSignInLinkToEmailFail(String errorMsg);
     }
 
+
+
     interface SendEmailVerificationLinkCallbacks {
         void onEmailVerificationLinkSendSuccess();
         void onEmailVerificationLinkSendFail(String errorMsg);

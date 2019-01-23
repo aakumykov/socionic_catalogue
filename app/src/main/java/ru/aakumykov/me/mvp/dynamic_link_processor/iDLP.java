@@ -10,6 +10,7 @@ interface iDLP {
 
     interface View extends iBaseView {
         void showHomeButton();
+        void goHomePage();
     }
 
     interface Presenter {

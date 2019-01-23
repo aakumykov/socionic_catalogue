@@ -14,7 +14,10 @@ import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.cards_grid.CardsGrid_View;
+import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.register_confirmation.RegisterConfirmation_View;
+import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class Register_View extends BaseView implements
@@ -170,15 +173,30 @@ public class Register_View extends BaseView implements
 
     @Override
     public void finishRegistration(String email) {
-        showToast(R.string.REGISTER2_registration_succes);
 
-//        auth().logout();
+        MyDialogs.registrationCompleteDialog(this, new iMyDialogs.StandardCallbacks() {
+            @Override
+            public void onCancelInDialog() {
+                goHomePage();
+            }
 
-//        Intent intent = new Intent(this, RegisterConfirmation_View.class);
-//        intent.putExtra(Constants.USER_EMAIL, email);
-//        intent.setAction(Constants.ACTION_REGISTRATION_CONFIRM_REQUEST);
+            @Override
+            public void onNoInDialog() {
 
-//        startActivity(intent);
+            }
+
+            @Override
+            public boolean onCheckInDialog() {
+                return true;
+            }
+
+            @Override
+            public void onYesInDialog() {
+                goHomePage();
+            }
+        });
+
+
     }
 
 
@@ -202,5 +220,10 @@ public class Register_View extends BaseView implements
 
         textInput.requestFocus();
         textInput.setError(errorMsg);
+    }
+
+    private void goHomePage() {
+        Intent intent = new Intent(this, CardsGrid_View.class);
+        startActivity(intent);
     }
 }

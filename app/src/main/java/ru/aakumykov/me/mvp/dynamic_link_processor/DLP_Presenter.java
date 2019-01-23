@@ -20,8 +20,10 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
+import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
+import ru.aakumykov.me.mvp.services.UsersSingleton;
 
 
 public class DLP_Presenter implements iDLP.Presenter {
@@ -29,6 +31,7 @@ public class DLP_Presenter implements iDLP.Presenter {
     private iDLP.View view;
     private FirebaseDynamicLinks firebaseDynamicLinks = FirebaseDynamicLinks.getInstance();
     private iAuthSingleton authService = AuthSingleton.getInstance();
+    private iUsersSingleton usersService = UsersSingleton.getInstance();
 
     @Override
     public void processDynamicLink(Activity activity, @Nullable final Intent intent) {
@@ -89,9 +92,8 @@ public class DLP_Presenter implements iDLP.Presenter {
                             .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                    FirebaseUser firebaseUser = authResult.getUser();
-                                    User user = authService.currentUser();
-                                    Log.d("wrgwrg","wrgwr");
+                                    String userId = authResult.getUser().getUid();
+                                    verifyEmail(userId);
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -113,8 +115,31 @@ public class DLP_Presenter implements iDLP.Presenter {
     }
 
 
+    private void verifyEmail(String userId) {
+
+        try {
+            usersService.setEmailVerified(userId, true, new iUsersSingleton.EmailVerificationCallbacks() {
+                @Override
+                public void OnEmailVerificationSuccess() {
+                    view.showToast(R.string.DLP_email_verified);
+                    view.goHomePage();
+                }
+
+                @Override
+                public void OnEmailVerificationFail(String errorMsg) {
+                    onErrorOccured(errorMsg);
+                }
+            });
+
+        } catch (Exception e) {
+            onErrorOccured(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private void onErrorOccured(String consoleMsg) {
-        authService.logout();
+//        authService.logout();
+        FirebaseAuth.getInstance().signOut();
         view.showErrorMsg(R.string.DLP_error_processing_link, consoleMsg);
         view.showHomeButton();
     }

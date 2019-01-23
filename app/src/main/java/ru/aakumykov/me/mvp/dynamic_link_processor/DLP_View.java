@@ -64,9 +64,16 @@ public class DLP_View extends BaseView implements
         return true;
     }
 
+
     // Интерфейсные методы
     @Override public void showHomeButton() {
         MyUtils.show(homeButton);
+    }
+
+    @Override
+    public void goHomePage() {
+        Intent intent = new Intent(this, CardsGrid_View.class);
+        startActivity(intent);
     }
 
     // Нажатия
