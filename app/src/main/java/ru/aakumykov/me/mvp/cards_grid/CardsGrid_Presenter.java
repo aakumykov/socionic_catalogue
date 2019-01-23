@@ -32,12 +32,12 @@ public class CardsGrid_Presenter implements
         cardsService.loadList(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                view.displayList(list);
+                if (null != view) view.displayList(list);
             }
 
             @Override
             public void onListLoadFail(String errorMessage) {
-                view.showErrorMsg(errorMessage);
+                if (null != view) view.showErrorMsg(errorMessage);
             }
         });
     }
