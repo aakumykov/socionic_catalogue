@@ -108,6 +108,9 @@
                 <data
                     android:host="sociocat.example.org"
                     android:scheme="https"/>
+                <data
+                    android:host="androidtest73e48.page.link"
+                    android:scheme="https"/>
             </intent-filter>
         </activity>
 
