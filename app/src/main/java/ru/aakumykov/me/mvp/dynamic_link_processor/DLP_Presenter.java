@@ -1,60 +1,67 @@
 package ru.aakumykov.me.mvp.dynamic_link_processor;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
+import ru.aakumykov.me.mvp.models.User;
+import ru.aakumykov.me.mvp.services.AuthSingleton;
 
 
 public class DLP_Presenter implements iDLP.Presenter {
 
     private iDLP.View view;
     private FirebaseDynamicLinks firebaseDynamicLinks = FirebaseDynamicLinks.getInstance();
+    private iAuthSingleton authService = AuthSingleton.getInstance();
 
     @Override
     public void processDynamicLink(Activity activity, @Nullable final Intent intent) {
 
-        if (null == intent) {
-            view.showErrorMsg(R.string.DLP_error_processing_link, "Intent is NULL");
-            return;
-        }
+        try {
+            view.showProgressBar();
 
-        view.showProgressBar();
-
-        firebaseDynamicLinks
-                .getDynamicLink(intent)
-                .addOnSuccessListener(activity, new OnSuccessListener<PendingDynamicLinkData>() {
-                    @Override
-                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
-                        Uri deepLink = null;
-                        if (null != pendingDynamicLinkData) {
-                            deepLink = pendingDynamicLinkData.getLink();
-                            processDeepLink(deepLink, intent);
-                        } else {
-                            view.showErrorMsg(R.string.DLP_error_processing_link, "Deep link not found");
-                            view.showHomeButton();
+            firebaseDynamicLinks
+                    .getDynamicLink(intent)
+                    .addOnSuccessListener(activity, new OnSuccessListener<PendingDynamicLinkData>() {
+                        @Override
+                        public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                            Uri deepLink = null;
+                            if (null != pendingDynamicLinkData) {
+                                deepLink = pendingDynamicLinkData.getLink();
+                                processDeepLink(deepLink, intent);
+                            } else {
+                                onErrorOccured("Deep link not found");
+                            }
                         }
-                    }
-                })
-                .addOnFailureListener(activity, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        view.showErrorMsg(R.string.DLP_error_processing_link, e.getMessage());
-                        view.showHomeButton();
-                        e.printStackTrace();
-                    }
-                });
+                    })
+                    .addOnFailureListener(activity, new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            onErrorOccured(e.getMessage());
+                            e.printStackTrace();
+                        }
+                    });
+
+        } catch (Exception e) {
+            onErrorOccured(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -69,19 +76,46 @@ public class DLP_Presenter implements iDLP.Presenter {
 
     // Внутренние методы
     private void processDeepLink(Uri deepLink, @NonNull Intent intent) {
-        if (null == deepLink) {
-            view.showErrorMsg(R.string.DLP_error_processing_link, "Deep link is NULL");
-            view.showHomeButton();
-            return;
-        }
+        try {
+            String emailLink = intent.getData().toString();
+            final FirebaseAuth auth = FirebaseAuth.getInstance();
 
-        String path = deepLink.getPath() + "";
-        if (!TextUtils.isEmpty(path)) {
-            view.showInfoMsg(path);
-        } else {
-            view.showErrorMsg(R.string.DLP_error_processing_link, "Deep link path is empty");
-        }
+            SharedPreferences sharedPreferences = view.getAppContext().getSharedPreferences(Constants.SHARED_PREFERENCES_EMAIL, Context.MODE_PRIVATE);
+            if (sharedPreferences.contains("email")) {
+                String storedEmail = sharedPreferences.getString("email", "");
 
+                if (auth.isSignInWithEmailLink(emailLink)) {
+                    auth.signInWithEmailLink(storedEmail, emailLink)
+                            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                                @Override
+                                public void onSuccess(AuthResult authResult) {
+                                    FirebaseUser firebaseUser = authResult.getUser();
+                                    User user = authService.currentUser();
+                                    Log.d("wrgwrg","wrgwr");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    onErrorOccured(e.getMessage());
+                                    e.printStackTrace();
+                                }
+                            });
+                }
+            } else {
+                onErrorOccured("There is no locally stored email.");
+            }
+
+        } catch (Exception e) {
+            onErrorOccured(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    private void onErrorOccured(String consoleMsg) {
+        authService.logout();
+        view.showErrorMsg(R.string.DLP_error_processing_link, consoleMsg);
         view.showHomeButton();
     }
 }

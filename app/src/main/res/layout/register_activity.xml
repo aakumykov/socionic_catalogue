@@ -36,6 +36,7 @@
                 android:hint="@string/REGISTER2_user_name"
                 android:inputType="textCapWords|textPersonName"
                 android:singleLine="true"
+                android:text="An12"
                 android:textAlignment="center" />
         </LinearLayout>
 
@@ -61,7 +62,7 @@
                 android:hint="@string/REGISTER2_email"
                 android:inputType="textEmailAddress"
                 android:singleLine="true"
-                android:text="@yandex.ru"
+                android:text="aakumykov@yandex.ru"
                 android:textAlignment="center" />
         </LinearLayout>
 
