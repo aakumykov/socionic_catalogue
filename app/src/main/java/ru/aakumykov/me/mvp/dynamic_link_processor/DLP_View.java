@@ -76,6 +76,7 @@ public class DLP_View extends BaseView implements
         startActivity(intent);
     }
 
+
     // Нажатия
     @OnClick(R.id.homeButton)
     void homeButtonClicked() {
