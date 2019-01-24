@@ -154,7 +154,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
 
     // Сообщения пользователю
-
     @Override
     public void showProgressMessage(int messageId) {
         showInfoMsg(messageId);
@@ -286,6 +285,12 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
 
     // Разное
+
+    @Override
+    public Context getAppContext() {
+        return getApplicationContext();
+    }
+
     @Override
     public void goCreateCard() {
         Intent intent = new Intent(this, CardEdit_View.class);

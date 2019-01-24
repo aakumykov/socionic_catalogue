@@ -1,6 +1,7 @@
 package ru.aakumykov.me.mvp.TEMPLATES.simple_page;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -49,6 +50,11 @@ public class SimplePage_View extends BaseView implements
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
+    }
+
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+//        return true;
     }
 
 

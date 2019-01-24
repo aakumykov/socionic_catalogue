@@ -1,5 +1,7 @@
 package ru.aakumykov.me.mvp;
 
+import android.content.Context;
+
 import com.google.firebase.auth.FirebaseUser;
 
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
@@ -9,6 +11,8 @@ import ru.aakumykov.me.mvp.models.User;
 public interface iBaseView {
 
     iAuthSingleton auth();
+
+    Context getAppContext();
 
     void showProgressMessage(int messageId);
 

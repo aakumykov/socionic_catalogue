@@ -1,12 +1,12 @@
 package ru.aakumykov.me.mvp.register;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
@@ -15,6 +15,7 @@ import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
+import ru.aakumykov.me.mvp.utils.MySharedPreferences;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class Register_Presenter implements iRegister.Presenter {
@@ -79,7 +80,7 @@ public class Register_Presenter implements iRegister.Presenter {
             @Override
             public void onNotExists() {
                 setNameIsValid(true);
-                startRegister();
+                registrationStep1();
             }
 
             @Override
@@ -99,7 +100,7 @@ public class Register_Presenter implements iRegister.Presenter {
             return;
         }
 
-        if (MyUtils.isEmailCorrect(email)) {
+        if (!MyUtils.isEmailCorrect(email)) {
             setEmailIsValid(false);
             view.showEmailError(R.string.REGISTER2_incorrect_email);
             return;
@@ -122,13 +123,13 @@ public class Register_Presenter implements iRegister.Presenter {
             @Override
             public void onNotExists() {
                 setEmailIsValid(true);
-                startRegister();
+                registrationStep1();
             }
 
             @Override
             public void onCheckFail(String errorMsg) {
                 setEmailIsValid(false);
-                view.showErrorMsg(R.string.REGISTER2_error, errorMsg);
+                view.showErrorMsg(R.string.REGISTER2_error_checking_form, errorMsg);
             }
         });
     }
@@ -185,13 +186,13 @@ public class Register_Presenter implements iRegister.Presenter {
         return (resultsSize == formSize);
     }
 
-    private void startRegister() {
+    private void registrationStep1() {
         if (formIsValid()) {
-            registrationStep1();
+            registrationStep2();
         }
     }
 
-    private void registrationStep1() {
+    private void registrationStep2() {
 
         final String userName = view.getName();
         final String userEmail = view.getEmail();
@@ -202,7 +203,7 @@ public class Register_Presenter implements iRegister.Presenter {
 
                 @Override public void onRegSucsess(String userId, String email) {
                     // TODO: здесь нужен только userId
-                    registrationStep2(userId, userName, userEmail);
+                    registrationStep3(userId, userName, userEmail);
                 }
 
                 @Override public void onRegFail(String errorMsg) {
@@ -211,26 +212,63 @@ public class Register_Presenter implements iRegister.Presenter {
                 }
             });
         } catch (Exception e) {
-            view.enableForm();
-            view.showErrorMsg(R.string.REGISTER2_registration_error, e.getMessage());
+            onErrorOccured(e.getMessage());
             e.printStackTrace();
         }
 
     }
 
-    private void registrationStep2(String userId, String name, final String email) {
+    private void registrationStep3(String userId, String name, final String email) {
 
         usersService.createUser(userId, name, email, new iUsersSingleton.CreateCallbacks() {
 
             @Override public void onUserCreateSuccess(User user) {
-                authService.storeCurrentUser(user);
-                view.finishRegistration(email);
+                registrationStep4(email);
             }
 
             @Override public void onUserCreateFail(String errorMsg) {
-                view.enableForm();
-                view.showErrorMsg(R.string.REGISTER2_registration_error, errorMsg);
+                onErrorOccured(errorMsg);
             }
         });
+    }
+
+    private void registrationStep4(final String email) {
+
+        try {
+            authService.sendSignInLinkToEmail(email, new iAuthSingleton.SendSignInLinkToEmailCallbacks() {
+                @Override
+                public void onSendSignInLinkToEmailSuccess() {
+//                    MySharedPreferences mySharedPreferences =
+//                            new MySharedPreferences(view.getAppContext(), Constants.SHARED_PREFERENCES_EMAIL);
+//                    mySharedPreferences.store("email", email);
+
+                    SharedPreferences sharedPreferences = view.getAppContext().getSharedPreferences(
+                            Constants.SHARED_PREFERENCES_EMAIL,
+                            Context.MODE_PRIVATE
+                    );
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email", email);
+                    editor.apply();
+
+                    authService.logout();
+                    view.finishRegistration(email);
+                }
+
+                @Override
+                public void onSendSignInLinkToEmailFail(String errorMsg) {
+                    onErrorOccured(errorMsg);
+                }
+            });
+
+        } catch (Exception e) {
+            onErrorOccured(e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
+    private void onErrorOccured(String errorMsg) {
+        view.showErrorMsg(R.string.REGISTER2_registration_error, errorMsg);
+        view.enableForm();
     }
 }

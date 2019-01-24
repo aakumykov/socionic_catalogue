@@ -196,7 +196,6 @@ public class MyDialogs {
         ).show();
     }
 
-
     // Диалог перехода на страницу
     public static void goToPageDialog(Activity activity, String message, iMyDialogs.StandardCallbacks callbacks) {
 
@@ -229,6 +228,32 @@ public class MyDialogs {
                 null,
                 callbacks
         ).show();
+    }
+
+    // Диалог сообщения о завершении регистрации
+    public static void registrationCompleteDialog(Activity activity, final iMyDialogs.StandardCallbacks callbacks) {
+        String title = activity.getResources().getString(R.string.REGISTER2_complete_dialog_title);
+        String message = activity.getResources().getString(R.string.REGISTER2_complete_dialog_message);
+        AlertDialog alertDialog = basicDialog(
+                activity,
+                title,
+                message,
+                R.string.REGISTER2_got_it,
+                null,
+                null,
+                null,
+                null,
+                callbacks
+        );
+
+        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                callbacks.onCancelInDialog();
+            }
+        });
+
+        alertDialog.show();
     }
 
 

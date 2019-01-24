@@ -100,6 +100,20 @@
 
         <activity android:name=".reset_password.ResetPassword_View" android:noHistory="true" />
 
+        <activity android:name=".dynamic_link_processor.DLP_View" android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="sociocat.example.org"
+                    android:scheme="https"/>
+                <data
+                    android:host="androidtest73e48.page.link"
+                    android:scheme="https"/>
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
