@@ -94,9 +94,6 @@
     <string name="REGISTER_proceed">SignUp</string>
     <string name="REGISTER_cancel">Cancel</string>
     <string name="REGISTER_name_cannot_be_empty">Nickname cannot be empty</string>
-    <string name="REGISTER2_registration_failed">Registration failed</string>
-    <string name="REGISTER2_passwords_mismatch">Passwords mismatch</string>
-    <string name="REGISTER2_registering_user">Registering</string>
     <string name="MENU_login">Login</string>
     <string name="MENU_logout">Logout</string>
     <string name="LOGIN_page_title">Login into app</string>
@@ -113,7 +110,6 @@
     <string name="ERROR_saving_card">Error saving card</string>
     <string name="LOGIN_register">SignUp</string>
     <string name="LOGIN_register_label">First time here?</string>
-    <string name="REGISTER2_page_title">New account</string>
     <string name="USER_page_title">User\'s profile</string>
     <string name="CARD_EDIT_edit_denied">Edit denied</string>
     <string name="CARD_EDIT_editing_error">Editing error</string>
@@ -163,7 +159,6 @@
     <string name="CARDS_LIST_error_creating_card">Error creating card</string>
     <string name="CARD_SHOW_data_error">Data error</string>
     <string name="COMMENT_author">Comment author</string>
-    <string name="REGISTER2_registration_succes">Registration success</string>
     <string name="REGISTER_error_creating_user">Error creating user</string>
     <string name="REGISTER_creating_user">Creating new user</string>
     <string name="USER_EDIT_error_loading_data">Error loading data</string>
@@ -245,21 +240,6 @@
     <string name="error_deleting_card_comments">Error deleting card\'s comments</string>
     <string name="DIALOG_user_name_required_title">User name required</string>
     <string name="DIALOG_user_name_required_message">You must set user name to add comment</string>
-    <string name="REGISTER2_you_are_already_registered">You are already registered</string>
-    <string name="REGISTER2_user_name">User name</string>
-    <string name="REGISTER2_email">Email</string>
-    <string name="REGISTER2_password">Password</string>
-    <string name="REGISTER2_password_confirmation">Password configmation</string>
-    <string name="REGISTER2_do_register">SignUp</string>
-    <string name="REGISTER2_do_not_register">Cancel</string>
-    <string name="REGISTER2_cannot_be_empty">Cannot be empty</string>
-    <string name="REGISTER2_checking_user_name">Checking user name</string>
-    <string name="REGISTER2_name_already_used">Name is already used</string>
-    <string name="REGISTER2_error">An error occurred</string>
-    <string name="REGISTER2_email_already_used">Email is already used</string>
-    <string name="REGISTER2_password_too_short">Password too short</string>
-    <string name="REGISTER2_incorrect_email">Incorrect email</string>
-    <string name="REGISTER2_registration_error">Sign up error</string>
     <string name="REGISTER_CONFIRMATION_page_title">Completion of registration</string>
     <string name="REGISTER_CONFIRMATION_check_your_email">A message has been sent to the address «%1$s». Check it to complete the registration.</string>
     <string name="REGISTER_CONFIRMATION_registration_confirm_success">Sign up complete</string>
@@ -289,9 +269,12 @@
     <string name="DLP_page_title">Dynamic link processing</string>
     <string name="DLP_error_processing_link">Error processing dynamic link</string>
     <string name="DLP_go_homepage">Go home page</string>
-    <string name="REGISTER2_error_checking_form">Error checking form</string>
-    <string name="REGISTER2_complete_dialog_title">Nearly ready</string>
-    <string name="REGISTER2_complete_dialog_message">Check your email to complete your registration</string>
-    <string name="REGISTER2_got_it">Got it</string>
     <string name="DLP_email_verified">Signup complete!</string>
+    <string name="REGISTER1_send_button">Sign up</string>
+    <string name="REGISTER1_page_title">Sign up, first step</string>
+    <string name="REGISTER1_error_sending_email">Email sending error</string>
+    <string name="REGISTER1_got_it">Got it</string>
+    <string name="REGISTER1_complete_dialog_title">Next step</string>
+    <string name="REGISTER1_complete_dialog_message">Check youe mailbox</string>
+    <string name="REGISTER1_sending_email">Sending email</string>
 </resources>

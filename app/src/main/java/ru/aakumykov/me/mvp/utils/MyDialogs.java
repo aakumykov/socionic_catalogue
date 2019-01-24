@@ -232,13 +232,13 @@ public class MyDialogs {
 
     // Диалог сообщения о завершении регистрации
     public static void registrationCompleteDialog(Activity activity, final iMyDialogs.StandardCallbacks callbacks) {
-        String title = activity.getResources().getString(R.string.REGISTER2_complete_dialog_title);
-        String message = activity.getResources().getString(R.string.REGISTER2_complete_dialog_message);
+        String title = activity.getResources().getString(R.string.REGISTER1_complete_dialog_title);
+        String message = activity.getResources().getString(R.string.REGISTER1_complete_dialog_message);
         AlertDialog alertDialog = basicDialog(
                 activity,
                 title,
                 message,
-                R.string.REGISTER2_got_it,
+                R.string.REGISTER1_got_it,
                 null,
                 null,
                 null,

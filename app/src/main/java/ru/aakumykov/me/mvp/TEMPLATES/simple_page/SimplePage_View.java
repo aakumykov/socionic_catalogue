@@ -20,7 +20,7 @@ public class SimplePage_View extends BaseView implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register_confirmation_activity);
+//        setContentView(R.layout.register_confirmation_activity);
         ButterKnife.bind(this);
 
         setPageTitle(R.string.REGISTER_CONFIRMATION_page_title);

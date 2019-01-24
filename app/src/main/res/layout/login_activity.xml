@@ -54,7 +54,7 @@
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/first_button_margin_top"
+            android:layout_marginTop="@dimen/major_button_margin_top"
             android:text="@string/LOGIN_login"
             android:textSize="@dimen/major_button_font_size" />
 

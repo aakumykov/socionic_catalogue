@@ -97,9 +97,6 @@
     <string name="REGISTER_proceed">Зарегистрироваться</string>
     <string name="REGISTER_cancel">Отказаться</string>
     <string name="REGISTER_name_cannot_be_empty">Псевдоним не может быть пустым</string>
-    <string name="REGISTER2_registration_failed">Ошибка регистрации</string>
-    <string name="REGISTER2_passwords_mismatch">Пароли не совпадают</string>
-    <string name="REGISTER2_registering_user">Регистрируемся</string>
     <string name="MENU_login">Войти</string>
     <string name="MENU_logout">Выйти</string>
     <string name="LOGIN_page_title">Вход в программу</string>
@@ -116,7 +113,6 @@
     <string name="ERROR_saving_card">Ошибка сохранения карточки</string>
     <string name="LOGIN_register">Зарегистрироваться</string>
     <string name="LOGIN_register_label">Впервые здесь?</string>
-    <string name="REGISTER2_page_title">Регистрация</string>
     <string name="USER_page_title">Профиль прользователя</string>
     <string name="CARD_EDIT_edit_denied">Редактирование запрещено</string>
     <string name="CARD_EDIT_editing_error">Ошибка редактирования</string>
@@ -167,7 +163,6 @@
     <string name="CARDS_LIST_error_creating_card">Ошибка создания карточки</string>
     <string name="CARD_SHOW_data_error">Ошибка данных</string>
     <string name="COMMENT_author">Автор комментария</string>
-    <string name="REGISTER2_registration_succes">Успешная регистрация</string>
     <string name="REGISTER_error_creating_user">Ошибка создания пользователя</string>
     <string name="REGISTER_creating_user">Создаём нового пользователя</string>
     <string name="USER_EDIT_error_loading_data">Ошибка загрузки данных</string>
@@ -249,21 +244,6 @@
     <string name="error_deleting_card_comments">Ошибка удаления комментариев к карточке</string>
     <string name="DIALOG_user_name_required_title">Установите имя пользователя</string>
     <string name="DIALOG_user_name_required_message">Чтобы добавить комментарий, вам нужно придумать имя пользователя</string>
-    <string name="REGISTER2_you_are_already_registered">Вы уже зарегистрированы</string>
-    <string name="REGISTER2_user_name">Имя пользователя</string>
-    <string name="REGISTER2_email">Адрес электронной почты</string>
-    <string name="REGISTER2_password">Пароль</string>
-    <string name="REGISTER2_password_confirmation">Подтверждение пароля</string>
-    <string name="REGISTER2_do_register">Регистрирация</string>
-    <string name="REGISTER2_do_not_register">Передумать</string>
-    <string name="REGISTER2_cannot_be_empty">Не может быть пустым</string>
-    <string name="REGISTER2_checking_user_name">Проверяю имя пользователя</string>
-    <string name="REGISTER2_name_already_used">Имя уже используется</string>
-    <string name="REGISTER2_error">Произошла ошибка</string>
-    <string name="REGISTER2_email_already_used">Email уже используется</string>
-    <string name="REGISTER2_password_too_short">Пароль слишком короткий</string>
-    <string name="REGISTER2_incorrect_email">Некорректный email</string>
-    <string name="REGISTER2_registration_error">Ошибка регистрации</string>
     <string name="REGISTER_CONFIRMATION_page_title">Завершение регистрации</string>
     <string name="REGISTER_CONFIRMATION_check_your_email">На адрес «%1$s» отправлено сообщение. Проверьте его для завершения регистрации.</string>
     <string name="REGISTER_CONFIRMATION_registration_confirm_success">Регистрация успешно завершена</string>
@@ -293,9 +273,12 @@
     <string name="DLP_page_title">Обработка динамической ссылки</string>
     <string name="DLP_error_processing_link">Ошибка обработки инамической ссылки</string>
     <string name="DLP_go_homepage">На главную страницу</string>
-    <string name="REGISTER2_error_checking_form">Ошибка проверки формы</string>
-    <string name="REGISTER2_complete_dialog_title">Почти готово</string>
-    <string name="REGISTER2_complete_dialog_message">Проверьте электронную почту для завершения регистрации</string>
-    <string name="REGISTER2_got_it">Понятно</string>
     <string name="DLP_email_verified">Регистрация завершена!</string>
+    <string name="REGISTER1_send_button">Зарегистрироваться</string>
+    <string name="REGISTER1_page_title">Регистрация, шаг первый</string>
+    <string name="REGISTER1_error_sending_email">Ошибка отправки письма</string>
+    <string name="REGISTER1_got_it">Понятно</string>
+    <string name="REGISTER1_complete_dialog_title">Следующий шаг</string>
+    <string name="REGISTER1_complete_dialog_message">Проверьте вашу электронную почту</string>
+    <string name="REGISTER1_sending_email">Отправлем письмо</string>
 </resources>
