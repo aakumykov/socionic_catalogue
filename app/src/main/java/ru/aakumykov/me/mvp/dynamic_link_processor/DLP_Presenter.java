@@ -83,11 +83,17 @@ public class DLP_Presenter implements iDLP.Presenter {
 
         try {
 
+            String emailLink = intent.getDataString();
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            if (firebaseAuth.isSignInWithEmailLink(emailLink)) {
+                registrationStep2(intent);
+            }
+
             String path = deepLink.getPath();
 
             switch (path) {
                 case "registration_step_2":
-                    registrationStep2(intent);
+
                     break;
 
                 default:
