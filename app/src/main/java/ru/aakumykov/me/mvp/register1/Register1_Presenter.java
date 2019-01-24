@@ -1,6 +1,9 @@
 package ru.aakumykov.me.mvp.register1;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -9,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class Register1_Presenter implements iRegister1.Presenter {
 
@@ -27,11 +31,14 @@ public class Register1_Presenter implements iRegister1.Presenter {
         this.view = null;
     }
 
+
     // Интерфейсные методы
     @Override
     public void sendRegistrationEmail() {
 
-        String email = view.getEmail();
+        if (!isValidEmail()) return;
+
+        final String email = view.getEmail();
 
         ActionCodeSettings actionCodeSettings =
                 ActionCodeSettings.newBuilder()
@@ -43,15 +50,16 @@ public class Register1_Presenter implements iRegister1.Presenter {
                                 null    /* minimumVersion */)
                         .build();
 
+        view.disableForm();
         view.showProgressMessage(R.string.REGISTER1_sending_email);
 
         firebaseAuth.sendSignInLinkToEmail(email, actionCodeSettings)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        view.hideProgressBar();
-                        view.hideMsg();
+                        view.hideProgressMessage();
                         view.showSuccessDialog();
+                        storeEmailLocally(email);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -65,6 +73,30 @@ public class Register1_Presenter implements iRegister1.Presenter {
 
 
     // Внутренние методы
+    private boolean isValidEmail() {
+        String email = view.getEmail();
+
+        if (TextUtils.isEmpty(email)) {
+            view.showEmailError(R.string.cannot_be_empty);
+            return false;
+        }
+
+        if (!MyUtils.isEmailCorrect(email)) {
+            view.showEmailError(R.string.REGISTER1_incorrect_email);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void storeEmailLocally(String email) {
+        SharedPreferences sharedPreferences =
+                view.getAppContext().getSharedPreferences(Constants.SHARED_PREFERENCES_EMAIL, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("email", email);
+        editor.apply();
+    }
+
     private void onErrorOccured(int userMsgId, String adminErrorMsg) {
         view.showErrorMsg(userMsgId, adminErrorMsg);
         view.enableForm();

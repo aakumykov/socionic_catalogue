@@ -9,12 +9,11 @@ public interface iRegister1 {
         String getEmail();
         void disableForm();
         void enableForm();
-        void showEmailError(String msgId);
+        void showEmailError(int msgId);
         void showSuccessDialog();
     }
 
     interface Presenter {
-//        void processInputIntent(@Nullable Intent intent);
         void sendRegistrationEmail();
 
         void linkView(View view);

@@ -277,8 +277,9 @@
     <string name="REGISTER1_send_button">Зарегистрироваться</string>
     <string name="REGISTER1_page_title">Регистрация, шаг первый</string>
     <string name="REGISTER1_error_sending_email">Ошибка отправки письма</string>
-    <string name="REGISTER1_got_it">Понятно</string>
+    <string name="REGISTER1_ok">Хорошо</string>
     <string name="REGISTER1_complete_dialog_title">Следующий шаг</string>
-    <string name="REGISTER1_complete_dialog_message">Проверьте вашу электронную почту</string>
+    <string name="REGISTER1_complete_dialog_message">Проверьте вашу электронную почту для завершения регистрации</string>
     <string name="REGISTER1_sending_email">Отправлем письмо</string>
+    <string name="REGISTER1_incorrect_email">Некорректный email</string>
 </resources>

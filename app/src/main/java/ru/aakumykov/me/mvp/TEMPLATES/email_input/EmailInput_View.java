@@ -20,12 +20,12 @@ import ru.aakumykov.me.mvp.register1.iRegister1;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
-public class EmailInput_View extends BaseView implements iRegister1.View {
+public class EmailInput_View extends BaseView implements iEmailInput.View {
 
     @BindView(R.id.emailInput) EditText emailInput;
     @BindView(R.id.sendButton) Button sendButton;
 
-    private iRegister1.Presenter presenter;
+    private iEmailInput.Presenter presenter;
 
 
     // Системные методы
@@ -38,7 +38,7 @@ public class EmailInput_View extends BaseView implements iRegister1.View {
         setPageTitle(R.string.REGISTER1_page_title);
         activateUpButton();
 
-        presenter = new Register1_Presenter();
+        presenter = new EmailInput_Presenter();
     }
 
     @Override
@@ -89,30 +89,6 @@ public class EmailInput_View extends BaseView implements iRegister1.View {
         emailInput.setError(msgId);
     }
 
-    @Override
-    public void showSuccessDialog() {
-        MyDialogs.registrationCompleteDialog(this, new iMyDialogs.StandardCallbacks() {
-            @Override
-            public void onCancelInDialog() {
-                goMainPage();
-            }
-
-            @Override
-            public void onNoInDialog() {
-                goMainPage();
-            }
-
-            @Override
-            public boolean onCheckInDialog() {
-                return true;
-            }
-
-            @Override
-            public void onYesInDialog() {
-                goMainPage();
-            }
-        });
-    }
 
 
     // Нажатия

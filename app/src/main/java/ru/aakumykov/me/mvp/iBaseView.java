@@ -15,6 +15,7 @@ public interface iBaseView {
     Context getAppContext();
 
     void showProgressMessage(int messageId);
+    void hideProgressMessage();
 
     void showInfoMsg(int messageId);
     void showInfoMsg(String message);

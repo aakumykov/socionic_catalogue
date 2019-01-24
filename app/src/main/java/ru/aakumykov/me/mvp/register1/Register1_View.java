@@ -110,8 +110,9 @@ public class Register1_View extends BaseView implements iRegister1.View {
     }
 
     @Override
-    public void showEmailError(String msgId) {
-        emailInput.setError(msgId);
+    public void showEmailError(int msgId) {
+        String message = getResources().getString(msgId);
+        emailInput.setError(message);
     }
 
 

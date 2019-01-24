@@ -238,7 +238,7 @@ public class MyDialogs {
                 activity,
                 title,
                 message,
-                R.string.REGISTER1_got_it,
+                R.string.REGISTER1_ok,
                 null,
                 null,
                 null,

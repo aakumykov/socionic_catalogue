@@ -273,8 +273,9 @@
     <string name="REGISTER1_send_button">Sign up</string>
     <string name="REGISTER1_page_title">Sign up, first step</string>
     <string name="REGISTER1_error_sending_email">Email sending error</string>
-    <string name="REGISTER1_got_it">Got it</string>
+    <string name="REGISTER1_ok">Ok</string>
     <string name="REGISTER1_complete_dialog_title">Next step</string>
-    <string name="REGISTER1_complete_dialog_message">Check youe mailbox</string>
+    <string name="REGISTER1_complete_dialog_message">Check your mailbox to complete registration</string>
     <string name="REGISTER1_sending_email">Sending email</string>
+    <string name="REGISTER1_incorrect_email">Incorrect email</string>
 </resources>

@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include
+        layout="@layout/progress_and_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <EditText
         android:id="@+id/emailInput"
         android:layout_width="match_parent"
@@ -11,8 +16,9 @@
         android:ems="10"
         android:inputType="textEmailAddress"
         android:singleLine="true"
+        android:text="aakumykov@yandex.ru"
         android:textAlignment="center"
-        android:textSize="24sp" />
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/sendButton"

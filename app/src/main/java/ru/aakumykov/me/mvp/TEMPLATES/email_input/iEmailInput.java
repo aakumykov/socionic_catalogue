@@ -5,6 +5,7 @@ import ru.aakumykov.me.mvp.iBaseView;
 public interface iEmailInput {
 
     interface View extends iBaseView {
+        String getEmail();
         void disableForm();
         void enableForm();
         void showEmailError(String msgId);
