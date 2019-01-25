@@ -110,7 +110,7 @@ public class Register2_View extends BaseView implements iRegister2.View {
 
 
     // Нажатия
-    @OnClick(R.id.sendButton)
+    @OnClick(R.id.saveButton)
     void onSendButtonClicked() {
         presenter.finishRegistration(getIntent());
     }
