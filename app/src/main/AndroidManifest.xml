@@ -96,8 +96,6 @@
 
         <activity android:name=".register.Register_View" android:noHistory="true" />
 
-        <activity android:name=".register_confirmation.RegisterConfirmation_View" android:noHistory="true"/>
-
         <activity android:name=".reset_password.ResetPassword_View" android:noHistory="true" />
 
         <activity android:name=".dynamic_link_processor.DLP_View" android:noHistory="true">
@@ -113,6 +111,8 @@
                     android:scheme="https"/>
             </intent-filter>
         </activity>
+        <activity android:name=".register.register_step_1.RegisterStep1_View" />
+        <activity android:name=".register.register_step_2.RegisterStep2_View" />
 
     </application>
 

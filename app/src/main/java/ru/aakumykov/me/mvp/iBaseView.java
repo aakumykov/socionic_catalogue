@@ -1,6 +1,8 @@
 package ru.aakumykov.me.mvp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 
 import com.google.firebase.auth.FirebaseUser;
 
@@ -13,8 +15,11 @@ public interface iBaseView {
     iAuthSingleton auth();
 
     Context getAppContext();
+    void startMyActivity(Intent intent);
+    SharedPreferences getSharedPrefs(String prefsName);
 
     void showProgressMessage(int messageId);
+    void hideProgressMessage();
 
     void showInfoMsg(int messageId);
     void showInfoMsg(String message);

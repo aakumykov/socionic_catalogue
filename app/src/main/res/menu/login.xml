@@ -6,5 +6,5 @@
         android:id="@+id/actionLogin"
         android:icon="@drawable/ic_login"
         android:title="@string/MENU_login"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
 </menu>

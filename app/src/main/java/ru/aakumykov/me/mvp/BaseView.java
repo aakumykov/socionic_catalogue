@@ -2,6 +2,7 @@ package ru.aakumykov.me.mvp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -161,6 +162,12 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
+    public void hideProgressMessage() {
+        hideProgressBar();
+        hideMsg();
+    }
+
+    @Override
     public void showInfoMsg(int messageId) {
         showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));
     }
@@ -289,6 +296,16 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     public Context getAppContext() {
         return getApplicationContext();
+    }
+
+    @Override
+    public void startMyActivity(Intent intent) {
+        startActivity(intent);
+    }
+
+    @Override
+    public SharedPreferences getSharedPrefs(String prefsName) {
+        return getSharedPreferences(prefsName, Context.MODE_PRIVATE);
     }
 
     @Override
