@@ -279,7 +279,7 @@
     <string name="REGISTER1_sending_email">Sending email</string>
     <string name="REGISTER1_incorrect_email">Incorrect email</string>
     <string name="REGISTER2_save">Save</string>
-    <string name="REGISTER2_page_title">Password setup</string>
+    <string name="REGISTER2_page_title">Sign up, second step</string>
     <string name="REGISTER2_passwords_mismatch">Passwords do not match</string>
     <string name="REGISTER2_password_is_too_short">Minimum 6 symbols</string>
     <string name="REGISTER2_wrong_input_data">Wrong input data</string>
@@ -287,4 +287,7 @@
     <string name="REGISTER2_registration_in_progress">Signing up</string>
     <string name="REGISTER2_creating_user">Creating new user</string>
     <string name="REGISTER2_registration_success">Sugn up complete!</string>
+    <string name="REGISTER2_password">Password</string>
+    <string name="REGISTER2_password_confirmation">Password configmation</string>
+    <string name="REGISTER2_user_message">Create password for your account</string>
 </resources>

@@ -10,6 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:id="@+id/userMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/REGISTER2_user_message"
+        android:textAlignment="center"
+        android:textColor="@color/info"
+        android:textSize="18sp" />
+
     <EditText
         android:id="@+id/password1Input"
         android:layout_width="match_parent"
@@ -19,6 +28,7 @@
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
         android:singleLine="true"
+        android:text="123456"
         android:textAlignment="center"
         android:textSize="18sp" />
 
@@ -31,6 +41,7 @@
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
         android:singleLine="true"
+        android:text="123456"
         android:textAlignment="center"
         android:textSize="18sp" />
 

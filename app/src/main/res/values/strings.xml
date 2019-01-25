@@ -274,7 +274,7 @@
     <string name="DLP_error_processing_link">Ошибка обработки инамической ссылки</string>
     <string name="DLP_go_homepage">На главную страницу</string>
     <string name="DLP_email_verified">Регистрация завершена!</string>
-    <string name="REGISTER1_send_button">Зарегистрироваться</string>
+    <string name="REGISTER1_send_button">Вперёд</string>
     <string name="REGISTER1_page_title">Регистрация, шаг первый</string>
     <string name="REGISTER1_error_sending_email">Ошибка отправки письма</string>
     <string name="REGISTER1_ok">Хорошо</string>
@@ -283,7 +283,7 @@
     <string name="REGISTER1_sending_email">Отправлем письмо</string>
     <string name="REGISTER1_incorrect_email">Некорректный email</string>
     <string name="REGISTER2_save">Сохранить</string>
-    <string name="REGISTER2_page_title">Установка пароля</string>
+    <string name="REGISTER2_page_title">Регистрация, шаг второй</string>
     <string name="REGISTER2_passwords_mismatch">Пароли не совпадают</string>
     <string name="REGISTER2_password_is_too_short">Минимум 6 символов</string>
     <string name="REGISTER2_wrong_input_data">Неправильные входящие данные</string>
@@ -293,4 +293,5 @@
     <string name="REGISTER2_registration_success">Успешная регистрация!</string>
     <string name="REGISTER2_password">Пароль</string>
     <string name="REGISTER2_password_confirmation">Подтверждение пароля</string>
+    <string name="REGISTER2_user_message">Придумайте пароль для вашей учётной записи</string>
 </resources>

@@ -5,8 +5,10 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -51,7 +53,8 @@ public class Register2_Presenter implements iRegister2.Presenter {
         }
 
         try {
-            String url = intent.getDataString();
+            view.hideUserMessage();
+            String url = intent.getStringExtra("emailSignInURL");
             if (firebaseAuth.isSignInWithEmailLink(url)) {
                 createFirebaseUser(url);
             } else {
@@ -161,13 +164,10 @@ public class Register2_Presenter implements iRegister2.Presenter {
             String email = firebaseUser.getEmail();
             String password = view.getPassword1();
 
-            EmailAuthCredential emailAuthCredential =
-                    (EmailAuthCredential) EmailAuthProvider.getCredential(email, password);
-
-            firebaseUser.linkWithCredential(emailAuthCredential)
-                    .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            firebaseUser.updatePassword(password)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
-                        public void onSuccess(AuthResult authResult) {
+                        public void onComplete(@NonNull Task<Void> task) {
                             view.hideProgressMessage();
                             view.showToast(R.string.REGISTER2_registration_success);
                             view.goMainPage();
@@ -180,6 +180,23 @@ public class Register2_Presenter implements iRegister2.Presenter {
                             e.printStackTrace();
                         }
                     });
+
+//            EmailAuthCredential emailAuthCredential =
+//                    (EmailAuthCredential) EmailAuthProvider.getCredential(email, password);
+//
+//            firebaseUser.linkWithCredential(emailAuthCredential)
+//                    .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+//                        @Override
+//                        public void onSuccess(AuthResult authResult) {
+//
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//
+//                        }
+//                    });
 
         } catch (Exception e) {
             onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());

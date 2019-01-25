@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
@@ -85,6 +89,19 @@ public class DLP_Presenter implements iDLP.Presenter {
             FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
             if (firebaseAuth.isSignInWithEmailLink(emailLink)) {
+
+//                firebaseAuth.signInWithEmailLink("aakumykov@yandex.ru", emailLink)
+//                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<AuthResult> task) {
+//                                if (task.isSuccessful()) {
+//                                    Log.d("1","success");
+//                                } else {
+//                                    Log.d("2", task.getException().getMessage());
+//                                }
+//                            }
+//                        });
+
                 Uri continueUrl = Uri.parse(deepLink.getQueryParameter("continueUrl"));
                 String continueUrlPath = continueUrl.getPath();
                 switch (continueUrlPath) {

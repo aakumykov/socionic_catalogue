@@ -6,6 +6,9 @@ import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,6 +20,7 @@ import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class Register2_View extends BaseView implements iRegister2.View {
 
+    @BindView(R.id.userMessage) TextView userMessage;
     @BindView(R.id.password1Input) EditText password1Input;
     @BindView(R.id.password2Input) EditText password2Input;
     @BindView(R.id.saveButton) Button saveButton;
@@ -66,6 +70,11 @@ public class Register2_View extends BaseView implements iRegister2.View {
 
 
     // Интерфейсные методы
+    @Override
+    public void hideUserMessage() {
+        MyUtils.hide(userMessage);
+    }
+
     @Override
     public String getPassword1() {
         return password1Input.getText().toString();

@@ -8,6 +8,8 @@ import ru.aakumykov.me.mvp.iBaseView;
 public interface iRegister2 {
 
     interface View extends iBaseView {
+        void hideUserMessage();
+
         String getPassword1();
         String getPassword2();
 
