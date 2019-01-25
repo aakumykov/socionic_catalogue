@@ -1,21 +1,17 @@
 package ru.aakumykov.me.mvp.dynamic_link_processor;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
-import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
@@ -47,6 +43,7 @@ public class DLP_Presenter implements iDLP.Presenter {
 
                             if (null != pendingDynamicLinkData) {
                                 deepLink = pendingDynamicLinkData.getLink();
+
                                 chooseActionFromDeepLink(deepLink, intent);
                             } else {
                                 onErrorOccured("Deep link not found");
@@ -84,22 +81,30 @@ public class DLP_Presenter implements iDLP.Presenter {
         try {
 
             String emailLink = intent.getDataString();
+
             FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
             if (firebaseAuth.isSignInWithEmailLink(emailLink)) {
-                registrationStep2(intent);
+                Uri continueUrl = Uri.parse(deepLink.getQueryParameter("continueUrl"));
+                String continueUrlPath = continueUrl.getPath();
+                switch (continueUrlPath) {
+                    case "/registration_step_2":
+                        registrationStep2(intent);
+                        break;
+                    default:
+                        throw new IllegalAccessException("Unknown continueUrl in dynamic link");
+                }
+
+            } else {
+                String deepLinkPath = deepLink.getPath();
+                switch (deepLinkPath) {
+                    case "/registration_step_2":
+                        break;
+
+                    default:
+                        throw new IllegalArgumentException("Unknown deep link: " + deepLink);
+                }
             }
-
-            String path = deepLink.getPath();
-
-            switch (path) {
-                case "registration_step_2":
-
-                    break;
-
-                default:
-                    throw new IllegalArgumentException("Unknown deep link: "+deepLink);
-            }
-
 
         } catch (Exception e) {
 
