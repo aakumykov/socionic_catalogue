@@ -231,8 +231,8 @@
     <string name="CARDS_LIST_loading_list">Загрузка списка карточек</string>
     <string name="CARDS_GRID_loading_cards">Загрузка карточек</string>
     <string name="CARDS_GRID_page_title">Карточки</string>
-    <string name="MENU_grid_view">В виде плиток</string>
-    <string name="MENU_list_view">В виде списка</string>
+    <string name="MENU_grid_view">Плитками</string>
+    <string name="MENU_list_view">Списком</string>
     <string name="CARDS_GRID_error_no_such_card">Нет такой карточки</string>
     <string name="DIALOG_login_required">Сначала зайдите в приложение</string>
     <string name="DIALOG_do_login">Войти</string>
