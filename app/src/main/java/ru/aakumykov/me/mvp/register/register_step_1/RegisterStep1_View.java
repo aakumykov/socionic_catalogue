@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp.register1;
+package ru.aakumykov.me.mvp.register.register_step_1;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,12 +17,12 @@ import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
-public class Register1_View extends BaseView implements iRegister1.View {
+public class RegisterStep1_View extends BaseView implements iRegisterStep1.View {
 
     @BindView(R.id.emailInput) EditText emailInput;
     @BindView(R.id.sendButton) Button sendButton;
 
-    private iRegister1.Presenter presenter;
+    private iRegisterStep1.Presenter presenter;
 
 
     // Системные методы
@@ -35,7 +35,7 @@ public class Register1_View extends BaseView implements iRegister1.View {
         setPageTitle(R.string.REGISTER1_page_title);
         activateUpButton();
 
-        presenter = new Register1_Presenter();
+        presenter = new RegisterStep1_Presenter();
     }
 
     @Override

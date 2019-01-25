@@ -1,10 +1,8 @@
 package ru.aakumykov.me.mvp.TEMPLATES.email_input;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -14,10 +12,6 @@ import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.cards_grid.CardsGrid_View;
-import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
-import ru.aakumykov.me.mvp.register1.Register1_Presenter;
-import ru.aakumykov.me.mvp.register1.iRegister1;
-import ru.aakumykov.me.mvp.utils.MyDialogs;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class EmailInput_View extends BaseView implements iEmailInput.View {

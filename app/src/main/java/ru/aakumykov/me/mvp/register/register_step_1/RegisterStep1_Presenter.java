@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp.register1;
+package ru.aakumykov.me.mvp.register.register_step_1;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,15 +14,15 @@ import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
-public class Register1_Presenter implements iRegister1.Presenter {
+public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
 
-    private iRegister1.View view;
+    private iRegisterStep1.View view;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
 
     // Системные методы
     @Override
-    public void linkView(iRegister1.View view) {
+    public void linkView(iRegisterStep1.View view) {
         this.view = view;
     }
 

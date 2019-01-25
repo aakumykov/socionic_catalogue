@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp.register2;
+package ru.aakumykov.me.mvp.register.register_step_2;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,8 +10,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -21,15 +19,15 @@ import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
 import ru.aakumykov.me.mvp.models.User;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
 
-public class Register2_Presenter implements iRegister2.Presenter {
+public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
-    private iRegister2.View view;
+    private iRegisterStep2.View view;
     private iUsersSingleton usersService = UsersSingleton.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     // Системные методы
     @Override
-    public void linkView(iRegister2.View view) {
+    public void linkView(iRegisterStep2.View view) {
         this.view = view;
     }
 

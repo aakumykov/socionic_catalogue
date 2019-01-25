@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp.register2;
+package ru.aakumykov.me.mvp.register.register_step_2;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -18,14 +16,14 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
-public class Register2_View extends BaseView implements iRegister2.View {
+public class RegisterStep2_View extends BaseView implements iRegisterStep2.View {
 
     @BindView(R.id.userMessage) TextView userMessage;
     @BindView(R.id.password1Input) EditText password1Input;
     @BindView(R.id.password2Input) EditText password2Input;
     @BindView(R.id.saveButton) Button saveButton;
 
-    private iRegister2.Presenter presenter;
+    private iRegisterStep2.Presenter presenter;
     private boolean firstRun = true;
 
     // Системные методы
@@ -38,7 +36,7 @@ public class Register2_View extends BaseView implements iRegister2.View {
         setPageTitle(R.string.REGISTER2_page_title);
         activateUpButton();
 
-        presenter = new Register2_Presenter();
+        presenter = new RegisterStep2_Presenter();
     }
 
     @Override

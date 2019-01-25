@@ -111,8 +111,8 @@
                     android:scheme="https"/>
             </intent-filter>
         </activity>
-        <activity android:name=".register1.Register1_View" />
-        <activity android:name=".register2.Register2_View" />
+        <activity android:name=".register.register_step_1.RegisterStep1_View" />
+        <activity android:name=".register.register_step_2.RegisterStep2_View" />
 
     </application>
 

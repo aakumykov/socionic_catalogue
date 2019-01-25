@@ -1,11 +1,11 @@
-package ru.aakumykov.me.mvp.register2;
+package ru.aakumykov.me.mvp.register.register_step_2;
 
 
 import android.content.Intent;
 
 import ru.aakumykov.me.mvp.iBaseView;
 
-public interface iRegister2 {
+public interface iRegisterStep2 {
 
     interface View extends iBaseView {
         void hideUserMessage();

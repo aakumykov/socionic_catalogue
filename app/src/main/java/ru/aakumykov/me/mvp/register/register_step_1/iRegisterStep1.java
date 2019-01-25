@@ -1,9 +1,9 @@
-package ru.aakumykov.me.mvp.register1;
+package ru.aakumykov.me.mvp.register.register_step_1;
 
 
 import ru.aakumykov.me.mvp.iBaseView;
 
-public interface iRegister1 {
+public interface iRegisterStep1 {
 
     interface View extends iBaseView {
         String getEmail();

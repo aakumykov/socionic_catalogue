@@ -5,13 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
@@ -19,7 +15,7 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
-import ru.aakumykov.me.mvp.register2.Register2_View;
+import ru.aakumykov.me.mvp.register.register_step_2.RegisterStep2_View;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
 
@@ -130,7 +126,7 @@ public class DLP_Presenter implements iDLP.Presenter {
 
     private void registrationStep2(@NonNull Intent inputIntent) {
         String emailURL = inputIntent.getDataString();
-        Intent intent = new Intent(view.getAppContext(), Register2_View.class);
+        Intent intent = new Intent(view.getAppContext(), RegisterStep2_View.class);
         intent.putExtra("emailSignInURL", emailURL);
         view.startMyActivity(intent);
     }

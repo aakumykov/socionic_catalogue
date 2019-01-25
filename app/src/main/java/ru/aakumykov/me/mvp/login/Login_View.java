@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.register1.Register1_View;
+import ru.aakumykov.me.mvp.register.register_step_1.RegisterStep1_View;
 import ru.aakumykov.me.mvp.reset_password.ResetPassword_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
@@ -141,7 +141,7 @@ public class Login_View extends BaseView implements
 
     @OnClick(R.id.registerButton)
     void goRegisterPage() {
-        Intent intent = new Intent(this, Register1_View.class);
+        Intent intent = new Intent(this, RegisterStep1_View.class);
         startActivity(intent);
     }
 
