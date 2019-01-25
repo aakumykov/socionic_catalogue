@@ -68,12 +68,12 @@ public class Register2_View extends BaseView implements iRegister2.View {
     // Интерфейсные методы
     @Override
     public String getPassword1() {
-        return null;
+        return password1Input.getText().toString();
     }
 
     @Override
     public String getPassword2() {
-        return null;
+        return password2Input.getText().toString();
     }
 
     @Override

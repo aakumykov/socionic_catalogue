@@ -291,4 +291,6 @@
     <string name="REGISTER2_registration_in_progress">Идёт регистрация</string>
     <string name="REGISTER2_creating_user">Создаём пользователя</string>
     <string name="REGISTER2_registration_success">Успешная регистрация!</string>
+    <string name="REGISTER2_password">Пароль</string>
+    <string name="REGISTER2_password_confirmation">Подтверждение пароля</string>
 </resources>
