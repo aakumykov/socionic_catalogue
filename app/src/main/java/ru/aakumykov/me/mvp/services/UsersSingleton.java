@@ -85,6 +85,8 @@ public class UsersSingleton implements iUsersSingleton {
         final User user = new User(userId);
          user.setEmail(email);
          user.setName(name);
+         user.setEmailVerified(true);
+
         final DatabaseReference newUserRef = usersRef.child(userId);
 
         // Проверяю на дубликат
