@@ -12,22 +12,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
-import ru.aakumykov.me.mvp.Constants;
+import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.register1.Register1_View;
 import ru.aakumykov.me.mvp.reset_password.ResetPassword_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
-import ru.aakumykov.me.mvp.R;
 
 public class Login_View extends BaseView implements
         iLogin.View {
     @BindView(R.id.emailInput) EditText emailInput;
     @BindView(R.id.passwordInput) EditText passwordInput;
     @BindView(R.id.loginButton) Button loginButton;
-    @BindView(R.id.cancelButton) Button cancelButton;
     @BindView(R.id.resetPasswordButton) Button resetPasswordButton;
     @BindView(R.id.registerButton) Button registerButton;
 
-    private final static String TAG = "Login_View";
     private iLogin.Presenter presenter;
 
 
@@ -66,11 +63,17 @@ public class Login_View extends BaseView implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                cancelLogin();
+                presenter.cancelLogin();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        presenter.cancelLogin();
     }
 
 
@@ -92,6 +95,7 @@ public class Login_View extends BaseView implements
         MyUtils.disable(emailInput);
         MyUtils.disable(passwordInput);
         MyUtils.disable(loginButton);
+        MyUtils.disable(resetPasswordButton);
         MyUtils.disable(registerButton);
     }
 
@@ -100,6 +104,7 @@ public class Login_View extends BaseView implements
         MyUtils.enable(emailInput);
         MyUtils.enable(passwordInput);
         MyUtils.enable(loginButton);
+        MyUtils.enable(resetPasswordButton);
         MyUtils.enable(registerButton);
     }
 
@@ -128,12 +133,6 @@ public class Login_View extends BaseView implements
         presenter.doLogin(email, password);
     }
 
-    @OnClick(R.id.cancelButton)
-    void cancelLogin() {
-        setResult(RESULT_CANCELED);
-        finish();
-    }
-
     @OnClick(R.id.resetPasswordButton)
     void resetPassword() {
         Intent intent = new Intent(this, ResetPassword_View.class);
@@ -145,4 +144,5 @@ public class Login_View extends BaseView implements
         Intent intent = new Intent(this, Register1_View.class);
         startActivity(intent);
     }
+
 }

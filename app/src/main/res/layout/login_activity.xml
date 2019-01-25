@@ -37,7 +37,7 @@
             android:gravity="center_horizontal"
             android:inputType="textEmailAddress"
             android:singleLine="true"
-            android:text="@yandex.ru" />
+            android:text="aakumykov@yandex.ru" />
 
         <EditText
             android:id="@+id/passwordInput"
@@ -59,14 +59,6 @@
             android:textSize="@dimen/major_button_font_size" />
 
         <Button
-            android:id="@+id/cancelButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/subsequent_button_margin_top"
-            android:text="@string/LOGIN_cancel"
-            android:textSize="@dimen/minor_button_font_size" />
-
-        <Button
             android:id="@+id/resetPasswordButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,7 +70,6 @@
             android:layout_marginTop="14dp"
             android:gravity="center_horizontal"
             android:text="@string/LOGIN_register_label"
-            android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
 
         <Button
