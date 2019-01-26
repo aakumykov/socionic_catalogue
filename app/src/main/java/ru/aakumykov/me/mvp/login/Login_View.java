@@ -13,6 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.register.register_step_1.RegisterStep1_View;
 import ru.aakumykov.me.mvp.reset_password.ResetPassword_View;
@@ -137,7 +138,7 @@ public class Login_View extends BaseView implements
     @OnClick(R.id.resetPasswordButton)
     void resetPassword() {
         Intent intent = new Intent(this, ResetPassword_View.class);
-        startActivity(intent);
+        startActivityForResult(intent, Constants.CODE_RESET_PASSWORD);
     }
 
     @OnClick(R.id.registerButton)

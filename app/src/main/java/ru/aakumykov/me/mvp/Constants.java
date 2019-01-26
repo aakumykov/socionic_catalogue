@@ -50,6 +50,7 @@ public final class Constants {
     public final static int CODE_USER_EDIT = 30;
     public final static int CODE_FORCE_SETUP_USER_NAME = 40;
     public final static int CODE_LOGIN_FOR_COMMENT = 50;
+    public final static int CODE_RESET_PASSWORD = 60;
 
     public final static int TAG_MIN_LENGTH = 2;
     public final static int TAG_MAX_LENGTH = 40;
