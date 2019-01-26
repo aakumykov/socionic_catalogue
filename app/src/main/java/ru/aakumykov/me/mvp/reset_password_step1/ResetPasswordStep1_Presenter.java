@@ -1,19 +1,16 @@
-package ru.aakumykov.me.mvp.reset_password;
+package ru.aakumykov.me.mvp.reset_password_step1;
 
-import android.text.TextUtils;
-
-import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 
 
-public class ResetPassword_Presenter implements iResetPassword.Presenter {
+public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Presenter {
 
-    private iResetPassword.View view;
+    private iResetPasswordStep1.View view;
     private iAuthSingleton authService = AuthSingleton.getInstance();
 
     @Override
-    public void linkView(iResetPassword.View view) {
+    public void linkView(iResetPasswordStep1.View view) {
         this.view = view;
     }
 
@@ -23,7 +20,7 @@ public class ResetPassword_Presenter implements iResetPassword.Presenter {
     }
 
     @Override
-    public void resetPassword(final iResetPassword.ResetPasswordCallbacks callbacks) {
+    public void resetPassword(final iResetPasswordStep1.ResetPasswordCallbacks callbacks) {
 
         String email = view.getEmail();
 

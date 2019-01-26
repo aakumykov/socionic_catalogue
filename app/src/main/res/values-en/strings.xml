@@ -258,13 +258,13 @@
     <string name="REGISTER_CONFIRMATION_error_no_required_data">No required data</string>
     <string name="RESET_PASSWORD_send">Reset password</string>
     <string name="RESET_PASSWORD_enter_registration_email_address">Enter your registration email address</string>
-    <string name="RESET_PASSWORD_page_title">Reset password</string>
+    <string name="RESET_PASSWORD_page_title">Password recovery</string>
     <string name="RESET_PASSWORD_sending_email">Sending email</string>
     <string name="RESET_PASSWORD_error_sending_email">Error sending email</string>
     <string name="RESET_PASSWORD_cancel">Do not reset</string>
     <string name="RESET_PASSWORD_incorrect_email">Email incorrect</string>
-    <string name="RESET_PASSWORD_email_sended">Email sended</string>
-    <string name="LOGIN_reset_password">Forgot password?</string>
+    <string name="RESET_PASSWORD_email_sended">Password reset email is sended to %1$s</string>
+    <string name="LOGIN_reset_password">Recover password</string>
     <string name="cannot_be_empty">Cannot be empty</string>
     <string name="DLP_page_title">Dynamic link processing</string>
     <string name="DLP_error_processing_link">Error processing dynamic link</string>
@@ -290,4 +290,12 @@
     <string name="REGISTER2_password">Password</string>
     <string name="REGISTER2_password_confirmation">Password configmation</string>
     <string name="REGISTER2_user_message">Create password for your account</string>
+    <string name="RESET_PASSWORD2_user_tip">Create your new password</string>
+    <string name="RESET_PASSWORD2_set_password">Set password</string>
+    <string name="RESET_PASSWORD2_saving_new_password">Setting new password</string>
+    <string name="RESET_PASSWORD2_error_saving_password">Error saving password</string>
+    <string name="RESET_PASSWORD2_new_password_saved">New password saved</string>
+    <string name="RESET_PASSWORD2_password">New password</string>
+    <string name="RESET_PASSWORD2_password_confirmation">Repeat of password</string>
+    <string name="LOGIN_try_new_password">You can log in with new password</string>
 </resources>

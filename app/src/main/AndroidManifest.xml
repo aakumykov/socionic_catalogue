@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".login.Login_View" android:noHistory="true" />
+        <activity android:name=".login.Login_View" />
 
         <activity android:name=".cards_list.CardsList_View" />
         <activity
@@ -94,9 +94,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".register.Register_View" android:noHistory="true" />
-
-        <activity android:name=".reset_password.ResetPassword_View" android:noHistory="true" />
+        <activity android:name=".reset_password_step1.ResetPasswordStep1_View" />
 
         <activity android:name=".dynamic_link_processor.DLP_View" android:noHistory="true">
             <intent-filter>
@@ -113,6 +111,7 @@
         </activity>
         <activity android:name=".register.register_step_1.RegisterStep1_View" />
         <activity android:name=".register.register_step_2.RegisterStep2_View" />
+        <activity android:name=".reset_password_step_2.ResetPasswordStep2_View" />
 
     </application>
 

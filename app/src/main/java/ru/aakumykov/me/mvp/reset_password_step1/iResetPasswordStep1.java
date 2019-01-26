@@ -1,11 +1,8 @@
-package ru.aakumykov.me.mvp.reset_password;
-
-import android.content.Intent;
-import android.support.annotation.Nullable;
+package ru.aakumykov.me.mvp.reset_password_step1;
 
 import ru.aakumykov.me.mvp.iBaseView;
 
-interface iResetPassword {
+interface iResetPasswordStep1 {
 
     interface View extends iBaseView {
         String getEmail();

@@ -12,10 +12,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
+import ru.aakumykov.me.mvp.login.Login_View;
 import ru.aakumykov.me.mvp.register.register_step_2.RegisterStep2_View;
+import ru.aakumykov.me.mvp.reset_password_step_2.ResetPasswordStep2_View;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
 import ru.aakumykov.me.mvp.services.UsersSingleton;
 
@@ -86,18 +89,6 @@ public class DLP_Presenter implements iDLP.Presenter {
 
             if (firebaseAuth.isSignInWithEmailLink(emailLink)) {
 
-//                firebaseAuth.signInWithEmailLink("aakumykov@yandex.ru", emailLink)
-//                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<AuthResult> task) {
-//                                if (task.isSuccessful()) {
-//                                    Log.d("1","success");
-//                                } else {
-//                                    Log.d("2", task.getException().getMessage());
-//                                }
-//                            }
-//                        });
-
                 Uri continueUrl = Uri.parse(deepLink.getQueryParameter("continueUrl"));
                 String continueUrlPath = continueUrl.getPath();
                 switch (continueUrlPath) {
@@ -111,7 +102,8 @@ public class DLP_Presenter implements iDLP.Presenter {
             } else {
                 String deepLinkPath = deepLink.getPath();
                 switch (deepLinkPath) {
-                    case "/registration_step_2":
+                    case "/reset_password":
+                        resetPasswordStep2(deepLink);
                         break;
 
                     default:
@@ -120,7 +112,8 @@ public class DLP_Presenter implements iDLP.Presenter {
             }
 
         } catch (Exception e) {
-
+            onErrorOccured(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -128,6 +121,14 @@ public class DLP_Presenter implements iDLP.Presenter {
         String emailURL = inputIntent.getDataString();
         Intent intent = new Intent(view.getAppContext(), RegisterStep2_View.class);
         intent.putExtra("emailSignInURL", emailURL);
+        view.startMyActivity(intent);
+    }
+
+    private void resetPasswordStep2(Uri deepLink) {
+//        Intent intent = new Intent(view.getAppContext(), ResetPasswordStep2_View.class);
+//        intent.putExtra("deepLink", deepLink);
+        Intent intent = new Intent(view.getAppContext(), Login_View.class);
+        intent.setAction(Constants.ACTION_TRY_NEW_PASSWORD);
         view.startMyActivity(intent);
     }
 
