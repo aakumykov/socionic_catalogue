@@ -94,7 +94,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".reset_password.ResetPassword_View" />
+        <activity android:name=".reset_password_step1.ResetPasswordStep1_View" />
 
         <activity android:name=".dynamic_link_processor.DLP_View" android:noHistory="true">
             <intent-filter>

@@ -1,12 +1,10 @@
-package ru.aakumykov.me.mvp.reset_password;
+package ru.aakumykov.me.mvp.reset_password_step1;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -22,8 +20,8 @@ import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 
-public class ResetPassword_View extends BaseView implements
-        iResetPassword.View,
+public class ResetPasswordStep1_View extends BaseView implements
+        iResetPasswordStep1.View,
         Validator.ValidationListener
 {
     @Email(messageResId = R.string.RESET_PASSWORD_incorrect_email)
@@ -32,7 +30,7 @@ public class ResetPassword_View extends BaseView implements
     @BindView(R.id.sendButton) Button sendButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
-    private iResetPassword.Presenter presenter;
+    private iResetPasswordStep1.Presenter presenter;
     private Validator validator;
 
 
@@ -40,13 +38,13 @@ public class ResetPassword_View extends BaseView implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.reset_password_activity);
+        setContentView(R.layout.reset_password_step_1_activity);
         ButterKnife.bind(this);
 
         setPageTitle(R.string.RESET_PASSWORD_page_title);
         activateUpButton();
 
-        presenter = new ResetPassword_Presenter();
+        presenter = new ResetPasswordStep1_Presenter();
 
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -84,7 +82,7 @@ public class ResetPassword_View extends BaseView implements
         showProgressMessage(R.string.RESET_PASSWORD_sending_email);
         disableForm();
 
-        presenter.resetPassword(new iResetPassword.ResetPasswordCallbacks() {
+        presenter.resetPassword(new iResetPasswordStep1.ResetPasswordCallbacks() {
             @Override
             public void onEmailSendSucces() {
                 hideProgressBar();
@@ -163,7 +161,7 @@ public class ResetPassword_View extends BaseView implements
 //        showProgressMessage(R.string.RESET_PASSWORD_sending_email);
 //        disableForm();
 //
-//        presenter.resetPassword(new iResetPassword.ResetPasswordCallbacks() {
+//        presenter.resetPassword(new iResetPasswordStep1.ResetPasswordCallbacks() {
 //            @Override
 //            public void onEmailSendSucces() {
 //                hideProgressBar();

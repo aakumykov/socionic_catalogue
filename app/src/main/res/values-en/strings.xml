@@ -290,4 +290,9 @@
     <string name="REGISTER2_password">Password</string>
     <string name="REGISTER2_password_confirmation">Password configmation</string>
     <string name="REGISTER2_user_message">Create password for your account</string>
+    <string name="RESET_PASSWORD2_user_tip">Create your new password</string>
+    <string name="RESET_PASSWORD2_set_password">Set password</string>
+    <string name="RESET_PASSWORD2_saving_new_password">Setting new password</string>
+    <string name="RESET_PASSWORD2_error_saving_password">Error saving password</string>
+    <string name="RESET_PASSWORD2_new_password_saved">New password saved</string>
 </resources>

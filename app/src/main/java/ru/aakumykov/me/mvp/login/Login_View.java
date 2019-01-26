@@ -16,7 +16,7 @@ import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.register.register_step_1.RegisterStep1_View;
-import ru.aakumykov.me.mvp.reset_password.ResetPassword_View;
+import ru.aakumykov.me.mvp.reset_password_step1.ResetPasswordStep1_View;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class Login_View extends BaseView implements
@@ -137,7 +137,7 @@ public class Login_View extends BaseView implements
 
     @OnClick(R.id.resetPasswordButton)
     void resetPassword() {
-        Intent intent = new Intent(this, ResetPassword_View.class);
+        Intent intent = new Intent(this, ResetPasswordStep1_View.class);
         startActivityForResult(intent, Constants.CODE_RESET_PASSWORD);
     }
 

@@ -222,7 +222,18 @@ public class AuthSingleton implements iAuthSingleton
 
     @Override
     public void resetPasswordEmail(String email, final ResetPasswordCallbacks callbacks) {
-        firebaseAuth.sendPasswordResetEmail(email)
+
+        ActionCodeSettings actionCodeSettings =
+                ActionCodeSettings.newBuilder()
+                        .setUrl("https://sociocat.example.org/reset_password_step1")
+                        .setHandleCodeInApp(true)
+                        .setAndroidPackageName(
+                                Constants.PACKAGE_NAME,
+                                true, /* installIfNotAvailable */
+                                null    /* minimumVersion */)
+                        .build();
+
+        firebaseAuth.sendPasswordResetEmail(email, actionCodeSettings)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
