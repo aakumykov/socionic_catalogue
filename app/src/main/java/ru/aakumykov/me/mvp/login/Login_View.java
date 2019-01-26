@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +23,7 @@ public class Login_View extends BaseView implements
     @BindView(R.id.emailInput) EditText emailInput;
     @BindView(R.id.passwordInput) EditText passwordInput;
     @BindView(R.id.loginButton) Button loginButton;
-    @BindView(R.id.resetPasswordButton) Button resetPasswordButton;
+    @BindView(R.id.resetPasswordButton) TextView resetPasswordButton;
     @BindView(R.id.registerButton) Button registerButton;
 
     private iLogin.Presenter presenter;
