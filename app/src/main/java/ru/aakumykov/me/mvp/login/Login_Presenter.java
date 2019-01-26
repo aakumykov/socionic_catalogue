@@ -55,8 +55,12 @@ public class Login_Presenter implements
     public void processInputIntent(@Nullable Intent intent) {
         if (null != intent) {
             String action = intent.getAction() + "";
-            if (action.equals(Constants.ACTION_LOGIN_FOR_COMMENT)) {
-
+            switch (action) {
+                case Constants.ACTION_TRY_NEW_PASSWORD:
+                    view.showInfoMsg(R.string.LOGIN_try_new_password);
+                    break;
+                default:
+                    break;
             }
         }
     }

@@ -261,13 +261,13 @@
     <string name="REGISTER_CONFIRMATION_email_sended">Письмо отправлено!</string>
     <string name="REGISTER_CONFIRMATION_error_no_required_data">Недостаточно данных</string>
     <string name="RESET_PASSWORD_send">Сбросить пароль</string>
-    <string name="RESET_PASSWORD_enter_registration_email_address">Введите адрес электронной почты, на который вы зарегистрированы</string>
+    <string name="RESET_PASSWORD_enter_registration_email_address">Введите адрес электронной почты, с которым вы зарегистрированы</string>
     <string name="RESET_PASSWORD_page_title">Восстановление пароля</string>
     <string name="RESET_PASSWORD_sending_email">Отправка сообщения</string>
     <string name="RESET_PASSWORD_error_sending_email">Ошибка отправки сообщения</string>
     <string name="RESET_PASSWORD_cancel">Передумать</string>
     <string name="RESET_PASSWORD_incorrect_email">Некорректный email</string>
-    <string name="RESET_PASSWORD_email_sended">Письмо отправлено</string>
+    <string name="RESET_PASSWORD_email_sended">Письмо для сброса пароля отправлено на адрес %1$s</string>
     <string name="LOGIN_reset_password">Восстановить пароль</string>
     <string name="cannot_be_empty">Не может быть пустым</string>
     <string name="DLP_page_title">Обработка динамической ссылки</string>
@@ -301,4 +301,5 @@
     <string name="RESET_PASSWORD2_new_password_saved">Новый пароль установлен</string>
     <string name="RESET_PASSWORD2_password">Новый пароль</string>
     <string name="RESET_PASSWORD2_password_confirmation">Повтор пароля</string>
+    <string name="LOGIN_try_new_password">Можете войти, используя новый пароль</string>
 </resources>

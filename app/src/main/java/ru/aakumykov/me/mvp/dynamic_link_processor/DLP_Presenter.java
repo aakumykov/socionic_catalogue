@@ -12,9 +12,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
+import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
 import ru.aakumykov.me.mvp.interfaces.iAuthSingleton;
 import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
+import ru.aakumykov.me.mvp.login.Login_View;
 import ru.aakumykov.me.mvp.register.register_step_2.RegisterStep2_View;
 import ru.aakumykov.me.mvp.reset_password_step_2.ResetPasswordStep2_View;
 import ru.aakumykov.me.mvp.services.AuthSingleton;
@@ -123,8 +125,10 @@ public class DLP_Presenter implements iDLP.Presenter {
     }
 
     private void resetPasswordStep2(Uri deepLink) {
-        Intent intent = new Intent(view.getAppContext(), ResetPasswordStep2_View.class);
-        intent.putExtra("deepLink", deepLink);
+//        Intent intent = new Intent(view.getAppContext(), ResetPasswordStep2_View.class);
+//        intent.putExtra("deepLink", deepLink);
+        Intent intent = new Intent(view.getAppContext(), Login_View.class);
+        intent.setAction(Constants.ACTION_TRY_NEW_PASSWORD);
         view.startMyActivity(intent);
     }
 

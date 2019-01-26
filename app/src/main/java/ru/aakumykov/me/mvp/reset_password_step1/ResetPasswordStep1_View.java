@@ -121,7 +121,8 @@ public class ResetPasswordStep1_View extends BaseView implements
 
     @Override
     public void finishWork() {
-        showToast(R.string.RESET_PASSWORD_email_sended);
+        String msg = getResources().getString(R.string.RESET_PASSWORD_email_sended, getEmail());
+        showLongToast(msg);
         setResult(RESULT_OK);
         finish();
     }

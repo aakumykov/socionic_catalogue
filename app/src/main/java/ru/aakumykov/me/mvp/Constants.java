@@ -20,7 +20,7 @@ public final class Constants {
     public final static String ACTION_LOGIN_FOR_COMMENT = "ACTION_LOGIN_FOR_COMMENT";
     public final static String ACTION_REGISTRATION_CONFIRM_REQUEST = "ACTION_REGISTRATION_CONFIRM_REQUEST";
     public final static String ACTION_REGISTRATION_CONFIRM_RESPONSE = "ACTION_REGISTRATION_CONFIRM_RESPONSE";
-    public final static String ACTION_REGISTRATION_CONFIRM_NOTIFICATION = "ACTION_REGISTRATION_CONFIRM_NOTIFICATION";
+    public final static String ACTION_TRY_NEW_PASSWORD = "ACTION_TRY_NEW_PASSWORD";
 
     public final static String TAG_FILTER = "TAG_FILTER";
     public final static String TAG_KEY = "TAG_KEY";
@@ -68,5 +68,4 @@ public final class Constants {
 
     public final static String SHARED_PREFERENCES_EMAIL = "SHARED_PREFERENCES_EMAIL";
 
-    public final static String REGISTRATION_STEP = "REGISTRATION_STEP";
 }
