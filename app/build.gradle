@@ -35,8 +35,8 @@ dependencies {
 
     // Firebase
     implementation 'com.google.firebase:firebase-core:16.0.6'
-    implementation 'com.google.firebase:firebase-auth:16.0.5'
-    implementation 'com.google.firebase:firebase-database:16.0.5'
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.google.firebase:firebase-database:16.0.6'
     implementation 'com.google.firebase:firebase-storage:16.0.5'
     implementation 'com.google.firebase:firebase-dynamic-links:16.1.5'
 
@@ -57,7 +57,7 @@ dependencies {
     // AndroidTagView
     implementation 'co.lujun:androidtagview:1.1.4'
 
-    // android-youutbe-player
+    // android-youtube-player
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:8.0.1'
 
     // Circle image view
