@@ -295,4 +295,6 @@
     <string name="RESET_PASSWORD2_saving_new_password">Setting new password</string>
     <string name="RESET_PASSWORD2_error_saving_password">Error saving password</string>
     <string name="RESET_PASSWORD2_new_password_saved">New password saved</string>
+    <string name="RESET_PASSWORD2_password">New password</string>
+    <string name="RESET_PASSWORD2_password_confirmation">Repeat of password</string>
 </resources>

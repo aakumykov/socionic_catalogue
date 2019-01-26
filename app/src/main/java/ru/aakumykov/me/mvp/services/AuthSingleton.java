@@ -225,8 +225,8 @@ public class AuthSingleton implements iAuthSingleton
 
         ActionCodeSettings actionCodeSettings =
                 ActionCodeSettings.newBuilder()
-                        .setUrl("https://sociocat.example.org/reset_password_step1")
-                        .setHandleCodeInApp(true)
+                        .setUrl("https://sociocat.example.org/reset_password?uid="+firebaseAuth.getUid())
+                        .setHandleCodeInApp(false)
                         .setAndroidPackageName(
                                 Constants.PACKAGE_NAME,
                                 true, /* installIfNotAvailable */

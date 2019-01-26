@@ -299,4 +299,6 @@
     <string name="RESET_PASSWORD2_saving_new_password">Установка нового пароля</string>
     <string name="RESET_PASSWORD2_error_saving_password">Ошибка сохранения пароля</string>
     <string name="RESET_PASSWORD2_new_password_saved">Новый пароль установлен</string>
+    <string name="RESET_PASSWORD2_password">Новый пароль</string>
+    <string name="RESET_PASSWORD2_password_confirmation">Повтор пароля</string>
 </resources>

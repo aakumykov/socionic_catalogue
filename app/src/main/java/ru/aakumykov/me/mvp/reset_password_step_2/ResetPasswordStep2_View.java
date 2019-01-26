@@ -42,7 +42,7 @@ public class ResetPasswordStep2_View extends BaseView implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.reset_password_step_1_activity);
+        setContentView(R.layout.reset_password_step_2_activity);
         ButterKnife.bind(this);
 
         setPageTitle(R.string.RESET_PASSWORD_page_title);
@@ -151,14 +151,14 @@ public class ResetPasswordStep2_View extends BaseView implements
 
 
     // Нажатия
-    @OnClick(R.id.sendButton)
-    void sendEmailClicked() {
-        validator.validate();
-    }
+//    @OnClick(R.id.setButton)
+//    void sendEmailClicked() {
+//        validator.validate();
+//    }
 
-    @OnClick(R.id.cancelButton)
-    void cancelClicked() {
-        setResult(RESULT_CANCELED);
-        finish();
-    }
+//    @OnClick(R.id.cancelButton)
+//    void cancelClicked() {
+//        setResult(RESULT_CANCELED);
+//        finish();
+//    }
 }
