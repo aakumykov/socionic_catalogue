@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -19,6 +20,8 @@ import ru.aakumykov.me.mvp.utils.MyUtils;
 public class RegisterStep2_View extends BaseView implements iRegisterStep2.View {
 
     @BindView(R.id.userMessage) TextView userMessage;
+    @BindView(R.id.userNameInput) EditText userNameInput;
+    @BindView(R.id.nameThrobber) ProgressBar nameThrobber;
     @BindView(R.id.password1Input) EditText password1Input;
     @BindView(R.id.password2Input) EditText password2Input;
     @BindView(R.id.saveButton) Button saveButton;
@@ -74,6 +77,11 @@ public class RegisterStep2_View extends BaseView implements iRegisterStep2.View 
     }
 
     @Override
+    public String getUserName() {
+        return userNameInput.getText().toString();
+    }
+
+    @Override
     public String getPassword1() {
         return password1Input.getText().toString();
     }
@@ -81,6 +89,12 @@ public class RegisterStep2_View extends BaseView implements iRegisterStep2.View 
     @Override
     public String getPassword2() {
         return password2Input.getText().toString();
+    }
+
+    @Override
+    public void showUserNameError(int msgId) {
+        String message = getResources().getString(msgId);
+        userNameInput.setError(message);
     }
 
     @Override
@@ -110,6 +124,18 @@ public class RegisterStep2_View extends BaseView implements iRegisterStep2.View 
     }
 
     @Override
+    public void showNameThrobber() {
+//        MyUtils.disable(userNameInput);
+        MyUtils.show(nameThrobber);
+    }
+
+    @Override
+    public void hideNameThrobber() {
+//        MyUtils.enable(userNameInput);
+        MyUtils.hide(nameThrobber);
+    }
+
+    @Override
     public void goMainPage() {
         Intent intent = new Intent(this, CardsGrid_View.class);
         startActivity(intent);
@@ -119,7 +145,7 @@ public class RegisterStep2_View extends BaseView implements iRegisterStep2.View 
     // Нажатия
     @OnClick(R.id.saveButton)
     void onSendButtonClicked() {
-        presenter.finishRegistration(getIntent());
+        presenter.processRegistration(getIntent());
     }
 
 }

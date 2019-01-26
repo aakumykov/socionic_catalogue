@@ -24,6 +24,8 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     private iRegisterStep2.View view;
     private iUsersSingleton usersService = UsersSingleton.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private boolean userNameIsValid = false;
+    private boolean passwordIsValid = false;
 
     // Системные методы
     @Override
@@ -39,22 +41,54 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
     // Интерфейсные методы
     @Override
-    public void finishRegistration(Intent intent) {
-
-        if (!isValidPassword()) {
-            return;
-        }
+    public void processRegistration(Intent intent) {
 
         if (null == intent) {
             onErrorOccured(R.string.REGISTER2_wrong_input_data, "Intent is NULL");
             return;
         }
 
+        view.hideUserMessage();
+
+        if (null == firebaseAuth.getCurrentUser()) {
+            step1_signInWithEmailLink(intent);
+        } else {
+            step2_checkForm();
+        }
+    }
+
+
+    // Внутренние методы
+    private void step1_signInWithEmailLink(Intent intent) {
         try {
-            view.hideUserMessage();
-            String url = intent.getStringExtra("emailSignInURL");
-            if (firebaseAuth.isSignInWithEmailLink(url)) {
-                createFirebaseUser(url);
+            String emailSignInURI = intent.getStringExtra("emailSignInURL");
+
+            if (firebaseAuth.isSignInWithEmailLink(emailSignInURI)) {
+
+                SharedPreferences sharedPreferences = view.getSharedPrefs(Constants.SHARED_PREFERENCES_EMAIL);
+
+                if (sharedPreferences.contains("email")) {
+                    final String storedEmail = sharedPreferences.getString("email", null);
+
+                    firebaseAuth.signInWithEmailLink(storedEmail, emailSignInURI)
+                            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                                @Override
+                                public void onSuccess(AuthResult authResult) {
+                                    step2_checkForm();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
+                                    e.printStackTrace();
+                                }
+                            });
+
+                } else {
+                    onErrorOccured(R.string.REGISTER2_registration_error, "Locally stored email not found");
+                }
+
             } else {
                 onErrorOccured(R.string.REGISTER2_registration_error, "Cannot sign in with email link");
             }
@@ -65,8 +99,124 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
         }
     }
 
+    private void step2_checkForm() {
+        checkPassword();
+        checkUserName();
+    }
 
-    // Внутренние методы
+    private void step_3_createAppUser(String userId, String email) {
+        try {
+//            view.showProgressMessage(R.string.REGISTER2_creating_user);
+            view.showProgressMessage(R.string.REGISTER2_registration_in_progress);
+
+            String userName = view.getUserName();
+
+            usersService.createUser(userId, userName, email, new iUsersSingleton.CreateCallbacks() {
+                @Override
+                public void onUserCreateSuccess(User user) {
+                    step_4_setUserPassword();
+                }
+
+                @Override
+                public void onUserCreateFail(String errorMsg) {
+                    onErrorOccured(R.string.REGISTER2_registration_error, errorMsg);
+                }
+            });
+
+        } catch (Exception e) {
+            onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void step_4_setUserPassword() {
+        try {
+
+            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+            String password = view.getPassword1();
+
+            firebaseUser.updatePassword(password)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            view.hideProgressMessage();
+                            view.showToast(R.string.REGISTER2_registration_success);
+                            view.goMainPage();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
+                            e.printStackTrace();
+                        }
+                    });
+
+        } catch (Exception e) {
+            onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    private void checkPassword() {
+        isValidPassword();
+    }
+
+    private void checkUserName() {
+        String userName = view.getUserName();
+
+        if (TextUtils.isEmpty(userName)) {
+            view.showUserNameError(R.string.cannot_be_empty);
+            return;
+        }
+
+        if (userName.length() < Constants.USER_NAME_MIN_LENGTH) {
+            view.showUserNameError(R.string.REGISTER2_user_name_too_short);
+            return;
+        }
+
+        if (userName.length() > Constants.USER_NAME_MAX_LENGTH) {
+            view.showUserNameError(R.string.REGISTER2_user_name_too_long);
+            return;
+        }
+
+        view.showNameThrobber();
+
+        usersService.checkNameExists(userName, new iUsersSingleton.CheckExistanceCallbacks() {
+            @Override
+            public void onCheckComplete() {
+            }
+
+            @Override
+            public void onExists() {
+                view.hideNameThrobber();
+                view.showUserNameError(R.string.REGISTER2_user_name_already_used);
+            }
+
+            @Override
+            public void onNotExists() {
+                if (isValidPassword()) {
+                    try {
+                        String userId = firebaseAuth.getUid();
+                        String email = firebaseAuth.getCurrentUser().getEmail();
+                        step_3_createAppUser(userId, email);
+                    } catch (Exception e) {
+                        onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onCheckFail(String errorMsg) {
+                view.hideNameThrobber();
+                onErrorOccured(R.string.REGISTER2_user_name_check_error, errorMsg);
+            }
+        });
+    }
+
     private boolean isValidPassword() {
         String password1 = view.getPassword1();
         String password2 = view.getPassword2();
@@ -96,111 +246,6 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
         return true;
     }
 
-    private void createFirebaseUser(String emailSignInURI) {
-        try {
-            SharedPreferences sharedPreferences = view.getSharedPrefs(Constants.SHARED_PREFERENCES_EMAIL);
-            if (sharedPreferences.contains("email")) {
-
-                final String storedEmail = sharedPreferences.getString("email", null);
-
-                view.showProgressMessage(R.string.REGISTER2_registration_in_progress);
-
-                firebaseAuth.signInWithEmailLink(storedEmail, emailSignInURI)
-                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                            @Override
-                            public void onSuccess(AuthResult authResult) {
-                                String userId = authResult.getUser().getUid();
-
-                                createAppUser(userId, storedEmail);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
-                                e.printStackTrace();
-                            }
-                        });
-
-            } else {
-                onErrorOccured(R.string.REGISTER2_registration_error, "Locally stored email not found");
-            }
-
-        } catch (Exception e) {
-            onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    private void createAppUser(String userId, String email) {
-        try {
-            view.showProgressMessage(R.string.REGISTER2_creating_user);
-
-            usersService.createUser(userId, "", email, new iUsersSingleton.CreateCallbacks() {
-                @Override
-                public void onUserCreateSuccess(User user) {
-                    setUserPassword();
-                }
-
-                @Override
-                public void onUserCreateFail(String errorMsg) {
-                    onErrorOccured(R.string.REGISTER2_registration_error, errorMsg);
-                }
-            });
-
-        } catch (Exception e) {
-            onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    private void setUserPassword() {
-        try {
-
-            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-
-            String email = firebaseUser.getEmail();
-            String password = view.getPassword1();
-
-            firebaseUser.updatePassword(password)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            view.hideProgressMessage();
-                            view.showToast(R.string.REGISTER2_registration_success);
-                            view.goMainPage();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
-                            e.printStackTrace();
-                        }
-                    });
-
-//            EmailAuthCredential emailAuthCredential =
-//                    (EmailAuthCredential) EmailAuthProvider.getCredential(email, password);
-//
-//            firebaseUser.linkWithCredential(emailAuthCredential)
-//                    .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-//                        @Override
-//                        public void onSuccess(AuthResult authResult) {
-//
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//
-//                        }
-//                    });
-
-        } catch (Exception e) {
-            onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
-            e.printStackTrace();
-        }
-    }
 
     // TODO: удалять FirebaseUser ...
 

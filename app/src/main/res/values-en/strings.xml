@@ -289,7 +289,7 @@
     <string name="REGISTER2_registration_success">Sugn up complete</string>
     <string name="REGISTER2_password">Password</string>
     <string name="REGISTER2_password_confirmation">Password configmation</string>
-    <string name="REGISTER2_user_message">Create password for your account</string>
+    <string name="REGISTER2_user_message">Create user name and password for your account</string>
     <string name="RESET_PASSWORD2_user_tip">Create your new password</string>
     <string name="RESET_PASSWORD2_set_password">Set password</string>
     <string name="RESET_PASSWORD2_saving_new_password">Setting new password</string>
@@ -298,4 +298,9 @@
     <string name="RESET_PASSWORD2_password">New password</string>
     <string name="RESET_PASSWORD2_password_confirmation">Repeat of password</string>
     <string name="LOGIN_try_new_password">You can log in with new password</string>
+    <string name="REGISTER2_user_name">User name</string>
+    <string name="REGISTER2_user_name_too_short">User name too short</string>
+    <string name="REGISTER2_user_name_too_long">User name too long</string>
+    <string name="REGISTER2_user_name_already_used">User name already used</string>
+    <string name="REGISTER2_user_name_check_error">User name check error</string>
 </resources>

@@ -293,7 +293,7 @@
     <string name="REGISTER2_registration_success">Вы зарегистрировались</string>
     <string name="REGISTER2_password">Пароль</string>
     <string name="REGISTER2_password_confirmation">Подтверждение пароля</string>
-    <string name="REGISTER2_user_message">Придумайте пароль для вашей учётной записи</string>
+    <string name="REGISTER2_user_message">Придумайте имя пользователя и пароль для вашей учётной записи</string>
     <string name="RESET_PASSWORD2_user_tip">Придумайте новый пароль</string>
     <string name="RESET_PASSWORD2_set_password">Установить</string>
     <string name="RESET_PASSWORD2_saving_new_password">Установка нового пароля</string>
@@ -302,4 +302,9 @@
     <string name="RESET_PASSWORD2_password">Новый пароль</string>
     <string name="RESET_PASSWORD2_password_confirmation">Повтор пароля</string>
     <string name="LOGIN_try_new_password">Можете войти, используя новый пароль</string>
+    <string name="REGISTER2_user_name">Имя пользователя</string>
+    <string name="REGISTER2_user_name_too_short">Имя слишком короткое</string>
+    <string name="REGISTER2_user_name_too_long">Имя слишком длинное</string>
+    <string name="REGISTER2_user_name_already_used">Имя уже используется</string>
+    <string name="REGISTER2_user_name_check_error">Ошибка проверки имени</string>
 </resources>
