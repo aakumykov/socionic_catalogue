@@ -94,8 +94,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".reset_password_step1.ResetPasswordStep1_View" />
-
         <activity android:name=".dynamic_link_processor.DLP_View" android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -109,8 +107,11 @@
                     android:scheme="https"/>
             </intent-filter>
         </activity>
+
         <activity android:name=".register.register_step_1.RegisterStep1_View" />
         <activity android:name=".register.register_step_2.RegisterStep2_View" />
+
+        <activity android:name=".reset_password_step1.ResetPasswordStep1_View" />
         <activity android:name=".reset_password_step_2.ResetPasswordStep2_View" />
 
     </application>

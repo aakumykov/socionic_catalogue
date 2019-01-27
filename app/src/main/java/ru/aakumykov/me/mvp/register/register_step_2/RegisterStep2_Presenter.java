@@ -155,36 +155,43 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
         view.showNameThrobber();
 
-        usersService.checkNameExists(userName, new iUsersSingleton.CheckExistanceCallbacks() {
-            @Override
-            public void onCheckComplete() {
-            }
-
-            @Override
-            public void onExists() {
-                view.hideNameThrobber();
-                view.showUserNameError(R.string.REGISTER2_user_name_already_used);
-            }
-
-            @Override
-            public void onNotExists() {
-                try {
-                    String userId = firebaseAuth.getUid();
-                    String email = firebaseAuth.getCurrentUser().getEmail();
-                    createAppUser(userId, email);
-
-                } catch (Exception e) {
-                    onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
-                    e.printStackTrace();
+        try {
+            usersService.checkNameExists(userName, new iUsersSingleton.CheckExistanceCallbacks() {
+                @Override
+                public void onCheckComplete() {
                 }
-            }
 
-            @Override
-            public void onCheckFail(String errorMsg) {
-                view.hideNameThrobber();
-                onErrorOccured(R.string.REGISTER2_user_name_check_error, errorMsg);
-            }
-        });
+                @Override
+                public void onExists() {
+                    view.hideNameThrobber();
+                    view.showUserNameError(R.string.REGISTER2_user_name_already_used);
+                }
+
+                @Override
+                public void onNotExists() {
+                    try {
+                        String userId = firebaseAuth.getUid();
+                        String email = firebaseAuth.getCurrentUser().getEmail();
+                        createAppUser(userId, email);
+
+                    } catch (Exception e) {
+                        onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onCheckFail(String errorMsg) {
+                    view.hideNameThrobber();
+                    onErrorOccured(R.string.REGISTER2_user_name_check_error, errorMsg);
+                }
+            });
+
+        } catch (Exception e) {
+            view.enableForm();
+            onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void createAppUser(String userId, String email) {
