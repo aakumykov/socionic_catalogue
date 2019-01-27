@@ -34,7 +34,14 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
 
     // Интерфейсные методы
     @Override
-    public void sendRegistrationEmail() {
+    public void doInitialCheck() {
+        if (null != firebaseAuth.getCurrentUser()) {
+            view.accessDenied(R.string.REGISTER1_you_are_already_authorized);
+        }
+    }
+
+    @Override
+    public void produceRegistrationStep1() {
 
         if (!isValidEmail()) return;
 

@@ -307,4 +307,5 @@
     <string name="REGISTER2_user_name_too_long">Имя слишком длинное</string>
     <string name="REGISTER2_user_name_already_used">Имя уже используется</string>
     <string name="REGISTER2_user_name_check_error">Ошибка проверки имени</string>
+    <string name="REGISTER1_you_are_already_authorized">Вы уже авторизованы</string>
 </resources>

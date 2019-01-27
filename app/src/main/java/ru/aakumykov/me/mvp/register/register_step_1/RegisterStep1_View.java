@@ -42,6 +42,7 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
+        presenter.doInitialCheck();
     }
 
     @Override
@@ -115,11 +116,18 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
         emailInput.setError(message);
     }
 
+    @Override
+    public void accessDenied(int msgId) {
+        String message = getString(msgId);
+        showToast(message);
+        finish();
+    }
+
 
     // Нажатия
     @OnClick(R.id.sendButton)
     void onSendButtonClicked() {
-        presenter.sendRegistrationEmail();
+        presenter.produceRegistrationStep1();
     }
 
 

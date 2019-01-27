@@ -303,4 +303,5 @@
     <string name="REGISTER2_user_name_too_long">User name too long</string>
     <string name="REGISTER2_user_name_already_used">User name already used</string>
     <string name="REGISTER2_user_name_check_error">User name check error</string>
+    <string name="REGISTER1_you_are_already_authorized">You are already authorized</string>
 </resources>
