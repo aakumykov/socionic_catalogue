@@ -12,12 +12,15 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
+import ru.aakumykov.me.mvp.interfaces.iUsersSingleton;
+import ru.aakumykov.me.mvp.services.UsersSingleton;
 import ru.aakumykov.me.mvp.utils.MyUtils;
 
 public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
 
     private iRegisterStep1.View view;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private iUsersSingleton usersService = UsersSingleton.getInstance();
 
 
     // Системные методы
@@ -42,9 +45,51 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
 
     @Override
     public void produceRegistrationStep1() {
+        checkEmail();
+    }
 
-        if (!isValidEmail()) return;
 
+    // Внутренние методы
+    private void checkEmail() {
+        String email = view.getEmail();
+
+        if (TextUtils.isEmpty(email)) {
+            view.showEmailError(R.string.cannot_be_empty);
+            return;
+        }
+
+        if (!MyUtils.isEmailCorrect(email)) {
+            view.showEmailError(R.string.REGISTER1_incorrect_email);
+            return;
+        }
+
+
+        view.showEmailChecked();
+
+        usersService.checkEmailExists(email, new iUsersSingleton.CheckExistanceCallbacks() {
+            @Override
+            public void onCheckComplete() {
+                view.hideEmailChecked();
+            }
+
+            @Override
+            public void onExists() {
+                view.showEmailError(R.string.REGISTER1_email_already_used);
+            }
+
+            @Override
+            public void onNotExists() {
+                step1_sendRegistrationEmail();
+            }
+
+            @Override
+            public void onCheckFail(String errorMsg) {
+                view.showEmailError(R.string.REGISTER1_error_check_email);
+            }
+        });
+    }
+
+    private void step1_sendRegistrationEmail() {
         final String email = view.getEmail();
 
         ActionCodeSettings actionCodeSettings =
@@ -76,24 +121,6 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
                         e.printStackTrace();
                     }
                 });
-    }
-
-
-    // Внутренние методы
-    private boolean isValidEmail() {
-        String email = view.getEmail();
-
-        if (TextUtils.isEmpty(email)) {
-            view.showEmailError(R.string.cannot_be_empty);
-            return false;
-        }
-
-        if (!MyUtils.isEmailCorrect(email)) {
-            view.showEmailError(R.string.REGISTER1_incorrect_email);
-            return false;
-        }
-
-        return true;
     }
 
     private void storeEmailLocally(String email) {

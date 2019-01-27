@@ -8,10 +8,14 @@ public interface iRegisterStep1 {
     interface View extends iBaseView {
         String getEmail();
 
+        void showEmailChecked();
+        void hideEmailChecked();
+
         void disableForm();
         void enableForm();
 
         void showEmailError(int msgId);
+
         void showSuccessDialog();
 
         void accessDenied(int msgId);

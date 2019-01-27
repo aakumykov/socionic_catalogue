@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +21,7 @@ import ru.aakumykov.me.mvp.utils.MyUtils;
 public class RegisterStep1_View extends BaseView implements iRegisterStep1.View {
 
     @BindView(R.id.emailInput) EditText emailInput;
+    @BindView(R.id.emailThrobber) ProgressBar emailThrobber;
     @BindView(R.id.sendButton) Button sendButton;
 
     private iRegisterStep1.Presenter presenter;
@@ -68,6 +70,19 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
 
 
     // Интерфейсные методы
+
+    @Override
+    public void showEmailChecked() {
+        MyUtils.disable(emailInput);
+        MyUtils.show(emailThrobber);
+    }
+
+    @Override
+    public void hideEmailChecked() {
+        MyUtils.enable(emailInput);
+        MyUtils.hide(emailThrobber);
+    }
+
     @Override
     public String getEmail() {
         return emailInput.getText().toString();
