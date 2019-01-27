@@ -48,18 +48,69 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
             return;
         }
 
-        view.hideUserMessage();
-
-        if (null == firebaseAuth.getCurrentUser()) {
-            step1_signInWithEmailLink(intent);
-        } else {
-            step2_checkForm();
+        if (formValidLocally()) {
+            signInWithEmailedLink(intent);
+            checkNameByNetwork();
         }
     }
 
 
     // Внутренние методы
-    private void step1_signInWithEmailLink(Intent intent) {
+    private boolean formValidLocally() {
+        return checkPassword() && checkUserNameLocal();
+    }
+
+    private boolean checkUserNameLocal() {
+        String userName = view.getUserName();
+
+        if (TextUtils.isEmpty(userName)) {
+            view.showUserNameError(R.string.cannot_be_empty);
+            return false;
+        }
+
+        if (userName.length() < Constants.USER_NAME_MIN_LENGTH) {
+            view.showUserNameError(R.string.REGISTER2_user_name_too_short);
+            return false;
+        }
+
+        if (userName.length() > Constants.USER_NAME_MAX_LENGTH) {
+            view.showUserNameError(R.string.REGISTER2_user_name_too_long);
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean checkPassword() {
+        String password1 = view.getPassword1();
+        String password2 = view.getPassword2();
+
+        if (TextUtils.isEmpty(password1)) {
+            view.showPassword1Error(R.string.cannot_be_empty);
+            return false;
+        }
+
+        if (TextUtils.isEmpty(password2)) {
+            view.showPassword2Error(R.string.cannot_be_empty);
+            return false;
+        }
+
+        if (!password1.equals(password2)) {
+            view.showPassword1Error(R.string.REGISTER2_passwords_mismatch);
+            view.showPassword2Error(R.string.REGISTER2_passwords_mismatch);
+            return false;
+        }
+
+        if (password1.length() < Constants.PASSWORD_MIN_LENGTH) {
+            view.showPassword1Error(R.string.REGISTER2_password_is_too_short);
+            view.showPassword2Error(R.string.REGISTER2_password_is_too_short);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void signInWithEmailedLink(Intent intent) {
         try {
             String emailSignInURI = intent.getStringExtra("emailSignInURL");
 
@@ -74,7 +125,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
                             .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                    step2_checkForm();
+                                    checkNameByNetwork();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -99,17 +150,46 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
         }
     }
 
-    private void step2_checkForm() {
+    private void checkNameByNetwork() {
+        String userName = view.getUserName();
 
-//        view.disableForm();
+        view.showNameThrobber();
 
-        checkPassword();
-        checkUserName();
+        usersService.checkNameExists(userName, new iUsersSingleton.CheckExistanceCallbacks() {
+            @Override
+            public void onCheckComplete() {
+            }
+
+            @Override
+            public void onExists() {
+                view.hideNameThrobber();
+                view.showUserNameError(R.string.REGISTER2_user_name_already_used);
+            }
+
+            @Override
+            public void onNotExists() {
+                try {
+                    String userId = firebaseAuth.getUid();
+                    String email = firebaseAuth.getCurrentUser().getEmail();
+                    createAppUser(userId, email);
+
+                } catch (Exception e) {
+                    onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCheckFail(String errorMsg) {
+                view.hideNameThrobber();
+                onErrorOccured(R.string.REGISTER2_user_name_check_error, errorMsg);
+            }
+        });
     }
 
-    private void step_3_createAppUser(String userId, String email) {
+    private void createAppUser(String userId, String email) {
         try {
-//            view.showProgressMessage(R.string.REGISTER2_creating_user);
+            view.disableForm();
             view.showProgressMessage(R.string.REGISTER2_registration_in_progress);
 
             String userName = view.getUserName();
@@ -117,7 +197,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
             usersService.createUser(userId, userName, email, new iUsersSingleton.CreateCallbacks() {
                 @Override
                 public void onUserCreateSuccess(User user) {
-                    step_4_setUserPassword();
+                    setUserPassword();
                 }
 
                 @Override
@@ -132,7 +212,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
         }
     }
 
-    private void step_4_setUserPassword() {
+    private void setUserPassword() {
         try {
 
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -160,95 +240,6 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
             onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
             e.printStackTrace();
         }
-    }
-
-
-    private void checkPassword() {
-        isValidPassword();
-    }
-
-    private void checkUserName() {
-        view.hideNameError();
-
-        String userName = view.getUserName();
-
-        if (TextUtils.isEmpty(userName)) {
-            view.showUserNameError(R.string.cannot_be_empty);
-            return;
-        }
-
-        if (userName.length() < Constants.USER_NAME_MIN_LENGTH) {
-            view.showUserNameError(R.string.REGISTER2_user_name_too_short);
-            return;
-        }
-
-        if (userName.length() > Constants.USER_NAME_MAX_LENGTH) {
-            view.showUserNameError(R.string.REGISTER2_user_name_too_long);
-            return;
-        }
-
-        view.showNameThrobber();
-
-        usersService.checkNameExists(userName, new iUsersSingleton.CheckExistanceCallbacks() {
-            @Override
-            public void onCheckComplete() {
-            }
-
-            @Override
-            public void onExists() {
-                view.hideNameThrobber();
-                view.showUserNameError(R.string.REGISTER2_user_name_already_used);
-            }
-
-            @Override
-            public void onNotExists() {
-                if (isValidPassword()) {
-                    try {
-                        String userId = firebaseAuth.getUid();
-                        String email = firebaseAuth.getCurrentUser().getEmail();
-                        step_3_createAppUser(userId, email);
-                    } catch (Exception e) {
-                        onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onCheckFail(String errorMsg) {
-                view.hideNameThrobber();
-                onErrorOccured(R.string.REGISTER2_user_name_check_error, errorMsg);
-            }
-        });
-    }
-
-    private boolean isValidPassword() {
-        String password1 = view.getPassword1();
-        String password2 = view.getPassword2();
-
-        if (TextUtils.isEmpty(password1)) {
-            view.showPassword1Error(R.string.cannot_be_empty);
-            return false;
-        }
-
-        if (TextUtils.isEmpty(password2)) {
-            view.showPassword2Error(R.string.cannot_be_empty);
-            return false;
-        }
-
-        if (!password1.equals(password2)) {
-            view.showPassword1Error(R.string.REGISTER2_passwords_mismatch);
-            view.showPassword2Error(R.string.REGISTER2_passwords_mismatch);
-            return false;
-        }
-
-        if (password1.length() < Constants.PASSWORD_MIN_LENGTH) {
-            view.showPassword1Error(R.string.REGISTER2_password_is_too_short);
-            view.showPassword2Error(R.string.REGISTER2_password_is_too_short);
-            return false;
-        }
-
-        return true;
     }
 
 

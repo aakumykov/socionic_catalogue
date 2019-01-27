@@ -125,19 +125,14 @@ public class RegisterStep2_View extends BaseView implements iRegisterStep2.View 
 
     @Override
     public void showNameThrobber() {
-//        MyUtils.disable(userNameInput);
+        MyUtils.disable(userNameInput);
         MyUtils.show(nameThrobber);
     }
 
     @Override
     public void hideNameThrobber() {
-//        MyUtils.enable(userNameInput);
+        MyUtils.enable(userNameInput);
         MyUtils.hide(nameThrobber);
-    }
-
-    @Override
-    public void hideNameError() {
-        userNameInput.setError(null);
     }
 
     @Override
