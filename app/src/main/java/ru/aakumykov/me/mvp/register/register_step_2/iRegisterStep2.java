@@ -24,6 +24,8 @@ public interface iRegisterStep2 {
         void showNameThrobber();
         void hideNameThrobber();
 
+        void hideNameError();
+
         void goMainPage();
     }
 

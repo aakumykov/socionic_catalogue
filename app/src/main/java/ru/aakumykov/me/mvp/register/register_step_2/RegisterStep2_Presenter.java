@@ -100,6 +100,9 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     }
 
     private void step2_checkForm() {
+
+//        view.disableForm();
+
         checkPassword();
         checkUserName();
     }
@@ -165,6 +168,8 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     }
 
     private void checkUserName() {
+        view.hideNameError();
+
         String userName = view.getUserName();
 
         if (TextUtils.isEmpty(userName)) {

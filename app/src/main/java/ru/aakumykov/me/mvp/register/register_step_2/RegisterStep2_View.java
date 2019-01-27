@@ -136,6 +136,11 @@ public class RegisterStep2_View extends BaseView implements iRegisterStep2.View 
     }
 
     @Override
+    public void hideNameError() {
+        userNameInput.setError(null);
+    }
+
+    @Override
     public void goMainPage() {
         Intent intent = new Intent(this, CardsGrid_View.class);
         startActivity(intent);
