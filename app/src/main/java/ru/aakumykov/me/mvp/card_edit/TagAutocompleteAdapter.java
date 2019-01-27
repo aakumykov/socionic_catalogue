@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp.card;
+package ru.aakumykov.me.mvp.card_edit;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

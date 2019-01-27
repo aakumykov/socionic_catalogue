@@ -190,7 +190,7 @@ public class Card implements Parcelable {
         if (Arrays.asList(availableCardTypes).contains(type)) {
             this.type = type;
         } else {
-            throw new IllegalArgumentException("Unknown card type '"+type+"'");
+            throw new IllegalArgumentException("Unknown card_edit type '"+type+"'");
         }
     }
     public void setTitle(String title) {

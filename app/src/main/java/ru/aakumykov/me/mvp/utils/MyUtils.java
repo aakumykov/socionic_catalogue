@@ -81,14 +81,14 @@ public final class MyUtils {
     }
 
 //    public static Card snapshot2card(DataSnapshot dataSnapshot) throws IllegalArgumentException {
-//        Card card = dataSnapshot.getValue(Card.class);
-//        // TODO: протестировать с card == null
-//        if (null != card) {
-//            card.setKey(dataSnapshot.getKey());
+//        Card card_edit = dataSnapshot.getValue(Card.class);
+//        // TODO: протестировать с card_edit == null
+//        if (null != card_edit) {
+//            card_edit.setKey(dataSnapshot.getKey());
 //        } else {
 //            throw new IllegalArgumentException("Card object is null");
 //        }
-//        return card;
+//        return card_edit;
 //    }
 
 //    public static String getMimeType(String url) {

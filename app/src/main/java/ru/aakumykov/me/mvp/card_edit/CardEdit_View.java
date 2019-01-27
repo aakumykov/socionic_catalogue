@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp.card.edit;
+package ru.aakumykov.me.mvp.card_edit;
 
 import android.Manifest;
 import android.content.ContentResolver;
@@ -48,9 +48,6 @@ import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Config;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.card.CardEdit_Presenter;
-import ru.aakumykov.me.mvp.card.TagAutocompleteAdapter;
-import ru.aakumykov.me.mvp.card.iCardEdit;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
 import ru.aakumykov.me.mvp.models.Card;
@@ -251,7 +248,7 @@ public class CardEdit_View extends BaseView implements
                 break;
             default:
                 showErrorMsg(R.string.CARD_EDIT_error_editing_card);
-                Log.e(TAG, "Unknown card type '"+card.getType()+"'");
+                Log.e(TAG, "Unknown card_edit type '"+card.getType()+"'");
         }
     }
 

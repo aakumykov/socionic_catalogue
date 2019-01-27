@@ -1,4 +1,4 @@
-package ru.aakumykov.me.mvp.card;
+package ru.aakumykov.me.mvp.card_edit;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -54,17 +54,19 @@ public class CardEdit_Presenter implements
             return;
         }
 
-        authService.restoreCurrentUser(new iAuthSingleton.UserRestoreCallbacks() {
-            @Override
-            public void onUserRestoreSuccess() {
-                chooseStartVariant(intent);
-            }
+//        authService.restoreCurrentUser(new iAuthSingleton.UserRestoreCallbacks() {
+//            @Override
+//            public void onUserRestoreSuccess() {
+//                chooseStartVariant(intent);
+//            }
+//
+//            @Override
+//            public void onUserRestoreFail(String errorMsg) {
+//                view.showErrorMsg(errorMsg);
+//            }
+//        });
 
-            @Override
-            public void onUserRestoreFail(String errorMsg) {
-                view.showErrorMsg(errorMsg);
-            }
-        });
+        chooseStartVariant(intent);
     }
 
     private void chooseStartVariant(@Nullable Intent intent) {
@@ -260,7 +262,7 @@ public class CardEdit_Presenter implements
         if (Arrays.asList(availableCardTypes).contains(cardType)) {
             currentCard.setType(cardType);
         } else {
-            throw new IllegalArgumentException("Unknown card type '"+cardType+"'");
+            throw new IllegalArgumentException("Unknown card_edit type '"+cardType+"'");
         }
     }
 

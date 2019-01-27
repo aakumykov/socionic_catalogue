@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
+import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 
 public class ExternalDataReceiver extends BaseView {
 

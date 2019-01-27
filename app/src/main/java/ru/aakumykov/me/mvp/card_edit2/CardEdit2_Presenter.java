@@ -232,7 +232,7 @@ public class CardEdit2_Presenter implements
                 break;
 
             default:
-                throw new IllegalArgumentException("Unsupported card type '"+card.getType()+"'");
+                throw new IllegalArgumentException("Unsupported card_edit type '"+card.getType()+"'");
         }
     }
 

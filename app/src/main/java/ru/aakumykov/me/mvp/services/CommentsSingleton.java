@@ -263,7 +263,7 @@ public class CommentsSingleton implements iCommentsSingleton {
                     }
 
                 } else {
-                    String errorMsg = "Unknown error during rating update of card ("+commentId+").";
+                    String errorMsg = "Unknown error during rating update of card_edit ("+commentId+").";
                     if (null != databaseError) {
                         errorMsg = databaseError.getMessage();
                         databaseError.toException().printStackTrace();

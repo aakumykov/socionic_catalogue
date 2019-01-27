@@ -265,7 +265,7 @@ public class CardsSingleton implements
                     }
 
                 } else {
-                    String errorMsg = "Unknown error during rating update of card ("+cardId+").";
+                    String errorMsg = "Unknown error during rating update of card_edit ("+cardId+").";
                     if (null != databaseError) {
                         errorMsg = databaseError.getMessage();
                         databaseError.toException().printStackTrace();

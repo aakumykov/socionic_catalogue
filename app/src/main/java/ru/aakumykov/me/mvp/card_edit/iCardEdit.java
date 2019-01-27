@@ -1,18 +1,15 @@
-package ru.aakumykov.me.mvp.card;
+package ru.aakumykov.me.mvp.card_edit;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.widget.ImageView;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.mvp.iBaseView;
-import ru.aakumykov.me.mvp.interfaces.iTagsSingleton;
 import ru.aakumykov.me.mvp.models.Card;
 
 public interface iCardEdit {

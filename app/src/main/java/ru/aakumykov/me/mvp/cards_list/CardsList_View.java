@@ -28,7 +28,7 @@ import butterknife.OnClick;
 import ru.aakumykov.me.mvp.BaseView;
 import ru.aakumykov.me.mvp.Constants;
 import ru.aakumykov.me.mvp.R;
-import ru.aakumykov.me.mvp.card.edit.CardEdit_View;
+import ru.aakumykov.me.mvp.card_edit.CardEdit_View;
 import ru.aakumykov.me.mvp.card_show.CardShow_View;
 import ru.aakumykov.me.mvp.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.mvp.interfaces.iMyDialogs;
@@ -338,7 +338,7 @@ public class CardsList_View extends BaseView implements
             if (null != card) {
                 showToast(R.string.INFO_card_created);
                 addListItem(card);
-//                int position = cardsListAdapter.getPosition(card);
+//                int position = cardsListAdapter.getPosition(card_edit);
 //                int count = cardsListAdapter.getCount();
 //                int size = listView.getChildCount();
 //                listView.smoothScrollToPosition(position);
