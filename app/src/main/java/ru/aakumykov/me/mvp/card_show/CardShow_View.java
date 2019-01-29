@@ -119,6 +119,7 @@ public class CardShow_View extends BaseView implements
         // Собираю разметку из частей
         mainListView = findViewById(R.id.commentsListView);
         View headerView = getLayoutInflater().inflate(R.layout.card_show_header, null);
+//        View headerView = getLayoutInflater().inflate(R.layout.card_show_header2, null);
         View footerView = getLayoutInflater().inflate(R.layout.card_show_footer, null);
         mainListView.addHeaderView(headerView);
         mainListView.addFooterView(footerView);
