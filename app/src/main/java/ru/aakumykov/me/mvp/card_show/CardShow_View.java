@@ -117,7 +117,7 @@ public class CardShow_View extends BaseView implements
         ButterKnife.bind(this);
 
         // Собираю разметку из частей
-        mainListView = findViewById(R.id.mainListView);
+        mainListView = findViewById(R.id.commentsListView);
         View headerView = getLayoutInflater().inflate(R.layout.card_show_header, null);
         View footerView = getLayoutInflater().inflate(R.layout.card_show_footer, null);
         mainListView.addHeaderView(headerView);
@@ -526,8 +526,8 @@ public class CardShow_View extends BaseView implements
     public void appendComment(Comment comment) {
         commentsList.add(comment);
         commentsAdapter.notifyDataSetChanged();
-//        mainListView.setSelection(commentsList.size()-1);
-//        mainListView.setSelection(commentsAdapter.getCount() - 1);
+//        commentsListView.setSelection(commentsList.size()-1);
+//        commentsListView.setSelection(commentsAdapter.getCount() - 1);
     }
 
     @Override
@@ -743,6 +743,10 @@ public class CardShow_View extends BaseView implements
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
         authorView.setText( getString(R.string.CARD_SHOW_author, card.getUserName()));
+
+        MyUtils.show(titleView);
+        MyUtils.show(descriptionView);
+        MyUtils.show(authorView);
 
         displayTags(card.getTags());
         showCardRating(card.getRating());
