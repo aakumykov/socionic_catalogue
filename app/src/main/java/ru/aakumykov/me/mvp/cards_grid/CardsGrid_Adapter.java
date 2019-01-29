@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
@@ -52,7 +53,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CardsGrid_Adapter.ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(@NonNull final CardsGrid_Adapter.ViewHolder viewHolder, final int position) {
         Card card = cardList.get(position);
 
         // Слушатель нажатий
@@ -77,20 +78,22 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
         // Картинка
         if (card.isImageCard()) {
 
-            MyUtils.show(viewHolder.imageView);
             MyUtils.hide(viewHolder.quoteView);
+            MyUtils.show(viewHolder.imageThrobber);
 
             Picasso.get()
                     .load(card.getImageURL())
                     .into(viewHolder.imageView, new Callback() {
                         @Override
                         public void onSuccess() {
-
+                            MyUtils.hide(viewHolder.imageThrobber);
+                            MyUtils.show(viewHolder.imageView);
                         }
 
                         @Override
                         public void onError(Exception e) {
-
+                            MyUtils.hide(viewHolder.imageThrobber);
+                            MyUtils.show(viewHolder.imageErrorView);
                         }
                     });
         }
@@ -106,7 +109,9 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
         @BindView(R.id.cardView) CardView cardView;
         @BindView(R.id.titleView) TextView titleView;
         @BindView(R.id.quoteView) TextView quoteView;
+        @BindView(R.id.imageThrobber) ProgressBar imageThrobber;
         @BindView(R.id.imageView) ImageView imageView;
+        @BindView(R.id.imageErrorView) ImageView imageErrorView;
 
         ViewHolder(View view){
             super(view);

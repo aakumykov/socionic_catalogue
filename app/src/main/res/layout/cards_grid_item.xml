@@ -34,11 +34,24 @@
             android:textStyle="italic"
             android:visibility="gone" />
 
+        <ProgressBar
+            android:id="@+id/imageThrobber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="86dp"
             android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/imageErrorView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_image_broken" />
     </LinearLayout>
 
 </android.support.v7.widget.CardView>
