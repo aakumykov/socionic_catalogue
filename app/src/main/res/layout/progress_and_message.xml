@@ -10,7 +10,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center_horizontal"
+        android:paddingStart="8dp"
         android:paddingTop="8dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="8dp"
         android:textSize="@dimen/top_message_font_size"
         android:visibility="gone" />

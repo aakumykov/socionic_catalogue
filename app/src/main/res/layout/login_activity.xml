@@ -12,22 +12,10 @@
         tools:context=".login.Login_View">
 
 
-        <TextView
-            android:id="@+id/messageView"
+        <include
+            layout="@layout/progress_and_message"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textColor="@color/info"
-            android:textSize="18sp"
-            android:visibility="gone" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="gone" />
+            android:layout_height="wrap_content" />
 
         <EditText
             android:id="@+id/emailInput"
