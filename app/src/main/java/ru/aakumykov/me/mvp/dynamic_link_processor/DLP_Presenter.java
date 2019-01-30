@@ -30,6 +30,7 @@ public class DLP_Presenter implements iDLP.Presenter {
     private iAuthSingleton authService = AuthSingleton.getInstance();
     private iUsersSingleton usersService = UsersSingleton.getInstance();
 
+
     @Override
     public void processDynamicLink(Activity activity, @Nullable final Intent intent) {
 
@@ -77,6 +78,7 @@ public class DLP_Presenter implements iDLP.Presenter {
     public void unlinkView() {
         this.view = null;
     }
+
 
     // Внутренние методы
     private void chooseActionFromDeepLink(Uri deepLink, @NonNull Intent intent) {

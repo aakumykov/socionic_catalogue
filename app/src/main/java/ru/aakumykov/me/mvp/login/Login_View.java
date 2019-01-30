@@ -170,6 +170,7 @@ public class Login_View extends BaseView implements
                 showInfoMsg(R.string.LOGIN_password_recovery_email_sent);
                 break;
             case RESULT_CANCELED:
+                hideMsg();
                 break;
             default:
                 consoleMsg(TAG,"Unknown result code: "+resultCode);
