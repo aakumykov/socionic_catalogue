@@ -11,8 +11,8 @@
     <color name="white">#ffffff</color>
 
     <color name="undefined">#a4a4a4</color>
-    <color name="info">#92a4ff</color>
-    <color name="info_background">#EBEEFF</color>
+    <color name="info">#4CAF50</color>
+    <color name="info_background">#E3FFE4</color>
     <color name="warning">#FF7140</color>
     <color name="alert">#EC407A</color>
     <color name="error">#ff4081</color>

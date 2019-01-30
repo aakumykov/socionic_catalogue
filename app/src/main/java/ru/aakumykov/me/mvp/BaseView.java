@@ -3,6 +3,7 @@ package ru.aakumykov.me.mvp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -169,12 +170,14 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public void showInfoMsg(int messageId) {
-        showMsg(getResources().getString(messageId), getResources().getColor(R.color.info));
+        Resources resources = getResources();
+        showMsg(resources.getString(messageId), resources.getColor(R.color.info), resources.getColor(R.color.info_background));
     }
 
     @Override
     public void showInfoMsg(String message) {
-        showMsg(message, getResources().getColor(R.color.info));
+        Resources resources = getResources();
+        showMsg(message, resources.getColor(R.color.info), resources.getColor(R.color.info_background));
     }
 
     @Override
@@ -232,6 +235,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         } else {
             Log.w(TAG, "messageView not found");
         }
+    }
+
+    @Override
+    public void consoleMsg(String tag, String msg) {
+        Log.d(tag, msg);
     }
 
 

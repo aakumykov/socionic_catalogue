@@ -3,6 +3,7 @@ package ru.aakumykov.me.mvp.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -27,6 +28,7 @@ public class Login_View extends BaseView implements
     @BindView(R.id.resetPasswordButton) TextView resetPasswordButton;
     @BindView(R.id.registerButton) Button registerButton;
 
+    public static final String TAG = "Login_View";
     private iLogin.Presenter presenter;
 
 
@@ -54,6 +56,19 @@ public class Login_View extends BaseView implements
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case Constants.CODE_RESET_PASSWORD:
+                afterResetPasswordRequest(resultCode, data);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -147,4 +162,18 @@ public class Login_View extends BaseView implements
         startActivity(intent);
     }
 
+
+    // Внтуренния методы
+    private void afterResetPasswordRequest(int resultCode, Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                showInfoMsg(R.string.LOGIN_password_recovery_email_sent);
+                break;
+            case RESULT_CANCELED:
+                break;
+            default:
+                consoleMsg(TAG,"Unknown result code: "+resultCode);
+                break;
+        }
+    }
 }

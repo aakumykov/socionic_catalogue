@@ -306,4 +306,5 @@
     <string name="REGISTER1_you_are_already_authorized">You are already authorized</string>
     <string name="REGISTER1_email_already_used">Email address already used</string>
     <string name="REGISTER1_error_check_email">Error checking email address</string>
+    <string name="LOGIN_password_recovery_email_sent">Password recovery email is sent to you</string>
 </resources>

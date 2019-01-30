@@ -38,6 +38,8 @@ public interface iBaseView {
 
     void hideMsg();
 
+    void consoleMsg(String tag, String msg);
+
     void setPageTitle(int titleId);
     void setPageTitle(String title);
     void activateUpButton();
