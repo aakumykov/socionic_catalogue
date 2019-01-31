@@ -173,7 +173,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:173172731051:android:b102c7c49b974cad",
         "android_client_info": {
-          "package_name": "ru.aakumykov.me.mvp"
+          "package_name": "ru.aakumykov.me.sociocat"
         }
       },
       "oauth_client": [
@@ -181,7 +181,7 @@
           "client_id": "173172731051-st18dkmpiqh6grdgmarij9k8ncr8s3cf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "ru.aakumykov.me.mvp",
+            "package_name": "ru.aakumykov.me.sociocat",
             "certificate_hash": "401931231ca85c896d366cbe7e69474a671edd13"
           }
         },
