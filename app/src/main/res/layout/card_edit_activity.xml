@@ -77,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/green_swipe"
+                android:background="@android:color/holo_purple"
                 app:srcCompat="@drawable/ic_card_edit_image" />
 
             <ImageView
@@ -85,7 +85,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/info"
                 app:srcCompat="@drawable/ic_card_edit_video" />
 
             <ImageView
