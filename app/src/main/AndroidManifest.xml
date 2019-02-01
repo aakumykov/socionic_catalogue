@@ -28,8 +28,11 @@
         <activity
             android:name=".tags.show.TagShow_View"
             android:parentActivityName=".tags.list.TagsList_View" />
+
         <activity android:name=".card_edit.CardEdit_View" />
+
         <activity android:name=".card_edit2.CardEdit2_View" />
+
         <activity
             android:name=".external_data_receiver.ExternalDataReceiver"
             android:noHistory="true">

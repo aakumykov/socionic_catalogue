@@ -49,7 +49,7 @@ public class ExternalDataReceiver extends BaseView {
 
         // Устанавливаю флаг NO_HISTORY для страницы редактирования
         if (Intent.ACTION_SEND.equals(action)) {
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         }
 
         // Пересылаю Intent другой странице
