@@ -36,4 +36,8 @@
     <color name="rating_down">#f7b8b8</color>
     <color name="rating_neutral">@color/light_grey</color>
 
+    <color name="text_mode_switch">#00ddff</color>
+    <color name="image_mode_switch">#99cc00</color>
+    <color name="video_mode_switch">#C87DFF</color>
+    <color name="audio_mode_switch">#FDB4B4</color>
 </resources>

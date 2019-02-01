@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/blue_swipe"
+                android:background="@color/text_mode_switch"
                 app:srcCompat="@drawable/ic_card_edit_text" />
 
             <ImageView
@@ -77,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@android:color/holo_purple"
+                android:background="@color/image_mode_switch"
                 app:srcCompat="@drawable/ic_card_edit_image" />
 
             <ImageView
@@ -85,6 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@color/video_mode_switch"
                 app:srcCompat="@drawable/ic_card_edit_video" />
 
             <ImageView
@@ -92,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/red_swipe"
+                android:background="@color/audio_mode_switch"
                 app:srcCompat="@drawable/ic_card_edit_audio" />
         </LinearLayout>
 
