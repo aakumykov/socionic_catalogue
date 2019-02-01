@@ -73,7 +73,7 @@ public class CardShow_View extends BaseView implements
 
     private TextView titleView;
     private TextView quoteView;
-    private ConstraintLayout imageHolder;
+//    private ConstraintLayout imageHolder;
     private ProgressBar imageProgressBar;
     private ImageView imageView;
     private TextView descriptionView;
@@ -129,7 +129,7 @@ public class CardShow_View extends BaseView implements
         titleView = findViewById(R.id.titleView);
         quoteView = findViewById(R.id.quoteView);
 
-        imageHolder = findViewById(R.id.imageHolder);
+//        imageHolder = findViewById(R.id.imageHolder);
         imageProgressBar = findViewById(R.id.imageProgressBar);
         imageView = findViewById(R.id.imageView);
 
@@ -470,7 +470,7 @@ public class CardShow_View extends BaseView implements
     public void displayImage(Uri imageURI) {
         Log.d(TAG, "displayImage("+imageURI+")");
 
-        MyUtils.show(imageHolder);
+//        MyUtils.show(imageHolder);
         MyUtils.show(imageProgressBar);
         MyUtils.hide(imageView);
 
@@ -692,7 +692,7 @@ public class CardShow_View extends BaseView implements
     private void displayImageCard(Card card) {
         Log.d(TAG, "displayImageCard(), "+card);
 
-        MyUtils.show(imageHolder);
+//        MyUtils.show(imageHolder);
         displayCommonCardParts(card);
 
         try {
