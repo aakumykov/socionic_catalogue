@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat.TEMPLATES.email_input;
 
-import ru.aakumykov.me.sociocat.iBaseView;
+import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
 public interface iEmailInput {
 

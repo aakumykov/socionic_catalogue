@@ -118,6 +118,8 @@ public class CardsGrid_View extends BaseView implements
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
 
+        menuInflater.inflate(R.menu.new_cards, menu);
+
         if (gridMode) menuInflater.inflate(R.menu.list_view, menu);
         else  menuInflater.inflate(R.menu.grid_view, menu);
 

@@ -3,9 +3,7 @@ package ru.aakumykov.me.sociocat.login;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.iBaseView;
-import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
+import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
 public interface iLogin {
 

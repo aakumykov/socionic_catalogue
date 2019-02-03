@@ -68,5 +68,8 @@ public final class Constants {
     public final static int PASSWORD_MIN_LENGTH = 6;
 
     public final static String SHARED_PREFERENCES_EMAIL = "SHARED_PREFERENCES_EMAIL";
+    public final static String SHARED_PREFERENCES_LOGIN = "SHARED_PREFERENCES_LOGIN";
+
+    public final static String KEY_LAST_LOGIN = "KEY_LAST_LOGIN";
 
 }

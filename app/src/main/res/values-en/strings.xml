@@ -309,4 +309,5 @@
     <string name="LOGIN_password_recovery_email_sent">Password recovery email is sent to you</string>
     <string name="CARD_SHOW_created">Created at %1$s</string>
     <string name="CARD_SHOW_edited">Edited at %1$s</string>
+    <string name="MENU_new_cards">New cards</string>
 </resources>

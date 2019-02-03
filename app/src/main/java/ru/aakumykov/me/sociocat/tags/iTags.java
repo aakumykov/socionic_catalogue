@@ -4,9 +4,7 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.iBaseView;
-import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
-import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Tag;
 
 

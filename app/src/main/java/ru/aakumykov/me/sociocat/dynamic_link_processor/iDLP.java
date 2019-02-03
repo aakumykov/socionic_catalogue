@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.iBaseView;
+import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
 interface iDLP {
 

@@ -18,10 +18,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iAuthStateListener;
+import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.services.AuthSingleton;
@@ -76,6 +81,16 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 onUserLogout();
             }
         });
+
+        // Сохраняю время последнего запуска
+        SharedPreferences sharedPreferences = getSharedPrefs(Constants.SHARED_PREFERENCES_LOGIN);
+        if (sharedPreferences.contains(Constants.KEY_LAST_LOGIN)) {
+            long lastLoginTime = sharedPreferences.getLong(Constants.KEY_LAST_LOGIN, 0L);
+            if (0L != lastLoginTime) Log.d(TAG, "lastLoginTime: "+lastLoginTime);
+        }
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong(Constants.KEY_LAST_LOGIN, new Date().getTime());
+        editor.apply();
     }
 
 

@@ -1,13 +1,11 @@
 package ru.aakumykov.me.sociocat.card_edit2;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.HashMap;
 
-import ru.aakumykov.me.sociocat.iBaseView;
-import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
+import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public interface iCardEdit2 {
