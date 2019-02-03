@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -141,6 +142,10 @@ public class CardsGrid_View extends BaseView implements
                 activateGridView();
                 break;
 
+            case R.id.actionNewCards:
+                showNewCards();
+                break;
+
             default:
                 super.onOptionsItemSelected(item);
         }
@@ -237,5 +242,12 @@ public class CardsGrid_View extends BaseView implements
         dataAdapter.notifyDataSetChanged();
 
         invalidateOptionsMenu();
+    }
+
+    private void showNewCards() {
+        SharedPreferences sharedPreferences = getSharedPrefs(Constants.SHARED_PREFERENCES_LOGIN);
+        long lastLoginTime = (sharedPreferences.contains(Constants.KEY_LAST_LOGIN))
+                ? sharedPreferences.getLong(Constants.KEY_LAST_LOGIN, 0L) : 0L;
+        presenter.loadNewCards(lastLoginTime);
     }
 }

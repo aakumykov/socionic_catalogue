@@ -18,6 +18,7 @@ public interface iCardsGrid {
 
     interface Presenter {
         void loadCards();
+        void loadNewCards(long newerThanTime);
 
         void linkView(iCardsGrid.View view);
         void unlinkView();

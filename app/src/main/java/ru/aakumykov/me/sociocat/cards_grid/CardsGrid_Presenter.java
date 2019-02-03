@@ -41,4 +41,30 @@ public class CardsGrid_Presenter implements
             }
         });
     }
+
+    @Override
+    public void loadNewCards(long newerThanTime) {
+
+        view.showProgressMessage(R.string.CARDS_GRID_loading_new_cards);
+
+        cardsService.loadNewCards(newerThanTime, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                if (null != view) {
+                    if (0 == list.size()) {
+                        view.hideProgressBar();
+                        view.showInfoMsg("С вашего прошлого посещения новых карточек нет");
+                    } else {
+                        view.displayList(list);
+                    }
+                }
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                if (null != view)
+                    view.showErrorMsg(errorMessage);
+            }
+        });
+    }
 }

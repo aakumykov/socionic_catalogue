@@ -314,4 +314,5 @@
     <string name="CARD_SHOW_created">Создано %1$s</string>
     <string name="CARD_SHOW_edited">Изменено %1$s</string>
     <string name="MENU_new_cards">Новые карточки</string>
+    <string name="CARDS_GRID_loading_new_cards">Загрузка новых карточек</string>
 </resources>
