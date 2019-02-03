@@ -8,10 +8,12 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.Enums;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
@@ -44,6 +46,8 @@ public class CardEdit_Presenter implements
     private HashMap<String,Boolean> newTags = null;
     private String imageType;
     private boolean goForwardMode = false;
+    private Enums.CardEditMode editMode;
+
 
     // Интерфейсные методы
     @Override
@@ -246,6 +250,20 @@ public class CardEdit_Presenter implements
             }
         }
 
+        // Время создания/правки
+        Long currentTime = new Date().getTime();
+        switch (editMode) {
+            case CREATE:
+                currentCard.setCTime(currentTime);
+                currentCard.setMTime(currentTime);
+                break;
+            case EDIT:
+                currentCard.setMTime(currentTime);
+                break;
+            default:
+                throw new Exception("Unknown editMode '"+editMode+"'");
+        }
+
         // Сохранение собственно карточки
         view.showInfoMsg(R.string.CARD_EDIT_saving_card);
         cardsService.saveCard(currentCard, this);
@@ -403,6 +421,8 @@ public class CardEdit_Presenter implements
     // Внутренние методы
     private void prepareCardCreation(boolean fromScratch) {
 
+        editMode = Enums.CardEditMode.CREATE;
+
         view.setPageTitle(R.string.CARD_EDIT_card_creation_title);
 
         if (fromScratch)
@@ -416,6 +436,8 @@ public class CardEdit_Presenter implements
     }
 
     private void prepareCardEdition(Intent intent) {
+
+        editMode = Enums.CardEditMode.EDIT;
 
         view.showProgressBar();
         view.setPageTitle(R.string.CARD_EDIT_card_edition_title);

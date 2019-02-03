@@ -307,4 +307,6 @@
     <string name="REGISTER1_email_already_used">Email address already used</string>
     <string name="REGISTER1_error_check_email">Error checking email address</string>
     <string name="LOGIN_password_recovery_email_sent">Password recovery email is sent to you</string>
+    <string name="CARD_SHOW_created">Created at %1$s</string>
+    <string name="CARD_SHOW_edited">Edited at %1$s</string>
 </resources>
