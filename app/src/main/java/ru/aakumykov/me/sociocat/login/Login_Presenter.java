@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
@@ -19,6 +20,8 @@ public class Login_Presenter implements
     private iLogin.View view;
     private iAuthSingleton authService = AuthSingleton.getInstance();
     private iUsersSingleton usersService = UsersSingleton.getInstance();
+    private String intentAction;
+
 
     // Обязательные методы
     @Override
@@ -32,6 +35,25 @@ public class Login_Presenter implements
 
 
     // Интерфейсные методы
+    @Override
+    public void processInputIntent(@Nullable Intent intent) {
+
+        if (null != intent) {
+
+            String action = intent.getAction() + "";
+            this.intentAction = action;
+
+            switch (action) {
+                case Constants.ACTION_TRY_NEW_PASSWORD:
+                    view.showInfoMsg(R.string.LOGIN_try_new_password);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+
     @Override
     public void doLogin(String email, String password) {
         try {
@@ -51,20 +73,6 @@ public class Login_Presenter implements
         view.finishLogin(true);
     }
 
-    @Override
-    public void processInputIntent(@Nullable Intent intent) {
-        if (null != intent) {
-            String action = intent.getAction() + "";
-            switch (action) {
-                case Constants.ACTION_TRY_NEW_PASSWORD:
-                    view.showInfoMsg(R.string.LOGIN_try_new_password);
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
 
     // Методы обратного вызова
     @Override
@@ -74,13 +82,19 @@ public class Login_Presenter implements
             @Override
             public void onUserReadSuccess(User user) {
 
-                if (user.isEmailVerified()) {
-                    view.hideProgressBar();
-                    view.showToast(R.string.LOGIN_login_success);
-                    view.finishLogin(false);
-                } else {
+                if (!user.isEmailVerified()) {
                     view.notifyToConfirmEmail(userId);
+                    return;
                 }
+
+                if (intentAction.equals(Constants.ACTION_CREATE)) {
+                    view.goCreateCard();
+                    return;
+                }
+
+                view.hideProgressBar();
+                view.showToast(R.string.LOGIN_login_success);
+                view.finishLogin(false);
             }
 
             @Override
@@ -96,5 +110,12 @@ public class Login_Presenter implements
         view.hideProgressBar();
         view.enableForm();
         view.showErrorMsg(errorMsg);
+    }
+
+    // Внутренние методы
+    private void goCardCreation() {
+        Intent intent = new Intent(view.getAppContext(), CardEdit_View.class);
+        intent.setAction(Constants.ACTION_CREATE);
+        view.startMyActivity(intent);
     }
 }

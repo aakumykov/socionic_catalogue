@@ -67,7 +67,7 @@ public class MyDialogs {
                 title,
                 message,
                 R.string.DIALOG_do_login,
-                R.string.cancel,
+                R.string.DIALOG_do_not_login,
                 null,
                 R.drawable.ic_login, // TODO: не видать
                 null,

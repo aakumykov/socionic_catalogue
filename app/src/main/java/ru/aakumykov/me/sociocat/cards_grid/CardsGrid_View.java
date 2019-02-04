@@ -186,31 +186,38 @@ public class CardsGrid_View extends BaseView implements
     }
 
 
-    // События
+    // Нажатия
     @OnClick(R.id.floatingActionButton)
     void fabClicked() {
-        if (auth().isUserLoggedIn())
+        if (auth().isUserLoggedIn()) {
             goCreateCard();
-        else
-            MyDialogs.loginRequiredDialog(this, new iMyDialogs.StandardCallbacks() {
-                @Override public void onCancelInDialog() {
+        } else {
+            MyDialogs.loginRequiredDialog(
+                    this,
+                    R.string.CARDS_GRID_authorization,
+                    R.string.CARDS_GRID_you_must_login_to_add_card,
+                    new iMyDialogs.StandardCallbacks()
+                    {
+                        @Override public void onCancelInDialog() {
 
-                }
+                        }
 
-                @Override public void onNoInDialog() {
+                        @Override public void onNoInDialog() {
 
-                }
+                        }
 
-                @Override public boolean onCheckInDialog() {
-                    return true; // TODO: попробовать false
-                }
+                        @Override public boolean onCheckInDialog() {
+                            return true; // TODO: попробовать false
+                        }
 
-                @Override public void onYesInDialog() {
-                    Intent intent = new Intent(CardsGrid_View.this, Login_View.class);
-                    intent.setAction(Constants.ACTION_CREATE);
-                    startActivity(intent);
-                }
-            });
+                        @Override public void onYesInDialog() {
+                            Intent intent = new Intent(CardsGrid_View.this, Login_View.class);
+                            intent.setAction(Constants.ACTION_CREATE);
+                            startActivity(intent);
+                        }
+                    }
+            );
+        }
     }
 
 
