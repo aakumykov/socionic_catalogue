@@ -277,7 +277,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     private void showToastReal(Context context, String message, int length) {
         Toast toast = Toast.makeText(context, message, length);
-        toast.setGravity(Gravity.CENTER, 0, 0);
+//        toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
 
