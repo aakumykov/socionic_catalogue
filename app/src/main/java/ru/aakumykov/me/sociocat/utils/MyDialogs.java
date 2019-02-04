@@ -17,6 +17,8 @@ import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
 public class MyDialogs {
 
+    public static final String TAG = "MyDialogs";
+
     // Диалог удаления карточки
     public static void cardDeleteDialog(Activity activity, String message, iMyDialogs.Delete callbacks) {
 
@@ -37,14 +39,35 @@ public class MyDialogs {
 
     // Диалог необходимости входа
     public static void loginRequiredDialog(Activity activity, iMyDialogs.StandardCallbacks callbacks) {
-        String title = activity.getString(R.string.DIALOG_login_required);
+        loginRequiredDialog(activity, R.string.DIALOG_login_required, null, callbacks);
+    }
+
+    public static <T> void loginRequiredDialog(Activity activity, T titleId, T messageId, iMyDialogs.StandardCallbacks callbacks) {
+
+        String title = null;
+        if (titleId instanceof Integer) {
+            title =activity.getString((Integer)titleId);
+        } else if (titleId instanceof String) {
+            title = (String)titleId;
+        } else {
+            Log.e(TAG, "Unknown type of 'titleId' argument: "+titleId);
+        }
+
+        String message = null;
+        if (messageId instanceof Integer) {
+            message =activity.getString((Integer)messageId);
+        } else if (messageId instanceof String) {
+            message = (String)messageId;
+        } else {
+            Log.e(TAG, "Unknown type of 'messageId' argument: "+messageId);
+        }
 
         AlertDialog alertDialog = basicDialog(
                 activity,
                 title,
-                null,
+                message,
                 R.string.DIALOG_do_login,
-                R.string.DIALOG_do_not_login,
+                R.string.cancel,
                 null,
                 R.drawable.ic_login, // TODO: не видать
                 null,

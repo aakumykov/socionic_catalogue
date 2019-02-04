@@ -26,7 +26,10 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
+import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
+import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsGrid_View extends BaseView implements
@@ -107,12 +110,12 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public void onUserLogin() {
-        MyUtils.show(floatingActionButton);
+        //MyUtils.show(floatingActionButton);
     }
 
     @Override
     public void onUserLogout() {
-        MyUtils.hide(floatingActionButton);
+        //MyUtils.hide(floatingActionButton);
     }
 
     @Override
@@ -186,7 +189,28 @@ public class CardsGrid_View extends BaseView implements
     // События
     @OnClick(R.id.floatingActionButton)
     void fabClicked() {
-        goCreateCard();
+        if (auth().isUserLoggedIn())
+            goCreateCard();
+        else
+            MyDialogs.loginRequiredDialog(this, new iMyDialogs.StandardCallbacks() {
+                @Override public void onCancelInDialog() {
+
+                }
+
+                @Override public void onNoInDialog() {
+
+                }
+
+                @Override public boolean onCheckInDialog() {
+                    return true; // TODO: попробовать false
+                }
+
+                @Override public void onYesInDialog() {
+                    Intent intent = new Intent(CardsGrid_View.this, Login_View.class);
+                    intent.setAction(Constants.ACTION_CREATE);
+                    startActivity(intent);
+                }
+            });
     }
 
 
