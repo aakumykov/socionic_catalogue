@@ -5,10 +5,7 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.iBaseView;
-import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iDialogCallbacks;
+import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public interface iCardsList {

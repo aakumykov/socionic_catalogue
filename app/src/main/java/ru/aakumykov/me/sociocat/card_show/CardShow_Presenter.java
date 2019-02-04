@@ -46,7 +46,10 @@ public class CardShow_Presenter implements
         String cardKey = intent.getStringExtra(Constants.CARD_KEY);
         if (null == cardKey) throw new Exception("Intent has no CARD_KEY");
 
-        view.showProgressBar();
+        if (null != view) {
+            view.showProgressBar();
+        }
+
         cardsService.loadCard(cardKey, this);
     }
 
@@ -62,7 +65,9 @@ public class CardShow_Presenter implements
     public void rateCardUp() {
         if (authService.isUserLoggedIn()) {
 
-            view.showCardRatingThrobber();
+            if (null != view) {
+                view.showCardRatingThrobber();
+            }
 
             cardsService.rateUp(currentCard.getKey(), authService.currentUserId(), new iCardsSingleton.RatingCallbacks() {
                 @Override
@@ -77,7 +82,9 @@ public class CardShow_Presenter implements
 
                 @Override
                 public void onRateFail(String errorMsg) {
-                    view.onCardRateError();
+                    if (null != view) {
+                        view.onCardRateError();
+                    }
                     Log.e(TAG, errorMsg);
                 }
             });
@@ -88,7 +95,9 @@ public class CardShow_Presenter implements
     public void rateCardDown() {
         if (authService.isUserLoggedIn()) {
 
-            view.showCardRatingThrobber();
+            if (null != view) {
+                view.showCardRatingThrobber();
+            }
 
             cardsService.rateDown(currentCard.getKey(), authService.currentUserId(), new iCardsSingleton.RatingCallbacks() {
                 @Override
@@ -103,7 +112,9 @@ public class CardShow_Presenter implements
 
                 @Override
                 public void onRateFail(String errorMsg) {
-                    view.onCardRateError();
+                    if (null != view) {
+                        view.onCardRateError();
+                    }
                     Log.e(TAG, errorMsg);
                 }
             });
@@ -116,7 +127,9 @@ public class CardShow_Presenter implements
     public void postComment(String text) {
 
         if (!authService.isUserLoggedIn()) {
-            view.showToast(R.string.INFO_you_must_be_logged_in);
+            if (null != view) {
+                view.showToast(R.string.INFO_you_must_be_logged_in);
+            }
             return;
         }
 
@@ -157,14 +170,18 @@ public class CardShow_Presenter implements
 
         // TODO: эта проверка без проверки на залогиненность...
         if (!authService.currentUserId().equals(comment.getUserId())) {
-            view.showErrorMsg(R.string.action_denied);
+            if (null != view) {
+                view.showErrorMsg(R.string.action_denied);
+            }
             return;
         }
 
         try {
             commentsService.deleteComment(comment, this);
         } catch (Exception e) {
-            view.showErrorMsg(R.string.COMMENT_delete_error);
+            if (null != view) {
+                view.showErrorMsg(R.string.COMMENT_delete_error);
+            }
             e.printStackTrace();
         }
     }
@@ -179,12 +196,16 @@ public class CardShow_Presenter implements
             return;
 
         if (!authService.currentUserId().equals(comment.getUserId())) {
-            view.showErrorMsg(R.string.action_denied);
+            if (null != view) {
+                view.showErrorMsg(R.string.action_denied);
+            }
         }
 
         if (!TextUtils.isEmpty(comment.getText())) {
             try {
-                view.showCommentInProgress();
+                if (null != view) {
+                    view.showCommentInProgress();
+                }
                 commentsService.updateComment(comment, new iCommentsSingleton.CreateCallbacks() {
                     @Override
                     public void onCommentSaveSuccess(Comment comment) {
@@ -198,7 +219,9 @@ public class CardShow_Presenter implements
                 });
 
             } catch (Exception e) {
-                view.showErrorMsg(R.string.COMMENT_save_error);
+                if (null != view) {
+                    view.showErrorMsg(R.string.COMMENT_save_error);
+                }
                 e.printStackTrace();
             }
         }
@@ -229,22 +252,28 @@ public class CardShow_Presenter implements
 
     @Override
     public void cardDeleteConfirmed(Card card) {
-        view.showProgressBar();
-        view.showInfoMsg(R.string.deleting_card);
+        if (null != view) {
+            view.showProgressBar();
+            view.showInfoMsg(R.string.deleting_card);
+        }
 
         if (!authService.isUserLoggedIn()) return;
 
         // TODO: "или Админ"
         if (!authService.currentUserId().equals(card.getUserId())) {
-            view.showErrorMsg(R.string.action_denied);
+            if (null != view) {
+                view.showErrorMsg(R.string.action_denied);
+            }
             return;
         }
 
         try {
             cardsService.deleteCard(currentCard, this);
         } catch (Exception e) {
-            view.hideProgressBar();
-            view.showErrorMsg(R.string.CARD_SHOW_error_deleting_card);
+            if (null != view) {
+                view.hideProgressBar();
+                view.showErrorMsg(R.string.CARD_SHOW_error_deleting_card);
+            }
             e.printStackTrace();
         }
     }
@@ -253,13 +282,15 @@ public class CardShow_Presenter implements
     // Link / Unlink
     @Override
     public void linkView(iCardShow.View view) {
-        Log.d(TAG, "linkView(), view: "+view);
-        this.view = view;
+        if (null != view) {
+            this.view = view;
+        }
     }
     @Override
     public void unlinkView() {
-        Log.d(TAG, "unlinkView()");
-        this.view = null;
+        if (null != view) {
+            this.view = null;
+        }
     }
 
 
@@ -267,7 +298,10 @@ public class CardShow_Presenter implements
     @Override
     public void onCardLoadSuccess(Card card) {
         this.currentCard = card;
-        view.displayCard(card);
+
+        if (null != view) {
+            view.displayCard(card);
+        }
 
         loadComments(card);
     }
@@ -275,7 +309,9 @@ public class CardShow_Presenter implements
     @Override
     public void onCardLoadFailed(String msg) {
         this.currentCard = null;
-        view.showErrorMsg(R.string.card_load_error);
+        if (null != view) {
+            view.showErrorMsg(R.string.card_load_error);
+        }
     }
 
     @Override
@@ -293,53 +329,69 @@ public class CardShow_Presenter implements
             e.printStackTrace();
         }
 
-        view.closePage();
+        if (null != view) {
+            view.closePage();
+        }
     }
 
     @Override
     public void onCardDeleteError(String msg) {
-        view.hideProgressBar();
-        view.showErrorMsg(R.string.CARD_SHOW_error_deleting_card);
+        if (null != view) {
+            view.hideProgressBar();
+            view.showErrorMsg(R.string.CARD_SHOW_error_deleting_card);
+        }
     }
 
 
     @Override
     public void onCommentSaveSuccess(Comment comment) {
-        view.showToast( R.string.COMMENT_saved);
-        view.hideCommentInProgress();
-        view.resetCommentForm();
-        view.appendComment(comment);
+        if (null != view) {
+            view.showToast(R.string.COMMENT_saved);
+            view.hideCommentInProgress();
+            view.resetCommentForm();
+            view.appendComment(comment);
+        }
         cardsService.updateCommentsCounter(comment.getCardId(), 1);
     }
 
     @Override
     public void onCommentSaveError(String errorMsg) {
-        view.hideCommentInProgress();
-        view.enableCommentForm();
-        view.showErrorMsg(errorMsg);
+        if (null != view) {
+            view.hideCommentInProgress();
+            view.enableCommentForm();
+            view.showErrorMsg(errorMsg);
+        }
     }
 
     @Override
     public void onCommentsLoadSuccess(List<Comment> list) {
-        view.hideCommentsThrobber();
-        view.displayComments(list);
+        if (null != view) {
+            view.hideCommentsThrobber();
+            view.displayComments(list);
+        }
     }
 
     @Override
     public void onCommentsLoadError(String errorMessage) {
-        view.showErrorMsg(R.string.CARD_SHOW_error_loading_comments);
+        if (null != view) {
+            view.showErrorMsg(R.string.CARD_SHOW_error_loading_comments);
+        }
     }
 
     @Override
     public void onDeleteSuccess(Comment comment) {
         cardsService.updateCommentsCounter(currentCard.getKey(), -1);
         // TODO: а можно сделать список "живым"...
-        view.removeComment(comment);
+        if (null != view) {
+            view.removeComment(comment);
+        }
     }
 
     @Override
     public void onDeleteError(String msg) {
-        view.showErrorMsg(R.string.COMMENT_delete_error, msg);
+        if (null != view) {
+            view.showErrorMsg(R.string.COMMENT_delete_error, msg);
+        }
     }
 
 

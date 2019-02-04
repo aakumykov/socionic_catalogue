@@ -3,7 +3,7 @@ package ru.aakumykov.me.sociocat.register.register_step_2;
 
 import android.content.Intent;
 
-import ru.aakumykov.me.sociocat.iBaseView;
+import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
 public interface iRegisterStep2 {
 

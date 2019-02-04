@@ -4,13 +4,11 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.widget.ImageView;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.iBaseView;
+import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
 

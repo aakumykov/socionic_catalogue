@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat.template_active_view;
 
-import ru.aakumykov.me.sociocat.iBaseView;
+import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 

@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -25,7 +26,10 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
+import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
+import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsGrid_View extends BaseView implements
@@ -106,17 +110,19 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public void onUserLogin() {
-        MyUtils.show(floatingActionButton);
+        //MyUtils.show(floatingActionButton);
     }
 
     @Override
     public void onUserLogout() {
-        MyUtils.hide(floatingActionButton);
+        //MyUtils.hide(floatingActionButton);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
+
+        menuInflater.inflate(R.menu.new_cards, menu);
 
         if (gridMode) menuInflater.inflate(R.menu.list_view, menu);
         else  menuInflater.inflate(R.menu.grid_view, menu);
@@ -137,6 +143,10 @@ public class CardsGrid_View extends BaseView implements
 
             case R.id.actionGridView:
                 activateGridView();
+                break;
+
+            case R.id.actionNewCards:
+                showNewCards();
                 break;
 
             default:
@@ -176,10 +186,38 @@ public class CardsGrid_View extends BaseView implements
     }
 
 
-    // События
+    // Нажатия
     @OnClick(R.id.floatingActionButton)
     void fabClicked() {
-        goCreateCard();
+        if (auth().isUserLoggedIn()) {
+            goCreateCard();
+        } else {
+            MyDialogs.loginRequiredDialog(
+                    this,
+                    R.string.CARDS_GRID_authorization,
+                    R.string.CARDS_GRID_you_must_login_to_add_card,
+                    new iMyDialogs.StandardCallbacks()
+                    {
+                        @Override public void onCancelInDialog() {
+
+                        }
+
+                        @Override public void onNoInDialog() {
+
+                        }
+
+                        @Override public boolean onCheckInDialog() {
+                            return true; // TODO: попробовать false
+                        }
+
+                        @Override public void onYesInDialog() {
+                            Intent intent = new Intent(CardsGrid_View.this, Login_View.class);
+                            intent.setAction(Constants.ACTION_CREATE);
+                            startActivity(intent);
+                        }
+                    }
+            );
+        }
     }
 
 
@@ -235,5 +273,12 @@ public class CardsGrid_View extends BaseView implements
         dataAdapter.notifyDataSetChanged();
 
         invalidateOptionsMenu();
+    }
+
+    private void showNewCards() {
+        SharedPreferences sharedPreferences = getSharedPrefs(Constants.SHARED_PREFERENCES_LOGIN);
+        long lastLoginTime = (sharedPreferences.contains(Constants.KEY_LAST_LOGIN))
+                ? sharedPreferences.getLong(Constants.KEY_LAST_LOGIN, 0L) : 0L;
+        presenter.loadNewCards(lastLoginTime);
     }
 }

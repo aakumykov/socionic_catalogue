@@ -10,6 +10,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.PopupMenu;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -79,6 +80,8 @@ public class CardShow_View extends BaseView implements
     private TextView descriptionView;
 
     private TextView authorView;
+    private TextView cTimeView;
+    private TextView mTimeView;
 
     private TagContainerLayout tagsContainer;
     private TextView cardRatingView;
@@ -137,7 +140,10 @@ public class CardShow_View extends BaseView implements
         videoPlayerHolder = findViewById(R.id.videoPlayerHolder);
 
         descriptionView = findViewById(R.id.descriptionView);
+
         authorView = findViewById(R.id.authorView);
+        cTimeView = findViewById(R.id.cTimeView);
+        mTimeView = findViewById(R.id.mTimeView);
 
         tagsContainer = findViewById(R.id.tagsContainer);
 
@@ -744,6 +750,24 @@ public class CardShow_View extends BaseView implements
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
         authorView.setText( getString(R.string.CARD_SHOW_author, card.getUserName()));
+
+        Long currentTime = System.currentTimeMillis();
+        Long cTime = card.getCTime();
+        Long mTime = card.getMTime();
+
+        if (0L != cTime) {
+            CharSequence createTime = DateUtils.getRelativeTimeSpanString(cTime, currentTime, DateUtils.SECOND_IN_MILLIS);
+            String fullCreateTime = getString(R.string.CARD_SHOW_created, createTime);
+            cTimeView.setText(fullCreateTime);
+            MyUtils.show(cTimeView);
+        }
+
+        if (0L != mTime && !cTime.equals(mTime)) {
+            CharSequence editTime = DateUtils.getRelativeTimeSpanString(mTime, currentTime, DateUtils.SECOND_IN_MILLIS);
+            String fullEditTime = getString(R.string.CARD_SHOW_edited, editTime);
+            mTimeView.setText(fullEditTime);
+            MyUtils.show(mTimeView);
+        }
 
         MyUtils.show(titleView);
         MyUtils.show(descriptionView);

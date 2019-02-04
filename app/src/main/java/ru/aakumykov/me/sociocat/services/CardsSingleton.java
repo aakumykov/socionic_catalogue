@@ -181,7 +181,6 @@ public class CardsSingleton implements
         loadList(null, callbacks);
     }
 
-
     @Override
     public void loadList(@Nullable String tagName, final ListCallbacks callbacks) {
         Log.d(TAG, "loadList(tagName: "+ tagName +", ...)");
@@ -195,29 +194,7 @@ public class CardsSingleton implements
 //        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                Log.d(TAG, "onDataChange(), "+dataSnapshot);
-
-                List<Card> list = new ArrayList<>();
-
-                for (DataSnapshot snapshotPiece : dataSnapshot.getChildren()) {
-                    try {
-                        Card card = snapshotPiece.getValue(Card.class);
-
-                        if (null != card) {
-                            card.setKey(snapshotPiece.getKey());
-                            list.add(card);
-                        } else {
-                           callbacks.onListLoadFail("Card from snapshotPiece is null");
-                           Log.d(TAG, "snapshotPiece: "+snapshotPiece);
-                        }
-
-                    } catch (Exception e) {
-                        // Здесь бы сообщение пользователю, но оно затрётся инфой
-                        Log.e(TAG, e.getMessage()+", snapshotPiece: "+snapshotPiece);
-                        e.printStackTrace();
-                    }
-                }
-
+                List<Card> list = extractCardsFromSnapshot(dataSnapshot);
                 callbacks.onListLoadSuccess(list);
             }
 
@@ -227,6 +204,27 @@ public class CardsSingleton implements
                 databaseError.toException().printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void loadNewCards(long newerThanTime, final ListCallbacks callbacks) {
+
+        Query query = cardsRef.orderByChild("cTime").startAt(newerThanTime);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Card> list = extractCardsFromSnapshot(dataSnapshot);
+                callbacks.onListLoadSuccess(list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callbacks.onListLoadFail(databaseError.getMessage());
+                databaseError.toException().printStackTrace();
+            }
+        });
+
     }
 
 
@@ -274,5 +272,29 @@ public class CardsSingleton implements
                 }
             }
         });
+    }
+
+    private List<Card> extractCardsFromSnapshot(DataSnapshot dataSnapshot) {
+        List<Card> list = new ArrayList<>();
+
+        for (DataSnapshot snapshotPiece : dataSnapshot.getChildren()) {
+            try {
+                Card card = snapshotPiece.getValue(Card.class);
+
+                if (null != card) {
+                    card.setKey(snapshotPiece.getKey());
+                    list.add(card);
+                } else {
+                    Log.e(TAG, "Card from snapshotPiece is null, snapshotPiece: "+snapshotPiece);
+                }
+
+            } catch (Exception e) {
+                // Здесь бы сообщение пользователю, но оно затрётся инфой
+                Log.e(TAG, e.getMessage()+", snapshotPiece: "+snapshotPiece);
+                e.printStackTrace();
+            }
+        }
+
+        return list;
     }
 }

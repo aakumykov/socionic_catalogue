@@ -1,7 +1,7 @@
 package ru.aakumykov.me.sociocat.register.register_step_1;
 
 
-import ru.aakumykov.me.sociocat.iBaseView;
+import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
 public interface iRegisterStep1 {
 

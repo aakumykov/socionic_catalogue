@@ -16,10 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iAuthStateListener;
+import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.services.AuthSingleton;
-import ru.aakumykov.me.sociocat.services.AuthStateListener;
 import ru.aakumykov.me.sociocat.services.CardsSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 

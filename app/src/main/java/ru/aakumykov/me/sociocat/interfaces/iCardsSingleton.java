@@ -8,6 +8,7 @@ public interface iCardsSingleton {
 
     void loadList(ListCallbacks callbacks);
     void loadList(String tagFilter, ListCallbacks callbacks);
+    void loadNewCards(long newerThanTime, ListCallbacks callbacks);
 
     void loadCard(String key, LoadCallbacks callbacks);
     void updateCommentsCounter(String cardId, int diffValue);

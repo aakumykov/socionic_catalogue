@@ -2,8 +2,7 @@ package ru.aakumykov.me.sociocat.cards_grid;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.cards_list.iCardsList;
-import ru.aakumykov.me.sociocat.iBaseView;
+import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public interface iCardsGrid {
@@ -19,6 +18,7 @@ public interface iCardsGrid {
 
     interface Presenter {
         void loadCards();
+        void loadNewCards(long newerThanTime);
 
         void linkView(iCardsGrid.View view);
         void unlinkView();

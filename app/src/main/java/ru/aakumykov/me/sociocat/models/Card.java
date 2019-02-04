@@ -9,7 +9,6 @@ import com.google.firebase.database.Exclude;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 
@@ -34,6 +33,8 @@ public class Card implements Parcelable {
     private int commentsCount = 0;
     private HashMap<String, Boolean> commentsKeys/* = new HashMap<>()*/;
     private Integer rating = 0;
+    private Long cTime = 0L;
+    private Long mTime = 0L;
 
     public Card() {
 
@@ -58,6 +59,8 @@ public class Card implements Parcelable {
                 ", commentsCount: "+getCommentsCount()+
                 ", commentsKeys: "+getCommentsKeys()+
                 ", rating: "+getRating()+
+                ", cTime: "+getCTime()+
+                ", mTime: "+getMTime()+
             " }";
     }
 
@@ -82,6 +85,8 @@ public class Card implements Parcelable {
         dest.writeInt(this.commentsCount);
         dest.writeMap(this.commentsKeys);
         dest.writeInt(this.rating);
+        dest.writeLong(this.cTime);
+        dest.writeLong(this.mTime);
     }
 
     protected Card(Parcel in) {
@@ -102,6 +107,8 @@ public class Card implements Parcelable {
         commentsCount = in.readInt();
         commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         rating = in.readInt();
+        cTime = in.readLong();
+        mTime = in.readLong();
     }
 
     @Override
@@ -170,6 +177,12 @@ public class Card implements Parcelable {
         if (null == this.rating) return 0;
         else return rating;
     }
+    public Long getCTime() {
+        return this.cTime;
+    }
+    public Long getMTime() {
+        return this.mTime;
+    }
 
 
     // Сеттеры
@@ -227,6 +240,12 @@ public class Card implements Parcelable {
     public void setCommentsCount(int count) { this.commentsCount = count; }
     public void setCommentsKeys(HashMap<String, Boolean> commentsKeys) {
         this.commentsKeys = commentsKeys;
+    }
+    public void setCTime(Long cTime) {
+        this.cTime = cTime;
+    }
+    public void setMTime(Long mTime) {
+        this.mTime = mTime;
     }
 
 

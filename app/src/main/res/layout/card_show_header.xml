@@ -83,9 +83,25 @@
         android:id="@+id/authorView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp"
         android:textAlignment="viewEnd"
         android:textColor="@color/colorPrimary"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/cTimeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/grey"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/mTimeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/grey"
         android:visibility="gone" />
 
     <co.lujun.androidtagview.TagContainerLayout

@@ -307,4 +307,11 @@
     <string name="REGISTER1_email_already_used">Email address already used</string>
     <string name="REGISTER1_error_check_email">Error checking email address</string>
     <string name="LOGIN_password_recovery_email_sent">Password recovery email is sent to you</string>
+    <string name="CARD_SHOW_created">Created at %1$s</string>
+    <string name="CARD_SHOW_edited">Edited at %1$s</string>
+    <string name="MENU_new_cards">New cards</string>
+    <string name="CARDS_GRID_loading_new_cards">Loading new cards</string>
+    <string name="CARDS_GRID_no_new_cards">There is no new cards</string>
+    <string name="CARDS_GRID_authorization">Authorization</string>
+    <string name="CARDS_GRID_you_must_login_to_add_card">You must login to create card</string>
 </resources>

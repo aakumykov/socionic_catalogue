@@ -311,4 +311,11 @@
     <string name="REGISTER1_email_already_used">Электронная почта уже используется</string>
     <string name="REGISTER1_error_check_email">Ошибка проверки электронной почты</string>
     <string name="LOGIN_password_recovery_email_sent">Вам отправлено письмо для восстановления пароля</string>
+    <string name="CARD_SHOW_created">Создано %1$s</string>
+    <string name="CARD_SHOW_edited">Изменено %1$s</string>
+    <string name="MENU_new_cards">Новые карточки</string>
+    <string name="CARDS_GRID_loading_new_cards">Загрузка новых карточек</string>
+    <string name="CARDS_GRID_no_new_cards">Нет новых карточек</string>
+    <string name="CARDS_GRID_authorization">Авторизация</string>
+    <string name="CARDS_GRID_you_must_login_to_add_card">Нужно войти, чтобы создавать карточки</string>
 </resources>

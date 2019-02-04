@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat;
+package ru.aakumykov.me.sociocat.interfaces;
 
 import android.content.Context;
 import android.content.Intent;
