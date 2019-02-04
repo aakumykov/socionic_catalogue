@@ -311,4 +311,5 @@
     <string name="CARD_SHOW_edited">Edited at %1$s</string>
     <string name="MENU_new_cards">New cards</string>
     <string name="CARDS_GRID_loading_new_cards">Loading new cards</string>
+    <string name="CARDS_GRID_no_new_cards">There is no new cards</string>
 </resources>

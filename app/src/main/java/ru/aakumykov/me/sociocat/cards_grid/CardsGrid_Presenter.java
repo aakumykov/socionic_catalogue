@@ -53,7 +53,7 @@ public class CardsGrid_Presenter implements
                 if (null != view) {
                     if (0 == list.size()) {
                         view.hideProgressBar();
-                        view.showInfoMsg("С вашего прошлого посещения новых карточек нет");
+                        view.showInfoMsg(R.string.CARDS_GRID_no_new_cards);
                     } else {
                         view.displayList(list);
                     }
