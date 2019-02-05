@@ -36,13 +36,15 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
     }
 
     private LayoutInflater inflater;
-    private List<Card> cardsList;
-    private List<Card> cardsListFiltered;
     private iOnItemClickListener onItemClickListener;
     private boolean gridMode = true;
+    private List<Card> cardsList;
+    private List<Card> originalCardsList;
+    private List<Card> cardsListFiltered;
 
     CardsGrid_Adapter(Context context, List<Card> cardsList) {
         this.cardsList = cardsList;
+        this.originalCardsList=  cardsList;
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -117,10 +119,10 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
             protected FilterResults performFiltering(CharSequence constraint) {
                 String charString = constraint.toString();
                 if (charString.isEmpty()) {
-                    cardsListFiltered = cardsList;
+                    cardsListFiltered = originalCardsList;
                 } else {
                     List<Card> filteredList = new ArrayList<>();
-                    for (Card row : cardsList) {
+                    for (Card row : originalCardsList) {
 
                         if (row.getTitle().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
@@ -172,5 +174,10 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
 
     public void activateGridLayout() {
         gridMode = true;
+    }
+
+    public void restoreInitialList() {
+        this.cardsList = this.originalCardsList;
+        notifyDataSetChanged();
     }
 }

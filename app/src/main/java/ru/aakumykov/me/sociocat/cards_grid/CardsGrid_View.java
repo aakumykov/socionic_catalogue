@@ -11,6 +11,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,7 +40,8 @@ public class CardsGrid_View extends BaseView implements
         iCardsGrid.View,
         CardsGrid_Adapter.iOnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener,
-        SearchView.OnQueryTextListener
+        SearchView.OnQueryTextListener,
+        SearchView.OnCloseListener
 {
     @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
     @BindView(R.id.progressBar) ProgressBar progressBar;
@@ -207,6 +209,12 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
+    public boolean onClose() {
+        dataAdapter.restoreInitialList();
+        return false;
+    }
+
+    @Override
     public void onBackPressed() {
         if (!searchView.isIconified()) {
             searchView.setIconified(true);
@@ -258,7 +266,10 @@ public class CardsGrid_View extends BaseView implements
             searchView = (SearchView) menu.findItem(R.id.actionSearch).getActionView();
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
             searchView.setMaxWidth(Integer.MAX_VALUE);
+
             searchView.setOnQueryTextListener(this);
+            searchView.setOnCloseListener(this);
+
         } catch (Exception e) {
             showErrorMsg(e.getMessage());
             e.printStackTrace();
