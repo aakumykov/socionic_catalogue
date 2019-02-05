@@ -42,6 +42,8 @@ public class CardsGrid_View extends BaseView implements
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.floatingActionButton) FloatingActionButton floatingActionButton;
+//    @BindView(R.id.actionSearch)
+
 
     private iCardsGrid.Presenter presenter;
     private List<Card> cardsList = new ArrayList<>();
@@ -128,6 +130,8 @@ public class CardsGrid_View extends BaseView implements
         else  menuInflater.inflate(R.menu.grid_view, menu);
 
         menuInflater.inflate(R.menu.tags, menu);
+
+        menuInflater.inflate(R.menu.search, menu);
 
         return super.onCreateOptionsMenu(menu);
     }

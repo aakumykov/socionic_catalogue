@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -24,19 +27,21 @@ import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
-public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.ViewHolder> {
-
+public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.ViewHolder>
+    implements Filterable
+{
     public interface iOnItemClickListener {
         void onItemClick(int position);
     }
 
     private LayoutInflater inflater;
-    private List<Card> cardList;
+    private List<Card> cardsList;
+    private List<Card> cardsListFiltered;
     private iOnItemClickListener onItemClickListener;
     private boolean gridMode = true;
 
-    CardsGrid_Adapter(Context context, List<Card> cardList) {
-        this.cardList = cardList;
+    CardsGrid_Adapter(Context context, List<Card> cardsList) {
+        this.cardsList = cardsList;
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -54,7 +59,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull final CardsGrid_Adapter.ViewHolder viewHolder, final int position) {
-        Card card = cardList.get(position);
+        Card card = cardsList.get(position);
 
         // Слушатель нажатий
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +106,39 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
 
     @Override
     public int getItemCount() {
-        return cardList.size();
+        return cardsList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charString = constraint.toString();
+                if (charString.isEmpty()) {
+                    cardsListFiltered = cardsList;
+                } else {
+                    List<Card> filteredList = new ArrayList<>();
+                    for (Card row : cardsList) {
+
+                        if (row.getTitle().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+                    cardsListFiltered = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = cardsListFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                cardsListFiltered = (ArrayList<Card>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     // Какой-то класс
