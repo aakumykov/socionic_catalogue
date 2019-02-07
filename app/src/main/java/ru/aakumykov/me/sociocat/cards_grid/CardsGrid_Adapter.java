@@ -180,4 +180,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
         this.cardsList = this.originalCardsList;
         notifyDataSetChanged();
     }
+
+    public List<Card> getFilteredCards() {
+        return cardsList;
+    }
 }

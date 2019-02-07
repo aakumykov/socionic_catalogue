@@ -199,12 +199,14 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public boolean onQueryTextSubmit(String s) {
         dataAdapter.getFilter().filter(s);
+        cardsList = dataAdapter.getFilteredCards();
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String s) {
         dataAdapter.getFilter().filter(s);
+        cardsList = dataAdapter.getFilteredCards();
         return false;
     }
 
