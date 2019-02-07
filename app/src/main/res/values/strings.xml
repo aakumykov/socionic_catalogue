@@ -318,4 +318,5 @@
     <string name="CARDS_GRID_no_new_cards">Нет новых карточек</string>
     <string name="CARDS_GRID_authorization">Авторизация</string>
     <string name="CARDS_GRID_you_must_login_to_add_card">Нужно войти, чтобы создавать карточки</string>
+    <string name="MENU_search">Поиск</string>
 </resources>

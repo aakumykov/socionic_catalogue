@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/device/ic_access_time_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/media/android/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_search_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -29,11 +29,9 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="fcffff" />
-                            <entry key="height" value="32" />
-                            <entry key="outputName" value="ic_time" />
+                            <entry key="outputName" value="ic_search" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\SANDRA\Загрузки\new.svg" />
-                            <entry key="width" value="32" />
+                            <entry key="sourceFile" value="$USER_HOME$/C:\Users\SANDRA\Загрузки\new.svg" />
                           </map>
                         </option>
                       </PersistentState>

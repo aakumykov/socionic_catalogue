@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,10 +11,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -35,14 +39,18 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class CardsGrid_View extends BaseView implements
         iCardsGrid.View,
         CardsGrid_Adapter.iOnItemClickListener,
-        SwipeRefreshLayout.OnRefreshListener
+        SwipeRefreshLayout.OnRefreshListener,
+        SearchView.OnQueryTextListener,
+        SearchView.OnCloseListener
 {
     @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.floatingActionButton) FloatingActionButton floatingActionButton;
+    private SearchView searchView;
 
+//    public static final String TAG = "CardsGrid_View";
     private iCardsGrid.Presenter presenter;
     private List<Card> cardsList = new ArrayList<>();
     private CardsGrid_Adapter dataAdapter;
@@ -129,6 +137,9 @@ public class CardsGrid_View extends BaseView implements
 
         menuInflater.inflate(R.menu.tags, menu);
 
+        menuInflater.inflate(R.menu.search, menu);
+        initSearchWidget(menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -185,6 +196,34 @@ public class CardsGrid_View extends BaseView implements
         }
     }
 
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        dataAdapter.getFilter().filter(s);
+        cardsList = dataAdapter.getFilteredCards();
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        dataAdapter.getFilter().filter(s);
+        cardsList = dataAdapter.getFilteredCards();
+        return false;
+    }
+
+    @Override
+    public boolean onClose() {
+        dataAdapter.restoreInitialList();
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+            return;
+        }
+        super.onBackPressed();
+    }
 
     // Нажатия
     @OnClick(R.id.floatingActionButton)
@@ -222,6 +261,23 @@ public class CardsGrid_View extends BaseView implements
 
 
     // Внутренние методы
+    private void initSearchWidget(Menu menu) {
+        // Ассоциируем настройку поиска с SearchView
+        try {
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            searchView = (SearchView) menu.findItem(R.id.actionSearch).getActionView();
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setMaxWidth(Integer.MAX_VALUE);
+
+            searchView.setOnQueryTextListener(this);
+            searchView.setOnCloseListener(this);
+
+        } catch (Exception e) {
+            showErrorMsg(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private void loadList(boolean showMessage) {
         if (showMessage) {
             MyUtils.show(progressBar);

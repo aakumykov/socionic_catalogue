@@ -6,5 +6,5 @@
         android:id="@+id/actionNewCards"
         android:icon="@drawable/ic_time"
         android:title="@string/MENU_new_cards"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>
