@@ -84,7 +84,7 @@
     <string name="tag">Метка</string>
     <string name="error_loading_tag">Ошибка получения метки</string>
     <string name="CARD_EDIT_error_editing_card">Ошибка редактирования карточки</string>
-    <string name="braces" translatable="false">«%1$s»</string>
+    <string name="aquotes" translatable="false">«%1$s»</string>
     <string name="TAGS_LIST_tags_list">Список меток</string>
     <string name="TAG_SHOW_page_title">Метка «%1$s»</string>
     <string name="CARDS_LIST_page_title">Карточки</string>

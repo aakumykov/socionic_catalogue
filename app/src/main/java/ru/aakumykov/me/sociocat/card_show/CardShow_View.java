@@ -710,10 +710,12 @@ public class CardShow_View extends BaseView implements
     }
 
     private void displayTextCard(Card card) {
-        SpannableString spannableQuote = MVPUtils.aspects2images(this, card.getQuote());
+        //SpannableString spannableQuote = MVPUtils.aspects2images(this, card.getQuote());
+        //quoteView.setText(spannableQuote);
+        // В цитату не нужно внедрять соционические значки. А вот в объяснение - да.
 
-        quoteView.setText(spannableQuote);
-
+        String quote = getString(R.string.aquotes, card.getQuote());
+        quoteView.setText(quote);
         MyUtils.show(quoteView);
 
         displayCommonCardParts(card);
