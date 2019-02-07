@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -285,7 +286,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     // Строка прогресса
     @Override
     public void showProgressBar() {
-        ProgressBar progressBar = findViewById(R.id.progressBar);
+        View progressBar = findViewById(R.id.progressBar);
         if (null != progressBar) {
             MyUtils.show(progressBar);
         } else {
@@ -295,7 +296,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public void hideProgressBar() {
-        ProgressBar progressBar = findViewById(R.id.progressBar);
+        View progressBar = findViewById(R.id.progressBar);
         if (null != progressBar) {
             MyUtils.hide(progressBar);
         } else {
