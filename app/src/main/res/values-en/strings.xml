@@ -316,4 +316,6 @@
     <string name="CARDS_GRID_you_must_login_to_add_card">You must login to create card</string>
     <string name="MENU_search">Search</string>
     <string name="CARD_EDIT_quote_source">Quote source</string>
+    <string name="CARD_SHOW_quote_source">Source: %1$s</string>
+    <string name="CARD_SHOW_unknown_quote_source">unknown</string>
 </resources>

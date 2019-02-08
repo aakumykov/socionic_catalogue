@@ -718,7 +718,11 @@ public class CardShow_View extends BaseView implements
         quoteView.setText(quote);
         MyUtils.show(quoteView);
 
-        quoteSourceView.setText(card.getQuoteSource());
+        String quoteSource = card.getQuoteSource();
+        if (TextUtils.isEmpty(quoteSource))
+            quoteSource = getResources().getString(R.string.CARD_SHOW_unknown_quote_source);
+        quoteSource = getString(R.string.CARD_SHOW_quote_source, quoteSource);
+        quoteSourceView.setText(quoteSource);
         MyUtils.show(quoteSourceView);
 
         displayCommonCardParts(card);
@@ -754,9 +758,9 @@ public class CardShow_View extends BaseView implements
     private void displayCommonCardParts(Card card) {
         titleView.setText(card.getTitle());
 
-        //SpannableString spannableQuote = MVPUtils.aspects2images(this, card.getQuote());
-        //quoteView.setText(spannableQuote);
-        descriptionView.setText(card.getDescription());
+        SpannableString description = MVPUtils.aspects2images(this, card.getDescription());
+        descriptionView.setText(description);
+//        descriptionView.setText(card.getDescription());
 
         authorView.setText( getString(R.string.CARD_SHOW_author, card.getUserName()));
 
