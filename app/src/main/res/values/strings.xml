@@ -319,4 +319,5 @@
     <string name="CARDS_GRID_authorization">Авторизация</string>
     <string name="CARDS_GRID_you_must_login_to_add_card">Нужно войти, чтобы создавать карточки</string>
     <string name="MENU_search">Поиск</string>
+    <string name="CARD_EDIT_quote_source">Источник цитаты</string>
 </resources>

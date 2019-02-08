@@ -101,7 +101,7 @@
             android:id="@+id/mediaHolder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone" android:orientation="vertical">
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/quoteView"
@@ -111,7 +111,21 @@
                 android:inputType="textCapSentences|textMultiLine"
                 android:selectAllOnFocus="false"
                 android:singleLine="false"
+                android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
+                android:textStyle="italic"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/quoteSourceView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/CARD_EDIT_quote_source"
+                android:inputType=""
+                android:selectAllOnFocus="false"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
                 android:textStyle="italic"
                 android:visibility="gone" />
 

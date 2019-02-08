@@ -315,4 +315,5 @@
     <string name="CARDS_GRID_authorization">Authorization</string>
     <string name="CARDS_GRID_you_must_login_to_add_card">You must login to create card</string>
     <string name="MENU_search">Search</string>
+    <string name="CARD_EDIT_quote_source">Quote source</string>
 </resources>
