@@ -212,6 +212,7 @@ public class CardEdit_Presenter implements
 
         if (currentCard.isTextCard()) {
             currentCard.setQuote(view.getCardQuote());
+            currentCard.setQuoteSource(view.getCardQuoteSource());
         }
 
         if (currentCard.isVideoCard()) {

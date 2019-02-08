@@ -23,6 +23,7 @@ public class Card implements Parcelable {
     private String type;
     private String title;
     private String quote;
+    private String quoteSource;
     private String imageURL;
     private String fileName;
     private String videoCode;
@@ -49,6 +50,7 @@ public class Card implements Parcelable {
                 ", type: "+getType()+
                 ", title: "+getTitle()+
                 ", quote: "+getQuote()+
+                ", quoteSource: "+getQuoteSource()+
                 ", imageURL: "+imageURL+
                 ", fileName: "+fileName+
                 ", videoCode: "+videoCode +
@@ -75,6 +77,7 @@ public class Card implements Parcelable {
         dest.writeString(this.type);
         dest.writeString(this.title);
         dest.writeString(this.quote);
+        dest.writeString(this.quoteSource);
         dest.writeString(this.imageURL);
         dest.writeString(this.fileName);
         dest.writeString(this.videoCode);
@@ -97,6 +100,7 @@ public class Card implements Parcelable {
         type = in.readString();
         title = in.readString();
         quote = in.readString();
+        quoteSource = in.readString();
         imageURL = in.readString();
         fileName = in.readString();
         videoCode = in.readString();
@@ -146,6 +150,9 @@ public class Card implements Parcelable {
     }
     public String getQuote() {
         return quote;
+    }
+    public String getQuoteSource() {
+        return quoteSource;
     }
     public String getImageURL() {
         return imageURL;
@@ -211,6 +218,9 @@ public class Card implements Parcelable {
     }
     public void setQuote(String quote) {
         this.quote = quote;
+    }
+    public void setQuoteSource(String quoteSource) {
+        this.quoteSource = quoteSource;
     }
     public void setImageURL(String imageURL) throws IllegalArgumentException {
             Uri uri = Uri.parse(imageURL);

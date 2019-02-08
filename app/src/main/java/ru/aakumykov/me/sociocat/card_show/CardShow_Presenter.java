@@ -28,7 +28,6 @@ public class CardShow_Presenter implements
         iCommentsSingleton.ListCallbacks,
         iCommentsSingleton.DeleteCallbacks
 {
-
     private final static String TAG = "CardShow_Presenter";
     private iCardShow.View view;
     private iAuthSingleton authService = AuthSingleton.getInstance();

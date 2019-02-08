@@ -24,13 +24,27 @@
         android:id="@+id/quoteView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="5dp"
         android:paddingStart="4dp"
         android:paddingEnd="4dp"
         android:text="Цитата высказывания великого человека, цитировавшего другого, ещё более великого, но менее известного человека."
         android:textColor="@color/colorPrimary"
         android:textIsSelectable="true"
         android:textSize="18sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/quoteSourceView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:text="Источник цитаты"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorPrimary"
+        android:textIsSelectable="true"
+        android:textSize="16sp"
         android:textStyle="italic"
         android:visibility="gone" />
 
