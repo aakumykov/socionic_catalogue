@@ -96,7 +96,7 @@ public class TagShow_View extends BaseView implements
         setPageTitle(pageTitle);
 
         String tagName = getResources()
-                .getString(R.string.braces, tag.getName());
+                .getString(R.string.aquotes, tag.getName());
         nameView.setText(tagName);
 
         int cardsCount =  tag.getCards().size();

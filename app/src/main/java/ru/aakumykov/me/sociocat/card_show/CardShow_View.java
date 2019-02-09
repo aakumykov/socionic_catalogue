@@ -74,6 +74,7 @@ public class CardShow_View extends BaseView implements
 
     private TextView titleView;
     private TextView quoteView;
+    private TextView quoteSourceView;
 //    private ConstraintLayout imageHolder;
     private ProgressBar imageProgressBar;
     private ImageView imageView;
@@ -131,6 +132,7 @@ public class CardShow_View extends BaseView implements
         commentLayout = findViewById(R.id.commentLayout);
         titleView = findViewById(R.id.titleView);
         quoteView = findViewById(R.id.quoteView);
+        quoteSourceView = findViewById(R.id.quoteSourceView);
 
 //        imageHolder = findViewById(R.id.imageHolder);
         imageProgressBar = findViewById(R.id.imageProgressBar);
@@ -710,11 +712,18 @@ public class CardShow_View extends BaseView implements
     }
 
     private void displayTextCard(Card card) {
-        SpannableString spannableQuote = MVPUtils.aspects2images(this, card.getQuote());
+        // В цитату не нужно внедрять соционические значки. А вот в объяснение - да.
 
-        quoteView.setText(spannableQuote);
-
+        String quote = getString(R.string.aquotes, card.getQuote());
+        quoteView.setText(quote);
         MyUtils.show(quoteView);
+
+        String quoteSource = card.getQuoteSource();
+        if (TextUtils.isEmpty(quoteSource))
+            quoteSource = getResources().getString(R.string.CARD_SHOW_unknown_quote_source);
+        quoteSource = getString(R.string.CARD_SHOW_quote_source, quoteSource);
+        quoteSourceView.setText(quoteSource);
+        MyUtils.show(quoteSourceView);
 
         displayCommonCardParts(card);
     }
@@ -748,7 +757,11 @@ public class CardShow_View extends BaseView implements
 
     private void displayCommonCardParts(Card card) {
         titleView.setText(card.getTitle());
-        descriptionView.setText(card.getDescription());
+
+        SpannableString description = MVPUtils.aspects2images(this, card.getDescription());
+        descriptionView.setText(description);
+//        descriptionView.setText(card.getDescription());
+
         authorView.setText( getString(R.string.CARD_SHOW_author, card.getUserName()));
 
         Long currentTime = System.currentTimeMillis();

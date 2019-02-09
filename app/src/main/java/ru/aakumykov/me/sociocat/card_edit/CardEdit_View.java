@@ -75,6 +75,7 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.mediaHolder) LinearLayout mediaHolder;
 
     @BindView(R.id.quoteView) EditText quoteView;
+    @BindView(R.id.quoteSourceView) EditText quoteSourceView;
 
     @BindView(R.id.videoPlayerHolder) FrameLayout videoPlayerHolder;
     @BindView(R.id.addVideoButton) Button addVideoButton;
@@ -383,6 +384,11 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
+    public String getCardQuoteSource() {
+        return quoteSourceView.getText().toString();
+    }
+
+    @Override
     public String getCardDescription() {
         return descriptionView.getText().toString();
     }
@@ -500,6 +506,7 @@ public class CardEdit_View extends BaseView implements
 
         MyUtils.show(mediaHolder);
         MyUtils.show(quoteView);
+        MyUtils.show(quoteSourceView);
 
         quoteView.requestFocus();
 
@@ -676,6 +683,7 @@ public class CardEdit_View extends BaseView implements
         switchTextMode();
         displayCommonCardParts(card);
         quoteView.setText(card.getQuote());
+        quoteSourceView.setText(card.getQuoteSource());
     }
 
     private void displayImageCard(Card card) {
