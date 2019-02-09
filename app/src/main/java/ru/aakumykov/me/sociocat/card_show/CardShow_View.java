@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.PopupMenu;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -760,7 +759,6 @@ public class CardShow_View extends BaseView implements
 
         SpannableString description = MVPUtils.aspects2images(this, card.getDescription());
         descriptionView.setText(description);
-//        descriptionView.setText(card.getDescription());
 
         authorView.setText( getString(R.string.CARD_SHOW_author, card.getUserName()));
 

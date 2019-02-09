@@ -41,7 +41,6 @@ public class MVPUtils {
     private static final List<String> upperCaseTags = new ArrayList<>();
 
     private static final Map<String,Integer> aspectsMap = new HashMap<>();
-    private static final List<String> aspectsBorders = new ArrayList<>();
 
     static {
         correctCardTypes.add(Constants.TEXT_CARD);
@@ -87,11 +86,6 @@ public class MVPUtils {
         aspectsMap.put("БЭ", R.drawable.aspect_relation);
         aspectsMap.put("БС", R.drawable.aspect_sence);
         aspectsMap.put("БИ", R.drawable.aspect_time);
-
-        aspectsBorders.add("()");
-        aspectsBorders.add("[]");
-        aspectsBorders.add("**");
-        aspectsBorders.add("\"\"");
     }
 
 
@@ -305,26 +299,27 @@ public class MVPUtils {
 
     public static SpannableString aspects2images(Context context, String inputText) {
 
+        // Текст --> spannableString
         SpannableString spannableString = new SpannableString(inputText);
 
-        for (String borders : aspectsBorders) {
-            String leftBorder = borders.substring(0,1);
-            String rightBorder = borders.substring(1, 1);
+        // Перебираю массив соответствий "аббривеатура -> иконка"
+        for (Map.Entry<String, Integer> entry : aspectsMap.entrySet()) {
 
-            for (Map.Entry<String, Integer> entry : aspectsMap.entrySet()) {
+            String aspectText = entry.getKey();
+            ImageSpan aspectImage = new ImageSpan(context, entry.getValue());
 
-                String aspectText = leftBorder + entry.getKey() + rightBorder;
-                ImageSpan imageSpan = new ImageSpan(context, entry.getValue());
+            // Позиция первого вхождния текстового обозначения аспекта
+            int startPosition = inputText.indexOf(aspectText);
 
-                int index = inputText.indexOf(aspectText);
-                while (index > -1) {
-                    int indexEnd = index + aspectText.length() + 1;
-                    spannableString.setSpan(imageSpan, index, indexEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    index = inputText.indexOf(aspectText, indexEnd);
-                }
+            // Заменяю все встречающиеся вхождения
+            while (startPosition > -1) {
+                int endPosition = startPosition + aspectText.length();
+                spannableString.setSpan(aspectImage, startPosition, endPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                startPosition = inputText.indexOf(aspectText, endPosition);
             }
         }
 
         return spannableString;
     }
+
 }
