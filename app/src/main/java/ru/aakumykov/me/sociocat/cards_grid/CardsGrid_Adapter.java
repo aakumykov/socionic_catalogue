@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +30,13 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.ViewHolder>
     implements Filterable
 {
-    public interface iOnItemClickListener {
+    public interface iAdapterConsumer {
+        void onDataFiltered(List<Card> filteredCardsList);
         void onItemClick(int position);
     }
 
     private LayoutInflater inflater;
-    private iOnItemClickListener onItemClickListener;
+    private iAdapterConsumer adapterConsumer;
     private boolean gridMode = true;
     private List<Card> cardsList;
     private List<Card> originalCardsList;
@@ -68,7 +68,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClickListener.onItemClick(position);
+                adapterConsumer.onItemClick(position);
             }
         });
 
@@ -139,6 +139,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 cardsList = (ArrayList<Card>) results.values;
+                adapterConsumer.onDataFiltered(cardsList);
                 notifyDataSetChanged();
             }
         };
@@ -160,12 +161,12 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
     }
 
     // Другие методы
-    void bindClickListener(iOnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
+    void bindView(iAdapterConsumer consumer) {
+        this.adapterConsumer = consumer;
     }
 
     void unbindClickListener() {
-        this.onItemClickListener = null;
+        this.adapterConsumer = null;
     }
 
     public void activateListLayout() {
@@ -179,9 +180,5 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
     public void restoreInitialList() {
         this.cardsList = this.originalCardsList;
         notifyDataSetChanged();
-    }
-
-    public List<Card> getFilteredCards() {
-        return cardsList;
     }
 }

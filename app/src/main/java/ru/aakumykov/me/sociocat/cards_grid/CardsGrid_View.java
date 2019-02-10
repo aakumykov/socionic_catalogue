@@ -11,7 +11,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -38,7 +37,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsGrid_View extends BaseView implements
         iCardsGrid.View,
-        CardsGrid_Adapter.iOnItemClickListener,
+        CardsGrid_Adapter.iAdapterConsumer,
         SwipeRefreshLayout.OnRefreshListener,
         SearchView.OnQueryTextListener,
         SearchView.OnCloseListener
@@ -88,7 +87,7 @@ public class CardsGrid_View extends BaseView implements
         super.onStart();
 
         presenter.linkView(this);
-        dataAdapter.bindClickListener(this);
+        dataAdapter.bindView(this);
 
         if (firstRun) {
             loadList(true);
@@ -187,6 +186,11 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
+    public void onDataFiltered(List<Card> filteredCardsList) {
+        this.cardsList = filteredCardsList;
+    }
+
+    @Override
     public void onItemClick(int position) {
         Card card = cardsList.get(position);
         if (null != card) {
@@ -199,14 +203,12 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public boolean onQueryTextSubmit(String s) {
         dataAdapter.getFilter().filter(s);
-        cardsList = dataAdapter.getFilteredCards();
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String s) {
         dataAdapter.getFilter().filter(s);
-        cardsList = dataAdapter.getFilteredCards();
         return false;
     }
 
