@@ -81,6 +81,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
             viewHolder.quoteView.setText(quote);
             MyUtils.show(viewHolder.quoteView);
             MyUtils.hide(viewHolder.imageView);
+        } else {
+            viewHolder.quoteView.setText(null);
         }
 
         // Картинка

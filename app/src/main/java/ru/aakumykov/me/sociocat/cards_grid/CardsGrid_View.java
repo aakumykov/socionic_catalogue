@@ -14,6 +14,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -40,7 +41,8 @@ public class CardsGrid_View extends BaseView implements
         CardsGrid_Adapter.iAdapterConsumer,
         SwipeRefreshLayout.OnRefreshListener,
         SearchView.OnQueryTextListener,
-        SearchView.OnCloseListener
+        SearchView.OnCloseListener,
+        SearchView.OnClickListener
 {
     @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
     @BindView(R.id.progressBar) ProgressBar progressBar;
@@ -213,6 +215,11 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
     public boolean onClose() {
         dataAdapter.restoreInitialList();
         return false;
@@ -226,6 +233,7 @@ public class CardsGrid_View extends BaseView implements
         }
         super.onBackPressed();
     }
+
 
     // Нажатия
     @OnClick(R.id.floatingActionButton)
