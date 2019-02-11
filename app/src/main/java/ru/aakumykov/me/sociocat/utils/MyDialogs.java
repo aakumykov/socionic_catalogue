@@ -19,7 +19,26 @@ public class MyDialogs {
 
     public static final String TAG = "MyDialogs";
 
-    // Диалог удаления карточки
+    // Отмена редактирования
+    public static void cancelEditDialog(Activity activity, int titleId, int messageId, iMyDialogs.StandardCallbacks callbacks) {
+
+        String title = activity.getString(titleId);
+        String message = activity.getString(messageId);
+
+        basicDialog(
+                activity,
+                title,
+                message,
+                R.string.yes,
+                R.string.no,
+                null,
+                null,
+                null,
+                callbacks
+        ).show();
+    }
+
+    // Удаление карточки
     public static void cardDeleteDialog(Activity activity, String message, iMyDialogs.Delete callbacks) {
 
         String title = activity.getString(R.string.DIALOG_delete_card);
@@ -37,7 +56,7 @@ public class MyDialogs {
         ).show();
     }
 
-    // Диалог необходимости входа
+    // Необходимость входа
     public static void loginRequiredDialog(Activity activity, iMyDialogs.StandardCallbacks callbacks) {
         loginRequiredDialog(activity, R.string.DIALOG_login_required, null, callbacks);
     }
@@ -77,7 +96,7 @@ public class MyDialogs {
         alertDialog.show();
     }
 
-    // Диалог необходимости установки имени пользователя
+    // Необходимость установки имени пользователя
     public static void userNameRequiredDialog(Activity activity, iMyDialogs.StandardCallbacks callbacks) {
         String title = activity.getResources().getString(R.string.DIALOG_user_name_required_title);
         String message = activity.getResources().getString(R.string.DIALOG_user_name_required_message);
@@ -96,7 +115,7 @@ public class MyDialogs {
     }
 
     // TODO: сделать единый диалог ввода строки
-    // Диалог добавления код видео
+    // Добавление кода видео
     public static void addYoutubeVideoDialog(Activity activity, final iMyDialogs.StringInputCallback callbacks) {
         String title = activity.getString(R.string.CARD_EDIT_video_code);
 
@@ -150,7 +169,7 @@ public class MyDialogs {
         alertDialog.show();
     }
 
-    // Диалог изменения комментария
+    // Правка комментария
     public static void commentEditDialog(
             Activity activity,
             String initialText,
@@ -200,8 +219,7 @@ public class MyDialogs {
         alertDialog.show();
     }
 
-
-    // Диалог удаления комментария
+    // Удаление комментария
     public static void commentDeleteDialog(Activity activity, String message, iMyDialogs.Delete callbacks) {
 
         String title = activity.getString(R.string.DIALOG_delete_comment);
@@ -219,7 +237,7 @@ public class MyDialogs {
         ).show();
     }
 
-    // Диалог перехода на страницу
+    // Переход на страницу
     public static void goToPageDialog(Activity activity, String message, iMyDialogs.StandardCallbacks callbacks) {
 
         basicDialog(
@@ -236,7 +254,7 @@ public class MyDialogs {
 
     }
 
-    // Диалог вопроса о недобавленной метке
+    // Вопрос о недобавленной метке
     public static void forgottenTagDialog(Activity activity, String message, iMyDialogs.StandardCallbacks callbacks) {
         String title = activity.getString(R.string.CARD_EDIT_forgotten_tag_dialog_title);
 
@@ -253,7 +271,7 @@ public class MyDialogs {
         ).show();
     }
 
-    // Диалог сообщения о завершении регистрации
+    // Сообщение о завершении регистрации
     public static void registrationCompleteDialog(Activity activity, final iMyDialogs.StandardCallbacks callbacks) {
         String title = activity.getResources().getString(R.string.REGISTER1_complete_dialog_title);
         String message = activity.getResources().getString(R.string.REGISTER1_complete_dialog_message);

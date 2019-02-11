@@ -322,4 +322,6 @@
     <string name="CARD_EDIT_quote_source">Источник цитаты</string>
     <string name="CARD_SHOW_quote_source">Источник: %1$s</string>
     <string name="CARD_SHOW_unknown_quote_source">неизвестен</string>
+    <string name="CARD_EDIT_cancel_editing_title">Отмена редактирования</string>
+    <string name="CARD_EDIT_cancel_editing_message">Действительно хотите отказаться от редактирования?</string>
 </resources>

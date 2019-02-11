@@ -141,7 +141,11 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 cardsList = (ArrayList<Card>) results.values;
-                adapterConsumer.onDataFiltered(cardsList);
+
+                //if (null != adapterConsumer) {
+                    adapterConsumer.onDataFiltered(cardsList);
+                //}
+
                 notifyDataSetChanged();
             }
         };

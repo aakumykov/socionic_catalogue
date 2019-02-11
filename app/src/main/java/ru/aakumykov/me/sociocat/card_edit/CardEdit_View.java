@@ -50,6 +50,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
+import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.FileInfo;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
@@ -598,8 +599,33 @@ public class CardEdit_View extends BaseView implements
 
     @OnClick(R.id.cancelButton)
     void cancel() {
-        setResult(RESULT_CANCELED);
-        finish();
+        MyDialogs.cancelEditDialog(
+                this,
+                R.string.CARD_EDIT_cancel_editing_title,
+                R.string.CARD_EDIT_cancel_editing_message,
+                new iMyDialogs.StandardCallbacks() {
+                    @Override
+                    public void onCancelInDialog() {
+
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        setResult(RESULT_CANCELED);
+                        finish();
+                    }
+                }
+        );
     }
 
     @OnClick(R.id.discardImageButton)
