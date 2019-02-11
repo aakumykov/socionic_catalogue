@@ -101,7 +101,7 @@ public class CardsGrid_View extends BaseView implements
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
-        dataAdapter.unbindClickListener();
+        dataAdapter.unbindView();
     }
 
     @Override

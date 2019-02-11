@@ -142,9 +142,9 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 cardsList = (ArrayList<Card>) results.values;
 
-                //if (null != adapterConsumer) {
+                if (null != adapterConsumer) { // Иначе падает при входе со страницы плиток
                     adapterConsumer.onDataFiltered(cardsList);
-                //}
+                }
 
                 notifyDataSetChanged();
             }
@@ -171,7 +171,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
         this.adapterConsumer = consumer;
     }
 
-    void unbindClickListener() {
+    void unbindView() {
         this.adapterConsumer = null;
     }
 
