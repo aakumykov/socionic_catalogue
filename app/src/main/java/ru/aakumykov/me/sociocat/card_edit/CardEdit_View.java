@@ -227,6 +227,10 @@ public class CardEdit_View extends BaseView implements
         }
     }
 
+    @Override public void onBackPressed() {
+        super.onBackPressed();
+        cancel();
+    }
 
     // Интерфейсные методы
     @Override

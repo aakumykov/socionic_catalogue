@@ -109,7 +109,7 @@
     <string name="ERROR_creating_card">Ошибка создания карточки</string>
     <string name="INFO_card_created">Карточка создана</string>
     <string name="INFO_card_saved">Карточка сохранена</string>
-    <string name="INFO_operation_cancelled">Операция отменена</string>
+    <string name="INFO_operation_cancelled">Действие отменено</string>
     <string name="ERROR_saving_card">Ошибка сохранения карточки</string>
     <string name="LOGIN_register">Зарегистрироваться</string>
     <string name="LOGIN_register_label">Впервые здесь?</string>
@@ -323,5 +323,5 @@
     <string name="CARD_SHOW_quote_source">Источник: %1$s</string>
     <string name="CARD_SHOW_unknown_quote_source">неизвестен</string>
     <string name="CARD_EDIT_cancel_editing_title">Отмена редактирования</string>
-    <string name="CARD_EDIT_cancel_editing_message">Действительно хотите отказаться от редактирования?</string>
+    <string name="CARD_EDIT_cancel_editing_message">Отказаться от изменений и уйти?</string>
 </resources>

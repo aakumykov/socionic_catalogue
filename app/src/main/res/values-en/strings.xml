@@ -319,5 +319,5 @@
     <string name="CARD_SHOW_quote_source">Source: %1$s</string>
     <string name="CARD_SHOW_unknown_quote_source">unknown</string>
     <string name="CARD_EDIT_cancel_editing_title">Cancel editing</string>
-    <string name="CARD_EDIT_cancel_editing_message">You really want to cancel edit?</string>
+    <string name="CARD_EDIT_cancel_editing_message">Abandon the changes and leave?</string>
 </resources>
