@@ -279,7 +279,7 @@ public class CardEdit_View extends BaseView implements
     public void displayQuote(String text) {
         switchTextMode();
 
-        quoteView.setText(text);
+        quoteView.setText( text.trim() );
     }
 
     @Override
