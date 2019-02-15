@@ -32,6 +32,7 @@ public interface iCardEdit {
 
         void displayTitle(String text);
         void displayQuote(String text);
+        void displayQuoteSource(String text);
         void displayImage(String imageURI, boolean unprocessedYet);
         void displayImageBitmap(Bitmap bitmap);
         void displayVideo(String videoCode);
