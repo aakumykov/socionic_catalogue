@@ -34,8 +34,7 @@
         <activity android:name=".card_edit2.CardEdit2_View" />
 
         <activity
-            android:name=".external_data_receiver.ExternalDataReceiver"
-            android:noHistory="true">
+            android:name=".external_data_receiver.ExternalDataReceiver" android:noHistory="false">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
