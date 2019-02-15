@@ -278,12 +278,8 @@ public class CardEdit_View extends BaseView implements
     @Override
     public void displayQuote(String text) {
         switchTextMode();
-        quoteView.setText( text.trim() );
-    }
 
-    @Override
-    public void displayQuoteSource(String text) {
-        quoteSourceView.setText(text);
+        quoteView.setText( text.trim() );
     }
 
     @Override
@@ -716,8 +712,8 @@ public class CardEdit_View extends BaseView implements
     private void displayTextCard(Card card) {
         switchTextMode();
         displayCommonCardParts(card);
-        displayQuote(card.getQuote());
-        displayQuoteSource(card.getQuoteSource());
+        quoteView.setText(card.getQuote());
+        quoteSourceView.setText(card.getQuoteSource());
     }
 
     private void displayImageCard(Card card) {

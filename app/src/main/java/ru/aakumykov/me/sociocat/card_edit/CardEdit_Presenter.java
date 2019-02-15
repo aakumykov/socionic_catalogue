@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.card_edit;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.Nullable;
@@ -326,12 +325,10 @@ public class CardEdit_Presenter implements
     @Override
     public void linkView(iCardEdit.View view) {
         this.view = view;
-        restoreEditState();
     }
 
     @Override
     public void unlinkView() {
-        storeEditState();
         this.view = null;
     }
 
@@ -499,32 +496,5 @@ public class CardEdit_Presenter implements
         return fname + "." + fext;
     }
 
-    private void storeEditState() {
 
-        SharedPreferences sharedPreferences = view.getSharedPrefs("editState");
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("title", currentCard.getTitle());
-        editor.putString("quote", currentCard.getQuote());
-        editor.putString("quoteSource", currentCard.getQuoteSource());
-        editor.putString("imageURL", currentCard.getImageURL());
-        editor.putString("videoCode", currentCard.getVideoCode());
-        editor.putString("description", currentCard.getDescription());
-
-//        editor.putString("", currentCard.ge());
-//        editor.putString("", currentCard.ge());
-    }
-
-    private void restoreEditState() {
-        SharedPreferences sharedPreferences = view.getSharedPrefs("editState");
-
-        Card card = new Card();
-        card.setTitle(sharedPreferences.getString("title",""));
-        card.setQuote(sharedPreferences.getString("quote",""));
-        card.setQuoteSource(sharedPreferences.getString("quoteSource",""));
-        card.setImageURL(sharedPreferences.getString("imageURL",""));
-        card.setVideoCode(sharedPreferences.getString("videoCode",""));
-        card.setDescription(sharedPreferences.getString("description",""));
-
-        view.displayCard(card);
-    }
 }
