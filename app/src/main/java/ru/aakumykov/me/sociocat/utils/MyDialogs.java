@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.utils;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.annotation.Nullable;
@@ -19,7 +20,25 @@ public class MyDialogs {
 
     public static final String TAG = "MyDialogs";
 
-    // Проверка
+    // Возобновление редактирования карточки
+    public static void resumeCardEditDialog(Activity activity, iMyDialogs.StandardCallbacks callbacks) {
+        String title = activity.getString(R.string.CARD_EDIT_resume_dialog_title);
+        String message = activity.getString(R.string.CARD_EDIT_resume_dialog_message);
+
+        basicDialog(
+                activity,
+                title,
+                message,
+                R.string.yes,
+                R.string.no,
+                null,
+                null,
+                null,
+                callbacks
+        ).show();
+    }
+
+    // Диалог для проверок
     public static void dummyDialog(Activity activity, String title, String message) {
         basicDialog(
                 activity,

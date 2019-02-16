@@ -121,6 +121,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         if (null != view) {
             currentCard = getSavedEditState();
             view.displayCard(currentCard);
+            view.clearSharedPrefsData(sharedPreferences, Constants.CARD);
         }
     }
 

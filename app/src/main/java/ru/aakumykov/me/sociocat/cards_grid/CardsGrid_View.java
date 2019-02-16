@@ -11,6 +11,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -91,6 +92,8 @@ public class CardsGrid_View extends BaseView implements
         presenter.linkView(this);
         dataAdapter.bindView(this);
 
+//        MyDialogs.dummyDialog(this, "Проверка", ":-)");
+
         if (firstRun) {
             loadList(true);
             firstRun = false;
@@ -99,6 +102,7 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     protected void onStop() {
+//        Log.d("QWERTY", "onStop()");
         super.onStop();
         presenter.unlinkView();
         dataAdapter.unbindView();
