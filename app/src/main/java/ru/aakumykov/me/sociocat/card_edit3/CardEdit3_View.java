@@ -17,16 +17,23 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubeP
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import co.lujun.androidtagview.TagContainerLayout;
+import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class CardEdit3_View extends BaseView implements iCardEdit3.View
+public class CardEdit3_View extends BaseView implements
+        iCardEdit3.View,
+        TagView.OnTagClickListener
 {
     @BindView(R.id.titleInput) EditText titleInput;
     @BindView(R.id.quoteInput) EditText quoteInput;
@@ -42,6 +49,10 @@ public class CardEdit3_View extends BaseView implements iCardEdit3.View
     @BindView(R.id.videoPlayerHolder) FrameLayout videoPlayerHolder;
     @BindView(R.id.removeVideoButton) Button removeVideoButton;
     @BindView(R.id.addVideoButton) Button addVideoButton;
+
+    @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
+    @BindView(R.id.newTagInput) EditText newTagInput;
+    @BindView(R.id.addTagButton) Button addTagButton;
 
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
@@ -119,6 +130,12 @@ public class CardEdit3_View extends BaseView implements iCardEdit3.View
 
 
     // Методы событий интерсейса
+    @OnClick(R.id.addTagButton)
+    void addTag() {
+        String tag = MVPUtils.normalizeTag(newTagInput.getText().toString());
+        tagsContainer.addTag(tag);
+    }
+
     @OnClick(R.id.saveButton)
     void saveCard() {
 
@@ -127,6 +144,23 @@ public class CardEdit3_View extends BaseView implements iCardEdit3.View
     @OnClick(R.id.cancelButton)
     void cancelEdit() {
 
+    }
+
+
+    // Методы обратнаго вызова
+    @Override
+    public void onTagClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagLongClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagCrossClick(int position) {
+        tagsContainer.removeTag(position);
     }
 
 
@@ -198,5 +232,6 @@ public class CardEdit3_View extends BaseView implements iCardEdit3.View
     private void displayCommonCardParts(Card card) {
         titleInput.setText(card.getTitle());
         descriptionInput.setText(card.getDescription());
+        tagsContainer.setTags(new ArrayList<String>(card.getTags().keySet()));
     }
 }

@@ -626,20 +626,9 @@ public class CardShow_View extends BaseView implements
     // Переходы
     @Override
     public void goEditPage(Card card) {
-        Log.d(TAG, "goEditPage()");
-
-//        Intent intent = new Intent(this, CardEdit_View.class);
-//        intent.setAction(Constants.ACTION_EDIT);
-//        intent.putExtra(Constants.CARD_KEY, card_edit.getKey());
-//        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
-
-//        Intent intent = new Intent(this, CardEdit_View.class);
-//        intent.setAction(Constants.ACTION_EDIT);
-//        intent.putExtra(Constants.CARD_KEY, card.getKey());
-//        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
-
         Intent intent = new Intent(this, CardEdit3_View.class);
-        intent.putExtra(Constants.CARD, card);
+        intent.setAction(Constants.ACTION_EDIT);
+        intent.putExtra(Constants.CARD_KEY, card.getKey());
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 

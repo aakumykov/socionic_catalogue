@@ -7,11 +7,15 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.services.CardsSingleton;
 
 public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
     private iCardEdit3.View view;
+    private iCardsSingleton cardsService = CardsSingleton.getInstance();
 
 
     // Системные методы (условно)
@@ -40,12 +44,24 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         if (null == intent)
             throw new IllegalArgumentException("Intent is NULL");
 
-        Card card = intent.getParcelableExtra(Constants.CARD);
-        if (null == card)
-            throw new IllegalArgumentException("There is no Card in Intent");
+        String cardKey = intent.getStringExtra(Constants.CARD_KEY);
+        if (null == cardKey)
+            throw new IllegalArgumentException("There is no cardKey in Intent");
 
-        if (null != view)
-            view.displayCard(card);
+        cardsService.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
+
+            @Override
+            public void onCardLoadSuccess(Card card) {
+                if (null != view)
+                    view.displayCard(card);
+            }
+
+            @Override
+            public void onCardLoadFailed(String msg) {
+                if (null != view)
+                    view.showErrorMsg(R.string.CARD_EDIT_error_loading_card, msg);
+            }
+        });
     }
 
     @Override
