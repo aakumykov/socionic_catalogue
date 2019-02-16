@@ -4,11 +4,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
@@ -27,9 +29,12 @@ import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.YesNoDialog;
 
 public class CardEdit3_View extends BaseView implements
         iCardEdit3.View,
@@ -57,11 +62,15 @@ public class CardEdit3_View extends BaseView implements
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
+    @BindView(R.id.imageURL_hiddenField) TextView imageURL_hiddenField;
+    @BindView(R.id.videoCode_hiddenField) TextView videoCode_hiddenField;
+
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayer;
 
     private iCardEdit3.Presenter presenter;
     private boolean firstRun = true;
+    private boolean cancelledByUser = false;
 
 
     // Системные методы
@@ -95,6 +104,10 @@ public class CardEdit3_View extends BaseView implements
     @Override
     protected void onStop() {
         super.onStop();
+
+        if (cancelledByUser) presenter.clearEditState();
+        else presenter.saveEditState();
+
         presenter.unlinkView();
     }
 
@@ -108,10 +121,29 @@ public class CardEdit3_View extends BaseView implements
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                cancelEdit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed(); // Если не закомментировать, выходит, игнорируя диалог
+        cancelEdit();
+    }
+
 
     // Интерфейсные методы
     @Override
     public void displayCard(Card card) {
+        hideProgressBar();
+
         switch (card.getType()) {
             case Constants.TEXT_CARD:
                 displayQuote(card.getQuote(), card.getQuoteSource());
@@ -125,7 +157,38 @@ public class CardEdit3_View extends BaseView implements
             default:
                 showErrorMsg(R.string.wrong_card_type);
         }
+
         displayCommonCardParts(card);
+    }
+
+    @Override
+    public String getCardTitle() {
+        return titleInput.getText().toString();
+    }
+
+    @Override
+    public String getQuote() {
+        return quoteInput.getText().toString();
+    }
+
+    @Override
+    public String getQuoteSource() {
+        return quoteSourceInput.getText().toString();
+    }
+
+    @Override
+    public String getImageURL() {
+        return imageURL_hiddenField.getText().toString();
+    }
+
+    @Override
+    public String getVideoCode() {
+        return videoCode_hiddenField.getText().toString();
+    }
+
+    @Override
+    public String getDescription() {
+        return descriptionInput.getText().toString();
     }
 
 
@@ -143,7 +206,34 @@ public class CardEdit3_View extends BaseView implements
 
     @OnClick(R.id.cancelButton)
     void cancelEdit() {
+        MyDialogs.cancelEditDialog(
+                this,
+                R.string.CARD_EDIT_cancel_editing_title,
+                R.string.CARD_EDIT_cancel_editing_message,
+                new iMyDialogs.StandardCallbacks() {
+                    @Override
+                    public void onCancelInDialog() {
 
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        cancelledByUser = true;
+                        setResult(RESULT_CANCELED);
+                        finish();
+                    }
+                }
+        );
     }
 
 
@@ -174,7 +264,7 @@ public class CardEdit3_View extends BaseView implements
         MyUtils.show(quoteSourceInput);
     }
 
-    private void displayImage(String imageURL) {
+    private void displayImage(final String imageURL) {
 
         MyUtils.hide(imagePlaceholder);
         MyUtils.show(mediaThrobber);
@@ -184,6 +274,7 @@ public class CardEdit3_View extends BaseView implements
             public void onSuccess() {
                 MyUtils.hide(mediaThrobber);
                 MyUtils.show(imageView);
+                imageURL_hiddenField.setText(imageURL);
             }
 
             @Override
@@ -218,8 +309,9 @@ public class CardEdit3_View extends BaseView implements
                         youTubePlayer = initializedYouTubePlayer;
                         youTubePlayer.cueVideo(videoCode, 0.0f);
 
-                        MyUtils.hide(mediaThrobber);
+                        videoCode_hiddenField.setText(videoCode);
 
+                        MyUtils.hide(mediaThrobber);
                         MyUtils.show(videoPlayerHolder);
                         MyUtils.show(youTubePlayerView);
                         MyUtils.show(removeVideoButton);

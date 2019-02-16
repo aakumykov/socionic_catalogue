@@ -19,6 +19,21 @@ public class MyDialogs {
 
     public static final String TAG = "MyDialogs";
 
+    // Проверка
+    public static void dummyDialog(Activity activity, String title, String message) {
+        basicDialog(
+                activity,
+                title,
+                message,
+                R.string.yes,
+                null,
+                null,
+                null,
+                null,
+                null
+        ).show();
+    }
+
     // Отмена редактирования
     public static void cancelEditDialog(Activity activity, int titleId, int messageId, iMyDialogs.StandardCallbacks callbacks) {
 

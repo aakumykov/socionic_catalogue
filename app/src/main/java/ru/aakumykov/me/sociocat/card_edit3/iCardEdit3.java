@@ -11,6 +11,13 @@ public interface iCardEdit3 {
     interface View extends iBaseView {
         void displayCard(Card card);
 
+        String getCardTitle();
+        String getQuote();
+        String getQuoteSource();
+        String getImageURL();
+        String getVideoCode();
+        String getDescription();
+
 //        void showTitleError();
 //        void showQuoteError();
 //        void showQuoteSourceError();
@@ -24,6 +31,8 @@ public interface iCardEdit3 {
         void unlinkView();
 
         void processInputIntent(@Nullable Intent intent) throws Exception;
+        void saveEditState();
+        void clearEditState();
         void saveCard();
     }
 }
