@@ -3,7 +3,6 @@ package ru.aakumykov.me.sociocat.card_edit3;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.google.gson.Gson;
 
@@ -19,6 +18,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     private SharedPreferences sharedPreferences;
     private iCardsSingleton cardsService = CardsSingleton.getInstance();
     private Card currentCard;
+
 
     // Системные методы (условно)
     @Override
@@ -41,37 +41,22 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         if (null == intent)
             throw new IllegalArgumentException("Intent is NULL");
 
-        String cardKey = intent.getStringExtra(Constants.CARD_KEY);
-        if (null == cardKey)
-            throw new IllegalArgumentException("There is no cardKey in Intent");
-
-        if (null != view) {
-            view.showProgressBar();
-
-//            // Если есть редактируемая версия этой карточки, загружаю её
-//            if (hasSavedEditState()) {
-//                Card card = getSavedEditState();
-//                if (null != card && card.getKey().equals(cardKey)) {
-//                    currentCard = card;
-//                    view.displayCard(card);
-//                    return;
-//                }
-//            }
-
-            cardsService.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
-                @Override
-                public void onCardLoadSuccess(Card card) {
-                    currentCard = card;
-                    view.displayCard(card);
-                }
-
-                @Override
-                public void onCardLoadFailed(String msg) {
-                    if (null != view)
-                        view.showErrorMsg(R.string.CARD_EDIT_error_loading_card, msg);
-                }
-            });
+        String action = "" + intent.getAction();
+        switch (action) {
+            case Constants.ACTION_CREATE:
+                startCreateCard();
+                break;
+            case Constants.ACTION_EDIT:
+                startEditCard(intent);
+                break;
+            case Constants.ACTION_EDIT_RESUME:
+                resumeEditCard();
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown intent's action: '"+action+"'");
         }
+
+
     }
 
     @Override
@@ -102,8 +87,41 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
 
     // Внутренние методы
-    private boolean hasSavedEditState() {
-        return sharedPreferences.contains(Constants.CARD);
+    private void startCreateCard() {
+        currentCard = new Card();
+        if (null != view)
+            view.displayCard(currentCard);
+    }
+
+    private void startEditCard(Intent intent) {
+        String cardKey = intent.getStringExtra(Constants.CARD_KEY);
+        if (null == cardKey)
+            throw new IllegalArgumentException("There is no cardKey in Intent");
+
+        if (null != view) {
+            view.showProgressBar();
+
+            cardsService.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
+                @Override
+                public void onCardLoadSuccess(Card card) {
+                    currentCard = card;
+                    view.displayCard(card);
+                }
+
+                @Override
+                public void onCardLoadFailed(String msg) {
+                    if (null != view)
+                        view.showErrorMsg(R.string.CARD_EDIT_error_loading_card, msg);
+                }
+            });
+        }
+    }
+
+    private void resumeEditCard() {
+        if (null != view) {
+            currentCard = getSavedEditState();
+            view.displayCard(currentCard);
+        }
     }
 
     private Card getSavedEditState() {
