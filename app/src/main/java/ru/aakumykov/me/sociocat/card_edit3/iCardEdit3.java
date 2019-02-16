@@ -3,11 +3,12 @@ package ru.aakumykov.me.sociocat.card_edit3;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
+import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public interface iCardEdit3 {
 
-    interface View {
+    interface View extends iBaseView {
         void displayCard(Card card);
 
 //        void showTitleError();

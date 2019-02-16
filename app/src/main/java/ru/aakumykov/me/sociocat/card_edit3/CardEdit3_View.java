@@ -26,8 +26,8 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class CardEdit3_View extends BaseView implements iCardEdit3.View {
-
+public class CardEdit3_View extends BaseView implements iCardEdit3.View
+{
     @BindView(R.id.titleInput) EditText titleInput;
     @BindView(R.id.quoteInput) EditText quoteInput;
     @BindView(R.id.quoteSourceInput) EditText quoteSourceInput;

@@ -1,7 +1,10 @@
 package ru.aakumykov.me.sociocat.card_edit3;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
+
+import com.google.gson.Gson;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -20,6 +23,14 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     @Override
     public void unlinkView() {
         this.view = null;
+
+//        SharedPreferences sharedPreferences = view.getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//
+//        Gson gson = new Gson();
+//        String json = gson.toJson(currentCard);
+//        editor.putString(Constants.CARD, json);
+//        editor.apply();
     }
 
 
