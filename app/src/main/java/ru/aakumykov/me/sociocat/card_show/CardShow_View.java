@@ -43,6 +43,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
+import ru.aakumykov.me.sociocat.card_edit3.CardEdit3_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.comment.CommentsAdapter;
 import ru.aakumykov.me.sociocat.comment.iComments;
@@ -632,9 +633,13 @@ public class CardShow_View extends BaseView implements
 //        intent.putExtra(Constants.CARD_KEY, card_edit.getKey());
 //        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
 
-        Intent intent = new Intent(this, CardEdit_View.class);
-        intent.setAction(Constants.ACTION_EDIT);
-        intent.putExtra(Constants.CARD_KEY, card.getKey());
+//        Intent intent = new Intent(this, CardEdit_View.class);
+//        intent.setAction(Constants.ACTION_EDIT);
+//        intent.putExtra(Constants.CARD_KEY, card.getKey());
+//        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+
+        Intent intent = new Intent(this, CardEdit3_View.class);
+        intent.putExtra(Constants.CARD, card);
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 

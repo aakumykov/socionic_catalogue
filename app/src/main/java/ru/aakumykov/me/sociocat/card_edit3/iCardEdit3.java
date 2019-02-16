@@ -1,5 +1,8 @@
 package ru.aakumykov.me.sociocat.card_edit3;
 
+import android.content.Intent;
+import android.support.annotation.Nullable;
+
 import ru.aakumykov.me.sociocat.models.Card;
 
 public interface iCardEdit3 {
@@ -18,6 +21,8 @@ public interface iCardEdit3 {
     interface Presenter {
         void linkView(View view);
         void unlinkView();
+
+        void processInputIntent(@Nullable Intent intent) throws Exception;
         void saveCard();
     }
 }

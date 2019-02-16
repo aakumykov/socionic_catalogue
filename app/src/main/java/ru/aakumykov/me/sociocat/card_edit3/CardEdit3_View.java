@@ -24,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -48,6 +49,7 @@ public class CardEdit3_View extends BaseView implements iCardEdit3.View {
     private YouTubePlayer youTubePlayer;
 
     private iCardEdit3.Presenter presenter;
+    private boolean firstRun = true;
 
 
     // Системные методы
@@ -64,6 +66,16 @@ public class CardEdit3_View extends BaseView implements iCardEdit3.View {
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
+
+        if (firstRun) {
+            firstRun = false;
+            try {
+                presenter.processInputIntent(getIntent());
+            } catch (Exception e) {
+                showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -86,7 +98,20 @@ public class CardEdit3_View extends BaseView implements iCardEdit3.View {
     // Интерфейсные методы
     @Override
     public void displayCard(Card card) {
-
+        switch (card.getType()) {
+            case Constants.TEXT_CARD:
+                displayQuote(card.getQuote(), card.getQuoteSource());
+                break;
+            case Constants.IMAGE_CARD:
+                displayImage(card.getImageURL());
+                break;
+            case Constants.VIDEO_CARD:
+                displayVideo(card.getVideoCode());
+                break;
+            default:
+                showErrorMsg(R.string.wrong_card_type);
+        }
+        displayCommonCardParts(card);
     }
 
 
@@ -102,6 +127,9 @@ public class CardEdit3_View extends BaseView implements iCardEdit3.View {
         quoteInput.setText(quoteParts[0]);
         if (2 == quoteParts.length)
             quoteSourceInput.setText(quoteParts[1]);
+
+        MyUtils.show(quoteInput);
+        MyUtils.show(quoteSourceInput);
     }
 
     private void displayImage(String imageURL) {
@@ -146,6 +174,8 @@ public class CardEdit3_View extends BaseView implements iCardEdit3.View {
                     public void onReady() {
                         youTubePlayer = initializedYouTubePlayer;
                         youTubePlayer.cueVideo(videoCode, 0.0f);
+
+                        MyUtils.show(videoPlayerHolder);
                         MyUtils.show(youTubePlayerView);
                         MyUtils.show(removeVideoButton);
                     }
