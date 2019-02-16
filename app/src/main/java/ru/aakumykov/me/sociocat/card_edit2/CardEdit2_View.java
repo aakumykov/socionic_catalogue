@@ -127,7 +127,7 @@ public class CardEdit2_View extends BaseView implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        showToast("CardEdit2_View.destroy()");
+        showToast("CardEdit3_View.destroy()");
         if (null != youTubePlayerView)
             youTubePlayerView.release();
     }

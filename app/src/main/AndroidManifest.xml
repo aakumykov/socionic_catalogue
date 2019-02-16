@@ -115,6 +115,7 @@
 
         <activity android:name=".reset_password_step1.ResetPasswordStep1_View" />
         <activity android:name=".reset_password_step_2.ResetPasswordStep2_View" />
+        <activity android:name=".card_edit3.CardEdit3_View" />
 
     </application>
 
