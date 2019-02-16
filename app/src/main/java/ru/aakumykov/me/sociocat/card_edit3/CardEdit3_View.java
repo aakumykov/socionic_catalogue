@@ -2,11 +2,8 @@ package ru.aakumykov.me.sociocat.card_edit3;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -36,14 +33,18 @@ public class CardEdit3_View extends BaseView implements iCardEdit3.View {
     @BindView(R.id.quoteSourceInput) EditText quoteSourceInput;
     @BindView(R.id.descriptionInput) EditText descriptionInput;
 
+    @BindView(R.id.mediaThrobber) ProgressBar mediaThrobber;
+
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.imagePlaceholder) ImageView imagePlaceholder;
     @BindView(R.id.discardImageButton) ImageView discardImageButton;
-    @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
 
     @BindView(R.id.videoPlayerHolder) FrameLayout videoPlayerHolder;
     @BindView(R.id.removeVideoButton) Button removeVideoButton;
     @BindView(R.id.addVideoButton) Button addVideoButton;
+
+    @BindView(R.id.saveButton) Button saveButton;
+    @BindView(R.id.cancelButton) Button cancelButton;
 
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayer;
@@ -58,6 +59,8 @@ public class CardEdit3_View extends BaseView implements iCardEdit3.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_edit3_activity);
         ButterKnife.bind(this);
+
+        activateUpButton();
 
         presenter = new CardEdit3_Presenter();
     }
@@ -121,6 +124,11 @@ public class CardEdit3_View extends BaseView implements iCardEdit3.View {
 
     }
 
+    @OnClick(R.id.cancelButton)
+    void cancelEdit() {
+
+    }
+
 
     // Внутренние методы
     private void displayQuote(String... quoteParts) {
@@ -135,12 +143,12 @@ public class CardEdit3_View extends BaseView implements iCardEdit3.View {
     private void displayImage(String imageURL) {
 
         MyUtils.hide(imagePlaceholder);
-        MyUtils.show(imageProgressBar);
+        MyUtils.show(mediaThrobber);
 
         Picasso.get().load(imageURL).into(imageView, new Callback() {
             @Override
             public void onSuccess() {
-                MyUtils.hide(imageProgressBar);
+                MyUtils.hide(mediaThrobber);
                 MyUtils.show(imageView);
             }
 
@@ -156,6 +164,7 @@ public class CardEdit3_View extends BaseView implements iCardEdit3.View {
     private void displayVideo(final String videoCode) {
 
         MyUtils.hide(addVideoButton);
+        MyUtils.show(mediaThrobber);
 
         int playerWidth = MyUtils.getScreenWidth(this);
         int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9f/16f);
@@ -174,6 +183,8 @@ public class CardEdit3_View extends BaseView implements iCardEdit3.View {
                     public void onReady() {
                         youTubePlayer = initializedYouTubePlayer;
                         youTubePlayer.cueVideo(videoCode, 0.0f);
+
+                        MyUtils.hide(mediaThrobber);
 
                         MyUtils.show(videoPlayerHolder);
                         MyUtils.show(youTubePlayerView);
