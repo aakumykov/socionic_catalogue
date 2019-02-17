@@ -105,8 +105,8 @@ public class CardEdit3_View extends BaseView implements
     protected void onStop() {
         super.onStop();
 
-        if (cancelledByUser) presenter.clearEditState();
-        else presenter.saveEditState();
+//        if (cancelledByUser) presenter.clearEditState();
+//        else presenter.saveEditState();
 
         presenter.unlinkView();
     }
@@ -228,7 +228,7 @@ public class CardEdit3_View extends BaseView implements
 
                     @Override
                     public void onYesInDialog() {
-                        cancelledByUser = true;
+                        clearSharedPrefsData(getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT), Constants.CARD);
                         setResult(RESULT_CANCELED);
                         finish();
                     }
