@@ -33,13 +33,11 @@ import ru.aakumykov.me.sociocat.interfaces.iAuthStateListener;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
-import ru.aakumykov.me.sociocat.interfaces.iSharedPrefsSingleton;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.services.AuthSingleton;
 import ru.aakumykov.me.sociocat.services.AuthStateListener;
 import ru.aakumykov.me.sociocat.services.CardsSingleton;
-import ru.aakumykov.me.sociocat.services.SharedPrefsSingleton;
 import ru.aakumykov.me.sociocat.tags.list.TagsList_View;
 import ru.aakumykov.me.sociocat.users.show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
@@ -49,9 +47,9 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 {
     public static String PACKAGE_NAME;
     private final static String TAG = "BaseView";
-    private iCardsSingleton cardsService = CardsSingleton.getInstance();
-    private iAuthSingleton authService = AuthSingleton.getInstance();
-    private iSharedPrefsSingleton sharedPrefsService = SharedPrefsSingleton.getInstance();
+    private iCardsSingleton cardsService;
+    private iAuthSingleton authService;
+
 
     // Абстрактные методы
     public abstract void onUserLogin();
@@ -66,6 +64,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         PACKAGE_NAME = getApplicationContext().getPackageName();
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
+        // TODO: убрать вообще?
+        authService = AuthSingleton.getInstance();
+        cardsService = CardsSingleton.getInstance();
+        // TODO: storageSingleton
 
         // Слушатель изменений авторизации
         iAuthStateListener authStateListener = new AuthStateListener(new iAuthStateListener.StateChangeCallbacks() {
@@ -333,6 +336,18 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     public void startMyActivity(Intent intent) {
         startActivity(intent);
+    }
+
+    @Override
+    public SharedPreferences getSharedPrefs(String prefsName) {
+        return getSharedPreferences(prefsName, Context.MODE_PRIVATE);
+    }
+
+    @Override
+    public void clearSharedPrefsData(SharedPreferences sharedPreferences, String dataName) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(dataName);
+        editor.apply();
     }
 
     @Override

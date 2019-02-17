@@ -17,6 +17,9 @@ public interface iBaseView {
     Context getAppContext();
     void startMyActivity(Intent intent);
 
+    SharedPreferences getSharedPrefs(String prefsName);
+    void clearSharedPrefsData(SharedPreferences sharedPreferences, String dataName);
+
     void showProgressMessage(int messageId);
     void hideProgressMessage();
 
