@@ -50,7 +50,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
                 startEditCard(intent);
                 break;
             case Constants.ACTION_EDIT_RESUME:
-                resumeEditCard();
+                resumeEditCard(intent);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown intent's action: '"+action+"'");
@@ -75,9 +75,10 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
     @Override
     public void clearEditState() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove(Constants.CARD);
-        editor.apply();
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.remove(Constants.CARD);
+//        editor.apply();
+        view.clearSharedPrefsData(sharedPreferences, Constants.CARD);
     }
 
     @Override
@@ -117,24 +118,24 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         }
     }
 
-    private void resumeEditCard() {
-        if (null != view) {
-            currentCard = getSavedEditState();
-            view.displayCard(currentCard);
-            view.clearSharedPrefsData(sharedPreferences, Constants.CARD);
-        }
-    }
-
-    private Card getSavedEditState() {
+    private void resumeEditCard(Intent intent) {
         SharedPreferences sharedPreferences = view.getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT);
-
-        if (sharedPreferences.contains(Constants.CARD)) {
-            String json = sharedPreferences.getString(Constants.CARD,"");
-            return new Gson().fromJson(json, Card.class);
-        } else {
-            return null;
+        if (null != view) {
+            currentCard = intent.getParcelableExtra(Constants.CARD);
+            view.displayCard(currentCard);
         }
     }
+
+//    private Card getSavedEditState() {
+//        SharedPreferences sharedPreferences = view.getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT);
+//
+//        if (sharedPreferences.contains(Constants.CARD)) {
+//            String json = sharedPreferences.getString(Constants.CARD,"");
+//            return new Gson().fromJson(json, Card.class);
+//        } else {
+//            return null;
+//        }
+//    }
 
     private void updateCurrentCardFromView(){
         if (null != view) {

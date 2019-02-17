@@ -19,6 +19,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,6 +34,7 @@ import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.login.Login_View;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.services.AuthSingleton;
 import ru.aakumykov.me.sociocat.services.AuthStateListener;
 import ru.aakumykov.me.sociocat.services.CardsSingleton;
@@ -46,7 +49,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private final static String TAG = "BaseView";
     private iCardsSingleton cardsService;
     private iAuthSingleton authService;
-    private boolean unfinishedEditChecked = false;
 
 
     // Абстрактные методы
@@ -439,31 +441,45 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void checkUnfinishedEdit() {
         final SharedPreferences sharedPreferences = getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT);
 
-        if (sharedPreferences.contains(Constants.CARD) && !unfinishedEditChecked) {
-            MyDialogs.resumeCardEditDialog(this, new iMyDialogs.StandardCallbacks() {
-                @Override
-                public void onCancelInDialog() {
-                }
+        //Log.d("QWERTY", this.getClass().getSimpleName());
 
-                @Override
-                public void onNoInDialog() {
-                    unfinishedEditChecked = true;
-                    clearSharedPrefsData(sharedPreferences, Constants.CARD);
-                }
+        if (!getClass().getSimpleName().equals("CardEdit3_View")) {
 
-                @Override
-                public boolean onCheckInDialog() {
-                    return true;
-                }
+            if (sharedPreferences.contains(Constants.CARD)) {
 
-                @Override
-                public void onYesInDialog() {
-                    unfinishedEditChecked = true;
-                    Intent intent = new Intent(BaseView.this, CardEdit3_View.class);
-                    intent.setAction(Constants.ACTION_EDIT_RESUME);
-                    startActivity(intent);
-                }
-            });
+                MyDialogs.resumeCardEditDialog(this, new iMyDialogs.StandardCallbacks() {
+                    @Override
+                    public void onCancelInDialog() {
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+                        clearSharedPrefsData(sharedPreferences, Constants.CARD);
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        Card card = new Gson().fromJson(
+                                sharedPreferences.getString(Constants.CARD, ""),
+                                Card.class
+                        );
+
+                        clearSharedPrefsData(sharedPreferences, Constants.CARD);
+
+                        // TODO: проверить с NULL Card
+
+                        Intent intent = new Intent(BaseView.this, CardEdit3_View.class);
+                        intent.setAction(Constants.ACTION_EDIT_RESUME);
+                        intent.putExtra(Constants.CARD, card);
+                        startActivity(intent);
+                    }
+                });
+            }
         }
     }
 
