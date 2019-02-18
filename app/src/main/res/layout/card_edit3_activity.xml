@@ -60,33 +60,59 @@
             android:indeterminate="false"
             android:visibility="gone" />
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/imageHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:minHeight="100dp"
+            android:visibility="gone">
 
             <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
+                android:id="@+id/discardImageButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/card_image"
-                android:scaleType="centerInside"
-                android:visibility="gone" />
+                android:contentDescription="@string/discard_image_button"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imagePlaceholder"
+                app:srcCompat="@drawable/ic_close_rounded" />
 
             <ImageView
                 android:id="@+id/imagePlaceholder"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:layout_height="100dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_image_placeholder" />
 
             <ImageView
-                android:id="@+id/discardImageButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/discard_image_button"
-                android:visibility="gone" />
+                android:id="@+id/imageView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/card_image"
+                android:scaleType="centerInside"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_image" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/imageHolderOld"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
         </LinearLayout>
 

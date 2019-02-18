@@ -14,11 +14,6 @@ import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardTypeChooser extends BaseView {
 
-//    @BindView(R.id.textChooser) ImageView textChooser;
-//    @BindView(R.id.imageChooser) ImageView imageChooser;
-//    @BindView(R.id.youtubeChooser) ImageView youtubeChooser;
-//    @BindView(R.id.soundChooser) ImageView soundChooser;
-
     private Card card;
 
     @Override
@@ -26,6 +21,9 @@ public class CardTypeChooser extends BaseView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_type_chooser_activity);
         ButterKnife.bind(this);
+
+        setPageTitle(R.string.CARD_TYPE_CHOOSER_page_title);
+        activateUpButton();
 
         card = new Card();
     }

@@ -42,16 +42,21 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
             throw new IllegalArgumentException("Intent is NULL");
 
         String action = "" + intent.getAction();
+
         switch (action) {
+
             case Constants.ACTION_CREATE:
                 startCreateCard(intent);
                 break;
+
             case Constants.ACTION_EDIT:
                 startEditCard(intent);
                 break;
+
             case Constants.ACTION_EDIT_RESUME:
                 resumeEditCard(intent);
                 break;
+
             default:
                 throw new IllegalArgumentException("Unknown intent's action: '"+action+"'");
         }
@@ -105,6 +110,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
     // Внутренние методы
     private void startCreateCard(Intent data) {
+        // TODO: проверить с NULL
         Card card = data.getParcelableExtra(Constants.CARD);
         currentCard = card;
         if (null != view)

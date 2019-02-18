@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_4_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".card_type_chooser.CardTypeChooser"></activity>
+
         <activity
             android:name=".login.Login_View"
             android:noHistory="true" />
@@ -115,6 +115,7 @@
         <activity android:name=".reset_password_step1.ResetPasswordStep1_View" />
         <activity android:name=".reset_password_step_2.ResetPasswordStep2_View" />
         <activity android:name=".card_edit3.CardEdit3_View" />
+        <activity android:name=".card_type_chooser.CardTypeChooser" />
     </application>
 
 </manifest>

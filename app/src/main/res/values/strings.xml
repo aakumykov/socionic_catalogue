@@ -328,4 +328,5 @@
     <string name="CARD_EDIT_resume_dialog_message">Есть несохранённая карточка. Вернуться к редактированию?</string>
     <string name="EXTERNAL_DATA_RECIEVER_error_creating_card">Ошибка создания карточки</string>
     <string name="CARD_TYPE_CHOOSER_page_tip">Какую карточку вы хотите создать?</string>
+    <string name="CARD_TYPE_CHOOSER_page_title">Выбор типа карточки</string>
 </resources>

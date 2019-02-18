@@ -4,6 +4,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,6 +49,7 @@ public class CardEdit3_View extends BaseView implements
 
     @BindView(R.id.mediaThrobber) ProgressBar mediaThrobber;
 
+    @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.imagePlaceholder) ImageView imagePlaceholder;
     @BindView(R.id.discardImageButton) ImageView discardImageButton;
@@ -281,24 +284,30 @@ public class CardEdit3_View extends BaseView implements
 
     private void displayImage(final String imageURL) {
 
-        MyUtils.hide(imagePlaceholder);
-        MyUtils.show(mediaThrobber);
+        MyUtils.show(imageHolder);
 
-        Picasso.get().load(imageURL).into(imageView, new Callback() {
-            @Override
-            public void onSuccess() {
-                MyUtils.hide(mediaThrobber);
-                MyUtils.show(imageView);
-                imageURL_hiddenField.setText(imageURL);
-            }
+        if (TextUtils.isEmpty(imageURL)) {
+            MyUtils.show(imagePlaceholder);
+        }
+        else {
+            MyUtils.hide(imagePlaceholder);
+            MyUtils.show(mediaThrobber);
 
-            @Override
-            public void onError(Exception e) {
-                Drawable drawable = getResources().getDrawable(R.drawable.ic_image_broken);
-                imageView.setImageDrawable(drawable);
-            }
-        });
+            Picasso.get().load(imageURL).into(imageView, new Callback() {
+                @Override
+                public void onSuccess() {
+                    MyUtils.hide(mediaThrobber);
+                    MyUtils.show(imageView);
+                    imageURL_hiddenField.setText(imageURL);
+                }
 
+                @Override
+                public void onError(Exception e) {
+                    Drawable drawable = getResources().getDrawable(R.drawable.ic_image_broken);
+                    imageView.setImageDrawable(drawable);
+                }
+            });
+        }
     }
 
     private void displayVideo(final String videoCode) {
@@ -340,5 +349,9 @@ public class CardEdit3_View extends BaseView implements
         titleInput.setText(card.getTitle());
         descriptionInput.setText(card.getDescription());
         tagsContainer.setTags(new ArrayList<String>(card.getTags().keySet()));
+    }
+
+    private void showImageChooser() {
+        MyUtils.show(imagePlaceholder);
     }
 }
