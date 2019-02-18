@@ -104,6 +104,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         checkUnfinishedEdit();
     }
 
@@ -441,8 +446,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void checkUnfinishedEdit() {
         final SharedPreferences sharedPreferences = getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT);
 
-        //Log.d("QWERTY", this.getClass().getSimpleName());
-
         if (!getClass().getSimpleName().equals("CardEdit3_View")) {
 
             if (sharedPreferences.contains(Constants.CARD)) {
@@ -450,6 +453,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 MyDialogs.resumeCardEditDialog(this, new iMyDialogs.StandardCallbacks() {
                     @Override
                     public void onCancelInDialog() {
+                        checkUnfinishedEdit();
                     }
 
                     @Override

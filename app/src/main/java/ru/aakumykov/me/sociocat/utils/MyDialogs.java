@@ -396,6 +396,13 @@ public class MyDialogs {
             }
         });
 
+//        dialogBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//            @Override
+//            public void onDismiss(DialogInterface dialog) {
+//                Log.d("DISMISS","ИСЧЕЗНОВЕНИЕ");
+//            }
+//        });
+
         // Сообщение
         if (null != message)
                 dialogBuilder.setMessage(message);

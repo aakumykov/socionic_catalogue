@@ -322,4 +322,5 @@
     <string name="CARD_EDIT_cancel_editing_message">Abandon the changes and leave?</string>
     <string name="CARD_EDIT_resume_dialog_title">Resume editing?</string>
     <string name="CARD_EDIT_resume_dialog_message">Unsaved card detected. Return to editing?</string>
+    <string name="EXTERNAL_DATA_RECIEVER_error_creating_card">Error creating card</string>
 </resources>

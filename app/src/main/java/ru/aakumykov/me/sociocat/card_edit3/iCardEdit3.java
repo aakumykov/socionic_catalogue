@@ -32,6 +32,8 @@ public interface iCardEdit3 {
 
         void processInputIntent(@Nullable Intent intent) throws Exception;
         void saveEditState();
+        void restoreEditState();
+
         void clearEditState();
         void saveCard();
     }

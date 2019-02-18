@@ -227,7 +227,7 @@
     <string name="INFO_not_implemented_yet">Ещё не реализовано</string>
     <string name="CARD_EDIT_error_loading_tags_list">Ошибка получения списка меток</string>
     <string name="INFO_you_must_be_logged_in">Вы должны зайти в программу</string>
-    <string name="EXTERNAL_DATA_RECIEVER_page_title">Получатель внешних данных</string>
+    <string name="EXTERNAL_DATA_RECIEVER_page_title">О внешних данных</string>
     <string name="CARDS_LIST_loading_list">Загрузка списка карточек</string>
     <string name="CARDS_GRID_loading_cards">Загрузка карточек</string>
     <string name="CARDS_GRID_page_title">Карточки</string>
@@ -326,4 +326,5 @@
     <string name="CARD_EDIT_cancel_editing_message">Потерять изменения и уйти?</string>
     <string name="CARD_EDIT_resume_dialog_title">Продолжить редактирование?</string>
     <string name="CARD_EDIT_resume_dialog_message">Есть несохранённая карточка. Вернуться к редактированию?</string>
+    <string name="EXTERNAL_DATA_RECIEVER_error_creating_card">Ошибка создания карточки</string>
 </resources>

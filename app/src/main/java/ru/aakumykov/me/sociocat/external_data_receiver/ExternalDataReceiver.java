@@ -51,7 +51,12 @@ public class ExternalDataReceiver extends BaseView {
 
         switch (requestCode) {
             case Constants.CODE_CREATE_CARD:
-                processCardCreationResult(resultCode, data);
+                try {
+                    processCardCreationResult(resultCode, data);
+                } catch (Exception e) {
+                    showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_error_creating_card, e.getMessage());
+                    e.printStackTrace();
+                }
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
@@ -89,9 +94,6 @@ public class ExternalDataReceiver extends BaseView {
             finish();
             return;
         }
-
-//        data.setClass(this, CardShow_View.class);
-//        startActivity(data);
 
         Card card = data.getParcelableExtra(Constants.CARD);
         Intent intent = new Intent(this, CardShow_View.class);
