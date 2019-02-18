@@ -44,7 +44,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         String action = "" + intent.getAction();
         switch (action) {
             case Constants.ACTION_CREATE:
-                startCreateCard();
+                startCreateCard(intent);
                 break;
             case Constants.ACTION_EDIT:
                 startEditCard(intent);
@@ -104,8 +104,9 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
 
     // Внутренние методы
-    private void startCreateCard() {
-        currentCard = new Card();
+    private void startCreateCard(Intent data) {
+        Card card = data.getParcelableExtra(Constants.CARD);
+        currentCard = card;
         if (null != view)
             view.displayCard(currentCard);
     }

@@ -175,7 +175,7 @@
     <string name="CARD_EDIT_add_video">Add video</string>
     <string name="CARD_EDIT_page_title">Card edition</string>
     <string name="CARD_tags">Tags</string>
-    <string name="not_yet_implamented">Not yet implementer</string>
+    <string name="not_implemented_yet">Not yet implementer</string>
     <string name="CARD_EDIT_unsupported_card_type">Unsupported card type</string>
     <string name="CARD_EDIT_card_saved">Card saved</string>
     <string name="CARD_EDIT_error_saving_tags">Error saving tags</string>
@@ -323,4 +323,5 @@
     <string name="CARD_EDIT_resume_dialog_title">Resume editing?</string>
     <string name="CARD_EDIT_resume_dialog_message">Unsaved card detected. Return to editing?</string>
     <string name="EXTERNAL_DATA_RECIEVER_error_creating_card">Error creating card</string>
+    <string name="CARD_TYPE_CHOOSER_page_tip">What card you want to create?</string>
 </resources>

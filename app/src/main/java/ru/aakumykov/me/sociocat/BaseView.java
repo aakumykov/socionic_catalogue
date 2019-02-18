@@ -27,6 +27,7 @@ import java.util.Date;
 
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_edit3.CardEdit3_View;
+import ru.aakumykov.me.sociocat.card_type_chooser.CardTypeChooser;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iAuthStateListener;
@@ -357,9 +358,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public void goCreateCard() {
-        Intent intent = new Intent(this, CardEdit_View.class);
-        intent.setAction(Constants.ACTION_CREATE);
-        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+        Intent intent = new Intent(this, CardTypeChooser.class);
+//        intent.setAction(Constants.ACTION_CREATE);
+//        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+        startActivity(intent);
     }
 
     @Override

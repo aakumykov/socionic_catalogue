@@ -179,7 +179,7 @@
     <string name="CARD_EDIT_add_video">Добавить видео</string>
     <string name="CARD_EDIT_page_title">Правка карточки</string>
     <string name="CARD_tags">Метки</string>
-    <string name="not_yet_implamented">Ещё не реализовано</string>
+    <string name="not_implemented_yet">Ещё не реализовано</string>
     <string name="CARD_EDIT_unsupported_card_type">Неподдерживаемый тип карточки</string>
     <string name="CARD_EDIT_card_saved">Карточка сохранена</string>
     <string name="CARD_EDIT_error_saving_tags">Ошибка сохранения меток</string>
@@ -327,4 +327,5 @@
     <string name="CARD_EDIT_resume_dialog_title">Продолжить редактирование?</string>
     <string name="CARD_EDIT_resume_dialog_message">Есть несохранённая карточка. Вернуться к редактированию?</string>
     <string name="EXTERNAL_DATA_RECIEVER_error_creating_card">Ошибка создания карточки</string>
+    <string name="CARD_TYPE_CHOOSER_page_tip">Какую карточку вы хотите создать?</string>
 </resources>
