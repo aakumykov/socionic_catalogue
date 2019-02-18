@@ -10,6 +10,7 @@ public interface iCardEdit3 {
 
     interface View extends iBaseView {
         void displayCard(Card card);
+        void displayImage(String imageURI, boolean unprocessedYet);
 
         String getCardTitle();
         String getQuote();
@@ -31,10 +32,11 @@ public interface iCardEdit3 {
         void unlinkView();
 
         void processInputIntent(@Nullable Intent intent) throws Exception;
+        void processSelectedImage(int resultCode, @Nullable Intent intent) throws Exception;
+        void saveCard();
+
         void saveEditState();
         void restoreEditState();
-
         void clearEditState();
-        void saveCard();
     }
 }

@@ -1,11 +1,14 @@
 package ru.aakumykov.me.sociocat.card_edit3;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,11 +32,14 @@ import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.FileInfo;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.iMVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.YesNoDialog;
@@ -155,6 +161,24 @@ public class CardEdit3_View extends BaseView implements
         cancelEdit();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        presenter.linkView(this); // обязательно!!!
+
+        switch (requestCode) {
+            case Constants.CODE_SELECT_IMAGE:
+                try {
+                    presenter.processSelectedImage(resultCode, data);
+                } catch (Exception e) {
+                    showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
+                    e.printStackTrace();
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
 
     // Интерфейсные методы
     @Override
@@ -176,6 +200,44 @@ public class CardEdit3_View extends BaseView implements
         }
 
         displayCommonCardParts(card);
+    }
+
+    @Override
+    public void displayImage(String imageURI, boolean unprocessedYet) {
+
+        MyUtils.hide(imagePlaceholder);
+        MyUtils.hide(imageHolder);
+        MyUtils.show(mediaThrobber);
+
+        try {
+            Uri uri = Uri.parse(imageURI);
+
+            MVPUtils.loadImageWithResizeInto(
+                    uri,
+                    imageView,
+                    unprocessedYet,
+                    Config.MAX_CARD_IMAGE_WIDTH,
+                    Config.MAX_CARD_IMAGE_HEIGHT,
+                    new iMVPUtils.ImageLoadWithResizeCallbacks() {
+                        @Override
+                        public void onImageLoadWithResizeSuccess(FileInfo fileInfo) {
+                            MyUtils.hide(mediaThrobber);
+                            MyUtils.hide(imagePlaceholder);
+                            MyUtils.show(imageHolder);
+                            MyUtils.show(imageView);
+                            MyUtils.show(discardImageButton);
+                        }
+
+                        @Override
+                        public void onImageLoadWithResizeFail(String errorMsg) {
+                            showBrokenImage();
+                        }
+                    }
+            );
+
+        }catch (Exception e) {
+            showBrokenImage();
+        }
     }
 
     @Override
@@ -210,6 +272,24 @@ public class CardEdit3_View extends BaseView implements
 
 
     // Методы событий интерсейса
+    @OnClick(R.id.imagePlaceholder)
+    public void selectImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        if (null != intent.resolveActivity(getPackageManager())) {
+            startActivityForResult(
+                    Intent.createChooser(intent, getResources().getString(R.string.select_image)),
+                    Constants.CODE_SELECT_IMAGE
+            );
+        }
+        else {
+            showErrorMsg(R.string.CARD_EDIT_error_receiving_image,
+                    "Error resolving activity for Intent.ACTION_GET_CONTENT");
+        }
+    }
+
     @OnClick(R.id.addTagButton)
     void addTag() {
         String tag = MVPUtils.normalizeTag(newTagInput.getText().toString());
@@ -351,7 +431,9 @@ public class CardEdit3_View extends BaseView implements
         tagsContainer.setTags(new ArrayList<String>(card.getTags().keySet()));
     }
 
-    private void showImageChooser() {
-        MyUtils.show(imagePlaceholder);
+    private void showBrokenImage() {
+        MyUtils.hide(mediaThrobber);
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_image_broken);
+        imageView.setImageDrawable(drawable);
     }
 }

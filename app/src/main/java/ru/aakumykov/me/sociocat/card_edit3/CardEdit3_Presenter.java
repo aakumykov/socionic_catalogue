@@ -1,7 +1,10 @@
 package ru.aakumykov.me.sociocat.card_edit3;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,6 +16,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.services.CardsSingleton;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
@@ -62,6 +66,28 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         }
 
 
+    }
+
+    @Override
+    public void processSelectedImage(int resultCode, @Nullable Intent intent) throws Exception {
+        if (Activity.RESULT_OK != resultCode)
+            return;
+
+        if (null == intent)
+            throw new IllegalArgumentException("Intent is NULL");
+
+        Uri imageURI = intent.getParcelableExtra(Intent.EXTRA_STREAM); // Первый способ получить содержимое
+        if (null == imageURI) {
+            imageURI = intent.getData(); // Второй способ получить содержимое
+            if (null == imageURI) {
+                throw new Exception("Where is no image data in intent");
+            }
+        }
+
+        currentCard.setImageURL(""); // Стираю существующий ImageURL, так как выбрана новая картинка
+        String imageType = MyUtils.detectImageType(view.getAppContext(), imageURI);
+        view.showToast(imageType);
+        view.displayImage(imageURI.toString(), true);
     }
 
     @Override
