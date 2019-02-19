@@ -209,35 +209,50 @@ public class CardEdit3_View extends BaseView implements
         MyUtils.hide(imageHolder);
         MyUtils.show(mediaThrobber);
 
-        try {
-            Uri uri = Uri.parse(imageURI);
-
-            MVPUtils.loadImageWithResizeInto(
-                    uri,
-                    imageView,
-                    unprocessedYet,
-                    Config.MAX_CARD_IMAGE_WIDTH,
-                    Config.MAX_CARD_IMAGE_HEIGHT,
-                    new iMVPUtils.ImageLoadWithResizeCallbacks() {
-                        @Override
-                        public void onImageLoadWithResizeSuccess(FileInfo fileInfo) {
-                            MyUtils.hide(mediaThrobber);
-                            MyUtils.hide(imagePlaceholder);
-                            MyUtils.show(imageHolder);
-                            MyUtils.show(imageView);
-                            MyUtils.show(discardImageButton);
-                        }
-
-                        @Override
-                        public void onImageLoadWithResizeFail(String errorMsg) {
-                            showBrokenImage();
-                        }
+        Picasso.get().load(imageURI)
+                .into(imageView, new Callback() {
+                    @Override public void onSuccess() {
+                        MyUtils.hide(mediaThrobber);
+                        MyUtils.hide(imagePlaceholder);
+                        MyUtils.show(imageHolder);
+                        MyUtils.show(imageView);
+                        MyUtils.show(discardImageButton);
                     }
-            );
 
-        }catch (Exception e) {
-            showBrokenImage();
-        }
+                    @Override public void onError(Exception e) {
+                        showBrokenImage();
+                    }
+                });
+
+//        try {
+//            Uri uri = Uri.parse(imageURI);
+//
+//            MVPUtils.loadImageWithResizeInto(
+//                    uri,
+//                    imageView,
+//                    unprocessedYet,
+//                    Config.MAX_CARD_IMAGE_WIDTH,
+//                    Config.MAX_CARD_IMAGE_HEIGHT,
+//                    new iMVPUtils.ImageLoadWithResizeCallbacks() {
+//                        @Override
+//                        public void onImageLoadWithResizeSuccess(FileInfo fileInfo) {
+//                            MyUtils.hide(mediaThrobber);
+//                            MyUtils.hide(imagePlaceholder);
+//                            MyUtils.show(imageHolder);
+//                            MyUtils.show(imageView);
+//                            MyUtils.show(discardImageButton);
+//                        }
+//
+//                        @Override
+//                        public void onImageLoadWithResizeFail(String errorMsg) {
+//                            showBrokenImage();
+//                        }
+//                    }
+//            );
+//
+//        }catch (Exception e) {
+//            showBrokenImage();
+//        }
     }
 
     @Override
@@ -288,6 +303,14 @@ public class CardEdit3_View extends BaseView implements
             showErrorMsg(R.string.CARD_EDIT_error_receiving_image,
                     "Error resolving activity for Intent.ACTION_GET_CONTENT");
         }
+    }
+
+    @OnClick(R.id.discardImageButton)
+    void resetImage() {
+        imageView.setImageDrawable(null);
+        MyUtils.hide(imageView);
+        MyUtils.hide(discardImageButton);
+        MyUtils.show(imagePlaceholder);
     }
 
     @OnClick(R.id.addTagButton)
