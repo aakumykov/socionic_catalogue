@@ -86,11 +86,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".cards_grid.CardsGrid_View">
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
         <activity
             android:name=".dynamic_link_processor.DLP_View"
@@ -117,11 +117,11 @@
         <activity android:name=".card_type_chooser.CardTypeChooser" />
 
         <activity android:name=".HorizontalScrollActivity">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
     </application>
 

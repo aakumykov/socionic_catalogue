@@ -63,15 +63,14 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/imageHolder"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="200dp"
+            android:layout_height="300dp"
             android:visibility="gone">
 
             <ImageView
                 android:id="@+id/discardImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/discard_image_button"
+                android:scaleType="center"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -80,9 +79,7 @@
             <ImageView
                 android:id="@+id/imagePlaceholder"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_height="0dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:visibility="gone"
@@ -90,31 +87,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_image_placeholder" />
+                app:srcCompat="@drawable/ic_image" />
 
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_gravity="center_horizontal|center_vertical"
                 android:adjustViewBounds="true"
-                android:contentDescription="@string/card_image"
-                android:scaleType="centerInside"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_image" />
-
+                app:srcCompat="@drawable/aspect_logic" />
         </android.support.constraint.ConstraintLayout>
-
-        <LinearLayout
-            android:id="@+id/imageHolderOld"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/videoHolder"
