@@ -1,37 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:padding="8dp"
     tools:context=".HorizontalScrollActivity">
 
-    <include
-        layout="@layout/progress_and_message"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        <include
+            layout="@layout/progress_and_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <TextView
+            android:id="@+id/titleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Заголовок"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/imageView"
+        <TextView
+            android:id="@+id/quoteView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="Разработчики проекта Wine опубликовали первый публичный выпуск эмулятора Hangover, позволяющего запускать 32- и 64-разрядные Windows-приложения, собранные для архитектур x86 и x86_64, в окружениях Linux и Android на базе архитектуры ARM64 (Aarch64). Выпуск основан на кодовой базе Wine 4.0, что отражено в номере версии Hangover 0.4.0. Слой эмуляции базируется на наработках проекта QEMU."
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:visibility="invisible"
-                app:srcCompat="@drawable/aspect_emotion" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:background="@color/orange_swipe"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </HorizontalScrollView>
 
-    </HorizontalScrollView>
+        <TextView
+            android:id="@+id/descriptionView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="В отличие от запуска Wine с минимальным системным окружением при помощи QEMU в режиме эмуляции на уровне системных вызовов (используется одно ядро с основной системой), проект Hangover позволяет добиться существенно более высокой производительности. Ускорение достигается за счёт переноса слоя эмуляции на уровень API Win32/Win64, вместо эмуляции штатных системных вызовов с последующей эмуляцией на их основе API Win32/Win64."
+            android:textSize="18sp" />
 
-</LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
