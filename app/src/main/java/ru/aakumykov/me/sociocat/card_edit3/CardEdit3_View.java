@@ -1,6 +1,8 @@
 package ru.aakumykov.me.sociocat.card_edit3;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +26,8 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.Abstract
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -57,6 +61,7 @@ public class CardEdit3_View extends BaseView implements
     @BindView(R.id.mediaThrobber) ProgressBar mediaThrobber;
 
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
+    @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.imagePlaceholder) ImageView imagePlaceholder;
     @BindView(R.id.discardImageButton) ImageView discardImageButton;
@@ -71,9 +76,6 @@ public class CardEdit3_View extends BaseView implements
 
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
-
-    @BindView(R.id.imageURL_hiddenField) TextView imageURL_hiddenField;
-    @BindView(R.id.videoCode_hiddenField) TextView videoCode_hiddenField;
 
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayer;
@@ -90,6 +92,7 @@ public class CardEdit3_View extends BaseView implements
         setContentView(R.layout.card_edit3_activity);
         ButterKnife.bind(this);
 
+        setPageTitle(R.string.CARD_EDIT_page_title);
         activateUpButton();
 
         presenter = new CardEdit3_Presenter();
@@ -204,56 +207,33 @@ public class CardEdit3_View extends BaseView implements
     }
 
     @Override
-    public void displayImage(String imageURI, boolean unprocessedYet) {
+    public void displayImage(String imageURI) {
 
-        MyUtils.hide(imagePlaceholder);
-        MyUtils.hide(imageHolder);
-        MyUtils.show(mediaThrobber);
+        if (TextUtils.isEmpty(imageURI)) {
+            MyUtils.show(imageHolder);
+            MyUtils.show(imagePlaceholder);
+            MyUtils.hide(mediaThrobber);
+        }
+        else {
+            MyUtils.hide(imagePlaceholder);
+            MyUtils.hide(imageHolder);
+            MyUtils.show(mediaThrobber);
 
-        Picasso.get().load(imageURI)
-                .into(imageView, new Callback() {
-                    @Override public void onSuccess() {
-                        MyUtils.hide(mediaThrobber);
-                        MyUtils.hide(imagePlaceholder);
-                        MyUtils.show(imageHolder);
-                        MyUtils.show(imageView);
-                        MyUtils.show(discardImageButton);
-                    }
+            Picasso.get().load(imageURI)
+                    .into(imageView, new Callback() {
+                        @Override public void onSuccess() {
+                            MyUtils.hide(mediaThrobber);
+                            MyUtils.hide(imagePlaceholder);
+                            MyUtils.show(imageHolder);
+                            MyUtils.show(imageView);
+                            MyUtils.show(discardImageButton);
+                        }
 
-                    @Override public void onError(Exception e) {
-                        showBrokenImage();
-                    }
-                });
-
-//        try {
-//            Uri uri = Uri.parse(imageURI);
-//
-//            MVPUtils.loadImageWithResizeInto(
-//                    uri,
-//                    imageView,
-//                    unprocessedYet,
-//                    Config.MAX_CARD_IMAGE_WIDTH,
-//                    Config.MAX_CARD_IMAGE_HEIGHT,
-//                    new iMVPUtils.ImageLoadWithResizeCallbacks() {
-//                        @Override
-//                        public void onImageLoadWithResizeSuccess(FileInfo fileInfo) {
-//                            MyUtils.hide(mediaThrobber);
-//                            MyUtils.hide(imagePlaceholder);
-//                            MyUtils.show(imageHolder);
-//                            MyUtils.show(imageView);
-//                            MyUtils.show(discardImageButton);
-//                        }
-//
-//                        @Override
-//                        public void onImageLoadWithResizeFail(String errorMsg) {
-//                            showBrokenImage();
-//                        }
-//                    }
-//            );
-//
-//        }catch (Exception e) {
-//            showBrokenImage();
-//        }
+                        @Override public void onError(Exception e) {
+                            showBrokenImage();
+                        }
+                    });
+        }
     }
 
     @Override
@@ -272,18 +252,28 @@ public class CardEdit3_View extends BaseView implements
     }
 
     @Override
-    public String getImageURL() {
-        return imageURL_hiddenField.getText().toString();
-    }
-
-    @Override
-    public String getVideoCode() {
-        return videoCode_hiddenField.getText().toString();
+    public Bitmap getImageBitmap() {
+        return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
     }
 
     @Override
     public String getDescription() {
         return descriptionInput.getText().toString();
+    }
+
+    @Override public void showImageProgressBar() {
+        MyUtils.show(imageProgressBar);
+    }
+
+    @Override public void hideImageProgressBar() {
+        MyUtils.hide(imageProgressBar);
+    }
+
+    @Override public void finishEdit(Card card) {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.CARD, card);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
 
@@ -322,7 +312,12 @@ public class CardEdit3_View extends BaseView implements
 
     @OnClick(R.id.saveButton)
     void saveCard() {
-
+        try {
+            presenter.saveCard();
+        } catch (Exception e) {
+            showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @OnClick(R.id.cancelButton)
@@ -386,34 +381,6 @@ public class CardEdit3_View extends BaseView implements
         MyUtils.show(quoteSourceInput);
     }
 
-    private void displayImage(final String imageURL) {
-
-        MyUtils.show(imageHolder);
-
-        if (TextUtils.isEmpty(imageURL)) {
-            MyUtils.show(imagePlaceholder);
-        }
-        else {
-            MyUtils.hide(imagePlaceholder);
-            MyUtils.show(mediaThrobber);
-
-            Picasso.get().load(imageURL).into(imageView, new Callback() {
-                @Override
-                public void onSuccess() {
-                    MyUtils.hide(mediaThrobber);
-                    MyUtils.show(imageView);
-                    imageURL_hiddenField.setText(imageURL);
-                }
-
-                @Override
-                public void onError(Exception e) {
-                    Drawable drawable = getResources().getDrawable(R.drawable.ic_image_broken);
-                    imageView.setImageDrawable(drawable);
-                }
-            });
-        }
-    }
-
     private void displayVideo(final String videoCode) {
 
         MyUtils.hide(addVideoButton);
@@ -436,8 +403,6 @@ public class CardEdit3_View extends BaseView implements
                     public void onReady() {
                         youTubePlayer = initializedYouTubePlayer;
                         youTubePlayer.cueVideo(videoCode, 0.0f);
-
-                        videoCode_hiddenField.setText(videoCode);
 
                         MyUtils.hide(mediaThrobber);
                         MyUtils.show(videoPlayerHolder);

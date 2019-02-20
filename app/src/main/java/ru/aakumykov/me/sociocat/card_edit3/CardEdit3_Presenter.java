@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -11,11 +12,17 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import java.util.Date;
+
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
+import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.services.AuthSingleton;
 import ru.aakumykov.me.sociocat.services.CardsSingleton;
+import ru.aakumykov.me.sociocat.services.StorageSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardEdit3_Presenter implements iCardEdit3.Presenter {
@@ -23,8 +30,10 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     private iCardEdit3.View view;
     private SharedPreferences sharedPreferences;
     private iCardsSingleton cardsService = CardsSingleton.getInstance();
+    private iStorageSingleton storageService = StorageSingleton.getInstance();
+    private iAuthSingleton authService = AuthSingleton.getInstance();
     private Card currentCard;
-
+    private String imageType;
 
     // Системные методы (условно)
     @Override
@@ -85,9 +94,8 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         }
 
         currentCard.setImageURL(""); // Стираю существующий ImageURL, так как выбрана новая картинка
-        String imageType = MyUtils.detectImageType(view.getAppContext(), imageURI);
-        view.showToast(imageType);
-        view.displayImage(imageURI.toString(), true);
+        imageType = MyUtils.detectImageType(view.getAppContext(), imageURI);
+        view.displayImage(imageURI.toString());
     }
 
     @Override
@@ -129,8 +137,74 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     }
 
     @Override
-    public void saveCard() {
+    public void saveCard() throws Exception {
+        if (!formIsValid()) return;
 
+        // Сохраняю картинку, если ещё не сохранена
+        if (currentCard.isImageCard() && !currentCard.hasImageURL()) {
+
+            String fileName = currentCard.getKey() + "." + imageType;
+            Bitmap imageBitmap = view.getImageBitmap();
+
+            storageService.uploadImage(imageBitmap, imageType, fileName, new iStorageSingleton.FileUploadCallbacks() {
+
+                @Override public void onFileUploadProgress(int progress) {
+                    if (null != view)
+                        view.showImageProgressBar();
+                }
+
+                @Override public void onFileUploadSuccess(String fileName, String downloadURL) {
+                    if (null != view) {
+                        view.hideImageProgressBar();
+                        view.displayImage(downloadURL);
+                    }
+
+                    currentCard.setFileName(fileName);
+                    currentCard.setImageURL(downloadURL);
+
+                    try {
+                        saveCard();
+                    } catch (Exception e) {
+                        if (null != view) {
+                            view.showErrorMsg(R.string.CARD_EDIT_error_saving_card);
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override public void onFileUploadFail(String errorMsg) {
+                    view.hideImageProgressBar();
+                    if (null != view)
+                        view.showErrorMsg(R.string.CARD_EDIT_error_saving_image, errorMsg);
+                }
+
+                @Override public void onFileUploadCancel() {
+                    view.hideImageProgressBar();
+                    if (null != view)
+                        view.showErrorMsg(R.string.CARD_EDIT_image_upload_cancelled);
+                }
+            });
+        }
+        else {
+
+            updateCurrentCardFromView();
+
+            // TODO: нужна проверка на авторизованность!
+            currentCard.setUserId(authService.currentUserId());
+            currentCard.setUserName(authService.currentUserName());
+
+            cardsService.saveCard(currentCard, new iCardsSingleton.SaveCardCallbacks() {
+                @Override public void onCardSaveSuccess(Card card) {
+                    if (null != view)
+                        view.finishEdit(card);
+                }
+
+                @Override public void onCardSaveError(String message) {
+                    if (null != view)
+                        view.showErrorMsg(R.string.CARD_EDIT_error_saving_card, message);
+                }
+            });
+        }
     }
 
 
@@ -138,6 +212,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     private void startCreateCard(Intent data) {
         // TODO: проверить с NULL
         Card card = data.getParcelableExtra(Constants.CARD);
+        card.setKey(cardsService.createKey());
         currentCard = card;
         if (null != view)
             view.displayCard(currentCard);
@@ -175,27 +250,18 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         }
     }
 
-//    private Card getSavedEditState() {
-//        SharedPreferences sharedPreferences = view.getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT);
-//
-//        if (sharedPreferences.contains(Constants.CARD)) {
-//            String json = sharedPreferences.getString(Constants.CARD,"");
-//            return new Gson().fromJson(json, Card.class);
-//        } else {
-//            return null;
-//        }
-//    }
-
     private void updateCurrentCardFromView(){
         if (null != view) {
             currentCard.setTitle(view.getCardTitle());
             currentCard.setQuote(view.getQuote());
             currentCard.setQuoteSource(view.getQuoteSource());
-            currentCard.setImageURL(view.getImageURL());
-            currentCard.setVideoCode(view.getVideoCode());
             currentCard.setDescription(view.getDescription());
 
             //currentCard.setTags(view.getTags());
         }
+    }
+
+    private boolean formIsValid() {
+        return true;
     }
 }

@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.card_edit3;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
@@ -10,21 +11,18 @@ public interface iCardEdit3 {
 
     interface View extends iBaseView {
         void displayCard(Card card);
-        void displayImage(String imageURI, boolean unprocessedYet);
+        void displayImage(String imageURI);
 
         String getCardTitle();
         String getQuote();
         String getQuoteSource();
-        String getImageURL();
-        String getVideoCode();
+        Bitmap getImageBitmap();
         String getDescription();
 
-//        void showTitleError();
-//        void showQuoteError();
-//        void showQuoteSourceError();
-//        void showImageError();
-//        void showVideoError();
-//        void showDescriptionError();
+        void showImageProgressBar();
+        void hideImageProgressBar();
+
+        void finishEdit(Card card);
     }
 
     interface Presenter {
@@ -33,7 +31,7 @@ public interface iCardEdit3 {
 
         void processInputIntent(@Nullable Intent intent) throws Exception;
         void processSelectedImage(int resultCode, @Nullable Intent intent) throws Exception;
-        void saveCard();
+        void saveCard() throws Exception;
 
         void saveEditState();
         void restoreEditState();
