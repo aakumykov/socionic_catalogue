@@ -19,6 +19,9 @@ public interface iCardEdit3 {
         Bitmap getImageBitmap();
         String getDescription();
 
+        void disableForm();
+        void enableForm();
+
         void showImageProgressBar();
         void hideImageProgressBar();
 
@@ -31,6 +34,7 @@ public interface iCardEdit3 {
 
         void processInputIntent(@Nullable Intent intent) throws Exception;
         void processSelectedImage(int resultCode, @Nullable Intent intent) throws Exception;
+        void processVideo(String videoString);
         void saveCard() throws Exception;
 
         void saveEditState();

@@ -99,6 +99,11 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     }
 
     @Override
+    public void processVideo(String videoString) {
+
+    }
+
+    @Override
     public void saveEditState() {
         if (null != view) {
             updateCurrentCardFromView();
@@ -146,11 +151,15 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
             String fileName = currentCard.getKey() + "." + imageType;
             Bitmap imageBitmap = view.getImageBitmap();
 
+            if (null != view) {
+                view.disableForm();
+                view.showImageProgressBar();
+            }
+
             storageService.uploadImage(imageBitmap, imageType, fileName, new iStorageSingleton.FileUploadCallbacks() {
 
                 @Override public void onFileUploadProgress(int progress) {
-                    if (null != view)
-                        view.showImageProgressBar();
+
                 }
 
                 @Override public void onFileUploadSuccess(String fileName, String downloadURL) {
@@ -192,6 +201,9 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
             // TODO: нужна проверка на авторизованность!
             currentCard.setUserId(authService.currentUserId());
             currentCard.setUserName(authService.currentUserName());
+
+            if (null != view)
+                view.disableForm();
 
             cardsService.saveCard(currentCard, new iCardsSingleton.SaveCardCallbacks() {
                 @Override public void onCardSaveSuccess(Card card) {

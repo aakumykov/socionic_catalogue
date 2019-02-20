@@ -183,6 +183,12 @@ public class CardEdit3_View extends BaseView implements
         }
     }
 
+    @Override
+    public void showErrorMsg(int messageId, String consoleMessage) {
+        super.showErrorMsg(messageId, consoleMessage);
+        enableForm();
+    }
+
 
     // Интерфейсные методы
     @Override
@@ -259,6 +265,36 @@ public class CardEdit3_View extends BaseView implements
     @Override
     public String getDescription() {
         return descriptionInput.getText().toString();
+    }
+
+    @Override
+    public void disableForm() {
+        MyUtils.disable(titleInput);
+        MyUtils.disable(quoteInput);
+        MyUtils.disable(quoteSourceInput);
+
+        MyUtils.disable(discardImageButton);
+        MyUtils.disable(addVideoButton);
+        MyUtils.disable(removeVideoButton);
+
+        MyUtils.disable(descriptionInput);
+
+        MyUtils.disable(saveButton);
+    }
+
+    @Override
+    public void enableForm() {
+        MyUtils.enable(titleInput);
+        MyUtils.enable(quoteInput);
+        MyUtils.enable(quoteSourceInput);
+
+        MyUtils.enable(discardImageButton);
+        MyUtils.enable(addVideoButton);
+        MyUtils.enable(removeVideoButton);
+
+        MyUtils.enable(descriptionInput);
+
+        MyUtils.enable(saveButton);
     }
 
     @Override public void showImageProgressBar() {
