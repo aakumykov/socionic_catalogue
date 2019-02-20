@@ -19,6 +19,12 @@ public interface iCardEdit3 {
         Bitmap getImageBitmap();
         String getDescription();
 
+        void showTitleError(int msgId);
+        void showQuoteError(int msgId);
+        void showImageError(int msgId);
+        void showVideoError(int msgId);
+        void showDescriptionError(int msgId);
+
         void disableForm();
         void enableForm();
 

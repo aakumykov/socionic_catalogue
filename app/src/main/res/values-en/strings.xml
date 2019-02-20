@@ -328,4 +328,6 @@
     <string name="CARD_TYPE_CHOOSER_card_creation_cancelled">Card creation canceled</string>
     <string name="CARD_TYPE_CHOOSER_error_creating_card">Card creation error</string>
     <string name="unknown_rsult_code">Unknown result code</string>
+    <string name="CARD_EDIT_title_too_long">Title is too long</string>
+    <string name="CARD_EDIT_title_too_short">Title is too short</string>
 </resources>

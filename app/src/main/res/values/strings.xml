@@ -332,4 +332,6 @@
     <string name="CARD_TYPE_CHOOSER_card_creation_cancelled">Создание картоки отменено</string>
     <string name="CARD_TYPE_CHOOSER_error_creating_card">Ошибка создания карточки</string>
     <string name="unknown_rsult_code">Неизвестный код результата</string>
+    <string name="CARD_EDIT_title_too_long">Заголовок слишком длинный</string>
+    <string name="CARD_EDIT_title_too_short">Заголовок слишком короткий</string>
 </resources>

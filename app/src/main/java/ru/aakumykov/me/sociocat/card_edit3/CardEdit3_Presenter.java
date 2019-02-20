@@ -274,6 +274,25 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     }
 
     private boolean formIsValid() {
-        return true;
+        boolean valid = true;
+
+        String title = view.getCardTitle().trim();
+        if (TextUtils.isEmpty(title)) {
+            view.showTitleError(R.string.cannot_be_empty);
+            valid = false;
+        } else {
+            if (title.length() < Constants.TITLE_MIN_LENGTH) {
+                view.showTitleError(R.string.CARD_EDIT_title_too_short);
+                valid = false;
+            }
+            if (title.length() > Constants.TITLE_MAX_LENGTH) {
+                //int lengthOvershoot = title.length() - Constants.TITLE_MAX_LENGTH;
+                view.showTitleError(R.string.CARD_EDIT_title_too_long);
+                valid = false;
+            }
+        }
+
+
+        return valid;
     }
 }

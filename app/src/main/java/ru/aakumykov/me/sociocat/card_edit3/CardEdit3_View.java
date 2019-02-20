@@ -268,6 +268,31 @@ public class CardEdit3_View extends BaseView implements
     }
 
     @Override
+    public void showTitleError(int msgId) {
+        titleInput.setError(getResources().getString(msgId));
+    }
+
+    @Override
+    public void showQuoteError(int msgId) {
+        quoteInput.setError(getResources().getString(msgId));
+    }
+
+    @Override
+    public void showImageError(int msgId) {
+        showToast(msgId);
+    }
+
+    @Override
+    public void showVideoError(int msgId) {
+        showToast(msgId);
+    }
+
+    @Override
+    public void showDescriptionError(int msgId) {
+        descriptionInput.setError(getResources().getString(msgId));
+    }
+
+    @Override
     public void disableForm() {
         MyUtils.disable(titleInput);
         MyUtils.disable(quoteInput);
