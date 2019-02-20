@@ -329,4 +329,7 @@
     <string name="EXTERNAL_DATA_RECIEVER_error_creating_card">Ошибка создания карточки</string>
     <string name="CARD_TYPE_CHOOSER_page_tip">Какую карточку вы хотите создать?</string>
     <string name="CARD_TYPE_CHOOSER_page_title">Выбор типа карточки</string>
+    <string name="CARD_TYPE_CHOOSER_card_creation_cancelled">Создание картоки отменено</string>
+    <string name="CARD_TYPE_CHOOSER_error_creating_card">Ошибка создания карточки</string>
+    <string name="unknown_rsult_code">Неизвестный код результата</string>
 </resources>

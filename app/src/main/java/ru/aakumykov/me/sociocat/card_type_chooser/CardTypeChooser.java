@@ -10,6 +10,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit3.CardEdit3_View;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardTypeChooser extends BaseView {
@@ -30,7 +31,13 @@ public class CardTypeChooser extends BaseView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case Constants.CODE_CREATE_CARD:
+                processCardCreationResult(resultCode, data);
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 
@@ -73,5 +80,33 @@ public class CardTypeChooser extends BaseView {
         intent.setAction(Constants.ACTION_CREATE);
         intent.putExtra(Constants.CARD, card);
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+    }
+
+    private void processCardCreationResult(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+
+            case RESULT_OK:
+                if (null == data) {
+                    showErrorMsg(R.string.CARD_TYPE_CHOOSER_error_creating_card, "Intent is NULL");
+                    return;
+                } else {
+                    Card card = data.getParcelableExtra(Constants.CARD);
+                    if (null != card) {
+                        Intent intent = new Intent(this, CardShow_View.class);
+                        intent.putExtra(Constants.CARD_KEY, card.getKey());
+                        startActivity(intent);
+                    } else {
+                        showErrorMsg(R.string.CARD_TYPE_CHOOSER_error_creating_card, "Card is NULL");
+                    }
+                }
+                break;
+
+            case RESULT_CANCELED:
+                showInfoMsg(R.string.CARD_TYPE_CHOOSER_card_creation_cancelled);
+                return;
+
+            default:
+                showErrorMsg(R.string.unknown_rsult_code);
+        }
     }
 }

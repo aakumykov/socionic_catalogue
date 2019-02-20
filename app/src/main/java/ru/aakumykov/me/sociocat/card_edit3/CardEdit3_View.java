@@ -4,21 +4,17 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
@@ -26,8 +22,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.Abstract
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -37,17 +31,13 @@ import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.BaseView;
-import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.FileInfo;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.iMVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
-import ru.aakumykov.me.sociocat.utils.YesNoDialog;
 
 public class CardEdit3_View extends BaseView implements
         iCardEdit3.View,
@@ -82,7 +72,7 @@ public class CardEdit3_View extends BaseView implements
 
     private iCardEdit3.Presenter presenter;
     private boolean firstRun = true;
-    private boolean cancelledByUser = false;
+    private boolean finishIsExpected = false;
 
 
     // Системные методы
@@ -96,6 +86,7 @@ public class CardEdit3_View extends BaseView implements
         activateUpButton();
 
         presenter = new CardEdit3_Presenter();
+        tagsContainer.setOnTagClickListener(this);
     }
 
     @Override
@@ -117,7 +108,7 @@ public class CardEdit3_View extends BaseView implements
     @Override
     protected void onPause() {
         super.onPause();
-        if (!cancelledByUser) {
+        if (!finishIsExpected) {
             presenter.saveEditState();
         }
     }
@@ -132,7 +123,7 @@ public class CardEdit3_View extends BaseView implements
     protected void onStop() {
         super.onStop();
 
-//        if (cancelledByUser) presenter.clearEditState();
+//        if (finishIsExpected) presenter.clearEditState();
 //        else presenter.saveEditState();
 
         presenter.unlinkView();
@@ -309,6 +300,8 @@ public class CardEdit3_View extends BaseView implements
         Intent intent = new Intent();
         intent.putExtra(Constants.CARD, card);
         setResult(RESULT_OK, intent);
+
+        finishIsExpected = true;
         finish();
     }
 
@@ -343,7 +336,10 @@ public class CardEdit3_View extends BaseView implements
     @OnClick(R.id.addTagButton)
     void addTag() {
         String tag = MVPUtils.normalizeTag(newTagInput.getText().toString());
-        tagsContainer.addTag(tag);
+        if (!TextUtils.isEmpty(tag)) {
+            tagsContainer.addTag(tag);
+            newTagInput.setText("");
+        }
     }
 
     @OnClick(R.id.saveButton)
@@ -381,7 +377,7 @@ public class CardEdit3_View extends BaseView implements
                     @Override
                     public void onYesInDialog() {
                         clearSharedPrefsData(getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT), Constants.CARD);
-                        cancelledByUser = true;
+                        finishIsExpected = true;
                         setResult(RESULT_CANCELED);
                         finish();
                     }

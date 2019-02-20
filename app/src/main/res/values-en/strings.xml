@@ -325,4 +325,7 @@
     <string name="EXTERNAL_DATA_RECIEVER_error_creating_card">Error creating card</string>
     <string name="CARD_TYPE_CHOOSER_page_tip">What card you want to create?</string>
     <string name="CARD_TYPE_CHOOSER_page_title">Card type choose</string>
+    <string name="CARD_TYPE_CHOOSER_card_creation_cancelled">Card creation canceled</string>
+    <string name="CARD_TYPE_CHOOSER_error_creating_card">Card creation error</string>
+    <string name="unknown_rsult_code">Unknown result code</string>
 </resources>
