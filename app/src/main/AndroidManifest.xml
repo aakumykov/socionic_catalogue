@@ -113,7 +113,7 @@
         <activity android:name=".register.register_step_2.RegisterStep2_View" />
         <activity android:name=".reset_password_step1.ResetPasswordStep1_View" />
         <activity android:name=".reset_password_step_2.ResetPasswordStep2_View" />
-        <activity android:name=".card_edit3.CardEdit3_View" />
+        <activity android:name=".card_edit3.CardEdit3_View" android:windowSoftInputMode="stateHidden" />
         <activity android:name=".card_type_chooser.CardTypeChooser" />
 
         <activity android:name=".HorizontalScrollActivity">
