@@ -152,6 +152,8 @@ public class CardEdit3_View extends BaseView implements
             case android.R.id.home:
                 cancelEdit();
                 return true;
+            case R.id.actionSave:
+                saveCard();
             default:
                 return super.onOptionsItemSelected(item);
         }
