@@ -363,35 +363,38 @@ public class CardEdit3_View extends BaseView implements
 
     @OnClick(R.id.cancelButton)
     void cancelEdit() {
-        MyDialogs.cancelEditDialog(
-                this,
-                R.string.CARD_EDIT_cancel_editing_title,
-                R.string.CARD_EDIT_cancel_editing_message,
-                new iMyDialogs.StandardCallbacks() {
-                    @Override
-                    public void onCancelInDialog() {
+        if (formIsChanged()) {
+            MyDialogs.cancelEditDialog(
+                    this,
+                    R.string.CARD_EDIT_cancel_editing_title,
+                    R.string.CARD_EDIT_cancel_editing_message,
+                    new iMyDialogs.StandardCallbacks() {
+                        @Override
+                        public void onCancelInDialog() {
 
+                        }
+
+                        @Override
+                        public void onNoInDialog() {
+
+                        }
+
+                        @Override
+                        public boolean onCheckInDialog() {
+                            return true;
+                        }
+
+                        @Override
+                        public void onYesInDialog() {
+                            clearSharedPrefsData(getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT), Constants.CARD);
+                            gracefulExit();
+                        }
                     }
-
-                    @Override
-                    public void onNoInDialog() {
-
-                    }
-
-                    @Override
-                    public boolean onCheckInDialog() {
-                        return true;
-                    }
-
-                    @Override
-                    public void onYesInDialog() {
-                        clearSharedPrefsData(getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT), Constants.CARD);
-                        finishIsExpected = true;
-                        setResult(RESULT_CANCELED);
-                        finish();
-                    }
-                }
-        );
+            );
+        }
+        else {
+            gracefulExit();
+        }
     }
 
 
@@ -465,5 +468,22 @@ public class CardEdit3_View extends BaseView implements
         MyUtils.hide(mediaThrobber);
         Drawable drawable = getResources().getDrawable(R.drawable.ic_image_broken);
         imageView.setImageDrawable(drawable);
+    }
+
+    private boolean formIsChanged() {
+        boolean changed = false;
+        if (!TextUtils.isEmpty(getCardTitle())) changed = true;
+        if (!TextUtils.isEmpty(getQuote())) changed = true;
+        if (!TextUtils.isEmpty(getQuoteSource())) changed = true;
+        if (!TextUtils.isEmpty(getDescription())) changed = true;
+        if (tagsContainer.getTags().size() > 0) changed = true;
+        //if (null != imageView.getDrawable()) changed = true;
+        return changed;
+    }
+
+    private void gracefulExit() {
+        finishIsExpected = true;
+        setResult(RESULT_CANCELED);
+        finish();
     }
 }
