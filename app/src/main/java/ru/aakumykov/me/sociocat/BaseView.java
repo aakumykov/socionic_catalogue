@@ -286,6 +286,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override public void showToast(int stringResourceId, int gravity) {
         String msg = getString(stringResourceId);
+        showToastReal(this, msg, Toast.LENGTH_SHORT, gravity);
+    }
+
+    @Override public void showLongToast(int stringResourceId, int gravity) {
+        String msg = getString(stringResourceId);
         showToastReal(this, msg, Toast.LENGTH_LONG, gravity);
     }
 

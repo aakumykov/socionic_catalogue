@@ -170,6 +170,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
                     currentCard.setFileName(fileName);
                     currentCard.setImageURL(downloadURL);
+                    currentCard.clearLocalImageURI();
 
                     try {
                         saveCard();
@@ -313,27 +314,25 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         }
 
         // Описание
-        if (currentCard.isTextCard()) {
-            String description = view.getDescription().trim();
-            if (TextUtils.isEmpty(description)) {
-                view.showDescriptionError(R.string.cannot_be_empty);
+        String description = view.getDescription().trim();
+        if (TextUtils.isEmpty(description)) {
+            view.showDescriptionError(R.string.cannot_be_empty);
+            valid = false;
+        } else {
+            if (description.length() < Constants.DESCRIPTION_MIN_LENGTH) {
+                view.showDescriptionError(R.string.CARD_EDIT_description_too_short);
                 valid = false;
-            } else {
-                if (description.length() < Constants.DESCRIPTION_MIN_LENGTH) {
-                    view.showDescriptionError(R.string.CARD_EDIT_description_too_short);
-                    valid = false;
-                }
-                if (description.length() > Constants.DESCRIPTION_MAX_LENGTH) {
-                    //int lengthOvershoot = title.length() - Constants.TITLE_MAX_LENGTH;
-                    view.showDescriptionError(R.string.CARD_EDIT_description_too_long);
-                    valid = false;
-                }
+            }
+            if (description.length() > Constants.DESCRIPTION_MAX_LENGTH) {
+                //int lengthOvershoot = title.length() - Constants.TITLE_MAX_LENGTH;
+                view.showDescriptionError(R.string.CARD_EDIT_description_too_long);
+                valid = false;
             }
         }
 
         // Картинка
         if (currentCard.isImageCard()) {
-            boolean hasLocalImageURI = (null == currentCard.getLocalImageURI());
+            boolean hasLocalImageURI = (null != currentCard.getLocalImageURI());
             boolean hasRemoteImageURL = currentCard.hasImageURL();
 
             if (!hasLocalImageURI && !hasRemoteImageURL) {
