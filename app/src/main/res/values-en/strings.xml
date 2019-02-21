@@ -332,4 +332,6 @@
     <string name="CARD_EDIT_title_too_short">Title is too short</string>
     <string name="CARD_EDIT_quote_too_short">Quote too short</string>
     <string name="CARD_EDIT_quote_too_long">Quote too long</string>
+    <string name="CARD_EDIT_description_too_short">Description too short</string>
+    <string name="CARD_EDIT_description_too_long">Description too long</string>
 </resources>

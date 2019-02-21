@@ -276,6 +276,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     private boolean formIsValid() {
         boolean valid = true;
 
+        // Название
         String title = view.getCardTitle().trim();
         if (TextUtils.isEmpty(title)) {
             view.showTitleError(R.string.cannot_be_empty);
@@ -292,6 +293,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
             }
         }
 
+        // Цитата
         if (currentCard.isTextCard()) {
             String quote = view.getQuote().trim();
             if (TextUtils.isEmpty(quote)) {
@@ -309,6 +311,30 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
                 }
             }
         }
+
+        // Описание
+        if (currentCard.isTextCard()) {
+            String description = view.getDescription().trim();
+            if (TextUtils.isEmpty(description)) {
+                view.showDescriptionError(R.string.cannot_be_empty);
+                valid = false;
+            } else {
+                if (description.length() < Constants.DESCRIPTION_MIN_LENGTH) {
+                    view.showDescriptionError(R.string.CARD_EDIT_description_too_short);
+                    valid = false;
+                }
+                if (description.length() > Constants.DESCRIPTION_MAX_LENGTH) {
+                    //int lengthOvershoot = title.length() - Constants.TITLE_MAX_LENGTH;
+                    view.showDescriptionError(R.string.CARD_EDIT_description_too_long);
+                    valid = false;
+                }
+            }
+        }
+
+        // Картинка
+
+
+        // Видео
 
         return valid;
     }
