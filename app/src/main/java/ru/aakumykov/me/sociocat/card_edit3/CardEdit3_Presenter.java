@@ -292,6 +292,23 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
             }
         }
 
+        if (currentCard.isTextCard()) {
+            String quote = view.getQuote().trim();
+            if (TextUtils.isEmpty(quote)) {
+                view.showQuoteError(R.string.cannot_be_empty);
+                valid = false;
+            } else {
+                if (quote.length() < Constants.QUOTE_MIN_LENGTH) {
+                    view.showQuoteError(R.string.CARD_EDIT_quote_too_short);
+                    valid = false;
+                }
+                if (quote.length() > Constants.QUOTE_MAX_LENGTH) {
+                    //int lengthOvershoot = title.length() - Constants.TITLE_MAX_LENGTH;
+                    view.showQuoteError(R.string.CARD_EDIT_quote_too_long);
+                    valid = false;
+                }
+            }
+        }
 
         return valid;
     }

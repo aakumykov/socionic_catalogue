@@ -334,4 +334,6 @@
     <string name="unknown_rsult_code">Неизвестный код результата</string>
     <string name="CARD_EDIT_title_too_long">Заголовок слишком длинный</string>
     <string name="CARD_EDIT_title_too_short">Заголовок слишком короткий</string>
+    <string name="CARD_EDIT_quote_too_short">Цитата слишком короткая</string>
+    <string name="CARD_EDIT_quote_too_long">Цитата слишком длинная</string>
 </resources>
