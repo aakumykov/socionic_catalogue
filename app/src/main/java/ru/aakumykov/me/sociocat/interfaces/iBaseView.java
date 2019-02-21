@@ -32,6 +32,7 @@ public interface iBaseView {
     void showErrorMsg(int userMessageId, String consoleMessage);
 
     void showToast(int stringResourceId);
+    void showToast(int stringResourceId, int gravity);
     void showToast(String msg);
     void showLongToast(String msg);
 

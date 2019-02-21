@@ -284,6 +284,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         showToast(msg);
     }
 
+    @Override public void showToast(int stringResourceId, int gravity) {
+        String msg = getString(stringResourceId);
+        showToastReal(this, msg, Toast.LENGTH_LONG, gravity);
+    }
+
     @Override
     public void showToast(String msg) {
         showToastReal(this, msg, Toast.LENGTH_SHORT);
@@ -295,8 +300,12 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void showToastReal(Context context, String message, int length) {
+        showToastReal(context, message, length, Gravity.NO_GRAVITY);
+    }
+
+    private void showToastReal(Context context, String message, int length, int gravity) {
         Toast toast = Toast.makeText(context, message, length);
-//        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.setGravity(gravity, 0, 0);
         toast.show();
     }
 

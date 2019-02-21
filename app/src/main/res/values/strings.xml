@@ -338,4 +338,6 @@
     <string name="CARD_EDIT_quote_too_long">Цитата слишком длинная</string>
     <string name="CARD_EDIT_description_too_short">Описание слишком короткое</string>
     <string name="CARD_EDIT_description_too_long">Описание слишком длинное</string>
+    <string name="CARD_EDIT_you_must_select_image">Выберите картинку</string>
+    <string name="CARD_EDIT_image_error">Ошибка картинки</string>
 </resources>

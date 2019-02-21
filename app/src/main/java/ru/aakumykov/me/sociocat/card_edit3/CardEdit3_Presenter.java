@@ -1,19 +1,16 @@
 package ru.aakumykov.me.sociocat.card_edit3;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 
 import com.google.gson.Gson;
-
-import java.util.Date;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -95,6 +92,8 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         }
 
         currentCard.setImageURL(""); // Стираю существующий ImageURL, так как выбрана новая картинка
+        currentCard.setLocalImageURI(imageURI);
+
         imageType = MyUtils.detectImageType(view.getAppContext(), imageURI);
         view.displayImage(imageURI.toString());
     }
@@ -334,7 +333,18 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
         // Картинка
         if (currentCard.isImageCard()) {
+            boolean hasLocalImageURI = (null == currentCard.getLocalImageURI());
+            boolean hasRemoteImageURL = currentCard.hasImageURL();
 
+            if (!hasLocalImageURI && !hasRemoteImageURL) {
+                view.showToast(R.string.CARD_EDIT_you_must_select_image, Gravity.CENTER);
+                valid = false;
+            }
+
+            if (hasLocalImageURI && hasRemoteImageURL) {
+                view.showToast(R.string.CARD_EDIT_image_error, Gravity.CENTER);
+                valid = false;
+            }
         }
 
         // Видео

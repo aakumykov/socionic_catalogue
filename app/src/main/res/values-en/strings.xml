@@ -334,4 +334,6 @@
     <string name="CARD_EDIT_quote_too_long">Quote too long</string>
     <string name="CARD_EDIT_description_too_short">Description too short</string>
     <string name="CARD_EDIT_description_too_long">Description too long</string>
+    <string name="CARD_EDIT_you_must_select_image">You must select image</string>
+    <string name="CARD_EDIT_image_error">Image error</string>
 </resources>
