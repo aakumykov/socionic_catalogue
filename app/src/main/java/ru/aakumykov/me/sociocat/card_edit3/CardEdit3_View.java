@@ -11,6 +11,9 @@ import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -36,6 +39,7 @@ import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_edit.TagAutocompleteAdapter;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
@@ -64,7 +68,7 @@ public class CardEdit3_View extends BaseView implements
     @BindView(R.id.addVideoButton) Button addVideoButton;
 
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
-    @BindView(R.id.newTagInput) EditText newTagInput;
+    @BindView(R.id.newTagInput) AutoCompleteTextView newTagInput;
     @BindView(R.id.addTagButton) Button addTagButton;
 
     @BindView(R.id.saveButton) Button saveButton;
@@ -74,6 +78,7 @@ public class CardEdit3_View extends BaseView implements
     private YouTubePlayer youTubePlayer;
 
     private iCardEdit3.Presenter presenter;
+    private List<String> tagsList = new ArrayList<>();
     private boolean firstRun = true;
     private boolean finishIsExpected = false;
 
@@ -89,6 +94,9 @@ public class CardEdit3_View extends BaseView implements
         activateUpButton();
 
         presenter = new CardEdit3_Presenter();
+
+//        tagsList = new ArrayList<>();
+
         tagsContainer.setOnTagClickListener(this);
     }
 
@@ -101,6 +109,19 @@ public class CardEdit3_View extends BaseView implements
             firstRun = false;
             try {
                 presenter.processInputIntent(getIntent());
+                presenter.loadTagsList(new iCardEdit3.TagsListLoadCallbacks() {
+                    @Override
+                    public void onTagsListLoadSuccess(List<String> list) {
+                        tagsList.addAll(list);
+                        setTagAutocomplete();
+                    }
+
+                    @Override
+                    public void onTagsListLoadFail(String errorMsg) {
+                        showErrorMsg(R.string.CARD_EDIT_error_loading_tags_list, errorMsg);
+                    }
+                });
+
             } catch (Exception e) {
                 showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
                 e.printStackTrace();
@@ -398,12 +419,8 @@ public class CardEdit3_View extends BaseView implements
     }
 
     @OnClick(R.id.addTagButton)
-    void addTag() {
-        String tag = MVPUtils.normalizeTag(newTagInput.getText().toString());
-        if (!TextUtils.isEmpty(tag)) {
-            tagsContainer.addTag(tag);
-            newTagInput.setText("");
-        }
+    void addTagClicked() {
+        addTag(newTagInput.getText().toString());
     }
 
     @OnClick(R.id.saveButton)
@@ -471,6 +488,34 @@ public class CardEdit3_View extends BaseView implements
 
 
     // Внутренние методы
+    private void setTagAutocomplete() {
+        newTagInput.setThreshold(1);
+
+        TagAutocompleteAdapter tagAutocompleteAdapter = new TagAutocompleteAdapter(
+                this,
+                R.layout.tag_autocomplete_item,
+                tagsList
+        );
+
+        newTagInput.setAdapter(tagAutocompleteAdapter);
+
+        newTagInput.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                addTag(tagsList.get(position));
+                newTagInput.setText("");
+            }
+        });
+    }
+
+    private void addTag(String tag) {
+        tag = MVPUtils.normalizeTag(newTagInput.getText().toString());
+        if (!TextUtils.isEmpty(tag)) {
+            tagsContainer.addTag(tag);
+            newTagInput.setText("");
+        }
+    }
+
     private void displayQuote(String... quoteParts) {
         quoteInput.setText(quoteParts[0]);
         if (2 == quoteParts.length)

@@ -12,17 +12,20 @@ import android.view.Gravity;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_edit.iCardEdit;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.services.AuthSingleton;
 import ru.aakumykov.me.sociocat.services.CardsSingleton;
 import ru.aakumykov.me.sociocat.services.StorageSingleton;
@@ -80,6 +83,27 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         }
 
 
+    }
+
+    @Override
+    public void loadTagsList(final iCardEdit3.TagsListLoadCallbacks callbacks) {
+        tagsService.listTags(new iTagsSingleton.ListCallbacks() {
+
+            @Override
+            public void onTagsListSuccess(List<Tag> tagsList) {
+                List<String> list = new ArrayList<>();
+                for (int i=0; i<tagsList.size(); i++) {
+                    String tag = tagsList.get(i).getName();
+                    if (!list.contains(tag)) list.add(tag);
+                }
+                callbacks.onTagsListLoadSuccess(list);
+            }
+
+            @Override
+            public void onTagsListFail(String errorMsg) {
+                callbacks.onTagsListLoadFail(errorMsg);
+            }
+        });
     }
 
     @Override

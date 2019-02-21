@@ -12,6 +12,11 @@ import ru.aakumykov.me.sociocat.models.Card;
 
 public interface iCardEdit3 {
 
+    interface TagsListLoadCallbacks {
+        void onTagsListLoadSuccess(List<String> list);
+        void onTagsListLoadFail(String errorMsg);
+    }
+
     interface View extends iBaseView {
         void displayCard(Card card);
         void displayImage(String imageURI);
@@ -45,6 +50,8 @@ public interface iCardEdit3 {
         void unlinkView();
 
         void processInputIntent(@Nullable Intent intent) throws Exception;
+        void loadTagsList(TagsListLoadCallbacks callbacks);
+
         void processSelectedImage(int resultCode, @Nullable Intent intent) throws Exception;
         void processVideo(String videoString);
         void saveCard() throws Exception;
