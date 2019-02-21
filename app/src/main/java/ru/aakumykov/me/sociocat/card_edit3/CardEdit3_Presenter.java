@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -332,7 +333,9 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         }
 
         // Картинка
+        if (currentCard.isImageCard()) {
 
+        }
 
         // Видео
 
