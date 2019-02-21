@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 
+import com.mobsandgeeks.saripaar.Validator;
+
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 
@@ -34,7 +36,7 @@ public interface iCardEdit3 {
         void finishEdit(Card card);
     }
 
-    interface Presenter {
+    interface Presenter extends Validator.ValidationListener {
         void linkView(View view);
         void unlinkView();
 

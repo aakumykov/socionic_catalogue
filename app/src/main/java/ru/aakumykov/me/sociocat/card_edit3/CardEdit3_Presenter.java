@@ -9,10 +9,16 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
 
 import java.util.Date;
+import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -26,7 +32,6 @@ import ru.aakumykov.me.sociocat.services.StorageSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardEdit3_Presenter implements iCardEdit3.Presenter {
-
     private iCardEdit3.View view;
     private SharedPreferences sharedPreferences;
     private iCardsSingleton cardsService = CardsSingleton.getInstance();
@@ -45,6 +50,23 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     @Override
     public void unlinkView() {
         this.view = null;
+    }
+
+    @Override public void onValidationSucceeded() {
+        view.showToast("Заполнено правильно!");
+    }
+
+    @Override public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(view.getContext());
+
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                Toast.makeText(view.getContext(), message, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
 
@@ -276,39 +298,39 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     private boolean formIsValid() {
         boolean valid = true;
 
-        String title = view.getCardTitle().trim();
-        if (TextUtils.isEmpty(title)) {
-            view.showTitleError(R.string.cannot_be_empty);
-            valid = false;
-        } else {
-            if (title.length() < Constants.TITLE_MIN_LENGTH) {
-                view.showTitleError(R.string.CARD_EDIT_title_too_short);
-                valid = false;
-            }
-            if (title.length() > Constants.TITLE_MAX_LENGTH) {
-                //int lengthOvershoot = title.length() - Constants.TITLE_MAX_LENGTH;
-                view.showTitleError(R.string.CARD_EDIT_title_too_long);
-                valid = false;
-            }
-        }
+//        String title = view.getCardTitle().trim();
+//        if (TextUtils.isEmpty(title)) {
+//            view.showTitleError(R.string.cannot_be_empty);
+//            valid = false;
+//        } else {
+//            if (title.length() < Constants.TITLE_MIN_LENGTH) {
+//                view.showTitleError(R.string.CARD_EDIT_title_too_short);
+//                valid = false;
+//            }
+//            if (title.length() > Constants.TITLE_MAX_LENGTH) {
+//                //int lengthOvershoot = title.length() - Constants.TITLE_MAX_LENGTH;
+//                view.showTitleError(R.string.CARD_EDIT_title_too_long);
+//                valid = false;
+//            }
+//        }
 
-        if (currentCard.isTextCard()) {
-            String quote = view.getQuote().trim();
-            if (TextUtils.isEmpty(quote)) {
-                view.showQuoteError(R.string.cannot_be_empty);
-                valid = false;
-            } else {
-                if (quote.length() < Constants.QUOTE_MIN_LENGTH) {
-                    view.showQuoteError(R.string.CARD_EDIT_quote_too_short);
-                    valid = false;
-                }
-                if (quote.length() > Constants.QUOTE_MAX_LENGTH) {
-                    //int lengthOvershoot = title.length() - Constants.TITLE_MAX_LENGTH;
-                    view.showQuoteError(R.string.CARD_EDIT_quote_too_long);
-                    valid = false;
-                }
-            }
-        }
+//        if (currentCard.isTextCard()) {
+//            String quote = view.getQuote().trim();
+//            if (TextUtils.isEmpty(quote)) {
+//                view.showQuoteError(R.string.cannot_be_empty);
+//                valid = false;
+//            } else {
+//                if (quote.length() < Constants.QUOTE_MIN_LENGTH) {
+//                    view.showQuoteError(R.string.CARD_EDIT_quote_too_short);
+//                    valid = false;
+//                }
+//                if (quote.length() > Constants.QUOTE_MAX_LENGTH) {
+//                    //int lengthOvershoot = title.length() - Constants.TITLE_MAX_LENGTH;
+//                    view.showQuoteError(R.string.CARD_EDIT_quote_too_long);
+//                    valid = false;
+//                }
+//            }
+//        }
 
         return valid;
     }
