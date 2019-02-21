@@ -128,8 +128,6 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
                     view.displayCard(card);
                 }
             }
-        } else {
-            Log.d("qwerty", "123");
         }
     }
 
@@ -208,8 +206,10 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
             cardsService.saveCard(currentCard, new iCardsSingleton.SaveCardCallbacks() {
                 @Override public void onCardSaveSuccess(Card card) {
-                    if (null != view)
+                    if (null != view) {
+                        clearEditState();
                         view.finishEdit(card);
+                    }
                 }
 
                 @Override public void onCardSaveError(String message) {
@@ -347,6 +347,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         }
 
         // Видео
+
 
         return valid;
     }
