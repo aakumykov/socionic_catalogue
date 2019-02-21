@@ -31,6 +31,8 @@ public interface iCardEdit3 {
         void showImageProgressBar();
         void hideImageProgressBar();
 
+        boolean isFormFilled();
+
         void finishEdit(Card card);
     }
 

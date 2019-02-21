@@ -327,7 +327,7 @@
     <string name="CARD_EDIT_resume_dialog_title">Продолжить редактирование?</string>
     <string name="CARD_EDIT_resume_dialog_message">Есть несохранённая карточка. Вернуться к редактированию?</string>
     <string name="EXTERNAL_DATA_RECIEVER_error_creating_card">Ошибка создания карточки</string>
-    <string name="CARD_TYPE_CHOOSER_page_tip">Какую карточку вы хотите создать?</string>
+    <string name="CARD_TYPE_CHOOSER_page_tip">Какую карточку создать?</string>
     <string name="CARD_TYPE_CHOOSER_page_title">Выбор типа карточки</string>
     <string name="CARD_TYPE_CHOOSER_card_creation_cancelled">Создание картоки отменено</string>
     <string name="CARD_TYPE_CHOOSER_error_creating_card">Ошибка создания карточки</string>
@@ -340,4 +340,8 @@
     <string name="CARD_EDIT_description_too_long">Описание слишком длинное</string>
     <string name="CARD_EDIT_you_must_select_image">Выберите картинку</string>
     <string name="CARD_EDIT_image_error">Ошибка картинки</string>
+    <string name="CARD_TYPE_CHOOSER_image_card">С картинкой</string>
+    <string name="CARD_TYPE_CHOOSER_text_card">С цитатой</string>
+    <string name="CARD_TYPE_CHOOSER_video_card">С видео</string>
+    <string name="CARD_TYPE_CHOOSER_audio_card">Со звуком</string>
 </resources>

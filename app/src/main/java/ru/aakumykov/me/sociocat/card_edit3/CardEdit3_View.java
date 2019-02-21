@@ -322,15 +322,30 @@ public class CardEdit3_View extends BaseView implements
         MyUtils.enable(saveButton);
     }
 
-    @Override public void showImageProgressBar() {
+    @Override
+    public void showImageProgressBar() {
         MyUtils.show(imageProgressBar);
     }
 
-    @Override public void hideImageProgressBar() {
+    @Override
+    public void hideImageProgressBar() {
         MyUtils.hide(imageProgressBar);
     }
 
-    @Override public void finishEdit(Card card) {
+    @Override
+    public boolean isFormFilled() {
+        boolean changed = false;
+        if (!TextUtils.isEmpty(getCardTitle())) changed = true;
+        if (!TextUtils.isEmpty(getQuote())) changed = true;
+        if (!TextUtils.isEmpty(getQuoteSource())) changed = true;
+        if (!TextUtils.isEmpty(getDescription())) changed = true;
+        if (tagsContainer.getTags().size() > 0) changed = true;
+        //if (null != imageView.getDrawable()) changed = true;
+        return changed;
+    }
+
+    @Override
+    public void finishEdit(Card card) {
         Intent intent = new Intent();
         intent.putExtra(Constants.CARD, card);
         setResult(RESULT_OK, intent);
@@ -388,7 +403,7 @@ public class CardEdit3_View extends BaseView implements
 
     @OnClick(R.id.cancelButton)
     void cancelEdit() {
-        if (formIsChanged()) {
+        if (isFormFilled()) {
             MyDialogs.cancelEditDialog(
                     this,
                     R.string.CARD_EDIT_cancel_editing_title,
@@ -493,17 +508,6 @@ public class CardEdit3_View extends BaseView implements
         MyUtils.hide(mediaThrobber);
         Drawable drawable = getResources().getDrawable(R.drawable.ic_image_broken);
         imageView.setImageDrawable(drawable);
-    }
-
-    private boolean formIsChanged() {
-        boolean changed = false;
-        if (!TextUtils.isEmpty(getCardTitle())) changed = true;
-        if (!TextUtils.isEmpty(getQuote())) changed = true;
-        if (!TextUtils.isEmpty(getQuoteSource())) changed = true;
-        if (!TextUtils.isEmpty(getDescription())) changed = true;
-        if (tagsContainer.getTags().size() > 0) changed = true;
-        //if (null != imageView.getDrawable()) changed = true;
-        return changed;
     }
 
     private void gracefulExit() {
