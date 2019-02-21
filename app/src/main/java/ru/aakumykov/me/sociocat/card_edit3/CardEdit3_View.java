@@ -302,6 +302,8 @@ public class CardEdit3_View extends BaseView implements
         MyUtils.disable(addVideoButton);
         MyUtils.disable(removeVideoButton);
 
+        MyUtils.disable(newTagInput);
+        MyUtils.disable(addTagButton);
         MyUtils.disable(descriptionInput);
 
         MyUtils.disable(saveButton);
@@ -317,6 +319,8 @@ public class CardEdit3_View extends BaseView implements
         MyUtils.enable(addVideoButton);
         MyUtils.enable(removeVideoButton);
 
+        MyUtils.enable(newTagInput);
+        MyUtils.enable(addTagButton);
         MyUtils.enable(descriptionInput);
 
         MyUtils.enable(saveButton);
