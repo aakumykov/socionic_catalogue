@@ -12,24 +12,31 @@ import android.view.Gravity;
 
 import com.google.gson.Gson;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
+import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.services.AuthSingleton;
 import ru.aakumykov.me.sociocat.services.CardsSingleton;
 import ru.aakumykov.me.sociocat.services.StorageSingleton;
+import ru.aakumykov.me.sociocat.services.TagsSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
     private iCardEdit3.View view;
     private SharedPreferences sharedPreferences;
-    private iCardsSingleton cardsService = CardsSingleton.getInstance();
-    private iStorageSingleton storageService = StorageSingleton.getInstance();
     private iAuthSingleton authService = AuthSingleton.getInstance();
+    private iCardsSingleton cardsService = CardsSingleton.getInstance();
+    private iTagsSingleton tagsService = TagsSingleton.getInstance();
+    private iStorageSingleton storageService = StorageSingleton.getInstance();
     private Card currentCard;
     private String imageType;
 
@@ -269,8 +276,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
             currentCard.setQuote(view.getQuote());
             currentCard.setQuoteSource(view.getQuoteSource());
             currentCard.setDescription(view.getDescription());
-
-            //currentCard.setTags(view.getTags());
+            currentCard.setTags(view.getTags());
         }
     }
 

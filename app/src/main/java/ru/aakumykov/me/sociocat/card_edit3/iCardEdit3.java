@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 
+import java.util.HashMap;
+import java.util.List;
+
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 
@@ -18,6 +21,7 @@ public interface iCardEdit3 {
         String getQuoteSource();
         Bitmap getImageBitmap();
         String getDescription();
+        HashMap<String,Boolean> getTags();
 
         void showTitleError(int msgId);
         void showQuoteError(int msgId);

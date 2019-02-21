@@ -25,6 +25,8 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -265,6 +267,15 @@ public class CardEdit3_View extends BaseView implements
     @Override
     public String getDescription() {
         return descriptionInput.getText().toString();
+    }
+
+    @Override
+    public HashMap<String,Boolean> getTags() {
+        List<String> tagsList = tagsContainer.getTags();
+        HashMap<String,Boolean> tagsMap = new HashMap<>();
+        for(int i=0; i<tagsList.size(); i++)
+            tagsMap.put(tagsList.get(i), true);
+        return tagsMap;
     }
 
     @Override
