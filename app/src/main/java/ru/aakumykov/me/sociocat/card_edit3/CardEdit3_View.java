@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.Size;
 import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -18,12 +17,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.mobsandgeeks.saripaar.Validator;
-import com.mobsandgeeks.saripaar.annotation.Email;
-import com.mobsandgeeks.saripaar.annotation.Length;
-import com.mobsandgeeks.saripaar.annotation.NotEmpty;
-import com.mobsandgeeks.saripaar.annotation.Order;
-import com.mobsandgeeks.saripaar.annotation.Pattern;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
@@ -51,12 +44,7 @@ public class CardEdit3_View extends BaseView implements
         iCardEdit3.View,
         TagView.OnTagClickListener
 {
-    @BindView(R.id.titleInput)
-    @NotEmpty(sequence = 1, trim = true, messageResId = R.string.cannot_be_empty)
-    @Length(sequence = 2, trim = true, min = Constants.TITLE_MIN_LENGTH, max = Constants.TITLE_MAX_LENGTH, messageResId = R.string.CARD_EDIT_title_too_short)
-    @Order(1)
-    EditText titleInput;
-
+    @BindView(R.id.titleInput) EditText titleInput;
     @BindView(R.id.quoteInput) EditText quoteInput;
     @BindView(R.id.quoteSourceInput) EditText quoteSourceInput;
     @BindView(R.id.descriptionInput) EditText descriptionInput;
@@ -84,9 +72,9 @@ public class CardEdit3_View extends BaseView implements
     private YouTubePlayer youTubePlayer;
 
     private iCardEdit3.Presenter presenter;
-    private Validator validator;
     private boolean firstRun = true;
     private boolean finishIsExpected = false;
+
 
     // Системные методы
     @Override
@@ -98,13 +86,8 @@ public class CardEdit3_View extends BaseView implements
         setPageTitle(R.string.CARD_EDIT_page_title);
         activateUpButton();
 
-        tagsContainer.setOnTagClickListener(this);
-
         presenter = new CardEdit3_Presenter();
-
-        validator = new Validator(this);
-        validator.setValidationListener(presenter);
-        validator.setValidationMode(Validator.Mode.IMMEDIATE);
+        tagsContainer.setOnTagClickListener(this);
     }
 
     @Override
@@ -395,13 +378,12 @@ public class CardEdit3_View extends BaseView implements
 
     @OnClick(R.id.saveButton)
     void saveCard() {
-        validator.validate();
-//        try {
-//            presenter.saveCard();
-//        } catch (Exception e) {
-//            showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
-//            e.printStackTrace();
-//        }
+        try {
+            presenter.saveCard();
+        } catch (Exception e) {
+            showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @OnClick(R.id.cancelButton)
