@@ -390,6 +390,12 @@ public class CardEdit3_View extends BaseView implements
         finish();
     }
 
+    @Override
+    public void addTag(String tag) {
+        tagsContainer.addTag(tag);
+        newTagInput.setText("");
+    }
+
 
     // Методы событий интерсейса
     @OnClick(R.id.imagePlaceholder)
@@ -420,7 +426,7 @@ public class CardEdit3_View extends BaseView implements
 
     @OnClick(R.id.addTagButton)
     void addTagClicked() {
-        addTag(newTagInput.getText().toString());
+        presenter.processTag(newTagInput.getText().toString());
     }
 
     @OnClick(R.id.saveButton)
@@ -506,14 +512,6 @@ public class CardEdit3_View extends BaseView implements
                 newTagInput.setText("");
             }
         });
-    }
-
-    private void addTag(String tag) {
-        tag = MVPUtils.normalizeTag(newTagInput.getText().toString());
-        if (!TextUtils.isEmpty(tag)) {
-            tagsContainer.addTag(tag);
-            newTagInput.setText("");
-        }
     }
 
     private void displayQuote(String... quoteParts) {

@@ -43,6 +43,8 @@ public interface iCardEdit3 {
         boolean isFormFilled();
 
         void finishEdit(Card card);
+
+        void addTag(String tag);
     }
 
     interface Presenter {
@@ -51,6 +53,7 @@ public interface iCardEdit3 {
 
         void processInputIntent(@Nullable Intent intent) throws Exception;
         void loadTagsList(TagsListLoadCallbacks callbacks);
+        void processTag(String tag);
 
         void processSelectedImage(int resultCode, @Nullable Intent intent) throws Exception;
         void processVideo(String videoString);

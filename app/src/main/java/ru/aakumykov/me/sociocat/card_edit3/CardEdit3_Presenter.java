@@ -30,6 +30,7 @@ import ru.aakumykov.me.sociocat.services.AuthSingleton;
 import ru.aakumykov.me.sociocat.services.CardsSingleton;
 import ru.aakumykov.me.sociocat.services.StorageSingleton;
 import ru.aakumykov.me.sociocat.services.TagsSingleton;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardEdit3_Presenter implements iCardEdit3.Presenter {
@@ -104,6 +105,14 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
                 callbacks.onTagsListLoadFail(errorMsg);
             }
         });
+    }
+
+    @Override
+    public void processTag(String tag) {
+        tag = MVPUtils.normalizeTag(tag);
+        if (!TextUtils.isEmpty(tag)) {
+            view.addTag(tag);
+        }
     }
 
     @Override
