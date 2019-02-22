@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -98,6 +100,8 @@ public class CardEdit3_View extends BaseView implements
 //        tagsList = new ArrayList<>();
 
         tagsContainer.setOnTagClickListener(this);
+
+        setTagWatcher();
     }
 
     @Override
@@ -572,5 +576,32 @@ public class CardEdit3_View extends BaseView implements
         finishIsExpected = true;
         setResult(RESULT_CANCELED);
         finish();
+    }
+
+    private void setTagWatcher() {
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String text = s.toString();
+                int commaIndex = text.toString().indexOf(",");
+                if (commaIndex > -1) {
+                    String tag = text.substring(0, commaIndex);
+                    presenter.processTag(tag);
+                    String restText = text.substring(commaIndex+1, text.length());
+                    newTagInput.setText(restText);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        };
+
+        newTagInput.addTextChangedListener(textWatcher);
     }
 }
