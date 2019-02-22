@@ -137,7 +137,9 @@ public class CardEdit3_View extends BaseView implements
     protected void onPause() {
         super.onPause();
         if (!finishIsExpected) {
-            presenter.saveEditState();
+            if (isFormFilled()) {
+                presenter.saveEditState();
+            }
         }
     }
 
