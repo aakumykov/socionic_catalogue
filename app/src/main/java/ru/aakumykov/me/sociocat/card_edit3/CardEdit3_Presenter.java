@@ -180,8 +180,10 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     }
 
     @Override
-    public void saveCard() throws Exception {
-        if (!formIsValid()) return;
+    public void saveCard(boolean validateFirst) throws Exception {
+        if (validateFirst) {
+            if (!formIsValid()) return;
+        }
 
         // Сохраняю картинку, если ещё не сохранена
         if (currentCard.isImageCard() && !currentCard.hasImageURL()) {
@@ -211,7 +213,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
                     currentCard.clearLocalImageURI();
 
                     try {
-                        saveCard();
+                        saveCard(false);
                     } catch (Exception e) {
                         if (null != view) {
                             view.showErrorMsg(R.string.CARD_EDIT_error_saving_card);

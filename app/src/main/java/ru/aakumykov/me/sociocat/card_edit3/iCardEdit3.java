@@ -57,7 +57,7 @@ public interface iCardEdit3 {
 
         void processSelectedImage(int resultCode, @Nullable Intent intent) throws Exception;
         void processVideo(String videoString);
-        void saveCard() throws Exception;
+        void saveCard(boolean validateFirst) throws Exception;
 
         void saveEditState();
         void restoreEditState();

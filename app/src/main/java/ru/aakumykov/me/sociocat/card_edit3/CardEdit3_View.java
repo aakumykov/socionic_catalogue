@@ -29,6 +29,8 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubeP
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +44,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.TagAutocompleteAdapter;
+import ru.aakumykov.me.sociocat.card_edit.iCardEdit;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
@@ -437,12 +440,38 @@ public class CardEdit3_View extends BaseView implements
 
     @OnClick(R.id.saveButton)
     void saveCard() {
-        try {
-            presenter.saveCard();
-        } catch (Exception e) {
-            showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
-            e.printStackTrace();
+        final String tag = newTagInput.getText().toString();
+
+        if (TextUtils.isEmpty(tag)) {
+            saveCardReal();
+            return;
         }
+
+        MyDialogs.forgottenTagDialog(
+                this,
+                getString(R.string.CARD_EDIT_forgotten_tag_dialog_message, tag),
+                new iMyDialogs.StandardCallbacks() {
+                    @Override
+                    public void onCancelInDialog() {
+                        saveCardReal();
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+                        saveCardReal();
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        presenter.processTag(tag);
+                        saveCardReal();
+                    }
+                });
     }
 
     @OnClick(R.id.cancelButton)
@@ -605,5 +634,14 @@ public class CardEdit3_View extends BaseView implements
         };
 
         newTagInput.addTextChangedListener(textWatcher);
+    }
+
+    private void saveCardReal() {
+        try {
+            presenter.saveCard(true);
+        } catch (Exception e) {
+            showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
