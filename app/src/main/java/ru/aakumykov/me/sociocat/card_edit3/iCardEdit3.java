@@ -19,7 +19,7 @@ public interface iCardEdit3 {
 
     interface View extends iBaseView {
         void displayCard(Card card);
-        void displayImage(String imageURI);
+        void displayImage(String imageURL);
 
         String getCardTitle();
         String getQuote();

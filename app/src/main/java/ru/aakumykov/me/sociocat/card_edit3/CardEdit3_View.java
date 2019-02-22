@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.support.constraint.ConstraintLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,6 +80,8 @@ public class CardEdit3_View extends BaseView implements
 
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
+
+    private static final String TAG = "CardEdit3_View";
 
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayer;
@@ -232,7 +236,7 @@ public class CardEdit3_View extends BaseView implements
                 displayQuote(card.getQuote(), card.getQuoteSource());
                 break;
             case Constants.IMAGE_CARD:
-                displayImage(card.getImageURL());
+                displayCardImage(card);
                 break;
             case Constants.VIDEO_CARD:
                 displayVideo(card.getVideoCode());
@@ -245,9 +249,9 @@ public class CardEdit3_View extends BaseView implements
     }
 
     @Override
-    public void displayImage(String imageURI) {
+    public void displayImage(String imageURL) {
 
-        if (TextUtils.isEmpty(imageURI)) {
+        if (!TextUtils.isEmpty(imageURL)) {
             MyUtils.show(imageHolder);
             MyUtils.show(imagePlaceholder);
             MyUtils.hide(mediaThrobber);
@@ -257,7 +261,7 @@ public class CardEdit3_View extends BaseView implements
             MyUtils.hide(imageHolder);
             MyUtils.show(mediaThrobber);
 
-            Picasso.get().load(imageURI)
+            Picasso.get().load(imageURL)
                     .into(imageView, new Callback() {
                         @Override public void onSuccess() {
                             MyUtils.hide(mediaThrobber);
@@ -646,6 +650,28 @@ public class CardEdit3_View extends BaseView implements
         } catch (Exception e) {
             showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    private void displayCardImage(Card card) {
+
+        Uri imageURI = null;
+
+        if (card.hasImageURL()) {
+            String imageURL = card.getImageURL();
+            try {
+                imageURI = Uri.parse(imageURL);
+            } catch (Exception e) {
+                Log.w(TAG, "Cannot parse imageURL");
+                e.printStackTrace();
+            }
+        } else {
+            imageURI = card.getLocalImageURI();
+        }
+
+
+        if (null != imageURI) {
+
         }
     }
 }
