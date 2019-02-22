@@ -79,6 +79,4 @@ public final class Constants {
 
     public final static String KEY_LAST_LOGIN = "KEY_LAST_LOGIN";
 
-    // Используется для сохранения/восстановления состояния редактирования карточки
-    public final static String LOCAL_IMAGE_URI = "LOCAL_IMAGE_URI";
 }

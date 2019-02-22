@@ -35,7 +35,6 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
-    private static final String TAG = "CardEdit3_Presenter";
     private iCardEdit3.View view;
     private SharedPreferences sharedPreferences;
     private iAuthSingleton authService = AuthSingleton.getInstance();
@@ -154,7 +153,6 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
             Gson gson = new Gson();
             String json = gson.toJson(currentCard);
             editor.putString(Constants.CARD, json);
-            editor.putString(Constants.LOCAL_IMAGE_URI, currentCard.getLocalImageURI().toString());
             editor.apply();
         }
     }
@@ -162,22 +160,10 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     @Override
     public void restoreEditState() {
         if (sharedPreferences.contains(Constants.CARD)) {
-
             String json = sharedPreferences.getString(Constants.CARD, "");
-            String localImageURI_string = sharedPreferences.getString(Constants.LOCAL_IMAGE_URI, "");
-
             if (!TextUtils.isEmpty(json)) {
                 Card card = new Gson().fromJson(json, Card.class);
                 if (null != card) {
-
-                    try {
-                        Uri uri = Uri.parse(localImageURI_string);
-                        card.setLocalImageURI(uri);
-                    } catch (Exception e) {
-                        Log.w(TAG, "Cannot parse local image URI");
-                        e.printStackTrace();
-                    }
-
                     currentCard = card;
                     view.displayCard(card);
                 }
@@ -219,7 +205,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
                 @Override public void onFileUploadSuccess(String fileName, String downloadURL) {
                     if (null != view) {
                         view.hideImageProgressBar();
-                        //view.displayImage(downloadURL);
+                        view.displayImage(downloadURL);
                     }
 
                     currentCard.setFileName(fileName);
