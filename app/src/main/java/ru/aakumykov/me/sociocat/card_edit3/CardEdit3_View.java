@@ -348,6 +348,8 @@ public class CardEdit3_View extends BaseView implements
         MyUtils.disable(descriptionInput);
 
         MyUtils.disable(saveButton);
+
+        tagsContainer.setOnTagClickListener(null);
     }
 
     @Override
@@ -365,6 +367,8 @@ public class CardEdit3_View extends BaseView implements
         MyUtils.enable(descriptionInput);
 
         MyUtils.enable(saveButton);
+
+        tagsContainer.setOnTagClickListener(this);
     }
 
     @Override
