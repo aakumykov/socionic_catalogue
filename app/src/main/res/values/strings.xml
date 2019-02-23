@@ -344,4 +344,5 @@
     <string name="CARD_TYPE_CHOOSER_text_card">С цитатой</string>
     <string name="CARD_TYPE_CHOOSER_video_card">С видео</string>
     <string name="CARD_TYPE_CHOOSER_audio_card">Со звуком</string>
+    <string name="CARD_EDIT_adding_video">Добавляем видео</string>
 </resources>

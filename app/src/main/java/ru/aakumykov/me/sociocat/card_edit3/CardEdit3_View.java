@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
@@ -28,8 +29,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.Abstract
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,15 +39,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
-import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.TagAutocompleteAdapter;
-import ru.aakumykov.me.sociocat.card_edit.iCardEdit;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -70,6 +66,7 @@ public class CardEdit3_View extends BaseView implements
     @BindView(R.id.imagePlaceholder) ImageView imagePlaceholder;
     @BindView(R.id.discardImageButton) ImageView discardImageButton;
 
+    @BindView(R.id.videoMessage) TextView videoMessage;
     @BindView(R.id.videoPlayerHolder) FrameLayout videoPlayerHolder;
     @BindView(R.id.removeVideoButton) Button removeVideoButton;
     @BindView(R.id.addVideoButton) Button addVideoButton;
@@ -277,6 +274,47 @@ public class CardEdit3_View extends BaseView implements
     }
 
     @Override
+    public void displayVideo(final String videoCode) {
+
+        if (TextUtils.isEmpty(videoCode)) {
+            MyUtils.show(addVideoButton);
+            return;
+        }
+
+        MyUtils.hide(addVideoButton);
+        MyUtils.show(mediaThrobber);
+        MyUtils.show(videoMessage);
+
+        int playerWidth = MyUtils.getScreenWidth(this);
+        int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9f / 16f);
+
+        youTubePlayerView = new YouTubePlayerView(this);
+        youTubePlayerView.setMinimumWidth(playerWidth);
+        youTubePlayerView.setMinimumHeight(playerHeight);
+
+        videoPlayerHolder.addView(youTubePlayerView);
+
+        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
+            @Override
+            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
+                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady() {
+                        youTubePlayer = initializedYouTubePlayer;
+                        youTubePlayer.cueVideo(videoCode, 0.0f);
+
+                        MyUtils.hide(mediaThrobber);
+                        MyUtils.hide(videoMessage);
+                        MyUtils.show(videoPlayerHolder);
+                        MyUtils.show(youTubePlayerView);
+                        MyUtils.show(removeVideoButton);
+                    }
+                });
+            }
+        }, true);
+    }
+
+    @Override
     public String getCardTitle() {
         return titleInput.getText().toString();
     }
@@ -391,7 +429,8 @@ public class CardEdit3_View extends BaseView implements
         if (!TextUtils.isEmpty(getQuoteSource())) changed = true;
         if (!TextUtils.isEmpty(getDescription())) changed = true;
         if (tagsContainer.getTags().size() > 0) changed = true;
-        //if (null != imageView.getDrawable()) changed = true;
+        if (View.VISIBLE == videoPlayerHolder.getVisibility()) changed = true;
+
         return changed;
     }
 
@@ -437,6 +476,28 @@ public class CardEdit3_View extends BaseView implements
         MyUtils.hide(imageView);
         MyUtils.hide(discardImageButton);
         MyUtils.show(imagePlaceholder);
+    }
+
+    @OnClick(R.id.addVideoButton)
+    void addVideoClicked() {
+        // TODO: переименовать в "inputStringDialog"
+        MyDialogs.addYoutubeVideoDialog(this, new iMyDialogs.StringInputCallback() {
+            @Override
+            public void onDialogWithStringYes(String text) {
+                presenter.processVideoLink(text);
+            }
+        });
+    }
+
+    @OnClick(R.id.removeVideoButton)
+    void removeVideoClicked() {
+        if (null != youTubePlayer)
+            youTubePlayer.pause();
+        youTubePlayerView.release();
+
+        MyUtils.hide(videoPlayerHolder);
+        MyUtils.hide(removeVideoButton);
+        MyUtils.show(addVideoButton);
     }
 
     @OnClick(R.id.addTagButton)
@@ -562,39 +623,6 @@ public class CardEdit3_View extends BaseView implements
 
         MyUtils.show(quoteInput);
         MyUtils.show(quoteSourceInput);
-    }
-
-    private void displayVideo(final String videoCode) {
-
-        MyUtils.hide(addVideoButton);
-        MyUtils.show(mediaThrobber);
-
-        int playerWidth = MyUtils.getScreenWidth(this);
-        int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9f/16f);
-
-        youTubePlayerView = new YouTubePlayerView(this);
-        youTubePlayerView.setMinimumWidth(playerWidth);
-        youTubePlayerView.setMinimumHeight(playerHeight);
-
-        videoPlayerHolder.addView(youTubePlayerView);
-
-        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
-            @Override
-            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
-                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
-                    @Override
-                    public void onReady() {
-                        youTubePlayer = initializedYouTubePlayer;
-                        youTubePlayer.cueVideo(videoCode, 0.0f);
-
-                        MyUtils.hide(mediaThrobber);
-                        MyUtils.show(videoPlayerHolder);
-                        MyUtils.show(youTubePlayerView);
-                        MyUtils.show(removeVideoButton);
-                    }
-                });
-            }
-        }, true);
     }
 
     private void displayCommonCardParts(Card card) {

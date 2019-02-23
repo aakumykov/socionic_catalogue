@@ -122,6 +122,16 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/videoMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/CARD_EDIT_adding_video"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
             <FrameLayout
                 android:id="@+id/videoPlayerHolder"
                 android:layout_width="match_parent"
@@ -132,8 +142,10 @@
                 android:id="@+id/removeVideoButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
                 android:text="@string/CARD_EDIT_remove_this_video"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:layout_marginTop="5dp"/>
 
             <Button
                 android:id="@+id/addVideoButton"

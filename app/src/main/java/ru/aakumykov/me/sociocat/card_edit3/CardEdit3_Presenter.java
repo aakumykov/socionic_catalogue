@@ -76,7 +76,6 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
                 break;
 
             case Constants.ACTION_EDIT_RESUME:
-                //resumeEditCard(intent);
                 restoreEditState();
                 break;
 
@@ -140,8 +139,11 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     }
 
     @Override
-    public void processVideo(String videoString) {
-
+    public void processVideoLink(String videoString) {
+        String videoCode = MVPUtils.extractYoutubeVideoCode(videoString);
+        currentCard.setVideoCode(videoCode);
+        if (null != view)
+            view.displayVideo(videoCode);
     }
 
     @Override
@@ -165,6 +167,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
                 if (null != card) {
                     currentCard = card;
                     view.displayCard(card);
+                    clearEditState();
                 }
             }
         }
@@ -264,7 +267,6 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
     // Внутренние методы
     private void startCreateCard(Intent data) {
-        // TODO: проверить с NULL
         Card card = data.getParcelableExtra(Constants.CARD);
         card.setKey(cardsService.createKey());
         currentCard = card;
@@ -293,14 +295,6 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
                         view.showErrorMsg(R.string.CARD_EDIT_error_loading_card, msg);
                 }
             });
-        }
-    }
-
-    private void resumeEditCard(Intent intent) {
-        SharedPreferences sharedPreferences = view.getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT);
-        if (null != view) {
-            currentCard = intent.getParcelableExtra(Constants.CARD);
-            view.displayCard(currentCard);
         }
     }
 

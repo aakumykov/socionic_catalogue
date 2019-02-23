@@ -20,6 +20,7 @@ public interface iCardEdit3 {
     interface View extends iBaseView {
         void displayCard(Card card);
         void displayImage(String imageURI);
+        void displayVideo(String videoCode);
 
         String getCardTitle();
         String getQuote();
@@ -56,7 +57,7 @@ public interface iCardEdit3 {
         void processTag(String tag);
 
         void processSelectedImage(int resultCode, @Nullable Intent intent) throws Exception;
-        void processVideo(String videoString);
+        void processVideoLink(String videoString);
         void saveCard(boolean validateFirst) throws Exception;
 
         void saveEditState();
