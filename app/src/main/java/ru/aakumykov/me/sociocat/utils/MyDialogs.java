@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.utils;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.annotation.Nullable;
@@ -18,6 +19,39 @@ import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 public class MyDialogs {
 
     public static final String TAG = "MyDialogs";
+
+    // Возобновление редактирования карточки
+    public static void resumeCardEditDialog(Activity activity, iMyDialogs.StandardCallbacks callbacks) {
+        String title = activity.getString(R.string.CARD_EDIT_resume_dialog_title);
+        String message = activity.getString(R.string.CARD_EDIT_resume_dialog_message);
+
+        basicDialog(
+                activity,
+                title,
+                message,
+                R.string.yes,
+                R.string.no,
+                null,
+                null,
+                null,
+                callbacks
+        ).show();
+    }
+
+    // Диалог для проверок
+    public static void dummyDialog(Activity activity, String title, String message) {
+        basicDialog(
+                activity,
+                title,
+                message,
+                R.string.yes,
+                null,
+                null,
+                null,
+                null,
+                null
+        ).show();
+    }
 
     // Отмена редактирования
     public static void cancelEditDialog(Activity activity, int titleId, int messageId, iMyDialogs.StandardCallbacks callbacks) {
@@ -361,6 +395,13 @@ public class MyDialogs {
                 Log.d("TAG", "диалог ОТМЕНЁН");
             }
         });
+
+//        dialogBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//            @Override
+//            public void onDismiss(DialogInterface dialog) {
+//                Log.d("DISMISS","ИСЧЕЗНОВЕНИЕ");
+//            }
+//        });
 
         // Сообщение
         if (null != message)

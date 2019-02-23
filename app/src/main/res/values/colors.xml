@@ -38,8 +38,8 @@
 
     <color name="text_mode_switch">#00ddff</color>
     <color name="image_mode_switch">#99cc00</color>
-    <color name="video_mode_switch">#C87DFF</color>
-    <color name="audio_mode_switch">#FDB4B4</color>
+    <color name="video_mode_switch">#E53935</color>
+    <color name="audio_mode_switch">#3949AB</color>
 
     <color name="card_show_title">#272727</color>
     <color name="card_show_description">#272727</color>

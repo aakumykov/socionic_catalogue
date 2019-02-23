@@ -175,7 +175,7 @@
     <string name="CARD_EDIT_add_video">Add video</string>
     <string name="CARD_EDIT_page_title">Card edition</string>
     <string name="CARD_tags">Tags</string>
-    <string name="not_yet_implamented">Not yet implementer</string>
+    <string name="not_implemented_yet">Not yet implementer</string>
     <string name="CARD_EDIT_unsupported_card_type">Unsupported card type</string>
     <string name="CARD_EDIT_card_saved">Card saved</string>
     <string name="CARD_EDIT_error_saving_tags">Error saving tags</string>
@@ -320,4 +320,25 @@
     <string name="CARD_SHOW_unknown_quote_source">unknown</string>
     <string name="CARD_EDIT_cancel_editing_title">Cancel editing</string>
     <string name="CARD_EDIT_cancel_editing_message">Abandon the changes and leave?</string>
+    <string name="CARD_EDIT_resume_dialog_title">Resume editing?</string>
+    <string name="CARD_EDIT_resume_dialog_message">Unsaved card detected. Return to editing?</string>
+    <string name="EXTERNAL_DATA_RECIEVER_error_creating_card">Error creating card</string>
+    <string name="CARD_TYPE_CHOOSER_page_tip">What card to create?</string>
+    <string name="CARD_TYPE_CHOOSER_page_title">Card type choose</string>
+    <string name="CARD_TYPE_CHOOSER_card_creation_cancelled">Card creation canceled</string>
+    <string name="CARD_TYPE_CHOOSER_error_creating_card">Card creation error</string>
+    <string name="unknown_rsult_code">Unknown result code</string>
+    <string name="CARD_EDIT_title_too_long">Title is too long</string>
+    <string name="CARD_EDIT_title_too_short">Title is too short</string>
+    <string name="CARD_EDIT_quote_too_short">Quote too short</string>
+    <string name="CARD_EDIT_quote_too_long">Quote too long</string>
+    <string name="CARD_EDIT_description_too_short">Description too short</string>
+    <string name="CARD_EDIT_description_too_long">Description too long</string>
+    <string name="CARD_EDIT_you_must_select_image">You must select image</string>
+    <string name="CARD_EDIT_image_error">Image error</string>
+    <string name="CARD_TYPE_CHOOSER_image_card">With image</string>
+    <string name="CARD_TYPE_CHOOSER_text_card">With quote</string>
+    <string name="CARD_TYPE_CHOOSER_video_card">With video</string>
+    <string name="CARD_TYPE_CHOOSER_audio_card">With sound</string>
+    <string name="CARD_EDIT_adding_video">Adding video</string>
 </resources>

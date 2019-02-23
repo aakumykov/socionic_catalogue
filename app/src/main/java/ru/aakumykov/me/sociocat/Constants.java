@@ -17,6 +17,7 @@ public final class Constants {
 
     public final static String ACTION_CREATE = "ACTION_CREATE";
     public final static String ACTION_EDIT = "ACTION_EDIT";
+    public final static String ACTION_EDIT_RESUME = "ACTION_EDIT_RESUME";
     public final static String ACTION_LOGIN_FOR_COMMENT = "ACTION_LOGIN_FOR_COMMENT";
     public final static String ACTION_REGISTRATION_CONFIRM_REQUEST = "ACTION_REGISTRATION_CONFIRM_REQUEST";
     public final static String ACTION_REGISTRATION_CONFIRM_RESPONSE = "ACTION_REGISTRATION_CONFIRM_RESPONSE";
@@ -54,7 +55,12 @@ public final class Constants {
 
     public final static int TAG_MIN_LENGTH = 2;
     public final static int TAG_MAX_LENGTH = 40;
+    public final static int TITLE_MIN_LENGTH = 2;
     public final static int TITLE_MAX_LENGTH = 70;
+    public final static int QUOTE_MIN_LENGTH = 5;
+    public final static int QUOTE_MAX_LENGTH = 1000;
+    public final static int DESCRIPTION_MIN_LENGTH = 2;
+    public final static int DESCRIPTION_MAX_LENGTH = 500;
     public final static int DIALOG_MESSAGE_LENGTH = 40;
     public final static String TAG_NUMBER_BRACE = "*";
 
@@ -69,6 +75,7 @@ public final class Constants {
 
     public final static String SHARED_PREFERENCES_EMAIL = "SHARED_PREFERENCES_EMAIL";
     public final static String SHARED_PREFERENCES_LOGIN = "SHARED_PREFERENCES_LOGIN";
+    public final static String SHARED_PREFERENCES_CARD_EDIT = "SHARED_PREFERENCES_CARD_EDIT";
 
     public final static String KEY_LAST_LOGIN = "KEY_LAST_LOGIN";
 

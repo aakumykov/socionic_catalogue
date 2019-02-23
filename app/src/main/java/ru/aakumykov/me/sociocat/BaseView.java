@@ -19,22 +19,29 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
+import ru.aakumykov.me.sociocat.card_edit3.CardEdit3_View;
+import ru.aakumykov.me.sociocat.card_type_chooser.CardTypeChooser;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iAuthStateListener;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
+import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.login.Login_View;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.services.AuthSingleton;
 import ru.aakumykov.me.sociocat.services.AuthStateListener;
 import ru.aakumykov.me.sociocat.services.CardsSingleton;
 import ru.aakumykov.me.sociocat.tags.list.TagsList_View;
 import ru.aakumykov.me.sociocat.users.show.UserShow_View;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public abstract class BaseView extends AppCompatActivity implements iBaseView
@@ -43,6 +50,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private final static String TAG = "BaseView";
     private iCardsSingleton cardsService;
     private iAuthSingleton authService;
+
 
     // Абстрактные методы
     public abstract void onUserLogin();
@@ -94,6 +102,16 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         editor.apply();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkUnfinishedEdit();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -266,6 +284,16 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         showToast(msg);
     }
 
+    @Override public void showToast(int stringResourceId, int gravity) {
+        String msg = getString(stringResourceId);
+        showToastReal(this, msg, Toast.LENGTH_SHORT, gravity);
+    }
+
+    @Override public void showLongToast(int stringResourceId, int gravity) {
+        String msg = getString(stringResourceId);
+        showToastReal(this, msg, Toast.LENGTH_LONG, gravity);
+    }
+
     @Override
     public void showToast(String msg) {
         showToastReal(this, msg, Toast.LENGTH_SHORT);
@@ -277,8 +305,12 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void showToastReal(Context context, String message, int length) {
+        showToastReal(context, message, length, Gravity.NO_GRAVITY);
+    }
+
+    private void showToastReal(Context context, String message, int length, int gravity) {
         Toast toast = Toast.makeText(context, message, length);
-//        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.setGravity(gravity, 0, 0);
         toast.show();
     }
 
@@ -316,7 +348,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
 
     // Разное
-
     @Override
     public Context getAppContext() {
         return getApplicationContext();
@@ -333,10 +364,18 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
+    public void clearSharedPrefsData(SharedPreferences sharedPreferences, String dataName) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(dataName);
+        editor.apply();
+    }
+
+    @Override
     public void goCreateCard() {
-        Intent intent = new Intent(this, CardEdit_View.class);
-        intent.setAction(Constants.ACTION_CREATE);
-        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+        Intent intent = new Intent(this, CardTypeChooser.class);
+//        intent.setAction(Constants.ACTION_CREATE);
+//        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+        startActivity(intent);
     }
 
     @Override
@@ -419,5 +458,40 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         Intent intent = new Intent(this, TagsList_View.class);
         startActivity(intent);
     }
+
+    private void checkUnfinishedEdit() {
+        final SharedPreferences sharedPreferences = getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT);
+
+        if (!getClass().getSimpleName().equals("CardEdit3_View")) {
+
+            if (sharedPreferences.contains(Constants.CARD)) {
+
+                MyDialogs.resumeCardEditDialog(this, new iMyDialogs.StandardCallbacks() {
+                    @Override
+                    public void onCancelInDialog() {
+                        checkUnfinishedEdit();
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+                        clearSharedPrefsData(sharedPreferences, Constants.CARD);
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        Intent intent = new Intent(BaseView.this, CardEdit3_View.class);
+                        intent.setAction(Constants.ACTION_EDIT_RESUME);
+                        startActivity(intent);
+                    }
+                });
+            }
+        }
+    }
+
 
 }

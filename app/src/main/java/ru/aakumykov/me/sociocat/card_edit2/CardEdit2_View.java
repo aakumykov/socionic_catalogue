@@ -127,7 +127,7 @@ public class CardEdit2_View extends BaseView implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        showToast("CardEdit2_View.destroy()");
+        showToast("CardEdit3_View.destroy()");
         if (null != youTubePlayerView)
             youTubePlayerView.release();
     }
@@ -209,7 +209,7 @@ public class CardEdit2_View extends BaseView implements
 
     @Override
     public void switchAudioMode(@Nullable Card card) {
-        String msg = getResources().getString(R.string.not_yet_implamented);
+        String msg = getResources().getString(R.string.not_implemented_yet);
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 
 //        presenter.setCardType(Constants.AUDIO_CARD);
