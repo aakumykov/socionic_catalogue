@@ -76,12 +76,12 @@ public class ExternalDataReceiver extends BaseView {
             throw new IllegalArgumentException("There is no action in intent");
 
         // Устанавливаю флаг NO_HISTORY для страницы редактирования
-        if (Intent.ACTION_SEND.equals(action)) {
+        //if (Intent.ACTION_SEND.equals(action)) {
             //intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        }
+        //}
 
         // Пересылаю Intent другой странице
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         intent.setClass(this, CardEdit3_View.class);
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
     }
