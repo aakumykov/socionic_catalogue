@@ -148,17 +148,10 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     public void saveEditState() {
         if (null != view) {
             updateCurrentCardFromView();
-
             SharedPreferences.Editor editor = sharedPreferences.edit();
-
             Gson gson = new Gson();
             String json = gson.toJson(currentCard);
             editor.putString(Constants.CARD, json);
-
-            if (currentCard.hasLocalImageURI()) {
-                editor.putString(Constants.LOCAL_IMAGE_URI, currentCard.getLocalImageURI().toString());
-            }
-
             editor.apply();
         }
     }
@@ -167,17 +160,11 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     public void restoreEditState() {
         if (sharedPreferences.contains(Constants.CARD)) {
             String json = sharedPreferences.getString(Constants.CARD, "");
-
             if (!TextUtils.isEmpty(json)) {
                 Card card = new Gson().fromJson(json, Card.class);
                 if (null != card) {
                     currentCard = card;
                     view.displayCard(card);
-
-                    String localImageURI = sharedPreferences.getString(Constants.LOCAL_IMAGE_URI, "");
-                    if (!TextUtils.isEmpty(localImageURI)) {
-                        view.displayImage(localImageURI);
-                    }
                 }
             }
         }
@@ -189,7 +176,6 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 //        editor.remove(Constants.CARD);
 //        editor.apply();
         view.clearSharedPrefsData(sharedPreferences, Constants.CARD);
-        view.clearSharedPrefsData(sharedPreferences, Constants.LOCAL_IMAGE_URI);
     }
 
     @Override

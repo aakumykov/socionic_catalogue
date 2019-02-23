@@ -52,7 +52,7 @@ import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-@RuntimePermissions
+//@RuntimePermissions
 public class CardEdit3_View extends BaseView implements
         iCardEdit3.View,
         TagView.OnTagClickListener

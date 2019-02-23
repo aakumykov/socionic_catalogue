@@ -79,6 +79,4 @@ public final class Constants {
 
     public final static String KEY_LAST_LOGIN = "KEY_LAST_LOGIN";
 
-    public final static String LOCAL_IMAGE_URI = "LOCAL_IMAGE_URI";
-
 }
