@@ -484,18 +484,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
                     @Override
                     public void onYesInDialog() {
-                        Card card = new Gson().fromJson(
-                                sharedPreferences.getString(Constants.CARD, ""),
-                                Card.class
-                        );
-
-                        clearSharedPrefsData(sharedPreferences, Constants.CARD);
-
-                        // TODO: проверить с NULL Card
-
                         Intent intent = new Intent(BaseView.this, CardEdit3_View.class);
                         intent.setAction(Constants.ACTION_EDIT_RESUME);
-                        intent.putExtra(Constants.CARD, card);
                         startActivity(intent);
                     }
                 });
