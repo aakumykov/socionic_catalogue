@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 
 import com.google.gson.Gson;
@@ -31,6 +32,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
+    private static final String TAG = "CardEdit3_Presenter";
     private iCardEdit3.View view;
     private SharedPreferences sharedPreferences;
     private iAuthSingleton authService = AuthSingleton.getInstance();
@@ -73,6 +75,11 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
             case Constants.ACTION_EDIT_RESUME:
                 restoreEditState();
+                break;
+
+            case Intent.ACTION_SEND:
+                prepareCardCreation();
+                processRecievedData(intent);
                 break;
 
             default:
@@ -298,6 +305,50 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         }
     }
 
+    private void prepareCardCreation() {
+        Card card = new Card();
+        card.setKey(cardsService.createKey());
+        currentCard = card;
+    }
+
+    private void processRecievedData(Intent intent) {
+        String inputDataMode = MVPUtils.detectInputDataMode(intent);
+
+        try {
+            switch (inputDataMode) {
+
+                case Constants.TYPE_TEXT:
+                    currentCard.setType(Constants.TEXT_CARD);
+                    procesIncomingText(intent);
+                    break;
+
+                case Constants.TYPE_IMAGE_LINK:
+                    currentCard.setType(Constants.IMAGE_CARD);
+                    //processLinkToImage(intent);
+                    break;
+
+                case Constants.TYPE_IMAGE_DATA:
+                    currentCard.setType(Constants.IMAGE_CARD);
+                    //processIncomingImage(intent);
+                    break;
+
+                case Constants.TYPE_YOUTUBE_VIDEO:
+                    currentCard.setType(Constants.VIDEO_CARD);
+                    //processYoutubeVideo(intent);
+                    break;
+
+                default:
+                    view.showErrorMsg(R.string.CARD_EDIT_unknown_data_mode);
+            }
+
+        } catch (Exception e) {
+            if (null != view) {
+                view.showErrorMsg(R.string.CARD_EDIT_error_processing_data);
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void updateCurrentCardFromView(){
         if (null != view) {
             currentCard.setTitle(view.getCardTitle());
@@ -384,5 +435,19 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
 
         return valid;
+    }
+
+    private void procesIncomingText(Intent intent) throws Exception {
+        String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+        if (!TextUtils.isEmpty(text)) {
+            String title = MyUtils.cutToLength(text, Constants.TITLE_MAX_LENGTH);
+            currentCard.setTitle(title);
+            currentCard.setQuote(text);
+            if (null != view)
+                view.displayCard(currentCard);
+        } else {
+           throw new IllegalArgumentException("There is no text in Intent.");
+        }
     }
 }
