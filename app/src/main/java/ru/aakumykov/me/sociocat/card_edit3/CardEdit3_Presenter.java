@@ -7,19 +7,15 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_edit.iCardEdit;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
@@ -141,9 +137,13 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     @Override
     public void processVideoLink(String videoString) {
         String videoCode = MVPUtils.extractYoutubeVideoCode(videoString);
-        currentCard.setVideoCode(videoCode);
-        if (null != view)
-            view.displayVideo(videoCode);
+        if (null != videoCode) {
+            currentCard.setVideoCode(videoCode);
+            if (null != view)
+                view.displayVideo(videoCode);
+        } else {
+            view.showErrorMsg(R.string.CARD_EDIT_error_adding_video, "Wrong video code: "+videoString);
+        }
     }
 
     @Override

@@ -341,4 +341,6 @@
     <string name="CARD_TYPE_CHOOSER_video_card">With video</string>
     <string name="CARD_TYPE_CHOOSER_audio_card">With sound</string>
     <string name="CARD_EDIT_adding_video">Adding video</string>
+    <string name="CARD_EDIT_error_adding_video">Error adding video</string>
+    <string name="CARD_EDIT_error_displaying_video">Error displaying video</string>
 </resources>

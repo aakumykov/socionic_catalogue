@@ -256,20 +256,28 @@ public class CardEdit3_View extends BaseView implements
             MyUtils.hide(imageHolder);
             MyUtils.show(mediaThrobber);
 
-            Picasso.get().load(imageURI)
-                    .into(imageView, new Callback() {
-                        @Override public void onSuccess() {
-                            MyUtils.hide(mediaThrobber);
-                            MyUtils.hide(imagePlaceholder);
-                            MyUtils.show(imageHolder);
-                            MyUtils.show(imageView);
-                            MyUtils.show(discardImageButton);
-                        }
+            try {
+                Picasso.get().load(imageURI)
+                        .into(imageView, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                MyUtils.hide(mediaThrobber);
+                                MyUtils.hide(imagePlaceholder);
+                                MyUtils.show(imageHolder);
+                                MyUtils.show(imageView);
+                                MyUtils.show(discardImageButton);
+                            }
 
-                        @Override public void onError(Exception e) {
-                            showBrokenImage();
-                        }
-                    });
+                            @Override
+                            public void onError(Exception e) {
+                                showBrokenImage();
+                            }
+                        });
+
+            } catch (Exception e) {
+                showErrorMsg(R.string.CARD_EDIT_error_displaying_image, e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 
@@ -285,33 +293,40 @@ public class CardEdit3_View extends BaseView implements
         MyUtils.show(mediaThrobber);
         MyUtils.show(videoMessage);
 
-        int playerWidth = MyUtils.getScreenWidth(this);
-        int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9f / 16f);
+        try {
 
-        youTubePlayerView = new YouTubePlayerView(this);
-        youTubePlayerView.setMinimumWidth(playerWidth);
-        youTubePlayerView.setMinimumHeight(playerHeight);
+            int playerWidth = MyUtils.getScreenWidth(this);
+            int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9f / 16f);
 
-        videoPlayerHolder.addView(youTubePlayerView);
+            youTubePlayerView = new YouTubePlayerView(this);
+            youTubePlayerView.setMinimumWidth(playerWidth);
+            youTubePlayerView.setMinimumHeight(playerHeight);
 
-        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
-            @Override
-            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
-                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
-                    @Override
-                    public void onReady() {
-                        youTubePlayer = initializedYouTubePlayer;
-                        youTubePlayer.cueVideo(videoCode, 0.0f);
+            videoPlayerHolder.addView(youTubePlayerView);
 
-                        MyUtils.hide(mediaThrobber);
-                        MyUtils.hide(videoMessage);
-                        MyUtils.show(videoPlayerHolder);
-                        MyUtils.show(youTubePlayerView);
-                        MyUtils.show(removeVideoButton);
-                    }
-                });
-            }
-        }, true);
+            youTubePlayerView.initialize(new YouTubePlayerInitListener() {
+                @Override
+                public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
+                    initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
+                        @Override
+                        public void onReady() {
+                            youTubePlayer = initializedYouTubePlayer;
+                            youTubePlayer.cueVideo(videoCode, 0.0f);
+
+                            MyUtils.hide(mediaThrobber);
+                            MyUtils.hide(videoMessage);
+                            MyUtils.show(videoPlayerHolder);
+                            MyUtils.show(youTubePlayerView);
+                            MyUtils.show(removeVideoButton);
+                        }
+                    });
+                }
+            }, true);
+
+        } catch (Exception e) {
+            showErrorMsg(R.string.CARD_EDIT_error_displaying_video, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -678,4 +693,5 @@ public class CardEdit3_View extends BaseView implements
             e.printStackTrace();
         }
     }
+
 }

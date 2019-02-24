@@ -345,4 +345,6 @@
     <string name="CARD_TYPE_CHOOSER_video_card">С видео</string>
     <string name="CARD_TYPE_CHOOSER_audio_card">Со звуком</string>
     <string name="CARD_EDIT_adding_video">Добавляем видео</string>
+    <string name="CARD_EDIT_error_adding_video">Ошибка добавления видео</string>
+    <string name="CARD_EDIT_error_displaying_video">Ошибка отображения видео</string>
 </resources>
