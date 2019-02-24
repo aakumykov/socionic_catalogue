@@ -12,11 +12,15 @@ import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_edit3.CardEdit3_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class ExternalDataReceiver extends BaseView {
 
     public static final String TAG = "ExternalDataReceiver";
+    private Card currentCard;
 
+    // Системные методы
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +28,10 @@ public class ExternalDataReceiver extends BaseView {
 
         setPageTitle(R.string.EXTERNAL_DATA_RECIEVER_page_title);
 
+        currentCard = new Card();
+
         try {
-            makeStartDecision();
+            processRecievedData(getIntent());
         } catch (Exception e) {
             showErrorMsg(e.getMessage());
             e.printStackTrace();
@@ -65,25 +71,58 @@ public class ExternalDataReceiver extends BaseView {
     }
 
 
-    private void makeStartDecision() throws Exception {
+    // Внутренние методы
+    private void processRecievedData(Intent data) throws Exception {
 
-        Intent intent = getIntent();
-        if (null == intent)
+        if (null == data)
             throw new IllegalArgumentException("Intent is NULL");
 
-        String action = intent.getAction();
-        if (null == action)
-            throw new IllegalArgumentException("There is no action in intent");
+        String inputDataMode = MVPUtils.detectInputDataMode(data);
 
-        // Устанавливаю флаг NO_HISTORY для страницы редактирования
-        //if (Intent.ACTION_SEND.equals(action)) {
-            //intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        //}
+        switch (inputDataMode) {
 
-        // Пересылаю Intent другой странице
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        intent.setClass(this, CardEdit3_View.class);
+            case Constants.TYPE_TEXT:
+                currentCard.setType(Constants.TEXT_CARD);
+                procesIncomingText(data);
+                break;
+
+            case Constants.TYPE_IMAGE_LINK:
+                currentCard.setType(Constants.IMAGE_CARD);
+                //processLinkToImage(intent);
+                break;
+
+            case Constants.TYPE_IMAGE_DATA:
+                currentCard.setType(Constants.IMAGE_CARD);
+                //processIncomingImage(intent);
+                break;
+
+            case Constants.TYPE_YOUTUBE_VIDEO:
+                currentCard.setType(Constants.VIDEO_CARD);
+                //processYoutubeVideo(intent);
+                break;
+
+            default:
+                String msg = getResources().getString(R.string.CARD_EDIT_unknown_data_mode);
+                throw new Exception(msg);
+        }
+
+        Intent intent = new Intent(this, CardEdit3_View.class);
+        intent.setAction(Constants.ACTION_CREATE);
+        intent.putExtra(Constants.CARD, currentCard);
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+    }
+
+    private void procesIncomingText(Intent intent) throws Exception {
+        String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+        if (null == text) {
+            throw new IllegalArgumentException("Intent.EXTRA_TEXT is null.");
+        }
+
+        String autoTitle = MyUtils.cutToLength(text, Constants.TITLE_MAX_LENGTH);
+
+        currentCard.setTitle(autoTitle);
+        currentCard.setQuote(text);
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
