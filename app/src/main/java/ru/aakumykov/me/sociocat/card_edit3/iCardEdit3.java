@@ -44,6 +44,7 @@ public interface iCardEdit3 {
         boolean isFormFilled();
 
         void finishEdit(Card card);
+        void showCard(Card card);
 
         void addTag(String tag);
     }

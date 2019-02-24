@@ -41,6 +41,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     private iStorageSingleton storageService = StorageSingleton.getInstance();
     private Card currentCard;
     private String imageType;
+    private boolean externalDataMode = false;
 
     // Системные методы (условно)
     @Override
@@ -78,7 +79,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
                 break;
 
             case Intent.ACTION_SEND:
-                prepareCardCreation();
+                prepareCardCreation(intent);
                 processRecievedData(intent);
                 break;
 
@@ -271,7 +272,8 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
                 @Override public void onCardSaveSuccess(Card card) {
                     if (null != view) {
                         clearEditState();
-                        view.finishEdit(card);
+                        if (externalDataMode) view.showCard(card);
+                        else view.finishEdit(card);
                     }
                 }
 
@@ -317,7 +319,9 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         }
     }
 
-    private void prepareCardCreation() {
+    private void prepareCardCreation(Intent intent) {
+        externalDataMode = (0 != (intent.getFlags() & Intent.FLAG_ACTIVITY_NO_HISTORY));
+
         Card card = new Card();
         card.setKey(cardsService.createKey());
         currentCard = card;
