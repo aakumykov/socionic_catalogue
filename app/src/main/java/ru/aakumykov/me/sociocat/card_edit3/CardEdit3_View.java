@@ -203,7 +203,8 @@ public class CardEdit3_View extends BaseView implements
         switch (requestCode) {
             case Constants.CODE_SELECT_IMAGE:
                 try {
-                    presenter.processSelectedImage(resultCode, data);
+                    if (RESULT_OK == resultCode)
+                        presenter.processIncomingImage(data);
                 } catch (Exception e) {
                     showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
                     e.printStackTrace();

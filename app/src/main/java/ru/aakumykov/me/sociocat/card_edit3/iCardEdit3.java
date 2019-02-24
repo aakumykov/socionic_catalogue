@@ -56,7 +56,7 @@ public interface iCardEdit3 {
         void loadTagsList(TagsListLoadCallbacks callbacks);
         void processTag(String tag);
 
-        void processSelectedImage(int resultCode, @Nullable Intent intent) throws Exception;
+        void processIncomingImage(@Nullable Intent intent) throws Exception;
         void processVideoLink(String videoString);
         void saveCard(boolean validateFirst) throws Exception;
 

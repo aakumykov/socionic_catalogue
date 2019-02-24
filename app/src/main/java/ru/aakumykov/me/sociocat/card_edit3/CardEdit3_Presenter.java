@@ -119,25 +119,37 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     }
 
     @Override
-    public void processSelectedImage(int resultCode, @Nullable Intent intent) throws Exception {
-        if (Activity.RESULT_OK != resultCode)
-            return;
+    public void processIncomingImage(@Nullable Intent intent) throws Exception {
 
         if (null == intent)
-            throw new IllegalArgumentException("Intent is NULL");
+            throw new Exception("Intent is null");
 
-        Uri imageURI = intent.getParcelableExtra(Intent.EXTRA_STREAM); // Первый способ получить содержимое
+        Object imageURI = intent.getParcelableExtra(Intent.EXTRA_STREAM); // Первый способ получить содержимое
+
         if (null == imageURI) {
             imageURI = intent.getData(); // Второй способ получить содержимое
+
             if (null == imageURI) {
-                throw new Exception("Where is no image data in intent");
+                imageURI = intent.getStringExtra(Intent.EXTRA_TEXT); // Третий способ
+
+                if (null == imageURI) {
+                    throw new Exception("Where is no image data in intent");
+                }
             }
         }
 
-        currentCard.setImageURL(""); // Стираю существующий ImageURL, так как выбрана новая картинка
-        currentCard.setLocalImageURI(imageURI);
+        if (imageURI instanceof Uri) {
+            imageType = MyUtils.detectImageType(view.getAppContext(), (Uri) imageURI);
+            currentCard.setLocalImageURI((Uri) imageURI);
+        }
+        else if (imageURI instanceof String) {
+            imageType = MyUtils.detectImageType(view.getAppContext(), (String) imageURI);
+            currentCard.setLocalImageURI((String) imageURI);
+        }
+        else
+            throw new Exception("Wring type of imageURI variable");
 
-        imageType = MyUtils.detectImageType(view.getAppContext(), imageURI);
+        currentCard.setImageURL("");
         view.displayImage(imageURI.toString());
     }
 
@@ -190,6 +202,9 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
     @Override
     public void saveCard(boolean validateFirst) throws Exception {
+
+        updateCurrentCardFromView();
+
         if (validateFirst) {
             if (!formIsValid()) return;
         }
@@ -245,9 +260,6 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
             });
         }
         else {
-
-            updateCurrentCardFromView();
-
             // TODO: нужна проверка на авторизованность!
             currentCard.setUserId(authService.currentUserId());
             currentCard.setUserName(authService.currentUserName());
@@ -324,12 +336,12 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
                 case Constants.TYPE_IMAGE_LINK:
                     currentCard.setType(Constants.IMAGE_CARD);
-                    //processLinkToImage(intent);
+                    processIncomingImage(intent);
                     break;
 
                 case Constants.TYPE_IMAGE_DATA:
                     currentCard.setType(Constants.IMAGE_CARD);
-                    //processIncomingImage(intent);
+                    processIncomingImage(intent);
                     break;
 
                 case Constants.TYPE_YOUTUBE_VIDEO:
@@ -450,4 +462,8 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
            throw new IllegalArgumentException("There is no text in Intent.");
         }
     }
+
+
+
+
 }

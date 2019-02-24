@@ -72,6 +72,7 @@
                 android:layout_height="0dp"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:adjustViewBounds="true"
+                android:background="@color/text_mode_switch"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

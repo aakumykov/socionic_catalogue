@@ -303,6 +303,9 @@ public class Card implements Parcelable {
     @Exclude public void setLocalImageURI(Uri uri) {
         this.localImageURI = uri;
     }
+    @Exclude public void setLocalImageURI(String uri) {
+        this.localImageURI = Uri.parse(uri);
+    }
     @Exclude public Uri getLocalImageURI() {
         return this.localImageURI;
     }
