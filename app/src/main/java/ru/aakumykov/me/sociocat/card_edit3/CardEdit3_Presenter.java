@@ -11,10 +11,12 @@ import android.view.Gravity;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.Enums;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
@@ -43,6 +45,8 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     private HashMap<String,Boolean> oldCardTags;
     private String imageType;
     private boolean externalDataMode = false;
+    private Enums.CardEditMode editMode;
+
 
     // Системные методы (условно)
     @Override
@@ -263,6 +267,20 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
             currentCard.setUserId(authService.currentUserId());
             currentCard.setUserName(authService.currentUserName());
 
+            // Время создания/правки
+            Long currentTime = new Date().getTime();
+            switch (editMode) {
+                case CREATE:
+                    currentCard.setCTime(currentTime);
+                    currentCard.setMTime(currentTime);
+                    break;
+                case EDIT:
+                    currentCard.setMTime(currentTime);
+                    break;
+                default:
+                    throw new Exception("Unknown editMode '"+editMode+"'");
+            }
+
             if (null != view)
                 view.disableForm();
 
@@ -284,7 +302,11 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     private void startCreateCard(Intent data) {
         Card card = data.getParcelableExtra(Constants.CARD);
         card.setKey(cardsService.createKey());
+
+        editMode = Enums.CardEditMode.CREATE;
+
         currentCard = card;
+
         if (null != view)
             view.displayCard(currentCard);
     }
@@ -294,9 +316,10 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         if (null == cardKey)
             throw new IllegalArgumentException("There is no cardKey in Intent");
 
+        editMode = Enums.CardEditMode.EDIT;
+
         if (null != view) {
             view.showProgressBar();
-
             cardsService.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
                 @Override
                 public void onCardLoadSuccess(Card card) {
