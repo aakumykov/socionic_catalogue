@@ -296,13 +296,16 @@ public class CardShow_Presenter implements
     // Коллбеки
     @Override
     public void onCardLoadSuccess(Card card) {
-        this.currentCard = card;
+        if (null != card) {
+            this.currentCard = card;
+            if (null != view)
+                view.displayCard(card);
+            loadComments(card);
 
-        if (null != view) {
-            view.displayCard(card);
+        } else {
+            if (null != view)
+                view.showErrorMsg(R.string.CARD_SHOW_error_card_not_exists);
         }
-
-        loadComments(card);
     }
 
     @Override
