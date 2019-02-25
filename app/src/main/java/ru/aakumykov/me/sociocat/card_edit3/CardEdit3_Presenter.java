@@ -324,6 +324,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
         Card card = new Card();
         card.setKey(cardsService.createKey());
+
         currentCard = card;
     }
 
@@ -350,7 +351,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
                 case Constants.TYPE_YOUTUBE_VIDEO:
                     currentCard.setType(Constants.VIDEO_CARD);
-                    //processYoutubeVideo(intent);
+                    processYoutubeVideo(intent);
                     break;
 
                 default:
@@ -467,6 +468,19 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         }
     }
 
+    private void processYoutubeVideo(Intent intent) throws Exception {
+
+        String link = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (null == link)
+            throw new IllegalArgumentException("Video link is null");
+
+        String videoCode = MVPUtils.extractYoutubeVideoCode(link);
+        if (null == videoCode)
+            throw new IllegalArgumentException("Where is no video code in link '"+link+"");
+
+        currentCard.setVideoCode(videoCode);
+        view.displayVideo(videoCode);
+    }
 
 
 
