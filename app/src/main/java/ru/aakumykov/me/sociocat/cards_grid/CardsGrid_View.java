@@ -355,15 +355,27 @@ public class CardsGrid_View extends BaseView implements
         presenter.loadNewCards(lastLoginTime);
     }
 
+    private int findIndexOfCard(Card card) {
+        int index = -1;
+        String cardKey = card.getKey();
+        for (int i=0; i<cardsList.size(); i++) {
+            if (cardKey.equals(cardsList.get(i).getKey()))
+                return i;
+        }
+        return index;
+    }
+
     private void processCardShowResult(int resultCode, @Nullable Intent data) {
         if (null != data && RESULT_OK == resultCode) {
             String backAction = data.getAction();
             if (Constants.ACTION_DELETE.equals(backAction)) {
                 Card card = data.getParcelableExtra(Constants.CARD);
                 if (null != card) {
-                    boolean c = cardsList.contains(card);
-                    cardsList.remove(card);
-                    dataAdapter.notifyDataSetChanged();
+                    int index = findIndexOfCard(card);
+                    if (-1 != index) {
+                        cardsList.remove(index);
+                        dataAdapter.notifyItemRemoved(index);
+                    }
                 }
             }
         }
