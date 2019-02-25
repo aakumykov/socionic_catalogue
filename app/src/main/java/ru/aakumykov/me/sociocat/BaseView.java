@@ -15,17 +15,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
-import java.text.DateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
-import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_edit3.CardEdit3_View;
 import ru.aakumykov.me.sociocat.card_type_chooser.CardTypeChooser;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
@@ -35,7 +29,6 @@ import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.login.Login_View;
-import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.services.AuthSingleton;
 import ru.aakumykov.me.sociocat.services.AuthStateListener;
 import ru.aakumykov.me.sociocat.services.CardsSingleton;
@@ -364,7 +357,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public void clearSharedPrefsData(SharedPreferences sharedPreferences, String dataName) {
+    public void clearSharedPrefs(SharedPreferences sharedPreferences, String dataName) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(dataName);
         editor.apply();
@@ -474,7 +467,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
                     @Override
                     public void onNoInDialog() {
-                        clearSharedPrefsData(sharedPreferences, Constants.CARD);
+                        clearSharedPrefs(sharedPreferences, Constants.CARD);
                     }
 
                     @Override

@@ -1,13 +1,11 @@
 package ru.aakumykov.me.sociocat.card_edit3;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 
 import com.google.gson.Gson;
@@ -195,10 +193,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
     @Override
     public void clearEditState() {
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.remove(Constants.CARD);
-//        editor.apply();
-        view.clearSharedPrefsData(sharedPreferences, Constants.CARD);
+        view.clearSharedPrefs(sharedPreferences, Constants.CARD);
     }
 
     @Override

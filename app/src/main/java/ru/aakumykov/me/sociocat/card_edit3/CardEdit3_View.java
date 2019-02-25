@@ -590,7 +590,7 @@ public class CardEdit3_View extends BaseView implements
 
                         @Override
                         public void onYesInDialog() {
-                            clearSharedPrefsData(getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT), Constants.CARD);
+                            clearSharedPrefs(getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT), Constants.CARD);
                             gracefulExit();
                         }
                     }
