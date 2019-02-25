@@ -12,11 +12,14 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iCommentsSingleton;
+import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
+import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.services.AuthSingleton;
 import ru.aakumykov.me.sociocat.services.CardsSingleton;
 import ru.aakumykov.me.sociocat.services.CommentsSingleton;
+import ru.aakumykov.me.sociocat.services.StorageSingleton;
 import ru.aakumykov.me.sociocat.services.TagsSingleton;
 
 
@@ -318,22 +321,51 @@ public class CardShow_Presenter implements
 
     @Override
     public void onCardDeleteSuccess(Card card) {
-        TagsSingleton.getInstance().updateCardTags(
-                card.getKey(),
-                card.getTags(),
-                null,
-                null
-        );
-
         try {
+            TagsSingleton.getInstance().updateCardTags(
+                    card.getKey(),
+                    card.getTags(),
+                    null,
+                    new iTagsSingleton.UpdateCallbacks() {
+                        @Override
+                        public void onUpdateSuccess() {
+
+                        }
+
+                        @Override
+                        public void onUpdateFail(String errorMsg) {
+                            if (null != view)
+                                view.showErrorMsg(R.string.CARD_SHOW_error_deleting_tags, errorMsg);
+                        }
+                    }
+            );
+
+            if (card.isImageCard()) {
+                String imageFileName = card.getFileName();
+                StorageSingleton.getInstance().deleteImage(imageFileName, new iStorageSingleton.FileDeletionCallbacks() {
+                    @Override
+                    public void onDeleteSuccess() {
+
+                    }
+
+                    @Override
+                    public void onDeleteFail(String errorMsg) {
+                        if (null != view)
+                            view.showErrorMsg(R.string.CARD_SHOW_error_deleting_image, errorMsg);
+                    }
+                });
+            }
+
             commentsService.deleteCommentsForCard(currentCard.getKey());
+
         } catch (Exception e) {
+            if (null != view)
+                view.showErrorMsg(e.getMessage());
             e.printStackTrace();
         }
 
-        if (null != view) {
+        if (null != view)
             view.closePage();
-        }
     }
 
     @Override

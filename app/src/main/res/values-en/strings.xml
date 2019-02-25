@@ -344,4 +344,6 @@
     <string name="CARD_EDIT_error_adding_video">Error adding video</string>
     <string name="CARD_EDIT_error_displaying_video">Error displaying video</string>
     <string name="CARD_SHOW_error_card_not_exists">Card is not exists</string>
+    <string name="CARD_SHOW_error_deleting_image">Error deleting image</string>
+    <string name="CARD_SHOW_error_deleting_tags">Error deleting tags</string>
 </resources>
