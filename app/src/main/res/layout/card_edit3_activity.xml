@@ -127,7 +127,7 @@
                 android:id="@+id/videoMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/CARD_EDIT_adding_video"
+                android:text="@string/CARD_EDIT_wating_for_video"
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 android:textSize="18sp"

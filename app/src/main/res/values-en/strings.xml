@@ -340,7 +340,7 @@
     <string name="CARD_TYPE_CHOOSER_text_card">With quote</string>
     <string name="CARD_TYPE_CHOOSER_video_card">With video</string>
     <string name="CARD_TYPE_CHOOSER_audio_card">With sound</string>
-    <string name="CARD_EDIT_adding_video">Adding video</string>
+    <string name="CARD_EDIT_wating_for_video">Waiting for video</string>
     <string name="CARD_EDIT_error_adding_video">Error adding video</string>
     <string name="CARD_EDIT_error_displaying_video">Error displaying video</string>
     <string name="CARD_SHOW_error_card_not_exists">Card is not exists</string>
