@@ -11,6 +11,7 @@ import android.view.Gravity;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
@@ -37,7 +38,9 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     private iCardsSingleton cardsService = CardsSingleton.getInstance();
     private iTagsSingleton tagsService = TagsSingleton.getInstance();
     private iStorageSingleton storageService = StorageSingleton.getInstance();
+
     private Card currentCard;
+    private HashMap<String,Boolean> oldCardTags;
     private String imageType;
     private boolean externalDataMode = false;
 
@@ -265,11 +268,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
             cardsService.saveCard(currentCard, new iCardsSingleton.SaveCardCallbacks() {
                 @Override public void onCardSaveSuccess(Card card) {
-                    if (null != view) {
-                        clearEditState();
-                        if (externalDataMode) view.showCard(card);
-                        else view.finishEdit(card);
-                    }
+                    updateCardTags(card);
                 }
 
                 @Override public void onCardSaveError(String message) {
@@ -302,6 +301,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
                 @Override
                 public void onCardLoadSuccess(Card card) {
                     currentCard = card;
+                    oldCardTags = card.getTags();
                     view.displayCard(card);
                 }
 
@@ -460,7 +460,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
             if (null != view)
                 view.displayCard(currentCard);
         } else {
-           throw new IllegalArgumentException("There is no text in Intent.");
+            throw new IllegalArgumentException("There is no text in Intent.");
         }
     }
 
@@ -478,6 +478,35 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
         view.displayVideo(videoCode);
     }
 
+    private void updateCardTags(final Card card) {
+        if (null == card)
+            throw new IllegalArgumentException("Card is NULL");
 
+        tagsService.updateCardTags(
+                card.getKey(),
+                oldCardTags,
+                card.getTags(),
+                new iTagsSingleton.UpdateCallbacks() {
+                    @Override
+                    public void onUpdateSuccess() {
+                        finishWork(card);
+                    }
 
+                    @Override
+                    public void onUpdateFail(String errorMsg) {
+                        if (null != view)
+                            view.showErrorMsg(R.string.CARD_EDIT_error_saving_tags, errorMsg);
+                        finishWork(card);
+                    }
+                }
+        );
+    }
+
+    private void finishWork(Card card) {
+        if (null != view) {
+            clearEditState();
+            if (externalDataMode) view.showCard(card);
+            else view.finishEdit(card);
+        }
+    }
 }
