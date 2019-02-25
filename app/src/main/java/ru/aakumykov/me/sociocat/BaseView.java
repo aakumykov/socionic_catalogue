@@ -455,6 +455,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void checkUnfinishedEdit() {
         final SharedPreferences sharedPreferences = getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT);
 
+        String className = getClass().getSimpleName();
+
         if (!getClass().getSimpleName().equals("CardEdit3_View")) {
 
             if (sharedPreferences.contains(Constants.CARD)) {

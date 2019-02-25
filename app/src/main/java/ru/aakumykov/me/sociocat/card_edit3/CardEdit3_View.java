@@ -85,7 +85,7 @@ public class CardEdit3_View extends BaseView implements
     private iCardEdit3.Presenter presenter;
     private List<String> tagsList = new ArrayList<>();
     private boolean firstRun = true;
-    private boolean finishIsExpected = false;
+    private boolean exitIsExpected = false;
 
 
     // Системные методы
@@ -139,7 +139,7 @@ public class CardEdit3_View extends BaseView implements
     @Override
     protected void onPause() {
         super.onPause();
-        if (!finishIsExpected) {
+        if (!exitIsExpected) {
             if (isFormFilled()) {
                 presenter.saveEditState();
             }
@@ -156,7 +156,7 @@ public class CardEdit3_View extends BaseView implements
     protected void onStop() {
         super.onStop();
 
-//        if (finishIsExpected) presenter.clearEditState();
+//        if (exitIsExpected) presenter.clearEditState();
 //        else presenter.saveEditState();
 
         presenter.unlinkView();
@@ -453,16 +453,16 @@ public class CardEdit3_View extends BaseView implements
 
     @Override
     public void finishEdit(Card card) {
+        exitIsExpected = true;
         Intent intent = new Intent();
         intent.putExtra(Constants.CARD, card);
         setResult(RESULT_OK, intent);
-
-        finishIsExpected = true;
         finish();
     }
 
     @Override
     public void showCard(Card card) {
+        exitIsExpected = true;
         Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
         startActivity(intent);
@@ -662,7 +662,7 @@ public class CardEdit3_View extends BaseView implements
     }
 
     private void gracefulExit() {
-        finishIsExpected = true;
+        exitIsExpected = true;
         setResult(RESULT_CANCELED);
         finish();
     }
