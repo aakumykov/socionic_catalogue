@@ -338,12 +338,12 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
     }
 
     private void prepareCardCreation(Intent intent) {
+        editMode = Enums.CardEditMode.CREATE;
         // Если запускается с флафгом NO_HISTORY, значит данные поступили извне
         externalDataMode = (0 != (intent.getFlags() & Intent.FLAG_ACTIVITY_NO_HISTORY));
 
         Card card = new Card();
         card.setKey(cardsService.createKey());
-
         currentCard = card;
     }
 
