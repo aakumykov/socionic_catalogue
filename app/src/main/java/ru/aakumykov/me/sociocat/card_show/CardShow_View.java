@@ -615,6 +615,15 @@ public class CardShow_View extends BaseView implements
         MyUtils.show(cardRatingView);
     }
 
+    @Override
+    public void finishAfterCardDeleting(Card card) {
+        Intent intent = new Intent();
+        intent.setAction(Constants.ACTION_DELETE);
+        intent.putExtra(Constants.CARD, card);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
 
     // Меток методы
     @Override

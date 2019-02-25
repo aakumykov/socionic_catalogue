@@ -116,6 +116,9 @@ public class CardsGrid_View extends BaseView implements
             case Constants.CODE_CREATE_CARD:
                 addCardToList(data);
                 break;
+            case Constants.CODE_SHOW_CARD:
+                processCardShowResult(resultCode, data);
+                break;
             default:
                 break;
         }
@@ -318,7 +321,7 @@ public class CardsGrid_View extends BaseView implements
     private void showCard(String cardKey) {
         Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, cardKey);
-        startActivity(intent);
+        startActivityForResult(intent, Constants.CODE_SHOW_CARD);
     }
 
     private void activateListView() {
@@ -350,5 +353,19 @@ public class CardsGrid_View extends BaseView implements
         long lastLoginTime = (sharedPreferences.contains(Constants.KEY_LAST_LOGIN))
                 ? sharedPreferences.getLong(Constants.KEY_LAST_LOGIN, 0L) : 0L;
         presenter.loadNewCards(lastLoginTime);
+    }
+
+    private void processCardShowResult(int resultCode, @Nullable Intent data) {
+        if (null != data && RESULT_OK == resultCode) {
+            String backAction = data.getAction();
+            if (Constants.ACTION_DELETE.equals(backAction)) {
+                Card card = data.getParcelableExtra(Constants.CARD);
+                if (null != card) {
+                    boolean c = cardsList.contains(card);
+                    cardsList.remove(card);
+                    dataAdapter.notifyDataSetChanged();
+                }
+            }
+        }
     }
 }

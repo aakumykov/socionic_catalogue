@@ -365,7 +365,7 @@ public class CardShow_Presenter implements
         }
 
         if (null != view)
-            view.closePage();
+            view.finishAfterCardDeleting(card);
     }
 
     @Override

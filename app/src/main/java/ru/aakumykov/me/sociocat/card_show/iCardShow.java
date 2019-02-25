@@ -44,6 +44,8 @@ public interface iCardShow {
         void onCardRatedUp(int newRating);
         void onCardRatedDown(int newRating);
         void onCardRateError();
+
+        void finishAfterCardDeleting(Card card);
     }
 
     interface Presenter {

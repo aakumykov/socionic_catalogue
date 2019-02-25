@@ -18,6 +18,7 @@ public final class Constants {
     public final static String ACTION_CREATE = "ACTION_CREATE";
     public final static String ACTION_EDIT = "ACTION_EDIT";
     public final static String ACTION_EDIT_RESUME = "ACTION_EDIT_RESUME";
+    public final static String ACTION_DELETE = "ACTION_DELETE";
     public final static String ACTION_LOGIN_FOR_COMMENT = "ACTION_LOGIN_FOR_COMMENT";
     public final static String ACTION_REGISTRATION_CONFIRM_REQUEST = "ACTION_REGISTRATION_CONFIRM_REQUEST";
     public final static String ACTION_REGISTRATION_CONFIRM_RESPONSE = "ACTION_REGISTRATION_CONFIRM_RESPONSE";
@@ -52,6 +53,7 @@ public final class Constants {
     public final static int CODE_FORCE_SETUP_USER_NAME = 40;
     public final static int CODE_LOGIN_FOR_COMMENT = 50;
     public final static int CODE_RESET_PASSWORD = 60;
+    public final static int CODE_SHOW_CARD = 70;
 
     public final static int TAG_MIN_LENGTH = 2;
     public final static int TAG_MAX_LENGTH = 40;
