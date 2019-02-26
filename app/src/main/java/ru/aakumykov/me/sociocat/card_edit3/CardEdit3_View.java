@@ -105,23 +105,6 @@ public class CardEdit3_View extends BaseView implements
         tagsContainer.setOnTagClickListener(this);
 
         setTagWatcher();
-
-        quoteInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                quoteInput.setBackgroundResource(R.drawable.no_border);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     @Override
@@ -394,7 +377,6 @@ public class CardEdit3_View extends BaseView implements
     @Override
     public void showQuoteError(int msgId) {
         quoteInput.setError(getResources().getString(msgId));
-        quoteInput.setBackgroundResource(R.drawable.red_border);
     }
 
     @Override
