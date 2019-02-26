@@ -60,7 +60,7 @@ public final class Constants {
     public final static int TITLE_MIN_LENGTH = 2;
     public final static int TITLE_MAX_LENGTH = 70;
     public final static int QUOTE_MIN_LENGTH = 5;
-    public final static int QUOTE_MAX_LENGTH = 1000;
+    public final static int QUOTE_MAX_LENGTH = 3000;
     public final static int DESCRIPTION_MIN_LENGTH = 2;
     public final static int DESCRIPTION_MAX_LENGTH = 500;
     public final static int DIALOG_MESSAGE_LENGTH = 40;
