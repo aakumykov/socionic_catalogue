@@ -25,6 +25,8 @@ public class Card implements Parcelable {
     private String quote;
     private String quoteSource;
     private String imageURL;
+    @Exclude private transient Uri localImageURI;
+    @Exclude private transient String mimeType;
     private String fileName;
     private String videoCode;
     private String description;
@@ -36,6 +38,7 @@ public class Card implements Parcelable {
     private Integer rating = 0;
     private Long cTime = 0L;
     private Long mTime = 0L;
+
 
     public Card() {
 
@@ -63,6 +66,8 @@ public class Card implements Parcelable {
                 ", rating: "+getRating()+
                 ", cTime: "+getCTime()+
                 ", mTime: "+getMTime()+
+                ", localImageURI: "+getLocalImageURI()+
+                ", mimeType: "+getMimeType()+
             " }";
     }
 
@@ -292,11 +297,14 @@ public class Card implements Parcelable {
 
 
     // Служебные
-    @Exclude private Uri localImageURI;
-    @Exclude private String mimeType;
-
+    @Exclude public boolean hasLocalImageURI() {
+        return null != this.localImageURI;
+    }
     @Exclude public void setLocalImageURI(Uri uri) {
         this.localImageURI = uri;
+    }
+    @Exclude public void setLocalImageURI(String uri) {
+        this.localImageURI = Uri.parse(uri);
     }
     @Exclude public Uri getLocalImageURI() {
         return this.localImageURI;

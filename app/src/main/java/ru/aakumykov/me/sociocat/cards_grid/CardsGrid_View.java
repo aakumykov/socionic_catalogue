@@ -11,6 +11,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -91,6 +92,8 @@ public class CardsGrid_View extends BaseView implements
         presenter.linkView(this);
         dataAdapter.bindView(this);
 
+//        MyDialogs.dummyDialog(this, "Проверка", ":-)");
+
         if (firstRun) {
             loadList(true);
             firstRun = false;
@@ -99,6 +102,7 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     protected void onStop() {
+//        Log.d("QWERTY", "onStop()");
         super.onStop();
         presenter.unlinkView();
         dataAdapter.unbindView();
@@ -111,6 +115,9 @@ public class CardsGrid_View extends BaseView implements
         switch (requestCode) {
             case Constants.CODE_CREATE_CARD:
                 addCardToList(data);
+                break;
+            case Constants.CODE_SHOW_CARD:
+                processCardShowResult(resultCode, data);
                 break;
             default:
                 break;
@@ -314,7 +321,7 @@ public class CardsGrid_View extends BaseView implements
     private void showCard(String cardKey) {
         Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, cardKey);
-        startActivity(intent);
+        startActivityForResult(intent, Constants.CODE_SHOW_CARD);
     }
 
     private void activateListView() {
@@ -346,5 +353,31 @@ public class CardsGrid_View extends BaseView implements
         long lastLoginTime = (sharedPreferences.contains(Constants.KEY_LAST_LOGIN))
                 ? sharedPreferences.getLong(Constants.KEY_LAST_LOGIN, 0L) : 0L;
         presenter.loadNewCards(lastLoginTime);
+    }
+
+    private int findIndexOfCard(Card card) {
+        int index = -1;
+        String cardKey = card.getKey();
+        for (int i=0; i<cardsList.size(); i++) {
+            if (cardKey.equals(cardsList.get(i).getKey()))
+                return i;
+        }
+        return index;
+    }
+
+    private void processCardShowResult(int resultCode, @Nullable Intent data) {
+        if (null != data && RESULT_OK == resultCode) {
+            String backAction = data.getAction();
+            if (Constants.ACTION_DELETE.equals(backAction)) {
+                Card card = data.getParcelableExtra(Constants.CARD);
+                if (null != card) {
+                    int index = findIndexOfCard(card);
+                    if (-1 != index) {
+                        cardsList.remove(index);
+                        dataAdapter.notifyItemRemoved(index);
+                    }
+                }
+            }
+        }
     }
 }

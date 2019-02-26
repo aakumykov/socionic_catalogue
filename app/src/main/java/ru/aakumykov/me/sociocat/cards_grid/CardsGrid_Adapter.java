@@ -107,6 +107,12 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
                         }
                     });
         }
+
+        // Видео
+        if (card.isVideoCard()) {
+            MyUtils.hide(viewHolder.imageView);
+            MyUtils.hide(viewHolder.quoteView);
+        }
     }
 
     @Override

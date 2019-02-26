@@ -5,16 +5,15 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_4"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_4_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".login.Login_View" android:noHistory="true" />
-
+        <activity
+            android:name=".login.Login_View"
+            android:noHistory="true" />
         <activity android:name=".cards_list.CardsList_View" />
         <activity
             android:name=".card_show.CardShow_View"
@@ -28,13 +27,39 @@
         <activity
             android:name=".tags.show.TagShow_View"
             android:parentActivityName=".tags.list.TagsList_View" />
-
         <activity android:name=".card_edit.CardEdit_View" />
 
-        <activity android:name=".card_edit2.CardEdit2_View" />
+        <activity android:name=".cards_grid.CardsGrid_View">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
-            android:name=".external_data_receiver.ExternalDataReceiver"
+            android:name=".dynamic_link_processor.DLP_View"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="sociocat.example.org"
+                    android:scheme="https" />
+                <data
+                    android:host="androidtest73e48.page.link"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".register.register_step_1.RegisterStep1_View" />
+        <activity android:name=".register.register_step_2.RegisterStep2_View" />
+        <activity android:name=".reset_password_step1.ResetPasswordStep1_View" />
+        <activity android:name=".reset_password_step_2.ResetPasswordStep2_View" />
+        <activity android:name=".card_type_chooser.CardTypeChooser" />
+
+        <activity android:name=".external_data_receiver.ExternalDataReceiver"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -89,34 +114,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".cards_grid.CardsGrid_View">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".card_edit3.CardEdit3_View" android:windowSoftInputMode="stateHidden">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-
-        <activity android:name=".dynamic_link_processor.DLP_View" android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data
-                    android:host="sociocat.example.org"
-                    android:scheme="https"/>
-                <data
-                    android:host="androidtest73e48.page.link"
-                    android:scheme="https"/>
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".register.register_step_1.RegisterStep1_View" />
-        <activity android:name=".register.register_step_2.RegisterStep2_View" />
-
-        <activity android:name=".reset_password_step1.ResetPasswordStep1_View" />
-        <activity android:name=".reset_password_step_2.ResetPasswordStep2_View" />
-
     </application>
 
 </manifest>
