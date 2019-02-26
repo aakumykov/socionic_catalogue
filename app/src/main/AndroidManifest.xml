@@ -53,11 +53,13 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+
         <activity android:name=".register.register_step_1.RegisterStep1_View" />
         <activity android:name=".register.register_step_2.RegisterStep2_View" />
         <activity android:name=".reset_password_step1.ResetPasswordStep1_View" />
         <activity android:name=".reset_password_step_2.ResetPasswordStep2_View" />
-        <activity android:name=".card_type_chooser.CardTypeChooser" />
+
+        <activity android:name=".card_type_chooser.CardTypeChooser" android:noHistory="true" />
 
         <activity android:name=".external_data_receiver.ExternalDataReceiver"
             android:noHistory="true">
