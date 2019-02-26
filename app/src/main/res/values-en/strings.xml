@@ -40,7 +40,7 @@
     <string name="wrong_mime_type">Wrong image type</string>
     <string name="image_upload_cancelled">Image upload cancelled</string>
     <string name="image_upload_error">Image upload error</string>
-    <string name="error_saving_card">Error saving card</string>
+    <string name="CARD_SHOW_error_saving_card">Error saving card</string>
     <string name="card_saving_cancelled">Card saving cancelled</string>
     <string name="error_missing_image">Image is missing</string>
     <string name="add_card">Add card</string>

@@ -41,7 +41,7 @@
     <string name="wrong_mime_type">Неправильный тип картинки</string>
     <string name="image_upload_cancelled">Отправка картинки отменена</string>
     <string name="image_upload_error">Ошибка отправки картинки</string>
-    <string name="error_saving_card">Ошибка сохранения карточки</string>
+    <string name="CARD_SHOW_error_saving_card">Ошибка сохранения карточки</string>
     <string name="card_saving_cancelled">Сохранение карточки отменено</string>
     <string name="error_missing_image">Картинка отсутствует</string>
     <string name="add_card">Добавить карточку</string>

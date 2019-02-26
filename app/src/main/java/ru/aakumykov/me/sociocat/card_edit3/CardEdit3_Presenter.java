@@ -31,8 +31,10 @@ import ru.aakumykov.me.sociocat.services.TagsSingleton;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class CardEdit3_Presenter implements iCardEdit3.Presenter {
-
+public class CardEdit3_Presenter implements
+        iCardEdit3.Presenter,
+        iCardsSingleton.SaveCardCallbacks
+{
     private static final String TAG = "CardEdit3_Presenter";
     private iCardEdit3.View view;
     private SharedPreferences sharedPreferences;
@@ -212,16 +214,17 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
             if (!formIsValid()) return;
         }
 
+        if (null != view)
+            view.disableForm();
+
         // Сохраняю картинку, если ещё не сохранена
         if (currentCard.isImageCard() && !currentCard.hasImageURL()) {
 
             String fileName = currentCard.getKey() + "." + imageType;
             Bitmap imageBitmap = view.getImageBitmap();
 
-            if (null != view) {
-                view.disableForm();
+            if (null != view)
                 view.showImageProgressBar();
-            }
 
             storageService.uploadImage(imageBitmap, imageType, fileName, new iStorageSingleton.FileUploadCallbacks() {
 
@@ -243,7 +246,7 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
                         saveCard(false);
                     } catch (Exception e) {
                         if (null != view) {
-                            view.showErrorMsg(R.string.CARD_EDIT_error_saving_card);
+                            view.showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
                             e.printStackTrace();
                         }
                     }
@@ -281,19 +284,22 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
                     throw new Exception("Unknown editMode '"+editMode+"'");
             }
 
-            if (null != view)
-                view.disableForm();
+            view.showProgressMessage(R.string.CARD_EDIT_saving_card);
 
-            cardsService.saveCard(currentCard, new iCardsSingleton.SaveCardCallbacks() {
-                @Override public void onCardSaveSuccess(Card card) {
-                    updateCardTags(card);
-                }
+            cardsService.saveCard(currentCard, this);
+        }
+    }
 
-                @Override public void onCardSaveError(String message) {
-                    if (null != view)
-                        view.showErrorMsg(R.string.CARD_EDIT_error_saving_card, message);
-                }
-            });
+
+    // Коллбеки
+    @Override public void onCardSaveSuccess(Card card) {
+        updateCardTags(card);
+    }
+
+    @Override public void onCardSaveError(String message) {
+        if (null != view) {
+            view.showErrorMsg(R.string.CARD_EDIT_error_saving_card, message);
+            view.enableForm();
         }
     }
 
@@ -320,21 +326,27 @@ public class CardEdit3_Presenter implements iCardEdit3.Presenter {
 
         if (null != view) {
             view.showProgressBar();
-            cardsService.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
-                @Override
-                public void onCardLoadSuccess(Card card) {
-                    currentCard = card;
-                    oldCardTags = card.getTags();
+            view.disableForm();
+        }
+
+        cardsService.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
+            @Override
+            public void onCardLoadSuccess(Card card) {
+                currentCard = card;
+                oldCardTags = card.getTags();
+                if (null != view) {
                     view.displayCard(card);
                 }
+            }
 
-                @Override
-                public void onCardLoadFailed(String msg) {
-                    if (null != view)
-                        view.showErrorMsg(R.string.CARD_EDIT_error_loading_card, msg);
+            @Override
+            public void onCardLoadFailed(String msg) {
+                if (null != view) {
+                    view.showErrorMsg(R.string.CARD_EDIT_error_loading_card, msg);
+                    view.enableForm();
                 }
-            });
-        }
+            }
+        });
     }
 
     private void prepareCardCreation(Intent intent) {

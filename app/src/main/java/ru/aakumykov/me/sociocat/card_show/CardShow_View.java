@@ -42,7 +42,6 @@ import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_edit3.CardEdit3_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.comment.CommentsAdapter;
@@ -1115,7 +1114,7 @@ public class CardShow_View extends BaseView implements
                 break;
 
             default:
-                showErrorMsg(R.string.error_saving_card);
+                showErrorMsg(R.string.CARD_SHOW_error_saving_card);
                 break;
         }
     }

@@ -243,6 +243,7 @@ public class CardEdit3_View extends BaseView implements
         }
 
         displayCommonCardParts(card);
+        enableForm();
     }
 
     @Override
