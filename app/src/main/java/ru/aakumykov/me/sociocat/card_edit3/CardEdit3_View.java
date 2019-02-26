@@ -273,10 +273,13 @@ public class CardEdit3_View extends BaseView implements
                             @Override
                             public void onError(Exception e) {
                                 showBrokenImage();
+                                showErrorMsg(R.string.CARD_EDIT_error_displaying_image, e.getMessage());
+                                e.printStackTrace();
                             }
                         });
 
             } catch (Exception e) {
+                showBrokenImage();
                 showErrorMsg(R.string.CARD_EDIT_error_displaying_image, e.getMessage());
                 e.printStackTrace();
             }
@@ -659,6 +662,8 @@ public class CardEdit3_View extends BaseView implements
         MyUtils.hide(mediaThrobber);
         Drawable drawable = getResources().getDrawable(R.drawable.ic_image_broken);
         imageView.setImageDrawable(drawable);
+        MyUtils.show(imageHolder);
+        MyUtils.show(imageView);
     }
 
     private void gracefulExit() {
