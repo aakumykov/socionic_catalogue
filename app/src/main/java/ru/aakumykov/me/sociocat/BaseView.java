@@ -234,6 +234,18 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         Log.e(TAG, message);
     }
 
+    @Override
+    public <T> void showConsoleError(String tag, T arg) {
+        String msg = "";
+        if (arg instanceof Integer) {
+            msg = getResources().getString((Integer) arg);
+        }
+        else {
+            msg = (String)arg;
+        }
+        Log.e(tag, msg);
+    }
+
     private void showMsg(String text, int color) {
         showMsg(text, color, null);
     }
@@ -290,6 +302,12 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     public void showToast(String msg) {
         showToastReal(this, msg, Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void showLongToast(int msgId) {
+        String msg = getResources().getString(msgId);
+        showLongToast(msg);
     }
 
     @Override
