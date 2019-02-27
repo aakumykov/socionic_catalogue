@@ -507,10 +507,12 @@ public class CardEdit3_View extends BaseView implements
     }
 
     @OnClick(R.id.discardImageButton)
-    void resetImage() {
+    @Override
+    public void resetImage() {
         imageView.setImageDrawable(null);
         MyUtils.hide(imageView);
         MyUtils.hide(discardImageButton);
+        MyUtils.show(imageHolder);
         MyUtils.show(imagePlaceholder);
     }
 

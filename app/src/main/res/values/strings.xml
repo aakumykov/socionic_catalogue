@@ -352,4 +352,5 @@
     <string name="CARD_SHOW_error_deleting_tags">Ошибка удаления меток</string>
     <string name="CARD_EDIT_error_saving_edit_state">Ошибка сохранения черновика</string>
     <string name="TAG_long_text">длиннотекст</string>
+    <string name="CARD_EDIT_unknown_image_type">Неправильный тип картинки</string>
 </resources>

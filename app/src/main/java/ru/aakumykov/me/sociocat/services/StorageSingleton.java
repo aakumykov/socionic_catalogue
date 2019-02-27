@@ -40,9 +40,7 @@ public class StorageSingleton implements iStorageSingleton {
     // Интерфейсные методы
     @Override
     public void uploadImage(Bitmap imageBitmap, String imageType, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
-
         byte[] imageBytesArray = MVPUtils.compressImage(imageBitmap, imageType);
-
         uploadFile(imageBytesArray, Constants.IMAGES_PATH, fileName, callbacks);
     }
 
