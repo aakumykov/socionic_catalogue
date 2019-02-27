@@ -17,7 +17,9 @@ import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -186,5 +188,12 @@ public final class MyUtils {
         Pattern pattern = Pattern.compile("^([a-z0-9+_]+[.-]?)*[a-z0-9]+@([a-z0-9]+[.-]?)*[a-z0-9]+\\.[a-z]+$");
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    public static <T> HashMap<T, Boolean> list2hashMap(Set<T> list, boolean defaultValue) {
+        HashMap<T,Boolean> hashMap = new HashMap<>();
+        for(T key : list)
+            hashMap.put(key, defaultValue);
+        return hashMap;
     }
 }

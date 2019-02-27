@@ -79,6 +79,8 @@ public class CardEdit3_View extends BaseView implements
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
+    private final static String TAG = "CardEdit3_View";
+
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayer;
 
@@ -140,8 +142,14 @@ public class CardEdit3_View extends BaseView implements
     protected void onPause() {
         super.onPause();
         if (!exitIsExpected) {
-            if (isFormFilled()) {
-                presenter.saveEditState();
+            if (formIsFilled()) {
+                try {
+                    presenter.saveEditState();
+                } catch (Exception e) {
+                    showLongToast(R.string.CARD_EDIT_error_saving_edit_state);
+                    showConsoleError(TAG, e.getMessage());
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -443,7 +451,7 @@ public class CardEdit3_View extends BaseView implements
     }
 
     @Override
-    public boolean isFormFilled() {
+    public boolean formIsFilled() {
         boolean changed = false;
         if (!TextUtils.isEmpty(getCardTitle())) changed = true;
         if (!TextUtils.isEmpty(getQuote())) changed = true;
@@ -571,7 +579,7 @@ public class CardEdit3_View extends BaseView implements
 
     @OnClick(R.id.cancelButton)
     void cancelEdit() {
-        if (isFormFilled()) {
+        if (formIsFilled()) {
             MyDialogs.cancelEditDialog(
                     this,
                     R.string.CARD_EDIT_cancel_editing_title,

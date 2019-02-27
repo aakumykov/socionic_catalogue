@@ -13,7 +13,9 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.Enums;
@@ -46,7 +48,7 @@ public class CardEdit3_Presenter implements
     private Card currentCard;
     private HashMap<String,Boolean> oldCardTags;
     private String imageType;
-    private boolean externalDataMode = false;
+    private boolean isExternalDataMode = false;
     private Enums.CardEditMode editMode;
 
 
@@ -175,26 +177,57 @@ public class CardEdit3_Presenter implements
 
     @Override
     public void saveEditState() {
-        if (null != view) {
-            updateCurrentCardFromView();
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            Gson gson = new Gson();
-            String json = gson.toJson(currentCard);
-            editor.putString(Constants.CARD, json);
-            editor.apply();
-        }
+        updateCurrentCardFromView();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        String cardJson = new Gson().toJson(currentCard);
+
+        editor.putString(Constants.CARD, cardJson);
+        editor.putString("editMode", editMode.name());
+        editor.putBoolean("isExternalDataMode", isExternalDataMode);
+        editor.putString("imageType", imageType);
+        editor.putStringSet("oldCardTags", oldCardTags.keySet());
+
+        editor.apply();
     }
 
     @Override
-    public void restoreEditState() {
+    public void restoreEditState() throws Exception {
+
         if (sharedPreferences.contains(Constants.CARD)) {
+
             String json = sharedPreferences.getString(Constants.CARD, "");
+
             if (!TextUtils.isEmpty(json)) {
-                Card card = new Gson().fromJson(json, Card.class);
-                if (null != card) {
-                    currentCard = card;
-                    view.displayCard(card);
+
+                Card savedCard = new Gson().fromJson(json, Card.class);
+
+                Enums.CardEditMode savedEditMode = Enums.CardEditMode.valueOf(sharedPreferences.getString("editMode", ""));
+
+                boolean savedIsExternalDataMode = sharedPreferences.getBoolean("isExternalDataMode", false);
+
+                String savedImageType = sharedPreferences.getString("imageType", null);
+
+                HashMap<String,Boolean> savedOldCardTags = new HashMap<>();
+                Set<String> tagsSet = sharedPreferences.getStringSet("oldCardTags", new HashSet<String>());
+                for(String tagName : tagsSet)
+                    savedOldCardTags.put(tagName, true);
+
+                HashMap<String,Boolean> savedOldCardTags2 = MyUtils.list2hashMap(tagsSet, true);
+
+                if (null != savedCard) {
+                    currentCard = savedCard;
+                    editMode = savedEditMode;
+                    isExternalDataMode = savedIsExternalDataMode;
+                    imageType = savedImageType;
+                    oldCardTags = savedOldCardTags;
+
+                    view.displayCard(savedCard);
                     clearEditState();
+
+                } else {
+                    throw new Exception("Card from shared preferences is NULL");
                 }
             }
         }
@@ -354,7 +387,7 @@ public class CardEdit3_Presenter implements
     private void prepareCardCreation(Intent intent) {
         editMode = Enums.CardEditMode.CREATE;
         // Если запускается с флафгом NO_HISTORY, значит данные поступили извне
-        externalDataMode = (0 != (intent.getFlags() & Intent.FLAG_ACTIVITY_NO_HISTORY));
+        isExternalDataMode = (0 != (intent.getFlags() & Intent.FLAG_ACTIVITY_NO_HISTORY));
 
         Card card = new Card();
         card.setKey(cardsService.createKey());
@@ -550,7 +583,7 @@ public class CardEdit3_Presenter implements
     private void finishWork(Card card) {
         if (null != view) {
             clearEditState();
-            if (externalDataMode) view.showCard(card);
+            if (isExternalDataMode) view.showCard(card);
             else view.finishEdit(card);
         }
     }

@@ -41,7 +41,7 @@ public interface iCardEdit3 {
         void showImageProgressBar();
         void hideImageProgressBar();
 
-        boolean isFormFilled();
+        boolean formIsFilled();
 
         void finishEdit(Card card);
         void showCard(Card card);
@@ -62,7 +62,7 @@ public interface iCardEdit3 {
         void saveCard(boolean alreadyValidated) throws Exception;
 
         void saveEditState();
-        void restoreEditState();
+        void restoreEditState() throws Exception;
         void clearEditState();
     }
 }
