@@ -206,11 +206,13 @@ public class CardEdit3_Presenter implements
     }
 
     @Override
-    public void saveCard(boolean validateFirst) throws Exception {
+    public void saveCard(boolean alreadyValidated) throws Exception {
 
         updateCurrentCardFromView();
 
-        if (validateFirst) {
+        processBeforeSave();
+
+        if (alreadyValidated) {
             if (!formIsValid()) return;
         }
 
@@ -404,6 +406,14 @@ public class CardEdit3_Presenter implements
             currentCard.setQuoteSource(view.getQuoteSource());
             currentCard.setDescription(view.getDescription());
             currentCard.setTags(view.getTags());
+        }
+    }
+
+    private void processBeforeSave() {
+        String quote = currentCard.getQuote();
+        if (quote.length() > Constants.LONG_TAG_THRESHOLD) {
+            String longTag = view.getString(R.string.TAG_long_text);
+            currentCard.addTag(longTag);
         }
     }
 

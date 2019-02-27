@@ -15,6 +15,8 @@ public interface iBaseView {
     iAuthSingleton auth();
 
     Context getAppContext();
+    String getString(int stringResourceId);
+
     void startMyActivity(Intent intent);
 
     SharedPreferences getSharedPrefs(String prefsName);
