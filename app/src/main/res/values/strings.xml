@@ -350,4 +350,5 @@
     <string name="CARD_SHOW_error_card_not_exists">Карточка не существует</string>
     <string name="CARD_SHOW_error_deleting_image">Ошибка удаления картинки</string>
     <string name="CARD_SHOW_error_deleting_tags">Ошибка удаления меток</string>
+    <string name="TAG_long_text">длиннотекст</string>
 </resources>

@@ -341,4 +341,10 @@ public class Card implements Parcelable {
     @Exclude public boolean hasImageURL() {
         return !TextUtils.isEmpty(getImageURL());
     }
+
+
+    // Разные
+    @Exclude public void addTag(String tag) {
+        tags.put(tag, true);
+    }
 }
