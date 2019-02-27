@@ -159,14 +159,8 @@ public class CardEdit3_Presenter implements
         else
             throw new Exception("Wring type of imageURI variable");
 
-
-        if (null == imageType) {
-            view.showErrorMsg(R.string.CARD_EDIT_unknown_image_type);
-            view.resetImage();
-        } else {
-            currentCard.setImageURL("");
-            view.displayImage(imageURI.toString());
-        }
+        currentCard.setImageURL("");
+        view.displayImage(imageURI.toString());
     }
 
     @Override
