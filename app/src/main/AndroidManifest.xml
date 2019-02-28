@@ -61,7 +61,8 @@
 
         <activity android:name=".card_type_chooser.CardTypeChooser" android:noHistory="true" />
 
-        <activity android:name=".external_data_receiver.ExternalDataReceiver">
+        <activity android:name=".external_data_receiver.ExternalDataReceiver"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
