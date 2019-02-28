@@ -73,7 +73,7 @@ public class ExternalDataReceiver extends BaseView {
 
         Intent intent2 = new Intent(intent1);
         intent2.setClass(this, CardEdit3_View.class);
-        intent2.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        //intent2.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivityForResult(intent2, Constants.CODE_CREATE_CARD);
     }
 
