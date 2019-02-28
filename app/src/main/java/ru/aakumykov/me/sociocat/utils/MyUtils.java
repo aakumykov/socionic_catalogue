@@ -65,7 +65,10 @@ public final class MyUtils {
     public static String detectImageType(Context context, Uri uri) {
         ContentResolver contentResolver = context.getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+        String mimeType = contentResolver.getType(uri);
+        if (null == mimeType)
+            mimeType = Config.DEFAULT_IMAGE_TYPE;
+        return mimeTypeMap.getExtensionFromMimeType(mimeType);
     }
 
     public static String detectImageType(Context context, String imageURL) {

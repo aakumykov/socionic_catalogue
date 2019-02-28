@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
@@ -54,6 +55,8 @@ public class CardEdit3_View extends BaseView implements
         iCardEdit3.View,
         TagView.OnTagClickListener
 {
+    @BindView(R.id.scrollView) ScrollView scrollView;
+
     @BindView(R.id.titleInput) EditText titleInput;
     @BindView(R.id.quoteInput) EditText quoteInput;
     @BindView(R.id.quoteSourceInput) EditText quoteSourceInput;
@@ -228,6 +231,9 @@ public class CardEdit3_View extends BaseView implements
     public void showErrorMsg(int messageId, String consoleMessage) {
         super.showErrorMsg(messageId, consoleMessage);
         enableForm();
+        MyUtils.hide(mediaThrobber);
+        MyUtils.hide(imageProgressBar);
+        scrollView.scrollTo(0,0);
     }
 
 
@@ -258,9 +264,7 @@ public class CardEdit3_View extends BaseView implements
     public void displayImage(String imageURI) {
 
         if (TextUtils.isEmpty(imageURI)) {
-            MyUtils.show(imageHolder);
-            MyUtils.show(imagePlaceholder);
-            MyUtils.hide(mediaThrobber);
+            removeImage();
         }
         else {
             MyUtils.hide(imagePlaceholder);
@@ -341,6 +345,17 @@ public class CardEdit3_View extends BaseView implements
             showErrorMsg(R.string.CARD_EDIT_error_displaying_video, e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    @Override public void removeImage() {
+        imageView.setImageDrawable(null);
+
+        MyUtils.hide(mediaThrobber);
+        MyUtils.hide(imageView);
+        MyUtils.hide(discardImageButton);
+
+        MyUtils.show(imageHolder);
+        MyUtils.show(imagePlaceholder);
     }
 
     @Override
@@ -507,11 +522,8 @@ public class CardEdit3_View extends BaseView implements
     }
 
     @OnClick(R.id.discardImageButton)
-    void resetImage() {
-        imageView.setImageDrawable(null);
-        MyUtils.hide(imageView);
-        MyUtils.hide(discardImageButton);
-        MyUtils.show(imagePlaceholder);
+    void resetImageClicked() {
+        removeImage();
     }
 
     @OnClick(R.id.addVideoButton)

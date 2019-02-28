@@ -22,6 +22,8 @@ public interface iCardEdit3 {
         void displayImage(String imageURI);
         void displayVideo(String videoCode);
 
+        void removeImage();
+
         String getCardTitle();
         String getQuote();
         String getQuoteSource();
