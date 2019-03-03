@@ -688,6 +688,11 @@ public class CardEdit_View extends BaseView implements
         tagsContainer.removeTag(position);
     }
 
+    @Override
+    public void onSelectedTagDrag(int position, String text) {
+
+    }
+
 
     // Внутренние методы
     private void switchImageMode(boolean startSelectingImage) {

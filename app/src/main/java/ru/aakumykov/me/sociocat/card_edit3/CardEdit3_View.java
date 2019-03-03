@@ -108,6 +108,7 @@ public class CardEdit3_View extends BaseView implements
 //        tagsList = new ArrayList<>();
 
         tagsContainer.setOnTagClickListener(this);
+        //tagsContainer.setDragEnable(false);
 
         setTagWatcher();
     }
@@ -640,6 +641,11 @@ public class CardEdit3_View extends BaseView implements
     @Override
     public void onTagCrossClick(int position) {
         tagsContainer.removeTag(position);
+    }
+
+    @Override
+    public void onSelectedTagDrag(int position, String text) {
+
     }
 
 
