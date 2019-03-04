@@ -640,11 +640,6 @@ public class CardShow_View extends BaseView implements
 
     }
 
-    @Override
-    public void onSelectedTagDrag(int position, String text) {
-
-    }
-
 
     // Переходы
     @Override
@@ -979,9 +974,14 @@ public class CardShow_View extends BaseView implements
                 currentComment.getText(),
                 new iMyDialogs.StringInputCallback() {
                     @Override
-                    public void onDialogWithStringYes(String text) {
+                    public String onYesClicked(String text) {
                         currentComment.setText(text);
                         presenter.editCommentConfirmed(currentComment);
+                        return null;
+                    }
+                    @Override
+                    public void onSuccess() {
+
                     }
                 }
         );

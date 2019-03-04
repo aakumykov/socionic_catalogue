@@ -48,6 +48,7 @@ import ru.aakumykov.me.sociocat.card_edit.TagAutocompleteAdapter;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.MyYoutubePlayer;
@@ -560,8 +561,13 @@ public class CardEdit3_View extends BaseView implements
         // TODO: переименовать в "inputStringDialog"
         MyDialogs.addYoutubeVideoDialog(this, new iMyDialogs.StringInputCallback() {
             @Override
-            public void onDialogWithStringYes(String text) {
+            public String onYesClicked(String text) {
                 presenter.processVideoLink(text);
+                return null;
+            }
+            @Override
+            public void onSuccess() {
+
             }
         });
     }
@@ -580,12 +586,22 @@ public class CardEdit3_View extends BaseView implements
     // Бредятина в логике.
     @OnClick(R.id.addAudioButton)
     void addAudioClicked() {
-        // TODO: переименовать в "inputStringDialog"
-        MyDialogs.addYoutubeVideoDialog(this, new iMyDialogs.StringInputCallback() {
-            @Override public void onDialogWithStringYes(String text) {
-                presenter.processAudioLink(text);
-            }
-        });
+        MyDialogs.stringInputDialog(this, R.string.CARD_EDIT_add_audio,
+                "Введите код музыки на Ютуб", new iMyDialogs.StringInputCallback() {
+                    @Override
+                    public String onYesClicked(String inputString) {
+                        String audioCode = MVPUtils.extractYoutubeVideoCode(inputString);
+                        if (null == audioCode) {
+                            return getResources().getString(R.string.CARD_EDIT_wrong_code);
+                        } else {
+                            return null;
+                        }
+                    }
+                    @Override
+                    public void onSuccess() {
+
+                    }
+                });
     }
 
     @OnClick(R.id.addTagButton)
@@ -680,11 +696,6 @@ public class CardEdit3_View extends BaseView implements
     @Override
     public void onTagCrossClick(int position) {
         tagsContainer.removeTag(position);
-    }
-
-    @Override
-    public void onSelectedTagDrag(int position, String text) {
-
     }
 
 
