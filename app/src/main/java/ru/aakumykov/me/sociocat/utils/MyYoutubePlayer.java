@@ -25,6 +25,10 @@ import static android.widget.LinearLayout.VERTICAL;
 public class MyYoutubePlayer implements
         View.OnClickListener
 {
+    public interface iMyYoutubePlayerCallbacks {
+        void onMediaAdded();
+    }
+
     public enum PlayerType {
         VIDEO_PLAYER, AUDIO_PLAYER
     }
@@ -75,19 +79,19 @@ public class MyYoutubePlayer implements
     }
 
 
-    public void setVideo(String videoId, boolean showPlayerImmediately) {
+    public void setVideo(String videoId, boolean showPlayerImmediately, iMyYoutubePlayerCallbacks callbacks) {
         this.videoId = videoId;
         if (showPlayerImmediately) {
             if (null != player)
                 player.cueVideo(videoId, 0f);
             else
-                prepareAndShowPlayer();
+                prepareAndShowPlayer(callbacks);
         }
 
     }
 
-    public void show() {
-        prepareAndShowPlayer();
+    public void show(iMyYoutubePlayerCallbacks callbacks) {
+        prepareAndShowPlayer(callbacks);
     }
 
     public void pause() {
@@ -114,7 +118,7 @@ public class MyYoutubePlayer implements
         playerContainer.setLayoutParams(layoutParams);
     }
 
-    private void prepareAndShowPlayer() {
+    private void prepareAndShowPlayer(final iMyYoutubePlayerCallbacks callbacks) {
 
         if (null != youTubePlayerView)
             return;
@@ -138,6 +142,7 @@ public class MyYoutubePlayer implements
                         playerContainer.addView(youTubePlayerView, playerContainer.indexOfChild(videoMsg));
                         hidePlayerMsg();
                         showPlayerControls();
+                        callbacks.onMediaAdded();
                     }
                     @Override
                     public void onStateChange(@NonNull PlayerConstants.PlayerState state) {

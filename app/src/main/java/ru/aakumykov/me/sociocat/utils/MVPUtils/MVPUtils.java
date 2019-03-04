@@ -52,8 +52,8 @@ public class MVPUtils {
     static {
         /* Все регулярные выражения для применения к URL/видео-кодам YouTube
          * обязаны выделять код видео в _первой_ группе. */
-        youtubePatterns.put("youtube1", "^https?://youtube\\.com/watch\\?v=([^=?&]+)");
-        youtubePatterns.put("youtube2", "^https?://www\\.youtube\\.com/watch\\?v=([^=?&]+)");
+        youtubePatterns.put("youtube1", "^https?://www\\.youtube\\.com/watch\\?v=([\\w-]+)");
+        youtubePatterns.put("youtube2", "^https?://youtube\\.com/watch\\?v=([\\w-]+)");
         youtubePatterns.put("youtube3", "^https?://youtu.be/([^/]+)$");
         youtubePatterns.put("youtube4", "^([\\w-]{11})$");
     }

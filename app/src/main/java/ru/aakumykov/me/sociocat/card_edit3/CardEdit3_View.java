@@ -368,9 +368,8 @@ public class CardEdit3_View extends BaseView implements
             return;
         }
 
-        MyUtils.hide(addAudioButton);
         MyUtils.show(audioPlayerHolder);
-        MyUtils.show(removeAudioButton);
+        MyUtils.hide(addAudioButton);
 
         audioPlayer = new MyYoutubePlayer(
                 MyYoutubePlayer.PlayerType.AUDIO_PLAYER,
@@ -380,7 +379,12 @@ public class CardEdit3_View extends BaseView implements
                 null
                 );
 
-        audioPlayer.setVideo(audioCode, true);
+        audioPlayer.setVideo(audioCode, true, new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
+            @Override
+            public void onMediaAdded() {
+                MyUtils.show(removeAudioButton);
+            }
+        });
     }
 
     @Override public void removeImage() {
