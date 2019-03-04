@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -49,6 +50,7 @@ import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.MyYoutubePlayer;
 
 //@RuntimePermissions
 public class CardEdit3_View extends BaseView implements
@@ -75,6 +77,9 @@ public class CardEdit3_View extends BaseView implements
     @BindView(R.id.removeVideoButton) Button removeVideoButton;
     @BindView(R.id.addVideoButton) Button addVideoButton;
 
+    @BindView(R.id.audioHolder) LinearLayout audioHolder;
+    @BindView(R.id.addAudioButton) Button addAudioButton;
+
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.newTagInput) AutoCompleteTextView newTagInput;
     @BindView(R.id.addTagButton) Button addTagButton;
@@ -86,6 +91,8 @@ public class CardEdit3_View extends BaseView implements
 
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayer;
+
+    private MyYoutubePlayer audioPlayer;
 
     private iCardEdit3.Presenter presenter;
     private List<String> tagsList = new ArrayList<>();
@@ -253,6 +260,9 @@ public class CardEdit3_View extends BaseView implements
             case Constants.VIDEO_CARD:
                 displayVideo(card.getVideoCode());
                 break;
+            case Constants.AUDIO_CARD:
+                displayAudio(card.getAudioCode());
+                break;
             default:
                 showErrorMsg(R.string.wrong_card_type);
         }
@@ -346,6 +356,24 @@ public class CardEdit3_View extends BaseView implements
             showErrorMsg(R.string.CARD_EDIT_error_displaying_video, e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void displayAudio(final String audioCode) {
+        if (null == audioCode) {
+            MyUtils.show(addAudioButton);
+            return;
+        }
+
+        audioPlayer = new MyYoutubePlayer(
+                MyYoutubePlayer.PlayerType.AUDIO_PLAYER,
+                R.string.YOUTUBE_PLAYER_preparing_player,
+                this,
+                audioHolder,
+                null
+                );
+
+        audioPlayer.setVideo(audioCode, true);
     }
 
     @Override public void removeImage() {
@@ -547,6 +575,17 @@ public class CardEdit3_View extends BaseView implements
         MyUtils.hide(videoPlayerHolder);
         MyUtils.hide(removeVideoButton);
         MyUtils.show(addVideoButton);
+    }
+
+    // Бредятина в логике.
+    @OnClick(R.id.addAudioButton)
+    void addAudioClicked() {
+        // TODO: переименовать в "inputStringDialog"
+        MyDialogs.addYoutubeVideoDialog(this, new iMyDialogs.StringInputCallback() {
+            @Override public void onDialogWithStringYes(String text) {
+                presenter.processAudioLink(text);
+            }
+        });
     }
 
     @OnClick(R.id.addTagButton)

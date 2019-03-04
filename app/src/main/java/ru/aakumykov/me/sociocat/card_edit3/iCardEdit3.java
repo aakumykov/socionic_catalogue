@@ -21,6 +21,7 @@ public interface iCardEdit3 {
         void displayCard(Card card);
         void displayImage(String imageURI);
         void displayVideo(String videoCode);
+        void displayAudio(String audioCode);
 
         void removeImage();
 
@@ -61,6 +62,7 @@ public interface iCardEdit3 {
 
         void processIncomingImage(@Nullable Intent intent) throws Exception;
         void processVideoLink(String videoString);
+        void processAudioLink(String audioString);
         void saveCard(boolean alreadyValidated) throws Exception;
 
         void saveEditState();

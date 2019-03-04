@@ -38,6 +38,7 @@ public class MyYoutubePlayer implements
     private final static String PLAY_PAUSE_BUTTON_TAG = "playPauseButton";
 
     private PlayerType playerType;
+    private int waitingMessageId;
     private LinearLayout playerContainer;
     private TextView videoMsg;
     private YouTubePlayerView youTubePlayerView;
@@ -54,12 +55,14 @@ public class MyYoutubePlayer implements
 
     public MyYoutubePlayer(
             PlayerType playerType,
+            int waitingMessageId,
             @NonNull Context context,
             @NonNull ViewGroup targetContainer,
             @Nullable View viewToInsertAfter
     )
     {
         this.playerType = playerType;
+        this.waitingMessageId = waitingMessageId;
         this.context = context;
         this.targetContainer = targetContainer;
         this.viewToInsertAfter = viewToInsertAfter;
@@ -116,7 +119,7 @@ public class MyYoutubePlayer implements
         if (null != youTubePlayerView)
             return;
 
-        showPlayerMsg(R.string.YOUTUBE_PLAYER_wating_for_video);
+        showPlayerMsg(waitingMessageId);
 
         youTubePlayerView = new YouTubePlayerView(context);
 

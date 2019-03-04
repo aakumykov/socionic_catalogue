@@ -176,6 +176,22 @@ public class CardEdit3_Presenter implements
     }
 
     @Override
+    public void processAudioLink(String audioString) {
+        String audioCode = MVPUtils.extractYoutubeVideoCode(audioString);
+        if (null != audioCode) {
+            try {
+                currentCard.setAudioCode(audioCode);
+                view.displayAudio(audioCode);
+            } catch (Exception e) {
+                view.showErrorMsg(R.string.CARD_EDIT_error_adding_audio, e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            view.showErrorMsg(R.string.CARD_EDIT_error_adding_audio, "Wrong audio code: "+audioString);
+        }
+    }
+
+    @Override
     public void saveEditState() {
         updateCurrentCardFromView();
 

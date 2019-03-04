@@ -155,6 +155,20 @@
                 android:visibility="gone" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/audioHolder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/addAudioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/CARD_EDIT_add_audio"
+                android:visibility="gone" />
+        </LinearLayout>
+
         <EditText
             android:id="@+id/descriptionInput"
             android:layout_width="match_parent"

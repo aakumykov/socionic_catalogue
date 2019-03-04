@@ -10,6 +10,7 @@ import com.google.firebase.database.Exclude;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 
 // TODO: как сделать так, чтобы графическая карточка не могла сохраниться без картинки?
@@ -29,6 +30,7 @@ public class Card implements Parcelable {
     @Exclude private transient String mimeType;
     private String fileName;
     private String videoCode;
+    private String audioCode;
     private String description;
     private HashMap<String, Boolean> tags;
     private HashMap<String, Boolean> rateUpList;
@@ -57,6 +59,7 @@ public class Card implements Parcelable {
                 ", imageURL: "+imageURL+
                 ", fileName: "+fileName+
                 ", videoCode: "+videoCode +
+                ", audioCode: "+audioCode +
                 ", description: "+getDescription()+
                 ", tags: "+ getTags()+
                 ", rateUpList: "+ getRateUpList()+
@@ -86,6 +89,7 @@ public class Card implements Parcelable {
         dest.writeString(this.imageURL);
         dest.writeString(this.fileName);
         dest.writeString(this.videoCode);
+        dest.writeString(this.audioCode);
         dest.writeString(this.description);
         dest.writeMap(this.tags);
         dest.writeMap(this.rateUpList);
@@ -109,6 +113,7 @@ public class Card implements Parcelable {
         imageURL = in.readString();
         fileName = in.readString();
         videoCode = in.readString();
+        audioCode = in.readString();
         description = in.readString();
         tags = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
@@ -168,6 +173,9 @@ public class Card implements Parcelable {
     public String getVideoCode() {
         return videoCode;
     }
+    public String getAudioCode() {
+        return audioCode;
+    }
     public String getDescription() {
         return description;
     }
@@ -209,7 +217,8 @@ public class Card implements Parcelable {
         String[] availableCardTypes = {
                 Constants.TEXT_CARD,
                 Constants.IMAGE_CARD,
-                Constants.VIDEO_CARD
+                Constants.VIDEO_CARD,
+                Constants.AUDIO_CARD
         };
 
         if (Arrays.asList(availableCardTypes).contains(type)) {
@@ -239,6 +248,12 @@ public class Card implements Parcelable {
             Uri uri = Uri.parse(videoCode);
             if (null == uri) throw new IllegalArgumentException("Error parsing videoCode");
             this.videoCode = videoCode;
+    }
+    public void setAudioCode(String audioCode) throws IllegalAccessException {
+        if (audioCode.matches(Config.AUDIO_CODE_REGEX))
+            this.audioCode = audioCode;
+        else
+            throw new IllegalAccessException("Wrong audio code");
     }
     public void setDescription(String description) {
         this.description = description;

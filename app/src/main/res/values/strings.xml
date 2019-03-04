@@ -352,4 +352,7 @@
     <string name="CARD_SHOW_error_deleting_tags">Ошибка удаления меток</string>
     <string name="CARD_EDIT_error_saving_edit_state">Ошибка сохранения черновика</string>
     <string name="TAG_long_text">длиннотекст</string>
+    <string name="YOUTUBE_PLAYER_preparing_player">Подготовка выигрывателя</string>
+    <string name="CARD_EDIT_add_audio">Добавить музыку</string>
+    <string name="CARD_EDIT_error_adding_audio">Ошибка добавления музыки</string>
 </resources>
