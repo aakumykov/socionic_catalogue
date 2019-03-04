@@ -208,4 +208,8 @@ public final class MyUtils {
             v.requestLayout();
         }
     }
+
+    public static <T> String object2string(Context context, T arg) {
+        return (arg instanceof Integer) ? context.getResources().getString((Integer)arg) : String.valueOf(arg);
+    }
 }
