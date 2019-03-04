@@ -356,4 +356,5 @@
     <string name="CARD_EDIT_add_audio">Добавить музыку</string>
     <string name="CARD_EDIT_error_adding_audio">Ошибка добавления музыки</string>
     <string name="CARD_EDIT_wrong_code">Некорректный код</string>
+    <string name="CARD_EDIT_remove_this_audio">Удалить эту мызуку</string>
 </resources>

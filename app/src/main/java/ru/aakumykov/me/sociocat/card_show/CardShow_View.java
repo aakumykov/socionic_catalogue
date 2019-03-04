@@ -980,7 +980,7 @@ public class CardShow_View extends BaseView implements
                         return null;
                     }
                     @Override
-                    public void onSuccess() {
+                    public void onSuccess(String inputtedString) {
 
                     }
                 }

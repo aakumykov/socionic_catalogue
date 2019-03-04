@@ -352,4 +352,5 @@
     <string name="CARD_EDIT_add_audio">Add audio</string>
     <string name="CARD_EDIT_error_adding_audio">Error adding audio</string>
     <string name="CARD_EDIT_wrong_code">Incorrect code</string>
+    <string name="CARD_EDIT_remove_this_audio">Remove this audio</string>
 </resources>

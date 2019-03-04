@@ -78,8 +78,9 @@ public class CardEdit3_View extends BaseView implements
     @BindView(R.id.removeVideoButton) Button removeVideoButton;
     @BindView(R.id.addVideoButton) Button addVideoButton;
 
-    @BindView(R.id.audioHolder) LinearLayout audioHolder;
+    @BindView(R.id.audioPlayerHolder) LinearLayout audioPlayerHolder;
     @BindView(R.id.addAudioButton) Button addAudioButton;
+    @BindView(R.id.removeAudioButton) Button removeAudioButton;
 
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.newTagInput) AutoCompleteTextView newTagInput;
@@ -362,15 +363,20 @@ public class CardEdit3_View extends BaseView implements
     @Override
     public void displayAudio(final String audioCode) {
         if (null == audioCode) {
+            MyUtils.show(audioPlayerHolder);
             MyUtils.show(addAudioButton);
             return;
         }
+
+        MyUtils.hide(addAudioButton);
+        MyUtils.show(audioPlayerHolder);
+        MyUtils.show(removeAudioButton);
 
         audioPlayer = new MyYoutubePlayer(
                 MyYoutubePlayer.PlayerType.AUDIO_PLAYER,
                 R.string.YOUTUBE_PLAYER_preparing_player,
                 this,
-                audioHolder,
+                audioPlayerHolder,
                 null
                 );
 
@@ -566,7 +572,7 @@ public class CardEdit3_View extends BaseView implements
                 return null;
             }
             @Override
-            public void onSuccess() {
+            public void onSuccess(String inputtedString) {
 
             }
         });
@@ -578,19 +584,20 @@ public class CardEdit3_View extends BaseView implements
             youTubePlayer.pause();
         youTubePlayerView.release();
 
+        //presenter.removeVideo();
+
         MyUtils.hide(videoPlayerHolder);
         MyUtils.hide(removeVideoButton);
         MyUtils.show(addVideoButton);
     }
 
-    // Бредятина в логике.
     @OnClick(R.id.addAudioButton)
     void addAudioClicked() {
         MyDialogs.stringInputDialog(this, R.string.CARD_EDIT_add_audio,
                 "Введите код музыки на Ютуб", new iMyDialogs.StringInputCallback() {
                     @Override
-                    public String onYesClicked(String inputString) {
-                        String audioCode = MVPUtils.extractYoutubeVideoCode(inputString);
+                    public String onYesClicked(String inputtedString) {
+                        String audioCode = MVPUtils.extractYoutubeVideoCode(inputtedString);
                         if (null == audioCode) {
                             return getResources().getString(R.string.CARD_EDIT_wrong_code);
                         } else {
@@ -598,10 +605,24 @@ public class CardEdit3_View extends BaseView implements
                         }
                     }
                     @Override
-                    public void onSuccess() {
-
+                    public void onSuccess(String inputtedString) {
+                        presenter.processAudioLink(inputtedString);
                     }
                 });
+    }
+
+    @OnClick(R.id.removeAudioButton)
+    void removeAudioClicked() {
+        if (null != audioPlayer) {
+            audioPlayer.pause();
+            audioPlayer.release();
+        }
+
+        //presenter.removeAudio();
+
+        MyUtils.hide(removeAudioButton);
+        MyUtils.show(audioPlayerHolder);
+        MyUtils.show(addAudioButton);
     }
 
     @OnClick(R.id.addTagButton)

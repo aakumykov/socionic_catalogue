@@ -31,7 +31,7 @@ public interface iMyDialogs {
 
     interface StringInputCallback {
         String onYesClicked(String text);
-        void onSuccess();
+        void onSuccess(String inputtedString);
     }
 
 }

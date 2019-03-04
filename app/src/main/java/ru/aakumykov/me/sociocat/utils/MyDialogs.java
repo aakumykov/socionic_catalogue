@@ -184,10 +184,11 @@ public class MyDialogs {
 
                     @Override
                     public void onClick(View v) {
-                        String errorMsg = callback.onYesClicked(editText.getText().toString());
+                        String inputString = editText.getText().toString();
+                        String errorMsg = callback.onYesClicked(inputString);
                         if (null == errorMsg) {
                             dialog.dismiss();
-                            callback.onSuccess();
+                            callback.onSuccess(inputString);
                         } else {
                             showErrorMessage(dialogLayout, errorMsg);
                         }
