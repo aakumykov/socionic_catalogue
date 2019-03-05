@@ -21,6 +21,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubeP
 import ru.aakumykov.me.sociocat.R;
 
 import static android.widget.LinearLayout.VERTICAL;
+import static com.pierfrancescosoffritti.androidyoutubeplayer.player.PlayerConstants.PlayerState.PLAYING;
 
 public class MyYoutubePlayer implements
         View.OnClickListener
@@ -58,7 +59,6 @@ public class MyYoutubePlayer implements
     private float videoDuration = 0;
     private String videoId;
     private PlayerConstants.PlayerState playerState;
-
 
     public MyYoutubePlayer(
             PlayerType playerType,
@@ -299,13 +299,14 @@ public class MyYoutubePlayer implements
     }
 
     private void playPauseMedia() {
-        switch (playerState) {
-            case PLAYING:
-                player.pause();
-                break;
-            default:
-                player.play();
-                break;
+//        // До первого нажатия на кнопку воспроизведения playerState неопределён.
+//        if (null == playerState)
+//            return;
+
+        if (PLAYING.equals(this.playerState)) {
+            player.pause();
+        } else {
+            player.play();
         }
     }
 
