@@ -36,6 +36,7 @@ public interface iCardEdit3 {
         void showQuoteError(int msgId);
         void showImageError(int msgId);
         void showVideoError(int msgId);
+        void showAudioError(int msgId);
         void showDescriptionError(int msgId);
 
         void disableForm();

@@ -32,44 +32,51 @@ public class MyYoutubePlayer implements
     public enum PlayerType {
         VIDEO_PLAYER, AUDIO_PLAYER
     }
-
     private static class PlayerConfig {
         static final int seekBarTopMargin = 30;
         static final int seekBarBottomMargin = 30;
 
     }
-
     private final static String PLAY_PAUSE_BUTTON_TAG = "playPauseButton";
 
     private PlayerType playerType;
     private int waitingMessageId;
+    private int playIconId;
+    private int pauseIconId;
+    private int waitIconId;
+    private Context context;
+    private ViewGroup targetContainer;
+
     private LinearLayout playerContainer;
-    private TextView videoMsg;
+    private TextView playerMsg;
     private YouTubePlayerView youTubePlayerView;
     private LinearLayout controlsContainer;
     private ImageView playPauseButton;
     private SeekBar seekBar;
     private YouTubePlayer player;
-    private PlayerConstants.PlayerState playerState;
+
     private float videoDuration = 0;
-    private Context context;
-    private ViewGroup targetContainer;
-    private View viewToInsertAfter;
     private String videoId;
+    private PlayerConstants.PlayerState playerState;
+
 
     public MyYoutubePlayer(
             PlayerType playerType,
             int waitingMessageId,
+            int playIconId,
+            int pauseIconId,
+            int waitIconId,
             @NonNull Context context,
-            @NonNull ViewGroup targetContainer,
-            @Nullable View viewToInsertAfter
+            @NonNull ViewGroup targetContainer
     )
     {
         this.playerType = playerType;
         this.waitingMessageId = waitingMessageId;
+        this.playIconId = playIconId;
+        this.pauseIconId = pauseIconId;
+        this.waitIconId = waitIconId;
         this.context = context;
         this.targetContainer = targetContainer;
-        this.viewToInsertAfter = viewToInsertAfter;
 
         preparePlayerContainer();
         preparePlayerMsg();
@@ -146,7 +153,7 @@ public class MyYoutubePlayer implements
                         player = youTubePlayer;
                         if (null != videoId)
                             youTubePlayer.cueVideo(videoId, 0f);
-                        playerContainer.addView(youTubePlayerView, playerContainer.indexOfChild(videoMsg));
+                        playerContainer.addView(youTubePlayerView, playerContainer.indexOfChild(playerMsg));
                         hidePlayerMsg();
                         showPlayerControls();
                         callbacks.onMediaAdded();
@@ -155,7 +162,7 @@ public class MyYoutubePlayer implements
                     public void onStateChange(@NonNull PlayerConstants.PlayerState state) {
                         super.onStateChange(state);
                         playerState = state;
-//                        showPlayerMsg(state);
+                        showPlayerMsg(state);
                         changePlayerControls(state);
                     }
                     @Override
@@ -179,8 +186,7 @@ public class MyYoutubePlayer implements
     }
 
     private void attachPlayerToTargetContainer() {
-        int index = (null == viewToInsertAfter) ? 0 : targetContainer.indexOfChild(viewToInsertAfter) + 1;
-        targetContainer.addView(playerContainer, index);
+        targetContainer.addView(playerContainer, 0);
     }
 
 
@@ -195,7 +201,7 @@ public class MyYoutubePlayer implements
         playPauseButton = new ImageView(context);
 //        playPauseButton.setId(R.id.playPauseButton);
         playPauseButton.setTag("playPauseButton");
-        playPauseButton.setImageDrawable(context.getResources().getDrawable(android.R.drawable.ic_media_play));
+        playPauseButton.setImageDrawable(context.getResources().getDrawable(playIconId));
         playPauseButton.setMinimumWidth(64);
         LinearLayout.LayoutParams ppLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
@@ -249,15 +255,15 @@ public class MyYoutubePlayer implements
 
 
     private void preparePlayerMsg() {
-        videoMsg = new TextView(context);
-        videoMsg.setText("Медиа выигрыватель");
-        videoMsg.setTextColor(context.getResources().getColor(android.R.color.white));
-        videoMsg.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        videoMsg.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
-        videoMsg.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-        videoMsg.setVisibility(View.GONE);
-        videoMsg.setPaddingRelative(0, 20, 0, 20);
-        playerContainer.addView(videoMsg);
+        playerMsg = new TextView(context);
+        playerMsg.setText("Медиа выигрыватель");
+        playerMsg.setTextColor(context.getResources().getColor(android.R.color.white));
+        playerMsg.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        playerMsg.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+        playerMsg.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+        playerMsg.setVisibility(View.GONE);
+        playerMsg.setPaddingRelative(0, 20, 0, 20);
+        playerContainer.addView(playerMsg);
     }
 
     private <T> void showPlayerMsg(T arg) {
@@ -268,12 +274,12 @@ public class MyYoutubePlayer implements
         } else {
             msg = String.valueOf(arg);
         }
-        videoMsg.setText(msg);
-        videoMsg.setVisibility(View.VISIBLE);
+        playerMsg.setText(msg);
+        playerMsg.setVisibility(View.VISIBLE);
     }
 
     private void hidePlayerMsg() {
-        videoMsg.setVisibility(View.GONE);
+        playerMsg.setVisibility(View.GONE);
     }
 
 
@@ -296,11 +302,9 @@ public class MyYoutubePlayer implements
         switch (playerState) {
             case PLAYING:
                 player.pause();
-                showPlayButton();
                 break;
             default:
                 player.play();
-                showPauseButton();
                 break;
         }
     }
@@ -312,26 +316,26 @@ public class MyYoutubePlayer implements
                 break;
             case PAUSED:
                 showPlayButton();
-//            case BUFFERING:
-//                showWatingButton();
-//                break;
+            case BUFFERING:
+                showWatingButton();
+                break;
             default:
                 break;
         }
     }
 
     private void showPlayButton() {
-        Drawable icon = context.getResources().getDrawable(android.R.drawable.ic_media_play);
+        Drawable icon = context.getResources().getDrawable(R.drawable.ic_play);
         playPauseButton.setImageDrawable(icon);
     }
 
     private void showPauseButton() {
-        Drawable icon = context.getResources().getDrawable(android.R.drawable.ic_media_pause);
+        Drawable icon = context.getResources().getDrawable(pauseIconId);
         playPauseButton.setImageDrawable(icon);
     }
 
-//    private void showWatingButton() {
-//        Drawable icon = context.getResources().getDrawable(android.R.drawable.presence_away);
-//        playPauseButton.setImageDrawable(icon);
-//    }
+    private void showWatingButton() {
+        Drawable icon = context.getResources().getDrawable(waitIconId);
+        playPauseButton.setImageDrawable(icon);
+    }
 }

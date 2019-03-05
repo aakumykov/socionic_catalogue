@@ -374,9 +374,11 @@ public class CardEdit3_View extends BaseView implements
         audioPlayer = new MyYoutubePlayer(
                 MyYoutubePlayer.PlayerType.AUDIO_PLAYER,
                 R.string.YOUTUBE_PLAYER_preparing_player,
+                R.drawable.ic_play,
+                R.drawable.ic_pause,
+                R.drawable.ic_wait,
                 this,
-                audioPlayerHolder,
-                null
+                audioPlayerHolder
                 );
 
         audioPlayer.setVideo(audioCode, true, new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
@@ -449,6 +451,11 @@ public class CardEdit3_View extends BaseView implements
 
     @Override
     public void showVideoError(int msgId) {
+        showToast(msgId);
+    }
+
+    @Override
+    public void showAudioError(int msgId) {
         showToast(msgId);
     }
 
@@ -586,7 +593,9 @@ public class CardEdit3_View extends BaseView implements
     void removeVideoClicked() {
         if (null != youTubePlayer)
             youTubePlayer.pause();
-        youTubePlayerView.release();
+
+        if (null != youTubePlayerView)
+            youTubePlayerView.release();
 
         //presenter.removeVideo();
 

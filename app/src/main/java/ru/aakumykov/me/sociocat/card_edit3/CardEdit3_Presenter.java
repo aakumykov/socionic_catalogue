@@ -539,6 +539,26 @@ public class CardEdit3_Presenter implements
         }
 
         // Видео
+        if (currentCard.isVideoCard()) {
+            if (null == currentCard.getVideoCode()) {
+                valid = false;
+                view.showVideoError(R.string.CARD_EDIT_there_is_no_video);
+            } else if (!MVPUtils.isYoutubeLink(currentCard.getVideoCode())) {
+                valid = false;
+                view.showVideoError(R.string.CARD_EDIT_incorrect_video_code);
+            }
+        }
+
+        // Аудио
+        if (currentCard.isAudioCard()) {
+            if (null == currentCard.getAudioCode()) {
+                valid = false;
+                view.showAudioError(R.string.CARD_EDIT_there_is_no_audio);
+            } else if (!MVPUtils.isYoutubeLink(currentCard.getAudioCode())) {
+                valid = false;
+                view.showAudioError(R.string.CARD_EDIT_incorrect_audio_code);
+            }
+        }
 
 
         return valid;
