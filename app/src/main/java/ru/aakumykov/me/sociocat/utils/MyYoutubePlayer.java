@@ -249,6 +249,7 @@ public class MyYoutubePlayer implements
         videoMsg.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
         videoMsg.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
         videoMsg.setVisibility(View.GONE);
+        videoMsg.setPaddingRelative(0, 20, 0, 20);
         playerContainer.addView(videoMsg);
     }
 
