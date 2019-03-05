@@ -94,6 +94,13 @@ public class MyYoutubePlayer implements
         prepareAndShowPlayer(callbacks);
     }
 
+    public void hide() {
+        if (null != playerContainer) {
+            ViewGroup parentGroup = (ViewGroup)playerContainer.getParent();
+            parentGroup.removeView(playerContainer);
+        }
+    }
+
     public void pause() {
         if (null != player)
             player.pause();

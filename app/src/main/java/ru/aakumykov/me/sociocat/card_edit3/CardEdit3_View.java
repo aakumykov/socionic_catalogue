@@ -620,6 +620,7 @@ public class CardEdit3_View extends BaseView implements
         if (null != audioPlayer) {
             audioPlayer.pause();
             audioPlayer.release();
+            audioPlayer.hide();
         }
 
         //presenter.removeAudio();
@@ -770,6 +771,8 @@ public class CardEdit3_View extends BaseView implements
 
     private void gracefulExit() {
         exitIsExpected = true;
+        removeAudioClicked();
+        removeVideoClicked();
         setResult(RESULT_CANCELED);
         finish();
     }
