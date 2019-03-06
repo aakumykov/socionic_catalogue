@@ -78,9 +78,11 @@ public class CardEdit3_View extends BaseView implements
     @BindView(R.id.removeVideoButton) Button removeVideoButton;
     @BindView(R.id.addVideoButton) Button addVideoButton;
 
-    @BindView(R.id.audioPlayerHolder) LinearLayout audioPlayerHolder;
-    @BindView(R.id.addAudioButton) Button addAudioButton;
-    @BindView(R.id.removeAudioButton) Button removeAudioButton;
+    @BindView(R.id.mediaPlayerHolder) LinearLayout audioPlayerHolder;
+    @BindView(R.id.addMediaButton) Button addAudioButton;
+    @BindView(R.id.convertToAudioButton) Button convertToAudioButton;
+    @BindView(R.id.convertToVideoButton) Button convertToVideoButton;
+    @BindView(R.id.removeMediaButton) Button removeAudioButton;
 
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.newTagInput) AutoCompleteTextView newTagInput;
@@ -94,7 +96,7 @@ public class CardEdit3_View extends BaseView implements
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayer;
 
-    private MyYoutubePlayer audioPlayer;
+    private MyYoutubePlayer mediaPlayer; // TODO: переименовать в youtubePlayer
 
     private iCardEdit3.Presenter presenter;
     private List<String> tagsList = new ArrayList<>();
@@ -371,7 +373,7 @@ public class CardEdit3_View extends BaseView implements
         MyUtils.show(audioPlayerHolder);
         MyUtils.hide(addAudioButton);
 
-        audioPlayer = new MyYoutubePlayer(
+        mediaPlayer = new MyYoutubePlayer(
                 MyYoutubePlayer.PlayerType.AUDIO_PLAYER,
                 R.string.YOUTUBE_PLAYER_preparing_player,
                 R.drawable.ic_player_play,
@@ -381,10 +383,21 @@ public class CardEdit3_View extends BaseView implements
                 audioPlayerHolder
                 );
 
-        audioPlayer.show(audioCode, new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
+        mediaPlayer.show(audioCode, new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
             @Override
             public void onMediaAdded() {
                 MyUtils.show(removeAudioButton);
+                switch (mediaPlayer.getPlayerType()) {
+                    case AUDIO_PLAYER:
+                        MyUtils.show(convertToVideoButton);
+                        break;
+                    case VIDEO_PLAYER:
+                        MyUtils.show(convertToAudioButton);
+                        break;
+                    default:
+                        //showError();
+                        break;
+                }
             }
         });
     }
@@ -432,6 +445,20 @@ public class CardEdit3_View extends BaseView implements
         for(int i=0; i<tagsList.size(); i++)
             tagsMap.put(tagsList.get(i), true);
         return tagsMap;
+    }
+
+    @Override
+    public void convert2audio() {
+        mediaPlayer.convert2audio();
+        MyUtils.show(convertToVideoButton);
+        MyUtils.hide(convertToAudioButton);
+    }
+
+    @Override
+    public void convert2video() {
+        mediaPlayer.convert2video();
+        MyUtils.hide(convertToVideoButton);
+        MyUtils.show(convertToAudioButton);
     }
 
     @Override
@@ -604,9 +631,9 @@ public class CardEdit3_View extends BaseView implements
         MyUtils.show(addVideoButton);
     }
 
-    @OnClick(R.id.addAudioButton)
+    @OnClick(R.id.addMediaButton)
     void addAudioClicked() {
-        MyDialogs.stringInputDialog(this, R.string.CARD_EDIT_add_audio,
+        MyDialogs.stringInputDialog(this, R.string.CARD_EDIT_add_media,
                 "Введите код музыки на Ютуб", new iMyDialogs.StringInputCallback() {
                     @Override
                     public String onYesClicked(String inputtedString) {
@@ -624,12 +651,22 @@ public class CardEdit3_View extends BaseView implements
                 });
     }
 
-    @OnClick(R.id.removeAudioButton)
+    @OnClick(R.id.convertToAudioButton)
+    void convertToAudioClicked() {
+        presenter.convertToAudio();
+    }
+
+    @OnClick(R.id.convertToVideoButton)
+    void convertToVideoClicked() {
+        presenter.convertToVideo();
+    }
+
+    @OnClick(R.id.removeMediaButton)
     void removeAudioClicked() {
-        if (null != audioPlayer) {
-            audioPlayer.pause();
-            audioPlayer.release();
-            audioPlayer.hide();
+        if (null != mediaPlayer) {
+            mediaPlayer.pause();
+            mediaPlayer.release();
+            mediaPlayer.hide();
         }
 
         //presenter.removeAudio();

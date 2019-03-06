@@ -156,28 +156,46 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/audioPlayerHolder"
+            android:id="@+id/mediaPlayerHolder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="gone">
 
             <Button
-                android:id="@+id/addAudioButton"
+                android:id="@+id/addMediaButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
-                android:text="@string/CARD_EDIT_add_audio"
+                android:text="@string/CARD_EDIT_add_media"
                 android:visibility="gone" />
 
             <Button
-                android:id="@+id/removeAudioButton"
+                android:id="@+id/convertToAudioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/card_edit_convert_button_background"
+                android:text="@string/CARD_EDIT_convert_to_audio"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/convertToVideoButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/card_edit_convert_button_background"
+                android:text="@string/CARD_EDIT_convert_to_video"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/removeMediaButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="@color/colorAccent"
-                android:text="@string/CARD_EDIT_remove_this_audio"
+                android:text="@string/CARD_EDIT_remove_this_media"
                 android:visibility="gone" />
 
         </LinearLayout>

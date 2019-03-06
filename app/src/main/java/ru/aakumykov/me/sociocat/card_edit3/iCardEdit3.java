@@ -32,6 +32,9 @@ public interface iCardEdit3 {
         String getDescription();
         HashMap<String,Boolean> getTags();
 
+        void convert2audio();
+        void convert2video();
+
         void showTitleError(int msgId);
         void showQuoteError(int msgId);
         void showImageError(int msgId);
@@ -60,6 +63,9 @@ public interface iCardEdit3 {
         void processInputIntent(@Nullable Intent intent) throws Exception;
         void loadTagsList(TagsListLoadCallbacks callbacks);
         void processTag(String tag);
+
+        void convertToAudio();
+        void convertToVideo();
 
         void processIncomingImage(@Nullable Intent intent) throws Exception;
         void processVideoLink(String videoString);

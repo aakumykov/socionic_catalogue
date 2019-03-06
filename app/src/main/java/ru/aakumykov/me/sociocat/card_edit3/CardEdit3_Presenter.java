@@ -33,6 +33,9 @@ import ru.aakumykov.me.sociocat.services.TagsSingleton;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
+import static ru.aakumykov.me.sociocat.Constants.AUDIO_CARD;
+import static ru.aakumykov.me.sociocat.Constants.VIDEO_CARD;
+
 public class CardEdit3_Presenter implements
         iCardEdit3.Presenter,
         iCardsSingleton.SaveCardCallbacks
@@ -126,6 +129,18 @@ public class CardEdit3_Presenter implements
         if (!TextUtils.isEmpty(tag)) {
             view.addTag(tag);
         }
+    }
+
+    @Override
+    public void convertToAudio() {
+        currentCard.setType(Constants.AUDIO_CARD);
+        view.convert2audio();
+    }
+
+    @Override
+    public void convertToVideo() {
+        currentCard.setType(Constants.VIDEO_CARD);
+        view.convert2video();
     }
 
     @Override
@@ -432,7 +447,7 @@ public class CardEdit3_Presenter implements
                     break;
 
                 case Constants.TYPE_YOUTUBE_VIDEO:
-                    currentCard.setType(Constants.VIDEO_CARD);
+                    currentCard.setType(VIDEO_CARD);
                     processYoutubeVideo(intent);
                     break;
 

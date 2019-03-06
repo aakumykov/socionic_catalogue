@@ -117,6 +117,24 @@ public class MyYoutubePlayer implements
             youTubePlayerView.release();
     }
 
+    public void convert2video() {
+        playerType = PlayerType.VIDEO_PLAYER;
+        MyUtils.show(youTubePlayerView);
+        MyUtils.hide(controlsContainer);
+        playerContainer.setBackground(null);
+    }
+
+    public void convert2audio() {
+        playerType = PlayerType.AUDIO_PLAYER;
+        MyUtils.hide(youTubePlayerView);
+        MyUtils.show(controlsContainer);
+    }
+
+    public PlayerType getPlayerType() {
+        return playerType;
+    }
+
+
 
     private void preparePlayerContainer() {
         playerContainer = new LinearLayout(context);

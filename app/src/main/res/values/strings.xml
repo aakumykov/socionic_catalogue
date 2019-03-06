@@ -353,12 +353,14 @@
     <string name="CARD_EDIT_error_saving_edit_state">Ошибка сохранения черновика</string>
     <string name="TAG_long_text">длиннотекст</string>
     <string name="YOUTUBE_PLAYER_preparing_player">Подготовка выигрывателя</string>
-    <string name="CARD_EDIT_add_audio">Добавить музыку</string>
+    <string name="CARD_EDIT_add_media">Добавить видео/музыку</string>
     <string name="CARD_EDIT_error_adding_audio">Ошибка добавления музыки</string>
     <string name="CARD_EDIT_wrong_code">Некорректный код</string>
-    <string name="CARD_EDIT_remove_this_audio">Удалить эту мызуку</string>
+    <string name="CARD_EDIT_remove_this_media">Удалить</string>
     <string name="CARD_EDIT_there_is_no_video">Добавьте видео</string>
     <string name="CARD_EDIT_there_is_no_audio">Добавьте музыку</string>
     <string name="CARD_EDIT_incorrect_video_code">Некорректный код видео</string>
     <string name="CARD_EDIT_incorrect_audio_code">Некорректный код музыки</string>
+    <string name="CARD_EDIT_convert_to_audio">Изменить на аудио</string>
+    <string name="CARD_EDIT_convert_to_video">Изменить на видео</string>
 </resources>
