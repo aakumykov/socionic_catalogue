@@ -374,14 +374,14 @@ public class CardEdit3_View extends BaseView implements
         audioPlayer = new MyYoutubePlayer(
                 MyYoutubePlayer.PlayerType.AUDIO_PLAYER,
                 R.string.YOUTUBE_PLAYER_preparing_player,
-                R.drawable.ic_play,
-                R.drawable.ic_pause,
-                R.drawable.ic_wait,
+                R.drawable.ic_player_play,
+                R.drawable.ic_player_pause,
+                R.drawable.ic_player_wait,
                 this,
                 audioPlayerHolder
                 );
 
-        audioPlayer.setVideo(audioCode, true, new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
+        audioPlayer.show(audioCode, new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
             @Override
             public void onMediaAdded() {
                 MyUtils.show(removeAudioButton);
