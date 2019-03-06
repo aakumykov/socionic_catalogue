@@ -779,6 +779,8 @@ public class CardShow_View extends BaseView implements
     private void displayAudioCard(Card card) {
         displayCommonCardParts(card);
 
+        MyUtils.show(mediaPlayerHolder);
+
         mediaPlayer = new MyYoutubePlayer(
                 MyYoutubePlayer.PlayerType.AUDIO_PLAYER,
                 R.string.YOUTUBE_PLAYER_preparing_player,
@@ -792,7 +794,7 @@ public class CardShow_View extends BaseView implements
         mediaPlayer.show(card.getAudioCode(), new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
             @Override
             public void onMediaAdded() {
-                MyUtils.show(mediaPlayerHolder);
+
             }
         });
     }

@@ -125,7 +125,7 @@ public class MyYoutubePlayer implements
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         playerContainer.setLayoutParams(layoutParams);
 //        playerContainer.setBackgroundColor(Color.rgb(255, 234, 244));
-        playerContainer.setBackground(context.getResources().getDrawable(R.drawable.my_youtube_player_background));
+        //playerContainer.setBackground(context.getResources().getDrawable(R.drawable.my_youtube_player_background));
     }
 
     private void prepareAndShowPlayer(final iMyYoutubePlayerCallbacks callbacks) {
@@ -147,11 +147,13 @@ public class MyYoutubePlayer implements
                     @Override
                     public void onReady() {
                         player = youTubePlayer;
+
                         if (null != videoId)
                             youTubePlayer.cueVideo(videoId, 0f);
-                        playerContainer.addView(youTubePlayerView, playerContainer.indexOfChild(playerMsg));
+
                         hidePlayerMsg();
                         showPlayerControls();
+
                         callbacks.onMediaAdded();
                     }
                     @Override
@@ -238,6 +240,9 @@ public class MyYoutubePlayer implements
     }
 
     private void showPlayerControls() {
+        playerContainer.addView(youTubePlayerView, playerContainer.indexOfChild(playerMsg));
+        playerContainer.setBackground(context.getResources().getDrawable(R.drawable.my_youtube_player_background));
+
         if (null != controlsContainer)
             controlsContainer.setVisibility(View.VISIBLE);
     }
