@@ -3,7 +3,6 @@ package ru.aakumykov.me.sociocat.utils;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,19 +85,13 @@ public class MyYoutubePlayer implements
     }
 
 
-    public void setVideo(String videoId, boolean showPlayerImmediately, iMyYoutubePlayerCallbacks callbacks) {
+    public void show(String videoId, iMyYoutubePlayerCallbacks callbacks) {
         this.videoId = videoId;
-        if (showPlayerImmediately) {
-            if (null != player)
-                player.cueVideo(videoId, 0f);
-            else
-                prepareAndShowPlayer(callbacks);
-        }
 
-    }
-
-    public void show(iMyYoutubePlayerCallbacks callbacks) {
-        prepareAndShowPlayer(callbacks);
+        if (null != player)
+            player.cueVideo(videoId, 0f);
+        else
+            prepareAndShowPlayer(callbacks);
     }
 
     public void hide() {
@@ -162,7 +155,7 @@ public class MyYoutubePlayer implements
                     public void onStateChange(@NonNull PlayerConstants.PlayerState state) {
                         super.onStateChange(state);
                         playerState = state;
-                        showPlayerMsg(state);
+                        //showPlayerMsg(state);
                         changePlayerControls(state);
                     }
                     @Override
@@ -326,7 +319,7 @@ public class MyYoutubePlayer implements
     }
 
     private void showPlayButton() {
-        Drawable icon = context.getResources().getDrawable(R.drawable.ic_play);
+        Drawable icon = context.getResources().getDrawable(R.drawable.ic_player_play);
         playPauseButton.setImageDrawable(icon);
     }
 
