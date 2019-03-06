@@ -155,6 +155,33 @@
                 android:visibility="gone" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/audioPlayerHolder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/addAudioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:text="@string/CARD_EDIT_add_audio"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/removeAudioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorAccent"
+                android:text="@string/CARD_EDIT_remove_this_audio"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
         <EditText
             android:id="@+id/descriptionInput"
             android:layout_width="match_parent"

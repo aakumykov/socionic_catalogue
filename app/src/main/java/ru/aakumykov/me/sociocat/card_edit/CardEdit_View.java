@@ -538,10 +538,15 @@ public class CardEdit_View extends BaseView implements
     void addVideo() {
         MyDialogs.addYoutubeVideoDialog(this, new iMyDialogs.StringInputCallback() {
             @Override
-            public void onDialogWithStringYes(String text) {
+            public String onYesClicked(String text) {
                 String videoCode = MVPUtils.extractYoutubeVideoCode(text);
                 storeCardVideoCode(videoCode);
                 displayVideo(videoCode);
+                return null;
+            }
+            @Override
+            public void onSuccess(String inputtedString) {
+
             }
         });
     }
@@ -686,11 +691,6 @@ public class CardEdit_View extends BaseView implements
     @Override
     public void onTagCrossClick(int position) {
         tagsContainer.removeTag(position);
-    }
-
-    @Override
-    public void onSelectedTagDrag(int position, String text) {
-
     }
 
 

@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
@@ -198,5 +199,17 @@ public final class MyUtils {
         for(T key : list)
             hashMap.put(key, defaultValue);
         return hashMap;
+    }
+
+    public static void setMargins (View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(l, t, r, b);
+            v.requestLayout();
+        }
+    }
+
+    public static <T> String object2string(Context context, T arg) {
+        return (arg instanceof Integer) ? context.getResources().getString((Integer)arg) : String.valueOf(arg);
     }
 }

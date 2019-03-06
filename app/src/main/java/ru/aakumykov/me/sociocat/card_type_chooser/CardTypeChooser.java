@@ -71,7 +71,8 @@ public class CardTypeChooser extends BaseView {
 
     @OnClick(R.id.soundChooser)
     void createAudioCard() {
-        showToast(R.string.not_implemented_yet);
+        card.setType(Constants.AUDIO_CARD);
+        startEditActivity();
     }
 
 

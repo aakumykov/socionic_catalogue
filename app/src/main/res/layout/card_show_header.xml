@@ -88,7 +88,16 @@
         android:id="@+id/videoPlayerHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible" android:layout_marginBottom="16dp"/>
+        android:visibility="gone"
+        android:layout_marginBottom="16dp"/>
+
+    <FrameLayout
+        android:id="@+id/mediaPlayerHolder"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp"/>
 
     <TextView
         android:id="@+id/descriptionView"

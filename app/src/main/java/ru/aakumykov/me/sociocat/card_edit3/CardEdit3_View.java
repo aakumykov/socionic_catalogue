@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -47,8 +48,10 @@ import ru.aakumykov.me.sociocat.card_edit.TagAutocompleteAdapter;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.MyYoutubePlayer;
 
 //@RuntimePermissions
 public class CardEdit3_View extends BaseView implements
@@ -75,6 +78,10 @@ public class CardEdit3_View extends BaseView implements
     @BindView(R.id.removeVideoButton) Button removeVideoButton;
     @BindView(R.id.addVideoButton) Button addVideoButton;
 
+    @BindView(R.id.audioPlayerHolder) LinearLayout audioPlayerHolder;
+    @BindView(R.id.addAudioButton) Button addAudioButton;
+    @BindView(R.id.removeAudioButton) Button removeAudioButton;
+
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.newTagInput) AutoCompleteTextView newTagInput;
     @BindView(R.id.addTagButton) Button addTagButton;
@@ -86,6 +93,8 @@ public class CardEdit3_View extends BaseView implements
 
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayer;
+
+    private MyYoutubePlayer audioPlayer;
 
     private iCardEdit3.Presenter presenter;
     private List<String> tagsList = new ArrayList<>();
@@ -253,6 +262,9 @@ public class CardEdit3_View extends BaseView implements
             case Constants.VIDEO_CARD:
                 displayVideo(card.getVideoCode());
                 break;
+            case Constants.AUDIO_CARD:
+                displayAudio(card.getAudioCode());
+                break;
             default:
                 showErrorMsg(R.string.wrong_card_type);
         }
@@ -348,6 +360,35 @@ public class CardEdit3_View extends BaseView implements
         }
     }
 
+    @Override
+    public void displayAudio(final String audioCode) {
+        if (null == audioCode) {
+            MyUtils.show(audioPlayerHolder);
+            MyUtils.show(addAudioButton);
+            return;
+        }
+
+        MyUtils.show(audioPlayerHolder);
+        MyUtils.hide(addAudioButton);
+
+        audioPlayer = new MyYoutubePlayer(
+                MyYoutubePlayer.PlayerType.AUDIO_PLAYER,
+                R.string.YOUTUBE_PLAYER_preparing_player,
+                R.drawable.ic_player_play,
+                R.drawable.ic_player_pause,
+                R.drawable.ic_player_wait,
+                this,
+                audioPlayerHolder
+                );
+
+        audioPlayer.show(audioCode, new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
+            @Override
+            public void onMediaAdded() {
+                MyUtils.show(removeAudioButton);
+            }
+        });
+    }
+
     @Override public void removeImage() {
         imageView.setImageDrawable(null);
 
@@ -410,6 +451,11 @@ public class CardEdit3_View extends BaseView implements
 
     @Override
     public void showVideoError(int msgId) {
+        showToast(msgId);
+    }
+
+    @Override
+    public void showAudioError(int msgId) {
         showToast(msgId);
     }
 
@@ -532,8 +578,13 @@ public class CardEdit3_View extends BaseView implements
         // TODO: переименовать в "inputStringDialog"
         MyDialogs.addYoutubeVideoDialog(this, new iMyDialogs.StringInputCallback() {
             @Override
-            public void onDialogWithStringYes(String text) {
+            public String onYesClicked(String text) {
                 presenter.processVideoLink(text);
+                return null;
+            }
+            @Override
+            public void onSuccess(String inputtedString) {
+
             }
         });
     }
@@ -542,11 +593,50 @@ public class CardEdit3_View extends BaseView implements
     void removeVideoClicked() {
         if (null != youTubePlayer)
             youTubePlayer.pause();
-        youTubePlayerView.release();
+
+        if (null != youTubePlayerView)
+            youTubePlayerView.release();
+
+        //presenter.removeVideo();
 
         MyUtils.hide(videoPlayerHolder);
         MyUtils.hide(removeVideoButton);
         MyUtils.show(addVideoButton);
+    }
+
+    @OnClick(R.id.addAudioButton)
+    void addAudioClicked() {
+        MyDialogs.stringInputDialog(this, R.string.CARD_EDIT_add_audio,
+                "Введите код музыки на Ютуб", new iMyDialogs.StringInputCallback() {
+                    @Override
+                    public String onYesClicked(String inputtedString) {
+                        String audioCode = MVPUtils.extractYoutubeVideoCode(inputtedString);
+                        if (null == audioCode) {
+                            return getResources().getString(R.string.CARD_EDIT_wrong_code);
+                        } else {
+                            return null;
+                        }
+                    }
+                    @Override
+                    public void onSuccess(String inputtedString) {
+                        presenter.processAudioLink(inputtedString);
+                    }
+                });
+    }
+
+    @OnClick(R.id.removeAudioButton)
+    void removeAudioClicked() {
+        if (null != audioPlayer) {
+            audioPlayer.pause();
+            audioPlayer.release();
+            audioPlayer.hide();
+        }
+
+        //presenter.removeAudio();
+
+        MyUtils.hide(removeAudioButton);
+        MyUtils.show(audioPlayerHolder);
+        MyUtils.show(addAudioButton);
     }
 
     @OnClick(R.id.addTagButton)
@@ -643,11 +733,6 @@ public class CardEdit3_View extends BaseView implements
         tagsContainer.removeTag(position);
     }
 
-    @Override
-    public void onSelectedTagDrag(int position, String text) {
-
-    }
-
 
     // Внутренние методы
     private void setTagAutocomplete() {
@@ -695,6 +780,8 @@ public class CardEdit3_View extends BaseView implements
 
     private void gracefulExit() {
         exitIsExpected = true;
+        removeAudioClicked();
+        removeVideoClicked();
         setResult(RESULT_CANCELED);
         finish();
     }

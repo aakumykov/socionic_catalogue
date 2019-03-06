@@ -16,4 +16,6 @@ public final class Config {
 
     public static final int MAX_CARD_IMAGE_WIDTH = 1920;
     public static final int MAX_CARD_IMAGE_HEIGHT = 1080;
+
+    public static final String AUDIO_CODE_REGEX = "^\\w+$";
 }

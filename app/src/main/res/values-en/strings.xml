@@ -348,4 +348,13 @@
     <string name="CARD_SHOW_error_deleting_tags">Error deleting tags</string>
     <string name="CARD_EDIT_error_saving_edit_state">Error saving draft</string>
     <string name="TAG_long_text">longtext</string>
+    <string name="YOUTUBE_PLAYER_preparing_player">Preparing player</string>
+    <string name="CARD_EDIT_add_audio">Add audio</string>
+    <string name="CARD_EDIT_error_adding_audio">Error adding audio</string>
+    <string name="CARD_EDIT_wrong_code">Incorrect code</string>
+    <string name="CARD_EDIT_remove_this_audio">Remove this audio</string>
+    <string name="CARD_EDIT_there_is_no_video">Please, add video</string>
+    <string name="CARD_EDIT_there_is_no_audio">Please, add audio</string>
+    <string name="CARD_EDIT_incorrect_video_code">Incorrect video code</string>
+    <string name="CARD_EDIT_incorrect_audio_code">Incorrect audio code</string>
 </resources>

@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.utils;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.annotation.Nullable;
@@ -148,6 +147,60 @@ public class MyDialogs {
         alertDialog.show();
     }
 
+    public static <T> void stringInputDialog(
+            Activity activity,
+            int titleId,
+            T message,
+            final iMyDialogs.StringInputCallback callback
+    )
+    {
+        String titleString = activity.getString(titleId);
+        String messageString = (message instanceof Integer) ? activity.getString(titleId) : String.valueOf(message);
+
+        final View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_text_input, null);
+        final EditText editText = dialogLayout.findViewById(R.id.editText);
+        final TextView dialogErrorView = dialogLayout.findViewById(R.id.dialogErrorView);
+
+        AlertDialog alertDialog = basicDialog(
+                activity,
+                titleString,
+                messageString,
+                R.string.yes,
+                null,
+                R.string.cancel,
+                null,
+                dialogLayout,
+                null
+        );
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(final DialogInterface dialog) {
+
+                Button yesButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+
+                yesButton.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        String inputString = editText.getText().toString();
+                        String errorMsg = callback.onYesClicked(inputString);
+                        if (null == errorMsg) {
+                            dialog.dismiss();
+                            callback.onSuccess(inputString);
+                        } else {
+                            showErrorMessage(dialogLayout, errorMsg);
+                        }
+                    }
+
+                });
+            }
+        });
+
+        alertDialog.show();
+    }
+
     // TODO: сделать единый диалог ввода строки
     // Добавление кода видео
     public static void addYoutubeVideoDialog(Activity activity, final iMyDialogs.StringInputCallback callbacks) {
@@ -193,7 +246,7 @@ public class MyDialogs {
 
                         else {
                             dialog.dismiss();
-                            callbacks.onDialogWithStringYes(newText);
+                            callbacks.onYesClicked(newText);
                         }
                     }
                 });
@@ -234,6 +287,7 @@ public class MyDialogs {
             public void onShow(final DialogInterface dialog) {
 
                 Button yesButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+
                 yesButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -242,7 +296,7 @@ public class MyDialogs {
                             dialogErrorView.setText(view.getResources().getString(R.string.DIALOG_MESSAGE_cannot_be_empty));
                         } else {
                             dialog.dismiss();
-                            callbacks.onDialogWithStringYes(newText);
+                            callbacks.onYesClicked(newText);
                         }
                     }
                 });
@@ -419,10 +473,14 @@ public class MyDialogs {
         return dialogBuilder.create();
     }
 
-    private static void showErrorMessage(View view, int stringResourceId) {
+    private static <T> void showErrorMessage(View view, T msg) {
+
         TextView dialogErrorView = view.findViewById(R.id.dialogErrorView);
+
+        String message = MyUtils.object2string(view.getContext(), msg);
+
         if (null != dialogErrorView) {
-            dialogErrorView.setText(view.getResources().getString(stringResourceId));
+            dialogErrorView.setText(message);
         }
     }
 }

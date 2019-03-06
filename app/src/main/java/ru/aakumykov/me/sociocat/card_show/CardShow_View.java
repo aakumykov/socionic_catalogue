@@ -57,6 +57,7 @@ import ru.aakumykov.me.sociocat.users.show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.MyYoutubePlayer;
 
 //TODO: уменьшение изображения
 
@@ -111,6 +112,9 @@ public class CardShow_View extends BaseView implements
     private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer youTubePlayer;
 
+    private FrameLayout mediaPlayerHolder;
+    private MyYoutubePlayer mediaPlayer;
+
 
     // Системные методы
     @Override
@@ -139,6 +143,8 @@ public class CardShow_View extends BaseView implements
 
         videoPlayerThrobber = findViewById(R.id.videoPlayerThrobber);
         videoPlayerHolder = findViewById(R.id.videoPlayerHolder);
+
+        mediaPlayerHolder = findViewById(R.id.mediaPlayerHolder);
 
         descriptionView = findViewById(R.id.descriptionView);
 
@@ -477,6 +483,10 @@ public class CardShow_View extends BaseView implements
                 displayVideoCard(card);
                 break;
 
+            case Constants.AUDIO_CARD:
+                displayAudioCard(card);
+                break;
+
             default:
                 showErrorMsg(R.string.wrong_card_type);
                 break;
@@ -640,11 +650,6 @@ public class CardShow_View extends BaseView implements
 
     }
 
-    @Override
-    public void onSelectedTagDrag(int position, String text) {
-
-    }
-
 
     // Переходы
     @Override
@@ -769,6 +774,29 @@ public class CardShow_View extends BaseView implements
                 });
             }
         }, true);
+    }
+
+    private void displayAudioCard(Card card) {
+        displayCommonCardParts(card);
+
+        MyUtils.show(mediaPlayerHolder);
+
+        mediaPlayer = new MyYoutubePlayer(
+                MyYoutubePlayer.PlayerType.AUDIO_PLAYER,
+                R.string.YOUTUBE_PLAYER_preparing_player,
+                R.drawable.ic_player_play,
+                R.drawable.ic_player_pause,
+                R.drawable.ic_player_wait,
+                this,
+                mediaPlayerHolder
+        );
+
+        mediaPlayer.show(card.getAudioCode(), new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
+            @Override
+            public void onMediaAdded() {
+
+            }
+        });
     }
 
     private void displayCommonCardParts(Card card) {
@@ -979,9 +1007,14 @@ public class CardShow_View extends BaseView implements
                 currentComment.getText(),
                 new iMyDialogs.StringInputCallback() {
                     @Override
-                    public void onDialogWithStringYes(String text) {
+                    public String onYesClicked(String text) {
                         currentComment.setText(text);
                         presenter.editCommentConfirmed(currentComment);
+                        return null;
+                    }
+                    @Override
+                    public void onSuccess(String inputtedString) {
+
                     }
                 }
         );
