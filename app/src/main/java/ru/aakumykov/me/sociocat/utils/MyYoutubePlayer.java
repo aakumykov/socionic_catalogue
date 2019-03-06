@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.utils;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.util.TypedValue;
@@ -123,6 +124,8 @@ public class MyYoutubePlayer implements
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         playerContainer.setLayoutParams(layoutParams);
+//        playerContainer.setBackgroundColor(Color.rgb(255, 234, 244));
+        playerContainer.setBackground(context.getResources().getDrawable(R.drawable.my_youtube_player_background));
     }
 
     private void prepareAndShowPlayer(final iMyYoutubePlayerCallbacks callbacks) {
