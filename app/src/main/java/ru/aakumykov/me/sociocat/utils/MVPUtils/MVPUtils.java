@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Spannable;
@@ -16,8 +15,6 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -52,10 +49,10 @@ public class MVPUtils {
     static {
         /* Все регулярные выражения для применения к URL/видео-кодам YouTube
          * обязаны выделять код видео в _первой_ группе. */
-        youtubePatterns.put("youtube1", "^https?://www\\.youtube\\.com/watch\\?v=([\\w-]+)");
-        youtubePatterns.put("youtube2", "^https?://youtube\\.com/watch\\?v=([\\w-]+)");
-        youtubePatterns.put("youtube3", "^https?://youtu.be/([^/]+)$");
-        youtubePatterns.put("youtube4", "^([\\w-]{11})$");
+        youtubePatterns.put("youtube1", Config.YOUTUBE_LONG_LINK_REGEX_2);
+        youtubePatterns.put("youtube2", Config.YOUTUBE_LONG_LINK_REGEX_1);
+        youtubePatterns.put("youtube3", Config.YOUTUBE_SHORT_LINK_REGEX);
+        youtubePatterns.put("youtube4", Config.YOUTUBE_CODE_REGEX);
     }
 
     static {

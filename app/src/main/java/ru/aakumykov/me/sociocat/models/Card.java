@@ -250,7 +250,7 @@ public class Card implements Parcelable {
             this.videoCode = videoCode;
     }
     public void setAudioCode(String audioCode) throws IllegalAccessException {
-        if (audioCode.matches(Config.AUDIO_CODE_REGEX))
+        if (audioCode.matches(Config.YOUTUBE_CODE_REGEX))
             this.audioCode = audioCode;
         else
             throw new IllegalAccessException("Wrong audio code: "+audioCode);
