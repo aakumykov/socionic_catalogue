@@ -253,7 +253,7 @@ public class Card implements Parcelable {
         if (audioCode.matches(Config.AUDIO_CODE_REGEX))
             this.audioCode = audioCode;
         else
-            throw new IllegalAccessException("Wrong audio code");
+            throw new IllegalAccessException("Wrong audio code: "+audioCode);
     }
     public void setDescription(String description) {
         this.description = description;
