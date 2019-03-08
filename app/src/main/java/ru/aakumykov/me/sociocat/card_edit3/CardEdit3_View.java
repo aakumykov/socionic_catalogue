@@ -852,7 +852,7 @@ public class CardEdit3_View extends BaseView implements
 
     private void saveCardReal() {
         try {
-            presenter.saveCard(true);
+            presenter.saveCard(false);
         } catch (Exception e) {
             showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
             e.printStackTrace();

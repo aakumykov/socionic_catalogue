@@ -309,7 +309,7 @@ public class CardEdit3_Presenter implements
                     currentCard.clearLocalImageURI();
 
                     try {
-                        saveCard(false);
+                        saveCard(true);
                     } catch (Exception e) {
                         if (null != view) {
                             view.showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
