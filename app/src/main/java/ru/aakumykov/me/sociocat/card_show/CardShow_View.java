@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.PopupMenu;
 import android.text.SpannableString;
@@ -25,10 +24,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -107,13 +102,8 @@ public class CardShow_View extends BaseView implements
     private Comment parentComment;
     private View currentCommentView;
 
-    private ProgressBar videoPlayerThrobber;
-    private FrameLayout videoPlayerHolder;
-    private YouTubePlayerView youTubePlayerView;
-    private YouTubePlayer youTubePlayer;
-
-    private FrameLayout mediaPlayerHolder;
-    private MyYoutubePlayer mediaPlayer;
+    private FrameLayout youtubePlayerHolder;
+    private MyYoutubePlayer youtubePlayer;
 
 
     // Системные методы
@@ -137,14 +127,10 @@ public class CardShow_View extends BaseView implements
         quoteView = findViewById(R.id.quoteView);
         quoteSourceView = findViewById(R.id.quoteSourceView);
 
-//        imageHolder = findViewById(R.id.imageHolder);
         imageProgressBar = findViewById(R.id.imageProgressBar);
         imageView = findViewById(R.id.imageView);
 
-        videoPlayerThrobber = findViewById(R.id.videoPlayerThrobber);
-        videoPlayerHolder = findViewById(R.id.videoPlayerHolder);
-
-        mediaPlayerHolder = findViewById(R.id.mediaPlayerHolder);
+        youtubePlayerHolder = findViewById(R.id.mediaPlayerHolder);
 
         descriptionView = findViewById(R.id.descriptionView);
 
@@ -214,8 +200,8 @@ public class CardShow_View extends BaseView implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != youTubePlayerView)
-            youTubePlayerView.release();
+        if (null != youtubePlayer)
+            youtubePlayer.release();
     }
 
     @Override
@@ -470,6 +456,8 @@ public class CardShow_View extends BaseView implements
         String pageTitle = getResources().getString(R.string.CARD_SHOW_page_title, card.getTitle());
         setPageTitle(pageTitle);
 
+        displayCommonCardParts(card);
+
         switch (card.getType()) {
             case Constants.IMAGE_CARD:
                 displayImageCard(card);
@@ -721,9 +709,6 @@ public class CardShow_View extends BaseView implements
     private void displayImageCard(Card card) {
         Log.d(TAG, "displayImageCard(), "+card);
 
-//        MyUtils.show(imageHolder);
-        displayCommonCardParts(card);
-
         try {
             Uri imageURI = Uri.parse(card.getImageURL());
             displayImage(imageURI);
@@ -745,58 +730,6 @@ public class CardShow_View extends BaseView implements
         quoteSource = getString(R.string.CARD_SHOW_quote_source, quoteSource);
         quoteSourceView.setText(quoteSource);
         MyUtils.show(quoteSourceView);
-
-        displayCommonCardParts(card);
-    }
-
-    private void displayVideoCard(final Card card) {
-        displayCommonCardParts(card);
-
-        int playerWidth = MyUtils.getScreenWidth(this);
-        int playerHeight = Math.round(MyUtils.getScreenWidth(this) * 9/16);
-
-        youTubePlayerView = new YouTubePlayerView(this);
-        youTubePlayerView.setMinimumWidth(playerWidth);
-        youTubePlayerView.setMinimumHeight(playerHeight);
-
-        videoPlayerHolder.addView(youTubePlayerView);
-
-        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
-            @Override
-            public void onInitSuccess(@NonNull final YouTubePlayer initializedYouTubePlayer) {
-                initializedYouTubePlayer.addListener(new AbstractYouTubePlayerListener() {
-                    @Override
-                    public void onReady() {
-                        youTubePlayer = initializedYouTubePlayer;
-                        youTubePlayer.cueVideo(card.getVideoCode(), 0.0f);
-                        MyUtils.show(youTubePlayerView);
-                    }
-                });
-            }
-        }, true);
-    }
-
-    private void displayAudioCard(Card card) {
-        displayCommonCardParts(card);
-
-        MyUtils.show(mediaPlayerHolder);
-
-        mediaPlayer = new MyYoutubePlayer(
-                MyYoutubePlayer.PlayerType.AUDIO_PLAYER,
-                R.string.YOUTUBE_PLAYER_preparing_player,
-                R.drawable.ic_player_play,
-                R.drawable.ic_player_pause,
-                R.drawable.ic_player_wait,
-                this,
-                mediaPlayerHolder
-        );
-
-        mediaPlayer.show(card.getAudioCode(), new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
-            @Override
-            public void onMediaAdded() {
-
-            }
-        });
     }
 
     private void displayCommonCardParts(Card card) {
@@ -833,8 +766,40 @@ public class CardShow_View extends BaseView implements
         showCardRating(card.getRating());
 
 //        if (auth().isUserLoggedIn()) {
-            MyUtils.show(addCommentButton);
+        MyUtils.show(addCommentButton);
 //        }
+    }
+
+    private void displayVideoCard(Card card) {
+        String mediaCode = card.getVideoCode();
+        displayYoutubeMedia(mediaCode, MyYoutubePlayer.PlayerType.VIDEO_PLAYER);
+    }
+
+    private void displayAudioCard(Card card) {
+        String mediaCode = card.getAudioCode();
+        displayYoutubeMedia(mediaCode, MyYoutubePlayer.PlayerType.AUDIO_PLAYER);
+    }
+
+    private void displayYoutubeMedia(String youtubeMediaCode, MyYoutubePlayer.PlayerType playerType) {
+
+        MyUtils.show(youtubePlayerHolder);
+
+        youtubePlayer = new MyYoutubePlayer(
+                playerType,
+                R.string.YOUTUBE_PLAYER_preparing_player,
+                R.drawable.ic_player_play,
+                R.drawable.ic_player_pause,
+                R.drawable.ic_player_wait,
+                this,
+                youtubePlayerHolder
+        );
+
+        youtubePlayer.show(youtubeMediaCode, new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
+            @Override
+            public void onMediaAdded() {
+
+            }
+        });
     }
 
     private View constructCommentItem(Comment comment) throws Exception {

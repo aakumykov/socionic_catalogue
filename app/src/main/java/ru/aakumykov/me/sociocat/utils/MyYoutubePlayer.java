@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.utils;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.util.TypedValue;
@@ -51,7 +50,7 @@ public class MyYoutubePlayer implements
     private LinearLayout playerContainer;
     private TextView playerMsg;
     private YouTubePlayerView youTubePlayerView;
-    private LinearLayout controlsContainer;
+    private LinearLayout audioControlsContainer;
     private ImageView playPauseButton;
     private SeekBar seekBar;
     private YouTubePlayer player;
@@ -80,7 +79,7 @@ public class MyYoutubePlayer implements
 
         preparePlayerContainer();
         preparePlayerMsg();
-        if (PlayerType.AUDIO_PLAYER.equals(playerType))
+        if (isAudioPlayer())
             preparePlayerControls();
         attachPlayerToTargetContainer();
     }
@@ -120,14 +119,14 @@ public class MyYoutubePlayer implements
     public void convert2video() {
         playerType = PlayerType.VIDEO_PLAYER;
         MyUtils.show(youTubePlayerView);
-        MyUtils.hide(controlsContainer);
+        MyUtils.hide(audioControlsContainer);
         playerContainer.setBackground(null);
     }
 
     public void convert2audio() {
         playerType = PlayerType.AUDIO_PLAYER;
         MyUtils.hide(youTubePlayerView);
-        MyUtils.show(controlsContainer);
+        MyUtils.show(audioControlsContainer);
     }
 
     public PlayerType getPlayerType() {
@@ -155,7 +154,7 @@ public class MyYoutubePlayer implements
 
         youTubePlayerView = new YouTubePlayerView(context);
 
-        if (PlayerType.AUDIO_PLAYER.equals(playerType))
+        if (isAudioPlayer())
             youTubePlayerView.setVisibility(View.GONE);
 
         youTubePlayerView.initialize(new YouTubePlayerInitListener() {
@@ -170,7 +169,8 @@ public class MyYoutubePlayer implements
                             youTubePlayer.cueVideo(videoId, 0f);
 
                         hidePlayerMsg();
-                        showPlayerControls();
+
+                        showPlayerInterface();
 
                         callbacks.onMediaAdded();
                     }
@@ -209,9 +209,9 @@ public class MyYoutubePlayer implements
     private void preparePlayerControls() {
 
         // Контейнер элементов управления
-        controlsContainer = new LinearLayout(context);
-        controlsContainer.setOrientation(LinearLayout.HORIZONTAL);
-        controlsContainer.setVisibility(View.GONE);
+        audioControlsContainer = new LinearLayout(context);
+        audioControlsContainer.setOrientation(LinearLayout.HORIZONTAL);
+        audioControlsContainer.setVisibility(View.GONE);
 
         // Кнопка играть/остановить
         playPauseButton = new ImageView(context);
@@ -249,20 +249,21 @@ public class MyYoutubePlayer implements
         });
 
         // Сборка воедино
-        controlsContainer.addView(playPauseButton);
-        controlsContainer.addView(seekBar);
+        audioControlsContainer.addView(playPauseButton);
+        audioControlsContainer.addView(seekBar);
 
         // Прикрепление к контейнеру выигрывателя
-        playerContainer.addView(controlsContainer);
-        setMargins(controlsContainer, 0, PlayerConfig.seekBarTopMargin,0, PlayerConfig.seekBarBottomMargin);
+        playerContainer.addView(audioControlsContainer);
+        setMargins(audioControlsContainer, 0, PlayerConfig.seekBarTopMargin,0, PlayerConfig.seekBarBottomMargin);
     }
 
-    private void showPlayerControls() {
+    private void showPlayerInterface() {
         playerContainer.addView(youTubePlayerView, playerContainer.indexOfChild(playerMsg));
-        playerContainer.setBackground(context.getResources().getDrawable(R.drawable.my_youtube_player_background));
 
-        if (null != controlsContainer)
-            controlsContainer.setVisibility(View.VISIBLE);
+        if (isAudioPlayer()) {
+            playerContainer.setBackground(context.getResources().getDrawable(R.drawable.my_youtube_player_audio_background));
+            audioControlsContainer.setVisibility(View.VISIBLE);
+        }
     }
 
     private void moveSeekBar(float currentPosition) {
@@ -357,5 +358,13 @@ public class MyYoutubePlayer implements
     private void showWatingButton() {
         Drawable icon = context.getResources().getDrawable(waitIconId);
         playPauseButton.setImageDrawable(icon);
+    }
+
+    private boolean isAudioPlayer() {
+        return PlayerType.AUDIO_PLAYER.equals(playerType);
+    }
+
+    private boolean isVideoPlayer() {
+        return PlayerType.VIDEO_PLAYER.equals(playerType);
     }
 }
