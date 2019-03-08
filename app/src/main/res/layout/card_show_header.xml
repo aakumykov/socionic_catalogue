@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="12dp">
+    android:paddingTop="@dimen/card_padding_top">
 
     <TextView
         android:id="@+id/titleView"
@@ -17,37 +17,39 @@
         android:textIsSelectable="true"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:paddingStart="@dimen/card_component_padding_left"
+        android:paddingEnd="@dimen/card_component_padding_right"
+    />
 
     <TextView
         android:id="@+id/quoteView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp"
-        android:text="Цитата высказывания великого человека, цитировавшего другого, ещё более великого, но менее известного человека."
         android:textColor="@color/colorPrimary"
         android:textIsSelectable="true"
-        android:textSize="18sp"
+        android:textSize="@dimen/quote_text_size"
         android:textStyle="italic"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:paddingStart="@dimen/card_component_padding_left"
+        android:paddingEnd="@dimen/card_component_padding_right"
+        />
 
     <TextView
         android:id="@+id/quoteSourceView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
-        android:paddingStart="4dp"
-        android:paddingLeft="40dp"
-        android:paddingEnd="4dp"
-        android:text="Источник цитаты"
         android:textAlignment="textEnd"
         android:textColor="@color/colorPrimary"
         android:textIsSelectable="true"
-        android:textSize="16sp"
+        android:textSize="@dimen/quote_source_text_size"
         android:textStyle="italic"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:paddingStart="@dimen/card_component_padding_left"
+        android:paddingEnd="@dimen/card_component_padding_right"
+        />
 
     <ProgressBar
         android:id="@+id/imageProgressBar"
@@ -66,7 +68,6 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/image_placeholder"
         android:scaleType="centerInside"
@@ -74,7 +75,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="@dimen/card_component_margin_bottom"
+        />
 
     <FrameLayout
         android:id="@+id/mediaPlayerHolder"
@@ -82,21 +85,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="@dimen/card_component_margin_bottom" />
 
     <TextView
         android:id="@+id/descriptionView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp"
-        android:text="Обстоятельное описание мимолётной цитаты, приведённой выше. Обстоятельное описание мимолётной цитаты, приведённой выше. Обстоятельное описание мимолётной цитаты, приведённой выше. Обстоятельное описание мимолётной цитаты, приведённой выше. Обстоятельное описание мимолётной цитаты, приведённой выше. Обстоятельное описание мимолётной цитаты, приведённой выше. Обстоятельное описание мимолётной цитаты, приведённой выше. Обстоятельное описание мимолётной цитаты, приведённой выше."
         android:textColor="@color/card_show_description"
         android:textIsSelectable="true"
-        android:textSize="18sp"
+        android:textSize="@dimen/description_text_size"
         android:textStyle="normal"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:paddingStart="@dimen/card_component_padding_left"
+        android:paddingEnd="@dimen/card_component_padding_right"
+        android:layout_marginBottom="@dimen/card_component_margin_bottom"
+        />
 
     <TextView
         android:id="@+id/authorView"
@@ -105,33 +108,38 @@
         android:layout_marginBottom="5dp"
         android:textAlignment="viewEnd"
         android:textColor="@color/colorPrimary"
-        android:textSize="16dp" />
+        android:textSize="@dimen/author_text_size"
+        android:paddingStart="@dimen/card_component_padding_right"
+        android:paddingEnd="@dimen/card_component_padding_right"
+        />
 
     <TextView
         android:id="@+id/cTimeView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
-        android:text="cTime"
         android:textAlignment="viewEnd"
         android:textColor="@color/grey"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:paddingStart="@dimen/card_component_padding_right"
+        android:paddingEnd="@dimen/card_component_padding_right"
+        />
 
     <TextView
         android:id="@+id/mTimeView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="mTime"
         android:textAlignment="viewEnd"
         android:textColor="@color/grey"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:paddingStart="@dimen/card_component_padding_right"
+        android:paddingEnd="@dimen/card_component_padding_right"
+        />
 
     <co.lujun.androidtagview.TagContainerLayout
         android:id="@+id/tagsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="25dp"
         app:container_background_color="@color/transparent"
         app:container_border_color="@color/transparent"
         app:container_enable_drag="false"
@@ -140,7 +148,12 @@
         app:tag_ripple_duration="400"
         app:tag_text_size="@dimen/tag_font_size"
         app:tag_theme="pure_teal"
-        app:vertical_interval="10dp" />
+        app:vertical_interval="10dp"
+        android:paddingStart="@dimen/card_component_padding_right"
+        android:paddingEnd="@dimen/card_component_padding_right"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp"
+        />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/ratingHolder"
@@ -163,7 +176,7 @@
             android:layout_height="match_parent"
             android:text="0"
             android:textAlignment="center"
-            android:textSize="18sp"
+            android:textSize="@dimen/card_rating_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cardRateUpButton"
             app:layout_constraintTop_toTopOf="parent"

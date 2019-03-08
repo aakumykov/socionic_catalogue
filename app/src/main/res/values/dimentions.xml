@@ -8,16 +8,26 @@
     <dimen name="major_button_font_size">16sp</dimen>
     <dimen name="minor_button_font_size">14sp</dimen>
 
-    <dimen name="tag_font_size">16sp</dimen>
-
     <dimen name="comment_text_size">16sp</dimen>
 
     <dimen name="avatar_width">512sp</dimen>
     <dimen name="avatar_height">512sp</dimen>
 
+    <dimen name="card_padding_top">12dp</dimen>
+    <dimen name="card_component_padding_left">12dp</dimen>
+    <dimen name="card_component_padding_right">12dp</dimen>
+    <dimen name="card_component_margin_bottom">16dp</dimen>
+
+    <dimen name="quote_text_size">18sp</dimen>
+    <dimen name="quote_source_text_size">16sp</dimen>
+    <dimen name="description_text_size">18sp</dimen>
+    <dimen name="author_text_size">16sp</dimen>
+    <dimen name="tag_font_size">16sp</dimen>
+    <dimen name="card_rating_text_size">18sp</dimen>
+
+
     <dimen name="comment_avatar_width">30dp</dimen>
     <dimen name="comment_avatar_height">30dp</dimen>
-
     <dimen name="comment_text_padding_left">15dp</dimen>
     <dimen name="comment_text_padding_right">15dp</dimen>
     <dimen name="comment_text_padding_bottom">10dp</dimen>
