@@ -784,24 +784,24 @@ public class CardShow_View extends BaseView implements
 
         MyUtils.show(youtubePlayerHolder);
 
-        youtubePlayer = new MyYoutubePlayer(
-                R.string.YOUTUBE_PLAYER_preparing_player,
-                R.drawable.ic_player_play,
-                R.drawable.ic_player_pause,
-                R.drawable.ic_player_wait,
-                this,
-                youtubePlayerHolder
-        );
-
-        youtubePlayer.show(
-                playerType,
-                youtubeMediaCode,
-                new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
-                    @Override
-                    public void onMediaAdded() {
-
-                    }
-                });
+//        youtubePlayer = new MyYoutubePlayer(
+//
+//                this,
+//                youtubePlayerHolder,
+//                R.string.YOUTUBE_PLAYER_preparing_player,
+//                R.drawable.ic_player_play,
+//                R.drawable.ic_player_pause,
+//                R.drawable.ic_player_wait
+//        );
+//
+//        youtubePlayer.show(
+//                youtubeMediaCode,
+//                new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
+//                    @Override
+//                    public void onMediaAdded() {
+//
+//                    }
+//                });
     }
 
     private View constructCommentItem(Comment comment) throws Exception {

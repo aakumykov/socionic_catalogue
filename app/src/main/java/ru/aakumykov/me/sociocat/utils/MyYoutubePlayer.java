@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.utils;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,12 +61,13 @@ public class MyYoutubePlayer implements
     private PlayerConstants.PlayerState playerState;
 
     public MyYoutubePlayer(
+            PlayerType playerType,
+            @NonNull Context context,
+            @NonNull ViewGroup targetContainer,
             int waitingMessageId,
             int playIconId,
             int pauseIconId,
-            int waitIconId,
-            @NonNull Context context,
-            @NonNull ViewGroup targetContainer
+            int waitIconId
     )
     {
         this.playerType = playerType;
@@ -84,7 +86,7 @@ public class MyYoutubePlayer implements
     }
 
 
-    public void show(PlayerType playerType, String videoId, iMyYoutubePlayerCallbacks callbacks) {
+    public void show(String videoId, iMyYoutubePlayerCallbacks callbacks) {
         this.videoId = videoId;
 
         if (null != player)
@@ -132,6 +134,9 @@ public class MyYoutubePlayer implements
         return playerType;
     }
 
+    public boolean hasMedia() {
+        return !TextUtils.isEmpty(videoId);
+    }
 
 
     private void preparePlayerContainer() {
