@@ -499,7 +499,12 @@ public class CardEdit3_View extends BaseView implements
 
         MyUtils.disable(discardImageButton);
         MyUtils.disable(addVideoButton);
+        MyUtils.disable(addAudioButton);
         MyUtils.disable(removeVideoButton);
+        MyUtils.disable(removeAudioButton);
+
+        MyUtils.disable(convertToVideoButton);
+        MyUtils.disable(convertToAudioButton);
 
         MyUtils.disable(newTagInput);
         MyUtils.disable(addTagButton);
