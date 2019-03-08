@@ -117,45 +117,6 @@
         </android.support.constraint.ConstraintLayout>
 
         <LinearLayout
-            android:id="@+id/videoHolder"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/videoMessage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/CARD_EDIT_wating_for_video"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="18sp"
-                android:visibility="gone" />
-
-            <FrameLayout
-                android:id="@+id/videoPlayerHolder"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/removeVideoButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@color/colorAccent"
-                android:text="@string/CARD_EDIT_remove_this_video"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/addVideoButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/CARD_EDIT_add_video"
-                android:visibility="gone" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/mediaPlayerHolder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
