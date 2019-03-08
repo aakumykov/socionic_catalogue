@@ -66,10 +66,12 @@ public class CardEdit3_View extends BaseView implements
     @BindView(R.id.discardImageButton) ImageView discardImageButton;
 
     @BindView(R.id.mediaPlayerHolder) LinearLayout mediaPlayerHolder;
-    @BindView(R.id.addMediaButton) Button addMediaButton;
+    @BindView(R.id.addVideoButton) Button addVideoButton;
+    @BindView(R.id.addAudioButton) Button addAudioButton;
     @BindView(R.id.convertToAudioButton) Button convertToAudioButton;
     @BindView(R.id.convertToVideoButton) Button convertToVideoButton;
-    @BindView(R.id.removeMediaButton) Button removeMediaButton;
+    @BindView(R.id.removeAudioButton) Button removeAudioButton;
+    @BindView(R.id.removeVideoButton) Button removeVideoButton;
 
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.newTagInput) AutoCompleteTextView newTagInput;
@@ -79,9 +81,7 @@ public class CardEdit3_View extends BaseView implements
     @BindView(R.id.cancelButton) Button cancelButton;
 
     private final static String TAG = "CardEdit3_View";
-
     private MyYoutubePlayer youTubePlayer;
-
     private iCardEdit3.Presenter presenter;
     private List<String> tagsList = new ArrayList<>();
     private boolean firstRun = true;
@@ -300,56 +300,28 @@ public class CardEdit3_View extends BaseView implements
 
     @Override
     public void displayVideo(final String videoCode) {
-
         if (TextUtils.isEmpty(videoCode)) {
-            MyUtils.show(addMediaButton);
+            MyUtils.show(mediaPlayerHolder);
+            MyUtils.show(addVideoButton);
             return;
         }
 
-
+        displayMedia(videoCode, MyYoutubePlayer.PlayerType.VIDEO_PLAYER);
     }
 
     @Override
     public void displayAudio(final String audioCode) {
         if (null == audioCode) {
             MyUtils.show(mediaPlayerHolder);
-            MyUtils.show(addMediaButton);
+            MyUtils.show(addAudioButton);
             return;
         }
 
-        MyUtils.show(mediaPlayerHolder);
-        MyUtils.hide(addMediaButton);
-
-        youTubePlayer = new MyYoutubePlayer(
-                MyYoutubePlayer.PlayerType.AUDIO_PLAYER,
-                R.string.YOUTUBE_PLAYER_preparing_player,
-                R.drawable.ic_player_play,
-                R.drawable.ic_player_pause,
-                R.drawable.ic_player_wait,
-                this,
-                mediaPlayerHolder
-                );
-
-        youTubePlayer.show(audioCode, new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
-            @Override
-            public void onMediaAdded() {
-                MyUtils.show(removeMediaButton);
-                switch (youTubePlayer.getPlayerType()) {
-                    case AUDIO_PLAYER:
-                        MyUtils.show(convertToVideoButton);
-                        break;
-                    case VIDEO_PLAYER:
-                        MyUtils.show(convertToAudioButton);
-                        break;
-                    default:
-                        //showError();
-                        break;
-                }
-            }
-        });
+        displayMedia(audioCode, MyYoutubePlayer.PlayerType.AUDIO_PLAYER);
     }
 
-    @Override public void removeImage() {
+    @Override
+    public void removeImage() {
         imageView.setImageDrawable(null);
 
         MyUtils.hide(mediaThrobber);
@@ -520,41 +492,43 @@ public class CardEdit3_View extends BaseView implements
         removeImage();
     }
 
-//    @OnClick(R.id.addVideoButton)
-//    void addVideoClicked() {
-//        // TODO: переименовать в "inputStringDialog"
-//        MyDialogs.addYoutubeVideoDialog(this, new iMyDialogs.StringInputCallback() {
-//            @Override
-//            public String onYesClicked(String text) {
-//                presenter.processVideoLink(text);
-//                return null;
-//            }
-//            @Override
-//            public void onSuccess(String inputtedString) {
-//
-//            }
-//        });
-//    }
+    @OnClick(R.id.addVideoButton)
+    void addVideoClicked() {
+        MyDialogs.stringInputDialog(
+                this,
+                R.string.CARD_EDIT_add_youtube_link,
+                null,
+                new iMyDialogs.StringInputCallback() {
 
-//    @OnClick(R.id.removeVideoButton)
-//    void removeVideoClicked() {
-//        if (null != youTubePlayer) {
-//            youTubePlayer.pause();
-//            youTubePlayer.release();
-//        }
-//
-//        //presenter.removeVideo();
-//    }
+                    @Override
+                    public String onYesClicked(String inputtedString) {
+                        String videoCode = MVPUtils.extractYoutubeVideoCode(inputtedString);
+                        if (null == videoCode) {
+                            return getResources().getString(R.string.CARD_EDIT_wrong_youtube_code);
+                        } else {
+                            return null;
+                        }
+                    }
+                    @Override
+                    public void onSuccess(String inputtedString) {
+                        presenter.processVideoLink(inputtedString);
+                    }
+                });
 
-    @OnClick(R.id.addMediaButton)
+    }
+
+    @OnClick(R.id.addAudioButton)
     void addAudioClicked() {
-        MyDialogs.stringInputDialog(this, R.string.CARD_EDIT_add_youtube_link,
-                "Введите код музыки на Ютуб", new iMyDialogs.StringInputCallback() {
+        MyDialogs.stringInputDialog(
+                this, R.string.CARD_EDIT_add_youtube_link,
+                null,
+                new iMyDialogs.StringInputCallback() {
+
                     @Override
                     public String onYesClicked(String inputtedString) {
                         String audioCode = MVPUtils.extractYoutubeVideoCode(inputtedString);
                         if (null == audioCode) {
-                            return getResources().getString(R.string.CARD_EDIT_wrong_code);
+                            return getResources().getString(R.string.CARD_EDIT_wrong_youtube_code);
                         } else {
                             return null;
                         }
@@ -576,7 +550,7 @@ public class CardEdit3_View extends BaseView implements
         presenter.convertToVideo();
     }
 
-    @OnClick(R.id.removeMediaButton)
+    @OnClick(R.id.removeAudioButton)
     void removeAudioClicked() {
         if (null != youTubePlayer) {
             youTubePlayer.pause();
@@ -586,9 +560,21 @@ public class CardEdit3_View extends BaseView implements
 
         //presenter.removeAudio();
 
-        MyUtils.hide(removeMediaButton);
         MyUtils.show(mediaPlayerHolder);
-        MyUtils.show(addMediaButton);
+        MyUtils.show(addAudioButton);
+        MyUtils.hide(removeAudioButton);
+        MyUtils.hide(convertToVideoButton);
+        MyUtils.hide(convertToAudioButton);
+    }
+
+    @OnClick(R.id.removeVideoButton)
+    void removeVideoClicked() {
+//        if (null != youTubePlayer) {
+//            youTubePlayer.pause();
+//            youTubePlayer.release();
+//        }
+
+        //presenter.removeVideo();
     }
 
     @OnClick(R.id.addTagButton)
@@ -695,8 +681,8 @@ public class CardEdit3_View extends BaseView implements
 
         discardImageButton.setEnabled(isEnabled);
 
-        addMediaButton.setEnabled(isEnabled);
-        removeMediaButton.setEnabled(isEnabled);
+        addAudioButton.setEnabled(isEnabled);
+        removeAudioButton.setEnabled(isEnabled);
 
         convertToVideoButton.setEnabled(isEnabled);
         convertToAudioButton.setEnabled(isEnabled);
@@ -738,9 +724,46 @@ public class CardEdit3_View extends BaseView implements
     }
 
     private void displayCommonCardParts(Card card) {
+        prepareMediaPlayer();
         titleInput.setText(card.getTitle());
         descriptionInput.setText(card.getDescription());
         tagsContainer.setTags(new ArrayList<String>(card.getTags().keySet()));
+    }
+
+    private void prepareMediaPlayer() {
+        youTubePlayer = new MyYoutubePlayer(
+                R.string.YOUTUBE_PLAYER_preparing_player,
+                R.drawable.ic_player_play,
+                R.drawable.ic_player_pause,
+                R.drawable.ic_player_wait,
+                this,
+                mediaPlayerHolder
+        );
+
+        MyUtils.show(mediaPlayerHolder);
+    }
+
+    private void displayMedia(String youtubeCode, MyYoutubePlayer.PlayerType playerType) {
+        youTubePlayer.show(
+                playerType,
+                youtubeCode,
+                new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
+                    @Override
+                    public void onMediaAdded() {
+                        switch (youTubePlayer.getPlayerType()) {
+                            case AUDIO_PLAYER:
+                                MyUtils.show(convertToVideoButton);
+                                MyUtils.show(removeAudioButton);
+                                break;
+                            case VIDEO_PLAYER:
+                                MyUtils.show(convertToAudioButton);
+                                MyUtils.show(removeVideoButton);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
     }
 
     private void showBrokenImage() {

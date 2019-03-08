@@ -383,8 +383,7 @@ public class CardEdit3_Presenter implements
 
         currentCard = card;
 
-        if (null != view)
-            view.displayCard(currentCard);
+        view.displayCard(currentCard);
     }
 
     private void startEditCard(Intent intent) {

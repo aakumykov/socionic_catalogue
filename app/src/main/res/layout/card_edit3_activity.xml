@@ -120,11 +120,19 @@
             android:id="@+id/mediaPlayerHolder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
             <Button
-                android:id="@+id/addMediaButton"
+                android:id="@+id/addVideoButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:text="@string/CARD_EDIT_add_youtube_link"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/addAudioButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="3dp"
@@ -151,12 +159,21 @@
                 android:visibility="gone" />
 
             <Button
-                android:id="@+id/removeMediaButton"
+                android:id="@+id/removeVideoButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="@color/colorAccent"
-                android:text="@string/CARD_EDIT_remove_this_media"
+                android:text="@string/CARD_EDIT_remove_video"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/removeAudioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorAccent"
+                android:text="@string/CARD_EDIT_remove_audio"
                 android:visibility="gone" />
 
         </LinearLayout>

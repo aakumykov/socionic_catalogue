@@ -60,7 +60,6 @@ public class MyYoutubePlayer implements
     private PlayerConstants.PlayerState playerState;
 
     public MyYoutubePlayer(
-            PlayerType playerType,
             int waitingMessageId,
             int playIconId,
             int pauseIconId,
@@ -85,7 +84,7 @@ public class MyYoutubePlayer implements
     }
 
 
-    public void show(String videoId, iMyYoutubePlayerCallbacks callbacks) {
+    public void show(PlayerType playerType, String videoId, iMyYoutubePlayerCallbacks callbacks) {
         this.videoId = videoId;
 
         if (null != player)

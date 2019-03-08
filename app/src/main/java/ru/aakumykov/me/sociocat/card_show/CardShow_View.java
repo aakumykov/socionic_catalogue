@@ -785,7 +785,6 @@ public class CardShow_View extends BaseView implements
         MyUtils.show(youtubePlayerHolder);
 
         youtubePlayer = new MyYoutubePlayer(
-                playerType,
                 R.string.YOUTUBE_PLAYER_preparing_player,
                 R.drawable.ic_player_play,
                 R.drawable.ic_player_pause,
@@ -794,12 +793,15 @@ public class CardShow_View extends BaseView implements
                 youtubePlayerHolder
         );
 
-        youtubePlayer.show(youtubeMediaCode, new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
-            @Override
-            public void onMediaAdded() {
+        youtubePlayer.show(
+                playerType,
+                youtubeMediaCode,
+                new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
+                    @Override
+                    public void onMediaAdded() {
 
-            }
-        });
+                    }
+                });
     }
 
     private View constructCommentItem(Comment comment) throws Exception {
