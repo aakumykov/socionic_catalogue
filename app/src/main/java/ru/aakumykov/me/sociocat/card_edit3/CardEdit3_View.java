@@ -638,7 +638,7 @@ public class CardEdit3_View extends BaseView implements
 
     @OnClick(R.id.addMediaButton)
     void addAudioClicked() {
-        MyDialogs.stringInputDialog(this, R.string.CARD_EDIT_add_media,
+        MyDialogs.stringInputDialog(this, R.string.CARD_EDIT_add_youtube_link,
                 "Введите код музыки на Ютуб", new iMyDialogs.StringInputCallback() {
                     @Override
                     public String onYesClicked(String inputtedString) {

@@ -168,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
-                android:text="@string/CARD_EDIT_add_media"
+                android:text="@string/CARD_EDIT_add_youtube_link"
                 android:visibility="gone" />
 
             <Button
