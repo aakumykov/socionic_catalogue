@@ -28,7 +28,7 @@ import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
+import ru.aakumykov.me.sociocat.card_edit3.CardEdit3_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
@@ -288,7 +288,7 @@ public class CardsList_View extends BaseView implements
 
     // Внутренние методы
     private void editCard() {
-        Intent intent = new Intent(this, CardEdit_View.class);
+        Intent intent = new Intent(this, CardEdit3_View.class);
         intent.setAction(Constants.ACTION_EDIT);
         intent.putExtra(Constants.CARD, currentCard);
         intent.putExtra(Constants.CARD_KEY, currentCard.getKey());
