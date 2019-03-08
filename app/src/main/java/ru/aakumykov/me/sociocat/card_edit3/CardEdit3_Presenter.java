@@ -134,12 +134,16 @@ public class CardEdit3_Presenter implements
     @Override
     public void convertToAudio() {
         currentCard.setType(Constants.AUDIO_CARD);
+        currentCard.setAudioCode(currentCard.getVideoCode());
+        currentCard.removeVideoCode();
         view.convert2audio();
     }
 
     @Override
     public void convertToVideo() {
         currentCard.setType(Constants.VIDEO_CARD);
+        currentCard.setVideoCode(currentCard.getAudioCode());
+        currentCard.removeAudioCode();
         view.convert2video();
     }
 

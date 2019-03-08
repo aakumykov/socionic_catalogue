@@ -170,12 +170,6 @@ public class Card implements Parcelable {
     public String getFileName() {
         return fileName;
     }
-    public String getVideoCode() {
-        return videoCode;
-    }
-    public String getAudioCode() {
-        return audioCode;
-    }
     public String getDescription() {
         return description;
     }
@@ -244,17 +238,7 @@ public class Card implements Parcelable {
     public void setFileName(String fileName) throws IllegalArgumentException {
             this.fileName = fileName;
     }
-    public void setVideoCode(String videoCode) throws IllegalArgumentException {
-            Uri uri = Uri.parse(videoCode);
-            if (null == uri) throw new IllegalArgumentException("Error parsing videoCode");
-            this.videoCode = videoCode;
-    }
-    public void setAudioCode(String audioCode) throws IllegalAccessException {
-        if (audioCode.matches(Config.YOUTUBE_CODE_REGEX))
-            this.audioCode = audioCode;
-        else
-            throw new IllegalAccessException("Wrong audio code: "+audioCode);
-    }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -276,6 +260,32 @@ public class Card implements Parcelable {
     }
     public void setMTime(Long mTime) {
         this.mTime = mTime;
+    }
+
+
+    public void setVideoCode(String videoCode) throws IllegalArgumentException {
+        Uri uri = Uri.parse(videoCode);
+        if (null == uri) throw new IllegalArgumentException("Error parsing videoCode");
+        this.videoCode = videoCode;
+    }
+    public String getVideoCode() {
+        return videoCode;
+    }
+    public void removeVideoCode() {
+        this.videoCode = null;
+    }
+
+    public void setAudioCode(String audioCode) throws IllegalArgumentException {
+        if (audioCode.matches(Config.YOUTUBE_CODE_REGEX))
+            this.audioCode = audioCode;
+        else
+            throw new IllegalArgumentException("Wrong audio code: "+audioCode);
+    }
+    public String getAudioCode() {
+        return audioCode;
+    }
+    public void removeAudioCode() {
+        this.audioCode = null;
     }
 
 

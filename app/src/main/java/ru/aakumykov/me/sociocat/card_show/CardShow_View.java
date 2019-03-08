@@ -463,7 +463,7 @@ public class CardShow_View extends BaseView implements
         hideMsg();
 
         if (null == card) {
-            showErrorMsg(R.string.CARD_SHOW_error_displaying_card);
+            showErrorMsg(R.string.CARD_SHOW_error_displaying_card, "Card id NULL");
             return;
         }
 
