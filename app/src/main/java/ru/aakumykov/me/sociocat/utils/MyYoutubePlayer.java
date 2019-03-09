@@ -96,6 +96,9 @@ public class MyYoutubePlayer implements
     }
 
     public void hide() {
+        if (null != player)
+            player.pause();
+
         if (null != playerContainer) {
             ViewGroup parentGroup = (ViewGroup)playerContainer.getParent();
             parentGroup.removeView(playerContainer);
@@ -181,9 +184,12 @@ public class MyYoutubePlayer implements
                     @Override
                     public void onStateChange(@NonNull PlayerConstants.PlayerState state) {
                         super.onStateChange(state);
+
                         playerState = state;
                         //showPlayerMsg(state);
-                        changePlayerControls(state);
+
+                        if (isAudioPlayer())
+                            changePlayerControls(state);
                     }
                     @Override
                     public void onVideoDuration(float duration) {

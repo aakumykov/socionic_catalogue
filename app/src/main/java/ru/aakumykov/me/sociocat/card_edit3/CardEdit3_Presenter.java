@@ -132,6 +132,17 @@ public class CardEdit3_Presenter implements
     }
 
     @Override
+    public void removeMedia() {
+        if (currentCard.isAudioCard())
+            currentCard.removeAudioCode();
+
+        if (currentCard.isVideoCard())
+            currentCard.removeVideoCode();
+
+        view.removeMedia();
+    }
+
+    @Override
     public void convertToAudio() {
         currentCard.setType(Constants.AUDIO_CARD);
         currentCard.setAudioCode(currentCard.getVideoCode());

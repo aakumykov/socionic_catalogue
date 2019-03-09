@@ -331,6 +331,13 @@ public class CardEdit3_View extends BaseView implements
     }
 
     @Override
+    public void removeMedia() {
+        youTubePlayer.hide();
+        MyUtils.hide(removeMediaButton);
+        MyUtils.show(addMediaButton);
+    }
+
+    @Override
     public String getCardTitle() {
         return titleInput.getText().toString();
     }
@@ -527,7 +534,7 @@ public class CardEdit3_View extends BaseView implements
 
     @OnClick(R.id.removeMediaButton)
     void removeMediaClicked() {
-
+        presenter.removeMedia();
     }
 
     @OnClick(R.id.convertToAudioButton)

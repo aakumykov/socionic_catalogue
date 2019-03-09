@@ -24,6 +24,7 @@ public interface iCardEdit3 {
         void displayAudio(String audioCode);
 
         void removeImage();
+        void removeMedia();
 
         String getCardTitle();
         String getQuote();
@@ -63,6 +64,8 @@ public interface iCardEdit3 {
         void processInputIntent(@Nullable Intent intent) throws Exception;
         void loadTagsList(TagsListLoadCallbacks callbacks);
         void processTag(String tag);
+
+        void removeMedia();
 
         void convertToAudio();
         void convertToVideo();
