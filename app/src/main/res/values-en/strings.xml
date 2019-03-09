@@ -360,4 +360,5 @@
     <string name="CARD_EDIT_convert_to_audio">Convert to audio</string>
     <string name="CARD_EDIT_convert_to_video">Convert to video</string>
     <string name="CARD_EDIT_remove_video">Remove video</string>
+    <string name="CARD_EDIT_paste_youtube_link">Paste Youtube link</string>
 </resources>

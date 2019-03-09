@@ -183,30 +183,19 @@ public class CardEdit3_Presenter implements
     }
 
     @Override
-    public void processVideoLink(String videoString) {
-        String videoCode = MVPUtils.extractYoutubeVideoCode(videoString);
-        if (null != videoCode) {
-            currentCard.setVideoCode(videoCode);
-            if (null != view)
-                view.displayVideo(videoCode);
-        } else {
-            view.showErrorMsg(R.string.CARD_EDIT_error_adding_video, "Wrong video code: "+videoString);
-        }
-    }
+    public void processYoutubeLink(String youtubeLink) throws Exception {
+        String youtubeCode = MVPUtils.extractYoutubeVideoCode(youtubeLink);
 
-    @Override
-    public void processAudioLink(String audioString) {
-        String audioCode = MVPUtils.extractYoutubeVideoCode(audioString);
-        if (null != audioCode) {
-            try {
-                currentCard.setAudioCode(audioCode);
-                view.displayAudio(audioCode);
-            } catch (Exception e) {
-                view.showErrorMsg(R.string.CARD_EDIT_error_adding_audio, e.getMessage());
-                e.printStackTrace();
+        if (null != youtubeCode) {
+            if (currentCard.isVideoCard()) {
+                currentCard.setVideoCode(youtubeCode);
+                view.displayVideo(youtubeCode);
+            } else {
+                currentCard.setAudioCode(youtubeCode);
+                view.displayAudio(youtubeCode);
             }
         } else {
-            view.showErrorMsg(R.string.CARD_EDIT_error_adding_audio, "Wrong audio code: "+audioString);
+            view.showErrorMsg(R.string.CARD_EDIT_error_adding_video, "Wrong video code: "+ youtubeLink);
         }
     }
 

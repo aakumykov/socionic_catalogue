@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -297,25 +298,25 @@ public class CardEdit3_View extends BaseView implements
     }
 
     @Override
-    public void displayVideo(final String videoCode) {
+    public void displayVideo(final String youtubeCode) {
         prepareForVideoCard();
 
-        if (TextUtils.isEmpty(videoCode)) {
+        if (TextUtils.isEmpty(youtubeCode)) {
             return;
         }
 
-        displayMedia(videoCode);
+        displayMedia(youtubeCode);
     }
 
     @Override
-    public void displayAudio(final String audioCode) {
+    public void displayAudio(final String youtubeCode) {
         prepareForAudioCard();
 
-        if (null == audioCode) {
+        if (null == youtubeCode) {
             return;
         }
 
-        displayMedia(audioCode);
+        displayMedia(youtubeCode);
     }
 
     @Override
@@ -491,32 +492,40 @@ public class CardEdit3_View extends BaseView implements
     }
 
     @OnClick(R.id.addMediaButton)
-    void addVideoClicked() {
+    void addMediaClicked() {
+
         MyDialogs.stringInputDialog(
                 this,
                 R.string.CARD_EDIT_add_youtube_link,
                 null,
+                R.string.CARD_EDIT_paste_youtube_link,
                 new iMyDialogs.StringInputCallback() {
 
                     @Override
                     public String onYesClicked(String inputtedString) {
-                        String videoCode = MVPUtils.extractYoutubeVideoCode(inputtedString);
-                        if (null == videoCode) {
+                        String youtubeCode = MVPUtils.extractYoutubeVideoCode(inputtedString);
+                        if (null == youtubeCode) {
                             return getResources().getString(R.string.CARD_EDIT_wrong_youtube_code);
                         } else {
                             return null;
                         }
                     }
+
                     @Override
                     public void onSuccess(String inputtedString) {
-                        presenter.processVideoLink(inputtedString);
+                        try {
+                            MyUtils.hide(addMediaButton);
+                            presenter.processYoutubeLink(inputtedString);
+                        } catch (Exception e) {
+                            showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
+                            e.printStackTrace();
+                        }
                     }
                 });
-
     }
 
     @OnClick(R.id.removeMediaButton)
-    void removeVideoClicked() {
+    void removeMediaClicked() {
 
     }
 
@@ -736,26 +745,18 @@ public class CardEdit3_View extends BaseView implements
     }
 
     private void prepareForVideoCard() {
-        youTubePlayer = new MyYoutubePlayer(
-                MyYoutubePlayer.PlayerType.VIDEO_PLAYER,
-                this,
-                mediaPlayerHolder,
-                R.string.YOUTUBE_PLAYER_preparing_player,
-                R.drawable.ic_player_play,
-                R.drawable.ic_player_pause,
-                R.drawable.ic_player_wait
-        );
-
-        addMediaButton.setText(R.string.CARD_EDIT_add_youtube_link);
+        prepareMediaPlayer(MyYoutubePlayer.PlayerType.VIDEO_PLAYER);
         removeMediaButton.setText(R.string.CARD_EDIT_remove_video);
-
-        MyUtils.show(mediaPlayerHolder);
-        MyUtils.show(addMediaButton);
     }
 
     private void prepareForAudioCard() {
+        prepareMediaPlayer(MyYoutubePlayer.PlayerType.AUDIO_PLAYER);
+        removeMediaButton.setText(R.string.CARD_EDIT_remove_audio);
+    }
+
+    private void prepareMediaPlayer(MyYoutubePlayer.PlayerType playerType) {
         youTubePlayer = new MyYoutubePlayer(
-                MyYoutubePlayer.PlayerType.AUDIO_PLAYER,
+                playerType,
                 this,
                 mediaPlayerHolder,
                 R.string.YOUTUBE_PLAYER_preparing_player,
@@ -765,7 +766,6 @@ public class CardEdit3_View extends BaseView implements
         );
 
         addMediaButton.setText(R.string.CARD_EDIT_add_youtube_link);
-        removeMediaButton.setText(R.string.CARD_EDIT_remove_audio);
 
         MyUtils.show(mediaPlayerHolder);
         MyUtils.show(addMediaButton);

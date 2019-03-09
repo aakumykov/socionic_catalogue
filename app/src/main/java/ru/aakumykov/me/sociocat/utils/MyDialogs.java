@@ -151,14 +151,24 @@ public class MyDialogs {
             Activity activity,
             int titleId,
             T message,
+            T hint,
             final iMyDialogs.StringInputCallback callback
     )
     {
         String titleString = activity.getString(titleId);
-        String messageString = (message instanceof Integer) ? activity.getString(titleId) : String.valueOf(message);
+
+        String messageString = null;
+        if (null != message)
+            messageString = (message instanceof Integer) ? activity.getString((Integer)message) : String.valueOf(message);
+
+        String hintString = null;
+        if (null != hint)
+            hintString = (hint instanceof Integer) ? activity.getString((Integer)hint) : String.valueOf(hint);
 
         final View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_text_input, null);
         final EditText editText = dialogLayout.findViewById(R.id.editText);
+        if (null != hintString)
+            editText.setHint(hintString);
         final TextView dialogErrorView = dialogLayout.findViewById(R.id.dialogErrorView);
 
         AlertDialog alertDialog = basicDialog(

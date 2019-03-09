@@ -364,4 +364,5 @@
     <string name="CARD_EDIT_convert_to_audio">Изменить на аудио</string>
     <string name="CARD_EDIT_convert_to_video">Изменить на видео</string>
     <string name="CARD_EDIT_remove_video">Удалить видео</string>
+    <string name="CARD_EDIT_paste_youtube_link">Вставьте ссылку на Ютуб</string>
 </resources>
