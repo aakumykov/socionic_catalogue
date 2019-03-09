@@ -301,6 +301,7 @@ public class CardEdit3_View extends BaseView implements
         prepareForVideoCard();
 
         if (TextUtils.isEmpty(youtubeCode)) {
+            MyUtils.show(addMediaButton);
             return;
         }
 
@@ -312,6 +313,7 @@ public class CardEdit3_View extends BaseView implements
         prepareForAudioCard();
 
         if (null == youtubeCode) {
+            MyUtils.show(addMediaButton);
             return;
         }
 
@@ -774,12 +776,11 @@ public class CardEdit3_View extends BaseView implements
         );
 
         addMediaButton.setText(R.string.CARD_EDIT_add_youtube_link);
-
-        MyUtils.show(mediaPlayerHolder);
-        MyUtils.show(addMediaButton);
     }
 
     private void displayMedia(String youtubeCode) {
+        MyUtils.show(mediaPlayerHolder);
+
         youTubePlayer.show(
                 youtubeCode,
                 new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
