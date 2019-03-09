@@ -28,7 +28,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -140,7 +139,7 @@ public class CardEdit3_View extends BaseView implements
     protected void onPause() {
         super.onPause();
         if (!exitIsExpected) {
-            if (formIsFilled()) {
+            if (isFormFilled()) {
                 try {
                     presenter.saveEditState();
                 } catch (Exception e) {
@@ -432,13 +431,15 @@ public class CardEdit3_View extends BaseView implements
     }
 
     @Override
-    public boolean formIsFilled() {
+    public boolean isFormFilled() {
         boolean changed = false;
+
         if (!TextUtils.isEmpty(getCardTitle())) changed = true;
         if (!TextUtils.isEmpty(getQuote())) changed = true;
         if (!TextUtils.isEmpty(getQuoteSource())) changed = true;
         if (!TextUtils.isEmpty(getDescription())) changed = true;
         if (tagsContainer.getTags().size() > 0) changed = true;
+        if (youTubePlayer.hasMedia()) changed = true;
 
         return changed;
     }
@@ -582,7 +583,7 @@ public class CardEdit3_View extends BaseView implements
 
     @OnClick(R.id.cancelButton)
     void cancelEdit() {
-        if (formIsFilled()) {
+        if (isFormFilled()) {
             MyDialogs.cancelEditDialog(
                     this,
                     R.string.CARD_EDIT_cancel_editing_title,

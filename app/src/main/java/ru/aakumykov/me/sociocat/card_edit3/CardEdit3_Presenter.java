@@ -212,6 +212,8 @@ public class CardEdit3_Presenter implements
         editor.putBoolean("isExternalDataMode", isExternalDataMode);
         editor.putString("imageType", imageType);
         editor.putStringSet("oldCardTags", oldCardTags.keySet());
+        editor.putString("videoCode", currentCard.getVideoCode());
+        editor.putString("audioCode", currentCard.getAudioCode());
 
         editor.apply();
     }
@@ -242,12 +244,20 @@ public class CardEdit3_Presenter implements
 
                 if (null != savedCard) {
                     currentCard = savedCard;
+
                     editMode = savedEditMode;
                     isExternalDataMode = savedIsExternalDataMode;
                     imageType = savedImageType;
                     oldCardTags = savedOldCardTags;
 
+                    if (currentCard.isAudioCard())
+                        currentCard.setAudioCode(sharedPreferences.getString("audioCode", ""));
+
+                    if (currentCard.isVideoCard())
+                        currentCard.setVideoCode(sharedPreferences.getString("videoCode", ""));
+
                     view.displayCard(savedCard);
+
                     clearEditState();
 
                 } else {
