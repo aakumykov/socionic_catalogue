@@ -141,7 +141,8 @@ public class CardEdit3_View extends BaseView implements
         if (!exitIsExpected) {
             if (isFormFilled()) {
                 try {
-                    youTubePlayer.pause();
+                    if (null != youTubePlayer)
+                        youTubePlayer.pause();
                     presenter.saveEditState();
                 } catch (Exception e) {
                     showLongToast(R.string.CARD_EDIT_error_saving_edit_state);
@@ -156,8 +157,9 @@ public class CardEdit3_View extends BaseView implements
     protected void onResume() {
         super.onResume();
         try {
-            youTubePlayer.play();
-            //presenter.restoreEditState();
+            if (null != youTubePlayer)
+                youTubePlayer.play();
+            presenter.restoreEditState();
         } catch (Exception e) {
             showErrorMsg(e.getMessage());
             e.printStackTrace();
@@ -313,6 +315,8 @@ public class CardEdit3_View extends BaseView implements
         }
 
         displayMedia(youtubeCode);
+
+        showAudioConvertButtons();
     }
 
     @Override
@@ -325,6 +329,8 @@ public class CardEdit3_View extends BaseView implements
         }
 
         displayMedia(youtubeCode);
+
+        showVideoConvertButtons();
     }
 
     @Override
@@ -383,15 +389,13 @@ public class CardEdit3_View extends BaseView implements
     @Override
     public void convert2audio() {
         youTubePlayer.convert2audio();
-        MyUtils.show(convertToVideoButton);
-        MyUtils.hide(convertToAudioButton);
+        showVideoConvertButtons();
     }
 
     @Override
     public void convert2video() {
         youTubePlayer.convert2video();
-        MyUtils.hide(convertToVideoButton);
-        MyUtils.show(convertToAudioButton);
+        showAudioConvertButtons();
     }
 
     @Override
@@ -455,7 +459,7 @@ public class CardEdit3_View extends BaseView implements
         if (!TextUtils.isEmpty(getQuoteSource())) changed = true;
         if (!TextUtils.isEmpty(getDescription())) changed = true;
         if (tagsContainer.getTags().size() > 0) changed = true;
-        if (youTubePlayer.hasMedia()) changed = true;
+        if (null != youTubePlayer && youTubePlayer.hasMedia()) changed = true;
 
         return changed;
     }
@@ -772,6 +776,9 @@ public class CardEdit3_View extends BaseView implements
     }
 
     private void prepareMediaPlayer(MyYoutubePlayer.PlayerType playerType) {
+        if (null != youTubePlayer)
+            return;
+
         youTubePlayer = new MyYoutubePlayer(
                 playerType,
                 this,
@@ -797,5 +804,15 @@ public class CardEdit3_View extends BaseView implements
                         MyUtils.show(removeMediaButton);
                     }
                 });
+    }
+
+    private void showVideoConvertButtons() {
+        MyUtils.hide(convertToAudioButton);
+        MyUtils.show(convertToVideoButton);
+    }
+
+    private void showAudioConvertButtons() {
+        MyUtils.hide(convertToVideoButton);
+        MyUtils.show(convertToAudioButton);
     }
 }

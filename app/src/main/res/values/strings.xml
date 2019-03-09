@@ -361,8 +361,8 @@
     <string name="CARD_EDIT_there_is_no_audio">Добавьте музыку</string>
     <string name="CARD_EDIT_incorrect_video_code">Некорректный код видео</string>
     <string name="CARD_EDIT_incorrect_audio_code">Некорректный код музыки</string>
-    <string name="CARD_EDIT_convert_to_audio">Изменить на аудио</string>
-    <string name="CARD_EDIT_convert_to_video">Изменить на видео</string>
+    <string name="CARD_EDIT_convert_to_audio">Переделать в звук</string>
+    <string name="CARD_EDIT_convert_to_video">Переделать в видео</string>
     <string name="CARD_EDIT_remove_video">Удалить видео</string>
     <string name="CARD_EDIT_paste_youtube_link">Вставьте ссылку на Ютуб</string>
 </resources>
