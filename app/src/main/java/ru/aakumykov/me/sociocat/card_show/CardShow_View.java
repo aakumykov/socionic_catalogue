@@ -184,11 +184,15 @@ public class CardShow_View extends BaseView implements
     @Override
     protected void onResume() {
         super.onResume();
+        if (null != youtubePlayer)
+            youtubePlayer.play();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        if (null != youtubePlayer)
+            youtubePlayer.pause();
     }
 
     @Override
@@ -440,9 +444,7 @@ public class CardShow_View extends BaseView implements
     // Интерфейсные методы
     @Override
     public void displayCard(@Nullable final Card card) {
-        Log.d(TAG, "displayCard(), "+card);
 
-        // TODO: а где её очищать?
         this.currentCard = card;
 
         hideProgressBar();
@@ -455,6 +457,8 @@ public class CardShow_View extends BaseView implements
 
         String pageTitle = getResources().getString(R.string.CARD_SHOW_page_title, card.getTitle());
         setPageTitle(pageTitle);
+
+        prepareMediaPlayer();
 
         displayCommonCardParts(card);
 
@@ -772,36 +776,42 @@ public class CardShow_View extends BaseView implements
 
     private void displayVideoCard(Card card) {
         String mediaCode = card.getVideoCode();
-        displayYoutubeMedia(mediaCode, MyYoutubePlayer.PlayerType.VIDEO_PLAYER);
+        displayYoutubeMedia(mediaCode);
     }
 
     private void displayAudioCard(Card card) {
         String mediaCode = card.getAudioCode();
-        displayYoutubeMedia(mediaCode, MyYoutubePlayer.PlayerType.AUDIO_PLAYER);
+        displayYoutubeMedia(mediaCode);
     }
 
-    private void displayYoutubeMedia(String youtubeMediaCode, MyYoutubePlayer.PlayerType playerType) {
+    private void prepareMediaPlayer() {
+
+        MyYoutubePlayer.PlayerType playerType = (currentCard.isVideoCard()) ?
+                MyYoutubePlayer.PlayerType.VIDEO_PLAYER : MyYoutubePlayer.PlayerType.AUDIO_PLAYER;
+
+        youtubePlayer = new MyYoutubePlayer(
+                playerType,
+                this,
+                youtubePlayerHolder,
+                R.string.YOUTUBE_PLAYER_preparing_player,
+                R.drawable.ic_player_play,
+                R.drawable.ic_player_pause,
+                R.drawable.ic_player_wait
+        );
+    }
+
+    private void displayYoutubeMedia(String youtubeMediaCode) {
 
         MyUtils.show(youtubePlayerHolder);
 
-//        youtubePlayer = new MyYoutubePlayer(
-//
-//                this,
-//                youtubePlayerHolder,
-//                R.string.YOUTUBE_PLAYER_preparing_player,
-//                R.drawable.ic_player_play,
-//                R.drawable.ic_player_pause,
-//                R.drawable.ic_player_wait
-//        );
-//
-//        youtubePlayer.show(
-//                youtubeMediaCode,
-//                new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
-//                    @Override
-//                    public void onMediaAdded() {
-//
-//                    }
-//                });
+        youtubePlayer.show(
+                youtubeMediaCode,
+                new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
+                    @Override
+                    public void onMediaAdded() {
+
+                    }
+                });
     }
 
     private View constructCommentItem(Comment comment) throws Exception {

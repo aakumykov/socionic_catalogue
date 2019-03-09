@@ -141,6 +141,7 @@ public class CardEdit3_View extends BaseView implements
         if (!exitIsExpected) {
             if (isFormFilled()) {
                 try {
+                    youTubePlayer.pause();
                     presenter.saveEditState();
                 } catch (Exception e) {
                     showLongToast(R.string.CARD_EDIT_error_saving_edit_state);
@@ -154,7 +155,13 @@ public class CardEdit3_View extends BaseView implements
     @Override
     protected void onResume() {
         super.onResume();
-        //presenter.restoreEditState();
+        try {
+            youTubePlayer.play();
+            //presenter.restoreEditState();
+        } catch (Exception e) {
+            showErrorMsg(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override
