@@ -102,7 +102,7 @@ public class CardShow_View extends BaseView implements
     private Comment parentComment;
     private View currentCommentView;
 
-    private FrameLayout youtubePlayerHolder;
+    private FrameLayout mediaPlayerHolder;
     private MyYoutubePlayer youtubePlayer;
 
 
@@ -130,7 +130,7 @@ public class CardShow_View extends BaseView implements
         imageProgressBar = findViewById(R.id.imageProgressBar);
         imageView = findViewById(R.id.imageView);
 
-        youtubePlayerHolder = findViewById(R.id.mediaPlayerHolder);
+        mediaPlayerHolder = findViewById(R.id.mediaPlayerHolder);
 
         descriptionView = findViewById(R.id.descriptionView);
 
@@ -792,7 +792,7 @@ public class CardShow_View extends BaseView implements
         youtubePlayer = new MyYoutubePlayer(
                 playerType,
                 this,
-                youtubePlayerHolder,
+                mediaPlayerHolder,
                 R.string.YOUTUBE_PLAYER_preparing_player,
                 R.drawable.ic_player_play,
                 R.drawable.ic_player_pause,
@@ -800,12 +800,17 @@ public class CardShow_View extends BaseView implements
         );
     }
 
-    private void displayYoutubeMedia(String youtubeMediaCode) {
+    private void displayYoutubeMedia(@Nullable String mediaCode) {
 
-        MyUtils.show(youtubePlayerHolder);
+        MyUtils.show(mediaPlayerHolder);
+
+        if (null == mediaCode) {
+            youtubePlayer.displayNoMedia();
+            return;
+        }
 
         youtubePlayer.show(
-                youtubeMediaCode,
+                mediaCode,
                 new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
                     @Override
                     public void onMediaAdded() {

@@ -81,11 +81,12 @@
 
     <FrameLayout
         android:id="@+id/mediaPlayerHolder"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_marginBottom="@dimen/card_component_margin_bottom" />
+        android:layout_marginBottom="@dimen/card_component_margin_bottom"
+        android:minHeight="10dp"
+        android:orientation="vertical"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/descriptionView"

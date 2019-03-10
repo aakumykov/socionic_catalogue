@@ -365,4 +365,6 @@
     <string name="CARD_EDIT_convert_to_video">Переделать в видео</string>
     <string name="CARD_EDIT_remove_video">Удалить видео</string>
     <string name="CARD_EDIT_paste_youtube_link">Вставьте ссылку на Ютуб</string>
+    <string name="YOUTUBE_PLAYER_there_is_no_audio">В карточке нет звука</string>
+    <string name="YOUTUBE_PLAYER_there_is_no_video">В карточке нет видео</string>
 </resources>

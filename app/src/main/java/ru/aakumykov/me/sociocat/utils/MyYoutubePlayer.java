@@ -145,6 +145,13 @@ public class MyYoutubePlayer implements
         return PLAYING.equals(playerState);
     }
 
+    public void displayNoMedia() {
+        int msgId = isAudioPlayer() ? R.string.YOUTUBE_PLAYER_there_is_no_audio : R.string.YOUTUBE_PLAYER_there_is_no_video;
+        playerMsg.setText(msgId);
+        playerMsg.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
+        MyUtils.show(playerMsg);
+    }
+
 
     private void preparePlayerContainer() {
         playerContainer = new LinearLayout(context);
