@@ -143,7 +143,7 @@ public class CardEdit3_Presenter implements
     }
 
     @Override
-    public void convertToAudio() {
+    public void convert2audio() {
         currentCard.setType(Constants.AUDIO_CARD);
         currentCard.setAudioCode(currentCard.getVideoCode());
         currentCard.removeVideoCode();
@@ -151,7 +151,7 @@ public class CardEdit3_Presenter implements
     }
 
     @Override
-    public void convertToVideo() {
+    public void convert2video() {
         currentCard.setType(Constants.VIDEO_CARD);
         currentCard.setVideoCode(currentCard.getAudioCode());
         currentCard.removeAudioCode();

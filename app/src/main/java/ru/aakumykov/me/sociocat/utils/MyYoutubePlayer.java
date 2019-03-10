@@ -80,7 +80,7 @@ public class MyYoutubePlayer implements
 
         preparePlayerContainer();
         preparePlayerMsg();
-        if (isAudioPlayer())
+//        if (isAudioPlayer())
             preparePlayerControls();
         attachPlayerToTargetContainer();
     }
@@ -139,6 +139,10 @@ public class MyYoutubePlayer implements
 
     public boolean hasMedia() {
         return !TextUtils.isEmpty(videoId);
+    }
+
+    public boolean wasPlay() {
+        return PLAYING.equals(playerState);
     }
 
 

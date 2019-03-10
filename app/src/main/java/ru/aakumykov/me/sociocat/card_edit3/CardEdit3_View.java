@@ -160,6 +160,7 @@ public class CardEdit3_View extends BaseView implements
             if (null != youTubePlayer)
                 youTubePlayer.play();
             presenter.restoreEditState();
+
         } catch (Exception e) {
             showErrorMsg(e.getMessage());
             e.printStackTrace();
@@ -316,7 +317,7 @@ public class CardEdit3_View extends BaseView implements
 
         displayMedia(youtubeCode);
 
-        showAudioConvertButtons();
+        changeButtonsForVideo();
     }
 
     @Override
@@ -330,7 +331,7 @@ public class CardEdit3_View extends BaseView implements
 
         displayMedia(youtubeCode);
 
-        showVideoConvertButtons();
+        changeButtonsForAudio();
     }
 
     @Override
@@ -348,8 +349,12 @@ public class CardEdit3_View extends BaseView implements
     @Override
     public void removeMedia() {
         youTubePlayer.hide();
-        MyUtils.hide(removeMediaButton);
+
         MyUtils.show(addMediaButton);
+
+        MyUtils.hide(removeMediaButton);
+        MyUtils.hide(convertToVideoButton);
+        MyUtils.hide(convertToAudioButton);
     }
 
     @Override
@@ -389,13 +394,13 @@ public class CardEdit3_View extends BaseView implements
     @Override
     public void convert2audio() {
         youTubePlayer.convert2audio();
-        showVideoConvertButtons();
+        changeButtonsForAudio();
     }
 
     @Override
     public void convert2video() {
         youTubePlayer.convert2video();
-        showAudioConvertButtons();
+        changeButtonsForVideo();
     }
 
     @Override
@@ -552,12 +557,12 @@ public class CardEdit3_View extends BaseView implements
 
     @OnClick(R.id.convertToAudioButton)
     void convertToAudioClicked() {
-        presenter.convertToAudio();
+        presenter.convert2audio();
     }
 
     @OnClick(R.id.convertToVideoButton)
     void convertToVideoClicked() {
-        presenter.convertToVideo();
+        presenter.convert2video();
     }
 
     @OnClick(R.id.addTagButton)
@@ -806,13 +811,15 @@ public class CardEdit3_View extends BaseView implements
                 });
     }
 
-    private void showVideoConvertButtons() {
-        MyUtils.hide(convertToAudioButton);
-        MyUtils.show(convertToVideoButton);
+    private void changeButtonsForVideo() {
+        MyUtils.show(convertToAudioButton);
+        MyUtils.hide(convertToVideoButton);
+        removeMediaButton.setText(R.string.CARD_EDIT_remove_video);
     }
 
-    private void showAudioConvertButtons() {
-        MyUtils.hide(convertToVideoButton);
-        MyUtils.show(convertToAudioButton);
+    private void changeButtonsForAudio() {
+        MyUtils.show(convertToVideoButton);
+        MyUtils.hide(convertToAudioButton);
+        removeMediaButton.setText(R.string.CARD_EDIT_remove_audio);
     }
 }
