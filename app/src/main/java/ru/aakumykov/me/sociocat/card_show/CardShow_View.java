@@ -187,8 +187,8 @@ public class CardShow_View extends BaseView implements
     @Override
     protected void onResume() {
         super.onResume();
-        if (null != youtubePlayer)
-            youtubePlayer.play();
+        //if (null != youtubePlayer)
+            //youtubePlayer.play();
     }
 
     @Override
