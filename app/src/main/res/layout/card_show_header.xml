@@ -75,6 +75,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/noMediaMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:layout_marginBottom="@dimen/card_component_margin_bottom"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:visibility="gone" />
+
     <FrameLayout
         android:id="@+id/mediaPlayerHolder"
         android:layout_width="match_parent"
@@ -85,19 +98,6 @@
         android:visibility="gone">
 
     </FrameLayout>
-
-    <Button
-        android:id="@+id/showPlayerMsg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="showPlayerMsg" />
-
-    <Button
-        android:id="@+id/hidePlayerMsg"
-        style="@style/Widget.AppCompat.Button.Small"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="hidePlayerMsg" />
 
     <TextView
         android:id="@+id/descriptionView"

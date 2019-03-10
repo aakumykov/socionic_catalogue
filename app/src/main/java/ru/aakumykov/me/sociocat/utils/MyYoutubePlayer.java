@@ -90,7 +90,6 @@ public class MyYoutubePlayer implements
         hidePlayerMsg();
 
         if (null == videoId) {
-//            showNoMediaError();
             return;
         }
 
@@ -242,6 +241,7 @@ public class MyYoutubePlayer implements
         audioControlsContainer = new LinearLayout(context);
         audioControlsContainer.setOrientation(LinearLayout.HORIZONTAL);
         audioControlsContainer.setVisibility(View.GONE);
+        audioControlsContainer.setPadding(10, 0, 0, 0);
 
         // Кнопка играть/остановить
         playPauseButton = new ImageView(context);
@@ -311,7 +311,7 @@ public class MyYoutubePlayer implements
         playerMsg.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         playerMsg.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
         playerMsg.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-//        playerMsg.setVisibility(View.GONE);
+        playerMsg.setVisibility(View.GONE);
         playerMsg.setPaddingRelative(0, 20, 0, 20);
         playerContainer.addView(playerMsg);
     }
@@ -328,13 +328,7 @@ public class MyYoutubePlayer implements
         playerMsg.setVisibility(View.VISIBLE);
     }
 
-
-    public void showPlayerMsg(String text) {
-        playerMsg.setText(text);
-        MyUtils.show(playerMsg);
-    }
-
-    public void hidePlayerMsg() {
+    private void hidePlayerMsg() {
         MyUtils.hide(playerMsg);
     }
 
@@ -395,14 +389,6 @@ public class MyYoutubePlayer implements
         Drawable icon = context.getResources().getDrawable(waitIconId);
         playPauseButton.setImageDrawable(icon);
     }
-
-    private void showNoMediaError() {
-        int msgId = isAudioPlayer() ? R.string.YOUTUBE_PLAYER_there_is_no_audio : R.string.YOUTUBE_PLAYER_there_is_no_video;
-        playerMsg.setText(msgId);
-        playerMsg.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
-        MyUtils.show(playerMsg);
-    }
-
 
 
 }

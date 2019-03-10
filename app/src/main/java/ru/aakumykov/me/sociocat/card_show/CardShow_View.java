@@ -103,6 +103,7 @@ public class CardShow_View extends BaseView implements
     private Comment parentComment;
     private View currentCommentView;
 
+    private TextView noMediaMessage;
     private FrameLayout mediaPlayerHolder;
     private MyYoutubePlayer youtubePlayer;
 
@@ -131,6 +132,7 @@ public class CardShow_View extends BaseView implements
         imageProgressBar = findViewById(R.id.imageProgressBar);
         imageView = findViewById(R.id.imageView);
 
+        noMediaMessage = findViewById(R.id.noMediaMessage);
         mediaPlayerHolder = findViewById(R.id.mediaPlayerHolder);
 
         descriptionView = findViewById(R.id.descriptionView);
@@ -168,12 +170,6 @@ public class CardShow_View extends BaseView implements
         tagsContainer.setOnTagClickListener(this);
 
         presenter = new CardShow_Presenter();
-
-        Button spm = findViewById(R.id.showPlayerMsg);
-        spm.setOnClickListener(this);
-
-        Button hpm = findViewById(R.id.hidePlayerMsg);
-        spm.setOnClickListener(this);
     }
 
     @Override
@@ -323,14 +319,6 @@ public class CardShow_View extends BaseView implements
                 presenter.rateCardDown();
                 break;
 
-            case R.id.showPlayerMsg:
-                youtubePlayer.showPlayerMsg("Выигрыватель");
-                break;
-
-            case R.id.hidePlayerMsg:
-                youtubePlayer.hidePlayerMsg();
-                break;
-
             default:
                 break;
         }
@@ -460,11 +448,9 @@ public class CardShow_View extends BaseView implements
     @Override
     public void displayCard(@Nullable final Card card) {
 
+        resetView();
+
         this.currentCard = card;
-
-        hideProgressBar();
-        hideMsg();
-
 
         if (null == card) {
             showErrorMsg(R.string.CARD_SHOW_error_displaying_card, "Card id NULL");
@@ -726,6 +712,14 @@ public class CardShow_View extends BaseView implements
         }
     }
 
+    private void resetView() {
+        hideProgressBar();
+        hideMsg();
+        MyUtils.hide(noMediaMessage);
+        if (null != youtubePlayer)
+            youtubePlayer.hide();
+    }
+
     private void displayImageCard(Card card) {
         Log.d(TAG, "displayImageCard(), "+card);
 
@@ -791,11 +785,13 @@ public class CardShow_View extends BaseView implements
     }
 
     private void displayVideoCard(Card card) {
+        noMediaMessage.setText(R.string.CARD_SHOW_there_is_no_video);
         String mediaCode = card.getVideoCode();
         displayYoutubeMedia(mediaCode);
     }
 
     private void displayAudioCard(Card card) {
+        noMediaMessage.setText(R.string.CARD_SHOW_there_is_no_audio);
         String mediaCode = card.getAudioCode();
         displayYoutubeMedia(mediaCode);
     }
@@ -817,6 +813,11 @@ public class CardShow_View extends BaseView implements
     }
 
     private void displayYoutubeMedia(@Nullable String mediaCode) {
+
+        if (null == mediaCode) {
+            MyUtils.show(noMediaMessage);
+            return;
+        }
 
         MyUtils.show(mediaPlayerHolder);
 
@@ -1168,10 +1169,6 @@ public class CardShow_View extends BaseView implements
         }
 
     }
-
-
-
-
 
 
 }

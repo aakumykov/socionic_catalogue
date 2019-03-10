@@ -356,15 +356,15 @@
     <string name="CARD_EDIT_add_youtube_link">Добавить ссылку на Youtube</string>
     <string name="CARD_EDIT_error_adding_audio">Ошибка добавления музыки</string>
     <string name="CARD_EDIT_wrong_youtube_code">Некорректный Youtube-код</string>
-    <string name="CARD_EDIT_remove_audio">Удалить музыку</string>
+    <string name="CARD_EDIT_remove_audio">Удалить</string>
     <string name="CARD_EDIT_there_is_no_video">Добавьте видео</string>
     <string name="CARD_EDIT_there_is_no_audio">Добавьте музыку</string>
     <string name="CARD_EDIT_incorrect_video_code">Некорректный код видео</string>
     <string name="CARD_EDIT_incorrect_audio_code">Некорректный код музыки</string>
     <string name="CARD_EDIT_convert_to_audio">Переделать в звук</string>
     <string name="CARD_EDIT_convert_to_video">Переделать в видео</string>
-    <string name="CARD_EDIT_remove_video">Удалить видео</string>
+    <string name="CARD_EDIT_remove_video">Удалить</string>
     <string name="CARD_EDIT_paste_youtube_link">Вставьте ссылку на Ютуб</string>
-    <string name="YOUTUBE_PLAYER_there_is_no_audio">В карточке нет звука</string>
-    <string name="YOUTUBE_PLAYER_there_is_no_video">В карточке нет видео</string>
+    <string name="CARD_SHOW_there_is_no_video">В карточке нет видео</string>
+    <string name="CARD_SHOW_there_is_no_audio">В карточке нет звука</string>
 </resources>

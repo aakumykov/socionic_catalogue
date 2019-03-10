@@ -352,15 +352,15 @@
     <string name="CARD_EDIT_add_youtube_link">Add Youtube link</string>
     <string name="CARD_EDIT_error_adding_audio">Error adding audio</string>
     <string name="CARD_EDIT_wrong_youtube_code">Incorrect Youtube-code</string>
-    <string name="CARD_EDIT_remove_audio">Remove music</string>
+    <string name="CARD_EDIT_remove_audio">Remove</string>
     <string name="CARD_EDIT_there_is_no_video">Please, add video</string>
     <string name="CARD_EDIT_there_is_no_audio">Please, add audio</string>
     <string name="CARD_EDIT_incorrect_video_code">Incorrect video code</string>
     <string name="CARD_EDIT_incorrect_audio_code">Incorrect audio code</string>
     <string name="CARD_EDIT_convert_to_audio">Convert to audio</string>
     <string name="CARD_EDIT_convert_to_video">Convert to video</string>
-    <string name="CARD_EDIT_remove_video">Remove video</string>
+    <string name="CARD_EDIT_remove_video">Remove</string>
     <string name="CARD_EDIT_paste_youtube_link">Paste Youtube link</string>
-    <string name="YOUTUBE_PLAYER_there_is_no_audio">There is no audio</string>
-    <string name="YOUTUBE_PLAYER_there_is_no_video">There is no video</string>
+    <string name="CARD_SHOW_there_is_no_video">There is no video</string>
+    <string name="CARD_SHOW_there_is_no_audio">There is no audio</string>
 </resources>
