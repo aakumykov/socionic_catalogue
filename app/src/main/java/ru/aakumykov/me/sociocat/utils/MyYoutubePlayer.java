@@ -7,6 +7,9 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -176,7 +179,7 @@ public class MyYoutubePlayer implements
         if (null != youTubePlayerView)
             return;
 
-        showPlayerMsg(waitingMessageId);
+        showPlayerMsg(waitingMessageId, true);
 
         youTubePlayerView = new YouTubePlayerView(context);
 
@@ -223,7 +226,7 @@ public class MyYoutubePlayer implements
                     @Override
                     public void onError(@NonNull PlayerConstants.PlayerError error) {
                         super.onError(error);
-                        showPlayerMsg(String.valueOf(error));
+                        showPlayerMsg(String.valueOf(error), false);
                     }
                 });
             }
@@ -316,19 +319,41 @@ public class MyYoutubePlayer implements
         playerContainer.addView(playerMsg);
     }
 
-    private <T> void showPlayerMsg(T arg) {
+    private <T> void showPlayerMsg(T arg, boolean withAnimation) {
+
+        int duration = 1000;
+
+        Animation fadeOut = new AlphaAnimation(1.0f, 0.5f);
+        fadeOut.setDuration(duration);
+        fadeOut.setRepeatCount(Animation.INFINITE);
+
+        Animation fadeIn = new AlphaAnimation(0.5f, 1.0f);
+        fadeIn.setDuration(duration);
+        fadeIn.setRepeatCount(Animation.INFINITE);
+
+        AnimationSet animationSet = new AnimationSet(true);
+        animationSet.addAnimation(fadeOut);
+        animationSet.addAnimation(fadeIn);
+        animationSet.setRepeatMode(Animation.RESTART);
+
+        if (withAnimation)
+            playerMsg.startAnimation(animationSet);
+
         String msg = "";
+
         if (arg instanceof Integer) {
             int msgId = (Integer)arg;
             msg = context.getResources().getString(msgId);
         } else {
             msg = String.valueOf(arg);
         }
+
         playerMsg.setText(msg);
         playerMsg.setVisibility(View.VISIBLE);
     }
 
     private void hidePlayerMsg() {
+        playerMsg.clearAnimation();
         MyUtils.hide(playerMsg);
     }
 
