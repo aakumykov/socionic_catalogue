@@ -316,8 +316,6 @@ public class CardEdit3_View extends BaseView implements
         }
 
         displayMedia(youtubeCode);
-
-        changeButtonsForVideo();
     }
 
     @Override
@@ -330,8 +328,6 @@ public class CardEdit3_View extends BaseView implements
         }
 
         displayMedia(youtubeCode);
-
-        changeButtonsForAudio();
     }
 
     @Override
@@ -807,6 +803,9 @@ public class CardEdit3_View extends BaseView implements
                     public void onMediaAdded() {
                         MyUtils.hide(addMediaButton);
                         MyUtils.show(removeMediaButton);
+
+                        if (youTubePlayer.isAudioPlayer()) changeButtonsForAudio();
+                        else changeButtonsForVideo();
                     }
                 });
     }

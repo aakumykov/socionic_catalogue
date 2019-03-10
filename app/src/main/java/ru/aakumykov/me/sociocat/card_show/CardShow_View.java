@@ -450,6 +450,7 @@ public class CardShow_View extends BaseView implements
         hideProgressBar();
         hideMsg();
 
+
         if (null == card) {
             showErrorMsg(R.string.CARD_SHOW_error_displaying_card, "Card id NULL");
             return;
@@ -803,11 +804,6 @@ public class CardShow_View extends BaseView implements
     private void displayYoutubeMedia(@Nullable String mediaCode) {
 
         MyUtils.show(mediaPlayerHolder);
-
-        if (null == mediaCode) {
-            youtubePlayer.displayNoMedia();
-            return;
-        }
 
         youtubePlayer.show(
                 mediaCode,

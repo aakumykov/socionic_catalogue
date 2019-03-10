@@ -87,6 +87,13 @@ public class MyYoutubePlayer implements
 
 
     public void show(String videoId, iMyYoutubePlayerCallbacks callbacks) {
+        hidePlayerMsg();
+
+        if (null == videoId) {
+            displayNoMedia();
+            return;
+        }
+
         this.videoId = videoId;
 
         if (null != player)
@@ -151,6 +158,15 @@ public class MyYoutubePlayer implements
         playerMsg.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
         MyUtils.show(playerMsg);
     }
+
+    public boolean isAudioPlayer() {
+        return PlayerType.AUDIO_PLAYER.equals(playerType);
+    }
+
+    public boolean isVideoPlayer() {
+        return PlayerType.VIDEO_PLAYER.equals(playerType);
+    }
+
 
 
     private void preparePlayerContainer() {
@@ -381,11 +397,4 @@ public class MyYoutubePlayer implements
         playPauseButton.setImageDrawable(icon);
     }
 
-    private boolean isAudioPlayer() {
-        return PlayerType.AUDIO_PLAYER.equals(playerType);
-    }
-
-    private boolean isVideoPlayer() {
-        return PlayerType.VIDEO_PLAYER.equals(playerType);
-    }
 }
