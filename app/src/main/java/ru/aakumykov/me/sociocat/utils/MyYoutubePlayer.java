@@ -90,7 +90,7 @@ public class MyYoutubePlayer implements
         hidePlayerMsg();
 
         if (null == videoId) {
-            displayNoMedia();
+//            showNoMediaError();
             return;
         }
 
@@ -150,13 +150,6 @@ public class MyYoutubePlayer implements
 
     public boolean wasPlay() {
         return PLAYING.equals(playerState);
-    }
-
-    public void displayNoMedia() {
-        int msgId = isAudioPlayer() ? R.string.YOUTUBE_PLAYER_there_is_no_audio : R.string.YOUTUBE_PLAYER_there_is_no_video;
-        playerMsg.setText(msgId);
-        playerMsg.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
-        MyUtils.show(playerMsg);
     }
 
     public boolean isAudioPlayer() {
@@ -298,7 +291,7 @@ public class MyYoutubePlayer implements
         playerContainer.addView(youTubePlayerView, playerContainer.indexOfChild(playerMsg));
 
         if (isAudioPlayer()) {
-            playerContainer.setBackground(context.getResources().getDrawable(R.drawable.my_youtube_player_audio_background));
+//            playerContainer.setBackground(context.getResources().getDrawable(R.drawable.my_youtube_player_audio_background));
             audioControlsContainer.setVisibility(View.VISIBLE);
         }
     }
@@ -318,7 +311,7 @@ public class MyYoutubePlayer implements
         playerMsg.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         playerMsg.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
         playerMsg.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-        playerMsg.setVisibility(View.GONE);
+//        playerMsg.setVisibility(View.GONE);
         playerMsg.setPaddingRelative(0, 20, 0, 20);
         playerContainer.addView(playerMsg);
     }
@@ -335,8 +328,14 @@ public class MyYoutubePlayer implements
         playerMsg.setVisibility(View.VISIBLE);
     }
 
-    private void hidePlayerMsg() {
-        playerMsg.setVisibility(View.GONE);
+
+    public void showPlayerMsg(String text) {
+        playerMsg.setText(text);
+        MyUtils.show(playerMsg);
+    }
+
+    public void hidePlayerMsg() {
+        MyUtils.hide(playerMsg);
     }
 
 
@@ -396,5 +395,14 @@ public class MyYoutubePlayer implements
         Drawable icon = context.getResources().getDrawable(waitIconId);
         playPauseButton.setImageDrawable(icon);
     }
+
+    private void showNoMediaError() {
+        int msgId = isAudioPlayer() ? R.string.YOUTUBE_PLAYER_there_is_no_audio : R.string.YOUTUBE_PLAYER_there_is_no_video;
+        playerMsg.setText(msgId);
+        playerMsg.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
+        MyUtils.show(playerMsg);
+    }
+
+
 
 }

@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.BaseView;
@@ -167,6 +168,12 @@ public class CardShow_View extends BaseView implements
         tagsContainer.setOnTagClickListener(this);
 
         presenter = new CardShow_Presenter();
+
+        Button spm = findViewById(R.id.showPlayerMsg);
+        spm.setOnClickListener(this);
+
+        Button hpm = findViewById(R.id.hidePlayerMsg);
+        spm.setOnClickListener(this);
     }
 
     @Override
@@ -217,7 +224,7 @@ public class CardShow_View extends BaseView implements
         switch (requestCode) {
 
             case Constants.CODE_EDIT_CARD:
-                processEditionResult(resultCode, data);
+                processCardEditionResult(resultCode, data);
                 break;
 
             case Constants.CODE_LOGIN_FOR_COMMENT:
@@ -314,6 +321,14 @@ public class CardShow_View extends BaseView implements
 
             case R.id.cardRateDownButton:
                 presenter.rateCardDown();
+                break;
+
+            case R.id.showPlayerMsg:
+                youtubePlayer.showPlayerMsg("Выигрыватель");
+                break;
+
+            case R.id.hidePlayerMsg:
+                youtubePlayer.hidePlayerMsg();
                 break;
 
             default:
@@ -1112,7 +1127,7 @@ public class CardShow_View extends BaseView implements
         startActivity(intent);
     }
 
-    private void processEditionResult(int resultCode, @Nullable Intent data) {
+    private void processCardEditionResult(int resultCode, @Nullable Intent data) {
         switch (resultCode) {
 
             case RESULT_OK:
@@ -1153,4 +1168,10 @@ public class CardShow_View extends BaseView implements
         }
 
     }
+
+
+
+
+
+
 }
