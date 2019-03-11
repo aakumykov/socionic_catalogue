@@ -63,8 +63,7 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/imageHolder"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:visibility="gone">
+            android:layout_height="300dp">
 
             <ImageView
                 android:id="@+id/imageView"
@@ -76,16 +75,14 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_image_placeholder" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/imagePlaceholder"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:visibility="gone"
+                android:scaleType="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
