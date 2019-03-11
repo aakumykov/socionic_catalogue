@@ -40,7 +40,7 @@
                 <ImageView
                     android:id="@+id/textChooser"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="@dimen/card_type_chooser_icon_height"
                     android:layout_gravity="left"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/ic_text" />
@@ -48,7 +48,7 @@
                 <ImageView
                     android:id="@+id/imageChooser"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="@dimen/card_type_chooser_icon_height"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/ic_image" />
             </TableRow>
@@ -84,14 +84,14 @@
                 <ImageView
                     android:id="@+id/youtubeChooser"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="@dimen/card_type_chooser_icon_height"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/ic_youtube" />
 
                 <ImageView
                     android:id="@+id/soundChooser"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="@dimen/card_type_chooser_icon_height"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/ic_sound" />
             </TableRow>

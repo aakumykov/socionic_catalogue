@@ -13,6 +13,8 @@
     <dimen name="avatar_width">512sp</dimen>
     <dimen name="avatar_height">512sp</dimen>
 
+    <dimen name="card_type_chooser_icon_height">48dp</dimen>
+
     <dimen name="card_padding_top">12dp</dimen>
     <dimen name="card_component_padding_left">12dp</dimen>
     <dimen name="card_component_padding_right">12dp</dimen>
@@ -24,7 +26,6 @@
     <dimen name="author_text_size">16sp</dimen>
     <dimen name="tag_font_size">16sp</dimen>
     <dimen name="card_rating_text_size">18sp</dimen>
-
 
     <dimen name="comment_avatar_width">30dp</dimen>
     <dimen name="comment_avatar_height">30dp</dimen>
