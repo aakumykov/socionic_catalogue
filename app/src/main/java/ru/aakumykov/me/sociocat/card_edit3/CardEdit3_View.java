@@ -781,7 +781,6 @@ public class CardEdit3_View extends BaseView implements
             return;
 
         youTubePlayer = new MyYoutubePlayer(
-                playerType,
                 this,
                 mediaPlayerHolder,
                 R.string.YOUTUBE_PLAYER_preparing_player,
@@ -796,18 +795,7 @@ public class CardEdit3_View extends BaseView implements
     private void displayMedia(String youtubeCode) {
         MyUtils.show(mediaPlayerHolder);
 
-        youTubePlayer.show(
-                youtubeCode,
-                new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
-                    @Override
-                    public void onMediaAdded() {
-                        MyUtils.hide(addMediaButton);
-                        MyUtils.show(removeMediaButton);
 
-                        if (youTubePlayer.isAudioPlayer()) changeButtonsForAudio();
-                        else changeButtonsForVideo();
-                    }
-                });
     }
 
     private void changeButtonsForVideo() {
