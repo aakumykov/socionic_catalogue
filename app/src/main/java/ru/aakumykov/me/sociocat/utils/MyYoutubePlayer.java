@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -47,7 +46,6 @@ public class MyYoutubePlayer implements
 
     LinearLayout player_layout_xml;
     private TextView playerMsg;
-    private FrameLayout videoPlayerHolder;
     private ConstraintLayout audioPlayer;
     private ImageView playerControlButton;
     private SeekBar playerSeekBar;
@@ -77,7 +75,9 @@ public class MyYoutubePlayer implements
         this.pauseIconId = pauseIconId;
         this.waitIconId = waitIconId;
 
-        player_layout_xml = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.my_youtube_player, null);
+        LayoutInflater layoutInflater = LayoutInflater.from(targetContainer.getContext());
+
+        player_layout_xml = (LinearLayout) layoutInflater.inflate(R.layout.my_youtube_player, null);
         playerMsg = player_layout_xml.findViewById(R.id.playerMsg);
         videoPlayer = player_layout_xml.findViewById(R.id.videoPlayer);
         audioPlayer = player_layout_xml.findViewById(R.id.audioPlayer);
@@ -100,12 +100,12 @@ public class MyYoutubePlayer implements
 
         switch (playerType) {
             case AUDIO_PLAYER:
-                MyUtils.hide(videoPlayerHolder);
+                MyUtils.hide(videoPlayer);
                 MyUtils.show(audioPlayer);
                 break;
             case VIDEO_PLAYER:
                 MyUtils.hide(audioPlayer);
-                MyUtils.show(videoPlayerHolder);
+                MyUtils.show(videoPlayer);
                 break;
         }
     }
@@ -113,7 +113,7 @@ public class MyYoutubePlayer implements
     public void hide() {
         if (null != player)
             player.pause();
-        MyUtils.hide(videoPlayerHolder);
+        MyUtils.hide(videoPlayer);
     }
 
     public void pause() {
