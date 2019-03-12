@@ -108,12 +108,10 @@ public class MyYoutubePlayer implements
         if (null != player)
             player.pause();
 
-        MyUtils.hide(youTubePlayerView);
-
-//        if (null != playerContainer) {
-//            ViewGroup parentGroup = (ViewGroup)playerContainer.getParent();
-//            parentGroup.removeView(playerContainer);
-//        }
+        if (null != playerContainer) {
+            ViewGroup parentGroup = (ViewGroup)playerContainer.getParent();
+            parentGroup.removeView(playerContainer);
+        }
     }
 
     public void pause() {
