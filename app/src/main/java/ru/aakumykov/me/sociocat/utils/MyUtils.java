@@ -8,7 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -18,15 +18,12 @@ import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.aakumykov.me.sociocat.Config;
-import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.R;
 
 public final class MyUtils {
 

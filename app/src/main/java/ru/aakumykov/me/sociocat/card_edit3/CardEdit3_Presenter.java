@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Gravity;
 
@@ -33,7 +33,6 @@ import ru.aakumykov.me.sociocat.services.TagsSingleton;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-import static ru.aakumykov.me.sociocat.Constants.AUDIO_CARD;
 import static ru.aakumykov.me.sociocat.Constants.VIDEO_CARD;
 
 public class CardEdit3_Presenter implements

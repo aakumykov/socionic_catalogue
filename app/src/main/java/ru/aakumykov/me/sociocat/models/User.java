@@ -2,14 +2,12 @@ package ru.aakumykov.me.sociocat.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
-import android.widget.TextView;
 
 import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class User implements Parcelable {
     

@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.register.register_step_1;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.android.gms.tasks.OnFailureListener;

@@ -3,8 +3,8 @@ package ru.aakumykov.me.sociocat.dynamic_link_processor;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,7 +18,6 @@ import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.register.register_step_2.RegisterStep2_View;
-import ru.aakumykov.me.sociocat.reset_password_step_2.ResetPasswordStep2_View;
 import ru.aakumykov.me.sociocat.services.AuthSingleton;
 import ru.aakumykov.me.sociocat.services.UsersSingleton;
 

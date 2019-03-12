@@ -1,7 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 

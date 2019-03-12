@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.services;
 
-import android.content.Intent;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -12,7 +11,6 @@ import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;

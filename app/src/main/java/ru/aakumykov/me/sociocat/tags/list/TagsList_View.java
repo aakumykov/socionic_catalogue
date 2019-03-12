@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.tags.list;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
