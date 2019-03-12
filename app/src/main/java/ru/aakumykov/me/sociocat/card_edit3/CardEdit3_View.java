@@ -315,7 +315,7 @@ public class CardEdit3_View extends BaseView implements
             return;
         }
 
-        displayMedia(youtubeCode);
+        youTubePlayer.show(youtubeCode, MyYoutubePlayer.PlayerType.VIDEO_PLAYER);
     }
 
     @Override
@@ -327,7 +327,7 @@ public class CardEdit3_View extends BaseView implements
             return;
         }
 
-        displayMedia(youtubeCode);
+        youTubePlayer.show(youtubeCode, MyYoutubePlayer.PlayerType.AUDIO_PLAYER);
     }
 
     @Override
@@ -767,16 +767,16 @@ public class CardEdit3_View extends BaseView implements
     }
 
     private void prepareForVideoCard() {
-        prepareMediaPlayer(MyYoutubePlayer.PlayerType.VIDEO_PLAYER);
+        prepareMediaPlayer();
         removeMediaButton.setText(R.string.CARD_EDIT_remove_video);
     }
 
     private void prepareForAudioCard() {
-        prepareMediaPlayer(MyYoutubePlayer.PlayerType.AUDIO_PLAYER);
+        prepareMediaPlayer();
         removeMediaButton.setText(R.string.CARD_EDIT_remove_audio);
     }
 
-    private void prepareMediaPlayer(MyYoutubePlayer.PlayerType playerType) {
+    private void prepareMediaPlayer() {
         if (null != youTubePlayer)
             return;
 
