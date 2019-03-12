@@ -1,7 +1,7 @@
 package ru.aakumykov.me.sociocat.template_active_view;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;

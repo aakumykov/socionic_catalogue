@@ -1,7 +1,7 @@
 package ru.aakumykov.me.sociocat.users.list;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.models.User;
 
 public class UsersListAdapter extends ArrayAdapter<User> {

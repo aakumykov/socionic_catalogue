@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.card_show;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import java.util.HashMap;
 import java.util.List;

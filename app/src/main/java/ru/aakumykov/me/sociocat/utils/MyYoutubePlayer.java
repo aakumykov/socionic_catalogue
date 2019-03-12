@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.utils;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
@@ -15,16 +15,16 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.PlayerConstants;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayerView;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
+
+import org.jetbrains.annotations.NotNull;
 
 import ru.aakumykov.me.sociocat.R;
 
 import static android.widget.LinearLayout.VERTICAL;
-import static com.pierfrancescosoffritti.androidyoutubeplayer.player.PlayerConstants.PlayerState.PLAYING;
 
 public class MyYoutubePlayer implements
         View.OnClickListener
@@ -61,7 +61,7 @@ public class MyYoutubePlayer implements
 
     private float videoDuration = 0;
     private String videoId;
-    private PlayerConstants.PlayerState playerState;
+    private PlayerConstants.PlayerState mediaPlayerState;
 
     public MyYoutubePlayer(
             PlayerType playerType,
@@ -88,6 +88,13 @@ public class MyYoutubePlayer implements
         attachPlayerToTargetContainer();
     }
 
+
+    @Override
+    public void onClick(View v) {
+        if (PLAY_PAUSE_BUTTON_TAG.equals(v.getTag())) {
+            playPauseMedia();
+        }
+    }
 
     public void show(String videoId, iMyYoutubePlayerCallbacks callbacks) {
         hidePlayerMsg();
@@ -142,16 +149,12 @@ public class MyYoutubePlayer implements
         MyUtils.show(audioControlsContainer);
     }
 
-    public PlayerType getPlayerType() {
-        return playerType;
-    }
-
     public boolean hasMedia() {
         return !TextUtils.isEmpty(videoId);
     }
 
     public boolean wasPlay() {
-        return PLAYING.equals(playerState);
+        return PlayerConstants.PlayerState.PLAYING.equals(mediaPlayerState);
     }
 
     public boolean isAudioPlayer() {
@@ -182,55 +185,74 @@ public class MyYoutubePlayer implements
         showPlayerMsg(waitingMessageId, true);
 
         youTubePlayerView = new YouTubePlayerView(context);
+        youTubePlayerView.setEnableAutomaticInitialization(false);
 
         if (isAudioPlayer())
             youTubePlayerView.setVisibility(View.GONE);
 
-        youTubePlayerView.initialize(new YouTubePlayerInitListener() {
+        youTubePlayerView.initialize(new YouTubePlayerListener() {
             @Override
-            public void onInitSuccess(@NonNull final YouTubePlayer youTubePlayer) {
-                youTubePlayer.addListener(new AbstractYouTubePlayerListener() {
-                    @Override
-                    public void onReady() {
-                        player = youTubePlayer;
+            public void onReady(@NotNull YouTubePlayer youTubePlayer) {
+                player = youTubePlayer;
 
-                        if (null != videoId)
-                            youTubePlayer.cueVideo(videoId, 0f);
+                if (null != videoId)
+                    youTubePlayer.cueVideo(videoId, 0f);
 
-                        hidePlayerMsg();
+                hidePlayerMsg();
 
-                        showPlayerInterface();
+                showPlayerInterface();
 
-                        callbacks.onMediaAdded();
-                    }
-                    @Override
-                    public void onStateChange(@NonNull PlayerConstants.PlayerState state) {
-                        super.onStateChange(state);
-
-                        playerState = state;
-                        //showPlayerMsg(state);
-
-                        if (isAudioPlayer())
-                            changePlayerControls(state);
-                    }
-                    @Override
-                    public void onVideoDuration(float duration) {
-                        super.onVideoDuration(duration);
-                        videoDuration = duration;
-                    }
-                    @Override
-                    public void onCurrentSecond(float second) {
-                        super.onCurrentSecond(second);
-                        moveSeekBar(second);
-                    }
-                    @Override
-                    public void onError(@NonNull PlayerConstants.PlayerError error) {
-                        super.onError(error);
-                        showPlayerMsg(String.valueOf(error), false);
-                    }
-                });
+                callbacks.onMediaAdded();
             }
-        }, true);
+
+            @Override
+            public void onStateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerState playerState) {
+                mediaPlayerState = playerState;
+                //showPlayerMsg(state);
+                if (isAudioPlayer())
+                    changePlayerControls(mediaPlayerState);
+            }
+
+            @Override
+            public void onPlaybackQualityChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackQuality playbackQuality) {
+
+            }
+
+            @Override
+            public void onPlaybackRateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackRate playbackRate) {
+
+            }
+
+            @Override
+            public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError playerError) {
+                showPlayerMsg(String.valueOf(playerError), false);
+            }
+
+            @Override
+            public void onCurrentSecond(@NotNull YouTubePlayer youTubePlayer, float v) {
+                moveSeekBar(v);
+            }
+
+            @Override
+            public void onVideoDuration(@NotNull YouTubePlayer youTubePlayer, float v) {
+                videoDuration = v;
+            }
+
+            @Override
+            public void onVideoLoadedFraction(@NotNull YouTubePlayer youTubePlayer, float v) {
+
+            }
+
+            @Override
+            public void onVideoId(@NotNull YouTubePlayer youTubePlayer, @NotNull String s) {
+
+            }
+
+            @Override
+            public void onApiChange(@NotNull YouTubePlayer youTubePlayer) {
+
+            }
+        });
     }
 
     private void attachPlayerToTargetContainer() {
@@ -287,7 +309,7 @@ public class MyYoutubePlayer implements
 
         // Прикрепление к контейнеру выигрывателя
         playerContainer.addView(audioControlsContainer);
-        setMargins(audioControlsContainer, 0, PlayerConfig.seekBarTopMargin,0, PlayerConfig.seekBarBottomMargin);
+        MyUtils.setMargins(audioControlsContainer, 0, PlayerConfig.seekBarTopMargin,0, PlayerConfig.seekBarBottomMargin);
     }
 
     private void showPlayerInterface() {
@@ -357,28 +379,12 @@ public class MyYoutubePlayer implements
         MyUtils.hide(playerMsg);
     }
 
-
-    public static void setMargins (View v, int l, int t, int r, int b) {
-        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-            p.setMargins(l, t, r, b);
-            v.requestLayout();
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (PLAY_PAUSE_BUTTON_TAG.equals(v.getTag())) {
-            playPauseMedia();
-        }
-    }
-
     private void playPauseMedia() {
-//        // До первого нажатия на кнопку воспроизведения playerState неопределён.
-//        if (null == playerState)
+//        // До первого нажатия на кнопку воспроизведения mediaPlayerState неопределён.
+//        if (null == mediaPlayerState)
 //            return;
 
-        if (PLAYING.equals(this.playerState)) {
+        if (PlayerConstants.PlayerState.PLAYING.equals(this.mediaPlayerState)) {
             player.pause();
         } else {
             player.play();

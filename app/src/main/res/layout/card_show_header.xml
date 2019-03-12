@@ -160,7 +160,7 @@
         app:tag_theme="pure_teal"
         app:vertical_interval="10dp" />
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ratingHolder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -207,7 +207,7 @@
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/ic_thumb_down_neutral" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
 

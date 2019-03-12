@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.register.register_step_2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;

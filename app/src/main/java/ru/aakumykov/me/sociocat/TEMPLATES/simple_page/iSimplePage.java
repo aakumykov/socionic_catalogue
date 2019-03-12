@@ -1,7 +1,7 @@
 package ru.aakumykov.me.sociocat.TEMPLATES.simple_page;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 

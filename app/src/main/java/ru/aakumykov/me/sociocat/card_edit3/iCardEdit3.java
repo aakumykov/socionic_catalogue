@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.card_edit3;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
