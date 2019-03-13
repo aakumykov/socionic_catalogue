@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -801,7 +803,6 @@ public class CardShow_View extends BaseView implements
                 MyYoutubePlayer.PlayerType.VIDEO_PLAYER : MyYoutubePlayer.PlayerType.AUDIO_PLAYER;
 
         youtubePlayer = new MyYoutubePlayer(
-                playerType,
                 this,
                 mediaPlayerHolder,
                 R.string.YOUTUBE_PLAYER_preparing_player,
@@ -820,14 +821,10 @@ public class CardShow_View extends BaseView implements
 
         MyUtils.show(mediaPlayerHolder);
 
-        youtubePlayer.show(
-                mediaCode,
-                new MyYoutubePlayer.iMyYoutubePlayerCallbacks() {
-                    @Override
-                    public void onMediaAdded() {
+        MyYoutubePlayer.PlayerType playerType = currentCard.isAudioCard() ?
+                MyYoutubePlayer.PlayerType.AUDIO_PLAYER : MyYoutubePlayer.PlayerType.VIDEO_PLAYER;
 
-                    }
-                });
+        youtubePlayer.show(mediaCode, playerType);
     }
 
     private View constructCommentItem(Comment comment) throws Exception {
