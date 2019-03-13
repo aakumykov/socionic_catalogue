@@ -202,6 +202,10 @@ public class CardShow_View extends BaseView implements
     @Override
     protected void onStop() {
         super.onStop();
+
+        if (null != youtubePlayer)
+            youtubePlayer.release();
+
         presenter.unlinkView();
     }
 

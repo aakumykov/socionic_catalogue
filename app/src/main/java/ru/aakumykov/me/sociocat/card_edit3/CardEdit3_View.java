@@ -173,8 +173,8 @@ public class CardEdit3_View extends BaseView implements
     protected void onStop() {
         super.onStop();
 
-//        if (exitIsExpected) presenter.clearEditState();
-//        else presenter.saveEditState();
+        if (null != youTubePlayer)
+            youTubePlayer.release();
 
         presenter.unlinkView();
     }
