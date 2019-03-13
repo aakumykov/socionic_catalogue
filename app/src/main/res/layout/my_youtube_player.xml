@@ -30,6 +30,7 @@
         android:id="@+id/audioPlayer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/my_youtube_player_audio_background"
         android:visibility="gone">
 
         <ImageView

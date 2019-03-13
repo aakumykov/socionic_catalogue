@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -66,6 +67,7 @@ public class CardEdit3_View extends BaseView implements
     @BindView(R.id.discardImageButton) ImageView discardImageButton;
 
     @BindView(R.id.mediaPlayerHolder) LinearLayout mediaPlayerHolder;
+    @BindView(R.id.playerContainer) FrameLayout playerContainer;
     @BindView(R.id.addMediaButton) Button addMediaButton;
     @BindView(R.id.removeMediaButton) Button removeMediaButton;
     @BindView(R.id.convertToAudioButton) Button convertToAudioButton;
@@ -316,6 +318,8 @@ public class CardEdit3_View extends BaseView implements
         }
 
         youTubePlayer.show(youtubeCode, MyYoutubePlayer.PlayerType.VIDEO_PLAYER);
+        MyUtils.show(convertToAudioButton);
+        MyUtils.show(removeMediaButton);
     }
 
     @Override
@@ -328,6 +332,8 @@ public class CardEdit3_View extends BaseView implements
         }
 
         youTubePlayer.show(youtubeCode, MyYoutubePlayer.PlayerType.AUDIO_PLAYER);
+        MyUtils.show(convertToVideoButton);
+        MyUtils.show(removeMediaButton);
     }
 
     @Override
@@ -782,7 +788,7 @@ public class CardEdit3_View extends BaseView implements
 
         youTubePlayer = new MyYoutubePlayer(
                 this,
-                mediaPlayerHolder,
+                playerContainer,
                 R.string.YOUTUBE_PLAYER_preparing_player,
                 R.drawable.ic_player_play,
                 R.drawable.ic_player_pause,
@@ -790,12 +796,6 @@ public class CardEdit3_View extends BaseView implements
         );
 
         addMediaButton.setText(R.string.CARD_EDIT_add_youtube_link);
-    }
-
-    private void displayMedia(String youtubeCode) {
-        MyUtils.show(mediaPlayerHolder);
-
-
     }
 
     private void changeButtonsForVideo() {
