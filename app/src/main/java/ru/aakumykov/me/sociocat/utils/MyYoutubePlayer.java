@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.utils;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,14 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstan
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.utils.TimeUtilities;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.util.Date;
+import java.util.TimeZone;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -36,6 +43,8 @@ public class MyYoutubePlayer implements
         VIDEO_PLAYER, AUDIO_PLAYER
     }
 
+
+    private final static String TAG = "MyYoutubePlayer";
     private PlayerType playerType;
     private int waitingMessageId;
     private int playIconId;
@@ -250,6 +259,7 @@ public class MyYoutubePlayer implements
     private void moveSeekBar(float currentPosition) {
         int progress = Math.round((currentPosition / videoDuration) * 100);
         playerSeekBar.setProgress(progress);
+        playerStatusBar.setText(TimeUtilities.formatTime(currentPosition));
     }
 
     private <T> void setPlayerMsg(T arg, boolean withAnimation) {
