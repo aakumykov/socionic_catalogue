@@ -132,16 +132,15 @@ public class MyYoutubePlayer implements
     }
 
     public void convert2video() {
-//        playerType = PlayerType.VIDEO_PLAYER;
-//        MyUtils.show(videoPlayer);
-//        MyUtils.hide(audioControlsContainer);
-//        playerContainer.setBackground(null);
+        playerType = PlayerType.VIDEO_PLAYER;
+        MyUtils.show(videoPlayer);
+        MyUtils.hide(audioPlayer);
     }
 
     public void convert2audio() {
-//        playerType = PlayerType.AUDIO_PLAYER;
-//        MyUtils.hide(videoPlayer);
-//        MyUtils.show(audioControlsContainer);
+        playerType = PlayerType.AUDIO_PLAYER;
+        MyUtils.hide(videoPlayer);
+        MyUtils.show(audioPlayer);
     }
 
     public PlayerType getPlayerType() {
