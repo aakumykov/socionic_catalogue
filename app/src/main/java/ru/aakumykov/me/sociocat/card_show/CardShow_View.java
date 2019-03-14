@@ -1,7 +1,5 @@
 package ru.aakumykov.me.sociocat.card_show;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -106,7 +104,7 @@ public class CardShow_View extends BaseView implements
 
     private TextView noMediaMessage;
     private FrameLayout mediaPlayerHolder;
-    private MyYoutubePlayer youtubePlayer;
+    private MyYoutubePlayer mediaPlayer;
 
 
     // Системные методы
@@ -182,29 +180,31 @@ public class CardShow_View extends BaseView implements
         if (firstRun) {
             loadCard();
             firstRun = false; // эта строка должна быть ниже loadCard(), так как там тоже проверяется firstRun
+        } else {
+            displayMedia();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //if (null != youtubePlayer)
-            //youtubePlayer.play();
+        //if (null != mediaPlayer)
+            //mediaPlayer.play();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (null != youtubePlayer)
-            youtubePlayer.pause();
+        if (null != mediaPlayer)
+            mediaPlayer.pause();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        if (null != youtubePlayer)
-            youtubePlayer.release();
+        if (null != mediaPlayer)
+            mediaPlayer.release();
 
         presenter.unlinkView();
     }
@@ -212,8 +212,8 @@ public class CardShow_View extends BaseView implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != youtubePlayer)
-            youtubePlayer.release();
+        if (null != mediaPlayer)
+            mediaPlayer.release();
     }
 
     @Override
@@ -466,8 +466,6 @@ public class CardShow_View extends BaseView implements
         setPageTitle(pageTitle);
 
         displayCommonCardParts(card);
-        
-        prepareMediaPlayer();
 
         switch (card.getType()) {
             case Constants.IMAGE_CARD:
@@ -721,8 +719,8 @@ public class CardShow_View extends BaseView implements
         hideProgressBar();
         hideMsg();
         MyUtils.hide(noMediaMessage);
-        if (null != youtubePlayer)
-            youtubePlayer.hide();
+        if (null != mediaPlayer)
+            mediaPlayer.hide();
     }
 
     private void displayImageCard(Card card) {
@@ -791,46 +789,46 @@ public class CardShow_View extends BaseView implements
 
     private void displayVideoCard(Card card) {
         noMediaMessage.setText(R.string.CARD_SHOW_there_is_no_video);
-        String mediaCode = card.getVideoCode();
-        displayYoutubeMedia(mediaCode);
+        displayMedia();
     }
 
     private void displayAudioCard(Card card) {
         noMediaMessage.setText(R.string.CARD_SHOW_there_is_no_audio);
-        String mediaCode = card.getAudioCode();
-        displayYoutubeMedia(mediaCode);
+        displayMedia();
     }
 
-    private void prepareMediaPlayer() {
-        if (currentCard.isAudioCard() || currentCard.isVideoCard()) {
+    private void displayMedia() {
 
-            MyYoutubePlayer.PlayerType playerType = (currentCard.isVideoCard()) ?
-                    MyYoutubePlayer.PlayerType.VIDEO_PLAYER : MyYoutubePlayer.PlayerType.AUDIO_PLAYER;
+        if (!currentCard.isAudioCard() && !currentCard.isVideoCard())
+            return;
 
-            youtubePlayer = new MyYoutubePlayer(
-                    this,
-                    mediaPlayerHolder,
-                    R.string.YOUTUBE_PLAYER_preparing_player,
-                    R.drawable.ic_player_play,
-                    R.drawable.ic_player_pause,
-                    R.drawable.ic_player_wait
-            );
+        String mediaCode = null;
+        MyYoutubePlayer.PlayerType playerType = null;
+
+        if (currentCard.isAudioCard()) {
+            mediaCode = currentCard.getAudioCode();
+            playerType = MyYoutubePlayer.PlayerType.AUDIO_PLAYER;
         }
-    }
-
-    private void displayYoutubeMedia(@Nullable String mediaCode) {
+        else if (currentCard.isVideoCard()) {
+            mediaCode = currentCard.getVideoCode();
+            playerType = MyYoutubePlayer.PlayerType.VIDEO_PLAYER;
+        }
 
         if (null == mediaCode) {
             MyUtils.show(noMediaMessage);
             return;
         }
 
-        //MyUtils.show(mediaPlayerHolder);
+        mediaPlayer = new MyYoutubePlayer(
+                this,
+                mediaPlayerHolder,
+                R.string.YOUTUBE_PLAYER_preparing_player,
+                R.drawable.ic_player_play,
+                R.drawable.ic_player_pause,
+                R.drawable.ic_player_wait
+        );
 
-        MyYoutubePlayer.PlayerType playerType = currentCard.isAudioCard() ?
-                MyYoutubePlayer.PlayerType.AUDIO_PLAYER : MyYoutubePlayer.PlayerType.VIDEO_PLAYER;
-
-        youtubePlayer.show(mediaCode, playerType);
+        mediaPlayer.show(mediaCode, playerType);
     }
 
     private View constructCommentItem(Comment comment) throws Exception {

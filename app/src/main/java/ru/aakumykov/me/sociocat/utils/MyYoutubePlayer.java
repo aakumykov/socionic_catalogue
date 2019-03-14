@@ -9,9 +9,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -58,7 +55,7 @@ public class MyYoutubePlayer implements
     private SeekBar playerSeekBar;
     private TextView playerStatusBar;
 
-    private YouTubePlayerView videoPlayer;
+    private YouTubePlayerView youTubePlayerView;
     private YouTubePlayer player;
 
     private float videoDuration = 0f;
@@ -85,7 +82,7 @@ public class MyYoutubePlayer implements
         LayoutInflater layoutInflater = LayoutInflater.from(targetContainer.getContext());
         player_layout = (LinearLayout) layoutInflater.inflate(R.layout.my_youtube_player, null);
         playerMsg = player_layout.findViewById(R.id.playerMsg);
-        videoPlayer = player_layout.findViewById(R.id.videoPlayer);
+        youTubePlayerView = player_layout.findViewById(R.id.videoPlayer);
         audioPlayer = player_layout.findViewById(R.id.audioPlayer);
         playerControlButton = player_layout.findViewById(R.id.playerControlButton);
         playerSeekBar = player_layout.findViewById(R.id.playerSeekBar);
@@ -106,12 +103,12 @@ public class MyYoutubePlayer implements
 
             switch (playerType) {
                 case AUDIO_PLAYER:
-                    MyUtils.hide(videoPlayer);
+                    MyUtils.hide(youTubePlayerView);
                     MyUtils.show(audioPlayer);
                     break;
                 case VIDEO_PLAYER:
                     MyUtils.hide(audioPlayer);
-                    MyUtils.show(videoPlayer);
+                    MyUtils.show(youTubePlayerView);
                     break;
             }
         }
@@ -120,7 +117,7 @@ public class MyYoutubePlayer implements
     public void hide() {
         if (null != player)
             player.pause();
-        MyUtils.hide(videoPlayer);
+        MyUtils.hide(youTubePlayerView);
     }
 
     public void pause() {
@@ -134,19 +131,21 @@ public class MyYoutubePlayer implements
     }
 
     public void release() {
-        if (null != videoPlayer)
-            videoPlayer.release();
+        if (null != youTubePlayerView) {
+            MyUtils.hide(youTubePlayerView);
+            youTubePlayerView.release();
+        }
     }
 
     public void convert2video() {
         playerType = PlayerType.VIDEO_PLAYER;
-        MyUtils.show(videoPlayer);
+        MyUtils.show(youTubePlayerView);
         MyUtils.hide(audioPlayer);
     }
 
     public void convert2audio() {
         playerType = PlayerType.AUDIO_PLAYER;
-        MyUtils.hide(videoPlayer);
+        MyUtils.hide(youTubePlayerView);
         MyUtils.show(audioPlayer);
     }
 
@@ -189,7 +188,7 @@ public class MyYoutubePlayer implements
 
         showPlayerMsg(waitingMessageId, true);
 
-        videoPlayer.initialize(new YouTubePlayerListener() {
+        youTubePlayerView.initialize(new YouTubePlayerListener() {
             @Override
             public void onReady(@NotNull YouTubePlayer youTubePlayer) {
                 player = youTubePlayer;
