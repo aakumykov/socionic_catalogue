@@ -3,7 +3,6 @@ package ru.aakumykov.me.sociocat.utils;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +21,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.utils.TimeUtilities;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.util.Date;
-import java.util.TimeZone;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -53,7 +47,7 @@ public class MyYoutubePlayer implements
     private Context context;
     private ViewGroup targetContainer;
 
-    LinearLayout player_layout_xml;
+    LinearLayout player_layout;
     private TextView playerMsg;
     private ConstraintLayout audioPlayer;
     private ImageView playerControlButton;
@@ -85,16 +79,15 @@ public class MyYoutubePlayer implements
         this.waitIconId = waitIconId;
 
         LayoutInflater layoutInflater = LayoutInflater.from(targetContainer.getContext());
+        player_layout = (LinearLayout) layoutInflater.inflate(R.layout.my_youtube_player, null);
+        playerMsg = player_layout.findViewById(R.id.playerMsg);
+        videoPlayer = player_layout.findViewById(R.id.videoPlayer);
+        audioPlayer = player_layout.findViewById(R.id.audioPlayer);
+        playerControlButton = player_layout.findViewById(R.id.playerControlButton);
+        playerSeekBar = player_layout.findViewById(R.id.playerSeekBar);
+        playerStatusBar = player_layout.findViewById(R.id.playerStatusBar);
 
-        player_layout_xml = (LinearLayout) layoutInflater.inflate(R.layout.my_youtube_player, null);
-        playerMsg = player_layout_xml.findViewById(R.id.playerMsg);
-        videoPlayer = player_layout_xml.findViewById(R.id.videoPlayer);
-        audioPlayer = player_layout_xml.findViewById(R.id.audioPlayer);
-        playerControlButton = player_layout_xml.findViewById(R.id.playerControlButton);
-        playerSeekBar = player_layout_xml.findViewById(R.id.playerSeekBar);
-        playerStatusBar = player_layout_xml.findViewById(R.id.playerStatusBar);
-
-        targetContainer.addView(player_layout_xml);
+        targetContainer.addView(player_layout);
 
         preparePlayer();
     }
@@ -104,18 +97,19 @@ public class MyYoutubePlayer implements
         this.videoId = videoId;
         this.playerType = playerType;
 
-        if (null != player)
+        if (null != player) {
             player.cueVideo(videoId, 0.0f);
 
-        switch (playerType) {
-            case AUDIO_PLAYER:
-                MyUtils.hide(videoPlayer);
-                MyUtils.show(audioPlayer);
-                break;
-            case VIDEO_PLAYER:
-                MyUtils.hide(audioPlayer);
-                MyUtils.show(videoPlayer);
-                break;
+            switch (playerType) {
+                case AUDIO_PLAYER:
+                    MyUtils.hide(videoPlayer);
+                    MyUtils.show(audioPlayer);
+                    break;
+                case VIDEO_PLAYER:
+                    MyUtils.hide(audioPlayer);
+                    MyUtils.show(videoPlayer);
+                    break;
+            }
         }
     }
 
@@ -187,7 +181,9 @@ public class MyYoutubePlayer implements
 
     private void preparePlayer() {
 
-        setPlayerMsg(waitingMessageId, true);
+        MyUtils.show(targetContainer);
+
+        showPlayerMsg(waitingMessageId, true);
 
         videoPlayer.initialize(new YouTubePlayerListener() {
             @Override
@@ -198,12 +194,14 @@ public class MyYoutubePlayer implements
                     youTubePlayer.cueVideo(videoId, 0f);
 
                 hidePlayerMsg();
+
+                showExistingMedia();
             }
 
             @Override
             public void onStateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerState playerState) {
                 mediaPlayerState = playerState;
-                //setPlayerMsg(state);
+                //showPlayerMsg(state);
                 if (isAudioPlayer())
                     changePlayerControls(mediaPlayerState);
             }
@@ -220,7 +218,7 @@ public class MyYoutubePlayer implements
 
             @Override
             public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError playerError) {
-                setPlayerMsg(String.valueOf(playerError), false);
+                showPlayerMsg(String.valueOf(playerError), false);
             }
 
             @Override
@@ -252,8 +250,9 @@ public class MyYoutubePlayer implements
         playerControlButton.setOnClickListener(this);
     }
 
-    private void showExistingVideo() {
-        player.cueVideo(videoId, 0.0f);
+    private void showExistingMedia() {
+        //player.cueVideo(videoId, 0.0f);
+        show(videoId, playerType);
     }
 
     private void moveSeekBar(float currentPosition) {
@@ -262,7 +261,7 @@ public class MyYoutubePlayer implements
         playerStatusBar.setText(TimeUtilities.formatTime(currentPosition));
     }
 
-    private <T> void setPlayerMsg(T arg, boolean withAnimation) {
+    private <T> void showPlayerMsg(T arg, boolean withAnimation) {
 
         int duration = 1000;
 
@@ -292,7 +291,7 @@ public class MyYoutubePlayer implements
         }
 
         playerMsg.setText(msg);
-        //playerMsg.setVisibility(View.VISIBLE);
+        MyUtils.show(playerMsg);
     }
 
     private void hidePlayerMsg() {

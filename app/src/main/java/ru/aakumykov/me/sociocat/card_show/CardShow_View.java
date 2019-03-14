@@ -823,7 +823,7 @@ public class CardShow_View extends BaseView implements
             return;
         }
 
-        MyUtils.show(mediaPlayerHolder);
+        //MyUtils.show(mediaPlayerHolder);
 
         MyYoutubePlayer.PlayerType playerType = currentCard.isAudioCard() ?
                 MyYoutubePlayer.PlayerType.AUDIO_PLAYER : MyYoutubePlayer.PlayerType.VIDEO_PLAYER;
