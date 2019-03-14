@@ -221,7 +221,12 @@ public class CardEdit3_Presenter implements
         editor.putString("editMode", editMode.name());
         editor.putBoolean("isExternalDataMode", isExternalDataMode);
         editor.putString("imageType", imageType);
-        editor.putStringSet("oldCardTags", oldCardTags.keySet());
+
+        /* У объекта oldCardTags запускается метод, поэтому
+        нужно проверять его существование. */
+        if (null != oldCardTags)
+            editor.putStringSet("oldCardTags", oldCardTags.keySet());
+
         editor.putString("videoCode", currentCard.getVideoCode());
         editor.putString("audioCode", currentCard.getAudioCode());
 
