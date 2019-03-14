@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,6 +134,7 @@ public class MyYoutubePlayer implements
     public void release() {
         if (null != youTubePlayerView) {
             MyUtils.hide(youTubePlayerView);
+            MyUtils.hide(audioPlayer);
             youTubePlayerView.release();
         }
     }
@@ -251,6 +253,34 @@ public class MyYoutubePlayer implements
         });
 
         playerControlButton.setOnClickListener(this);
+
+        configureSeekBar();
+    }
+
+    private void configureSeekBar() {
+        playerSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    float newPosition = videoDuration * progress / 100;
+                    if (null != player) {
+                        player.seekTo(newPosition);
+                        player.play();
+//                        player.loadVideo(videoId, newPosition);
+                    }
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     private void showExistingMedia() {
