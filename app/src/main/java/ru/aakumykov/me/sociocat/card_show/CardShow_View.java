@@ -465,9 +465,9 @@ public class CardShow_View extends BaseView implements
         String pageTitle = getResources().getString(R.string.CARD_SHOW_page_title, card.getTitle());
         setPageTitle(pageTitle);
 
-        prepareMediaPlayer();
-
         displayCommonCardParts(card);
+        
+        prepareMediaPlayer();
 
         switch (card.getType()) {
             case Constants.IMAGE_CARD:
@@ -802,18 +802,20 @@ public class CardShow_View extends BaseView implements
     }
 
     private void prepareMediaPlayer() {
+        if (currentCard.isAudioCard() || currentCard.isVideoCard()) {
 
-        MyYoutubePlayer.PlayerType playerType = (currentCard.isVideoCard()) ?
-                MyYoutubePlayer.PlayerType.VIDEO_PLAYER : MyYoutubePlayer.PlayerType.AUDIO_PLAYER;
+            MyYoutubePlayer.PlayerType playerType = (currentCard.isVideoCard()) ?
+                    MyYoutubePlayer.PlayerType.VIDEO_PLAYER : MyYoutubePlayer.PlayerType.AUDIO_PLAYER;
 
-        youtubePlayer = new MyYoutubePlayer(
-                this,
-                mediaPlayerHolder,
-                R.string.YOUTUBE_PLAYER_preparing_player,
-                R.drawable.ic_player_play,
-                R.drawable.ic_player_pause,
-                R.drawable.ic_player_wait
-        );
+            youtubePlayer = new MyYoutubePlayer(
+                    this,
+                    mediaPlayerHolder,
+                    R.string.YOUTUBE_PLAYER_preparing_player,
+                    R.drawable.ic_player_play,
+                    R.drawable.ic_player_pause,
+                    R.drawable.ic_player_wait
+            );
+        }
     }
 
     private void displayYoutubeMedia(@Nullable String mediaCode) {
