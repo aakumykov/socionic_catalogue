@@ -46,4 +46,8 @@
 
     <!--Кнопки режима редактирования карточки-->
     <color name="card_edit_convert_button_background">#C5E1A5</color>
+
+    <!--MyYoutubePlayer-->
+    <color name="my_youtube_player_msg_animation_from">@color/colorPrimary</color>
+    <color name="my_youtube_player_msg_animation_to">@color/background_default</color>
 </resources>

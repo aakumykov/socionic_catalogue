@@ -1,5 +1,8 @@
 package ru.aakumykov.me.sociocat.utils;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
@@ -24,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import ru.aakumykov.me.sociocat.R;
 
 public class MyYoutubePlayer implements
@@ -263,23 +267,36 @@ public class MyYoutubePlayer implements
 
     private <T> void showPlayerMsg(T arg, boolean withAnimation) {
 
-        int duration = 1000;
+        if (withAnimation) {
+            int duration = 1000;
 
-        Animation fadeOut = new AlphaAnimation(1.0f, 0.5f);
-        fadeOut.setDuration(duration);
-        fadeOut.setRepeatCount(Animation.INFINITE);
+            ObjectAnimator backgroundAnimator = ObjectAnimator.ofObject(
+                    playerMsg,
+                    "backgroundColor",
+                    new ArgbEvaluator(),
+                    ContextCompat.getColor(context, R.color.my_youtube_player_msg_animation_from),
+                    ContextCompat.getColor(context, R.color.my_youtube_player_msg_animation_to)
+            );
 
-        Animation fadeIn = new AlphaAnimation(0.5f, 1.0f);
-        fadeIn.setDuration(duration);
-        fadeIn.setRepeatCount(Animation.INFINITE);
+            backgroundAnimator.setRepeatCount(ValueAnimator.INFINITE);
+            backgroundAnimator.setRepeatMode(ValueAnimator.REVERSE);
+            backgroundAnimator.setDuration(duration);
 
-        AnimationSet animationSet = new AnimationSet(true);
-        animationSet.addAnimation(fadeOut);
-        animationSet.addAnimation(fadeIn);
-        animationSet.setRepeatMode(Animation.RESTART);
+            ObjectAnimator textAnimator = ObjectAnimator.ofObject(
+                    playerMsg,
+                    "textColor",
+                    new ArgbEvaluator(),
+                    ContextCompat.getColor(context, R.color.my_youtube_player_msg_animation_to),
+                    ContextCompat.getColor(context, R.color.my_youtube_player_msg_animation_from)
+            );
 
-        if (withAnimation)
-            playerMsg.startAnimation(animationSet);
+            textAnimator.setRepeatCount(ValueAnimator.INFINITE);
+            textAnimator.setRepeatMode(ValueAnimator.REVERSE);
+            textAnimator.setDuration(duration);
+
+            backgroundAnimator.start();
+            textAnimator.start();
+        }
 
         String msg = "";
 
