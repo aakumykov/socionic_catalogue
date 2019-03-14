@@ -355,14 +355,23 @@ public class MyYoutubePlayer implements
 
     private void changePlayerControls(PlayerConstants.PlayerState state) {
         switch (state) {
+
+            case VIDEO_CUED:
+                showPlayButton();
+                break;
+
             case PLAYING:
                 showPauseButton();
                 break;
+
             case PAUSED:
                 showPlayButton();
+                break;
+
             case BUFFERING:
                 showWatingButton();
                 break;
+
             default:
                 break;
         }
