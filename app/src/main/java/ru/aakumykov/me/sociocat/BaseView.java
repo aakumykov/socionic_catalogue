@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import java.util.Date;
 
-import ru.aakumykov.me.sociocat.card_edit3.CardEdit3_View;
+import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_type_chooser.CardTypeChooser;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
@@ -475,7 +475,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         String className = getClass().getSimpleName();
 
-        if (!getClass().getSimpleName().equals("CardEdit3_View")) {
+        if (!getClass().getSimpleName().equals("CardEdit_View")) {
 
             if (sharedPreferences.contains(Constants.CARD)) {
 
@@ -497,7 +497,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
                     @Override
                     public void onYesInDialog() {
-                        Intent intent = new Intent(BaseView.this, CardEdit3_View.class);
+                        Intent intent = new Intent(BaseView.this, CardEdit_View.class);
                         intent.setAction(Constants.ACTION_EDIT_RESUME);
                         startActivity(intent);
                     }

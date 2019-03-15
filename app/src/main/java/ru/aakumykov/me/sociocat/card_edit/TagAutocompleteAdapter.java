@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_edit3;
+package ru.aakumykov.me.sociocat.card_edit;
 
 import android.content.Context;
 import androidx.annotation.NonNull;

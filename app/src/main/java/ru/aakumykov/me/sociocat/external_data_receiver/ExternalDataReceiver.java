@@ -8,7 +8,7 @@ import android.view.Menu;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_edit3.CardEdit3_View;
+import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
 
@@ -71,7 +71,7 @@ public class ExternalDataReceiver extends BaseView {
             throw new IllegalArgumentException("Intent is NULL");
 
         Intent intent2 = new Intent(intent1);
-        intent2.setClass(this, CardEdit3_View.class);
+        intent2.setClass(this, CardEdit_View.class);
         intent2.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivityForResult(intent2, Constants.CODE_CREATE_CARD);
     }

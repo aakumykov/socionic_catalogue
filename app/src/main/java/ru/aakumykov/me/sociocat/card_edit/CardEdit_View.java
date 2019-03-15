@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_edit3;
+package ru.aakumykov.me.sociocat.card_edit;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -47,8 +47,8 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.MyYoutubePlayer;
 
 //@RuntimePermissions
-public class CardEdit3_View extends BaseView implements
-        iCardEdit3.View,
+public class CardEdit_View extends BaseView implements
+        iCardEdit.View,
         TagView.OnTagClickListener
 {
     @BindView(R.id.scrollView) ScrollView scrollView;
@@ -80,9 +80,9 @@ public class CardEdit3_View extends BaseView implements
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
-    private final static String TAG = "CardEdit3_View";
+    private final static String TAG = "CardEdit_View";
     private MyYoutubePlayer youTubePlayer;
-    private iCardEdit3.Presenter presenter;
+    private iCardEdit.Presenter presenter;
     private List<String> tagsList = new ArrayList<>();
     private boolean firstRun = true;
     private boolean exitIsExpected = false;
@@ -92,13 +92,13 @@ public class CardEdit3_View extends BaseView implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.card_edit3_activity);
+        setContentView(R.layout.card_edit_activity);
         ButterKnife.bind(this);
 
         setPageTitle(R.string.CARD_EDIT_page_title);
         activateUpButton();
 
-        presenter = new CardEdit3_Presenter();
+        presenter = new CardEdit_Presenter();
 
 //        tagsList = new ArrayList<>();
 
@@ -117,7 +117,7 @@ public class CardEdit3_View extends BaseView implements
             firstRun = false;
             try {
                 presenter.processInputIntent(getIntent());
-                presenter.loadTagsList(new iCardEdit3.TagsListLoadCallbacks() {
+                presenter.loadTagsList(new iCardEdit.TagsListLoadCallbacks() {
                     @Override
                     public void onTagsListLoadSuccess(List<String> list) {
                         tagsList.addAll(list);

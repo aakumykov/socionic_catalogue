@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_edit3.CardEdit3_View;
+import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
@@ -114,7 +114,7 @@ public class Login_Presenter implements
 
     // Внутренние методы
     private void goCardCreation() {
-        Intent intent = new Intent(view.getAppContext(), CardEdit3_View.class);
+        Intent intent = new Intent(view.getAppContext(), CardEdit_View.class);
         intent.setAction(Constants.ACTION_CREATE);
         view.startMyActivity(intent);
     }

@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_edit3;
+package ru.aakumykov.me.sociocat.card_edit;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,7 +10,7 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public interface iCardEdit3 {
+public interface iCardEdit {
 
     interface TagsListLoadCallbacks {
         void onTagsListLoadSuccess(List<String> list);

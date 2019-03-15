@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_edit3;
+package ru.aakumykov.me.sociocat.card_edit;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,12 +35,12 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 import static ru.aakumykov.me.sociocat.Constants.VIDEO_CARD;
 
-public class CardEdit3_Presenter implements
-        iCardEdit3.Presenter,
+public class CardEdit_Presenter implements
+        iCardEdit.Presenter,
         iCardsSingleton.SaveCardCallbacks
 {
-    private static final String TAG = "CardEdit3_Presenter";
-    private iCardEdit3.View view;
+    private static final String TAG = "CardEdit_Presenter";
+    private iCardEdit.View view;
     private SharedPreferences sharedPreferences;
     private iAuthSingleton authService = AuthSingleton.getInstance();
     private iCardsSingleton cardsService = CardsSingleton.getInstance();
@@ -56,7 +56,7 @@ public class CardEdit3_Presenter implements
 
     // Системные методы (условно)
     @Override
-    public void linkView(iCardEdit3.View view) {
+    public void linkView(iCardEdit.View view) {
         this.view = view;
         sharedPreferences = view.getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT);
     }
@@ -102,7 +102,7 @@ public class CardEdit3_Presenter implements
     }
 
     @Override
-    public void loadTagsList(final iCardEdit3.TagsListLoadCallbacks callbacks) {
+    public void loadTagsList(final iCardEdit.TagsListLoadCallbacks callbacks) {
         tagsService.listTags(new iTagsSingleton.ListCallbacks() {
 
             @Override
