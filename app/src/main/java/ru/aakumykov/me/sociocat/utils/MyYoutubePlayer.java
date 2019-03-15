@@ -115,9 +115,13 @@ public class MyYoutubePlayer implements
         }
     }
 
-    public void hide() {
+    public void remove() {
+        videoId = null;
+
         if (null != player)
             player.pause();
+
+        hidePlayerMsg();
         MyUtils.hide(youTubePlayerView);
         MyUtils.hide(audioPlayer);
     }
@@ -196,12 +200,10 @@ public class MyYoutubePlayer implements
             public void onReady(@NotNull YouTubePlayer youTubePlayer) {
                 player = youTubePlayer;
 
-                if (null != videoId)
-                    youTubePlayer.cueVideo(videoId, 0f);
-
                 hidePlayerMsg();
 
-                showExistingMedia();
+                if (null != videoId)
+                    show(videoId, playerType);
             }
 
             @Override
@@ -282,11 +284,6 @@ public class MyYoutubePlayer implements
 
             }
         });
-    }
-
-    private void showExistingMedia() {
-        //player.cueVideo(videoId, 0.0f);
-        show(videoId, playerType);
     }
 
     private void moveSeekBar(float currentPosition) {

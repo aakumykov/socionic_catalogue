@@ -714,7 +714,7 @@ public class CardShow_View extends BaseView implements
         hideMsg();
         MyUtils.hide(noMediaMessage);
         if (null != mediaPlayer)
-            mediaPlayer.hide();
+            mediaPlayer.remove();
     }
 
     private void displayImageCard(Card card) {

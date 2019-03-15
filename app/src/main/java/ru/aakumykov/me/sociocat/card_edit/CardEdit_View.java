@@ -355,7 +355,7 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void removeMedia() {
-        youTubePlayer.hide();
+        youTubePlayer.remove();
 
         MyUtils.show(addMediaButton);
 
