@@ -2,7 +2,6 @@ package ru.aakumykov.me.sociocat.card_edit;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -203,10 +202,10 @@ public class CardEdit_View extends BaseView implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                cancelEdit();
+                onCancelClicked();
                 return true;
             case R.id.actionSave:
-                saveCard();
+                onSaveClicked();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -215,7 +214,7 @@ public class CardEdit_View extends BaseView implements
     @Override
     public void onBackPressed() {
 //        super.onBackPressed(); // Если не закомментировать, выходит, игнорируя диалог
-        cancelEdit();
+        onCancelClicked();
     }
 
     @Override
@@ -511,7 +510,7 @@ public class CardEdit_View extends BaseView implements
 
     // Методы событий интерсейса
     @OnClick(R.id.imagePlaceholder)
-    public void selectImage() {
+    public void onSelectImageClicked() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -529,12 +528,12 @@ public class CardEdit_View extends BaseView implements
     }
 
     @OnClick(R.id.discardImageButton)
-    void resetImageClicked() {
+    void onResetImageClicked() {
         removeImage();
     }
 
     @OnClick(R.id.addMediaButton)
-    void addMediaClicked() {
+    void onAddMediaClicked() {
 
         MyDialogs.stringInputDialog(
                 this,
@@ -568,27 +567,27 @@ public class CardEdit_View extends BaseView implements
     }
 
     @OnClick(R.id.removeMediaButton)
-    void removeMediaClicked() {
+    void onRemoveMediaClicked() {
         presenter.removeMedia();
     }
 
     @OnClick(R.id.convertToAudioButton)
-    void convertToAudioClicked() {
+    void onConvertToAudioClicked() {
         presenter.convert2audio();
     }
 
     @OnClick(R.id.convertToVideoButton)
-    void convertToVideoClicked() {
+    void onConvertToVideoClicked() {
         presenter.convert2video();
     }
 
     @OnClick(R.id.addTagButton)
-    void addTagClicked() {
+    void onAddTagClicked() {
         presenter.processTag(newTagInput.getText().toString());
     }
 
     @OnClick(R.id.saveButton)
-    void saveCard() {
+    void onSaveClicked() {
         final String tag = newTagInput.getText().toString();
 
         if (TextUtils.isEmpty(tag)) {
@@ -624,7 +623,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     @OnClick(R.id.cancelButton)
-    void cancelEdit() {
+    void onCancelClicked() {
         if (isFormFilled()) {
             MyDialogs.cancelEditDialog(
                     this,
