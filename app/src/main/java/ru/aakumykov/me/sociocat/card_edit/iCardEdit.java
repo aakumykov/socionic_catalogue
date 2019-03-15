@@ -41,6 +41,8 @@ public interface iCardEdit {
         void showImageError(int msgId);
         void showVideoError(int msgId);
         void showAudioError(int msgId);
+        void showMediaError();
+        void hideMediaError();
         void showDescriptionError(int msgId);
 
         void disableForm();

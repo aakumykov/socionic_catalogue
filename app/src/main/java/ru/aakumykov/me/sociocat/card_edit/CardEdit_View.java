@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.card_edit;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -68,6 +69,7 @@ public class CardEdit_View extends BaseView implements
 
     @BindView(R.id.mediaPlayerHolder) LinearLayout mediaPlayerHolder;
     @BindView(R.id.playerContainer) FrameLayout playerContainer;
+    @BindView(R.id.addMediaButtonContainer) FrameLayout addMediaButtonContainer;
     @BindView(R.id.addMediaButton) Button addMediaButton;
     @BindView(R.id.removeMediaButton) Button removeMediaButton;
     @BindView(R.id.convertToAudioButton) Button convertToAudioButton;
@@ -434,6 +436,14 @@ public class CardEdit_View extends BaseView implements
         showToast(msgId);
     }
 
+    @Override public void showMediaError() {
+        addMediaButtonContainer.setBackgroundResource(R.drawable.shape_red_border);
+    }
+
+    @Override public void hideMediaError() {
+        addMediaButtonContainer.setBackground(null);
+    }
+
     @Override
     public void showDescriptionError(int msgId) {
         descriptionInput.setError(getResources().getString(msgId));
@@ -546,6 +556,7 @@ public class CardEdit_View extends BaseView implements
                     @Override
                     public void onSuccess(String inputtedString) {
                         try {
+                            hideMediaError();
                             MyUtils.hide(addMediaButton);
                             presenter.processYoutubeLink(inputtedString);
                         } catch (Exception e) {

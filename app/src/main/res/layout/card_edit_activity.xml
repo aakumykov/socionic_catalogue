@@ -128,14 +128,20 @@
 
             </FrameLayout>
 
-            <Button
-                android:id="@+id/addMediaButton"
+            <FrameLayout
+                android:id="@+id/addMediaButtonContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:text="@string/CARD_EDIT_add_youtube_link"
-                android:visibility="gone" />
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/addMediaButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:text="@string/CARD_EDIT_add_youtube_link"
+                    android:visibility="gone" />
+            </FrameLayout>
 
             <Button
                 android:id="@+id/convertToAudioButton"
@@ -235,26 +241,6 @@
             android:layout_marginBottom="30dp"
             android:text="@string/cancel"
             android:textSize="14sp" />
-
-        <LinearLayout
-            android:id="@+id/hiddenFields"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/imageURL_hiddenField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/videoCode_hiddenField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center" />
-        </LinearLayout>
 
     </LinearLayout>
 
