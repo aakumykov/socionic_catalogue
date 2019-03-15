@@ -119,6 +119,7 @@ public class MyYoutubePlayer implements
         if (null != player)
             player.pause();
         MyUtils.hide(youTubePlayerView);
+        MyUtils.hide(audioPlayer);
     }
 
     public void pause() {
