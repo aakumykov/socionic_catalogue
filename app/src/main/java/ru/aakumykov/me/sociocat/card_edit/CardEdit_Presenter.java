@@ -294,7 +294,7 @@ public class CardEdit_Presenter implements
 
         processBeforeSave();
 
-        if (alreadyValidated) {
+        if (!alreadyValidated) {
             if (!formIsValid()) return;
         }
 
