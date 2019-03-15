@@ -312,12 +312,13 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void displayVideo(final String youtubeCode) {
-        prepareForVideoCard();
 
         if (TextUtils.isEmpty(youtubeCode)) {
             MyUtils.show(addMediaButton);
             return;
         }
+
+        prepareForVideoCard();
 
         youTubePlayer.show(youtubeCode, MyYoutubePlayer.PlayerType.VIDEO_PLAYER);
         MyUtils.show(convertToAudioButton);
@@ -326,12 +327,13 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void displayAudio(final String youtubeCode) {
-        prepareForAudioCard();
 
         if (null == youtubeCode) {
             MyUtils.show(addMediaButton);
             return;
         }
+
+        prepareForAudioCard();
 
         youTubePlayer.show(youtubeCode, MyYoutubePlayer.PlayerType.AUDIO_PLAYER);
         MyUtils.show(convertToVideoButton);
