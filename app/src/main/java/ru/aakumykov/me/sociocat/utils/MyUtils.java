@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.utils;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.aakumykov.me.sociocat.Config;
+
+import static android.content.Context.CLIPBOARD_SERVICE;
 
 public final class MyUtils {
 
@@ -208,5 +211,16 @@ public final class MyUtils {
 
     public static <T> String object2string(Context context, T arg) {
         return (arg instanceof Integer) ? context.getResources().getString((Integer)arg) : String.valueOf(arg);
+    }
+
+    public static String getClipboardText(Context context) {
+        ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+        ClipData clipData = clipboardManager.getPrimaryClip();
+        if (null != clipData && clipData.getItemCount() > 0) {
+            ClipData.Item item = clipData.getItemAt(0);
+            return item.getText().toString();
+        } else {
+            return null;
+        }
     }
 }
