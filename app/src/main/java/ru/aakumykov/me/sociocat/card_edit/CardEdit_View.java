@@ -1,5 +1,8 @@
 package ru.aakumykov.me.sociocat.card_edit;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -39,6 +42,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
+import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
@@ -541,6 +545,14 @@ public class CardEdit_View extends BaseView implements
                 null,
                 R.string.CARD_EDIT_paste_youtube_link,
                 new iMyDialogs.StringInputCallback() {
+
+                    @Override public String onPrepareText() {
+                        String clipbText = MyUtils.getClipboardText(CardEdit_View.this);
+                        if (MVPUtils.isYoutubeLink(clipbText))
+                            return clipbText;
+                        else
+                            return null;
+                    }
 
                     @Override
                     public String onYesClicked(String inputtedString) {

@@ -30,6 +30,7 @@ public interface iMyDialogs {
     }
 
     interface StringInputCallback {
+        String onPrepareText();
         String onYesClicked(String text);
         void onSuccess(String inputtedString);
     }

@@ -994,6 +994,9 @@ public class CardShow_View extends BaseView implements
                 this,
                 currentComment.getText(),
                 new iMyDialogs.StringInputCallback() {
+                    @Override public String onPrepareText() {
+                        return null;
+                    }
                     @Override
                     public String onYesClicked(String text) {
                         currentComment.setText(text);

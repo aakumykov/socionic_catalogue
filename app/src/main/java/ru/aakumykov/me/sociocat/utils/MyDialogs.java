@@ -188,6 +188,9 @@ public class MyDialogs {
             @Override
             public void onShow(final DialogInterface dialog) {
 
+                String clipboardString = callback.onPrepareText();
+                editText.setText(clipboardString);
+
                 Button yesButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
 
                 yesButton.setOnClickListener(new View.OnClickListener() {
