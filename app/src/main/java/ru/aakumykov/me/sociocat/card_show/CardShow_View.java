@@ -180,8 +180,6 @@ public class CardShow_View extends BaseView implements
         if (firstRun) {
             loadCard();
             firstRun = false; // эта строка должна быть ниже loadCard(), так как там тоже проверяется firstRun
-        } else {
-            displayMedia();
         }
     }
 
@@ -202,10 +200,6 @@ public class CardShow_View extends BaseView implements
     @Override
     protected void onStop() {
         super.onStop();
-
-        if (null != mediaPlayer)
-            mediaPlayer.release();
-
         presenter.unlinkView();
     }
 

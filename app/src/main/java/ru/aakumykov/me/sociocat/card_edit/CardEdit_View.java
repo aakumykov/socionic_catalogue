@@ -172,11 +172,13 @@ public class CardEdit_View extends BaseView implements
     @Override
     protected void onStop() {
         super.onStop();
+        presenter.unlinkView();
+    }
 
+    @Override protected void onDestroy() {
+        super.onDestroy();
         if (null != youTubePlayer)
             youTubePlayer.release();
-
-        presenter.unlinkView();
     }
 
     @Override
