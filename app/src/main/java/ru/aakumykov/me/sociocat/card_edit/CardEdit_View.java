@@ -91,7 +91,7 @@ public class CardEdit_View extends BaseView implements
     private List<String> tagsList = new ArrayList<>();
     private boolean firstRun = true;
     private boolean exitIsExpected = false;
-
+    private boolean selectImageMode = false;
 
     // Системные методы
     @Override
@@ -145,7 +145,7 @@ public class CardEdit_View extends BaseView implements
     @Override
     protected void onPause() {
         super.onPause();
-        if (!exitIsExpected) {
+        if (!exitIsExpected && !selectImageMode) {
             if (isFormFilled()) {
                 try {
                     if (null != youTubePlayer)
@@ -163,14 +163,15 @@ public class CardEdit_View extends BaseView implements
     @Override
     protected void onResume() {
         super.onResume();
-        try {
-            if (null != youTubePlayer)
-                youTubePlayer.play();
-            presenter.restoreEditState();
 
-        } catch (Exception e) {
-            showErrorMsg(e.getMessage());
-            e.printStackTrace();
+        if (!selectImageMode) {
+            try {
+                presenter.restoreEditState();
+
+            } catch (Exception e) {
+                showErrorMsg(e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 
@@ -226,15 +227,22 @@ public class CardEdit_View extends BaseView implements
         presenter.linkView(this); // обязательно!!!
 
         switch (requestCode) {
+
             case Constants.CODE_SELECT_IMAGE:
+
+                selectImageMode = false;
+
                 try {
                     if (RESULT_OK == resultCode)
                         presenter.processIncomingImage(data);
+
                 } catch (Exception e) {
                     showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
                     e.printStackTrace();
                 }
+
                 break;
+
             default:
                 super.onActivityResult(requestCode, resultCode, data);
         }
@@ -518,6 +526,8 @@ public class CardEdit_View extends BaseView implements
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        selectImageMode = true;
 
         if (null != intent.resolveActivity(getPackageManager())) {
             startActivityForResult(
