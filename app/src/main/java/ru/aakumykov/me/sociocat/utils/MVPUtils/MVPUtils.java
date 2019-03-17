@@ -34,7 +34,7 @@ public class MVPUtils {
     private final static String TAG = "MVPUtils";
     private static Map<String,String> youtubePatterns = new HashMap<>();
     private static Map<String,String> imagePatterns = new HashMap<>();
-    private static List<String> correctCardTypes = new ArrayList<>();
+    private static List<Integer> correctCardTypes = new ArrayList<>();
     private static final List<String> upperCaseTags = new ArrayList<>();
 
     private static final Map<String,Integer> aspectsMap = new HashMap<>();

@@ -31,10 +31,10 @@ public final class Constants {
     public final static String USER_ID = "USER_ID";
     public final static String USER_EMAIL = "USER_EMAIL";
 
-    public final static String TEXT_CARD = "TEXT_CARD";
-    public final static String IMAGE_CARD = "IMAGE_CARD";
-    public final static String AUDIO_CARD = "AUDIO_CARD";
-    public final static String VIDEO_CARD = "VIDEO_CARD";
+    public final static int TEXT_CARD = 1;
+    public final static int IMAGE_CARD = 2;
+    public final static int AUDIO_CARD = 3;
+    public final static int VIDEO_CARD = 4;
 
     public final static String TYPE_TEXT = "TYPE_TEXT";
     public final static String TYPE_IMAGE_DATA = "TYPE_IMAGE_DATA";
