@@ -22,7 +22,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.Enums;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -158,7 +157,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
         };
     }
 
-
+    // Какой-то класс
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.cardView) CardView cardView;
         @BindView(R.id.titleView) TextView titleView;
@@ -172,7 +171,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
             ButterKnife.bind(this, view);
         }
     }
-
 
     // Другие методы
     void bindView(iAdapterConsumer consumer) {

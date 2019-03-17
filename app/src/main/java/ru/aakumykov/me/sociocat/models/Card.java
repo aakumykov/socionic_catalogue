@@ -21,7 +21,7 @@ public class Card implements Parcelable {
     private String key;
     private String userId;
     private String userName;
-    private int type;
+    private String type;
     private String title;
     private String quote;
     private String quoteSource;
@@ -82,7 +82,7 @@ public class Card implements Parcelable {
         dest.writeString(this.key);
         dest.writeString(this.userId);
         dest.writeString(this.userName);
-        dest.writeInt(this.type);
+        dest.writeString(this.type);
         dest.writeString(this.title);
         dest.writeString(this.quote);
         dest.writeString(this.quoteSource);
@@ -106,7 +106,7 @@ public class Card implements Parcelable {
         key = in.readString();
         userId = in.readString();
         userName = in.readString();
-        type = in.readInt();
+        type = in.readString();
         title = in.readString();
         quote = in.readString();
         quoteSource = in.readString();
@@ -152,8 +152,8 @@ public class Card implements Parcelable {
     public String getKey() {
         return key;
     }
-    public int getType() {
-        return type;
+    public String getType() {
+        return type + "";
     }
     public String getTitle() {
         return title;
@@ -207,8 +207,8 @@ public class Card implements Parcelable {
     public void setKey(String key) {
         this.key = key;
     }
-    public void setType(int type) throws IllegalArgumentException {
-        Integer[] availableCardTypes = {
+    public void setType(String type) throws IllegalArgumentException {
+        String[] availableCardTypes = {
                 Constants.TEXT_CARD,
                 Constants.IMAGE_CARD,
                 Constants.VIDEO_CARD,
@@ -349,16 +349,18 @@ public class Card implements Parcelable {
     }
 
     @Exclude public boolean isTextCard() {
-        return Constants.TEXT_CARD == getType();
+        // TODO: метод вызывает исключение, если данные повреждены
+//        return getType().equals(Constants.TEXT_CARD);
+        return Constants.TEXT_CARD.equals(getType()); // Устойчивый к отсутствию данных вариант.
     }
     @Exclude public boolean isImageCard() {
-        return Constants.IMAGE_CARD == getType();
+        return Constants.IMAGE_CARD.equals(getType());
     }
     @Exclude public boolean isVideoCard() {
-        return Constants.VIDEO_CARD == getType();
+        return Constants.VIDEO_CARD.equals(getType());
     }
     @Exclude public boolean isAudioCard() {
-        return Constants.AUDIO_CARD == getType();
+        return Constants.AUDIO_CARD.equals(getType());
     }
 
     @Exclude public boolean hasImageURL() {
