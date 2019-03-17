@@ -17,6 +17,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,6 +43,14 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
     private List<Card> originalCardsList;
     private List<Card> cardsListFiltered;
 
+    private static HashMap<String, Integer> cardTypes = new HashMap<>();
+    static {
+        cardTypes.put(Constants.TEXT_CARD, 10);
+        cardTypes.put(Constants.IMAGE_CARD, 20);
+        cardTypes.put(Constants.AUDIO_CARD, 30);
+        cardTypes.put(Constants.VIDEO_CARD, 40);
+    }
+
     CardsGrid_Adapter(Context context, List<Card> cardsList) {
         this.cardsList = cardsList;
         this.originalCardsList=  cardsList;
@@ -62,7 +71,25 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull final CardsGrid_Adapter.ViewHolder viewHolder, final int position) {
+
         Card card = cardsList.get(position);
+
+        switch (viewHolder.getItemViewType()) {
+            case 10:
+                initTextCard((CommonViewHolder) viewHolder, card);
+                break;
+            case 20:
+                initImageCard((ImageViewHolder) viewHolder, card);
+                break;
+            case 30:
+                initAudioCard((AudioViewHolder) viewHolder, card);
+                break;
+            case 40:
+                initVideoCard((VideoViewHolder) viewHolder, card);
+                break;
+            default:
+                break;
+        }
 
         // Слушатель нажатий
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -115,9 +142,38 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
         }
     }
 
+    private void initTextCard(TextViewHolder textViewHolder, Card card) {
+        textViewHolder.titleView.setText(card.getTitle());
+    }
+
+    private void initImageCard(ImageViewHolder imageViewHolder, Card card) {
+
+    }
+
+    private void initAudioCard(AudioViewHolder audioViewHolder, Card card) {
+
+    }
+
+    private void initVideoCard(VideoViewHolder videoViewHolder, Card card) {
+
+    }
+
+
     @Override
     public int getItemCount() {
         return cardsList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        Card card = cardsList.get(position);
+        String cardTypeString = card.getType();
+
+        if (cardTypes.containsKey(cardTypeString)) {
+            return cardTypes.get(cardTypeString);
+        } else {
+            return -1;
+        }
     }
 
     @Override
@@ -157,20 +213,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
         };
     }
 
-    // Какой-то класс
-    class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.cardView) CardView cardView;
-        @BindView(R.id.titleView) TextView titleView;
-        @BindView(R.id.quoteView) TextView quoteView;
-        @BindView(R.id.imageThrobber) ProgressBar imageThrobber;
-        @BindView(R.id.imageView) ImageView imageView;
-        @BindView(R.id.imageErrorView) ImageView imageErrorView;
-
-        ViewHolder(View view){
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-    }
 
     // Другие методы
     void bindView(iAdapterConsumer consumer) {
@@ -192,5 +234,59 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<CardsGrid_Adapter.Vi
     public void restoreInitialList() {
         this.cardsList = this.originalCardsList;
         notifyDataSetChanged();
+    }
+
+
+    // Внутренние классы
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.cardView) CardView cardView;
+        @BindView(R.id.titleView) TextView titleView;
+        @BindView(R.id.quoteView) TextView quoteView;
+        @BindView(R.id.imageThrobber) ProgressBar imageThrobber;
+        @BindView(R.id.imageView) ImageView imageView;
+        @BindView(R.id.imageErrorView) ImageView imageErrorView;
+
+        ViewHolder(View view){
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    static class TextViewHolder extends RecyclerView.ViewHolder {
+        public TextViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
+
+    static class ImageViewHolder extends RecyclerView.ViewHolder {
+        ProgressBar imageThrobber;
+        ImageView imageView;
+        ImageView imageErrorView;
+        public ImageViewHolder(@NonNull View itemView) {
+            super(itemView);
+            imageThrobber = itemView.findViewById(R.id.imageThrobber);
+            imageView = itemView.findViewById(R.id.imageView);
+            imageErrorView = itemView.findViewById(R.id.imageErrorView);
+        }
+    }
+
+    static class AudioViewHolder extends RecyclerView.ViewHolder {
+        public AudioViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
+
+    static class VideoViewHolder extends RecyclerView.ViewHolder {
+        public VideoViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
+
+    static class CommonViewHolder extends RecyclerView.ViewHolder {
+        TextView titleView;
+        public CommonViewHolder(@NonNull View itemView) {
+            super(itemView);
+            titleView = itemView.findViewById(R.id.titleView);
+        }
     }
 }
