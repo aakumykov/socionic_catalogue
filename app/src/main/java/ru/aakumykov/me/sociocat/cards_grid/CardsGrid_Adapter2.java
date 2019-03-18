@@ -122,15 +122,15 @@ public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             case VIEW_TYPE_IMAGE_CARD:
                 view = layoutInflater.inflate(R.layout.cards_grid_item_image, parent, false);
-                return new ViewHolderText(view);
+                return new ViewHolderImage(view);
 
             case VIEW_TYPE_AUDIO_CARD:
                 view = layoutInflater.inflate(R.layout.cards_grid_item_audio, parent, false);
-                return new ViewHolderText(view);
+                return new ViewHolderAudio(view);
 
             case VIEW_TYPE_VIDEO_CARD:
                 view = layoutInflater.inflate(R.layout.cards_grid_item_video, parent, false);
-                return new ViewHolderText(view);
+                return new ViewHolderVideo(view);
 
             default:
                 throw new RuntimeException("Unknown view type: "+viewType);
@@ -187,6 +187,7 @@ public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
         Picasso.get().load(card.getImageURL()).into(viewHolder.imageView, new Callback() {
             @Override public void onSuccess() {
                 MyUtils.hide(viewHolder.imageThrobber);
+                MyUtils.show(viewHolder.imageView);
             }
 
             @Override public void onError(Exception e) {
