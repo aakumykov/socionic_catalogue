@@ -3,6 +3,8 @@ package ru.aakumykov.me.sociocat.cards_grid;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,7 +22,13 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements Filterable
+{
+    public interface iAdapterConsumer {
+        void onDataFiltered(List<Card> filteredCardsList);
+        void onItemClick(int position);
+    }
 
     private static final int VIEW_TYPE_TEXT_CARD = 10;
     private static final int VIEW_TYPE_IMAGE_CARD = 20;
@@ -28,17 +36,25 @@ public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int VIEW_TYPE_VIDEO_CARD = 40;
 
     private List<Card> cardsList;
+    private List<Card> originalCardsList;
+    private List<Card> cardsListFiltered;
+    private CardsGrid_Adapter2.iAdapterConsumer adapterConsumer;
 
 
+    // Конструктор
     CardsGrid_Adapter2(List<Card> cardsList) {
         this.cardsList = cardsList;
     }
 
-    @Override public int getItemCount() {
+
+    // Системные методы
+    @Override
+    public int getItemCount() {
         return null == cardsList ? 0 : cardsList.size();
     }
 
-    @Override public int getItemViewType(int position) {
+    @Override
+    public int getItemViewType(int position) {
 
         // TODO: по идее, это неустойчиво к отсутствию карточки
         Card card = cardsList.get(position);
@@ -57,7 +73,45 @@ public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    @NonNull @Override public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charString = constraint.toString();
+                if (charString.isEmpty()) {
+                    cardsListFiltered = originalCardsList;
+                } else {
+                    List<Card> filteredList = new ArrayList<>();
+                    for (Card row : originalCardsList) {
+
+                        if (row.getTitle().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+                    cardsListFiltered = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = cardsListFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                cardsList = (ArrayList<Card>) results.values;
+
+                if (null != adapterConsumer) { // Иначе падает при входе со страницы плиток
+                    adapterConsumer.onDataFiltered(cardsList);
+                }
+
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+    @NonNull @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view;
 
@@ -83,7 +137,8 @@ public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    @Override public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int listPosition) {
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int listPosition) {
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_TEXT_CARD:
                 initTextLayout((ViewHolderText)holder, listPosition);
@@ -102,6 +157,22 @@ public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
 
+    // Публичные методы
+    public void bindView(CardsGrid_Adapter2.iAdapterConsumer consumer) {
+        this.adapterConsumer = consumer;
+    }
+
+    public void unbindView() {
+        this.adapterConsumer = null;
+    }
+
+    public void restoreInitialList() {
+        this.cardsList = this.originalCardsList;
+        notifyDataSetChanged();
+    }
+
+
+    // Внутренние методы
     private void initTextLayout(ViewHolderText viewHolder, int listPosition) {
         Card card = cardsList.get(listPosition);
         viewHolder.titleView.setText(card.getTitle());
@@ -135,6 +206,7 @@ public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
 
+    // Внутренние классы
     static class ViewHolderText extends RecyclerView.ViewHolder {
         TextView titleView;
         public ViewHolderText(@NonNull View itemView) {

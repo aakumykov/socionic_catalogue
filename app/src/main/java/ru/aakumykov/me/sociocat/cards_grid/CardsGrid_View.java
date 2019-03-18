@@ -39,7 +39,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsGrid_View extends BaseView implements
         iCardsGrid.View,
-        CardsGrid_Adapter.iAdapterConsumer,
+        CardsGrid_Adapter2.iAdapterConsumer,
         SwipeRefreshLayout.OnRefreshListener,
         SearchView.OnQueryTextListener,
         SearchView.OnCloseListener,
@@ -55,7 +55,7 @@ public class CardsGrid_View extends BaseView implements
 //    public static final String TAG = "CardsGrid_View";
     private iCardsGrid.Presenter presenter;
     private List<Card> cardsList = new ArrayList<>();
-    private CardsGrid_Adapter dataAdapter;
+    private CardsGrid_Adapter2 dataAdapter;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
 
@@ -80,7 +80,8 @@ public class CardsGrid_View extends BaseView implements
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         linearLayoutManager = new LinearLayoutManager(this);
 
-        dataAdapter = new CardsGrid_Adapter(this, cardsList);
+//        dataAdapter = new CardsGrid_Adapter(this, cardsList); // Передавать контекст-то опасно!
+        dataAdapter = new CardsGrid_Adapter2(cardsList);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.setAdapter(dataAdapter);
     }
