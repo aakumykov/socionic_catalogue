@@ -384,8 +384,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     public void goCreateCard() {
         Intent intent = new Intent(this, CardTypeChooser.class);
-//        intent.setAction(Constants.ACTION_CREATE);
-//        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
     }
 
