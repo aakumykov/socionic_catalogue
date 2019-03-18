@@ -102,23 +102,23 @@ public class MVPUtils {
             String text = intent.getStringExtra(Intent.EXTRA_TEXT);
 
             if (isLinkToImage(text)) {
-                return Constants.TYPE_IMAGE_LINK;
+                return Constants.MIME_TYPE_IMAGE_LINK;
             }
             else if (MVPUtils.isYoutubeLink(text)) {
-                return Constants.TYPE_YOUTUBE_VIDEO;
+                return Constants.MIME_TYPE_YOUTUBE_VIDEO;
             }
             else {
-                return Constants.TYPE_TEXT;
+                return Constants.MIME_TYPE_TEXT;
             }
         }
         else if (type.startsWith("image/") && isLinkToImage(extraText)) {
-            return Constants.TYPE_IMAGE_LINK;
+            return Constants.MIME_TYPE_IMAGE_LINK;
         }
         else if (type.startsWith("image/")) {
-            return Constants.TYPE_IMAGE_DATA;
+            return Constants.MIME_TYPE_IMAGE_DATA;
         }
         else {
-            return Constants.TYPE_UNKNOWN;
+            return Constants.MIME_TYPE_UNKNOWN;
         }
     }
 

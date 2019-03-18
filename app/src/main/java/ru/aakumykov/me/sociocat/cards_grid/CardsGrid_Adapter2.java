@@ -1,0 +1,175 @@
+package ru.aakumykov.me.sociocat.cards_grid;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
+
+public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final int VIEW_TYPE_TEXT_CARD = 10;
+    private static final int VIEW_TYPE_IMAGE_CARD = 20;
+    private static final int VIEW_TYPE_AUDIO_CARD = 30;
+    private static final int VIEW_TYPE_VIDEO_CARD = 40;
+
+    private List<Card> cardsList;
+
+
+    CardsGrid_Adapter2(List<Card> cardsList) {
+        this.cardsList = cardsList;
+    }
+
+    @Override public int getItemCount() {
+        return null == cardsList ? 0 : cardsList.size();
+    }
+
+    @Override public int getItemViewType(int position) {
+
+        // TODO: по идее, это неустойчиво к отсутствию карточки
+        Card card = cardsList.get(position);
+
+        switch (card.getType()) {
+            case Constants.TEXT_CARD:
+                return VIEW_TYPE_TEXT_CARD;
+            case Constants.IMAGE_CARD:
+                return VIEW_TYPE_IMAGE_CARD;
+            case Constants.AUDIO_CARD:
+                return VIEW_TYPE_AUDIO_CARD;
+            case Constants.VIDEO_CARD:
+                return VIEW_TYPE_VIDEO_CARD;
+            default:
+                return -1;
+        }
+    }
+
+    @NonNull @Override public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view;
+
+        switch (viewType) {
+            case VIEW_TYPE_TEXT_CARD:
+                view = layoutInflater.inflate(R.layout.cards_grid_item_text, parent, false);
+                return new ViewHolderText(view);
+
+            case VIEW_TYPE_IMAGE_CARD:
+                view = layoutInflater.inflate(R.layout.cards_grid_item_image, parent, false);
+                return new ViewHolderText(view);
+
+            case VIEW_TYPE_AUDIO_CARD:
+                view = layoutInflater.inflate(R.layout.cards_grid_item_audio, parent, false);
+                return new ViewHolderText(view);
+
+            case VIEW_TYPE_VIDEO_CARD:
+                view = layoutInflater.inflate(R.layout.cards_grid_item_video, parent, false);
+                return new ViewHolderText(view);
+
+            default:
+                throw new RuntimeException("Unknown view type: "+viewType);
+        }
+    }
+
+    @Override public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int listPosition) {
+        switch (holder.getItemViewType()) {
+            case VIEW_TYPE_TEXT_CARD:
+                initTextLayout((ViewHolderText)holder, listPosition);
+                break;
+            case VIEW_TYPE_IMAGE_CARD:
+                initImageLayout((ViewHolderImage)holder, listPosition);
+                break;
+            case VIEW_TYPE_AUDIO_CARD:
+                initAudioLayout((ViewHolderAudio)holder, listPosition);
+                break;
+            case VIEW_TYPE_VIDEO_CARD:
+                initVideoLayout((ViewHolderVideo)holder, listPosition);
+            default:
+                break;
+        }
+    }
+
+
+    private void initTextLayout(ViewHolderText viewHolder, int listPosition) {
+        Card card = cardsList.get(listPosition);
+        viewHolder.titleView.setText(card.getTitle());
+    }
+
+    private void initImageLayout(ViewHolderImage viewHolder, int listPosition) {
+        Card card = cardsList.get(listPosition);
+        viewHolder.titleView.setText(card.getTitle());
+
+        MyUtils.show(viewHolder.imageThrobber);
+
+        Picasso.get().load(card.getImageURL()).into(viewHolder.imageView, new Callback() {
+            @Override public void onSuccess() {
+                MyUtils.hide(viewHolder.imageThrobber);
+            }
+
+            @Override public void onError(Exception e) {
+                MyUtils.show(viewHolder.imageErrorView);
+            }
+        });
+    }
+
+    private void initAudioLayout(ViewHolderAudio viewHolder, int listPosition) {
+        Card card = cardsList.get(listPosition);
+        viewHolder.titleView.setText(card.getTitle());
+    }
+
+    private void initVideoLayout(ViewHolderVideo viewHolder, int listPosition) {
+        Card card = cardsList.get(listPosition);
+        viewHolder.titleView.setText(card.getTitle());
+    }
+
+
+    static class ViewHolderText extends RecyclerView.ViewHolder {
+        TextView titleView;
+        public ViewHolderText(@NonNull View itemView) {
+            super(itemView);
+            titleView = itemView.findViewById(R.id.titleView);
+        }
+    }
+
+    static class ViewHolderImage extends RecyclerView.ViewHolder {
+        TextView titleView;
+        ProgressBar imageThrobber;
+        ImageView imageView;
+        ImageView imageErrorView;
+        public ViewHolderImage(@NonNull View itemView) {
+            super(itemView);
+            titleView = itemView.findViewById(R.id.titleView);
+            imageThrobber = itemView.findViewById(R.id.imageThrobber);
+            imageView = itemView.findViewById(R.id.imageView);
+            imageErrorView = itemView.findViewById(R.id.imageErrorView);
+        }
+    }
+
+    static class ViewHolderAudio extends RecyclerView.ViewHolder {
+        TextView titleView;
+        public ViewHolderAudio(@NonNull View itemView) {
+            super(itemView);
+            titleView = itemView.findViewById(R.id.titleView);
+        }
+    }
+
+    static class ViewHolderVideo extends RecyclerView.ViewHolder {
+        TextView titleView;
+        public ViewHolderVideo(@NonNull View itemView) {
+            super(itemView);
+            titleView = itemView.findViewById(R.id.titleView);
+        }
+    }
+}
