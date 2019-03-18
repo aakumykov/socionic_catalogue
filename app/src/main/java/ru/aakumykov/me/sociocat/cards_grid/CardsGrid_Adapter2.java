@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -25,9 +26,9 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements Filterable
 {
-    public interface iAdapterConsumer {
-        void onDataFiltered(List<Card> filteredCardsList);
+    public interface iAdapterUser {
         void onItemClick(int position);
+        void onDataFiltered(List<Card> filteredCardsList);
     }
 
     private static final int VIEW_TYPE_TEXT_CARD = 10;
@@ -38,7 +39,7 @@ public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<Card> cardsList;
     private List<Card> originalCardsList;
     private List<Card> cardsListFiltered;
-    private CardsGrid_Adapter2.iAdapterConsumer adapterConsumer;
+    private iAdapterUser adapterUser;
 
 
     // Конструктор
@@ -101,8 +102,8 @@ public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 cardsList = (ArrayList<Card>) results.values;
 
-                if (null != adapterConsumer) { // Иначе падает при входе со страницы плиток
-                    adapterConsumer.onDataFiltered(cardsList);
+                if (null != adapterUser) { // Иначе падает при входе со страницы плиток
+                    adapterUser.onDataFiltered(cardsList);
                 }
 
                 notifyDataSetChanged();
@@ -139,6 +140,13 @@ public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int listPosition) {
+
+        ((ViewHolderCommon) holder).cardView.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                adapterUser.onItemClick(listPosition);
+            }
+        });
+
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_TEXT_CARD:
                 initTextLayout((ViewHolderText)holder, listPosition);
@@ -158,12 +166,12 @@ public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
     // Публичные методы
-    public void bindView(CardsGrid_Adapter2.iAdapterConsumer consumer) {
-        this.adapterConsumer = consumer;
+    public void bindView(iAdapterUser consumer) {
+        this.adapterUser = consumer;
     }
 
     public void unbindView() {
-        this.adapterConsumer = null;
+        this.adapterUser = null;
     }
 
     public void restoreInitialList() {
@@ -241,10 +249,13 @@ public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     static class ViewHolderCommon extends RecyclerView.ViewHolder {
+        CardView cardView;
         TextView titleView;
         public ViewHolderCommon(@NonNull View itemView) {
             super(itemView);
+            cardView = itemView.findViewById(R.id.cardView);
             titleView = itemView.findViewById(R.id.titleView);
         }
     }
+
 }

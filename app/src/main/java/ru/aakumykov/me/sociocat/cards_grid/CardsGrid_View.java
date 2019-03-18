@@ -39,7 +39,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsGrid_View extends BaseView implements
         iCardsGrid.View,
-        CardsGrid_Adapter2.iAdapterConsumer,
+        CardsGrid_Adapter2.iAdapterUser,
         SwipeRefreshLayout.OnRefreshListener,
         SearchView.OnQueryTextListener,
         SearchView.OnCloseListener,
