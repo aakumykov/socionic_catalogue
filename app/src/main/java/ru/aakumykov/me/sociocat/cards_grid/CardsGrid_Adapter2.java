@@ -208,7 +208,7 @@ public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
     // Внутренние классы
-    static class ViewHolderText extends RecyclerView.ViewHolder {
+    static class ViewHolderText extends ViewHolderCommon {
         TextView titleView;
         public ViewHolderText(@NonNull View itemView) {
             super(itemView);
@@ -216,31 +216,33 @@ public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    static class ViewHolderImage extends RecyclerView.ViewHolder {
-        TextView titleView;
+    static class ViewHolderImage extends ViewHolderCommon {
         ProgressBar imageThrobber;
         ImageView imageView;
         ImageView imageErrorView;
         public ViewHolderImage(@NonNull View itemView) {
             super(itemView);
-            titleView = itemView.findViewById(R.id.titleView);
             imageThrobber = itemView.findViewById(R.id.imageThrobber);
             imageView = itemView.findViewById(R.id.imageView);
             imageErrorView = itemView.findViewById(R.id.imageErrorView);
         }
     }
 
-    static class ViewHolderAudio extends RecyclerView.ViewHolder {
-        TextView titleView;
+    static class ViewHolderAudio extends ViewHolderCommon {
         public ViewHolderAudio(@NonNull View itemView) {
             super(itemView);
-            titleView = itemView.findViewById(R.id.titleView);
         }
     }
 
-    static class ViewHolderVideo extends RecyclerView.ViewHolder {
-        TextView titleView;
+    static class ViewHolderVideo extends ViewHolderCommon {
         public ViewHolderVideo(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
+
+    static class ViewHolderCommon extends RecyclerView.ViewHolder {
+        TextView titleView;
+        public ViewHolderCommon(@NonNull View itemView) {
             super(itemView);
             titleView = itemView.findViewById(R.id.titleView);
         }
