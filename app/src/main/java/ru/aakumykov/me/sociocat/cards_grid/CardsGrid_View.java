@@ -54,7 +54,7 @@ public class CardsGrid_View extends BaseView implements
 
 //    public static final String TAG = "CardsGrid_View";
     private iCardsGrid.Presenter presenter;
-    private List<Card> cardsList = new ArrayList<>();
+    private List<Card> cardsList;
     private CardsGrid_Adapter2 dataAdapter;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
@@ -80,6 +80,7 @@ public class CardsGrid_View extends BaseView implements
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         linearLayoutManager = new LinearLayoutManager(this);
 
+        cardsList = new ArrayList<>();
 //        dataAdapter = new CardsGrid_Adapter(this, cardsList); // Передавать контекст-то опасно!
         dataAdapter = new CardsGrid_Adapter2(cardsList);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
@@ -89,6 +90,8 @@ public class CardsGrid_View extends BaseView implements
     @Override
     protected void onStart() {
         super.onStart();
+
+        int listSize = cardsList.size();
 
         presenter.linkView(this);
         dataAdapter.bindView(this);
@@ -190,14 +193,16 @@ public class CardsGrid_View extends BaseView implements
         hideMsg();
         swiperefreshLayout.setRefreshing(false);
 
-        cardsList.clear();
+        //if (null != cardsList)
+            cardsList.clear();
         cardsList.addAll(list);
         dataAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onDataFiltered(List<Card> filteredCardsList) {
-        this.cardsList = filteredCardsList;
+        //if (null != filteredCardsList)
+            this.cardsList = filteredCardsList;
     }
 
     @Override

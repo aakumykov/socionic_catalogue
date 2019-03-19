@@ -45,6 +45,7 @@ public class CardsGrid_Adapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
     // Конструктор
     CardsGrid_Adapter2(List<Card> cardsList) {
         this.cardsList = cardsList;
+        this.originalCardsList = this.cardsList;
     }
 
 
