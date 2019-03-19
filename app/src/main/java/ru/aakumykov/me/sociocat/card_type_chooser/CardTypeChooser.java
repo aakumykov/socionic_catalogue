@@ -80,7 +80,8 @@ public class CardTypeChooser extends BaseView {
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.setAction(Constants.ACTION_CREATE);
         intent.putExtra(Constants.CARD, card);
-        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+        intent.setFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+        startActivity(intent);
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {

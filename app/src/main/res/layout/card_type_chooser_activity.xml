@@ -43,7 +43,7 @@
                     android:layout_height="@dimen/card_type_chooser_icon_height"
                     android:layout_gravity="left"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_text" />
+                    app:srcCompat="@drawable/ic_type_chooser_text" />
 
                 <ImageView
                     android:id="@+id/imageChooser"
@@ -86,14 +86,14 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/card_type_chooser_icon_height"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_youtube" />
+                    app:srcCompat="@drawable/ic_type_chooser_youtube" />
 
                 <ImageView
                     android:id="@+id/soundChooser"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/card_type_chooser_icon_height"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_sound" />
+                    app:srcCompat="@drawable/ic_type_chooser_sound" />
             </TableRow>
 
             <TableRow

@@ -448,22 +448,22 @@ public class CardEdit_Presenter implements
         try {
             switch (inputDataMode) {
 
-                case Constants.TYPE_TEXT:
+                case Constants.MIME_TYPE_TEXT:
                     currentCard.setType(Constants.TEXT_CARD);
                     procesIncomingText(intent);
                     break;
 
-                case Constants.TYPE_IMAGE_LINK:
+                case Constants.MIME_TYPE_IMAGE_LINK:
                     currentCard.setType(Constants.IMAGE_CARD);
                     processIncomingImage(intent);
                     break;
 
-                case Constants.TYPE_IMAGE_DATA:
+                case Constants.MIME_TYPE_IMAGE_DATA:
                     currentCard.setType(Constants.IMAGE_CARD);
                     processIncomingImage(intent);
                     break;
 
-                case Constants.TYPE_YOUTUBE_VIDEO:
+                case Constants.MIME_TYPE_YOUTUBE_VIDEO:
                     currentCard.setType(VIDEO_CARD);
                     processYoutubeVideo(intent);
                     break;
