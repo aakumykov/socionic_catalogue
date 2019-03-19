@@ -4,7 +4,10 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -12,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -45,6 +49,9 @@ public class CardsGrid_View extends BaseView implements
         SearchView.OnCloseListener,
         SearchView.OnClickListener
 {
+    private final static int COLUMNS_COUNT_LANDSCAPE = 3;
+    private final static int COLUMNS_COUNT_PORTRAIT = 2;
+
     @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
@@ -52,7 +59,7 @@ public class CardsGrid_View extends BaseView implements
     @BindView(R.id.floatingActionButton) FloatingActionButton floatingActionButton;
     private SearchView searchView;
 
-//    public static final String TAG = "CardsGrid_View";
+    public static final String TAG = "CardsGrid_View";
     private iCardsGrid.Presenter presenter;
     private List<Card> cardsList;
     private CardsGrid_Adapter2 dataAdapter;
@@ -185,6 +192,21 @@ public class CardsGrid_View extends BaseView implements
         loadList(false);
     }
 
+    @Override public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (Configuration.ORIENTATION_LANDSCAPE == newConfig.orientation) {
+            showToast("Альбом");
+            staggeredGridLayoutManager.setSpanCount(COLUMNS_COUNT_LANDSCAPE);
+        }
+        else if (Configuration.ORIENTATION_PORTRAIT == newConfig.orientation) {
+            showToast("Портрет");
+            staggeredGridLayoutManager.setSpanCount(COLUMNS_COUNT_PORTRAIT);
+        }
+        else {
+            Log.e(TAG, "Unknown orientation '"+newConfig.orientation+"'");
+        }
+    }
 
     // Интерфейсные методы
     @Override

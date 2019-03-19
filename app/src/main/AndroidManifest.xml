@@ -28,7 +28,10 @@
             android:name=".tags.show.TagShow_View"
             android:parentActivityName=".tags.list.TagsList_View" />
 
-        <activity android:name=".cards_grid.CardsGrid_View">
+        <activity
+            android:name=".cards_grid.CardsGrid_View"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+        >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
