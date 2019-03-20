@@ -1,12 +1,15 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
-import android.graphics.Color;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -28,8 +31,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         implements Filterable
 {
     public interface iAdapterUser {
-        void onItemClick(int position);
-        void onItemLongClick(View view, int position);
+        void onGridItemClick(int position);
+        void onPopupMenuClick(MenuItem menuItem, int listPosition);
         void onDataFiltered(List<Card> filteredCardsList);
     }
 
@@ -148,14 +151,13 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         viewHolderCommon.cardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                adapterUser.onItemClick(listPosition);
+                adapterUser.onGridItemClick(listPosition);
             }
         });
 
         viewHolderCommon.cardView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override public boolean onLongClick(View v) {
-                viewHolderCommon.setPressedBackground();
-                adapterUser.onItemLongClick(v, listPosition);
+            @Override public boolean onLongClick(View view) {
+                showPopupMenu(view, listPosition, viewHolderCommon);
                 return true;
             }
         });
@@ -179,15 +181,15 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
     // Публичные методы
-    public void bindView(iAdapterUser consumer) {
+    void bindView(iAdapterUser consumer) {
         this.adapterUser = consumer;
     }
 
-    public void unbindView() {
+    void unbindView() {
         this.adapterUser = null;
     }
 
-    public void restoreInitialList() {
+    void restoreInitialList() {
         this.cardsList = this.originalCardsList;
         notifyDataSetChanged();
     }
@@ -229,6 +231,35 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
+    private void showPopupMenu(View view, int listPosition, ViewHolderCommon viewHolderCommon) {
+        PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+
+        popupMenu.inflate(R.menu.edit);
+        popupMenu.inflate(R.menu.delete);
+        popupMenu.inflate(R.menu.share);
+
+        viewHolderCommon.saveOriginalBackground();
+        viewHolderCommon.setPressedBackground();
+
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+                viewHolderCommon.restoreBackground();
+            }
+        });
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                adapterUser.onPopupMenuClick(item, listPosition);
+                return true;
+            }
+        });
+
+        popupMenu.show();
+    }
+
+
     // Внутренние классы
     static class ViewHolderText extends ViewHolderCommon {
         TextView titleView;
@@ -265,14 +296,25 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     static class ViewHolderCommon extends RecyclerView.ViewHolder {
         CardView cardView;
         TextView titleView;
-        public ViewHolderCommon(@NonNull View itemView) {
+        int oldBackgroundColor;
+
+        ViewHolderCommon(@NonNull View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.cardView);
             titleView = itemView.findViewById(R.id.titleView);
         }
-        public void setPressedBackground() {
+
+        void saveOriginalBackground() {
+            oldBackgroundColor = cardView.getCardBackgroundColor().getDefaultColor();
+        }
+
+        void setPressedBackground() {
             int color = cardView.getContext().getResources().getColor(R.color.selected_list_item_bg);
             cardView.setCardBackgroundColor(color);
+        }
+
+        void restoreBackground() {
+            cardView.setCardBackgroundColor(oldBackgroundColor);
         }
     }
 

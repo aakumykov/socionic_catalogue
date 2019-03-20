@@ -81,7 +81,7 @@ public class UsersList_View extends BaseView implements
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "onItemClick(..., position: "+position+", id: "+id+")");
+        Log.d(TAG, "onGridItemClick(..., position: "+position+", id: "+id+")");
 
         User user = usersList.get(position);
         Log.d(TAG, user.toString());

@@ -232,7 +232,7 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onGridItemClick(int position) {
         Card card = cardsList.get(position);
         if (null != card) {
             showCard(card.getKey());
@@ -242,14 +242,8 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void onItemLongClick(View view, int position) {
-        Card card = cardsList.get(position);
-
-        if (auth().isUserLoggedIn()) {
-            Drawable oldBackground = view.getBackground();
-            //view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
-            showPopupMenu(view, card, oldBackground);
-        }
+    public void onPopupMenuClick(MenuItem menuItem, int listPosition) {
+        showToast(menuItem.getTitle().toString());
     }
 
     @Override
@@ -425,27 +419,4 @@ public class CardsGrid_View extends BaseView implements
         }
     }
 
-    private void showPopupMenu(final View view, final Card card, final Drawable oldBackground) {
-
-        PopupMenu popupMenu = new PopupMenu(this, view);
-
-        if (auth().isAdmin() || auth().isCardOwner(card)) {
-            popupMenu.inflate(R.menu.edit);
-            popupMenu.inflate(R.menu.delete);
-        }
-
-        popupMenu.inflate(R.menu.share);
-
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-            @Override
-            public void onDismiss(PopupMenu popupMenu) {
-                view.setBackground(oldBackground);
-                //dataAdapter.onPopupMenuDismiss();
-            }
-        });
-
-        //popupMenu.setOnMenuItemClickListener(this);
-        popupMenu.setGravity(Gravity.END);
-        popupMenu.show();
-    }
 }
