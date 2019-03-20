@@ -50,7 +50,7 @@ public class CardsGrid_View extends BaseView implements
         SearchView.OnClickListener
 {
     private final static int COLUMNS_COUNT_LANDSCAPE = 3;
-    private final static int COLUMNS_COUNT_PORTRAIT = 2;
+    private final static int COLUMNS_COUNT_PORTRAIT = 1;
 
     @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
     @BindView(R.id.progressBar) ProgressBar progressBar;
@@ -84,7 +84,7 @@ public class CardsGrid_View extends BaseView implements
 
         presenter = new CardsGrid_Presenter();
 
-        staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(COLUMNS_COUNT_PORTRAIT, StaggeredGridLayoutManager.VERTICAL);
         linearLayoutManager = new LinearLayoutManager(this);
 
         cardsList = new ArrayList<>();
@@ -402,7 +402,8 @@ public class CardsGrid_View extends BaseView implements
                     int index = findIndexOfCard(card);
                     if (-1 != index) {
                         cardsList.remove(index);
-                        dataAdapter.notifyItemRemoved(index);
+//                        dataAdapter.notifyItemRemoved(index);
+                        dataAdapter.notifyDataSetChanged();
                     }
                 }
             }
