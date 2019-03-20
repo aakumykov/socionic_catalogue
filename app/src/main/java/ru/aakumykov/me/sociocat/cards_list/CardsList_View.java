@@ -242,9 +242,9 @@ public class CardsList_View extends BaseView implements
 
 
     // Выслывающее меню
-    private void showPopupMenu(final View v, final Card card, final Drawable oldBackground) {
+    private void showPopupMenu(final View view, final Card card, final Drawable oldBackground) {
 
-        PopupMenu popupMenu = new PopupMenu(this, v);
+        PopupMenu popupMenu = new PopupMenu(this, view);
 
         if (auth().isAdmin() || auth().isCardOwner(card)) {
             popupMenu.inflate(R.menu.edit);
@@ -256,14 +256,12 @@ public class CardsList_View extends BaseView implements
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
             public void onDismiss(PopupMenu popupMenu) {
-                v.setBackground(oldBackground);
+                view.setBackground(oldBackground);
             }
         });
 
         popupMenu.setOnMenuItemClickListener(this);
-
         popupMenu.setGravity(Gravity.END);
-
         popupMenu.show();
     }
 

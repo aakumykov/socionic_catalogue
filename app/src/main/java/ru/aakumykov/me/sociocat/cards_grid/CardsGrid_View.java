@@ -5,17 +5,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.appcompat.widget.PopupMenu;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -50,7 +54,7 @@ public class CardsGrid_View extends BaseView implements
         SearchView.OnClickListener
 {
     private final static int COLUMNS_COUNT_LANDSCAPE = 3;
-    private final static int COLUMNS_COUNT_PORTRAIT = 1;
+    private final static int COLUMNS_COUNT_PORTRAIT = 2;
 
     @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
     @BindView(R.id.progressBar) ProgressBar progressBar;
@@ -238,6 +242,17 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
+    public void onItemLongClick(View view, int position) {
+        Card card = cardsList.get(position);
+
+        if (auth().isUserLoggedIn()) {
+            Drawable oldBackground = view.getBackground();
+            //view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
+            showPopupMenu(view, card, oldBackground);
+        }
+    }
+
+    @Override
     public boolean onQueryTextSubmit(String s) {
         dataAdapter.getFilter().filter(s);
         return false;
@@ -408,5 +423,29 @@ public class CardsGrid_View extends BaseView implements
                 }
             }
         }
+    }
+
+    private void showPopupMenu(final View view, final Card card, final Drawable oldBackground) {
+
+        PopupMenu popupMenu = new PopupMenu(this, view);
+
+        if (auth().isAdmin() || auth().isCardOwner(card)) {
+            popupMenu.inflate(R.menu.edit);
+            popupMenu.inflate(R.menu.delete);
+        }
+
+        popupMenu.inflate(R.menu.share);
+
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu popupMenu) {
+                view.setBackground(oldBackground);
+                //dataAdapter.onPopupMenuDismiss();
+            }
+        });
+
+        //popupMenu.setOnMenuItemClickListener(this);
+        popupMenu.setGravity(Gravity.END);
+        popupMenu.show();
     }
 }

@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 {
     public interface iAdapterUser {
         void onItemClick(int position);
+        void onItemLongClick(View view, int position);
         void onDataFiltered(List<Card> filteredCardsList);
     }
 
@@ -142,9 +144,19 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int listPosition) {
 
-        ((ViewHolderCommon) holder).cardView.setOnClickListener(new View.OnClickListener() {
+        ViewHolderCommon viewHolderCommon = (ViewHolderCommon) holder;
+
+        viewHolderCommon.cardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 adapterUser.onItemClick(listPosition);
+            }
+        });
+
+        viewHolderCommon.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override public boolean onLongClick(View v) {
+                viewHolderCommon.setPressedBackground();
+                adapterUser.onItemLongClick(v, listPosition);
+                return true;
             }
         });
 
@@ -257,6 +269,10 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(itemView);
             cardView = itemView.findViewById(R.id.cardView);
             titleView = itemView.findViewById(R.id.titleView);
+        }
+        public void setPressedBackground() {
+            int color = cardView.getContext().getResources().getColor(R.color.selected_list_item_bg);
+            cardView.setCardBackgroundColor(color);
         }
     }
 
