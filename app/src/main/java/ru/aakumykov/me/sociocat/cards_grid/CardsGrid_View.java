@@ -84,11 +84,11 @@ public class CardsGrid_View extends BaseView implements
 
         presenter = new CardsGrid_Presenter();
 
-        staggeredGridLayoutManager = new StaggeredGridLayoutManager(COLUMNS_COUNT_PORTRAIT, StaggeredGridLayoutManager.VERTICAL);
+        int colsNum = MyUtils.isPortraitOrientation(this) ? COLUMNS_COUNT_PORTRAIT : COLUMNS_COUNT_LANDSCAPE;
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
         linearLayoutManager = new LinearLayoutManager(this);
 
         cardsList = new ArrayList<>();
-//        dataAdapter = new CardsGrid_Adapter(this, cardsList); // Передавать контекст-то опасно!
         dataAdapter = new CardsGrid_Adapter(cardsList);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.setAdapter(dataAdapter);

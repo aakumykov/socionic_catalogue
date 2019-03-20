@@ -7,6 +7,7 @@ import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Point;
 import android.net.Uri;
 import androidx.annotation.Nullable;
@@ -223,4 +224,15 @@ public final class MyUtils {
             return null;
         }
     }
+
+    public static int getOrientation(Context context) {
+        Configuration configuration = context.getResources().getConfiguration();
+        return configuration.orientation;
+    }
+
+    public static boolean isPortraitOrientation(Context context) {
+        return Configuration.ORIENTATION_PORTRAIT == getOrientation(context);
+    }
+
+
 }
