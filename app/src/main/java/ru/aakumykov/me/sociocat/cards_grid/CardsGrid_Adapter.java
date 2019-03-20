@@ -200,6 +200,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
 
             @Override public void onError(Exception e) {
+                MyUtils.hide(viewHolder.imageThrobber);
                 MyUtils.show(viewHolder.imageErrorView);
             }
         });
