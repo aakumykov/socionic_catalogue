@@ -212,6 +212,7 @@ public class CardsGrid_View extends BaseView implements
         }
     }
 
+
     // Интерфейсные методы
     @Override
     public void displayList(List<Card> list) {
@@ -223,6 +224,15 @@ public class CardsGrid_View extends BaseView implements
             cardsList.clear();
         cardsList.addAll(list);
         dataAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void removeGridItem(Card card) {
+        int index = cardsList.indexOf(card);
+        if (-1 != index) {
+            cardsList.remove(index);
+            dataAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -243,7 +253,18 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public void onPopupMenuClick(MenuItem menuItem, int listPosition) {
-        showToast(menuItem.getTitle().toString());
+        Card card = cardsList.get(listPosition);
+
+        switch (menuItem.getItemId()) {
+
+            case R.id.actionEdit:
+                //editCard();
+                break;
+
+            case R.id.actionDelete:
+                deleteCardQuestion(card);
+                break;
+        }
     }
 
     @Override
@@ -419,4 +440,28 @@ public class CardsGrid_View extends BaseView implements
         }
     }
 
+    private void deleteCardQuestion(Card card) {
+        String cardName = card.getTitle();
+        MyDialogs.cardDeleteDialog(this, cardName, new iMyDialogs.Delete() {
+            @Override
+            public void onCancelInDialog() {
+
+            }
+
+            @Override
+            public void onNoInDialog() {
+
+            }
+
+            @Override
+            public boolean onCheckInDialog() {
+                return true;
+            }
+
+            @Override
+            public void onYesInDialog() {
+                presenter.deleteCard(card);
+            }
+        });
+    }
 }

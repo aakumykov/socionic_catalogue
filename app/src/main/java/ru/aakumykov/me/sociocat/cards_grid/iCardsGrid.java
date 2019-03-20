@@ -14,13 +14,16 @@ public interface iCardsGrid {
 
     interface View extends iBaseView {
         void displayList(List<Card> list);
+        void removeGridItem(Card card);
     }
 
     interface Presenter {
+        void linkView(iCardsGrid.View view);
+        void unlinkView();
+
         void loadCards();
         void loadNewCards(long newerThanTime);
 
-        void linkView(iCardsGrid.View view);
-        void unlinkView();
+        void deleteCard(Card card);
     }
 }
