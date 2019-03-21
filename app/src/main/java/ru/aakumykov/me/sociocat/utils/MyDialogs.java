@@ -76,6 +76,8 @@ public class MyDialogs {
 
         String title = activity.getString(R.string.DIALOG_delete_card);
 
+        message = activity.getString(R.string.aquotes, message);
+
         basicDialog(
                 activity,
                 title,

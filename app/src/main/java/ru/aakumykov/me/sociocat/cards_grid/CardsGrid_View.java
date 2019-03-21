@@ -441,7 +441,9 @@ public class CardsGrid_View extends BaseView implements
     }
 
     private void deleteCardQuestion(Card card) {
+
         String cardName = card.getTitle();
+
         MyDialogs.cardDeleteDialog(this, cardName, new iMyDialogs.Delete() {
             @Override
             public void onCancelInDialog() {
