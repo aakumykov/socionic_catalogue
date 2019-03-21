@@ -37,6 +37,7 @@ import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
@@ -133,6 +134,9 @@ public class CardsGrid_View extends BaseView implements
                 break;
             case Constants.CODE_SHOW_CARD:
                 processCardShowResult(resultCode, data);
+                break;
+            case Constants.CODE_EDIT_CARD:
+                processCardEditionResult(resultCode, data);
                 break;
             default:
                 break;
@@ -253,12 +257,13 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public void onPopupMenuClick(MenuItem menuItem, int listPosition) {
+
         Card card = cardsList.get(listPosition);
 
         switch (menuItem.getItemId()) {
 
             case R.id.actionEdit:
-                //editCard();
+                editCard(card);
                 break;
 
             case R.id.actionDelete:
@@ -415,19 +420,24 @@ public class CardsGrid_View extends BaseView implements
 
     private int findIndexOfCard(Card card) {
         int index = -1;
-        String cardKey = card.getKey();
+        String key = card.getKey();
         for (int i=0; i<cardsList.size(); i++) {
-            if (cardKey.equals(cardsList.get(i).getKey()))
+            if (key.equals(cardsList.get(i).getKey()))
                 return i;
         }
         return index;
     }
 
     private void processCardShowResult(int resultCode, @Nullable Intent data) {
+
         if (null != data && RESULT_OK == resultCode) {
+
             String backAction = data.getAction();
+
             if (Constants.ACTION_DELETE.equals(backAction)) {
+
                 Card card = data.getParcelableExtra(Constants.CARD);
+
                 if (null != card) {
                     int index = findIndexOfCard(card);
                     if (-1 != index) {
@@ -436,6 +446,17 @@ public class CardsGrid_View extends BaseView implements
                         dataAdapter.notifyDataSetChanged();
                     }
                 }
+            }
+        }
+    }
+
+    private void processCardEditionResult(int resultCode, @Nullable Intent data) {
+        if (RESULT_OK == resultCode) {
+            if (null != data) {
+                Card card = data.getParcelableExtra(Constants.CARD);
+                int index = findIndexOfCard(card);
+                cardsList.set(index, card);
+                dataAdapter.notifyItemChanged(index);
             }
         }
     }
@@ -465,5 +486,13 @@ public class CardsGrid_View extends BaseView implements
                 presenter.deleteCard(card);
             }
         });
+    }
+
+    private void editCard(Card card) {
+        Intent intent = new Intent(this, CardEdit_View.class);
+//        intent.putExtra(Constants.CARD, card);
+        intent.putExtra(Constants.CARD_KEY, card.getKey());
+        intent.setAction(Constants.ACTION_EDIT);
+        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 }
