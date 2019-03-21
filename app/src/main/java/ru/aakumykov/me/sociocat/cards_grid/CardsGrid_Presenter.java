@@ -84,10 +84,11 @@ public class CardsGrid_Presenter implements
         });
     }
 
-    @Override public void loadNewCards() {
+    @Override
+    public void loadNewCards() {
         long timeNow = new Date().getTime();
-        long secondsInDay = TimeUnit.DAYS.toSeconds(2L);
-        long oneDayAgo = timeNow - secondsInDay;
+        long milliSecondsInDay = TimeUnit.HOURS.toMillis(1);
+        long oneDayAgo = timeNow - milliSecondsInDay;
         loadNewCards(oneDayAgo);
     }
 

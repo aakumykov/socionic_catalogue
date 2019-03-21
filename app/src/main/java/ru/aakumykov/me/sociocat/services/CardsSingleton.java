@@ -209,7 +209,7 @@ public class CardsSingleton implements
     @Override
     public void loadNewCards(long newerThanTime, final ListCallbacks callbacks) {
 
-        Query query = cardsRef.orderByChild("cTime").startAt(newerThanTime);
+        Query query = cardsRef.orderByChild("ctime").startAt(newerThanTime);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
