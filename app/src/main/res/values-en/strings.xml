@@ -363,4 +363,5 @@
     <string name="CARD_EDIT_paste_youtube_link">Paste Youtube link</string>
     <string name="CARD_SHOW_there_is_no_video">There is no video</string>
     <string name="CARD_SHOW_there_is_no_audio">There is no audio</string>
+    <string name="CARD_EDIT_form_filling_error">Form filling error</string>
 </resources>

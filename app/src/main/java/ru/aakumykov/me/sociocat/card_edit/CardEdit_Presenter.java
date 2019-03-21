@@ -292,10 +292,14 @@ public class CardEdit_Presenter implements
 
         updateCurrentCardFromView();
 
-        processBeforeSave();
-
         if (!alreadyValidated) {
-            if (!formIsValid()) return;
+
+            processBeforeSave();
+
+            if (!formIsValid()) {
+                view.showToast(R.string.CARD_EDIT_form_filling_error);
+                return;
+            }
         }
 
         if (null != view)
@@ -491,7 +495,21 @@ public class CardEdit_Presenter implements
     }
 
     private void processBeforeSave() {
-        String quote = currentCard.getQuote();
+
+        String title = currentCard.getTitle().trim();
+        currentCard.setTitle(title);
+
+        String quote = currentCard.getQuote().trim();
+        currentCard.setQuote(quote);
+
+        String quoteSource = currentCard.getQuoteSource().trim();
+        currentCard.setQuoteSource(quoteSource);
+
+        String description = currentCard.getDescription().trim();
+        currentCard.setDescription(description);
+
+        view.displayCard(currentCard);
+
         if (quote.length() > Constants.LONG_TAG_THRESHOLD) {
             String longTag = view.getString(R.string.TAG_long_text);
             currentCard.addTag(longTag);
