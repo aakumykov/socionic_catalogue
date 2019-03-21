@@ -23,6 +23,7 @@ public interface iCardsGrid {
 
         void loadCards();
         void loadNewCards(long newerThanTime);
+        void loadNewCards();
 
         void deleteCard(Card card);
     }

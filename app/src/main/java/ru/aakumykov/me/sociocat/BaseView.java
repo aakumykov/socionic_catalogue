@@ -86,14 +86,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         });
 
         // Сохраняю время последнего запуска
-        SharedPreferences sharedPreferences = getSharedPrefs(Constants.SHARED_PREFERENCES_LOGIN);
-        if (sharedPreferences.contains(Constants.KEY_LAST_LOGIN)) {
-            long lastLoginTime = sharedPreferences.getLong(Constants.KEY_LAST_LOGIN, 0L);
-            if (0L != lastLoginTime) Log.d(TAG, "lastLoginTime: "+lastLoginTime);
-        }
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putLong(Constants.KEY_LAST_LOGIN, new Date().getTime());
-        editor.apply();
+        saveLastLoginTime();
     }
 
     @Override
@@ -511,5 +504,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         }
     }
 
-
+    private void saveLastLoginTime() {
+        SharedPreferences sharedPreferences = getSharedPrefs(Constants.SHARED_PREFERENCES_LOGIN);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong(Constants.KEY_LAST_LOGIN, new Date().getTime());
+        editor.apply();
+    }
 }

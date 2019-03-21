@@ -2,7 +2,9 @@ package ru.aakumykov.me.sociocat.cards_grid;
 
 import android.util.Log;
 
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
@@ -80,6 +82,13 @@ public class CardsGrid_Presenter implements
                     view.showErrorMsg(errorMessage);
             }
         });
+    }
+
+    @Override public void loadNewCards() {
+        long timeNow = new Date().getTime();
+        long secondsInDay = TimeUnit.DAYS.toSeconds(2L);
+        long oneDayAgo = timeNow - secondsInDay;
+        loadNewCards(oneDayAgo);
     }
 
     @Override

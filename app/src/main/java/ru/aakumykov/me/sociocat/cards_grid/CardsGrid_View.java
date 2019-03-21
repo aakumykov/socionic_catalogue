@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.util.Log;
+import android.util.TimeUtils;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -412,10 +414,13 @@ public class CardsGrid_View extends BaseView implements
     }
 
     private void showNewCards() {
-        SharedPreferences sharedPreferences = getSharedPrefs(Constants.SHARED_PREFERENCES_LOGIN);
-        long lastLoginTime = (sharedPreferences.contains(Constants.KEY_LAST_LOGIN))
-                ? sharedPreferences.getLong(Constants.KEY_LAST_LOGIN, 0L) : 0L;
-        presenter.loadNewCards(lastLoginTime);
+//        SharedPreferences sharedPreferences = getSharedPrefs(Constants.SHARED_PREFERENCES_LOGIN);
+//        long lastLoginTime = (sharedPreferences.contains(Constants.KEY_LAST_LOGIN))
+//                ? sharedPreferences.getLong(Constants.KEY_LAST_LOGIN, 0L)
+//                : 0L;
+//        presenter.loadNewCards(lastLoginTime);
+
+        presenter.loadNewCards();
     }
 
     private int findIndexOfCard(Card card) {
