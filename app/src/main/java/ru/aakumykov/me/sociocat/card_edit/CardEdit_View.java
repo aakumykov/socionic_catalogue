@@ -393,7 +393,11 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public Bitmap getImageBitmap() {
-        return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+//        return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        Drawable drawable = imageView.getDrawable();
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+        return bitmap;
     }
 
     @Override
