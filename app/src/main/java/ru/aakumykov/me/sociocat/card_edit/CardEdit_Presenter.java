@@ -495,7 +495,6 @@ public class CardEdit_Presenter implements
     }
 
     private void processBeforeSave() {
-
         String title = currentCard.getTitle().trim();
         currentCard.setTitle(title);
 

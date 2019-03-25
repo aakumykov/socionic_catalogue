@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -268,7 +269,8 @@ public class CardEdit_View extends BaseView implements
                 displayQuote(card.getQuote(), card.getQuoteSource());
                 break;
             case Constants.IMAGE_CARD:
-                displayImage(card.getImageURL());
+                //displayImage(card.getImageURL());
+                displayImageFromCard(card);
                 break;
             case Constants.VIDEO_CARD:
                 displayVideo(card.getVideoCode());
@@ -282,6 +284,20 @@ public class CardEdit_View extends BaseView implements
 
         displayCommonCardParts(card);
         enableForm();
+    }
+
+    @Override public void displayImageFromCard(Card card) {
+        Uri localImageURI = card.getLocalImageURI();
+        String remoteImageURL = card.getImageURL();
+
+        if (null != localImageURI)
+            displayImage(localImageURI.toString());
+        else if (!TextUtils.isEmpty(remoteImageURL)) {
+            displayImage(remoteImageURL);
+        }
+        else {
+            removeImage();
+        }
     }
 
     @Override

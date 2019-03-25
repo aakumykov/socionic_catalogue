@@ -19,6 +19,7 @@ public interface iCardEdit {
 
     interface View extends iBaseView {
         void displayCard(Card card);
+        void displayImageFromCard(Card card);
         void displayImage(String imageURI);
         void displayVideo(String videoCode);
         void displayAudio(String audioCode);
