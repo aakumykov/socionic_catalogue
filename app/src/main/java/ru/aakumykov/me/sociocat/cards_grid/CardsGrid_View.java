@@ -10,7 +10,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import androidx.appcompat.widget.PopupMenu;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -28,6 +32,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +104,8 @@ public class CardsGrid_View extends BaseView implements
         dataAdapter = new CardsGrid_Adapter(cardsList);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.setAdapter(dataAdapter);
+
+        subscribeToNewCardsNotifications();
     }
 
     @Override
@@ -499,5 +506,25 @@ public class CardsGrid_View extends BaseView implements
         intent.putExtra(Constants.CARD_KEY, card.getKey());
         intent.setAction(Constants.ACTION_EDIT);
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+    }
+
+    private void subscribeToNewCardsNotifications() {
+
+        FirebaseMessaging.getInstance().subscribeToTopic("new_cards")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        String msg = "Вы подписаны на новые карточки";
+
+                        if (!task.isSuccessful()) {
+                            msg = "Ошибка подписки на новые карточки";
+                        }
+
+                        showToast(msg);
+                    }
+
+                });
     }
 }
