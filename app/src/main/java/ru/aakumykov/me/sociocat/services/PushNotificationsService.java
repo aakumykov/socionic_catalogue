@@ -1,9 +1,20 @@
 package ru.aakumykov.me.sociocat.services;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 
 public class PushNotificationsService extends FirebaseMessagingService {
 
@@ -19,10 +30,42 @@ public class PushNotificationsService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        showNotification(remoteMessage.getNotification());
     }
 
 
-    private void showNotification(RemoteMessage.Notification notification) {
+    private void showNotification(@Nullable RemoteMessage.Notification notification) {
 
+        if (null == notification)
+            return;
+
+        Intent intent = new Intent(this, CardShow_View.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_ONE_SHOT
+        );
+
+        String title = notification.getTitle();
+        String message = notification.getBody();
+
+        Uri soundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_notification_default)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setAutoCancel(true)
+                .setSound(soundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (null != notificationManager)
+            notificationManager.notify(0, notificationBuilder.build());
     }
 }
