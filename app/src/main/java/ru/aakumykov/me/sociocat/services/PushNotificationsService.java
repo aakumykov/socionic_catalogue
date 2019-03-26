@@ -43,7 +43,7 @@ public class PushNotificationsService extends FirebaseMessagingService {
 
     private void showNotification(@Nullable RemoteMessage.Notification notification, @Nullable Map<String,String> data) {
 
-        if (null == notification || null == data)
+        if (null == notification && null == data)
             return;
 
         String cardKey = data.get(Constants.CARD_KEY);
