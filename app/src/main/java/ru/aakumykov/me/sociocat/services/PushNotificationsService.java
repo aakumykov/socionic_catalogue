@@ -11,8 +11,11 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Map;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 
@@ -30,17 +33,24 @@ public class PushNotificationsService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        showNotification(remoteMessage.getNotification());
+        showNotification(remoteMessage.getNotification(), remoteMessage.getData());
     }
 
+    @Override
+    public void onDeletedMessages() {
+        super.onDeletedMessages();
+    }
 
-    private void showNotification(@Nullable RemoteMessage.Notification notification) {
+    private void showNotification(@Nullable RemoteMessage.Notification notification, @Nullable Map<String,String> data) {
 
-        if (null == notification)
+        if (null == notification || null == data)
             return;
 
+        String cardKey = data.get(Constants.CARD_KEY);
+
         Intent intent = new Intent(this, CardShow_View.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(Constants.CARD_KEY, cardKey);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this,

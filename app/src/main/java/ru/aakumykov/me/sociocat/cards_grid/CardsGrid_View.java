@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import androidx.appcompat.widget.PopupMenu;
@@ -105,7 +107,9 @@ public class CardsGrid_View extends BaseView implements
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.setAdapter(dataAdapter);
 
-        subscribeToNewCardsNotifications();
+        getFCMToken();
+
+//        subscribeToNewCardsNotifications();
     }
 
     @Override
@@ -506,6 +510,26 @@ public class CardsGrid_View extends BaseView implements
         intent.putExtra(Constants.CARD_KEY, card.getKey());
         intent.setAction(Constants.ACTION_EDIT);
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+    }
+
+    private void getFCMToken() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        String token;
+                        InstanceIdResult instanceIdResult = task.getResult();
+                        if (null != instanceIdResult) {
+                            token = instanceIdResult.getToken();
+//                            showToast("TOKEN: " + token);
+                        }
+                    }
+                });
     }
 
     private void subscribeToNewCardsNotifications() {
