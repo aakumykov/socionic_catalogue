@@ -368,4 +368,6 @@
     <string name="CARD_SHOW_there_is_no_video">В карточке нет видео</string>
     <string name="CARD_SHOW_there_is_no_audio">В карточке нет звука</string>
     <string name="CARD_EDIT_form_filling_error">Ошибка заполнения формы</string>
+    <string name="BASE_VIEW_error_reading_current_user">Ошибка чтения текущего пользователя</string>
+    <string name="BASE_VIEW_error_recieving_push_token">Ошибка получения метки PUSH-сообщений</string>
 </resources>

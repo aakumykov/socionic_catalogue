@@ -5,8 +5,10 @@ import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,6 +48,7 @@ public class UsersSingleton implements iUsersSingleton {
     private DatabaseReference usersRef = firebaseDatabase.getReference().child(Constants.USERS_PATH);
 
 
+    // Интерфейсные методы
     @Override
     public void listUsers(final ListCallbacks callbacks) {
         final ArrayList<User> list = new ArrayList<>();
@@ -269,7 +272,31 @@ public class UsersSingleton implements iUsersSingleton {
         });
     }
 
+    @Override public void updatePushToken(String token, @Nullable iUsersSingleton.PushTokenCallbacks callbacks) {
 
+        usersRef.child(PUSH_TOKEN_NAME).setValue(token)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    @Override public void onComplete(@NonNull Task<Void> task) {
+
+                        if (task.isSuccessful()) {
+                            if (null != callbacks)
+                                callbacks.onPushTokenUpdateSuccess(token);
+                        } else {
+                            Exception exception = task.getException();
+                            if (null != exception) {
+                                if (null != callbacks)
+                                    callbacks.onPushTokenUpdateError(exception.getMessage());
+                                exception.printStackTrace();
+                            }
+                        }
+                    }
+
+                });
+    }
+
+
+    // Внутренние методы
     private void checkExistance(Query query, final CheckExistanceCallbacks callbacks) {
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {

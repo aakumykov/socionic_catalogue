@@ -21,6 +21,11 @@ import ru.aakumykov.me.sociocat.models.User;
 
 public class AuthSingleton implements iAuthSingleton
 {
+    private final static String TAG = "AuthSingleton";
+    private FirebaseAuth firebaseAuth;
+    private User currentUser;
+
+
     /* Одиночка */
     private static volatile AuthSingleton ourInstance;
     public synchronized static AuthSingleton getInstance() {
@@ -31,20 +36,12 @@ public class AuthSingleton implements iAuthSingleton
     }
     private AuthSingleton() {
         firebaseAuth = FirebaseAuth.getInstance();
-//        usersService = UsersSingleton.getInstance(); // КРУГОВАЯ ЗАВИСИМОСТЬ!!!
+        Log.d(TAG, "firebaseAuth: "+firebaseAuth);
     }
     /* Одиночка */    
 
 
-    // Свойства
-    private final static String TAG = "AuthSingleton";
-    private FirebaseAuth firebaseAuth;
-//    private iUsersSingleton usersService; // КРУГОВАЯ ЗАВИСИМОСТЬ!!!
-    private User currentUser;
-
-
     // Интерфейсные методы
-
     // Регистрация, вход, выход
     @Override
     public void registerWithEmail(String email, String password,

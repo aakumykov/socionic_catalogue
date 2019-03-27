@@ -14,6 +14,7 @@ public class User implements Parcelable {
     private String key;
     private String name;
     private String email;
+    private String pushToken;
     private String about;
     private String avatarFileName;
     private String avatarURL;
@@ -36,6 +37,7 @@ public class User implements Parcelable {
                 "key: "+key+
                 ", name: "+name+
                 ", email: "+email+
+                ", pushToken: "+pushToken+
                 ", about: "+about+
                 ", avatarFileName: "+avatarFileName+
                 ", avatarURL: "+avatarURL+
@@ -51,6 +53,7 @@ public class User implements Parcelable {
         map.put("key", key);
         map.put("name", name);
         map.put("email", email);
+        map.put("pushToken", pushToken);
         map.put("about", about);
         map.put("avatarFileName", avatarFileName);
         map.put("avatarURL", avatarURL);
@@ -85,6 +88,7 @@ public class User implements Parcelable {
         dest.writeString(key);
         dest.writeString(name);
         dest.writeString(email);
+        dest.writeString(pushToken);
         dest.writeString(about);
         dest.writeString(avatarFileName);
         dest.writeString(avatarURL);
@@ -98,6 +102,7 @@ public class User implements Parcelable {
         key = in.readString();
         name = in.readString();
         email = in.readString();
+        pushToken = in.readString();
         about = in.readString();
         avatarFileName = in.readString();
         avatarURL = in.readString();
@@ -127,6 +132,13 @@ public class User implements Parcelable {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPushToken() {
+        return this.pushToken;
+    }
+    public void setPushToken(String token) {
+        this.pushToken = token;
     }
 
     public String getAbout() {
