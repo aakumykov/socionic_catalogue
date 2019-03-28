@@ -1,6 +1,11 @@
 package ru.aakumykov.me.sociocat.login;
 
 import android.content.Intent;
+import android.util.Log;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.Constants;
@@ -93,13 +98,13 @@ public class Login_Presenter implements
                 }
 
                 view.hideProgressBar();
-                view.showToast(R.string.LOGIN_login_success);
                 view.finishLogin(false);
             }
 
             @Override
             public void onUserReadFail(String errorMsg) {
-                view.showErrorMsg(R.string.LOGIN_login_error, errorMsg);
+                view.showToast(R.string.LOGIN_login_error);
+                Log.e(TAG, errorMsg);
                 authService.logout();
             }
         });
@@ -111,6 +116,7 @@ public class Login_Presenter implements
         view.enableForm();
         view.showErrorMsg(errorMsg);
     }
+
 
     // Внутренние методы
     private void goCardCreation() {

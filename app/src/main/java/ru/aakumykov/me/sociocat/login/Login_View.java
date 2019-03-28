@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -50,12 +52,14 @@ public class Login_View extends BaseView implements
         super.onStart();
         presenter.linkView(this);
         presenter.processInputIntent(getIntent());
+        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

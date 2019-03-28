@@ -33,12 +33,11 @@ public class AuthStateListener implements iAuthStateListener {
 
                 if (null != firebaseUser) {
 
-                    callbacks.onLoggedIn();
-
                     usersService.getUserById(firebaseUser.getUid(), new iUsersSingleton.ReadCallbacks() {
                         @Override
                         public void onUserReadSuccess(User user) {
                             authService.storeCurrentUser(user);
+                            callbacks.onLoggedIn();
                         }
 
                         @Override
