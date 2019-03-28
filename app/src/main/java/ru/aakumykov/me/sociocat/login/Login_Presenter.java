@@ -95,7 +95,6 @@ public class Login_Presenter implements
                 }
 
                 view.hideProgressBar();
-                //view.showToast(R.string.LOGIN_login_success);
                 view.finishLogin(false);
             }
 

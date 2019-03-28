@@ -5,12 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -20,17 +14,15 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Date;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_type_chooser.CardTypeChooser;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
@@ -38,17 +30,12 @@ import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iAuthStateListener;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
-import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.login.Login_View;
-import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.services.AuthSingleton;
-import ru.aakumykov.me.sociocat.services.AuthStateListener;
 import ru.aakumykov.me.sociocat.services.CardsSingleton;
-import ru.aakumykov.me.sociocat.services.UsersSingleton;
 import ru.aakumykov.me.sociocat.tags.list.TagsList_View;
 import ru.aakumykov.me.sociocat.users.show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
@@ -58,9 +45,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 {
     public static String PACKAGE_NAME;
     private final static String TAG = "BaseView";
-    private iCardsSingleton cardsService;
-    private iAuthSingleton authService;
-    private iUsersSingleton usersService;
+    private iCardsSingleton cardsService = CardsSingleton.getInstance();
+    private iAuthSingleton authService = AuthSingleton.getInstance();
 
     // Абстрактные методы
     public abstract void onUserLogin();
@@ -74,49 +60,28 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         PACKAGE_NAME = getApplicationContext().getPackageName();
 
+        // TODO: попробовать перенести в MyApp
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-
-        // TODO: убрать вообще?
-        authService = AuthSingleton.getInstance();
-        cardsService = CardsSingleton.getInstance();
-        usersService = UsersSingleton.getInstance();
-        // TODO: storageSingleton
-
-        // Слушатель изменений авторизации
-        iAuthStateListener authStateListener = new AuthStateListener(new iAuthStateListener.StateChangeCallbacks() {
-
-            // Осторожно с этими методами!
-            @Override
-            public void onLoggedIn() {
-                invalidateOptionsMenu();
-                //showToast("ВОШЁЛ");
-                onUserLogin();
-            }
-
-            // Осторожно с этими методами!
-            @Override
-            public void onLoggedOut() {
-                invalidateOptionsMenu();
-                //showToast("ВЫШЕЛ");
-                onUserLogout();
-            }
-        });
-
-        // Сохраняю время последнего запуска
-        saveLastLoginTime();
-
-        // Проверяю метку для push-сообщений
-        //checkCurrentUser();
     }
 
     @Subscribe
     public void onUserAuthorized(UserAuthorizedEvent event) {
-        showToast("Авторизовался "+event.getUid());
+        showToast("Авторизовался "+event.getUser().getKey());
+
+        invalidateOptionsMenu();
+
+        onUserLogin();
+
+        saveLastLoginTime();
     }
 
     @Subscribe
     public void onUserUnauthorized(UserUnauthorizedEvent event) {
         showToast("Разавторизовался");
+
+        invalidateOptionsMenu();
+
+        onUserLogout();
     }
 
     @Override
@@ -314,7 +279,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
 
-    // Тосты
+    // Всплывающие сообщения
     @Override
     public void showToast(int stringResourceId) {
         String msg = getString(stringResourceId);
@@ -546,55 +511,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(Constants.KEY_LAST_LOGIN, new Date().getTime());
         editor.apply();
-    }
-
-    private void checkPushToken(User user) {
-
-        if (null == user.getPushToken()) {
-
-            FirebaseInstanceId.getInstance().getInstanceId()
-                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-
-                        @Override
-                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                            if (!task.isSuccessful()) {
-                                Exception exception = task.getException();
-                                if (null != exception) {
-                                    Log.e(TAG, exception.getMessage());
-                                    exception.printStackTrace();
-                                }
-                                showToast(R.string.BASE_VIEW_error_recieving_push_token);
-                                return;
-                            }
-
-                            InstanceIdResult instanceIdResult = task.getResult();
-
-                            if (null != instanceIdResult) {
-
-                                String token = instanceIdResult.getToken();
-
-                                usersService.updatePushToken(token, new iUsersSingleton.PushTokenCallbacks() {
-                                    @Override
-                                    public void onPushTokenUpdateSuccess(String token) {
-                                        User user = authService.currentUser();
-                                        user.setPushToken(token);
-                                        authService.storeCurrentUser(user); // TODO: добавляет неоднозначности
-                                    }
-
-                                    @Override
-                                    public void onPushTokenUpdateError(String errorMsg) {
-                                        //showToast(getString(R.string.BASE_VIEW_error_updating_push_token));
-                                        Log.e(TAG, errorMsg);
-                                    }
-                                });
-
-                            } else {
-                                Log.e(TAG, "InstanceIdResult is NULL");
-                            }
-                        }
-                    });
-
-        }
     }
 
 }

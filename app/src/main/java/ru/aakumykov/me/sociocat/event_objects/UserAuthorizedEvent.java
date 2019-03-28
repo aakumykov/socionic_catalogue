@@ -1,14 +1,16 @@
 package ru.aakumykov.me.sociocat.event_objects;
 
+import ru.aakumykov.me.sociocat.models.User;
+
 public class UserAuthorizedEvent {
 
-    private String uid;
+    private User user;
 
-    public UserAuthorizedEvent(String uid) {
-        this.uid = uid;
+    public UserAuthorizedEvent(User user) {
+        this.user = user;
     }
 
-    public String getUid() {
-        return this.uid;
+    public User getUser() {
+        return this.user;
     }
 }
