@@ -23,6 +23,30 @@ public class PushNotificationsService extends FirebaseMessagingService {
 
     private final static String TAG = "PushNotifService";
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "onCreate()");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy()");
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        Log.d(TAG, "onUnbind()");
+        return super.onUnbind(intent);
+    }
+
+    @Override
+    public void onRebind(Intent intent) {
+        super.onRebind(intent);
+        Log.d(TAG, "onRebind()");
+    }
+
 
     @Override
     public void onNewToken(String s) {
