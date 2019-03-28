@@ -22,13 +22,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseAppLifecycleListener;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Date;
 
@@ -36,6 +35,8 @@ import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_type_chooser.CardTypeChooser;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
+import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
+import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iAuthStateListener;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
@@ -88,20 +89,16 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             @Override
             public void onLoggedIn() {
                 invalidateOptionsMenu();
-                showToast("ВОШЁЛ");
+                //showToast("ВОШЁЛ");
                 onUserLogin();
-
-                Log.d(TAG, "ВОШЁЛ, uid: "+FirebaseAuth.getInstance().getUid());
             }
 
             // Осторожно с этими методами!
             @Override
             public void onLoggedOut() {
                 invalidateOptionsMenu();
-                showToast("ВЫШЕЛ");
+                //showToast("ВЫШЕЛ");
                 onUserLogout();
-
-                Log.d(TAG, "ВЫШЕЛ, uid: "+FirebaseAuth.getInstance().getUid());
             }
         });
 
@@ -112,15 +109,32 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         //checkCurrentUser();
     }
 
+    @Subscribe
+    public void onUserAuthorized(UserAuthorizedEvent event) {
+        showToast("Авторизовался "+event.getUid());
+    }
+
+    @Subscribe
+    public void onUserUnauthorized(UserUnauthorizedEvent event) {
+        showToast("Разавторизовался");
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         checkUnfinishedEdit();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -532,42 +546,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(Constants.KEY_LAST_LOGIN, new Date().getTime());
         editor.apply();
-    }
-
-    private void checkCurrentUser() {
-
-        User user = authService.currentUser();
-
-        if (null == user) {
-
-            FirebaseApp.getInstance().addLifecycleEventListener(new FirebaseAppLifecycleListener() {
-                @Override
-                public void onDeleted(String s, FirebaseOptions firebaseOptions) {
-
-                }
-            });
-
-            FirebaseApp.initializeApp(this);
-
-            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-            String userId = firebaseUser.getUid();
-
-//            String userId = authService.currentUserId();
-
-//            usersService.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
-//                @Override
-//                public void onUserReadSuccess(User user) {
-//                    authService.storeCurrentUser(user);
-//                    checkPushToken(user);
-//                }
-//
-//                @Override
-//                public void onUserReadFail(String errorMsg) {
-//                    showErrorMsg(R.string.BASE_VIEW_error_reading_current_user);
-//                }
-//            });
-        }
     }
 
     private void checkPushToken(User user) {

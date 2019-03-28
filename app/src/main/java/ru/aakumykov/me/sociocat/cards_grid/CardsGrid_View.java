@@ -546,7 +546,7 @@ public class CardsGrid_View extends BaseView implements
                             msg = "Ошибка подписки на новые карточки";
                         }
 
-                        showToast(msg);
+                        //showToast(msg);
                     }
 
                 });
