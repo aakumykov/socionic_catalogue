@@ -88,16 +88,20 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             @Override
             public void onLoggedIn() {
                 invalidateOptionsMenu();
-//                showToast("onLoggedIn()");
+                showToast("ВОШЁЛ");
                 onUserLogin();
+
+                Log.d(TAG, "ВОШЁЛ, uid: "+FirebaseAuth.getInstance().getUid());
             }
 
             // Осторожно с этими методами!
             @Override
             public void onLoggedOut() {
                 invalidateOptionsMenu();
-//                showToast("onLoggedOut()");
+                showToast("ВЫШЕЛ");
                 onUserLogout();
+
+                Log.d(TAG, "ВЫШЕЛ, uid: "+FirebaseAuth.getInstance().getUid());
             }
         });
 
@@ -105,7 +109,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         saveLastLoginTime();
 
         // Проверяю метку для push-сообщений
-        checkCurrentUser();
+        //checkCurrentUser();
     }
 
     @Override
@@ -179,7 +183,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.d(TAG, "onActivityResult()");
+        //Log.d(TAG, "onActivityResult()");
 
         switch (requestCode) {
 
@@ -403,20 +407,20 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public void closePage() {
-        Log.d(TAG, "closePage()");
+        //Log.d(TAG, "closePage()");
         finish();
     }
 
     @Override
     public void setPageTitle(int titleId) {
-        Log.d(TAG, "setPageTitle("+titleId+")");
+        //Log.d(TAG, "setPageTitle("+titleId+")");
         String title = getResources().getString(titleId);
         setPageTitle(title);
     }
 
     @Override
     public void setPageTitle(String title) {
-        Log.d(TAG, "setPageTitle("+title+")");
+        //Log.d(TAG, "setPageTitle("+title+")");
         ActionBar actionBar = getSupportActionBar();
         if (null != actionBar) {
             actionBar.setTitle(title);
@@ -435,14 +439,14 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         // Можно и без result, потому что статус авторизации обрабатывается в
         // AuthStateListener
         if (!authService.isUserLoggedIn()) {
-            Log.d(TAG, "doLogin()");
+            //Log.d(TAG, "doLogin()");
             Intent intent = new Intent(this, Login_View.class);
             startActivityForResult(intent, Constants.CODE_LOGIN);
         }
     }
 
     private void logout() {
-        Log.d(TAG, "logout()");
+        //Log.d(TAG, "logout()");
         authService.logout();
     }
 
@@ -467,7 +471,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 break;
             default:
                 showErrorMsg(R.string.ERROR_saving_card);
-                Log.d(TAG, "data: "+data);
+                Log.e(TAG, "data: "+data);
                 break;
         }
     }
