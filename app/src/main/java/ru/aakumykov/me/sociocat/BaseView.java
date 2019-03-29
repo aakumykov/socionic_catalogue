@@ -70,7 +70,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         authService.storeCurrentUser(event.getUser());
 
+        Log.d(TAG, "Авторизовался, 01");
         invalidateOptionsMenu();
+        supportInvalidateOptionsMenu();
+        Log.d(TAG, "Авторизовался, 02");
 
         onUserLogin();
 
@@ -83,7 +86,9 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         authService.clearCurrentUser();
 
+        Log.d(TAG, "Разавторизовался, 01");
         invalidateOptionsMenu();
+        Log.d(TAG, "Разавторизовался, 02");
 
         onUserLogout();
     }
@@ -108,6 +113,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "onCreateOptionsMenu()");
+
         super.onCreateOptionsMenu(menu);
 
         MenuInflater menuInflater = getMenuInflater();

@@ -168,6 +168,8 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "onCreateOptionsMenu()");
+
         MenuInflater menuInflater = getMenuInflater();
 
         menuInflater.inflate(R.menu.new_cards, menu);
