@@ -19,6 +19,7 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -296,7 +297,9 @@ public class UsersSingleton implements iUsersSingleton {
 
     @Override public void storeDeviceId(String userId, String deviceId, SaveDeviceIdCallbacks callbacks) {
 
-        deviceIdRef.child(deviceId).setValue(userId)
+        long currentTime = new Date().getTime();
+
+        deviceIdRef.child(deviceId).setValue(userId+"__"+currentTime)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override public void onSuccess(Void aVoid) {
                         callbacks.onStoreDeviceIdSuccess();
