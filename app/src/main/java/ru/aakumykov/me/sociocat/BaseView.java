@@ -68,6 +68,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public void onUserAuthorized(UserAuthorizedEvent event) {
         showToast("Авторизовался "+event.getUser().getKey());
 
+        authService.storeCurrentUser(event.getUser());
+
         invalidateOptionsMenu();
 
         onUserLogin();
@@ -78,6 +80,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Subscribe
     public void onUserUnauthorized(UserUnauthorizedEvent event) {
         showToast("Разавторизовался");
+
+        authService.clearCurrentUser();
 
         invalidateOptionsMenu();
 
