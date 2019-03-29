@@ -66,14 +66,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Subscribe
     public void onUserAuthorized(UserAuthorizedEvent event) {
-        showToast("Авторизовался "+event.getUser().getKey());
+        //showToast("Авторизовался "+event.getUser().getKey());
 
         authService.storeCurrentUser(event.getUser());
 
-        Log.d(TAG, "Авторизовался, 01");
         invalidateOptionsMenu();
-        supportInvalidateOptionsMenu();
-        Log.d(TAG, "Авторизовался, 02");
 
         onUserLogin();
 
@@ -82,13 +79,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Subscribe
     public void onUserUnauthorized(UserUnauthorizedEvent event) {
-        showToast("Разавторизовался");
+        //showToast("Разавторизовался");
 
         authService.clearCurrentUser();
 
-        Log.d(TAG, "Разавторизовался, 01");
         invalidateOptionsMenu();
-        Log.d(TAG, "Разавторизовался, 02");
 
         onUserLogout();
     }
@@ -113,15 +108,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        Log.d(TAG, "onPrepareOptionsMenu()");
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(TAG, "onCreateOptionsMenu()");
-
-        super.onCreateOptionsMenu(menu);
 
         MenuInflater menuInflater = getMenuInflater();
 
@@ -129,11 +115,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             menuInflater.inflate(R.menu.profile, menu);
             menuInflater.inflate(R.menu.logout, menu);
         } else {
-//            menuInflater.inflate(R.menu.user_out, menu);
             menuInflater.inflate(R.menu.login, menu);
         }
 
-        return true;
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override

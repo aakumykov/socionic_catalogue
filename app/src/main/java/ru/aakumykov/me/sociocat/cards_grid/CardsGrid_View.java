@@ -169,12 +169,8 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         Log.d(TAG, "onPrepareOptionsMenu()");
-        return super.onPrepareOptionsMenu(menu);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(TAG, "onCreateOptionsMenu()");
+        menu.clear();
 
         MenuInflater menuInflater = getMenuInflater();
 
@@ -188,7 +184,7 @@ public class CardsGrid_View extends BaseView implements
         menuInflater.inflate(R.menu.search, menu);
         initSearchWidget(menu);
 
-        return super.onCreateOptionsMenu(menu);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override

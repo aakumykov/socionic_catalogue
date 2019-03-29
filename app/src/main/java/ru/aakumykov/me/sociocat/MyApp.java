@@ -25,7 +25,7 @@ import ru.aakumykov.me.sociocat.services.UsersSingleton;
 
 public class MyApp extends Application {
 
-    private final static String TAG = "MyApp";
+    private final static String TAG = "=MyApp=";
     private iAuthSingleton authService;
     private iUsersSingleton usersService;
 
@@ -68,6 +68,8 @@ public class MyApp extends Application {
 
 
     private void registerPushToken(User user) {
+        Log.d(TAG, "registerPushToken()");
+
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
                     @Override public void onSuccess(InstanceIdResult instanceIdResult) {
