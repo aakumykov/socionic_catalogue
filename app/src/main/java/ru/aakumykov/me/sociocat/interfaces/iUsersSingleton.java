@@ -20,7 +20,7 @@ public interface iUsersSingleton {
     void checkEmailExists(String email, CheckExistanceCallbacks callbacks);
     void setEmailVerified(String userId, boolean isVerified, final EmailVerificationCallbacks callbacks);
     void updatePushToken(String token, PushTokenCallbacks callbacks);
-
+    void storeDeviceId(String userId, String deviceId, SaveDeviceIdCallbacks callbacks);
 
     interface CreateCallbacks {
         void onUserCreateSuccess(User user);
@@ -62,5 +62,10 @@ public interface iUsersSingleton {
     interface PushTokenCallbacks {
         void onPushTokenUpdateSuccess(String token);
         void onPushTokenUpdateError(String errorMsg);
+    }
+
+    interface SaveDeviceIdCallbacks {
+        void onStoreDeviceIdSuccess();
+        void onStoreDeviceIdFailed(String errorMSg);
     }
 }

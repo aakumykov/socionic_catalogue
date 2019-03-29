@@ -52,14 +52,12 @@ public class Login_View extends BaseView implements
         super.onStart();
         presenter.linkView(this);
         presenter.processInputIntent(getIntent());
-        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         presenter.unlinkView();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override

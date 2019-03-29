@@ -4,6 +4,8 @@ import android.app.Application;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,6 +49,7 @@ public class MyApp extends Application {
                         @Override
                         public void onUserReadSuccess(User user) {
                             EventBus.getDefault().post(new UserAuthorizedEvent(user));
+                            registerPushToken(user);
                         }
 
                         @Override
@@ -63,6 +66,31 @@ public class MyApp extends Application {
         });
     }
 
+
+    private void registerPushToken(User user) {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                    @Override public void onSuccess(InstanceIdResult instanceIdResult) {
+                        String devId = instanceIdResult.getId();
+
+                        usersService.storeDeviceId(user.getKey(), devId, new iUsersSingleton.SaveDeviceIdCallbacks() {
+                            @Override public void onStoreDeviceIdSuccess() {
+                                Log.d(TAG, "device id saved: "+devId);
+                            }
+
+                            @Override public void onStoreDeviceIdFailed(String errorMSg) {
+                                Log.e(TAG, errorMSg);
+                            }
+                        });
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+    }
 
     private void checkPushToken(User user) {
 

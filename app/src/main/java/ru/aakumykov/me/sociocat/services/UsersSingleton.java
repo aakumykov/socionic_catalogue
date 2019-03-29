@@ -43,10 +43,9 @@ public class UsersSingleton implements iUsersSingleton {
     /* Одиночка */
 
     private final static String TAG = "UsersSingleton";
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference rootRef = firebaseDatabase.getReference().child("/");
-    private DatabaseReference usersRef = firebaseDatabase.getReference().child(Constants.USERS_PATH);
-
+    private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("/");
+    private DatabaseReference usersRef = rootRef.child(Constants.USERS_PATH);
+    private DatabaseReference deviceIdRef = rootRef.child(Constants.DEVICE_ID_PATH);
 
     // Интерфейсные методы
     @Override
@@ -295,6 +294,22 @@ public class UsersSingleton implements iUsersSingleton {
                 });
     }
 
+    @Override public void storeDeviceId(String userId, String deviceId, SaveDeviceIdCallbacks callbacks) {
+
+        deviceIdRef.child(deviceId).setValue(userId)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override public void onSuccess(Void aVoid) {
+                        callbacks.onStoreDeviceIdSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override public void onFailure(@NonNull Exception e) {
+                        callbacks.onStoreDeviceIdFailed(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+
+    }
 
     // Внутренние методы
     private void checkExistance(Query query, final CheckExistanceCallbacks callbacks) {
