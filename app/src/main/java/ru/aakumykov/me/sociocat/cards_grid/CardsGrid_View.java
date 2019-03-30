@@ -109,7 +109,7 @@ public class CardsGrid_View extends BaseView implements
 
         getFCMToken();
 
-        //subscribeToNewCardsNotifications();
+        subscribeToNewCardsNotifications();
     }
 
     @Override
@@ -546,7 +546,7 @@ public class CardsGrid_View extends BaseView implements
                     }
                 });*/
 
-    /*    FirebaseMessaging.getInstance().subscribeToTopic("new_cards")
+        FirebaseMessaging.getInstance().subscribeToTopic("new_cards")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
 
                     @Override
@@ -558,10 +558,9 @@ public class CardsGrid_View extends BaseView implements
                             msg = "Ошибка подписки на новые карточки";
                         }
 
-                        //showToast(msg);
+                        showToast(msg);
                     }
 
                 });
-    */
     }
 }

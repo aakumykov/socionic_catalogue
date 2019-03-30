@@ -83,8 +83,17 @@ public class PushNotificationsService extends FirebaseMessagingService {
                 PendingIntent.FLAG_ONE_SHOT
         );
 
-        String title = notification.getTitle();
-        String message = notification.getBody();
+        String title = "Нет заголовка";
+        String message = "Нет сообщения";
+
+        if (null != notification) {
+            title = notification.getTitle();
+            message = notification.getBody();
+        }
+        else if (data.size() > 0) {
+            title = data.get("title");
+            message = data.containsKey("message") ? data.get("message") : "";
+        }
 
         Uri soundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
