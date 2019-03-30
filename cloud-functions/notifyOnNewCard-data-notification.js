@@ -3,30 +3,23 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 
 
-exports.sendMessageToDevice = functions.database.ref('/cards/{cardId}')
+exports.notifyOnNewCard = functions.database.ref('/cards/{cardId}')
 	.onWrite( (change,context) => {
 
 		if (change.after.exists()) {
 			let cardData = change.after.val();
 			
-			var registrationToken = 'drMiSgtiHKQ:APA91bFLrbFSzYwjHVtY8zKBQbvilK1TWTaI95v9GjKeRcbDsIvF53NQCNu7M2lhENyLS3UVhLJQNraknxxNET1-IFRTRGyLHZXZXIXX6Gs24NK7YBUXO5US0bVW1A9JCaZMLpSIEnTJ';
-
 			var message = {
-				// token: registrationToken,
-				notification: {
-					title: "Новая карточка",
-					body: "«" + cardData.title + "»"
-				},
+				topic: 'new_cards',
 				data: {
-					CARD_KEY: cardData.key
-				},
-				topic: 'new_cards'
+					card_key: cardData.key,
+					card_title: cardData.title,
+					card_user_id: cardData.userId
+				}
 			};
 
 			admin.messaging().send(message)
 				.then((response) => {
-					// Response is a message ID string.
-					console.log('Successfully sent message:', response);
 					return true;
 				})
 				.catch((error) => {
@@ -39,7 +32,7 @@ exports.sendMessageToDevice = functions.database.ref('/cards/{cardId}')
 	});
 
 
-exports.notifyOnNewCardAdvanced = functions.database.ref('/cards/{cardId}').onWrite( (change, context) => {
+/*exports.notifyOnNewCardAdvanced = functions.database.ref('/cards/{cardId}').onWrite( (change, context) => {
 
 	if (!change.after.exists()) {
 		return null;
@@ -83,4 +76,4 @@ exports.notifyOnNewCardAdvanced = functions.database.ref('/cards/{cardId}').onWr
 	);
 
 	return true;
-});
+});*/
