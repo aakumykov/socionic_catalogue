@@ -18,10 +18,12 @@ import androidx.core.app.NotificationCompat;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
+import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 
 public class PushNotificationsService extends FirebaseMessagingService {
 
     private final static String TAG = "PushNotifService";
+    private iAuthSingleton authService = AuthSingleton.getInstance();
 
     @Override
     public void onCreate() {
@@ -57,23 +59,38 @@ public class PushNotificationsService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        showNotification(remoteMessage.getNotification(), remoteMessage.getData());
+        try {
+            showNotification(remoteMessage.getData());
+        } catch (Exception e) {
+            // TODO: как собирать эту ошибку?
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public void onDeletedMessages() {
-        super.onDeletedMessages();
-    }
+    private void showNotification(@Nullable Map<String,String> data) throws Exception {
 
-    private void showNotification(@Nullable RemoteMessage.Notification notification, @Nullable Map<String,String> data) {
-
-        if (null == notification && null == data)
+        if (null == data) {
+            Log.w(TAG, "There is no data in push notification: "+data);
             return;
+        }
 
-        String cardKey = data.get(Constants.CARD_KEY);
+        String cardUserId = data.get("card_user_id");
+        if (null == cardUserId) {
+            Log.w(TAG, "There is no card's user id in push notification: "+data);
+            return;
+        }
+
+        // Не показываю уведомление автору карточки
+        if (cardUserId.equals(authService.currentUserId())) {
+            return;
+        }
+
+        String title = getResources().getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created);
+        String cardKey = data.get("card_key");
+        String cardTitle = data.get("card_title");
 
         Intent intent = new Intent(this, CardShow_View.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(Constants.CARD_KEY, cardKey);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -83,24 +100,12 @@ public class PushNotificationsService extends FirebaseMessagingService {
                 PendingIntent.FLAG_ONE_SHOT
         );
 
-        String title = "Нет заголовка";
-        String message = "Нет сообщения";
-
-        if (null != notification) {
-            title = notification.getTitle();
-            message = notification.getBody();
-        }
-        else if (data.size() > 0) {
-            title = data.get("title");
-            message = data.containsKey("message") ? data.get("message") : "";
-        }
-
-        Uri soundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notification_default)
                 .setContentTitle(title)
-                .setContentText(message)
+                .setContentText(cardTitle)
                 .setAutoCancel(true)
                 .setSound(soundUri)
                 .setContentIntent(pendingIntent);
