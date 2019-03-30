@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.services;
+package ru.aakumykov.me.sociocat.utils;
 
 import androidx.annotation.NonNull;
 import android.util.Log;
