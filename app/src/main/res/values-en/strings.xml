@@ -366,5 +366,5 @@
     <string name="CARD_EDIT_form_filling_error">Form filling error</string>
     <string name="BASE_VIEW_error_reading_current_user">Error reading current user</string>
     <string name="BASE_VIEW_error_recieving_push_token">Error recieving PUSH-messages token</string>
-    <string name="PUSH_NOTIFICATION_SERVICE_new_card_created">New card created</string>
+    <string name="PUSH_NOTIFICATION_SERVICE_new_card_created_title">%1$s create new card</string>
 </resources>

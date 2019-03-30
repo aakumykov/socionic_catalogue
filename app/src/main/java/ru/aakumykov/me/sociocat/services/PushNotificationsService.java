@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.util.Log;
@@ -77,6 +78,7 @@ public class PushNotificationsService extends FirebaseMessagingService {
         }
 
         String cardUserId = data.get("card_user_id");
+
         if (null == cardUserId) {
             Log.w(TAG, "There is no card's user id in push notification: "+data);
             return;
@@ -87,9 +89,12 @@ public class PushNotificationsService extends FirebaseMessagingService {
             return;
         }
 
-        String title = getResources().getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created);
-        String cardKey = data.get("card_key");
+        String cardUserName = data.get("card_user_name");
         String cardTitle = data.get("card_title");
+        String cardKey = data.get("card_key");
+
+        String title = getResources().getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_title, cardUserName);
+        String message = getResources().getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_message, cardTitle);
 
         Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, cardKey);
