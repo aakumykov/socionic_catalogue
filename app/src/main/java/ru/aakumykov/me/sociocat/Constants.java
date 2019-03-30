@@ -74,7 +74,7 @@ public final class Constants {
     public final static int CARDS_GRID_QUOTE_MAX_LENGTH = 50;
 
     public final static int USER_NAME_MIN_LENGTH = 2;
-    public final static int USER_NAME_MAX_LENGTH = 16;
+    public final static int USER_NAME_MAX_LENGTH = 30;
     public final static int PASSWORD_MIN_LENGTH = 6;
 
     public final static String SHARED_PREFERENCES_EMAIL = "SHARED_PREFERENCES_EMAIL";

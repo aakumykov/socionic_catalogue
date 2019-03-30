@@ -40,6 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".dynamic_link_processor.DLP_View"
             android:noHistory="true">
@@ -53,7 +54,7 @@
                     android:host="sociocat.example.org"
                     android:scheme="https" />
                 <data
-                    android:host="androidtest73e48.page.link"
+                    android:host="sociocat.page.link"
                     android:scheme="https" />
             </intent-filter>
         </activity>
