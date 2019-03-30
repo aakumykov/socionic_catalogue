@@ -49,7 +49,7 @@ public class MyApp extends Application {
                         @Override
                         public void onUserReadSuccess(User user) {
                             EventBus.getDefault().post(new UserAuthorizedEvent(user));
-                            registerPushToken(user);
+//                            registerPushToken(user);
                         }
 
                         @Override
