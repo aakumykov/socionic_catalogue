@@ -34,8 +34,8 @@ import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.login.Login_View;
-import ru.aakumykov.me.sociocat.services.AuthSingleton;
-import ru.aakumykov.me.sociocat.services.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.tags.list.TagsList_View;
 import ru.aakumykov.me.sociocat.users.show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
@@ -45,8 +45,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 {
     public static String PACKAGE_NAME;
     private final static String TAG = "BaseView";
-    private iCardsSingleton cardsService = CardsSingleton.getInstance();
-    private iAuthSingleton authService = AuthSingleton.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
 
     // Абстрактные методы
     public abstract void onUserLogin();
@@ -68,7 +68,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public void onUserAuthorized(UserAuthorizedEvent event) {
         //showToast("Авторизовался "+event.getUser().getKey());
 
-        authService.storeCurrentUser(event.getUser());
+        authSingleton.storeCurrentUser(event.getUser());
 
         invalidateOptionsMenu();
 
@@ -81,7 +81,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public void onUserUnauthorized(UserUnauthorizedEvent event) {
         //showToast("Разавторизовался");
 
-        authService.clearCurrentUser();
+        authSingleton.clearCurrentUser();
 
         invalidateOptionsMenu();
 
@@ -349,11 +349,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     // Геттеры
     public iCardsSingleton getCardsService() {
-        return cardsService;
+        return cardsSingleton;
     }
 
     public iAuthSingleton auth() {
-        return authService;
+        return authSingleton;
     }
 
 
@@ -419,7 +419,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void login() {
         // Можно и без result, потому что статус авторизации обрабатывается в
         // AuthStateListener
-        if (!authService.isUserLoggedIn()) {
+        if (!authSingleton.isUserLoggedIn()) {
             //Log.d(TAG, "doLogin()");
             Intent intent = new Intent(this, Login_View.class);
             startActivityForResult(intent, Constants.CODE_LOGIN);
@@ -428,13 +428,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     private void logout() {
         //Log.d(TAG, "logout()");
-        authService.logout();
+        authSingleton.logout();
     }
 
     private void seeUserProfile() {
         try {
             Intent intent = new Intent(this, UserShow_View.class);
-            intent.putExtra(Constants.USER_ID, authService.currentUserId());
+            intent.putExtra(Constants.USER_ID, authSingleton.currentUserId());
             startActivity(intent);
         } catch (Exception e) {
             showErrorMsg(e.getMessage());

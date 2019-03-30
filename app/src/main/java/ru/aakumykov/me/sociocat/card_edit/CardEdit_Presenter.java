@@ -26,10 +26,10 @@ import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.services.AuthSingleton;
-import ru.aakumykov.me.sociocat.services.CardsSingleton;
-import ru.aakumykov.me.sociocat.services.StorageSingleton;
-import ru.aakumykov.me.sociocat.services.TagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
+import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -42,10 +42,10 @@ public class CardEdit_Presenter implements
     private static final String TAG = "CardEdit_Presenter";
     private iCardEdit.View view;
     private SharedPreferences sharedPreferences;
-    private iAuthSingleton authService = AuthSingleton.getInstance();
-    private iCardsSingleton cardsService = CardsSingleton.getInstance();
-    private iTagsSingleton tagsService = TagsSingleton.getInstance();
-    private iStorageSingleton storageService = StorageSingleton.getInstance();
+    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
+    private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
     private Card currentCard;
     private HashMap<String,Boolean> oldCardTags;
@@ -103,7 +103,7 @@ public class CardEdit_Presenter implements
 
     @Override
     public void loadTagsList(final iCardEdit.TagsListLoadCallbacks callbacks) {
-        tagsService.listTags(new iTagsSingleton.ListCallbacks() {
+        tagsSingleton.listTags(new iTagsSingleton.ListCallbacks() {
 
             @Override
             public void onTagsListSuccess(List<Tag> tagsList) {
@@ -314,7 +314,7 @@ public class CardEdit_Presenter implements
             if (null != view)
                 view.showImageProgressBar();
 
-            storageService.uploadImage(imageBitmap, imageType, fileName, new iStorageSingleton.FileUploadCallbacks() {
+            storageSingleton.uploadImage(imageBitmap, imageType, fileName, new iStorageSingleton.FileUploadCallbacks() {
 
                 @Override public void onFileUploadProgress(int progress) {
 
@@ -355,8 +355,8 @@ public class CardEdit_Presenter implements
         }
         else {
             // TODO: нужна проверка на авторизованность!
-            currentCard.setUserId(authService.currentUserId());
-            currentCard.setUserName(authService.currentUserName());
+            currentCard.setUserId(authSingleton.currentUserId());
+            currentCard.setUserName(authSingleton.currentUserName());
 
             // Время создания/правки
             Long currentTime = new Date().getTime();
@@ -374,7 +374,7 @@ public class CardEdit_Presenter implements
 
             view.showProgressMessage(R.string.CARD_EDIT_saving_card);
 
-            cardsService.saveCard(currentCard, this);
+            cardsSingleton.saveCard(currentCard, this);
         }
     }
 
@@ -395,7 +395,7 @@ public class CardEdit_Presenter implements
     // Внутренние методы
     private void startCreateCard(Intent data) {
         Card card = data.getParcelableExtra(Constants.CARD);
-        card.setKey(cardsService.createKey());
+        card.setKey(cardsSingleton.createKey());
 
         editMode = Enums.CardEditMode.CREATE;
 
@@ -416,7 +416,7 @@ public class CardEdit_Presenter implements
             view.disableForm();
         }
 
-        cardsService.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
+        cardsSingleton.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
             @Override
             public void onCardLoadSuccess(Card card) {
                 currentCard = card;
@@ -442,7 +442,7 @@ public class CardEdit_Presenter implements
         isExternalDataMode = (0 != (intent.getFlags() & Intent.FLAG_ACTIVITY_NO_HISTORY));
 
         Card card = new Card();
-        card.setKey(cardsService.createKey());
+        card.setKey(cardsSingleton.createKey());
         currentCard = card;
     }
 
@@ -649,7 +649,7 @@ public class CardEdit_Presenter implements
         if (null == card)
             throw new IllegalArgumentException("Card is NULL");
 
-        tagsService.updateCardTags(
+        tagsSingleton.updateCardTags(
                 card.getKey(),
                 oldCardTags,
                 card.getTags(),

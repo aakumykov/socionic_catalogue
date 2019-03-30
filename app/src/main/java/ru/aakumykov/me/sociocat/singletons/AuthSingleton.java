@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.services;
+package ru.aakumykov.me.sociocat.singletons;
 
 import androidx.annotation.NonNull;
 import android.util.Log;
@@ -97,7 +97,7 @@ public class AuthSingleton implements iAuthSingleton
 
     @Override
     public void restoreCurrentUser(final iAuthSingleton.UserRestoreCallbacks callbacks) {
-//        usersService.getUserById(currentUserId(), new iUsersSingleton.ReadCallbacks() {
+//        usersSingleton.getUserById(currentUserId(), new iUsersSingleton.ReadCallbacks() {
 //            @Override
 //            public void onUserReadSuccess(User user) {
 //                storeCurrentUser(user);

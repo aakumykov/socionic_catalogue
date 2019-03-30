@@ -1,13 +1,13 @@
 package ru.aakumykov.me.sociocat.reset_password_step1;
 
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
-import ru.aakumykov.me.sociocat.services.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
 
 public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Presenter {
 
     private iResetPasswordStep1.View view;
-    private iAuthSingleton authService = AuthSingleton.getInstance();
+    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
 
     @Override
     public void linkView(iResetPasswordStep1.View view) {
@@ -24,7 +24,7 @@ public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Present
 
         String email = view.getEmail();
 
-        authService.resetPasswordEmail(email, new iAuthSingleton.ResetPasswordCallbacks() {
+        authSingleton.resetPasswordEmail(email, new iAuthSingleton.ResetPasswordCallbacks() {
             @Override
             public void onEmailSendSuccess() {
                 callbacks.onEmailSendSucces();

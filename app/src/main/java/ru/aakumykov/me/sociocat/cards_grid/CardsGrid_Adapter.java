@@ -1,7 +1,5 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
-import android.content.res.ColorStateList;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +24,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.services.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
@@ -48,7 +46,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<Card> cardsListFiltered;
     private iAdapterUser adapterUser;
 
-    private iAuthSingleton authService = AuthSingleton.getInstance();
+    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
 
     // Конструктор
     CardsGrid_Adapter(List<Card> cardsList) {
@@ -238,7 +236,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
 
-        if (authService.isAdmin() || authService.isCardOwner(cardsList.get(listPosition))) {
+        if (authSingleton.isAdmin() || authSingleton.isCardOwner(cardsList.get(listPosition))) {
             popupMenu.inflate(R.menu.edit);
             popupMenu.inflate(R.menu.delete);
         }

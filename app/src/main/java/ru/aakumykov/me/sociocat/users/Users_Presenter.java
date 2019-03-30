@@ -13,9 +13,9 @@ import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.services.AuthSingleton;
-import ru.aakumykov.me.sociocat.services.StorageSingleton;
-import ru.aakumykov.me.sociocat.services.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Users_Presenter implements
@@ -29,9 +29,9 @@ public class Users_Presenter implements
     private iUsers.ShowView showView;
     private iUsers.ListView listView;
     private iUsers.EditView editView;
-    private iUsersSingleton usersService = UsersSingleton.getInstance();
-    private iAuthSingleton authService = AuthSingleton.getInstance();
-    private iStorageSingleton storageService = StorageSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
+    private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
     private User currentUser;
     private String editedUserId;
@@ -71,11 +71,11 @@ public class Users_Presenter implements
     // Пользовательские методы
     @Override
     public void prepareUserEdit(String userId) throws Exception {
-        if (authService.isUserLoggedIn())
+        if (authSingleton.isUserLoggedIn())
         {
-            if (authService.currentUserId().equals(userId))
+            if (authSingleton.currentUserId().equals(userId))
             {
-                usersService.getUserById(userId, this);
+                usersSingleton.getUserById(userId, this);
             }
             else {
                 throw new IllegalAccessException("Cannot edit profile of another user.");
@@ -96,7 +96,7 @@ public class Users_Presenter implements
         if (null == userId) {
             throw new Exception("userId == null");
         }
-        usersService.getUserById(userId, callbacks);
+        usersSingleton.getUserById(userId, callbacks);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class Users_Presenter implements
     @Override
     public void loadList(iUsersSingleton.ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
-        usersService.listUsers(callbacks);
+        usersSingleton.listUsers(callbacks);
     }
 
     @Override
@@ -120,11 +120,11 @@ public class Users_Presenter implements
     @Override
     public void saveProfile() throws Exception {
 
-        if (!authService.isUserLoggedIn()) {
+        if (!authSingleton.isUserLoggedIn()) {
             throw new IllegalAccessException("You is not logged in.");
         }
 
-        if (!authService.currentUserId().equals(editedUserId)) {
+        if (!authSingleton.currentUserId().equals(editedUserId)) {
             throw new IllegalAccessException("Cannot save profile of another user.");
         }
 
@@ -140,13 +140,13 @@ public class Users_Presenter implements
         if (!currentUser.hasAvatar() && imageSelected) {
             try {
                 Bitmap imageBitmap = editView.getImageBitmap();
-                String fileName = authService.currentUserId() + "."+imageType;
+                String fileName = authSingleton.currentUserId() + "."+imageType;
 
                 editView.showAvatarThrobber();
                 editView.disableEditForm();
                 editView.showInfoMsg(R.string.USER_EDIT_saving_avatar);
 
-                storageService.uploadAvatar(imageBitmap, imageType, fileName, this);
+                storageSingleton.uploadAvatar(imageBitmap, imageType, fileName, this);
 
             } catch (Exception e) {
                 onFileUploadFail(e.getMessage());
@@ -230,7 +230,7 @@ public class Users_Presenter implements
 
     @Override
     public void onUserSaveSuccess(User user) {
-        authService.storeCurrentUser(user);
+        authSingleton.storeCurrentUser(user);
         editView.hideProgressBar();
         editView.finishEdit(user, true);
     }
@@ -250,7 +250,7 @@ public class Users_Presenter implements
         editView.showInfoMsg(R.string.USER_EDIT_saving_profile);
 
         try {
-            usersService.saveUser(currentUser, new iUsersSingleton.SaveCallbacks() {
+            usersSingleton.saveUser(currentUser, new iUsersSingleton.SaveCallbacks() {
                 @Override
                 public void onUserSaveSuccess(User user) {
                     editView.showToast(R.string.USER_EDIT_profile_saved);

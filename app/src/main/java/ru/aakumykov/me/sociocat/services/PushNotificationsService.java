@@ -19,11 +19,12 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
 public class PushNotificationsService extends FirebaseMessagingService {
 
     private final static String TAG = "PushNotifService";
-    private iAuthSingleton authService = AuthSingleton.getInstance();
+    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
 
     @Override
     public void onCreate() {
@@ -82,7 +83,7 @@ public class PushNotificationsService extends FirebaseMessagingService {
         }
 
         // Не показываю уведомление автору карточки
-        if (cardUserId.equals(authService.currentUserId())) {
+        if (cardUserId.equals(authSingleton.currentUserId())) {
             return;
         }
 

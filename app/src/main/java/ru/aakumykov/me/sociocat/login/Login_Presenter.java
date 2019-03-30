@@ -3,9 +3,6 @@ package ru.aakumykov.me.sociocat.login;
 import android.content.Intent;
 import android.util.Log;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.Constants;
@@ -14,8 +11,8 @@ import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.services.AuthSingleton;
-import ru.aakumykov.me.sociocat.services.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 
 public class Login_Presenter implements
         iLogin.Presenter,
@@ -23,8 +20,8 @@ public class Login_Presenter implements
 {
     private final static String TAG = "Login_Presenter";
     private iLogin.View view;
-    private iAuthSingleton authService = AuthSingleton.getInstance();
-    private iUsersSingleton usersService = UsersSingleton.getInstance();
+    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private String intentAction;
 
 
@@ -62,7 +59,7 @@ public class Login_Presenter implements
     @Override
     public void doLogin(String email, String password) {
         try {
-            authService.login(email, password, this);
+            authSingleton.login(email, password, this);
         }
         catch (Exception e) {
             view.hideProgressBar();
@@ -74,7 +71,7 @@ public class Login_Presenter implements
 
     @Override
     public void cancelLogin() {
-        authService.cancelLogin();
+        authSingleton.cancelLogin();
         view.finishLogin(true);
     }
 
@@ -83,7 +80,7 @@ public class Login_Presenter implements
     @Override
     public void onLoginSuccess(final String userId) {
 
-        usersService.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
+        usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
 
@@ -105,7 +102,7 @@ public class Login_Presenter implements
             public void onUserReadFail(String errorMsg) {
                 view.showToast(R.string.LOGIN_login_error);
                 Log.e(TAG, errorMsg);
-                authService.logout();
+                authSingleton.logout();
             }
         });
     }

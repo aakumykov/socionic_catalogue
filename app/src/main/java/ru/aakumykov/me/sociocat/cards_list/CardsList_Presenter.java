@@ -12,11 +12,11 @@ import ru.aakumykov.me.sociocat.interfaces.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.services.AuthSingleton;
-import ru.aakumykov.me.sociocat.services.CardsSingleton;
-import ru.aakumykov.me.sociocat.services.CommentsSingleton;
-import ru.aakumykov.me.sociocat.services.StorageSingleton;
-import ru.aakumykov.me.sociocat.services.TagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
+import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
+import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 
 public class CardsList_Presenter implements
         iCardsList.Presenter,
@@ -25,11 +25,11 @@ public class CardsList_Presenter implements
 {
     private final static String TAG = "CardsList_Presenter";
     private iCardsList.View view;
-    private iAuthSingleton authService = AuthSingleton.getInstance();
-    private iCardsSingleton cardsService = CardsSingleton.getInstance();
-    private iTagsSingleton tagsService = TagsSingleton.getInstance();
-    private iCommentsSingleton commentsService = CommentsSingleton.getInstance();
-    private iStorageSingleton storageService = StorageSingleton.getInstance();
+    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
+    private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
+    private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
     private Card currentCard = null;
     private String tagFilter = null;
@@ -54,18 +54,18 @@ public class CardsList_Presenter implements
 
         if (null != tagFilter) {
             this.tagFilter = tagFilter;
-            cardsService.loadList(tagFilter,this);
+            cardsSingleton.loadList(tagFilter,this);
         }
         else {
             this.tagFilter = null;
-            cardsService.loadList(this);
+            cardsSingleton.loadList(this);
         }
     }
 
     @Override
     public void deleteCard(final Card card) {
 
-        if (!authService.isCardOwner(card) && !authService.isAdmin()) {
+        if (!authSingleton.isCardOwner(card) && !authSingleton.isAdmin()) {
             view.showErrorMsg(R.string.CARDS_LIST_you_cannot_delete_this_card);
             return;
         }
@@ -73,7 +73,7 @@ public class CardsList_Presenter implements
         this.currentCard = card;
 
         try {
-            cardsService.deleteCard(card, this);
+            cardsSingleton.deleteCard(card, this);
         } catch (Exception e) {
             onCardDeleteError(e.getMessage());
             e.printStackTrace();
@@ -124,7 +124,7 @@ public class CardsList_Presenter implements
 
     private void deleteCardTags(Card card){
         try {
-            tagsService.updateCardTags(
+            tagsSingleton.updateCardTags(
                     currentCard.getKey(),
                     currentCard.getTags(),
                     null,
@@ -141,7 +141,7 @@ public class CardsList_Presenter implements
                     }
             );
 
-            storageService.deleteImage(card.getFileName(), new iStorageSingleton.FileDeletionCallbacks() {
+            storageSingleton.deleteImage(card.getFileName(), new iStorageSingleton.FileDeletionCallbacks() {
                 @Override
                 public void onDeleteSuccess() {
 
@@ -153,7 +153,7 @@ public class CardsList_Presenter implements
                 }
             });
 
-            commentsService.deleteCommentsForCard(card.getKey());
+            commentsSingleton.deleteCommentsForCard(card.getKey());
 
 
         } catch (Exception e) {
@@ -164,7 +164,7 @@ public class CardsList_Presenter implements
 
     private void deleteCardComments(Card card) {
         try {
-            commentsService.deleteCommentsForCard(card.getKey());
+            commentsSingleton.deleteCommentsForCard(card.getKey());
         } catch (Exception e) {
             view.showErrorMsg(R.string.error_deleting_card_comments, e.getMessage());
             e.printStackTrace();
@@ -173,7 +173,7 @@ public class CardsList_Presenter implements
 
     private void deleteCardImage(Card card) {
         try {
-            storageService.deleteImage(card.getFileName(), new iStorageSingleton.FileDeletionCallbacks() {
+            storageSingleton.deleteImage(card.getFileName(), new iStorageSingleton.FileDeletionCallbacks() {
                 @Override
                 public void onDeleteSuccess() {
 

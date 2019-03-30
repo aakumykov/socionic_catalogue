@@ -20,21 +20,21 @@ import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.services.AuthSingleton;
-import ru.aakumykov.me.sociocat.services.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 
 public class MyApp extends Application {
 
     private final static String TAG = "=MyApp=";
-    private iAuthSingleton authService;
-    private iUsersSingleton usersService;
+    private iAuthSingleton authSingleton;
+    private iUsersSingleton usersSingleton;
 
 
     @Override public void onCreate() {
         super.onCreate();
 
-        authService = AuthSingleton.getInstance();
-        usersService = UsersSingleton.getInstance();
+        authSingleton = AuthSingleton.getInstance();
+        usersSingleton = UsersSingleton.getInstance();
 
         FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
 
@@ -45,7 +45,7 @@ public class MyApp extends Application {
                 if (null != firebaseUser) {
                     String uid = firebaseUser.getUid();
 
-                    usersService.getUserById(uid, new iUsersSingleton.ReadCallbacks() {
+                    usersSingleton.getUserById(uid, new iUsersSingleton.ReadCallbacks() {
                         @Override
                         public void onUserReadSuccess(User user) {
                             EventBus.getDefault().post(new UserAuthorizedEvent(user));
@@ -75,7 +75,7 @@ public class MyApp extends Application {
                     @Override public void onSuccess(InstanceIdResult instanceIdResult) {
                         String devId = instanceIdResult.getId();
 
-                        usersService.storeDeviceId(user.getKey(), devId, new iUsersSingleton.SaveDeviceIdCallbacks() {
+                        usersSingleton.storeDeviceId(user.getKey(), devId, new iUsersSingleton.SaveDeviceIdCallbacks() {
                             @Override public void onStoreDeviceIdSuccess() {
                                 Log.d(TAG, "device id saved: "+devId);
                             }
@@ -119,12 +119,12 @@ public class MyApp extends Application {
 
                                     String token = instanceIdResult.getToken();
 
-                                    usersService.updatePushToken(token, new iUsersSingleton.PushTokenCallbacks() {
+                                    usersSingleton.updatePushToken(token, new iUsersSingleton.PushTokenCallbacks() {
                                         @Override
                                         public void onPushTokenUpdateSuccess(String token) {
-                                            User user = authService.currentUser();
+                                            User user = authSingleton.currentUser();
                                             user.setPushToken(token);
-                                            authService.storeCurrentUser(user); // TODO: добавляет неоднозначности
+                                            authSingleton.storeCurrentUser(user); // TODO: добавляет неоднозначности
                                         }
 
                                         @Override
