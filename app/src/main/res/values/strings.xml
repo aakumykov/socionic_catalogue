@@ -370,6 +370,6 @@
     <string name="CARD_EDIT_form_filling_error">Ошибка заполнения формы</string>
     <string name="BASE_VIEW_error_reading_current_user">Ошибка чтения текущего пользователя</string>
     <string name="BASE_VIEW_error_recieving_push_token">Ошибка получения метки PUSH-сообщений</string>
-    <string name="PUSH_NOTIFICATION_SERVICE_new_card_created_title">%1$s создал новую карточку</string>
+    <string name="PUSH_NOTIFICATION_SERVICE_new_card_created_title">Новая карточка от %1$s</string>
     <string name="PUSH_NOTIFICATION_SERVICE_new_card_created_message" translatable="false">«%1$s»</string>
 </resources>
