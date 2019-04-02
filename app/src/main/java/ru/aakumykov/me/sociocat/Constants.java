@@ -83,4 +83,5 @@ public final class Constants {
 
     public final static String KEY_LAST_LOGIN = "KEY_LAST_LOGIN";
 
+    public final static String TOPIC_NEW_CARDS = "new_cards";
 }

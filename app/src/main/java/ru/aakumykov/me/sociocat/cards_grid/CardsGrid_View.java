@@ -108,8 +108,6 @@ public class CardsGrid_View extends BaseView implements
         recyclerView.setAdapter(dataAdapter);
 
         getFCMToken();
-
-        subscribeToNewCardsNotifications();
     }
 
     @Override
@@ -536,31 +534,4 @@ public class CardsGrid_View extends BaseView implements
                 });
     }
 
-    private void subscribeToNewCardsNotifications() {
-
-        /*FirebaseMessaging.getInstance().unsubscribeFromTopic("new_cards")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        showToast("Отписан от new_cards");
-                    }
-                });*/
-
-        FirebaseMessaging.getInstance().subscribeToTopic("new_cards")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        String msg = "Вы подписаны на новые карточки";
-
-                        if (!task.isSuccessful()) {
-                            msg = "Ошибка подписки на новые карточки";
-                        }
-
-                        showToast(msg);
-                    }
-
-                });
-    }
 }

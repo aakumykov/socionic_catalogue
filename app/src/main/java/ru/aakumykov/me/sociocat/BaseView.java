@@ -66,7 +66,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         // TODO: попробовать перенести в MyApp
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
     }
 
     @Subscribe
