@@ -276,7 +276,7 @@ public class CardEdit_Presenter implements
                     clearEditState();
 
                 } else {
-                    throw new Exception("Card from shared preferences is NULL");
+                    throw new Exception("Card from shared ru.aakumykov.me.sociocat.preferences is NULL");
                 }
             }
         }

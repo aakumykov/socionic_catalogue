@@ -367,4 +367,9 @@
     <string name="BASE_VIEW_error_reading_current_user">Error reading current user</string>
     <string name="BASE_VIEW_error_recieving_push_token">Error recieving PUSH-messages token</string>
     <string name="PUSH_NOTIFICATION_SERVICE_new_card_created_title">New card from %1$s</string>
+    <string name="PREFERENCES_notify_on_new_cards_enabled_summary">Notifications on new cards will arrive to phone</string>
+    <string name="PREFERENCES_notify_on_new_cards_disabled_summary">You will not recieve new card notifications</string>
+    <string name="PREFERENCES_notify_on_new_cards_title">Notify on new cards</string>
+    <string name="PREFERENCES_page_title">App preferences</string>
+    <string name="MENU_preferences">Preferences</string>
 </resources>

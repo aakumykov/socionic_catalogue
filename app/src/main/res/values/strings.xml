@@ -372,4 +372,10 @@
     <string name="BASE_VIEW_error_recieving_push_token">Ошибка получения метки PUSH-сообщений</string>
     <string name="PUSH_NOTIFICATION_SERVICE_new_card_created_title">Новая карточка от %1$s</string>
     <string name="PUSH_NOTIFICATION_SERVICE_new_card_created_message" translatable="false">«%1$s»</string>
+    <string name="PREFERENCES_notify_on_new_cards_enabled_summary">Будут приходить уведомления о новых карточках</string>
+    <string name="PREFERENCES_notify_on_new_cards_disabled_summary">Вы не будете получать уведомления о новых карточках</string>
+    <string name="PREFERENCES_notify_on_new_cards_title">Уведомлять о новых карточках</string>
+    <string name="PREFERENCES_page_title">Настройки приложения</string>
+    <string name="PREFERENCES_notify_on_new_cards" translatable="false">PREFERENCES_notify_on_new_cards</string>
+    <string name="MENU_preferences">Настройки</string>
 </resources>

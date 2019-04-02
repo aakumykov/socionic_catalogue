@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -34,6 +36,7 @@ import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.login.Login_View;
+import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.tags.list.TagsList_View;
@@ -62,6 +65,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         // TODO: попробовать перенести в MyApp
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
 
     @Subscribe
@@ -112,6 +117,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         MenuInflater menuInflater = getMenuInflater();
 
         if (auth().isUserLoggedIn()) {
+            menuInflater.inflate(R.menu.preferences, menu);
             menuInflater.inflate(R.menu.profile, menu);
             menuInflater.inflate(R.menu.logout, menu);
         } else {
@@ -128,6 +134,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
             case android.R.id.home:
                 this.finish();
+                break;
+
+            case R.id.actionPreferences:
+                openPreferences();
                 break;
 
             case R.id.actionProfile:
@@ -429,6 +439,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void logout() {
         //Log.d(TAG, "logout()");
         authSingleton.logout();
+    }
+
+    private void openPreferences() {
+        Intent intent = new Intent(this, PreferencesActivity.class);
+        startActivity(intent);
     }
 
     private void seeUserProfile() {
