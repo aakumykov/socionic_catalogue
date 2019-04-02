@@ -637,6 +637,11 @@ public class CardShow_View extends BaseView implements
     }
 
     @Override
+    public void onSelectedTagDrag(int position, String text) {
+
+    }
+
+    @Override
     public void onTagCrossClick(int position) {
 
     }
