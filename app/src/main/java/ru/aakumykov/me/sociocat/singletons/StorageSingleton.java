@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.services;
+package ru.aakumykov.me.sociocat.singletons;
 
 import android.graphics.Bitmap;
 import android.net.Uri;

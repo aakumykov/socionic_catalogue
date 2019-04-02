@@ -1,12 +1,14 @@
-package ru.aakumykov.me.sociocat.services;
+package ru.aakumykov.me.sociocat.singletons;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,6 +19,7 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,11 +44,11 @@ public class UsersSingleton implements iUsersSingleton {
     /* Одиночка */
 
     private final static String TAG = "UsersSingleton";
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference rootRef = firebaseDatabase.getReference().child("/");
-    private DatabaseReference usersRef = firebaseDatabase.getReference().child(Constants.USERS_PATH);
+    private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("/");
+    private DatabaseReference usersRef = rootRef.child(Constants.USERS_PATH);
+    private DatabaseReference deviceIdRef = rootRef.child(Constants.DEVICE_ID_PATH);
 
-
+    // Интерфейсные методы
     @Override
     public void listUsers(final ListCallbacks callbacks) {
         final ArrayList<User> list = new ArrayList<>();
@@ -269,7 +272,49 @@ public class UsersSingleton implements iUsersSingleton {
         });
     }
 
+    @Override public void updatePushToken(String token, @Nullable iUsersSingleton.PushTokenCallbacks callbacks) {
 
+        usersRef.child(PUSH_TOKEN_NAME).setValue(token)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    @Override public void onComplete(@NonNull Task<Void> task) {
+
+                        if (task.isSuccessful()) {
+                            if (null != callbacks)
+                                callbacks.onPushTokenUpdateSuccess(token);
+                        } else {
+                            Exception exception = task.getException();
+                            if (null != exception) {
+                                if (null != callbacks)
+                                    callbacks.onPushTokenUpdateError(exception.getMessage());
+                                exception.printStackTrace();
+                            }
+                        }
+                    }
+
+                });
+    }
+
+    @Override public void storeDeviceId(String userId, String deviceId, SaveDeviceIdCallbacks callbacks) {
+
+        long currentTime = new Date().getTime();
+
+        deviceIdRef.child(deviceId).setValue(userId+"__"+currentTime)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override public void onSuccess(Void aVoid) {
+                        callbacks.onStoreDeviceIdSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override public void onFailure(@NonNull Exception e) {
+                        callbacks.onStoreDeviceIdFailed(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+
+    }
+
+    // Внутренние методы
     private void checkExistance(Query query, final CheckExistanceCallbacks callbacks) {
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {

@@ -2,9 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.aakumykov.me.sociocat">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_4"
         android:label="@string/app_name"
@@ -38,6 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".dynamic_link_processor.DLP_View"
             android:noHistory="true">
@@ -51,7 +54,7 @@
                     android:host="sociocat.example.org"
                     android:scheme="https" />
                 <data
-                    android:host="androidtest73e48.page.link"
+                    android:host="sociocat.page.link"
                     android:scheme="https" />
             </intent-filter>
         </activity>
@@ -118,9 +121,20 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".card_edit.CardEdit_View" android:windowSoftInputMode="stateHidden">
+        <activity android:name=".card_edit.CardEdit_View" android:windowSoftInputMode="stateHidden" />
 
-        </activity>
+        <service android:name=".services.PushNotificationsService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@drawable/ic_notification_default" />
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="@color/white" />
+        </service>
+
     </application>
 
 </manifest>

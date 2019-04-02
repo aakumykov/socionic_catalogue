@@ -16,11 +16,11 @@ import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
-import ru.aakumykov.me.sociocat.services.AuthSingleton;
-import ru.aakumykov.me.sociocat.services.CardsSingleton;
-import ru.aakumykov.me.sociocat.services.CommentsSingleton;
-import ru.aakumykov.me.sociocat.services.StorageSingleton;
-import ru.aakumykov.me.sociocat.services.TagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
+import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
+import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 
 
 public class CardShow_Presenter implements
@@ -33,9 +33,9 @@ public class CardShow_Presenter implements
 {
     private final static String TAG = "CardShow_Presenter";
     private iCardShow.View view;
-    private iAuthSingleton authService = AuthSingleton.getInstance();
-    private iCardsSingleton cardsService = CardsSingleton.getInstance();
-    private iCommentsSingleton commentsService = CommentsSingleton.getInstance();
+    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private Card currentCard;
 
 
@@ -52,26 +52,26 @@ public class CardShow_Presenter implements
             view.showProgressBar();
         }
 
-        cardsService.loadCard(cardKey, this);
+        cardsSingleton.loadCard(cardKey, this);
     }
 
     @Override
     public void loadComments(Card card) {
         if (card.getCommentsCount() > 10) view.showCommentsThrobber();
-        commentsService.loadList(card.getKey(), this);
+        commentsSingleton.loadList(card.getKey(), this);
     }
 
 
     // Изменение рейтинга
     @Override
     public void rateCardUp() {
-        if (authService.isUserLoggedIn()) {
+        if (authSingleton.isUserLoggedIn()) {
 
             if (null != view) {
                 view.showCardRatingThrobber();
             }
 
-            cardsService.rateUp(currentCard.getKey(), authService.currentUserId(), new iCardsSingleton.RatingCallbacks() {
+            cardsSingleton.rateUp(currentCard.getKey(), authSingleton.currentUserId(), new iCardsSingleton.RatingCallbacks() {
                 @Override
                 public void onRetedUp(int newRating) {
                     view.onCardRatedUp(newRating);
@@ -95,13 +95,13 @@ public class CardShow_Presenter implements
 
     @Override
     public void rateCardDown() {
-        if (authService.isUserLoggedIn()) {
+        if (authSingleton.isUserLoggedIn()) {
 
             if (null != view) {
                 view.showCardRatingThrobber();
             }
 
-            cardsService.rateDown(currentCard.getKey(), authService.currentUserId(), new iCardsSingleton.RatingCallbacks() {
+            cardsSingleton.rateDown(currentCard.getKey(), authSingleton.currentUserId(), new iCardsSingleton.RatingCallbacks() {
                 @Override
                 public void onRetedUp(int newRating) {
                     // не используется
@@ -128,7 +128,7 @@ public class CardShow_Presenter implements
     @Override
     public void postComment(String text) {
 
-        if (!authService.isUserLoggedIn()) {
+        if (!authSingleton.isUserLoggedIn()) {
             if (null != view) {
                 view.showToast(R.string.INFO_you_must_be_logged_in);
             }
@@ -140,9 +140,9 @@ public class CardShow_Presenter implements
                 currentCard.getKey(),
                 null,
                 null,
-                authService.currentUserId(),
-                authService.currentUserName(),
-                authService.currentUser().getAvatarURL()
+                authSingleton.currentUserId(),
+                authSingleton.currentUserName(),
+                authSingleton.currentUser().getAvatarURL()
         );
 
         postComment(comment);
@@ -155,9 +155,9 @@ public class CardShow_Presenter implements
                 currentCard.getKey(),
                 parentComment.getKey(),
                 parentComment.getText(),
-                authService.currentUserId(),
-                authService.currentUserName(),
-                authService.currentUser().getAvatarURL()
+                authSingleton.currentUserId(),
+                authSingleton.currentUserName(),
+                authSingleton.currentUser().getAvatarURL()
         );
         postComment(comment);
     }
@@ -167,11 +167,11 @@ public class CardShow_Presenter implements
     @Override
     public void deleteCommentConfirmed(Comment comment) {
         // TODO: переделать проверку по-правильному
-        if (!authService.isUserLoggedIn())
+        if (!authSingleton.isUserLoggedIn())
             return;
 
         // TODO: эта проверка без проверки на залогиненность...
-        if (!authService.currentUserId().equals(comment.getUserId())) {
+        if (!authSingleton.currentUserId().equals(comment.getUserId())) {
             if (null != view) {
                 view.showErrorMsg(R.string.action_denied);
             }
@@ -179,7 +179,7 @@ public class CardShow_Presenter implements
         }
 
         try {
-            commentsService.deleteComment(comment, this);
+            commentsSingleton.deleteComment(comment, this);
         } catch (Exception e) {
             if (null != view) {
                 view.showErrorMsg(R.string.COMMENT_delete_error);
@@ -194,10 +194,10 @@ public class CardShow_Presenter implements
     public void editCommentConfirmed(final Comment comment) {
         // TODO: контроль длины
 
-        if (!authService.isUserLoggedIn())
+        if (!authSingleton.isUserLoggedIn())
             return;
 
-        if (!authService.currentUserId().equals(comment.getUserId())) {
+        if (!authSingleton.currentUserId().equals(comment.getUserId())) {
             if (null != view) {
                 view.showErrorMsg(R.string.action_denied);
             }
@@ -208,7 +208,7 @@ public class CardShow_Presenter implements
                 if (null != view) {
                     view.showCommentInProgress();
                 }
-                commentsService.updateComment(comment, new iCommentsSingleton.CreateCallbacks() {
+                commentsSingleton.updateComment(comment, new iCommentsSingleton.CreateCallbacks() {
                     @Override
                     public void onCommentSaveSuccess(Comment comment) {
 //                            view
@@ -233,15 +233,15 @@ public class CardShow_Presenter implements
     // Оценка комментария
     @Override
     public void rateCommentUp(Comment comment, iCommentsSingleton.RatingCallbacks callbacks) {
-        if (authService.isUserLoggedIn()) {
-            commentsService.rateUp(comment.getKey(), authService.currentUserId(), callbacks);
+        if (authSingleton.isUserLoggedIn()) {
+            commentsSingleton.rateUp(comment.getKey(), authSingleton.currentUserId(), callbacks);
         }
     }
 
     @Override
     public void rateCommentDown(Comment comment, iCommentsSingleton.RatingCallbacks callbacks) {
-        if (authService.isUserLoggedIn()) {
-            commentsService.rateDown(comment.getKey(), authService.currentUserId(), callbacks);
+        if (authSingleton.isUserLoggedIn()) {
+            commentsSingleton.rateDown(comment.getKey(), authSingleton.currentUserId(), callbacks);
         }
     }
 
@@ -259,10 +259,10 @@ public class CardShow_Presenter implements
             view.showInfoMsg(R.string.deleting_card);
         }
 
-        if (!authService.isUserLoggedIn()) return;
+        if (!authSingleton.isUserLoggedIn()) return;
 
         // TODO: "или Админ"
-        if (!authService.currentUserId().equals(card.getUserId())) {
+        if (!authSingleton.currentUserId().equals(card.getUserId())) {
             if (null != view) {
                 view.showErrorMsg(R.string.action_denied);
             }
@@ -270,7 +270,7 @@ public class CardShow_Presenter implements
         }
 
         try {
-            cardsService.deleteCard(currentCard, this);
+            cardsSingleton.deleteCard(currentCard, this);
         } catch (Exception e) {
             if (null != view) {
                 view.hideProgressBar();
@@ -356,7 +356,7 @@ public class CardShow_Presenter implements
                 });
             }
 
-            commentsService.deleteCommentsForCard(currentCard.getKey());
+            commentsSingleton.deleteCommentsForCard(currentCard.getKey());
 
         } catch (Exception e) {
             if (null != view)
@@ -385,7 +385,7 @@ public class CardShow_Presenter implements
             view.resetCommentForm();
             view.appendComment(comment);
         }
-        cardsService.updateCommentsCounter(comment.getCardId(), 1);
+        cardsSingleton.updateCommentsCounter(comment.getCardId(), 1);
     }
 
     @Override
@@ -414,7 +414,7 @@ public class CardShow_Presenter implements
 
     @Override
     public void onDeleteSuccess(Comment comment) {
-        cardsService.updateCommentsCounter(currentCard.getKey(), -1);
+        cardsSingleton.updateCommentsCounter(currentCard.getKey(), -1);
         // TODO: а можно сделать список "живым"...
         if (null != view) {
             view.removeComment(comment);
@@ -431,6 +431,6 @@ public class CardShow_Presenter implements
 
     // Внутренние методы
     private void postComment(Comment comment) {
-        commentsService.createComment(comment, this);
+        commentsSingleton.createComment(comment, this);
     }
 }

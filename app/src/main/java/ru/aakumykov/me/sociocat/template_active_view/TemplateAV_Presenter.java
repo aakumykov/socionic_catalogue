@@ -9,7 +9,7 @@ public class TemplateAV_Presenter implements
     private final static String TAG = "Register_Presenter";
     private iTemplateAV.View view;
     private iCardsSingleton model;
-    private iAuthSingleton authService;
+    private iAuthSingleton authSingleton;
 
 
     // Интерфейсные методы
@@ -39,12 +39,12 @@ public class TemplateAV_Presenter implements
     }
 
     @Override
-    public void linkAuth(iAuthSingleton authService) {
-        this.authService = authService;
+    public void linkAuth(iAuthSingleton authSingleton) {
+        this.authSingleton = authSingleton;
     }
     @Override
     public void unlinkAuthService() {
-        this.authService = null;
+        this.authSingleton = null;
     }
 
 }

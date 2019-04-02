@@ -1,7 +1,5 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
-import android.util.Log;
-
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -13,21 +11,21 @@ import ru.aakumykov.me.sociocat.interfaces.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.services.AuthSingleton;
-import ru.aakumykov.me.sociocat.services.CardsSingleton;
-import ru.aakumykov.me.sociocat.services.CommentsSingleton;
-import ru.aakumykov.me.sociocat.services.StorageSingleton;
-import ru.aakumykov.me.sociocat.services.TagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
+import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
+import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 
 public class CardsGrid_Presenter implements
         iCardsGrid.Presenter,
         iCardsSingleton.DeleteCallbacks
 {
-    private iAuthSingleton authService = AuthSingleton.getInstance();
-    private iCardsSingleton cardsService = CardsSingleton.getInstance();
-    private iTagsSingleton tagsService = TagsSingleton.getInstance();
-    private iCommentsSingleton commentsService = CommentsSingleton.getInstance();
-    private iStorageSingleton storageService = StorageSingleton.getInstance();
+    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
+    private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
+    private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
     private iCardsGrid.View view;
 
 
@@ -45,7 +43,7 @@ public class CardsGrid_Presenter implements
     // Интерфейсные методы
     @Override
     public void loadCards() {
-        cardsService.loadList(new iCardsSingleton.ListCallbacks() {
+        cardsSingleton.loadList(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 if (null != view) view.displayList(list);
@@ -63,7 +61,7 @@ public class CardsGrid_Presenter implements
 
         view.showProgressMessage(R.string.CARDS_GRID_loading_new_cards);
 
-        cardsService.loadNewCards(newerThanTime, new iCardsSingleton.ListCallbacks() {
+        cardsSingleton.loadNewCards(newerThanTime, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 if (null != view) {
@@ -95,13 +93,13 @@ public class CardsGrid_Presenter implements
     @Override
     public void deleteCard(final Card card) {
 
-        if (!authService.isCardOwner(card) && !authService.isAdmin()) {
+        if (!authSingleton.isCardOwner(card) && !authSingleton.isAdmin()) {
             view.showErrorMsg(R.string.CARDS_LIST_you_cannot_delete_this_card);
             return;
         }
 
         try {
-            cardsService.deleteCard(card, this);
+            cardsSingleton.deleteCard(card, this);
         } catch (Exception e) {
             onCardDeleteError(e.getMessage());
             e.printStackTrace();
@@ -129,7 +127,7 @@ public class CardsGrid_Presenter implements
     // Внутренние методы
     private void deleteCardTags(Card card){
         try {
-            tagsService.updateCardTags(
+            tagsSingleton.updateCardTags(
                     card.getKey(),
                     card.getTags(),
                     null,
@@ -146,7 +144,7 @@ public class CardsGrid_Presenter implements
                     }
             );
 
-            storageService.deleteImage(card.getFileName(), new iStorageSingleton.FileDeletionCallbacks() {
+            storageSingleton.deleteImage(card.getFileName(), new iStorageSingleton.FileDeletionCallbacks() {
                 @Override
                 public void onDeleteSuccess() {
 
@@ -158,7 +156,7 @@ public class CardsGrid_Presenter implements
                 }
             });
 
-            commentsService.deleteCommentsForCard(card.getKey());
+            commentsSingleton.deleteCommentsForCard(card.getKey());
 
 
         } catch (Exception e) {
@@ -169,7 +167,7 @@ public class CardsGrid_Presenter implements
 
     private void deleteCardComments(Card card) {
         try {
-            commentsService.deleteCommentsForCard(card.getKey());
+            commentsSingleton.deleteCommentsForCard(card.getKey());
         } catch (Exception e) {
             view.showErrorMsg(R.string.error_deleting_card_comments, e.getMessage());
             e.printStackTrace();
@@ -178,7 +176,7 @@ public class CardsGrid_Presenter implements
 
     private void deleteCardImage(Card card) {
         try {
-            storageService.deleteImage(card.getFileName(), new iStorageSingleton.FileDeletionCallbacks() {
+            storageSingleton.deleteImage(card.getFileName(), new iStorageSingleton.FileDeletionCallbacks() {
                 @Override
                 public void onDeleteSuccess() {
 

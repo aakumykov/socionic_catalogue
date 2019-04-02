@@ -18,16 +18,16 @@ import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.register.register_step_2.RegisterStep2_View;
-import ru.aakumykov.me.sociocat.services.AuthSingleton;
-import ru.aakumykov.me.sociocat.services.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 
 
 public class DLP_Presenter implements iDLP.Presenter {
 
     private iDLP.View view;
     private FirebaseDynamicLinks firebaseDynamicLinks = FirebaseDynamicLinks.getInstance();
-    private iAuthSingleton authService = AuthSingleton.getInstance();
-    private iUsersSingleton usersService = UsersSingleton.getInstance();
+    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
 
     @Override
@@ -134,7 +134,7 @@ public class DLP_Presenter implements iDLP.Presenter {
     }
 
     private void onErrorOccured(String consoleMsg) {
-//        authService.logout();
+//        authSingleton.logout();
         FirebaseAuth.getInstance().signOut();
         view.showErrorMsg(R.string.DLP_error_processing_link, consoleMsg);
         view.showHomeButton();

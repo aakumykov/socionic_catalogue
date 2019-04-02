@@ -13,14 +13,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
-import ru.aakumykov.me.sociocat.services.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
 
     private iRegisterStep1.View view;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private iUsersSingleton usersService = UsersSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
 
     // Системные методы
@@ -66,7 +66,7 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
 
         view.showEmailChecked();
 
-        usersService.checkEmailExists(email, new iUsersSingleton.CheckExistanceCallbacks() {
+        usersSingleton.checkEmailExists(email, new iUsersSingleton.CheckExistanceCallbacks() {
             @Override
             public void onCheckComplete() {
                 view.hideEmailChecked();

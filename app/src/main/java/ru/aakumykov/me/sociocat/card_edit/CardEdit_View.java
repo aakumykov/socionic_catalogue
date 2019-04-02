@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -268,7 +269,8 @@ public class CardEdit_View extends BaseView implements
                 displayQuote(card.getQuote(), card.getQuoteSource());
                 break;
             case Constants.IMAGE_CARD:
-                displayImage(card.getImageURL());
+                //displayImage(card.getImageURL());
+                displayImageFromCard(card);
                 break;
             case Constants.VIDEO_CARD:
                 displayVideo(card.getVideoCode());
@@ -282,6 +284,20 @@ public class CardEdit_View extends BaseView implements
 
         displayCommonCardParts(card);
         enableForm();
+    }
+
+    @Override public void displayImageFromCard(Card card) {
+        Uri localImageURI = card.getLocalImageURI();
+        String remoteImageURL = card.getImageURL();
+
+        if (null != localImageURI)
+            displayImage(localImageURI.toString());
+        else if (!TextUtils.isEmpty(remoteImageURL)) {
+            displayImage(remoteImageURL);
+        }
+        else {
+            removeImage();
+        }
     }
 
     @Override
@@ -393,7 +409,11 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public Bitmap getImageBitmap() {
-        return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+//        return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        Drawable drawable = imageView.getDrawable();
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+        return bitmap;
     }
 
     @Override
@@ -689,6 +709,11 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void onTagLongClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onSelectedTagDrag(int position, String text) {
 
     }
 

@@ -5,10 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -18,21 +14,28 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.Date;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_type_chooser.CardTypeChooser;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
+import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
+import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iAuthStateListener;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.login.Login_View;
-import ru.aakumykov.me.sociocat.services.AuthSingleton;
-import ru.aakumykov.me.sociocat.services.AuthStateListener;
-import ru.aakumykov.me.sociocat.services.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.tags.list.TagsList_View;
 import ru.aakumykov.me.sociocat.users.show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
@@ -42,9 +45,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 {
     public static String PACKAGE_NAME;
     private final static String TAG = "BaseView";
-    private iCardsSingleton cardsService;
-    private iAuthSingleton authService;
-
+    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
 
     // Абстрактные методы
     public abstract void onUserLogin();
@@ -58,40 +60,38 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         PACKAGE_NAME = getApplicationContext().getPackageName();
 
+        // TODO: попробовать перенести в MyApp
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
-        // TODO: убрать вообще?
-        authService = AuthSingleton.getInstance();
-        cardsService = CardsSingleton.getInstance();
-        // TODO: storageSingleton
+    @Subscribe
+    public void onUserAuthorized(UserAuthorizedEvent event) {
+        //showToast("Авторизовался "+event.getUser().getKey());
 
-        // Слушатель изменений авторизации
-        iAuthStateListener authStateListener = new AuthStateListener(new iAuthStateListener.StateChangeCallbacks() {
+        authSingleton.storeCurrentUser(event.getUser());
 
-            // Осторожно с этими методами!
-            @Override
-            public void onLoggedIn() {
-                invalidateOptionsMenu();
-//                showToast("onLoggedIn()");
-                onUserLogin();
-            }
+        invalidateOptionsMenu();
 
-            // Осторожно с этими методами!
-            @Override
-            public void onLoggedOut() {
-                invalidateOptionsMenu();
-//                showToast("onLoggedOut()");
-                onUserLogout();
-            }
-        });
+        onUserLogin();
 
-        // Сохраняю время последнего запуска
         saveLastLoginTime();
+    }
+
+    @Subscribe
+    public void onUserUnauthorized(UserUnauthorizedEvent event) {
+        //showToast("Разавторизовался");
+
+        authSingleton.clearCurrentUser();
+
+        invalidateOptionsMenu();
+
+        onUserLogout();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -101,8 +101,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
 
         MenuInflater menuInflater = getMenuInflater();
 
@@ -110,11 +115,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             menuInflater.inflate(R.menu.profile, menu);
             menuInflater.inflate(R.menu.logout, menu);
         } else {
-//            menuInflater.inflate(R.menu.user_out, menu);
             menuInflater.inflate(R.menu.login, menu);
         }
 
-        return true;
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -160,7 +164,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.d(TAG, "onActivityResult()");
+        //Log.d(TAG, "onActivityResult()");
 
         switch (requestCode) {
 
@@ -277,7 +281,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
 
-    // Тосты
+    // Всплывающие сообщения
     @Override
     public void showToast(int stringResourceId) {
         String msg = getString(stringResourceId);
@@ -345,11 +349,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     // Геттеры
     public iCardsSingleton getCardsService() {
-        return cardsService;
+        return cardsSingleton;
     }
 
     public iAuthSingleton auth() {
-        return authService;
+        return authSingleton;
     }
 
 
@@ -384,20 +388,20 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public void closePage() {
-        Log.d(TAG, "closePage()");
+        //Log.d(TAG, "closePage()");
         finish();
     }
 
     @Override
     public void setPageTitle(int titleId) {
-        Log.d(TAG, "setPageTitle("+titleId+")");
+        //Log.d(TAG, "setPageTitle("+titleId+")");
         String title = getResources().getString(titleId);
         setPageTitle(title);
     }
 
     @Override
     public void setPageTitle(String title) {
-        Log.d(TAG, "setPageTitle("+title+")");
+        //Log.d(TAG, "setPageTitle("+title+")");
         ActionBar actionBar = getSupportActionBar();
         if (null != actionBar) {
             actionBar.setTitle(title);
@@ -415,22 +419,22 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void login() {
         // Можно и без result, потому что статус авторизации обрабатывается в
         // AuthStateListener
-        if (!authService.isUserLoggedIn()) {
-            Log.d(TAG, "doLogin()");
+        if (!authSingleton.isUserLoggedIn()) {
+            //Log.d(TAG, "doLogin()");
             Intent intent = new Intent(this, Login_View.class);
             startActivityForResult(intent, Constants.CODE_LOGIN);
         }
     }
 
     private void logout() {
-        Log.d(TAG, "logout()");
-        authService.logout();
+        //Log.d(TAG, "logout()");
+        authSingleton.logout();
     }
 
     private void seeUserProfile() {
         try {
             Intent intent = new Intent(this, UserShow_View.class);
-            intent.putExtra(Constants.USER_ID, authService.currentUserId());
+            intent.putExtra(Constants.USER_ID, authSingleton.currentUserId());
             startActivity(intent);
         } catch (Exception e) {
             showErrorMsg(e.getMessage());
@@ -448,7 +452,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 break;
             default:
                 showErrorMsg(R.string.ERROR_saving_card);
-                Log.d(TAG, "data: "+data);
+                Log.e(TAG, "data: "+data);
                 break;
         }
     }
@@ -510,4 +514,5 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         editor.putLong(Constants.KEY_LAST_LOGIN, new Date().getTime());
         editor.apply();
     }
+
 }

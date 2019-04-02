@@ -17,12 +17,12 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.services.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 
 public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
     private iRegisterStep2.View view;
-    private iUsersSingleton usersService = UsersSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private boolean userNameIsValid = false;
     private boolean passwordIsValid = false;
@@ -156,7 +156,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
         view.showNameThrobber();
 
         try {
-            usersService.checkNameExists(userName, new iUsersSingleton.CheckExistanceCallbacks() {
+            usersSingleton.checkNameExists(userName, new iUsersSingleton.CheckExistanceCallbacks() {
                 @Override
                 public void onCheckComplete() {
                 }
@@ -201,7 +201,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
             String userName = view.getUserName();
 
-            usersService.createUser(userId, userName, email, new iUsersSingleton.CreateCallbacks() {
+            usersSingleton.createUser(userId, userName, email, new iUsersSingleton.CreateCallbacks() {
                 @Override
                 public void onUserCreateSuccess(User user) {
                     setUserPassword();

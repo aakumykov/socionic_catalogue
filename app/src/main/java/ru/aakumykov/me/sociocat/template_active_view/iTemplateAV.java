@@ -20,7 +20,7 @@ public interface iTemplateAV {
         void linkCardsService(iCardsSingleton model);
         void unlinkCardsService();
 
-        void linkAuth(iAuthSingleton authService);
+        void linkAuth(iAuthSingleton authSingleton);
         void unlinkAuthService();
     }
 }

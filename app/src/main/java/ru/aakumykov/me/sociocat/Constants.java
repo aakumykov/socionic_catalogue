@@ -11,6 +11,7 @@ public final class Constants {
     public final static String IMAGES_PATH = "/images";
     public final static String USERS_PATH = "/users";
     public final static String AVATARS_PATH = "/avatars";
+    public final static String DEVICE_ID_PATH = "/device_id";
 
     public final static String CARD = "CARD";
     public final static String CARD_KEY = "CARD_KEY";
@@ -73,7 +74,7 @@ public final class Constants {
     public final static int CARDS_GRID_QUOTE_MAX_LENGTH = 50;
 
     public final static int USER_NAME_MIN_LENGTH = 2;
-    public final static int USER_NAME_MAX_LENGTH = 16;
+    public final static int USER_NAME_MAX_LENGTH = 30;
     public final static int PASSWORD_MIN_LENGTH = 6;
 
     public final static String SHARED_PREFERENCES_EMAIL = "SHARED_PREFERENCES_EMAIL";
