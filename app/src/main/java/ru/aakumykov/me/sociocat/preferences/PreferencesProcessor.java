@@ -36,6 +36,10 @@ public class PreferencesProcessor {
         }
     }
 
+    public static void processKey(Context context, SharedPreferences sharedPreferences, String key) {
+
+    }
+
 
     private static void subscribeToNewCardsNotifications(Context context) {
 
