@@ -37,6 +37,7 @@ import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;
+import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.tags.list.TagsList_View;
@@ -67,6 +68,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
+
+        PreferencesProcessor.processPreferences(this, PreferenceManager.getDefaultSharedPreferences(this));
     }
 
     @Subscribe
