@@ -29,7 +29,6 @@ public class MyApp extends Application {
     private iAuthSingleton authSingleton;
     private iUsersSingleton usersSingleton;
 
-
     @Override public void onCreate() {
         super.onCreate();
 
@@ -65,7 +64,6 @@ public class MyApp extends Application {
             }
         });
     }
-
 
     private void registerPushToken(User user) {
         Log.d(TAG, "registerPushToken()");

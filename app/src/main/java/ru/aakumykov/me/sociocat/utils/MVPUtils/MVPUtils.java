@@ -12,7 +12,11 @@ import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -24,6 +28,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.annotation.NonNull;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -319,4 +324,42 @@ public class MVPUtils {
         return spannableString;
     }
 
+
+    public static void subscribeToNewCardsNotifications(Context context) {
+
+        FirebaseMessaging.getInstance().subscribeToTopic(Constants.TOPIC_NEW_CARDS)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        String msg = "Вы подписаны на новые карточки";
+
+                        if (!task.isSuccessful()) {
+                            msg = "Ошибка подписки на новые карточки";
+                        }
+
+                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                    }
+
+                });
+    }
+
+    public static void unsubscribeFromNewCardsNotifications(Context context) {
+
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(Constants.TOPIC_NEW_CARDS)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        String msg = "Вы отписаны от уведомлений о новых карточках";
+
+                        if (!task.isSuccessful()) {
+                            msg = "Ошибка отписки от уведомлений о новых карточках";
+                        }
+
+                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 }
