@@ -93,8 +93,8 @@ public class PushNotificationsService extends FirebaseMessagingService {
         String cardTitle = data.get("card_title");
         String cardKey = data.get("card_key");
 
-        String title = getResources().getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_title, cardUserName);
-        String message = getResources().getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_message, cardTitle);
+        String title = getResources().getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_message, cardTitle);
+        String message = getResources().getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_title, cardUserName);
 
         Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, cardKey);
