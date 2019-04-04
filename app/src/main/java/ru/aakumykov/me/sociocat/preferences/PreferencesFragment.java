@@ -48,17 +48,19 @@ public class PreferencesFragment extends PreferenceFragment implements
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
+        PreferencesProcessor.processPreferenceKey(getActivity(), sharedPreferences, key);
+
         if (key.equals(getString(R.string.PREFERENCES_notify_on_new_cards))) {
 
             SwitchPreference switchPreference = (SwitchPreference) findPreference(key);
 
-            if (switchPreference.isChecked()) {
-                switchPreference.setSummary(getString(R.string.PREFERENCES_notify_on_new_cards_enabled_summary));
-                subscribeToNewCardsNotifications();
-            } else {
-                switchPreference.setSummary(getString(R.string.PREFERENCES_notify_on_new_cards_disabled_summary));
-                unsubscribeFromNewCardsNotifications();
-            }
+//            if (switchPreference.isChecked()) {
+//                switchPreference.setSummary(getString(R.string.PREFERENCES_notify_on_new_cards_enabled_summary));
+//                subscribeToNewCardsNotifications();
+//            } else {
+//                switchPreference.setSummary(getString(R.string.PREFERENCES_notify_on_new_cards_disabled_summary));
+//                unsubscribeFromNewCardsNotifications();
+//            }
         }
     }
 

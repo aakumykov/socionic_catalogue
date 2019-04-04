@@ -17,27 +17,40 @@ import ru.aakumykov.me.sociocat.R;
 
 public class PreferencesProcessor {
 
-    public static void processPreferences(Context context, SharedPreferences sharedPreferences) {
-
-        String notifyOnNewCards = context.getString(R.string.PREFERENCES_notify_on_new_cards);
+    public static void processAllPreferences(Context context, SharedPreferences sharedPreferences) {
 
         for (Map.Entry<String,?> entry : sharedPreferences.getAll().entrySet()) {
-
             String key = entry.getKey();
-            Object value = entry.getValue();
-
-            if (notifyOnNewCards.equals(key)) {
-                if ((Boolean)value) {
-                    subscribeToNewCardsNotifications(context);
-                } else {
-                    unsubscribeFromNewCardsNotifications(context);
-                }
-            }
+            processPreferenceKey(context, sharedPreferences, key);
         }
     }
 
-    public static void processKey(Context context, SharedPreferences sharedPreferences, String key) {
+    public static void processPreferenceKey(Context context, SharedPreferences sharedPreferences, String key) {
 
+        String notifyOnNewCards = context.getString(R.string.PREFERENCES_notify_on_new_cards);
+
+        if (notifyOnNewCards.equals(key)) {
+            boolean enabled = sharedPreferences.getBoolean(key, true);
+
+            if (enabled) subscribeToNewCardsNotifications(context);
+            else unsubscribeFromNewCardsNotifications(context);
+
+            return;
+        }
+
+        if ("other option".equals(key)) {
+            return;
+        }
+    }
+
+    private static void processKey(Context context, Object referenceKey, String key, Object value) {
+        if (referenceKey.equals(key)) {
+            if ((Boolean)value) {
+                subscribeToNewCardsNotifications(context);
+            } else {
+                unsubscribeFromNewCardsNotifications(context);
+            }
+        }
     }
 
 
