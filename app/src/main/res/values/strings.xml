@@ -377,4 +377,8 @@
     <string name="PREFERENCES_page_title">Настройки приложения</string>
     <string name="PREFERENCES_notify_on_new_cards" translatable="false">PREFERENCES_notify_on_new_cards</string>
     <string name="MENU_preferences">Настройки</string>
+    <string name="PREFERENCES_you_are_subscribed_to_new_cards">Вы подписаны на уведомления о новые карточки</string>
+    <string name="PREFERENCES_error_subscribing_to_new_cards">Ошибка подписки на уведомления о новых карточках</string>
+    <string name="PREFERENCES_you_are_unsubscribed_from_new_cards">Вы отписаны от уведомлений о новых карточках</string>
+    <string name="PREFERENCES_error_unsubscribing_from_new_cards_notifications">Ошибка отписки от уведомлений о новых карточках</string>
 </resources>

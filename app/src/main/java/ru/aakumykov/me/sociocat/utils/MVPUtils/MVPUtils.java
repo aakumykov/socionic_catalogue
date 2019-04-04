@@ -10,6 +10,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
+import android.view.Gravity;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -333,13 +334,15 @@ public class MVPUtils {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
-                        String msg = "Вы подписаны на новые карточки";
+                        String msg = context.getString(R.string.PREFERENCES_you_are_subscribed_to_new_cards);
 
                         if (!task.isSuccessful()) {
-                            msg = "Ошибка подписки на новые карточки";
+                            msg = context.getString(R.string.PREFERENCES_error_subscribing_to_new_cards);
                         }
 
-                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0,0);
+                        toast.show();
                     }
 
                 });
@@ -352,10 +355,10 @@ public class MVPUtils {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
-                        String msg = "Вы отписаны от уведомлений о новых карточках";
+                        String msg = context.getString(R.string.PREFERENCES_you_are_unsubscribed_from_new_cards);
 
                         if (!task.isSuccessful()) {
-                            msg = "Ошибка отписки от уведомлений о новых карточках";
+                            msg = context.getString(R.string.PREFERENCES_error_unsubscribing_from_new_cards_notifications);
                         }
 
                         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();

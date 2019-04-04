@@ -371,4 +371,8 @@
     <string name="PREFERENCES_notify_on_new_cards_title">Notify on new cards</string>
     <string name="PREFERENCES_page_title">App preferences</string>
     <string name="MENU_preferences">Preferences</string>
+    <string name="PREFERENCES_you_are_subscribed_to_new_cards">You are subscribed to new cards notifications</string>
+    <string name="PREFERENCES_error_subscribing_to_new_cards">Error subscribing to new cards notifications</string>
+    <string name="PREFERENCES_you_are_unsubscribed_from_new_cards">You are unsubscribed from new cards notifications</string>
+    <string name="PREFERENCES_error_unsubscribing_from_new_cards_notifications">Error unsubscribing from new cards notifications</string>
 </resources>
