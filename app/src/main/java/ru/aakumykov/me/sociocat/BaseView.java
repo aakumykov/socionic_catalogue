@@ -65,15 +65,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         // TODO: попробовать перенести в MyApp
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-
-        PreferenceManager.setDefaultValues(this, R.xml.settings, true);
-
-        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = defaultSharedPreferences.edit();
-        editor.putBoolean("firstRun", false);
-        editor.apply();
-
-        PreferencesProcessor.processAllPreferences(this, PreferenceManager.getDefaultSharedPreferences(this));
     }
 
     @Subscribe

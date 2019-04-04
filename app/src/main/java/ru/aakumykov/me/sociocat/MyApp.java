@@ -39,6 +39,7 @@ public class MyApp extends Application {
         authSingleton = AuthSingleton.getInstance();
         usersSingleton = UsersSingleton.getInstance();
 
+        // Подписываюсь на события изменения авторизации
         FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
 
             @Override public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -68,9 +69,28 @@ public class MyApp extends Application {
             }
         });
 
-        Context appContext = getApplicationContext();
-        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(appContext);
-        PreferencesProcessor.processAllPreferences(appContext, defaultSharedPreferences);
+        prepareDefaultPreferences();
+    }
+
+    private void prepareDefaultPreferences() {
+
+        // Подготавливаю необходимые компоненты
+//        Context appContext = getApplicationContext();
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Проверяю, первый ли это запуск программы?
+        boolean isFirstRun = defaultSharedPreferences.getBoolean(Constants.PREFERENCE_KEY_IS_FIRST_RUN, true);
+
+        // Если это первый запуск, устанавдиваю в механизме настроек значения по умолчанию и обрабатываю их все
+        if (isFirstRun) {
+            PreferenceManager.setDefaultValues(this, R.xml.settings, true);
+            PreferencesProcessor.processAllPreferences(this, defaultSharedPreferences);
+
+            // Помечаю, что теперь это не первый запуск
+            SharedPreferences.Editor editor = defaultSharedPreferences.edit();
+            editor.putBoolean(Constants.PREFERENCE_KEY_IS_FIRST_RUN, false);
+            editor.apply();
+        }
     }
 
     private void registerPushToken(User user) {
