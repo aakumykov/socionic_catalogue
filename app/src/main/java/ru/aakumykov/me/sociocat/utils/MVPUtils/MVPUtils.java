@@ -361,7 +361,9 @@ public class MVPUtils {
                             msg = context.getString(R.string.PREFERENCES_error_unsubscribing_from_new_cards_notifications);
                         }
 
-                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0,0);
+                        toast.show();
                     }
                 });
     }
