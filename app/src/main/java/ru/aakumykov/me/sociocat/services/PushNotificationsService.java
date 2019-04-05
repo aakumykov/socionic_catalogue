@@ -4,7 +4,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.util.Log;
@@ -93,8 +92,8 @@ public class PushNotificationsService extends FirebaseMessagingService {
         String cardTitle = data.get("card_title");
         String cardKey = data.get("card_key");
 
-        String title = getResources().getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_message, cardTitle);
-        String message = getResources().getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_title, cardUserName);
+        String title = getResources().getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_title, cardTitle);
+        String message = getResources().getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_message, cardUserName);
 
         Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, cardKey);
@@ -111,7 +110,7 @@ public class PushNotificationsService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notification_default)
                 .setContentTitle(title)
-                .setContentText(cardTitle)
+                .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(soundUri)
                 .setContentIntent(pendingIntent);
