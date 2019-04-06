@@ -118,7 +118,9 @@ public class PushNotificationsService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (null != notificationManager)
+        if (null != notificationManager) {
             notificationManager.notify(0, notificationBuilder.build());
+            Log.d(TAG, "Уведомление должно быть показано...");
+        }
     }
 }
