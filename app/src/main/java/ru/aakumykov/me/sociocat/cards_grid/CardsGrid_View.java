@@ -106,8 +106,6 @@ public class CardsGrid_View extends BaseView implements
         recyclerView.setAdapter(dataAdapter);
 
         getFCMToken();
-
-        setupChannels();
     }
 
     @Override
@@ -534,23 +532,5 @@ public class CardsGrid_View extends BaseView implements
                 });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void setupChannels(){
-        CharSequence sociocatChannelName = getString(R.string.NOTIFICATIONS_sociocat_channel_name);
-        String sociocatChannelDescription = getString(R.string.NOTIFICATIONS_sociocat_channel_description);
 
-        NotificationChannel adminChannel;
-        adminChannel = new NotificationChannel(Constants.NEW_CARDS_NOTIFICATIONS_CHANNEL_ID, sociocatChannelName, NotificationManager.IMPORTANCE_LOW);
-        adminChannel.setDescription(sociocatChannelDescription);
-        adminChannel.enableLights(true);
-        adminChannel.setLightColor(Color.RED);
-        adminChannel.enableVibration(true);
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        if (notificationManager != null) {
-            notificationManager.createNotificationChannel(adminChannel);
-        }
-    }
 }

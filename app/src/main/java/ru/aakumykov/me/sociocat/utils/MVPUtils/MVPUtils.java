@@ -1,11 +1,15 @@
 package ru.aakumykov.me.sociocat.utils.MVPUtils;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -30,6 +34,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -328,6 +333,9 @@ public class MVPUtils {
 
     public static void subscribeToNewCardsNotifications(Context context) {
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            setupNewCardsNotificationChannel(context, true);
+
         FirebaseMessaging.getInstance().subscribeToTopic(Constants.TOPIC_NEW_CARDS)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
 
@@ -350,6 +358,9 @@ public class MVPUtils {
 
     public static void unsubscribeFromNewCardsNotifications(Context context) {
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            setupNewCardsNotificationChannel(context, true);
+
         FirebaseMessaging.getInstance().unsubscribeFromTopic(Constants.TOPIC_NEW_CARDS)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -366,5 +377,27 @@ public class MVPUtils {
                         toast.show();
                     }
                 });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static void setupNewCardsNotificationChannel(Context context, boolean doEnable){
+
+        CharSequence sociocatChannelName = context.getString(R.string.NOTIFICATIONS_sociocat_channel_name);
+        String sociocatChannelDescription = context.getString(R.string.NOTIFICATIONS_sociocat_channel_description);
+
+        NotificationChannel adminChannel;
+        adminChannel = new NotificationChannel(Constants.NEW_CARDS_NOTIFICATIONS_CHANNEL_ID, sociocatChannelName, NotificationManager.IMPORTANCE_LOW);
+        adminChannel.setDescription(sociocatChannelDescription);
+//        adminChannel.enableLights(true);
+//        adminChannel.setLightColor(Color.RED);
+        adminChannel.enableVibration(true);
+
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (notificationManager != null) {
+            if (doEnable) notificationManager.createNotificationChannel(adminChannel);
+            else notificationManager.deleteNotificationChannel(Constants.NEW_CARDS_NOTIFICATIONS_CHANNEL_ID);
+        }
     }
 }
