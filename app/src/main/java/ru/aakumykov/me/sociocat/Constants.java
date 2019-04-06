@@ -46,6 +46,9 @@ public final class Constants {
 
     public final static String PARENT_COMMENT = "PARENT_COMMENT";
 
+    public final static String NEW_CARDS_NOTIFICATIONS_CHANNEL_ID = "NEW_CARDS_NOTIFICATIONS_CHANNEL_ID";
+
+    // Разные коды
     public final static int CODE_LOGIN = 5;
     public final static int CODE_CREATE_CARD = 15;
     public final static int CODE_EDIT_CARD = 20;
@@ -56,6 +59,7 @@ public final class Constants {
     public final static int CODE_RESET_PASSWORD = 60;
     public final static int CODE_SHOW_CARD = 70;
 
+    // Длины
     public final static int TAG_MIN_LENGTH = 2;
     public final static int TAG_MAX_LENGTH = 40;
     public final static int TITLE_MIN_LENGTH = 2;
@@ -66,6 +70,7 @@ public final class Constants {
     public final static int DESCRIPTION_MAX_LENGTH = 500;
     public final static int DIALOG_MESSAGE_LENGTH = 40;
     public final static int LONG_TAG_THRESHOLD = 500;
+
     public final static String TAG_NUMBER_BRACE = "*";
 
     public final static String MODE_SEND = "MODE_SEND";
@@ -86,4 +91,6 @@ public final class Constants {
     public final static String TOPIC_NEW_CARDS = "new_cards";
 
     public final static String PREFERENCE_KEY_IS_FIRST_RUN = "PREFERENCE_KEY_IS_FIRST_RUN";
+
+
 }

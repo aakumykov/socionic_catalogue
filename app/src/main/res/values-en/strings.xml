@@ -375,4 +375,6 @@
     <string name="PREFERENCES_error_subscribing_to_new_cards">Error subscribing to new cards notifications</string>
     <string name="PREFERENCES_you_are_unsubscribed_from_new_cards">You are unsubscribed from new cards notifications</string>
     <string name="PREFERENCES_error_unsubscribing_from_new_cards_notifications">Error unsubscribing from new cards notifications</string>
+    <string name="NOTIFICATIONS_sociocat_channel_name">Cosionic Catalogue channel</string>
+    <string name="NOTIFICATIONS_sociocat_channel_description">Notifications about new cards in Socionic catalogue</string>
 </resources>

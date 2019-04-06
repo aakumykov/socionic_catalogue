@@ -381,4 +381,6 @@
     <string name="PREFERENCES_error_subscribing_to_new_cards">Ошибка подписки на уведомления о новых карточках</string>
     <string name="PREFERENCES_you_are_unsubscribed_from_new_cards">Вы отписаны от уведомлений о новых карточках</string>
     <string name="PREFERENCES_error_unsubscribing_from_new_cards_notifications">Ошибка отписки от уведомлений о новых карточках</string>
+    <string name="NOTIFICATIONS_sociocat_channel_name">Канал Соционического Каталога</string>
+    <string name="NOTIFICATIONS_sociocat_channel_description">Оповещения о новых карточках Соционического каталога</string>
 </resources>

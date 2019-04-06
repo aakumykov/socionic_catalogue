@@ -107,7 +107,8 @@ public class PushNotificationsService extends FirebaseMessagingService {
 
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, Constants.NEW_CARDS_NOTIFICATIONS_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification_default)
                 .setContentTitle(title)
                 .setContentText(message)
