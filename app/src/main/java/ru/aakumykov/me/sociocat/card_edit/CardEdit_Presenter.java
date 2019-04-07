@@ -24,6 +24,7 @@ import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
+import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
@@ -42,6 +43,7 @@ public class CardEdit_Presenter implements
     private static final String TAG = "CardEdit_Presenter";
     private iCardEdit.View view;
     private SharedPreferences sharedPreferences;
+
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
@@ -72,6 +74,9 @@ public class CardEdit_Presenter implements
     public void processInputIntent(@Nullable Intent intent) throws Exception {
         if (null == intent)
             throw new IllegalArgumentException("Intent is NULL");
+
+        if (!authSingleton.isUserLoggedIn())
+            view.requestAuthorization(intent);
 
         String action = "" + intent.getAction();
 
