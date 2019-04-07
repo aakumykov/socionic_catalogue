@@ -377,4 +377,7 @@
     <string name="PREFERENCES_error_unsubscribing_from_new_cards_notifications">Error unsubscribing from new cards notifications</string>
     <string name="NOTIFICATIONS_sociocat_channel_name">Cosionic Catalogue channel</string>
     <string name="NOTIFICATIONS_sociocat_channel_description">Notifications about new cards in Socionic catalogue</string>
+    <string name="SHORTCUT_create_short_label">Create</string>
+    <string name="SHORTCUT_create_long_label">Create card</string>
+    <string name="SHORTCUT_create_unavailable">Card creation unavailable</string>
 </resources>

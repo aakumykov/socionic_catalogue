@@ -383,4 +383,7 @@
     <string name="PREFERENCES_error_unsubscribing_from_new_cards_notifications">Ошибка отписки от уведомлений о новых карточках</string>
     <string name="NOTIFICATIONS_sociocat_channel_name">Канал Соционического Каталога</string>
     <string name="NOTIFICATIONS_sociocat_channel_description">Оповещения о новых карточках Соционического каталога</string>
+    <string name="SHORTCUT_create_short_label">Создать</string>
+    <string name="SHORTCUT_create_long_label">Создать карточку</string>
+    <string name="SHORTCUT_create_unavailable">Создание карточки недоступно</string>
 </resources>

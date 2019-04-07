@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:shortcutId="create"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_create"
+        android:shortcutShortLabel="@string/SHORTCUT_create_short_label"
+        android:shortcutLongLabel="@string/SHORTCUT_create_long_label"
+        android:shortcutDisabledMessage="@string/SHORTCUT_create_unavailable">
+
+        <intent
+            android:action="android.intent.action.CREATE_DOCUMENT"
+            android:targetPackage="ru.aakumykov.me.sociocat"
+            android:targetClass="ru.aakumykov.me.sociocat.card_type_chooser.CardTypeChooser" />
+
+    </shortcut>
+
+</shortcuts>

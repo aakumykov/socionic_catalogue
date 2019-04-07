@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/media/android/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/image/ic_tune_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/media/android/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_create_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -29,7 +29,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="fcffff" />
-                            <entry key="outputName" value="ic_preferences" />
+                            <entry key="outputName" value="ic_shortcuts_create" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="$PROJECT_DIR$/../TagViewTest/D:\Downloads\sound(1).svg" />
                           </map>
