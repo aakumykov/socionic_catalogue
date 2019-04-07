@@ -112,39 +112,6 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        presenter.linkView(this); // обязательно!!!
-
-        switch (requestCode) {
-
-            case Constants.CODE_LOGIN:
-                if (null != data) {
-                    Intent originalIntent = data.getParcelableExtra(Intent.EXTRA_INTENT);
-                    startEditWork(originalIntent);
-                }
-                break;
-
-            case Constants.CODE_SELECT_IMAGE:
-
-                selectImageMode = false;
-
-                try {
-                    if (RESULT_OK == resultCode)
-                        presenter.processIncomingImage(data);
-
-                } catch (Exception e) {
-                    showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
-                    e.printStackTrace();
-                }
-
-                break;
-
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
@@ -198,6 +165,39 @@ public class CardEdit_View extends BaseView implements
         super.onDestroy();
         if (null != youTubePlayer)
             youTubePlayer.release();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        presenter.linkView(this); // обязательно!!!
+
+        switch (requestCode) {
+
+            case Constants.CODE_LOGIN:
+                if (null != data) {
+                    Intent originalIntent = data.getParcelableExtra(Intent.EXTRA_INTENT);
+                    startEditWork(originalIntent);
+                }
+                break;
+
+            case Constants.CODE_SELECT_IMAGE:
+
+                selectImageMode = false;
+
+                try {
+                    if (RESULT_OK == resultCode)
+                        presenter.processIncomingImage(data);
+
+                } catch (Exception e) {
+                    showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
+                    e.printStackTrace();
+                }
+
+                break;
+
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override

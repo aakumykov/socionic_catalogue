@@ -72,6 +72,7 @@ public class CardEdit_Presenter implements
     // Интерфейсные методы
     @Override
     public void processInputIntent(@Nullable Intent intent) throws Exception {
+
         if (null == intent)
             throw new IllegalArgumentException("Intent is NULL");
 
@@ -81,6 +82,22 @@ public class CardEdit_Presenter implements
         String action = "" + intent.getAction();
 
         switch (action) {
+
+            case "CREATE_TEXT_CARD":
+                startCreateCard(Constants.TEXT_CARD);
+                break;
+
+            case "CREATE_IMAGE_CARD":
+                startCreateCard(Constants.IMAGE_CARD);
+                break;
+
+            case "CREATE_VIDEO_CARD":
+                startCreateCard(Constants.VIDEO_CARD);
+                break;
+
+            case "CREATE_AUDIO_CARD":
+                startCreateCard(Constants.AUDIO_CARD);
+                break;
 
             case Constants.ACTION_CREATE:
                 startCreateCard(intent);
@@ -398,6 +415,32 @@ public class CardEdit_Presenter implements
 
 
     // Внутренние методы
+    private void startCreateCard(String cardType) {
+
+        Card card = new Card();
+
+        switch (cardType) {
+            case Constants.TEXT_CARD:
+                card.setType(Constants.TEXT_CARD);
+                break;
+            case Constants.IMAGE_CARD:
+                card.setType(Constants.IMAGE_CARD);
+                break;
+            case Constants.VIDEO_CARD:
+                card.setType(Constants.VIDEO_CARD);
+                break;
+            case Constants.AUDIO_CARD:
+                card.setType(Constants.AUDIO_CARD);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown card type '"+cardType+"'");
+        }
+
+        Intent intent = new Intent();
+        intent.putExtra(Constants.CARD, card);
+        startCreateCard(intent);
+    }
+
     private void startCreateCard(Intent data) {
         Card card = data.getParcelableExtra(Constants.CARD);
         card.setKey(cardsSingleton.createKey());
