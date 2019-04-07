@@ -13,17 +13,20 @@ public final class Constants {
     public final static String AVATARS_PATH = "/avatars";
     public final static String DEVICE_ID_PATH = "/device_id";
 
-    public final static String CARD = "CARD";
-    public final static String CARD_KEY = "CARD_KEY";
-
     public final static String ACTION_CREATE = "ACTION_CREATE";
     public final static String ACTION_EDIT = "ACTION_EDIT";
     public final static String ACTION_EDIT_RESUME = "ACTION_EDIT_RESUME";
     public final static String ACTION_DELETE = "ACTION_DELETE";
     public final static String ACTION_LOGIN_FOR_COMMENT = "ACTION_LOGIN_FOR_COMMENT";
+    public final static String ACTION_LOGIN = "ACTION_LOGIN";
     public final static String ACTION_REGISTRATION_CONFIRM_REQUEST = "ACTION_REGISTRATION_CONFIRM_REQUEST";
     public final static String ACTION_REGISTRATION_CONFIRM_RESPONSE = "ACTION_REGISTRATION_CONFIRM_RESPONSE";
     public final static String ACTION_TRY_NEW_PASSWORD = "ACTION_TRY_NEW_PASSWORD";
+
+    public final static String CARD = "CARD";
+    public final static String CARD_KEY = "CARD_KEY";
+
+    public final static String ORIGINAL_INTENT = "ORIGINAL_INTENT";
 
     public final static String TAG_FILTER = "TAG_FILTER";
     public final static String TAG_KEY = "TAG_KEY";

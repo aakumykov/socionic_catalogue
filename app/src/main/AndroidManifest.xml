@@ -30,16 +30,18 @@
             android:name=".tags.show.TagShow_View"
             android:parentActivityName=".tags.list.TagsList_View" />
 
+        <!-- Главный экран -->
         <activity
             android:name=".cards_grid.CardsGrid_View"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-        >
+            android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
         </activity>
+        <!-- Главный экран -->
 
         <activity
             android:name=".dynamic_link_processor.DLP_View"

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:shortcutId="create_text_card"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_text"
+        android:shortcutShortLabel="@string/SHORTCUT_create_text_card_short_label"
+        android:shortcutLongLabel="@string/SHORTCUT_create_text_card_long_label"
+        android:shortcutDisabledMessage="@string/SHORTCUT_creation_unavailable">
+
+        <intent
+            android:action="CREATE_TEXT_CARD"
+            android:targetPackage="ru.aakumykov.me.sociocat"
+            android:targetClass="ru.aakumykov.me.sociocat.card_edit.CardEdit_View" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="create_image_card"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_image"
+        android:shortcutShortLabel="@string/SHORTCUT_create_image_card_short_label"
+        android:shortcutLongLabel="@string/SHORTCUT_create_image_card_long_label"
+        android:shortcutDisabledMessage="@string/SHORTCUT_creation_unavailable">
+
+        <intent
+            android:action="CREATE_IMAGE_CARD"
+            android:targetPackage="ru.aakumykov.me.sociocat"
+            android:targetClass="ru.aakumykov.me.sociocat.card_edit.CardEdit_View" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="create_video_card"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_video"
+        android:shortcutShortLabel="@string/SHORTCUT_create_video_card_short_label"
+        android:shortcutLongLabel="@string/SHORTCUT_create_video_card_long_label"
+        android:shortcutDisabledMessage="@string/SHORTCUT_creation_unavailable">
+
+        <intent
+            android:action="CREATE_VIDEO_CARD"
+            android:targetPackage="ru.aakumykov.me.sociocat"
+            android:targetClass="ru.aakumykov.me.sociocat.card_edit.CardEdit_View" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="create_audio_card"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_audio"
+        android:shortcutShortLabel="@string/SHORTCUT_create_audio_card_short_label"
+        android:shortcutLongLabel="@string/SHORTCUT_create_audio_card_long_label"
+        android:shortcutDisabledMessage="@string/SHORTCUT_creation_unavailable">
+
+        <intent
+            android:action="CREATE_AUDIO_CARD"
+            android:targetPackage="ru.aakumykov.me.sociocat"
+            android:targetClass="ru.aakumykov.me.sociocat.card_edit.CardEdit_View" />
+    </shortcut>
+
+</shortcuts>

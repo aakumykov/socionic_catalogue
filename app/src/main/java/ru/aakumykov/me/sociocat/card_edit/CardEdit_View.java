@@ -1,8 +1,5 @@
 package ru.aakumykov.me.sociocat.card_edit;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -43,8 +40,8 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
-import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
+import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
@@ -121,25 +118,7 @@ public class CardEdit_View extends BaseView implements
 
         if (firstRun) {
             firstRun = false;
-            try {
-                presenter.processInputIntent(getIntent());
-                presenter.loadTagsList(new iCardEdit.TagsListLoadCallbacks() {
-                    @Override
-                    public void onTagsListLoadSuccess(List<String> list) {
-                        tagsList.addAll(list);
-                        setTagAutocomplete();
-                    }
-
-                    @Override
-                    public void onTagsListLoadFail(String errorMsg) {
-                        showErrorMsg(R.string.CARD_EDIT_error_loading_tags_list, errorMsg);
-                    }
-                });
-
-            } catch (Exception e) {
-                showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
-                e.printStackTrace();
-            }
+            startEditWork(getIntent());
         }
     }
 
@@ -189,13 +168,46 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        presenter.linkView(this); // обязательно!!!
+
+        switch (requestCode) {
+
+            case Constants.CODE_LOGIN:
+                if (null != data) {
+                    Intent originalIntent = data.getParcelableExtra(Intent.EXTRA_INTENT);
+                    startEditWork(originalIntent);
+                }
+                break;
+
+            case Constants.CODE_SELECT_IMAGE:
+
+                selectImageMode = false;
+
+                try {
+                    if (RESULT_OK == resultCode)
+                        presenter.processIncomingImage(data);
+
+                } catch (Exception e) {
+                    showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
+                    e.printStackTrace();
+                }
+
+                break;
+
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
     public void onUserLogin() {
 
     }
 
     @Override
     public void onUserLogout() {
-
+        finish();
     }
 
     @Override
@@ -224,32 +236,6 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        presenter.linkView(this); // обязательно!!!
-
-        switch (requestCode) {
-
-            case Constants.CODE_SELECT_IMAGE:
-
-                selectImageMode = false;
-
-                try {
-                    if (RESULT_OK == resultCode)
-                        presenter.processIncomingImage(data);
-
-                } catch (Exception e) {
-                    showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
-                    e.printStackTrace();
-                }
-
-                break;
-
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
     public void showErrorMsg(int messageId, String consoleMessage) {
         super.showErrorMsg(messageId, consoleMessage);
         enableForm();
@@ -260,6 +246,14 @@ public class CardEdit_View extends BaseView implements
 
 
     // Интерфейсные методы
+    @Override
+    public void requestAuthorization(Intent originalIntent) {
+        Intent authReqIntent = new Intent(this, Login_View.class);
+        authReqIntent.setAction(Constants.ACTION_LOGIN);
+        authReqIntent.putExtra(Intent.EXTRA_INTENT, originalIntent);
+        startActivityForResult(authReqIntent, Constants.CODE_LOGIN);
+    }
+
     @Override
     public void displayCard(Card card) {
         hideProgressBar();
@@ -724,6 +718,28 @@ public class CardEdit_View extends BaseView implements
 
 
     // Внутренние методы
+    private void startEditWork(Intent intent) {
+        try {
+            presenter.processInputIntent(intent);
+            presenter.loadTagsList(new iCardEdit.TagsListLoadCallbacks() {
+                @Override
+                public void onTagsListLoadSuccess(List<String> list) {
+                    tagsList.addAll(list);
+                    setTagAutocomplete();
+                }
+
+                @Override
+                public void onTagsListLoadFail(String errorMsg) {
+                    showErrorMsg(R.string.CARD_EDIT_error_loading_tags_list, errorMsg);
+                }
+            });
+
+        } catch (Exception e) {
+            showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private void setTagAutocomplete() {
         newTagInput.setThreshold(1);
 

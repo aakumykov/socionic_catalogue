@@ -24,6 +24,7 @@ import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
+import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
@@ -42,6 +43,7 @@ public class CardEdit_Presenter implements
     private static final String TAG = "CardEdit_Presenter";
     private iCardEdit.View view;
     private SharedPreferences sharedPreferences;
+
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
@@ -70,12 +72,32 @@ public class CardEdit_Presenter implements
     // Интерфейсные методы
     @Override
     public void processInputIntent(@Nullable Intent intent) throws Exception {
+
         if (null == intent)
             throw new IllegalArgumentException("Intent is NULL");
+
+        if (!authSingleton.isUserLoggedIn())
+            view.requestAuthorization(intent);
 
         String action = "" + intent.getAction();
 
         switch (action) {
+
+            case "CREATE_TEXT_CARD":
+                startCreateCard(Constants.TEXT_CARD);
+                break;
+
+            case "CREATE_IMAGE_CARD":
+                startCreateCard(Constants.IMAGE_CARD);
+                break;
+
+            case "CREATE_VIDEO_CARD":
+                startCreateCard(Constants.VIDEO_CARD);
+                break;
+
+            case "CREATE_AUDIO_CARD":
+                startCreateCard(Constants.AUDIO_CARD);
+                break;
 
             case Constants.ACTION_CREATE:
                 startCreateCard(intent);
@@ -393,6 +415,32 @@ public class CardEdit_Presenter implements
 
 
     // Внутренние методы
+    private void startCreateCard(String cardType) {
+
+        Card card = new Card();
+
+        switch (cardType) {
+            case Constants.TEXT_CARD:
+                card.setType(Constants.TEXT_CARD);
+                break;
+            case Constants.IMAGE_CARD:
+                card.setType(Constants.IMAGE_CARD);
+                break;
+            case Constants.VIDEO_CARD:
+                card.setType(Constants.VIDEO_CARD);
+                break;
+            case Constants.AUDIO_CARD:
+                card.setType(Constants.AUDIO_CARD);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown card type '"+cardType+"'");
+        }
+
+        Intent intent = new Intent();
+        intent.putExtra(Constants.CARD, card);
+        startCreateCard(intent);
+    }
+
     private void startCreateCard(Intent data) {
         Card card = data.getParcelableExtra(Constants.CARD);
         card.setKey(cardsSingleton.createKey());
