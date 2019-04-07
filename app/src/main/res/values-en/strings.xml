@@ -366,5 +366,15 @@
     <string name="CARD_EDIT_form_filling_error">Form filling error</string>
     <string name="BASE_VIEW_error_reading_current_user">Error reading current user</string>
     <string name="BASE_VIEW_error_recieving_push_token">Error recieving PUSH-messages token</string>
-    <string name="PUSH_NOTIFICATION_SERVICE_new_card_created_title">New card from %1$s</string>
+    <string name="PUSH_NOTIFICATION_SERVICE_new_card_created_message">New card from %1$s</string>
+    <string name="PREFERENCES_notify_on_new_cards_summary">Send or not notifications on new cards</string>
+    <string name="PREFERENCES_notify_on_new_cards_title">Notify on new cards</string>
+    <string name="PREFERENCES_page_title">App preferences</string>
+    <string name="MENU_preferences">Preferences</string>
+    <string name="PREFERENCES_you_are_subscribed_to_new_cards">You are subscribed to new cards notifications</string>
+    <string name="PREFERENCES_error_subscribing_to_new_cards">Error subscribing to new cards notifications</string>
+    <string name="PREFERENCES_you_are_unsubscribed_from_new_cards">You are unsubscribed from new cards notifications</string>
+    <string name="PREFERENCES_error_unsubscribing_from_new_cards_notifications">Error unsubscribing from new cards notifications</string>
+    <string name="NOTIFICATIONS_sociocat_channel_name">Cosionic Catalogue channel</string>
+    <string name="NOTIFICATIONS_sociocat_channel_description">Notifications about new cards in Socionic catalogue</string>
 </resources>

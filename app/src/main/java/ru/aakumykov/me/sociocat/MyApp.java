@@ -1,6 +1,9 @@
 package ru.aakumykov.me.sociocat;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,6 +23,7 @@ import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 
@@ -29,13 +33,13 @@ public class MyApp extends Application {
     private iAuthSingleton authSingleton;
     private iUsersSingleton usersSingleton;
 
-
     @Override public void onCreate() {
         super.onCreate();
 
         authSingleton = AuthSingleton.getInstance();
         usersSingleton = UsersSingleton.getInstance();
 
+        // Подписываюсь на события изменения авторизации
         FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
 
             @Override public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -64,8 +68,30 @@ public class MyApp extends Application {
                 }
             }
         });
+
+        prepareDefaultPreferences();
     }
 
+    private void prepareDefaultPreferences() {
+
+        // Подготавливаю необходимые компоненты
+//        Context appContext = getApplicationContext();
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Проверяю, первый ли это запуск программы?
+        boolean isFirstRun = defaultSharedPreferences.getBoolean(Constants.PREFERENCE_KEY_IS_FIRST_RUN, true);
+
+        // Если это первый запуск, устанавдиваю в механизме настроек значения по умолчанию и обрабатываю их все
+        if (isFirstRun) {
+            PreferenceManager.setDefaultValues(this, R.xml.settings, true);
+            PreferencesProcessor.processAllPreferences(this, defaultSharedPreferences);
+
+            // Помечаю, что теперь это не первый запуск
+            SharedPreferences.Editor editor = defaultSharedPreferences.edit();
+            editor.putBoolean(Constants.PREFERENCE_KEY_IS_FIRST_RUN, false);
+            editor.apply();
+        }
+    }
 
     private void registerPushToken(User user) {
         Log.d(TAG, "registerPushToken()");

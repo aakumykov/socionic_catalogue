@@ -186,7 +186,7 @@ public class TagsSingleton implements iTagsSingleton {
             @Nullable HashMap<String,Boolean> newTags,
             @Nullable final iTagsSingleton.UpdateCallbacks callbacks
     ) {
-        Log.d(TAG, "updateCardTags(cardKey: "+cardKey+", oldTags: "+oldTags+", newTags: "+newTags+")");
+        //Log.d(TAG, "updateCardTags(cardKey: "+cardKey+", oldTags: "+oldTags+", newTags: "+newTags+")");
 
         if (null == oldTags) oldTags = new HashMap<>();
         if (null == newTags) newTags = new HashMap<>();

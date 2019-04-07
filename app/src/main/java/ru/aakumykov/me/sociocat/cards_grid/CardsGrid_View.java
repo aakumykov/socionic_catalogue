@@ -1,11 +1,13 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,17 +18,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
 
-import androidx.appcompat.widget.PopupMenu;
+import androidx.annotation.RequiresApi;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.util.Log;
-import android.util.TimeUtils;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,11 +33,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,6 +82,7 @@ public class CardsGrid_View extends BaseView implements
 
 
     // Системные методы
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,8 +106,6 @@ public class CardsGrid_View extends BaseView implements
         recyclerView.setAdapter(dataAdapter);
 
         getFCMToken();
-
-        subscribeToNewCardsNotifications();
     }
 
     @Override
@@ -536,31 +532,5 @@ public class CardsGrid_View extends BaseView implements
                 });
     }
 
-    private void subscribeToNewCardsNotifications() {
 
-        /*FirebaseMessaging.getInstance().unsubscribeFromTopic("new_cards")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        showToast("Отписан от new_cards");
-                    }
-                });*/
-
-        FirebaseMessaging.getInstance().subscribeToTopic("new_cards")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        String msg = "Вы подписаны на новые карточки";
-
-                        if (!task.isSuccessful()) {
-                            msg = "Ошибка подписки на новые карточки";
-                        }
-
-                        showToast(msg);
-                    }
-
-                });
-    }
 }

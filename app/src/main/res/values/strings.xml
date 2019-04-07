@@ -370,6 +370,17 @@
     <string name="CARD_EDIT_form_filling_error">Ошибка заполнения формы</string>
     <string name="BASE_VIEW_error_reading_current_user">Ошибка чтения текущего пользователя</string>
     <string name="BASE_VIEW_error_recieving_push_token">Ошибка получения метки PUSH-сообщений</string>
-    <string name="PUSH_NOTIFICATION_SERVICE_new_card_created_title">Новая карточка от %1$s</string>
-    <string name="PUSH_NOTIFICATION_SERVICE_new_card_created_message" translatable="false">«%1$s»</string>
+    <string name="PUSH_NOTIFICATION_SERVICE_new_card_created_message">Новая карточка от %1$s</string>
+    <string name="PUSH_NOTIFICATION_SERVICE_new_card_created_title" translatable="false">«%1$s»</string>
+    <string name="PREFERENCES_notify_on_new_cards_summary">Присылать или нет уведомления о новых карточках</string>
+    <string name="PREFERENCES_notify_on_new_cards_title">Уведомлять о новых карточках</string>
+    <string name="PREFERENCES_page_title">Настройки приложения</string>
+    <string name="PREFERENCES_notify_on_new_cards" translatable="false">PREFERENCES_notify_on_new_cards</string>
+    <string name="MENU_preferences">Настройки</string>
+    <string name="PREFERENCES_you_are_subscribed_to_new_cards">Вы подписаны на уведомления о новых карточках</string>
+    <string name="PREFERENCES_error_subscribing_to_new_cards">Ошибка подписки на уведомления о новых карточках</string>
+    <string name="PREFERENCES_you_are_unsubscribed_from_new_cards">Вы отписаны от уведомлений о новых карточках</string>
+    <string name="PREFERENCES_error_unsubscribing_from_new_cards_notifications">Ошибка отписки от уведомлений о новых карточках</string>
+    <string name="NOTIFICATIONS_sociocat_channel_name">Канал Соционического Каталога</string>
+    <string name="NOTIFICATIONS_sociocat_channel_description">Оповещения о новых карточках Соционического каталога</string>
 </resources>
