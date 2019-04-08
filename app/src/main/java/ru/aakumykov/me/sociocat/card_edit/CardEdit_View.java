@@ -41,7 +41,6 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
-import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
@@ -103,12 +102,9 @@ public class CardEdit_View extends BaseView implements
 
         presenter = new CardEdit_Presenter();
 
-//        tagsList = new ArrayList<>();
-
         tagsContainer.setOnTagClickListener(this);
-        //tagsContainer.setDragEnable(false);
 
-        setTagWatcher();
+        setupTagWatcher();
     }
 
     @Override
@@ -805,7 +801,7 @@ public class CardEdit_View extends BaseView implements
         finish();
     }
 
-    private void setTagWatcher() {
+    private void setupTagWatcher() {
 
         TextWatcher textWatcher = new TextWatcher() {
             @Override
