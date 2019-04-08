@@ -18,8 +18,6 @@ public interface iCardEdit {
     }
 
     interface View extends iBaseView {
-        void requestAuthorization(Intent originalIntent);
-
         void displayCard(Card card);
         void displayImageFromCard(Card card);
         void displayImage(String imageURI);

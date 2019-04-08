@@ -247,14 +247,6 @@ public class CardEdit_View extends BaseView implements
 
     // Интерфейсные методы
     @Override
-    public void requestAuthorization(Intent originalIntent) {
-        Intent authReqIntent = new Intent(this, Login_View.class);
-        authReqIntent.setAction(Constants.ACTION_LOGIN);
-        authReqIntent.putExtra(Intent.EXTRA_INTENT, originalIntent);
-        startActivityForResult(authReqIntent, Constants.CODE_LOGIN);
-    }
-
-    @Override
     public void displayCard(Card card) {
         hideProgressBar();
 
