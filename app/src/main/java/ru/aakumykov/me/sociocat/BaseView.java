@@ -372,7 +372,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public void startMyActivity(Intent intent) {
+    public void startSomeActivity(Intent intent) {
         startActivity(intent);
     }
 

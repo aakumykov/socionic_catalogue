@@ -119,6 +119,6 @@ public class Login_Presenter implements
     private void goCardCreation() {
         Intent intent = new Intent(view.getAppContext(), CardEdit_View.class);
         intent.setAction(Constants.ACTION_CREATE);
-        view.startMyActivity(intent);
+        view.startSomeActivity(intent);
     }
 }

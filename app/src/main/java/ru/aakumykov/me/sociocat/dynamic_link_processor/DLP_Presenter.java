@@ -122,7 +122,7 @@ public class DLP_Presenter implements iDLP.Presenter {
         String emailURL = inputIntent.getDataString();
         Intent intent = new Intent(view.getAppContext(), RegisterStep2_View.class);
         intent.putExtra("emailSignInURL", emailURL);
-        view.startMyActivity(intent);
+        view.startSomeActivity(intent);
     }
 
     private void resetPasswordStep2(Uri deepLink) {
@@ -130,7 +130,7 @@ public class DLP_Presenter implements iDLP.Presenter {
 //        intent.putExtra("deepLink", deepLink);
         Intent intent = new Intent(view.getAppContext(), Login_View.class);
         intent.setAction(Constants.ACTION_TRY_NEW_PASSWORD);
-        view.startMyActivity(intent);
+        view.startSomeActivity(intent);
     }
 
     private void onErrorOccured(String consoleMsg) {

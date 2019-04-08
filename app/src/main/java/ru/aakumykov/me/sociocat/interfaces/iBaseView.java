@@ -17,7 +17,7 @@ public interface iBaseView {
     Context getAppContext();
     String getString(int stringResourceId);
 
-    void startMyActivity(Intent intent);
+    void startSomeActivity(Intent intent);
 
     SharedPreferences getSharedPrefs(String prefsName);
     void clearSharedPrefs(SharedPreferences sharedPreferences, String dataName);
