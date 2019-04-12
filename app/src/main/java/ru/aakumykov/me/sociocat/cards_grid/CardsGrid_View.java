@@ -14,11 +14,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
@@ -36,7 +34,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -44,7 +41,6 @@ import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
-import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -538,22 +534,26 @@ public class CardsGrid_View extends BaseView implements
         SpeedDialView speedDialView = findViewById(R.id.speedDial);
 
         speedDialView.addActionItem(
-                new SpeedDialActionItem.Builder(R.id.fab_audio, R.drawable.ic_shortcut_audio)
+                new SpeedDialActionItem.Builder(R.id.fab_audio, R.drawable.ic_fab_audio)
+                        .setFabBackgroundColor(getResources().getColor(R.color.audio_mode))
                         .create()
         );
 
         speedDialView.addActionItem(
-                new SpeedDialActionItem.Builder(R.id.fab_video, R.drawable.ic_shortcut_video)
+                new SpeedDialActionItem.Builder(R.id.fab_video, R.drawable.ic_fab_video)
+                        .setFabBackgroundColor(getResources().getColor(R.color.video_mode))
                         .create()
         );
 
         speedDialView.addActionItem(
-                new SpeedDialActionItem.Builder(R.id.fab_image, R.drawable.ic_shortcut_image)
+                new SpeedDialActionItem.Builder(R.id.fab_image, R.drawable.ic_fab_image)
+                        .setFabBackgroundColor(getResources().getColor(R.color.image_mode))
                         .create()
         );
 
         speedDialView.addActionItem(
-                new SpeedDialActionItem.Builder(R.id.fab_quote, R.drawable.ic_shortcut_text)
+                new SpeedDialActionItem.Builder(R.id.fab_quote, R.drawable.ic_fab_text)
+                        .setFabBackgroundColor(getResources().getColor(R.color.text_mode))
                         .create()
         );
 

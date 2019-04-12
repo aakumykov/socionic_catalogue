@@ -36,10 +36,10 @@
     <color name="rating_down">#f7b8b8</color>
     <color name="rating_neutral">@color/light_grey</color>
 
-    <color name="text_mode_switch">#00ddff</color>
-    <color name="image_mode_switch">#99cc00</color>
-    <color name="video_mode_switch">#E53935</color>
-    <color name="audio_mode_switch">#3949AB</color>
+    <color name="text_mode">#00ddff</color>
+    <color name="image_mode">#99cc00</color>
+    <color name="video_mode">#4C39AB</color>
+    <color name="audio_mode">#E53935</color>
 
     <color name="card_show_title">#272727</color>
     <color name="card_show_description">#272727</color>
