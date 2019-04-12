@@ -81,4 +81,7 @@ dependencies {
 
     // EventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
+
+    // FABsMenu
+    implementation 'me.jahirfiquitiva:FABsMenu:1.1.4'
 }
