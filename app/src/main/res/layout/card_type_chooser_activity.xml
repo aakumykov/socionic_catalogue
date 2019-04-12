@@ -73,7 +73,7 @@
                     android:layout_weight="1"
                     android:text="@string/CARD_TYPE_CHOOSER_image_card"
                     android:textAlignment="center"
-                    android:textColor="@color/image_mode_switch"
+                    android:textColor="@color/image_mode"
                     android:textSize="20sp" />
             </TableRow>
 
@@ -107,7 +107,7 @@
                     android:layout_weight="1"
                     android:text="@string/CARD_TYPE_CHOOSER_video_card"
                     android:textAlignment="center"
-                    android:textColor="@color/video_mode_switch"
+                    android:textColor="@color/video_mode"
                     android:textSize="20sp" />
 
                 <TextView
@@ -117,7 +117,7 @@
                     android:layout_weight="1"
                     android:text="@string/CARD_TYPE_CHOOSER_audio_card"
                     android:textAlignment="center"
-                    android:textColor="@color/audio_mode_switch"
+                    android:textColor="@color/audio_mode"
                     android:textSize="20sp" />
             </TableRow>
 

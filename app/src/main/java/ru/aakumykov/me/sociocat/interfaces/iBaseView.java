@@ -17,7 +17,7 @@ public interface iBaseView {
     Context getAppContext();
     String getString(int stringResourceId);
 
-    void requestAuthorization(Intent originalIntent);
+    void requestLogin(Intent originalIntent);
 
     void startSomeActivity(Intent intent);
 
@@ -55,6 +55,7 @@ public interface iBaseView {
     void setPageTitle(String title);
     void activateUpButton();
 
+    void proceedLoginRequest(Intent intent);
     void goCreateCard();
     void closePage();
 }

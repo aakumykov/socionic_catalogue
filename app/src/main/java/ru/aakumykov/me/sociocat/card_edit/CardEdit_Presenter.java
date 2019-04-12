@@ -24,7 +24,6 @@ import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
-import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
@@ -77,7 +76,7 @@ public class CardEdit_Presenter implements
             throw new IllegalArgumentException("Intent is NULL");
 
         if (!authSingleton.isUserLoggedIn())
-            view.requestAuthorization(intent);
+            view.requestLogin(intent);
 
         String action = "" + intent.getAction();
 

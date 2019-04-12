@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <item name="fab_quote" type="id" />
+    <item name="fab_image" type="id" />
+    <item name="fab_video" type="id" />
+    <item name="fab_audio" type="id" />
 </resources>

@@ -23,7 +23,7 @@ public class Login_Presenter implements
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private String intentAction;
-
+    private Intent originalIntent;
 
     // Обязательные методы
     @Override
@@ -44,6 +44,7 @@ public class Login_Presenter implements
 
             String action = intent.getAction() + "";
             this.intentAction = action;
+            this.originalIntent = intent;
 
             switch (action) {
                 case Constants.ACTION_TRY_NEW_PASSWORD:
@@ -91,6 +92,11 @@ public class Login_Presenter implements
 
                 if (intentAction.equals(Constants.ACTION_CREATE)) {
                     view.goCreateCard();
+                    return;
+                }
+
+                if (intentAction.equals(Constants.ACTION_LOGIN_REQUEST)) {
+                    view.proceedLoginRequest(originalIntent);
                     return;
                 }
 

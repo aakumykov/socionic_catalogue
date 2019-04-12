@@ -1,30 +1,11 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-
-import androidx.annotation.RequiresApi;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,12 +15,25 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.leinardi.android.speeddial.SpeedDialActionItem;
+import com.leinardi.android.speeddial.SpeedDialView;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -47,7 +41,6 @@ import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
-import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -67,7 +60,7 @@ public class CardsGrid_View extends BaseView implements
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
-    @BindView(R.id.floatingActionButton) FloatingActionButton floatingActionButton;
+//    @BindView(R.id.floatingActionButton) FloatingActionButton floatingActionButton;
     private SearchView searchView;
 
     public static final String TAG = "CardsGrid_View";
@@ -104,6 +97,8 @@ public class CardsGrid_View extends BaseView implements
         dataAdapter = new CardsGrid_Adapter(cardsList);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.setAdapter(dataAdapter);
+
+        configureFAB();
 
         getFCMToken();
     }
@@ -319,6 +314,7 @@ public class CardsGrid_View extends BaseView implements
 
 
     // Нажатия
+/*
     @OnClick(R.id.floatingActionButton)
     void fabClicked() {
         if (auth().isUserLoggedIn()) {
@@ -351,6 +347,7 @@ public class CardsGrid_View extends BaseView implements
             );
         }
     }
+*/
 
 
     // Внутренние методы
@@ -532,5 +529,89 @@ public class CardsGrid_View extends BaseView implements
                 });
     }
 
+    private void configureFAB() {
 
+        SpeedDialView speedDialView = findViewById(R.id.speedDial);
+
+        speedDialView.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_audio, R.drawable.ic_fab_audio)
+                        .setFabBackgroundColor(getResources().getColor(R.color.audio_mode))
+                        .create()
+        );
+
+        speedDialView.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_video, R.drawable.ic_fab_video)
+                        .setFabBackgroundColor(getResources().getColor(R.color.video_mode))
+                        .create()
+        );
+
+        speedDialView.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_image, R.drawable.ic_fab_image)
+                        .setFabBackgroundColor(getResources().getColor(R.color.image_mode))
+                        .create()
+        );
+
+        speedDialView.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_quote, R.drawable.ic_fab_text)
+                        .setFabBackgroundColor(getResources().getColor(R.color.text_mode))
+                        .create()
+        );
+
+        speedDialView.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
+            @Override
+            public boolean onActionSelected(SpeedDialActionItem speedDialActionItem) {
+
+                switch (speedDialActionItem.getId()) {
+
+                    case R.id.fab_quote:
+                        sartCreateCard(Constants.TEXT_CARD);
+                        return false;
+
+                    case R.id.fab_image:
+                        sartCreateCard(Constants.IMAGE_CARD);
+                        return false;
+
+                    case R.id.fab_video:
+                        sartCreateCard(Constants.VIDEO_CARD);
+                        return false;
+
+                    case R.id.fab_audio:
+                        sartCreateCard(Constants.AUDIO_CARD);
+                        return false;
+
+                    default:
+                        return false;
+                }
+            }
+        });
+
+    }
+
+    private void sartCreateCard(String cardType) {
+        Card card  = new Card();
+
+        switch (cardType) {
+            case Constants.TEXT_CARD:
+                card.setType(Constants.TEXT_CARD);
+                break;
+            case Constants.IMAGE_CARD:
+                card.setType(Constants.IMAGE_CARD);
+                break;
+            case Constants.VIDEO_CARD:
+                card.setType(Constants.VIDEO_CARD);
+                break;
+            case Constants.AUDIO_CARD:
+                card.setType(Constants.AUDIO_CARD);
+                break;
+            default:
+                showErrorMsg(R.string.wrong_card_type);
+                return;
+        }
+
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.putExtra(Constants.CARD, card);
+        intent.setAction(Constants.ACTION_CREATE);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+    }
 }
