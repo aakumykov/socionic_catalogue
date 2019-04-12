@@ -17,8 +17,9 @@ public final class Constants {
     public final static String ACTION_EDIT = "ACTION_EDIT";
     public final static String ACTION_EDIT_RESUME = "ACTION_EDIT_RESUME";
     public final static String ACTION_DELETE = "ACTION_DELETE";
-    public final static String ACTION_LOGIN_FOR_COMMENT = "ACTION_LOGIN_FOR_COMMENT";
     public final static String ACTION_LOGIN = "ACTION_LOGIN";
+    public final static String ACTION_LOGIN_REQUEST = "ACTION_LOGIN_REQUEST";
+    public final static String ACTION_LOGIN_FOR_COMMENT = "ACTION_LOGIN_FOR_COMMENT";
     public final static String ACTION_REGISTRATION_CONFIRM_REQUEST = "ACTION_REGISTRATION_CONFIRM_REQUEST";
     public final static String ACTION_REGISTRATION_CONFIRM_RESPONSE = "ACTION_REGISTRATION_CONFIRM_RESPONSE";
     public final static String ACTION_TRY_NEW_PASSWORD = "ACTION_TRY_NEW_PASSWORD";

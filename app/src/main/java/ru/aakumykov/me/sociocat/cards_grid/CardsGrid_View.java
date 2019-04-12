@@ -538,12 +538,7 @@ public class CardsGrid_View extends BaseView implements
         SpeedDialView speedDialView = findViewById(R.id.speedDial);
 
         speedDialView.addActionItem(
-                new SpeedDialActionItem.Builder(R.id.fab_quote, R.drawable.ic_shortcut_text)
-                        .create()
-        );
-
-        speedDialView.addActionItem(
-                new SpeedDialActionItem.Builder(R.id.fab_image, R.drawable.ic_shortcut_image)
+                new SpeedDialActionItem.Builder(R.id.fab_audio, R.drawable.ic_shortcut_audio)
                         .create()
         );
 
@@ -553,7 +548,12 @@ public class CardsGrid_View extends BaseView implements
         );
 
         speedDialView.addActionItem(
-                new SpeedDialActionItem.Builder(R.id.fab_audio, R.drawable.ic_shortcut_audio)
+                new SpeedDialActionItem.Builder(R.id.fab_image, R.drawable.ic_shortcut_image)
+                        .create()
+        );
+
+        speedDialView.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_quote, R.drawable.ic_shortcut_text)
                         .create()
         );
 
@@ -564,19 +564,19 @@ public class CardsGrid_View extends BaseView implements
                 switch (speedDialActionItem.getId()) {
 
                     case R.id.fab_quote:
-                        Toast.makeText(CardsGrid_View.this, "Цитата", Toast.LENGTH_SHORT).show();
+                        sartCreateCard(Constants.TEXT_CARD);
                         return false;
 
                     case R.id.fab_image:
-                        Toast.makeText(CardsGrid_View.this, "Картинка", Toast.LENGTH_SHORT).show();
+                        sartCreateCard(Constants.IMAGE_CARD);
                         return false;
 
                     case R.id.fab_video:
-                        Toast.makeText(CardsGrid_View.this, "Видео", Toast.LENGTH_SHORT).show();
+                        sartCreateCard(Constants.VIDEO_CARD);
                         return false;
 
                     case R.id.fab_audio:
-                        Toast.makeText(CardsGrid_View.this, "Аудио", Toast.LENGTH_SHORT).show();
+                        sartCreateCard(Constants.AUDIO_CARD);
                         return false;
 
                     default:
@@ -585,5 +585,33 @@ public class CardsGrid_View extends BaseView implements
             }
         });
 
+    }
+
+    private void sartCreateCard(String cardType) {
+        Card card  = new Card();
+
+        switch (cardType) {
+            case Constants.TEXT_CARD:
+                card.setType(Constants.TEXT_CARD);
+                break;
+            case Constants.IMAGE_CARD:
+                card.setType(Constants.IMAGE_CARD);
+                break;
+            case Constants.VIDEO_CARD:
+                card.setType(Constants.VIDEO_CARD);
+                break;
+            case Constants.AUDIO_CARD:
+                card.setType(Constants.AUDIO_CARD);
+                break;
+            default:
+                showErrorMsg(R.string.wrong_card_type);
+                return;
+        }
+
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.putExtra(Constants.CARD, card);
+        intent.setAction(Constants.ACTION_CREATE);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
     }
 }
