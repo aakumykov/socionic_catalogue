@@ -82,6 +82,6 @@ dependencies {
     // EventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
 
-    // FABsMenu
-    implementation 'me.jahirfiquitiva:FABsMenu:1.1.4'
+    // FloatingActionButtonSpeedDial
+    implementation "com.leinardi.android:speed-dial:2.0.1"
 }

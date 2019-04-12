@@ -1,30 +1,11 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-
-import androidx.annotation.RequiresApi;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,10 +14,26 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.leinardi.android.speeddial.SpeedDialActionItem;
+import com.leinardi.android.speeddial.SpeedDialView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -67,7 +64,7 @@ public class CardsGrid_View extends BaseView implements
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
-    @BindView(R.id.floatingActionButton) FloatingActionButton floatingActionButton;
+//    @BindView(R.id.floatingActionButton) FloatingActionButton floatingActionButton;
     private SearchView searchView;
 
     public static final String TAG = "CardsGrid_View";
@@ -104,6 +101,8 @@ public class CardsGrid_View extends BaseView implements
         dataAdapter = new CardsGrid_Adapter(cardsList);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.setAdapter(dataAdapter);
+
+        configureFAB();
 
         getFCMToken();
     }
@@ -319,6 +318,7 @@ public class CardsGrid_View extends BaseView implements
 
 
     // Нажатия
+/*
     @OnClick(R.id.floatingActionButton)
     void fabClicked() {
         if (auth().isUserLoggedIn()) {
@@ -351,6 +351,7 @@ public class CardsGrid_View extends BaseView implements
             );
         }
     }
+*/
 
 
     // Внутренние методы
@@ -532,5 +533,57 @@ public class CardsGrid_View extends BaseView implements
                 });
     }
 
+    private void configureFAB() {
 
+        SpeedDialView speedDialView = findViewById(R.id.speedDial);
+
+        speedDialView.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_quote, R.drawable.ic_shortcut_text)
+                        .create()
+        );
+
+        speedDialView.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_image, R.drawable.ic_shortcut_image)
+                        .create()
+        );
+
+        speedDialView.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_video, R.drawable.ic_shortcut_video)
+                        .create()
+        );
+
+        speedDialView.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_audio, R.drawable.ic_shortcut_audio)
+                        .create()
+        );
+
+        speedDialView.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
+            @Override
+            public boolean onActionSelected(SpeedDialActionItem speedDialActionItem) {
+
+                switch (speedDialActionItem.getId()) {
+
+                    case R.id.fab_quote:
+                        Toast.makeText(CardsGrid_View.this, "Цитата", Toast.LENGTH_SHORT).show();
+                        return false;
+
+                    case R.id.fab_image:
+                        Toast.makeText(CardsGrid_View.this, "Картинка", Toast.LENGTH_SHORT).show();
+                        return false;
+
+                    case R.id.fab_video:
+                        Toast.makeText(CardsGrid_View.this, "Видео", Toast.LENGTH_SHORT).show();
+                        return false;
+
+                    case R.id.fab_audio:
+                        Toast.makeText(CardsGrid_View.this, "Аудио", Toast.LENGTH_SHORT).show();
+                        return false;
+
+                    default:
+                        return false;
+                }
+            }
+        });
+
+    }
 }
