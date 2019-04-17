@@ -265,7 +265,7 @@ public class CardEdit_Presenter implements
         if (null != card)
             view.displayCard(card);
 
-        if (sharedPreferences.contains(Constants.CARD)) {
+        /*if (sharedPreferences.contains(Constants.CARD)) {
 
             String json = sharedPreferences.getString(Constants.CARD, "");
 
@@ -308,7 +308,7 @@ public class CardEdit_Presenter implements
                     throw new Exception("Card from shared ru.aakumykov.me.sociocat.preferences is NULL");
                 }
             }
-        }
+        }*/
     }
 
     @Override
