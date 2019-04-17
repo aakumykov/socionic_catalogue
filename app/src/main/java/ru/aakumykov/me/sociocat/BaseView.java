@@ -100,7 +100,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     protected void onResume() {
         super.onResume();
-        checkUnfinishedEdit();
+        //checkUnfinishedEdit();
     }
 
     @Override

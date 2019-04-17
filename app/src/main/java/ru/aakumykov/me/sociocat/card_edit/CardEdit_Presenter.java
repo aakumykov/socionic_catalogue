@@ -234,28 +234,34 @@ public class CardEdit_Presenter implements
     public void saveEditState() {
         updateCurrentCardFromView();
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        MVPUtils.saveCardDraft(view.getAppContext(), currentCard);
 
-        String cardJson = new Gson().toJson(currentCard);
-
-        editor.putString(Constants.CARD, cardJson);
-        editor.putString("editMode", editMode.name());
-        editor.putBoolean("isExternalDataMode", isExternalDataMode);
-        editor.putString("imageType", imageType);
-
-        /* У объекта oldCardTags запускается метод, поэтому
-        нужно проверять его существование. */
-        if (null != oldCardTags)
-            editor.putStringSet("oldCardTags", oldCardTags.keySet());
-
-        editor.putString("videoCode", currentCard.getVideoCode());
-        editor.putString("audioCode", currentCard.getAudioCode());
-
-        editor.apply();
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//
+//        String cardJson = new Gson().toJson(currentCard);
+//
+//        editor.putString(Constants.CARD, cardJson);
+//        editor.putString("editMode", editMode.name());
+//        editor.putBoolean("isExternalDataMode", isExternalDataMode);
+//        editor.putString("imageType", imageType);
+//
+//        /* У объекта oldCardTags запускается метод, поэтому
+//        нужно проверять его существование. */
+//        if (null != oldCardTags)
+//            editor.putStringSet("oldCardTags", oldCardTags.keySet());
+//
+//        editor.putString("videoCode", currentCard.getVideoCode());
+//        editor.putString("audioCode", currentCard.getAudioCode());
+//
+//        editor.apply();
     }
 
     @Override
     public void restoreEditState() throws Exception {
+
+        Card card = MVPUtils.retriveCardDraft(view.getAppContext());
+        if (null != card)
+            view.displayCard(card);
 
         if (sharedPreferences.contains(Constants.CARD)) {
 
@@ -305,7 +311,8 @@ public class CardEdit_Presenter implements
 
     @Override
     public void clearEditState() {
-        view.clearSharedPrefs(sharedPreferences, Constants.CARD);
+        //view.clearSharedPrefs(sharedPreferences, Constants.CARD);
+        MVPUtils.clearCardDraft(view.getAppContext());
     }
 
     @Override

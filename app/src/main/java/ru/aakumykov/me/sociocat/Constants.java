@@ -25,6 +25,7 @@ public final class Constants {
     public final static String ACTION_TRY_NEW_PASSWORD = "ACTION_TRY_NEW_PASSWORD";
 
     public final static String CARD = "CARD";
+    public final static String CARD_DRAFT = "CARD_DRAFT";
     public final static String CARD_KEY = "CARD_KEY";
 
     public final static String ORIGINAL_INTENT = "ORIGINAL_INTENT";
