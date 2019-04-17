@@ -236,6 +236,8 @@ public class CardEdit_Presenter implements
 
         MVPUtils.saveCardDraft(view.getAppContext(), currentCard);
 
+        view.showToast(R.string.CARD_EDIT_draft_saved);
+
 //        SharedPreferences.Editor editor = sharedPreferences.edit();
 //
 //        String cardJson = new Gson().toJson(currentCard);
