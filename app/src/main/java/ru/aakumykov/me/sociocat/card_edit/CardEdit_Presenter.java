@@ -261,54 +261,9 @@ public class CardEdit_Presenter implements
     @Override
     public void restoreEditState() throws Exception {
 
-        Card card = MVPUtils.retriveCardDraft(view.getAppContext());
-        if (null != card)
-            view.displayCard(card);
-
-        /*if (sharedPreferences.contains(Constants.CARD)) {
-
-            String json = sharedPreferences.getString(Constants.CARD, "");
-
-            if (!TextUtils.isEmpty(json)) {
-
-                Card savedCard = new Gson().fromJson(json, Card.class);
-
-                Enums.CardEditMode savedEditMode = Enums.CardEditMode.valueOf(sharedPreferences.getString("editMode", ""));
-
-                boolean savedIsExternalDataMode = sharedPreferences.getBoolean("isExternalDataMode", false);
-
-                String savedImageType = sharedPreferences.getString("imageType", null);
-
-                HashMap<String,Boolean> savedOldCardTags = new HashMap<>();
-                Set<String> tagsSet = sharedPreferences.getStringSet("oldCardTags", new HashSet<String>());
-                for(String tagName : tagsSet)
-                    savedOldCardTags.put(tagName, true);
-
-                HashMap<String,Boolean> savedOldCardTags2 = MyUtils.list2hashMap(tagsSet, true);
-
-                if (null != savedCard) {
-                    currentCard = savedCard;
-
-                    editMode = savedEditMode;
-                    isExternalDataMode = savedIsExternalDataMode;
-                    imageType = savedImageType;
-                    oldCardTags = savedOldCardTags;
-
-                    if (currentCard.isAudioCard())
-                        currentCard.setAudioCode(sharedPreferences.getString("audioCode", ""));
-
-                    if (currentCard.isVideoCard())
-                        currentCard.setVideoCode(sharedPreferences.getString("videoCode", ""));
-
-                    view.displayCard(savedCard);
-
-                    clearEditState();
-
-                } else {
-                    throw new Exception("Card from shared ru.aakumykov.me.sociocat.preferences is NULL");
-                }
-            }
-        }*/
+        Card cardDraft = MVPUtils.retriveCardDraft(view.getAppContext());
+        if (null != cardDraft)
+            view.showDraftRestoreDialog(cardDraft);
     }
 
     @Override

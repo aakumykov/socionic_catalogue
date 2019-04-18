@@ -521,6 +521,28 @@ public class CardEdit_View extends BaseView implements
         newTagInput.setText("");
     }
 
+    @Override
+    public void showDraftRestoreDialog(Card cardDraft) {
+
+        DraftRestoreFragment.Callbacks callbacks = new DraftRestoreFragment.Callbacks() {
+            @Override
+            public void onDraftRestoreConfirmed() {
+                displayCard(cardDraft);
+            }
+
+            @Override
+            public void onDraftRestoreCanceled() {
+                presenter.clearEditState();
+            }
+        };
+
+        DraftRestoreFragment draftRestoreFragment =
+                DraftRestoreFragment.getInstance(cardDraft);
+
+        draftRestoreFragment.setCallbacks(callbacks);
+
+        draftRestoreFragment.show(getSupportFragmentManager(), "draft_restore_dialog");
+    }
 
     // Методы событий интерсейса
     @OnClick(R.id.imagePlaceholder)

@@ -393,4 +393,7 @@
     <string name="SHORTCUT_create_audio_card_short_label">Аудио</string>
     <string name="SHORTCUT_create_audio_card_long_label">Создать карточку с аудио</string>
     <string name="CARD_EDIT_draft_saved">Черновик сохранён</string>
+    <string name="DRAFT_RESTORE_DIALOG_discard">Удалить черновик</string>
+    <string name="DRAFT_RESTORE_DIALOG_confirm">Восстановить черновик</string>
+    <string name="DRAFT_RESTORE_DIALOG_title">Обнаружен черновик карточки</string>
 </resources>
