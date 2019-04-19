@@ -38,6 +38,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
@@ -439,12 +440,14 @@ public class MVPUtils {
         return new Gson().fromJson(cardJSON, Card.class);
     }
 
-    public static void clearCardDraft(Context context) {
-        SharedPreferences.Editor editor =
-                context.getSharedPreferences(Constants.SHARED_PREFERENCES_CARD_EDIT, Context.MODE_PRIVATE)
-                        .edit();
-        editor.remove(Constants.CARD_DRAFT);
-        editor.apply();
+    public static void clearCardDraft(@Nullable Context context) {
+        if (null != context) {
+            SharedPreferences.Editor editor =
+                    context.getSharedPreferences(Constants.SHARED_PREFERENCES_CARD_EDIT, Context.MODE_PRIVATE)
+                            .edit();
+            editor.remove(Constants.CARD_DRAFT);
+            editor.apply();
+        }
     }
 
     public static void showDraftRestoreDialog(FragmentManager fragmentManager, Card cardDraft, DraftRestoreFragment.Callbacks callbacks) {

@@ -142,9 +142,6 @@ public class CardsGrid_View extends BaseView implements
                     Intent intent = new Intent(getAppContext(), CardEdit_View.class);
                     intent.setAction(Constants.ACTION_CREATE);
                     intent.putExtra(Constants.CARD, cardDraft);
-
-                    MVPUtils.clearCardDraft(getAppContext());
-
                     startActivity(intent);
                 }
 

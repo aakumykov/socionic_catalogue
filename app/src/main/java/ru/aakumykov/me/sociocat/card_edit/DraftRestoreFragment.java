@@ -20,6 +20,7 @@ import androidx.fragment.app.DialogFragment;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
 public class DraftRestoreFragment extends DialogFragment {
 
@@ -79,14 +80,17 @@ public class DraftRestoreFragment extends DialogFragment {
             Button deferButton = view.findViewById(R.id.draftDeferButton);
             Button discardButton = view.findViewById(R.id.draftDiscardButton);
 
+            // Восстановление
             confirmButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     callbacks.onDraftRestoreConfirmed();
+                    MVPUtils.clearCardDraft(getContext());
                     dismiss();
                 }
             });
 
+            // "Напомнить позже"
             deferButton.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     callbacks.onDraftRestoreDeferred();
@@ -94,6 +98,7 @@ public class DraftRestoreFragment extends DialogFragment {
                 }
             });
 
+            // Отказ
             discardButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
