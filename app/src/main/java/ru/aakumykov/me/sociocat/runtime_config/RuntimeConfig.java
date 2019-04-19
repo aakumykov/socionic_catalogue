@@ -49,7 +49,7 @@ public class RuntimeConfig {
             settings.putBoolean(key, (Boolean)value);
         }
         else if (value instanceof Integer) {
-            settings.putInt(key, (int)value);
+            settings.putInt(key, (Integer)value);
         }
         else if (value instanceof String) {
             settings.putString(key, (String)value);

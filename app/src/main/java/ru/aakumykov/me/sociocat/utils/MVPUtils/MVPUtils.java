@@ -39,9 +39,12 @@ import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_edit.DraftRestoreFragment;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -406,6 +409,13 @@ public class MVPUtils {
         }
     }
 
+
+    public static boolean hasCardDraft(Context context) {
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences(Constants.SHARED_PREFERENCES_CARD_EDIT, Context.MODE_PRIVATE);
+        return sharedPreferences.contains(Constants.CARD_DRAFT);
+    }
+
     public static void saveCardDraft(Context context, Card card) {
         SharedPreferences.Editor editor =
                 context.getSharedPreferences(Constants.SHARED_PREFERENCES_CARD_EDIT, Context.MODE_PRIVATE)
@@ -437,5 +447,13 @@ public class MVPUtils {
         editor.apply();
     }
 
+    public static void showDraftRestoreDialog(FragmentManager fragmentManager, Card cardDraft, DraftRestoreFragment.Callbacks callbacks) {
 
+        DraftRestoreFragment draftRestoreFragment =
+                DraftRestoreFragment.getInstance(cardDraft);
+
+        draftRestoreFragment.setCallbacks(callbacks);
+
+        draftRestoreFragment.show(fragmentManager, "draft_restore_dialog");
+    }
 }

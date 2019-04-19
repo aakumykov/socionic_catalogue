@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.card_edit;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -524,24 +526,15 @@ public class CardEdit_View extends BaseView implements
     @Override
     public void showDraftRestoreDialog(Card cardDraft) {
 
-        DraftRestoreFragment.Callbacks callbacks = new DraftRestoreFragment.Callbacks() {
-            @Override
-            public void onDraftRestoreConfirmed() {
+        MVPUtils.showDraftRestoreDialog(getSupportFragmentManager(), cardDraft, new DraftRestoreFragment.Callbacks() {
+            @Override public void onDraftRestoreConfirmed() {
                 displayCard(cardDraft);
             }
 
-            @Override
-            public void onDraftRestoreCanceled() {
+            @Override public void onDraftRestoreCanceled() {
                 presenter.clearEditState();
             }
-        };
-
-        DraftRestoreFragment draftRestoreFragment =
-                DraftRestoreFragment.getInstance(cardDraft);
-
-        draftRestoreFragment.setCallbacks(callbacks);
-
-        draftRestoreFragment.show(getSupportFragmentManager(), "draft_restore_dialog");
+        });
     }
 
     // Методы событий интерсейса

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -38,10 +39,12 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
+import ru.aakumykov.me.sociocat.card_edit.DraftRestoreFragment;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -118,6 +121,32 @@ public class CardsGrid_View extends BaseView implements
             loadList(true);
             firstRun = false;
         }
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+
+        if (MVPUtils.hasCardDraft(this)) {
+
+            Card cardDraft = MVPUtils.retriveCardDraft(this);
+
+            MVPUtils.showDraftRestoreDialog(getSupportFragmentManager(), cardDraft, new DraftRestoreFragment.Callbacks() {
+                @Override public void onDraftRestoreConfirmed() {
+                    Intent intent = new Intent(getAppContext(), CardEdit_View.class);
+                    intent.setAction(Constants.ACTION_CREATE);
+                    intent.putExtra(Constants.CARD, cardDraft);
+                    startActivity(intent);
+                }
+
+                @Override public void onDraftRestoreCanceled() {
+                    MVPUtils.clearCardDraft(getAppContext());
+                }
+            });
+        }
+    }
+
+    @Override protected void onPause() {
+        super.onPause();
     }
 
     @Override
