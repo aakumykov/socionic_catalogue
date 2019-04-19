@@ -81,30 +81,22 @@ public class DraftRestoreFragment extends DialogFragment {
             Button discardButton = view.findViewById(R.id.draftDiscardButton);
 
             // Восстановление
-            confirmButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callbacks.onDraftRestoreConfirmed();
-                    MVPUtils.clearCardDraft(getContext());
-                    dismiss();
-                }
+            confirmButton.setOnClickListener(v -> {
+                callbacks.onDraftRestoreConfirmed();
+                MVPUtils.clearCardDraft(getContext());
+                dismiss();
             });
 
             // "Напомнить позже"
-            deferButton.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    callbacks.onDraftRestoreDeferred();
-                    dismiss();
-                }
+            deferButton.setOnClickListener(v -> {
+                callbacks.onDraftRestoreDeferred();
+                dismiss();
             });
 
             // Отказ
-            discardButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callbacks.onDraftRestoreCanceled();
-                    dismiss();
-                }
+            discardButton.setOnClickListener(v -> {
+                callbacks.onDraftRestoreCanceled();
+                dismiss();
             });
 
             Dialog dialog = getDialog();
