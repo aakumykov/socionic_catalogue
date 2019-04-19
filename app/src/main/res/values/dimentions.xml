@@ -3,7 +3,7 @@
     <dimen name="top_message_font_size">18sp</dimen>
 
     <dimen name="major_button_margin_top">10dp</dimen>
-    <dimen name="subsequent_button_margin_top">3dp</dimen>
+    <dimen name="minor_button_margin_top">3dp</dimen>
 
     <dimen name="major_button_font_size">16sp</dimen>
     <dimen name="minor_button_font_size">14sp</dimen>

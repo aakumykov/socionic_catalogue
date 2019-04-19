@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -38,10 +40,13 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
+import ru.aakumykov.me.sociocat.card_edit.DraftRestoreFragment;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.runtime_config.RuntimeConfig;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -118,6 +123,42 @@ public class CardsGrid_View extends BaseView implements
             loadList(true);
             firstRun = false;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (MVPUtils.hasCardDraft(this)) {
+
+            if (RuntimeConfig.getBool(Constants.DRAFT_DEFERRED))
+                return;
+
+            Card cardDraft = MVPUtils.retriveCardDraft(this);
+
+            MVPUtils.showDraftRestoreDialog(getSupportFragmentManager(), cardDraft, new DraftRestoreFragment.Callbacks() {
+
+                @Override public void onDraftRestoreConfirmed() {
+                    Intent intent = new Intent(getAppContext(), CardEdit_View.class);
+                    intent.setAction(Constants.ACTION_CREATE);
+                    intent.putExtra(Constants.CARD, cardDraft);
+                    startActivity(intent);
+                }
+
+                @Override public void onDraftRestoreDeferred() {
+                    RuntimeConfig.setValue(Constants.DRAFT_DEFERRED, true);
+                }
+
+                @Override public void onDraftRestoreCanceled() {
+                    MVPUtils.clearCardDraft(getAppContext());
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -533,27 +574,41 @@ public class CardsGrid_View extends BaseView implements
 
         SpeedDialView speedDialView = findViewById(R.id.speedDial);
 
+        Resources resources = getResources();
+
         speedDialView.addActionItem(
                 new SpeedDialActionItem.Builder(R.id.fab_audio, R.drawable.ic_fab_audio)
-                        .setFabBackgroundColor(getResources().getColor(R.color.audio_mode))
+                        .setFabBackgroundColor(resources.getColor(R.color.audio_mode))
+                        .setLabel(R.string.FAB_subitem_audio)
+                        .setLabelColor(resources.getColor(R.color.white))
+                        .setLabelBackgroundColor(resources.getColor(R.color.audio_mode))
                         .create()
         );
 
         speedDialView.addActionItem(
                 new SpeedDialActionItem.Builder(R.id.fab_video, R.drawable.ic_fab_video)
                         .setFabBackgroundColor(getResources().getColor(R.color.video_mode))
+                        .setLabel(R.string.FAB_subitem_video)
+                        .setLabelColor(resources.getColor(R.color.white))
+                        .setLabelBackgroundColor(resources.getColor(R.color.video_mode))
                         .create()
         );
 
         speedDialView.addActionItem(
                 new SpeedDialActionItem.Builder(R.id.fab_image, R.drawable.ic_fab_image)
-                        .setFabBackgroundColor(getResources().getColor(R.color.image_mode))
+                        .setFabBackgroundColor(resources.getColor(R.color.image_mode))
+                        .setLabel(R.string.FAB_subitem_image)
+                        .setLabelColor(resources.getColor(R.color.white))
+                        .setLabelBackgroundColor(resources.getColor(R.color.image_mode))
                         .create()
         );
 
         speedDialView.addActionItem(
                 new SpeedDialActionItem.Builder(R.id.fab_quote, R.drawable.ic_fab_text)
-                        .setFabBackgroundColor(getResources().getColor(R.color.text_mode))
+                        .setFabBackgroundColor(resources.getColor(R.color.text_mode))
+                        .setLabel(R.string.FAB_subitem_text)
+                        .setLabelColor(resources.getColor(R.color.white))
+                        .setLabelBackgroundColor(resources.getColor(R.color.text_mode))
                         .create()
         );
 

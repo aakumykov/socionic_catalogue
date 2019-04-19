@@ -234,78 +234,42 @@ public class CardEdit_Presenter implements
     public void saveEditState() {
         updateCurrentCardFromView();
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        MVPUtils.saveCardDraft(view.getAppContext(), currentCard);
 
-        String cardJson = new Gson().toJson(currentCard);
+        view.showToast(R.string.CARD_EDIT_draft_saved);
 
-        editor.putString(Constants.CARD, cardJson);
-        editor.putString("editMode", editMode.name());
-        editor.putBoolean("isExternalDataMode", isExternalDataMode);
-        editor.putString("imageType", imageType);
-
-        /* У объекта oldCardTags запускается метод, поэтому
-        нужно проверять его существование. */
-        if (null != oldCardTags)
-            editor.putStringSet("oldCardTags", oldCardTags.keySet());
-
-        editor.putString("videoCode", currentCard.getVideoCode());
-        editor.putString("audioCode", currentCard.getAudioCode());
-
-        editor.apply();
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//
+//        String cardJson = new Gson().toJson(currentCard);
+//
+//        editor.putString(Constants.CARD, cardJson);
+//        editor.putString("editMode", editMode.name());
+//        editor.putBoolean("isExternalDataMode", isExternalDataMode);
+//        editor.putString("imageType", imageType);
+//
+//        /* У объекта oldCardTags запускается метод, поэтому
+//        нужно проверять его существование. */
+//        if (null != oldCardTags)
+//            editor.putStringSet("oldCardTags", oldCardTags.keySet());
+//
+//        editor.putString("videoCode", currentCard.getVideoCode());
+//        editor.putString("audioCode", currentCard.getAudioCode());
+//
+//        editor.apply();
     }
 
     @Override
     public void restoreEditState() throws Exception {
 
-        if (sharedPreferences.contains(Constants.CARD)) {
-
-            String json = sharedPreferences.getString(Constants.CARD, "");
-
-            if (!TextUtils.isEmpty(json)) {
-
-                Card savedCard = new Gson().fromJson(json, Card.class);
-
-                Enums.CardEditMode savedEditMode = Enums.CardEditMode.valueOf(sharedPreferences.getString("editMode", ""));
-
-                boolean savedIsExternalDataMode = sharedPreferences.getBoolean("isExternalDataMode", false);
-
-                String savedImageType = sharedPreferences.getString("imageType", null);
-
-                HashMap<String,Boolean> savedOldCardTags = new HashMap<>();
-                Set<String> tagsSet = sharedPreferences.getStringSet("oldCardTags", new HashSet<String>());
-                for(String tagName : tagsSet)
-                    savedOldCardTags.put(tagName, true);
-
-                HashMap<String,Boolean> savedOldCardTags2 = MyUtils.list2hashMap(tagsSet, true);
-
-                if (null != savedCard) {
-                    currentCard = savedCard;
-
-                    editMode = savedEditMode;
-                    isExternalDataMode = savedIsExternalDataMode;
-                    imageType = savedImageType;
-                    oldCardTags = savedOldCardTags;
-
-                    if (currentCard.isAudioCard())
-                        currentCard.setAudioCode(sharedPreferences.getString("audioCode", ""));
-
-                    if (currentCard.isVideoCard())
-                        currentCard.setVideoCode(sharedPreferences.getString("videoCode", ""));
-
-                    view.displayCard(savedCard);
-
-                    clearEditState();
-
-                } else {
-                    throw new Exception("Card from shared ru.aakumykov.me.sociocat.preferences is NULL");
-                }
-            }
-        }
+        Card cardDraft = MVPUtils.retriveCardDraft(view.getAppContext());
+        if (null != cardDraft)
+            view.showDraftRestoreDialog(cardDraft);
     }
 
     @Override
     public void clearEditState() {
-        view.clearSharedPrefs(sharedPreferences, Constants.CARD);
+        //view.clearSharedPrefs(sharedPreferences, Constants.CARD);
+        MVPUtils.clearCardDraft(view.getAppContext());
     }
 
     @Override

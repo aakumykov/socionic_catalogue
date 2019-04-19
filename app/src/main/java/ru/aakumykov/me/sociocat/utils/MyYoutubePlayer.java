@@ -15,13 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.firebase.database.annotations.NotNull;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.utils.TimeUtilities;
-
-import org.jetbrains.annotations.NotNull;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -197,7 +196,7 @@ public class MyYoutubePlayer implements
 
         youTubePlayerView.initialize(new YouTubePlayerListener() {
             @Override
-            public void onReady(@NotNull YouTubePlayer youTubePlayer) {
+            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
                 player = youTubePlayer;
 
                 hidePlayerMsg();
@@ -207,7 +206,7 @@ public class MyYoutubePlayer implements
             }
 
             @Override
-            public void onStateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerState playerState) {
+            public void onStateChange(@NonNull YouTubePlayer youTubePlayer, @NonNull PlayerConstants.PlayerState playerState) {
                 mediaPlayerState = playerState;
                 //showPlayerMsg(state);
                 if (isAudioPlayer())
@@ -215,42 +214,42 @@ public class MyYoutubePlayer implements
             }
 
             @Override
-            public void onPlaybackQualityChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackQuality playbackQuality) {
+            public void onPlaybackQualityChange(@NonNull YouTubePlayer youTubePlayer, @NonNull PlayerConstants.PlaybackQuality playbackQuality) {
 
             }
 
             @Override
-            public void onPlaybackRateChange(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlaybackRate playbackRate) {
+            public void onPlaybackRateChange(@NonNull YouTubePlayer youTubePlayer, @NonNull PlayerConstants.PlaybackRate playbackRate) {
 
             }
 
             @Override
-            public void onError(@NotNull YouTubePlayer youTubePlayer, @NotNull PlayerConstants.PlayerError playerError) {
+            public void onError(@NonNull YouTubePlayer youTubePlayer, @NonNull PlayerConstants.PlayerError playerError) {
                 showPlayerMsg(String.valueOf(playerError), false);
             }
 
             @Override
-            public void onCurrentSecond(@NotNull YouTubePlayer youTubePlayer, float v) {
+            public void onCurrentSecond(@NonNull YouTubePlayer youTubePlayer, float v) {
                 moveSeekBar(v);
             }
 
             @Override
-            public void onVideoDuration(@NotNull YouTubePlayer youTubePlayer, float v) {
+            public void onVideoDuration(@NonNull YouTubePlayer youTubePlayer, float v) {
                 videoDuration = v;
             }
 
             @Override
-            public void onVideoLoadedFraction(@NotNull YouTubePlayer youTubePlayer, float v) {
+            public void onVideoLoadedFraction(@NonNull YouTubePlayer youTubePlayer, float v) {
 
             }
 
             @Override
-            public void onVideoId(@NotNull YouTubePlayer youTubePlayer, @NotNull String s) {
+            public void onVideoId(@NonNull YouTubePlayer youTubePlayer, @NonNull String s) {
 
             }
 
             @Override
-            public void onApiChange(@NotNull YouTubePlayer youTubePlayer) {
+            public void onApiChange(@NonNull YouTubePlayer youTubePlayer) {
 
             }
         });

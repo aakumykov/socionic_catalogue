@@ -392,4 +392,13 @@
     <string name="SHORTCUT_create_video_card_long_label">Создать карточку с видео</string>
     <string name="SHORTCUT_create_audio_card_short_label">Аудио</string>
     <string name="SHORTCUT_create_audio_card_long_label">Создать карточку с аудио</string>
+    <string name="CARD_EDIT_draft_saved">Черновик сохранён</string>
+    <string name="DRAFT_RESTORE_DIALOG_discard">Забыть изменения</string>
+    <string name="DRAFT_RESTORE_DIALOG_confirm">Продолжить редактирование</string>
+    <string name="DRAFT_RESTORE_DIALOG_title">Найдена несохранённая карточка</string>
+    <string name="DRAFT_RESTORE_DIALOG_remind_later">Напомнить позже</string>
+    <string name="FAB_subitem_audio">Аудио</string>
+    <string name="FAB_subitem_image">Картинка</string>
+    <string name="FAB_subitem_video">Видео</string>
+    <string name="FAB_subitem_text">Текст</string>
 </resources>

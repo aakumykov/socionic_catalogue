@@ -25,6 +25,7 @@ public final class Constants {
     public final static String ACTION_TRY_NEW_PASSWORD = "ACTION_TRY_NEW_PASSWORD";
 
     public final static String CARD = "CARD";
+    public final static String CARD_DRAFT = "CARD_DRAFT";
     public final static String CARD_KEY = "CARD_KEY";
 
     public final static String ORIGINAL_INTENT = "ORIGINAL_INTENT";
@@ -96,5 +97,5 @@ public final class Constants {
 
     public final static String PREFERENCE_KEY_IS_FIRST_RUN = "PREFERENCE_KEY_IS_FIRST_RUN";
 
-
+    public static String DRAFT_DEFERRED = "DRAFT_DEFERRED";
 }

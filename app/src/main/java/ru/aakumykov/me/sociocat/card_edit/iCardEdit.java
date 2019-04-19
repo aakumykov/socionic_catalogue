@@ -58,6 +58,8 @@ public interface iCardEdit {
         void showCard(Card card);
 
         void addTag(String tag);
+
+        void showDraftRestoreDialog(Card cardDraft);
     }
 
     interface Presenter {

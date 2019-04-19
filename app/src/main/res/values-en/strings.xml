@@ -386,4 +386,13 @@
     <string name="SHORTCUT_create_video_card_long_label">Create card with video</string>
     <string name="SHORTCUT_create_audio_card_short_label">Audio</string>
     <string name="SHORTCUT_create_audio_card_long_label">Create card with audio</string>
+    <string name="CARD_EDIT_draft_saved">Card draft saved</string>
+    <string name="DRAFT_RESTORE_DIALOG_confirm">Continue editing</string>
+    <string name="DRAFT_RESTORE_DIALOG_discard">Forget changes</string>
+    <string name="DRAFT_RESTORE_DIALOG_title">Unsaved card found</string>
+    <string name="DRAFT_RESTORE_DIALOG_remind_later">Remind me later</string>
+    <string name="FAB_subitem_audio">Audio</string>
+    <string name="FAB_subitem_text">Text</string>
+    <string name="FAB_subitem_video">Video</string>
+    <string name="FAB_subitem_image">Image</string>
 </resources>

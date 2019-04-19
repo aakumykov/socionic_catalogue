@@ -1,10 +1,12 @@
 package ru.aakumykov.me.sociocat.utils.MVPUtils;
 
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -14,6 +16,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
@@ -22,6 +25,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -34,10 +38,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_edit.DraftRestoreFragment;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class MVPUtils {
@@ -399,5 +408,55 @@ public class MVPUtils {
             if (doEnable) notificationManager.createNotificationChannel(adminChannel);
             else notificationManager.deleteNotificationChannel(Constants.NEW_CARDS_NOTIFICATIONS_CHANNEL_ID);
         }
+    }
+
+
+    public static boolean hasCardDraft(Context context) {
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences(Constants.SHARED_PREFERENCES_CARD_EDIT, Context.MODE_PRIVATE);
+        return sharedPreferences.contains(Constants.CARD_DRAFT);
+    }
+
+    public static void saveCardDraft(Context context, Card card) {
+        SharedPreferences.Editor editor =
+                context.getSharedPreferences(Constants.SHARED_PREFERENCES_CARD_EDIT, Context.MODE_PRIVATE)
+                .edit();
+
+        String cardJSON = new Gson().toJson(card);
+
+        editor.putString(Constants.CARD_DRAFT, cardJSON);
+
+        editor.apply();
+    }
+
+    public static Card retriveCardDraft(Context context) {
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences(Constants.SHARED_PREFERENCES_CARD_EDIT, Context.MODE_PRIVATE);
+
+        if (!sharedPreferences.contains(Constants.CARD_DRAFT))
+            return null;
+
+        String cardJSON = sharedPreferences.getString(Constants.CARD_DRAFT, "");
+        return new Gson().fromJson(cardJSON, Card.class);
+    }
+
+    public static void clearCardDraft(@Nullable Context context) {
+        if (null != context) {
+            SharedPreferences.Editor editor =
+                    context.getSharedPreferences(Constants.SHARED_PREFERENCES_CARD_EDIT, Context.MODE_PRIVATE)
+                            .edit();
+            editor.remove(Constants.CARD_DRAFT);
+            editor.apply();
+        }
+    }
+
+    public static void showDraftRestoreDialog(FragmentManager fragmentManager, Card cardDraft, DraftRestoreFragment.Callbacks callbacks) {
+
+        DraftRestoreFragment draftRestoreFragment =
+                DraftRestoreFragment.getInstance(cardDraft);
+
+        draftRestoreFragment.setCallbacks(callbacks);
+
+        draftRestoreFragment.show(fragmentManager, "draft_restore_dialog");
     }
 }

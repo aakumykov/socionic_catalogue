@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.card_edit;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -521,6 +523,23 @@ public class CardEdit_View extends BaseView implements
         newTagInput.setText("");
     }
 
+    @Override
+    public void showDraftRestoreDialog(Card cardDraft) {
+
+        MVPUtils.showDraftRestoreDialog(getSupportFragmentManager(), cardDraft, new DraftRestoreFragment.Callbacks() {
+            @Override public void onDraftRestoreConfirmed() {
+                displayCard(cardDraft);
+            }
+
+            @Override public void onDraftRestoreDeferred() {
+
+            }
+
+            @Override public void onDraftRestoreCanceled() {
+                presenter.clearEditState();
+            }
+        });
+    }
 
     // Методы событий интерсейса
     @OnClick(R.id.imagePlaceholder)
@@ -671,7 +690,8 @@ public class CardEdit_View extends BaseView implements
 
                         @Override
                         public void onYesInDialog() {
-                            clearSharedPrefs(getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT), Constants.CARD);
+                            //clearSharedPrefs(getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT), Constants.CARD);
+                            presenter.clearEditState();
                             gracefulExit();
                         }
                     }
