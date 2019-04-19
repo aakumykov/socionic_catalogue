@@ -125,7 +125,8 @@ public class CardsGrid_View extends BaseView implements
         }
     }
 
-    @Override protected void onResume() {
+    @Override
+    protected void onResume() {
         super.onResume();
 
         if (MVPUtils.hasCardDraft(this)) {
@@ -136,10 +137,14 @@ public class CardsGrid_View extends BaseView implements
             Card cardDraft = MVPUtils.retriveCardDraft(this);
 
             MVPUtils.showDraftRestoreDialog(getSupportFragmentManager(), cardDraft, new DraftRestoreFragment.Callbacks() {
+
                 @Override public void onDraftRestoreConfirmed() {
                     Intent intent = new Intent(getAppContext(), CardEdit_View.class);
                     intent.setAction(Constants.ACTION_CREATE);
                     intent.putExtra(Constants.CARD, cardDraft);
+
+                    MVPUtils.clearCardDraft(getAppContext());
+
                     startActivity(intent);
                 }
 
@@ -154,7 +159,8 @@ public class CardsGrid_View extends BaseView implements
         }
     }
 
-    @Override protected void onPause() {
+    @Override
+    protected void onPause() {
         super.onPause();
     }
 
