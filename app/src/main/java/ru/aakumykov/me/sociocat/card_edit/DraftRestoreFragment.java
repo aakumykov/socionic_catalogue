@@ -25,6 +25,7 @@ public class DraftRestoreFragment extends DialogFragment {
 
     public interface Callbacks {
         void onDraftRestoreConfirmed();
+        void onDraftRestoreDeferred();
         void onDraftRestoreCanceled();
     }
 
@@ -75,14 +76,20 @@ public class DraftRestoreFragment extends DialogFragment {
 
 
             Button confirmButton = view.findViewById(R.id.drafConfirmButton);
+            Button deferButton = view.findViewById(R.id.draftDeferButton);
             Button discardButton = view.findViewById(R.id.draftDiscardButton);
-
-            //Callbacks callbacks = (Callbacks)getActivity();
 
             confirmButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     callbacks.onDraftRestoreConfirmed();
+                    dismiss();
+                }
+            });
+
+            deferButton.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    callbacks.onDraftRestoreDeferred();
                     dismiss();
                 }
             });
@@ -101,11 +108,5 @@ public class DraftRestoreFragment extends DialogFragment {
                 dialog.setCanceledOnTouchOutside(false);
             }
         }
-    }
-
-    @Override
-    public void onDismiss(@NonNull DialogInterface dialog) {
-        super.onDismiss(dialog);
-        callbacks.onDraftRestoreCanceled();
     }
 }

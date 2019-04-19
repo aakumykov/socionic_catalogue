@@ -60,6 +60,12 @@
         android:text="@string/DRAFT_RESTORE_DIALOG_confirm" />
 
     <Button
+        android:id="@+id/draftDeferButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/DRAFT_RESTORE_DIALOG_remind_later" />
+
+    <Button
         android:id="@+id/draftDiscardButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

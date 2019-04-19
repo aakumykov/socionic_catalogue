@@ -531,6 +531,10 @@ public class CardEdit_View extends BaseView implements
                 displayCard(cardDraft);
             }
 
+            @Override public void onDraftRestoreDeferred() {
+
+            }
+
             @Override public void onDraftRestoreCanceled() {
                 presenter.clearEditState();
             }

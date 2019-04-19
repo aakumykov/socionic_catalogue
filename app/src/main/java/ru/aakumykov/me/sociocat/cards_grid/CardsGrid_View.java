@@ -44,6 +44,7 @@ import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.runtime_config.RuntimeConfig;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -128,6 +129,9 @@ public class CardsGrid_View extends BaseView implements
 
         if (MVPUtils.hasCardDraft(this)) {
 
+            if (RuntimeConfig.getBool(Constants.DRAFT_DEFERRED))
+                return;
+
             Card cardDraft = MVPUtils.retriveCardDraft(this);
 
             MVPUtils.showDraftRestoreDialog(getSupportFragmentManager(), cardDraft, new DraftRestoreFragment.Callbacks() {
@@ -136,6 +140,10 @@ public class CardsGrid_View extends BaseView implements
                     intent.setAction(Constants.ACTION_CREATE);
                     intent.putExtra(Constants.CARD, cardDraft);
                     startActivity(intent);
+                }
+
+                @Override public void onDraftRestoreDeferred() {
+                    RuntimeConfig.setValue(Constants.DRAFT_DEFERRED, true);
                 }
 
                 @Override public void onDraftRestoreCanceled() {

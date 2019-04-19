@@ -97,5 +97,5 @@ public final class Constants {
 
     public final static String PREFERENCE_KEY_IS_FIRST_RUN = "PREFERENCE_KEY_IS_FIRST_RUN";
 
-
+    public static String DRAFT_DEFERRED = "DRAFT_DEFERRED";
 }

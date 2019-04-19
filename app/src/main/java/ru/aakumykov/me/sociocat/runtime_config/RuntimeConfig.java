@@ -26,8 +26,8 @@ public class RuntimeConfig {
 
 
     // Внешние методы
-    public static <T> void set(String key, T value) {
-        getInstance().setValue(key,value);
+    public static <T> void setValue(String key, T value) {
+        getInstance().setSomeValue(key,value);
     }
 
     public static boolean getBool(String key) {
@@ -44,7 +44,7 @@ public class RuntimeConfig {
 
 
     // Внутренние методы
-    private <T> void setValue(String key, T value) {
+    private <T> void setSomeValue(String key, T value) {
         if (value instanceof Boolean) {
             settings.putBoolean(key, (Boolean)value);
         }
