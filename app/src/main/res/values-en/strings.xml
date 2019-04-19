@@ -391,4 +391,8 @@
     <string name="DRAFT_RESTORE_DIALOG_discard">Forget changes</string>
     <string name="DRAFT_RESTORE_DIALOG_title">Unsaved card found</string>
     <string name="DRAFT_RESTORE_DIALOG_remind_later">Remind me later</string>
+    <string name="FAB_subitem_audio">Audio</string>
+    <string name="FAB_subitem_text">Text</string>
+    <string name="FAB_subitem_video">Video</string>
+    <string name="FAB_subitem_image">Image</string>
 </resources>

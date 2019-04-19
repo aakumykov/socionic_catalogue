@@ -397,4 +397,8 @@
     <string name="DRAFT_RESTORE_DIALOG_confirm">Продолжить редактирование</string>
     <string name="DRAFT_RESTORE_DIALOG_title">Найдена несохранённая карточка</string>
     <string name="DRAFT_RESTORE_DIALOG_remind_later">Напомнить позже</string>
+    <string name="FAB_subitem_audio">Аудио</string>
+    <string name="FAB_subitem_image">Картинка</string>
+    <string name="FAB_subitem_video">Видео</string>
+    <string name="FAB_subitem_text">Текст</string>
 </resources>

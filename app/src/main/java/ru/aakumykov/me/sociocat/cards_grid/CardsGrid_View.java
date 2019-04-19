@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -570,27 +571,41 @@ public class CardsGrid_View extends BaseView implements
 
         SpeedDialView speedDialView = findViewById(R.id.speedDial);
 
+        Resources resources = getResources();
+
         speedDialView.addActionItem(
                 new SpeedDialActionItem.Builder(R.id.fab_audio, R.drawable.ic_fab_audio)
-                        .setFabBackgroundColor(getResources().getColor(R.color.audio_mode))
+                        .setFabBackgroundColor(resources.getColor(R.color.audio_mode))
+                        .setLabel(R.string.FAB_subitem_audio)
+                        .setLabelColor(resources.getColor(R.color.white))
+                        .setLabelBackgroundColor(resources.getColor(R.color.audio_mode))
                         .create()
         );
 
         speedDialView.addActionItem(
                 new SpeedDialActionItem.Builder(R.id.fab_video, R.drawable.ic_fab_video)
                         .setFabBackgroundColor(getResources().getColor(R.color.video_mode))
+                        .setLabel(R.string.FAB_subitem_video)
+                        .setLabelColor(resources.getColor(R.color.white))
+                        .setLabelBackgroundColor(resources.getColor(R.color.video_mode))
                         .create()
         );
 
         speedDialView.addActionItem(
                 new SpeedDialActionItem.Builder(R.id.fab_image, R.drawable.ic_fab_image)
-                        .setFabBackgroundColor(getResources().getColor(R.color.image_mode))
+                        .setFabBackgroundColor(resources.getColor(R.color.image_mode))
+                        .setLabel(R.string.FAB_subitem_image)
+                        .setLabelColor(resources.getColor(R.color.white))
+                        .setLabelBackgroundColor(resources.getColor(R.color.image_mode))
                         .create()
         );
 
         speedDialView.addActionItem(
                 new SpeedDialActionItem.Builder(R.id.fab_quote, R.drawable.ic_fab_text)
-                        .setFabBackgroundColor(getResources().getColor(R.color.text_mode))
+                        .setFabBackgroundColor(resources.getColor(R.color.text_mode))
+                        .setLabel(R.string.FAB_subitem_text)
+                        .setLabelColor(resources.getColor(R.color.white))
+                        .setLabelBackgroundColor(resources.getColor(R.color.text_mode))
                         .create()
         );
 
