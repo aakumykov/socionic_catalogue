@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.card_edit;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,7 +50,7 @@ public class DraftRestoreFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.draft_restore_dialog2, container);
+        return inflater.inflate(R.layout.draft_restore_dialog, container);
     }
 
     @Override
