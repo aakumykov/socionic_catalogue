@@ -3,8 +3,6 @@ package ru.aakumykov.me.sociocat.card_edit;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.telecom.Call;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,6 @@ import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -54,12 +51,14 @@ public class DraftRestoreFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.draft_restore_dialog, container);
+        return inflater.inflate(R.layout.draft_restore_dialog2, container);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // TODO: проверить с NULL
 
         Bundle arguments = getArguments();
         if (null != arguments) {
@@ -75,35 +74,49 @@ public class DraftRestoreFragment extends DialogFragment {
                 descriptionView.setText(cardDraft.getDescription());
             }
 
+        }
 
-            Button confirmButton = view.findViewById(R.id.drafConfirmButton);
-            Button deferButton = view.findViewById(R.id.draftDeferButton);
-            Button discardButton = view.findViewById(R.id.draftDiscardButton);
+        Button confirmButton = view.findViewById(R.id.draftConfirmButton);
+        Button deferButton = view.findViewById(R.id.draftDeferButton);
+        Button discardButton = view.findViewById(R.id.draftDiscardButton);
 
-            // Восстановление
-            confirmButton.setOnClickListener(v -> {
-                callbacks.onDraftRestoreConfirmed();
-                MVPUtils.clearCardDraft(getContext());
-                dismiss();
+        // Восстановление
+        confirmButton.setOnClickListener(v -> {
+            callbacks.onDraftRestoreConfirmed();
+            MVPUtils.clearCardDraft(getContext());
+            dismiss();
+        });
+
+        // "Напомнить позже"
+        deferButton.setOnClickListener(v -> {
+            callbacks.onDraftRestoreDeferred();
+            dismiss();
+        });
+
+        // Отказ
+        discardButton.setOnClickListener(v -> {
+            callbacks.onDraftRestoreCanceled();
+            dismiss();
+        });
+
+        Dialog dialog = getDialog();
+        if (null != dialog) {
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+
+                }
             });
 
-            // "Напомнить позже"
-            deferButton.setOnClickListener(v -> {
-                callbacks.onDraftRestoreDeferred();
-                dismiss();
-            });
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
 
-            // Отказ
-            discardButton.setOnClickListener(v -> {
-                callbacks.onDraftRestoreCanceled();
-                dismiss();
+                }
             });
-
-            Dialog dialog = getDialog();
-            if (null != dialog) {
-                dialog.setCancelable(false);
-                dialog.setCanceledOnTouchOutside(false);
-            }
         }
     }
 }

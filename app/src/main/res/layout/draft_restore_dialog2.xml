@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:weightSum="10">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:text="@string/DRAFT_RESTORE_DIALOG_title"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/titleView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="LEFT JOIN"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:adjustViewBounds="false"
+                app:srcCompat="@drawable/ic_image" />
+
+            <TextView
+                android:id="@+id/quoteView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text='Так получилось, что я провожу довольно много собеседований на должность веб-программиста. Один из обязательных вопросов, который я задаю — это чем отличается INNER JOIN от LEFT JOIN.  Чаще всего ответ примерно такой: "inner join — это как бы пересечение множеств, т.е. остается только то, что есть в обеих таблицах, а left join — это когда левая таблица остается без изменений, а от правой добавляется пересечение множеств. Для всех остальных строк добавляется null". Еще, бывает, рисуют пересекающиеся круги.  Я так устал от этих ответов с пересечениями множеств и кругов, что даже перестал поправлять людей.  Дело в том, что этот ответ в общем случае неверен. Ну или, как минимум, не точен.  Давайте рассмотрим почему, и заодно затронем еще парочку тонкостей join-ов.  Во-первых, таблица — это вообще не множество. По математическому определению, во множестве все элементы уникальны, не повторяются, а в таблицах в общем случае это вообще-то не так. Вторая беда, что термин "пересечение" только путает.  (Update. В комментах идут жаркие споры о теории множеств и уникальности. Очень интересно, много нового узнал, спасибо)'
+                android:textSize="18sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/descriptionView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Одновременно доступны обновления плагинов gst-plugins-base 1.16, gst-plugins-good 1.16, gst-plugins-bad 1.16, gst-plugins-ugly 1.16, а также обвязка gst-libav 1.16 и сервер потокового вещания gst-rtsp-server 1.16. На уровне API и ABI новый выпуск обратно совместим с веткой 1.0. Бинарные сборки в скором времени будут подготовлены для Android, iOS, macOS и Windows (в Linux рекомендуется использовать пакеты из дистрибутива). Т.е. по сути INNER JOIN — это все комбинации соединений строк с неким фильтром condition. В общем-то, можно это представлять по разному, кому как удобнее, но точно не как пересечение каких-то там кругов.  Небольшой disclaimer: хотя inner join логически эквивалентен cross join с фильтром, это не значит, что база будет делать именно так, в тупую: генерить все комбинации и фильтровать. На самом деле там более интересные алгоритмы."
+                android:textSize="18sp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/draftConfirmButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/DRAFT_RESTORE_DIALOG_confirm" />
+
+    <Button
+        android:id="@+id/draftDeferButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/DRAFT_RESTORE_DIALOG_remind_later" />
+
+    <Button
+        android:id="@+id/draftDiscardButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
+        android:text="@string/DRAFT_RESTORE_DIALOG_discard" />
+
+</LinearLayout>

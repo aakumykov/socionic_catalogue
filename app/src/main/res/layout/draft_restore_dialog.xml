@@ -64,7 +64,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/drafConfirmButton"
+        android:id="@+id/draftConfirmButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/major_button_margin_top"
