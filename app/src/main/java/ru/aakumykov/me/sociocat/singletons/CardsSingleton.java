@@ -207,6 +207,26 @@ public class CardsSingleton implements
     }
 
     @Override
+    public void loadListForUser(String userId, ListCallbacks callbacks) {
+
+        Query query = cardsRef.orderByChild("userId").equalTo(userId);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Card> list = extractCardsFromSnapshot(dataSnapshot);
+                callbacks.onListLoadSuccess(list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callbacks.onListLoadFail(databaseError.getMessage());
+                databaseError.toException().printStackTrace();
+            }
+        });
+    }
+
+    @Override
     public void loadNewCards(long newerThanTime, final ListCallbacks callbacks) {
 
         Query query = cardsRef.orderByChild("ctime").startAt(newerThanTime);

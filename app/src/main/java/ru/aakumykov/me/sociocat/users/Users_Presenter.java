@@ -8,12 +8,17 @@ import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.util.List;
+
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
+import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -22,7 +27,8 @@ public class Users_Presenter implements
         iUsers.Presenter,
         iUsersSingleton.ReadCallbacks,
         iUsersSingleton.SaveCallbacks,
-        iStorageSingleton.FileUploadCallbacks
+        iStorageSingleton.FileUploadCallbacks,
+        iCardsSingleton.ListCallbacks
 {
 
     private final static String TAG = "Users_Presenter";
@@ -30,6 +36,7 @@ public class Users_Presenter implements
     private iUsers.ListView listView;
     private iUsers.EditView editView;
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
@@ -109,6 +116,11 @@ public class Users_Presenter implements
     public void loadList(iUsersSingleton.ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
         usersSingleton.listUsers(callbacks);
+    }
+
+    @Override
+    public void loadCardsOfUser(String userId) {
+        cardsSingleton.loadListForUser(userId, this);
     }
 
     @Override
@@ -242,6 +254,16 @@ public class Users_Presenter implements
         editView.showErrorMsg(R.string.USER_EDIT_error_saving_profile, errorMsg);
     }
 
+    @Override
+    public void onListLoadSuccess(List<Card> list) {
+        showView.displayCardsList(list);
+    }
+
+    @Override
+    public void onListLoadFail(String errorMessage) {
+        showView.showErrorMsg(R.string.USER_SHOW_error_loading_cards_lsit, errorMessage);
+    }
+
 
     // Внутренние методы
     private void saveUser() {
@@ -275,4 +297,6 @@ public class Users_Presenter implements
 
 //        BitmapFactory.decodeFile(imageURI)
     }
+
+
 }
