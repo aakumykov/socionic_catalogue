@@ -8,17 +8,26 @@ import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
+import ru.aakumykov.me.sociocat.cards_list.CardsListAdapter;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
@@ -29,7 +38,8 @@ import ru.aakumykov.me.sociocat.users.iUsers;
 
 public class UserShow_View extends BaseView implements
         iUsers.ShowView,
-        iUsersSingleton.ReadCallbacks
+        iUsersSingleton.ReadCallbacks,
+        AdapterView.OnItemClickListener
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.nameView) TextView nameView;
@@ -44,6 +54,10 @@ public class UserShow_View extends BaseView implements
     // Где должен базироваться currentUser: во вьюхе или презентере?
     private User currentUser;
 
+    private CardsListAdapter cardsListAdapter;
+    private List<Card> cardsList;
+    @BindView(R.id.cardsListView) ListView cardsListView;
+
 
     // Системные методы
     @Override
@@ -57,6 +71,12 @@ public class UserShow_View extends BaseView implements
         showProgressBar();
 
         presenter = new Users_Presenter();
+
+        cardsList = new ArrayList<>();
+        cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
+        cardsListView.setAdapter(cardsListAdapter);
+
+        cardsListView.setOnItemClickListener(this);
 
         try {
             Intent intent = getIntent();
@@ -174,6 +194,14 @@ public class UserShow_View extends BaseView implements
     }
 
     @Override
+    public void displayCardsList(List<Card> list) {
+        if (null != list) {
+            cardsList.addAll(list);
+            cardsListAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
     public void goUserEdit() {
         if (null != currentUser) {
             Intent intent = new Intent(this, UserEdit_View.class);
@@ -188,6 +216,7 @@ public class UserShow_View extends BaseView implements
     public void onUserReadSuccess(User user) {
         currentUser = user;
         displayUser(user);
+        presenter.loadCardsOfUser(user.getKey());
     }
 
     @Override
@@ -195,6 +224,14 @@ public class UserShow_View extends BaseView implements
         currentUser = null;
         hideProgressBar();
         showErrorMsg(R.string.error_displaying_user, errorMsg);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Card card = cardsList.get(position);
+        Intent intent = new Intent(this, CardShow_View.class);
+        intent.putExtra(Constants.CARD_KEY, card.getKey());
+        startActivity(intent);
     }
 
 

@@ -395,4 +395,6 @@
     <string name="FAB_subitem_text">Text</string>
     <string name="FAB_subitem_video">Video</string>
     <string name="FAB_subitem_image">Image</string>
+    <string name="USER_SHOW_cards_of_user">User\'s cards</string>
+    <string name="USER_SHOW_error_loading_cards_lsit">Error loading cards list</string>
 </resources>

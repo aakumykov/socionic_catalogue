@@ -10,6 +10,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 
 public interface iUsers {
@@ -25,6 +26,7 @@ public interface iUsers {
 
     interface ShowView  extends iBaseView, View {
         void displayUser(User user);
+        void displayCardsList(List<Card> list);
         void goUserEdit();
     }
 
@@ -61,6 +63,8 @@ public interface iUsers {
         void processSelectedImage(@Nullable Intent intent);
 
         void loadList(iUsersSingleton.ListCallbacks callbacks);
+
+        void loadCardsOfUser(String userId);
 
         void listItemClicked(String key);
 

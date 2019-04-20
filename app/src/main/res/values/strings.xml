@@ -401,4 +401,6 @@
     <string name="FAB_subitem_image">Картинка</string>
     <string name="FAB_subitem_video">Видео</string>
     <string name="FAB_subitem_text">Текст</string>
+    <string name="USER_SHOW_cards_of_user">Карточки пользователя</string>
+    <string name="USER_SHOW_error_loading_cards_lsit">Ошибка загрузки списка карточек</string>
 </resources>

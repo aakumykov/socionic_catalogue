@@ -22,7 +22,7 @@ public class CardsListAdapter extends ArrayAdapter<Card> {
     private int layout;
     private List<Card> cards;
 
-    CardsListAdapter(Context context, int resource, List<Card> cards) {
+    public CardsListAdapter(Context context, int resource, List<Card> cards) {
         super(context, resource, cards);
 //        Log.d(TAG, "== new CardsListAdapter(), cards: "+cards);
         this.cards = cards;
