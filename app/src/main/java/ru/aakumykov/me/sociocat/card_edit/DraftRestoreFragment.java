@@ -103,20 +103,6 @@ public class DraftRestoreFragment extends DialogFragment {
         if (null != dialog) {
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
-
-            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-
-                }
-            });
-
-            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-
-                }
-            });
         }
     }
 }
