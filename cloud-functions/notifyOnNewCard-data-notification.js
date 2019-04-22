@@ -4,27 +4,32 @@ admin.initializeApp();
 
 
 exports.notifyOnNewCard = functions.database.ref('/cards/{cardId}')
-	.onWrite( (change,context) => {
+	.onCreate( (snapshot,context) => {
 
-		if (change.after.exists()) {
-			let cardData = change.after.val();
-			
+		if (snapshot.exists()) {
+
+			let cardData = snapshot.val();
+			console.log(cardData);
+
 			var message = {
 				topic: 'new_cards',
 				data: {
+					message_type: 'new_card',
 					card_key: cardData.key,
 					card_title: cardData.title,
 					card_user_id: cardData.userId,
 					card_user_name: cardData.userName
 				}
 			};
+			console.log(message);
 
 			admin.messaging().send(message)
 				.then((response) => {
+					//console.log("Message sended!");
 					return true;
 				})
 				.catch((error) => {
-					console.log('Error sending message:', error);
+					console.log('Error sending new card notification: ', error);
 					return false;
 				});
 		}

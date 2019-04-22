@@ -12,10 +12,11 @@ exports.notifyOnNewComment = functions.database.ref('/comments/{commentId}')
         let message = {
             topic: commentData.cardId,
             data: {
-                card_key: commentData.cardId,
+            	message_type: 'new_comment',
                 comment_key: commentData.key,
                 text: commentData.text,
-                user_name: commentData.userName
+                user_name: commentData.userName,
+                card_key: commentData.cardId
             }
         }
         console.log(message);
