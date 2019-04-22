@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         void onDataFiltered(List<Card> filteredCardsList);
     }
 
+    private static final String TAG = "CardsGrid_Adapter";
+
     private static final int VIEW_TYPE_TEXT_CARD = 10;
     private static final int VIEW_TYPE_IMAGE_CARD = 20;
     private static final int VIEW_TYPE_AUDIO_CARD = 30;
@@ -45,6 +49,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<Card> originalCardsList;
     private List<Card> cardsListFiltered;
     private iAdapterUser adapterUser;
+
+    private Card currentCard; // Используется для отладки ошибки.
 
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
 
@@ -66,17 +72,26 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         // TODO: по идее, это неустойчиво к отсутствию карточки
         Card card = cardsList.get(position);
+        currentCard = card;
+        //Log.e(TAG, "Card: "+card);
+        //Log.e(TAG, card.getKey()+" | "+card.getTitle()+" | "+card.getType());
 
         switch (card.getType()) {
+
             case Constants.TEXT_CARD:
                 return VIEW_TYPE_TEXT_CARD;
+
             case Constants.IMAGE_CARD:
                 return VIEW_TYPE_IMAGE_CARD;
+
             case Constants.AUDIO_CARD:
                 return VIEW_TYPE_AUDIO_CARD;
+
             case Constants.VIDEO_CARD:
                 return VIEW_TYPE_VIDEO_CARD;
+
             default:
+                Log.e(TAG, "UNKNOWN CARD TYPE: "+card);
                 return -1;
         }
     }
@@ -141,7 +156,10 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 return new ViewHolderVideo(view);
 
             default:
-                throw new RuntimeException("Unknown view type: "+viewType);
+                // TODO: регистрировать это событие
+                Log.e(TAG, "Unknown view type of card: "+currentCard);
+                view = layoutInflater.inflate(R.layout.cards_grid_item_unknown, parent, false);
+                return new ViewHolderUnknown(view);
         }
     }
 
@@ -294,6 +312,12 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     static class ViewHolderVideo extends ViewHolderCommon {
         public ViewHolderVideo(@NonNull View itemView) {
+            super(itemView);
+        }
+    }
+
+    static class ViewHolderUnknown extends ViewHolderCommon {
+        public ViewHolderUnknown(@NonNull View itemView) {
             super(itemView);
         }
     }

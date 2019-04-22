@@ -58,7 +58,7 @@ public class CardsGrid_View extends BaseView implements
         SearchView.OnCloseListener,
         SearchView.OnClickListener
 {
-    private final static int COLUMNS_COUNT_LANDSCAPE = 3;
+    private final static int COLUMNS_COUNT_LANDSCAPE = 4;
     private final static int COLUMNS_COUNT_PORTRAIT = 2;
 
     @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
