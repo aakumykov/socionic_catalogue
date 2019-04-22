@@ -367,8 +367,14 @@ public class CardEdit_Presenter implements
     // Коллбеки
     @Override public void onCardSaveSuccess(Card card) {
         updateCardTags(card);
+
         if (editMode.equals(Enums.CardEditMode.CREATE)) {
-            //MVPUtils.subscribeToTopicNotifications(view.getAppContext(), card.getKey());
+            MVPUtils.subscribeToTopicNotifications(
+                    view.getAppContext(),
+                    card.getKey(),
+                    null,
+                    R.string.CARD_EDIT_error_subscribing_to_comments
+            );
         }
     }
 
