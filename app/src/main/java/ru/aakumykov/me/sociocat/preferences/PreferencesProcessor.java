@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import java.util.Map;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
@@ -30,7 +31,19 @@ public class PreferencesProcessor {
     }
 
     private static void processNewCardsSubscription(Context context, boolean isEnabled) {
-        if (isEnabled) MVPUtils.subscribeToNewCardsNotifications(context);
-        else MVPUtils.unsubscribeFromNewCardsNotifications(context);
+        if (isEnabled)
+            MVPUtils.subscribeToTopicNotifications(
+                    context,
+                    Constants.TOPIC_NEW_CARDS,
+                    R.string.PREFERENCES_you_are_subscribed_to_new_cards,
+                    R.string.PREFERENCES_error_subscribing_to_new_cards
+            );
+        else
+            MVPUtils.unsubscribeFromTopicNotifications(
+                    context,
+                    Constants.TOPIC_NEW_CARDS,
+                    R.string.PREFERENCES_you_are_unsubscribed_from_new_cards,
+                    R.string.PREFERENCES_error_unsubscribing_from_new_cards_notifications
+            );
     }
 }

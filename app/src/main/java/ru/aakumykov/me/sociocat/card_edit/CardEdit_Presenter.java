@@ -368,7 +368,7 @@ public class CardEdit_Presenter implements
     @Override public void onCardSaveSuccess(Card card) {
         updateCardTags(card);
         if (editMode.equals(Enums.CardEditMode.CREATE)) {
-            MVPUtils.subscribeToTopicNotifications(view.getAppContext(), card.getKey());
+            //MVPUtils.subscribeToTopicNotifications(view.getAppContext(), card.getKey());
         }
     }
 

@@ -23,6 +23,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
@@ -340,61 +342,6 @@ public class MVPUtils {
     }
 
 
-    public static void subscribeToNewCardsNotifications(Context context) {
-        subscribeToTopicNotifications(context, Constants.TOPIC_NEW_CARDS);
-    }
-
-    public static void subscribeToTopicNotifications(Context context, String topicName) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            setupNewCardsNotificationChannel(context, true);
-
-        FirebaseMessaging.getInstance().subscribeToTopic(topicName)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        String msg = context.getString(R.string.PREFERENCES_you_are_subscribed_to_new_cards);
-
-                        if (!task.isSuccessful()) {
-                            msg = context.getString(R.string.PREFERENCES_error_subscribing_to_new_cards);
-                        }
-
-                        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER, 0,0);
-                        toast.show();
-                    }
-
-                });
-    }
-
-    public static void unsubscribeFromNewCardsNotifications(Context context) {
-        unsubscribeFromTopicNotifications(context, Constants.TOPIC_NEW_CARDS);
-    }
-
-    public static void unsubscribeFromTopicNotifications(Context context, String topicName) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            setupNewCardsNotificationChannel(context, true);
-
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(topicName)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        String msg = context.getString(R.string.PREFERENCES_you_are_unsubscribed_from_new_cards);
-
-                        if (!task.isSuccessful()) {
-                            msg = context.getString(R.string.PREFERENCES_error_unsubscribing_from_new_cards_notifications);
-                        }
-
-                        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER, 0,0);
-                        toast.show();
-                    }
-                });
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static void setupNewCardsNotificationChannel(Context context, boolean doEnable){
@@ -417,6 +364,57 @@ public class MVPUtils {
             else notificationManager.deleteNotificationChannel(Constants.NEW_CARDS_NOTIFICATIONS_CHANNEL_ID);
         }
     }
+
+    public static void subscribeToTopicNotifications(Context context, String topicName,
+           @Nullable Integer successMessageId, @Nullable Integer errorMessageId) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            setupNewCardsNotificationChannel(context, true);
+
+        FirebaseMessaging.getInstance().subscribeToTopic(topicName)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        if (null != successMessageId)
+                            showToast(context, successMessageId, true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        if (null != errorMessageId)
+                            showToast(context, errorMessageId, true);
+                        Log.e(TAG, "Error subscribing to topic '" + topicName + "': " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+    public static void unsubscribeFromTopicNotifications(Context context, String topicName,
+           @Nullable Integer successMessageId, @Nullable Integer errorMessageId) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            setupNewCardsNotificationChannel(context, true);
+
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topicName)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        if (null != successMessageId)
+                            showToast(context, successMessageId, true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        if (null != errorMessageId)
+                            showToast(context, errorMessageId, true);
+                        Log.e(TAG, "Error unsubscribing from topic '" + topicName + "': " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+    }
+
 
 
     public static boolean hasCardDraft(Context context) {
@@ -466,5 +464,20 @@ public class MVPUtils {
         draftRestoreFragment.setCallbacks(callbacks);
 
         draftRestoreFragment.show(fragmentManager, "draft_restore_dialog");
+    }
+
+
+    // TODO: перенести showToast из BaseView
+    public static <T> void showToast(Context context, T messageId, boolean atCenter) {
+        String message = (messageId instanceof Integer) ?
+                context.getResources().getString((Integer) messageId) :
+                String.valueOf(messageId);
+
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+
+        if (atCenter)
+            toast.setGravity(Gravity.CENTER, 0,0);
+
+        toast.show();
     }
 }
