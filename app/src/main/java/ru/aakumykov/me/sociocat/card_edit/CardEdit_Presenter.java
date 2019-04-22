@@ -290,7 +290,7 @@ public class CardEdit_Presenter implements
         if (null != view)
             view.disableForm();
 
-        // Сохраняю картинку, если ещё не сохранена
+        // Сохраняю картинку, если этого ещё не сделано
         if (currentCard.isImageCard() && !currentCard.hasImageURL()) {
 
             String fileName = currentCard.getKey() + "." + imageType;
@@ -367,6 +367,9 @@ public class CardEdit_Presenter implements
     // Коллбеки
     @Override public void onCardSaveSuccess(Card card) {
         updateCardTags(card);
+        if (editMode.equals(Enums.CardEditMode.CREATE)) {
+            MVPUtils.subscribeToTopicNotifications(view.getAppContext(), card.getKey());
+        }
     }
 
     @Override public void onCardSaveError(String message) {

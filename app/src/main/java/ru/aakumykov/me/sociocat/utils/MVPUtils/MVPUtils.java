@@ -341,11 +341,15 @@ public class MVPUtils {
 
 
     public static void subscribeToNewCardsNotifications(Context context) {
+        subscribeToTopicNotifications(context, Constants.TOPIC_NEW_CARDS);
+    }
+
+    public static void subscribeToTopicNotifications(Context context, String topicName) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             setupNewCardsNotificationChannel(context, true);
 
-        FirebaseMessaging.getInstance().subscribeToTopic(Constants.TOPIC_NEW_CARDS)
+        FirebaseMessaging.getInstance().subscribeToTopic(topicName)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
 
                     @Override
@@ -366,11 +370,15 @@ public class MVPUtils {
     }
 
     public static void unsubscribeFromNewCardsNotifications(Context context) {
+        unsubscribeFromTopicNotifications(context, Constants.TOPIC_NEW_CARDS);
+    }
+
+    public static void unsubscribeFromTopicNotifications(Context context, String topicName) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             setupNewCardsNotificationChannel(context, true);
 
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(Constants.TOPIC_NEW_CARDS)
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topicName)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
