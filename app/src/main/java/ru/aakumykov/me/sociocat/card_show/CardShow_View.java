@@ -445,7 +445,7 @@ public class CardShow_View extends BaseView implements
 
     // Интерфейсные методы
     @Override
-    public void displayCard(@Nullable final Card card) {
+    public void displayCard(@Nullable final Card card) throws Exception {
 
         resetView();
 
@@ -1134,12 +1134,12 @@ public class CardShow_View extends BaseView implements
         switch (resultCode) {
 
             case RESULT_OK:
-                if (null != data) {
+                try {
                     Card card = data.getParcelableExtra(Constants.CARD);
                     displayCard(card);
-                } else {
-                    showErrorMsg(R.string.error_displaying_card);
-                    Log.e(TAG, "Intent data in activity result == null.");
+                } catch (Exception e) {
+                    showErrorMsg(R.string.error_displaying_card, e.getMessage());
+                    e.printStackTrace();
                 }
                 break;
 

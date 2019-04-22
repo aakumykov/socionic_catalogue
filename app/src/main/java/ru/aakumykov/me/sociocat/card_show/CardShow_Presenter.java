@@ -301,9 +301,15 @@ public class CardShow_Presenter implements
     public void onCardLoadSuccess(Card card) {
         if (null != card) {
             this.currentCard = card;
-            if (null != view)
-                view.displayCard(card);
-            loadComments(card);
+            if (null != view) {
+                try {
+                    view.displayCard(card);
+                    loadComments(card);
+                } catch (Exception e) {
+                    view.showErrorMsg(R.string.CARD_SHOW_error_displaying_card, e.getMessage());
+                    e.printStackTrace();
+                }
+            }
 
         } else {
             if (null != view)

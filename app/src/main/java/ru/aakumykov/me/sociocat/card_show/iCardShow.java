@@ -16,7 +16,7 @@ public interface iCardShow {
 
     interface View extends iBaseView {
 
-        void displayCard(Card card);
+        void displayCard(Card card) throws Exception;
         void displayImage(Uri imageURI);
         void displayImageError();
         void displayTags(HashMap<String,Boolean> tagsHash);
