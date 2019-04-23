@@ -21,8 +21,6 @@ public interface iUsersSingleton {
     void setEmailVerified(String userId, boolean isVerified, final EmailVerificationCallbacks callbacks);
     void updatePushToken(String token, PushTokenCallbacks callbacks);
     void storeDeviceId(String userId, String deviceId, SaveDeviceIdCallbacks callbacks);
-    void toggleCommentsSubscription(String userId, boolean isEnabled, CommentsSubscriptionCallbacks callbacks);
-
 
     interface CreateCallbacks {
         void onUserCreateSuccess(User user);
@@ -70,10 +68,4 @@ public interface iUsersSingleton {
         void onStoreDeviceIdSuccess();
         void onStoreDeviceIdFailed(String errorMSg);
     }
-
-    interface CommentsSubscriptionCallbacks {
-        void onSubscribeToComments();
-        void onUnsubscribeFromComments();
-    }
 }
-

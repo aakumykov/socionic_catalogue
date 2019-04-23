@@ -342,11 +342,6 @@ public class MVPUtils {
     }
 
 
-    public interface SubscribeToTopicCallbacks {
-        void onTopicNotificationsSubscribed();
-        void onTopicNotificationsUnsubscribed();
-        void onTopicNotificationsError(String errorMsg);
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static void setupNewCardsNotificationChannel(Context context, boolean doEnable){
@@ -371,7 +366,7 @@ public class MVPUtils {
     }
 
     public static void subscribeToTopicNotifications(Context context, String topicName,
-           @Nullable Integer successMessageId, @Nullable Integer errorMessageId, SubscribeToTopicCallbacks callbacks) {
+           @Nullable Integer successMessageId, @Nullable Integer errorMessageId) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             setupNewCardsNotificationChannel(context, true);
@@ -380,7 +375,6 @@ public class MVPUtils {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        callbacks.onTopicNotificationsSubscribed();
                         if (null != successMessageId)
                             showToast(context, successMessageId, true);
                     }
@@ -388,7 +382,6 @@ public class MVPUtils {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        callbacks.onTopicNotificationsError(e.getMessage());
                         if (null != errorMessageId)
                             showToast(context, errorMessageId, true);
                         Log.e(TAG, "Error subscribing to topic '" + topicName + "': " + e.getMessage());
@@ -398,7 +391,7 @@ public class MVPUtils {
     }
 
     public static void unsubscribeFromTopicNotifications(Context context, String topicName,
-           @Nullable Integer successMessageId, @Nullable Integer errorMessageId, SubscribeToTopicCallbacks callbacks) {
+           @Nullable Integer successMessageId, @Nullable Integer errorMessageId) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             setupNewCardsNotificationChannel(context, true);
@@ -407,7 +400,6 @@ public class MVPUtils {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        callbacks.onTopicNotificationsUnsubscribed();
                         if (null != successMessageId)
                             showToast(context, successMessageId, true);
                     }
@@ -415,7 +407,6 @@ public class MVPUtils {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        callbacks.onTopicNotificationsError(e.getMessage());
                         if (null != errorMessageId)
                             showToast(context, errorMessageId, true);
                         Log.e(TAG, "Error unsubscribing from topic '" + topicName + "': " + e.getMessage());

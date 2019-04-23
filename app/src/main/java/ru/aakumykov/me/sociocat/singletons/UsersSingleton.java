@@ -26,7 +26,6 @@ import java.util.Map;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
 // TODO: пункт меню "Обновить"
 
@@ -273,8 +272,7 @@ public class UsersSingleton implements iUsersSingleton {
         });
     }
 
-    @Override
-    public void updatePushToken(String token, @Nullable iUsersSingleton.PushTokenCallbacks callbacks) {
+    @Override public void updatePushToken(String token, @Nullable iUsersSingleton.PushTokenCallbacks callbacks) {
 
         usersRef.child(PUSH_TOKEN_NAME).setValue(token)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -297,8 +295,7 @@ public class UsersSingleton implements iUsersSingleton {
                 });
     }
 
-    @Override
-    public void storeDeviceId(String userId, String deviceId, SaveDeviceIdCallbacks callbacks) {
+    @Override public void storeDeviceId(String userId, String deviceId, SaveDeviceIdCallbacks callbacks) {
 
         long currentTime = new Date().getTime();
 
@@ -315,11 +312,6 @@ public class UsersSingleton implements iUsersSingleton {
                     }
                 });
 
-    }
-
-    @Override
-    public void toggleCommentsSubscription(String userId, boolean isEnabled, CommentsSubscriptionCallbacks callbacks) {
-        MVPUtils.subscribeToTopicNotifications();
     }
 
     // Внутренние методы
