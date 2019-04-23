@@ -252,25 +252,11 @@ public class CardShow_View extends BaseView implements
             if (auth().isAdmin() || auth().isCardOwner(currentCard)) {
                 menuInflater.inflate(R.menu.edit, menu);
                 menuInflater.inflate(R.menu.delete, menu);
+                menuInflater.inflate(R.menu.comments_subscription, menu);
             }
         }
 
         return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-//        MenuInflater menuInflater = getMenuInflater();
-//
-//        if (auth().isAdmin() || auth().isCardOwner(currentCard)) {
-//            menuInflater.inflate(R.menu.edit, menu);
-//            menuInflater.inflate(R.menu.delete, menu);
-//        }
-//
-//        menuInflater.inflate(R.menu.share, menu);
-//
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -284,6 +270,10 @@ public class CardShow_View extends BaseView implements
 
             case R.id.actionDelete:
                 deleteCard();
+                break;
+
+            case R.id.actionSubscription:
+                toggleCommentsSubscription(item);
                 break;
 
             default:
@@ -1172,5 +1162,11 @@ public class CardShow_View extends BaseView implements
 
     }
 
+    private void toggleCommentsSubscription(MenuItem menuItem) {
 
+        menuItem.setChecked(!menuItem.isChecked());
+
+        //MVPUtils.unsubscribeFromTopicNotifications();
+
+    }
 }
