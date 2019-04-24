@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 
 import com.google.gson.Gson;
@@ -369,11 +370,23 @@ public class CardEdit_Presenter implements
         updateCardTags(card);
 
         if (editMode.equals(Enums.CardEditMode.CREATE)) {
+
             MVPUtils.subscribeToTopicNotifications(
                     view.getAppContext(),
                     card.getKey(),
-                    null,
-                    R.string.CARD_EDIT_error_subscribing_to_comments
+                    new MVPUtils.TopicNotificationsCallbacks.SubscribeCallbacks() {
+                        @Override
+                        public void onSubscribeSuccess() {
+
+                        }
+
+                        @Override
+                        public void onSubscribeFail(String errorMsg) {
+                            view.showToast(R.string.CARD_EDIT_error_subscribing_to_comments);
+                            Log.e(TAG, errorMsg);
+                            //view.showErrorMsg(R.string.CARD_EDIT_error_subscribing_to_comments, errorMsg);
+                        }
+                    }
             );
         }
     }

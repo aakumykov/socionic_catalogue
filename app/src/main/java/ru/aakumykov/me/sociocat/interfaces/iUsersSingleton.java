@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.interfaces;
 
+import android.content.Context;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.User;
@@ -21,6 +23,9 @@ public interface iUsersSingleton {
     void setEmailVerified(String userId, boolean isVerified, final EmailVerificationCallbacks callbacks);
     void updatePushToken(String token, PushTokenCallbacks callbacks);
     void storeDeviceId(String userId, String deviceId, SaveDeviceIdCallbacks callbacks);
+    void subscribeToCardComments(Context context, boolean enableSubscription, String userId, String cardId,
+                                 CardCommentsSubscriptionCallbacks callbacks);
+
 
     interface CreateCallbacks {
         void onUserCreateSuccess(User user);
@@ -67,5 +72,12 @@ public interface iUsersSingleton {
     interface SaveDeviceIdCallbacks {
         void onStoreDeviceIdSuccess();
         void onStoreDeviceIdFailed(String errorMSg);
+    }
+
+    interface CardCommentsSubscriptionCallbacks {
+        void onSubscribeSuccess();
+        void onSubscribeFail(String errorMsg);
+        void onUnsubscribeSuccess();
+        void onUnsubscribeFail(String errorMsg);
     }
 }

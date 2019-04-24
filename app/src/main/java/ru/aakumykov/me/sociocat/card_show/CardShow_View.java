@@ -249,10 +249,12 @@ public class CardShow_View extends BaseView implements
         menuInflater.inflate(R.menu.share, menu);
 
         if (null != currentCard) {
-            if (auth().isAdmin() || auth().isCardOwner(currentCard)) {
-                menuInflater.inflate(R.menu.edit, menu);
-                menuInflater.inflate(R.menu.delete, menu);
+            if (auth().isCardOwner(currentCard)) {
                 menuInflater.inflate(R.menu.comments_subscription, menu);
+                if (auth().isAdmin()) {
+                    menuInflater.inflate(R.menu.edit, menu);
+                    menuInflater.inflate(R.menu.delete, menu);
+                }
             }
         }
 
@@ -1164,9 +1166,7 @@ public class CardShow_View extends BaseView implements
 
     private void toggleCommentsSubscription(MenuItem menuItem) {
 
-        menuItem.setChecked(!menuItem.isChecked());
-
-        //MVPUtils.unsubscribeFromTopicNotifications();
+        showToast(menuItem.isChecked() ? "1" : "0");
 
     }
 }
