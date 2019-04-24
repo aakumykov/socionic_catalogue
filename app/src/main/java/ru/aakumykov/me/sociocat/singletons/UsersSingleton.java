@@ -402,9 +402,9 @@ public class UsersSingleton implements iUsersSingleton {
     private void changeCardCommentsSubscription(String cardId, String userId, boolean enable,
                                                 ChangeCardCommentsSubscriptionCallbacks callbacks) {
 
-        DatabaseReference unsubscribedCardsPath = usersRef.child("/unsubscribed_cards");
+        DatabaseReference unsubscribedCardsPath = usersRef.child(userId+"/unsubscribed_cards");
         DatabaseReference cardRef = unsubscribedCardsPath.child(cardId);
-        cardRef.setValue(enable)
+        cardRef.setValue(!enable)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

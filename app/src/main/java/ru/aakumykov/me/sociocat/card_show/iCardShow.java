@@ -70,5 +70,7 @@ public interface iCardShow {
 
         void rateCommentUp(Comment comment, iCommentsSingleton.RatingCallbacks callbacks);
         void rateCommentDown(Comment comment, iCommentsSingleton.RatingCallbacks callbacks);
+
+        void changeCardCommentsSubscription(boolean enable);
     }
 }

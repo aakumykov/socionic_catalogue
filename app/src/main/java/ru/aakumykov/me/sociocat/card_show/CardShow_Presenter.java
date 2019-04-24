@@ -14,6 +14,7 @@ import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
+import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
@@ -21,6 +22,7 @@ import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 
 
 public class CardShow_Presenter implements
@@ -36,6 +38,7 @@ public class CardShow_Presenter implements
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private Card currentCard;
 
 
@@ -243,6 +246,37 @@ public class CardShow_Presenter implements
         if (authSingleton.isUserLoggedIn()) {
             commentsSingleton.rateDown(comment.getKey(), authSingleton.currentUserId(), callbacks);
         }
+    }
+
+    @Override
+    public void changeCardCommentsSubscription(boolean enable) {
+        usersSingleton.subscribeToCardComments(
+                view.getAppContext(),
+                enable,
+                authSingleton.currentUserId(),
+                currentCard.getKey(),
+                new iUsersSingleton.CardCommentsSubscriptionCallbacks() {
+                    @Override
+                    public void onSubscribeSuccess() {
+
+                    }
+
+                    @Override
+                    public void onSubscribeFail(String errorMsg) {
+
+                    }
+
+                    @Override
+                    public void onUnsubscribeSuccess() {
+
+                    }
+
+                    @Override
+                    public void onUnsubscribeFail(String errorMsg) {
+
+                    }
+                }
+        );
     }
 
 

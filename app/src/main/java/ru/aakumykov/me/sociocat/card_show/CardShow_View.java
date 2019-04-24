@@ -1165,8 +1165,7 @@ public class CardShow_View extends BaseView implements
     }
 
     private void toggleCommentsSubscription(MenuItem menuItem) {
-
-        showToast(menuItem.isChecked() ? "1" : "0");
-
+        menuItem.setChecked(!menuItem.isChecked());
+        presenter.changeCardCommentsSubscription(menuItem.isChecked());
     }
 }
