@@ -26,6 +26,10 @@ public interface iUsersSingleton {
     void subscribeToCardComments(Context context, boolean enableSubscription, String userId, String cardId,
                                  CardCommentsSubscriptionCallbacks callbacks);
 
+    void reloadUserFromServer(ReadCallbacks callbacks);
+    void storeCurrentUser(User user);
+    User getCurrentUser();
+
 
     interface CreateCallbacks {
         void onUserCreateSuccess(User user);

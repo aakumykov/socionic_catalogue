@@ -47,12 +47,52 @@ public class UsersSingleton implements iUsersSingleton {
     /* Одиночка */
 
     private final static String TAG = "UsersSingleton";
+    private User currentUser;
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("/");
     private DatabaseReference usersRef = rootRef.child(Constants.USERS_PATH);
     private DatabaseReference deviceIdRef = rootRef.child(Constants.DEVICE_ID_PATH);
 
 
     // Интерфейсные методы
+    @Override
+    public void reloadUserFromServer(ReadCallbacks callbacks) {
+
+        usersRef.child(currentUser.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot item : dataSnapshot.getChildren()) {
+                    User user = item.getValue(User.class);
+                    if (null != user) {
+                        storeCurrentUser(user);
+                        if (null != callbacks)
+                            callbacks.onUserReadSuccess(user);
+                        return;
+                    }
+                    if (null != callbacks)
+                        callbacks.onUserReadFail("There is no User data in data snapshot");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                if (null != callbacks)
+                    callbacks.onUserReadFail(databaseError.getMessage());
+                databaseError.toException().printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void storeCurrentUser(User user) {
+        currentUser = user;
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+
     @Override
     public void listUsers(final ListCallbacks callbacks) {
         final ArrayList<User> list = new ArrayList<>();
@@ -405,7 +445,7 @@ public class UsersSingleton implements iUsersSingleton {
         String path = userId+"/unsubscribedCards/"+cardId;
         DatabaseReference reference = usersRef.child(path);
 
-        boolean value = !enable;
+        Boolean value = (enable) ? true : null;
 
         reference.setValue(value)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
