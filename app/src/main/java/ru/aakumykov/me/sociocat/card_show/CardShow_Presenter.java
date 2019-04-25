@@ -250,6 +250,7 @@ public class CardShow_Presenter implements
 
     @Override
     public void changeCardCommentsSubscription(boolean enable) {
+
         usersSingleton.subscribeToCardComments(
                 view.getAppContext(),
                 enable,

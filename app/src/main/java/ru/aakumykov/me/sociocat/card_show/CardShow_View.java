@@ -70,7 +70,6 @@ public class CardShow_View extends BaseView implements
     private TextView titleView;
     private TextView quoteView;
     private TextView quoteSourceView;
-//    private ConstraintLayout imageHolder;
     private ProgressBar imageProgressBar;
     private ImageView imageView;
     private TextView descriptionView;
@@ -250,7 +249,14 @@ public class CardShow_View extends BaseView implements
 
         if (null != currentCard) {
             if (auth().isCardOwner(currentCard)) {
+
                 menuInflater.inflate(R.menu.comments_subscription, menu);
+                MenuItem menuItem = menu.findItem(R.id.actionSubscription);
+
+                boolean shouldBeChecked = auth().currentUser()
+                        .isSubscribedToCardComments(currentCard.getKey());
+                menuItem.setChecked(shouldBeChecked);
+
                 if (auth().isAdmin()) {
                     menuInflater.inflate(R.menu.edit, menu);
                     menuInflater.inflate(R.menu.delete, menu);
@@ -1165,7 +1171,8 @@ public class CardShow_View extends BaseView implements
     }
 
     private void toggleCommentsSubscription(MenuItem menuItem) {
-        menuItem.setChecked(!menuItem.isChecked());
+        boolean checked = !menuItem.isChecked();
+        menuItem.setChecked(checked);
         presenter.changeCardCommentsSubscription(menuItem.isChecked());
     }
 }
