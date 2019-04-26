@@ -28,6 +28,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsListAdapter;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
@@ -134,7 +135,7 @@ public class UserShow_View extends BaseView implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        if (auth().isUserLoggedIn()) {
+        if (AuthSingleton.getInstance().isUserLoggedIn()) {
             getMenuInflater().inflate(R.menu.edit_profile, menu);
         }
         return true;

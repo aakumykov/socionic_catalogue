@@ -12,8 +12,6 @@ import ru.aakumykov.me.sociocat.models.User;
 
 public interface iBaseView {
 
-    iAuthSingleton auth();
-
     Context getAppContext();
     String getString(int stringResourceId);
 

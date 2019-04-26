@@ -28,6 +28,7 @@ public interface iUsersSingleton {
 
     void reloadUserFromServer(ReadCallbacks callbacks);
     void storeCurrentUser(User user);
+    void clearCurrentUser();
     User getCurrentUser();
 
 

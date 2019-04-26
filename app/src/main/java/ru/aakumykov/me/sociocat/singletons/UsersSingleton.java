@@ -87,6 +87,10 @@ public class UsersSingleton implements iUsersSingleton {
         currentUser = user;
     }
 
+    @Override public void clearCurrentUser() {
+        currentUser = null;
+    }
+
     @Override
     public User getCurrentUser() {
         return currentUser;

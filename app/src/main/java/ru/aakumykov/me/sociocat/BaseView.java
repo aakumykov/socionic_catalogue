@@ -50,34 +50,16 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 {
     public static String PACKAGE_NAME;
     private final static String TAG = "BaseView";
-    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
-    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
     // Абстрактные методы
     public abstract void onUserLogin();
     public abstract void onUserLogout();
 
-
-    // Системные методы
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        PACKAGE_NAME = getApplicationContext().getPackageName();
-
-        // TODO: попробовать перенести в MyApp
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    }
-
+    // EventBus
     @Subscribe
     public void onUserAuthorized(UserAuthorizedEvent event) {
-        //showToast("Авторизовался "+event.getUser().getKey());
 
-        // TODO: убрать
-        authSingleton.storeCurrentUser(event.getUser());
-
-        usersSingleton.storeCurrentUser(event.getUser());
+        UsersSingleton.getInstance().storeCurrentUser(event.getUser());
 
         invalidateOptionsMenu();
 
@@ -90,11 +72,22 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public void onUserUnauthorized(UserUnauthorizedEvent event) {
         //showToast("Разавторизовался");
 
-        authSingleton.clearCurrentUser();
+        UsersSingleton.getInstance().clearCurrentUser();
 
         invalidateOptionsMenu();
 
         onUserLogout();
+    }
+
+    // Системные методы
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        PACKAGE_NAME = getApplicationContext().getPackageName();
+
+        // TODO: попробовать перенести в MyApp
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     @Override
@@ -120,7 +113,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         MenuInflater menuInflater = getMenuInflater();
 
-        if (auth().isUserLoggedIn()) {
+        if (AuthSingleton.getInstance().isUserLoggedIn()) {
             menuInflater.inflate(R.menu.preferences, menu);
             menuInflater.inflate(R.menu.profile, menu);
             menuInflater.inflate(R.menu.logout, menu);
@@ -361,15 +354,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
 
-    // Геттеры
-    public iCardsSingleton getCardsService() {
-        return cardsSingleton;
-    }
-
-    public iAuthSingleton auth() {
-        return authSingleton;
-    }
-
 
     // Разное
     @Override
@@ -450,7 +434,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void login() {
         // Можно и без result, потому что статус авторизации обрабатывается в
         // AuthStateListener
-        if (!authSingleton.isUserLoggedIn()) {
+        if (!AuthSingleton.getInstance().isUserLoggedIn()) {
             //Log.d(TAG, "doLogin()");
             Intent intent = new Intent(this, Login_View.class);
             startActivityForResult(intent, Constants.CODE_LOGIN);
@@ -459,7 +443,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     private void logout() {
         //Log.d(TAG, "logout()");
-        authSingleton.logout();
+        AuthSingleton.getInstance().logout();
     }
 
     private void openPreferences() {
@@ -470,7 +454,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void seeUserProfile() {
         try {
             Intent intent = new Intent(this, UserShow_View.class);
-            intent.putExtra(Constants.USER_ID, authSingleton.currentUserId());
+            intent.putExtra(Constants.USER_ID, AuthSingleton.getInstance().currentUserId());
             startActivity(intent);
         } catch (Exception e) {
             showErrorMsg(e.getMessage());

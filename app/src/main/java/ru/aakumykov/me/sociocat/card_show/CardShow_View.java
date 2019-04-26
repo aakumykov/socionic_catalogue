@@ -47,6 +47,7 @@ import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.users.edit.UserEdit_View;
 import ru.aakumykov.me.sociocat.users.show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
@@ -161,7 +162,7 @@ public class CardShow_View extends BaseView implements
 
         // Присоединяю адаптер списка
         commentsList = new ArrayList<>();
-        commentsAdapter = new CommentsAdapter(this, auth().currentUser(),
+        commentsAdapter = new CommentsAdapter(this, AuthSingleton.getInstance().currentUser(),
                 R.layout.comments_list_item, commentsList,this);
         mainListView.setAdapter(commentsAdapter);
 
@@ -228,7 +229,7 @@ public class CardShow_View extends BaseView implements
             case Constants.CODE_FORCE_SETUP_USER_NAME:
                 if (null != data) {
                     User user = data.getParcelableExtra(Constants.USER);
-                    auth().storeCurrentUser(user);
+                    AuthSingleton.getInstance().storeCurrentUser(user);
                 }
                 addComment();
                 break;
@@ -248,16 +249,16 @@ public class CardShow_View extends BaseView implements
         menuInflater.inflate(R.menu.share, menu);
 
         if (null != currentCard) {
-            if (auth().isCardOwner(currentCard)) {
+            if (AuthSingleton.getInstance().isCardOwner(currentCard)) {
 
                 menuInflater.inflate(R.menu.comments_subscription, menu);
                 MenuItem menuItem = menu.findItem(R.id.actionSubscription);
 
-                boolean shouldBeChecked = auth().currentUser()
+                boolean shouldBeChecked = AuthSingleton.getInstance().currentUser()
                         .isSubscribedToCardComments(currentCard.getKey());
                 menuItem.setChecked(shouldBeChecked);
 
-                if (auth().isAdmin()) {
+                if (AuthSingleton.getInstance().isAdmin()) {
                     menuInflater.inflate(R.menu.edit, menu);
                     menuInflater.inflate(R.menu.delete, menu);
                 }
@@ -330,7 +331,7 @@ public class CardShow_View extends BaseView implements
     public void onCommentReplyClicked(View view, final Comment comment) {
         // TODO: эта логика должна быть в презентере
 
-        if (!auth().isUserLoggedIn()) {
+        if (!AuthSingleton.getInstance().isUserLoggedIn()) {
             showToast(R.string.DIALOG_login_first);
         }
         else if (forceSetupUserName(comment)) {
@@ -565,7 +566,7 @@ public class CardShow_View extends BaseView implements
         MyUtils.show(cardRatingView);
         cardRatingView.setText(String.valueOf(value));
 
-        String currentUserId = auth().currentUserId();
+        String currentUserId = AuthSingleton.getInstance().currentUserId();
 
         if (currentCard.isRatedUpBy(currentUserId)) {
             colorizeCardRatingAsUp();
@@ -779,7 +780,7 @@ public class CardShow_View extends BaseView implements
         displayTags(card.getTags());
         showCardRating(card.getRating());
 
-//        if (auth().isUserLoggedIn()) {
+//        if (AuthSingleton.getInstance().isUserLoggedIn()) {
         MyUtils.show(addCommentButton);
 //        }
     }
@@ -844,9 +845,9 @@ public class CardShow_View extends BaseView implements
 
     private void addComment() {
 
-        if (auth().isUserLoggedIn()) {
+        if (AuthSingleton.getInstance().isUserLoggedIn()) {
 
-            final User user = auth().currentUser();
+            final User user = AuthSingleton.getInstance().currentUser();
 
             if (!TextUtils.isEmpty(user.getName())) {
                 showCommentForm();
@@ -934,11 +935,11 @@ public class CardShow_View extends BaseView implements
 
         // TODO: сделать это по-нормальному
         // TODO: логика-то во вьюхе не должна присутствовать!
-        if (auth().isUserLoggedIn()) {
-            if (comment.getUserId().equals(auth().currentUserId()))
+        if (AuthSingleton.getInstance().isUserLoggedIn()) {
+            if (comment.getUserId().equals(AuthSingleton.getInstance().currentUserId()))
                 popupMenu.inflate(R.menu.edit);
 
-            if (auth().userIsAdmin(auth().currentUserId()))
+            if (AuthSingleton.getInstance().userIsAdmin(AuthSingleton.getInstance().currentUserId()))
                 popupMenu.inflate(R.menu.delete);
         }
 
@@ -1048,7 +1049,7 @@ public class CardShow_View extends BaseView implements
 
     private boolean forceSetupUserName(@Nullable final Comment parentComment) {
 
-        final User user = auth().currentUser();
+        final User user = AuthSingleton.getInstance().currentUser();
 
         if (null != user && !TextUtils.isEmpty(user.getName())) {
             return true;

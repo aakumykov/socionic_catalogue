@@ -33,6 +33,7 @@ import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -231,7 +232,7 @@ public class CardsList_View extends BaseView implements
 //        Log.d(TAG, "onItemLongClick(pos: "+position+", id: "+id+")");
         currentCard = cardsList.get(position);
 
-        if (auth().isUserLoggedIn()) {
+        if (AuthSingleton.getInstance().isUserLoggedIn()) {
             Drawable oldBackground = view.getBackground();
             view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
             showPopupMenu(view, currentCard, oldBackground);
@@ -246,7 +247,7 @@ public class CardsList_View extends BaseView implements
 
         PopupMenu popupMenu = new PopupMenu(this, view);
 
-        if (auth().isAdmin() || auth().isCardOwner(card)) {
+        if (AuthSingleton.getInstance().isAdmin() || AuthSingleton.getInstance().isCardOwner(card)) {
             popupMenu.inflate(R.menu.edit);
             popupMenu.inflate(R.menu.delete);
         }

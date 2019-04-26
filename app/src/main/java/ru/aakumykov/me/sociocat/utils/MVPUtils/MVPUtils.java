@@ -478,17 +478,16 @@ public class MVPUtils {
     }
 
 
-    // TODO: перенести showToast из BaseView
-    public static <T> void showToast(Context context, T messageId, boolean atCenter) {
-        String message = (messageId instanceof Integer) ?
-                context.getResources().getString((Integer) messageId) :
-                String.valueOf(messageId);
-
-        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-
-        if (atCenter)
-            toast.setGravity(Gravity.CENTER, 0,0);
-
-        toast.show();
-    }
+//    public static <T> void showToast(Context context, T messageId, boolean atCenter) {
+//        String message = (messageId instanceof Integer) ?
+//                context.getResources().getString((Integer) messageId) :
+//                String.valueOf(messageId);
+//
+//        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+//
+//        if (atCenter)
+//            toast.setGravity(Gravity.CENTER, 0,0);
+//
+//        toast.show();
+//    }
 }
