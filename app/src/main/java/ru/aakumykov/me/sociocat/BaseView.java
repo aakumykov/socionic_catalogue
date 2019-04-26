@@ -51,15 +51,16 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public static String PACKAGE_NAME;
     private final static String TAG = "BaseView";
 
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+
     // Абстрактные методы
     public abstract void onUserLogin();
     public abstract void onUserLogout();
 
+
     // EventBus
     @Subscribe
     public void onUserAuthorized(UserAuthorizedEvent event) {
-
-        UsersSingleton.getInstance().storeCurrentUser(event.getUser());
 
         invalidateOptionsMenu();
 
@@ -70,14 +71,12 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Subscribe
     public void onUserUnauthorized(UserUnauthorizedEvent event) {
-        //showToast("Разавторизовался");
-
-        UsersSingleton.getInstance().clearCurrentUser();
 
         invalidateOptionsMenu();
 
         onUserLogout();
     }
+
 
     // Системные методы
     @Override
@@ -88,6 +87,24 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         // TODO: попробовать перенести в MyApp
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //Log.d(TAG, "onActivityResult()");
+
+        switch (requestCode) {
+
+            case Constants.CODE_LOGIN:
+                break;
+
+            case Constants.CODE_EDIT_CARD:
+                onCardEdited(resultCode, data);
+                break;
+
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -108,12 +125,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         EventBus.getDefault().unregister(this);
     }
 
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
         MenuInflater menuInflater = getMenuInflater();
 
-        if (AuthSingleton.getInstance().isUserLoggedIn()) {
+        if (isUserLoggedIn()) {
             menuInflater.inflate(R.menu.preferences, menu);
             menuInflater.inflate(R.menu.profile, menu);
             menuInflater.inflate(R.menu.logout, menu);
@@ -169,22 +187,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        //Log.d(TAG, "onActivityResult()");
 
-        switch (requestCode) {
-
-            case Constants.CODE_LOGIN:
-                break;
-
-            case Constants.CODE_EDIT_CARD:
-                onCardEdited(resultCode, data);
-                break;
-
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-        }
+    // Методы, связанные с авторизацией
+    public boolean isUserLoggedIn() {
+        // Опасно
+        return (null != usersSingleton.getCurrentUser());
     }
 
 

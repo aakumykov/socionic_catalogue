@@ -19,23 +19,19 @@ import org.greenrobot.eventbus.EventBus;
 import androidx.annotation.NonNull;
 import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
-import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
-import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 
 public class MyApp extends Application {
 
     private final static String TAG = "=MyApp=";
-    private iAuthSingleton authSingleton;
     private iUsersSingleton usersSingleton;
 
     @Override public void onCreate() {
         super.onCreate();
 
-        authSingleton = AuthSingleton.getInstance();
         usersSingleton = UsersSingleton.getInstance();
 
         // Подписываюсь на события изменения авторизации
@@ -51,25 +47,36 @@ public class MyApp extends Application {
                     usersSingleton.getUserById(uid, new iUsersSingleton.ReadCallbacks() {
                         @Override
                         public void onUserReadSuccess(User user) {
-                            EventBus.getDefault().post(new UserAuthorizedEvent(user));
-//                            registerPushToken(user);
+                            authorizeUser(user);
                         }
 
                         @Override
                         public void onUserReadFail(String errorMsg) {
-                            // TODO: что делать с ошибкой?
+                            deauthorizeUser();
                             Log.e(TAG, errorMsg);
                         }
                     });
 
                 } else {
-                    EventBus.getDefault().post(new UserUnauthorizedEvent());
+                    deauthorizeUser();
                 }
             }
         });
 
         prepareDefaultPreferences();
     }
+
+
+    private void authorizeUser(User user) {
+        EventBus.getDefault().post(new UserAuthorizedEvent(user));
+        usersSingleton.storeCurrentUser(user);
+    }
+
+    private void deauthorizeUser() {
+        EventBus.getDefault().post(new UserUnauthorizedEvent());
+        usersSingleton.clearCurrentUser();
+    }
+
 
     private void prepareDefaultPreferences() {
 
@@ -92,6 +99,8 @@ public class MyApp extends Application {
         }
     }
 
+
+/*
     private void registerPushToken(User user) {
         Log.d(TAG, "registerPushToken()");
 
@@ -118,7 +127,9 @@ public class MyApp extends Application {
                     }
                 });
     }
+*/
 
+/*
     private void checkPushToken(User user) {
 
         if (null == user.getPushToken()) {
@@ -167,4 +178,5 @@ public class MyApp extends Application {
 
         }
     }
+*/
 }

@@ -35,34 +35,12 @@ public class AuthSingleton implements iAuthSingleton
     }
     /* Одиночка */
 
+
     private final static String TAG = "AuthSingleton";
     private FirebaseAuth firebaseAuth;
 
 
     // Интерфейсные методы
-    // Регистрация, вход, выход
-//    @Override
-//    public void registerWithEmail(String email, String password,
-//            final iAuthSingleton.RegisterCallbacks callbacks) throws Exception
-//    {
-//        Log.d(TAG, "registerWithEmail("+email+", ***)");
-//
-//        firebaseAuth.createUserWithEmailAndPassword(email, password)
-//                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-//                    @Override
-//                    public void onSuccess(AuthResult authResult) {
-//                        callbacks.onRegSucsess(authResult.getUser().getUid(), authResult.getUser().getEmail());
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        callbacks.onRegFail(e.getMessage());
-//                        e.printStackTrace();
-//                    }
-//                });
-//    }
-
     @Override
     public void login(String email, String password, final LoginCallbacks callbacks) throws Exception {
 
@@ -92,39 +70,10 @@ public class AuthSingleton implements iAuthSingleton
         firebaseAuth.signOut();
     }
 
-
-//    @Override
-//    public void restoreCurrentUser(final iAuthSingleton.UserRestoreCallbacks callbacks) {
-//        usersSingleton.getUserById(currentUserId(), new iUsersSingleton.ReadCallbacks() {
-//            @Override
-//            public void onUserReadSuccess(User user) {
-//                storeCurrentUser(user);
-//                callbacks.onUserRestoreSuccess();
-//            }
-//
-//            @Override
-//            public void onUserReadFail(String errorMsg) {
-//                callbacks.onUserRestoreFail(errorMsg);
-//            }
-//        });
-//    }
-
-
-    // Параметры текущего пользователя
-//    @Override
-//    public User currentUser() {
-//        return this.currentUser;
-//    }
-
     @Override
     public String currentUserId() {
         return firebaseAuth.getUid();
     }
-
-//    @Override
-//    public String currentUserName() {
-//        return currentUser.getName();
-//    }
 
     @Override
     public boolean isUserLoggedIn() {
@@ -135,74 +84,6 @@ public class AuthSingleton implements iAuthSingleton
     public boolean isCardOwner(Card card) {
         return card.getUserId().equals(currentUserId());
     }
-
-/*
-    @Override
-    public void sendSignInLinkToEmail(String email, final SendSignInLinkToEmailCallbacks callbacks) {
-
-        String url = "http://sociocat.example.org/verify";
-
-        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
-                .setUrl(url)
-                .setAndroidPackageName(Constants.PACKAGE_NAME, true, null)
-                .setHandleCodeInApp(true)
-                .build();
-
-        firebaseAuth.sendSignInLinkToEmail(email, actionCodeSettings)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onSendSignInLinkToEmailSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onSendSignInLinkToEmailFail(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
-    }
-*/
-
-/*
-    @Override
-    public void sendEmailVerificationLink(String packageName, final SendEmailVerificationLinkCallbacks callbacks) {
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        String url = "http://sociocat.example.org/verify?uid=" + user.getUid();
-
-        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
-                .setUrl(url)
-                // The default for this is populated with the current android package name.
-                .setAndroidPackageName(packageName, true, null)
-                .setHandleCodeInApp(false)
-                .build();
-
-        user.sendEmailVerification(actionCodeSettings)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        logout();
-                    }
-                })
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onEmailVerificationLinkSendSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onEmailVerificationLinkSendFail(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
-
-    }
-*/
 
     @Override
     public void resetPasswordEmail(String email, final ResetPasswordCallbacks callbacks) {
@@ -232,22 +113,6 @@ public class AuthSingleton implements iAuthSingleton
                     }
                 });
     }
-
-    // Служебные
-/*
-    @Override
-    public void storeCurrentUser(final User user) {
-        // TODO: проверять на null, бросать исключение?
-        this.currentUser = user;
-    }
-*/
-
-/*
-    @Override
-    public void clearCurrentUser() {
-        this.currentUser = null;
-    }
-*/
 
 }
 
