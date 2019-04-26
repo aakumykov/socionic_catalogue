@@ -56,7 +56,9 @@ public class UsersSingleton implements iUsersSingleton {
     // Интерфейсные методы
     @Override
     public void reloadUserFromServer(ReadCallbacks callbacks) {
+
         usersRef.child(currentUser.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot item : dataSnapshot.getChildren()) {
@@ -78,6 +80,7 @@ public class UsersSingleton implements iUsersSingleton {
                     callbacks.onUserReadFail(databaseError.getMessage());
                 databaseError.toException().printStackTrace();
             }
+
         });
     }
 

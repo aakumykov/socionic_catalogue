@@ -283,7 +283,7 @@ public class CardShow_View extends BaseView implements
                 break;
 
             case R.id.actionSubscription:
-                toggleCommentsSubscription(item);
+                changeCardCommentsSubscription(item);
                 break;
 
             default:
@@ -1172,7 +1172,7 @@ public class CardShow_View extends BaseView implements
 
     }
 
-    private void toggleCommentsSubscription(MenuItem menuItem) {
+    private void changeCardCommentsSubscription(MenuItem menuItem) {
         boolean checked = !menuItem.isChecked();
         menuItem.setChecked(checked);
         presenter.changeCardCommentsSubscription(menuItem.isChecked());
