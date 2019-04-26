@@ -242,7 +242,7 @@ public class Users_Presenter implements
 
     @Override
     public void onUserSaveSuccess(User user) {
-        authSingleton.storeCurrentUser(user);
+        usersSingleton.storeCurrentUser(user);
         editView.hideProgressBar();
         editView.finishEdit(user, true);
     }

@@ -21,11 +21,6 @@ import ru.aakumykov.me.sociocat.models.User;
 
 public class AuthSingleton implements iAuthSingleton
 {
-    private final static String TAG = "AuthSingleton";
-    private FirebaseAuth firebaseAuth;
-    private User currentUser;
-
-
     /* Одиночка */
     private static volatile AuthSingleton ourInstance;
     public synchronized static AuthSingleton getInstance() {
@@ -38,32 +33,35 @@ public class AuthSingleton implements iAuthSingleton
         firebaseAuth = FirebaseAuth.getInstance();
         Log.d(TAG, "firebaseAuth: "+firebaseAuth);
     }
-    /* Одиночка */    
+    /* Одиночка */
+
+    private final static String TAG = "AuthSingleton";
+    private FirebaseAuth firebaseAuth;
 
 
     // Интерфейсные методы
     // Регистрация, вход, выход
-    @Override
-    public void registerWithEmail(String email, String password,
-            final iAuthSingleton.RegisterCallbacks callbacks) throws Exception
-    {
-        Log.d(TAG, "registerWithEmail("+email+", ***)");
-
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        callbacks.onRegSucsess(authResult.getUser().getUid(), authResult.getUser().getEmail());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onRegFail(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
-    }
+//    @Override
+//    public void registerWithEmail(String email, String password,
+//            final iAuthSingleton.RegisterCallbacks callbacks) throws Exception
+//    {
+//        Log.d(TAG, "registerWithEmail("+email+", ***)");
+//
+//        firebaseAuth.createUserWithEmailAndPassword(email, password)
+//                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+//                    @Override
+//                    public void onSuccess(AuthResult authResult) {
+//                        callbacks.onRegSucsess(authResult.getUser().getUid(), authResult.getUser().getEmail());
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        callbacks.onRegFail(e.getMessage());
+//                        e.printStackTrace();
+//                    }
+//                });
+//    }
 
     @Override
     public void login(String email, String password, final LoginCallbacks callbacks) throws Exception {
@@ -95,8 +93,8 @@ public class AuthSingleton implements iAuthSingleton
     }
 
 
-    @Override
-    public void restoreCurrentUser(final iAuthSingleton.UserRestoreCallbacks callbacks) {
+//    @Override
+//    public void restoreCurrentUser(final iAuthSingleton.UserRestoreCallbacks callbacks) {
 //        usersSingleton.getUserById(currentUserId(), new iUsersSingleton.ReadCallbacks() {
 //            @Override
 //            public void onUserReadSuccess(User user) {
@@ -109,27 +107,24 @@ public class AuthSingleton implements iAuthSingleton
 //                callbacks.onUserRestoreFail(errorMsg);
 //            }
 //        });
-    }
+//    }
 
 
     // Параметры текущего пользователя
-    @Override
-    public User currentUser() {
-        return this.currentUser;
-    }
+//    @Override
+//    public User currentUser() {
+//        return this.currentUser;
+//    }
 
     @Override
-    public String currentUserId() /*throws Exception*/ {
-        String firebaseUid = firebaseAuth.getUid();
-//        String userId = getCurrentUser().getKey();
-//        if (!firebaseUid.equals(userId)) throw new Exception("Firebase user id != program user uid");
-        return firebaseUid;
+    public String currentUserId() {
+        return firebaseAuth.getUid();
     }
 
-    @Override
-    public String currentUserName() {
-        return currentUser.getName();
-    }
+//    @Override
+//    public String currentUserName() {
+//        return currentUser.getName();
+//    }
 
     @Override
     public boolean isUserLoggedIn() {
@@ -137,20 +132,11 @@ public class AuthSingleton implements iAuthSingleton
     }
 
     @Override
-    public boolean isAdmin() {
-        return false;
-    }
-
-    @Override
-    public boolean userIsAdmin(String userId) {
-        return false;
-    }
-
-    @Override
     public boolean isCardOwner(Card card) {
         return card.getUserId().equals(currentUserId());
     }
 
+/*
     @Override
     public void sendSignInLinkToEmail(String email, final SendSignInLinkToEmailCallbacks callbacks) {
 
@@ -177,7 +163,9 @@ public class AuthSingleton implements iAuthSingleton
                     }
                 });
     }
+*/
 
+/*
     @Override
     public void sendEmailVerificationLink(String packageName, final SendEmailVerificationLinkCallbacks callbacks) {
 
@@ -214,6 +202,7 @@ public class AuthSingleton implements iAuthSingleton
                 });
 
     }
+*/
 
     @Override
     public void resetPasswordEmail(String email, final ResetPasswordCallbacks callbacks) {
@@ -245,21 +234,20 @@ public class AuthSingleton implements iAuthSingleton
     }
 
     // Служебные
+/*
     @Override
     public void storeCurrentUser(final User user) {
         // TODO: проверять на null, бросать исключение?
         this.currentUser = user;
     }
+*/
 
+/*
     @Override
     public void clearCurrentUser() {
         this.currentUser = null;
     }
+*/
 
-
-    // Внутренние
-    private User getCurrentUser() {
-        return this.currentUser;
-    }
 }
 

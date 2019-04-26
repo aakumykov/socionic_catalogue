@@ -38,19 +38,19 @@ public class AuthStateListener implements iAuthStateListener {
                     usersSingleton.getUserById(firebaseUser.getUid(), new iUsersSingleton.ReadCallbacks() {
                         @Override
                         public void onUserReadSuccess(User user) {
-                            authSingleton.storeCurrentUser(user);
+                            usersSingleton.storeCurrentUser(user);
                             callbacks.onLoggedIn();
                         }
 
                         @Override
                         public void onUserReadFail(String errorMsg) {
-                            authSingleton.clearCurrentUser();
+                            usersSingleton.clearCurrentUser();
                         }
                     });
 
                 } else {
                     callbacks.onLoggedOut();
-                    authSingleton.clearCurrentUser();
+                    usersSingleton.clearCurrentUser();
                 }
             }
         });

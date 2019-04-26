@@ -31,6 +31,9 @@ public interface iUsersSingleton {
     void clearCurrentUser();
     User getCurrentUser();
 
+    boolean isAdmin();
+    String currentUserName();
+
 
     interface CreateCallbacks {
         void onUserCreateSuccess(User user);

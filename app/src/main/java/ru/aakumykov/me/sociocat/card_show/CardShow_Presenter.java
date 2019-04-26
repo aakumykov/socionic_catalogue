@@ -144,8 +144,8 @@ public class CardShow_Presenter implements
                 null,
                 null,
                 authSingleton.currentUserId(),
-                authSingleton.currentUserName(),
-                authSingleton.currentUser().getAvatarURL()
+                usersSingleton.currentUserName(),
+                usersSingleton.getCurrentUser().getAvatarURL()
         );
 
         postComment(comment);
@@ -159,8 +159,8 @@ public class CardShow_Presenter implements
                 parentComment.getKey(),
                 parentComment.getText(),
                 authSingleton.currentUserId(),
-                authSingleton.currentUserName(),
-                authSingleton.currentUser().getAvatarURL()
+                usersSingleton.currentUserName(),
+                usersSingleton.getCurrentUser().getAvatarURL()
         );
         postComment(comment);
     }

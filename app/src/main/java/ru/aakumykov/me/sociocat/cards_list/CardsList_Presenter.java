@@ -11,12 +11,14 @@ import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
+import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 
 public class CardsList_Presenter implements
         iCardsList.Presenter,
@@ -26,6 +28,7 @@ public class CardsList_Presenter implements
     private final static String TAG = "CardsList_Presenter";
     private iCardsList.View view;
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
@@ -65,7 +68,7 @@ public class CardsList_Presenter implements
     @Override
     public void deleteCard(final Card card) {
 
-        if (!authSingleton.isCardOwner(card) && !authSingleton.isAdmin()) {
+        if (!authSingleton.isCardOwner(card) && !usersSingleton.isAdmin()) {
             view.showErrorMsg(R.string.CARDS_LIST_you_cannot_delete_this_card);
             return;
         }

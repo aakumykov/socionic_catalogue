@@ -56,7 +56,6 @@ public class UsersSingleton implements iUsersSingleton {
     // Интерфейсные методы
     @Override
     public void reloadUserFromServer(ReadCallbacks callbacks) {
-
         usersRef.child(currentUser.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -94,6 +93,14 @@ public class UsersSingleton implements iUsersSingleton {
     @Override
     public User getCurrentUser() {
         return currentUser;
+    }
+
+    @Override public boolean isAdmin() {
+        return false;
+    }
+
+    @Override public String currentUserName() {
+        return currentUser.getName();
     }
 
 

@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -148,9 +147,9 @@ public class MyApp extends Application {
                                     usersSingleton.updatePushToken(token, new iUsersSingleton.PushTokenCallbacks() {
                                         @Override
                                         public void onPushTokenUpdateSuccess(String token) {
-                                            User user = authSingleton.currentUser();
+                                            User user = usersSingleton.getCurrentUser();
                                             user.setPushToken(token);
-                                            authSingleton.storeCurrentUser(user); // TODO: добавляет неоднозначности
+                                            usersSingleton.storeCurrentUser(user); // TODO: добавляет неоднозначности
                                         }
 
                                         @Override

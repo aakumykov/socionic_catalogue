@@ -25,12 +25,14 @@ import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
+import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -45,6 +47,7 @@ public class CardEdit_Presenter implements
     private SharedPreferences sharedPreferences;
 
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
@@ -342,7 +345,7 @@ public class CardEdit_Presenter implements
         else {
             // TODO: нужна проверка на авторизованность!
             currentCard.setUserId(authSingleton.currentUserId());
-            currentCard.setUserName(authSingleton.currentUserName());
+            currentCard.setUserName(usersSingleton.currentUserName());
 
             // Время создания/правки
             Long currentTime = new Date().getTime();
