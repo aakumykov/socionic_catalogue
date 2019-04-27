@@ -259,7 +259,7 @@ public class CardShow_Presenter implements
                 new iUsersSingleton.CardCommentsSubscriptionCallbacks() {
                     @Override
                     public void onSubscribeSuccess() {
-                        usersSingleton.reloadUserFromServer(null);
+                        usersSingleton.refreshUserFromServer(null);
                     }
 
                     @Override
@@ -269,7 +269,7 @@ public class CardShow_Presenter implements
 
                     @Override
                     public void onUnsubscribeSuccess() {
-                        usersSingleton.reloadUserFromServer(null);
+                        usersSingleton.refreshUserFromServer(null);
                     }
 
                     @Override

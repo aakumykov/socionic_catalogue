@@ -1,11 +1,11 @@
 package ru.aakumykov.me.sociocat.login;
 
 import android.content.Intent;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -15,23 +15,22 @@ import java.util.HashMap;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 
 public class Login_Presenter implements
-        iLogin.Presenter,
-        iAuthSingleton.LoginCallbacks
+        iLogin.Presenter
 {
-    private final static String TAG = "Login_Presenter";
+    //private final static String TAG = "Login_Presenter";
     private iLogin.View view;
-    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+
     private String intentAction;
     private Intent originalIntent;
-    private String currentUserId;
+
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
 
     // Обязательные методы
     @Override
@@ -54,54 +53,49 @@ public class Login_Presenter implements
             this.intentAction = action;
             this.originalIntent = intent;
 
-            switch (action) {
-                case Constants.ACTION_TRY_NEW_PASSWORD:
-                    view.showInfoMsg(R.string.LOGIN_try_new_password);
-                    break;
-
-                default:
-                    break;
+            if (Constants.ACTION_TRY_NEW_PASSWORD.equals(action)) {
+                view.showInfoMsg(R.string.LOGIN_try_new_password);
             }
         }
     }
 
     @Override
     public void doLogin(String email, String password) {
-        try {
-            authSingleton.login(email, password, this);
-        }
-        catch (Exception e) {
-            view.hideProgressBar();
-            view.enableForm();
-            view.showErrorMsg(R.string.LOGIN_login_failed, e.getMessage());
-            e.printStackTrace();
-        }
+
+        FirebaseAuth
+                .getInstance()
+                .signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener(authResult -> fetchUser(authResult.getUser().getUid()))
+                .addOnFailureListener(e -> {
+                    showLoginError(e.getMessage());
+                    e.printStackTrace();
+                });
     }
 
     @Override
     public void cancelLogin() {
-        authSingleton.cancelLogin();
+        firebaseAuth.signOut();
         view.finishLogin(true);
     }
 
 
-    // Методы обратного вызова
-    @Override
-    public void onLoginSuccess(final String userId) {
-        currentUserId = userId;
-        readAdminsList();
-    }
-
-    @Override
-    public void onLoginFail(String errorMsg) {
-        view.hideProgressBar();
-        view.enableForm();
-        view.showErrorMsg(errorMsg);
-    }
-
-
     // Внутренние методы
-    private void readAdminsList() {
+    private void fetchUser(String userId) {
+        usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.ReadCallbacks() {
+            @Override
+            public void onUserReadSuccess(User user) {
+                fetchAdminsList();
+            }
+
+            @Override
+            public void onUserReadFail(String errorMsg) {
+                showLoginError(errorMsg);
+            }
+        });
+    }
+
+    private void fetchAdminsList() {
+
         FirebaseDatabase
                 .getInstance()
                 .getReference()
@@ -109,55 +103,47 @@ public class Login_Presenter implements
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                         HashMap<String,Boolean> list = new HashMap<>();
-                        for (DataSnapshot snapshotItem : dataSnapshot.getChildren()) {
+                        for (DataSnapshot snapshotItem : dataSnapshot.getChildren())
                             list.put(snapshotItem.getKey(), true);
-                        }
+
                         usersSingleton.storeAdminsList(list);
-                        fetchUserData();
+
+                        postLoginProcess(usersSingleton.getCurrentUser());
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        view.showErrorMsg(R.string.LOGIN_login_error, databaseError.getMessage());
+                        showLoginError(databaseError.getMessage());
                         databaseError.toException().printStackTrace();
                     }
                 });
     }
 
-    private void fetchUserData() {
+    private void postLoginProcess(User user) {
 
-        // TODO: в MyApp также запрашиваются даные пользователя с сервера!
+        if (!user.isEmailVerified()) {
+            view.notifyToConfirmEmail(user.getKey());
+            return;
+        }
 
-        usersSingleton.getUserById(currentUserId, new iUsersSingleton.ReadCallbacks() {
-            @Override
-            public void onUserReadSuccess(User user) {
+        if (intentAction.equals(Constants.ACTION_CREATE)) {
+            view.goCreateCard();
+            return;
+        }
 
-                if (!user.isEmailVerified()) {
-                    view.notifyToConfirmEmail(currentUserId);
-                    return;
-                }
+        if (intentAction.equals(Constants.ACTION_LOGIN_REQUEST)) {
+            view.proceedLoginRequest(originalIntent);
+            return;
+        }
 
-                if (intentAction.equals(Constants.ACTION_CREATE)) {
-                    view.goCreateCard();
-                    return;
-                }
+        view.finishLogin(false);
+    }
 
-                if (intentAction.equals(Constants.ACTION_LOGIN_REQUEST)) {
-                    view.proceedLoginRequest(originalIntent);
-                    return;
-                }
-
-                view.hideProgressBar();
-                view.finishLogin(false);
-            }
-
-            @Override
-            public void onUserReadFail(String errorMsg) {
-                view.showToast(R.string.LOGIN_login_error);
-                Log.e(TAG, errorMsg);
-                authSingleton.logout();
-            }
-        });
+    private void showLoginError(String msg) {
+        view.hideProgressBar();
+        view.enableForm();
+        view.showErrorMsg(R.string.LOGIN_login_error, msg);
     }
 }

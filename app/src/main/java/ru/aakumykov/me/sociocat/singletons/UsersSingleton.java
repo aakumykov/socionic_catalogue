@@ -56,7 +56,15 @@ public class UsersSingleton implements iUsersSingleton {
 
     // Интерфейсные методы
     @Override
-    public void reloadUserFromServer(ReadCallbacks callbacks) {
+    public void refreshUserFromServer(ReadCallbacks callbacks) {
+        refreshUserFromServer(currentUser.getKey(), callbacks);
+    }
+
+    @Override
+    public void refreshUserFromServer(String userId, ReadCallbacks callbacks) {
+
+        if ((null != currentUser) && !userId.equals(currentUser.getKey()))
+            throw new RuntimeException("Attempt to refresh user ("+currentUser.getKey()+") with different userId ("+userId+")");
 
         usersRef.child(currentUser.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
 

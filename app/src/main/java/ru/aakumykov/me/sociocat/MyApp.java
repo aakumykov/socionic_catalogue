@@ -64,11 +64,13 @@ public class MyApp extends Application {
 
 
     private void authorizeUser(User user) {
+        Log.d(TAG, "authorizeUser(), "+user.getName());
         EventBus.getDefault().post(new UserAuthorizedEvent(user));
         usersSingleton.storeCurrentUser(user);
     }
 
     private void deauthorizeUser() {
+        Log.d(TAG, "deauthorizeUser()");
         EventBus.getDefault().post(new UserUnauthorizedEvent());
         usersSingleton.clearCurrentUser();
     }
