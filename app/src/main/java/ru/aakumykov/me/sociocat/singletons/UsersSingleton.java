@@ -546,13 +546,13 @@ public class UsersSingleton implements iUsersSingleton {
         void onChangeFail(String errorMsg);
     }
 
-    private void changeCardCommentsSubscription(String cardId, String userId, boolean enable,
+    private void changeCardCommentsSubscription(String cardId, String userId, boolean enableSubscription,
                                                 ChangeCardCommentsSubscriptionCallbacks callbacks) {
 
         String path = userId+"/unsubscribedCards/"+cardId;
         DatabaseReference reference = usersRef.child(path);
 
-        Boolean value = (enable) ? true : null;
+        Boolean value = (enableSubscription) ? null : true;
 
         reference.setValue(value)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -249,8 +249,8 @@ public class CardShow_View extends BaseView implements
 
         menuInflater.inflate(R.menu.share, menu);
 
-        /*if (null != currentCard) {
-            if (AuthSingleton.getInstance().isCardOwner(currentCard)) {
+        if (null != currentCard) {
+            if (UsersSingleton.getInstance().isCardOwner(currentCard)) {
 
                 menuInflater.inflate(R.menu.comments_subscription, menu);
                 MenuItem menuItem = menu.findItem(R.id.actionSubscription);
@@ -264,7 +264,7 @@ public class CardShow_View extends BaseView implements
                     menuInflater.inflate(R.menu.delete, menu);
                 }
             }
-        }*/
+        }
 
         return super.onPrepareOptionsMenu(menu);
     }
