@@ -2,6 +2,8 @@ package ru.aakumykov.me.sociocat.interfaces;
 
 import android.content.Context;
 
+import androidx.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,8 +30,8 @@ public interface iUsersSingleton {
     void subscribeToCardComments(Context context, boolean enableSubscription, String userId, String cardId,
                                  CardCommentsSubscriptionCallbacks callbacks);
 
-    void refreshUserFromServer(RefreshCallbacks callbacks);
-    void refreshUserFromServer(String userId, RefreshCallbacks callbacks);
+    void refreshUserFromServer(@Nullable RefreshCallbacks callbacks);
+    void refreshUserFromServer(String userId, @Nullable RefreshCallbacks callbacks);
     void storeCurrentUser(User user);
     void clearCurrentUser();
     User getCurrentUser();

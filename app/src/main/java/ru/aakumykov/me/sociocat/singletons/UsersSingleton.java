@@ -75,7 +75,8 @@ public class UsersSingleton implements iUsersSingleton {
         if (null != currentUser && !userId.equals(currentUser.getKey())) {
             String errorMsg = "Attempt to refresh user (" + currentUser.getKey() + ") with different userId (" + userId + ")";
             Log.e(TAG, errorMsg);
-            callbacks.onUserRefreshFail(errorMsg);
+            if (null != callbacks)
+                callbacks.onUserRefreshFail(errorMsg);
         }
 
         readUser(userId, new ReadCallbacks() {
@@ -84,19 +85,22 @@ public class UsersSingleton implements iUsersSingleton {
                 readAdminsList(new ReadAdminsListCallbacks() {
                     @Override
                     public void onReadAdminsListSuccess() {
-                        callbacks.onUserRefreshSuccess(user);
+                        if (null != callbacks)
+                            callbacks.onUserRefreshSuccess(user);
                     }
 
                     @Override
                     public void onReadAdminsListFail(String errorMsg) {
-                        callbacks.onUserRefreshFail(errorMsg);
+                        if (null != callbacks)
+                            callbacks.onUserRefreshFail(errorMsg);
                     }
                 });
             }
 
             @Override
             public void onUserReadFail(String errorMsg) {
-                callbacks.onUserRefreshFail(errorMsg);
+                if (null != callbacks)
+                    callbacks.onUserRefreshFail(errorMsg);
             }
         });
     }

@@ -260,17 +260,7 @@ public class CardShow_Presenter implements
                 new iUsersSingleton.CardCommentsSubscriptionCallbacks() {
                     @Override
                     public void onSubscribeSuccess() {
-                        usersSingleton.refreshUserFromServer(new iUsersSingleton.RefreshCallbacks() {
-                            @Override
-                            public void onUserRefreshSuccess(User user) {
-
-                            }
-
-                            @Override
-                            public void onUserRefreshFail(String errorMsg) {
-
-                            }
-                        });
+                        usersSingleton.refreshUserFromServer(null);
                     }
 
                     @Override
@@ -280,17 +270,7 @@ public class CardShow_Presenter implements
 
                     @Override
                     public void onUnsubscribeSuccess() {
-                        usersSingleton.refreshUserFromServer(new iUsersSingleton.RefreshCallbacks() {
-                            @Override
-                            public void onUserRefreshSuccess(User user) {
-
-                            }
-
-                            @Override
-                            public void onUserRefreshFail(String errorMsg) {
-
-                            }
-                        });
+                        usersSingleton.refreshUserFromServer(null);
                     }
 
                     @Override
