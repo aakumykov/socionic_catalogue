@@ -34,11 +34,13 @@ import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
+import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;
 import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.tags.list.TagsList_View;
 import ru.aakumykov.me.sociocat.users.show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
@@ -48,12 +50,32 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 {
     public static String PACKAGE_NAME;
     private final static String TAG = "BaseView";
-    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
-    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
+
+    //private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
     // Абстрактные методы
     public abstract void onUserLogin();
     public abstract void onUserLogout();
+
+
+    // EventBus
+    @Subscribe
+    public void onUserAuthorized(UserAuthorizedEvent event) {
+
+        invalidateOptionsMenu();
+
+        onUserLogin();
+
+        saveLastLoginTime();
+    }
+
+    @Subscribe
+    public void onUserUnauthorized(UserUnauthorizedEvent event) {
+
+        invalidateOptionsMenu();
+
+        onUserLogout();
+    }
 
 
     // Системные методы
@@ -67,28 +89,22 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
-    @Subscribe
-    public void onUserAuthorized(UserAuthorizedEvent event) {
-        //showToast("Авторизовался "+event.getUser().getKey());
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //Log.d(TAG, "onActivityResult()");
 
-        authSingleton.storeCurrentUser(event.getUser());
+        switch (requestCode) {
 
-        invalidateOptionsMenu();
+            case Constants.CODE_LOGIN:
+                break;
 
-        onUserLogin();
+            case Constants.CODE_EDIT_CARD:
+                onCardEdited(resultCode, data);
+                break;
 
-        saveLastLoginTime();
-    }
-
-    @Subscribe
-    public void onUserUnauthorized(UserUnauthorizedEvent event) {
-        //showToast("Разавторизовался");
-
-        authSingleton.clearCurrentUser();
-
-        invalidateOptionsMenu();
-
-        onUserLogout();
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -109,12 +125,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         EventBus.getDefault().unregister(this);
     }
 
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
         MenuInflater menuInflater = getMenuInflater();
 
-        if (auth().isUserLoggedIn()) {
+        if (AuthSingleton.isLoggedIn()) {
             menuInflater.inflate(R.menu.preferences, menu);
             menuInflater.inflate(R.menu.profile, menu);
             menuInflater.inflate(R.menu.logout, menu);
@@ -170,23 +187,12 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        //Log.d(TAG, "onActivityResult()");
 
-        switch (requestCode) {
-
-            case Constants.CODE_LOGIN:
-                break;
-
-            case Constants.CODE_EDIT_CARD:
-                onCardEdited(resultCode, data);
-                break;
-
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
+    // Методы, связанные с авторизацией
+/*    public boolean isUserLoggedIn() {
+        // Опасно
+        return (null != usersSingleton.getCurrentUser());
+    }*/
 
 
     // Сообщения пользователю
@@ -355,15 +361,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
 
-    // Геттеры
-    public iCardsSingleton getCardsService() {
-        return cardsSingleton;
-    }
-
-    public iAuthSingleton auth() {
-        return authSingleton;
-    }
-
 
     // Разное
     @Override
@@ -444,7 +441,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void login() {
         // Можно и без result, потому что статус авторизации обрабатывается в
         // AuthStateListener
-        if (!authSingleton.isUserLoggedIn()) {
+        if (!AuthSingleton.isLoggedIn()) {
             //Log.d(TAG, "doLogin()");
             Intent intent = new Intent(this, Login_View.class);
             startActivityForResult(intent, Constants.CODE_LOGIN);
@@ -452,8 +449,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void logout() {
-        //Log.d(TAG, "logout()");
-        authSingleton.logout();
+        AuthSingleton.logout();
     }
 
     private void openPreferences() {
@@ -464,7 +460,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void seeUserProfile() {
         try {
             Intent intent = new Intent(this, UserShow_View.class);
-            intent.putExtra(Constants.USER_ID, authSingleton.currentUserId());
+            intent.putExtra(Constants.USER_ID, AuthSingleton.currentUserId());
             startActivity(intent);
         } catch (Exception e) {
             showErrorMsg(e.getMessage());

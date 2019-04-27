@@ -20,8 +20,10 @@ import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
@@ -385,7 +387,9 @@ public class MVPUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             setupNewCardsNotificationChannel(context, true);
 
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(topicName)
+        FirebaseMessaging firebaseMessaging = FirebaseMessaging.getInstance();
+
+        firebaseMessaging.unsubscribeFromTopic(topicName)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -478,17 +482,16 @@ public class MVPUtils {
     }
 
 
-    // TODO: перенести showToast из BaseView
-    public static <T> void showToast(Context context, T messageId, boolean atCenter) {
-        String message = (messageId instanceof Integer) ?
-                context.getResources().getString((Integer) messageId) :
-                String.valueOf(messageId);
-
-        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-
-        if (atCenter)
-            toast.setGravity(Gravity.CENTER, 0,0);
-
-        toast.show();
-    }
+//    public static <T> void showToast(Context context, T messageId, boolean atCenter) {
+//        String message = (messageId instanceof Integer) ?
+//                context.getResources().getString((Integer) messageId) :
+//                String.valueOf(messageId);
+//
+//        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+//
+//        if (atCenter)
+//            toast.setGravity(Gravity.CENTER, 0,0);
+//
+//        toast.show();
+//    }
 }
