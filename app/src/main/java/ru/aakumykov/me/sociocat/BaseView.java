@@ -51,7 +51,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public static String PACKAGE_NAME;
     private final static String TAG = "BaseView";
 
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    //private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
     // Абстрактные методы
     public abstract void onUserLogin();
@@ -189,10 +189,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
 
     // Методы, связанные с авторизацией
-    public boolean isUserLoggedIn() {
+/*    public boolean isUserLoggedIn() {
         // Опасно
         return (null != usersSingleton.getCurrentUser());
-    }
+    }*/
 
 
     // Сообщения пользователю
