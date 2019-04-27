@@ -51,47 +51,55 @@ public class UsersSingleton implements iUsersSingleton {
     private HashMap<String,Boolean> adminsList = new HashMap<>();
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("/");
     private DatabaseReference usersRef = rootRef.child(Constants.USERS_PATH);
+    private DatabaseReference adminsRef = rootRef.child(Constants.ADMINS_PATH);
     private DatabaseReference deviceIdRef = rootRef.child(Constants.DEVICE_ID_PATH);
 
 
     // Интерфейсные методы
     @Override
-    public void refreshUserFromServer(ReadCallbacks callbacks) {
+    public void refreshUserFromServer(RefreshCallbacks callbacks) {
         refreshUserFromServer(currentUser.getKey(), callbacks);
     }
 
     @Override
-    public void refreshUserFromServer(String userId, ReadCallbacks callbacks) {
+    public void refreshUserFromServer(String userId, RefreshCallbacks callbacks) {
 
-        if ((null != currentUser) && !userId.equals(currentUser.getKey()))
-            throw new RuntimeException("Attempt to refresh user ("+currentUser.getKey()+") with different userId ("+userId+")");
+        if (null == userId) {
+            String errorMsg = "userId == NULL";
+            Log.e(TAG, errorMsg);
+            callbacks.onUserRefreshFail(errorMsg);
+            return;
+        }
 
-        usersRef.child(currentUser.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+        if (null != currentUser && !userId.equals(currentUser.getKey())) {
+            String errorMsg = "Attempt to refresh user (" + currentUser.getKey() + ") with different userId (" + userId + ")";
+            Log.e(TAG, errorMsg);
+            callbacks.onUserRefreshFail(errorMsg);
+        }
 
+        readUser(userId, new ReadCallbacks() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot item : dataSnapshot.getChildren()) {
-                    User user = item.getValue(User.class);
-                    if (null != user) {
-                        storeCurrentUser(user);
-                        if (null != callbacks)
-                            callbacks.onUserReadSuccess(user);
-                        return;
+            public void onUserReadSuccess(User user) {
+                readAdminsList(new ReadAdminsListCallbacks() {
+                    @Override
+                    public void onReadAdminsListSuccess() {
+                        callbacks.onUserRefreshSuccess(user);
                     }
-                    if (null != callbacks)
-                        callbacks.onUserReadFail("There is no User data in data snapshot");
-                }
+
+                    @Override
+                    public void onReadAdminsListFail(String errorMsg) {
+                        callbacks.onUserRefreshFail(errorMsg);
+                    }
+                });
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                if (null != callbacks)
-                    callbacks.onUserReadFail(databaseError.getMessage());
-                databaseError.toException().printStackTrace();
+            public void onUserReadFail(String errorMsg) {
+                callbacks.onUserRefreshFail(errorMsg);
             }
-
         });
     }
+
 
     @Override
     public void storeCurrentUser(User user) {
@@ -441,6 +449,60 @@ public class UsersSingleton implements iUsersSingleton {
 
 
     // Внутренние методы
+    private void readUser(String userId, ReadCallbacks callbacks) {
+
+        usersRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                User user = dataSnapshot.getValue(User.class);
+
+                if (null != user) {
+                    storeCurrentUser(user);
+                    callbacks.onUserReadSuccess(user);
+                    return;
+                }
+
+                callbacks.onUserReadFail("User from dataSnapshot is NULL");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                String errorMsg = databaseError.getMessage();
+                callbacks.onUserReadFail(errorMsg);
+                Log.e(TAG, errorMsg);
+                databaseError.toException().printStackTrace();
+            }
+
+        });
+    }
+
+    private void readAdminsList(ReadAdminsListCallbacks callbacks) {
+
+        adminsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                HashMap<String,Boolean> list = new HashMap<>();
+                for (DataSnapshot snapshotItem : dataSnapshot.getChildren())
+                    list.put(snapshotItem.getKey(), true);
+
+                storeAdminsList(list);
+
+                callbacks.onReadAdminsListSuccess();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                String errorMsg = databaseError.getMessage();
+                callbacks.onReadAdminsListFail(errorMsg);
+                Log.e(TAG, errorMsg);
+                databaseError.toException().printStackTrace();
+            }
+        });
+    }
+
     private void checkExistance(Query query, final CheckExistanceCallbacks callbacks) {
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {

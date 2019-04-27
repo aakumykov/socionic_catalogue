@@ -27,8 +27,8 @@ public interface iUsersSingleton {
     void subscribeToCardComments(Context context, boolean enableSubscription, String userId, String cardId,
                                  CardCommentsSubscriptionCallbacks callbacks);
 
-    void refreshUserFromServer(ReadCallbacks callbacks);
-    void refreshUserFromServer(String userId, ReadCallbacks callbacks);
+    void refreshUserFromServer(RefreshCallbacks callbacks);
+    void refreshUserFromServer(String userId, RefreshCallbacks callbacks);
     void storeCurrentUser(User user);
     void clearCurrentUser();
     User getCurrentUser();
@@ -56,6 +56,16 @@ public interface iUsersSingleton {
     interface DeleteCallbacks {
         void onUserDeleteSuccess(User user);
         void onUserDeleteFail(String errorMsg);
+    }
+
+    interface RefreshCallbacks {
+        void onUserRefreshSuccess(User user);
+        void onUserRefreshFail(String errorMsg);
+    }
+
+    interface ReadAdminsListCallbacks {
+        void onReadAdminsListSuccess();
+        void onReadAdminsListFail(String errorMsg);
     }
 
     interface ListCallbacks {

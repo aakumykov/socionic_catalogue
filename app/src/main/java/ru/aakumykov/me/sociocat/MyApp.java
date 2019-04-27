@@ -41,15 +41,14 @@ public class MyApp extends Application {
 
             if (null != firebaseUser) {
 
-                usersSingleton.refreshUserFromServer(firebaseUser.getUid(), new iUsersSingleton.ReadCallbacks() {
+                usersSingleton.refreshUserFromServer(firebaseUser.getUid(), new iUsersSingleton.RefreshCallbacks() {
                     @Override
-                    public void onUserReadSuccess(User user) {
+                    public void onUserRefreshSuccess(User user) {
                         authorizeUser(user);
                     }
 
                     @Override
-                    public void onUserReadFail(String errorMsg) {
-                        Log.e(TAG, errorMsg);
+                    public void onUserRefreshFail(String errorMsg) {
                         deauthorizeUser();
                     }
                 });

@@ -61,15 +61,17 @@ public class Login_Presenter implements
 
     @Override
     public void doLogin(String email, String password) {
+        usersSingleton.refreshUserFromServer(new iUsersSingleton.RefreshCallbacks() {
+            @Override
+            public void onUserRefreshSuccess(User user) {
+                postLoginProcess(user);
+            }
 
-        FirebaseAuth
-                .getInstance()
-                .signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener(authResult -> fetchUser(authResult.getUser().getUid()))
-                .addOnFailureListener(e -> {
-                    showLoginError(e.getMessage());
-                    e.printStackTrace();
-                });
+            @Override
+            public void onUserRefreshFail(String errorMsg) {
+                showLoginError(errorMsg);
+            }
+        });
     }
 
     @Override
@@ -80,47 +82,6 @@ public class Login_Presenter implements
 
 
     // Внутренние методы
-    private void fetchUser(String userId) {
-        usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.ReadCallbacks() {
-            @Override
-            public void onUserReadSuccess(User user) {
-                fetchAdminsList();
-            }
-
-            @Override
-            public void onUserReadFail(String errorMsg) {
-                showLoginError(errorMsg);
-            }
-        });
-    }
-
-    private void fetchAdminsList() {
-
-        FirebaseDatabase
-                .getInstance()
-                .getReference()
-                .child("/admins")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                        HashMap<String,Boolean> list = new HashMap<>();
-                        for (DataSnapshot snapshotItem : dataSnapshot.getChildren())
-                            list.put(snapshotItem.getKey(), true);
-
-                        usersSingleton.storeAdminsList(list);
-
-                        postLoginProcess(usersSingleton.getCurrentUser());
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        showLoginError(databaseError.getMessage());
-                        databaseError.toException().printStackTrace();
-                    }
-                });
-    }
-
     private void postLoginProcess(User user) {
 
         if (!user.isEmailVerified()) {
