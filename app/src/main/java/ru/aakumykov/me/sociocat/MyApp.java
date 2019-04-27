@@ -35,31 +35,27 @@ public class MyApp extends Application {
         usersSingleton = UsersSingleton.getInstance();
 
         // Подписываюсь на события изменения авторизации
-        FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+        FirebaseAuth.getInstance().addAuthStateListener(firebaseAuth -> {
 
-            @Override public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+            if (null != firebaseUser) {
 
-                if (null != firebaseUser) {
-                    String uid = firebaseUser.getUid();
+                usersSingleton.getUserById(firebaseUser.getUid(), new iUsersSingleton.ReadCallbacks() {
+                    @Override
+                    public void onUserReadSuccess(User user) {
+                        authorizeUser(user);
+                    }
 
-                    usersSingleton.getUserById(uid, new iUsersSingleton.ReadCallbacks() {
-                        @Override
-                        public void onUserReadSuccess(User user) {
-                            authorizeUser(user);
-                        }
+                    @Override
+                    public void onUserReadFail(String errorMsg) {
+                        Log.e(TAG, errorMsg);
+                        deauthorizeUser();
+                    }
+                });
 
-                        @Override
-                        public void onUserReadFail(String errorMsg) {
-                            deauthorizeUser();
-                            Log.e(TAG, errorMsg);
-                        }
-                    });
-
-                } else {
-                    deauthorizeUser();
-                }
+            } else {
+                deauthorizeUser();
             }
         });
 
@@ -100,83 +96,79 @@ public class MyApp extends Application {
     }
 
 
-/*
-    private void registerPushToken(User user) {
-        Log.d(TAG, "registerPushToken()");
+//    private void registerPushToken(User user) {
+//        Log.d(TAG, "registerPushToken()");
+//
+//        FirebaseInstanceId.getInstance().getInstanceId()
+//                .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+//                    @Override public void onSuccess(InstanceIdResult instanceIdResult) {
+//                        String devId = instanceIdResult.getId();
+//
+//                        usersSingleton.storeDeviceId(user.getKey(), devId, new iUsersSingleton.SaveDeviceIdCallbacks() {
+//                            @Override public void onStoreDeviceIdSuccess() {
+//                                Log.d(TAG, "device id saved: "+devId);
+//                            }
+//
+//                            @Override public void onStoreDeviceIdFailed(String errorMSg) {
+//                                Log.e(TAG, errorMSg);
+//                            }
+//                        });
+//
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override public void onFailure(@NonNull Exception e) {
+//
+//                    }
+//                });
+//    }
 
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
-                    @Override public void onSuccess(InstanceIdResult instanceIdResult) {
-                        String devId = instanceIdResult.getId();
-
-                        usersSingleton.storeDeviceId(user.getKey(), devId, new iUsersSingleton.SaveDeviceIdCallbacks() {
-                            @Override public void onStoreDeviceIdSuccess() {
-                                Log.d(TAG, "device id saved: "+devId);
-                            }
-
-                            @Override public void onStoreDeviceIdFailed(String errorMSg) {
-                                Log.e(TAG, errorMSg);
-                            }
-                        });
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-    }
-*/
-
-/*
-    private void checkPushToken(User user) {
-
-        if (null == user.getPushToken()) {
-
-            FirebaseInstanceId.getInstance().getInstanceId()
-                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-
-                        @Override
-                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
-
-                            if (!task.isSuccessful()) {
-                                Exception exception = task.getException();
-                                if (null != exception) {
-                                    Log.e(TAG, exception.getMessage());
-                                    exception.printStackTrace();
-                                }
-
-                            } else {
-
-                                InstanceIdResult instanceIdResult = task.getResult();
-
-                                if (null != instanceIdResult) {
-
-                                    String token = instanceIdResult.getToken();
-
-                                    usersSingleton.updatePushToken(token, new iUsersSingleton.PushTokenCallbacks() {
-                                        @Override
-                                        public void onPushTokenUpdateSuccess(String token) {
-                                            User user = usersSingleton.getCurrentUser();
-                                            user.setPushToken(token);
-                                            usersSingleton.storeCurrentUser(user); // TODO: добавляет неоднозначности
-                                        }
-
-                                        @Override
-                                        public void onPushTokenUpdateError(String errorMsg) {
-                                            Log.e(TAG, errorMsg);
-                                        }
-                                    });
-
-                                } else {
-                                    Log.e(TAG, "InstanceIdResult is NULL");
-                                }
-                            }
-                        }
-                    });
-
-        }
-    }
-*/
+//    private void checkPushToken(User user) {
+//
+//        if (null == user.getPushToken()) {
+//
+//            FirebaseInstanceId.getInstance().getInstanceId()
+//                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+//
+//                        @Override
+//                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+//
+//                            if (!task.isSuccessful()) {
+//                                Exception exception = task.getException();
+//                                if (null != exception) {
+//                                    Log.e(TAG, exception.getMessage());
+//                                    exception.printStackTrace();
+//                                }
+//
+//                            } else {
+//
+//                                InstanceIdResult instanceIdResult = task.getResult();
+//
+//                                if (null != instanceIdResult) {
+//
+//                                    String token = instanceIdResult.getToken();
+//
+//                                    usersSingleton.updatePushToken(token, new iUsersSingleton.PushTokenCallbacks() {
+//                                        @Override
+//                                        public void onPushTokenUpdateSuccess(String token) {
+//                                            User user = usersSingleton.getCurrentUser();
+//                                            user.setPushToken(token);
+//                                            usersSingleton.storeCurrentUser(user); // TODO: добавляет неоднозначности
+//                                        }
+//
+//                                        @Override
+//                                        public void onPushTokenUpdateError(String errorMsg) {
+//                                            Log.e(TAG, errorMsg);
+//                                        }
+//                                    });
+//
+//                                } else {
+//                                    Log.e(TAG, "InstanceIdResult is NULL");
+//                                }
+//                            }
+//                        }
+//                    });
+//
+//        }
+//    }
 }
