@@ -250,7 +250,9 @@ public class CardShow_Presenter implements
     }
 
     @Override
-    public void changeCardCommentsSubscription(boolean enable) {
+    public void changeCardCommentsSubscription(boolean enable,
+                                               iCardShow.ChangeCommentsSubscriptionCallbacks callbacks)
+    {
 
         usersSingleton.subscribeToCardComments(
                 view.getAppContext(),
@@ -261,6 +263,7 @@ public class CardShow_Presenter implements
                     @Override
                     public void onSubscribeSuccess() {
                         usersSingleton.refreshUserFromServer(null);
+                        callbacks.onCommentsSubscriptionChangeDone();
                     }
 
                     @Override
@@ -271,6 +274,7 @@ public class CardShow_Presenter implements
                     @Override
                     public void onUnsubscribeSuccess() {
                         usersSingleton.refreshUserFromServer(null);
+                        callbacks.onCommentsSubscriptionChangeDone();
                     }
 
                     @Override
@@ -417,7 +421,6 @@ public class CardShow_Presenter implements
             view.showErrorMsg(R.string.CARD_SHOW_error_deleting_card);
         }
     }
-
 
     @Override
     public void onCommentSaveSuccess(Comment comment) {

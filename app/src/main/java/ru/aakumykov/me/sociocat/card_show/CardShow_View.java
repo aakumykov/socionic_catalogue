@@ -102,6 +102,7 @@ public class CardShow_View extends BaseView implements
     private Comment currentComment;
     private Comment parentComment;
     private View currentCommentView;
+    private boolean commentsSubscriptionInProgress = false;
 
     private TextView noMediaMessage;
     private FrameLayout mediaPlayerHolder;
@@ -258,6 +259,7 @@ public class CardShow_View extends BaseView implements
                 boolean shouldBeChecked = UsersSingleton.getInstance().getCurrentUser()
                         .isSubscribedToCardComments(currentCard.getKey());
                 menuItem.setChecked(shouldBeChecked);
+                menuItem.setEnabled(!commentsSubscriptionInProgress);
 
                 if (UsersSingleton.getInstance().currentUserIsAdmin()) {
                     menuInflater.inflate(R.menu.edit, menu);
@@ -1173,8 +1175,17 @@ public class CardShow_View extends BaseView implements
     }
 
     private void changeCardCommentsSubscription(MenuItem menuItem) {
+
         boolean checked = !menuItem.isChecked();
         menuItem.setChecked(checked);
-        presenter.changeCardCommentsSubscription(menuItem.isChecked());
+
+        commentsSubscriptionInProgress = true;
+
+        presenter.changeCardCommentsSubscription(menuItem.isChecked(), new iCardShow.ChangeCommentsSubscriptionCallbacks() {
+            @Override
+            public void onCommentsSubscriptionChangeDone() {
+                commentsSubscriptionInProgress = false;
+            }
+        });
     }
 }
