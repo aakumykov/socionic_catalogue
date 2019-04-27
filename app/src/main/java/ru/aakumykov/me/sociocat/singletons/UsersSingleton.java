@@ -48,6 +48,7 @@ public class UsersSingleton implements iUsersSingleton {
 
     private final static String TAG = "UsersSingleton";
     private User currentUser;
+    private HashMap<String,Boolean> adminsList = new HashMap<>();
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("/");
     private DatabaseReference usersRef = rootRef.child(Constants.USERS_PATH);
     private DatabaseReference deviceIdRef = rootRef.child(Constants.DEVICE_ID_PATH);
@@ -98,14 +99,18 @@ public class UsersSingleton implements iUsersSingleton {
         return currentUser;
     }
 
-    @Override public boolean isAdmin() {
-        return false;
+    @Override
+    public void storeAdminsList(HashMap<String, Boolean> list) {
+        this.adminsList = list;
+    }
+
+    @Override public boolean currentUserIsAdmin() {
+        return adminsList.containsKey(currentUser.getKey());
     }
 
     @Override public String currentUserName() {
         return currentUser.getName();
     }
-
 
     @Override
     public void listUsers(final ListCallbacks callbacks) {

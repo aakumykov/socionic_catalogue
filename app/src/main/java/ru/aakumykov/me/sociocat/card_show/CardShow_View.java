@@ -259,7 +259,7 @@ public class CardShow_View extends BaseView implements
                         .isSubscribedToCardComments(currentCard.getKey());
                 menuItem.setChecked(shouldBeChecked);
 
-                if (UsersSingleton.getInstance().isAdmin()) {
+                if (UsersSingleton.getInstance().currentUserIsAdmin()) {
                     menuInflater.inflate(R.menu.edit, menu);
                     menuInflater.inflate(R.menu.delete, menu);
                 }
@@ -940,7 +940,7 @@ public class CardShow_View extends BaseView implements
             if (comment.getUserId().equals(AuthSingleton.getInstance().currentUserId()))
                 popupMenu.inflate(R.menu.edit);
 
-            if (UsersSingleton.getInstance().isAdmin())
+            if (UsersSingleton.getInstance().currentUserIsAdmin())
                 popupMenu.inflate(R.menu.delete);
         }
 

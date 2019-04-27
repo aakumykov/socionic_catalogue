@@ -3,11 +3,18 @@ package ru.aakumykov.me.sociocat.login;
 import android.content.Intent;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
@@ -24,6 +31,7 @@ public class Login_Presenter implements
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private String intentAction;
     private Intent originalIntent;
+    private String currentUserId;
 
     // Обязательные методы
     @Override
@@ -80,13 +88,53 @@ public class Login_Presenter implements
     // Методы обратного вызова
     @Override
     public void onLoginSuccess(final String userId) {
+        currentUserId = userId;
+        readAdminsList();
+    }
 
-        usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
+    @Override
+    public void onLoginFail(String errorMsg) {
+        view.hideProgressBar();
+        view.enableForm();
+        view.showErrorMsg(errorMsg);
+    }
+
+
+    // Внутренние методы
+    private void readAdminsList() {
+        FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child("/admins")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        HashMap<String,Boolean> list = new HashMap<>();
+                        for (DataSnapshot snapshotItem : dataSnapshot.getChildren()) {
+                            list.put(snapshotItem.getKey(), true);
+                        }
+                        usersSingleton.storeAdminsList(list);
+                        fetchUserData();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        view.showErrorMsg(R.string.LOGIN_login_error, databaseError.getMessage());
+                        databaseError.toException().printStackTrace();
+                    }
+                });
+    }
+
+    private void fetchUserData() {
+
+        // TODO: в MyApp также запрашиваются даные пользователя с сервера!
+
+        usersSingleton.getUserById(currentUserId, new iUsersSingleton.ReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
 
                 if (!user.isEmailVerified()) {
-                    view.notifyToConfirmEmail(userId);
+                    view.notifyToConfirmEmail(currentUserId);
                     return;
                 }
 
@@ -111,20 +159,5 @@ public class Login_Presenter implements
                 authSingleton.logout();
             }
         });
-    }
-
-    @Override
-    public void onLoginFail(String errorMsg) {
-        view.hideProgressBar();
-        view.enableForm();
-        view.showErrorMsg(errorMsg);
-    }
-
-
-    // Внутренние методы
-    private void goCardCreation() {
-        Intent intent = new Intent(view.getAppContext(), CardEdit_View.class);
-        intent.setAction(Constants.ACTION_CREATE);
-        view.startSomeActivity(intent);
     }
 }

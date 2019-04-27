@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.interfaces;
 
 import android.content.Context;
 
+import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.User;
@@ -31,7 +32,8 @@ public interface iUsersSingleton {
     void clearCurrentUser();
     User getCurrentUser();
 
-    boolean isAdmin();
+    void storeAdminsList(HashMap<String,Boolean> list);
+    boolean currentUserIsAdmin();
     String currentUserName();
 
 

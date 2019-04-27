@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -257,7 +256,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
 
-        if (usersSingleton.isAdmin() || authSingleton.isCardOwner(cardsList.get(listPosition))) {
+        if (usersSingleton.currentUserIsAdmin() || authSingleton.isCardOwner(cardsList.get(listPosition))) {
             popupMenu.inflate(R.menu.edit);
             popupMenu.inflate(R.menu.delete);
         }

@@ -248,7 +248,7 @@ public class CardsList_View extends BaseView implements
 
         PopupMenu popupMenu = new PopupMenu(this, view);
 
-        if (UsersSingleton.getInstance().isAdmin() || AuthSingleton.getInstance().isCardOwner(card)) {
+        if (UsersSingleton.getInstance().currentUserIsAdmin() || AuthSingleton.getInstance().isCardOwner(card)) {
             popupMenu.inflate(R.menu.edit);
             popupMenu.inflate(R.menu.delete);
         }

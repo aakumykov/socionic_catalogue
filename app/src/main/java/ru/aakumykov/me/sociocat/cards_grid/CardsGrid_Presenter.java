@@ -96,7 +96,7 @@ public class CardsGrid_Presenter implements
     @Override
     public void deleteCard(final Card card) {
 
-        if (!authSingleton.isCardOwner(card) && !usersSingleton.isAdmin()) {
+        if (!authSingleton.isCardOwner(card) && !usersSingleton.currentUserIsAdmin()) {
             view.showErrorMsg(R.string.CARDS_LIST_you_cannot_delete_this_card);
             return;
         }
