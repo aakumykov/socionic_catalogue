@@ -5,6 +5,9 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -61,17 +64,34 @@ public class Login_Presenter implements
 
     @Override
     public void doLogin(String email, String password) {
-        usersSingleton.refreshUserFromServer(new iUsersSingleton.RefreshCallbacks() {
-            @Override
-            public void onUserRefreshSuccess(User user) {
-                postLoginProcess(user);
-            }
 
-            @Override
-            public void onUserRefreshFail(String errorMsg) {
-                showLoginError(errorMsg);
-            }
-        });
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+
+                        String userId = authResult.getUser().getUid();
+
+                        usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
+                            @Override
+                            public void onUserRefreshSuccess(User user) {
+                                postLoginProcess(user);
+                            }
+
+                            @Override
+                            public void onUserRefreshFail(String errorMsg) {
+                                showLoginError(errorMsg);
+                            }
+                        });
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
     }
 
     @Override

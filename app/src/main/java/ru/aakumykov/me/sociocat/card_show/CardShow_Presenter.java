@@ -17,6 +17,7 @@ import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
@@ -259,7 +260,17 @@ public class CardShow_Presenter implements
                 new iUsersSingleton.CardCommentsSubscriptionCallbacks() {
                     @Override
                     public void onSubscribeSuccess() {
-                        usersSingleton.refreshUserFromServer(null);
+                        usersSingleton.refreshUserFromServer(new iUsersSingleton.RefreshCallbacks() {
+                            @Override
+                            public void onUserRefreshSuccess(User user) {
+
+                            }
+
+                            @Override
+                            public void onUserRefreshFail(String errorMsg) {
+
+                            }
+                        });
                     }
 
                     @Override
@@ -269,7 +280,17 @@ public class CardShow_Presenter implements
 
                     @Override
                     public void onUnsubscribeSuccess() {
-                        usersSingleton.refreshUserFromServer(null);
+                        usersSingleton.refreshUserFromServer(new iUsersSingleton.RefreshCallbacks() {
+                            @Override
+                            public void onUserRefreshSuccess(User user) {
+
+                            }
+
+                            @Override
+                            public void onUserRefreshFail(String errorMsg) {
+
+                            }
+                        });
                     }
 
                     @Override
