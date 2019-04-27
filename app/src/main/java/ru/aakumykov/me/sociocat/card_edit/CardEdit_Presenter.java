@@ -79,7 +79,7 @@ public class CardEdit_Presenter implements
         if (null == intent)
             throw new IllegalArgumentException("Intent is NULL");
 
-        if (!authSingleton.isUserLoggedIn())
+        if (!AuthSingleton.isLoggedIn())
             view.requestLogin(intent);
 
         String action = "" + intent.getAction();
@@ -344,7 +344,7 @@ public class CardEdit_Presenter implements
         }
         else {
             // TODO: нужна проверка на авторизованность!
-            currentCard.setUserId(authSingleton.currentUserId());
+            currentCard.setUserId(AuthSingleton.currentUserId());
             currentCard.setUserName(usersSingleton.currentUserName());
 
             // Время создания/правки

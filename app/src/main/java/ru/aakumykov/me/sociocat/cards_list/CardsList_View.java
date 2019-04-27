@@ -233,7 +233,7 @@ public class CardsList_View extends BaseView implements
 //        Log.d(TAG, "onItemLongClick(pos: "+position+", id: "+id+")");
         currentCard = cardsList.get(position);
 
-        if (AuthSingleton.getInstance().isUserLoggedIn()) {
+        if (AuthSingleton.isLoggedIn()) {
             Drawable oldBackground = view.getBackground();
             view.setBackgroundColor(getResources().getColor(R.color.selected_list_item_bg));
             showPopupMenu(view, currentCard, oldBackground);
@@ -248,7 +248,7 @@ public class CardsList_View extends BaseView implements
 
         PopupMenu popupMenu = new PopupMenu(this, view);
 
-        if (UsersSingleton.getInstance().currentUserIsAdmin() || AuthSingleton.getInstance().isCardOwner(card)) {
+        if (UsersSingleton.getInstance().currentUserIsAdmin() || UsersSingleton.getInstance().isCardOwner(card)) {
             popupMenu.inflate(R.menu.edit);
             popupMenu.inflate(R.menu.delete);
         }

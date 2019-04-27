@@ -27,6 +27,7 @@ import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
@@ -127,6 +128,19 @@ public class UsersSingleton implements iUsersSingleton {
     @Override public String currentUserName() {
         return currentUser.getName();
     }
+
+    @Override
+    public boolean isCardOwner(Card card) {
+
+        if (null == card)
+            return false;
+
+        if (null == currentUser)
+            return false;
+
+        return (card.getUserId().equals(currentUser.getKey()));
+    }
+
 
     @Override
     public void listUsers(final ListCallbacks callbacks) {

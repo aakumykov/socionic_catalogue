@@ -84,7 +84,7 @@ public class PushNotificationsService extends FirebaseMessagingService {
         }
 
         // Не показываю уведомление автору карточки
-        if (cardUserId.equals(authSingleton.currentUserId())) {
+        if (cardUserId.equals(AuthSingleton.currentUserId())) {
             return;
         }
 

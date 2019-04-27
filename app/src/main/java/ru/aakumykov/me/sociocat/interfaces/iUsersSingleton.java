@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.HashMap;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 
 // TODO: глобальный goOffline() для Firebase
@@ -37,6 +38,7 @@ public interface iUsersSingleton {
     boolean currentUserIsAdmin();
     String currentUserName();
 
+    boolean isCardOwner(Card card);
 
     interface CreateCallbacks {
         void onUserCreateSuccess(User user);

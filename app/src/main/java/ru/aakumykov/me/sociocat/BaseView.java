@@ -131,13 +131,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         MenuInflater menuInflater = getMenuInflater();
 
-//        if (isUserLoggedIn()) {
+        if (AuthSingleton.isLoggedIn()) {
             menuInflater.inflate(R.menu.preferences, menu);
             menuInflater.inflate(R.menu.profile, menu);
             menuInflater.inflate(R.menu.logout, menu);
-//        } else {
+        } else {
             menuInflater.inflate(R.menu.login, menu);
-//        }
+        }
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -441,7 +441,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void login() {
         // Можно и без result, потому что статус авторизации обрабатывается в
         // AuthStateListener
-        if (!AuthSingleton.getInstance().isUserLoggedIn()) {
+        if (!AuthSingleton.isLoggedIn()) {
             //Log.d(TAG, "doLogin()");
             Intent intent = new Intent(this, Login_View.class);
             startActivityForResult(intent, Constants.CODE_LOGIN);
@@ -449,8 +449,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void logout() {
-        //Log.d(TAG, "logout()");
-        AuthSingleton.getInstance().logout();
+        AuthSingleton.logout();
     }
 
     private void openPreferences() {
@@ -461,7 +460,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void seeUserProfile() {
         try {
             Intent intent = new Intent(this, UserShow_View.class);
-            intent.putExtra(Constants.USER_ID, AuthSingleton.getInstance().currentUserId());
+            intent.putExtra(Constants.USER_ID, AuthSingleton.currentUserId());
             startActivity(intent);
         } catch (Exception e) {
             showErrorMsg(e.getMessage());

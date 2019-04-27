@@ -332,7 +332,7 @@ public class CardShow_View extends BaseView implements
     public void onCommentReplyClicked(View view, final Comment comment) {
         // TODO: эта логика должна быть в презентере
 
-        if (!AuthSingleton.getInstance().isUserLoggedIn()) {
+        if (!AuthSingleton.isLoggedIn()) {
             showToast(R.string.DIALOG_login_first);
         }
         else if (forceSetupUserName(comment)) {
@@ -781,7 +781,7 @@ public class CardShow_View extends BaseView implements
         displayTags(card.getTags());
         showCardRating(card.getRating());
 
-//        if (AuthSingleton.getInstance().isUserLoggedIn()) {
+//        if (AuthSingleton.isLoggedIn()) {
         MyUtils.show(addCommentButton);
 //        }
     }
@@ -846,7 +846,7 @@ public class CardShow_View extends BaseView implements
 
     private void addComment() {
 
-        if (AuthSingleton.getInstance().isUserLoggedIn()) {
+        if (AuthSingleton.isLoggedIn()) {
 
             final User user = UsersSingleton.getInstance().getCurrentUser();
 
@@ -936,7 +936,7 @@ public class CardShow_View extends BaseView implements
 
         // TODO: сделать это по-нормальному
         // TODO: логика-то во вьюхе не должна присутствовать!
-        if (AuthSingleton.getInstance().isUserLoggedIn()) {
+        if (AuthSingleton.isLoggedIn()) {
             if (comment.getUserId().equals(AuthSingleton.getInstance().currentUserId()))
                 popupMenu.inflate(R.menu.edit);
 

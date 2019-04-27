@@ -256,7 +256,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
 
-        if (usersSingleton.currentUserIsAdmin() || authSingleton.isCardOwner(cardsList.get(listPosition))) {
+        if (usersSingleton.currentUserIsAdmin() || usersSingleton.isCardOwner(cardsList.get(listPosition))) {
             popupMenu.inflate(R.menu.edit);
             popupMenu.inflate(R.menu.delete);
         }

@@ -78,9 +78,9 @@ public class Users_Presenter implements
     // Пользовательские методы
     @Override
     public void prepareUserEdit(String userId) throws Exception {
-        if (authSingleton.isUserLoggedIn())
+        if (AuthSingleton.isLoggedIn())
         {
-            if (authSingleton.currentUserId().equals(userId))
+            if (AuthSingleton.currentUserId().equals(userId))
             {
                 usersSingleton.getUserById(userId, this);
             }
@@ -132,11 +132,11 @@ public class Users_Presenter implements
     @Override
     public void saveProfile() throws Exception {
 
-        if (!authSingleton.isUserLoggedIn()) {
+        if (!AuthSingleton.isLoggedIn()) {
             throw new IllegalAccessException("You is not logged in.");
         }
 
-        if (!authSingleton.currentUserId().equals(editedUserId)) {
+        if (!AuthSingleton.currentUserId().equals(editedUserId)) {
             throw new IllegalAccessException("Cannot save profile of another user.");
         }
 
@@ -152,7 +152,7 @@ public class Users_Presenter implements
         if (!currentUser.hasAvatar() && imageSelected) {
             try {
                 Bitmap imageBitmap = editView.getImageBitmap();
-                String fileName = authSingleton.currentUserId() + "."+imageType;
+                String fileName = AuthSingleton.currentUserId() + "."+imageType;
 
                 editView.showAvatarThrobber();
                 editView.disableEditForm();

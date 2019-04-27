@@ -35,56 +35,25 @@ public class AuthSingleton implements iAuthSingleton
     }
     /* Одиночка */
 
-
     private final static String TAG = "AuthSingleton";
-    private FirebaseAuth firebaseAuth;
+    private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
 
-    // Интерфейсные методы
-    @Override
-    public void login(String email, String password, final LoginCallbacks callbacks) throws Exception {
-
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        callbacks.onLoginSuccess(authResult.getUser().getUid());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onLoginFail(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
+    // Статические методы
+    public static boolean isLoggedIn() {
+        return (null != firebaseAuth.getCurrentUser());
     }
 
-    @Override
-    public void cancelLogin() {
+    public static void logout() {
         firebaseAuth.signOut();
     }
 
-    @Override
-    public void logout() {
-        firebaseAuth.signOut();
-    }
-
-    @Override
-    public String currentUserId() {
+    public static String currentUserId() {
         return firebaseAuth.getUid();
     }
 
-    @Override
-    public boolean isUserLoggedIn() {
-        return null != firebaseAuth.getCurrentUser();
-    }
 
-    @Override
-    public boolean isCardOwner(Card card) {
-        return card.getUserId().equals(currentUserId());
-    }
-
+    // Динамические методы методы
     @Override
     public void resetPasswordEmail(String email, final ResetPasswordCallbacks callbacks) {
 
