@@ -41,7 +41,7 @@ public class MyApp extends Application {
 
             if (null != firebaseUser) {
 
-                usersSingleton.getUserById(firebaseUser.getUid(), new iUsersSingleton.ReadCallbacks() {
+                usersSingleton.refreshUserFromServer(firebaseUser.getUid(), new iUsersSingleton.ReadCallbacks() {
                     @Override
                     public void onUserReadSuccess(User user) {
                         authorizeUser(user);
@@ -55,6 +55,7 @@ public class MyApp extends Application {
                 });
 
             } else {
+                Log.e(TAG, "FirebaseUser == NULL");
                 deauthorizeUser();
             }
         });
@@ -66,7 +67,6 @@ public class MyApp extends Application {
     private void authorizeUser(User user) {
         Log.d(TAG, "authorizeUser(), "+user.getName());
         EventBus.getDefault().post(new UserAuthorizedEvent(user));
-        usersSingleton.storeCurrentUser(user);
     }
 
     private void deauthorizeUser() {
