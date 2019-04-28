@@ -65,7 +65,7 @@ public class CardShow_View extends BaseView implements
         TagView.OnTagClickListener,
         iComments.commentClickListener
 {
-    private ListView mainListView;
+    private ListView listView;
 
     private TextView titleView;
     private TextView quoteView;
@@ -115,11 +115,11 @@ public class CardShow_View extends BaseView implements
         ButterKnife.bind(this);
 
         // Собираю разметку из частей
-        mainListView = findViewById(R.id.commentsListView);
+        listView = findViewById(R.id.listView);
         View headerView = getLayoutInflater().inflate(R.layout.card_show_header, null);
         View footerView = getLayoutInflater().inflate(R.layout.card_show_footer, null);
-        mainListView.addHeaderView(headerView);
-        mainListView.addFooterView(footerView);
+        listView.addHeaderView(headerView);
+        listView.addFooterView(footerView);
 
         // Подключаю элементы интерфейса
         titleView = findViewById(R.id.titleView);
@@ -162,7 +162,7 @@ public class CardShow_View extends BaseView implements
         commentsList = new ArrayList<>();
         commentsAdapter = new CommentsAdapter(this, UsersSingleton.getInstance().getCurrentUser(),
                 R.layout.comments_list_item, commentsList,this);
-        mainListView.setAdapter(commentsAdapter);
+        listView.setAdapter(commentsAdapter);
 
         tagsContainer.setOnTagClickListener(this);
 
