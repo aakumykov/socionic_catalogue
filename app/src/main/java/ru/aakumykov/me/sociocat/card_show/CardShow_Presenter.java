@@ -40,7 +40,9 @@ public class CardShow_Presenter implements
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+
     private Card currentCard;
+    private String commentKey;
 
 
     // Получение карточки
@@ -52,9 +54,10 @@ public class CardShow_Presenter implements
         String cardKey = intent.getStringExtra(Constants.CARD_KEY);
         if (null == cardKey) throw new Exception("Intent has no CARD_KEY");
 
-        if (null != view) {
+        this.commentKey = intent.getStringExtra(Constants.COMMENT_KEY);
+
+        if (null != view)
             view.showProgressBar();
-        }
 
         cardsSingleton.loadCard(cardKey, this);
     }
@@ -339,6 +342,7 @@ public class CardShow_Presenter implements
     // Коллбеки
     @Override
     public void onCardLoadSuccess(Card card) {
+
         if (null != card) {
             this.currentCard = card;
             if (null != view) {
@@ -447,6 +451,8 @@ public class CardShow_Presenter implements
         if (null != view) {
             view.hideCommentsThrobber();
             view.displayComments(list);
+            if (null != commentKey)
+                view.scrollToComment(commentKey);
         }
     }
 

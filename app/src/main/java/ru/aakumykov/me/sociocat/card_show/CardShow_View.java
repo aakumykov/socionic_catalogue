@@ -552,6 +552,17 @@ public class CardShow_View extends BaseView implements
         commentsAdapter.remove(comment);
     }
 
+    @Override
+    public void scrollToComment(String commentKey) {
+        for (Comment comment : commentsList) {
+            if (comment.getKey().equals(commentKey)) {
+                int position = commentsList.indexOf(comment);
+                listView.smoothScrollToPosition(position);
+                break;
+            }
+        }
+    }
+
 
     @Override
     public void showCardRatingThrobber() {
@@ -700,15 +711,13 @@ public class CardShow_View extends BaseView implements
 
     // Внутренние методы
     private void loadCard() {
-        if (firstRun) {
-            try {
-                presenter.processInputIntent(getIntent());
-            } catch (Exception e) {
-                hideProgressBar();
-                showErrorMsg(R.string.CARD_SHOW_error_displaying_card, e.getMessage());
-                e.printStackTrace();
-            }
-            firstRun = false;
+        try {
+            presenter.processInputIntent(getIntent());
+        }
+        catch (Exception e) {
+            hideProgressBar();
+            showErrorMsg(R.string.CARD_SHOW_error_displaying_card, e.getMessage());
+            e.printStackTrace();
         }
     }
 

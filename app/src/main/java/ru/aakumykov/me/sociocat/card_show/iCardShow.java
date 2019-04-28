@@ -27,6 +27,7 @@ public interface iCardShow {
         void displayComments(List<Comment> list);
         void appendComment(Comment comment);
         void removeComment(Comment comment);
+        void scrollToComment(String commentKey);
 
         void disableCommentForm();
         void enableCommentForm();
