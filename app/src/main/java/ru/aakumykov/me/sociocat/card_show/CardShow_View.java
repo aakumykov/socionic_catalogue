@@ -67,8 +67,6 @@ public class CardShow_View extends BaseView implements
 {
     private ListView mainListView;
 
-    private LinearLayout commentLayout;
-
     private TextView titleView;
     private TextView quoteView;
     private TextView quoteSourceView;
@@ -119,13 +117,11 @@ public class CardShow_View extends BaseView implements
         // Собираю разметку из частей
         mainListView = findViewById(R.id.commentsListView);
         View headerView = getLayoutInflater().inflate(R.layout.card_show_header, null);
-//        View headerView = getLayoutInflater().inflate(R.layout.card_show_header2, null);
         View footerView = getLayoutInflater().inflate(R.layout.card_show_footer, null);
         mainListView.addHeaderView(headerView);
         mainListView.addFooterView(footerView);
 
         // Подключаю элементы интерфейса
-        commentLayout = findViewById(R.id.commentLayout);
         titleView = findViewById(R.id.titleView);
         quoteView = findViewById(R.id.quoteView);
         quoteSourceView = findViewById(R.id.quoteSourceView);
