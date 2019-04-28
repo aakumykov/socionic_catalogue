@@ -65,7 +65,6 @@ public class CardsGrid_View extends BaseView implements
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
-//    @BindView(R.id.floatingActionButton) FloatingActionButton floatingActionButton;
     private SearchView searchView;
 
     public static final String TAG = "CardsGrid_View";
@@ -105,19 +104,15 @@ public class CardsGrid_View extends BaseView implements
 
         configureFAB();
 
-        getFCMToken();
+        //getFCMToken();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        int listSize = cardsList.size();
-
         presenter.linkView(this);
         dataAdapter.bindView(this);
-
-//        MyDialogs.dummyDialog(this, "Проверка", ":-)");
 
         if (firstRun) {
             loadList(true);
