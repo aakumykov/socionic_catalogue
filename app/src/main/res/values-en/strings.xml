@@ -365,8 +365,11 @@
     <string name="CARD_SHOW_there_is_no_audio">There is no audio</string>
     <string name="CARD_EDIT_form_filling_error">Form filling error</string>
     <string name="BASE_VIEW_error_reading_current_user">Error reading current user</string>
-    <string name="BASE_VIEW_error_recieving_push_token">Error recieving PUSH-messages token</string>
+    <string name="BASE_VIEW_error_recieving_push_token">Error receiving PUSH-messages token</string>
+
     <string name="PUSH_NOTIFICATION_SERVICE_new_card_created_message">New card from %1$s</string>
+    <string name="PUSH_NOTIFICATION_SERVICE_new_comment_created_message">New comment from %1$s</string>
+
     <string name="PREFERENCES_notify_on_new_cards_summary">Send or not notifications on new cards</string>
     <string name="PREFERENCES_notify_on_new_cards_title">Notify on new cards</string>
     <string name="PREFERENCES_page_title">App preferences</string>

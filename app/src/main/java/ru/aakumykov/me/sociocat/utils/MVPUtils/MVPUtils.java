@@ -14,16 +14,11 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
-import android.util.Log;
-import android.view.Gravity;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
@@ -415,7 +410,7 @@ public class MVPUtils {
         String sociocatChannelDescription = context.getString(R.string.NOTIFICATIONS_sociocat_channel_description);
 
         NotificationChannel adminChannel;
-        adminChannel = new NotificationChannel(Constants.NEW_CARDS_NOTIFICATIONS_CHANNEL_ID, sociocatChannelName, NotificationManager.IMPORTANCE_LOW);
+        adminChannel = new NotificationChannel(Constants.SOCIOCAT_NOTIFICATIONS_CHANNEL, sociocatChannelName, NotificationManager.IMPORTANCE_LOW);
         adminChannel.setDescription(sociocatChannelDescription);
 //        adminChannel.enableLights(true);
 //        adminChannel.setLightColor(Color.RED);
@@ -426,7 +421,7 @@ public class MVPUtils {
 
         if (notificationManager != null) {
             if (doEnable) notificationManager.createNotificationChannel(adminChannel);
-            else notificationManager.deleteNotificationChannel(Constants.NEW_CARDS_NOTIFICATIONS_CHANNEL_ID);
+            else notificationManager.deleteNotificationChannel(Constants.SOCIOCAT_NOTIFICATIONS_CHANNEL);
         }
     }
 
