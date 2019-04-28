@@ -24,7 +24,6 @@ import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 public class PushNotificationsService extends FirebaseMessagingService {
 
     private final static String TAG = "PushNotifService";
-    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
 
 
     @Override
