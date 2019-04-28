@@ -54,9 +54,9 @@ public class PushNotificationsService extends FirebaseMessagingService {
             return;
         }
 
-        String messageType = data.get("message_type") + "";
+        String notificationType = data.get("notification_type") + "";
 
-        switch (messageType) {
+        switch (notificationType) {
             case "new_card":
                 showNewCardNotification(data);
                 break;
@@ -64,7 +64,7 @@ public class PushNotificationsService extends FirebaseMessagingService {
                 showNewCommentNotification(data);
                 break;
             default:
-                Log.e(TAG, "Unknown message type: '"+messageType+"'");
+                Log.e(TAG, "Unknown notification type: '"+notificationType+"'");
         }
     }
 
@@ -90,7 +90,7 @@ public class PushNotificationsService extends FirebaseMessagingService {
         String notificationTitle = getResources()
                 .getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_title, text);
         String notificationMessage = getResources()
-                .getString(R.string.PUSH_NOTIFICATION_SERVICE_new_comment_created_message, cardUserName);
+                .getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_message, cardUserName);
 
         Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, cardId);
