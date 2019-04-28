@@ -2,6 +2,8 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import android.content.Context;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCanceledListener;
@@ -25,7 +27,9 @@ import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
 // TODO: пункт меню "Обновить"
 
@@ -44,11 +48,104 @@ public class UsersSingleton implements iUsersSingleton {
     /* Одиночка */
 
     private final static String TAG = "UsersSingleton";
+    private User currentUser;
+    private HashMap<String,Boolean> adminsList = new HashMap<>();
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("/");
     private DatabaseReference usersRef = rootRef.child(Constants.USERS_PATH);
+    private DatabaseReference adminsRef = rootRef.child(Constants.ADMINS_PATH);
     private DatabaseReference deviceIdRef = rootRef.child(Constants.DEVICE_ID_PATH);
 
+
     // Интерфейсные методы
+    @Override
+    public void refreshUserFromServer(RefreshCallbacks callbacks) {
+        refreshUserFromServer(currentUser.getKey(), callbacks);
+    }
+
+    @Override
+    public void refreshUserFromServer(String userId, RefreshCallbacks callbacks) {
+
+        if (null == userId) {
+            String errorMsg = "userId == NULL";
+            Log.e(TAG, errorMsg);
+            callbacks.onUserRefreshFail(errorMsg);
+            return;
+        }
+
+        if (null != currentUser && !userId.equals(currentUser.getKey())) {
+            String errorMsg = "Attempt to refresh user (" + currentUser.getKey() + ") with different userId (" + userId + ")";
+            Log.e(TAG, errorMsg);
+            if (null != callbacks)
+                callbacks.onUserRefreshFail(errorMsg);
+        }
+
+        readUser(userId, new ReadCallbacks() {
+            @Override
+            public void onUserReadSuccess(User user) {
+                readAdminsList(new ReadAdminsListCallbacks() {
+                    @Override
+                    public void onReadAdminsListSuccess() {
+                        if (null != callbacks)
+                            callbacks.onUserRefreshSuccess(user);
+                    }
+
+                    @Override
+                    public void onReadAdminsListFail(String errorMsg) {
+                        if (null != callbacks)
+                            callbacks.onUserRefreshFail(errorMsg);
+                    }
+                });
+            }
+
+            @Override
+            public void onUserReadFail(String errorMsg) {
+                if (null != callbacks)
+                    callbacks.onUserRefreshFail(errorMsg);
+            }
+        });
+    }
+
+
+    @Override
+    public void storeCurrentUser(User user) {
+        currentUser = user;
+    }
+
+    @Override public void clearCurrentUser() {
+        currentUser = null;
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    @Override
+    public void storeAdminsList(HashMap<String, Boolean> list) {
+        this.adminsList = list;
+    }
+
+    @Override public boolean currentUserIsAdmin() {
+        return adminsList.containsKey(currentUser.getKey());
+    }
+
+    @Override public String currentUserName() {
+        return currentUser.getName();
+    }
+
+    @Override
+    public boolean isCardOwner(Card card) {
+
+        if (null == card)
+            return false;
+
+        if (null == currentUser)
+            return false;
+
+        return (card.getUserId().equals(currentUser.getKey()));
+    }
+
+
     @Override
     public void listUsers(final ListCallbacks callbacks) {
         final ArrayList<User> list = new ArrayList<>();
@@ -314,7 +411,116 @@ public class UsersSingleton implements iUsersSingleton {
 
     }
 
+    @Override
+    public void subscribeToCardComments(Context context, boolean enableSubscription,
+                                        String userId, String cardId,
+                                        CardCommentsSubscriptionCallbacks callbacks) {
+
+        if (enableSubscription) {
+            MVPUtils.subscribeToTopicNotifications(context, cardId, new MVPUtils.TopicNotificationsCallbacks.SubscribeCallbacks() {
+                @Override
+                public void onSubscribeSuccess() {
+                    changeCardCommentsSubscription(cardId, userId, true, new ChangeCardCommentsSubscriptionCallbacks() {
+                        @Override
+                        public void onChangeSuccess() {
+                            callbacks.onSubscribeSuccess();
+                        }
+
+                        @Override
+                        public void onChangeFail(String errorMsg) {
+                            callbacks.onSubscribeFail(errorMsg);
+                        }
+                    });
+                }
+
+                @Override
+                public void onSubscribeFail(String errorMsg) {
+                    callbacks.onSubscribeFail(errorMsg);
+                }
+            });
+        }
+        else {
+            MVPUtils.unsubscribeFromTopicNotifications(context, cardId, new MVPUtils.TopicNotificationsCallbacks.UnsbscribeCallbacks() {
+                @Override
+                public void onUnsubscribeSuccess() {
+                    changeCardCommentsSubscription(cardId, userId, false, new ChangeCardCommentsSubscriptionCallbacks() {
+                        @Override
+                        public void onChangeSuccess() {
+                            callbacks.onUnsubscribeSuccess();
+                        }
+
+                        @Override
+                        public void onChangeFail(String errorMsg) {
+                            callbacks.onUnsubscribeFail(errorMsg);
+                        }
+                    });
+                }
+
+                @Override
+                public void onUnsubscribeFail(String errorMsg) {
+                    callbacks.onUnsubscribeFail(errorMsg);
+                }
+            });
+        }
+
+    }
+
+
     // Внутренние методы
+    private void readUser(String userId, ReadCallbacks callbacks) {
+
+        usersRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                User user = dataSnapshot.getValue(User.class);
+
+                if (null != user) {
+                    storeCurrentUser(user);
+                    callbacks.onUserReadSuccess(user);
+                    return;
+                }
+
+                callbacks.onUserReadFail("User from dataSnapshot is NULL");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                String errorMsg = databaseError.getMessage();
+                callbacks.onUserReadFail(errorMsg);
+                Log.e(TAG, errorMsg);
+                databaseError.toException().printStackTrace();
+            }
+
+        });
+    }
+
+    private void readAdminsList(ReadAdminsListCallbacks callbacks) {
+
+        adminsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                HashMap<String,Boolean> list = new HashMap<>();
+                for (DataSnapshot snapshotItem : dataSnapshot.getChildren())
+                    list.put(snapshotItem.getKey(), true);
+
+                storeAdminsList(list);
+
+                callbacks.onReadAdminsListSuccess();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                String errorMsg = databaseError.getMessage();
+                callbacks.onReadAdminsListFail(errorMsg);
+                Log.e(TAG, errorMsg);
+                databaseError.toException().printStackTrace();
+            }
+        });
+    }
+
     private void checkExistance(Query query, final CheckExistanceCallbacks callbacks) {
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -333,5 +539,34 @@ public class UsersSingleton implements iUsersSingleton {
                 databaseError.toException().printStackTrace();
             }
         });
+    }
+
+    private interface ChangeCardCommentsSubscriptionCallbacks {
+        void onChangeSuccess();
+        void onChangeFail(String errorMsg);
+    }
+
+    private void changeCardCommentsSubscription(String cardId, String userId, boolean enableSubscription,
+                                                ChangeCardCommentsSubscriptionCallbacks callbacks) {
+
+        String path = userId+"/unsubscribedCards/"+cardId;
+        DatabaseReference reference = usersRef.child(path);
+
+        Boolean value = (enableSubscription) ? null : true;
+
+        reference.setValue(value)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onChangeSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onChangeFail(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
     }
 }

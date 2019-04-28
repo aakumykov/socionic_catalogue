@@ -10,6 +10,7 @@ public final class Constants {
     public final static String COMMENTS_PATH = "/comments";
     public final static String IMAGES_PATH = "/images";
     public final static String USERS_PATH = "/users";
+    public final static String ADMINS_PATH = "/admins";
     public final static String AVATARS_PATH = "/avatars";
     public final static String DEVICE_ID_PATH = "/device_id";
 
@@ -27,6 +28,7 @@ public final class Constants {
     public final static String CARD = "CARD";
     public final static String CARD_DRAFT = "CARD_DRAFT";
     public final static String CARD_KEY = "CARD_KEY";
+    public final static String COMMENT_KEY = "COMMENT_KEY";
 
     public final static String ORIGINAL_INTENT = "ORIGINAL_INTENT";
 
@@ -51,7 +53,7 @@ public final class Constants {
 
     public final static String PARENT_COMMENT = "PARENT_COMMENT";
 
-    public final static String NEW_CARDS_NOTIFICATIONS_CHANNEL_ID = "NEW_CARDS_NOTIFICATIONS_CHANNEL_ID";
+    public final static String SOCIOCAT_NOTIFICATIONS_CHANNEL = "SOCIOCAT_NOTIFICATIONS_CHANNEL";
 
     // Разные коды
     public final static int CODE_LOGIN = 5;

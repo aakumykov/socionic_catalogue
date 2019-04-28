@@ -26,35 +26,11 @@ public class PushNotificationsService extends FirebaseMessagingService {
     private final static String TAG = "PushNotifService";
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.d(TAG, "onCreate()");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy()");
-    }
-
-    @Override
-    public boolean onUnbind(Intent intent) {
-        Log.d(TAG, "onUnbind()");
-        return super.onUnbind(intent);
-    }
-
-    @Override
-    public void onRebind(Intent intent) {
-        super.onRebind(intent);
-        Log.d(TAG, "onRebind()");
-    }
-
 
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
-        Log.d(TAG, "token: "+s);
+        //Log.d(TAG, "token: "+s);
     }
 
     @Override
@@ -69,6 +45,8 @@ public class PushNotificationsService extends FirebaseMessagingService {
         }
     }
 
+
+
     private void showNotification(@Nullable Map<String,String> data) throws Exception {
 
         if (null == data) {
@@ -76,27 +54,80 @@ public class PushNotificationsService extends FirebaseMessagingService {
             return;
         }
 
+        String notificationType = data.get("notification_type") + "";
+
+        switch (notificationType) {
+            case "new_card":
+                showNewCardNotification(data);
+                break;
+            case "new_comment":
+                showNewCommentNotification(data);
+                break;
+            default:
+                Log.e(TAG, "Unknown notification type: '"+notificationType+"'");
+        }
+    }
+
+
+    private void showNewCardNotification(Map<String,String> data) {
+
         String cardUserId = data.get("card_user_id");
 
+        // Для определения дальнеших действий нужен userId
         if (null == cardUserId) {
-            Log.w(TAG, "There is no card's user id in push notification: "+data);
+            Log.e(TAG, "There is no card's user id in push notification: "+data);
             return;
         }
 
         // Не показываю уведомление автору карточки
-        if (cardUserId.equals(authSingleton.currentUserId())) {
+        if (cardUserId.equals(AuthSingleton.currentUserId()))
+            return;
+
+        String text = data.get("text");
+        String cardId = data.get("card_id");
+        String cardUserName = data.get("card_user_name");
+
+        String notificationTitle = getResources()
+                .getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_title, text);
+        String notificationMessage = getResources()
+                .getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_message, cardUserName);
+
+        Intent intent = new Intent(this, CardShow_View.class);
+        intent.putExtra(Constants.CARD_KEY, cardId);
+
+        showNotification(notificationTitle, notificationMessage, intent);
+    }
+
+
+    private void showNewCommentNotification(Map<String,String> data) {
+
+        String text = data.get("text");
+        String commentId = data.get("comment_id");
+        String commentUserId = data.get("comment_user_id");
+        String commentUserName = data.get("comment_user_name");
+
+        if (null == commentUserId) {
+            Log.e(TAG, "There is no comment's user id in push notification: "+data);
             return;
         }
 
-        String cardUserName = data.get("card_user_name");
-        String cardTitle = data.get("card_title");
-        String cardKey = data.get("card_key");
+        String cardId = data.get("card_id");
 
-        String title = getResources().getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_title, cardTitle);
-        String message = getResources().getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_message, cardUserName);
+        String notificationTitle = getResources()
+                .getString(R.string.PUSH_NOTIFICATION_SERVICE_new_comment_created_title, text);
+        String notificationMessage = getResources()
+                .getString(R.string.PUSH_NOTIFICATION_SERVICE_new_comment_created_message, commentUserName);
 
+        // TODO: сделать переход к комментарию !
         Intent intent = new Intent(this, CardShow_View.class);
-        intent.putExtra(Constants.CARD_KEY, cardKey);
+        intent.putExtra(Constants.CARD_KEY, cardId);
+        intent.putExtra(Constants.COMMENT_KEY, commentId);
+
+        showNotification(notificationTitle, notificationMessage, intent);
+    }
+
+
+    private void showNotification(String title, String message, Intent intent) {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this,
@@ -108,20 +139,19 @@ public class PushNotificationsService extends FirebaseMessagingService {
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, Constants.NEW_CARDS_NOTIFICATIONS_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_notification_default)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setSound(soundUri)
-                .setContentIntent(pendingIntent);
+                new NotificationCompat.Builder(this, Constants.SOCIOCAT_NOTIFICATIONS_CHANNEL)
+                        .setSmallIcon(R.drawable.ic_notification_default)
+                        .setContentTitle(title)
+                        .setContentText(message)
+                        .setAutoCancel(true)
+                        .setSound(soundUri)
+                        .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (null != notificationManager) {
+        if (null != notificationManager)
             notificationManager.notify(0, notificationBuilder.build());
-            Log.d(TAG, "Уведомление должно быть показано...");
-        }
+
     }
 }

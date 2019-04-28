@@ -35,15 +35,12 @@ public class PreferencesProcessor {
             MVPUtils.subscribeToTopicNotifications(
                     context,
                     Constants.TOPIC_NEW_CARDS,
-                    R.string.PREFERENCES_you_are_subscribed_to_new_cards,
-                    R.string.PREFERENCES_error_subscribing_to_new_cards
+                    null
             );
         else
             MVPUtils.unsubscribeFromTopicNotifications(
                     context,
                     Constants.TOPIC_NEW_CARDS,
-                    R.string.PREFERENCES_you_are_unsubscribed_from_new_cards,
-                    R.string.PREFERENCES_error_unsubscribing_from_new_cards_notifications
-            );
+                    null);
     }
 }

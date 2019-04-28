@@ -541,6 +541,7 @@ public class CardEdit_View extends BaseView implements
         });
     }
 
+
     // Методы событий интерсейса
     @OnClick(R.id.imagePlaceholder)
     public void onSelectImageClicked() {

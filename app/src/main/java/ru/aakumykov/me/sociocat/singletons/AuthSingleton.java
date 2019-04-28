@@ -21,11 +21,6 @@ import ru.aakumykov.me.sociocat.models.User;
 
 public class AuthSingleton implements iAuthSingleton
 {
-    private final static String TAG = "AuthSingleton";
-    private FirebaseAuth firebaseAuth;
-    private User currentUser;
-
-
     /* Одиночка */
     private static volatile AuthSingleton ourInstance;
     public synchronized static AuthSingleton getInstance() {
@@ -38,183 +33,27 @@ public class AuthSingleton implements iAuthSingleton
         firebaseAuth = FirebaseAuth.getInstance();
         Log.d(TAG, "firebaseAuth: "+firebaseAuth);
     }
-    /* Одиночка */    
+    /* Одиночка */
+
+    private final static String TAG = "AuthSingleton";
+    private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
 
-    // Интерфейсные методы
-    // Регистрация, вход, выход
-    @Override
-    public void registerWithEmail(String email, String password,
-            final iAuthSingleton.RegisterCallbacks callbacks) throws Exception
-    {
-        Log.d(TAG, "registerWithEmail("+email+", ***)");
-
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        callbacks.onRegSucsess(authResult.getUser().getUid(), authResult.getUser().getEmail());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onRegFail(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
+    // Статические методы
+    public static boolean isLoggedIn() {
+        return (null != firebaseAuth.getCurrentUser());
     }
 
-    @Override
-    public void login(String email, String password, final LoginCallbacks callbacks) throws Exception {
-
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        callbacks.onLoginSuccess(authResult.getUser().getUid());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onLoginFail(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
-    }
-
-    @Override
-    public void cancelLogin() {
+    public static void logout() {
         firebaseAuth.signOut();
     }
 
-    @Override
-    public void logout() {
-        firebaseAuth.signOut();
+    public static String currentUserId() {
+        return firebaseAuth.getUid();
     }
 
 
-    @Override
-    public void restoreCurrentUser(final iAuthSingleton.UserRestoreCallbacks callbacks) {
-//        usersSingleton.getUserById(currentUserId(), new iUsersSingleton.ReadCallbacks() {
-//            @Override
-//            public void onUserReadSuccess(User user) {
-//                storeCurrentUser(user);
-//                callbacks.onUserRestoreSuccess();
-//            }
-//
-//            @Override
-//            public void onUserReadFail(String errorMsg) {
-//                callbacks.onUserRestoreFail(errorMsg);
-//            }
-//        });
-    }
-
-
-    // Параметры текущего пользователя
-    @Override
-    public User currentUser() {
-        return this.currentUser;
-    }
-
-    @Override
-    public String currentUserId() /*throws Exception*/ {
-        String firebaseUid = firebaseAuth.getUid();
-//        String userId = getCurrentUser().getKey();
-//        if (!firebaseUid.equals(userId)) throw new Exception("Firebase user id != program user uid");
-        return firebaseUid;
-    }
-
-    @Override
-    public String currentUserName() {
-        return currentUser.getName();
-    }
-
-    @Override
-    public boolean isUserLoggedIn() {
-        return null != firebaseAuth.getCurrentUser();
-    }
-
-    @Override
-    public boolean isAdmin() {
-        return false;
-    }
-
-    @Override
-    public boolean userIsAdmin(String userId) {
-        return false;
-    }
-
-    @Override
-    public boolean isCardOwner(Card card) {
-        return card.getUserId().equals(currentUserId());
-    }
-
-    @Override
-    public void sendSignInLinkToEmail(String email, final SendSignInLinkToEmailCallbacks callbacks) {
-
-        String url = "http://sociocat.example.org/verify";
-
-        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
-                .setUrl(url)
-                .setAndroidPackageName(Constants.PACKAGE_NAME, true, null)
-                .setHandleCodeInApp(true)
-                .build();
-
-        firebaseAuth.sendSignInLinkToEmail(email, actionCodeSettings)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onSendSignInLinkToEmailSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onSendSignInLinkToEmailFail(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
-    }
-
-    @Override
-    public void sendEmailVerificationLink(String packageName, final SendEmailVerificationLinkCallbacks callbacks) {
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        String url = "http://sociocat.example.org/verify?uid=" + user.getUid();
-
-        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
-                .setUrl(url)
-                // The default for this is populated with the current android package name.
-                .setAndroidPackageName(packageName, true, null)
-                .setHandleCodeInApp(false)
-                .build();
-
-        user.sendEmailVerification(actionCodeSettings)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        logout();
-                    }
-                })
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onEmailVerificationLinkSendSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onEmailVerificationLinkSendFail(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
-
-    }
-
+    // Динамические методы методы
     @Override
     public void resetPasswordEmail(String email, final ResetPasswordCallbacks callbacks) {
 
@@ -244,22 +83,5 @@ public class AuthSingleton implements iAuthSingleton
                 });
     }
 
-    // Служебные
-    @Override
-    public void storeCurrentUser(final User user) {
-        // TODO: проверять на null, бросать исключение?
-        this.currentUser = user;
-    }
-
-    @Override
-    public void clearCurrentUser() {
-        this.currentUser = null;
-    }
-
-
-    // Внутренние
-    private User getCurrentUser() {
-        return this.currentUser;
-    }
 }
 

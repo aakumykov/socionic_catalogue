@@ -21,6 +21,7 @@ public class User implements Parcelable {
     private boolean emailVerified = false;
     private HashMap<String, Boolean> cardsKeys;
     private HashMap<String, Boolean> commentsKeys;
+    private HashMap<String, Boolean> unsubscribedCards;
 
     public User() {}
 
@@ -44,6 +45,7 @@ public class User implements Parcelable {
                 ", emailVerified: "+emailVerified+
                 ", cardsKeys: "+cardsKeys+
                 ", commentsKeys: "+commentsKeys+
+                ", unsubscribedCards: "+unsubscribedCards+
                 " }";
     }
 
@@ -60,6 +62,7 @@ public class User implements Parcelable {
         map.put("emailVerified", emailVerified);
         map.put("cardsKeys", cardsKeys);
         map.put("commentsKeys", commentsKeys);
+        map.put("unsubscribedCards", unsubscribedCards);
         return map;
     }
 
@@ -95,6 +98,7 @@ public class User implements Parcelable {
         dest.writeString(String.valueOf(emailVerified));
         dest.writeMap(this.cardsKeys);
         dest.writeMap(this.commentsKeys);
+        dest.writeMap(this.unsubscribedCards);
     }
 
     private User(Parcel in) {
@@ -109,6 +113,7 @@ public class User implements Parcelable {
         emailVerified = in.readString().equals("1");
         cardsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+        unsubscribedCards = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
     }
     /* Parcelable */
 
@@ -183,7 +188,18 @@ public class User implements Parcelable {
         this.cardsKeys = cardsKeys;
     }
 
+    public HashMap<String,Boolean> getUnsubscribedCards() { return unsubscribedCards; }
+    public void setUnsubscribedCards(HashMap<String,Boolean> unsubscribedCards) {
+        this.unsubscribedCards = unsubscribedCards;
+    }
+
     @Exclude public boolean hasAvatar() {
         return !TextUtils.isEmpty(getAvatarURL());
+    }
+
+    @Exclude public boolean isSubscribedToCardComments(String cardId) {
+        HashMap<String,Boolean> unsubscribedCards = getUnsubscribedCards();
+        if (null == unsubscribedCards) return true;
+        return !unsubscribedCards.containsKey(cardId);
     }
 }

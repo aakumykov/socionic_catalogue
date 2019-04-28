@@ -358,7 +358,7 @@ public class CardsGrid_View extends BaseView implements
 /*
     @OnClick(R.id.floatingActionButton)
     void fabClicked() {
-        if (auth().isUserLoggedIn()) {
+        if (AuthSingleton.isLoggedIn()) {
             goCreateCard();
         } else {
             MyDialogs.loginRequiredDialog(

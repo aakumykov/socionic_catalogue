@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +24,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
+import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
@@ -53,6 +54,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private Card currentCard; // Используется для отладки ошибки.
 
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
     // Конструктор
     CardsGrid_Adapter(List<Card> cardsList) {
@@ -254,7 +256,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
 
-        if (authSingleton.isAdmin() || authSingleton.isCardOwner(cardsList.get(listPosition))) {
+        if (usersSingleton.currentUserIsAdmin() || usersSingleton.isCardOwner(cardsList.get(listPosition))) {
             popupMenu.inflate(R.menu.edit);
             popupMenu.inflate(R.menu.delete);
         }

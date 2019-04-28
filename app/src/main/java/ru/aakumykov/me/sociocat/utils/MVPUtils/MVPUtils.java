@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.utils.MVPUtils;
 
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ContentResolver;
@@ -8,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -16,16 +14,11 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
-import android.util.Log;
-import android.view.Gravity;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
@@ -42,7 +35,6 @@ import java.util.regex.Pattern;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
@@ -342,7 +334,75 @@ public class MVPUtils {
     }
 
 
+    // Подписка/отписка от уведомлений по темам
+    public interface TopicNotificationsCallbacks {
+        interface SubscribeCallbacks {
+            void onSubscribeSuccess();
+            void onSubscribeFail(String errorMsg);
+        }
+        interface UnsbscribeCallbacks {
+            void onUnsubscribeSuccess();
+            void onUnsubscribeFail(String errorMsg);
+        }
+    }
 
+    public static void subscribeToTopicNotifications(
+            Context context,
+            String topicName,
+            TopicNotificationsCallbacks.SubscribeCallbacks callbacks
+    ) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            setupNewCardsNotificationChannel(context, true);
+
+        FirebaseMessaging.getInstance().subscribeToTopic(topicName)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        if (null != callbacks)
+                            callbacks.onSubscribeSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        if (null != callbacks)
+                            callbacks.onSubscribeFail(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+    public static void unsubscribeFromTopicNotifications(
+            Context context,
+            String topicName,
+            TopicNotificationsCallbacks.UnsbscribeCallbacks callbacks
+    ) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            setupNewCardsNotificationChannel(context, true);
+
+        FirebaseMessaging firebaseMessaging = FirebaseMessaging.getInstance();
+
+        firebaseMessaging.unsubscribeFromTopic(topicName)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        if (null != callbacks)
+                            callbacks.onUnsubscribeSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        if (null != callbacks)
+                            callbacks.onUnsubscribeFail(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+    // Настройка каналов уведомлений
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static void setupNewCardsNotificationChannel(Context context, boolean doEnable){
 
@@ -350,7 +410,7 @@ public class MVPUtils {
         String sociocatChannelDescription = context.getString(R.string.NOTIFICATIONS_sociocat_channel_description);
 
         NotificationChannel adminChannel;
-        adminChannel = new NotificationChannel(Constants.NEW_CARDS_NOTIFICATIONS_CHANNEL_ID, sociocatChannelName, NotificationManager.IMPORTANCE_LOW);
+        adminChannel = new NotificationChannel(Constants.SOCIOCAT_NOTIFICATIONS_CHANNEL, sociocatChannelName, NotificationManager.IMPORTANCE_LOW);
         adminChannel.setDescription(sociocatChannelDescription);
 //        adminChannel.enableLights(true);
 //        adminChannel.setLightColor(Color.RED);
@@ -361,58 +421,8 @@ public class MVPUtils {
 
         if (notificationManager != null) {
             if (doEnable) notificationManager.createNotificationChannel(adminChannel);
-            else notificationManager.deleteNotificationChannel(Constants.NEW_CARDS_NOTIFICATIONS_CHANNEL_ID);
+            else notificationManager.deleteNotificationChannel(Constants.SOCIOCAT_NOTIFICATIONS_CHANNEL);
         }
-    }
-
-    public static void subscribeToTopicNotifications(Context context, String topicName,
-           @Nullable Integer successMessageId, @Nullable Integer errorMessageId) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            setupNewCardsNotificationChannel(context, true);
-
-        FirebaseMessaging.getInstance().subscribeToTopic(topicName)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        if (null != successMessageId)
-                            showToast(context, successMessageId, true);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        if (null != errorMessageId)
-                            showToast(context, errorMessageId, true);
-                        Log.e(TAG, "Error subscribing to topic '" + topicName + "': " + e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
-    }
-
-    public static void unsubscribeFromTopicNotifications(Context context, String topicName,
-           @Nullable Integer successMessageId, @Nullable Integer errorMessageId) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            setupNewCardsNotificationChannel(context, true);
-
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(topicName)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        if (null != successMessageId)
-                            showToast(context, successMessageId, true);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        if (null != errorMessageId)
-                            showToast(context, errorMessageId, true);
-                        Log.e(TAG, "Error unsubscribing from topic '" + topicName + "': " + e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
     }
 
 
@@ -467,17 +477,16 @@ public class MVPUtils {
     }
 
 
-    // TODO: перенести showToast из BaseView
-    public static <T> void showToast(Context context, T messageId, boolean atCenter) {
-        String message = (messageId instanceof Integer) ?
-                context.getResources().getString((Integer) messageId) :
-                String.valueOf(messageId);
-
-        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-
-        if (atCenter)
-            toast.setGravity(Gravity.CENTER, 0,0);
-
-        toast.show();
-    }
+//    public static <T> void showToast(Context context, T messageId, boolean atCenter) {
+//        String message = (messageId instanceof Integer) ?
+//                context.getResources().getString((Integer) messageId) :
+//                String.valueOf(messageId);
+//
+//        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+//
+//        if (atCenter)
+//            toast.setGravity(Gravity.CENTER, 0,0);
+//
+//        toast.show();
+//    }
 }

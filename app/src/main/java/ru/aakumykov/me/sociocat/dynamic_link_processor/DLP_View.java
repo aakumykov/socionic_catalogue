@@ -60,13 +60,15 @@ public class DLP_View extends BaseView implements
         presenter.unlinkView();
     }
 
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
 
 
     // Интерфейсные методы
-    @Override public void showHomeButton() {
+    @Override
+    public void showHomeButton() {
         MyUtils.show(homeButton);
     }
 

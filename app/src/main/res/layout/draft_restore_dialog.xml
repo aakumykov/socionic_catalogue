@@ -26,6 +26,7 @@
                 android:text="@string/DRAFT_RESTORE_DIALOG_title"
                 android:textAlignment="center"
                 android:textSize="18sp"
+                android:textColor="@color/colorPrimary"
                 android:textStyle="bold" />
 
             <TextView

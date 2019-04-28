@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 
 import com.google.gson.Gson;
@@ -24,12 +25,14 @@ import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
+import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -44,6 +47,7 @@ public class CardEdit_Presenter implements
     private SharedPreferences sharedPreferences;
 
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
@@ -75,7 +79,7 @@ public class CardEdit_Presenter implements
         if (null == intent)
             throw new IllegalArgumentException("Intent is NULL");
 
-        if (!authSingleton.isUserLoggedIn())
+        if (!AuthSingleton.isLoggedIn())
             view.requestLogin(intent);
 
         String action = "" + intent.getAction();
@@ -340,8 +344,8 @@ public class CardEdit_Presenter implements
         }
         else {
             // TODO: нужна проверка на авторизованность!
-            currentCard.setUserId(authSingleton.currentUserId());
-            currentCard.setUserName(authSingleton.currentUserName());
+            currentCard.setUserId(AuthSingleton.currentUserId());
+            currentCard.setUserName(usersSingleton.currentUserName());
 
             // Время создания/правки
             Long currentTime = new Date().getTime();
@@ -367,8 +371,26 @@ public class CardEdit_Presenter implements
     // Коллбеки
     @Override public void onCardSaveSuccess(Card card) {
         updateCardTags(card);
+
         if (editMode.equals(Enums.CardEditMode.CREATE)) {
-            //MVPUtils.subscribeToTopicNotifications(view.getAppContext(), card.getKey());
+
+            MVPUtils.subscribeToTopicNotifications(
+                    view.getAppContext(),
+                    card.getKey(),
+                    new MVPUtils.TopicNotificationsCallbacks.SubscribeCallbacks() {
+                        @Override
+                        public void onSubscribeSuccess() {
+
+                        }
+
+                        @Override
+                        public void onSubscribeFail(String errorMsg) {
+                            view.showToast(R.string.CARD_EDIT_error_subscribing_to_comments);
+                            Log.e(TAG, errorMsg);
+                            //view.showErrorMsg(R.string.CARD_EDIT_error_subscribing_to_comments, errorMsg);
+                        }
+                    }
+            );
         }
     }
 
