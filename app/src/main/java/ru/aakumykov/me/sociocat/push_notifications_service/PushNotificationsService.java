@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.services;
+package ru.aakumykov.me.sociocat.push_notifications_service;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
