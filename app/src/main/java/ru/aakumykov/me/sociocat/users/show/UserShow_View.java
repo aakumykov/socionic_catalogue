@@ -133,11 +133,10 @@ public class UserShow_View extends BaseView implements
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        /*if (AuthSingleton.isLoggedIn()) {
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        //super.onCreateOptionsMenu(menu);
+        if (AuthSingleton.isLoggedIn())
             getMenuInflater().inflate(R.menu.edit_profile, menu);
-        }*/
         return true;
     }
 
