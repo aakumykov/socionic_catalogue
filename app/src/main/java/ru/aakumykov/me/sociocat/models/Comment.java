@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Comment implements Parcelable {
+public class Comment extends Item implements Parcelable {
 
     public final static int key_commentId = 10;
     public final static String key_createdAt = "createdAt";
@@ -46,7 +46,12 @@ public class Comment implements Parcelable {
         this.rateUpList = new ArrayList<>();
         this.rateDownList = new ArrayList<>();
     }
-    
+
+
+    @Override
+    public ItemType getItemType() {
+        return ItemType.COMMENT_ITEM;
+    }
 
     @Override @Exclude
     public String toString() {

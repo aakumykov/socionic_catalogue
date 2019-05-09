@@ -9,15 +9,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +38,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.aakumykov.me.sociocat.Config;
+import ru.aakumykov.me.sociocat.R;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -234,5 +247,61 @@ public final class MyUtils {
         return Configuration.ORIENTATION_PORTRAIT == getOrientation(context);
     }
 
+    public static void showToast(Context context, String message) {
 
+        LayoutInflater myInflater = LayoutInflater.from(context);
+        View view = myInflater.inflate(R.layout.toast_custom, null);
+
+        TextView textView = view.findViewById(R.id.textView);
+        textView.setText(message);
+
+        Toast mytoast = new Toast(context);
+        mytoast.setView(view);
+        mytoast.setDuration(Toast.LENGTH_SHORT);
+        mytoast.show();
+    }
+
+    public static void loadImageToContainer(
+            Context context,
+            ViewGroup imageContainer,
+            String imageURL,
+            int errorPlaceholderResourceId
+//            ,LoadImageToContainerCallbacls callbacls
+    ) {
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+
+        ProgressBar progressBar = new ProgressBar(context);
+        progressBar.setLayoutParams(layoutParams);
+
+        ImageView imageView = new ImageView(context);
+        imageView.setLayoutParams(layoutParams);
+        imageView.setAdjustViewBounds(true);
+
+        Drawable errorDrawable = context.getResources().getDrawable(errorPlaceholderResourceId);
+
+        imageContainer.addView(progressBar);
+        MyUtils.show(imageContainer);
+
+        Glide.with(context)
+                .load(imageURL)
+                //.diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        imageView.setImageDrawable(resource);
+                        imageContainer.removeViewAt(0);
+                        imageContainer.addView(imageView);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                        imageView.setImageDrawable(errorDrawable);
+                        imageContainer.removeViewAt(0);
+                        imageContainer.addView(imageView);
+                    }
+                });
+    }
 }
