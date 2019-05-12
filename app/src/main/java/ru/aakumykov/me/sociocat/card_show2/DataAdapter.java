@@ -84,19 +84,19 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         switch (viewType) {
             case Item.CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.list_item_card, parent, false);
+                itemView = layoutInflater.inflate(R.layout.card_show_card, parent, false);
                 return new Card_ViewHolder(itemView);
 
             case Item.COMMENT_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.list_item_comment, parent, false);
+                itemView = layoutInflater.inflate(R.layout.card_show_comment, parent, false);
                 return new Comment_ViewHolder(itemView);
 
             case Item.LOAD_MORE_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.list_item_comments_load_more, parent, false);
+                itemView = layoutInflater.inflate(R.layout.card_show_load_more, parent, false);
                 return new LoadMore_ViewHolder(itemView);
 
             case Item.COMMENTS_THROBBER_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.list_item_comments_throbber, parent, false);
+                itemView = layoutInflater.inflate(R.layout.card_show_throbber, parent, false);
                 return new CommentsThrobber_ViewHolder(itemView);
 
             default:

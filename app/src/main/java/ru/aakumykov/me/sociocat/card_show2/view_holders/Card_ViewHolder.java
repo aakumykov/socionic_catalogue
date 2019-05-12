@@ -8,8 +8,13 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import co.lujun.androidtagview.TagContainerLayout;
 import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.Constants;
@@ -19,15 +24,15 @@ import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
-public class Card_ViewHolder extends Base_ViewHolder {
+public class Card_ViewHolder extends Base_ViewHolder
+{
     @BindView(R.id.cardLayout) LinearLayout cardLayout;
-
     @BindView(R.id.titleView) TextView titleView;
     @BindView(R.id.quoteView) TextView quoteView;
-    @BindView(R.id.descriptionView) TextView descriptionView;
-
     @BindView(R.id.imageContainer) FrameLayout imageContainer;
     @BindView(R.id.videoContainer) FrameLayout videoContainer;
+    @BindView(R.id.descriptionView) TextView descriptionView;
+    @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
 
     private static final String TAG = "Card_ViewHolder";
     private iCardController cardController;
@@ -66,14 +71,9 @@ public class Card_ViewHolder extends Base_ViewHolder {
     private void showCardContent(Card card) {
 
         titleView.setText(card.getTitle());
-        //MyUtils.show(titleView);
-
         descriptionView.setText(card.getDescription());
-        //MyUtils.show(descriptionView);
 
-        String cardType = card.getType();
-
-        switch (cardType) {
+        switch (card.getType()) {
 
             case Constants.TEXT_CARD:
                 String quote = card.getQuote();
@@ -99,6 +99,16 @@ public class Card_ViewHolder extends Base_ViewHolder {
             case Constants.AUDIO_CARD:
                 showYoutubeMedia(card.getAudioCode(), InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER);
                 break;
+        }
+
+        displayTags(card.getTags());
+    }
+
+    private void displayTags(HashMap<String,Boolean> tagsHash) {
+        if (null != tagsHash) {
+            List<String> tagsList = new ArrayList<>(tagsHash.keySet());
+            tagsContainer.setTags(tagsList);
+            MyUtils.show(tagsContainer);
         }
     }
 

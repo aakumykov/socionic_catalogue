@@ -61,9 +61,9 @@ public class Card_Service {
         card.setVideoCode("BgfcToAjfdc");
 
         card.setType(Constants.VIDEO_CARD);
-//        list_item_card.setType("AUDIO_CARD");
-//        list_item_card.setType("IMAGE_CARD");
-//        list_item_card.setType("TEXT_CARD");
+//        card_show_card.setType("AUDIO_CARD");
+//        card_show_card.setType("IMAGE_CARD");
+//        card_show_card.setType("TEXT_CARD");
 
         return card;
     }
