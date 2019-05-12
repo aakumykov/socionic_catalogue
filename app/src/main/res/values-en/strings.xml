@@ -404,4 +404,6 @@
     <string name="MENU_notify_on_comments">Notify on comments</string>
     <string name="YOUTUBE_PLAYER_waiting_for_video">Preparing video</string>
     <string name="YOUTUBE_PLAYER_waiting_for_audio">Preparing audio</string>
+    <string name="CARD_SHOW_loading_card">Loading card</string>
+    <string name="CARD_SHOW_error_loading_card">Error loading card</string>
 </resources>

@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -8,7 +9,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,15 +18,19 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.services.Card_Service;
 import ru.aakumykov.me.sociocat.card_show2.services.Comments_Service;
+import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.Item;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class CardShow_View extends AppCompatActivity implements
+
+public class CardShow_View extends BaseView implements
         iCardController,
         iCommentsController
 {
@@ -66,9 +70,7 @@ public class CardShow_View extends AppCompatActivity implements
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(dataAdapter);
 
-        commentsService = new Comments_Service();
-
-        loadCard();
+        processInputIntent();
     }
 
     @Override
@@ -99,6 +101,16 @@ public class CardShow_View extends AppCompatActivity implements
 
     // Интерфейсные методы
     @Override
+    public void onUserLogin() {
+
+    }
+
+    @Override
+    public void onUserLogout() {
+
+    }
+
+    @Override
     public Context getContext() {
         return (Context) this;
     }
@@ -121,7 +133,7 @@ public class CardShow_View extends AppCompatActivity implements
 
                 @Override
                 public void onCommentsLoadFail(String errorMsg) {
-                    showError(errorMsg);
+                    showErrorMsg(R.string.CARD_SHOW_error_loading_comments, errorMsg);
                     flagCommentsLoadInProgress = false;
                 }
             });
@@ -217,63 +229,42 @@ public class CardShow_View extends AppCompatActivity implements
 
 
     // Внутренние методы
-    private void loadCard() {
-        showProgressMessage("Загрузка карточки");
+    private void processInputIntent() {
+        Intent intent = getIntent();
 
-        new Card_Service().loadCard("", new Card_Service.iCardLoadCallbacks() {
+        if (null != intent)
+        {
+            String cardKey = intent.getStringExtra(Constants.CARD_KEY);
+            String commentKey =intent.getStringExtra(Constants.COMMENT_KEY);
+            loadCard(cardKey);
+        }
+        else {
+            showErrorMsg(R.string.CARD_SHOW_error_loading_card, "Intent is NULL");
+        }
+    }
+
+    private void loadCard(String key) {
+        showProgressMessage(R.string.CARD_SHOW_loading_card);
+
+        CardsSingleton.getInstance().loadCard(key, new iCardsSingleton.LoadCallbacks() {
             @Override
             public void onCardLoadSuccess(Card card) {
-                hideProgressMessage();
                 dataAdapter.setCard(card);
-                loadComments("start", 10);
             }
 
             @Override
-            public void onCardLoadFail(String errorMsg) {
-                showError(errorMsg);
+            public void onCardLoadFailed(String msg) {
+                showErrorMsg(R.string.CARD_SHOW_error_loading_card, msg);
             }
         });
     }
 
     private void refreshCard() {
         dataAdapter.clearList();
-        loadCard();
-        //loadComments(0, 30);
     }
 
     private void startEditCard() {
         MyUtils.showCustomToast(this, "Правка карточки...");
-    }
-
-    private void showProgressBar() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    private void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
-    }
-
-    private void showProgressMessage(String msg) {
-        messageView.setText(msg);
-        messageView.setVisibility(View.VISIBLE);
-        showProgressBar();
-    }
-
-    private void hideProgressMessage() {
-        messageView.setVisibility(View.GONE);
-        hideProgressBar();
-    }
-
-    private void showError(String errorMsg) {
-        hideProgressBar();
-        dataAdapter.hideCommentsThrobber();
-
-        messageView.setText(errorMsg);
-        messageView.setVisibility(View.VISIBLE);
-    }
-
-    private void hideError() {
-        messageView.setVisibility(View.GONE);
     }
 
     private void setupAutoCommentsLoading() {

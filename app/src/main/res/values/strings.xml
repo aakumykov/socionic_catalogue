@@ -412,4 +412,6 @@
     <string name="MENU_notify_on_comments">Уведомлять о комментариях</string>
     <string name="YOUTUBE_PLAYER_waiting_for_video">Подготовка видео</string>
     <string name="YOUTUBE_PLAYER_waiting_for_audio">Подготовка звука</string>
+    <string name="CARD_SHOW_loading_card">Загрузка карточки</string>
+    <string name="CARD_SHOW_error_loading_card">Ошибка загрузки карточки</string>
 </resources>
