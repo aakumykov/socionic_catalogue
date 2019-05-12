@@ -410,6 +410,4 @@
     <string name="USER_SHOW_error_loading_cards_lsit">Ошибка загрузки списка карточек</string>
     <string name="CARD_EDIT_error_subscribing_to_comments">Ошибка подписки на комментарии</string>
     <string name="MENU_notify_on_comments">Уведомлять о комментариях</string>
-    <string name="YOUTUBE_PLAYER_waiting_for_video">Подготовка видео</string>
-    <string name="YOUTUBE_PLAYER_waiting_for_audio">Подготовка звука</string>
 </resources>

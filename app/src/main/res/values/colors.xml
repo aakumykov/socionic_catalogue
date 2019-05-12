@@ -50,10 +50,4 @@
     <!--MyYoutubePlayer-->
     <color name="my_youtube_player_msg_animation_from">@color/colorPrimary</color>
     <color name="my_youtube_player_msg_animation_to">@color/background_default</color>
-
-    <color name="defaultTextColor">#3C3C3C</color>
-    <color name="quoteTextColor">#303F9F</color>
-
-    <!-- Комментарии -->
-    <color name="comment_pressed_color">@color/grey</color>
 </resources>
