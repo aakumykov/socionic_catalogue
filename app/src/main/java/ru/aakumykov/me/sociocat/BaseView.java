@@ -422,12 +422,9 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public void setPageTitle(String title) {
-        //Log.d(TAG, "setPageTitle("+title+")");
-        ActionBar actionBar = getSupportActionBar();
-        if (null != actionBar) {
-            actionBar.setTitle(title);
-        }
+    public void setPageTitle(int titleId, String insertedText) {
+        String title = getResources().getString(titleId, insertedText);
+        setPageTitle(title);
     }
 
     @Override
@@ -438,6 +435,14 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
 
     // Внутренние методы
+    private void setPageTitle(String title) {
+        //Log.d(TAG, "setPageTitle("+title+")");
+        ActionBar actionBar = getSupportActionBar();
+        if (null != actionBar) {
+            actionBar.setTitle(title);
+        }
+    }
+
     private void login() {
         // Можно и без result, потому что статус авторизации обрабатывается в
         // AuthStateListener

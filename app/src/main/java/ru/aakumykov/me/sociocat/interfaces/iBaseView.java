@@ -50,7 +50,8 @@ public interface iBaseView {
     void consoleMsg(String tag, String msg);
 
     void setPageTitle(int titleId);
-    void setPageTitle(String title);
+    void setPageTitle(int titleId, String insertedText);
+
     void activateUpButton();
 
     void proceedLoginRequest(Intent intent);
