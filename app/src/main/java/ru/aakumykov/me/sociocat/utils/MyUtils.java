@@ -13,11 +13,14 @@ import android.net.Uri;
 import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +29,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.aakumykov.me.sociocat.Config;
+import ru.aakumykov.me.sociocat.R;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -234,5 +238,17 @@ public final class MyUtils {
         return Configuration.ORIENTATION_PORTRAIT == getOrientation(context);
     }
 
+    public static void showCustomToast(Context context, String message) {
 
+        LayoutInflater myInflater = LayoutInflater.from(context);
+        View view = myInflater.inflate(R.layout.toast, null);
+
+        TextView textView = view.findViewById(R.id.textView);
+        textView.setText(message);
+
+        Toast mytoast = new Toast(context);
+        mytoast.setView(view);
+        mytoast.setDuration(Toast.LENGTH_SHORT);
+        mytoast.show();
+    }
 }

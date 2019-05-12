@@ -402,4 +402,6 @@
     <string name="USER_SHOW_error_loading_cards_lsit">Error loading cards list</string>
     <string name="CARD_EDIT_error_subscribing_to_comments">Error subscribing to comments</string>
     <string name="MENU_notify_on_comments">Notify on comments</string>
+    <string name="YOUTUBE_PLAYER_waiting_for_video">Preparing video</string>
+    <string name="YOUTUBE_PLAYER_waiting_for_audio">Preparing audio</string>
 </resources>
