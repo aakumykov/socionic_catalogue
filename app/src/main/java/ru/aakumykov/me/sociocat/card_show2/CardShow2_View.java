@@ -30,7 +30,7 @@ import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
-public class CardShow_View extends BaseView implements
+public class CardShow2_View extends BaseView implements
         iCardController,
         iCommentsController
 {
@@ -39,7 +39,7 @@ public class CardShow_View extends BaseView implements
         void onLoadCommentsFail(String errorMsg);
     }
 
-    private final static String TAG ="CardShow_View";
+    private final static String TAG ="CardShow2_View";
 
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.progressBar) ProgressBar progressBar;

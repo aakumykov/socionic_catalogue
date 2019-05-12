@@ -30,7 +30,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final static String TAG = "DataAdapter";
     private ArrayList<Item> itemsList;
 
-    private CardShow_View view;
+    private CardShow2_View view;
 
 
     // Конструктор
@@ -40,7 +40,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
 
-    public void bindView(CardShow_View view) {
+    public void bindView(CardShow2_View view) {
         this.view = view;
     }
 
