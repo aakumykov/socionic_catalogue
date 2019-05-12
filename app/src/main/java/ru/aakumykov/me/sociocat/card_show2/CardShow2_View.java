@@ -65,7 +65,7 @@ public class CardShow2_View extends BaseView implements
         ButterKnife.bind(this);
 
         activateUpButton();
-        setPageTitle(R.string.CARD_SHOW_page_title);
+        setPageTitle(R.string.CARD_SHOW_page_title_short);
 
         dataAdapter = new DataAdapter();
 
@@ -258,7 +258,7 @@ public class CardShow2_View extends BaseView implements
             @Override
             public void onCardLoadSuccess(Card card) {
                 hideProgressMessage();
-                setPageTitle(R.string.CARD_SHOW_page_title, card.getTitle());
+                setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
                 dataAdapter.setCard(card);
             }
 

@@ -454,7 +454,7 @@ public class CardShow_View extends BaseView implements
             return;
         }
 
-        setPageTitle(R.string.CARD_SHOW_page_title, card.getTitle());
+        setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
 
         displayCommonCardParts(card);
 

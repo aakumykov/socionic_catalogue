@@ -86,7 +86,7 @@
     <string name="TAGS_LIST_tags_list">Tags List</string>
     <string name="TAG_SHOW_page_title">Tag «%1$s»</string>
     <string name="CARDS_LIST_page_title">Cards list</string>
-    <string name="CARD_SHOW_page_title">«%1$s», card viewing</string>
+    <string name="CARD_SHOW_page_title_long">«%1$s», card viewing</string>
     <string name="DIALOG_deleted_card_name">Really delete card «%1$s»</string>
     <string name="REGISTER_name">Nickame</string>
     <string name="REGISTER_password">Password</string>
@@ -406,4 +406,5 @@
     <string name="YOUTUBE_PLAYER_waiting_for_audio">Preparing audio</string>
     <string name="CARD_SHOW_loading_card">Loading card</string>
     <string name="CARD_SHOW_error_loading_card">Error loading card</string>
+    <string name="CARD_SHOW_page_title_short">Card viewing</string>
 </resources>
