@@ -41,7 +41,7 @@ public class Login_View extends BaseView implements iLogin.View
         setContentView(R.layout.login_activity);
         ButterKnife.bind(this);
 
-        setPageTitle(getResources().getString(R.string.LOGIN_page_title));
+        setPageTitle(R.string.LOGIN_page_title);
         activateUpButton();
 
         presenter = new Login_Presenter();

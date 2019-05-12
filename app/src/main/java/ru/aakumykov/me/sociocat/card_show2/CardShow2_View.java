@@ -3,6 +3,8 @@ package ru.aakumykov.me.sociocat.card_show2;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -52,7 +54,6 @@ public class CardShow2_View extends BaseView implements
     @BindView(R.id.sendCommentWidget) View sendCommentWidget;
 
     private DataAdapter dataAdapter;
-    private ArrayList<Item> list;
     private boolean flagCommentsLoadInProgress = false;
     private Comments_Service commentsService;
 
@@ -64,8 +65,10 @@ public class CardShow2_View extends BaseView implements
         setContentView(R.layout.card_show2_activity);
         ButterKnife.bind(this);
 
-        list = new ArrayList<>();
-        dataAdapter = new DataAdapter(list);
+        activateUpButton();
+        setPageTitle(R.string.CARD_SHOW_page_title);
+
+        dataAdapter = new DataAdapter();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(dataAdapter);
@@ -86,16 +89,21 @@ public class CardShow2_View extends BaseView implements
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     public void onBackPressed() {
         if (View.VISIBLE == commentFormContainer.getVisibility())
             hideCommentForm();
         else
             super.onBackPressed();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -244,11 +252,14 @@ public class CardShow2_View extends BaseView implements
     }
 
     private void loadCard(String key) {
+
         showProgressMessage(R.string.CARD_SHOW_loading_card);
 
         CardsSingleton.getInstance().loadCard(key, new iCardsSingleton.LoadCallbacks() {
             @Override
             public void onCardLoadSuccess(Card card) {
+                hideProgressMessage();
+                setPageTitle(R.string.CARD_SHOW_page_title, card.getTitle());
                 dataAdapter.setCard(card);
             }
 
@@ -257,6 +268,7 @@ public class CardShow2_View extends BaseView implements
                 showErrorMsg(R.string.CARD_SHOW_error_loading_card, msg);
             }
         });
+
     }
 
     private void refreshCard() {

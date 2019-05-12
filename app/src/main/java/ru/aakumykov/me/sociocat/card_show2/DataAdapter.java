@@ -34,9 +34,8 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
     // Конструктор
-    DataAdapter(ArrayList<Item> list) {
+    DataAdapter() {
         itemsList = new ArrayList<>();
-        itemsList.addAll(list);
     }
 
 

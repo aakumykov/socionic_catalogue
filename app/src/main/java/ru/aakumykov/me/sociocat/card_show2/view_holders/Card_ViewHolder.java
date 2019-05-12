@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show2.view_holders;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -65,13 +66,21 @@ public class Card_ViewHolder extends Base_ViewHolder {
     private void showCardContent(Card card) {
 
         titleView.setText(card.getTitle());
-        descriptionView.setText(card.getDescription());
+        //MyUtils.show(titleView);
 
-        switch (card.getType()) {
+        descriptionView.setText(card.getDescription());
+        //MyUtils.show(descriptionView);
+
+        String cardType = card.getType();
+
+        switch (cardType) {
 
             case Constants.TEXT_CARD:
-                quoteView.setText(card.getQuote());
-                MyUtils.show(quoteView);
+                String quote = card.getQuote();
+                if (!TextUtils.isEmpty(quote)) {
+                    quoteView.setText(quote);
+                    MyUtils.show(quoteView);
+                }
                 break;
 
             case Constants.IMAGE_CARD:
