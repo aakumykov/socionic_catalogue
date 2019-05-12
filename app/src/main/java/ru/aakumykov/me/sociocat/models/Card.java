@@ -16,8 +16,8 @@ import ru.aakumykov.me.sociocat.Constants;
 // TODO: как сделать так, чтобы графическая карточка не могла сохраниться без картинки?
 // И так далее...
 
-public class Card implements Parcelable {
-
+public class Card extends Item implements Parcelable
+{
     private String key;
     private String userId;
     private String userName;
@@ -46,7 +46,12 @@ public class Card implements Parcelable {
 
     }
 
-    @Exclude @Override
+    @Override @Exclude
+    public ItemType getItemType() {
+        return ItemType.CARD_ITEM;
+    }
+
+    @Override @Exclude
     public String toString() {
         return "Card {"+
                 "  key: "+getKey()+

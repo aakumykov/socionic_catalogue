@@ -90,4 +90,8 @@ dependencies {
 
     // Insertable Youtube Playr
     implementation 'com.github.aakumykov:insertable-youtube-player:0.4'
+
+    // RxJava v1
+    implementation 'io.reactivex:rxjava:1.2.3'
+    implementation 'io.reactivex:rxandroid:1.2.1'
 }

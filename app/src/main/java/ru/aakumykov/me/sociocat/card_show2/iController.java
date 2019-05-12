@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.card_show2;
 
 import android.content.Context;
 
-import ru.aakumykov.me.sociocat.card_show2.models.Item;
+import ru.aakumykov.me.sociocat.models.Item;
 
 
 public interface iController {

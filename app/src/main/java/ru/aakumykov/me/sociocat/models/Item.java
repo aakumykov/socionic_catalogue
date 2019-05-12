@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show2.models;
+package ru.aakumykov.me.sociocat.models;
 
 public abstract class Item {
 
@@ -13,8 +13,6 @@ public abstract class Item {
         LOAD_MORE_ITEM,
         COMMENTS_THROBBER_ITEM
     }
-
-    public abstract int getKey();
 
     public abstract ItemType getItemType();
 }

@@ -10,9 +10,9 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.aakumykov.me.complexrecyclerview.R;
-import ru.aakumykov.me.complexrecyclerview.card_show2.iCommentsController;
-import ru.aakumykov.me.complexrecyclerview.card_show2.models.Comment;
+import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show2.iCommentsController;
+import ru.aakumykov.me.sociocat.models.Comment;
 
 public class Comment_ViewHolder extends Base_ViewHolder {
 

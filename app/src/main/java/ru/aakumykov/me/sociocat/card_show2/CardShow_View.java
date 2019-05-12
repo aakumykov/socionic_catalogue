@@ -18,13 +18,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ru.aakumykov.me.complexrecyclerview.MyUtils;
-import ru.aakumykov.me.complexrecyclerview.R;
-import ru.aakumykov.me.complexrecyclerview.card_show2.models.Card;
-import ru.aakumykov.me.complexrecyclerview.card_show2.models.Comment;
-import ru.aakumykov.me.complexrecyclerview.card_show2.models.Item;
-import ru.aakumykov.me.complexrecyclerview.services.Card_Service;
-import ru.aakumykov.me.complexrecyclerview.services.Comments_Service;
+import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show2.services.Card_Service;
+import ru.aakumykov.me.sociocat.card_show2.services.Comments_Service;
+import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.models.Item;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardShow_View extends AppCompatActivity implements
         iCardController,
@@ -57,7 +57,7 @@ public class CardShow_View extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_card_show);
+        setContentView(R.layout.card_show2_activity);
         ButterKnife.bind(this);
 
         list = new ArrayList<>();
@@ -104,15 +104,14 @@ public class CardShow_View extends AppCompatActivity implements
     }
 
     @Override
-    public void loadComments(int startAfter, int count) {
-
+    public void loadComments(String start, int count) {
         if (!flagCommentsLoadInProgress) {
 
             flagCommentsLoadInProgress = true;
             dataAdapter.hideLoadMoreItem();
             dataAdapter.showCommentsThrobber();
 
-            new Comments_Service().loadComments(startAfter + 1, count, new Comments_Service.iLoadCommentsCallbacks() {
+            new Comments_Service().loadComments(start, count, new Comments_Service.iLoadCommentsCallbacks() {
                 @Override
                 public void onCommentsLoadSuccess(List<Comment> list) {
                     dataAdapter.hideCommentsThrobber();
@@ -127,6 +126,7 @@ public class CardShow_View extends AppCompatActivity implements
                 }
             });
         }
+
     }
 
     @Override
@@ -185,6 +185,7 @@ public class CardShow_View extends AppCompatActivity implements
     @OnClick(R.id.sendCommentWidget)
     void postComment() {
 
+/*
         Comment comment = new Comment(commentInput.getText().toString());
         disableCommentForm();
 
@@ -210,6 +211,8 @@ public class CardShow_View extends AppCompatActivity implements
                 enableCommentForm();
             }
         });
+*/
+
     }
 
 
@@ -222,7 +225,7 @@ public class CardShow_View extends AppCompatActivity implements
             public void onCardLoadSuccess(Card card) {
                 hideProgressMessage();
                 dataAdapter.setCard(card);
-                loadComments(0, 10);
+                loadComments("start", 10);
             }
 
             @Override

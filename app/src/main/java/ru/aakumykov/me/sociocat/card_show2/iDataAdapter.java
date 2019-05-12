@@ -1,9 +1,10 @@
 package ru.aakumykov.me.sociocat.card_show2;
 
+
 import java.util.List;
 
-import ru.aakumykov.me.complexrecyclerview.card_show2.models.Card;
-import ru.aakumykov.me.complexrecyclerview.card_show2.models.Comment;
+import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Comment;
 
 public interface iDataAdapter {
 

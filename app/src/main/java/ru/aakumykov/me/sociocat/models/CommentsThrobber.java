@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show2.models;
+package ru.aakumykov.me.sociocat.models;
 
 public class CommentsThrobber extends Item {
 
@@ -7,8 +7,4 @@ public class CommentsThrobber extends Item {
         return ItemType.COMMENTS_THROBBER_ITEM;
     }
 
-    @Override
-    public int getKey() {
-        return -1;
-    }
 }

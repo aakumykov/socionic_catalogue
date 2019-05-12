@@ -11,18 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.aakumykov.me.complexrecyclerview.MyUtils;
-import ru.aakumykov.me.complexrecyclerview.R;
-import ru.aakumykov.me.complexrecyclerview.card_show2.models.Card;
-import ru.aakumykov.me.complexrecyclerview.card_show2.models.Comment;
-import ru.aakumykov.me.complexrecyclerview.card_show2.models.CommentsThrobber;
-import ru.aakumykov.me.complexrecyclerview.card_show2.models.Item;
-import ru.aakumykov.me.complexrecyclerview.card_show2.models.LoadMore;
-import ru.aakumykov.me.complexrecyclerview.card_show2.view_holders.Base_ViewHolder;
-import ru.aakumykov.me.complexrecyclerview.card_show2.view_holders.Card_ViewHolder;
-import ru.aakumykov.me.complexrecyclerview.card_show2.view_holders.Comment_ViewHolder;
-import ru.aakumykov.me.complexrecyclerview.card_show2.view_holders.CommentsThrobber_ViewHolder;
-import ru.aakumykov.me.complexrecyclerview.card_show2.view_holders.LoadMore_ViewHolder;
+import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show2.view_holders.Base_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show2.view_holders.Comment_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show2.view_holders.CommentsThrobber_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show2.view_holders.LoadMore_ViewHolder;
+import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.models.CommentsThrobber;
+import ru.aakumykov.me.sociocat.models.Item;
+import ru.aakumykov.me.sociocat.models.LoadMore;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     implements iDataAdapter
