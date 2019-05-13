@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:background="@color/comment_load_mode_background"
         android:padding="12dp"
-        android:text="@string/COMMENTS_more_comments"
         android:textAlignment="center"
         android:textSize="18sp" />
 

@@ -3,6 +3,8 @@ package ru.aakumykov.me.sociocat.card_show2.view_holders;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.R;
@@ -20,16 +22,21 @@ public class LoadMore_ViewHolder extends Base_ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void initialize(Comment comment, iCommentsController commentsController) {
+    public void initialize(@Nullable Comment comment, iCommentsController commentsController) {
 
-//        commentsController.loadComments(item.getKey()+1, 10);
+        if (null != comment) {
+            textView.setText(R.string.COMMENTS_load_more_comments);
 
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                commentsController.loadComments(comment.getKey(), 10);
-            }
-        });
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    commentsController.loadComments(comment.getKey(), 10);
+                }
+            });
+        }
+        else {
+            textView.setText(R.string.COMMENTS_there_is_no_comments_yet);
+        }
     }
 
     @Override

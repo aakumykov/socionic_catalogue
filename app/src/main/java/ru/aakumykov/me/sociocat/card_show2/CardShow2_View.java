@@ -303,15 +303,19 @@ public class CardShow2_View extends BaseView implements
     }
 
     private void setupAutoCommentsLoading() {
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        /*recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
                 if (!recyclerView.canScrollVertically(1)) {
-                    loadComments(dataAdapter.getLastComment().getKey(), 10);
+                    Comment lastComment = dataAdapter.getLastComment();
+                    if (null != lastComment)
+                        loadComments(lastComment.getKey(), 10);
+                    else
+                        // Что тогда?
                 }
             }
-        });
+        });*/
     }
 }
