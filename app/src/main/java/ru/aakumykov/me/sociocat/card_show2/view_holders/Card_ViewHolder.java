@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.card_show2.view_holders;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -32,6 +33,9 @@ public class Card_ViewHolder extends Base_ViewHolder
     @BindView(R.id.imageContainer) FrameLayout imageContainer;
     @BindView(R.id.videoContainer) FrameLayout videoContainer;
     @BindView(R.id.descriptionView) TextView descriptionView;
+    @BindView(R.id.cTimeView) TextView cTimeView;
+    @BindView(R.id.mTimeView) TextView mTimeView;
+    @BindView(R.id.authorView) TextView authorView;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
 
     private static final String TAG = "Card_ViewHolder";
@@ -62,17 +66,24 @@ public class Card_ViewHolder extends Base_ViewHolder
             Log.d(TAG, "initialize()");
             this.isInitialized = true;
             this.cardController = cardController;
-            showCardContent(card);
+            displayCard(card);
         }
     }
 
 
     // Внутренние методы
-    private void showCardContent(Card card) {
+    private void displayCard(Card card) {
 
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
 
+        showBaseContent(card);
+        showAuthor(card);
+        showTime(card.getCTime(), card.getMTime());
+        showTags(card.getTags());
+    }
+
+    private void showBaseContent(Card card) {
         switch (card.getType()) {
 
             case Constants.TEXT_CARD:
@@ -100,11 +111,32 @@ public class Card_ViewHolder extends Base_ViewHolder
                 showYoutubeMedia(card.getAudioCode(), InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER);
                 break;
         }
-
-        displayTags(card.getTags());
     }
 
-    private void displayTags(HashMap<String,Boolean> tagsHash) {
+    private void showAuthor(Card card) {
+        String authorString = context.getString(R.string.CARD_SHOW_author, card.getUserName());
+        authorView.setText(authorString);
+    }
+
+    private void showTime(Long cTime, Long mTime) {
+        Long currentTime = System.currentTimeMillis();
+
+        if (0L != cTime) {
+            CharSequence createTime = DateUtils.getRelativeTimeSpanString(cTime, currentTime, DateUtils.SECOND_IN_MILLIS);
+            String fullCreateTime = context.getString(R.string.CARD_SHOW_created, createTime);
+            cTimeView.setText(fullCreateTime);
+            MyUtils.show(cTimeView);
+        }
+
+        if (0L != mTime && !cTime.equals(mTime)) {
+            CharSequence editTime = DateUtils.getRelativeTimeSpanString(mTime, currentTime, DateUtils.SECOND_IN_MILLIS);
+            String fullEditTime = context.getString(R.string.CARD_SHOW_edited, editTime);
+            mTimeView.setText(fullEditTime);
+            MyUtils.show(mTimeView);
+        }
+    }
+
+    private void showTags(HashMap<String,Boolean> tagsHash) {
         if (null != tagsHash) {
             List<String> tagsList = new ArrayList<>(tagsHash.keySet());
             tagsContainer.setTags(tagsList);
