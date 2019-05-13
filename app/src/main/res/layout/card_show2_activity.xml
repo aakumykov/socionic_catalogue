@@ -65,7 +65,7 @@
 
     <include
         android:id="@+id/commentFormContainer"
-        layout="@layout/comment_form"
+        layout="@layout/card_show_comment_form"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:visibility="gone"

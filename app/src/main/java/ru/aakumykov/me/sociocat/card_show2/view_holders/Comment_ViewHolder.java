@@ -43,7 +43,7 @@ public class Comment_ViewHolder extends Base_ViewHolder {
 
 
     public void initialize(Comment comment, iCommentsController commentsController) {
-        //Log.d(TAG, "Comment_ViewHolder.initialize("+card_show_comment.getText()+")");
+        //Log.d(TAG, "Comment_ViewHolder.initialize("+card_show_comment_item.getText()+")");
 
         this.commentsController = commentsController;
 

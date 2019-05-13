@@ -53,6 +53,8 @@
 
     <!-- Комментарии -->
     <color name="comment_pressed_color">@color/grey</color>
+    <color name="comment_load_mode_background">#E2E2E2</color>
+    <color name="comment_form_parent_comment_background">#E2E2E2</color>
 
     <!-- ... -->
     <color name="defaultTextColor">#3C3C3C</color>

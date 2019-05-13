@@ -16,10 +16,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Загрузка комментариев"
+        android:paddingBottom="12dp"
+        android:text="@string/COMMENTS_loading_comments"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
-        android:textSize="16sp"
-        android:paddingBottom="12dp"/>
+        android:textSize="16sp" />
 
 </LinearLayout>

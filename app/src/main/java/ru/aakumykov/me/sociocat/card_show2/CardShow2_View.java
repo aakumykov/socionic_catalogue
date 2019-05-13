@@ -24,10 +24,12 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.services.Comments_Service;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
+import ru.aakumykov.me.sociocat.interfaces.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.Item;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
@@ -260,11 +262,33 @@ public class CardShow2_View extends BaseView implements
                 hideProgressMessage();
                 setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
                 dataAdapter.setCard(card);
+
+                loadComments(card.getKey());
             }
 
             @Override
             public void onCardLoadFailed(String msg) {
                 showErrorMsg(R.string.CARD_SHOW_error_loading_card, msg);
+            }
+        });
+
+    }
+
+    private void loadComments(String cardKey) {
+
+        dataAdapter.showCommentsThrobber();
+
+        CommentsSingleton.getInstance().loadList(cardKey, new iCommentsSingleton.ListCallbacks() {
+            @Override
+            public void onCommentsLoadSuccess(List<Comment> list) {
+                dataAdapter.hideCommentsThrobber();
+                dataAdapter.appendComments(list);
+            }
+
+            @Override
+            public void onCommentsLoadError(String errorMsg) {
+                dataAdapter.hideCommentsThrobber();
+                showErrorMsg(R.string.CARD_SHOW_error_loading_comments, errorMsg);
             }
         });
 

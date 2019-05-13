@@ -24,8 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="9"
+            android:background="@color/comment_form_parent_comment_background"
             android:padding="6dp"
-            android:background="@color/grey"
             tools:visibility="visible" />
 
         <ImageView

@@ -407,4 +407,6 @@
     <string name="CARD_SHOW_loading_card">Loading card</string>
     <string name="CARD_SHOW_error_loading_card">Error loading card</string>
     <string name="CARD_SHOW_page_title_short">Card viewing</string>
+    <string name="COMMENTS_more_comments">More comments</string>
+    <string name="COMMENTS_loading_comments">Loading comments</string>
 </resources>
