@@ -30,7 +30,7 @@ public class LoadMore_ViewHolder extends Base_ViewHolder {
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    commentsController.loadComments(comment.getKey(), 10);
+                    //commentsController.loadComments(comment.getKey(), 10);
                 }
             });
         }
