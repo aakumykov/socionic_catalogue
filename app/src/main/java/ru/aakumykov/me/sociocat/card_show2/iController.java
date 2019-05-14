@@ -7,9 +7,8 @@ import ru.aakumykov.me.sociocat.models.Item;
 
 public interface iController {
 
-    Context getContext();
-
-    void showCommentForm(Item item);
-    void hideCommentForm();
+//    Context getContext();
+//    void showCommentForm(Item item);
+//    void hideCommentForm();
 
 }

@@ -114,7 +114,8 @@ public class Comment_ViewHolder extends Base_ViewHolder {
     }
 
     private void startReplyToComment(Comment comment) {
-        commentsController.showCommentForm(comment);
+        // Это не ответственность контроллера!
+        //        commentsController.showCommentForm(comment);
     }
 
     private void saveOriginalBackground() {

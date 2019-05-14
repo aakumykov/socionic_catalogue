@@ -4,6 +4,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.models.Item;
 
 public interface iCardShow2_View {
 
@@ -15,4 +16,10 @@ public interface iCardShow2_View {
 
     void showCommentsThrobber();
     void hideCommentsThrobber();
+
+    void showCommentForm(Item parentItem);
+    void hideCommentForm();
+
+    void enableCommentForm();
+    void disableCommentForm();
 }

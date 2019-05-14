@@ -170,6 +170,7 @@ public class Card_ViewHolder extends Base_ViewHolder
     }
 
     private void openCommentForm(Card card) {
-        cardController.showCommentForm(card);
+        // Это не контроллера ответственность!
+        //        cardController.showCommentForm(card);
     }
 }

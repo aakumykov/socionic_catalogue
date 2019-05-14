@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,8 +57,7 @@ public class CardShow2_View extends BaseView implements
     @BindView(R.id.sendCommentWidget) View sendCommentWidget;
 
     private DataAdapter dataAdapter;
-    private boolean flagCommentsLoadInProgress = false;
-    private Comments_Service commentsService;
+//    private boolean flagCommentsLoadInProgress = false;
 
     private iCardController cardController;
     private iCommentsController commentsController;
@@ -80,6 +80,7 @@ public class CardShow2_View extends BaseView implements
 
         activateUpButton();
         setPageTitle(R.string.CARD_SHOW_page_title_short);
+
         processInputIntent();
     }
 
@@ -155,7 +156,7 @@ public class CardShow2_View extends BaseView implements
     }
 
 
-    // iBaseView
+    // Методы iBaseView
     @Override
     public void onUserLogin() {
 
@@ -167,9 +168,9 @@ public class CardShow2_View extends BaseView implements
     }
 
 
-    // iCardShow2_View
+    // Методы iCardShow2_View
     @Override public void displayCard(Card card) {
-        hideCardThrobber(); // Здесь ли?
+        setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
         dataAdapter.setCard(card);
     }
 
@@ -194,26 +195,20 @@ public class CardShow2_View extends BaseView implements
     }
 
 
-    // iController
+    // Методы iCardController
     @Override
-    public Context getContext() {
-        return (Context) this;
-    }
-
-
-    // iCardController
-    public void loadCard(String key) {
+    public void loadCard(String cardKey, @Nullable String commentKey) {
 
         showProgressMessage(R.string.CARD_SHOW_loading_card);
 
-        CardsSingleton.getInstance().loadCard(key, new iCardsSingleton.LoadCallbacks() {
+        CardsSingleton.getInstance().loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
             @Override
             public void onCardLoadSuccess(Card card) {
                 hideProgressMessage();
-                setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
-                dataAdapter.setCard(card);
 
-                loadComments(card.getKey());
+                displayCard(card);
+
+                //commentsController.loadComments(card.getKey(), null, 10);
             }
 
             @Override
@@ -225,26 +220,30 @@ public class CardShow2_View extends BaseView implements
     }
 
 
-    // iCommentsController
-    @Override public void loadComments(String parentCardId, String start, int count) {
+    // Методы iCommentsController
+    @Override public void loadComments(String parentCardId, @Nullable String start, int count) {
+        dataAdapter.showCommentsThrobber();
 
+        CommentsSingleton.getInstance().loadList(parentCardId, new iCommentsSingleton.ListCallbacks() {
+            @Override
+            public void onCommentsLoadSuccess(List<Comment> list) {
+                dataAdapter.hideCommentsThrobber();
+                dataAdapter.appendComments(list);
+            }
+
+            @Override
+            public void onCommentsLoadError(String errorMsg) {
+                dataAdapter.hideCommentsThrobber();
+                showErrorMsg(R.string.CARD_SHOW_error_loading_comments, errorMsg);
+            }
+        });
     }
 
     @Override public void editComment(Comment comment) {
 
     }
 
-
-    // Внешние методы (что?)
-    public void scrollToComment(Comment comment) {
-        int position = dataAdapter.findCommentPosition(comment);
-        if (-1 != position)
-            recyclerView.scrollToPosition(position);
-        else
-            MyUtils.showCustomToast(this, "Комментарий не найден");
-    }
-
-    public void showCommentForm(Item parentItem) {
+    @Override public void showCommentForm(Item parentItem) {
         enableCommentForm();
         commentFormContainer.setVisibility(View.VISIBLE);
 
@@ -258,18 +257,18 @@ public class CardShow2_View extends BaseView implements
         }
     }
 
-    public void hideCommentForm() {
+    @Override public void hideCommentForm() {
         hideParentCommentPiece();
         commentInput.setText("");
         commentFormContainer.setVisibility(View.GONE);
     }
 
-    private void enableCommentForm() {
+    @Override public void enableCommentForm() {
         commentInput.setEnabled(true);
         sendCommentWidget.setEnabled(true);
     }
 
-    private void disableCommentForm() {
+    @Override public void disableCommentForm() {
         commentInput.setEnabled(false);
         sendCommentWidget.setEnabled(false);
     }
@@ -279,59 +278,46 @@ public class CardShow2_View extends BaseView implements
     private void processInputIntent() {
         Intent intent = getIntent();
 
-        if (null != intent)
-        {
+        if (null != intent) {
             String cardKey = intent.getStringExtra(Constants.CARD_KEY);
             String commentKey =intent.getStringExtra(Constants.COMMENT_KEY);
-            loadCard(cardKey);
+            cardController.loadCard(cardKey, commentKey);
         }
         else {
             showErrorMsg(R.string.CARD_SHOW_error_loading_card, "Intent is NULL");
         }
     }
 
-
-
-    public void loadComments(String cardKey) {
-
-        dataAdapter.showCommentsThrobber();
-
-        CommentsSingleton.getInstance().loadList(cardKey, new iCommentsSingleton.ListCallbacks() {
-            @Override
-            public void onCommentsLoadSuccess(List<Comment> list) {
-                dataAdapter.hideCommentsThrobber();
-                dataAdapter.appendComments(list);
-            }
-
-            @Override
-            public void onCommentsLoadError(String errorMsg) {
-                dataAdapter.hideCommentsThrobber();
-                showErrorMsg(R.string.CARD_SHOW_error_loading_comments, errorMsg);
-            }
-        });
-
+    private void scrollToComment(Comment comment) {
+        int position = dataAdapter.findCommentPosition(comment);
+        if (-1 != position)
+            recyclerView.scrollToPosition(position);
+        else
+            MyUtils.showCustomToast(this, "Комментарий не найден");
     }
 
-    private void refreshCard() {
-        dataAdapter.clearList();
-    }
 
-    private void setupAutoCommentsLoading() {
-        /*recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
+//    private void refreshCard() {
+//        dataAdapter.clearList();
+//        processInputIntent();
+//    }
 
-                if (!recyclerView.canScrollVertically(1)) {
-                    Comment lastComment = dataAdapter.getLastComment();
-                    if (null != lastComment)
-                        loadComments(lastComment.getKey(), 10);
-                    else
-                        // Что тогда?
-                }
-            }
-        });*/
-    }
+//    private void setupAutoCommentsLoading() {
+//        /*recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//
+//                if (!recyclerView.canScrollVertically(1)) {
+//                    Comment lastComment = dataAdapter.getLastComment();
+//                    if (null != lastComment)
+//                        loadComments(lastComment.getKey(), 10);
+//                    else
+//                        // Что тогда?
+//                }
+//            }
+//        });*/
+//    }
 
 //    @Override
 //    public void loadComments(String start, int count) {
