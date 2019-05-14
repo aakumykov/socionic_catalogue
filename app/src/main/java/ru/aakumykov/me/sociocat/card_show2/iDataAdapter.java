@@ -24,6 +24,8 @@ public interface iDataAdapter {
 
     void clearList();
 
+    void hideLastServiceItem();
+
     void showLoadMoreItem();
     void hideLoadMoreItem();
 

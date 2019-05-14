@@ -154,14 +154,10 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void appendComments(List<Comment> list) {
-        hideLoadMoreItem();
-
         int startIndex = getLastItemIndex() + 1;
         int itemsCount = list.size();
         itemsList.addAll(list);
         notifyItemRangeChanged(startIndex, itemsCount);
-
-        showLoadMoreItem();
     }
 
     @Override
@@ -201,18 +197,28 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public Comment getLastComment() {
-        int lastCommentIndex = getLastItemIndex();
-        if (0 == lastCommentIndex)
+        int maxListIndex = getLastItemIndex();
+
+        if (0 == maxListIndex)
             return null;
 
         Item item;
         do {
-            item = itemsList.get(lastCommentIndex);
-            lastCommentIndex -= 1;
-        } while (!item.getItemType().equals(Item.ItemType.COMMENT_ITEM));
-        return (Comment) item;
+            item = itemsList.get(maxListIndex);
+            if (item.isCommentItem())
+                return (Comment) item;
+            maxListIndex -= 1;
+        } while (maxListIndex > 0);
+
+        return null;
     }
 
+
+    @Override
+    public void hideLastServiceItem() {
+        hideLoadMoreItem();
+        hideCommentsThrobber();
+    }
 
     @Override
     public void showLoadMoreItem() {
@@ -235,8 +241,6 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void hideCommentsThrobber() {
         removeLastItemIfType(Item.ItemType.COMMENTS_THROBBER_ITEM);
-//        itemsList.remove(getLastItemIndex());
-//        notifyDataSetChanged();
     }
 
 
@@ -245,7 +249,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         int lastItemIndex = getLastItemIndex();
         Item lastItem = itemsList.get(lastItemIndex);
 
-        if (lastItem.getItemType().equals(itemType)) {
+        if (lastItem.is(itemType)) {
             itemsList.remove(getLastItemIndex());
             notifyItemRemoved(lastItemIndex);
         }
@@ -253,6 +257,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private int getLastItemIndex() {
         int listSize = itemsList.size();
-        return (0 == listSize) ? 0 : listSize - 1;
+        if (0 == listSize) return 0;
+        else return listSize - 1;
     }
 }

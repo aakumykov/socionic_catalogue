@@ -175,7 +175,9 @@ public class CardShow2_View extends BaseView implements
     }
 
     @Override public void displayComments(List<Comment> list) {
-        dataAdapter.appendComments(list);
+        dataAdapter.hideLastServiceItem();
+         dataAdapter.appendComments(list);
+        dataAdapter.showLoadMoreItem();
     }
 
     @Override public void showCardThrobber() {
@@ -208,7 +210,7 @@ public class CardShow2_View extends BaseView implements
 
                 displayCard(card);
 
-                //commentsController.loadComments(card.getKey(), null, 10);
+                commentsController.loadComments(card.getKey(), null, 10);
             }
 
             @Override
@@ -228,7 +230,7 @@ public class CardShow2_View extends BaseView implements
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
                 dataAdapter.hideCommentsThrobber();
-                dataAdapter.appendComments(list);
+                displayComments(list);
             }
 
             @Override

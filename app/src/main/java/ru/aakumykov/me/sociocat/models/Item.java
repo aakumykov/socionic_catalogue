@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.models;
 
+import com.google.firebase.database.Exclude;
+
 public abstract class Item {
 
     public static final int CARD_VIEW_TYPE = 1;
@@ -14,5 +16,29 @@ public abstract class Item {
         COMMENTS_THROBBER_ITEM
     }
 
-    public abstract ItemType getItemType();
+    @Exclude private ItemType itemType;
+
+    public void setItemType(ItemType itemType) {
+        this.itemType = itemType;
+    }
+
+    public ItemType getItemType() {
+        return itemType;
+    }
+
+    public boolean is(ItemType testItemType) {
+        return itemType.equals(testItemType);
+    }
+
+    public boolean isCommentItem() {
+        return itemType.equals(ItemType.COMMENT_ITEM);
+    }
+
+    public boolean isCommentsThrobberItem() {
+        return itemType.equals(ItemType.CARD_ITEM);
+    }
+
+    public boolean isLoadMoreItem() {
+        return itemType.equals(ItemType.LOAD_MORE_ITEM);
+    }
 }

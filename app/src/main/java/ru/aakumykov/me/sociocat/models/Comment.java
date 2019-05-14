@@ -30,8 +30,11 @@ public class Comment extends Item implements Parcelable
     private Integer rating = 0;
     private List<String> rateUpList = new ArrayList<>();
     private List<String> rateDownList = new ArrayList<>();
-    
-    public Comment(){}
+
+
+    public Comment(){
+        setItemType(ItemType.COMMENT_ITEM);
+    }
     
     public Comment(String text, String cardId, String parentId,
                    String parentText, String userId, String userName, String userAvatar) {
@@ -45,12 +48,6 @@ public class Comment extends Item implements Parcelable
         this.rating = 0;
         this.rateUpList = new ArrayList<>();
         this.rateDownList = new ArrayList<>();
-    }
-
-
-    @Override
-    public ItemType getItemType() {
-        return ItemType.COMMENT_ITEM;
     }
 
     @Override @Exclude

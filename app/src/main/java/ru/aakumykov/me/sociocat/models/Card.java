@@ -41,14 +41,8 @@ public class Card extends Item implements Parcelable
     private Long cTime = 0L;
     private Long mTime = 0L;
 
-
     public Card() {
-
-    }
-
-    @Override @Exclude
-    public ItemType getItemType() {
-        return ItemType.CARD_ITEM;
+        setItemType(ItemType.CARD_ITEM);
     }
 
     @Override @Exclude
