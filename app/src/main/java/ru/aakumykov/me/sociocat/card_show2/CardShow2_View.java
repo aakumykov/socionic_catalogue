@@ -21,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.CommentsController;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.services.Comments_Service;
@@ -35,9 +36,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
 public class CardShow2_View extends BaseView implements
-        iCardShow2_View,
-        iCardController,
-        iCommentsController
+        iCardShow2_View
 {
     public interface LoadCommentsCallbacks {
         void onLoadCommentsSuccess(List<Comment> list);
@@ -61,7 +60,7 @@ public class CardShow2_View extends BaseView implements
 
     private iCardController cardController;
     private iCommentsController commentsController;
-
+    private boolean firstRun = true;
 
     // Системные методы
     @Override
@@ -70,8 +69,8 @@ public class CardShow2_View extends BaseView implements
         setContentView(R.layout.card_show2_activity);
         ButterKnife.bind(this);
 
-        cardController = this;
-        commentsController = this;
+        this.cardController = new CardController();
+        this.commentsController = new CommentsController();
 
         dataAdapter = new DataAdapter();
 
@@ -80,20 +79,28 @@ public class CardShow2_View extends BaseView implements
 
         activateUpButton();
         setPageTitle(R.string.CARD_SHOW_page_title_short);
-
-        processInputIntent();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        dataAdapter.bindView(this);
+    protected void onStart() {
+        super.onStart();
+
+        cardController.bindView(this);
+        commentsController.bindView(this);
+        dataAdapter.bindControllers(cardController, commentsController);
+
+        if (firstRun) {
+            firstRun = false;
+            processInputIntent(); // TODO: чья ответственность обрабатывать Intent?
+        }
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        dataAdapter.unbindView();
+    protected void onStop() {
+        super.onStop();
+        cardController.unbindView();
+        commentsController.unbindView();
+        dataAdapter.unbindControllers();
     }
 
     @Override
@@ -112,6 +119,16 @@ public class CardShow2_View extends BaseView implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onUserLogin() {
+
+    }
+
+    @Override
+    public void onUserLogout() {
+
     }
 
 
@@ -156,19 +173,7 @@ public class CardShow2_View extends BaseView implements
     }
 
 
-    // Методы iBaseView
-    @Override
-    public void onUserLogin() {
-
-    }
-
-    @Override
-    public void onUserLogout() {
-
-    }
-
-
-    // Методы iCardShow2_View
+    // Интерфейсные методы
     @Override public void displayCard(Card card) {
         setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
         dataAdapter.setCard(card);
@@ -196,83 +201,34 @@ public class CardShow2_View extends BaseView implements
         dataAdapter.hideCommentsThrobber();
     }
 
-
-    // Методы iCardController
-    @Override
-    public void loadCard(String cardKey, @Nullable String commentKey) {
-
-        showProgressMessage(R.string.CARD_SHOW_loading_card);
-
-        CardsSingleton.getInstance().loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
-            @Override
-            public void onCardLoadSuccess(Card card) {
-                hideProgressMessage();
-
-                displayCard(card);
-
-                commentsController.loadComments(card.getKey(), null, 10);
-            }
-
-            @Override
-            public void onCardLoadFailed(String msg) {
-                showErrorMsg(R.string.CARD_SHOW_error_loading_card, msg);
-            }
-        });
-
-    }
-
-
-    // Методы iCommentsController
-    @Override public void loadComments(String parentCardId, @Nullable String start, int count) {
-        dataAdapter.showCommentsThrobber();
-
-        CommentsSingleton.getInstance().loadList(parentCardId, new iCommentsSingleton.ListCallbacks() {
-            @Override
-            public void onCommentsLoadSuccess(List<Comment> list) {
-                dataAdapter.hideCommentsThrobber();
-                displayComments(list);
-            }
-
-            @Override
-            public void onCommentsLoadError(String errorMsg) {
-                dataAdapter.hideCommentsThrobber();
-                showErrorMsg(R.string.CARD_SHOW_error_loading_comments, errorMsg);
-            }
-        });
-    }
-
-    @Override public void editComment(Comment comment) {
-
-    }
-
     @Override public void showCommentForm(Item parentItem) {
         enableCommentForm();
-        commentFormContainer.setVisibility(View.VISIBLE);
+//        commentFormContainer.setVisibility(View.VISIBLE);
 
         if (parentItem instanceof Comment) {
             String parentCommentText = MyUtils.cutToLength(((Comment) parentItem).getText(), 20);
-            parentCommentTextView.setText(parentCommentText);
-            parentCommentContainer.setVisibility(View.VISIBLE);
+//            parentCommentTextView.setText(parentCommentText);
+//            parentCommentContainer.setVisibility(View.VISIBLE);
         }
         else {
-            hideParentCommentPiece();
+//            hideParentCommentPiece();
         }
     }
 
     @Override public void hideCommentForm() {
-        hideParentCommentPiece();
-        commentInput.setText("");
-        commentFormContainer.setVisibility(View.GONE);
+//        hideParentCommentPiece();
+//        commentInput.setText("");
+//        commentFormContainer.setVisibility(View.GONE);
     }
 
     @Override public void enableCommentForm() {
-        commentInput.setEnabled(true);
-        sendCommentWidget.setEnabled(true);
+//        commentInput.setEnabled(true);
+//        sendCommentWidget.setEnabled(true);
     }
 
     @Override public void disableCommentForm() {
-        commentInput.setEnabled(false);
-        sendCommentWidget.setEnabled(false);
+//        commentInput.setEnabled(false);
+//        sendCommentWidget.setEnabled(false);
     }
 
 

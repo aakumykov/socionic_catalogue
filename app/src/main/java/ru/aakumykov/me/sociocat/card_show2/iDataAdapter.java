@@ -12,6 +12,9 @@ public interface iDataAdapter {
         void onCommentAppended();
     }
 
+    void bindControllers(iCardController cardController, iCommentsController commentsController);
+    void unbindControllers();
+
     void setCard(Card card);
     void appendComments(List<Comment> list);
     void appendComment(Comment comment, AppendCommentCallbacks callbacks);

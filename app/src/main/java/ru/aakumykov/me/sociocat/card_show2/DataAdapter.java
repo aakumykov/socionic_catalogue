@@ -22,7 +22,6 @@ import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.CommentsThrobber;
 import ru.aakumykov.me.sociocat.models.Item;
 import ru.aakumykov.me.sociocat.models.LoadMore;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     implements iDataAdapter
@@ -30,7 +29,8 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final static String TAG = "DataAdapter";
     private ArrayList<Item> itemsList;
 
-    private CardShow2_View view;
+    private iCardController cardController;
+    private iCommentsController commentsController;
 
 
     // Конструктор
@@ -39,16 +39,19 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
 
-    public void bindView(CardShow2_View view) {
-        this.view = view;
-    }
-
-    public void unbindView() {
-        this.view = null;
-    }
-
-
     // Системные методы
+    @Override
+    public void bindControllers(iCardController cardController, iCommentsController commentsController) {
+        this.cardController = cardController;
+        this.commentsController = commentsController;
+    }
+
+    @Override
+    public void unbindControllers() {
+        this.cardController = null;
+        this.commentsController = null;
+    }
+
     @Override
     public int getItemCount() {
         return itemsList == null ? 0 : itemsList.size();
@@ -114,16 +117,16 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         switch (viewHolder.getItemViewType()) {
 
             case Item.CARD_VIEW_TYPE:
-                ((Card_ViewHolder) viewHolder).initialize((Card) item, view);
+                ((Card_ViewHolder) viewHolder).initialize((Card) item, cardController);
                 break;
 
             case Item.COMMENT_VIEW_TYPE:
-                ((Comment_ViewHolder) viewHolder).initialize((Comment) item, view);
+                ((Comment_ViewHolder) viewHolder).initialize((Comment) item, commentsController);
                 break;
 
             case Item.LOAD_MORE_VIEW_TYPE:
                 Comment lastComment = getLastComment();
-                ((LoadMore_ViewHolder) viewHolder).initialize(lastComment, view);
+                ((LoadMore_ViewHolder) viewHolder).initialize(lastComment, commentsController);
 
             default:
                 break;
@@ -182,17 +185,17 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void setComment(int position, Comment comment) {
-        MyUtils.showCustomToast(view, "Замена комментария ещё не реализована");
+
     }
 
     @Override
     public void insertComment(int position, Comment comment) {
-        MyUtils.showCustomToast(view, "Вставка комментария ещё не реализована");
+
     }
 
     @Override
     public void removeComment(int position) {
-        MyUtils.showCustomToast(view, "Удаление комментария ещё не реализовано");
+
     }
 
     @Override
