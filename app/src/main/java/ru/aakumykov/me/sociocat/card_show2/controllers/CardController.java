@@ -44,4 +44,8 @@ public class CardController implements iCardController {
 
     }
 
+    @Override
+    public void startCommentingCard(Card card) {
+        view.showCommentForm(card);
+    }
 }

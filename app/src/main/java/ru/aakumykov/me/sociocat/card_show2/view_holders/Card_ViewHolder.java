@@ -15,6 +15,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.myimageloader.MyImageLoader;
@@ -37,10 +38,12 @@ public class Card_ViewHolder extends Base_ViewHolder
     @BindView(R.id.mTimeView) TextView mTimeView;
     @BindView(R.id.authorView) TextView authorView;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
+    @BindView(R.id.replyWidget) TextView replyWidget;
 
     private static final String TAG = "Card_ViewHolder";
     private iCardController cardController;
     private Context context;
+    private Card currentCard;
     private boolean isInitialized = false;
 
     // Конструктор
@@ -48,7 +51,6 @@ public class Card_ViewHolder extends Base_ViewHolder
         super(itemView);
         ButterKnife.bind(this, itemView);
         this.context = itemView.getContext();
-        Log.d(TAG, "new Card_ViewHolder()");
     }
 
     @Override
@@ -63,11 +65,18 @@ public class Card_ViewHolder extends Base_ViewHolder
 
     public void initialize(Card card, iCardController cardController) {
         if (!this.isInitialized) {
-            Log.d(TAG, "initialize()");
-            this.isInitialized = true;
             this.cardController = cardController;
+            this.currentCard = card;
+            this.isInitialized = true;
             displayCard(card);
         }
+    }
+
+
+    // Нажатия
+    @OnClick(R.id.replyWidget)
+    void openCommentForm() {
+        cardController.startCommentingCard(currentCard);
     }
 
 

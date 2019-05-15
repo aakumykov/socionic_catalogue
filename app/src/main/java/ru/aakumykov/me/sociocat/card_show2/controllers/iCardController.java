@@ -10,4 +10,5 @@ public interface iCardController extends iController {
 
     void loadCard(String cardKey, String commentKey, LoadCardCallbacks callbacks);
 
+    void startCommentingCard(Card card);
 }
