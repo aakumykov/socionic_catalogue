@@ -1,18 +1,13 @@
-package ru.aakumykov.me.sociocat;
-
-import android.view.View;
+package ru.aakumykov.me.sociocat.card_show2.controllers;
 
 import androidx.annotation.Nullable;
 
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.card_show2.iCardShow2_View;
-import ru.aakumykov.me.sociocat.card_show2.iCommentsController;
 import ru.aakumykov.me.sociocat.interfaces.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.models.Comment;
-import ru.aakumykov.me.sociocat.models.Item;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CommentsController implements iCommentsController {
 

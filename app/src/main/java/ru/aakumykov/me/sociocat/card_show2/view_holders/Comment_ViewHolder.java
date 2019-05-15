@@ -11,7 +11,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.iCommentsController;
+import ru.aakumykov.me.sociocat.card_show2.controllers.iCommentsController;
 import ru.aakumykov.me.sociocat.models.Comment;
 
 public class Comment_ViewHolder extends Base_ViewHolder {

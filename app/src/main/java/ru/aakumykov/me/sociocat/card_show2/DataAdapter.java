@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show2.controllers.iCardController;
+import ru.aakumykov.me.sociocat.card_show2.controllers.iCommentsController;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Base_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Comment_ViewHolder;
@@ -164,10 +166,11 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void appendComment(Comment comment, @Nullable AppendCommentCallbacks callbacks) {
-        hideLoadMoreItem();
-        itemsList.add(comment);
-        showLoadMoreItem();
+    public void appendOneComment(Comment comment, @Nullable AppendCommentCallbacks callbacks) {
+        List<Comment> list = new ArrayList<>();
+        list.add(comment);
+        appendComments(list);
+
         if (null != callbacks)
             callbacks.onCommentAppended();
     }

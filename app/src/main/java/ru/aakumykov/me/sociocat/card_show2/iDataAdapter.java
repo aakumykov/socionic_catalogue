@@ -3,6 +3,8 @@ package ru.aakumykov.me.sociocat.card_show2;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.card_show2.controllers.iCardController;
+import ru.aakumykov.me.sociocat.card_show2.controllers.iCommentsController;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 
@@ -17,7 +19,7 @@ public interface iDataAdapter {
 
     void setCard(Card card);
     void appendComments(List<Comment> list);
-    void appendComment(Comment comment, AppendCommentCallbacks callbacks);
+    void appendOneComment(Comment comment, AppendCommentCallbacks callbacks);
     int findCommentPosition(Comment comment);
 
     void setComment(int position, Comment comment);
