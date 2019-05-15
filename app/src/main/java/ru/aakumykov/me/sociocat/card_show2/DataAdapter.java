@@ -166,7 +166,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void appendOneComment(Comment comment, @Nullable AppendCommentCallbacks callbacks) {
+    public void appendComment(Comment comment, @Nullable AppendCommentCallbacks callbacks) {
         List<Comment> list = new ArrayList<>();
         list.add(comment);
         appendComments(list);
@@ -187,7 +187,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void setComment(int position, Comment comment) {
+    public void updateComment(int position, Comment comment) {
 
     }
 

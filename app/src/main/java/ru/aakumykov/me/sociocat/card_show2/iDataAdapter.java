@@ -19,12 +19,13 @@ public interface iDataAdapter {
 
     void setCard(Card card);
     void appendComments(List<Comment> list);
-    void appendOneComment(Comment comment, AppendCommentCallbacks callbacks);
-    int findCommentPosition(Comment comment);
 
-    void setComment(int position, Comment comment);
+    void appendComment(Comment comment, AppendCommentCallbacks callbacks);
     void insertComment(int position, Comment comment);
+    void updateComment(int position, Comment comment);
     void removeComment(int position);
+
+    int findCommentPosition(Comment comment);
     Comment getLastComment();
 
     void clearList();

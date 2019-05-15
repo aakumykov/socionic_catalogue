@@ -147,7 +147,7 @@ public class CardShow2_View extends BaseView implements
             public void onPostCommentSuccess(Comment comment) {
 
                 hideCommentForm();
-                dataAdapter.appendOneComment(comment, new iDataAdapter.AppendCommentCallbacks() {
+                dataAdapter.appendComment(comment, new iDataAdapter.AppendCommentCallbacks() {
 
                     @Override
                     public void onCommentAppended() {
