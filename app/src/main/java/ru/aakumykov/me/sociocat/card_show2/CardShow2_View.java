@@ -50,16 +50,15 @@ public class CardShow2_View extends BaseView implements
     @BindView(R.id.commentInput) EditText commentInput;
     @BindView(R.id.sendCommentWidget) View sendCommentWidget;
 
-    private DataAdapter dataAdapter;
-//    private boolean flagCommentsLoadInProgress = false;
-
     private iCardController cardController;
     private iCommentsController commentsController;
+    private DataAdapter dataAdapter;
     private boolean firstRun = true;
+    //    private boolean flagCommentsLoadInProgress = false;
+
 
     // Системные методы
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_show2_activity);
         ButterKnife.bind(this);
@@ -76,8 +75,7 @@ public class CardShow2_View extends BaseView implements
         setPageTitle(R.string.CARD_SHOW_page_title_short);
     }
 
-    @Override
-    protected void onStart() {
+    @Override protected void onStart() {
         super.onStart();
 
         cardController.bindView(this);
@@ -90,80 +88,33 @@ public class CardShow2_View extends BaseView implements
         }
     }
 
-    @Override
-    protected void onStop() {
+    @Override protected void onStop() {
         super.onStop();
         cardController.unbindView();
         commentsController.unbindView();
         dataAdapter.unbindControllers();
     }
 
-    @Override
-    public void onBackPressed() {
+    @Override public void onBackPressed() {
         if (View.VISIBLE == commentFormContainer.getVisibility())
             hideCommentForm();
         else
             super.onBackPressed();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onUserLogin() {
+    @Override public void onUserLogin() {
 
     }
 
-    @Override
-    public void onUserLogout() {
-
-    }
-
-
-    // Нажатия
-    @OnClick(R.id.parentCommentDiscardWidget)
-    void hideParentCommentPiece() {
-        parentCommentTextView.setText("");
-        parentCommentContainer.setVisibility(View.GONE);
-    }
-
-    @OnClick(R.id.sendCommentWidget)
-    void postComment() {
-
-/*
-        Comment comment = new Comment(commentInput.getText().toString());
-        disableCommentForm();
-
-        commentsService.postComment(comment, new Comments_Service.iPostCommentCallbacks() {
-
-            @Override
-            public void onPostCommentSuccess(Comment comment) {
-
-                hideCommentForm();
-                dataAdapter.appendComment(comment, new iDataAdapter.AppendCommentCallbacks() {
-
-                    @Override
-                    public void onCommentAppended() {
-                        scrollToComment(comment);
-                    }
-
-                });
-            }
-
-            @Override
-            public void onPostCommentFail(String errorMsg) {
-                showError(errorMsg);
-                enableCommentForm();
-            }
-        });
-*/
+    @Override public void onUserLogout() {
 
     }
 
@@ -224,6 +175,50 @@ public class CardShow2_View extends BaseView implements
     @Override public void disableCommentForm() {
 //        commentInput.setEnabled(false);
 //        sendCommentWidget.setEnabled(false);
+    }
+
+
+    // Нажатия
+    @OnClick(R.id.parentCommentDiscardWidget)
+    void hideParentCommentPiece() {
+        //parentCommentTextView.setText("");
+        //parentCommentContainer.setVisibility(View.GONE);
+        MyUtils.showCustomToast(this, "Ещё не реализовано");
+    }
+
+    @OnClick(R.id.sendCommentWidget)
+    void postComment() {
+
+        MyUtils.showCustomToast(this, "Ещё не реализовано");
+
+/*
+        Comment comment = new Comment(commentInput.getText().toString());
+        disableCommentForm();
+
+        commentsService.postComment(comment, new Comments_Service.iPostCommentCallbacks() {
+
+            @Override
+            public void onPostCommentSuccess(Comment comment) {
+
+                hideCommentForm();
+                dataAdapter.appendComment(comment, new iDataAdapter.AppendCommentCallbacks() {
+
+                    @Override
+                    public void onCommentAppended() {
+                        scrollToComment(comment);
+                    }
+
+                });
+            }
+
+            @Override
+            public void onPostCommentFail(String errorMsg) {
+                showError(errorMsg);
+                enableCommentForm();
+            }
+        });
+*/
+
     }
 
 
