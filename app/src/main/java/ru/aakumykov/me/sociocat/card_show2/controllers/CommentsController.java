@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.iCardShow2_View;
 import ru.aakumykov.me.sociocat.interfaces.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -26,19 +27,20 @@ public class CommentsController implements iCommentsController {
 
     // Собственные методы
     @Override public void loadComments(String parentCardId, @Nullable String start, int count) {
-//        dataAdapter.showCommentsThrobber();
+
+        view.showCommentsThrobber();
 
         CommentsSingleton.getInstance().loadList(parentCardId, new iCommentsSingleton.ListCallbacks() {
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
-//                dataAdapter.hideCommentsThrobber();
-//                displayComments(list);
+                view.hideCommentsThrobber();
+                view.displayComments(list);
             }
 
             @Override
             public void onCommentsLoadError(String errorMsg) {
-//                dataAdapter.hideCommentsThrobber();
-//                showErrorMsg(R.string.CARD_SHOW_error_loading_comments, errorMsg);
+                view.hideCommentsThrobber();
+                view.showErrorMsg(R.string.CARD_SHOW_error_loading_comments, errorMsg);
             }
         });
     }

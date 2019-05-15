@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.controllers.CardController;
@@ -229,7 +230,12 @@ public class CardShow2_View extends BaseView implements
         if (null != intent) {
             String cardKey = intent.getStringExtra(Constants.CARD_KEY);
             String commentKey =intent.getStringExtra(Constants.COMMENT_KEY);
-            cardController.loadCard(cardKey, commentKey);
+
+            cardController.loadCard(cardKey, commentKey, new iCardController.LoadCardCallbacks() {
+                @Override public void onCardLoaded(Card card) {
+                    commentsController.loadComments(card.getKey(), null, Config.DEFAULT_COMMENTS_LOAD_COUNT);
+                }
+            });
         }
         else {
             showErrorMsg(R.string.CARD_SHOW_error_loading_card, "Intent is NULL");

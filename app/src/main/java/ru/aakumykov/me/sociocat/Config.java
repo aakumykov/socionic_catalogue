@@ -23,4 +23,6 @@ public final class Config {
     public static final String YOUTUBE_SHORT_LINK_REGEX = "^https?://youtu.be/([^/]+)$";
     public static final String YOUTUBE_LONG_LINK_REGEX_1 = "^https?://youtube\\.com/watch\\?v=([\\w-]+)";
     public static final String YOUTUBE_LONG_LINK_REGEX_2 = "^https?://www\\.youtube\\.com/watch\\?v=([\\w-]+)";
+
+    public static final int DEFAULT_COMMENTS_LOAD_COUNT = 10;
 }

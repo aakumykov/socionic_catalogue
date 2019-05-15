@@ -24,7 +24,7 @@ public class CardController implements iCardController {
     }
 
     @Override
-    public void loadCard(String cardKey, @Nullable String commentKey) {
+    public void loadCard(String cardKey, @Nullable String commentKey, LoadCardCallbacks callbacks) {
 
         view.showProgressMessage(R.string.CARD_SHOW_loading_card);
 
@@ -32,10 +32,8 @@ public class CardController implements iCardController {
             @Override
             public void onCardLoadSuccess(Card card) {
                 view.hideProgressMessage();
-
                 view.displayCard(card);
-
-//                commentsController.loadComments(card.getKey(), null, 10);
+                callbacks.onCardLoaded(card);
             }
 
             @Override
