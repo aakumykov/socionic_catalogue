@@ -25,6 +25,8 @@ public interface iDataAdapter {
     void updateComment(int position, Comment comment);
     void removeComment(int position);
 
+    Comment getComment(int position);
+
     int findCommentPosition(Comment comment);
     Comment getLastComment();
 

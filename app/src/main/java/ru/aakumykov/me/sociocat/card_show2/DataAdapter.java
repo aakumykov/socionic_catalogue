@@ -93,7 +93,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 return new Card_ViewHolder(itemView);
 
             case Item.COMMENT_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.card_show_comment_item, parent, false);
+                itemView = layoutInflater.inflate(R.layout.card_show_comment, parent, false);
                 return new Comment_ViewHolder(itemView);
 
             case Item.LOAD_MORE_VIEW_TYPE:
@@ -199,6 +199,13 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void removeComment(int position) {
 
+    }
+
+
+    @Override public Comment getComment(int position) {
+        // TODO: проверка на существование
+        Item item = itemsList.get(position);
+        return (Comment) item;
     }
 
     @Override

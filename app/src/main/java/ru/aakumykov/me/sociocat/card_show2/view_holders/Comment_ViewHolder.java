@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.controllers.iCommentsController;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -43,7 +44,7 @@ public class Comment_ViewHolder extends Base_ViewHolder {
 
 
     public void initialize(Comment comment, iCommentsController commentsController) {
-        //Log.d(TAG, "Comment_ViewHolder.initialize("+card_show_comment_item.getText()+")");
+        //Log.d(TAG, "Comment_ViewHolder.initialize("+card_show_comment.getText()+")");
 
         this.commentsController = commentsController;
 
@@ -76,6 +77,12 @@ public class Comment_ViewHolder extends Base_ViewHolder {
         if (null != originalBackground) {
             commentRow.setBackground(originalBackground);
         }
+    }
+
+
+    @OnClick(R.id.replyWidget)
+    void onReplyClicked() {
+        commentsController.startReplyingComment(getAdapterPosition());
     }
 
 
