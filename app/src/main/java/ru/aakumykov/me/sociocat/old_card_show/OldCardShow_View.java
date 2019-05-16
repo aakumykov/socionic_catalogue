@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show;
+package ru.aakumykov.me.sociocat.old_card_show;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -58,8 +58,8 @@ import ru.aakumykov.me.sociocat.utils.MyYoutubePlayer;
 
 //TODO: уменьшение изображения
 
-public class CardShow_View extends BaseView implements
-        iCardShow.View,
+public class OldCardShow_View extends BaseView implements
+        iOldCardShow.View,
         View.OnClickListener,
         PopupMenu.OnMenuItemClickListener,
         TagView.OnTagClickListener,
@@ -92,7 +92,7 @@ public class CardShow_View extends BaseView implements
 
     private final static String TAG = "CardShow2_View";
     private boolean firstRun = true;
-    private iCardShow.Presenter presenter;
+    private iOldCardShow.Presenter presenter;
     private ArrayList<Comment> commentsList;
     private CommentsAdapter commentsAdapter;
 
@@ -111,13 +111,13 @@ public class CardShow_View extends BaseView implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.card_show_activity);
+        setContentView(R.layout.old_card_show_activity);
         ButterKnife.bind(this);
 
         // Собираю разметку из частей
         listView = findViewById(R.id.listView);
-        View headerView = getLayoutInflater().inflate(R.layout.card_show_header, null);
-        View footerView = getLayoutInflater().inflate(R.layout.card_show_footer, null);
+        View headerView = getLayoutInflater().inflate(R.layout.old_card_show_header, null);
+        View footerView = getLayoutInflater().inflate(R.layout.old_card_show_footer, null);
         listView.addHeaderView(headerView);
         listView.addFooterView(footerView);
 
@@ -166,7 +166,7 @@ public class CardShow_View extends BaseView implements
 
         tagsContainer.setOnTagClickListener(this);
 
-        presenter = new CardShow_Presenter();
+        presenter = new OldCardShow_Presenter();
     }
 
     @Override
@@ -877,7 +877,7 @@ public class CardShow_View extends BaseView implements
 
                     @Override
                     public void onYesInDialog() {
-                        Intent intent = new Intent(CardShow_View.this, UserEdit_View.class);
+                        Intent intent = new Intent(OldCardShow_View.this, UserEdit_View.class);
                         intent.putExtra(Constants.USER_ID, user.getKey());
                         startActivityForResult(intent, Constants.CODE_FORCE_SETUP_USER_NAME);
                     }
@@ -903,7 +903,7 @@ public class CardShow_View extends BaseView implements
 
                 @Override
                 public void onYesInDialog() {
-                    Intent intent = new Intent(CardShow_View.this, Login_View.class);
+                    Intent intent = new Intent(OldCardShow_View.this, Login_View.class);
                     intent.setAction(Constants.ACTION_LOGIN_FOR_COMMENT);
                     startActivityForResult(intent, Constants.CODE_LOGIN_FOR_COMMENT);
                 }
@@ -1083,7 +1083,7 @@ public class CardShow_View extends BaseView implements
 
                 @Override
                 public void onYesInDialog() {
-                    Intent intent = new Intent(CardShow_View.this, UserEdit_View.class);
+                    Intent intent = new Intent(OldCardShow_View.this, UserEdit_View.class);
                     String userId = user.getKey();
                     intent.putExtra(Constants.USER_ID, userId);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -1185,7 +1185,7 @@ public class CardShow_View extends BaseView implements
 
         commentsSubscriptionInProgress = true;
 
-        presenter.changeCardCommentsSubscription(menuItem.isChecked(), new iCardShow.ChangeCommentsSubscriptionCallbacks() {
+        presenter.changeCardCommentsSubscription(menuItem.isChecked(), new iOldCardShow.ChangeCommentsSubscriptionCallbacks() {
             @Override
             public void onCommentsSubscriptionChangeDone() {
                 commentsSubscriptionInProgress = false;

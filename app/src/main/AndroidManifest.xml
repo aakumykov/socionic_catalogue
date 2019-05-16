@@ -18,7 +18,7 @@
             android:noHistory="true" />
         <activity android:name=".cards_list.CardsList_View" />
         <activity
-            android:name=".card_show.CardShow_View"
+            android:name=".old_card_show.OldCardShow_View"
             android:parentActivityName=".cards_list.CardsList_View" />
         <activity android:name=".users.list.UsersList_View" />
         <activity

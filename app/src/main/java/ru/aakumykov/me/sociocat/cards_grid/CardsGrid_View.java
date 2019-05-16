@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -41,7 +40,6 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_edit.DraftRestoreFragment;
-import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.card_show2.CardShow2_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;

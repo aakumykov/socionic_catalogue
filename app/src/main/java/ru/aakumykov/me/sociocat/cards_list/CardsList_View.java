@@ -29,7 +29,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
-import ru.aakumykov.me.sociocat.card_show.CardShow_View;
+import ru.aakumykov.me.sociocat.old_card_show.OldCardShow_View;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -223,7 +223,7 @@ public class CardsList_View extends BaseView implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Card card = cardsList.get(position);
-        Intent intent = new Intent(this, CardShow_View.class);
+        Intent intent = new Intent(this, OldCardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
         startActivity(intent);
     }
