@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show2;
+package ru.aakumykov.me.sociocat.card_show;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.controllers.iCardController;
-import ru.aakumykov.me.sociocat.card_show2.controllers.iCommentsController;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.Base_ViewHolder;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.Comment_ViewHolder;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.CommentsThrobber_ViewHolder;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.LoadMore_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.controllers.iCardController;
+import ru.aakumykov.me.sociocat.card_show.controllers.iCommentsController;
+import ru.aakumykov.me.sociocat.card_show.view_holders.Base_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.view_holders.Comment_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.view_holders.CommentsThrobber_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.CommentsThrobber;
@@ -93,7 +93,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 return new Card_ViewHolder(itemView);
 
             case Item.COMMENT_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.card_show_comment_item, parent, false);
+                itemView = layoutInflater.inflate(R.layout.card_show_comment, parent, false);
                 return new Comment_ViewHolder(itemView);
 
             case Item.LOAD_MORE_VIEW_TYPE:

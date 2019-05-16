@@ -1,9 +1,8 @@
-package ru.aakumykov.me.sociocat.card_show2.view_holders;
+package ru.aakumykov.me.sociocat.card_show.view_holders;
 
 import android.content.Context;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -21,7 +20,7 @@ import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.controllers.iCardController;
+import ru.aakumykov.me.sociocat.card_show.controllers.iCardController;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 

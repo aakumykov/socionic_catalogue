@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show2;
+package ru.aakumykov.me.sociocat.card_show;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,25 +22,25 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.controllers.CardController;
-import ru.aakumykov.me.sociocat.card_show2.controllers.CommentsController;
-import ru.aakumykov.me.sociocat.card_show2.controllers.iCardController;
-import ru.aakumykov.me.sociocat.card_show2.controllers.iCommentsController;
+import ru.aakumykov.me.sociocat.card_show.controllers.CardController;
+import ru.aakumykov.me.sociocat.card_show.controllers.CommentsController;
+import ru.aakumykov.me.sociocat.card_show.controllers.iCardController;
+import ru.aakumykov.me.sociocat.card_show.controllers.iCommentsController;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.Item;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
-public class CardShow2_View extends BaseView implements
-        iCardShow2_View
+public class CardShow_View extends BaseView implements
+        iCardShow_View
 {
     public interface LoadCommentsCallbacks {
         void onLoadCommentsSuccess(List<Comment> list);
         void onLoadCommentsFail(String errorMsg);
     }
 
-    private final static String TAG ="CardShow2_View";
+    private final static String TAG ="CardShow_View";
 
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.progressBar) ProgressBar progressBar;
@@ -62,7 +62,7 @@ public class CardShow2_View extends BaseView implements
     // Системные методы
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.card_show2_activity);
+        setContentView(R.layout.card_show_activity);
         ButterKnife.bind(this);
 
         this.cardController = new CardController();

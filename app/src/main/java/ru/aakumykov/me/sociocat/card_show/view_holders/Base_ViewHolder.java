@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show2.view_holders;
+package ru.aakumykov.me.sociocat.card_show.view_holders;
 
 import android.view.View;
 

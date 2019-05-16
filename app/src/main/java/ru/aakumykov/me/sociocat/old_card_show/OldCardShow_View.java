@@ -90,7 +90,7 @@ public class OldCardShow_View extends BaseView implements
     private ImageView sendCommentButton;
     private Button addCommentButton;
 
-    private final static String TAG = "CardShow2_View";
+    private final static String TAG = "CardShow_View";
     private boolean firstRun = true;
     private iOldCardShow.Presenter presenter;
     private ArrayList<Comment> commentsList;

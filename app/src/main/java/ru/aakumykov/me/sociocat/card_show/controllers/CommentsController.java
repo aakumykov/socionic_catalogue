@@ -1,22 +1,22 @@
-package ru.aakumykov.me.sociocat.card_show2.controllers;
+package ru.aakumykov.me.sociocat.card_show.controllers;
 
 import androidx.annotation.Nullable;
 
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.iCardShow2_View;
+import ru.aakumykov.me.sociocat.card_show.iCardShow_View;
 import ru.aakumykov.me.sociocat.interfaces.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 
 public class CommentsController implements iCommentsController {
 
-    private iCardShow2_View view;
+    private iCardShow_View view;
 
 
     // Родительские методы
-    @Override public void bindView(iCardShow2_View view) {
+    @Override public void bindView(iCardShow_View view) {
         this.view = view;
     }
 

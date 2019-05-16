@@ -1,10 +1,10 @@
-package ru.aakumykov.me.sociocat.card_show2;
+package ru.aakumykov.me.sociocat.card_show;
 
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.card_show2.controllers.iCardController;
-import ru.aakumykov.me.sociocat.card_show2.controllers.iCommentsController;
+import ru.aakumykov.me.sociocat.card_show.controllers.iCardController;
+import ru.aakumykov.me.sociocat.card_show.controllers.iCommentsController;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 

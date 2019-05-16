@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show2.view_holders;
+package ru.aakumykov.me.sociocat.card_show.view_holders;
 
 import android.view.View;
 import android.widget.TextView;
@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.controllers.iCommentsController;
+import ru.aakumykov.me.sociocat.card_show.controllers.iCommentsController;
 import ru.aakumykov.me.sociocat.models.Comment;
 
 public class LoadMore_ViewHolder extends Base_ViewHolder {

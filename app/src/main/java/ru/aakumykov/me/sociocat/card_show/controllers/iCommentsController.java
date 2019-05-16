@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show2.controllers;
+package ru.aakumykov.me.sociocat.card_show.controllers;
 
 import androidx.annotation.Nullable;
 

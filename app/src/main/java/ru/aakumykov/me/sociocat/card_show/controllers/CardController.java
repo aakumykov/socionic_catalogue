@@ -1,21 +1,20 @@
-package ru.aakumykov.me.sociocat.card_show2.controllers;
+package ru.aakumykov.me.sociocat.card_show.controllers;
 
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.iCardShow2_View;
+import ru.aakumykov.me.sociocat.card_show.iCardShow_View;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardController implements iCardController {
 
-    private iCardShow2_View view;
+    private iCardShow_View view;
 
 
     @Override
-    public void bindView(iCardShow2_View view) {
+    public void bindView(iCardShow_View view) {
         this.view = view;
     }
 

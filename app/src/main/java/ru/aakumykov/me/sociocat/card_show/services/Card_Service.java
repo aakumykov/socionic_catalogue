@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show2.services;
+package ru.aakumykov.me.sociocat.card_show.services;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;

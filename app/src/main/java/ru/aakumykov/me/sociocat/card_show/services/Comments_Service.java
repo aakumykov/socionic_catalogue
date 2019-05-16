@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show2.services;
+package ru.aakumykov.me.sociocat.card_show.services;
 
 import java.util.ArrayList;
 import java.util.List;
