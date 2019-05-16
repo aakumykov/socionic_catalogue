@@ -19,7 +19,6 @@ public interface iCardShow2_View extends iBaseView {
     void hideCommentsThrobber();
 
     void showCommentForm(Item parentItem);
-    void showCommentForm(int commentPosition);
     void hideCommentForm();
 
     void enableCommentForm();

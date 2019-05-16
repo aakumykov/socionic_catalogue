@@ -49,7 +49,4 @@ public class CommentsController implements iCommentsController {
 
     }
 
-    @Override public void startReplyingComment(int position) {
-        view.showCommentForm(position);
-    }
 }

@@ -161,11 +161,6 @@ public class CardShow2_View extends BaseView implements
         MyUtils.show(commentFormContainer);
     }
 
-    public void showCommentForm(int commentPosition) {
-        Comment comment = dataAdapter.getComment(commentPosition);
-        showCommentForm(comment);
-    }
-
     @Override public void hideCommentForm() {
         hideRepliedText();
         MyUtils.hide(commentFormContainer);

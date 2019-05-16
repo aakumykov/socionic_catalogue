@@ -8,5 +8,4 @@ public interface iCommentsController extends iController {
 
     void loadComments(String parentCardId, @Nullable String start, int count);
     void editComment(Comment comment);
-    void startReplyingComment(int position);
 }
