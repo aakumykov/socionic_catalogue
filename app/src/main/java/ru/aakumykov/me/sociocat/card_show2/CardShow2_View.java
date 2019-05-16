@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.card_show2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,9 +46,9 @@ public class CardShow2_View extends BaseView implements
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.item_list) RecyclerView recyclerView;
     @BindView(R.id.commentFormContainer) View commentFormContainer;
-    @BindView(R.id.parentCommentContainer) View parentCommentContainer;
-    @BindView(R.id.parentCommentTextView) TextView parentCommentTextView;
-    @BindView(R.id.parentCommentDiscardWidget) View parentCommentDiscardWidget;
+    @BindView(R.id.parentCommentContainer) View repliedCommentContainer;
+    @BindView(R.id.parentCommentTextView) TextView repliedCommentTextView;
+    @BindView(R.id.repliedCommentDiscardWidget) View parentCommentDiscardWidget;
     @BindView(R.id.commentInput) EditText commentInput;
     @BindView(R.id.sendCommentWidget) View sendCommentWidget;
 
@@ -148,44 +149,40 @@ public class CardShow2_View extends BaseView implements
         dataAdapter.hideCommentsThrobber();
     }
 
-    @Override public void showCommentForm(Item parentItem) {
-        enableCommentForm();
-//        commentFormContainer.setVisibility(View.VISIBLE);
 
-        if (parentItem instanceof Comment) {
-            String parentCommentText = MyUtils.cutToLength(((Comment) parentItem).getText(), 20);
-//            parentCommentTextView.setText(parentCommentText);
-//            parentCommentContainer.setVisibility(View.VISIBLE);
+    @Override public void showCommentForm(Item repliedItem) {
+        String repliedText = "";
+        if (repliedItem instanceof Comment) {
+            Comment comment = (Comment) repliedItem;
+            repliedText = MyUtils.cutToLength(comment.getText(), 20);
         }
-        else {
-//            hideParentCommentPiece();
-        }
+
+        showRepliedText(repliedText);
+        MyUtils.show(commentFormContainer);
     }
 
     @Override public void hideCommentForm() {
-//        hideParentCommentPiece();
-//        commentInput.setText("");
-//        commentFormContainer.setVisibility(View.GONE);
+        hideRepliedText();
+        MyUtils.hide(commentFormContainer);
     }
 
     @Override public void enableCommentForm() {
-//        commentInput.setEnabled(true);
-//        sendCommentWidget.setEnabled(true);
+        MyUtils.enable(commentInput);
+        MyUtils.enable(sendCommentWidget);
     }
 
     @Override public void disableCommentForm() {
-//        commentInput.setEnabled(false);
-//        sendCommentWidget.setEnabled(false);
+        MyUtils.disable(commentInput);
+        MyUtils.disable(sendCommentWidget);
     }
 
 
-    // Нажатия
-    @OnClick(R.id.parentCommentDiscardWidget)
-    void hideParentCommentPiece() {
-        //parentCommentTextView.setText("");
-        //parentCommentContainer.setVisibility(View.GONE);
-        MyUtils.showCustomToast(this, "Ещё не реализовано");
+
+    @OnClick(R.id.repliedCommentDiscardWidget)
+    void onRemoveRepliedText() {
+        hideRepliedText();
     }
+
 
     @OnClick(R.id.sendCommentWidget)
     void postComment() {
@@ -224,6 +221,18 @@ public class CardShow2_View extends BaseView implements
 
 
     // Внутренние методы
+    private void showRepliedText(String text) {
+        if (!TextUtils.isEmpty(text)) {
+            repliedCommentTextView.setText(text);
+            MyUtils.show(repliedCommentContainer);
+        }
+    }
+
+    private void hideRepliedText() {
+        repliedCommentTextView.setText("");
+        MyUtils.hide(repliedCommentContainer);
+    }
+
     private void processInputIntent() {
         Intent intent = getIntent();
 
@@ -249,6 +258,7 @@ public class CardShow2_View extends BaseView implements
         else
             MyUtils.showCustomToast(this, "Комментарий не найден");
     }
+
 
 
 //    private void refreshCard() {

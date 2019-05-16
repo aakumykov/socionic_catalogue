@@ -7,6 +7,7 @@ import ru.aakumykov.me.sociocat.card_show2.iCardShow2_View;
 import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardController implements iCardController {
 
@@ -46,6 +47,7 @@ public class CardController implements iCardController {
 
     @Override
     public void startCommentingCard(Card card) {
+//        MyUtils.showCustomToast(view.getAppContext(), "startCommentingCard(), "+card.getTitle());
         view.showCommentForm(card);
     }
 }

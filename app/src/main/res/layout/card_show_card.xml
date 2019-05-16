@@ -108,7 +108,7 @@
         app:vertical_interval="10dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ratingHolder"
+        android:id="@+id/controlsHolder"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -159,11 +159,19 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="@string/CARD_SHOW_add_comment"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/bottomSpacer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="10dp" />
 
     <!-- android:paddingStart="@dimen/card_component_padding_right"
         android:paddingEnd="@dimen/card_component_padding_right" -->

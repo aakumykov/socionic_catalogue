@@ -68,7 +68,7 @@ public class Comment_ViewHolder extends Base_ViewHolder {
     public void setBackgroundPressed() {
         saveOriginalBackground();
 
-        int color = commentRow.getResources().getColor(R.color.comment_pressed_color);
+        int color = commentRow.getResources().getColor(R.color.comment_pressed_background_color);
         commentRow.setBackgroundColor(color);
     }
 

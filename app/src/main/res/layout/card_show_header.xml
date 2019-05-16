@@ -163,7 +163,7 @@
         app:vertical_interval="10dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ratingHolder"
+        android:id="@+id/controlsHolder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
