@@ -56,9 +56,7 @@ public class CardShow_View extends BaseView implements
 
     private iCardPresenter cardPresenter;
     private iCommentsPresenter commentsPresenter;
-
     private iListAdapter listAdapter;
-
     private boolean firstRun = true;
     //    private boolean flagCommentsLoadInProgress = false;
 
@@ -221,11 +219,8 @@ public class CardShow_View extends BaseView implements
             String cardKey = intent.getStringExtra(Constants.CARD_KEY);
             String commentKey =intent.getStringExtra(Constants.COMMENT_KEY);
 
-//            cardController.loadCard(cardKey, commentKey, new iCardController.LoadCardCallbacks() {
-//                @Override public void onCardLoaded(Card card) {
-//                    commentsController.loadComments(card.getKey(), null, Config.DEFAULT_COMMENTS_LOAD_COUNT);
-//                }
-//            });
+            // TODO: проверить с null
+            cardPresenter.onWorkBegins(cardKey, commentKey);
         }
         else {
             showErrorMsg(R.string.CARD_SHOW_error_loading_card, "Intent is NULL");

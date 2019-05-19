@@ -4,12 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.google.firebase.auth.FirebaseUser;
-
-import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
-import ru.aakumykov.me.sociocat.models.User;
-
 public interface iBaseView {
 
     Context getAppContext();

@@ -13,7 +13,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
 public class StorageSingleton implements iStorageSingleton {

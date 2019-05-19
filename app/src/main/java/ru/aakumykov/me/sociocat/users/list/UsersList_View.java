@@ -18,7 +18,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.users.Users_Presenter;
 import ru.aakumykov.me.sociocat.users.iUsers;

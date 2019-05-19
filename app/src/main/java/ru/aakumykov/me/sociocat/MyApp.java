@@ -5,21 +5,14 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 
 import org.greenrobot.eventbus.EventBus;
 
-import androidx.annotation.NonNull;
 import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
-import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;

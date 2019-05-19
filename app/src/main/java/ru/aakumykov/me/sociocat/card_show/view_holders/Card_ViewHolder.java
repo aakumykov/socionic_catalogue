@@ -8,6 +8,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +26,7 @@ import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
-public class Card_ViewHolder
+public class Card_ViewHolder extends Base_ViewHolder
 {
     @BindView(R.id.cardLayout) LinearLayout cardLayout;
     @BindView(R.id.titleView) TextView titleView;
@@ -45,6 +47,7 @@ public class Card_ViewHolder
 
     // Конструктор
     public Card_ViewHolder(View itemView) {
+        super(itemView);
         ButterKnife.bind(this, itemView);
         this.context = itemView.getContext();
     }
@@ -67,7 +70,6 @@ public class Card_ViewHolder
 
     // Внутренние методы
     private void displayCard(Card card) {
-
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
 

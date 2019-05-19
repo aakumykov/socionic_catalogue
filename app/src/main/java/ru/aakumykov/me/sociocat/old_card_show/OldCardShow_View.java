@@ -41,7 +41,7 @@ import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.comment.CommentsAdapter;
 import ru.aakumykov.me.sociocat.comment.iComments;
-import ru.aakumykov.me.sociocat.interfaces.iCommentsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.models.Card;

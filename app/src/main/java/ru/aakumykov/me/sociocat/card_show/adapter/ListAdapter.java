@@ -137,13 +137,14 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void setCard(Card card) {
-        if (0== itemsList.size())
+        int cardPosition = 0;
+
+        if (0 == itemsList.size())
             itemsList.add(card);
-        else {
-            int cardPosition = 0;
+        else
             itemsList.set(cardPosition, card);
-            notifyItemChanged(cardPosition);
-        }
+
+        notifyItemChanged(cardPosition);
     }
 
 

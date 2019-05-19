@@ -11,10 +11,10 @@ import android.util.Log;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;

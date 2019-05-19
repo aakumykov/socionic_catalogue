@@ -21,7 +21,6 @@ import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
-import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
 import ru.aakumykov.me.sociocat.models.Tag;
 
 public class TagsSingleton implements iTagsSingleton {

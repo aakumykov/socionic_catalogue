@@ -9,23 +9,19 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.Enums;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
+import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
