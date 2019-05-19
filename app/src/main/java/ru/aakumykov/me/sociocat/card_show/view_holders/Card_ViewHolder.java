@@ -24,7 +24,7 @@ import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
-public class Card_ViewHolder extends Base_ViewHolder
+public class Card_ViewHolder
 {
     @BindView(R.id.cardLayout) LinearLayout cardLayout;
     @BindView(R.id.titleView) TextView titleView;
@@ -45,19 +45,8 @@ public class Card_ViewHolder extends Base_ViewHolder
 
     // Конструктор
     public Card_ViewHolder(View itemView) {
-        super(itemView);
         ButterKnife.bind(this, itemView);
         this.context = itemView.getContext();
-    }
-
-    @Override
-    public void onAttached() {
-
-    }
-
-    @Override
-    public void onDetached() {
-
     }
 
     public void initialize(Card card) {

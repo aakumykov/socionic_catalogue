@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Comment;
 
-public class Comment_ViewHolder extends Base_ViewHolder {
+public class Comment_ViewHolder {
 
     @BindView(R.id.commentRow) LinearLayout commentRow;
     @BindView(R.id.textView) TextView textView;
@@ -24,19 +24,8 @@ public class Comment_ViewHolder extends Base_ViewHolder {
 
 
     public Comment_ViewHolder(View itemView) {
-        super(itemView);
         ButterKnife.bind(this, itemView);
         Log.d(TAG, "new Comment_ViewHolder()");
-    }
-
-    @Override
-    public void onAttached() {
-
-    }
-
-    @Override
-    public void onDetached() {
-
     }
 
 
