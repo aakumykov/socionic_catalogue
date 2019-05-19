@@ -20,15 +20,15 @@
         <activity
             android:name=".old_card_show.OldCardShow_View"
             android:parentActivityName=".cards_list.CardsList_View" />
-        <activity android:name=".users.list.UsersList_View" />
+        <activity android:name=".users.itemsList.UsersList_View" />
         <activity
             android:name=".users.show.UserShow_View"
-            android:parentActivityName=".users.list.UsersList_View" />
+            android:parentActivityName=".users.itemsList.UsersList_View" />
         <activity android:name=".users.edit.UserEdit_View" />
-        <activity android:name=".tags.list.TagsList_View" />
+        <activity android:name=".tags.itemsList.TagsList_View" />
         <activity
             android:name=".tags.show.TagShow_View"
-            android:parentActivityName=".tags.list.TagsList_View" />
+            android:parentActivityName=".tags.itemsList.TagsList_View" />
 
         <!-- Главный экран -->
         <activity

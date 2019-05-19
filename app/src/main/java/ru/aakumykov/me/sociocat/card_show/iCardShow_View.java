@@ -9,15 +9,6 @@ import ru.aakumykov.me.sociocat.models.Item;
 
 public interface iCardShow_View extends iBaseView {
 
-    void displayCard(Card card);
-    void displayComments(List<Comment> list);
-
-    void showCardThrobber();
-    void hideCardThrobber();
-
-    void showCommentsThrobber();
-    void hideCommentsThrobber();
-
     void showCommentForm(Item parentItem);
     void hideCommentForm();
 

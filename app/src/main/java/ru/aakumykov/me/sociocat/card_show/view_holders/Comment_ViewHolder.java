@@ -11,7 +11,6 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.controllers.iCommentsController;
 import ru.aakumykov.me.sociocat.models.Comment;
 
 public class Comment_ViewHolder extends Base_ViewHolder {
@@ -21,7 +20,6 @@ public class Comment_ViewHolder extends Base_ViewHolder {
     @BindView(R.id.replyWidget) TextView replyWidget;
 
     private final static String TAG = "Comment_ViewHolder";
-    private iCommentsController commentsController;
     private Drawable originalBackground = null;
 
 
@@ -42,11 +40,7 @@ public class Comment_ViewHolder extends Base_ViewHolder {
     }
 
 
-    public void initialize(Comment comment, iCommentsController commentsController) {
-        //Log.d(TAG, "Comment_ViewHolder.initialize("+card_show_comment.getText()+")");
-
-        this.commentsController = commentsController;
-
+    public void initialize(Comment comment) {
         textView.setText(comment.getText());
 
         commentRow.setOnLongClickListener(new View.OnLongClickListener() {
@@ -100,7 +94,6 @@ public class Comment_ViewHolder extends Base_ViewHolder {
 
                 switch (item.getItemId()) {
                     case R.id.actionEdit:
-                        commentsController.editComment(comment);
                         break;
                     default:
                         break;

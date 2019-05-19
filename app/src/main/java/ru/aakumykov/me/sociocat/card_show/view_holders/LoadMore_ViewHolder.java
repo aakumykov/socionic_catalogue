@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.controllers.iCommentsController;
 import ru.aakumykov.me.sociocat.models.Comment;
 
 public class LoadMore_ViewHolder extends Base_ViewHolder {
@@ -22,7 +21,7 @@ public class LoadMore_ViewHolder extends Base_ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void initialize(@Nullable Comment comment, iCommentsController commentsController) {
+    public void initialize(@Nullable Comment comment) {
 
         if (null != comment) {
             textView.setText(R.string.COMMENTS_load_more_comments);

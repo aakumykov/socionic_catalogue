@@ -20,7 +20,6 @@ import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.controllers.iCardController;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -40,7 +39,6 @@ public class Card_ViewHolder extends Base_ViewHolder
     @BindView(R.id.replyWidget) TextView replyWidget;
 
     private static final String TAG = "Card_ViewHolder";
-    private iCardController cardController;
     private Context context;
     private Card currentCard;
     private boolean isInitialized = false;
@@ -62,9 +60,8 @@ public class Card_ViewHolder extends Base_ViewHolder
 
     }
 
-    public void initialize(Card card, iCardController cardController) {
+    public void initialize(Card card) {
         if (!this.isInitialized) {
-            this.cardController = cardController;
             this.currentCard = card;
             this.isInitialized = true;
             displayCard(card);
@@ -75,7 +72,7 @@ public class Card_ViewHolder extends Base_ViewHolder
     // Нажатия
     @OnClick(R.id.replyWidget)
     void openCommentForm() {
-        cardController.startCommentingCard(currentCard);
+
     }
 
 

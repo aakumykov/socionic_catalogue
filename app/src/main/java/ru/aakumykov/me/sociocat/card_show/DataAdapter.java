@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.controllers.iCardController;
-import ru.aakumykov.me.sociocat.card_show.controllers.iCommentsController;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Base_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Comment_ViewHolder;
@@ -31,10 +29,6 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final static String TAG = "DataAdapter";
     private ArrayList<Item> itemsList;
 
-    private iCardController cardController;
-    private iCommentsController commentsController;
-
-
     // Конструктор
     DataAdapter() {
         itemsList = new ArrayList<>();
@@ -42,18 +36,6 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
     // Системные методы
-    @Override
-    public void bindControllers(iCardController cardController, iCommentsController commentsController) {
-        this.cardController = cardController;
-        this.commentsController = commentsController;
-    }
-
-    @Override
-    public void unbindControllers() {
-        this.cardController = null;
-        this.commentsController = null;
-    }
-
     @Override
     public int getItemCount() {
         return itemsList == null ? 0 : itemsList.size();
@@ -119,16 +101,16 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         switch (viewHolder.getItemViewType()) {
 
             case Item.CARD_VIEW_TYPE:
-                ((Card_ViewHolder) viewHolder).initialize((Card) item, cardController);
+                ((Card_ViewHolder) viewHolder).initialize((Card) item);
                 break;
 
             case Item.COMMENT_VIEW_TYPE:
-                ((Comment_ViewHolder) viewHolder).initialize((Comment) item, commentsController);
+                ((Comment_ViewHolder) viewHolder).initialize((Comment) item);
                 break;
 
             case Item.LOAD_MORE_VIEW_TYPE:
                 Comment lastComment = getLastComment();
-                ((LoadMore_ViewHolder) viewHolder).initialize(lastComment, commentsController);
+                ((LoadMore_ViewHolder) viewHolder).initialize(lastComment);
 
             default:
                 break;
