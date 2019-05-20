@@ -68,8 +68,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             return ListItem.COMMENTS_THROBBER_VIEW_TYPE;
         }
         else {
-            // TODO: throw
-            return super.getItemViewType(position);
+            return -1;
         }
     }
 
