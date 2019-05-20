@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.card_show.adapter;
 
+import android.content.ClipData;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -180,7 +181,9 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void hideCommentsThrobber() {
-
+        int maxIndex = getMaxIndex();
+        // TODO: проверить с -1
+        removeItemIfType(ListItem.ItemType.THROBBER_ITEM, maxIndex);
     }
 
     @Override
@@ -194,12 +197,16 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void setList(List<Comment> itemsList) {
-        if (itemsList.size() >= 1) {
-            itemsList.subList(1, itemsList.size() + 1).clear();
+    public void setList(List<Comment> newCommentsList) {
+        int listSize = list.size();
+        if (listSize > 1) {
+            List<ListItem> existingCommentsList = list.subList(1, listSize - 1);
+            list.removeAll(existingCommentsList);
+            notifyItemRangeRemoved(1, existingCommentsList.size());
         }
-//        notifyItemRangeChanged();
-        notifyDataSetChanged();
+
+        list.addAll(newCommentsList);
+        notifyItemRangeChanged(1, newCommentsList.size());
     }
 
     @Override
@@ -211,8 +218,25 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         notifyItemRangeChanged(start, count);
     }
 
+    @Override
+    public void scrollToComment() {
+
+    }
+
 
     // Внутренние методы
+    private int getMaxIndex() {
+        return list.size() - 1;
+    }
+
+    /*private ListItem getLastItem() {
+        int maxIndex = list.size() - 1;
+        if (maxIndex >= 0)
+            return list.get(maxIndex);
+        else
+            return null;
+    }*/
+
     private void removeItemIfType(ListItem.ItemType itemType, int index) {
 
         if (0 != list.size() && list.size() > index) {

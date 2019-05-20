@@ -221,8 +221,7 @@ public class CardShow_View extends BaseView implements
             String cardKey = intent.getStringExtra(Constants.CARD_KEY);
             String commentKey =intent.getStringExtra(Constants.COMMENT_KEY);
 
-            // TODO: проверить с null
-            cardPresenter.onWorkBegins(null, commentKey);
+            cardPresenter.onWorkBegins(cardKey, commentKey);
         }
         catch (Exception e) {
             cardPresenter.onErrorOccurs();

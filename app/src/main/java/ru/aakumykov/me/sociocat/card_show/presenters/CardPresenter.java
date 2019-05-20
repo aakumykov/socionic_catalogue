@@ -35,11 +35,6 @@ public class CardPresenter implements iCardPresenter {
     @Override
     public void onWorkBegins(@Nullable String cardKey, @Nullable String commentKey) {
 
-//        if (null == cardKey) {
-//            listAdapter.showCardError(R.string.CARD_SHOW_error_loading_card, "cardKey is null");
-//            return;
-//        }
-
         listAdapter.showCardThrobber();
 
         cardSingleton.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
@@ -47,6 +42,8 @@ public class CardPresenter implements iCardPresenter {
             public void onCardLoadSuccess(Card card) {
                 listAdapter.hideCardThrobber();
                 listAdapter.setCard(card);
+
+                commentsPresenter.onWorkBegins(cardKey, commentKey);
             }
 
             @Override
