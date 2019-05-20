@@ -243,7 +243,7 @@ public final class MyUtils {
         LayoutInflater myInflater = LayoutInflater.from(context);
         View view = myInflater.inflate(R.layout.toast, null);
 
-        TextView textView = view.findViewById(R.id.textView);
+        TextView textView = view.findViewById(R.id.loadMoreTextView);
         textView.setText(message);
 
         Toast mytoast = new Toast(context);

@@ -6,5 +6,4 @@ public class LoadMore_Item extends ListItem {
     public LoadMore_Item() {
         setItemType(ItemType.LOAD_MORE_ITEM);
     }
-
 }
