@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="Ответить"
-            android:textAlignment="center"
+            android:textAlignment="textEnd"
             android:textColor="@color/colorPrimary" />
     </LinearLayout>
 </LinearLayout>
