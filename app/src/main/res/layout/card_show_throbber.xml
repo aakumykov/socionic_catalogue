@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/shape_bottom_line"
@@ -14,12 +15,13 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        android:id="@+id/throbberMessageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="12dp"
-        android:text="@string/CARD_SHOW_loading_card"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        tools:text="Сообщение крутилки" />
 
 </LinearLayout>
