@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
+
 public class Comment extends ListItem implements Parcelable
 {
     public final static int key_commentId = 10;

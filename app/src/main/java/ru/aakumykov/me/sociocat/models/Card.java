@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 
 // TODO: как сделать так, чтобы графическая карточка не могла сохраниться без картинки?
 // И так далее...

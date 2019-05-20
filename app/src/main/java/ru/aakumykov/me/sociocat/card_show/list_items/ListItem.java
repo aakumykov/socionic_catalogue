@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.models;
+package ru.aakumykov.me.sociocat.card_show.list_items;
 
 import com.google.firebase.database.Exclude;
 
@@ -8,7 +8,7 @@ public abstract class ListItem {
     public static final int COMMENT_VIEW_TYPE = 2;
     public static final int LOAD_MORE_VIEW_TYPE = 3;
     public static final int COMMENTS_THROBBER_VIEW_TYPE = 4;
-    public static final int CARD_THROBBER_VIEW_TYPE = 5;
+    public static final int THROBBER_VIEW_TYPE = 5;
 
     public enum ItemType {
         CARD_ITEM,

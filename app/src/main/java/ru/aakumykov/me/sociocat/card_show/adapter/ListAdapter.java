@@ -15,17 +15,15 @@ import ru.aakumykov.me.sociocat.card_show.presenters.CardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.CommentsPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
-import ru.aakumykov.me.sociocat.card_show.view_holders.CardThrobber_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Comment_ViewHolder;
-import ru.aakumykov.me.sociocat.card_show.view_holders.CommentsThrobber_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
-import ru.aakumykov.me.sociocat.models.ListItem;
-import ru.aakumykov.me.sociocat.models.ListItem_CardThrobber;
-import ru.aakumykov.me.sociocat.models.ListItem_CommentsThrobber;
-import ru.aakumykov.me.sociocat.models.ListItem_LoadMore;
+import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
+import ru.aakumykov.me.sociocat.card_show.list_items.Throbber_Item;
+import ru.aakumykov.me.sociocat.card_show.list_items.LoadMore_Item;
 
 public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         iListAdapter,
@@ -58,14 +56,11 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         else if (listItem instanceof Comment) {
             return ListItem.COMMENT_VIEW_TYPE;
         }
-        else if (listItem instanceof ListItem_CardThrobber) {
-            return ListItem.CARD_THROBBER_VIEW_TYPE;
+        else if (listItem instanceof Throbber_Item) {
+            return ListItem.THROBBER_VIEW_TYPE;
         }
-        else if (listItem instanceof ListItem_LoadMore) {
+        else if (listItem instanceof LoadMore_Item) {
             return ListItem.LOAD_MORE_VIEW_TYPE;
-        }
-        else if (listItem instanceof ListItem_CommentsThrobber) {
-            return ListItem.COMMENTS_THROBBER_VIEW_TYPE;
         }
         else {
             return -1;
@@ -86,17 +81,13 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 itemView = layoutInflater.inflate(R.layout.card_show_comment, parent, false);
                 return new Comment_ViewHolder(itemView);
 
-            case ListItem.CARD_THROBBER_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.card_show_card_throbber, parent, false);
-                return new CardThrobber_ViewHolder(itemView);
+            case ListItem.THROBBER_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.card_show_throbber, parent, false);
+                return new Throbber_ViewHolder(itemView);
 
             case ListItem.LOAD_MORE_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.card_show_comments_load_more, parent, false);
+                itemView = layoutInflater.inflate(R.layout.card_show_load_more, parent, false);
                 return new LoadMore_ViewHolder(itemView);
-
-            case ListItem.COMMENTS_THROBBER_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.card_show_comments_throbber, parent, false);
-                return new CommentsThrobber_ViewHolder(itemView);
 
             default:
                 // TODO: попробовать возвлащать заглушку
@@ -114,11 +105,12 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 ((Card_ViewHolder) viewHolder).initialize((Card) item);
                 break;
 
-            case ListItem.CARD_THROBBER_VIEW_TYPE:
-                break;
-
             case ListItem.COMMENT_VIEW_TYPE:
                 ((Comment_ViewHolder) viewHolder).initialize((Comment) item);
+                break;
+
+            case ListItem.THROBBER_VIEW_TYPE:
+                ((Throbber_ViewHolder) viewHolder).initialize((Throbber_Item) item);
                 break;
 
             case ListItem.LOAD_MORE_VIEW_TYPE:
@@ -147,7 +139,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void showCardThrobber() {
         int index = 0;
-        list.add(index, new ListItem_CardThrobber());
+        list.add(index, new Throbber_Item(R.string.CARD_SHOW_loading_card));
         notifyItemChanged(index);
     }
 
@@ -183,7 +175,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     // iListAdapter_Comments
     @Override
     public void showCommentsThrobber() {
-
+        list.add(new Throbber_Item(R.string.COMMENTS_loading_comments));
     }
 
     @Override
