@@ -6,13 +6,12 @@
     android:background="@drawable/shape_bottom_line"
     android:orientation="vertical">
 
-    <!--  -->
-
     <ProgressBar
         android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:indeterminate="true" />
 
     <TextView
         android:id="@+id/throbberMessageView"
