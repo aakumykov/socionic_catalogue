@@ -213,6 +213,7 @@ public class CardShow_View extends BaseView implements
         MyUtils.hide(repliedCommentContainer);
     }
 
+
     private void processInputIntent() {
         Intent intent = getIntent();
 
@@ -221,16 +222,13 @@ public class CardShow_View extends BaseView implements
             String commentKey =intent.getStringExtra(Constants.COMMENT_KEY);
 
             // TODO: проверить с null
-            cardPresenter.onWorkBegins(cardKey, commentKey);
+            cardPresenter.onWorkBegins(null, commentKey);
         }
         catch (Exception e) {
             cardPresenter.onErrorOccurs();
 
-            showErrorMsg(R.string.CARD_SHOW_error_loading_card, e.getMessage());
+            showErrorMsg(R.string.CARD_SHOW_error_loading_card, e);
             e.printStackTrace();
-
-            String stackTrace = MyUtils.stackTrace2String(e.getStackTrace());
-            Log.e(TAG, stackTrace);
         }
     }
 

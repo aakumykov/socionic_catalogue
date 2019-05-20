@@ -227,6 +227,16 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
+    public void showErrorMsg(int userMessageId, Exception e) {
+        showErrorMsg(userMessageId, e.getMessage());
+
+        if (Config.DEBUG_MODE)
+            showStackTrace(e.getStackTrace());
+
+        e.printStackTrace();
+    }
+
+    @Override
     public void showErrorMsg(int messageId) {
         hideProgressBar();
         String message = getResources().getString(messageId);
@@ -272,13 +282,26 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         }
     }
 
+    private void showStackTrace(StackTraceElement[] stackTraceElements) {
+        String traceText = MyUtils.stackTrace2String(stackTraceElements);
+        TextView stackTraceView = findViewById(R.id.stackTraceView);
+
+        stackTraceView.setText(traceText);
+        MyUtils.show(stackTraceView);
+    }
+
+
     @Override
     public void hideMsg() {
         TextView messageView = findViewById(R.id.messageView);
+        TextView stackTraceView = findViewById(R.id.stackTraceView);
+
         if (null != messageView) {
             MyUtils.hide(messageView);
-        } else {
-            Log.w(TAG, "messageView not found");
+        }
+
+        if (null != stackTraceView) {
+            MyUtils.hide(stackTraceView);
         }
     }
 

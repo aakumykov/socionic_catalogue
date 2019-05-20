@@ -4,7 +4,7 @@ public final class Config {
 
     private Config() {}
 
-    public final static boolean DEBUG_MODE = false;
+    public final static boolean DEBUG_MODE = true;
 
     public final static String YOUTUBE_API_KEY = "AIzaSyDmoNN5aMSvJflpt6bjQdTWfPc7CHtz3i4";
 
