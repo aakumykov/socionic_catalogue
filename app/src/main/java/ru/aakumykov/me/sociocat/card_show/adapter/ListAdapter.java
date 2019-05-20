@@ -15,7 +15,6 @@ import ru.aakumykov.me.sociocat.card_show.presenters.CardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.CommentsPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
-import ru.aakumykov.me.sociocat.card_show.view_holders.CardError_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.CardThrobber_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Comment_ViewHolder;
@@ -24,7 +23,6 @@ import ru.aakumykov.me.sociocat.card_show.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.ListItem;
-import ru.aakumykov.me.sociocat.models.ListItem_CardError;
 import ru.aakumykov.me.sociocat.models.ListItem_CardThrobber;
 import ru.aakumykov.me.sociocat.models.ListItem_CommentsThrobber;
 import ru.aakumykov.me.sociocat.models.ListItem_LoadMore;
@@ -53,7 +51,25 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public int getItemViewType(int position) {
         ListItem listItem = list.get(position);
-        return listItem.getViewType();
+
+        if (listItem instanceof Card) {
+            return ListItem.CARD_VIEW_TYPE;
+        }
+        else if (listItem instanceof Comment) {
+            return ListItem.COMMENT_VIEW_TYPE;
+        }
+        else if (listItem instanceof ListItem_CardThrobber) {
+            return ListItem.CARD_THROBBER_VIEW_TYPE;
+        }
+        else if (listItem instanceof ListItem_LoadMore) {
+            return ListItem.LOAD_MORE_VIEW_TYPE;
+        }
+        else if (listItem instanceof ListItem_CommentsThrobber) {
+            return ListItem.COMMENTS_THROBBER_VIEW_TYPE;
+        }
+        else {
+            return -1;
+        }
     }
 
     @NonNull @Override
@@ -66,17 +82,13 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 itemView = layoutInflater.inflate(R.layout.card_show_card, parent, false);
                 return new Card_ViewHolder(itemView);
 
-            case ListItem.CARD_THROBBER_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.card_show_card_throbber, parent, false);
-                return new CardThrobber_ViewHolder(itemView);
-
-            case ListItem.CARD_ERROR_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.card_show_card_error, parent, false);
-                return new CardError_ViewHolder(itemView);
-
             case ListItem.COMMENT_VIEW_TYPE:
                 itemView = layoutInflater.inflate(R.layout.card_show_comment, parent, false);
                 return new Comment_ViewHolder(itemView);
+
+            case ListItem.CARD_THROBBER_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.card_show_card_throbber, parent, false);
+                return new CardThrobber_ViewHolder(itemView);
 
             case ListItem.LOAD_MORE_VIEW_TYPE:
                 itemView = layoutInflater.inflate(R.layout.card_show_comments_load_more, parent, false);
@@ -104,10 +116,6 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
             case ListItem.CARD_THROBBER_VIEW_TYPE:
                 break;
-
-            case ListItem.CARD_ERROR_VIEW_TYPE:
-                ((CardError_ViewHolder) viewHolder).initialize((ListItem_CardError) item);
-
 
             case ListItem.COMMENT_VIEW_TYPE:
                 ((Comment_ViewHolder) viewHolder).initialize((Comment) item);
@@ -150,8 +158,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void showCardError(int errorMsgId, String consoleErrorMsg) {
-        ListItem_CardError cardError = new ListItem_CardError(consoleErrorMsg);
-        list.add(0, cardError);
+
     }
 
     @Override
