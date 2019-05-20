@@ -1,9 +1,9 @@
 package ru.aakumykov.me.sociocat.models;
 
 
-public class LoadMore extends Item {
+public class ListItem_LoadMore extends ListItem {
 
-    public LoadMore() {
+    public ListItem_LoadMore() {
         setItemType(ItemType.LOAD_MORE_ITEM);
     }
 

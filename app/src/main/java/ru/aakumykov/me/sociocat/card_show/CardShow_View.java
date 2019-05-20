@@ -30,7 +30,7 @@ import ru.aakumykov.me.sociocat.card_show.presenters.CommentsPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
 import ru.aakumykov.me.sociocat.models.Comment;
-import ru.aakumykov.me.sociocat.models.Item;
+import ru.aakumykov.me.sociocat.models.ListItem;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
@@ -46,7 +46,7 @@ public class CardShow_View extends BaseView implements
 
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.progressBar) ProgressBar progressBar;
-    @BindView(R.id.item_list) RecyclerView recyclerView;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.commentFormContainer) View commentFormContainer;
     @BindView(R.id.parentCommentContainer) View repliedCommentContainer;
     @BindView(R.id.parentCommentTextView) TextView repliedCommentTextView;
@@ -129,7 +129,7 @@ public class CardShow_View extends BaseView implements
 
 
     // Интерфейсные методы
-    @Override public void showCommentForm(Item repliedItem) {
+    @Override public void showCommentForm(ListItem repliedItem) {
         String repliedText = "";
         if (repliedItem instanceof Comment) {
             Comment comment = (Comment) repliedItem;

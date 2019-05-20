@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.models;
 
 import com.google.firebase.database.Exclude;
 
-public abstract class Item {
+public abstract class ListItem {
 
     public static final int CARD_VIEW_TYPE = 1;
     public static final int COMMENT_VIEW_TYPE = 2;
