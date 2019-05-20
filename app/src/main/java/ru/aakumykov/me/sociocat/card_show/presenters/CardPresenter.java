@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show.presenters;
 
+import android.view.View;
+
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.R;
@@ -54,6 +56,12 @@ public class CardPresenter implements iCardPresenter {
             }
         });
     }
+
+    @Override
+    public void onErrorOccurs() {
+        listAdapter.hideCardThrobber();
+    }
+
 
     @Override
     public void onAddCommentClicked() {

@@ -145,7 +145,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void hideCardThrobber() {
-        removeItemIfType(ListItem.ItemType.CARD_THROBBER_ITEM, 0);
+        removeItemIfType(ListItem.ItemType.THROBBER_ITEM, 0);
     }
 
     @Override

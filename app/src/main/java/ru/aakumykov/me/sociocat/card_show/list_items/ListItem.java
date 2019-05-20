@@ -4,18 +4,16 @@ import com.google.firebase.database.Exclude;
 
 public abstract class ListItem {
 
-    public static final int CARD_VIEW_TYPE = 1;
-    public static final int COMMENT_VIEW_TYPE = 2;
-    public static final int LOAD_MORE_VIEW_TYPE = 3;
-    public static final int COMMENTS_THROBBER_VIEW_TYPE = 4;
-    public static final int THROBBER_VIEW_TYPE = 5;
+    public static final int CARD_VIEW_TYPE = 10;
+    public static final int COMMENT_VIEW_TYPE = 20;
+    public static final int LOAD_MORE_VIEW_TYPE = 30;
+    public static final int THROBBER_VIEW_TYPE = 40;
 
     public enum ItemType {
         CARD_ITEM,
         COMMENT_ITEM,
         LOAD_MORE_ITEM,
-        COMMENTS_THROBBER_ITEM,
-        CARD_THROBBER_ITEM
+        THROBBER_ITEM
     }
 
     @Exclude private ItemType itemType;

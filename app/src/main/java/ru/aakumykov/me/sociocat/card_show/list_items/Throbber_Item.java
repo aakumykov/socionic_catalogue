@@ -6,7 +6,7 @@ public class Throbber_Item extends ListItem {
 
     public Throbber_Item(int messageId) {
         this.messageId = messageId;
-        setItemType(ItemType.COMMENTS_THROBBER_ITEM);
+        setItemType(ItemType.THROBBER_ITEM);
     }
 
     public int getMessage() {

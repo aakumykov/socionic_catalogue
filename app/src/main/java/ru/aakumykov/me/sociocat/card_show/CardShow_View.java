@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.card_show;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -215,15 +216,21 @@ public class CardShow_View extends BaseView implements
     private void processInputIntent() {
         Intent intent = getIntent();
 
-        if (null != intent) {
+        try {
             String cardKey = intent.getStringExtra(Constants.CARD_KEY);
             String commentKey =intent.getStringExtra(Constants.COMMENT_KEY);
 
             // TODO: проверить с null
-            cardPresenter.onWorkBegins(null, commentKey);
+            cardPresenter.onWorkBegins(cardKey, commentKey);
         }
-        else {
-            showErrorMsg(R.string.CARD_SHOW_error_loading_card, "Intent is NULL");
+        catch (Exception e) {
+            cardPresenter.onErrorOccurs();
+
+            showErrorMsg(R.string.CARD_SHOW_error_loading_card, e.getMessage());
+            e.printStackTrace();
+
+            String stackTrace = MyUtils.stackTrace2String(e.getStackTrace());
+            Log.e(TAG, stackTrace);
         }
     }
 

@@ -10,5 +10,8 @@ public interface iCardPresenter extends iPresenter {
     void unbindListAdapter();
 
     void onWorkBegins(@Nullable String cardKey, @Nullable String commentKey);
+    void onErrorOccurs();
+
+
     void onAddCommentClicked();
 }

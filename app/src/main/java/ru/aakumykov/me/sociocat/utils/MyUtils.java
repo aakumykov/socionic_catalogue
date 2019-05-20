@@ -251,4 +251,11 @@ public final class MyUtils {
         mytoast.setDuration(Toast.LENGTH_SHORT);
         mytoast.show();
     }
+
+    public static String stackTrace2String(StackTraceElement[] stackTraceElements) {
+        String stackTrace = "";
+        for (StackTraceElement element : stackTraceElements)
+            stackTrace += element.toString() + "\n";
+        return stackTrace;
+    }
 }
