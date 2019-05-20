@@ -33,24 +33,24 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         iListAdapter_Comments
 {
     private final static String TAG = "ListAdapter";
-    private List<ListItem> itemsList;
+    private List<ListItem> list;
     private CardPresenter cardPresenter;
     private CommentsPresenter commentsPresenter;
 
     public ListAdapter() {
-        this.itemsList = new ArrayList<>();
+        this.list = new ArrayList<>();
     }
 
 
     // RecyclerView
     @Override
     public int getItemCount() {
-        return itemsList.size();
+        return list.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        ListItem listItem = itemsList.get(position);
+        ListItem listItem = list.get(position);
 
         if (listItem instanceof Card) {
             return ListItem.CARD_VIEW_TYPE;
@@ -107,7 +107,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        ListItem item = itemsList.get(position);
+        ListItem item = list.get(position);
 
         switch (viewHolder.getItemViewType()) {
 
@@ -147,14 +147,14 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     // iListAdapter_Card
     @Override
     public void showCardThrobber() {
-        itemsList.add(new ListItem_CardThrobber());
-//        notifyItemChanged(0);
-        notifyDataSetChanged();
+        int index = 0;
+        list.add(index, new ListItem_CardThrobber());
+        notifyItemChanged(index);
     }
 
     @Override
     public void hideCardThrobber() {
-        ListItem listItem = itemsList.get(0);
+        removeItemIfType(ListItem.ItemType.CARD_THROBBER_ITEM, 0);
     }
 
     @Override
@@ -172,10 +172,10 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public void setCard(Card card) {
         int cardPosition = 0;
 
-        if (0 == itemsList.size())
-            itemsList.add(card);
+        if (0 == list.size())
+            list.add(card);
         else
-            itemsList.set(cardPosition, card);
+            list.set(cardPosition, card);
 
         notifyItemChanged(cardPosition);
     }
@@ -213,10 +213,27 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void addList(List<Comment> list) {
-        int start = itemsList.size();
+        int start = this.list.size();
         int count = list.size();
 
-        itemsList.addAll(list);
+        this.list.addAll(list);
         notifyItemRangeChanged(start, count);
     }
+
+
+    // Внутренние методы
+    private void removeItemIfType(ListItem.ItemType itemType, int index) {
+
+        if (0 != list.size() && list.size() > index) {
+
+            ListItem listItem = list.get(index);
+
+            if (listItem.is(itemType)) {
+                list.remove(index);
+                notifyItemRemoved(index);
+            }
+
+        }
+    }
+
 }
