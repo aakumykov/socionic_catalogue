@@ -220,7 +220,7 @@ public class CardShow_View extends BaseView implements
             String commentKey =intent.getStringExtra(Constants.COMMENT_KEY);
 
             // TODO: проверить с null
-            cardPresenter.onWorkBegins(cardKey, commentKey);
+            cardPresenter.onWorkBegins(null, commentKey);
         }
         else {
             showErrorMsg(R.string.CARD_SHOW_error_loading_card, "Intent is NULL");
