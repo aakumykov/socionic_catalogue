@@ -126,7 +126,7 @@
         <activity android:name=".card_edit.CardEdit_View" android:windowSoftInputMode="stateHidden" />
 
         <activity android:name=".preferences.PreferencesActivity" />
-        <activity android:name=".card_show.CardShow_View" />
+        <activity android:name=".card_show.CardShowView" />
 
         <service android:name=".push_notifications_service.PushNotificationsService" android:exported="false">
             <intent-filter>

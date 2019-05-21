@@ -4,12 +4,14 @@ import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCard_ViewAdapter;
+import ru.aakumykov.me.sociocat.card_show.iCommentForm;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 
 public class CardPresenter implements iCardPresenter {
 
+    private iCommentForm commentForm;
     private iCard_ViewAdapter listAdapter;
     private iCommentsPresenter commentsPresenter;
     private CardsSingleton cardSingleton = CardsSingleton.getInstance();
@@ -18,6 +20,14 @@ public class CardPresenter implements iCardPresenter {
         this.commentsPresenter = commentsPresenter;
     }
 
+
+    @Override public void bindCommentForm(iCommentForm pageView) {
+        this.commentForm = pageView;
+    }
+
+    @Override public void unbindCommentForm() {
+        this.commentForm = null;
+    }
 
     @Override
     public void bindListAdapter(iCard_ViewAdapter listAdapter) {
