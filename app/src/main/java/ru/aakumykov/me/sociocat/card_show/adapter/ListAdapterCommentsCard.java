@@ -228,6 +228,15 @@ public class ListAdapterCommentsCard extends RecyclerView.Adapter<RecyclerView.V
     }
 
     @Override
+    public void addComment(Comment comment, boolean scrollToAddedComment) {
+        list.add(comment);
+        notifyItemChanged(getLastCommentIndex());
+
+        if (scrollToAddedComment)
+            scrollToComment(comment.getKey());
+    }
+
+    @Override
     public void scrollToComment(String commentKey) {
         Comment comment = getCommentByKey(commentKey);
         if (null != comment)
@@ -247,6 +256,10 @@ public class ListAdapterCommentsCard extends RecyclerView.Adapter<RecyclerView.V
         else
             return null;
     }*/
+
+    private int getLastCommentIndex() {
+        return list.size()-1;
+    }
 
     private void removeItemIfType(ListItem.ItemType itemType, int index) {
 

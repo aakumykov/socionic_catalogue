@@ -23,6 +23,8 @@ import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapterCommentsCard;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Comments;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Card;
+import ru.aakumykov.me.sociocat.card_show.comment_form.CommentForm;
+import ru.aakumykov.me.sociocat.card_show.comment_form.iCommentForm;
 import ru.aakumykov.me.sociocat.card_show.presenters.CardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.CommentsPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
@@ -144,13 +146,16 @@ public class CardShowView extends BaseView implements
 
     // iReplyView
     @Override public void showCommentForm(ListItem repliedItem) {
-        iCommentForm commentForm = new CommentForm(this, new iCommentForm.CommentFormCallbacks() {
+        iCommentForm commentForm = new CommentForm(this);
+
+        commentForm.attachTo(commentFormContainer);
+
+        commentForm.addSendButtonListener(new iCommentForm.SendButtonListener() {
             @Override
             public void onSendCommentClicked(String commentText) {
-                commentsPresenter.onSendComment(commentText, null);
+                commentsPresenter.onSendComment(commentText, repliedItem, commentForm);
             }
         });
-        commentForm.attachTo(commentFormContainer);
     }
 
     @Override public void hideCommentForm() {
@@ -222,7 +227,7 @@ public class CardShowView extends BaseView implements
 
     private void hideRepliedText() {
 //        repliedCommentTextView.setText("");
-//        MyUtils.hide(repliedCommentContainer);
+//        MyUtils.remove(repliedCommentContainer);
     }
 
 

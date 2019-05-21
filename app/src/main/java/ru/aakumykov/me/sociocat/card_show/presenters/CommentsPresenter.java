@@ -6,26 +6,29 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Comments;
+import ru.aakumykov.me.sociocat.card_show.comment_form.iCommentForm;
 import ru.aakumykov.me.sociocat.card_show.iReplyView;
+import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iComment_ViewHolder;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 
 public class CommentsPresenter implements iCommentsPresenter{
 
-    private iListAdapter_Comments viewAdapter;
+    private iListAdapter_Comments listAdapter;
     private iReplyView replyView;
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
 
     @Override
     public void bindViewAdapter(iListAdapter_Comments viewAdapter) {
-        this.viewAdapter = viewAdapter;
+        this.listAdapter = viewAdapter;
     }
 
     @Override
     public void unbindViewAdapter() {
-        this.viewAdapter = null;
+        this.listAdapter = null;
     }
 
     @Override
@@ -41,22 +44,22 @@ public class CommentsPresenter implements iCommentsPresenter{
     @Override
     public void onWorkBegins(@Nullable String cardKey, @Nullable String commentKey) {
 
-        viewAdapter.showCommentsThrobber();
+        listAdapter.showCommentsThrobber();
 
         commentsSingleton.loadList(cardKey, new iCommentsSingleton.ListCallbacks() {
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
-                viewAdapter.hideCommentsThrobber();
-                viewAdapter.setList(list);
+                listAdapter.hideCommentsThrobber();
+                listAdapter.setList(list);
 
                 if (null != commentKey)
-                    viewAdapter.scrollToComment(commentKey);
+                    listAdapter.scrollToComment(commentKey);
             }
 
             @Override
             public void onCommentsLoadError(String errorMessage) {
-                viewAdapter.hideCommentsThrobber();
-                viewAdapter.showCommentsError(R.string.COMMENTS_error_loading_comments, errorMessage);
+                listAdapter.hideCommentsThrobber();
+                listAdapter.showCommentsError(R.string.COMMENTS_error_loading_comments, errorMessage);
             }
         });
     }
@@ -67,9 +70,39 @@ public class CommentsPresenter implements iCommentsPresenter{
     }
 
     @Override
-    public void onSendComment(String text, @Nullable Comment parentComment) {
+    public void onSendComment(String commentText, ListItem repliedItem, iCommentForm commentForm) {
 
+        Comment newComment = new Comment();
+        newComment.setText(commentText);
 
+        switch (repliedItem.getItemType()) {
+            case CARD_ITEM:
+                newComment.setCardId(((Card)repliedItem).getKey());
+                break;
+            case COMMENT_ITEM:
+                Comment repliedComment = (Comment)repliedItem;
+                newComment.setCardId(repliedComment.getCardId());
+                newComment.setParentId(repliedComment.getKey());
+                newComment.setParentText(repliedComment.getText());
+                break;
+            default:
+                break;
+        }
 
+        commentForm.disable();
+
+        commentsSingleton.createComment(newComment, new iCommentsSingleton.CreateCallbacks() {
+            @Override
+            public void onCommentSaveSuccess(Comment comment) {
+                commentForm.remove();
+                listAdapter.addComment(comment, true);
+            }
+
+            @Override
+            public void onCommentSaveError(String errorMsg) {
+                commentForm.enable();
+                replyView.showErrorMsg(R.string.COMMENT_error_adding_comment, errorMsg);
+            }
+        });
     }
 }

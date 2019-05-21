@@ -18,6 +18,7 @@ public abstract class ListItem {
 
     @Exclude private ItemType itemType;
 
+
     public void setItemType(ItemType itemType) {
         this.itemType = itemType;
     }
@@ -28,6 +29,10 @@ public abstract class ListItem {
 
     public boolean is(ItemType testItemType) {
         return itemType.equals(testItemType);
+    }
+
+    public boolean isCardItem() {
+        return itemType.equals(ItemType.CARD_ITEM);
     }
 
     public boolean isCommentItem() {

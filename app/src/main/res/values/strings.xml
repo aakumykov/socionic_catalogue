@@ -419,4 +419,5 @@
     <string name="COMMENTS_loading_comments">Загрузка комментариев</string>
     <string name="COMMENTS_there_is_no_comments_yet">Комментариев пока нет</string>
     <string name="COMMENTS_error_loading_comments">Ошибка загрузки комментариев</string>
+    <string name="COMMENT_error_adding_comment">Ошибка добавления комментария</string>
 </resources>

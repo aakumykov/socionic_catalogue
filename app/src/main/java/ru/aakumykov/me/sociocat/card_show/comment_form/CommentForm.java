@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show;
+package ru.aakumykov.me.sociocat.card_show.comment_form;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,7 +17,7 @@ public class CommentForm implements
         View.OnClickListener
 {
     private Context context;
-    private CommentFormCallbacks callbacks;
+    private SendButtonListener sendButtonListener;
 
     private View commentForm;
 
@@ -29,9 +29,8 @@ public class CommentForm implements
     private View sendCommentWidget;
 
 
-    public CommentForm(Context context, CommentFormCallbacks callbacks) {
+    public CommentForm(Context context) {
         this.context = context;
-        this.callbacks = callbacks;
     }
 
 
@@ -55,6 +54,11 @@ public class CommentForm implements
     }
 
     @Override
+    public void addSendButtonListener(SendButtonListener listener) {
+        this.sendButtonListener = listener;
+    }
+
+    @Override
     public void setQuote(ListItem listItem) {
         String text = ((Comment)listItem).getText();
         quoteTextView.setText(text);
@@ -67,7 +71,11 @@ public class CommentForm implements
     }
 
     @Override
-    public void hide() {
+    public void remove() {
+        quoteTextView.setText("");
+        MyUtils.hide(quoteContainer);
+
+        commentTextInput.setText("");
         MyUtils.hide(commentForm);
     }
 
@@ -107,7 +115,7 @@ public class CommentForm implements
 
     // Внутренние методы
     private void sendComment() {
-        callbacks.onSendCommentClicked(getText());
+        sendButtonListener.onSendCommentClicked(getText());
     }
 
     private String getText() {

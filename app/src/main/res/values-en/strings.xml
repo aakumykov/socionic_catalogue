@@ -411,4 +411,5 @@
     <string name="COMMENTS_loading_comments">Loading comments</string>
     <string name="COMMENTS_there_is_no_comments_yet">There is no comments yet</string>
     <string name="COMMENTS_error_loading_comments">Error loading comments</string>
+    <string name="COMMENT_error_adding_comment">Error adding comment</string>
 </resources>
