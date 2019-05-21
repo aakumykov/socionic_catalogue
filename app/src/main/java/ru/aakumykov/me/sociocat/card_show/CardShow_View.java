@@ -36,7 +36,8 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
 public class CardShow_View extends BaseView implements
-        iCardShow_View
+        iCardShow_View,
+        iListView
 {
     public interface LoadCommentsCallbacks {
         void onLoadCommentsSuccess(List<Comment> list);
@@ -129,7 +130,7 @@ public class CardShow_View extends BaseView implements
     }
 
 
-    // Интерфейсные методы
+    // iCardShowView
     @Override public void showCommentForm(ListItem repliedItem) {
         String repliedText = "";
         if (repliedItem instanceof Comment) {
@@ -157,12 +158,17 @@ public class CardShow_View extends BaseView implements
     }
 
 
+    // iListView
+    @Override public void scrollToPosition(int position) {
+        recyclerView.scrollToPosition(position);
+    }
 
+
+    // Нажатия
     @OnClick(R.id.repliedCommentDiscardWidget)
     void onRemoveRepliedText() {
         hideRepliedText();
     }
-
 
     @OnClick(R.id.sendCommentWidget)
     void postComment() {

@@ -219,7 +219,10 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void scrollToComment() {
+    public void scrollToComment(String commentKey) {
+        Comment comment = findCommentByKey(commentKey);
+        if (null != comment)
+            list.indexOf(comment)
 
     }
 
