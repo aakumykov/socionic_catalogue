@@ -83,10 +83,11 @@ public class CardShowView extends BaseView implements
     @Override protected void onStart() {
         super.onStart();
 
-        cardPresenter.bindListAdapter((iCard_ViewAdapter) listAdapter);
+        cardPresenter.bindViewAdapter((iCard_ViewAdapter) listAdapter);
         cardPresenter.bindReplyView(this);
 
-        commentsPresenter.bindListAdapter((iComments_ViewAdapter) listAdapter);
+        commentsPresenter.bindViewAdapter((iComments_ViewAdapter) listAdapter);
+        commentsPresenter.bindReplyView(this);
 
         listAdapter.bindPresenters(cardPresenter, commentsPresenter);
         listAdapter.bindListView(this);
@@ -102,10 +103,11 @@ public class CardShowView extends BaseView implements
     @Override protected void onStop() {
         super.onStop();
 
-        cardPresenter.unbindListAdapter();
+        cardPresenter.unbindViewAdapter();
         cardPresenter.unbindReplyView();
 
-        commentsPresenter.unbindListAdapter();
+        commentsPresenter.unbindViewAdapter();
+        commentsPresenter.unbindReplyView();
 
         listAdapter.unbindPresenters();
         listAdapter.unbindListView();

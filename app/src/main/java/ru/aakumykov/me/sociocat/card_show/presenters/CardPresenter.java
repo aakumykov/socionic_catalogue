@@ -23,24 +23,25 @@ public class CardPresenter implements iCardPresenter {
     }
 
 
-    @Override public void bindReplyView(iReplyView replyView) {
-        this.replyView = replyView;
-    }
-
-    @Override public void unbindReplyView() {
-        this.replyView = null;
-    }
-
     @Override
-    public void bindListAdapter(iCard_ViewAdapter listAdapter) {
+    public void bindViewAdapter(iCard_ViewAdapter listAdapter) {
         this.listAdapter = (iCard_ViewAdapter) listAdapter;
     }
 
     @Override
-    public void unbindListAdapter() {
+    public void unbindViewAdapter() {
         this.listAdapter = null;
     }
 
+    @Override
+    public void bindReplyView(iReplyView replyView) {
+        this.replyView = replyView;
+    }
+
+    @Override
+    public void unbindReplyView() {
+        this.replyView = null;
+    }
 
     @Override
     public void onWorkBegins(@Nullable String cardKey, @Nullable String commentKey) {

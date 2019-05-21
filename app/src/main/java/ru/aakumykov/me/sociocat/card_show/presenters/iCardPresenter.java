@@ -8,11 +8,11 @@ import ru.aakumykov.me.sociocat.card_show.iReplyView;
 
 public interface iCardPresenter extends iPresenter {
 
-    void bindReplyView(iReplyView pageView);
+    void bindReplyView(iReplyView replyView);
     void unbindReplyView();
 
-    void bindListAdapter(iCard_ViewAdapter listAdapter);
-    void unbindListAdapter();
+    void bindViewAdapter(iCard_ViewAdapter listAdapter);
+    void unbindViewAdapter();
 
     void onWorkBegins(@Nullable String cardKey, @Nullable String commentKey);
     void onErrorOccurs();

@@ -81,7 +81,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
             case ListItem.COMMENT_VIEW_TYPE:
                 itemView = layoutInflater.inflate(R.layout.card_show_comment, parent, false);
-                return new Comment_ViewHolder(itemView);
+                return new Comment_ViewHolder(itemView, commentsPresenter);
 
             case ListItem.THROBBER_VIEW_TYPE:
                 itemView = layoutInflater.inflate(R.layout.card_show_throbber, parent, false);
@@ -127,9 +127,9 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // iListAdapter
     @Override
-    public void bindPresenters(iCardPresenter cardPresenter, iCommentsPresenter commentPresenter) {
+    public void bindPresenters(iCardPresenter cardPresenter, iCommentsPresenter commP) {
         this.cardPresenter = cardPresenter;
-        this.commentsPresenter = commentsPresenter;
+        this.commentsPresenter = commP;
     }
 
     @Override

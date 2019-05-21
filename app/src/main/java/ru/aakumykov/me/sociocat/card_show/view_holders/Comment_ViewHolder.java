@@ -10,27 +10,32 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
 import ru.aakumykov.me.sociocat.models.Comment;
 
-public class Comment_ViewHolder  extends Base_ViewHolder
+public class Comment_ViewHolder  extends Base_ViewHolder implements iComment_ViewHolder
 {
     @BindView(R.id.commentRow) LinearLayout commentRow;
     @BindView(R.id.textView) TextView textView;
     @BindView(R.id.replyWidget) TextView replyWidget;
 
     private final static String TAG = "Comment_ViewHolder";
+    private iCommentsPresenter commentsPresenter;
     private Drawable originalBackground = null;
+    private Comment currentComment;
 
-
-    public Comment_ViewHolder(View itemView) {
+    public Comment_ViewHolder(View itemView, iCommentsPresenter commentsPresenter) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-        Log.d(TAG, "new Comment_ViewHolder()");
+        this.commentsPresenter = commentsPresenter;
     }
 
 
     public void initialize(Comment comment) {
+        currentComment = comment;
+
         textView.setText(comment.getText());
 
         commentRow.setOnLongClickListener(new View.OnLongClickListener() {
@@ -38,13 +43,6 @@ public class Comment_ViewHolder  extends Base_ViewHolder
             public boolean onLongClick(View v) {
                 showPopupMenu(v, comment);
                 return true;
-            }
-        });
-
-        replyWidget.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startReplyToComment(comment);
             }
         });
     }
@@ -60,6 +58,13 @@ public class Comment_ViewHolder  extends Base_ViewHolder
         if (null != originalBackground) {
             commentRow.setBackground(originalBackground);
         }
+    }
+
+
+    // Нажатия
+    @OnClick(R.id.replyWidget)
+    void openCommentForm() {
+        commentsPresenter.onReplyToCommentClicked(this, currentComment);
     }
 
 

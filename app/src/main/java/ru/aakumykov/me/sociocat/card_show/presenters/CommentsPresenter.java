@@ -6,6 +6,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.iComments_ViewAdapter;
+import ru.aakumykov.me.sociocat.card_show.iReplyView;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iComment_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
@@ -14,16 +15,27 @@ import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 public class CommentsPresenter implements iCommentsPresenter{
 
     private iComments_ViewAdapter viewAdapter;
+    private iReplyView replyView;
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
 
     @Override
-    public void bindListAdapter(iComments_ViewAdapter listAdapter) {
-        this.viewAdapter = listAdapter;
+    public void bindViewAdapter(iComments_ViewAdapter viewAdapter) {
+        this.viewAdapter = viewAdapter;
     }
 
     @Override
-    public void unbindListAdapter() {
+    public void unbindViewAdapter() {
         this.viewAdapter = null;
+    }
+
+    @Override
+    public void bindReplyView(iReplyView replyView) {
+        this.replyView = replyView;
+    }
+
+    @Override
+    public void unbindReplyView() {
+        this.replyView = null;
     }
 
     @Override
@@ -50,7 +62,7 @@ public class CommentsPresenter implements iCommentsPresenter{
     }
 
     @Override
-    public void onReplyToCommentClicked(iComment_ViewHolder viewHolder, String text) {
-
+    public void onReplyToCommentClicked(iComment_ViewHolder commentViewHolder, Comment comment) {
+        replyView.showCommentForm(comment);
     }
 }
