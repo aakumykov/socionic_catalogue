@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.card_show.adapter;
 
 import ru.aakumykov.me.sociocat.models.Card;
 
-public interface iCard_ViewAdapter {
+public interface iListAdapter_Card {
 
     void showCardThrobber();
     void hideCardThrobber();

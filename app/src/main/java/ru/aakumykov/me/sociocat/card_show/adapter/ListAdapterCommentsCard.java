@@ -12,8 +12,6 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.iListView;
-import ru.aakumykov.me.sociocat.card_show.presenters.CardPresenter;
-import ru.aakumykov.me.sociocat.card_show.presenters.CommentsPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Throbber_ViewHolder;
@@ -26,18 +24,18 @@ import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.list_items.Throbber_Item;
 import ru.aakumykov.me.sociocat.card_show.list_items.LoadMore_Item;
 
-public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
+public class ListAdapterCommentsCard extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         iListAdapter,
-        iCard_ViewAdapter,
-        iComments_ViewAdapter
+        iListAdapter_Card,
+        iListAdapter_Comments
 {
-    private final static String TAG = "ListAdapter";
+    private final static String TAG = "ListAdapterCommentsCard";
     private List<ListItem> list;
     private iCardPresenter cardPresenter;
     private iCommentsPresenter commentsPresenter;
     private iListView listView;
 
-    public ListAdapter() {
+    public ListAdapterCommentsCard() {
         this.list = new ArrayList<>();
     }
 
@@ -147,7 +145,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
 
-    // iCard_ViewAdapter
+    // iListAdapter_Card
     @Override
     public void showCardThrobber() {
         int index = 0;
@@ -184,7 +182,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
 
-    // iComments_ViewAdapter
+    // iListAdapter_Comments
     @Override
     public void showCommentsThrobber() {
         list.add(new Throbber_Item(R.string.COMMENTS_loading_comments));

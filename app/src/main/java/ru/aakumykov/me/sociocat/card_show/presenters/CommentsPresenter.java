@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.adapter.iComments_ViewAdapter;
+import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Comments;
 import ru.aakumykov.me.sociocat.card_show.iReplyView;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iComment_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -14,12 +14,12 @@ import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 
 public class CommentsPresenter implements iCommentsPresenter{
 
-    private iComments_ViewAdapter viewAdapter;
+    private iListAdapter_Comments viewAdapter;
     private iReplyView replyView;
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
 
     @Override
-    public void bindViewAdapter(iComments_ViewAdapter viewAdapter) {
+    public void bindViewAdapter(iListAdapter_Comments viewAdapter) {
         this.viewAdapter = viewAdapter;
     }
 

@@ -21,10 +21,10 @@ import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter;
-import ru.aakumykov.me.sociocat.card_show.adapter.iComments_ViewAdapter;
+import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapterCommentsCard;
+import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Comments;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
-import ru.aakumykov.me.sociocat.card_show.adapter.iCard_ViewAdapter;
+import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Card;
 import ru.aakumykov.me.sociocat.card_show.presenters.CardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.CommentsPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
@@ -71,7 +71,7 @@ public class CardShowView extends BaseView implements
         this.commentsPresenter = new CommentsPresenter();
         this.cardPresenter = new CardPresenter(commentsPresenter);
 
-        this.listAdapter = new ListAdapter();
+        this.listAdapter = new ListAdapterCommentsCard();
 
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.recyclerView.setAdapter((RecyclerView.Adapter) listAdapter);
@@ -83,10 +83,10 @@ public class CardShowView extends BaseView implements
     @Override protected void onStart() {
         super.onStart();
 
-        cardPresenter.bindViewAdapter((iCard_ViewAdapter) listAdapter);
+        cardPresenter.bindViewAdapter((iListAdapter_Card) listAdapter);
         cardPresenter.bindReplyView(this);
 
-        commentsPresenter.bindViewAdapter((iComments_ViewAdapter) listAdapter);
+        commentsPresenter.bindViewAdapter((iListAdapter_Comments) listAdapter);
         commentsPresenter.bindReplyView(this);
 
         listAdapter.bindPresenters(cardPresenter, commentsPresenter);
