@@ -7,16 +7,16 @@ import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 
 public interface iCommentForm {
 
-    void attachTo(Context context, ViewGroup container);
+    interface CommentFormCallbacks {
+        void onSendCommentClicked(String commentText);
+    }
+
+    void attachTo(ViewGroup container);
+    void setQuote(ListItem listItem);
 
     void show();
     void hide();
 
     void enable();
     void disable();
-
-    String getText();
-
-    void setQuote(ListItem listItem);
-    void clearQuote();
 }

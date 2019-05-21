@@ -2,11 +2,9 @@ package ru.aakumykov.me.sociocat.card_show;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,7 +16,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -147,8 +144,13 @@ public class CardShowView extends BaseView implements
 
     // iReplyView
     @Override public void showCommentForm(ListItem repliedItem) {
-        iCommentForm commentForm = new CommentForm();
-        commentForm.attachTo(this, commentFormContainer);
+        iCommentForm commentForm = new CommentForm(this, new iCommentForm.CommentFormCallbacks() {
+            @Override
+            public void onSendCommentClicked(String commentText) {
+                commentsPresenter.onSendComment(commentText, null);
+            }
+        });
+        commentForm.attachTo(commentFormContainer);
     }
 
     @Override public void hideCommentForm() {

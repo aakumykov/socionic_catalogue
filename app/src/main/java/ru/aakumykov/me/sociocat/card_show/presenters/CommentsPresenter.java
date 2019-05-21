@@ -65,4 +65,11 @@ public class CommentsPresenter implements iCommentsPresenter{
     public void onReplyToCommentClicked(iComment_ViewHolder commentViewHolder, Comment comment) {
         replyView.showCommentForm(comment);
     }
+
+    @Override
+    public void onSendComment(String text, @Nullable Comment parentComment) {
+
+
+
+    }
 }

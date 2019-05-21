@@ -7,11 +7,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
-import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -20,6 +17,9 @@ public class CommentForm implements
         View.OnClickListener
 {
     private Context context;
+    private CommentFormCallbacks callbacks;
+
+    private View commentForm;
 
     private View quoteContainer;
     private TextView quoteTextView;
@@ -29,13 +29,20 @@ public class CommentForm implements
     private View sendCommentWidget;
 
 
-    @Override
-    public void attachTo(Context context, ViewGroup container) {
+    public CommentForm(Context context, CommentFormCallbacks callbacks) {
         this.context = context;
+        this.callbacks = callbacks;
+    }
 
+
+    // Интерфесные методы
+    @Override
+    public void attachTo(ViewGroup container) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         container.removeAllViews();
         View formLayout = layoutInflater.inflate(R.layout.card_show_comment_form, container, true);
+
+        commentForm = formLayout.findViewById(R.id.commentForm);
 
         quoteContainer = formLayout.findViewById(R.id.quoteContainer);
         quoteTextView = formLayout.findViewById(R.id.quoteTextView);
@@ -48,43 +55,6 @@ public class CommentForm implements
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-
-            case R.id.sendCommentWidget:
-                sendCommentClicked();
-                break;
-
-            case R.id.clearQuoteWidget:
-                clearQuoteClicked();
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void show() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void enable() {
-
-    }
-
-    @Override
-    public void disable() {
-
-    }
-
-    @Override
     public void setQuote(ListItem listItem) {
         String text = ((Comment)listItem).getText();
         quoteTextView.setText(text);
@@ -92,23 +62,61 @@ public class CommentForm implements
     }
 
     @Override
-    public void clearQuote() {
-
+    public void show() {
+        MyUtils.show(commentForm);
     }
 
     @Override
-    public String getText() {
-        return null;
+    public void hide() {
+        MyUtils.hide(commentForm);
+    }
+
+    @Override
+    public void enable() {
+        MyUtils.enable(clearQuoteWidget);
+        MyUtils.enable(commentTextInput);
+        MyUtils.enable(sendCommentWidget);
+    }
+
+    @Override
+    public void disable() {
+        MyUtils.disable(clearQuoteWidget);
+        MyUtils.disable(commentTextInput);
+        MyUtils.disable(sendCommentWidget);
+    }
+
+
+    // Системные методы
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.sendCommentWidget:
+                sendComment();
+                break;
+
+            case R.id.clearQuoteWidget:
+                clearQuote();
+                break;
+
+            default:
+                break;
+        }
     }
 
 
     // Внутренние методы
-    private void sendCommentClicked() {
-        MyUtils.showCustomToast(context, commentTextInput.getText().toString());
+    private void sendComment() {
+        callbacks.onSendCommentClicked(getText());
     }
 
-    private void clearQuoteClicked() {
+    private String getText() {
+        return commentTextInput.getText().toString();
+    }
+
+    private void clearQuote() {
         quoteTextView.setText("");
         MyUtils.hide(quoteContainer);
     }
+
 }

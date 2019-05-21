@@ -15,7 +15,10 @@ public interface iCommentsPresenter extends iPresenter {
     void bindReplyView(iReplyView replyView);
     void unbindReplyView();
 
+
     void onWorkBegins(@Nullable String cardKey, @Nullable String commentKey);
 
     void onReplyToCommentClicked(iComment_ViewHolder commentViewHolder, Comment comment);
+
+    void onSendComment(String text, @Nullable Comment parentComment);
 }
