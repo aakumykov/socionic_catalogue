@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -48,12 +49,12 @@ public class CardShowView extends BaseView implements
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
-    @BindView(R.id.commentFormContainer) View commentFormContainer;
-    @BindView(R.id.parentCommentContainer) View repliedCommentContainer;
-    @BindView(R.id.parentCommentTextView) TextView repliedCommentTextView;
-    @BindView(R.id.repliedCommentDiscardWidget) View parentCommentDiscardWidget;
-    @BindView(R.id.commentInput) EditText commentInput;
-    @BindView(R.id.sendCommentWidget) View sendCommentWidget;
+    @BindView(R.id.commentFormContainer) FrameLayout commentFormContainer;
+//    @BindView(R.id.parentCommentContainer) View repliedCommentContainer;
+//    @BindView(R.id.parentCommentTextView) TextView repliedCommentTextView;
+//    @BindView(R.id.repliedCommentDiscardWidget) View parentCommentDiscardWidget;
+//    @BindView(R.id.commentInput) EditText commentInput;
+//    @BindView(R.id.sendCommentWidget) View sendCommentWidget;
 
     private iCardPresenter cardPresenter;
     private iCommentsPresenter commentsPresenter;
@@ -146,14 +147,8 @@ public class CardShowView extends BaseView implements
 
     // iReplyView
     @Override public void showCommentForm(ListItem repliedItem) {
-        String repliedText = "";
-        if (repliedItem instanceof Comment) {
-            Comment comment = (Comment) repliedItem;
-            repliedText = MyUtils.cutToLength(comment.getText(), 20);
-        }
-
-        showRepliedText(repliedText);
-        MyUtils.show(commentFormContainer);
+        iCommentForm commentForm = new CommentForm();
+        commentForm.attachTo(this, commentFormContainer);
     }
 
     @Override public void hideCommentForm() {
@@ -162,70 +157,70 @@ public class CardShowView extends BaseView implements
     }
 
     @Override public void enableCommentForm() {
-        MyUtils.enable(commentInput);
-        MyUtils.enable(sendCommentWidget);
+//        MyUtils.enable(commentInput);
+//        MyUtils.enable(sendCommentWidget);
     }
 
     @Override public void disableCommentForm() {
-        MyUtils.disable(commentInput);
-        MyUtils.disable(sendCommentWidget);
+//        MyUtils.disable(commentInput);
+//        MyUtils.disable(sendCommentWidget);
     }
 
 
     // Нажатия
-    @OnClick(R.id.repliedCommentDiscardWidget)
-    void onRemoveRepliedText() {
-        hideRepliedText();
-    }
-
-
-    @OnClick(R.id.sendCommentWidget)
-    void postComment() {
-
-        MyUtils.showCustomToast(this, "Ещё не реализовано");
-
-/*
-        Comment comment = new Comment(commentInput.getText().toString());
-        disableCommentForm();
-
-        commentsService.postComment(comment, new Comments_Service.iPostCommentCallbacks() {
-
-            @Override
-            public void onPostCommentSuccess(Comment comment) {
-
-                hideCommentForm();
-                dataAdapter.appendComment(comment, new iDataAdapter.AppendCommentCallbacks() {
-
-                    @Override
-                    public void onCommentAppended() {
-                        scrollToComment(comment);
-                    }
-
-                });
-            }
-
-            @Override
-            public void onPostCommentFail(String errorMsg) {
-                showError(errorMsg);
-                enableCommentForm();
-            }
-        });
-*/
-
-    }
+//    @OnClick(R.id.repliedCommentDiscardWidget)
+//    void onRemoveRepliedText() {
+//        hideRepliedText();
+//    }
+//
+//
+//    @OnClick(R.id.sendCommentWidget)
+//    void postComment() {
+//
+//        MyUtils.showCustomToast(this, "Ещё не реализовано");
+//
+///*
+//        Comment comment = new Comment(commentInput.getText().toString());
+//        disableCommentForm();
+//
+//        commentsService.postComment(comment, new Comments_Service.iPostCommentCallbacks() {
+//
+//            @Override
+//            public void onPostCommentSuccess(Comment comment) {
+//
+//                hideCommentForm();
+//                dataAdapter.appendComment(comment, new iDataAdapter.AppendCommentCallbacks() {
+//
+//                    @Override
+//                    public void onCommentAppended() {
+//                        scrollToComment(comment);
+//                    }
+//
+//                });
+//            }
+//
+//            @Override
+//            public void onPostCommentFail(String errorMsg) {
+//                showError(errorMsg);
+//                enableCommentForm();
+//            }
+//        });
+//*/
+//
+//    }
 
 
     // Внутренние методы
     private void showRepliedText(String text) {
-        if (!TextUtils.isEmpty(text)) {
-            repliedCommentTextView.setText(text);
-            MyUtils.show(repliedCommentContainer);
-        }
+//        if (!TextUtils.isEmpty(text)) {
+//            repliedCommentTextView.setText(text);
+//            MyUtils.show(repliedCommentContainer);
+//        }
     }
 
     private void hideRepliedText() {
-        repliedCommentTextView.setText("");
-        MyUtils.hide(repliedCommentContainer);
+//        repliedCommentTextView.setText("");
+//        MyUtils.hide(repliedCommentContainer);
     }
 
 
