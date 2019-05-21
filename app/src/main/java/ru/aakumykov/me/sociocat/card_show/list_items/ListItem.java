@@ -23,27 +23,27 @@ public abstract class ListItem {
         this.itemType = itemType;
     }
 
-    public ItemType getItemType() {
+    @Exclude public ItemType getItemType() {
         return itemType;
     }
 
-    public boolean is(ItemType testItemType) {
+    @Exclude public boolean is(ItemType testItemType) {
         return itemType.equals(testItemType);
     }
 
-    public boolean isCardItem() {
+    @Exclude public boolean isCardItem() {
         return itemType.equals(ItemType.CARD_ITEM);
     }
 
-    public boolean isCommentItem() {
+    @Exclude public boolean isCommentItem() {
         return itemType.equals(ItemType.COMMENT_ITEM);
     }
 
-    public boolean isCommentsThrobberItem() {
+    @Exclude public boolean isCommentsThrobberItem() {
         return itemType.equals(ItemType.CARD_ITEM);
     }
 
-    public boolean isLoadMoreItem() {
+    @Exclude public boolean isLoadMoreItem() {
         return itemType.equals(ItemType.LOAD_MORE_ITEM);
     }
 }

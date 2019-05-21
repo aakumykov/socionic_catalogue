@@ -150,6 +150,9 @@ public class CardShowView extends BaseView implements
 
         commentForm.attachTo(commentFormContainer);
 
+        if (repliedItem.isCommentItem())
+            commentForm.setQuote(repliedItem);
+
         commentForm.addSendButtonListener(new iCommentForm.SendButtonListener() {
             @Override
             public void onSendCommentClicked(String commentText) {
