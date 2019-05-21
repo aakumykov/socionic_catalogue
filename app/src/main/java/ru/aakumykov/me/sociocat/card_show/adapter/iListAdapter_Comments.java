@@ -16,5 +16,5 @@ public interface iListAdapter_Comments {
     void setList(List<Comment> itemsList);
     void addList(List<Comment> list);
 
-    void scrollToComment(String commentKey);
+    void scrollToComment();
 }

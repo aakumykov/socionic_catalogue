@@ -6,7 +6,6 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Comments;
-import ru.aakumykov.me.sociocat.card_show.iListView;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iComment_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
@@ -15,9 +14,7 @@ import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 public class CommentsPresenter implements iCommentsPresenter{
 
     private iListAdapter_Comments listAdapter;
-    private iListView listView;
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
-
 
     @Override
     public void bindListAdapter(iListAdapter_Comments listAdapter) {
@@ -29,18 +26,6 @@ public class CommentsPresenter implements iCommentsPresenter{
         this.listAdapter = null;
     }
 
-
-    @Override
-    public void bindListView(iListView listView) {
-        this.listView = listView;
-    }
-
-    @Override
-    public void unbindListView() {
-        this.listView = null;
-    }
-
-
     @Override
     public void onWorkBegins(@Nullable String cardKey, @Nullable String commentKey) {
 
@@ -51,9 +36,6 @@ public class CommentsPresenter implements iCommentsPresenter{
             public void onCommentsLoadSuccess(List<Comment> list) {
                 listAdapter.hideCommentsThrobber();
                 listAdapter.setList(list);
-
-                if (null != commentKey)
-                    listAdapter.scrollToComment(commentKey);
             }
 
             @Override
