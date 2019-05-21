@@ -4,12 +4,12 @@ package ru.aakumykov.me.sociocat.card_show.presenters;
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.card_show.adapter.iCard_ViewAdapter;
-import ru.aakumykov.me.sociocat.card_show.iCommentForm;
+import ru.aakumykov.me.sociocat.card_show.iReplyView;
 
 public interface iCardPresenter extends iPresenter {
 
-    void bindCommentForm(iCommentForm pageView);
-    void unbindCommentForm();
+    void bindReplyView(iReplyView pageView);
+    void unbindReplyView();
 
     void bindListAdapter(iCard_ViewAdapter listAdapter);
     void unbindListAdapter();

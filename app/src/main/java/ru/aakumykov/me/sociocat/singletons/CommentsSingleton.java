@@ -70,7 +70,11 @@ public class CommentsSingleton implements iCommentsSingleton {
                     }
                 }
 
-                callbacks.onCommentsLoadSuccess(commentsList);
+//                try {
+                    callbacks.onCommentsLoadSuccess(commentsList);
+//                } catch (Exception e) {
+//                    Log.e(TAG, e.getMessage());
+//                }
             }
 
             @Override

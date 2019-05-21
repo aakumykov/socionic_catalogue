@@ -33,8 +33,8 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 {
     private final static String TAG = "ListAdapter";
     private List<ListItem> list;
-    private CardPresenter cardPresenter;
-    private CommentsPresenter commentsPresenter;
+    private iCardPresenter cardPresenter;
+    private iCommentsPresenter commentsPresenter;
     private iListView listView;
 
     public ListAdapter() {
@@ -77,7 +77,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         switch (viewType) {
             case ListItem.CARD_VIEW_TYPE:
                 itemView = layoutInflater.inflate(R.layout.card_show_card, parent, false);
-                return new Card_ViewHolder(itemView);
+                return new Card_ViewHolder(itemView, cardPresenter);
 
             case ListItem.COMMENT_VIEW_TYPE:
                 itemView = layoutInflater.inflate(R.layout.card_show_comment, parent, false);
@@ -128,12 +128,14 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     // iListAdapter
     @Override
     public void bindPresenters(iCardPresenter cardPresenter, iCommentsPresenter commentPresenter) {
-
+        this.cardPresenter = cardPresenter;
+        this.commentsPresenter = commentsPresenter;
     }
 
     @Override
     public void unbindPresenters() {
-
+        this.commentsPresenter = null;
+        this.cardPresenter = null;
     }
 
     @Override public void bindListView(iListView listView) {

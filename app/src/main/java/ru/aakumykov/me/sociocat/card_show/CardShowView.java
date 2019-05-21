@@ -36,7 +36,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardShowView extends BaseView implements
         iListView,
-        iCommentForm
+        iReplyView
 {
     public interface LoadCommentsCallbacks {
         void onLoadCommentsSuccess(List<Comment> list);
@@ -84,6 +84,8 @@ public class CardShowView extends BaseView implements
         super.onStart();
 
         cardPresenter.bindListAdapter((iCard_ViewAdapter) listAdapter);
+        cardPresenter.bindReplyView(this);
+
         commentsPresenter.bindListAdapter((iComments_ViewAdapter) listAdapter);
 
         listAdapter.bindPresenters(cardPresenter, commentsPresenter);
@@ -101,6 +103,8 @@ public class CardShowView extends BaseView implements
         super.onStop();
 
         cardPresenter.unbindListAdapter();
+        cardPresenter.unbindReplyView();
+
         commentsPresenter.unbindListAdapter();
 
         listAdapter.unbindPresenters();
@@ -138,7 +142,7 @@ public class CardShowView extends BaseView implements
     }
 
 
-    // iCommentForm
+    // iReplyView
     @Override public void showCommentForm(ListItem repliedItem) {
         String repliedText = "";
         if (repliedItem instanceof Comment) {

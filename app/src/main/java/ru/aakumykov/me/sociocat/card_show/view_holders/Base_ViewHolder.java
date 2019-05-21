@@ -4,7 +4,7 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-abstract class Base_ViewHolder extends RecyclerView.ViewHolder {
+public abstract class Base_ViewHolder extends RecyclerView.ViewHolder {
 
     Base_ViewHolder(View view){
         super(view);

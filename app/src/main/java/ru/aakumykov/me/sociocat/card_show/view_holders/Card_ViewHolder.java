@@ -8,8 +8,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +20,7 @@ import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -43,13 +42,15 @@ public class Card_ViewHolder extends Base_ViewHolder
     private static final String TAG = "Card_ViewHolder";
     private Context context;
     private Card currentCard;
+    private iCardPresenter cardPresenter;
     private boolean isInitialized = false;
 
     // Конструктор
-    public Card_ViewHolder(View itemView) {
+    public Card_ViewHolder(View itemView, iCardPresenter cardPresenter) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         this.context = itemView.getContext();
+        this.cardPresenter = cardPresenter;
     }
 
     public void initialize(Card card) {
@@ -64,7 +65,7 @@ public class Card_ViewHolder extends Base_ViewHolder
     // Нажатия
     @OnClick(R.id.replyWidget)
     void openCommentForm() {
-
+        cardPresenter.onAddCommentClicked();
     }
 
 
