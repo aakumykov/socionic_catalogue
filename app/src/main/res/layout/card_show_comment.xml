@@ -5,7 +5,11 @@
     android:layout_height="wrap_content"
     android:background="@drawable/shape_bottom_line"
     android:orientation="vertical"
-    android:padding="12dp">
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="6dp"
+    >
 
     <TextView
         android:id="@+id/textView"
@@ -23,16 +27,17 @@
 
         <Space
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="8" />
+            android:layout_height="match_parent"
+            android:layout_weight="9" />
 
         <TextView
             android:id="@+id/replyWidget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:text="Ответить"
             android:textAlignment="textEnd"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp" />
     </LinearLayout>
 </LinearLayout>
