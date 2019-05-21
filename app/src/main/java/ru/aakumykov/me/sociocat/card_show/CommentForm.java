@@ -13,10 +13,8 @@ public class CommentForm implements iCommentForm {
     @Override
     public void attachTo(Context context, ViewGroup container) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View formLayout = layoutInflater.inflate(R.layout.card_show_comment_form, null);
-//        View formLayout = layoutInflater.inflate(R.layout.card_show_comment_form, container);
         container.removeAllViews();
-        container.addView(formLayout);
+        layoutInflater.inflate(R.layout.card_show_comment_form, container, true);
     }
 
     @Override
