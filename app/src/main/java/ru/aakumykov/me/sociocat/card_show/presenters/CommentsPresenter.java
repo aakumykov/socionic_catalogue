@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show.presenters;
 
+import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
 
 import java.util.List;
@@ -71,6 +73,12 @@ public class CommentsPresenter implements iCommentsPresenter{
 
     @Override
     public void onSendComment(String commentText, ListItem repliedItem, iCommentForm commentForm) {
+
+        commentText = commentText.trim();
+
+        if (TextUtils.isEmpty(commentText))
+            return;
+
 
         Comment newComment = new Comment();
         newComment.setText(commentText);
