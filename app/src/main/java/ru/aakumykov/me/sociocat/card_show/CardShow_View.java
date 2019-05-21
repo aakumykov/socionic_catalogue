@@ -3,7 +3,6 @@ package ru.aakumykov.me.sociocat.card_show;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,9 +22,9 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter;
+import ru.aakumykov.me.sociocat.card_show.adapter.iComments_ViewAdapter;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
-import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Card;
-import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Comments;
+import ru.aakumykov.me.sociocat.card_show.adapter.iCard_ViewAdapter;
 import ru.aakumykov.me.sociocat.card_show.presenters.CardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.CommentsPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
@@ -36,7 +35,8 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
 public class CardShow_View extends BaseView implements
-        iCardShow_View
+        iCardShow_View,
+        iListView
 {
     public interface LoadCommentsCallbacks {
         void onLoadCommentsSuccess(List<Comment> list);
@@ -83,10 +83,11 @@ public class CardShow_View extends BaseView implements
     @Override protected void onStart() {
         super.onStart();
 
-        cardPresenter.bindListAdapter((iListAdapter_Card) listAdapter);
-        commentsPresenter.bindListAdapter((iListAdapter_Comments) listAdapter);
+        cardPresenter.bindListAdapter((iCard_ViewAdapter) listAdapter);
+        commentsPresenter.bindListAdapter((iComments_ViewAdapter) listAdapter);
 
         listAdapter.bindPresenters(cardPresenter, commentsPresenter);
+        listAdapter.bindListView(this);
 
         if (firstRun) {
             firstRun = false;
@@ -103,6 +104,7 @@ public class CardShow_View extends BaseView implements
         commentsPresenter.unbindListAdapter();
 
         listAdapter.unbindPresenters();
+        listAdapter.unbindListView();
     }
 
     @Override public void onBackPressed() {
@@ -129,7 +131,7 @@ public class CardShow_View extends BaseView implements
     }
 
 
-    // Интерфейсные методы
+    // iCardShowView
     @Override public void showCommentForm(ListItem repliedItem) {
         String repliedText = "";
         if (repliedItem instanceof Comment) {
@@ -157,7 +159,14 @@ public class CardShow_View extends BaseView implements
     }
 
 
+    // iListView
+    @Override public void scrollToPosition(int position) {
+        recyclerView.scrollToPosition(position);
+//        recyclerView.scrollToPosition(-1);
+    }
 
+
+    // Нажатия
     @OnClick(R.id.repliedCommentDiscardWidget)
     void onRemoveRepliedText() {
         hideRepliedText();

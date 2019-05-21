@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.card_show.adapter;
 
-import android.content.ClipData;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show.iListView;
 import ru.aakumykov.me.sociocat.card_show.presenters.CardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.CommentsPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
@@ -28,13 +28,14 @@ import ru.aakumykov.me.sociocat.card_show.list_items.LoadMore_Item;
 
 public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         iListAdapter,
-        iListAdapter_Card,
-        iListAdapter_Comments
+        iCard_ViewAdapter,
+        iComments_ViewAdapter
 {
     private final static String TAG = "ListAdapter";
     private List<ListItem> list;
     private CardPresenter cardPresenter;
     private CommentsPresenter commentsPresenter;
+    private iListView listView;
 
     public ListAdapter() {
         this.list = new ArrayList<>();
@@ -135,8 +136,16 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     }
 
+    @Override public void bindListView(iListView listView) {
+        this.listView = listView;
+    }
 
-    // iListAdapter_Card
+    @Override public void unbindListView() {
+        this.listView = null;
+    }
+
+
+    // iCard_ViewAdapter
     @Override
     public void showCardThrobber() {
         int index = 0;
@@ -173,7 +182,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
 
-    // iListAdapter_Comments
+    // iComments_ViewAdapter
     @Override
     public void showCommentsThrobber() {
         list.add(new Throbber_Item(R.string.COMMENTS_loading_comments));
@@ -219,8 +228,10 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void scrollToComment() {
-
+    public void scrollToComment(String commentKey) {
+        Comment comment = getCommentByKey(commentKey);
+        if (null != comment)
+            listView.scrollToPosition(list.indexOf(comment));
     }
 
 
@@ -251,4 +262,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
     }
 
+    private Comment getCommentByKey(String commentKey) {
+        return null;
+    }
 }
