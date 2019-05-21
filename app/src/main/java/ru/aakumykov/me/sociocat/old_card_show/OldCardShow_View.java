@@ -148,7 +148,7 @@ public class OldCardShow_View extends BaseView implements
         commentsThrobber = findViewById(R.id.commentsThrobber);
         addCommentButton = findViewById(R.id.addCommentButton);
         commentForm = findViewById(R.id.commentForm);
-        commentInput = findViewById(R.id.commentInput);
+        commentInput = findViewById(R.id.commentTextInput);
         sendCommentButton = findViewById(R.id.sendCommentButton);
 
         // Устанавливаю обработчики нажатий

@@ -17,6 +17,6 @@ public interface iCommentForm {
 
     String getText();
 
-    void setParent(ListItem listItem);
-    void clearParent();
+    void setQuote(ListItem listItem);
+    void clearQuote();
 }

@@ -10,7 +10,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/parentCommentContainer"
+        android:id="@+id/quoteContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -21,7 +21,7 @@
         tools:visibility="visible">
 
         <TextView
-            android:id="@+id/parentCommentTextView"
+            android:id="@+id/quoteTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="9"
@@ -31,7 +31,7 @@
             tools:visibility="visible" />
 
         <ImageView
-            android:id="@+id/repliedCommentDiscardWidget"
+            android:id="@+id/clearQuoteWidget"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -46,11 +46,11 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/parentCommentContainer"
-        app:layout_constraintTop_toBottomOf="@+id/parentCommentContainer">
+        app:layout_constraintStart_toStartOf="@+id/quoteContainer"
+        app:layout_constraintTop_toBottomOf="@+id/quoteContainer">
 
         <EditText
-            android:id="@+id/commentInput"
+            android:id="@+id/commentTextInput"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="9"
