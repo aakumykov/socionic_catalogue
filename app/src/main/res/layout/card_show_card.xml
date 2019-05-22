@@ -110,7 +110,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/controlsHolder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
 
         <ImageView
             android:id="@+id/cardRateUpButton"
@@ -166,12 +168,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <View
-        android:id="@+id/bottomSpacer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="10dp" />
 
     <!-- android:paddingStart="@dimen/card_component_padding_right"
         android:paddingEnd="@dimen/card_component_padding_right" -->
