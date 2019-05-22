@@ -276,6 +276,13 @@ public class ListAdapterCommentsCard extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private Comment getCommentByKey(String commentKey) {
+        for (ListItem listItem : list) {
+            if (listItem.isCommentItem()) {
+                Comment comment = (Comment) listItem;
+                if (commentKey.equals(comment.getKey()))
+                    return comment;
+            }
+        }
         return null;
     }
 }
