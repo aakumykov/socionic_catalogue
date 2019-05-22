@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show.view_holders;
 
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,10 +15,12 @@ import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
 import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Comment_ViewHolder  extends Base_ViewHolder implements iComment_ViewHolder
 {
     @BindView(R.id.commentRow) LinearLayout commentRow;
+    @BindView(R.id.quoteView) TextView quoteView;
     @BindView(R.id.textView) TextView textView;
     @BindView(R.id.replyWidget) TextView replyWidget;
 
@@ -35,6 +38,14 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements iComment_Vie
 
     public void initialize(Comment comment) {
         currentComment = comment;
+
+        MyUtils.hide(quoteView);
+
+        String parentText = comment.getParentText();
+        if (!TextUtils.isEmpty(parentText)) {
+            quoteView.setText(parentText);
+            MyUtils.show(quoteView);
+        }
 
         textView.setText(comment.getText());
 

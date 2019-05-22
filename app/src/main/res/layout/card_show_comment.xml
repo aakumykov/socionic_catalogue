@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/commentRow"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -12,10 +13,23 @@
     >
 
     <TextView
+        android:id="@+id/quoteView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        tools:text="Родительский комментарий"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:background="@drawable/shape_comment_quote_background"
+        android:padding="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="36dp" />
+
+    <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Комментарий"
+        tools:text="Комментарий"
         android:textSize="18sp" />
 
     <LinearLayout
@@ -35,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Ответить"
+            android:text="@string/COMMENT_reply"
             android:textAlignment="textEnd"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp" />
