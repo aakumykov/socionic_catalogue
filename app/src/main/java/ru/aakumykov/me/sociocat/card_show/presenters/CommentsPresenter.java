@@ -68,11 +68,11 @@ public class CommentsPresenter implements iCommentsPresenter{
 
     @Override
     public void onReplyToCommentClicked(iComment_ViewHolder commentViewHolder, Comment comment) {
-        replyView.showCommentForm(comment);
+        replyView.showCommentForm(comment.getText(), comment);
     }
 
     @Override
-    public void onSendComment(String commentText, ListItem repliedItem, iCommentForm commentForm) {
+    public void sendCommentClicked(String commentText, ListItem repliedItem, iCommentForm commentForm) {
 
         commentText = commentText.trim();
 
@@ -102,7 +102,7 @@ public class CommentsPresenter implements iCommentsPresenter{
         commentsSingleton.createComment(newComment, new iCommentsSingleton.CreateCallbacks() {
             @Override
             public void onCommentSaveSuccess(Comment comment) {
-                commentForm.remove();
+                commentForm.hide();
                 listAdapter.addComment(comment, true);
             }
 

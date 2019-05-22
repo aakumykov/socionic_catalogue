@@ -189,7 +189,7 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public void onUserLogout() {
-        //MyUtils.remove(floatingActionButton);
+        //MyUtils.hide(floatingActionButton);
     }
 
     @Override

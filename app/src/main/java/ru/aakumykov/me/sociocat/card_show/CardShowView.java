@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,13 +26,12 @@ import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Card;
 import ru.aakumykov.me.sociocat.card_show.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.card_show.comment_form.iCommentForm;
+import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.presenters.CardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.CommentsPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
 import ru.aakumykov.me.sociocat.models.Comment;
-import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
 public class CardShowView extends BaseView implements
@@ -49,18 +49,12 @@ public class CardShowView extends BaseView implements
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.commentFormContainer) FrameLayout commentFormContainer;
-//    @BindView(R.id.parentCommentContainer) View repliedCommentContainer;
-//    @BindView(R.id.parentCommentTextView) TextView repliedCommentTextView;
-//    @BindView(R.id.repliedCommentDiscardWidget) View parentCommentDiscardWidget;
-//    @BindView(R.id.commentInput) EditText commentInput;
-//    @BindView(R.id.sendCommentWidget) View sendCommentWidget;
 
     private iCardPresenter cardPresenter;
     private iCommentsPresenter commentsPresenter;
     private iListAdapter listAdapter;
     private boolean firstRun = true;
-    //    private boolean flagCommentsLoadInProgress = false;
-
+    private iCommentForm commentForm;
 
     // Системные методы
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +69,9 @@ public class CardShowView extends BaseView implements
 
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.recyclerView.setAdapter((RecyclerView.Adapter) listAdapter);
+
+        this.commentForm = new CommentForm(this);
+        this.commentForm.attachTo(commentFormContainer);
 
         activateUpButton();
         setPageTitle(R.string.CARD_SHOW_page_title_short);
@@ -145,25 +142,22 @@ public class CardShowView extends BaseView implements
 
 
     // iReplyView
-    @Override public void showCommentForm(ListItem repliedItem) {
-        iCommentForm commentForm = new CommentForm(this);
-
-        commentForm.attachTo(commentFormContainer);
-
-        if (repliedItem.isCommentItem())
-            commentForm.setQuote(repliedItem);
+    @Override public void showCommentForm(@Nullable String quotedText, ListItem parentItem) {
+        if (null != quotedText)
+            commentForm.setQuote(quotedText);
 
         commentForm.addSendButtonListener(new iCommentForm.SendButtonListener() {
             @Override
             public void onSendCommentClicked(String commentText) {
-                commentsPresenter.onSendComment(commentText, repliedItem, commentForm);
+                commentsPresenter.sendCommentClicked(commentText, parentItem, commentForm);
             }
         });
+
+        commentForm.show();
     }
 
     @Override public void hideCommentForm() {
-        hideRepliedText();
-        MyUtils.hide(commentFormContainer);
+        commentForm.hide();
     }
 
     @Override public void enableCommentForm() {
@@ -230,7 +224,7 @@ public class CardShowView extends BaseView implements
 
     private void hideRepliedText() {
 //        repliedCommentTextView.setText("");
-//        MyUtils.remove(repliedCommentContainer);
+//        MyUtils.hide(repliedCommentContainer);
     }
 
 

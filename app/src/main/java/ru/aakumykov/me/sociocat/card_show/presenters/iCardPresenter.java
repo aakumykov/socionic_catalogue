@@ -17,5 +17,5 @@ public interface iCardPresenter extends iPresenter {
     void onWorkBegins(@Nullable String cardKey, @Nullable String commentKey);
     void onErrorOccurs();
 
-    void onAddCommentClicked();
+    void replyClicked();
 }

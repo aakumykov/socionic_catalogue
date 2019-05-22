@@ -74,7 +74,7 @@ public class CardPresenter implements iCardPresenter {
 
 
     @Override
-    public void onAddCommentClicked() {
-        replyView.showCommentForm(currentCard);
+    public void replyClicked() {
+        replyView.showCommentForm(null, currentCard);
     }
 }

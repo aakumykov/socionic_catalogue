@@ -1,9 +1,6 @@
 package ru.aakumykov.me.sociocat.card_show.comment_form;
 
-import android.content.Context;
 import android.view.ViewGroup;
-
-import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 
 public interface iCommentForm {
 
@@ -14,10 +11,10 @@ public interface iCommentForm {
     void attachTo(ViewGroup container);
     void addSendButtonListener(SendButtonListener listener);
 
-    void setQuote(ListItem listItem);
+    void setQuote(String text);
 
     void show();
-    void remove();
+    void hide();
 
     void enable();
     void disable();

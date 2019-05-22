@@ -27,8 +27,7 @@
             android:layout_weight="9"
             android:background="@color/comment_form_replied_comment_background"
             android:padding="6dp"
-            tools:text="Текст, на который пишется коментарий. Он может быть длинным, но здесь должно отображаться только 20 символов."
-            tools:visibility="visible" />
+            tools:text="Текст, на который пишется коментарий. Он может быть длинным, но здесь должно отображаться только 20 символов." />
 
         <ImageView
             android:id="@+id/clearQuoteWidget"
@@ -40,14 +39,17 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/commentContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_comment_form"
         android:orientation="horizontal"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/quoteContainer"
-        app:layout_constraintTop_toBottomOf="@+id/quoteContainer">
+        app:layout_constraintTop_toBottomOf="@+id/quoteContainer"
+        tools:visibility="visible">
 
         <EditText
             android:id="@+id/commentTextInput"

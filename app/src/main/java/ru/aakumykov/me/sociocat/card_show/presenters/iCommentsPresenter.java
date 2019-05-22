@@ -22,5 +22,5 @@ public interface iCommentsPresenter extends iPresenter {
 
     void onReplyToCommentClicked(iComment_ViewHolder commentViewHolder, Comment comment);
 
-    void onSendComment(String text, ListItem repliedItem, iCommentForm commentForm);
+    void sendCommentClicked(String text, ListItem repliedItem, iCommentForm commentForm);
 }
