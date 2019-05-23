@@ -1,11 +1,10 @@
 package ru.aakumykov.me.sociocat.card_show.presenters;
 
-
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Card;
 
-public interface iCardPresenter extends iPresenter {
+public interface iCardPresenter {
 
     void bindListAdapter(iListAdapter_Card listAdapter);
     void unbindListAdapter();

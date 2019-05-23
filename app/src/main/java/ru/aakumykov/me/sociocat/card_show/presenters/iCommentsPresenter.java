@@ -7,7 +7,7 @@ import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iComment_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Comment;
 
-public interface iCommentsPresenter extends iPresenter {
+public interface iCommentsPresenter {
 
     void bindListAdapter(iListAdapter_Comments listAdapter);
     void unbindListAdapter();
