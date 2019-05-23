@@ -8,8 +8,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Comments;
-import ru.aakumykov.me.sociocat.card_show.comment_form.iCommentForm;
-import ru.aakumykov.me.sociocat.card_show.iReplyView;
+import ru.aakumykov.me.sociocat.card_show.iCommentFormView;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iComment_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -20,7 +19,7 @@ import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 public class CommentsPresenter implements iCommentsPresenter{
 
     private iListAdapter_Comments listAdapter;
-    private iReplyView replyView;
+    private iCommentFormView commentFormView;
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
 
     @Override
@@ -34,13 +33,13 @@ public class CommentsPresenter implements iCommentsPresenter{
     }
 
     @Override
-    public void bindReplyView(iReplyView replyView) {
-        this.replyView = replyView;
+    public void bindReplyView(iCommentFormView replyView) {
+        this.commentFormView = replyView;
     }
 
     @Override
     public void unbindReplyView() {
-        this.replyView = null;
+        this.commentFormView = null;
     }
 
     @Override
@@ -68,11 +67,11 @@ public class CommentsPresenter implements iCommentsPresenter{
 
     @Override
     public void onReplyToCommentClicked(iComment_ViewHolder commentViewHolder, Comment comment) {
-        replyView.showCommentForm(comment.getText(), comment);
+        commentFormView.showCommentForm(comment.getText(), comment);
     }
 
     @Override
-    public void sendCommentClicked(String commentText, ListItem repliedItem, iCommentForm commentForm) {
+    public void sendCommentClicked(String commentText, ListItem repliedItem, ru.aakumykov.me.sociocat.card_show.comment_form.iCommentForm commentForm) {
 
         commentText = commentText.trim();
 
@@ -109,7 +108,8 @@ public class CommentsPresenter implements iCommentsPresenter{
             @Override
             public void onCommentSaveError(String errorMsg) {
                 commentForm.enable();
-                replyView.showErrorMsg(R.string.COMMENT_error_adding_comment, errorMsg);
+                // TODO: где и как показывать ошибку?
+                //commentFormView.showErrorMsg(R.string.COMMENT_error_adding_comment, errorMsg);
             }
         });
     }
