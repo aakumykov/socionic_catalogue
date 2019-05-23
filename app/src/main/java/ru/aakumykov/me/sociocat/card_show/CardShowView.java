@@ -23,7 +23,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapterCommentsCard;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Comments;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
-import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Card;
+import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
 import ru.aakumykov.me.sociocat.card_show.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.card_show.comment_form.iCommentForm;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
@@ -56,6 +56,7 @@ public class CardShowView extends BaseView implements
     private boolean firstRun = true;
     private iCommentForm commentForm;
 
+
     // Системные методы
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +81,7 @@ public class CardShowView extends BaseView implements
     @Override protected void onStart() {
         super.onStart();
 
-        cardPresenter.bindViewAdapter((iListAdapter_Card) listAdapter);
+        cardPresenter.bindViewAdapter((iCardView) listAdapter);
         cardPresenter.bindReplyView(this);
 
         commentsPresenter.bindViewAdapter((iListAdapter_Comments) listAdapter);
@@ -111,7 +112,7 @@ public class CardShowView extends BaseView implements
     }
 
     @Override public void onBackPressed() {
-        if (View.VISIBLE == commentFormContainer.getVisibility())
+        if (commentForm.isVisible())
             hideCommentForm();
         else
             super.onBackPressed();
@@ -159,59 +160,6 @@ public class CardShowView extends BaseView implements
     @Override public void hideCommentForm() {
         commentForm.hide();
     }
-
-    @Override public void enableCommentForm() {
-//        MyUtils.enable(commentInput);
-//        MyUtils.enable(sendCommentWidget);
-    }
-
-    @Override public void disableCommentForm() {
-//        MyUtils.disable(commentInput);
-//        MyUtils.disable(sendCommentWidget);
-    }
-
-
-    // Нажатия
-//    @OnClick(R.id.repliedCommentDiscardWidget)
-//    void onRemoveRepliedText() {
-//        hideRepliedText();
-//    }
-//
-//
-//    @OnClick(R.id.sendCommentWidget)
-//    void postComment() {
-//
-//        MyUtils.showCustomToast(this, "Ещё не реализовано");
-//
-///*
-//        Comment comment = new Comment(commentInput.getText().toString());
-//        disableCommentForm();
-//
-//        commentsService.postComment(comment, new Comments_Service.iPostCommentCallbacks() {
-//
-//            @Override
-//            public void onPostCommentSuccess(Comment comment) {
-//
-//                hideCommentForm();
-//                dataAdapter.appendComment(comment, new iDataAdapter.AppendCommentCallbacks() {
-//
-//                    @Override
-//                    public void onCommentAppended() {
-//                        scrollToComment(comment);
-//                    }
-//
-//                });
-//            }
-//
-//            @Override
-//            public void onPostCommentFail(String errorMsg) {
-//                showError(errorMsg);
-//                enableCommentForm();
-//            }
-//        });
-//*/
-//
-//    }
 
 
     // Внутренние методы

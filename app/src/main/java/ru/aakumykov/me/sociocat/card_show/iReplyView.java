@@ -10,6 +10,4 @@ public interface iReplyView extends iBaseView {
     void showCommentForm(@Nullable String quotedText, ListItem parentItem);
     void hideCommentForm();
 
-    void enableCommentForm();
-    void disableCommentForm();
 }
