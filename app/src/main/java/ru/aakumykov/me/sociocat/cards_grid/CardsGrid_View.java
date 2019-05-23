@@ -40,7 +40,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_edit.DraftRestoreFragment;
-import ru.aakumykov.me.sociocat.card_show.CardShowView;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -427,7 +427,7 @@ public class CardsGrid_View extends BaseView implements
     }
 
     private void showCard(String cardKey) {
-        Intent intent = new Intent(this, CardShowView.class);
+        Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, cardKey);
         startActivityForResult(intent, Constants.CODE_SHOW_CARD);
     }

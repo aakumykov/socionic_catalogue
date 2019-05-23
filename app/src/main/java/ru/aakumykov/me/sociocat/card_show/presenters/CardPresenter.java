@@ -3,17 +3,14 @@ package ru.aakumykov.me.sociocat.card_show.presenters;
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.CommentFormView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Card;
-import ru.aakumykov.me.sociocat.card_show.iCommentFormView;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 
 public class CardPresenter implements iCardPresenter {
 
-    private iCommentFormView replyView;
     private iListAdapter_Card listAdapter;
     private iCommentsPresenter commentsPresenter;
     private CardsSingleton cardSingleton = CardsSingleton.getInstance();
@@ -26,23 +23,13 @@ public class CardPresenter implements iCardPresenter {
 
 
     @Override
-    public void bindViewAdapter(iListAdapter_Card listAdapter) {
+    public void bindListAdapter(iListAdapter_Card listAdapter) {
         this.listAdapter = (iListAdapter_Card) listAdapter;
     }
 
     @Override
-    public void unbindViewAdapter() {
+    public void unbindListAdapter() {
         this.listAdapter = new ListAdapter_Stub();
-    }
-
-    @Override
-    public void bindReplyView(iCommentFormView replyView) {
-        this.replyView = replyView;
-    }
-
-    @Override
-    public void unbindReplyView() {
-        this.replyView = new CommentFormView_Stub();
     }
 
     @Override
@@ -76,7 +63,7 @@ public class CardPresenter implements iCardPresenter {
 
 
     @Override
-    public void replyClicked() {
-        replyView.showCommentForm(null, currentCard);
+    public void onReplyClicked() {
+        //replyView.showCommentForm(null, currentCard);
     }
 }

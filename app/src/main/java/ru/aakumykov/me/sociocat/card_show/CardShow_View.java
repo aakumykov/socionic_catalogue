@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapterCommentsCard;
+import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Card;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Comments;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
@@ -32,16 +32,15 @@ import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
 import ru.aakumykov.me.sociocat.models.Comment;
 
 
-public class CardShowView extends BaseView implements
-        iListView,
-        iCommentFormView
+public class CardShow_View extends BaseView implements
+        iCardShow_View
 {
     public interface LoadCommentsCallbacks {
         void onLoadCommentsSuccess(List<Comment> list);
         void onLoadCommentsFail(String errorMsg);
     }
 
-    private final static String TAG ="CardShowView";
+    private final static String TAG ="CardShow_View";
 
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.progressBar) ProgressBar progressBar;
@@ -64,7 +63,7 @@ public class CardShowView extends BaseView implements
         this.commentsPresenter = new CommentsPresenter();
         this.cardPresenter = new CardPresenter(commentsPresenter);
 
-        this.listAdapter = new ListAdapterCommentsCard();
+        this.listAdapter = new ListAdapter();
 
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.recyclerView.setAdapter((RecyclerView.Adapter) listAdapter);
@@ -79,14 +78,12 @@ public class CardShowView extends BaseView implements
     @Override protected void onStart() {
         super.onStart();
 
-        cardPresenter.bindViewAdapter((iListAdapter_Card) listAdapter);
-        cardPresenter.bindReplyView(this);
+        cardPresenter.bindListAdapter((iListAdapter_Card) listAdapter);
 
-        commentsPresenter.bindViewAdapter((iListAdapter_Comments) listAdapter);
-        commentsPresenter.bindReplyView(this);
+        commentsPresenter.bindListAdapter((iListAdapter_Comments) listAdapter);
 
         listAdapter.bindPresenters(cardPresenter, commentsPresenter);
-        listAdapter.bindListView(this);
+        listAdapter.bindView(this);
 
         if (firstRun) {
             firstRun = false;
@@ -99,14 +96,11 @@ public class CardShowView extends BaseView implements
     @Override protected void onStop() {
         super.onStop();
 
-        cardPresenter.unbindViewAdapter();
-        cardPresenter.unbindReplyView();
-
-        commentsPresenter.unbindViewAdapter();
-        commentsPresenter.unbindReplyView();
+        cardPresenter.unbindListAdapter();
+        commentsPresenter.unbindListAdapter();
 
         listAdapter.unbindPresenters();
-        listAdapter.unbindListView();
+        listAdapter.unbindView();
     }
 
     @Override public void onBackPressed() {
@@ -133,11 +127,11 @@ public class CardShowView extends BaseView implements
     }
 
 
-    // iListView
-    @Override public void scrollToPosition(int position) {
-        recyclerView.scrollToPosition(position);
-//        recyclerView.scrollToPosition(-1);
-    }
+    // iCardShow_View
+//    @Override public void scrollToPosition(int position) {
+//        recyclerView.scrollToPosition(position);
+////        recyclerView.scrollToPosition(-1);
+//    }
 
 
     // iCommentFormView
@@ -148,7 +142,7 @@ public class CardShowView extends BaseView implements
         commentForm.addSendButtonListener(new ru.aakumykov.me.sociocat.card_show.comment_form.iCommentForm.SendButtonListener() {
             @Override
             public void onSendCommentClicked(String commentText) {
-                commentsPresenter.sendCommentClicked(commentText, parentItem, commentForm);
+                commentsPresenter.onSendCommentClicked(commentText, parentItem, commentForm);
             }
         });
 

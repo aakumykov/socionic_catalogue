@@ -65,7 +65,7 @@ public class Card_ViewHolder extends Base_ViewHolder
     // Нажатия
     @OnClick(R.id.replyWidget)
     void openCommentForm() {
-        cardPresenter.replyClicked();
+        cardPresenter.onReplyClicked();
     }
 
 

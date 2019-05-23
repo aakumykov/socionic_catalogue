@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.iListView;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View_Stub;
+import ru.aakumykov.me.sociocat.card_show.iCardShow_View;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Throbber_ViewHolder;
@@ -24,18 +25,18 @@ import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.list_items.Throbber_Item;
 import ru.aakumykov.me.sociocat.card_show.list_items.LoadMore_Item;
 
-public class ListAdapterCommentsCard extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
+public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         iListAdapter,
         iListAdapter_Card,
         iListAdapter_Comments
 {
-    private final static String TAG = "ListAdapterCommentsCard";
+    private final static String TAG = "ListAdapter";
     private List<ListItem> list;
     private iCardPresenter cardPresenter;
     private iCommentsPresenter commentsPresenter;
-    private iListView listView;
+    private iCardShow_View view;
 
-    public ListAdapterCommentsCard() {
+    public ListAdapter() {
         this.list = new ArrayList<>();
     }
 
@@ -136,12 +137,12 @@ public class ListAdapterCommentsCard extends RecyclerView.Adapter<RecyclerView.V
         this.cardPresenter = null;
     }
 
-    @Override public void bindListView(iListView listView) {
-        this.listView = listView;
+    @Override public void bindView(iCardShow_View view) {
+        this.view = view;
     }
 
-    @Override public void unbindListView() {
-        this.listView = null;
+    @Override public void unbindView() {
+        this.view = new CardShow_View_Stub();
     }
 
 
@@ -238,9 +239,9 @@ public class ListAdapterCommentsCard extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public void scrollToComment(String commentKey) {
-        Comment comment = getCommentByKey(commentKey);
-        if (null != comment)
-            listView.scrollToPosition(list.indexOf(comment));
+//        Comment comment = getCommentByKey(commentKey);
+//        if (null != comment)
+//            view.scrollToPosition(list.indexOf(comment));
     }
 
 

@@ -7,10 +7,8 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.CommentFormView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Comments;
-import ru.aakumykov.me.sociocat.card_show.iCommentFormView;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iComment_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -21,27 +19,16 @@ import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 public class CommentsPresenter implements iCommentsPresenter{
 
     private iListAdapter_Comments listAdapter;
-    private iCommentFormView commentFormView;
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
 
     @Override
-    public void bindViewAdapter(iListAdapter_Comments viewAdapter) {
-        this.listAdapter = viewAdapter;
+    public void bindListAdapter(iListAdapter_Comments listAdapter) {
+        this.listAdapter = listAdapter;
     }
 
     @Override
-    public void unbindViewAdapter() {
+    public void unbindListAdapter() {
         this.listAdapter = new ListAdapter_Stub();
-    }
-
-    @Override
-    public void bindReplyView(iCommentFormView replyView) {
-        this.commentFormView = replyView;
-    }
-
-    @Override
-    public void unbindReplyView() {
-        this.commentFormView = new CommentFormView_Stub();
     }
 
     @Override
@@ -69,11 +56,11 @@ public class CommentsPresenter implements iCommentsPresenter{
 
     @Override
     public void onReplyToCommentClicked(iComment_ViewHolder commentViewHolder, Comment comment) {
-        commentFormView.showCommentForm(comment.getText(), comment);
+        //commentFormView.showCommentForm(comment.getText(), comment);
     }
 
     @Override
-    public void sendCommentClicked(String commentText, ListItem repliedItem, ru.aakumykov.me.sociocat.card_show.comment_form.iCommentForm commentForm) {
+    public void onSendCommentClicked(String commentText, ListItem repliedItem, ru.aakumykov.me.sociocat.card_show.comment_form.iCommentForm commentForm) {
 
         commentText = commentText.trim();
 

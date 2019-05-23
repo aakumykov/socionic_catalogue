@@ -4,7 +4,8 @@ import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 
-public class CommentFormView_Stub implements iCommentFormView {
+public class CardShow_View_Stub implements iCardShow_View {
+
     @Override
     public void showCommentForm(@Nullable String quotedText, ListItem parentItem) {
 
