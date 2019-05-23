@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show.CommentFormView_Stub;
+import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Comments;
 import ru.aakumykov.me.sociocat.card_show.iCommentFormView;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
@@ -29,7 +31,7 @@ public class CommentsPresenter implements iCommentsPresenter{
 
     @Override
     public void unbindViewAdapter() {
-        this.listAdapter = null;
+        this.listAdapter = new ListAdapter_Stub();
     }
 
     @Override
@@ -39,7 +41,7 @@ public class CommentsPresenter implements iCommentsPresenter{
 
     @Override
     public void unbindReplyView() {
-        this.commentFormView = null;
+        this.commentFormView = new CommentFormView_Stub();
     }
 
     @Override
