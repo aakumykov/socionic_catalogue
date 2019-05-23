@@ -10,7 +10,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Comments;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
-import ru.aakumykov.me.sociocat.card_show.view_holders.iComment_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.view_holders.Comment_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
@@ -55,7 +55,7 @@ public class CommentsPresenter implements iCommentsPresenter{
     }
 
     @Override
-    public void onReplyToCommentClicked(iComment_ViewHolder commentViewHolder, Comment comment) {
+    public void onReplyToCommentClicked(Comment_ViewHolder commentViewHolder, Comment comment) {
         //commentFormView.showCommentForm(comment.getText(), comment);
     }
 

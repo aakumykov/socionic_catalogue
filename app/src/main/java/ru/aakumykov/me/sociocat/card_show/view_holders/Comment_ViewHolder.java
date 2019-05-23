@@ -2,7 +2,6 @@ package ru.aakumykov.me.sociocat.card_show.view_holders;
 
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -17,8 +16,7 @@ import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class Comment_ViewHolder  extends Base_ViewHolder implements iComment_ViewHolder
-{
+public class Comment_ViewHolder  extends Base_ViewHolder {
     @BindView(R.id.commentRow) LinearLayout commentRow;
     @BindView(R.id.quoteView) TextView quoteView;
     @BindView(R.id.textView) TextView textView;
