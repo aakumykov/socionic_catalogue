@@ -18,6 +18,8 @@ public class CommentForm implements
     private Context context;
     private SendButtonListener sendButtonListener;
 
+    private View commentForm;
+
     private View quoteContainer;
     private TextView quoteTextView;
     private View clearQuoteWidget;
@@ -39,6 +41,7 @@ public class CommentForm implements
         container.removeAllViews();
         View layout = layoutInflater.inflate(R.layout.comment_form, container, true);
 
+        commentForm = layout.findViewById(R.id.commentForm);
         quoteContainer = layout.findViewById(R.id.quoteContainer);
         quoteTextView = layout.findViewById(R.id.quoteTextView);
         clearQuoteWidget = layout.findViewById(R.id.clearQuoteWidget);
@@ -64,6 +67,7 @@ public class CommentForm implements
     @Override
     public void show() {
         MyUtils.show(commentContainer);
+        MyUtils.show(commentForm);
     }
 
     @Override
@@ -75,6 +79,8 @@ public class CommentForm implements
 
         commentTextInput.setText("");
         MyUtils.hide(commentContainer);
+
+        MyUtils.hide(commentForm);
     }
 
     @Override
@@ -89,6 +95,10 @@ public class CommentForm implements
         MyUtils.disable(clearQuoteWidget);
         MyUtils.disable(commentTextInput);
         MyUtils.disable(sendCommentWidget);
+    }
+
+    @Override public boolean isVisible() {
+        return View.VISIBLE == commentForm.getVisibility();
     }
 
 

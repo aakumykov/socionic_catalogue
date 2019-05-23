@@ -18,4 +18,6 @@ public interface iCommentForm {
 
     void enable();
     void disable();
+
+    boolean isVisible();
 }
