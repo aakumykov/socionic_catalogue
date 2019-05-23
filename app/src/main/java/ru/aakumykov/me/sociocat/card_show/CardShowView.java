@@ -21,9 +21,9 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapterCommentsCard;
+import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Card;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Comments;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
-import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
 import ru.aakumykov.me.sociocat.card_show.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.card_show.comment_form.iCommentForm;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
@@ -81,7 +81,7 @@ public class CardShowView extends BaseView implements
     @Override protected void onStart() {
         super.onStart();
 
-        cardPresenter.bindViewAdapter((iCardView) listAdapter);
+        cardPresenter.bindViewAdapter((iListAdapter_Card) listAdapter);
         cardPresenter.bindReplyView(this);
 
         commentsPresenter.bindViewAdapter((iListAdapter_Comments) listAdapter);
