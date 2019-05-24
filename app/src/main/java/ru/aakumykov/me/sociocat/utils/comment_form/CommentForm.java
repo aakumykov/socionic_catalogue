@@ -65,6 +65,7 @@ public class CommentForm implements
 
     @Override
     public void show() {
+        enable();
         MyUtils.show(commentContainer);
         MyUtils.show(commentForm);
         MyUtils.showKeyboardOnFocus(context, commentTextInput);
@@ -72,14 +73,12 @@ public class CommentForm implements
 
     @Override
     public void hide() {
-        enable();
-
         quoteTextView.setText("");
+//        commentTextInput.setText("");
+        commentTextInput.clearFocus();
+
         MyUtils.hide(quoteContainer);
-
-        commentTextInput.setText("");
         MyUtils.hide(commentContainer);
-
         MyUtils.hide(commentForm);
     }
 
