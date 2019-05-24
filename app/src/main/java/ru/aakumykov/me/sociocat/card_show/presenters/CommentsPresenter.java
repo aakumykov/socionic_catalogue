@@ -60,7 +60,7 @@ public class CommentsPresenter implements iCommentsPresenter{
     }
 
     @Override
-    public void onSendCommentClicked(String commentText, ListItem repliedItem, ru.aakumykov.me.sociocat.card_show.comment_form.iCommentForm commentForm) {
+    public void onSendCommentClicked(String commentText, ListItem repliedItem, ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm commentForm) {
 
         commentText = commentText.trim();
 

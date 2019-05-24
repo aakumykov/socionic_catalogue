@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show.comment_form;
+package ru.aakumykov.me.sociocat.utils.comment_form;
 
 import android.view.ViewGroup;
 

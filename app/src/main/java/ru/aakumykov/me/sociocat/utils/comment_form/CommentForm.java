@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show.comment_form;
+package ru.aakumykov.me.sociocat.utils.comment_form;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CommentForm implements

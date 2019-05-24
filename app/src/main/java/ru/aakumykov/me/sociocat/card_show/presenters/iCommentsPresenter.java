@@ -16,5 +16,5 @@ public interface iCommentsPresenter {
 
     void onReplyToCommentClicked(Comment_ViewHolder commentViewHolder, Comment comment);
 
-    void onSendCommentClicked(String text, ListItem repliedItem, ru.aakumykov.me.sociocat.card_show.comment_form.iCommentForm commentForm);
+    void onSendCommentClicked(String text, ListItem repliedItem, ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm commentForm);
 }
