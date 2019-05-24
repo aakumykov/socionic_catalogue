@@ -67,6 +67,7 @@ public class CommentForm implements
     public void show() {
         MyUtils.show(commentContainer);
         MyUtils.show(commentForm);
+        MyUtils.showKeyboardOnFocus(context, commentTextInput);
     }
 
     @Override
