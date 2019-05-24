@@ -1,10 +1,16 @@
 package ru.aakumykov.me.sociocat.card_show.adapter;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Comment;
 
 public interface iCommentsView {
+
+    interface AttachCommentCallbacks {
+        void onCommentAttached(Comment comment);
+    }
 
     void showCommentsThrobber();
     void hideCommentsThrobber();
@@ -15,7 +21,7 @@ public interface iCommentsView {
     void setList(List<Comment> itemsList);
     void addList(List<Comment> list);
 
-    void addComment(Comment comment, boolean scrollToAddedComment);
+    void attachComment(Comment comment, @Nullable AttachCommentCallbacks callbacks);
 
     void scrollToComment(String commentKey);
 }

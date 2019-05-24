@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -238,19 +239,19 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void addComment(Comment comment, boolean scrollToAddedComment) {
+    public void attachComment(Comment comment, @Nullable AttachCommentCallbacks callbacks) {
         list.add(comment);
         notifyItemChanged(getLastCommentIndex());
 
-        if (scrollToAddedComment)
-            scrollToComment(comment.getKey());
+        if (null != callbacks)
+            callbacks.onCommentAttached(comment);
     }
 
     @Override
     public void scrollToComment(String commentKey) {
-//        Comment comment = getCommentByKey(commentKey);
-//        if (null != comment)
-//            view.scrollToPosition(list.indexOf(comment));
+        Comment comment = getCommentByKey(commentKey);
+        if (null != comment)
+            view.scrollListToPosition(list.indexOf(comment));
     }
 
 

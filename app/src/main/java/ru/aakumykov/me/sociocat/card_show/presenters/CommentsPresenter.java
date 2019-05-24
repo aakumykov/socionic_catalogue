@@ -91,7 +91,12 @@ public class CommentsPresenter implements iCommentsPresenter{
             @Override
             public void onCommentSaveSuccess(Comment comment) {
                 commentForm.hide();
-                commentsView.addComment(comment, true);
+
+                commentsView.attachComment(comment, new iCommentsView.AttachCommentCallbacks() {
+                    @Override public void onCommentAttached(Comment comment) {
+                        commentsView.scrollToComment(comment.getKey());
+                    }
+                });
             }
 
             @Override

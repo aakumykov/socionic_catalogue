@@ -15,4 +15,8 @@ public class CardShow_View_Stub implements iCardShow_View {
     public void hideCommentForm() {
 
     }
+
+    @Override public void scrollListToPosition(int position) {
+
+    }
 }

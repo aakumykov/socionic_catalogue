@@ -128,13 +128,6 @@ public class CardShow_View extends BaseView implements
     }
 
 
-    // iCardShow_View
-//    @Override public void scrollToPosition(int position) {
-//        recyclerView.scrollToPosition(position);
-////        recyclerView.scrollToPosition(-1);
-//    }
-
-
     // iCommentFormView
     @Override public void showCommentForm(@Nullable String quotedText, ListItem parentItem) {
         if (null != quotedText)
@@ -154,21 +147,12 @@ public class CardShow_View extends BaseView implements
         commentForm.hide();
     }
 
+    @Override public void scrollListToPosition(int position) {
+        recyclerView.scrollToPosition(position);
+    }
+
 
     // Внутренние методы
-    private void showRepliedText(String text) {
-//        if (!TextUtils.isEmpty(text)) {
-//            repliedCommentTextView.setText(text);
-//            MyUtils.show(repliedCommentContainer);
-//        }
-    }
-
-    private void hideRepliedText() {
-//        repliedCommentTextView.setText("");
-//        MyUtils.hide(repliedCommentContainer);
-    }
-
-
     private void processInputIntent() {
         Intent intent = getIntent();
 
@@ -186,61 +170,4 @@ public class CardShow_View extends BaseView implements
         }
     }
 
-    private void scrollToComment(Comment comment) {
-//        int position = dataAdapter.findCommentPosition(comment);
-//        if (-1 != position)
-//            recyclerView.scrollToPosition(position);
-//        else
-//            MyUtils.showCustomToast(this, "Комментарий не найден");
-    }
-
-
-
-//    private void refreshCard() {
-//        dataAdapter.clearList();
-//        processInputIntent();
-//    }
-
-//    private void setupAutoCommentsLoading() {
-//        /*recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//
-//                if (!recyclerView.canScrollVertically(1)) {
-//                    Comment lastComment = dataAdapter.getLastComment();
-//                    if (null != lastComment)
-//                        loadComments(lastComment.getKey(), 10);
-//                    else
-//                        // Что тогда?
-//                }
-//            }
-//        });*/
-//    }
-
-//    @Override
-//    public void loadComments(String start, int count) {
-//        if (!flagCommentsLoadInProgress) {
-//
-//            flagCommentsLoadInProgress = true;
-//            dataAdapter.hideLoadMoreItem();
-//            dataAdapter.showCommentsThrobber();
-//
-//            new Comments_Service().loadComments(start, count, new Comments_Service.iLoadCommentsCallbacks() {
-//                @Override
-//                public void onCommentsLoadSuccess(List<Comment> list) {
-//                    dataAdapter.hideCommentsThrobber();
-//                    dataAdapter.appendComments(list);
-//                    flagCommentsLoadInProgress = false;
-//                }
-//
-//                @Override
-//                public void onCommentsLoadFail(String errorMsg) {
-//                    showErrorMsg(R.string.CARD_SHOW_error_loading_comments, errorMsg);
-//                    flagCommentsLoadInProgress = false;
-//                }
-//            });
-//        }
-//
-//    }
 }

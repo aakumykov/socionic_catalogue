@@ -9,4 +9,5 @@ public interface iCardShow_View {
     void showCommentForm(@Nullable String quotedText, ListItem parentItem);
     void hideCommentForm();
 
+    void scrollListToPosition(int position);
 }

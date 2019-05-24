@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show.adapter;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -29,7 +31,7 @@ public class CommentsView_Stub implements iCommentsView {
 
     }
 
-    @Override public void addComment(Comment comment, boolean scrollToAddedComment) {
+    @Override public void attachComment(Comment comment, @Nullable AttachCommentCallbacks callbacks) {
 
     }
 
