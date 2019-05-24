@@ -173,6 +173,20 @@ public final class MyUtils {
         }
     }
 
+    public static void showKeyboardOnFocus(Context context, EditText editTextView) {
+
+        editTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (null != imm)
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+            }
+        });
+
+        editTextView.requestFocus();
+    }
+
     public static void hideKeyboard(Context ctx, EditText editText) {
         InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
