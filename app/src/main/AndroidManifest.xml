@@ -17,18 +17,6 @@
             android:name=".login.Login_View"
             android:noHistory="true" />
         <activity android:name=".cards_list.CardsList_View" />
-        <activity
-            android:name=".old_card_show.OldCardShow_View"
-            android:parentActivityName=".cards_list.CardsList_View" />
-        <activity android:name=".users.itemsList.UsersList_View" />
-        <activity
-            android:name=".users.show.UserShow_View"
-            android:parentActivityName=".users.itemsList.UsersList_View" />
-        <activity android:name=".users.edit.UserEdit_View" />
-        <activity android:name=".tags.itemsList.TagsList_View" />
-        <activity
-            android:name=".tags.show.TagShow_View"
-            android:parentActivityName=".tags.itemsList.TagsList_View" />
 
         <!-- Главный экран -->
         <activity
@@ -126,7 +114,9 @@
         <activity android:name=".card_edit.CardEdit_View" android:windowSoftInputMode="stateHidden" />
 
         <activity android:name=".preferences.PreferencesActivity" />
-        <activity android:name=".card_show.CardShow_View" />
+
+        <activity android:name=".card_show.CardShow_View"
+            android:windowSoftInputMode="stateHidden" />
 
         <service android:name=".push_notifications_service.PushNotificationsService" android:exported="false">
             <intent-filter>
