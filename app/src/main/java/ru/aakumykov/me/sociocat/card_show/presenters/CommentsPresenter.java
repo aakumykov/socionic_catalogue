@@ -7,8 +7,8 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter_Stub;
-import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Comments;
+import ru.aakumykov.me.sociocat.card_show.adapter.CommentsView_Stub;
+import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Comment_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -18,38 +18,38 @@ import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 
 public class CommentsPresenter implements iCommentsPresenter{
 
-    private iListAdapter_Comments listAdapter;
+    private iCommentsView commentsView;
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
 
     @Override
-    public void bindListAdapter(iListAdapter_Comments listAdapter) {
-        this.listAdapter = listAdapter;
+    public void bindListAdapter(iCommentsView listAdapter) {
+        this.commentsView = listAdapter;
     }
 
     @Override
     public void unbindListAdapter() {
-        this.listAdapter = new ListAdapter_Stub();
+        this.commentsView = new CommentsView_Stub();
     }
 
     @Override
     public void onWorkBegins(@Nullable String cardKey, @Nullable String commentKey) {
 
-        listAdapter.showCommentsThrobber();
+        commentsView.showCommentsThrobber();
 
         commentsSingleton.loadList(cardKey, new iCommentsSingleton.ListCallbacks() {
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
-                listAdapter.hideCommentsThrobber();
-                listAdapter.setList(list);
+                commentsView.hideCommentsThrobber();
+                commentsView.setList(list);
 
                 if (null != commentKey)
-                    listAdapter.scrollToComment(commentKey);
+                    commentsView.scrollToComment(commentKey);
             }
 
             @Override
             public void onCommentsLoadError(String errorMessage) {
-                listAdapter.hideCommentsThrobber();
-                listAdapter.showCommentsError(R.string.COMMENTS_error_loading_comments, errorMessage);
+                commentsView.hideCommentsThrobber();
+                commentsView.showCommentsError(R.string.COMMENTS_error_loading_comments, errorMessage);
             }
         });
     }
@@ -91,7 +91,7 @@ public class CommentsPresenter implements iCommentsPresenter{
             @Override
             public void onCommentSaveSuccess(Comment comment) {
                 commentForm.hide();
-                listAdapter.addComment(comment, true);
+                commentsView.addComment(comment, true);
             }
 
             @Override

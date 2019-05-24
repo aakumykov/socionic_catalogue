@@ -27,8 +27,8 @@ import ru.aakumykov.me.sociocat.card_show.list_items.LoadMore_Item;
 
 public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         iListAdapter,
-        iListAdapter_Card,
-        iListAdapter_Comments
+        iCardView,
+        iCommentsView
 {
     private final static String TAG = "ListAdapter";
     private List<ListItem> list;
@@ -146,7 +146,20 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
 
-    // iListAdapter_Card
+    // iCardView
+    @Override
+    public void displayCard(Card card) {
+        int cardPosition = 0;
+
+        if (0 == list.size())
+            list.add(card);
+        else
+            list.set(cardPosition, card);
+
+        notifyItemChanged(cardPosition);
+    }
+
+
     @Override
     public void showCardThrobber() {
         int index = 0;
@@ -169,21 +182,17 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     }
 
+    @Override public void showCommentForm(ListItem repliedItem) {
+        String repliedText = repliedItem.isCommentItem() ? ((Comment)repliedItem).getText() : null;
+        view.showCommentForm(repliedText, repliedItem);
+    }
 
-    @Override
-    public void setCard(Card card) {
-        int cardPosition = 0;
-
-        if (0 == list.size())
-            list.add(card);
-        else
-            list.set(cardPosition, card);
-
-        notifyItemChanged(cardPosition);
+    @Override public void hideCommentForm() {
+        view.hideCommentForm();
     }
 
 
-    // iListAdapter_Comments
+    // iCommentsView
     @Override
     public void showCommentsThrobber() {
         list.add(new Throbber_Item(R.string.COMMENTS_loading_comments));

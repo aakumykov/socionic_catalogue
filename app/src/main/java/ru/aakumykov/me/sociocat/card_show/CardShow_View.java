@@ -20,10 +20,11 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter;
-import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Card;
-import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter_Comments;
+import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
+import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
 import ru.aakumykov.me.sociocat.card_show.comment_form.CommentForm;
+import ru.aakumykov.me.sociocat.card_show.comment_form.iCommentForm;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.presenters.CardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.CommentsPresenter;
@@ -50,8 +51,8 @@ public class CardShow_View extends BaseView implements
     private iCardPresenter cardPresenter;
     private iCommentsPresenter commentsPresenter;
     private iListAdapter listAdapter;
+    private iCommentForm commentForm;
     private boolean firstRun = true;
-    private ru.aakumykov.me.sociocat.card_show.comment_form.iCommentForm commentForm;
 
 
     // Системные методы
@@ -78,9 +79,9 @@ public class CardShow_View extends BaseView implements
     @Override protected void onStart() {
         super.onStart();
 
-        cardPresenter.bindListAdapter((iListAdapter_Card) listAdapter);
+        cardPresenter.bindListAdapter((iCardView) listAdapter);
 
-        commentsPresenter.bindListAdapter((iListAdapter_Comments) listAdapter);
+        commentsPresenter.bindListAdapter((iCommentsView) listAdapter);
 
         listAdapter.bindPresenters(cardPresenter, commentsPresenter);
         listAdapter.bindView(this);

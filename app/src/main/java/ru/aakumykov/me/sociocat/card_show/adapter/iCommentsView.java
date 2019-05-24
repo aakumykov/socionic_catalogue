@@ -4,7 +4,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Comment;
 
-public interface iListAdapter_Comments {
+public interface iCommentsView {
 
     void showCommentsThrobber();
     void hideCommentsThrobber();
