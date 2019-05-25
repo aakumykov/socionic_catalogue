@@ -180,7 +180,7 @@ public final class MyUtils {
             public void onFocusChange(View v, boolean hasFocus) {
                 InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (null != imm)
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
             }
         });
 
@@ -190,7 +190,7 @@ public final class MyUtils {
     public static void hideKeyboard(Context ctx, EditText editText) {
         InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
-            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
         }
     }
 

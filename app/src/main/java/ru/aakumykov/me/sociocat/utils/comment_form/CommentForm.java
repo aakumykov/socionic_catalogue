@@ -74,8 +74,14 @@ public class CommentForm implements
     @Override
     public void hide() {
         quoteTextView.setText("");
-//        commentTextInput.setText("");
+
+        /* Если раскомментировать следующую строку (то есть, очищать поле ввода),
+           клавиатура выскакивает при скрытии формы. */
+        // commentTextInput.setText("");
+
         commentTextInput.clearFocus();
+
+        MyUtils.hideKeyboard(context, commentTextInput);
 
         MyUtils.hide(quoteContainer);
         MyUtils.hide(commentContainer);
