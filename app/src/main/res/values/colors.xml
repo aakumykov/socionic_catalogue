@@ -16,7 +16,7 @@
     <color name="warning">#FF7140</color>
     <color name="alert">#EC407A</color>
     <color name="error">#ff4081</color>
-    <color name="error_background">#ffe2ec</color>
+    <color name="error_background">#FFEDF4</color>
 
     <!--<color name="text_default">#5c5c5c</color>-->
     <color name="background_default">@color/white</color>

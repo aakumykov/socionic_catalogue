@@ -188,10 +188,6 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         view.showCommentForm(repliedText, repliedItem);
     }
 
-    @Override public void hideCommentForm() {
-        view.hideCommentForm();
-    }
-
 
     // iCommentsView
     @Override

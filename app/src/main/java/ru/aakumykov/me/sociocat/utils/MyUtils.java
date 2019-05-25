@@ -272,4 +272,10 @@ public final class MyUtils {
             stackTrace += element.toString() + "\n";
         return stackTrace;
     }
+
+    /*public static String getString(Context context, int msgId) {
+        return context.getResources().getString(msgId);
+    } */
+
+
 }

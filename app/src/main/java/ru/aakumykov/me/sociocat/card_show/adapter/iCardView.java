@@ -17,5 +17,4 @@ public interface iCardView {
     void hideCardError();
 
     void showCommentForm(ListItem repliedItem);
-    void hideCommentForm();
 }

@@ -24,10 +24,6 @@ public class CardView_Stub implements iCardView {
 
     }
 
-    @Override public void hideCommentForm() {
-
-    }
-
     @Override public void displayCard(Card card) {
 
     }

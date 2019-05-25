@@ -20,4 +20,7 @@ public interface iCommentForm {
     void disable();
 
     boolean isVisible();
+
+    void showError(int messageId, String consoleMessage);
+    void hideError();
 }

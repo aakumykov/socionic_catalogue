@@ -56,7 +56,7 @@ public class CommentsPresenter implements iCommentsPresenter{
 
     @Override
     public void onReplyToCommentClicked(Comment_ViewHolder commentViewHolder, Comment comment) {
-        //commentFormView.showCommentForm(comment.getText(), comment);
+        commentsView.showCommentForm(comment);
     }
 
     @Override
@@ -102,8 +102,7 @@ public class CommentsPresenter implements iCommentsPresenter{
             @Override
             public void onCommentSaveError(String errorMsg) {
                 commentForm.enable();
-                // TODO: где и как показывать ошибку?
-                //commentFormView.showErrorMsg(R.string.COMMENT_error_adding_comment, errorMsg);
+                commentForm.showError(R.string.COMMENT_error_adding_comment, errorMsg);
             }
         });
     }
