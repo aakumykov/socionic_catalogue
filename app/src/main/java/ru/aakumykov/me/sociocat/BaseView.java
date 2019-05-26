@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -30,17 +29,11 @@ import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
-import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
-import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
-import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;
-import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.tags.list.TagsList_View;
 import ru.aakumykov.me.sociocat.users.show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
@@ -234,6 +227,16 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
+    public void showErrorMsg(int userMessageId, Exception e) {
+        showErrorMsg(userMessageId, e.getMessage());
+
+        if (Config.DEBUG_MODE)
+            showStackTrace(e.getStackTrace());
+
+        e.printStackTrace();
+    }
+
+    @Override
     public void showErrorMsg(int messageId) {
         hideProgressBar();
         String message = getResources().getString(messageId);
@@ -279,13 +282,26 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         }
     }
 
+    private void showStackTrace(StackTraceElement[] stackTraceElements) {
+        String traceText = MyUtils.stackTrace2String(stackTraceElements);
+        TextView stackTraceView = findViewById(R.id.stackTraceView);
+
+        stackTraceView.setText(traceText);
+        MyUtils.show(stackTraceView);
+    }
+
+
     @Override
     public void hideMsg() {
         TextView messageView = findViewById(R.id.messageView);
+        TextView stackTraceView = findViewById(R.id.stackTraceView);
+
         if (null != messageView) {
             MyUtils.hide(messageView);
-        } else {
-            Log.w(TAG, "messageView not found");
+        }
+
+        if (null != stackTraceView) {
+            MyUtils.hide(stackTraceView);
         }
     }
 
@@ -422,12 +438,9 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public void setPageTitle(String title) {
-        //Log.d(TAG, "setPageTitle("+title+")");
-        ActionBar actionBar = getSupportActionBar();
-        if (null != actionBar) {
-            actionBar.setTitle(title);
-        }
+    public void setPageTitle(int titleId, String insertedText) {
+        String title = getResources().getString(titleId, insertedText);
+        setPageTitle(title);
     }
 
     @Override
@@ -438,6 +451,14 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
 
     // Внутренние методы
+    private void setPageTitle(String title) {
+        //Log.d(TAG, "setPageTitle("+title+")");
+        ActionBar actionBar = getSupportActionBar();
+        if (null != actionBar) {
+            actionBar.setTitle(title);
+        }
+    }
+
     private void login() {
         // Можно и без result, потому что статус авторизации обрабатывается в
         // AuthStateListener

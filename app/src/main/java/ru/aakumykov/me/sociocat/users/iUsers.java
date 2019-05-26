@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
-import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 

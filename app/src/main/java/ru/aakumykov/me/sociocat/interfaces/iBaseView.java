@@ -4,11 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.google.firebase.auth.FirebaseUser;
-
-import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
-import ru.aakumykov.me.sociocat.models.User;
+import com.google.firebase.database.Exclude;
 
 public interface iBaseView {
 
@@ -32,6 +28,7 @@ public interface iBaseView {
     void showErrorMsg(int messageId);
     void showErrorMsg(String message);
     void showErrorMsg(int userMessageId, String consoleMessage);
+    void showErrorMsg(int userMessageId, Exception e);
 
     <T> void showConsoleError(String tag, T arg);
 
@@ -50,7 +47,8 @@ public interface iBaseView {
     void consoleMsg(String tag, String msg);
 
     void setPageTitle(int titleId);
-    void setPageTitle(String title);
+    void setPageTitle(int titleId, String insertedText);
+
     void activateUpButton();
 
     void proceedLoginRequest(Intent intent);

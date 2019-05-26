@@ -88,7 +88,7 @@
     <string name="TAGS_LIST_tags_list">Список меток</string>
     <string name="TAG_SHOW_page_title">Метка «%1$s»</string>
     <string name="CARDS_LIST_page_title">Карточки</string>
-    <string name="CARD_SHOW_page_title">«%1$s», просмотр карточки</string>
+    <string name="CARD_SHOW_page_title_long">«%1$s», просмотр карточки</string>
     <string name="DIALOG_deleted_card_name">Удалить карточку «%1$s»</string>
     <string name="REGISTER_name">Псевдоним</string>
     <string name="REGISTER_email" translatable="false">E-mail</string>
@@ -410,4 +410,14 @@
     <string name="USER_SHOW_error_loading_cards_lsit">Ошибка загрузки списка карточек</string>
     <string name="CARD_EDIT_error_subscribing_to_comments">Ошибка подписки на комментарии</string>
     <string name="MENU_notify_on_comments">Уведомлять о комментариях</string>
+    <string name="YOUTUBE_PLAYER_waiting_for_video">Подготовка видео</string>
+    <string name="YOUTUBE_PLAYER_waiting_for_audio">Подготовка звука</string>
+    <string name="CARD_SHOW_loading_card">Загрузка карточки</string>
+    <string name="CARD_SHOW_error_loading_card">Ошибка загрузки карточки</string>
+    <string name="CARD_SHOW_page_title_short">Просмотр карточки</string>
+    <string name="COMMENTS_load_more_comments">Ещё комментарии</string>
+    <string name="COMMENTS_loading_comments">Загрузка комментариев</string>
+    <string name="COMMENTS_there_is_no_comments_yet">Комментариев пока нет</string>
+    <string name="COMMENTS_error_loading_comments">Ошибка загрузки комментариев</string>
+    <string name="COMMENT_error_adding_comment">Ошибка добавления комментария</string>
 </resources>

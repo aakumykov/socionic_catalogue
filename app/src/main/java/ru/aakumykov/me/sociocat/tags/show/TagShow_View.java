@@ -92,8 +92,7 @@ public class TagShow_View extends BaseView implements
 
         hideProgressBar();
 
-        String pageTitle = getString(R.string.TAG_SHOW_page_title, tag.getName());
-        setPageTitle(pageTitle);
+        setPageTitle(R.string.TAG_SHOW_page_title, tag.getName());
 
         String tagName = getResources()
                 .getString(R.string.aquotes, tag.getName());

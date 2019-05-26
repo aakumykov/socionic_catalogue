@@ -16,7 +16,7 @@
     <color name="warning">#FF7140</color>
     <color name="alert">#EC407A</color>
     <color name="error">#ff4081</color>
-    <color name="error_background">#ffe2ec</color>
+    <color name="error_background">#FFEDF4</color>
 
     <!--<color name="text_default">#5c5c5c</color>-->
     <color name="background_default">@color/white</color>
@@ -48,6 +48,18 @@
     <color name="card_edit_convert_button_background">#C5E1A5</color>
 
     <!--MyYoutubePlayer-->
-    <color name="my_youtube_player_msg_animation_from">@color/colorPrimary</color>
+    <color name="my_youtube_player_msg_animation_from">#C7C7C7</color>
     <color name="my_youtube_player_msg_animation_to">@color/background_default</color>
+
+    <!-- Комментарии -->
+    <color name="comment_pressed_background_color">@color/grey</color>
+    <color name="comment_load_mode_background">#E2E2E2</color>
+    <color name="comment_form_replied_comment_background">#E2E2E2</color>
+    <color name="comment_form_replied_comment_discard_button_background">#D6D6D6</color>
+
+    <!-- ... -->
+    <color name="defaultTextColor">#3C3C3C</color>
+    <color name="quoteTextColor">#303F9F</color>
+
+
 </resources>

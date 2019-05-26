@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -190,7 +189,7 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public void onUserLogout() {
-        //MyUtils.remove(floatingActionButton);
+        //MyUtils.hide(floatingActionButton);
     }
 
     @Override

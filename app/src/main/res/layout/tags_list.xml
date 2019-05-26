@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".tags.list.TagsList_View">
+    tools:context=".tags.itemsList.TagsList_View">
 
     <TextView
         android:id="@+id/messageView"

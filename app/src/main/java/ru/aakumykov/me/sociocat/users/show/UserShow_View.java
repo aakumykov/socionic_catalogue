@@ -25,13 +25,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.card_show.CardShow_View;
+import ru.aakumykov.me.sociocat.old_card_show.OldCardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsListAdapter;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.users.Users_Presenter;
 import ru.aakumykov.me.sociocat.users.edit.UserEdit_View;
@@ -229,7 +229,7 @@ public class UserShow_View extends BaseView implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Card card = cardsList.get(position);
-        Intent intent = new Intent(this, CardShow_View.class);
+        Intent intent = new Intent(this, OldCardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
         startActivity(intent);
     }

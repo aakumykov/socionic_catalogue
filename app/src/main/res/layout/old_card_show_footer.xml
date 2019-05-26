@@ -23,7 +23,7 @@
         android:visibility="gone">
 
         <EditText
-            android:id="@+id/commentInput"
+            android:id="@+id/commentTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

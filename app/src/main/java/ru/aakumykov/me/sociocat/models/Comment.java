@@ -10,8 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Comment implements Parcelable {
+import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 
+public class Comment extends ListItem implements Parcelable
+{
     public final static int key_commentId = 10;
     public final static String key_createdAt = "createdAt";
     public final static String key_cardId = "cardId";
@@ -30,8 +32,11 @@ public class Comment implements Parcelable {
     private Integer rating = 0;
     private List<String> rateUpList = new ArrayList<>();
     private List<String> rateDownList = new ArrayList<>();
-    
-    public Comment(){}
+
+
+    public Comment(){
+        setItemType(ItemType.COMMENT_ITEM);
+    }
     
     public Comment(String text, String cardId, String parentId,
                    String parentText, String userId, String userName, String userAvatar) {
@@ -46,7 +51,6 @@ public class Comment implements Parcelable {
         this.rateUpList = new ArrayList<>();
         this.rateDownList = new ArrayList<>();
     }
-    
 
     @Override @Exclude
     public String toString() {
@@ -123,7 +127,7 @@ public class Comment implements Parcelable {
         dest.writeList(this.rateDownList);
     }
 
-    private Comment(Parcel in) {
+    public Comment(Parcel in) {
         // важен порядок считывания
         key = in.readString();
         text = in.readString();

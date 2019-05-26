@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show;
+package ru.aakumykov.me.sociocat.old_card_show;
 
 import android.content.Intent;
 import androidx.annotation.Nullable;
@@ -9,15 +9,14 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iCommentsSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iStorageSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iTagsSingleton;
-import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
+import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
-import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
@@ -26,16 +25,16 @@ import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 
 
-public class CardShow_Presenter implements
-        iCardShow.Presenter,
+public class OldCardShow_Presenter implements
+        iOldCardShow.Presenter,
         iCardsSingleton.LoadCallbacks,
         iCardsSingleton.DeleteCallbacks,
         iCommentsSingleton.CreateCallbacks,
         iCommentsSingleton.ListCallbacks,
         iCommentsSingleton.DeleteCallbacks
 {
-    private final static String TAG = "CardShow_Presenter";
-    private iCardShow.View view;
+    private final static String TAG = "OldCardShow_Presenter";
+    private iOldCardShow.View view;
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
@@ -254,7 +253,7 @@ public class CardShow_Presenter implements
 
     @Override
     public void changeCardCommentsSubscription(boolean enable,
-                                               iCardShow.ChangeCommentsSubscriptionCallbacks callbacks)
+                                               iOldCardShow.ChangeCommentsSubscriptionCallbacks callbacks)
     {
 
         usersSingleton.subscribeToCardComments(
@@ -326,7 +325,7 @@ public class CardShow_Presenter implements
 
     // Link / Unlink
     @Override
-    public void linkView(iCardShow.View view) {
+    public void linkView(iOldCardShow.View view) {
         if (null != view) {
             this.view = view;
         }

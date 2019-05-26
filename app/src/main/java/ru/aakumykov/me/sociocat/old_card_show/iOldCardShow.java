@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show;
+package ru.aakumykov.me.sociocat.old_card_show;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
-import ru.aakumykov.me.sociocat.interfaces.iCommentsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 
-public interface iCardShow {
+public interface iOldCardShow {
 
     interface View extends iBaseView {
 
@@ -51,7 +51,7 @@ public interface iCardShow {
 
     interface Presenter {
 
-        void linkView(iCardShow.View view);
+        void linkView(iOldCardShow.View view);
         void unlinkView();
 
         void processInputIntent(@Nullable Intent intent) throws Exception;

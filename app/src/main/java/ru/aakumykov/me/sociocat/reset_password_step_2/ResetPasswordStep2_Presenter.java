@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat.reset_password_step_2;
 
-import ru.aakumykov.me.sociocat.interfaces.iAuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
 

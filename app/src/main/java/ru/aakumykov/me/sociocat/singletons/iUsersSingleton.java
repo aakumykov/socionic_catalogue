@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.interfaces;
+package ru.aakumykov.me.sociocat.singletons;
 
 import android.content.Context;
 

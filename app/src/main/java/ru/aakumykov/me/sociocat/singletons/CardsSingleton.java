@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.interfaces.iCardsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardsSingleton implements

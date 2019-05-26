@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.interfaces;
+package ru.aakumykov.me.sociocat.singletons;
 
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;

@@ -13,11 +13,14 @@ import android.net.Uri;
 import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +29,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.aakumykov.me.sociocat.Config;
+import ru.aakumykov.me.sociocat.R;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -169,10 +173,24 @@ public final class MyUtils {
         }
     }
 
+    public static void showKeyboardOnFocus(Context context, EditText editTextView) {
+
+        editTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (null != imm)
+                    imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+            }
+        });
+
+        editTextView.requestFocus();
+    }
+
     public static void hideKeyboard(Context ctx, EditText editText) {
         InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
-            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
         }
     }
 
@@ -233,6 +251,31 @@ public final class MyUtils {
     public static boolean isPortraitOrientation(Context context) {
         return Configuration.ORIENTATION_PORTRAIT == getOrientation(context);
     }
+
+    public static void showCustomToast(Context context, String message) {
+
+        LayoutInflater myInflater = LayoutInflater.from(context);
+        View view = myInflater.inflate(R.layout.toast, null);
+
+        TextView textView = view.findViewById(R.id.textView);
+        textView.setText(message);
+
+        Toast mytoast = new Toast(context);
+        mytoast.setView(view);
+        mytoast.setDuration(Toast.LENGTH_SHORT);
+        mytoast.show();
+    }
+
+    public static String stackTrace2String(StackTraceElement[] stackTraceElements) {
+        String stackTrace = "";
+        for (StackTraceElement element : stackTraceElements)
+            stackTrace += element.toString() + "\n";
+        return stackTrace;
+    }
+
+    /*public static String getString(Context context, int msgId) {
+        return context.getResources().getString(msgId);
+    } */
 
 
 }

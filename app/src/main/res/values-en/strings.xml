@@ -16,7 +16,7 @@
     <string name="card_load_error">Error loading card</string>
     <string name="card_load_canceled">Card loading cancelled</string>
     <string name="opening_card">Opening card</string>
-    <string name="loading_cards_list">Loading cardsList list</string>
+    <string name="loading_cards_list">Loading cards list</string>
     <string name="image_placeholder">Image stub</string>
     <string name="wrong_card_type">Unknown card type</string>
     <string name="error_loading_image">Error loading image</string>
@@ -83,10 +83,10 @@
     <string name="tag">Tag</string>
     <string name="error_loading_tag">Error loading tag</string>
     <string name="CARD_EDIT_error_editing_card">Error editing card</string>
-    <string name="TAGS_LIST_tags_list">Tags List</string>
+    <string name="TAGS_LIST_tags_list">Tags list</string>
     <string name="TAG_SHOW_page_title">Tag «%1$s»</string>
     <string name="CARDS_LIST_page_title">Cards list</string>
-    <string name="CARD_SHOW_page_title">«%1$s», card viewing</string>
+    <string name="CARD_SHOW_page_title_long">«%1$s», card viewing</string>
     <string name="DIALOG_deleted_card_name">Really delete card «%1$s»</string>
     <string name="REGISTER_name">Nickame</string>
     <string name="REGISTER_password">Password</string>
@@ -119,7 +119,7 @@
     <string name="CARD_EDIT_card_edition_title">Card editing</string>
     <string name="CARD_EDIT_error_displaying_card">Error displaying card</string>
     <string name="CARD_EDIT_error_receiving_image">Error selecting image</string>
-    <string name="CARD_EDIT_error_recieving_data">Error recieving data</string>
+    <string name="CARD_EDIT_error_recieving_data">Error receiving data</string>
     <string name="CARD_EDIT_unsupported_data_type">Unsupported data type</string>
     <string name="CARD_EDIT_error_displaying_image">Error displaying image</string>
     <string name="CARD_EDIT_error_processing_data">Error processing data</string>
@@ -224,8 +224,8 @@
     <string name="CARD_EDIT_error_loading_tags_list">Error loading tags list</string>
     <string name="INFO_you_must_be_logged_in">You must be logged in</string>
     <string name="EXTERNAL_DATA_RECIEVER_page_title">External data receiver</string>
-    <string name="CARDS_LIST_loading_list">Loading cardsList list</string>
-    <string name="CARDS_GRID_loading_cards">Loading cardsList</string>
+    <string name="CARDS_LIST_loading_list">Loading cards list</string>
+    <string name="CARDS_GRID_loading_cards">Loading cards list</string>
     <string name="CARDS_GRID_page_title">Cards</string>
     <string name="MENU_grid_view">Grid view</string>
     <string name="MENU_list_view">List view</string>
@@ -248,7 +248,7 @@
     <string name="LOGIN_login_error">Login error</string>
     <string name="REGISTER_CONFIRMATION_you_need_to_confirm_email">Confirm your email address to sign in</string>
     <string name="REGISTER_CONFIRMATION_got_it">Got it</string>
-    <string name="REGISTER_CONFIRMATION_ok">Ok</string>
+    <string name="REGISTER_CONFIRMATION_ok">OK</string>
     <string name="REGISTER_CONFIRMATION_continue">Continue</string>
     <string name="REGISTER_CONFIRMATION_send_letter_again">Send letter again</string>
     <string name="REGISTER_CONFIRMATION_sending_confirmation_message">Sending email</string>
@@ -273,7 +273,7 @@
     <string name="REGISTER1_send_button">Sign up</string>
     <string name="REGISTER1_page_title">Sign up, first step</string>
     <string name="REGISTER1_error_sending_email">Email sending error</string>
-    <string name="REGISTER1_ok">Ok</string>
+    <string name="REGISTER1_ok">OK</string>
     <string name="REGISTER1_complete_dialog_title">Next step</string>
     <string name="REGISTER1_complete_dialog_message">Check your mailbox to complete registration</string>
     <string name="REGISTER1_sending_email">Sending email</string>
@@ -402,4 +402,14 @@
     <string name="USER_SHOW_error_loading_cards_lsit">Error loading cards list</string>
     <string name="CARD_EDIT_error_subscribing_to_comments">Error subscribing to comments</string>
     <string name="MENU_notify_on_comments">Notify on comments</string>
+    <string name="YOUTUBE_PLAYER_waiting_for_video">Preparing video</string>
+    <string name="YOUTUBE_PLAYER_waiting_for_audio">Preparing audio</string>
+    <string name="CARD_SHOW_loading_card">Loading card</string>
+    <string name="CARD_SHOW_error_loading_card">Error loading card</string>
+    <string name="CARD_SHOW_page_title_short">Card viewing</string>
+    <string name="COMMENTS_load_more_comments">More comments</string>
+    <string name="COMMENTS_loading_comments">Loading comments</string>
+    <string name="COMMENTS_there_is_no_comments_yet">There is no comments yet</string>
+    <string name="COMMENTS_error_loading_comments">Error loading comments</string>
+    <string name="COMMENT_error_adding_comment">Error adding comment</string>
 </resources>

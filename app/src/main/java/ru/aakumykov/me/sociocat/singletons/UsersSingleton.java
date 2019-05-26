@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.interfaces.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;

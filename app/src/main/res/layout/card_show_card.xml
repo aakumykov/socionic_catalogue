@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_bottom_line"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/titleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/defaultTextColor"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        tools:text="Заголовок карточки" />
+
+    <TextView
+        android:id="@+id/quoteView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/quoteTextColor"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        android:visibility="gone"
+        tools:text='Компании "НПО РусБИТех" опубликовала выпуск дистрибутива Astra Linux Common Edition 2.12.13, построенного на пакетной базе Debian GNU/Linux и поставляемого с собственным проприетарным рабочим столом Fly (интерактивная демонстрация), использующим библиотеку Qt.'
+        tools:visibility="visible" />
+
+    <FrameLayout
+        android:id="@+id/imageContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginBottom="10dp"/>
+
+    <FrameLayout
+        android:id="@+id/videoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:id="@+id/descriptionView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/defaultTextColor"
+        android:textSize="18sp"
+        tools:text="Для загрузки доступны iso-образы (3.7 Гб, x86-64), бинарный репозиторий и исходные тексты пакетов. Дистрибутив распространяется в рамках лицензионного соглашения, которое накладывает ряд ограничений на пользователей, в частности, запрещены коммерческое использование, декомпиляция и дизассемблирование продукта." />
+
+    <TextView
+        android:id="@+id/authorView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:paddingStart="@dimen/card_component_padding_right"
+        android:paddingEnd="@dimen/card_component_padding_right"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/author_text_size"
+        android:visibility="gone"
+        tools:text="Автор: Разработчик"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/cTimeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/grey"
+        android:visibility="gone"
+        tools:text="Создано: вчера"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/mTimeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/grey"
+        android:visibility="gone"
+        tools:text="Изменено: сегодня"
+        tools:visibility="visible" />
+
+    <co.lujun.androidtagview.TagContainerLayout
+        android:id="@+id/tagsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp"
+        android:visibility="visible"
+        app:container_background_color="@color/transparent"
+        app:container_border_color="@color/transparent"
+        app:container_enable_drag="false"
+        app:horizontal_interval="10dp"
+        app:tag_clickable="true"
+        app:tag_ripple_duration="400"
+        app:tag_text_size="@dimen/tag_font_size"
+        app:tag_theme="pure_teal"
+        app:vertical_interval="10dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/controlsHolder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
+
+        <ImageView
+            android:id="@+id/cardRateUpButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_thumb_up_neutral" />
+
+        <TextView
+            android:id="@+id/cardRatingView"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:text="0"
+            android:textAlignment="center"
+            android:textSize="@dimen/card_rating_text_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardRateUpButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ProgressBar
+            android:id="@+id/cardRatingThrobber"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="30dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardRatingView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/cardRateDownButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardRatingThrobber"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_thumb_down_neutral" />
+
+        <TextView
+            android:id="@+id/replyWidget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/CARD_SHOW_add_comment"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- android:paddingStart="@dimen/card_component_padding_right"
+        android:paddingEnd="@dimen/card_component_padding_right" -->
+
+</LinearLayout>
