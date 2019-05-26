@@ -69,7 +69,8 @@ public class CardShow_View extends BaseView implements
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.recyclerView.setAdapter((RecyclerView.Adapter) listAdapter);
 
-        this.commentForm = new CommentForm(this, commentFormContainer);
+        this.commentForm = new CommentForm(this);
+        this.commentForm.attachTo(commentFormContainer);
 
         activateUpButton();
         setPageTitle(R.string.CARD_SHOW_page_title_short);

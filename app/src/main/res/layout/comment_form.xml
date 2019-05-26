@@ -7,7 +7,9 @@
     android:layout_height="wrap_content"
     android:layout_weight="9"
     android:background="@drawable/shape_comment_form"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:visibility="gone"
+    tools:visibility="visible">
 
     <TextView
         android:id="@+id/errorView"
@@ -53,7 +55,10 @@
         android:id="@+id/commentContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@drawable/shape_comment_form"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <EditText
             android:id="@+id/commentTextInput"

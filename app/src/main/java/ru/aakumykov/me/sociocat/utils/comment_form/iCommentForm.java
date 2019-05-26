@@ -8,6 +8,7 @@ public interface iCommentForm {
         void onSendCommentClicked(String commentText);
     }
 
+    void attachTo(ViewGroup container);
     void addSendButtonListener(SendButtonListener listener);
 
     void setQuote(String text);
