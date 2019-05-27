@@ -8,16 +8,10 @@ import com.google.firebase.database.Exclude;
 
 public interface iBaseView {
 
+    // Контекст
     Context getAppContext();
-    String getString(int stringResourceId);
 
-    void requestLogin(Intent originalIntent);
-
-    void startSomeActivity(Intent intent);
-
-    SharedPreferences getSharedPrefs(String prefsName);
-    void clearSharedPrefs(SharedPreferences sharedPreferences, String dataName);
-
+    // Сообщения вверху страницы
     void showProgressMessage(int messageId);
     void hideProgressMessage();
 
@@ -32,6 +26,7 @@ public interface iBaseView {
 
     <T> void showConsoleError(String tag, T arg);
 
+    // Всплывающие сообщения
     void showToast(int stringResourceId);
     void showToast(String msg);
     void showLongToast(String msg);
@@ -39,19 +34,32 @@ public interface iBaseView {
     void showToast(int stringResourceId, int gravity);
     void showLongToast(int stringResourceId, int gravity);
 
+    void hideMsg();
+
+    // Индикатор активности
     void showProgressBar();
     void hideProgressBar();
 
-    void hideMsg();
-
     void consoleMsg(String tag, String msg);
 
+    // Заголовок страницы
     void setPageTitle(int titleId);
     void setPageTitle(int titleId, String insertedText);
 
+    // Настройка страницы
     void activateUpButton();
 
+    // Хранимые настройки
+    SharedPreferences getSharedPrefs(String prefsName);
+    void clearSharedPrefs(SharedPreferences sharedPreferences, String dataName);
+
+
+    // Разное (УБРАТЬ!)
     void proceedLoginRequest(Intent intent);
     void goCreateCard();
     void closePage();
+
+    String getString(int stringResourceId);
+    void requestLogin(Intent originalIntent);
+    void startSomeActivity(Intent intent);
 }
