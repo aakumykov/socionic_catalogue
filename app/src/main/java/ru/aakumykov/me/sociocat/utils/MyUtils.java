@@ -11,6 +11,8 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.net.Uri;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -29,7 +31,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.aakumykov.me.sociocat.Config;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.login.Login_View;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -277,5 +281,11 @@ public final class MyUtils {
         return context.getResources().getString(msgId);
     } */
 
-
+    /*public static void requestLogin(Context context, Intent proceedIntent) {
+        Intent intent = new Intent(context, Login_View.class);
+        intent.setAction(Constants.ACTION_LOGIN_REQUEST);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.putExtra(Intent.EXTRA_INTENT, proceedIntent);
+        context.startActivity(intent);
+    }*/
 }
