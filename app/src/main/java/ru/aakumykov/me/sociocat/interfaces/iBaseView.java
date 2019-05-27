@@ -39,6 +39,5 @@ public interface iBaseView {
     void closePage();
 
     String getString(int stringResourceId);
-    void requestLogin(Intent originalIntent);
     void startSomeActivity(Intent intent);
 }

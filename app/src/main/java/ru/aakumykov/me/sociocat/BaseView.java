@@ -30,6 +30,7 @@ import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
+import ru.aakumykov.me.sociocat.interfaces.iLoginRequester;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;
@@ -39,7 +40,9 @@ import ru.aakumykov.me.sociocat.users.show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public abstract class BaseView extends AppCompatActivity implements iBaseView
+public abstract class BaseView extends AppCompatActivity implements
+        iBaseView,
+        iLoginRequester
 {
     public static String PACKAGE_NAME;
     private final static String TAG = "BaseView";
