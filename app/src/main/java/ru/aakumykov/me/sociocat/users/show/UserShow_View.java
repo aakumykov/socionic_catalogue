@@ -25,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.old_card_show.OldCardShow_View;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsListAdapter;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
@@ -69,7 +69,7 @@ public class UserShow_View extends BaseView implements
 
         setPageTitle(R.string.USER_page_title);
 
-        showProgressBar();
+        showProgressMessage(R.string.USER_SHOW_loading_user_info);
 
         presenter = new Users_Presenter();
 
@@ -86,7 +86,7 @@ public class UserShow_View extends BaseView implements
 
         } catch (Exception e) {
             // TODO: всунуть сокрытие крутилки внутрь show*Message()
-            hideProgressBar();
+            hideProgressMessage();
             showErrorMsg(R.string.error_displaying_user, e.getMessage());
             e.printStackTrace();
         }
@@ -178,7 +178,7 @@ public class UserShow_View extends BaseView implements
 
         currentUser = user;
 
-        hideProgressBar();
+        hideProgressMessage();
 
         nameView.setText(user.getName());
         emailView.setText(user.getEmail());
@@ -222,14 +222,14 @@ public class UserShow_View extends BaseView implements
     @Override
     public void onUserReadFail(String errorMsg) {
         currentUser = null;
-        hideProgressBar();
+        hideProgressMessage();
         showErrorMsg(R.string.error_displaying_user, errorMsg);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Card card = cardsList.get(position);
-        Intent intent = new Intent(this, OldCardShow_View.class);
+        Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
         startActivity(intent);
     }

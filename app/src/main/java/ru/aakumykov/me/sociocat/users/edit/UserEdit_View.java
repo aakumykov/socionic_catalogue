@@ -78,8 +78,8 @@ public class UserEdit_View extends BaseView implements
         try {
             presenter.prepareUserEdit(userId);
         } catch (Exception e) {
-            hideProgressBar();
-            showErrorMsg(R.string.USER_EDIT_error_loading_data);
+            hideProgressMessage();
+            showErrorMsg(R.string.USER_EDIT_error_loading_data, e.getMessage());
         }
     }
 
@@ -144,7 +144,7 @@ public class UserEdit_View extends BaseView implements
     @Override
     public void fillUserForm(User user) {
         Log.d(TAG, "fillUserForm()");
-        hideProgressBar();
+        hideProgressMessage();
 
         nameInput.setText(user.getName());
         emailInput.setText(user.getEmail());
@@ -231,8 +231,7 @@ public class UserEdit_View extends BaseView implements
             );
         }
         else {
-            showErrorMsg(R.string.USER_EDIT_error_selecting_image);
-            Log.e(TAG, "Error resolving activity for Intent.ACTION_GET_CONTENT");
+            showErrorMsg(R.string.USER_EDIT_error_selecting_image, "Error resolving activity for Intent.ACTION_GET_CONTENT");
         }
     }
 

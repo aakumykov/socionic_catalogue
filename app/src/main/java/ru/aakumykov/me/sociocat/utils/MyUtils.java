@@ -256,6 +256,11 @@ public final class MyUtils {
         return Configuration.ORIENTATION_PORTRAIT == getOrientation(context);
     }
 
+    public static void showCustomToast(Context context, int messageId) {
+        String message = context.getResources().getString(messageId);
+        showCustomToast(context, message);
+    }
+
     public static void showCustomToast(Context context, String message) {
 
         LayoutInflater myInflater = LayoutInflater.from(context);

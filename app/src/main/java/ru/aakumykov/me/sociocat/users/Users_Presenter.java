@@ -142,7 +142,7 @@ public class Users_Presenter implements
 
         String name = editView.getName();
         if (TextUtils.isEmpty(name)) {
-            editView.showErrorMsg(R.string.USER_EDIT_name_cannot_be_empty);
+            editView.showErrorMsg(R.string.USER_EDIT_name_cannot_be_empty, "");
             return;
         }
 
@@ -156,7 +156,7 @@ public class Users_Presenter implements
 
                 editView.showAvatarThrobber();
                 editView.disableEditForm();
-                editView.showInfoMsg(R.string.USER_EDIT_saving_avatar);
+                editView.showToast(R.string.USER_EDIT_saving_avatar);
 
                 storageSingleton.uploadAvatar(imageBitmap, imageType, fileName, this);
 
@@ -174,7 +174,7 @@ public class Users_Presenter implements
     public void processSelectedImage(@Nullable Intent data) {
 
         if (null == data) {
-            editView.showErrorMsg(R.string.USER_EDIT_error_selecting_image);
+            editView.showErrorMsg(R.string.USER_EDIT_error_selecting_image, "");
             return;
         }
 
@@ -185,7 +185,7 @@ public class Users_Presenter implements
         if (null == imageURI) {
             imageURI = data.getData();
             if (null == imageURI) {
-                editView.showErrorMsg(R.string.USER_EDIT_no_image_data);
+                editView.showErrorMsg(R.string.USER_EDIT_no_image_data, "imageURI == NULL");
                 return;
             }
         }
@@ -203,14 +203,14 @@ public class Users_Presenter implements
         currentUser = user;
         editedUserId = user.getKey();
 
-        editView.hideProgressBar();
+        editView.hideProgressMessage();
         editView.fillUserForm(user);
     }
 
     @Override
     public void onUserReadFail(String errorMsg) {
-        editView.hideProgressBar();
-        editView.hideProgressBar();
+        editView.hideProgressMessage();
+        editView.hideProgressMessage();
         editView.showErrorMsg(R.string.USER_EDIT_error_loading_data, errorMsg);
     }
 
@@ -229,7 +229,7 @@ public class Users_Presenter implements
 
     @Override
     public void onFileUploadFail(String errorMsg) {
-        editView.showErrorMsg(R.string.USER_EDIT_error_saving_avatar);
+        editView.showErrorMsg(R.string.USER_EDIT_error_saving_avatar, errorMsg);
         editView.hideAvatarThrobber();
         editView.enableEditForm();
     }
@@ -243,13 +243,13 @@ public class Users_Presenter implements
     @Override
     public void onUserSaveSuccess(User user) {
         usersSingleton.storeCurrentUser(user);
-        editView.hideProgressBar();
+        editView.hideProgressMessage();
         editView.finishEdit(user, true);
     }
 
     @Override
     public void onUserSaveFail(String errorMsg) {
-        editView.hideProgressBar();
+        editView.hideProgressMessage();
         editView.enableEditForm();
         editView.showErrorMsg(R.string.USER_EDIT_error_saving_profile, errorMsg);
     }
@@ -267,9 +267,8 @@ public class Users_Presenter implements
 
     // Внутренние методы
     private void saveUser() {
-        editView.showProgressBar();
         editView.disableEditForm();
-        editView.showInfoMsg(R.string.USER_EDIT_saving_profile);
+        editView.showProgressMessage(R.string.USER_EDIT_saving_profile);
 
         try {
             usersSingleton.saveUser(currentUser, new iUsersSingleton.SaveCallbacks() {

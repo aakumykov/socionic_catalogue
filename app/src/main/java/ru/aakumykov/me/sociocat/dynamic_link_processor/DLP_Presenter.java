@@ -34,7 +34,7 @@ public class DLP_Presenter implements iDLP.Presenter {
     public void processDynamicLink(Activity activity, @Nullable final Intent intent) {
 
         try {
-            view.showProgressBar();
+            view.showProgressMessage(R.string.DLP_processing_dynamic_link);
 
             firebaseDynamicLinks
                     .getDynamicLink(intent)

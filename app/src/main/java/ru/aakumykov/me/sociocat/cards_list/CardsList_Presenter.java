@@ -69,7 +69,7 @@ public class CardsList_Presenter implements
     public void deleteCard(final Card card) {
 
         if (!usersSingleton.isCardOwner(card) && !usersSingleton.currentUserIsAdmin()) {
-            view.showErrorMsg(R.string.CARDS_LIST_you_cannot_delete_this_card);
+            view.showToast(R.string.CARDS_LIST_you_cannot_delete_this_card);
             return;
         }
 
@@ -102,7 +102,7 @@ public class CardsList_Presenter implements
 
     @Override
     public void onCardDeleteSuccess(Card card) {
-        view.hideProgressBar();
+        view.hideProgressMessage();
         view.showToast(R.string.card_deleted);
         view.removeListItem(card);
 
@@ -114,7 +114,7 @@ public class CardsList_Presenter implements
     @Override
     public void onCardDeleteError(String msg) {
         Log.d(TAG, "onCardDeleteError()");
-        view.hideProgressBar();
+        view.hideProgressMessage();
         view.showErrorMsg(R.string.CARDS_LIST_error_deleting_card, msg);
     }
 

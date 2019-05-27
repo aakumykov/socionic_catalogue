@@ -334,7 +334,7 @@ public class CardEdit_Presenter implements
                 @Override public void onFileUploadCancel() {
                     view.hideImageProgressBar();
                     if (null != view)
-                        view.showErrorMsg(R.string.CARD_EDIT_image_upload_cancelled);
+                        view.showErrorMsg(R.string.CARD_EDIT_image_upload_cancelled, "File upload cancelled...");
                 }
             });
         }
@@ -444,8 +444,8 @@ public class CardEdit_Presenter implements
         editMode = Enums.CardEditMode.EDIT;
 
         if (null != view) {
-            view.showProgressBar();
             view.disableForm();
+            view.showProgressMessage(R.string.CARD_EDIT_loading_card);
         }
 
         cardsSingleton.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
@@ -505,12 +505,12 @@ public class CardEdit_Presenter implements
                     break;
 
                 default:
-                    view.showErrorMsg(R.string.CARD_EDIT_unknown_data_mode);
+                    view.showErrorMsg(R.string.CARD_EDIT_unknown_data_mode, "Unknown input data mode: "+inputDataMode);
             }
 
         } catch (Exception e) {
             if (null != view) {
-                view.showErrorMsg(R.string.CARD_EDIT_error_processing_data);
+                view.showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -609,12 +609,12 @@ public class CardEdit_Presenter implements
             boolean hasRemoteImageURL = currentCard.hasImageURL();
 
             if (!hasLocalImageURI && !hasRemoteImageURL) {
-                view.showToast(R.string.CARD_EDIT_you_must_select_image, Gravity.CENTER);
+                view.showToast(R.string.CARD_EDIT_you_must_select_image);
                 valid = false;
             }
 
             if (hasLocalImageURI && hasRemoteImageURL) {
-                view.showToast(R.string.CARD_EDIT_image_error, Gravity.CENTER);
+                view.showToast(R.string.CARD_EDIT_image_error);
                 valid = false;
             }
         }

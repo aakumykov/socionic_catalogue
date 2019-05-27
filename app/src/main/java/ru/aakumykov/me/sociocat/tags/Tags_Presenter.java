@@ -74,7 +74,7 @@ public class Tags_Presenter implements
     @Override
     public void onTagsListSuccess(List<Tag> list) {
         if (null != listView) {
-            listView.hideProgressBar();
+            listView.hideProgressMessage();
             listView.hideSwipeRefresh();
             listView.displayTags(list);
         }
@@ -84,7 +84,7 @@ public class Tags_Presenter implements
     public void onTagsListFail(String errorMsg) {
         if (null != listView) {
             listView.hideSwipeRefresh();
-            listView.showErrorMsg(R.string.error_loading_tags);
+            listView.showErrorMsg(R.string.error_loading_tags, errorMsg);
         }
     }
 
@@ -97,7 +97,6 @@ public class Tags_Presenter implements
     @Override
     public void onTagFail(String errorMsg) {
         if (null != showView)
-            showView.showErrorMsg(R.string.error_loading_tag);
-        Log.e(TAG, errorMsg);
+            showView.showErrorMsg(R.string.error_loading_tag, errorMsg);
     }
 }

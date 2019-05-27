@@ -9,7 +9,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
-import ru.aakumykov.me.sociocat.old_card_show.OldCardShow_View;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class ExternalDataReceiver extends BaseView {
@@ -26,7 +26,7 @@ public class ExternalDataReceiver extends BaseView {
         try {
             makeStartDecision();
         } catch (Exception e) {
-            showErrorMsg(e.getMessage());
+            showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_error_starting_work, e.getMessage());
             e.printStackTrace();
         }
     }
@@ -87,7 +87,7 @@ public class ExternalDataReceiver extends BaseView {
         }
 
         Card card = data.getParcelableExtra(Constants.CARD);
-        Intent intent = new Intent(this, OldCardShow_View.class);
+        Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD, card);
         startActivity(intent);
     }

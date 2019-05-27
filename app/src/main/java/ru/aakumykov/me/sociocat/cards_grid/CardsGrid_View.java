@@ -263,7 +263,7 @@ public class CardsGrid_View extends BaseView implements
     // Интерфейсные методы
     @Override
     public void displayList(List<Card> list) {
-        hideProgressBar();
+        hideProgressMessage();
         hideMsg();
         swiperefreshLayout.setRefreshing(false);
 
@@ -294,7 +294,7 @@ public class CardsGrid_View extends BaseView implements
         if (null != card) {
             showCard(card.getKey());
         } else {
-            showErrorMsg(R.string.CARDS_GRID_error_no_such_card);
+            showToast(R.string.CARDS_GRID_error_no_such_card);
         }
     }
 
@@ -398,7 +398,8 @@ public class CardsGrid_View extends BaseView implements
             searchView.setOnCloseListener(this);
 
         } catch (Exception e) {
-            showErrorMsg(e.getMessage());
+//            showErrorMsg(e.getMessage());
+            Log.e(TAG, e.getMessage());
             e.printStackTrace();
         }
     }
@@ -406,7 +407,7 @@ public class CardsGrid_View extends BaseView implements
     private void loadList(boolean showMessage) {
         if (showMessage) {
             MyUtils.show(progressBar);
-            showInfoMsg(R.string.CARDS_GRID_loading_cards);
+            showProgressMessage(R.string.CARDS_GRID_loading_cards);
         }
         presenter.loadCards();
     }
@@ -653,7 +654,7 @@ public class CardsGrid_View extends BaseView implements
                 card.setType(Constants.AUDIO_CARD);
                 break;
             default:
-                showErrorMsg(R.string.wrong_card_type);
+                showErrorMsg(R.string.wrong_card_type, "Wrong card type: "+cardType);
                 return;
         }
 

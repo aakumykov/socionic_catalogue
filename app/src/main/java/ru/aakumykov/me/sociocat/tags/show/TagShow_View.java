@@ -90,7 +90,7 @@ public class TagShow_View extends BaseView implements
 
         currentTag = tag;
 
-        hideProgressBar();
+        hideProgressMessage();
 
         setPageTitle(R.string.TAG_SHOW_page_title, tag.getName());
 

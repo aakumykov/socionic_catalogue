@@ -85,7 +85,7 @@ public class ResetPasswordStep1_View extends BaseView implements
         presenter.resetPassword(new iResetPasswordStep1.ResetPasswordCallbacks() {
             @Override
             public void onEmailSendSucces() {
-                hideProgressBar();
+                hideProgressMessage();
                 hideMsg();
                 finishWork();
             }
@@ -122,7 +122,7 @@ public class ResetPasswordStep1_View extends BaseView implements
     @Override
     public void finishWork() {
         String msg = getResources().getString(R.string.RESET_PASSWORD_email_sended, getEmail());
-        showLongToast(msg);
+        showToast(msg);
         setResult(RESULT_OK);
         finish();
     }
@@ -165,7 +165,7 @@ public class ResetPasswordStep1_View extends BaseView implements
 //        presenter.resetPassword(new iResetPasswordStep1.ResetPasswordCallbacks() {
 //            @Override
 //            public void onEmailSendSucces() {
-//                hideProgressBar();
+//                hideProgressMessage();
 //                hideMsg();
 //                finishWork();
 //            }

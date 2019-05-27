@@ -39,7 +39,7 @@ import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.old_card_show.OldCardShow_View;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
@@ -128,8 +128,8 @@ public class CardEdit_View extends BaseView implements
                         youTubePlayer.pause();
                     presenter.saveEditState();
                 } catch (Exception e) {
-                    showLongToast(R.string.CARD_EDIT_error_saving_edit_state);
-                    showConsoleError(TAG, e.getMessage());
+                    //showLongToast(R.string.CARD_EDIT_error_saving_edit_state);
+                    showErrorMsg(R.string.CARD_EDIT_error_saving_edit_state, e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -143,9 +143,8 @@ public class CardEdit_View extends BaseView implements
         if (!selectImageMode) {
             try {
                 presenter.restoreEditState();
-
             } catch (Exception e) {
-                showErrorMsg(e.getMessage());
+                showErrorMsg(R.string.CARD_EDIT_error_restoring_edit_state, e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -244,9 +243,11 @@ public class CardEdit_View extends BaseView implements
     // Интерфейсные методы
     @Override
     public void displayCard(Card card) {
-        hideProgressBar();
+        hideProgressMessage();
 
-        switch (card.getType()) {
+        String cardType = card.getType();
+
+        switch (cardType) {
             case Constants.TEXT_CARD:
                 displayQuote(card.getQuote(), card.getQuoteSource());
                 break;
@@ -261,7 +262,7 @@ public class CardEdit_View extends BaseView implements
                 displayAudio(card.getAudioCode());
                 break;
             default:
-                showErrorMsg(R.string.wrong_card_type);
+                showErrorMsg(R.string.wrong_card_type, "Unknown card type: "+cardType);
         }
 
         displayCommonCardParts(card);
@@ -510,7 +511,7 @@ public class CardEdit_View extends BaseView implements
     @Override
     public void showCard(Card card) {
         exitIsExpected = true;
-        Intent intent = new Intent(this, OldCardShow_View.class);
+        Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
         startActivity(intent);
     }

@@ -54,7 +54,7 @@ public class CardsGrid_Presenter implements
 
             @Override
             public void onListLoadFail(String errorMessage) {
-                if (null != view) view.showErrorMsg(errorMessage);
+                if (null != view) view.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
             }
         });
     }
@@ -69,8 +69,8 @@ public class CardsGrid_Presenter implements
             public void onListLoadSuccess(List<Card> list) {
                 if (null != view) {
                     if (0 == list.size()) {
-                        view.hideProgressBar();
-                        view.showInfoMsg(R.string.CARDS_GRID_no_new_cards);
+                        view.hideProgressMessage();
+                        view.showToast(R.string.CARDS_GRID_no_new_cards);
                     } else {
                         view.displayList(list);
                     }
@@ -80,7 +80,7 @@ public class CardsGrid_Presenter implements
             @Override
             public void onListLoadFail(String errorMessage) {
                 if (null != view)
-                    view.showErrorMsg(errorMessage);
+                    view.showErrorMsg(R.string.CARDS_GRID_loading_cards, errorMessage);
             }
         });
     }
@@ -97,7 +97,7 @@ public class CardsGrid_Presenter implements
     public void deleteCard(final Card card) {
 
         if (!usersSingleton.isCardOwner(card) && !usersSingleton.currentUserIsAdmin()) {
-            view.showErrorMsg(R.string.CARDS_LIST_you_cannot_delete_this_card);
+            view.showToast(R.string.CARDS_LIST_you_cannot_delete_this_card);
             return;
         }
 
@@ -111,7 +111,7 @@ public class CardsGrid_Presenter implements
 
     @Override
     public void onCardDeleteSuccess(Card card) {
-        view.hideProgressBar();
+        view.hideProgressMessage();
         view.showToast(R.string.card_deleted);
         view.removeGridItem(card);
 
@@ -122,7 +122,7 @@ public class CardsGrid_Presenter implements
 
     @Override
     public void onCardDeleteError(String msg) {
-        view.hideProgressBar();
+        view.hideProgressMessage();
         view.showErrorMsg(R.string.CARDS_LIST_error_deleting_card, msg);
     }
 

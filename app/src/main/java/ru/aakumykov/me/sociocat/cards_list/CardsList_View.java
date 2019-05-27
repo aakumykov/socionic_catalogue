@@ -29,7 +29,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
-import ru.aakumykov.me.sociocat.old_card_show.OldCardShow_View;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -169,7 +169,7 @@ public class CardsList_View extends BaseView implements
     public void displayList(final List<Card> list) {
         Log.d(TAG, "displayList()");
 
-        hideProgressBar();
+        hideProgressMessage();
         hideMsg();
         swiperefreshLayout.setRefreshing(false);
 
@@ -223,7 +223,7 @@ public class CardsList_View extends BaseView implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Card card = cardsList.get(position);
-        Intent intent = new Intent(this, OldCardShow_View.class);
+        Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
         startActivity(intent);
     }
@@ -322,8 +322,7 @@ public class CardsList_View extends BaseView implements
 
     private void loadList(boolean showProgressBar) {
         if (showProgressBar) {
-            showInfoMsg(R.string.CARDS_LIST_loading_list);
-            showProgressBar();
+            showProgressMessage(R.string.CARDS_LIST_loading_list);
         }
         presenter.loadList(tagFilter);
     }
@@ -344,11 +343,11 @@ public class CardsList_View extends BaseView implements
 //                listView.smoothScrollToPosition(position);
 
             } else {
-                showErrorMsg(R.string.CARDS_LIST_error_creating_card);
+                showErrorMsg(R.string.CARDS_LIST_error_creating_card, "Error creating card");
             }
 
         } else {
-            showErrorMsg(R.string.CARD_SHOW_data_error);
+            showErrorMsg(R.string.CARD_SHOW_data_error, "Intent is NULL");
         }
     }
 
@@ -364,7 +363,7 @@ public class CardsList_View extends BaseView implements
             updateListItem(oldCardIndex, newCard);
 
         } else {
-            showErrorMsg(R.string.CARD_SHOW_data_error);
+            showErrorMsg(R.string.CARD_SHOW_data_error, "Intent is NULL");
         }
     }
 
@@ -387,8 +386,7 @@ public class CardsList_View extends BaseView implements
                 break;
 
             default:
-                showErrorMsg(R.string.ERROR_creating_card);
-                Log.d(TAG, "data: "+data);
+                showErrorMsg(R.string.ERROR_creating_card, "Unknown result code: "+resultCode);
                 break;
         }
     }

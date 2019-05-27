@@ -15,32 +15,11 @@ public interface iBaseView {
     void showProgressMessage(int messageId);
     void hideProgressMessage();
 
-    void showInfoMsg(int messageId);
-    void showInfoMsg(String message);
-    void showInfoMsg(int messageId, String consoleMessage);
-
-    void showErrorMsg(int messageId);
-    void showErrorMsg(String message);
     void showErrorMsg(int userMessageId, String consoleMessage);
-    void showErrorMsg(int userMessageId, Exception e);
-
-    <T> void showConsoleError(String tag, T arg);
-
-    // Всплывающие сообщения
-    void showToast(int stringResourceId);
-    void showToast(String msg);
-    void showLongToast(String msg);
-    void showLongToast(int msgId);
-    void showToast(int stringResourceId, int gravity);
-    void showLongToast(int stringResourceId, int gravity);
-
     void hideMsg();
 
-    // Индикатор активности
-    void showProgressBar();
-    void hideProgressBar();
-
-    void consoleMsg(String tag, String msg);
+    void showToast(int msgId);
+    void showToast(String message);
 
     // Заголовок страницы
     void setPageTitle(int titleId);

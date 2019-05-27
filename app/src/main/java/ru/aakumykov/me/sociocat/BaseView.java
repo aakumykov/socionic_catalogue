@@ -44,12 +44,9 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public static String PACKAGE_NAME;
     private final static String TAG = "BaseView";
 
-    //private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-
     // Абстрактные методы
     public abstract void onUserLogin();
     public abstract void onUserLogout();
-
 
     // EventBus
     @Subscribe
@@ -61,7 +58,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         saveLastLoginTime();
     }
-
     @Subscribe
     public void onUserUnauthorized(UserUnauthorizedEvent event) {
 
@@ -117,7 +113,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
-
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -181,17 +176,22 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
 
-    // Методы, связанные с авторизацией
-/*    public boolean isUserLoggedIn() {
-        // Опасно
-        return (null != usersSingleton.getCurrentUser());
-    }*/
+    // Контекст
+    @Override
+    public Context getAppContext() {
+        return getApplicationContext();
+    }
 
 
-    // Сообщения пользователю
+    // Сообщения вверху страницы
     @Override
     public void showProgressMessage(int messageId) {
-        showInfoMsg(messageId);
+        Resources resources = getResources();
+        showMsg(
+                resources.getString(messageId),
+                resources.getColor(R.color.info),
+                resources.getColor(R.color.info_background)
+        );
         showProgressBar();
     }
 
@@ -202,94 +202,12 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public void showInfoMsg(int messageId) {
-        Resources resources = getResources();
-        showMsg(resources.getString(messageId), resources.getColor(R.color.info), resources.getColor(R.color.info_background));
-    }
-
-    @Override
-    public void showInfoMsg(String message) {
-        Resources resources = getResources();
-        showMsg(message, resources.getColor(R.color.info), resources.getColor(R.color.info_background));
-    }
-
-    @Override
-    public void showInfoMsg(int userMessageId, String consoleMessage) {
-        showInfoMsg(userMessageId);
-        Log.d(TAG, consoleMessage);
-    }
-
-    @Override
-    public void showErrorMsg(int messageId, String consoleMessage) {
+    public void showErrorMsg(int messageId, @Nullable String consoleMessage) {
         String msg = (Config.DEBUG_MODE) ? consoleMessage : getResources().getString(messageId);
-        showErrorMsg(msg);
+        hideProgressMessage();
+        showMsg(msg, R.color.error, R.color.error_background);
         Log.e(TAG, consoleMessage);
     }
-
-    @Override
-    public void showErrorMsg(int userMessageId, Exception e) {
-        showErrorMsg(userMessageId, e.getMessage());
-
-        if (Config.DEBUG_MODE)
-            showStackTrace(e.getStackTrace());
-
-        e.printStackTrace();
-    }
-
-    @Override
-    public void showErrorMsg(int messageId) {
-        hideProgressBar();
-        String message = getResources().getString(messageId);
-        showErrorMsg(message);
-    }
-
-    @Override
-    public void showErrorMsg(String message) {
-        hideProgressBar();
-        showMsg(message, getResources().getColor(R.color.error), getResources().getColor(R.color.error_background));
-        Log.e(TAG, message);
-    }
-
-    @Override
-    public <T> void showConsoleError(String tag, T arg) {
-        String msg = "";
-        if (arg instanceof Integer) {
-            msg = getResources().getString((Integer) arg);
-        }
-        else {
-            msg = (String)arg;
-        }
-        Log.e(tag, msg);
-    }
-
-    private void showMsg(String text, int color) {
-        showMsg(text, color, null);
-    }
-
-    private void showMsg(String text, int textColor, @Nullable Integer backgroundColor) {
-        TextView messageView = findViewById(R.id.messageView);
-
-        if (null == backgroundColor)
-            backgroundColor = getResources().getColor(R.color.background_default);
-
-        if (null != messageView) {
-            messageView.setText(text);
-            messageView.setTextColor(textColor);
-            messageView.setBackgroundColor(backgroundColor);
-            MyUtils.show(messageView);
-        } else {
-            Log.w(TAG, "messageView not found");
-        }
-    }
-
-    private void showStackTrace(StackTraceElement[] stackTraceElements) {
-        String traceText = MyUtils.stackTrace2String(stackTraceElements);
-        TextView stackTraceView = findViewById(R.id.stackTraceView);
-
-        stackTraceView.setText(traceText);
-        MyUtils.show(stackTraceView);
-    }
-
 
     @Override
     public void hideMsg() {
@@ -306,84 +224,17 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public void consoleMsg(String tag, String msg) {
-        Log.d(tag, msg);
-    }
-
-
-    // Всплывающие сообщения
-    @Override
-    public void showToast(int stringResourceId) {
-        String msg = getString(stringResourceId);
-        showToast(msg);
-    }
-
-    @Override public void showToast(int stringResourceId, int gravity) {
-        String msg = getString(stringResourceId);
-        showToastReal(this, msg, Toast.LENGTH_SHORT, gravity);
-    }
-
-    @Override public void showLongToast(int stringResourceId, int gravity) {
-        String msg = getString(stringResourceId);
-        showToastReal(this, msg, Toast.LENGTH_LONG, gravity);
+    public void showToast(int msgId) {
+        MyUtils.showCustomToast(getAppContext(), msgId);
     }
 
     @Override
-    public void showToast(String msg) {
-        showToastReal(this, msg, Toast.LENGTH_SHORT);
+    public void showToast(String message) {
+        MyUtils.showCustomToast(getAppContext(), message);
     }
-
-    @Override
-    public void showLongToast(int msgId) {
-        String msg = getResources().getString(msgId);
-        showLongToast(msg);
-    }
-
-    @Override
-    public void showLongToast(String msg) {
-        showToastReal(this, msg, Toast.LENGTH_LONG);
-    }
-
-    private void showToastReal(Context context, String message, int length) {
-        showToastReal(context, message, length, Gravity.NO_GRAVITY);
-    }
-
-    private void showToastReal(Context context, String message, int length, int gravity) {
-        Toast toast = Toast.makeText(context, message, length);
-        toast.setGravity(gravity, 0, 0);
-        toast.show();
-    }
-
-
-    // Строка прогресса
-    @Override
-    public void showProgressBar() {
-        View progressBar = findViewById(R.id.progressBar);
-        if (null != progressBar) {
-            MyUtils.show(progressBar);
-        } else {
-            Log.w(TAG, "progressBar not found");
-        }
-    }
-
-    @Override
-    public void hideProgressBar() {
-        View progressBar = findViewById(R.id.progressBar);
-        if (null != progressBar) {
-            MyUtils.hide(progressBar);
-        } else {
-            Log.w(TAG, "progressBar not found");
-        }
-    }
-
 
 
     // Разное
-    @Override
-    public Context getAppContext() {
-        return getApplicationContext();
-    }
-
     @Override
     public void requestLogin(Intent originalIntent) {
 
@@ -432,7 +283,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public void setPageTitle(int titleId) {
-        //Log.d(TAG, "setPageTitle("+titleId+")");
         String title = getResources().getString(titleId);
         setPageTitle(title);
     }
@@ -451,8 +301,35 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
 
     // Внутренние методы
+    private void showMsg(String text, int textColor, @Nullable Integer backgroundColor) {
+        TextView messageView = findViewById(R.id.messageView);
+
+        if (null == backgroundColor)
+            backgroundColor = getResources().getColor(R.color.background_default);
+
+        if (null != messageView) {
+            messageView.setText(text);
+            messageView.setTextColor(textColor);
+            messageView.setBackgroundColor(backgroundColor);
+            MyUtils.show(messageView);
+        } else {
+            Log.w(TAG, "messageView not found");
+        }
+    }
+
+    private void showProgressBar() {
+        View progressBar = findViewById(R.id.progressBar);
+        if (null != progressBar)
+            MyUtils.show(progressBar);
+    }
+
+    private void hideProgressBar() {
+        View progressBar = findViewById(R.id.progressBar);
+        if (null != progressBar)
+            MyUtils.hide(progressBar);
+    }
+
     private void setPageTitle(String title) {
-        //Log.d(TAG, "setPageTitle("+title+")");
         ActionBar actionBar = getSupportActionBar();
         if (null != actionBar) {
             actionBar.setTitle(title);
@@ -479,29 +356,31 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void seeUserProfile() {
-        try {
+        MyUtils.showCustomToast(getAppContext(), R.string.not_implemented_yet);
+        /*try {
             Intent intent = new Intent(this, UserShow_View.class);
             intent.putExtra(Constants.USER_ID, AuthSingleton.currentUserId());
             startActivity(intent);
         } catch (Exception e) {
             showErrorMsg(e.getMessage());
             e.printStackTrace();
-        }
+        }*/
     }
 
     private void onCardEdited(int resultCode, @Nullable Intent data) {
-        switch (resultCode) {
-            case RESULT_OK:
-                showToast(R.string.INFO_card_saved);
-                break;
-            case RESULT_CANCELED:
-                showToast(R.string.INFO_operation_cancelled);
-                break;
-            default:
-                showErrorMsg(R.string.ERROR_saving_card);
-                Log.e(TAG, "data: "+data);
-                break;
-        }
+        MyUtils.showCustomToast(getAppContext(), R.string.not_implemented_yet);
+//        switch (resultCode) {
+//            case RESULT_OK:
+//                showToast(R.string.INFO_card_saved);
+//                break;
+//            case RESULT_CANCELED:
+//                showToast(R.string.INFO_operation_cancelled);
+//                break;
+//            default:
+//                showErrorMsg(R.string.ERROR_saving_card);
+//                Log.e(TAG, "data: "+data);
+//                break;
+//        }
     }
 
     private void goCardsList() {

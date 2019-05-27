@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -145,9 +146,8 @@ public class Login_View extends BaseView implements iLogin.View
         String email = emailInput.getText().toString();
         String password = passwordInput.getText().toString();
 
-        showProgressBar();
         disableForm();
-        showInfoMsg(R.string.LOGIN_logging_in);
+        showProgressMessage(R.string.LOGIN_logging_in);
 
         presenter.doLogin(email, password);
     }
@@ -169,13 +169,13 @@ public class Login_View extends BaseView implements iLogin.View
     private void afterResetPasswordRequest(int resultCode, Intent data) {
         switch (resultCode) {
             case RESULT_OK:
-                showInfoMsg(R.string.LOGIN_password_recovery_email_sent);
+                showToast(R.string.LOGIN_password_recovery_email_sent);
                 break;
             case RESULT_CANCELED:
                 hideMsg();
                 break;
             default:
-                consoleMsg(TAG,"Unknown result code: "+resultCode);
+                Log.e(TAG,"Unknown result code: "+resultCode);
                 break;
         }
     }

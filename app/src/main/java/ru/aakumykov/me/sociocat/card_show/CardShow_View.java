@@ -164,8 +164,7 @@ public class CardShow_View extends BaseView implements
         }
         catch (Exception e) {
             cardPresenter.onErrorOccurs();
-
-            showErrorMsg(R.string.CARD_SHOW_error_loading_card, e);
+            showErrorMsg(R.string.CARD_SHOW_error_loading_card, e.getMessage());
             e.printStackTrace();
         }
     }

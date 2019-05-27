@@ -10,7 +10,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
-import ru.aakumykov.me.sociocat.old_card_show.OldCardShow_View;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardTypeChooser extends BaseView {
@@ -94,7 +94,7 @@ public class CardTypeChooser extends BaseView {
                 } else {
                     Card card = data.getParcelableExtra(Constants.CARD);
                     if (null != card) {
-                        Intent intent = new Intent(this, OldCardShow_View.class);
+                        Intent intent = new Intent(this, CardShow_View.class);
                         intent.putExtra(Constants.CARD_KEY, card.getKey());
                         startActivity(intent);
                     } else {
@@ -104,11 +104,11 @@ public class CardTypeChooser extends BaseView {
                 break;
 
             case RESULT_CANCELED:
-                showInfoMsg(R.string.CARD_TYPE_CHOOSER_card_creation_cancelled);
+                showToast(R.string.CARD_TYPE_CHOOSER_card_creation_cancelled);
                 return;
 
             default:
-                showErrorMsg(R.string.unknown_rsult_code);
+                showErrorMsg(R.string.unknown_rsult_code, "Unknown result code: "+resultCode);
         }
     }
 }

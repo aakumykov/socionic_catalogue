@@ -51,7 +51,7 @@ public class Login_Presenter implements
             this.originalIntent = intent;
 
             if (Constants.ACTION_TRY_NEW_PASSWORD.equals(action)) {
-                view.showInfoMsg(R.string.LOGIN_try_new_password);
+                view.showToast(R.string.LOGIN_try_new_password);
             }
         }
     }
@@ -117,7 +117,7 @@ public class Login_Presenter implements
     }
 
     private void showLoginError(String msg) {
-        view.hideProgressBar();
+        view.hideProgressMessage();
         view.enableForm();
         view.showErrorMsg(R.string.LOGIN_login_error, msg);
     }
