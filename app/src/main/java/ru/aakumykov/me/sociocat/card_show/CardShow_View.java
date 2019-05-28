@@ -80,18 +80,23 @@ public class CardShow_View extends BaseView implements
     @Override protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        bindComponents();
 
+        switch (requestCode) {
+            case Constants.CODE_ADD_COMMENT:
+                if (RESULT_OK == resultCode)
+                    cardPresenter.onReplyClicked();
+                break;
+            default:
+                showErrorMsg(R.string.CARD_SHOW_data_error, "onActivityResult(), unknown request code: "+requestCode);
+                break;
+        }
     }
 
     @Override protected void onStart() {
         super.onStart();
 
-        cardPresenter.bindPageView(this);
-        cardPresenter.bindListAdapter((iCardView) listAdapter);
-        commentsPresenter.bindListAdapter((iCommentsView) listAdapter);
-
-        listAdapter.bindPresenters(cardPresenter, commentsPresenter);
-        listAdapter.bindView(this);
+        bindComponents();
 
         if (firstRun) {
             firstRun = false;
@@ -103,13 +108,7 @@ public class CardShow_View extends BaseView implements
 
     @Override protected void onStop() {
         super.onStop();
-
-        cardPresenter.unbindPageView();
-        cardPresenter.unbindListAdapter();
-        commentsPresenter.unbindListAdapter();
-
-        listAdapter.unbindPresenters();
-        listAdapter.unbindView();
+        unbindComponents();
     }
 
     @Override public void onBackPressed() {
@@ -161,6 +160,24 @@ public class CardShow_View extends BaseView implements
 
 
     // Внутренние методы
+    private void bindComponents() {
+        cardPresenter.bindPageView(this);
+        cardPresenter.bindListAdapter((iCardView) listAdapter);
+        commentsPresenter.bindListAdapter((iCommentsView) listAdapter);
+
+        listAdapter.bindPresenters(cardPresenter, commentsPresenter);
+        listAdapter.bindView(this);
+    }
+
+    private void unbindComponents() {
+        cardPresenter.unbindPageView();
+        cardPresenter.unbindListAdapter();
+        commentsPresenter.unbindListAdapter();
+
+        listAdapter.unbindPresenters();
+        listAdapter.unbindView();
+    }
+
     private void processInputIntent() {
         Intent intent = getIntent();
 

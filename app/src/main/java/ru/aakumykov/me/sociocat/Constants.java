@@ -58,12 +58,13 @@ public final class Constants {
 
     // Разные коды
     public final static int CODE_LOGIN = 5;
+    public final static int CODE_LOGIN_REQUEST = 6;
     public final static int CODE_CREATE_CARD = 15;
     public final static int CODE_EDIT_CARD = 20;
     public final static int CODE_SELECT_IMAGE = 25;
     public final static int CODE_USER_EDIT = 30;
     public final static int CODE_FORCE_SETUP_USER_NAME = 40;
-    public final static int CODE_LOGIN_FOR_COMMENT = 50;
+    public final static int CODE_ADD_COMMENT = 50;
     public final static int CODE_RESET_PASSWORD = 60;
     public final static int CODE_SHOW_CARD = 70;
 

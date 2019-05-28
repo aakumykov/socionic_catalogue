@@ -53,13 +53,17 @@ public class Login_Presenter implements
         this.intentAction = action;
         this.originalIntent = intent;
 
-        switch (action) {
+        if (Constants.ACTION_TRY_NEW_PASSWORD.equals(action)) {
+            view.showToast(R.string.LOGIN_try_new_password);
+        }
+
+        /*switch (action) {
             case Constants.ACTION_TRY_NEW_PASSWORD:
                 view.showToast(R.string.LOGIN_try_new_password);
                 break;
             default:
                 view.showErrorMsg(R.string.LOGIN_data_error, "Unknown action: "+action);
-        }
+        }*/
     }
 
     @Override
@@ -114,10 +118,10 @@ public class Login_Presenter implements
             return;
         }
 
-        if (intentAction.equals(Constants.ACTION_LOGIN_REQUEST)) {
+        /*if (intentAction.equals(Constants.ACTION_LOGIN_REQUEST)) {
             view.proceedLoginRequest(originalIntent);
             return;
-        }
+        }*/
 
         view.finishLogin(false);
     }

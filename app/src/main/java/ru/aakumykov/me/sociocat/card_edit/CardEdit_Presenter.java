@@ -76,7 +76,7 @@ public class CardEdit_Presenter implements
             throw new IllegalArgumentException("Intent is NULL");
 
         if (!AuthSingleton.isLoggedIn())
-            view.requestLogin(intent);
+            view.requestLogin(Constants.CODE_EDIT_CARD, intent);
 
         String action = "" + intent.getAction();
 

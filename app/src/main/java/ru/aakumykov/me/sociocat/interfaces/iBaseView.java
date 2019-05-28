@@ -33,12 +33,14 @@ public interface iBaseView {
     void clearSharedPrefs(SharedPreferences sharedPreferences, String dataName);
 
 
+    // Разное
+    void requestLogin(int requestCode, Intent originalIntent);
+
     // Разное (УБРАТЬ!)
     void proceedLoginRequest(Intent intent);
     void goCreateCard();
     void closePage();
 
     String getString(int stringResourceId);
-    void requestLogin(Intent originalIntent);
     void startSomeActivity(Intent intent);
 }

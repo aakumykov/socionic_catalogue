@@ -10,7 +10,6 @@ import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
-import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -85,7 +84,7 @@ public class CardPresenter implements iCardPresenter {
         else {
             Intent intent = new Intent(pageView.getAppContext(), CardShow_View.class);
             intent.setAction(Constants.ACTION_ADD_COMMENT);
-            pageView.requestLogin(intent);
+            pageView.requestLogin(Constants.CODE_ADD_COMMENT, intent);
         }
     }
 }

@@ -88,7 +88,7 @@ public class CardShow_View_Stub implements iCardShow_View {
         return null;
     }
 
-    @Override public void requestLogin(Intent originalIntent) {
+    @Override public void requestLogin(int requestCode, Intent originalIntent) {
 
     }
 

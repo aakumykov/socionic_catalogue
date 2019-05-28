@@ -236,14 +236,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     // Разное
     @Override
-    public void requestLogin(Intent originalIntent) {
-
+    public void requestLogin(int requestCode, Intent originalIntent) {
         Intent targetIntent = new Intent(this, Login_View.class);
         targetIntent.setAction(Constants.ACTION_LOGIN_REQUEST);
         targetIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         targetIntent.putExtra(Intent.EXTRA_INTENT, originalIntent);
 
-        startActivityForResult(targetIntent, Constants.CODE_LOGIN);
+        startActivityForResult(targetIntent, requestCode);
     }
 
     @Override
