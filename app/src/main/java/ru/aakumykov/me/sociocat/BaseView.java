@@ -250,12 +250,6 @@ public abstract class BaseView extends AppCompatActivity implements
     }
 
     @Override
-    public void proceedLoginRequest(Intent intent) {
-        Intent originalIntent = (Intent) intent.getParcelableExtra(Intent.EXTRA_INTENT);
-        startActivity(originalIntent);
-    }
-
-    @Override
     public void startSomeActivity(Intent intent) {
         startActivity(intent);
     }

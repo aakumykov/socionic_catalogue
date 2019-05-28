@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.card_show.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -148,6 +149,11 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
     // iCardView
+
+    @Override public Context getPageContext() {
+        return null;
+    }
+
     @Override
     public void displayCard(Card card) {
         int cardPosition = 0;

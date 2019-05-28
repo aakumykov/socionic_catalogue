@@ -12,6 +12,7 @@ public interface iLogin {
         void enableForm();
         void finishLogin(boolean byCancel);
         void notifyToConfirmEmail(String userId);
+        void proceedLoginRequest(Intent intent);
     }
 
     interface Presenter {

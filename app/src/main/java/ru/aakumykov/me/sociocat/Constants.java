@@ -25,6 +25,8 @@ public final class Constants {
     public final static String ACTION_REGISTRATION_CONFIRM_RESPONSE = "ACTION_REGISTRATION_CONFIRM_RESPONSE";
     public final static String ACTION_TRY_NEW_PASSWORD = "ACTION_TRY_NEW_PASSWORD";
 
+    public final static String EXTRA_REQUESTED_ACTION = "EXTRA_REQUESTED_ACTION";
+
     public final static String CARD = "CARD";
     public final static String CARD_DRAFT = "CARD_DRAFT";
     public final static String CARD_KEY = "CARD_KEY";
