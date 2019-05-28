@@ -34,6 +34,7 @@ import ru.aakumykov.me.sociocat.models.Comment;
 
 
 public class CardShow_View extends BaseView implements
+        iPageView,
         iCardShow_View
 {
     public interface LoadCommentsCallbacks {
@@ -76,11 +77,17 @@ public class CardShow_View extends BaseView implements
         setPageTitle(R.string.CARD_SHOW_page_title_short);
     }
 
+    @Override protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+    }
+
     @Override protected void onStart() {
         super.onStart();
 
+        cardPresenter.bindPageView(this);
         cardPresenter.bindListAdapter((iCardView) listAdapter);
-
         commentsPresenter.bindListAdapter((iCommentsView) listAdapter);
 
         listAdapter.bindPresenters(cardPresenter, commentsPresenter);
@@ -97,6 +104,7 @@ public class CardShow_View extends BaseView implements
     @Override protected void onStop() {
         super.onStop();
 
+        cardPresenter.unbindPageView();
         cardPresenter.unbindListAdapter();
         commentsPresenter.unbindListAdapter();
 

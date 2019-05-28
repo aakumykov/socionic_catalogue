@@ -1,10 +1,17 @@
 package ru.aakumykov.me.sociocat.card_show.presenters;
 
+import android.content.Intent;
+
 import androidx.annotation.Nullable;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
+import ru.aakumykov.me.sociocat.card_show.iPageView;
+import ru.aakumykov.me.sociocat.login.Login_View;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
@@ -12,6 +19,7 @@ import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 public class CardPresenter implements iCardPresenter {
 
     private iCardView cardView;
+    private iPageView pageView;
     private iCommentsPresenter commentsPresenter;
     private CardsSingleton cardSingleton = CardsSingleton.getInstance();
     private Card currentCard;
@@ -21,6 +29,14 @@ public class CardPresenter implements iCardPresenter {
         this.commentsPresenter = commentsPresenter;
     }
 
+
+    @Override public void bindPageView(iPageView pageView) {
+        this.pageView = pageView;
+    }
+
+    @Override public void unbindPageView() {
+        this.pageView = null;
+    }
 
     @Override
     public void bindListAdapter(iCardView listAdapter) {
@@ -64,6 +80,12 @@ public class CardPresenter implements iCardPresenter {
 
     @Override
     public void onReplyClicked() {
-        cardView.showCommentForm(currentCard);
+        if (AuthSingleton.isLoggedIn())
+            cardView.showCommentForm(currentCard);
+        else {
+            Intent intent = new Intent(pageView.getAppContext(), CardShow_View.class);
+            intent.setAction(Constants.ACTION_ADD_COMMENT);
+            pageView.requestLogin(intent);
+        }
     }
 }

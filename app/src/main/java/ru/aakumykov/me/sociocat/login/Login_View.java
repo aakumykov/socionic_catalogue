@@ -135,7 +135,8 @@ public class Login_View extends BaseView implements iLogin.View
         finish();
     }
 
-    @Override public void notifyToConfirmEmail(String userId) {
+    @Override
+    public void notifyToConfirmEmail(String userId) {
 
     }
 
