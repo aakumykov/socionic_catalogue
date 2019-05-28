@@ -44,15 +44,21 @@ public class Login_Presenter implements
     @Override
     public void processInputIntent(@Nullable Intent intent) {
 
-        if (null != intent) {
+        if (null == intent) {
+            view.showErrorMsg(R.string.LOGIN_data_error, "Intent is NULL");
+            return;
+        }
 
-            String action = intent.getAction() + "";
-            this.intentAction = action;
-            this.originalIntent = intent;
+        String action = intent.getAction();
+        this.intentAction = action;
+        this.originalIntent = intent;
 
-            if (Constants.ACTION_TRY_NEW_PASSWORD.equals(action)) {
+        switch (action) {
+            case Constants.ACTION_TRY_NEW_PASSWORD:
                 view.showToast(R.string.LOGIN_try_new_password);
-            }
+                break;
+            default:
+                view.showErrorMsg(R.string.LOGIN_data_error, "Unknown action: "+action);
         }
     }
 
