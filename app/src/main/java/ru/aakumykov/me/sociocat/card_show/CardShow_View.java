@@ -83,10 +83,14 @@ public class CardShow_View extends BaseView implements
         bindComponents();
 
         switch (requestCode) {
-            case Constants.CODE_ADD_COMMENT:
-                if (RESULT_OK == resultCode)
-                    cardPresenter.onReplyClicked();
+            case Constants.CODE_REPLY_TO_CARD:
+                processReplyToCard(resultCode);
                 break;
+
+            case Constants.CODE_REPLY_TO_COMMENT:
+                processReplyToComment(resultCode, data);
+                break;
+
             default:
                 showErrorMsg(R.string.CARD_SHOW_data_error, "onActivityResult(), unknown request code: "+requestCode);
                 break;
@@ -163,7 +167,9 @@ public class CardShow_View extends BaseView implements
     private void bindComponents() {
         cardPresenter.bindPageView(this);
         cardPresenter.bindListAdapter((iCardView) listAdapter);
-        commentsPresenter.bindListAdapter((iCommentsView) listAdapter);
+
+        commentsPresenter.bindPageView(this);
+        commentsPresenter.bindCommentsView((iCommentsView) listAdapter);
 
         listAdapter.bindPresenters(cardPresenter, commentsPresenter);
         listAdapter.bindView(this);
@@ -172,7 +178,9 @@ public class CardShow_View extends BaseView implements
     private void unbindComponents() {
         cardPresenter.unbindPageView();
         cardPresenter.unbindListAdapter();
-        commentsPresenter.unbindListAdapter();
+
+        commentsPresenter.unbindPageView();
+        commentsPresenter.unbindCommentsView();
 
         listAdapter.unbindPresenters();
         listAdapter.unbindView();
@@ -194,4 +202,28 @@ public class CardShow_View extends BaseView implements
         }
     }
 
+    private void processReplyToCard(int resultCode) {
+        if (RESULT_OK != resultCode) {
+            showToast(R.string.CARD_SHOW_login_required);
+            return;
+        }
+
+        cardPresenter.onReplyClicked();
+    }
+
+    private void processReplyToComment(int resultCode, @Nullable Intent data) {
+        if (RESULT_OK != resultCode) {
+            showToast(R.string.CARD_SHOW_login_required);
+            return;
+        }
+
+        if (null == data) {
+            showErrorMsg(R.string.CARD_SHOW_data_error, "Intent from onActivityResult() is NULL");
+            return;
+        }
+
+        String commentKey = data.getStringExtra(Constants.COMMENT_KEY);
+        // TODO: проверить с NULL
+        commentsPresenter.onReplyToCommentClicked(commentKey);
+    }
 }

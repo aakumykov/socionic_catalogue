@@ -83,8 +83,8 @@ public class CardPresenter implements iCardPresenter {
             cardView.showCommentForm(currentCard);
         else {
             Intent intent = new Intent(pageView.getAppContext(), CardShow_View.class);
-            intent.setAction(Constants.ACTION_ADD_COMMENT);
-            pageView.requestLogin(Constants.CODE_ADD_COMMENT, intent);
+            intent.setAction(Constants.ACTION_REPLY_TO_CARD);
+            pageView.requestLogin(Constants.CODE_REPLY_TO_CARD, intent);
         }
     }
 }

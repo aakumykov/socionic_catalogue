@@ -419,4 +419,5 @@
     <string name="CARDS_GRID_error_loading_cards">Error loading cards</string>
     <string name="CARD_EDIT_loading_card">Loading card</string>
     <string name="LOGIN_data_error">Data error</string>
+    <string name="CARD_SHOW_login_required">Login required</string>
 </resources>

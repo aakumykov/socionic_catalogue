@@ -427,4 +427,5 @@
     <string name="CARDS_GRID_error_loading_cards">Ошибка загрузки карточек</string>
     <string name="CARD_EDIT_loading_card">Получение данных карточки</string>
     <string name="LOGIN_data_error">Ошибка данных</string>
+    <string name="CARD_SHOW_login_required">Необходимо войти</string>
 </resources>

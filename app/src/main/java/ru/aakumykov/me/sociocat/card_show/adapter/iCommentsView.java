@@ -24,6 +24,8 @@ public interface iCommentsView {
 
     void attachComment(Comment comment, @Nullable AttachCommentCallbacks callbacks);
 
+    Comment getComment(String commentKey);
+
     void scrollToComment(String commentKey);
 
     void showCommentForm(ListItem repliedItem);

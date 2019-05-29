@@ -36,6 +36,10 @@ public class CommentsView_Stub implements iCommentsView {
 
     }
 
+    @Override public Comment getComment(String commentKey) {
+        return null;
+    }
+
     @Override public void scrollToComment(String commentKey) {
 
     }

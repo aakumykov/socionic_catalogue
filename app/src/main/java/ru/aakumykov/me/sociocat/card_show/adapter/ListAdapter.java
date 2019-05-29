@@ -244,8 +244,20 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
+    public Comment getComment(String commentKey) {
+        for (ListItem listItem : list) {
+            if (listItem.isCommentItem()) {
+                Comment comment = (Comment) listItem;
+                if (commentKey.equals(comment.getKey()))
+                    return comment;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public void scrollToComment(String commentKey) {
-        Comment comment = getCommentByKey(commentKey);
+        Comment comment = getComment(commentKey);
         if (null != comment)
             view.scrollListToPosition(list.indexOf(comment));
     }
@@ -282,14 +294,4 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
     }
 
-    private Comment getCommentByKey(String commentKey) {
-        for (ListItem listItem : list) {
-            if (listItem.isCommentItem()) {
-                Comment comment = (Comment) listItem;
-                if (commentKey.equals(comment.getKey()))
-                    return comment;
-            }
-        }
-        return null;
-    }
 }

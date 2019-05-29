@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import androidx.annotation.Nullable;
+
 import com.google.firebase.database.Exclude;
 
 public interface iBaseView {
@@ -34,7 +36,7 @@ public interface iBaseView {
 
 
     // Разное
-    void requestLogin(int requestCode, Intent originalIntent);
+    void requestLogin(int requestCode, @Nullable Intent originalIntent);
 
     // Разное (УБРАТЬ!)
     void proceedLoginRequest(Intent intent);

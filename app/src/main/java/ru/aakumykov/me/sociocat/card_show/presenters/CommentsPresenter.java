@@ -1,33 +1,49 @@
 package ru.aakumykov.me.sociocat.card_show.presenters;
 
+import android.content.Intent;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.card_show.adapter.CommentsView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
+import ru.aakumykov.me.sociocat.card_show.iPageView;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
-import ru.aakumykov.me.sociocat.card_show.view_holders.Comment_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 
 public class CommentsPresenter implements iCommentsPresenter{
 
     private iCommentsView commentsView;
+    private iPageView pageView;
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
 
+
     @Override
-    public void bindListAdapter(iCommentsView listAdapter) {
-        this.commentsView = listAdapter;
+    public void bindPageView(iPageView pageView) {
+        this.pageView = pageView;
     }
 
     @Override
-    public void unbindListAdapter() {
+    public void unbindPageView() {
+        this.pageView = null;
+    }
+
+    @Override
+    public void bindCommentsView(iCommentsView commentsView) {
+        this.commentsView = commentsView;
+    }
+
+    @Override
+    public void unbindCommentsView() {
         this.commentsView = new CommentsView_Stub();
     }
 
@@ -55,10 +71,21 @@ public class CommentsPresenter implements iCommentsPresenter{
     }
 
     @Override
-    public void onReplyToCommentClicked(Comment_ViewHolder commentViewHolder, Comment comment) {
-        commentsView.showCommentForm(comment);
+    public void onReplyToCommentClicked(String commentKey) {
+        if (AuthSingleton.isLoggedIn()) {
+            Comment comment = commentsView.getComment(commentKey);
+            commentsView.showCommentForm(comment);
+        }
+        else {
+            Intent intent = new Intent(pageView.getAppContext(), CardShow_View.class);
+            intent.setAction(Constants.ACTION_REPLY_TO_COMMENT);
+            intent.putExtra(Constants.COMMENT_KEY, commentKey);
+
+            pageView.requestLogin(Constants.CODE_REPLY_TO_COMMENT, null);
+        }
     }
 
+    // TODO: почему это делает CommentsPresenter?
     @Override
     public void onSendCommentClicked(String commentText, ListItem repliedItem, ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm commentForm) {
 
