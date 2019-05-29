@@ -242,7 +242,12 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                targetIntent.setAction(Constants.ACTION_LOGIN_REQUEST);
                targetIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
-               targetIntent.putExtra(Intent.EXTRA_INTENT, arguments);
+               //targetIntent.putExtra(Intent.EXTRA_INTENT, arguments);
+               targetIntent.putExtra(Constants.EXTRA_ARGUMENTS, arguments);
+
+       Intent argumentsIntent = new Intent();
+       argumentsIntent.putExtra(Constants.COMMENT_KEY, "the-comment-key");
+       targetIntent.putExtra(Intent.EXTRA_INTENT, argumentsIntent);
 
         startActivityForResult(targetIntent, requestCode);
     }
