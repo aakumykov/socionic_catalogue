@@ -52,7 +52,7 @@ public class Login_Presenter implements
 
         String action = intent.getAction();
         this.intentAction = action;
-        this.arguments = intent.getBundleExtra(Constants.EXTRA_ARGUMENTS);
+        this.arguments = intent.getBundleExtra(Intent.EXTRA_INTENT);
 
         if (Constants.ACTION_TRY_NEW_PASSWORD.equals(action)) {
             view.showToast(R.string.LOGIN_try_new_password);

@@ -78,11 +78,8 @@ public class CommentsPresenter implements iCommentsPresenter{
             commentsView.showCommentForm(comment);
         }
         else {
-            //Intent intent = new Intent(pageView.getAppContext(), CardShow_View.class);
-            //intent.setAction(Constants.ACTION_REPLY_TO_COMMENT);
-
             Bundle arguments = new Bundle();
-            arguments.putString(Constants.COMMENT_KEY, commentKey);
+                   arguments.putString(Constants.COMMENT_KEY, commentKey);
 
             pageView.requestLogin(Constants.CODE_REPLY_TO_COMMENT, arguments);
         }
