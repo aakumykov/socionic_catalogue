@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show.presenters;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
@@ -77,11 +78,13 @@ public class CommentsPresenter implements iCommentsPresenter{
             commentsView.showCommentForm(comment);
         }
         else {
-            Intent intent = new Intent(pageView.getAppContext(), CardShow_View.class);
-            intent.setAction(Constants.ACTION_REPLY_TO_COMMENT);
-            intent.putExtra(Constants.COMMENT_KEY, commentKey);
+            //Intent intent = new Intent(pageView.getAppContext(), CardShow_View.class);
+            //intent.setAction(Constants.ACTION_REPLY_TO_COMMENT);
 
-            pageView.requestLogin(Constants.CODE_REPLY_TO_COMMENT, null);
+            Bundle arguments = new Bundle();
+            arguments.putString(Constants.COMMENT_KEY, commentKey);
+
+            pageView.requestLogin(Constants.CODE_REPLY_TO_COMMENT, arguments);
         }
     }
 

@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.login;
 
 import android.content.Intent;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +24,7 @@ public class Login_Presenter implements
     private iLogin.View view;
 
     private String intentAction;
-    private Intent originalIntent;
+    private Bundle arguments;
 
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -51,19 +52,11 @@ public class Login_Presenter implements
 
         String action = intent.getAction();
         this.intentAction = action;
-        this.originalIntent = intent;
+        this.arguments = intent.getBundleExtra(Constants.EXTRA_ARGUMENTS);
 
         if (Constants.ACTION_TRY_NEW_PASSWORD.equals(action)) {
             view.showToast(R.string.LOGIN_try_new_password);
         }
-
-        /*switch (action) {
-            case Constants.ACTION_TRY_NEW_PASSWORD:
-                view.showToast(R.string.LOGIN_try_new_password);
-                break;
-            default:
-                view.showErrorMsg(R.string.LOGIN_data_error, "Unknown action: "+action);
-        }*/
     }
 
     @Override
@@ -101,7 +94,7 @@ public class Login_Presenter implements
     @Override
     public void cancelLogin() {
         firebaseAuth.signOut();
-        view.finishLogin(true);
+        view.finishLogin(true, arguments);
     }
 
 
@@ -123,7 +116,7 @@ public class Login_Presenter implements
             return;
         }*/
 
-        view.finishLogin(false);
+        view.finishLogin(false, arguments);
     }
 
     private void showLoginError(String msg) {

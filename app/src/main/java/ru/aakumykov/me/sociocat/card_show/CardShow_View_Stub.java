@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.card_show;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
@@ -72,6 +73,11 @@ public class CardShow_View_Stub implements iCardShow_View {
 
     }
 
+    @Override
+    public void requestLogin(int requestCode, @Nullable Bundle arguments) {
+
+    }
+
     @Override public void proceedLoginRequest(Intent intent) {
 
     }
@@ -88,9 +94,6 @@ public class CardShow_View_Stub implements iCardShow_View {
         return null;
     }
 
-    @Override public void requestLogin(int requestCode, Intent originalIntent) {
-
-    }
 
     @Override public void startSomeActivity(Intent intent) {
 

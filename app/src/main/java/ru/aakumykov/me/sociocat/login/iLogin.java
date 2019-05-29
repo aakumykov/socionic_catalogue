@@ -1,6 +1,8 @@
 package ru.aakumykov.me.sociocat.login;
 
 import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
@@ -10,7 +12,7 @@ public interface iLogin {
     interface View extends iBaseView {
         void disableForm();
         void enableForm();
-        void finishLogin(boolean byCancel);
+        void finishLogin(boolean byCancel, @Nullable Bundle arguments);
         void notifyToConfirmEmail(String userId);
     }
 

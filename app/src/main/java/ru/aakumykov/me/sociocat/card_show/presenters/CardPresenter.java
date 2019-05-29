@@ -82,9 +82,7 @@ public class CardPresenter implements iCardPresenter {
         if (AuthSingleton.isLoggedIn())
             cardView.showCommentForm(currentCard);
         else {
-            Intent intent = new Intent(pageView.getAppContext(), CardShow_View.class);
-            intent.setAction(Constants.ACTION_REPLY_TO_CARD);
-            pageView.requestLogin(Constants.CODE_REPLY_TO_CARD, intent);
+            pageView.requestLogin(Constants.CODE_REPLY_TO_CARD, null);
         }
     }
 }

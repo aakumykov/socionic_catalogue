@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.interfaces;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
@@ -34,9 +35,8 @@ public interface iBaseView {
     SharedPreferences getSharedPrefs(String prefsName);
     void clearSharedPrefs(SharedPreferences sharedPreferences, String dataName);
 
-
     // Разное
-    void requestLogin(int requestCode, @Nullable Intent originalIntent);
+    void requestLogin(int requestCode, @Nullable Bundle arguments);
 
     // Разное (УБРАТЬ!)
     void proceedLoginRequest(Intent intent);
