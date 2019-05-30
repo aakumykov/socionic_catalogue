@@ -61,5 +61,8 @@
     <color name="defaultTextColor">#3C3C3C</color>
     <color name="quoteTextColor">#303F9F</color>
 
+    <!-- Всплывающие сообщения -->
+    <color name="toastBorder">#E2E2E2</color>
+
 
 </resources>
