@@ -83,16 +83,6 @@ public class CardShow_View extends BaseView implements
         bindComponents();
 
         switch (requestCode) {
-            case 10:
-                if (null != data) {
-                    Bundle bundle = data.getBundleExtra("bundle");
-                    if (null != bundle) {
-                        String text = bundle.getString("text");
-                        showToast(text);
-                    }
-                }
-                break;
-
             case Constants.CODE_REPLY_TO_CARD:
                 processReplyToCard(resultCode);
                 break;
@@ -232,8 +222,10 @@ public class CardShow_View extends BaseView implements
             return;
         }
 
-        String commentKey = data.getStringExtra(Constants.COMMENT_KEY);
-        // TODO: проверить с NULL
-        commentsPresenter.onReplyToCommentClicked(commentKey);
+        Bundle transitArguments = data.getBundleExtra(Constants.TRANSIT_ARGUMENTS);
+        if (null != transitArguments) {
+            String commentKey = transitArguments.getString(Constants.COMMENT_KEY);
+            commentsPresenter.onReplyToCommentClicked(commentKey);
+        }
     }
 }

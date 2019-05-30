@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.CommentsView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
@@ -87,9 +88,9 @@ public class CommentsPresenter implements iCommentsPresenter{
             Comment comment = commentsView.getComment(commentKey);
             commentsView.showCommentForm(comment);
         } else {
-            Bundle bundle = new Bundle();
-                    bundle.putString("text", "Какой-то текст");
-            pageView.requestLogin2(10, bundle);
+            Bundle transitAgruments = new Bundle();
+                    transitAgruments.putString(Constants.COMMENT_KEY, commentKey);
+            pageView.requestLogin2(Constants.CODE_REPLY_TO_COMMENT, transitAgruments);
         }
     }
 

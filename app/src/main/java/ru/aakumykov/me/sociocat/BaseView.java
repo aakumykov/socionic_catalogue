@@ -240,7 +240,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                targetIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
                //targetIntent.putExtra(Intent.EXTRA_INTENT, arguments);
-               targetIntent.putExtra(Constants.EXTRA_ARGUMENTS, arguments);
+               targetIntent.putExtra(Constants.TRANSIT_ARGUMENTS, arguments);
 
        Intent argumentsIntent = new Intent();
        argumentsIntent.putExtra(Constants.COMMENT_KEY, "the-comment-key");
@@ -249,9 +249,9 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         startActivityForResult(targetIntent, requestCode);
     }
 
-    @Override public void requestLogin2(int requestCode, Bundle bundle) {
+    @Override public void requestLogin2(int requestCode, Bundle transitArguments) {
         Intent intent = new Intent(this, Login_View.class);
-        intent.putExtra("bundle", bundle);
+        intent.putExtra(Constants.TRANSIT_ARGUMENTS, transitArguments);
         startActivityForResult(intent, requestCode);
     }
 

@@ -32,7 +32,7 @@ public final class Constants {
     public final static String CARD_KEY = "CARD_KEY";
     public final static String COMMENT_KEY = "COMMENT_KEY";
 
-    public final static String EXTRA_ARGUMENTS = "EXTRA_ARGUMENTS";
+    public final static String TRANSIT_ARGUMENTS = "TRANSIT_ARGUMENTS";
 
     public final static String TAG_FILTER = "TAG_FILTER";
     public final static String TAG_KEY = "TAG_KEY";
