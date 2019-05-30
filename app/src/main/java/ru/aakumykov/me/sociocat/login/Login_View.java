@@ -131,11 +131,14 @@ public class Login_View extends BaseView implements iLogin.View
     }
 
     @Override
-    public void finishLogin(boolean byCancel, @Nullable Bundle arguments) {
+//    public void finishLogin(boolean byCancel, @Nullable Bundle arguments) {
+    public void finishLogin(boolean byCancel, @Nullable Bundle bundle) {
         int resultCode = (byCancel) ? RESULT_CANCELED : RESULT_OK;
 
         Intent resultsIntent = new Intent();
-               resultsIntent.putExtra(Constants.EXTRA_ARGUMENTS, arguments);
+//               resultsIntent.putExtra(Constants.EXTRA_ARGUMENTS, arguments);
+        if (null != bundle)
+            resultsIntent.putExtra("bundle", bundle);
 
         setResult(resultCode, resultsIntent);
 

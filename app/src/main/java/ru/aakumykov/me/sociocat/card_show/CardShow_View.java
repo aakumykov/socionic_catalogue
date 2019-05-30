@@ -84,6 +84,13 @@ public class CardShow_View extends BaseView implements
 
         switch (requestCode) {
             case 10:
+                if (null != data) {
+                    Bundle bundle = data.getBundleExtra("bundle");
+                    if (null != bundle) {
+                        String text = bundle.getString("text");
+                        showToast(text);
+                    }
+                }
                 break;
 
             case Constants.CODE_REPLY_TO_CARD:
