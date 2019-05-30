@@ -78,10 +78,6 @@ public class CardShow_View_Stub implements iCardShow_View {
 
     }
 
-    @Override public void requestLogin(int requestCode, Bundle bundle) {
-
-    }
-
     @Override public void proceedLoginRequest(Intent intent) {
 
     }
