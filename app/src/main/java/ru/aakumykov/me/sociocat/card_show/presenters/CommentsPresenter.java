@@ -71,17 +71,28 @@ public class CommentsPresenter implements iCommentsPresenter{
         });
     }
 
-    @Override
-    public void onReplyToCommentClicked(String commentKey) {
+//    @Override
+//    public void onReplyToCommentClicked(String commentKey) {
+//        if (AuthSingleton.isLoggedIn()) {
+//            Comment comment = commentsView.getComment(commentKey);
+//            commentsView.showCommentForm(comment);
+//        }
+//        else {
+//            Bundle arguments = new Bundle();
+//                   arguments.putString(Constants.COMMENT_KEY, commentKey);
+//
+//            pageView.requestLogin(Constants.CODE_REPLY_TO_COMMENT, arguments);
+//        }
+//    }
+
+    @Override public void onReplyToCommentClicked(String commentKey) {
         if (AuthSingleton.isLoggedIn()) {
             Comment comment = commentsView.getComment(commentKey);
             commentsView.showCommentForm(comment);
-        }
-        else {
-            Bundle arguments = new Bundle();
-                   arguments.putString(Constants.COMMENT_KEY, commentKey);
-
-            pageView.requestLogin(Constants.CODE_REPLY_TO_COMMENT, arguments);
+        } else {
+            Bundle bundle = new Bundle();
+                    bundle.putString("text", "Какой-то текст");
+            pageView.requestLogin2(bundle);
         }
     }
 

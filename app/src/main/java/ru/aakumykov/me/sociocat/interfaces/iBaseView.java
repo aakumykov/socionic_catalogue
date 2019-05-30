@@ -37,6 +37,7 @@ public interface iBaseView {
 
     // Разное
     void requestLogin(int requestCode, @Nullable Bundle arguments);
+    void requestLogin2(Bundle bundle);
 
     // Разное (УБРАТЬ!)
     void proceedLoginRequest(Intent intent);

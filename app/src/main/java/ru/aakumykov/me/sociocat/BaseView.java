@@ -252,6 +252,12 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         startActivityForResult(targetIntent, requestCode);
     }
 
+    @Override public void requestLogin2(Bundle bundle) {
+        Intent intent = new Intent(this, Login_View.class);
+        intent.putExtra("bundle", bundle);
+        startActivity(intent);
+    }
+
     @Override
     public void proceedLoginRequest(Intent intent) {
         Intent originalIntent = (Intent) intent.getParcelableExtra(Intent.EXTRA_INTENT);
