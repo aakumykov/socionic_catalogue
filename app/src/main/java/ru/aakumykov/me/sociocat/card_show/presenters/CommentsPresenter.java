@@ -112,6 +112,7 @@ public class CommentsPresenter implements iCommentsPresenter{
         commentsSingleton.createComment(newComment, new iCommentsSingleton.CreateCallbacks() {
             @Override
             public void onCommentSaveSuccess(Comment comment) {
+                commentForm.clear();
                 commentForm.hide();
 
                 commentsView.attachComment(comment, new iCommentsView.AttachCommentCallbacks() {
