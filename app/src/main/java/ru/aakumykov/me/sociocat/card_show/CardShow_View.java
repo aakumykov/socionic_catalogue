@@ -204,7 +204,7 @@ public class CardShow_View extends BaseView implements
 
     private void processReplyToCard(int resultCode) {
         if (RESULT_OK != resultCode) {
-            showToast(R.string.CARD_SHOW_login_required);
+            showToast(R.string.CARD_SHOW_login_required_to_comment);
             return;
         }
 
@@ -213,7 +213,7 @@ public class CardShow_View extends BaseView implements
 
     private void processReplyToComment(int resultCode, @Nullable Intent data) {
         if (RESULT_OK != resultCode) {
-            showToast(R.string.CARD_SHOW_login_required);
+            showToast(R.string.CARD_SHOW_login_required_to_comment);
             return;
         }
 
