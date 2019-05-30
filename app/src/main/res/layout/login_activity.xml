@@ -65,6 +65,13 @@
             android:text="@string/LOGIN_register"
             android:textSize="@dimen/major_button_font_size" />
 
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/LOGIN_cancel"
+            android:layout_marginTop="10dp" />
+
     </LinearLayout>
 
 </ScrollView>
