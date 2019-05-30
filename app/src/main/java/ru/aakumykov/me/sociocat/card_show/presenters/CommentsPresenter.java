@@ -69,20 +69,6 @@ public class CommentsPresenter implements iCommentsPresenter{
         });
     }
 
-//    @Override
-//    public void onReplyToCommentClicked(String commentKey) {
-//        if (AuthSingleton.isLoggedIn()) {
-//            Comment comment = commentsView.getComment(commentKey);
-//            commentsView.showCommentForm(comment);
-//        }
-//        else {
-//            Bundle arguments = new Bundle();
-//                   arguments.putString(Constants.COMMENT_KEY, commentKey);
-//
-//            pageView.requestLogin(Constants.CODE_REPLY_TO_COMMENT, arguments);
-//        }
-//    }
-
     @Override public void onReplyToCommentClicked(String commentKey) {
         if (AuthSingleton.isLoggedIn()) {
             Comment comment = commentsView.getComment(commentKey);
@@ -90,7 +76,7 @@ public class CommentsPresenter implements iCommentsPresenter{
         } else {
             Bundle transitAgruments = new Bundle();
                     transitAgruments.putString(Constants.COMMENT_KEY, commentKey);
-            pageView.requestLogin2(Constants.CODE_REPLY_TO_COMMENT, transitAgruments);
+            pageView.requestLogin(Constants.CODE_REPLY_TO_COMMENT, transitAgruments);
         }
     }
 
