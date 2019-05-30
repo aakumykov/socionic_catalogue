@@ -7,8 +7,6 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import com.google.firebase.database.Exclude;
-
 public interface iBaseView {
 
     // Контекст
@@ -37,7 +35,7 @@ public interface iBaseView {
 
     // Разное
     void requestLogin(int requestCode, @Nullable Bundle arguments);
-    void requestLogin2(Bundle bundle);
+    void requestLogin2(int requestCode, Bundle bundle);
 
     // Разное (УБРАТЬ!)
     void proceedLoginRequest(Intent intent);

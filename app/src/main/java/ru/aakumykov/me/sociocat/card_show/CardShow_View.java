@@ -83,6 +83,9 @@ public class CardShow_View extends BaseView implements
         bindComponents();
 
         switch (requestCode) {
+            case 10:
+                break;
+
             case Constants.CODE_REPLY_TO_CARD:
                 processReplyToCard(resultCode);
                 break;

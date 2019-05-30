@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.card_show.presenters;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -8,9 +7,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.card_show.adapter.CommentsView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
@@ -92,7 +89,7 @@ public class CommentsPresenter implements iCommentsPresenter{
         } else {
             Bundle bundle = new Bundle();
                     bundle.putString("text", "Какой-то текст");
-            pageView.requestLogin2(bundle);
+            pageView.requestLogin2(10, bundle);
         }
     }
 

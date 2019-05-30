@@ -6,13 +6,11 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -35,7 +33,6 @@ import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.tags.list.TagsList_View;
-import ru.aakumykov.me.sociocat.users.show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -252,10 +249,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         startActivityForResult(targetIntent, requestCode);
     }
 
-    @Override public void requestLogin2(Bundle bundle) {
+    @Override public void requestLogin2(int requestCode, Bundle bundle) {
         Intent intent = new Intent(this, Login_View.class);
         intent.putExtra("bundle", bundle);
-        startActivity(intent);
+        startActivityForResult(intent, requestCode);
     }
 
     @Override
