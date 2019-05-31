@@ -191,8 +191,11 @@ public class CommentsSingleton implements iCommentsSingleton {
                 "/commentsKeys/" + commentKey;
         updatePool.put(commentInsdeCardPath, true);
 
-        String commentInsideUserPath = Constants.USERS_PATH + "/" + commentDraft.getUserId() +
-                "/commentsKeys/" + commentKey;
+        String commentInsideUserPath =
+                Constants.USERS_PATH + "/" +
+                    commentDraft.getUserId() + "/" +
+                    "commentsKeys/" +
+                    commentDraft.getCardId() + "__" + commentKey;
         updatePool.put(commentInsideUserPath, true);
 
         rootRef.updateChildren(updatePool)
