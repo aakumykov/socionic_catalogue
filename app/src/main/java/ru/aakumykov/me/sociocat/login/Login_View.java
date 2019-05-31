@@ -19,6 +19,7 @@ import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.event_objects.LoginRequestSuccess;
 import ru.aakumykov.me.sociocat.register.register_step_1.RegisterStep1_View;
 import ru.aakumykov.me.sociocat.reset_password_step1.ResetPasswordStep1_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -147,7 +148,23 @@ public class Login_View extends BaseView implements iLogin.View
 
     @Override
     public void notifyToConfirmEmail(String userId) {
+<<<<<<< HEAD
+=======
 
+    }
+
+    @Override
+    public void proceedLoginRequest(Intent intent) {
+        Intent originalIntent = (Intent) intent.getParcelableExtra(Intent.EXTRA_INTENT);
+        String requestedAction = intent.getStringExtra(Constants.EXTRA_REQUESTED_ACTION);
+
+        if ("add_comment".equals(requestedAction)) {
+            EventBus.getDefault().post(new LoginRequestSuccess(requestedAction));
+            return;
+        }
+>>>>>>> 8a716d7d65ec3c465f2f779f35f64ead59def73a
+
+        startActivity(originalIntent);
     }
 
 

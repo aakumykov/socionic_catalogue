@@ -11,7 +11,6 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.net.Uri;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.util.Log;
 import android.view.Display;
@@ -293,4 +292,12 @@ public final class MyUtils {
         intent.putExtra(Intent.EXTRA_INTENT, proceedIntent);
         context.startActivity(intent);
     }*/
+
+    public static void requestLogin(Context context, String initial_action) {
+        Intent intent = new Intent(context, Login_View.class);
+        intent.setAction(Constants.ACTION_LOGIN_REQUEST);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.putExtra(Constants.EXTRA_REQUESTED_ACTION, initial_action);
+        context.startActivity(intent);
+    }
 }

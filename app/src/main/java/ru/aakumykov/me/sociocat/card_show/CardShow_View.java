@@ -23,6 +23,7 @@ import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
+import ru.aakumykov.me.sociocat.interfaces.iLoginRequester;
 import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
@@ -34,8 +35,13 @@ import ru.aakumykov.me.sociocat.models.Comment;
 
 
 public class CardShow_View extends BaseView implements
+<<<<<<< HEAD
         iPageView,
         iCardShow_View
+=======
+        iCardShow_View,
+        iLoginRequester
+>>>>>>> 8a716d7d65ec3c465f2f779f35f64ead59def73a
 {
     public interface LoadCommentsCallbacks {
         void onLoadCommentsSuccess(List<Comment> list);

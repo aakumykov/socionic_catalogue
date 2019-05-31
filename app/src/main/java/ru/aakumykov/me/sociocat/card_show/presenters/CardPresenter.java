@@ -4,21 +4,21 @@ import android.content.Intent;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.Constants;
+import org.greenrobot.eventbus.Subscribe;
+
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
-import ru.aakumykov.me.sociocat.card_show.iPageView;
+import ru.aakumykov.me.sociocat.event_objects.LoginRequestSuccess;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardPresenter implements iCardPresenter {
 
     private iCardView cardView;
-    private iPageView pageView;
     private iCommentsPresenter commentsPresenter;
     private CardsSingleton cardSingleton = CardsSingleton.getInstance();
     private Card currentCard;
@@ -28,14 +28,6 @@ public class CardPresenter implements iCardPresenter {
         this.commentsPresenter = commentsPresenter;
     }
 
-
-    @Override public void bindPageView(iPageView pageView) {
-        this.pageView = pageView;
-    }
-
-    @Override public void unbindPageView() {
-        this.pageView = null;
-    }
 
     @Override
     public void bindListAdapter(iCardView listAdapter) {
@@ -76,13 +68,28 @@ public class CardPresenter implements iCardPresenter {
         cardView.hideCardThrobber();
     }
 
-
     @Override
     public void onReplyClicked() {
         if (AuthSingleton.isLoggedIn())
             cardView.showCommentForm(currentCard);
-        else {
-            pageView.requestLogin(Constants.CODE_REPLY_TO_CARD, null);
+        else
+            MyUtils.requestLogin(cardView.getPageContext(), "add_comment");
+    }
+
+
+    // EventBus
+    @Subscribe
+    public void onLoginRequestSuccess(LoginRequestSuccess loginRequestSuccess) {
+        String requestedAction = loginRequestSuccess.getRequestedAction();
+
+        switch (requestedAction) {
+            case "add_comment":
+                cardView.showCommentForm(currentCard);
+                break;
+            default:
+//                cardView.showToast("Неизвестное действие");
+                break;
         }
     }
+
 }

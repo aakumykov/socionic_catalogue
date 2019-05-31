@@ -27,6 +27,8 @@ public final class Constants {
     public final static String ACTION_REPLY_TO_CARD = "ACTION_REPLY_TO_CARD";
     public final static String ACTION_REPLY_TO_COMMENT = "ACTION_REPLY_TO_COMMENT";
 
+    public final static String EXTRA_REQUESTED_ACTION = "EXTRA_REQUESTED_ACTION";
+
     public final static String CARD = "CARD";
     public final static String CARD_DRAFT = "CARD_DRAFT";
     public final static String CARD_KEY = "CARD_KEY";
