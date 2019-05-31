@@ -9,6 +9,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show.list_items.LoadMore_Item;
 import ru.aakumykov.me.sociocat.models.Comment;
 
 public class LoadMore_ViewHolder extends Base_ViewHolder
@@ -24,10 +25,10 @@ public class LoadMore_ViewHolder extends Base_ViewHolder
         ButterKnife.bind(this, itemView);
     }
 
-    public void initialize(@Nullable Comment comment) {
+    public void initialize(@Nullable LoadMore_Item loadMoreItem) {
 
-        if (null != comment) {
-            lastCommentKey = comment.getKey();
+        if (null != loadMoreItem) {
+            lastCommentKey = loadMoreItem.getLastCommentKey();
             textView.setText(R.string.COMMENTS_load_more_comments);
         }
         else {

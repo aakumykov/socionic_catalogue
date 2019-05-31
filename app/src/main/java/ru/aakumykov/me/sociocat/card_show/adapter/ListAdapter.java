@@ -116,8 +116,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 break;
 
             case ListItem.LOAD_MORE_VIEW_TYPE:
-//                Comment lastComment = getLastComment();
-//                ((LoadMore_ViewHolder) viewHolder).initialize(lastComment);
+                ((LoadMore_ViewHolder) viewHolder).initialize((LoadMore_Item) item);
 
             default:
                 break;
@@ -223,6 +222,8 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         list.addAll(newCommentsList);
         notifyItemRangeChanged(1, newCommentsList.size());
+
+        addLoadMoreItem();
     }
 
     @Override
@@ -230,8 +231,12 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         int start = this.list.size();
         int count = list.size();
 
+        removeLoadMoreItem();
+
         this.list.addAll(list);
         notifyItemRangeChanged(start, count);
+
+        addLoadMoreItem();
     }
 
     @Override
@@ -265,17 +270,35 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
     // Внутренние методы
+    private void addLoadMoreItem() {
+        Comment lastComment = (Comment) getLastItem(ListItem.ItemType.COMMENT_ITEM);
+        LoadMore_Item loadMoreItem = new LoadMore_Item(lastComment);
+        list.add(loadMoreItem);
+        //notifyItemChanged(getMaxIndex());
+    }
+
+    private void removeLoadMoreItem() {
+        int maxIndex = getMaxIndex();
+        removeItemIfType(ListItem.ItemType.LOAD_MORE_ITEM, maxIndex);
+    }
+
     private int getMaxIndex() {
         return list.size() - 1;
     }
 
-    /*private ListItem getLastItem() {
-        int maxIndex = list.size() - 1;
-        if (maxIndex >= 0)
-            return list.get(maxIndex);
+    private ListItem getLastItem(ListItem.ItemType itemType) {
+        int maxIndex = getMaxIndex();
+
+        if (maxIndex < 0)
+            return null;
+
+        ListItem listItem = list.get(maxIndex);
+
+        if (listItem.is(itemType))
+            return listItem;
         else
             return null;
-    }*/
+    }
 
     private int getLastCommentIndex() {
         return list.size()-1;
