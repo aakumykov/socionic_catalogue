@@ -64,7 +64,7 @@ public class Card_ViewHolder extends Base_ViewHolder
 
     // Нажатия
     @OnClick(R.id.replyWidget)
-    void openCommentForm() {
+    void onReplyWidgetClicked() {
         cardPresenter.onReplyClicked();
     }
 
@@ -166,7 +166,7 @@ public class Card_ViewHolder extends Base_ViewHolder
         insertableYoutubePlayer.show(mediaCode, playerType);
     }
 
-    private void openCommentForm(Card card) {
+    private void onReplyWidgetClicked(Card card) {
         // Это не контроллера ответственность!
         //        cardController.showCommentForm(card);
     }

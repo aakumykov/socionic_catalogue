@@ -72,7 +72,8 @@ public class CommentsPresenter implements iCommentsPresenter{
         });
     }
 
-    @Override public void onReplyToCommentClicked(String commentKey) {
+    @Override
+    public void onReplyToCommentClicked(String commentKey) {
         if (AuthSingleton.isLoggedIn()) {
             Comment comment = commentsView.getComment(commentKey);
             commentsView.showCommentForm(comment);
