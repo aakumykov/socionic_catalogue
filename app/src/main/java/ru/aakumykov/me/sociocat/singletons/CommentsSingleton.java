@@ -89,13 +89,13 @@ public class CommentsSingleton implements iCommentsSingleton {
     public void updateComment(Comment comment, CreateCallbacks callbacks) {
         /* Update работает на основе Create, а не наоборот,
         потому что там используется деструктивный метод setValue(). Название это отражает. */
-        createComment(comment.getKey(), comment, callbacks);
+        createComment(comment.getCardId(), comment.getKey(), comment, callbacks);
     }
 
     @Override
     public void createComment(final Comment commentDraft, final CreateCallbacks callbacks) {
         commentDraft.setKey(commentsRef.push().getKey());
-        createComment(commentDraft.getKey(), commentDraft, callbacks);
+        createComment(commentDraft.getCardId(), commentDraft.getKey(), commentDraft, callbacks);
     }
 
     @Override
@@ -180,24 +180,37 @@ public class CommentsSingleton implements iCommentsSingleton {
 
 
     // Внутренние методы
-    private void createComment(String commentKey, final Comment commentDraft, final CreateCallbacks callbacks) {
+    private void createComment(String cardKey, String commentKey, final Comment commentDraft, final CreateCallbacks callbacks) {
 
         HashMap<String,Object> updatePool = new HashMap<>();
 
-        String commentPath = Constants.COMMENTS_PATH+"/"+commentKey;
+        // Ветка "Комментарии"
+        String commentPath =
+                Constants.COMMENTS_PATH + "/" +
+                        cardKey + "/" +
+                        commentKey;
         updatePool.put(commentPath, commentDraft);
 
-        String commentInsdeCardPath = Constants.CARDS_PATH + "/" + commentDraft.getCardId() +
-                "/commentsKeys/" + commentKey;
+
+        // Инфа в карточке
+        String commentInsdeCardPath =
+                Constants.CARDS_PATH + "/" +
+                        cardKey + "/" +
+                        "commentsKeys/" +
+                        commentKey;
         updatePool.put(commentInsdeCardPath, true);
 
+
+        // Инфа в пользователе
         String commentInsideUserPath =
                 Constants.USERS_PATH + "/" +
                     commentDraft.getUserId() + "/" +
                     "commentsKeys/" +
-                    commentDraft.getCardId() + "__" + commentKey;
+                    cardKey + "__" + commentKey;
         updatePool.put(commentInsideUserPath, true);
 
+
+        // Отправка в БД
         rootRef.updateChildren(updatePool)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
