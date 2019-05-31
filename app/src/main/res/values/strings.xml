@@ -102,7 +102,7 @@
     <string name="LOGIN_page_title">Вход в программу</string>
     <string name="LOGIN_login_failed">Ошибка входа</string>
     <string name="LOGIN_login_success">Успешный вход</string>
-    <string name="LOGIN_cancel">Не входить</string>
+    <string name="LOGIN_cancel">Отмена</string>
     <string name="LOGIN_logging_in">Входим в программу</string>
     <string name="LOGIN_login">Войти</string>
     <string name="AUTH_error_logging_out">Ошибка выхода</string>
@@ -427,5 +427,5 @@
     <string name="CARDS_GRID_error_loading_cards">Ошибка загрузки карточек</string>
     <string name="CARD_EDIT_loading_card">Получение данных карточки</string>
     <string name="LOGIN_data_error">Ошибка данных</string>
-    <string name="CARD_SHOW_login_required">Необходимо войти</string>
+    <string name="CARD_SHOW_login_required_to_comment">Чтобы комментировать, нужно войти</string>
 </resources>

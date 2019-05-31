@@ -251,6 +251,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public Comment getComment(String commentKey) {
+        commentKey = commentKey + ""; // Защита от NULL
         for (ListItem listItem : list) {
             if (listItem.isCommentItem()) {
                 Comment comment = (Comment) listItem;

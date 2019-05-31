@@ -13,6 +13,8 @@ public interface iCommentForm {
 
     void setQuote(String text);
 
+    void clear();
+
     void show();
     void hide();
 

@@ -24,7 +24,7 @@ public class Login_Presenter implements
     private iLogin.View view;
 
     private String intentAction;
-    private Bundle arguments;
+    private Bundle transitArguments;
 
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -54,12 +54,10 @@ public class Login_Presenter implements
         this.intentAction = action + "";
         //this.arguments = intent.getParcelableExtra(Intent.EXTRA_INTENT);
 //        Intent argumentsIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
-        //Bundle args1 = intent.getBundleExtra(Constants.EXTRA_ARGUMENTS);
-        //Bundle args2 = intent.getParcelableExtra(Constants.EXTRA_ARGUMENTS);
+        //Bundle args1 = intent.getBundleExtra(Constants.TRANSIT_ARGUMENTS);
+        //Bundle args2 = intent.getParcelableExtra(Constants.TRANSIT_ARGUMENTS);
 
-        Bundle bundle = intent.getBundleExtra("bundle");
-        this.arguments = bundle;
-        String text = bundle.getString("text");
+        this.transitArguments = intent.getBundleExtra(Constants.TRANSIT_ARGUMENTS);
 
         if (Constants.ACTION_TRY_NEW_PASSWORD.equals(action)) {
             view.showToast(R.string.LOGIN_try_new_password);
@@ -79,7 +77,7 @@ public class Login_Presenter implements
                         usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
                             @Override
                             public void onUserRefreshSuccess(User user) {
-                                postLoginProcess(user);
+                                processSuccessfullLogin(user);
                             }
 
                             @Override
@@ -101,12 +99,12 @@ public class Login_Presenter implements
     @Override
     public void cancelLogin() {
         firebaseAuth.signOut();
-        view.finishLogin(true, arguments);
+        view.finishLogin(true, transitArguments);
     }
 
 
     // Внутренние методы
-    private void postLoginProcess(User user) {
+    private void processSuccessfullLogin(User user) {
 
         if (!user.isEmailVerified()) {
             view.notifyToConfirmEmail(user.getKey());
@@ -123,7 +121,7 @@ public class Login_Presenter implements
             return;
         }*/
 
-        view.finishLogin(false, arguments);
+        view.finishLogin(false, transitArguments);
     }
 
     private void showLoginError(String msg) {

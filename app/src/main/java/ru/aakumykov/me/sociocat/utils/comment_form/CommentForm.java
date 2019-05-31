@@ -71,6 +71,11 @@ public class CommentForm implements
     }
 
     @Override
+    public void clear() {
+        commentTextInput.setText("");
+    }
+
+    @Override
     public void show() {
         enable();
         MyUtils.show(commentContainer);

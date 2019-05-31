@@ -31,6 +31,7 @@ public class Login_View extends BaseView implements iLogin.View
     @BindView(R.id.loginButton) Button loginButton;
     @BindView(R.id.resetPasswordButton) TextView resetPasswordButton;
     @BindView(R.id.registerButton) Button registerButton;
+    @BindView(R.id.cancelButton) Button cancelButton;
 
     public static final String TAG = "Login_View";
     private iLogin.Presenter presenter;
@@ -120,6 +121,7 @@ public class Login_View extends BaseView implements iLogin.View
         MyUtils.disable(loginButton);
         MyUtils.disable(resetPasswordButton);
         MyUtils.disable(registerButton);
+//        MyUtils.disable(cancelButton);
     }
 
     @Override
@@ -129,20 +131,18 @@ public class Login_View extends BaseView implements iLogin.View
         MyUtils.enable(loginButton);
         MyUtils.enable(resetPasswordButton);
         MyUtils.enable(registerButton);
+//        MyUtils.enable(cancelButton);
     }
 
     @Override
-//    public void finishLogin(boolean byCancel, @Nullable Bundle arguments) {
-    public void finishLogin(boolean byCancel, @Nullable Bundle bundle) {
+    public void finishLogin(boolean byCancel, @Nullable Bundle transitArguments) {
         int resultCode = (byCancel) ? RESULT_CANCELED : RESULT_OK;
 
         Intent resultsIntent = new Intent();
-//               resultsIntent.putExtra(Constants.EXTRA_ARGUMENTS, arguments);
-        if (null != bundle)
-            resultsIntent.putExtra("bundle", bundle);
+        if (null != transitArguments)
+            resultsIntent.putExtra(Constants.TRANSIT_ARGUMENTS, transitArguments);
 
         setResult(resultCode, resultsIntent);
-
         finish();
     }
 
@@ -190,6 +190,11 @@ public class Login_View extends BaseView implements iLogin.View
     void goRegisterPage() {
         Intent intent = new Intent(this, RegisterStep1_View.class);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.cancelButton)
+    void cancelLogin() {
+        presenter.cancelLogin();
     }
 
 

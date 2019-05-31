@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.CommentsView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
@@ -68,28 +69,14 @@ public class CommentsPresenter implements iCommentsPresenter{
         });
     }
 
-//    @Override
-//    public void onReplyToCommentClicked(String commentKey) {
-//        if (AuthSingleton.isLoggedIn()) {
-//            Comment comment = commentsView.getComment(commentKey);
-//            commentsView.showCommentForm(comment);
-//        }
-//        else {
-//            Bundle arguments = new Bundle();
-//                   arguments.putString(Constants.COMMENT_KEY, commentKey);
-//
-//            pageView.requestLogin(Constants.CODE_REPLY_TO_COMMENT, arguments);
-//        }
-//    }
-
     @Override public void onReplyToCommentClicked(String commentKey) {
         if (AuthSingleton.isLoggedIn()) {
             Comment comment = commentsView.getComment(commentKey);
             commentsView.showCommentForm(comment);
         } else {
-            Bundle bundle = new Bundle();
-                    bundle.putString("text", "Какой-то текст");
-            pageView.requestLogin2(10, bundle);
+            Bundle transitAgruments = new Bundle();
+                    transitAgruments.putString(Constants.COMMENT_KEY, commentKey);
+            pageView.requestLogin(Constants.CODE_REPLY_TO_COMMENT, transitAgruments);
         }
     }
 
@@ -125,6 +112,7 @@ public class CommentsPresenter implements iCommentsPresenter{
         commentsSingleton.createComment(newComment, new iCommentsSingleton.CreateCallbacks() {
             @Override
             public void onCommentSaveSuccess(Comment comment) {
+                commentForm.clear();
                 commentForm.hide();
 
                 commentsView.attachComment(comment, new iCommentsView.AttachCommentCallbacks() {
