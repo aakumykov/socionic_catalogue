@@ -50,8 +50,10 @@ public class CommentsSingleton implements iCommentsSingleton {
     public void loadList(String cardId, final ListCallbacks callbacks) {
 
         // TODO: что будет при кривом cardId? Бросать исключние?
-        Query query = commentsRef.orderByChild(Comment.key_cardId)
-                .equalTo(cardId);
+        Query query = commentsRef
+                .child(cardId)
+                .orderByKey()
+                .limitToFirst(5);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
