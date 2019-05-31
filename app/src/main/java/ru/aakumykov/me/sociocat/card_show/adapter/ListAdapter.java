@@ -192,7 +192,9 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     // iCommentsView
     @Override
     public void showCommentsThrobber() {
+        hideLoadMoreItem();
         list.add(new Throbber_Item(R.string.COMMENTS_loading_comments));
+        notifyItemChanged(getMaxIndex());
     }
 
     @Override
@@ -238,13 +240,13 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         int start = this.list.size();
         int count = inputList.size();
 
-        removeLoadMoreItem();
+        hideLoadMoreItem();
 
         this.list.addAll(inputList);
         notifyItemRangeChanged(start, count);
 
         if (null != lastComment)
-            addLoadMoreItem(lastComment);
+            showLoadMoreItem(lastComment);
     }
 
     @Override
@@ -278,12 +280,12 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
     // Внутренние методы
-    private void addLoadMoreItem(Comment lastComment) {
+    private void showLoadMoreItem(Comment lastComment) {
         LoadMore_Item loadMoreItem = new LoadMore_Item(lastComment);
         list.add(loadMoreItem);
     }
 
-    private void removeLoadMoreItem() {
+    private void hideLoadMoreItem() {
         int maxIndex = getMaxIndex();
         removeItemIfType(ListItem.ItemType.LOAD_MORE_ITEM, maxIndex);
     }
