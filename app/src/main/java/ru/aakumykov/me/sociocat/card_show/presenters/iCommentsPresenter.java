@@ -14,7 +14,9 @@ public interface iCommentsPresenter {
     void bindCommentsView(iCommentsView listAdapter);
     void unbindCommentsView();
 
-    void onWorkBegins(@Nullable String cardKey, @Nullable String commentKey);
+    void onWorkBegins(String cardKey, @Nullable String scrollToCommentKey);
+
+    void onLoadMoreClicked(String cardKey, @Nullable String lastVisibleCommentKey);
 
     void onReplyToCommentClicked(String commentKey);
 

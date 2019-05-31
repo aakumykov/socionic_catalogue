@@ -24,6 +24,10 @@ import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class CommentsPresenter implements iCommentsPresenter{
 
+    private enum LoadMode {
+        MODE_APPEND, MODE_REPLACE
+    }
+
     private iCommentsView commentsView;
     private iPageView pageView;
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
@@ -50,26 +54,13 @@ public class CommentsPresenter implements iCommentsPresenter{
     }
 
     @Override
-    public void onWorkBegins(@Nullable String cardKey, @Nullable String commentKey) {
+    public void onWorkBegins(String cardKey, @Nullable String scrollToCommentKey) {
+        loadComments(LoadMode.MODE_REPLACE, cardKey, null, scrollToCommentKey);
+    }
 
-        commentsView.showCommentsThrobber();
-
-        commentsSingleton.loadList(cardKey, new iCommentsSingleton.ListCallbacks() {
-            @Override
-            public void onCommentsLoadSuccess(List<Comment> list) {
-                commentsView.hideCommentsThrobber();
-                commentsView.setList(list);
-
-                if (null != commentKey)
-                    commentsView.scrollToComment(commentKey);
-            }
-
-            @Override
-            public void onCommentsLoadError(String errorMessage) {
-                commentsView.hideCommentsThrobber();
-                commentsView.showCommentsError(R.string.COMMENTS_error_loading_comments, errorMessage);
-            }
-        });
+    @Override
+    public void onLoadMoreClicked(String cardKey, String lastVisibleCommentKey) {
+        loadComments(LoadMode.MODE_APPEND, cardKey, lastVisibleCommentKey, null);
     }
 
     @Override
@@ -134,6 +125,34 @@ public class CommentsPresenter implements iCommentsPresenter{
             public void onCommentSaveError(String errorMsg) {
                 commentForm.enable();
                 commentForm.showError(R.string.COMMENT_error_adding_comment, errorMsg);
+            }
+        });
+    }
+
+
+    // Внутренние методы
+    private void loadComments(LoadMode loadMode, String cardKey, @Nullable String lastCommentKey, @Nullable String scrollToCommentKey) {
+
+        commentsView.showCommentsThrobber();
+
+        commentsSingleton.loadList(cardKey, lastCommentKey, new iCommentsSingleton.ListCallbacks() {
+            @Override
+            public void onCommentsLoadSuccess(List<Comment> list) {
+                commentsView.hideCommentsThrobber();
+
+                if (LoadMode.MODE_REPLACE.equals(loadMode))
+                    commentsView.setList(list);
+                else
+                    commentsView.appendList(list);
+
+                if (null != scrollToCommentKey)
+                    commentsView.scrollToComment(scrollToCommentKey);
+            }
+
+            @Override
+            public void onCommentsLoadError(String errorMessage) {
+                commentsView.hideCommentsThrobber();
+                commentsView.showCommentsError(R.string.COMMENTS_error_loading_comments, errorMessage);
             }
         });
     }

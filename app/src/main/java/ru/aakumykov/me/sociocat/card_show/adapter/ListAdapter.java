@@ -89,7 +89,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
             case ListItem.LOAD_MORE_VIEW_TYPE:
                 itemView = layoutInflater.inflate(R.layout.card_show_load_more, parent, false);
-                return new LoadMore_ViewHolder(itemView);
+                return new LoadMore_ViewHolder(itemView, commentsPresenter);
 
             default:
                 // TODO: попробовать возвлащать заглушку
@@ -227,7 +227,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void addList(List<Comment> list) {
+    public void appendList(List<Comment> list) {
         int start = this.list.size();
         int count = list.size();
 

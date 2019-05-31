@@ -2,12 +2,11 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 
 public interface iCommentsSingleton {
 
-    void loadList(String cardId, ListCallbacks callbacks);
+    void loadList(String cardId, String lastCommentKey, ListCallbacks callbacks);
     void createComment(Comment commentDraft, CreateCallbacks callbacks);
     void updateComment(Comment comment, CreateCallbacks callbacks);
     void deleteComment(Comment comment, DeleteCallbacks callbacks);

@@ -47,7 +47,7 @@ public class CommentsSingleton implements iCommentsSingleton {
 
     // Интерфейсные методы
     @Override
-    public void loadList(String cardId, final ListCallbacks callbacks) {
+    public void loadList(String cardId, @Nullable String lastCommentKey, final ListCallbacks callbacks) {
 
         // TODO: что будет при кривом cardId? Бросать исключние?
         Query query = commentsRef

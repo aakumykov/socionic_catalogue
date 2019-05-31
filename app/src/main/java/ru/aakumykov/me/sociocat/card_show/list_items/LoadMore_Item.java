@@ -5,14 +5,14 @@ import ru.aakumykov.me.sociocat.models.Comment;
 
 public class LoadMore_Item extends ListItem {
 
-    private String lastCommentKey;
+    private Comment lastVisibleComment;
 
-    public LoadMore_Item(Comment lastComment) {
+    public LoadMore_Item(Comment lastVisibleComment) {
         setItemType(ItemType.LOAD_MORE_ITEM);
-        this.lastCommentKey = lastComment.getKey();
+        this.lastVisibleComment = lastVisibleComment;
     }
 
-    public String getLastCommentKey() {
-        return lastCommentKey;
+    public Comment getLastVisibleComment() {
+        return lastVisibleComment;
     }
 }
