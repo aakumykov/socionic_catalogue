@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Comment;
 
@@ -57,12 +58,12 @@ public class CommentsSingleton implements iCommentsSingleton {
                     .child(cardId)
                     .orderByKey()
                     .startAt(lastCommentKey)
-                    .limitToFirst(5);
+                    .limitToFirst(Config.DEFAULT_COMMENTS_LOAD_COUNT + 1);
         else
             query = commentsRef
                     .child(cardId)
                     .orderByKey()
-                    .limitToFirst(5);
+                    .limitToFirst(Config.DEFAULT_COMMENTS_LOAD_COUNT + 1);
 
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {

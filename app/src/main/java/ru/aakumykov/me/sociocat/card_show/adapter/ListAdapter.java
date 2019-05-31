@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View_Stub;
 import ru.aakumykov.me.sociocat.card_show.iCardShow_View;
@@ -212,31 +213,38 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void setList(List<Comment> newCommentsList) {
+    public void setList(List<Comment> inputList) {
         int listSize = list.size();
         if (listSize > 1) {
             List<ListItem> existingCommentsList = list.subList(1, listSize - 1);
             list.removeAll(existingCommentsList);
             notifyItemRangeRemoved(1, existingCommentsList.size());
         }
-
-        list.addAll(newCommentsList);
-        notifyItemRangeChanged(1, newCommentsList.size());
-
-        addLoadMoreItem();
+        appendList(inputList);
     }
 
     @Override
-    public void appendList(List<Comment> list) {
+    public void appendList(List<Comment> inputList) {
+
+        int inputListSize = inputList.size();
+        Comment lastComment = null;
+
+        if (inputListSize > Config.DEFAULT_COMMENTS_LOAD_COUNT) {
+            int lastCommentIndex = inputListSize - 1;
+            lastComment = inputList.get(lastCommentIndex);
+            inputList.remove(lastCommentIndex);
+        }
+
         int start = this.list.size();
-        int count = list.size();
+        int count = inputList.size();
 
         removeLoadMoreItem();
 
-        this.list.addAll(list);
+        this.list.addAll(inputList);
         notifyItemRangeChanged(start, count);
 
-        addLoadMoreItem();
+        if (null != lastComment)
+            addLoadMoreItem(lastComment);
     }
 
     @Override
@@ -270,11 +278,9 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
     // Внутренние методы
-    private void addLoadMoreItem() {
-        Comment lastComment = (Comment) getLastItem(ListItem.ItemType.COMMENT_ITEM);
+    private void addLoadMoreItem(Comment lastComment) {
         LoadMore_Item loadMoreItem = new LoadMore_Item(lastComment);
         list.add(loadMoreItem);
-        //notifyItemChanged(getMaxIndex());
     }
 
     private void removeLoadMoreItem() {
