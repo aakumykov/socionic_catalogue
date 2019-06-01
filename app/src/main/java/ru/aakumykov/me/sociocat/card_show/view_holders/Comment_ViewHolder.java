@@ -98,6 +98,7 @@ public class Comment_ViewHolder  extends Base_ViewHolder {
 
                 switch (item.getItemId()) {
                     case R.id.actionEdit:
+                        commentsPresenter.onEditCommentClicked(comment);
                         break;
                     default:
                         break;

@@ -129,6 +129,14 @@ public class CommentsPresenter implements iCommentsPresenter{
         });
     }
 
+    @Override
+    public void onEditCommentClicked(Comment comment) {
+        if (AuthSingleton.isLoggedIn()) {
+
+        } else {
+            pageView.showToast("Необходимо авторизоваться (╯°□°)╯");
+        }
+    }
 
     // Внутренние методы
     private void loadComments(LoadMode loadMode, String cardKey, @Nullable String lastCommentKey, @Nullable String scrollToCommentKey) {
