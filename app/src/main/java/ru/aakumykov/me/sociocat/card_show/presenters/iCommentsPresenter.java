@@ -24,4 +24,6 @@ public interface iCommentsPresenter {
     void onSendCommentClicked(String text, ListItem repliedItem, ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm commentForm);
 
     void onEditCommentClicked(Comment comment);
+
+    void onCommentEditFinished(Comment originalComment, String newText);
 }

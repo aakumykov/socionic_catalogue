@@ -13,6 +13,7 @@ import ru.aakumykov.me.sociocat.card_show.adapter.CommentsView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
+import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
@@ -21,6 +22,7 @@ import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
 
 public class CommentsPresenter implements iCommentsPresenter{
 
@@ -131,12 +133,35 @@ public class CommentsPresenter implements iCommentsPresenter{
 
     @Override
     public void onEditCommentClicked(Comment comment) {
-        if (AuthSingleton.isLoggedIn()) {
-
-        } else {
+        if (!AuthSingleton.isLoggedIn()) {
             pageView.showToast("Необходимо авторизоваться (╯°□°)╯");
+            return;
         }
+
+        MyDialogs.commentEditDialog(pageView.getActivity(), comment.getText(), new iMyDialogs.StringInputCallback() {
+            @Override
+            public String onPrepareText() {
+                return null;
+            }
+
+            @Override
+            public String onYesClicked(String text) {
+                onCommentEditFinished(comment, text);
+                return null;
+            }
+
+            @Override
+            public void onSuccess(String inputtedString) {
+
+            }
+        });
     }
+
+    @Override
+    public void onCommentEditFinished(Comment originalComment, String newText) {
+
+    }
+
 
     // Внутренние методы
     private void loadComments(LoadMode loadMode, String cardKey, @Nullable String lastCommentKey, @Nullable String scrollToCommentKey) {

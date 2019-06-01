@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.card_show;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -138,6 +139,11 @@ public class CardShow_View extends BaseView implements
 
     }
 
+    // iPageView
+    @Override
+    public Activity getActivity() {
+        return (Activity) this;
+    }
 
     // iCommentFormView
     @Override public void showCommentForm(@Nullable String quotedText, ListItem parentItem) {
