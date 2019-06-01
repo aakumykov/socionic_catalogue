@@ -138,7 +138,7 @@ public class CommentsPresenter implements iCommentsPresenter{
             return;
         }
 
-        MyDialogs.commentEditDialog(pageView.getActivity(), comment.getText(), new iMyDialogs.StringInputCallback() {
+        /*MyDialogs.commentEditDialog(pageView.getActivity(), comment.getText(), new iMyDialogs.StringInputCallback() {
             @Override
             public String onPrepareText() {
                 return null;
@@ -154,7 +154,30 @@ public class CommentsPresenter implements iCommentsPresenter{
             public void onSuccess(String inputtedString) {
 
             }
-        });
+        });*/
+
+        MyDialogs.stringInputDialog(
+                pageView.getActivity(),
+                R.string.CARD_SHOW_comment_edition,
+                "Сообщение: чо?",
+                "Подсказка",
+                new iMyDialogs.StringInputCallback() {
+                    @Override
+                    public String onPrepareText() {
+                        return null;
+                    }
+
+                    @Override
+                    public String onYesClicked(String text) {
+                        return null;
+                    }
+
+                    @Override
+                    public void onSuccess(String inputtedString) {
+
+                    }
+                }
+        );
     }
 
     @Override

@@ -149,6 +149,7 @@ public class MyDialogs {
         alertDialog.show();
     }
 
+    // Запрос строки
     public static <T> void stringInputDialog(
             Activity activity,
             int titleId,
