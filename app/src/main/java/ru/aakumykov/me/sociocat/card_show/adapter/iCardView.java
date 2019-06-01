@@ -10,11 +10,8 @@ public interface iCardView {
 
     // Вспомогательные методы
     void showCardThrobber();
-
     void hideCardThrobber();
+
     void showCardError(int errorMsgId, String errorMsg);
-
     void hideCardError();
-
-    void showCommentForm(ListItem repliedItem);
 }

@@ -43,9 +43,4 @@ public class CommentsView_Stub implements iCommentsView {
     @Override public void scrollToComment(String commentKey) {
 
     }
-
-    @Override
-    public void showCommentForm(ListItem repliedItem) {
-
-    }
 }

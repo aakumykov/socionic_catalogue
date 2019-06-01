@@ -139,11 +139,20 @@ public class CardShow_View extends BaseView implements
 
     }
 
+
     // iPageView
     @Override
     public Activity getActivity() {
         return (Activity) this;
     }
+
+    @Override
+    public void showCommentForm(ListItem repliedItem) {
+        String repliedText = repliedItem.isCommentItem() ? ((Comment)repliedItem).getText() : null;
+        commentForm.setQuote(repliedText);
+        commentForm.show();
+    }
+
 
     // iCommentFormView
     @Override public void showCommentForm(@Nullable String quotedText, ListItem parentItem) {

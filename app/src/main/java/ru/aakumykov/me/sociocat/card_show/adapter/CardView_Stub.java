@@ -20,10 +20,6 @@ public class CardView_Stub implements iCardView {
 
     }
 
-    @Override public void showCommentForm(ListItem repliedItem) {
-
-    }
-
     @Override public void displayCard(Card card) {
 
     }

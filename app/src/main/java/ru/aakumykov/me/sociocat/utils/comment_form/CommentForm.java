@@ -134,6 +134,7 @@ public class CommentForm implements
         MyUtils.hide(errorView);
     }
 
+
     // Системные методы
     @Override
     public void onClick(View v) {

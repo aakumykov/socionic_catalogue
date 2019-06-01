@@ -23,6 +23,7 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
+import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 
 public class CommentsPresenter implements iCommentsPresenter{
 
@@ -69,7 +70,7 @@ public class CommentsPresenter implements iCommentsPresenter{
     public void onReplyToCommentClicked(String commentKey) {
         if (AuthSingleton.isLoggedIn()) {
             Comment comment = commentsView.getComment(commentKey);
-            commentsView.showCommentForm(comment);
+            pageView.showCommentForm(comment);
         } else {
             Bundle transitAgruments = new Bundle();
                     transitAgruments.putString(Constants.COMMENT_KEY, commentKey);
@@ -79,7 +80,8 @@ public class CommentsPresenter implements iCommentsPresenter{
 
     // TODO: почему это делает CommentsPresenter?
     @Override
-    public void onSendCommentClicked(String commentText, ListItem repliedItem, ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm commentForm) {
+    public void onSendCommentClicked(String commentText, ListItem repliedItem,
+                                     iCommentForm commentForm) {
 
         commentText = commentText.trim();
 

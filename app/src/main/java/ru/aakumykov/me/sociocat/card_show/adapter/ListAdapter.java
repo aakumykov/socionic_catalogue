@@ -183,11 +183,6 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     }
 
-    @Override public void showCommentForm(ListItem repliedItem) {
-        String repliedText = repliedItem.isCommentItem() ? ((Comment)repliedItem).getText() : null;
-        view.showCommentForm(repliedText, repliedItem);
-    }
-
 
     // iCommentsView
     @Override

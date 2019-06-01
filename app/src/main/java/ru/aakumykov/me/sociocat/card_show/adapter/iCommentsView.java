@@ -27,6 +27,4 @@ public interface iCommentsView {
     Comment getComment(String commentKey);
 
     void scrollToComment(String commentKey);
-
-    void showCommentForm(ListItem repliedItem);
 }

@@ -80,7 +80,7 @@ public class CardPresenter implements iCardPresenter {
     @Override
     public void onReplyClicked() {
         if (AuthSingleton.isLoggedIn())
-            cardView.showCommentForm(currentCard);
+            pageView.showCommentForm(currentCard);
         else {
             pageView.requestLogin(Constants.CODE_REPLY_TO_CARD, null);
         }
