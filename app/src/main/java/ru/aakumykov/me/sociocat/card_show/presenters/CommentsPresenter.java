@@ -38,6 +38,10 @@ public class CommentsPresenter implements iCommentsPresenter {
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
+    private ListItem repliedItem;
+    private Comment editedComment;
+
+
     @Override
     public void bindPageView(iPageView pageView) {
         this.pageView = pageView;
@@ -72,17 +76,17 @@ public class CommentsPresenter implements iCommentsPresenter {
     public void onReplyToCommentClicked(String commentKey) {
         if (AuthSingleton.isLoggedIn()) {
             Comment comment = commentsView.getComment(commentKey);
+            this.repliedItem = comment;
             pageView.showCommentForm(comment);
         } else {
             Bundle transitAgruments = new Bundle();
-                    transitAgruments.putString(Constants.COMMENT_KEY, commentKey);
+            transitAgruments.putString(Constants.COMMENT_KEY, commentKey);
             pageView.requestLogin(Constants.CODE_REPLY_TO_COMMENT, transitAgruments);
         }
     }
 
-    // TODO: почему это делает CommentsPresenter?
     @Override
-    public void onSendCommentClicked(iCommentForm commentForm, ListItem repliedItem) {
+    public void onSendCommentClicked(iCommentForm commentForm) {
 
         String commentText = commentForm.getText().trim();
 
@@ -99,7 +103,7 @@ public class CommentsPresenter implements iCommentsPresenter {
                 newComment.setUserName(user.getName());
                 newComment.setUserAvatar(user.getAvatarURL());
 
-        switch (repliedItem.getItemType()) {
+        switch (this.repliedItem.getItemType()) {
             case CARD_ITEM:
                 newComment.setCardId(((Card)repliedItem).getKey());
                 break;

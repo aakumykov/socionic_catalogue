@@ -174,7 +174,7 @@ public class CardShow_View extends BaseView implements
         commentForm.addSendButtonListener(new iCommentForm.SendButtonListener() {
             @Override
             public void onSendCommentClicked(String commentText) {
-                commentsPresenter.onSendCommentClicked(commentForm, repliedItem);
+                commentsPresenter.onSendCommentClicked(commentForm);
             }
         });
 

@@ -22,7 +22,7 @@ public interface iCommentsPresenter {
 
     void onReplyToCommentClicked(String commentKey);
 
-    void onSendCommentClicked(iCommentForm commentForm, ListItem repliedItem);
+    void onSendCommentClicked(iCommentForm commentForm);
 
     void onEditCommentClicked(Comment comment);
 
