@@ -1,12 +1,9 @@
 package ru.aakumykov.me.sociocat.card_show.presenters;
 
-import android.content.Intent;
-
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
@@ -80,7 +77,7 @@ public class CardPresenter implements iCardPresenter {
     @Override
     public void onReplyClicked() {
         if (AuthSingleton.isLoggedIn())
-            pageView.showCommentForm(currentCard);
+            pageView.showCommentForm(null, null);
         else {
             pageView.requestLogin(Constants.CODE_REPLY_TO_CARD, null);
         }

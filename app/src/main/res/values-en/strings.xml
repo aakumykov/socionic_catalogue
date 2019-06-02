@@ -421,4 +421,5 @@
     <string name="LOGIN_data_error">Data error</string>
     <string name="CARD_SHOW_login_required_to_comment">Login required for comment</string>
     <string name="CARD_SHOW_comment_edition">Edit comment</string>
+    <string name="CARD_SHOW_error_saving_comment">Error saving comment</string>
 </resources>

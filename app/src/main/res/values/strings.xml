@@ -429,4 +429,5 @@
     <string name="LOGIN_data_error">Ошибка данных</string>
     <string name="CARD_SHOW_login_required_to_comment">Чтобы комментировать, нужно войти</string>
     <string name="CARD_SHOW_comment_edition">Правка комментария</string>
+    <string name="CARD_SHOW_error_saving_comment">Ошибка сохранения комментария</string>
 </resources>

@@ -26,7 +26,6 @@ import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
 import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
-import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.presenters.CardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.CommentsPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
@@ -164,12 +163,16 @@ public class CardShow_View extends BaseView implements
     }
 
     @Override
-    public void showCommentForm(ListItem repliedItem) {
-        String repliedText = repliedItem.isCommentItem() ? ((Comment)repliedItem).getText() : null;
-        commentForm.setQuote(repliedText);
+    public void showCommentForm(@Nullable String initialText, @Nullable String quote) {
+
+        if (null != initialText)
+            commentForm.setText(initialText);
+
+        if (null != quote)
+            commentForm.setQuote(quote);
 
         /* Так как форма используется для коммментирования как
-        * карточки, так и других комментариев, обработчики меняются
+        * карточки, так и других комментариев, обработчик устанавливается
         * динамически. */
         commentForm.addSendButtonListener(new iCommentForm.SendButtonListener() {
             @Override
