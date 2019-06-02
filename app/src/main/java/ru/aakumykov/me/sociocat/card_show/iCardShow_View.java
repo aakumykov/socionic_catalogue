@@ -7,8 +7,6 @@ import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
 public interface iCardShow_View extends iBaseView {
 
-    void showCommentForm(@Nullable String quotedText, ListItem parentItem);
-    void hideCommentForm();
-
+    // TODO: кажется, ему здесь не место
     void scrollListToPosition(int position);
 }

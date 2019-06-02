@@ -5,6 +5,8 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
@@ -25,7 +27,7 @@ import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 
-public class CommentsPresenter implements iCommentsPresenter{
+public class CommentsPresenter implements iCommentsPresenter {
 
     private enum LoadMode {
         MODE_APPEND, MODE_REPLACE
@@ -80,13 +82,14 @@ public class CommentsPresenter implements iCommentsPresenter{
 
     // TODO: почему это делает CommentsPresenter?
     @Override
-    public void onSendCommentClicked(String commentText, ListItem repliedItem,
-                                     iCommentForm commentForm) {
+    public void onSendCommentClicked(iCommentForm commentForm, ListItem repliedItem) {
 
-        commentText = commentText.trim();
+        String commentText = commentForm.getText().trim();
 
-        if (TextUtils.isEmpty(commentText))
+        if (TextUtils.isEmpty(commentText)) {
+            commentForm.showError(R.string.cannot_be_empty, null);
             return;
+        }
 
         User user = usersSingleton.getCurrentUser();
 
@@ -116,7 +119,7 @@ public class CommentsPresenter implements iCommentsPresenter{
             @Override
             public void onCommentSaveSuccess(Comment comment) {
                 commentForm.clear();
-                commentForm.hide();
+                pageView.hideCommentForm();
 
                 commentsView.attachComment(comment, new iCommentsView.AttachCommentCallbacks() {
                     @Override public void onCommentAttached(Comment comment) {

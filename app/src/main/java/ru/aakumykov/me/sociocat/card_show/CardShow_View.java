@@ -140,22 +140,9 @@ public class CardShow_View extends BaseView implements
     }
 
 
-    // iPageView
-    @Override
-    public Activity getActivity() {
-        return (Activity) this;
-    }
-
-    @Override
-    public void showCommentForm(ListItem repliedItem) {
-        String repliedText = repliedItem.isCommentItem() ? ((Comment)repliedItem).getText() : null;
-        commentForm.setQuote(repliedText);
-        commentForm.show();
-    }
-
-
     // iCommentFormView
-    @Override public void showCommentForm(@Nullable String quotedText, ListItem parentItem) {
+/*    @Override
+    public void showCommentForm(@Nullable String quotedText, ListItem parentItem) {
         if (null != quotedText)
             commentForm.setQuote(quotedText);
 
@@ -167,13 +154,41 @@ public class CardShow_View extends BaseView implements
         });
 
         commentForm.show();
+    }*/
+
+
+    // iPageView
+    @Override
+    public Activity getActivity() {
+        return (Activity) this;
     }
 
-    @Override public void hideCommentForm() {
+    @Override
+    public void showCommentForm(ListItem repliedItem) {
+        String repliedText = repliedItem.isCommentItem() ? ((Comment)repliedItem).getText() : null;
+        commentForm.setQuote(repliedText);
+
+        /* Так как форма используется для коммментирования как
+        * карточки, так и других комментариев, обработчики меняются
+        * динамически. */
+        commentForm.addSendButtonListener(new iCommentForm.SendButtonListener() {
+            @Override
+            public void onSendCommentClicked(String commentText) {
+                commentsPresenter.onSendCommentClicked(commentForm, repliedItem);
+            }
+        });
+
+        commentForm.show();
+    }
+
+    @Override
+    public void hideCommentForm() {
         commentForm.hide();
     }
 
-    @Override public void scrollListToPosition(int position) {
+
+    @Override
+    public void scrollListToPosition(int position) {
         recyclerView.scrollToPosition(position);
     }
 

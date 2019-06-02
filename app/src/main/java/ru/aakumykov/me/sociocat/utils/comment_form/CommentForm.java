@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -65,9 +67,16 @@ public class CommentForm implements
     }
 
     @Override
-    public void setQuote(String text) {
-        quoteTextView.setText(text);
-        MyUtils.show(quoteContainer);
+    public void setQuote(@Nullable String text) {
+        if (null != text) {
+            quoteTextView.setText(text);
+            MyUtils.show(quoteContainer);
+        }
+    }
+
+    @Override
+    public String getText() {
+        return commentTextInput.getText().toString();
     }
 
     @Override
@@ -118,7 +127,7 @@ public class CommentForm implements
     }
 
     @Override
-    public void showError(int messageId, String consoleMessage) {
+    public void showError(int messageId, @Nullable String consoleMessage) {
 //        hideKeyboard();
 
         String msg = (Config.DEBUG_MODE) ? consoleMessage : context.getResources().getString(messageId);
@@ -126,7 +135,8 @@ public class CommentForm implements
         errorView.setText(msg);
         MyUtils.show(errorView);
 
-        Log.e(TAG, consoleMessage);
+        if (null != consoleMessage)
+            Log.e(TAG, consoleMessage);
     }
 
     @Override
@@ -158,10 +168,6 @@ public class CommentForm implements
     private void sendComment() {
         hideError();
         sendButtonListener.onSendCommentClicked(getText());
-    }
-
-    private String getText() {
-        return commentTextInput.getText().toString();
     }
 
     private void clearQuote() {

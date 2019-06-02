@@ -6,6 +6,7 @@ import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 
 public interface iCommentsPresenter {
 
@@ -21,7 +22,7 @@ public interface iCommentsPresenter {
 
     void onReplyToCommentClicked(String commentKey);
 
-    void onSendCommentClicked(String text, ListItem repliedItem, ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm commentForm);
+    void onSendCommentClicked(iCommentForm commentForm, ListItem repliedItem);
 
     void onEditCommentClicked(Comment comment);
 
