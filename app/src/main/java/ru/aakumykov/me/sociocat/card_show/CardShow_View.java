@@ -85,14 +85,9 @@ public class CardShow_View extends BaseView implements
         bindComponents();
 
         switch (requestCode) {
-            case Constants.CODE_REPLY_TO_CARD:
-                processReplyToCard(resultCode);
+            case Constants.CODE_REPLY:
+                processReply(resultCode, data);
                 break;
-
-            case Constants.CODE_REPLY_TO_COMMENT:
-                processReplyToComment(resultCode, data);
-                break;
-
             default:
                 showErrorMsg(R.string.CARD_SHOW_data_error, "onActivityResult(), unknown request code: "+requestCode);
                 break;
@@ -165,7 +160,12 @@ public class CardShow_View extends BaseView implements
     }
 
     @Override public void showCommentForm(iTextItem repliedItem) {
-        String quote = (repliedItem.isCommentItem()) ? ((Comment)repliedItem).getText() : null;
+
+        String quote = null;
+        if (repliedItem.isCommentItem())
+            quote = ((Comment)repliedItem).getText();
+
+//        String quote = (repliedItem.isCommentItem()) ? ((Comment)repliedItem).getText() : null;
 
         if (null != quote)
             commentForm.setQuote(quote);
@@ -231,16 +231,7 @@ public class CardShow_View extends BaseView implements
         }
     }
 
-    private void processReplyToCard(int resultCode) {
-        if (RESULT_OK != resultCode) {
-            showToast(R.string.CARD_SHOW_login_required_to_comment);
-            return;
-        }
-
-        cardPresenter.onReplyClicked();
-    }
-
-    private void processReplyToComment(int resultCode, @Nullable Intent data) {
+    private void processReply(int resultCode, @Nullable Intent data) {
         if (RESULT_OK != resultCode) {
             showToast(R.string.CARD_SHOW_login_required_to_comment);
             return;
