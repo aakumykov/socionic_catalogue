@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.models.Comment;
 
 public interface iCommentsView {
@@ -19,8 +20,9 @@ public interface iCommentsView {
     void hideCommentsError();
 
     void setList(List<Comment> itemsList);
-    void appendList(List<Comment> list, int insertToIndex);
-    void appendComment(Comment comment, @Nullable AttachCommentCallbacks callbacks);
+    void appendList(List<Comment> list);
+
+    void attachComment(Comment comment, @Nullable AttachCommentCallbacks callbacks);
 
     Comment getComment(String commentKey);
 

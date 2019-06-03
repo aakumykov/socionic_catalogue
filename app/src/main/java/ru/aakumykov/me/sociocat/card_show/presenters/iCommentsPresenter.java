@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
+import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
@@ -16,8 +17,8 @@ public interface iCommentsPresenter {
     void bindCommentsView(iCommentsView listAdapter);
     void unbindCommentsView();
 
-    void onWorkBegins(String cardKey, @Nullable String commentKeyToScroll);
-    void onLoadMoreClicked(int itemIndex, Comment startAtComment);
+    void onWorkBegins(String cardKey, @Nullable String scrollToCommentKey);
+    void onLoadMoreClicked(String cardKey, @Nullable String lastVisibleCommentKey);
 
     void onReplyClicked(iTextItem repliedItem);
     void onEditCommentClicked(Comment comment);

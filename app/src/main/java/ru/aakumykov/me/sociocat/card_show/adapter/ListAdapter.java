@@ -33,25 +33,25 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         iCommentsView
 {
     private final static String TAG = "ListAdapter";
-    private List<ListItem> mList;
+    private List<ListItem> list;
     private iCardPresenter cardPresenter;
     private iCommentsPresenter commentsPresenter;
     private iCardShow_View view;
 
     public ListAdapter() {
-        this.mList = new ArrayList<>();
+        this.list = new ArrayList<>();
     }
 
 
     // RecyclerView
     @Override
     public int getItemCount() {
-        return mList.size();
+        return list.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        ListItem listItem = mList.get(position);
+        ListItem listItem = list.get(position);
 
         if (listItem instanceof Card) {
             return ListItem.CARD_VIEW_TYPE;
@@ -100,7 +100,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        ListItem item = mList.get(position);
+        ListItem item = list.get(position);
 
         switch (viewHolder.getItemViewType()) {
 
@@ -117,7 +117,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 break;
 
             case ListItem.LOAD_MORE_VIEW_TYPE:
-                ((LoadMore_ViewHolder) viewHolder).initialize(position, (LoadMore_Item) item);
+                ((LoadMore_ViewHolder) viewHolder).initialize((LoadMore_Item) item);
 
             default:
                 break;
@@ -152,10 +152,10 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public void displayCard(Card card) {
         int cardPosition = 0;
 
-        if (0 == mList.size())
-            mList.add(card);
+        if (0 == list.size())
+            list.add(card);
         else
-            mList.set(cardPosition, card);
+            list.set(cardPosition, card);
 
         notifyItemChanged(cardPosition);
     }
@@ -164,7 +164,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void showCardThrobber() {
         int index = 0;
-        mList.add(index, new Throbber_Item(R.string.CARD_SHOW_loading_card));
+        list.add(index, new Throbber_Item(R.string.CARD_SHOW_loading_card));
         notifyItemChanged(index);
     }
 
@@ -188,7 +188,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void showCommentsThrobber() {
         hideLoadMoreItem();
-        mList.add(new Throbber_Item(R.string.COMMENTS_loading_comments));
+        list.add(new Throbber_Item(R.string.COMMENTS_loading_comments));
         notifyItemChanged(getMaxIndex());
     }
 
@@ -211,17 +211,17 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void setList(List<Comment> inputList) {
-        int listSize = mList.size();
+        int listSize = list.size();
         if (listSize > 1) {
-            List<ListItem> existingCommentsList = mList.subList(1, listSize - 1);
-            mList.removeAll(existingCommentsList);
+            List<ListItem> existingCommentsList = list.subList(1, listSize - 1);
+            list.removeAll(existingCommentsList);
             notifyItemRangeRemoved(1, existingCommentsList.size());
         }
-        appendList(inputList, 1);
+        appendList(inputList);
     }
 
     @Override
-    public void appendList(List<Comment> inputList, int insertToIndex) {
+    public void appendList(List<Comment> inputList) {
 
         int inputListSize = inputList.size();
         Comment lastComment = null;
@@ -232,23 +232,21 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             inputList.remove(lastCommentIndex);
         }
 
-        int start = mList.size();
+        int start = this.list.size();
         int count = inputList.size();
 
-//        hideLoadMoreItem();
-
-        mList.addAll(insertToIndex, inputList);
-        notifyItemRangeChanged(start, count);
-
         hideLoadMoreItem();
+
+        this.list.addAll(inputList);
+        notifyItemRangeChanged(start, count);
 
         if (null != lastComment)
             showLoadMoreItem(lastComment);
     }
 
     @Override
-    public void appendComment(Comment comment, @Nullable AttachCommentCallbacks callbacks) {
-        mList.add(comment);
+    public void attachComment(Comment comment, @Nullable AttachCommentCallbacks callbacks) {
+        list.add(comment);
         notifyItemChanged(getLastCommentIndex());
 
         if (null != callbacks)
@@ -258,7 +256,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public Comment getComment(String commentKey) {
         commentKey = commentKey + ""; // Защита от NULL
-        for (ListItem listItem : mList) {
+        for (ListItem listItem : list) {
             if (listItem.isCommentItem()) {
                 Comment comment = (Comment) listItem;
                 if (commentKey.equals(comment.getKey()))
@@ -272,14 +270,14 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public void scrollToComment(String commentKey) {
         Comment comment = getComment(commentKey);
         if (null != comment)
-            view.scrollListToPosition(mList.indexOf(comment));
+            view.scrollListToPosition(list.indexOf(comment));
     }
 
 
     // Внутренние методы
     private void showLoadMoreItem(Comment lastComment) {
         LoadMore_Item loadMoreItem = new LoadMore_Item(lastComment);
-        mList.add(loadMoreItem);
+        list.add(loadMoreItem);
     }
 
     private void hideLoadMoreItem() {
@@ -288,7 +286,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     private int getMaxIndex() {
-        return mList.size() - 1;
+        return list.size() - 1;
     }
 
     private ListItem getLastItem(ListItem.ItemType itemType) {
@@ -297,7 +295,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         if (maxIndex < 0)
             return null;
 
-        ListItem listItem = mList.get(maxIndex);
+        ListItem listItem = list.get(maxIndex);
 
         if (listItem.is(itemType))
             return listItem;
@@ -306,17 +304,17 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     private int getLastCommentIndex() {
-        return mList.size()-1;
+        return list.size()-1;
     }
 
     private void removeItemIfType(ListItem.ItemType itemType, int index) {
 
-        if (0 != mList.size() && mList.size() > index) {
+        if (0 != list.size() && list.size() > index) {
 
-            ListItem listItem = mList.get(index);
+            ListItem listItem = list.get(index);
 
             if (listItem.is(itemType)) {
-                mList.remove(index);
+                list.remove(index);
                 notifyItemRemoved(index);
             }
 
