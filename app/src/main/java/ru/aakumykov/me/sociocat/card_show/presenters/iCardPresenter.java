@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
+import ru.aakumykov.me.sociocat.models.Card;
 
 public interface iCardPresenter {
 
@@ -17,4 +18,6 @@ public interface iCardPresenter {
     void onErrorOccurs();
 
     void onReplyClicked();
+
+    Card getCard();
 }

@@ -21,7 +21,7 @@ public class CommentForm implements
     private final static String TAG = "CommentForm";
 
     private Context context;
-    private SendButtonListener sendButtonListener;
+    private ButtonListeners buttonListeners;
 
     private View commentForm;
 
@@ -62,8 +62,8 @@ public class CommentForm implements
     }
 
     @Override
-    public void addSendButtonListener(SendButtonListener listener) {
-        this.sendButtonListener = listener;
+    public void addButtonListeners(ButtonListeners listeners) {
+        this.buttonListeners = listeners;
     }
 
     @Override
@@ -170,12 +170,13 @@ public class CommentForm implements
     // Внутренние методы
     private void sendComment() {
         hideError();
-        sendButtonListener.onSendCommentClicked(getText());
+        buttonListeners.onSendCommentClicked(getText());
     }
 
     private void clearQuote() {
         quoteTextView.setText("");
         MyUtils.hide(quoteContainer);
+        buttonListeners.onClearQuoteClicked();
     }
 
     private void hideKeyboard() {

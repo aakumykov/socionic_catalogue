@@ -4,12 +4,13 @@ import android.view.ViewGroup;
 
 public interface iCommentForm {
 
-    interface SendButtonListener {
+    interface ButtonListeners {
+        void onClearQuoteClicked();
         void onSendCommentClicked(String commentText);
     }
 
     void attachTo(ViewGroup container);
-    void addSendButtonListener(SendButtonListener listener);
+    void addButtonListeners(ButtonListeners listeners);
 
     void setQuote(String text);
 

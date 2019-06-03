@@ -24,8 +24,8 @@ import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
-import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 import ru.aakumykov.me.sociocat.card_show.presenters.CardPresenter;
@@ -142,7 +142,7 @@ public class CardShow_View extends BaseView implements
         if (null != quotedText)
             commentForm.setQuote(quotedText);
 
-        commentForm.addSendButtonListener(new ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm.SendButtonListener() {
+        commentForm.addButtonListeners(new ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm.ButtonListeners() {
             @Override
             public void onSendCommentClicked(String commentText) {
                 commentsPresenter.onSendCommentClicked(commentText, parentItem, commentForm);
@@ -170,7 +170,14 @@ public class CardShow_View extends BaseView implements
         if (null != quote)
             commentForm.setQuote(quote);
 
-        commentForm.addSendButtonListener(new iCommentForm.SendButtonListener() {
+
+
+        commentForm.addButtonListeners(new iCommentForm.ButtonListeners() {
+            @Override public void onClearQuoteClicked() {
+                Card card = cardPresenter.getCard();
+                commentsPresenter.onReplyClicked(card);
+            }
+
             @Override
             public void onSendCommentClicked(String commentText) {
                 commentsPresenter.onSendCommentClicked(commentForm);
