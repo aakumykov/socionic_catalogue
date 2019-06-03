@@ -73,7 +73,7 @@ public class Comment_ViewHolder  extends Base_ViewHolder {
     // Нажатия
     @OnClick(R.id.replyWidget)
     void openCommentForm() {
-        commentsPresenter.onReplyToCommentClicked(currentComment.getKey());
+        commentsPresenter.onReplyClicked(currentComment);
     }
 
 

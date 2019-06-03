@@ -33,6 +33,7 @@ public final class Constants {
     public final static String COMMENT_KEY = "COMMENT_KEY";
 
     public final static String TRANSIT_ARGUMENTS = "TRANSIT_ARGUMENTS";
+    public final static String REPLIED_ITEM = "REPLIED_ITEM";
 
     public final static String TAG_FILTER = "TAG_FILTER";
     public final static String TAG_KEY = "TAG_KEY";
@@ -65,6 +66,7 @@ public final class Constants {
     public final static int CODE_SELECT_IMAGE = 25;
     public final static int CODE_USER_EDIT = 30;
     public final static int CODE_FORCE_SETUP_USER_NAME = 40;
+    public final static int CODE_REPLY = 49;
     public final static int CODE_REPLY_TO_CARD = 50;
     public final static int CODE_REPLY_TO_COMMENT = 51;
     public final static int CODE_RESET_PASSWORD = 60;

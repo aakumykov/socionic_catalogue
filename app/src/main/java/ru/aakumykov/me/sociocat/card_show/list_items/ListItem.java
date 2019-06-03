@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.card_show.list_items;
 
 import com.google.firebase.database.Exclude;
 
-public abstract class ListItem {
+public abstract class ListItem implements iListItem {
 
     public static final int CARD_VIEW_TYPE = 10;
     public static final int COMMENT_VIEW_TYPE = 20;
@@ -19,31 +19,38 @@ public abstract class ListItem {
     @Exclude private ItemType itemType;
 
 
+    @Override
     public void setItemType(ItemType itemType) {
         this.itemType = itemType;
     }
 
-    @Exclude public ItemType getItemType() {
+    @Override @Exclude
+    public ItemType getItemType() {
         return itemType;
     }
 
-    @Exclude public boolean is(ItemType testItemType) {
+    @Override @Exclude
+    public boolean is(ItemType testItemType) {
         return itemType.equals(testItemType);
     }
 
-    @Exclude public boolean isCardItem() {
+    @Override @Exclude
+    public boolean isCardItem() {
         return itemType.equals(ItemType.CARD_ITEM);
     }
 
-    @Exclude public boolean isCommentItem() {
+    @Override @Exclude
+    public boolean isCommentItem() {
         return itemType.equals(ItemType.COMMENT_ITEM);
     }
 
-    @Exclude public boolean isCommentsThrobberItem() {
+    @Override @Exclude
+    public boolean isCommentsThrobberItem() {
         return itemType.equals(ItemType.CARD_ITEM);
     }
 
-    @Exclude public boolean isLoadMoreItem() {
+    @Override @Exclude
+    public boolean isLoadMoreItem() {
         return itemType.equals(ItemType.LOAD_MORE_ITEM);
     }
 }

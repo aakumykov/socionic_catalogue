@@ -11,8 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
+import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 
-public class Comment extends ListItem implements Parcelable
+public class Comment extends ListItem implements Parcelable, iTextItem
 {
     public final static int key_commentId = 10;
     public final static String key_createdAt = "createdAt";

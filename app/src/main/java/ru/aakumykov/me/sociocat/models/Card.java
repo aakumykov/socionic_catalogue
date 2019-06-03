@@ -13,11 +13,12 @@ import java.util.HashMap;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
+import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 
 // TODO: как сделать так, чтобы графическая карточка не могла сохраниться без картинки?
 // И так далее...
 
-public class Card extends ListItem implements Parcelable
+public class Card extends ListItem implements Parcelable, iTextItem
 {
     private String key;
     private String userId;

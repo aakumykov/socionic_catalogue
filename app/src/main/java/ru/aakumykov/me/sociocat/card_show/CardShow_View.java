@@ -24,6 +24,8 @@ import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
+import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
+import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 import ru.aakumykov.me.sociocat.card_show.presenters.CardPresenter;
@@ -162,18 +164,12 @@ public class CardShow_View extends BaseView implements
         return (Activity) this;
     }
 
-    @Override
-    public void showCommentForm(@Nullable String initialText, @Nullable String quote) {
-
-        if (null != initialText)
-            commentForm.setText(initialText);
+    @Override public void showCommentForm(iTextItem repliedItem) {
+        String quote = (repliedItem.isCommentItem()) ? ((Comment)repliedItem).getText() : null;
 
         if (null != quote)
             commentForm.setQuote(quote);
 
-        /* Так как форма используется для коммментирования как
-        * карточки, так и других комментариев, обработчик устанавливается
-        * динамически. */
         commentForm.addSendButtonListener(new iCommentForm.SendButtonListener() {
             @Override
             public void onSendCommentClicked(String commentText) {
@@ -257,8 +253,8 @@ public class CardShow_View extends BaseView implements
 
         Bundle transitArguments = data.getBundleExtra(Constants.TRANSIT_ARGUMENTS);
         if (null != transitArguments) {
-            String commentKey = transitArguments.getString(Constants.COMMENT_KEY);
-            commentsPresenter.onReplyToCommentClicked(commentKey);
+            iTextItem repliedItem = transitArguments.getParcelable(Constants.REPLIED_ITEM);
+            commentsPresenter.onReplyClicked(repliedItem);
         }
     }
 }

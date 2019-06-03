@@ -13,6 +13,7 @@ import ru.aakumykov.me.sociocat.card_show.adapter.CommentsView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
+import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
@@ -34,7 +35,7 @@ public class CommentsPresenter implements iCommentsPresenter {
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
-    private ListItem mRepliedItem;
+    private iTextItem mRepliedItem;
     private Comment mEditedComment;
 
 
@@ -69,16 +70,29 @@ public class CommentsPresenter implements iCommentsPresenter {
     }
 
     @Override
-    public void onReplyToCommentClicked(String commentKey) {
+    public void onReplyClicked(iTextItem repliedItem) {
+        mRepliedItem = repliedItem;
+
         if (AuthSingleton.isLoggedIn()) {
-            Comment repliedComment = commentsView.getComment(commentKey);
-            mRepliedItem = repliedComment;
-            pageView.showCommentForm(null, repliedComment.getText());
-        } else {
-            Bundle transitAgruments = new Bundle();
-            transitAgruments.putString(Constants.COMMENT_KEY, commentKey);
-            pageView.requestLogin(Constants.CODE_REPLY_TO_COMMENT, transitAgruments);
+            pageView.showCommentForm(repliedItem);
         }
+        else {
+            Bundle transitAgruments = new Bundle();
+            transitAgruments.putParcelable(Constants.REPLIED_ITEM, repliedItem);
+            pageView.requestLogin(Constants.CODE_REPLY, transitAgruments);
+        }
+    }
+
+    @Override
+    public void onEditCommentClicked(Comment comment) {
+        if (!AuthSingleton.isLoggedIn()) {
+            pageView.showToast("Необходимо авторизоваться (╯°□°)╯");
+            return;
+        }
+
+        mEditedComment = comment;
+
+        pageView.showCommentForm(comment);
     }
 
     @Override
@@ -95,23 +109,6 @@ public class CommentsPresenter implements iCommentsPresenter {
             createComment(commentText, commentForm);
         else if (null != mEditedComment)
             updateComment(commentText, commentForm);
-    }
-
-    @Override
-    public void onEditCommentClicked(Comment comment) {
-        if (!AuthSingleton.isLoggedIn()) {
-            pageView.showToast("Необходимо авторизоваться (╯°□°)╯");
-            return;
-        }
-
-        mEditedComment = comment;
-
-        pageView.showCommentForm(comment.getText(), null);
-    }
-
-    @Override
-    public void onCommentEditFinished(Comment originalComment, String newText) {
-
     }
 
 
