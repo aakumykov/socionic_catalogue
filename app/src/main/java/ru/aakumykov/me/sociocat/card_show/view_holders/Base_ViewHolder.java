@@ -8,6 +8,5 @@ public abstract class Base_ViewHolder extends RecyclerView.ViewHolder {
 
     Base_ViewHolder(View view){
         super(view);
-
     }
 }

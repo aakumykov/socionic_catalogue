@@ -6,7 +6,7 @@ import ru.aakumykov.me.sociocat.models.Comment;
 
 public interface iCommentsSingleton {
 
-    void loadList(String cardId, String lastCommentKey, ListCallbacks callbacks);
+    void loadList(String cardId, String startKey, String endKey, ListCallbacks callbacks);
     void createComment(Comment commentDraft, CreateCallbacks callbacks);
     void updateComment(Comment comment, CreateCallbacks callbacks);
     void deleteComment(Comment comment, DeleteCallbacks callbacks);

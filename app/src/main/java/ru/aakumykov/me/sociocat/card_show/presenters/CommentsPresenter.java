@@ -12,7 +12,6 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.CommentsView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
-import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -37,6 +36,7 @@ public class CommentsPresenter implements iCommentsPresenter {
 
     private iTextItem mRepliedItem;
     private Comment mEditedComment;
+    private Comment endComment;
 
 
     @Override
@@ -60,13 +60,17 @@ public class CommentsPresenter implements iCommentsPresenter {
     }
 
     @Override
-    public void onWorkBegins(String cardKey, @Nullable String scrollToCommentKey) {
-        loadComments(LoadMode.MODE_REPLACE, cardKey, null, scrollToCommentKey);
+    public void onWorkBegins(String cardKey, @Nullable String commentKeyToScroll) {
+        loadComments(LoadMode.MODE_REPLACE, cardKey, -1, null, null, commentKeyToScroll);
     }
 
     @Override
-    public void onLoadMoreClicked(String cardKey, String lastVisibleCommentKey) {
-        loadComments(LoadMode.MODE_APPEND, cardKey, lastVisibleCommentKey, null);
+    public void onLoadMoreClicked(int itemIndex, Comment startAtComment) {
+        int insertToIndex = itemIndex - 1;
+        String cardKey = startAtComment.getCardId();
+        String startKey = startAtComment.getKey();
+        String endKey = endComment.getKey();
+        loadComments(LoadMode.MODE_APPEND, cardKey, insertToIndex, startKey, endKey, null);
     }
 
     @Override
@@ -113,19 +117,27 @@ public class CommentsPresenter implements iCommentsPresenter {
 
 
     // Внутренние методы
-    private void loadComments(LoadMode loadMode, String cardKey, @Nullable String lastCommentKey, @Nullable String scrollToCommentKey) {
+    private void loadComments(LoadMode loadMode,
+                              String cardKey,
+                              int insertToIndex,
+                              @Nullable String startKey,
+                              @Nullable String endKey,
+                              @Nullable String scrollToCommentKey
+    ) {
 
         commentsView.showCommentsThrobber();
 
-        commentsSingleton.loadList(cardKey, lastCommentKey, new iCommentsSingleton.ListCallbacks() {
+        commentsSingleton.loadList(cardKey, startKey, endKey, new iCommentsSingleton.ListCallbacks() {
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
                 commentsView.hideCommentsThrobber();
 
+                endComment = list.get(list.size()-1);
+
                 if (LoadMode.MODE_REPLACE.equals(loadMode))
                     commentsView.setList(list);
                 else
-                    commentsView.appendList(list);
+                    commentsView.appendList(list, insertToIndex);
 
                 if (null != scrollToCommentKey)
                     commentsView.scrollToComment(scrollToCommentKey);
@@ -173,11 +185,7 @@ public class CommentsPresenter implements iCommentsPresenter {
                 mEditedComment = null;
                 mRepliedItem = null;
 
-                commentsView.attachComment(comment, new iCommentsView.AttachCommentCallbacks() {
-                    @Override public void onCommentAttached(Comment comment) {
-                        commentsView.scrollToComment(comment.getKey());
-                    }
-                });
+                appendComment(comment, true);
             }
 
             @Override
@@ -205,18 +213,24 @@ public class CommentsPresenter implements iCommentsPresenter {
                 mEditedComment = null;
                 mRepliedItem = null;
 
-                commentsView.attachComment(comment, new iCommentsView.AttachCommentCallbacks() {
-                    @Override
-                    public void onCommentAttached(Comment comment) {
-
-                    }
-                });
+                appendComment(comment, false);
             }
 
             @Override
             public void onCommentSaveError(String errorMsg) {
                 commentForm.showError(R.string.CARD_SHOW_error_saving_comment, errorMsg);
                 commentForm.enable();
+            }
+        });
+    }
+
+    private void appendComment(Comment comment, boolean scrollToIt) {
+        this.endComment = comment;
+
+        commentsView.appendComment(comment, new iCommentsView.AttachCommentCallbacks() {
+            @Override public void onCommentAttached(Comment comment) {
+                if (scrollToIt)
+                    commentsView.scrollToComment(comment.getKey());
             }
         });
     }

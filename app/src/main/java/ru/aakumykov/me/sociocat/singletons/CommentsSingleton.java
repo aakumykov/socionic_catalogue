@@ -48,16 +48,17 @@ public class CommentsSingleton implements iCommentsSingleton {
 
     // Интерфейсные методы
     @Override
-    public void loadList(String cardId, @Nullable String lastCommentKey, final ListCallbacks callbacks) {
+    public void loadList(String cardId, @Nullable String startKey, @Nullable String endKey, final ListCallbacks callbacks) {
 
         // TODO: что будет при кривом cardId? Бросать исключние?
         Query query;
 
-        if (null != lastCommentKey)
+        if (null != startKey && null != endKey)
             query = commentsRef
                     .child(cardId)
                     .orderByKey()
-                    .startAt(lastCommentKey)
+                    .startAt(startKey)
+                    .endAt(endKey)
                     .limitToFirst(Config.DEFAULT_COMMENTS_LOAD_COUNT + 1);
         else
             query = commentsRef
