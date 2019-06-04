@@ -11,14 +11,14 @@ import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.list_items.LoadMore_Item;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
-import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 
 public class LoadMore_ViewHolder extends Base_ViewHolder
 {
     private final static String TAG = "LoadMore_ViewHolder";
     private iCommentsPresenter commentsPresenter;
-    private Comment lastVisibleComment;
+    private Comment associatedComment;
+    private int position;
 
     @BindView(R.id.loadMoreTextView) TextView textView;
 
@@ -29,10 +29,12 @@ public class LoadMore_ViewHolder extends Base_ViewHolder
         this.commentsPresenter = commentsPresenter;
     }
 
-    public void initialize(@Nullable LoadMore_Item loadMoreItem) {
+    public void initialize(@Nullable LoadMore_Item loadMoreItem, int position) {
+
+        this.position = position;
 
         if (null != loadMoreItem) {
-            lastVisibleComment = loadMoreItem.getLastVisibleComment();
+            associatedComment = loadMoreItem.getLastVisibleComment();
             textView.setText(R.string.COMMENTS_load_more_comments);
         }
         else {
@@ -41,8 +43,11 @@ public class LoadMore_ViewHolder extends Base_ViewHolder
     }
 
     @OnClick(R.id.loadMoreTextView)
-    void loadMoreComments() {
-        commentsPresenter.onLoadMoreClicked(lastVisibleComment.getCardId(), lastVisibleComment.getKey());
+    void loadMoreClicked() {
+        commentsPresenter.onLoadMoreClicked(
+                associatedComment.getCardId(),
+                associatedComment.getKey()
+        );
     }
 }
 

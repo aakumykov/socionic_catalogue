@@ -117,7 +117,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 break;
 
             case ListItem.LOAD_MORE_VIEW_TYPE:
-                ((LoadMore_ViewHolder) viewHolder).initialize((LoadMore_Item) item);
+                ((LoadMore_ViewHolder) viewHolder).initialize((LoadMore_Item) item, position);
 
             default:
                 break;
