@@ -27,7 +27,7 @@ public class CommentsView_Stub implements iCommentsView {
 
     }
 
-    @Override public void appendList(List<Comment> list, int position) {
+    @Override public void addList(List<Comment> list, int position) {
 
     }
 

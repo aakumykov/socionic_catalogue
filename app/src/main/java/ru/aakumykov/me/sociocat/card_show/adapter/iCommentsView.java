@@ -19,7 +19,7 @@ public interface iCommentsView {
     void hideCommentsError();
 
     void setList(List<Comment> itemsList);
-    void appendList(List<Comment> list, int position);
+    void addList(List<Comment> list, int position);
 
     void attachComment(Comment comment, @Nullable AttachCommentCallbacks callbacks);
 

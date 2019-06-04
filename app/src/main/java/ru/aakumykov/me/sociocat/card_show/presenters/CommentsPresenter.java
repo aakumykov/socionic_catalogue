@@ -141,6 +141,7 @@ public class CommentsPresenter implements iCommentsPresenter {
         commentsView.showCommentsThrobber();
 
         commentsSingleton.loadList(cardKey, startAtKey, endAtKey, new iCommentsSingleton.ListCallbacks() {
+
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
                 commentsView.hideCommentsThrobber();
@@ -148,7 +149,7 @@ public class CommentsPresenter implements iCommentsPresenter {
                 if (LoadMode.MODE_REPLACE.equals(loadMode))
                     commentsView.setList(list);
                 else
-                    commentsView.appendList(list, insertPosition);
+                    commentsView.addList(list, insertPosition);
 
                 if (null != scrollToCommentKey)
                     commentsView.scrollToComment(scrollToCommentKey);
