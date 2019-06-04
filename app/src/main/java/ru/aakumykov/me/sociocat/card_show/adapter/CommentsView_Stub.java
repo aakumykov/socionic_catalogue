@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.models.Comment;
 
 public class CommentsView_Stub implements iCommentsView {
@@ -28,7 +27,7 @@ public class CommentsView_Stub implements iCommentsView {
 
     }
 
-    @Override public void appendList(List<Comment> list) {
+    @Override public void appendList(List<Comment> list, int position) {
 
     }
 

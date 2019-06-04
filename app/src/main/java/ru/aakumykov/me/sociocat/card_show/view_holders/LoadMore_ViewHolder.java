@@ -17,7 +17,7 @@ public class LoadMore_ViewHolder extends Base_ViewHolder
 {
     private final static String TAG = "LoadMore_ViewHolder";
     private iCommentsPresenter commentsPresenter;
-    private Comment associatedComment;
+    private Comment startAtComment;
     private int position;
 
     @BindView(R.id.loadMoreTextView) TextView textView;
@@ -34,7 +34,7 @@ public class LoadMore_ViewHolder extends Base_ViewHolder
         this.position = position;
 
         if (null != loadMoreItem) {
-            associatedComment = loadMoreItem.getLastVisibleComment();
+            startAtComment = loadMoreItem.getLastVisibleComment();
             textView.setText(R.string.COMMENTS_load_more_comments);
         }
         else {
@@ -44,10 +44,7 @@ public class LoadMore_ViewHolder extends Base_ViewHolder
 
     @OnClick(R.id.loadMoreTextView)
     void loadMoreClicked() {
-        commentsPresenter.onLoadMoreClicked(
-                associatedComment.getCardId(),
-                associatedComment.getKey()
-        );
+        commentsPresenter.onLoadMoreClicked(position, startAtComment);
     }
 }
 

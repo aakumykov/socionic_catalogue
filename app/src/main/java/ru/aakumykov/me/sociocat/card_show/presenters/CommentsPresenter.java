@@ -12,7 +12,6 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.CommentsView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
-import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -61,12 +60,29 @@ public class CommentsPresenter implements iCommentsPresenter {
 
     @Override
     public void onWorkBegins(String cardKey, @Nullable String scrollToCommentKey) {
-        loadComments(LoadMode.MODE_REPLACE, cardKey, null, scrollToCommentKey);
+        loadComments(
+                LoadMode.MODE_REPLACE,
+                cardKey,
+                null,
+                null,
+                -1,
+                scrollToCommentKey
+        );
     }
 
     @Override
-    public void onLoadMoreClicked(String cardKey, String lastVisibleCommentKey) {
-        loadComments(LoadMode.MODE_APPEND, cardKey, lastVisibleCommentKey, null);
+    public void onLoadMoreClicked(int insertPosition, Comment beginningComment) {
+        String cardKey = beginningComment.getKey();
+        String startAtKey = beginningComment.getKey();
+
+        loadComments(
+                LoadMode.MODE_APPEND,
+                cardKey,
+                startAtKey,
+                null,
+                insertPosition,
+                null
+        );
     }
 
     @Override
@@ -113,11 +129,18 @@ public class CommentsPresenter implements iCommentsPresenter {
 
 
     // Внутренние методы
-    private void loadComments(LoadMode loadMode, String cardKey, @Nullable String lastCommentKey, @Nullable String scrollToCommentKey) {
+    private void loadComments(
+            LoadMode loadMode,
+            String cardKey,
+            @Nullable String startAtKey,
+            @Nullable String endAtKey,
+            int insertPosition,
+            @Nullable String scrollToCommentKey
+    ) {
 
         commentsView.showCommentsThrobber();
 
-        commentsSingleton.loadList(cardKey, lastCommentKey, new iCommentsSingleton.ListCallbacks() {
+        commentsSingleton.loadList(cardKey, startAtKey, endAtKey, new iCommentsSingleton.ListCallbacks() {
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
                 commentsView.hideCommentsThrobber();
@@ -125,7 +148,7 @@ public class CommentsPresenter implements iCommentsPresenter {
                 if (LoadMode.MODE_REPLACE.equals(loadMode))
                     commentsView.setList(list);
                 else
-                    commentsView.appendList(list);
+                    commentsView.appendList(list, insertPosition);
 
                 if (null != scrollToCommentKey)
                     commentsView.scrollToComment(scrollToCommentKey);

@@ -217,11 +217,11 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             list.removeAll(existingCommentsList);
             notifyItemRangeRemoved(1, existingCommentsList.size());
         }
-        appendList(inputList);
+        appendList(inputList, 1);
     }
 
     @Override
-    public void appendList(List<Comment> inputList) {
+    public void appendList(List<Comment> inputList, int position) {
 
         int inputListSize = inputList.size();
         Comment lastComment = null;

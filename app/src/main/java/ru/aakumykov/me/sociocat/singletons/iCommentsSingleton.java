@@ -1,12 +1,14 @@
 package ru.aakumykov.me.sociocat.singletons;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Comment;
 
 public interface iCommentsSingleton {
 
-    void loadList(String cardId, String lastCommentKey, ListCallbacks callbacks);
+    void loadList(String cardId, @Nullable String startAtKey, @Nullable String endAtKey, ListCallbacks callbacks);
     void createComment(Comment commentDraft, CreateCallbacks callbacks);
     void updateComment(Comment comment, CreateCallbacks callbacks);
     void deleteComment(Comment comment, DeleteCallbacks callbacks);
