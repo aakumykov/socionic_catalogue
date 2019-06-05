@@ -34,8 +34,9 @@ public class CommentsPresenter implements iCommentsPresenter {
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
-    private iTextItem mRepliedItem;
-    private Comment mEditedComment;
+    private @Nullable iTextItem mRepliedItem;
+    private @Nullable Comment mEditedComment;
+    private @Nullable Comment mEndComment;
 
 
     @Override
@@ -72,14 +73,15 @@ public class CommentsPresenter implements iCommentsPresenter {
 
     @Override
     public void onLoadMoreClicked(int insertPosition, Comment beginningComment) {
-        String cardKey = beginningComment.getKey();
+        String cardKey = beginningComment.getCardId();
         String startAtKey = beginningComment.getKey();
+        String endAtKey = (null != mEndComment) ? mEndComment.getKey() : null;
 
         loadComments(
                 LoadMode.MODE_APPEND,
                 cardKey,
                 startAtKey,
-                null,
+                endAtKey,
                 insertPosition,
                 null
         );
@@ -196,6 +198,7 @@ public class CommentsPresenter implements iCommentsPresenter {
 
                 mEditedComment = null;
                 mRepliedItem = null;
+                mEndComment = comment;
 
                 commentsView.attachComment(comment, new iCommentsView.AttachCommentCallbacks() {
                     @Override public void onCommentAttached(Comment comment) {
