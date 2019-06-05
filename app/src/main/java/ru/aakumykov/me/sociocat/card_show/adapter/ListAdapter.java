@@ -170,7 +170,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void hideCardThrobber() {
-        removeItemIfType(ListItem.ItemType.THROBBER_ITEM, 0);
+        removeLastItemIfType(ListItem.ItemType.THROBBER_ITEM);
     }
 
     @Override
@@ -202,11 +202,11 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void hideCommentsThrobber(int position) {
-//        int maxIndex = getMaxIndex();
-//        removeItemIfType(ListItem.ItemType.THROBBER_ITEM, maxIndex);
         if (position > 0 && itemsList.size() >= position + 1) {
             itemsList.remove(position);
             notifyItemRemoved(position);
+        } else {
+            removeLastItemIfType(ListItem.ItemType.THROBBER_ITEM);
         }
     }
 
@@ -234,7 +234,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void addList(List<Comment> inputList, int position) {
 
-        int inputListSize = inputList.size();
+/*        int inputListSize = inputList.size();
         Comment lastComment = null;
 
         if (inputListSize > Config.DEFAULT_COMMENTS_LOAD_COUNT) {
@@ -252,7 +252,20 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         notifyItemRangeChanged(start, count);
 
         if (null != lastComment)
-            showLoadMoreItem(position, lastComment);
+            showLoadMoreItem(position, lastComment);*/
+
+        // Другой вариант
+        Comment lastComment = (inputList.size() > Config.DEFAULT_COMMENTS_LOAD_COUNT) ?
+                inputList.get(inputList.size()-1) : null;
+
+        if (null != lastComment)
+            inputList.remove(inputList.size()-1);
+
+        itemsList.addAll(position, inputList);
+        notifyItemRangeChanged(position, inputList.size());
+
+        if (null != lastComment)
+            showLoadMoreItem(position + inputList.size(), lastComment);
     }
 
     @Override
@@ -288,13 +301,15 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     // Внутренние методы
     private void showLoadMoreItem(int position, Comment commentToStartFrom) {
         LoadMore_Item loadMoreItem = new LoadMore_Item(commentToStartFrom);
-        itemsList.add(loadMoreItem);
+        itemsList.add(position, loadMoreItem);
     }
 
     private void hideLoadMoreItem(int position) {
         if (position > -1 && itemsList.size() >= position + 1) {
             itemsList.remove(position);
             notifyItemRemoved(position);
+        } else {
+            removeLastItemIfType(ListItem.ItemType.LOAD_MORE_ITEM);
         }
     }
 
@@ -320,17 +335,12 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         return itemsList.size()-1;
     }
 
-    private void removeItemIfType(ListItem.ItemType itemType, int index) {
-
-        if (0 != itemsList.size() && itemsList.size() > index) {
-
-            ListItem listItem = itemsList.get(index);
-
-            if (listItem.is(itemType)) {
-                itemsList.remove(index);
-                notifyItemRemoved(index);
-            }
-
+    private void removeLastItemIfType(ListItem.ItemType itemType) {
+        int maxIndex = itemsList.size() - 1;
+        ListItem lastItem = itemsList.get(maxIndex);
+        if (lastItem.is(itemType)) {
+            itemsList.remove(maxIndex);
+            notifyItemRemoved(maxIndex);
         }
     }
 

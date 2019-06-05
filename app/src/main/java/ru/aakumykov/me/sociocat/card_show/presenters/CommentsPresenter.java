@@ -146,6 +146,7 @@ public class CommentsPresenter implements iCommentsPresenter {
 
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
+
                 commentsView.hideCommentsThrobber(insertPosition);
 
                 if (LoadMode.MODE_REPLACE.equals(loadMode))
