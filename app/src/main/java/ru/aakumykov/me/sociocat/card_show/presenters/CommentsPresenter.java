@@ -72,7 +72,7 @@ public class CommentsPresenter implements iCommentsPresenter {
 
     @Override
     public void onLoadMoreClicked(int insertPosition, Comment beginningComment) {
-        String cardKey = beginningComment.getKey();
+        String cardKey = beginningComment.getCardId();
         String startAtKey = beginningComment.getKey();
 
         loadComments(

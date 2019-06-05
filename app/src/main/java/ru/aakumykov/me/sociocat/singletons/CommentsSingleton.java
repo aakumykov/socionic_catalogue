@@ -59,6 +59,8 @@ public class CommentsSingleton implements iCommentsSingleton {
         Query query = commentsRef
                 .child(cardKey)
                 .orderByKey();
+//                .startAt("-LgCGD_7NxEGYqHu5NxQ")
+//                .limitToFirst(Config.DEFAULT_COMMENTS_LOAD_COUNT + 1);
 
         if (null != startAtKey)
             query = query.startAt(startAtKey);
