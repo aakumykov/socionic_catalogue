@@ -248,11 +248,11 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         hideLoadMoreItem(position);
 
-        this.itemsList.addAll(inputList);
+        this.itemsList.addAll(position, inputList);
         notifyItemRangeChanged(start, count);
 
         if (null != lastComment)
-            showLoadMoreItem(lastComment);
+            showLoadMoreItem(position, lastComment);
     }
 
     @Override
@@ -286,8 +286,8 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
     // Внутренние методы
-    private void showLoadMoreItem(Comment lastComment) {
-        LoadMore_Item loadMoreItem = new LoadMore_Item(lastComment);
+    private void showLoadMoreItem(int position, Comment commentToStartFrom) {
+        LoadMore_Item loadMoreItem = new LoadMore_Item(commentToStartFrom);
         itemsList.add(loadMoreItem);
     }
 
