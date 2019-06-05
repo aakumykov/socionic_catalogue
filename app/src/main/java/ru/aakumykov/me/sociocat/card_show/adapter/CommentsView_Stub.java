@@ -11,7 +11,8 @@ public class CommentsView_Stub implements iCommentsView {
 
     }
 
-    @Override public void hideCommentsThrobber(int position) {
+    @Override
+    public void hideCommentsThrobber() {
 
     }
 
