@@ -282,9 +282,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     private void hideLoadMoreItem(int position) {
-//        int maxIndex = getMaxIndex();
-//        removeItemIfType(ListItem.ItemType.LOAD_MORE_ITEM, maxIndex);
-        if (itemsList.size() >= position-1) {
+        if (position > 0 && itemsList.size() >= position + 1) {
             itemsList.remove(position);
             notifyItemRemoved(position);
         }
