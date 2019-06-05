@@ -186,7 +186,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // iCommentsView
     @Override
-    public void showCommentsThrobber() {
+    public void showCommentsThrobber(int position) {
         hideLoadMoreItem();
         itemsList.add(new Throbber_Item(R.string.COMMENTS_loading_comments));
         notifyItemChanged(getMaxIndex());

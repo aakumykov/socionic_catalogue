@@ -34,8 +34,8 @@ public class CommentsPresenter implements iCommentsPresenter {
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
-    private @Nullable iTextItem mRepliedItem;
-    private @Nullable Comment mEditedComment;
+    private iTextItem mRepliedItem;
+    private Comment mEditedComment;
     private @Nullable Comment mEndComment;
 
 
@@ -140,7 +140,7 @@ public class CommentsPresenter implements iCommentsPresenter {
             @Nullable String scrollToCommentKey
     ) {
 
-        commentsView.showCommentsThrobber();
+        commentsView.showCommentsThrobber(insertPosition);
 
         commentsSingleton.loadList(cardKey, startAtKey, endAtKey, new iCommentsSingleton.ListCallbacks() {
 

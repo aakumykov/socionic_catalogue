@@ -12,7 +12,7 @@ public interface iCommentsView {
         void onCommentAttached(Comment comment);
     }
 
-    void showCommentsThrobber();
+    void showCommentsThrobber(int position);
     void hideCommentsThrobber();
 
     void showCommentsError(int errorMsgId, String consoleErrorMsg);
