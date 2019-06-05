@@ -201,10 +201,13 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void hideCommentsThrobber() {
-        int maxIndex = getMaxIndex();
-        // TODO: проверить с -1
-        removeItemIfType(ListItem.ItemType.THROBBER_ITEM, maxIndex);
+    public void hideCommentsThrobber(int position) {
+//        int maxIndex = getMaxIndex();
+//        removeItemIfType(ListItem.ItemType.THROBBER_ITEM, maxIndex);
+        if (position > 0 && itemsList.size() >= position + 1) {
+            itemsList.remove(position);
+            notifyItemRemoved(position);
+        }
     }
 
     @Override

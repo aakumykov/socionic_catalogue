@@ -13,7 +13,7 @@ public interface iCommentsView {
     }
 
     void showCommentsThrobber(int position);
-    void hideCommentsThrobber();
+    void hideCommentsThrobber(int position);
 
     void showCommentsError(int errorMsgId, String consoleErrorMsg);
     void hideCommentsError();
