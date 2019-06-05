@@ -119,9 +119,9 @@ public class CommentForm implements
 
     @Override
     public void disable() {
-//        MyUtils.disable(clearQuoteWidget);
-//        MyUtils.disable(commentTextInput);
-//        MyUtils.disable(sendCommentWidget);
+        MyUtils.disable(clearQuoteWidget);
+        MyUtils.disable(commentTextInput);
+        MyUtils.disable(sendCommentWidget);
     }
 
     @Override
