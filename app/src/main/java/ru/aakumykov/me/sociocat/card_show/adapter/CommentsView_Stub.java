@@ -7,11 +7,11 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.models.Comment;
 
 public class CommentsView_Stub implements iCommentsView {
-    @Override public void showCommentsThrobber() {
+    @Override public void showCommentsThrobber(int position) {
 
     }
 
-    @Override public void hideCommentsThrobber() {
+    @Override public void hideCommentsThrobber(int position) {
 
     }
 

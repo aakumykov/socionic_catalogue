@@ -12,8 +12,8 @@ public interface iCommentsView {
         void onCommentAttached(Comment comment);
     }
 
-    void showCommentsThrobber();
-    void hideCommentsThrobber();
+    void showCommentsThrobber(int position);
+    void hideCommentsThrobber(int position);
 
     void showCommentsError(int errorMsgId, String consoleErrorMsg);
     void hideCommentsError();

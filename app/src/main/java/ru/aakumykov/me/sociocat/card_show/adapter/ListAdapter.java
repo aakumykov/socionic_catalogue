@@ -186,14 +186,14 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // iCommentsView
     @Override
-    public void showCommentsThrobber() {
-        hideLoadMoreItem();
+    public void showCommentsThrobber(int position) {
+        hideLoadMoreItem(position);
         itemsList.add(new Throbber_Item(R.string.COMMENTS_loading_comments));
         notifyItemChanged(getMaxIndex());
     }
 
     @Override
-    public void hideCommentsThrobber() {
+    public void hideCommentsThrobber(int position) {
         int maxIndex = getMaxIndex();
         // TODO: проверить с -1
         removeItemIfType(ListItem.ItemType.THROBBER_ITEM, maxIndex);
@@ -235,13 +235,13 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         int start = this.itemsList.size();
         int count = inputList.size();
 
-        hideLoadMoreItem();
+        hideLoadMoreItem(position);
 
-        this.itemsList.addAll(inputList);
+        this.itemsList.addAll(position, inputList);
         notifyItemRangeChanged(start, count);
 
         if (null != lastComment)
-            showLoadMoreItem(lastComment);
+            showLoadMoreItem(position + inputList.size(), lastComment);
     }
 
     @Override
@@ -275,14 +275,19 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
     // Внутренние методы
-    private void showLoadMoreItem(Comment lastComment) {
+    private void showLoadMoreItem(int position, Comment lastComment) {
         LoadMore_Item loadMoreItem = new LoadMore_Item(lastComment);
-        itemsList.add(loadMoreItem);
+        itemsList.add(position, loadMoreItem);
+        notifyItemChanged(position);
     }
 
-    private void hideLoadMoreItem() {
-        int maxIndex = getMaxIndex();
-        removeItemIfType(ListItem.ItemType.LOAD_MORE_ITEM, maxIndex);
+    private void hideLoadMoreItem(int position) {
+//        int maxIndex = getMaxIndex();
+//        removeItemIfType(ListItem.ItemType.LOAD_MORE_ITEM, maxIndex);
+        if (itemsList.size() >= position-1) {
+            itemsList.remove(position);
+            notifyItemRemoved(position);
+        }
     }
 
     private int getMaxIndex() {
