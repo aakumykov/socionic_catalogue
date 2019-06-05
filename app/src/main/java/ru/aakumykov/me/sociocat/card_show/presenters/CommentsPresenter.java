@@ -146,7 +146,7 @@ public class CommentsPresenter implements iCommentsPresenter {
 
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
-                commentsView.hideCommentsThrobber();
+                commentsView.hideCommentsThrobber(insertPosition);
 
                 if (LoadMode.MODE_REPLACE.equals(loadMode))
                     commentsView.setList(list);
@@ -159,7 +159,7 @@ public class CommentsPresenter implements iCommentsPresenter {
 
             @Override
             public void onCommentsLoadError(String errorMessage) {
-                commentsView.hideCommentsThrobber();
+                commentsView.hideCommentsThrobber(insertPosition);
                 commentsView.showCommentsError(R.string.COMMENTS_error_loading_comments, errorMessage);
             }
         });

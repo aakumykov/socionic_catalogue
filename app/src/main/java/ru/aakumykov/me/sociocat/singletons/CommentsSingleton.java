@@ -49,34 +49,26 @@ public class CommentsSingleton implements iCommentsSingleton {
     // Интерфейсные методы
     @Override
     public void loadList(
-            String cardId,
+            String cardKey,
             @Nullable String startAtKey,
             @Nullable String endAtKey,
             final ListCallbacks callbacks
     )
     {
         // TODO: что будет при кривом cardId? Бросать исключние?
-        Query query;
+        Query query = commentsRef
+                .child(cardKey)
+                .orderByKey();
+//                .startAt("-LgCGD_7NxEGYqHu5NxQ")
+//                .limitToFirst(Config.DEFAULT_COMMENTS_LOAD_COUNT + 1);
 
-        if (null != startAtKey && null == endAtKey)
-            query = commentsRef
-                    .child(cardId)
-                    .orderByKey()
-                    .startAt(startAtKey)
-                    .limitToFirst(Config.DEFAULT_COMMENTS_LOAD_COUNT + 1);
-        else if (null != startAtKey && null != endAtKey)
-            query = commentsRef
-                    .child(cardId)
-                    .orderByKey()
-                    .startAt(startAtKey)
-                    .endAt(endAtKey)
-                    .limitToFirst(Config.DEFAULT_COMMENTS_LOAD_COUNT + 1);
-        else
-            query = commentsRef
-                    .child(cardId)
-                    .orderByKey()
-                    .limitToFirst(Config.DEFAULT_COMMENTS_LOAD_COUNT + 1);
+        if (null != startAtKey)
+            query = query.startAt(startAtKey);
 
+        if (null != endAtKey)
+            query = query.endAt(endAtKey);
+
+        query = query.limitToFirst(Config.DEFAULT_COMMENTS_LOAD_COUNT + 1);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
