@@ -21,6 +21,7 @@ import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 
 public class CommentsPresenter implements iCommentsPresenter {
@@ -114,7 +115,7 @@ public class CommentsPresenter implements iCommentsPresenter {
     @Override
     public void onDeleteCommentClicked(Comment comment) {
         if (!AuthSingleton.isLoggedIn()) {
-            pageView.showToast("(╯°-°)╯ Что ты творишь?");
+            pageView.showToast("(╯°-°)╯ Что же ты творишь?");
             return;
         }
 
@@ -123,7 +124,18 @@ public class CommentsPresenter implements iCommentsPresenter {
 
     @Override
     public void onDeleteConfirmed(Comment comment) {
+        commentsSingleton.deleteComment(comment, new iCommentsSingleton.DeleteCallbacks() {
+            @Override
+            public void onDeleteSuccess(Comment comment) {
+                commentsView.removeComment(comment);
+            }
 
+            @Override
+            public void onDeleteError(String msg) {
+//                commentsView.showCommentsError(R.string.COMMENTS_VIEW_error_deleting_comment, msg);
+                pageView.showErrorMsg(R.string.COMMENTS_VIEW_error_deleting_comment, msg);
+            }
+        });
     }
 
     @Override

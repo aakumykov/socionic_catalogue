@@ -25,6 +25,7 @@ public interface iCommentsView {
 
     void attachComment(Comment comment, @Nullable AttachCommentCallbacks callbacks);
     void updateComment(Comment oldComment, Comment newComment);
+    void removeComment(Comment comment);
 
     Comment getComment(String commentKey);
 

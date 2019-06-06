@@ -46,6 +46,11 @@ public class CommentsView_Stub implements iCommentsView {
 
     }
 
+    @Override
+    public void removeComment(Comment comment) {
+
+    }
+
     @Override public Comment getComment(String commentKey) {
         return null;
     }

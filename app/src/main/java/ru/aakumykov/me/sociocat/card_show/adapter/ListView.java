@@ -335,6 +335,13 @@ public class ListView extends RecyclerView.Adapter<RecyclerView.ViewHolder> impl
     }
 
     @Override
+    public void removeComment(Comment comment) {
+        int index = itemsList.indexOf(comment);
+        itemsList.remove(index);
+        notifyItemRemoved(index);
+    }
+
+    @Override
     public Comment getComment(String commentKey) {
         commentKey = commentKey + ""; // Защита от NULL
         for (ListItem listItem : itemsList) {
