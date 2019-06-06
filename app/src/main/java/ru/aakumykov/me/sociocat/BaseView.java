@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -179,6 +180,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         return getApplicationContext();
     }
 
+    @Override
+    public Activity getActivity() {
+        return (Activity) this;
+    }
+
 
     // Сообщения вверху страницы
     @Override
@@ -272,6 +278,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public void closePage() {
         //Log.d(TAG, "closePage()");
         finish();
+    }
+
+    @Override
+    public String getString(int stringResourceId, String substitutedMessage) {
+        return getResources().getString(stringResourceId, substitutedMessage);
     }
 
     @Override

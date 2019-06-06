@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.interfaces;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +12,7 @@ public interface iBaseView {
 
     // Контекст
     Context getAppContext();
+    Activity getActivity();
 
     // Сообщения вверху страницы
     void showProgressMessage(int messageId);
@@ -42,5 +44,7 @@ public interface iBaseView {
     void closePage();
 
     String getString(int stringResourceId);
+    String getString(int stringResourceId, String substitutedMessage);
+
     void startSomeActivity(Intent intent);
 }

@@ -7,8 +7,6 @@ import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
 public interface iPageView extends iBaseView {
 
-    Activity getActivity();
-
     void showCommentForm(iTextItem repliedItem, boolean editMode);
     void hideCommentForm(boolean withQuestion);
 }
