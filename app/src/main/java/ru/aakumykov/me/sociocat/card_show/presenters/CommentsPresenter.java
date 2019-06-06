@@ -74,14 +74,12 @@ public class CommentsPresenter implements iCommentsPresenter {
     @Override
     public void onLoadMoreClicked(int insertPosition, Comment beginningComment) {
         String cardKey = beginningComment.getCardId();
-        String startAtKey = beginningComment.getKey();
-        String endAtKey = (null != mEndComment) ? mEndComment.getKey() : null;
 
         loadComments(
                 LoadMode.MODE_APPEND,
                 cardKey,
-                startAtKey,
-                endAtKey,
+                beginningComment,
+                mEndComment,
                 insertPosition,
                 null
         );
@@ -134,36 +132,42 @@ public class CommentsPresenter implements iCommentsPresenter {
     private void loadComments(
             LoadMode loadMode,
             String cardKey,
-            @Nullable String startAtKey,
-            @Nullable String endAtKey,
+            @Nullable Comment startComment,
+            @Nullable Comment endComment,
             int insertPosition,
             @Nullable String scrollToCommentKey
     ) {
+        String startCommentKey = (null != startComment) ? startComment.getKey() : null;
+        String endCommentKey = (null != endComment) ? endComment.getKey() : null;
 
         commentsView.showCommentsThrobber(insertPosition);
 
-        commentsSingleton.loadList(cardKey, startAtKey, endAtKey, new iCommentsSingleton.ListCallbacks() {
+        commentsSingleton.loadList(
+                cardKey,
+                startCommentKey,
+                endCommentKey,
+                new iCommentsSingleton.ListCallbacks() {
+                    @Override
+                    public void onCommentsLoadSuccess(List<Comment> list) {
 
-            @Override
-            public void onCommentsLoadSuccess(List<Comment> list) {
+                        commentsView.hideCommentsThrobber(insertPosition);
 
-                commentsView.hideCommentsThrobber(insertPosition);
+                        if (LoadMode.MODE_REPLACE.equals(loadMode))
+                            commentsView.setList(list);
+                        else
+                            commentsView.addList(list, insertPosition, endComment);
 
-                if (LoadMode.MODE_REPLACE.equals(loadMode))
-                    commentsView.setList(list);
-                else
-                    commentsView.addList(list, insertPosition);
+                        if (null != scrollToCommentKey)
+                            commentsView.scrollToComment(scrollToCommentKey);
+                    }
 
-                if (null != scrollToCommentKey)
-                    commentsView.scrollToComment(scrollToCommentKey);
-            }
-
-            @Override
-            public void onCommentsLoadError(String errorMessage) {
-                commentsView.hideCommentsThrobber(insertPosition);
-                commentsView.showCommentsError(R.string.COMMENTS_error_loading_comments, errorMessage);
-            }
-        });
+                    @Override
+                    public void onCommentsLoadError(String errorMessage) {
+                        commentsView.hideCommentsThrobber(insertPosition);
+                        commentsView.showCommentsError(R.string.COMMENTS_error_loading_comments, errorMessage);
+                    }
+                }
+        );
     }
 
     private void createComment(String commentText, iCommentForm commentForm) {
