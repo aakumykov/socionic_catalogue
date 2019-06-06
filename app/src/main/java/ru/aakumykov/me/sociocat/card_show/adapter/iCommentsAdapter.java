@@ -22,6 +22,7 @@ public interface iCommentsAdapter {
     void addList(List<Comment> list, int position, @Nullable Comment alreadyVisibleTailComment);
 
     void attachComment(Comment comment, @Nullable AttachCommentCallbacks callbacks);
+    void updateComment(Comment oldComment, Comment newComment);
 
     Comment getComment(String commentKey);
 

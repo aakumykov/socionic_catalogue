@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.utils.comment_form;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CommentForm implements
@@ -34,6 +36,8 @@ public class CommentForm implements
     private View commentContainer;
     private EditText commentTextInput;
     private View sendCommentWidget;
+
+    private boolean isEditMode;
 
 
     public CommentForm(Context context) {
@@ -88,7 +92,8 @@ public class CommentForm implements
     }
 
     @Override
-    public void show() {
+    public void show(boolean isEditMode) {
+        this.isEditMode = isEditMode;
         enable();
         MyUtils.show(commentContainer);
         MyUtils.show(commentForm);
@@ -99,12 +104,9 @@ public class CommentForm implements
     public void hide() {
         quoteTextView.setText("");
 
-        /* Если раскомментировать следующую строку (то есть, очищать поле ввода),
-           клавиатура выскакивает при скрытии формы. */
-        // commentTextInput.setText("");
-
         hideKeyboard();
 
+        MyUtils.hide(errorView);
         MyUtils.hide(quoteContainer);
         MyUtils.hide(commentContainer);
         MyUtils.hide(commentForm);
@@ -130,10 +132,17 @@ public class CommentForm implements
     }
 
     @Override
+    public boolean isEmpty() {
+        String text = getText().trim();
+        return TextUtils.isEmpty(text);
+    }
+
+    @Override
     public void showError(int messageId, @Nullable String consoleMessage) {
 //        hideKeyboard();
 
-        String msg = (Config.DEBUG_MODE) ? consoleMessage : context.getResources().getString(messageId);
+        String msg = (Config.DEBUG_MODE && null != consoleMessage) ?
+                consoleMessage : context.getResources().getString(messageId);
 
         errorView.setText(msg);
         MyUtils.show(errorView);

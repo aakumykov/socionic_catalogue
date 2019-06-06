@@ -36,6 +36,11 @@ public class CommentsAdapter_Stub implements iCommentsAdapter {
 
     }
 
+    @Override
+    public void updateComment(Comment oldComment, Comment newComment) {
+
+    }
+
     @Override public Comment getComment(String commentKey) {
         return null;
     }

@@ -10,5 +10,5 @@ public interface iPageView extends iBaseView {
     Activity getActivity();
 
     void showCommentForm(iTextItem repliedItem, boolean editMode);
-    void hideCommentForm();
+    void hideCommentForm(boolean withQuestion);
 }

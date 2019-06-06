@@ -291,6 +291,13 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
+    public void updateComment(Comment oldComment, Comment newComment) {
+        int index = itemsList.indexOf(oldComment);
+        itemsList.set(index, newComment);
+        notifyItemChanged(index);
+    }
+
+    @Override
     public Comment getComment(String commentKey) {
         commentKey = commentKey + ""; // Защита от NULL
         for (ListItem listItem : itemsList) {

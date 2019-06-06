@@ -199,7 +199,7 @@ public class CommentsPresenter implements iCommentsPresenter {
             @Override
             public void onCommentSaveSuccess(Comment comment) {
                 commentForm.clear();
-                pageView.hideCommentForm();
+                pageView.hideCommentForm(false);
 
                 mEditedComment = null;
                 mRepliedItem = null;
@@ -232,17 +232,12 @@ public class CommentsPresenter implements iCommentsPresenter {
             @Override
             public void onCommentSaveSuccess(Comment comment) {
                 commentForm.clear();
-                pageView.hideCommentForm();
+                pageView.hideCommentForm(false);
+
+                commentsView.updateComment(mEditedComment, comment);
 
                 mEditedComment = null;
                 mRepliedItem = null;
-
-                commentsView.attachComment(comment, new iCommentsAdapter.AttachCommentCallbacks() {
-                    @Override
-                    public void onCommentAttached(Comment comment) {
-
-                    }
-                });
             }
 
             @Override

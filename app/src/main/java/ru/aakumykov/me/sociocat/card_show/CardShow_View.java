@@ -25,7 +25,9 @@ import ru.aakumykov.me.sociocat.card_show.adapter.iCardAdapter;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsAdapter;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
+import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 import ru.aakumykov.me.sociocat.card_show.presenters.CardPresenter;
@@ -56,7 +58,7 @@ public class CardShow_View extends BaseView implements
     private iListAdapter listAdapter;
     private iCommentForm commentForm;
     private boolean firstRun = true;
-
+    private boolean mEditMode;
 
     // Системные методы
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +116,7 @@ public class CardShow_View extends BaseView implements
 
     @Override public void onBackPressed() {
         if (commentForm.isVisible())
-            hideCommentForm();
+            hideCommentForm(true);
         else
             super.onBackPressed();
     }
@@ -136,23 +138,6 @@ public class CardShow_View extends BaseView implements
     }
 
 
-    // iCommentFormView
-/*    @Override
-    public void showCommentForm(@Nullable String quotedText, ListItem parentItem) {
-        if (null != quotedText)
-            commentForm.setQuote(quotedText);
-
-        commentForm.addButtonListeners(new ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm.ButtonListeners() {
-            @Override
-            public void onSendCommentClicked(String commentText) {
-                commentsPresenter.onSendCommentClicked(commentText, parentItem, commentForm);
-            }
-        });
-
-        commentForm.show();
-    }*/
-
-
     // iPageView
     @Override
     public Activity getActivity() {
@@ -171,6 +156,8 @@ public class CardShow_View extends BaseView implements
                 commentForm.setQuote(text);
         }
 
+        mEditMode = editMode;
+
         commentForm.addButtonListeners(new iCommentForm.ButtonListeners() {
             @Override public void onClearQuoteClicked() {
                 Card card = cardPresenter.getCard();
@@ -183,12 +170,50 @@ public class CardShow_View extends BaseView implements
             }
         });
 
-        commentForm.show();
+        commentForm.show(editMode);
     }
 
     @Override
-    public void hideCommentForm() {
-        commentForm.hide();
+    public void hideCommentForm(boolean withQuestion) {
+
+        if (commentForm.isEmpty()) {
+            commentForm.hide();
+            return;
+        }
+
+        if (withQuestion && mEditMode) {
+            MyDialogs.cancelEditDialog(
+                    this,
+                    R.string.CARD_SHOW_cancel_comment_edition_title,
+                    R.string.CARD_SHOW_cancel_comment_edittion_message,
+                    new iMyDialogs.StandardCallbacks() {
+                        @Override
+                        public void onCancelInDialog() {
+
+                        }
+
+                        @Override
+                        public void onNoInDialog() {
+
+                        }
+
+                        @Override
+                        public boolean onCheckInDialog() {
+                            return true;
+                            // TODO: проверить с false
+                        }
+
+                        @Override
+                        public void onYesInDialog() {
+                            commentForm.clear();
+                            commentForm.hide();
+                        }
+                    }
+            );
+        }
+        else {
+            commentForm.hide();
+        }
     }
 
 

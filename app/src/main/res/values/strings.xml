@@ -430,4 +430,6 @@
     <string name="CARD_SHOW_login_required_to_comment">Чтобы комментировать, нужно войти</string>
     <string name="CARD_SHOW_comment_edition">Правка комментария</string>
     <string name="CARD_SHOW_error_saving_comment">Ошибка сохранения комментария</string>
+    <string name="CARD_SHOW_cancel_comment_edition_title">Отмена редактирования</string>
+    <string name="CARD_SHOW_cancel_comment_edittion_message">Cancel editing and loose changes?</string>
 </resources>
