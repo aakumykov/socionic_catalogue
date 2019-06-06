@@ -159,18 +159,17 @@ public class CardShow_View extends BaseView implements
         return (Activity) this;
     }
 
-    @Override public void showCommentForm(iTextItem repliedItem) {
+    @Override
+    public void showCommentForm(iTextItem item, boolean editMode) {
 
-        String quote = null;
-        if (repliedItem.isCommentItem())
-            quote = ((Comment)repliedItem).getText();
+        String text = item.isCommentItem() ? ((Comment)item).getText() : null;
 
-//        String quote = (repliedItem.isCommentItem()) ? ((Comment)repliedItem).getText() : null;
-
-        if (null != quote)
-            commentForm.setQuote(quote);
-
-
+        if (null != text) {
+            if (editMode)
+                commentForm.setText(text);
+            else
+                commentForm.setQuote(text);
+        }
 
         commentForm.addButtonListeners(new iCommentForm.ButtonListeners() {
             @Override public void onClearQuoteClicked() {

@@ -90,7 +90,7 @@ public class CommentsPresenter implements iCommentsPresenter {
         mRepliedItem = repliedItem;
 
         if (AuthSingleton.isLoggedIn()) {
-            pageView.showCommentForm(repliedItem);
+            pageView.showCommentForm(repliedItem, false);
         }
         else {
             Bundle transitAgruments = new Bundle();
@@ -102,13 +102,13 @@ public class CommentsPresenter implements iCommentsPresenter {
     @Override
     public void onEditCommentClicked(Comment comment) {
         if (!AuthSingleton.isLoggedIn()) {
-            pageView.showToast("Необходимо авторизоваться (╯°□°)╯");
+            pageView.showToast("Необходимо авторизоваться (╯°-°)╯");
             return;
         }
 
         mEditedComment = comment;
 
-        pageView.showCommentForm(comment);
+        pageView.showCommentForm(comment, true);
     }
 
     @Override

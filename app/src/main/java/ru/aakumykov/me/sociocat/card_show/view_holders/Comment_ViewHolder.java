@@ -16,7 +16,10 @@ import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class Comment_ViewHolder  extends Base_ViewHolder {
+public class Comment_ViewHolder  extends Base_ViewHolder implements
+        View.OnLongClickListener,
+        PopupMenu.OnMenuItemClickListener
+{
     @BindView(R.id.commentRow) LinearLayout commentRow;
     @BindView(R.id.quoteView) TextView quoteView;
     @BindView(R.id.textView) TextView textView;
@@ -27,12 +30,12 @@ public class Comment_ViewHolder  extends Base_ViewHolder {
     private Drawable originalBackground = null;
     private Comment currentComment;
 
+
     public Comment_ViewHolder(View itemView, iCommentsPresenter commentsPresenter) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         this.commentsPresenter = commentsPresenter;
     }
-
 
     public void initialize(Comment comment) {
         currentComment = comment;
@@ -47,26 +50,7 @@ public class Comment_ViewHolder  extends Base_ViewHolder {
 
         textView.setText(comment.getText());
 
-        commentRow.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                showPopupMenu(v, comment);
-                return true;
-            }
-        });
-    }
-
-    public void setBackgroundPressed() {
-        saveOriginalBackground();
-
-        int color = commentRow.getResources().getColor(R.color.comment_pressed_background_color);
-        commentRow.setBackgroundColor(color);
-    }
-
-    public void restoreOriginalBackground() {
-        if (null != originalBackground) {
-            commentRow.setBackground(originalBackground);
-        }
+        commentRow.setOnLongClickListener(this);
     }
 
 
@@ -76,7 +60,26 @@ public class Comment_ViewHolder  extends Base_ViewHolder {
         commentsPresenter.onReplyClicked(currentComment);
     }
 
+    @Override
+    public boolean onLongClick(View v) {
+        showPopupMenu(v, currentComment);
+        return true;
+    }
 
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionEdit:
+                commentsPresenter.onEditCommentClicked(currentComment);
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+
+    // Внутренние методы
     private void showPopupMenu(View view, Comment comment) {
 
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
@@ -92,28 +95,22 @@ public class Comment_ViewHolder  extends Base_ViewHolder {
             }
         });
 
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-
-                switch (item.getItemId()) {
-                    case R.id.actionEdit:
-                        commentsPresenter.onEditCommentClicked(comment);
-                        break;
-                    default:
-                        break;
-                }
-
-                return true;
-            }
-        });
+        popupMenu.setOnMenuItemClickListener(this);
 
         popupMenu.show();
     }
 
-    private void startReplyToComment(Comment comment) {
-        // Это не ответственность контроллера!
-        //        commentsController.showCommentForm(comment);
+    private void setBackgroundPressed() {
+        saveOriginalBackground();
+
+        int color = commentRow.getResources().getColor(R.color.comment_pressed_background_color);
+        commentRow.setBackgroundColor(color);
+    }
+
+    private void restoreOriginalBackground() {
+        if (null != originalBackground) {
+            commentRow.setBackground(originalBackground);
+        }
     }
 
     private void saveOriginalBackground() {
