@@ -6,7 +6,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Comment;
 
-public class CommentsView_Stub implements iCommentsView {
+public class CommentsAdapter_Stub implements iCommentsAdapter {
     @Override public void showCommentsThrobber(int position) {
 
     }
@@ -28,7 +28,7 @@ public class CommentsView_Stub implements iCommentsView {
 
     }
 
-    @Override public void addList(List<Comment> list, int position, Comment endBoundaryComment) {
+    @Override public void addList(List<Comment> list, int position, Comment alreadyVisibleTailComment) {
 
     }
 

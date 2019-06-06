@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.card_show.presenters;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
+import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsAdapter;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -13,7 +13,7 @@ public interface iCommentsPresenter {
     void bindPageView(iPageView pageView);
     void unbindPageView();
 
-    void bindCommentsView(iCommentsView listAdapter);
+    void bindCommentsView(iCommentsAdapter listAdapter);
     void unbindCommentsView();
 
 

@@ -9,8 +9,8 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.adapter.CommentsView_Stub;
-import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
+import ru.aakumykov.me.sociocat.card_show.adapter.CommentsAdapter_Stub;
+import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsAdapter;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -29,7 +29,7 @@ public class CommentsPresenter implements iCommentsPresenter {
         MODE_APPEND, MODE_REPLACE
     }
 
-    private iCommentsView commentsView;
+    private iCommentsAdapter commentsView;
     private iPageView pageView;
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
@@ -50,13 +50,13 @@ public class CommentsPresenter implements iCommentsPresenter {
     }
 
     @Override
-    public void bindCommentsView(iCommentsView commentsView) {
+    public void bindCommentsView(iCommentsAdapter commentsView) {
         this.commentsView = commentsView;
     }
 
     @Override
     public void unbindCommentsView() {
-        this.commentsView = new CommentsView_Stub();
+        this.commentsView = new CommentsAdapter_Stub();
     }
 
     @Override
@@ -205,7 +205,7 @@ public class CommentsPresenter implements iCommentsPresenter {
                 mRepliedItem = null;
                 mEndComment = comment;
 
-                commentsView.attachComment(comment, new iCommentsView.AttachCommentCallbacks() {
+                commentsView.attachComment(comment, new iCommentsAdapter.AttachCommentCallbacks() {
                     @Override public void onCommentAttached(Comment comment) {
                         commentsView.scrollToComment(comment.getKey());
                     }
@@ -237,7 +237,7 @@ public class CommentsPresenter implements iCommentsPresenter {
                 mEditedComment = null;
                 mRepliedItem = null;
 
-                commentsView.attachComment(comment, new iCommentsView.AttachCommentCallbacks() {
+                commentsView.attachComment(comment, new iCommentsAdapter.AttachCommentCallbacks() {
                     @Override
                     public void onCommentAttached(Comment comment) {
 

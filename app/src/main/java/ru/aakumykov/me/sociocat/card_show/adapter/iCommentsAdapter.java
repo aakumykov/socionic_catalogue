@@ -6,7 +6,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Comment;
 
-public interface iCommentsView {
+public interface iCommentsAdapter {
 
     interface AttachCommentCallbacks {
         void onCommentAttached(Comment comment);
@@ -19,7 +19,7 @@ public interface iCommentsView {
     void hideCommentsError();
 
     void setList(List<Comment> itemsList);
-    void addList(List<Comment> list, int position, @Nullable Comment endBoundaryComment);
+    void addList(List<Comment> list, int position, @Nullable Comment alreadyVisibleTailComment);
 
     void attachComment(Comment comment, @Nullable AttachCommentCallbacks callbacks);
 

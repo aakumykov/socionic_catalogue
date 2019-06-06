@@ -29,8 +29,8 @@ import ru.aakumykov.me.sociocat.card_show.list_items.LoadMore_Item;
 
 public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         iListAdapter,
-        iCardView,
-        iCommentsView
+        iCardAdapter,
+        iCommentsAdapter
 {
     private final static String TAG = "ListAdapter";
     private List<ListItem> itemsList;
@@ -147,7 +147,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
 
-    // iCardView
+    // iCardAdapter
     @Override
     public void displayCard(Card card) {
         int cardPosition = 0;
@@ -184,7 +184,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
 
-    // iCommentsView
+    // iCommentsAdapter
     @Override
     public void showCommentsThrobber(int position) {
         hideLoadMoreItem(position);
@@ -232,40 +232,53 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void addList(List<Comment> inputList, int position, @Nullable Comment endBoundaryComment) {
+    public void addList(List<Comment> inputList, int position, @Nullable Comment alreadyVisibleTailComment) {
 
-/*        int inputListSize = inputList.size();
-        Comment lastComment = null;
-
-        if (inputListSize > Config.DEFAULT_COMMENTS_LOAD_COUNT) {
-            int lastCommentIndex = inputListSize - 1;
-            lastComment = inputList.get(lastCommentIndex);
-            inputList.remove(lastCommentIndex);
-        }
-
-        int start = this.itemsList.size();
-        int count = inputList.size();
-
-        hideLoadMoreItem(position);
-
-        this.itemsList.addAll(position, inputList);
-        notifyItemRangeChanged(start, count);
-
-        if (null != lastComment)
-            showLoadMoreItem(position, lastComment);*/
+//        int inputListSize = inputList.size();
+//        Comment lastComment = null;
+//
+//        if (inputListSize > Config.DEFAULT_COMMENTS_LOAD_COUNT) {
+//            int lastCommentIndex = inputListSize - 1;
+//            lastComment = inputList.get(lastCommentIndex);
+//            inputList.remove(lastCommentIndex);
+//        }
+//
+//        int start = this.itemsList.size();
+//        int count = inputList.size();
+//
+//        hideLoadMoreItem(position);
+//
+//        this.itemsList.addAll(position, inputList);
+//        notifyItemRangeChanged(start, count);
+//
+//        if (null != lastComment)
+//            showLoadMoreItem(position, lastComment);
 
         // Другой вариант
-        Comment lastComment = (inputList.size() > Config.DEFAULT_COMMENTS_LOAD_COUNT) ?
+
+        // Убираю уже видимый конечный комментарий
+        if (null != alreadyVisibleTailComment) {
+            Comment tailComment = inputList.get(inputList.size() - 1);
+            if (tailComment.getKey().equals(alreadyVisibleTailComment.getKey()))
+                inputList.remove(inputList.size() - 1);
+        }
+
+        /* Если список больше порции комментариев, установленной для показа,
+           от него отщипывается последний элемент для использования в загрузке
+           следующей порции. */
+        Comment loadMoreStartComment = (inputList.size() > Config.DEFAULT_COMMENTS_LOAD_COUNT) ?
                 inputList.get(inputList.size()-1) : null;
 
-        if (null != lastComment)
+        if (null != loadMoreStartComment)
             inputList.remove(inputList.size()-1);
 
+        // Отправляю список на показ
         itemsList.addAll(position, inputList);
         notifyItemRangeChanged(position, inputList.size());
 
-        if (null != lastComment)
-            showLoadMoreItem(position + inputList.size(), lastComment);
+        // Добавляю элемент "Загрузить ещё"
+        if (null != loadMoreStartComment)
+            showLoadMoreItem(position + inputList.size(), loadMoreStartComment);
     }
 
     @Override
