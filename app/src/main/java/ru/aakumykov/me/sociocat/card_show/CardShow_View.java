@@ -20,9 +20,9 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter;
-import ru.aakumykov.me.sociocat.card_show.adapter.iCardAdapter;
-import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsAdapter;
+import ru.aakumykov.me.sociocat.card_show.adapter.ListView;
+import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
+import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
@@ -69,7 +69,7 @@ public class CardShow_View extends BaseView implements
         this.commentsPresenter = new CommentsPresenter();
         this.cardPresenter = new CardPresenter(commentsPresenter);
 
-        this.listAdapter = new ListAdapter();
+        this.listAdapter = new ListView();
 
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.recyclerView.setAdapter((RecyclerView.Adapter) listAdapter);
@@ -139,11 +139,6 @@ public class CardShow_View extends BaseView implements
 
 
     // iPageView
-    @Override
-    public Activity getActivity() {
-        return (Activity) this;
-    }
-
     @Override
     public void showCommentForm(iTextItem item, boolean editMode) {
 
@@ -226,10 +221,10 @@ public class CardShow_View extends BaseView implements
     // Внутренние методы
     private void bindComponents() {
         cardPresenter.bindPageView(this);
-        cardPresenter.bindListAdapter((iCardAdapter) listAdapter);
+        cardPresenter.bindListAdapter((iCardView) listAdapter);
 
         commentsPresenter.bindPageView(this);
-        commentsPresenter.bindCommentsView((iCommentsAdapter) listAdapter);
+        commentsPresenter.bindCommentsView((iCommentsView) listAdapter);
 
         listAdapter.bindPresenters(cardPresenter, commentsPresenter);
         listAdapter.bindView(this);

@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.card_show;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +18,11 @@ public class CardShow_View_Stub implements iCardShow_View {
     }
 
     @Override public Context getAppContext() {
+        return null;
+    }
+
+    @Override
+    public Activity getActivity() {
         return null;
     }
 
@@ -82,6 +88,11 @@ public class CardShow_View_Stub implements iCardShow_View {
     }
 
     @Override public String getString(int stringResourceId) {
+        return null;
+    }
+
+    @Override
+    public String getString(int stringResourceId, String substitutedMessage) {
         return null;
     }
 

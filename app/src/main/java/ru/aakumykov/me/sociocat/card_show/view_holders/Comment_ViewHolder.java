@@ -72,6 +72,9 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
             case R.id.actionEdit:
                 commentsPresenter.onEditCommentClicked(currentComment);
                 break;
+            case R.id.actionDelete:
+                commentsPresenter.onDeleteCommentClicked(currentComment);
+                break;
             default:
                 break;
         }
@@ -85,6 +88,7 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
 
         popupMenu.inflate(R.menu.edit);
+        popupMenu.inflate(R.menu.delete);
 
         setBackgroundPressed();
 

@@ -146,7 +146,7 @@
     <string name="CARDS_LIST_comments_count">Комментариев: %1$d</string>
     <string name="MENU_refresh">Обновить</string>
     <string name="MENU_share">Поделиться</string>
-    <string name="COMMENT_comment_deletion">Удалить комментарий?</string>
+    <string name="COMMENT_comment_deletion">Удаление комментария</string>
     <string name="COMMENT_delete_error">Ошибка удаления комментария</string>
     <string name="COMMENT_save_error">Ошибка сохранения комментария</string>
     <string name="DIALOG_delete_card">Удалить карточку?</string>
@@ -156,7 +156,7 @@
     <string name="COMMENT_added">Комментарий добавлен</string>
     <string name="DIALOG_MESSAGE_cannot_be_empty">Не может быть пустым</string>
     <string name="action_denied">Действие запрещено</string>
-    <string name="DIALOG_delete_comment">Удалить комментарий?</string>
+    <string name="DIALOG_delete_comment">Удалние комментария</string>
     <string name="COMMENT_delete_message_template" translatable="false">%1$s ...</string>
     <string name="CARDS_LIST_error_deleting_card">Ошибка удаления карточки</string>
     <string name="error_deleting_card_tags">Ошибка удаления меток карточки</string>
@@ -431,5 +431,7 @@
     <string name="CARD_SHOW_comment_edition">Правка комментария</string>
     <string name="CARD_SHOW_error_saving_comment">Ошибка сохранения комментария</string>
     <string name="CARD_SHOW_cancel_comment_edition_title">Отмена редактирования</string>
-    <string name="CARD_SHOW_cancel_comment_edittion_message">Cancel editing and loose changes?</string>
+    <string name="CARD_SHOW_cancel_comment_edittion_message">Отказаться от редактирования и потерять изменения?</string>
+    <string name="CARD_SHOW_delete_comment_dialog_title">Удаление комментария</string>
+    <string name="CARD_SHOW_delete_comment_dialog_message">Удалить комментарий «%1$s...»?</string>
 </resources>

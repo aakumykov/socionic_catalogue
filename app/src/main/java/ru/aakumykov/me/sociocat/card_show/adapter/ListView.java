@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.card_show.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,24 +22,27 @@ import ru.aakumykov.me.sociocat.card_show.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Comment_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.LoadMore_ViewHolder;
+import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.list_items.Throbber_Item;
 import ru.aakumykov.me.sociocat.card_show.list_items.LoadMore_Item;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
+public class ListView extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         iListAdapter,
-        iCardAdapter,
-        iCommentsAdapter
+        iCardView,
+        iCommentsView
 {
-    private final static String TAG = "ListAdapter";
+    private final static String TAG = "ListView";
     private List<ListItem> itemsList;
     private iCardPresenter cardPresenter;
     private iCommentsPresenter commentsPresenter;
     private iCardShow_View view;
 
-    public ListAdapter() {
+    public ListView() {
         this.itemsList = new ArrayList<>();
     }
 
@@ -147,7 +151,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
 
-    // iCardAdapter
+    // iCardView
     @Override
     public void displayCard(Card card) {
         int cardPosition = 0;
@@ -184,7 +188,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
 
-    // iCommentsAdapter
+    // iCommentsView
     @Override
     public void showCommentsThrobber(int position) {
         hideLoadMoreItem(position);
@@ -212,12 +216,45 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void showCommentsError(int errorMsgId, String consoleErrorMsg) {
-
+        MyUtils.showCustomToast(view.getAppContext(), errorMsgId);
+        Log.e(TAG, consoleErrorMsg);
     }
 
     @Override
     public void hideCommentsError() {
 
+    }
+
+    @Override
+    public void showDeleteDialog(Comment comment) {
+        String text = MyUtils.cutToLength(comment.getText(), 20);
+        String msg = view.getString(R.string.CARD_SHOW_delete_comment_dialog_message, text);
+
+        MyDialogs.commentDeleteDialog(
+                view.getActivity(),
+                msg,
+                new iMyDialogs.Delete() {
+                    @Override
+                    public void onCancelInDialog() {
+
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        commentsPresenter.onDeleteConfirmed(comment);
+                    }
+                }
+        );
     }
 
     @Override

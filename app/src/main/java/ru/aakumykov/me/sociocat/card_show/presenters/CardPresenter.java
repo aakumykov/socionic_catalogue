@@ -3,8 +3,8 @@ package ru.aakumykov.me.sociocat.card_show.presenters;
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.adapter.CardAdapter_Stub;
-import ru.aakumykov.me.sociocat.card_show.adapter.iCardAdapter;
+import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
+import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -12,7 +12,7 @@ import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 
 public class CardPresenter implements iCardPresenter {
 
-    private iCardAdapter cardView;
+    private iCardView cardView;
     private iPageView pageView;
     private iCommentsPresenter commentsPresenter;
     private CardsSingleton cardSingleton = CardsSingleton.getInstance();
@@ -33,13 +33,13 @@ public class CardPresenter implements iCardPresenter {
     }
 
     @Override
-    public void bindListAdapter(iCardAdapter listAdapter) {
-        this.cardView = (iCardAdapter) listAdapter;
+    public void bindListAdapter(iCardView listAdapter) {
+        this.cardView = (iCardView) listAdapter;
     }
 
     @Override
     public void unbindListAdapter() {
-        this.cardView = new CardAdapter_Stub();
+        this.cardView = new CardView_Stub();
     }
 
     @Override

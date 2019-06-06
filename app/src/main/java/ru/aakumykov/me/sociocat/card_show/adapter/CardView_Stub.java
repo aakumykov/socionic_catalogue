@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.card_show.adapter;
 
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class CardAdapter_Stub implements iCardAdapter {
+public class CardView_Stub implements iCardView {
     @Override public void showCardThrobber() {
 
     }
