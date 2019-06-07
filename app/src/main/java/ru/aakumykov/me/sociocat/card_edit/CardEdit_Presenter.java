@@ -7,7 +7,6 @@ import android.net.Uri;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.Enums;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
@@ -38,6 +36,11 @@ public class CardEdit_Presenter implements
         iCardEdit.Presenter,
         iCardsSingleton.SaveCardCallbacks
 {
+    public enum CardEditMode {
+        CREATE,
+        EDIT
+    }
+
     private static final String TAG = "CardEdit_Presenter";
     private iCardEdit.View view;
     private SharedPreferences sharedPreferences;
@@ -52,7 +55,7 @@ public class CardEdit_Presenter implements
     private HashMap<String,Boolean> oldCardTags;
     private String imageType;
     private boolean isExternalDataMode = false;
-    private Enums.CardEditMode editMode;
+    private CardEditMode editMode;
 
 
     // Системные методы (условно)
@@ -368,7 +371,7 @@ public class CardEdit_Presenter implements
     @Override public void onCardSaveSuccess(Card card) {
         updateCardTags(card);
 
-        if (editMode.equals(Enums.CardEditMode.CREATE)) {
+        if (editMode.equals(CardEditMode.CREATE)) {
 
             MVPUtils.subscribeToTopicNotifications(
                     view.getAppContext(),
@@ -429,7 +432,7 @@ public class CardEdit_Presenter implements
         Card card = data.getParcelableExtra(Constants.CARD);
         card.setKey(cardsSingleton.createKey());
 
-        editMode = Enums.CardEditMode.CREATE;
+        editMode = CardEditMode.CREATE;
 
         currentCard = card;
 
@@ -441,7 +444,7 @@ public class CardEdit_Presenter implements
         if (null == cardKey)
             throw new IllegalArgumentException("There is no cardKey in Intent");
 
-        editMode = Enums.CardEditMode.EDIT;
+        editMode = CardEditMode.EDIT;
 
         if (null != view) {
             view.disableForm();
@@ -469,7 +472,7 @@ public class CardEdit_Presenter implements
     }
 
     private void prepareCardCreation(Intent intent) {
-        editMode = Enums.CardEditMode.CREATE;
+        editMode = CardEditMode.CREATE;
         // Если запускается с флафгом NO_HISTORY, значит данные поступили извне
         isExternalDataMode = (0 != (intent.getFlags() & Intent.FLAG_ACTIVITY_NO_HISTORY));
 
@@ -708,4 +711,6 @@ public class CardEdit_Presenter implements
             else view.finishEdit(card);
         }
     }
+
+
 }
