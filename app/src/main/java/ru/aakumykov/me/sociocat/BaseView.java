@@ -49,18 +49,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     // EventBus
     @Subscribe
     public void onUserAuthorized(UserAuthorizedEvent event) {
-
         invalidateOptionsMenu();
-
         onUserLogin();
-
         saveLastLoginTime();
     }
     @Subscribe
     public void onUserUnauthorized(UserUnauthorizedEvent event) {
-
         invalidateOptionsMenu();
-
         onUserLogout();
     }
 
@@ -83,6 +78,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         switch (requestCode) {
 
             case Constants.CODE_LOGIN:
+                invalidateOptionsMenu();
                 break;
 
             case Constants.CODE_EDIT_CARD:
@@ -115,17 +111,31 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
+//        MenuInflater menuInflater = getMenuInflater();
+//
+//        if (AuthSingleton.isLoggedIn()) {
+//            menuInflater.inflate(R.menu.preferences, menu);
+//            menuInflater.inflate(R.menu.profile, menu);
+//            menuInflater.inflate(R.menu.logout, menu);
+//        } else {
+//            menuInflater.inflate(R.menu.login, menu);
+//        }
+//
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
         MenuInflater menuInflater = getMenuInflater();
 
         if (AuthSingleton.isLoggedIn()) {
-            menuInflater.inflate(R.menu.preferences, menu);
-            menuInflater.inflate(R.menu.profile, menu);
             menuInflater.inflate(R.menu.logout, menu);
         } else {
             menuInflater.inflate(R.menu.login, menu);
         }
 
-        return super.onPrepareOptionsMenu(menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

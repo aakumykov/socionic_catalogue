@@ -194,23 +194,25 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        Log.d(TAG, "onPrepareOptionsMenu()");
-
-        menu.clear();
-
-        MenuInflater menuInflater = getMenuInflater();
-
-        menuInflater.inflate(R.menu.new_cards, menu);
-
-        if (gridMode) menuInflater.inflate(R.menu.list_view, menu);
-        else  menuInflater.inflate(R.menu.grid_view, menu);
-
-        menuInflater.inflate(R.menu.tags, menu);
-
-        menuInflater.inflate(R.menu.search, menu);
-        initSearchWidget(menu);
+//        menu.clear();
+//
+//        MenuInflater menuInflater = getMenuInflater();
+//
+//        menuInflater.inflate(R.menu.new_cards, menu);
+//
+//        if (gridMode) menuInflater.inflate(R.menu.list_view, menu);
+//        else  menuInflater.inflate(R.menu.grid_view, menu);
+//
+//        menuInflater.inflate(R.menu.tags, menu);
+//
+//        menuInflater.inflate(R.menu.search, menu);
+//        initSearchWidget(menu);
 
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
