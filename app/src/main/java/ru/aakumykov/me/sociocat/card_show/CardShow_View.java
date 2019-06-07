@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.card_show;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -87,7 +86,7 @@ public class CardShow_View extends BaseView implements
         bindComponents();
 
         switch (requestCode) {
-            case Constants.CODE_REPLY:
+            case Constants.CODE_POST_REPLY:
                 processReply(resultCode, data);
                 break;
             default:
@@ -258,6 +257,7 @@ public class CardShow_View extends BaseView implements
     }
 
     private void processReply(int resultCode, @Nullable Intent data) {
+
         if (RESULT_OK != resultCode) {
             showToast(R.string.CARD_SHOW_login_required_to_comment);
             return;
@@ -269,9 +269,12 @@ public class CardShow_View extends BaseView implements
         }
 
         Bundle transitArguments = data.getBundleExtra(Constants.TRANSIT_ARGUMENTS);
-        if (null != transitArguments) {
-            iTextItem repliedItem = transitArguments.getParcelable(Constants.REPLIED_ITEM);
-            commentsPresenter.onReplyClicked(repliedItem);
+        if (null == transitArguments) {
+            showErrorMsg(R.string.CARD_SHOW_data_error, "There is no transit arguments.");
+            return;
         }
+
+        iTextItem repliedItem = transitArguments.getParcelable(Constants.REPLIED_ITEM);
+        commentsPresenter.onReplyClicked(repliedItem);
     }
 }

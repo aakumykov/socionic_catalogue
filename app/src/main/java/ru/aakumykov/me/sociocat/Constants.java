@@ -66,7 +66,7 @@ public final class Constants {
     public final static int CODE_SELECT_IMAGE = 25;
     public final static int CODE_USER_EDIT = 30;
     public final static int CODE_FORCE_SETUP_USER_NAME = 40;
-    public final static int CODE_REPLY = 49;
+    public final static int CODE_POST_REPLY = 49;
     public final static int CODE_RESET_PASSWORD = 60;
     public final static int CODE_SHOW_CARD = 70;
 

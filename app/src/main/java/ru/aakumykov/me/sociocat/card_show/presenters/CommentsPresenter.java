@@ -21,7 +21,6 @@ import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 
 public class CommentsPresenter implements iCommentsPresenter {
@@ -94,9 +93,9 @@ public class CommentsPresenter implements iCommentsPresenter {
             pageView.showCommentForm(repliedItem, false);
         }
         else {
-            Bundle transitAgruments = new Bundle();
-            transitAgruments.putParcelable(Constants.REPLIED_ITEM, repliedItem);
-            pageView.requestLogin(Constants.CODE_REPLY, transitAgruments);
+            Bundle transitArguments = new Bundle();
+            transitArguments.putParcelable(Constants.REPLIED_ITEM, repliedItem);
+            pageView.requestLogin(Constants.CODE_POST_REPLY, transitArguments);
         }
     }
 
