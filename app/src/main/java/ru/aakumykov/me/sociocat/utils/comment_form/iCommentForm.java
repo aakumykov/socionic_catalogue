@@ -19,13 +19,14 @@ public interface iCommentForm {
 
     void clear();
 
-    void show();
+    void show(boolean isEditMode);
     void hide();
 
     void enable();
     void disable();
 
     boolean isVisible();
+    boolean isEmpty();
 
     void showError(int messageId, String consoleMessage);
     void hideError();

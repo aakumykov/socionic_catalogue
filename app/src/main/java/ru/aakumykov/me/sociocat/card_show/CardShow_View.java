@@ -20,12 +20,14 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter;
-import ru.aakumykov.me.sociocat.card_show.adapter.iCardAdapter;
-import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsAdapter;
+import ru.aakumykov.me.sociocat.card_show.adapter.ListView;
+import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
+import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
+import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 import ru.aakumykov.me.sociocat.card_show.presenters.CardPresenter;
@@ -56,7 +58,7 @@ public class CardShow_View extends BaseView implements
     private iListAdapter listAdapter;
     private iCommentForm commentForm;
     private boolean firstRun = true;
-
+    private boolean mEditMode;
 
     // Системные методы
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +69,7 @@ public class CardShow_View extends BaseView implements
         this.commentsPresenter = new CommentsPresenter();
         this.cardPresenter = new CardPresenter(commentsPresenter);
 
-        this.listAdapter = new ListAdapter();
+        this.listAdapter = new ListView();
 
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.recyclerView.setAdapter((RecyclerView.Adapter) listAdapter);
@@ -114,7 +116,7 @@ public class CardShow_View extends BaseView implements
 
     @Override public void onBackPressed() {
         if (commentForm.isVisible())
-            hideCommentForm();
+            hideCommentForm(true);
         else
             super.onBackPressed();
     }
@@ -136,41 +138,20 @@ public class CardShow_View extends BaseView implements
     }
 
 
-    // iCommentFormView
-/*    @Override
-    public void showCommentForm(@Nullable String quotedText, ListItem parentItem) {
-        if (null != quotedText)
-            commentForm.setQuote(quotedText);
-
-        commentForm.addButtonListeners(new ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm.ButtonListeners() {
-            @Override
-            public void onSendCommentClicked(String commentText) {
-                commentsPresenter.onSendCommentClicked(commentText, parentItem, commentForm);
-            }
-        });
-
-        commentForm.show();
-    }*/
-
-
     // iPageView
     @Override
-    public Activity getActivity() {
-        return (Activity) this;
-    }
+    public void showCommentForm(iTextItem item, boolean editMode) {
 
-    @Override public void showCommentForm(iTextItem repliedItem) {
+        String text = item.isCommentItem() ? ((Comment)item).getText() : null;
 
-        String quote = null;
-        if (repliedItem.isCommentItem())
-            quote = ((Comment)repliedItem).getText();
+        if (null != text) {
+            if (editMode)
+                commentForm.setText(text);
+            else
+                commentForm.setQuote(text);
+        }
 
-//        String quote = (repliedItem.isCommentItem()) ? ((Comment)repliedItem).getText() : null;
-
-        if (null != quote)
-            commentForm.setQuote(quote);
-
-
+        mEditMode = editMode;
 
         commentForm.addButtonListeners(new iCommentForm.ButtonListeners() {
             @Override public void onClearQuoteClicked() {
@@ -184,12 +165,50 @@ public class CardShow_View extends BaseView implements
             }
         });
 
-        commentForm.show();
+        commentForm.show(editMode);
     }
 
     @Override
-    public void hideCommentForm() {
-        commentForm.hide();
+    public void hideCommentForm(boolean withQuestion) {
+
+        if (commentForm.isEmpty()) {
+            commentForm.hide();
+            return;
+        }
+
+        if (withQuestion && mEditMode) {
+            MyDialogs.cancelEditDialog(
+                    this,
+                    R.string.CARD_SHOW_cancel_comment_edition_title,
+                    R.string.CARD_SHOW_cancel_comment_edittion_message,
+                    new iMyDialogs.StandardCallbacks() {
+                        @Override
+                        public void onCancelInDialog() {
+
+                        }
+
+                        @Override
+                        public void onNoInDialog() {
+
+                        }
+
+                        @Override
+                        public boolean onCheckInDialog() {
+                            return true;
+                            // TODO: проверить с false
+                        }
+
+                        @Override
+                        public void onYesInDialog() {
+                            commentForm.clear();
+                            commentForm.hide();
+                        }
+                    }
+            );
+        }
+        else {
+            commentForm.hide();
+        }
     }
 
 
@@ -202,10 +221,10 @@ public class CardShow_View extends BaseView implements
     // Внутренние методы
     private void bindComponents() {
         cardPresenter.bindPageView(this);
-        cardPresenter.bindListAdapter((iCardAdapter) listAdapter);
+        cardPresenter.bindListAdapter((iCardView) listAdapter);
 
         commentsPresenter.bindPageView(this);
-        commentsPresenter.bindCommentsView((iCommentsAdapter) listAdapter);
+        commentsPresenter.bindCommentsView((iCommentsView) listAdapter);
 
         listAdapter.bindPresenters(cardPresenter, commentsPresenter);
         listAdapter.bindView(this);

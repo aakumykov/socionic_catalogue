@@ -52,7 +52,7 @@
     <color name="my_youtube_player_msg_animation_to">@color/background_default</color>
 
     <!-- Комментарии -->
-    <color name="comment_pressed_background_color">@color/grey</color>
+    <color name="comment_pressed_background_color">#E2E2E2</color>
     <color name="comment_load_mode_background">#E2E2E2</color>
     <color name="comment_form_replied_comment_background">#E2E2E2</color>
     <color name="comment_form_replied_comment_discard_button_background">#D6D6D6</color>

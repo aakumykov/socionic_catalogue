@@ -120,12 +120,18 @@ public class CommentsSingleton implements iCommentsSingleton {
 
         HashMap<String,Object> updatePool = new HashMap<>();
 
-        String commentPath = Constants.COMMENTS_PATH+"/"+comment.getKey();
+        String commentPath = Constants.COMMENTS_PATH+"/"+
+                comment.getCardId()+"/"+
+                comment.getKey();
         updatePool.put(commentPath, null);
 
         String commentInCardPath = Constants.CARDS_PATH+"/"+comment.getCardId()+
                 "/commentsKeys/"+comment.getKey();
         updatePool.put(commentInCardPath, null);
+
+        String commentInUserPath = Constants.USERS_PATH+"/"+comment.getUserId()+
+                "/commentsKeys/"+comment.getCardId()+"__"+comment.getKey();
+        updatePool.put(commentInUserPath, null);
 
         rootRef.updateChildren(updatePool)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

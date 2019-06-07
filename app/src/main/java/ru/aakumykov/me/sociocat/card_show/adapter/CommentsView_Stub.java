@@ -6,7 +6,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Comment;
 
-public class CommentsAdapter_Stub implements iCommentsAdapter {
+public class CommentsView_Stub implements iCommentsView {
     @Override public void showCommentsThrobber(int position) {
 
     }
@@ -24,6 +24,11 @@ public class CommentsAdapter_Stub implements iCommentsAdapter {
 
     }
 
+    @Override
+    public void showDeleteDialog(Comment comment) {
+
+    }
+
     @Override public void setList(List<Comment> itemsList) {
 
     }
@@ -33,6 +38,16 @@ public class CommentsAdapter_Stub implements iCommentsAdapter {
     }
 
     @Override public void attachComment(Comment comment, @Nullable AttachCommentCallbacks callbacks) {
+
+    }
+
+    @Override
+    public void updateComment(Comment oldComment, Comment newComment) {
+
+    }
+
+    @Override
+    public void removeComment(Comment comment) {
 
     }
 
