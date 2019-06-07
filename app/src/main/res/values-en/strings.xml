@@ -427,4 +427,6 @@
     <string name="CARD_SHOW_delete_comment_dialog_title">Deleting a comment</string>
     <string name="CARD_SHOW_delete_comment_dialog_message">Delete comment «%1$s...»?</string>
     <string name="COMMENTS_VIEW_error_deleting_comment">Error deleting comment</string>
+    <string name="MENU_user_logged_in">User logged in</string>
+    <string name="MENU_user_logged_out">User logged out</string>
 </resources>

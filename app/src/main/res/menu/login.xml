@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/actionLogin"
-        android:icon="@drawable/ic_login2"
+        android:icon="@drawable/ic_login3"
         android:title="@string/MENU_login"
         app:showAsAction="ifRoom" />
 </menu>

@@ -5,6 +5,6 @@
     <item
         android:id="@+id/userLoggedOut"
         android:icon="@drawable/ic_user_logged_out"
-        android:title="Пользователь вышел"
-        app:showAsAction="never" />
+        android:title="@string/MENU_user_logged_out"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -435,4 +435,6 @@
     <string name="CARD_SHOW_delete_comment_dialog_title">Удаление комментария</string>
     <string name="CARD_SHOW_delete_comment_dialog_message">Удалить комментарий «%1$s...»?</string>
     <string name="COMMENTS_VIEW_error_deleting_comment">Ошибка удаления комментария</string>
+    <string name="MENU_user_logged_in">Пользователь вошёл</string>
+    <string name="MENU_user_logged_out">Пользователь вышел</string>
 </resources>
