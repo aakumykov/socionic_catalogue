@@ -58,27 +58,22 @@
 
         <activity android:name=".card_type_chooser.CardTypeChooser" android:noHistory="true" />
 
-        <activity android:name=".external_data_receiver.ExternalDataReceiver"
-            android:noHistory="true">
+        <activity android:name=".external_data_receiver.ExternalDataReceiver" android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="image/*" />
             </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="text/plain" />
             </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data
                     android:host="www.youtube.com"
                     android:pathPrefix="/watch"
@@ -101,9 +96,7 @@
             <!-- https://stackoverflow.com/questions/31002909/android-deeplink-pathprefix-attribute-is-being-ignored -->
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data
                     android:host="youtu.be"
                     android:scheme="http" />

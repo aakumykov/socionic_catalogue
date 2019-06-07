@@ -16,6 +16,7 @@ public class ExternalDataReceiver extends BaseView {
 
     public static final String TAG = "ExternalDataReceiver";
 
+    // Системные методы
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,17 +64,18 @@ public class ExternalDataReceiver extends BaseView {
         }
     }
 
-
+    // Внутренние методы
     private void makeStartDecision() throws Exception {
 
-        Intent intent1 = getIntent();
-        if (null == intent1)
-            throw new IllegalArgumentException("Intent is NULL");
+        Intent inputEntent = getIntent();
+        if (null == inputEntent)
+            throw new IllegalArgumentException("Input intent is NULL");
 
-        Intent intent2 = new Intent(intent1);
-        intent2.setClass(this, CardEdit_View.class);
-        intent2.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivityForResult(intent2, Constants.CODE_CREATE_CARD);
+        Intent outputIntent = new Intent(inputEntent);
+        outputIntent.setClass(this, CardEdit_View.class);
+        outputIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+        startActivityForResult(outputIntent, Constants.CODE_CREATE_CARD);
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
