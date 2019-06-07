@@ -23,8 +23,8 @@ public class Login_Presenter implements
     //private final static String TAG = "Login_Presenter";
     private iLogin.View view;
 
-    private String intentAction;
-    private Bundle transitArguments;
+    private String mIntentAction;
+    private Bundle mTransitArguments;
 
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -50,16 +50,15 @@ public class Login_Presenter implements
             return;
         }
 
-        String action = intent.getAction();
-        this.intentAction = action + "";
+        mIntentAction = intent.getAction() + "";
         //this.arguments = intent.getParcelableExtra(Intent.EXTRA_INTENT);
 //        Intent argumentsIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
         //Bundle args1 = intent.getBundleExtra(Constants.TRANSIT_ARGUMENTS);
         //Bundle args2 = intent.getParcelableExtra(Constants.TRANSIT_ARGUMENTS);
 
-        this.transitArguments = intent.getBundleExtra(Constants.TRANSIT_ARGUMENTS);
+        mTransitArguments = intent.getBundleExtra(Constants.TRANSIT_ARGUMENTS);
 
-        if (Constants.ACTION_TRY_NEW_PASSWORD.equals(action)) {
+        if (mIntentAction.equals(Constants.ACTION_TRY_NEW_PASSWORD)) {
             view.showToast(R.string.LOGIN_try_new_password);
         }
     }
@@ -71,7 +70,6 @@ public class Login_Presenter implements
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-
                         String userId = authResult.getUser().getUid();
 
                         usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
@@ -85,7 +83,6 @@ public class Login_Presenter implements
                                 showLoginError(errorMsg);
                             }
                         });
-
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -99,29 +96,23 @@ public class Login_Presenter implements
     @Override
     public void cancelLogin() {
         firebaseAuth.signOut();
-        view.finishLogin(true, transitArguments);
+        view.finishLogin(true, mTransitArguments);
     }
 
 
     // Внутренние методы
     private void processSuccessfullLogin(User user) {
-
         if (!user.isEmailVerified()) {
             view.notifyToConfirmEmail(user.getKey());
             return;
         }
 
-        if (intentAction.equals(Constants.ACTION_CREATE)) {
+        if (mIntentAction.equals(Constants.ACTION_CREATE)) {
             view.goCreateCard();
             return;
         }
 
-        /*if (intentAction.equals(Constants.ACTION_LOGIN_REQUEST)) {
-            view.proceedLoginRequest(originalIntent);
-            return;
-        }*/
-
-        view.finishLogin(false, transitArguments);
+        view.finishLogin(false, mTransitArguments);
     }
 
     private void showLoginError(String msg) {

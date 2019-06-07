@@ -11,8 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.EventBus;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -134,8 +132,8 @@ public class Login_View extends BaseView implements iLogin.View
     }
 
     @Override
-    public void finishLogin(boolean byCancel, @Nullable Bundle transitArguments) {
-        int resultCode = (byCancel) ? RESULT_CANCELED : RESULT_OK;
+    public void finishLogin(boolean isCancelled, @Nullable Bundle transitArguments) {
+        int resultCode = (isCancelled) ? RESULT_CANCELED : RESULT_OK;
 
         Intent resultsIntent = new Intent();
         if (null != transitArguments)
