@@ -69,6 +69,8 @@ public class UserShow_View extends BaseView implements
 
         setPageTitle(R.string.USER_page_title);
 
+        activateUpButton();
+
         showProgressMessage(R.string.USER_SHOW_loading_user_info);
 
         presenter = new Users_Presenter();

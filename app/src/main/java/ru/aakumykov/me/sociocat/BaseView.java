@@ -34,6 +34,7 @@ import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.tags.list.TagsList_View;
+import ru.aakumykov.me.sociocat.users.show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -155,7 +156,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 break;
 
             case R.id.actionProfile:
-                seeUserProfile();
+                onUserProfileClicked();
                 break;
 
             case R.id.actionLogin:
@@ -372,16 +373,21 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         startActivity(intent);
     }
 
-    private void seeUserProfile() {
-        MyUtils.showCustomToast(getAppContext(), R.string.not_implemented_yet);
-        /*try {
-            Intent intent = new Intent(this, UserShow_View.class);
-            intent.putExtra(Constants.USER_ID, AuthSingleton.currentUserId());
+    private void onUserProfileClicked() {
+        Intent intent = new Intent(this, UserShow_View.class);
+        startActivity(intent);
+
+        /*if (AuthSingleton.isLoggedIn()) {
             startActivity(intent);
-        } catch (Exception e) {
-            showErrorMsg(e.getMessage());
-            e.printStackTrace();
+        } else {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Intent.EXTRA_INTENT, intent);
+            requestLogin(Constants.CODE_USER_PROFILE, bundle);
         }*/
+    }
+
+    private void goToUserProfile() {
+
     }
 
     private void onCardEdited(int resultCode, @Nullable Intent data) {
