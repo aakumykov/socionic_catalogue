@@ -71,7 +71,7 @@ public class CardShow_View_Stub implements iCardShow_View {
     }
 
     @Override
-    public void requestLogin(int requestCode, @Nullable Bundle arguments) {
+    public <T> void requestLogin(int requestCode, @Nullable T transitArguments) {
 
     }
 

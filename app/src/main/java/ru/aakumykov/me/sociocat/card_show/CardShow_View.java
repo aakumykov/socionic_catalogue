@@ -89,6 +89,8 @@ public class CardShow_View extends BaseView implements
             case Constants.CODE_POST_REPLY:
                 processReply(resultCode, data);
                 break;
+            case Constants.CODE_LOGIN:
+                break;
             default:
                 showErrorMsg(R.string.CARD_SHOW_data_error, "onActivityResult(), unknown request code: "+requestCode);
                 break;
