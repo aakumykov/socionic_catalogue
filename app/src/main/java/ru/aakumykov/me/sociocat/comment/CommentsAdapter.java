@@ -77,7 +77,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
                 seeCommentAuthorProfile(comment);
             }
         });
-        String userAvatar = comment.getUserAvatar();
+        String userAvatar = comment.getUserAvatarURL();
         if (!TextUtils.isEmpty(userAvatar)) displayAvatar(userAvatar, commentAvatarView);
 
         TextView commentAuthorView = commentItemView.findViewById(R.id.commentAuthor);

@@ -196,7 +196,7 @@ public class Comment extends ListItem implements Parcelable, iTextItem
         this.userName = userName;
     }
 
-    public String getUserAvatar() {
+    public String getUserAvatarURL() {
         return userAvatar;
     }
     public void setUserAvatar(String userAvatar) {
