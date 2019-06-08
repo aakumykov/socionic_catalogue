@@ -1,26 +1,37 @@
 package ru.aakumykov.me.sociocat.card_show.view_holders;
 
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
 import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.FileInfo;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.iMVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Comment_ViewHolder  extends Base_ViewHolder implements
         View.OnLongClickListener,
         PopupMenu.OnMenuItemClickListener
 {
-    @BindView(R.id.commentRow) LinearLayout commentRow;
+    @BindView(R.id.commentRow) ConstraintLayout commentRow;
+    @BindView(R.id.userAvatarView) ImageView userAvatarView;
+    @BindView(R.id.userNameView) TextView userNameView;
+    @BindView(R.id.cTimeView) TextView cTimeView;
+    @BindView(R.id.mTimeView) TextView mTimeView;
     @BindView(R.id.quoteView) TextView quoteView;
     @BindView(R.id.textView) TextView textView;
     @BindView(R.id.replyWidget) TextView replyWidget;
@@ -47,6 +58,38 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
             quoteView.setText(parentText);
             MyUtils.show(quoteView);
         }
+
+        userNameView.setText(comment.getUserName());
+
+        userAvatarView.setImageResource(R.drawable.ic_man);
+
+        /*try {
+            Uri userAvatarURI = Uri.parse(comment.getUserAvatar());
+            MVPUtils.loadImageWithResizeInto(
+                    userAvatarURI,
+                    userAvatarView,
+                    true,
+                    64,
+                    64,
+                    new iMVPUtils.ImageLoadWithResizeCallbacks() {
+                        @Override
+                        public void onImageLoadWithResizeSuccess(FileInfo fileInfo) {
+
+                        }
+
+                        @Override
+                        public void onImageLoadWithResizeFail(String errorMsg) {
+
+                        }
+                    }
+            );
+        } catch (Exception e) {
+
+        }*/
+
+        cTimeView.setText(comment.getCreatedAt());
+
+        mTimeView.setText(comment.getEditedAt());
 
         textView.setText(comment.getText());
 

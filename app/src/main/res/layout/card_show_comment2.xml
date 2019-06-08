@@ -8,18 +8,19 @@
     android:layout_marginBottom="8dp"
     android:background="@drawable/shape_bottom_line"
     android:orientation="vertical"
-    android:paddingBottom="10dp">
+    android:paddingBottom="6dp">
 
     <ImageView
-        android:id="@+id/userAvatar"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:id="@+id/userAvatarView"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/COMMENT_user_avatar"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@drawable/ic_man" />
 
     <TextView
         android:id="@+id/userNameView"
@@ -31,7 +32,7 @@
         android:paddingBottom="4dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/userAvatar"
+        app:layout_constraintStart_toEndOf="@+id/userAvatarView"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Пользователь" />
 
@@ -40,11 +41,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
         android:textSize="12sp"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/userAvatar"
+        app:layout_constraintStart_toEndOf="@+id/userAvatarView"
         app:layout_constraintTop_toBottomOf="@+id/userNameView"
         tools:text="Создано 2 минуты назад"
         tools:visibility="visible" />
@@ -54,20 +54,28 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:textSize="12sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/userAvatar"
-        app:layout_constraintTop_toBottomOf="@+id/cTimeView"
+        app:layout_constraintStart_toEndOf="@+id/cTimeView"
+        app:layout_constraintTop_toBottomOf="@+id/userNameView"
         tools:text="Изменено 1 минуту назад"
         tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="66dp" />
 
     <TextView
         android:id="@+id/quoteView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/shape_comment_quote_background"
@@ -77,8 +85,8 @@
         android:paddingBottom="6dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/userAvatar"
-        app:layout_constraintTop_toBottomOf="@+id/mTimeView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
         tools:text="Цитата (родительский комментарий)"
         tools:visibility="visible" />
 
@@ -87,12 +95,29 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:paddingTop="6dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quoteView"
         tools:text="Комментарий, комментарий, это комментарий. Глубокомысленный, лучше, чем начальное сообщение, комментарий." />
+
+    <TextView
+        android:id="@+id/replyWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:text="@string/COMMENT_reply"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
