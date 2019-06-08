@@ -252,10 +252,18 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
 
     // Разное
-    @Override public void requestLogin(int requestCode, @Nullable Bundle transitArguments) {
+    @Override
+    public <T> void requestLogin(int requestCode, @Nullable T transitData) {
         Intent intent = new Intent(this, Login_View.class);
-        if (null != transitArguments)
-            intent.putExtra(Constants.TRANSIT_ARGUMENTS, transitArguments);
+
+        if (transitData instanceof Intent)
+            intent.putExtra(Intent.EXTRA_INTENT, (Intent) transitData);
+        else if (transitData instanceof Bundle)
+            intent.putExtra(Constants.TRANSIT_ARGUMENTS, (Bundle) transitData);
+        else {
+            throw new RuntimeException("transitData argument must have Intent or Bundle type.");
+        }
+
         startActivityForResult(intent, requestCode);
     }
 
@@ -376,18 +384,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void onUserProfileClicked() {
         Intent intent = new Intent(this, UserShow_View.class);
         startActivity(intent);
-
-        /*if (AuthSingleton.isLoggedIn()) {
-            startActivity(intent);
-        } else {
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(Intent.EXTRA_INTENT, intent);
-            requestLogin(Constants.CODE_USER_PROFILE, bundle);
-        }*/
-    }
-
-    private void goToUserProfile() {
-
     }
 
     private void onCardEdited(int resultCode, @Nullable Intent data) {
