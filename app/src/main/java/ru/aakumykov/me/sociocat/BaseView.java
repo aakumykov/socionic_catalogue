@@ -79,7 +79,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         switch (requestCode) {
 
             case Constants.CODE_LOGIN:
-                invalidateOptionsMenu();
+                //invalidateOptionsMenu();
                 break;
 
             case Constants.CODE_EDIT_CARD:
@@ -100,6 +100,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     protected void onResume() {
         super.onResume();
+        invalidateOptionsMenu();
         //checkUnfinishedEdit();
     }
 
