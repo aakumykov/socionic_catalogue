@@ -56,7 +56,6 @@ public class CardEdit_Presenter implements
     private Card currentCard;
     private HashMap<String,Boolean> oldCardTags;
     private String imageType;
-    private boolean isExternalDataMode = false;
     private CardEditMode editMode;
 
 
@@ -713,8 +712,7 @@ public class CardEdit_Presenter implements
     private void finishWork(Card card) {
         if (null != view) {
             clearEditState();
-            if (isExternalDataMode) view.showCard(card);
-            else view.finishEdit(card);
+            view.finishEdit(card);
         }
     }
 
