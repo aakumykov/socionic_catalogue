@@ -14,12 +14,15 @@ import ru.aakumykov.me.sociocat.models.Card;
 
 public class ExternalDataReceiver extends BaseView {
 
-    public static final String TAG = "ExternalDataReceiver";
+    private boolean mWorkDone = false;
 
     // Системные методы
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        finishIfDone();
+
         setContentView(R.layout.data_reciever_activity);
         setPageTitle(R.string.EXTERNAL_DATA_RECIEVER_page_title);
 
@@ -49,6 +52,12 @@ public class ExternalDataReceiver extends BaseView {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        finishIfDone();
+    }
+
     @Override public void onUserLogin() {
 
     }
@@ -67,9 +76,6 @@ public class ExternalDataReceiver extends BaseView {
         if (null == inputIntent)
             throw new IllegalArgumentException("Input intent is NULL");
 
-        String type = inputIntent.getType();
-        String text = inputIntent.getStringExtra(Intent.EXTRA_TEXT);
-
         Intent outputIntent = new Intent(this, CardEdit_View.class);
         outputIntent.setAction(Intent.ACTION_SEND);
         outputIntent.putExtra(Intent.EXTRA_INTENT, inputIntent);
@@ -77,13 +83,15 @@ public class ExternalDataReceiver extends BaseView {
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
+        mWorkDone = true;
+
         if (null == data)
             throw  new IllegalArgumentException("Intent is null");
 
         if (RESULT_OK == resultCode) {
             Card card = data.getParcelableExtra(Constants.CARD);
             Intent intent = new Intent(this, CardShow_View.class);
-            intent.putExtra(Constants.CARD, card);
+            intent.putExtra(Constants.CARD_KEY, card.getKey());
             startActivity(intent);
         }
         else {
@@ -91,4 +99,8 @@ public class ExternalDataReceiver extends BaseView {
         }
     }
 
+    private void finishIfDone() {
+        if (mWorkDone)
+            finish();
+    }
 }
