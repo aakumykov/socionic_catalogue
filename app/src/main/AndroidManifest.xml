@@ -106,7 +106,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".card_edit.CardEdit_View" android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".card_edit.CardEdit_View"
+            android:windowSoftInputMode="stateHidden" />
 
         <activity android:name=".preferences.PreferencesActivity" />
 

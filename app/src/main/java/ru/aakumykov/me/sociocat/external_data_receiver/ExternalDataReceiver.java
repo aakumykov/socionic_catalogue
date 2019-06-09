@@ -21,30 +21,15 @@ public class ExternalDataReceiver extends BaseView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.data_reciever_activity);
-
         setPageTitle(R.string.EXTERNAL_DATA_RECIEVER_page_title);
 
         try {
-            makeStartDecision();
-        } catch (Exception e) {
+            processInputIntent(getIntent());
+        }
+        catch (Exception e) {
             showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_error_starting_work, e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onUserLogin() {
-
-    }
-
-    @Override
-    public void onUserLogout() {
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
     }
 
     @Override
@@ -64,33 +49,46 @@ public class ExternalDataReceiver extends BaseView {
         }
     }
 
-    // Внутренние методы
-    private void makeStartDecision() throws Exception {
+    @Override public void onUserLogin() {
 
-        Intent inputEntent = getIntent();
-        if (null == inputEntent)
+    }
+
+    @Override public void onUserLogout() {
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+
+    // Внутренние методы
+    private void processInputIntent(@Nullable Intent inputIntent) throws Exception {
+        if (null == inputIntent)
             throw new IllegalArgumentException("Input intent is NULL");
 
-        Intent outputIntent = new Intent(inputEntent);
-        outputIntent.setClass(this, CardEdit_View.class);
-        outputIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        String type = inputIntent.getType();
+        String text = inputIntent.getStringExtra(Intent.EXTRA_TEXT);
 
+        Intent outputIntent = new Intent(this, CardEdit_View.class);
+        outputIntent.setAction(Intent.ACTION_SEND);
+        outputIntent.putExtra(Intent.EXTRA_INTENT, inputIntent);
         startActivityForResult(outputIntent, Constants.CODE_CREATE_CARD);
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
-        if (null == data) {
+        if (null == data)
             throw  new IllegalArgumentException("Intent is null");
-        }
 
-        if (RESULT_CANCELED == resultCode) {
+        if (RESULT_OK == resultCode) {
+            Card card = data.getParcelableExtra(Constants.CARD);
+            Intent intent = new Intent(this, CardShow_View.class);
+            intent.putExtra(Constants.CARD, card);
+            startActivity(intent);
+        }
+        else {
             finish();
-            return;
         }
-
-        Card card = data.getParcelableExtra(Constants.CARD);
-        Intent intent = new Intent(this, CardShow_View.class);
-        intent.putExtra(Constants.CARD, card);
-        startActivity(intent);
     }
+
 }

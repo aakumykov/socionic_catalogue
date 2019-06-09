@@ -80,13 +80,13 @@ public class CardEdit_Presenter implements
         if (null == intent)
             throw new IllegalArgumentException("Intent is NULL");
 
-        if (!AuthSingleton.isLoggedIn()) {
-            Bundle bundle = new Bundle();
-                bundle.putParcelable(Intent.EXTRA_INTENT, intent);
-            view.requestLogin(Constants.CODE_EDIT_CARD, bundle);
-        }
+//        if (!AuthSingleton.isLoggedIn()) {
+//            Bundle bundle = new Bundle();
+//                bundle.putParcelable(Intent.EXTRA_INTENT, intent);
+//            view.requestLogin(Constants.CODE_EDIT_CARD, bundle);
+//        }
 
-        String action = "" + intent.getAction();
+        String action = intent.getAction()+"";
 
         switch (action) {
 
@@ -119,7 +119,7 @@ public class CardEdit_Presenter implements
                 break;
 
             case Intent.ACTION_SEND:
-                prepareCardCreation(intent);
+                prepareCardCreation();
                 processRecievedData(intent);
                 break;
 
@@ -433,8 +433,8 @@ public class CardEdit_Presenter implements
         startCreateCard(intent);
     }
 
-    private void startCreateCard(Intent data) {
-        Card card = data.getParcelableExtra(Constants.CARD);
+    private void startCreateCard(Intent intent) {
+        Card card = intent.getParcelableExtra(Constants.CARD);
         card.setKey(cardsSingleton.createKey());
 
         editMode = CardEditMode.CREATE;
@@ -476,47 +476,48 @@ public class CardEdit_Presenter implements
         });
     }
 
-    private void prepareCardCreation(Intent intent) {
+    private void prepareCardCreation() {
         editMode = CardEditMode.CREATE;
-        // Если запускается с флафгом NO_HISTORY, значит данные поступили извне
-        isExternalDataMode = (0 != (intent.getFlags() & Intent.FLAG_ACTIVITY_NO_HISTORY));
-
         Card card = new Card();
         card.setKey(cardsSingleton.createKey());
         currentCard = card;
     }
 
     private void processRecievedData(Intent intent) {
-        String inputDataMode = MVPUtils.detectInputDataMode(intent);
+
+        Intent transitIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
+
+        String inputDataMode = MVPUtils.detectInputDataMode(transitIntent);
 
         try {
             switch (inputDataMode) {
 
                 case Constants.MIME_TYPE_TEXT:
                     currentCard.setType(Constants.TEXT_CARD);
-                    procesIncomingText(intent);
+                    procesIncomingText(transitIntent);
                     break;
 
                 case Constants.MIME_TYPE_IMAGE_LINK:
                     currentCard.setType(Constants.IMAGE_CARD);
-                    processIncomingImage(intent);
+                    processIncomingImage(transitIntent);
                     break;
 
                 case Constants.MIME_TYPE_IMAGE_DATA:
                     currentCard.setType(Constants.IMAGE_CARD);
-                    processIncomingImage(intent);
+                    processIncomingImage(transitIntent);
                     break;
 
                 case Constants.MIME_TYPE_YOUTUBE_VIDEO:
                     currentCard.setType(VIDEO_CARD);
-                    processYoutubeVideo(intent);
+                    processYoutubeVideo(transitIntent);
                     break;
 
                 default:
                     view.showErrorMsg(R.string.CARD_EDIT_unknown_data_mode, "Unknown input data mode: "+inputDataMode);
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             if (null != view) {
                 view.showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
                 e.printStackTrace();
