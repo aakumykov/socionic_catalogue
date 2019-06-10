@@ -10,17 +10,22 @@
     android:orientation="vertical"
     android:paddingBottom="6dp">
 
-    <ImageView
-        android:id="@+id/userAvatarView"
+    <FrameLayout
+        android:id="@+id/userAvatarContainer"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:contentDescription="@string/COMMENT_user_avatar"
-        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_man" />
+        >
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_man" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/userNameView"
@@ -32,7 +37,7 @@
         android:paddingBottom="4dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/userAvatarView"
+        app:layout_constraintStart_toEndOf="@+id/userAvatarContainer"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Пользователь" />
 
@@ -44,7 +49,7 @@
         android:layout_marginTop="8dp"
         android:textSize="12sp"
         android:visibility="gone"
-        app:layout_constraintStart_toEndOf="@+id/userAvatarView"
+        app:layout_constraintStart_toEndOf="@+id/userAvatarContainer"
         app:layout_constraintTop_toBottomOf="@+id/userNameView"
         tools:text="Создано 2 минуты назад"
         tools:visibility="visible" />
