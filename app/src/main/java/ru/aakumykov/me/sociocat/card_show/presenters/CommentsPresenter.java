@@ -203,7 +203,7 @@ public class CommentsPresenter implements iCommentsPresenter {
                 newComment.setText(commentText);
                 newComment.setUserId(user.getKey());
                 newComment.setUserName(user.getName());
-                newComment.setUserAvatar(user.getAvatarURL());
+                newComment.setUserAvatarURL(user.getAvatarURL());
 
         switch (mRepliedItem.getItemType()) {
             case CARD_ITEM:

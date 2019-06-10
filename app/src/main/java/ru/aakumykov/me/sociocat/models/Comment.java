@@ -27,7 +27,7 @@ public class Comment extends ListItem implements Parcelable, iTextItem
     private String parentText;
     private String userId;
     private String userName;
-    private String userAvatar;
+    private String userAvatarURL;
     private String createdAt;
     private String editedAt;
     private Integer rating = 0;
@@ -40,14 +40,14 @@ public class Comment extends ListItem implements Parcelable, iTextItem
     }
     
     public Comment(String text, String cardId, String parentId,
-                   String parentText, String userId, String userName, String userAvatar) {
+                   String parentText, String userId, String userName, String userAvatarURL) {
         this.text = text;
         this.cardId = cardId;
         this.parentId = parentId;
         this.parentText = parentText;
         this.userId = userId;
         this.userName = userName;
-        this.userAvatar = userAvatar;
+        this.userAvatarURL = userAvatarURL;
         this.rating = 0;
         this.rateUpList = new ArrayList<>();
         this.rateDownList = new ArrayList<>();
@@ -63,7 +63,7 @@ public class Comment extends ListItem implements Parcelable, iTextItem
                 +", parentText: "+parentText
                 +", userId: "+userId
                 +", userName: "+userName
-                +", userAvatar: "+userAvatar
+                +", userAvatarURL: "+ userAvatarURL
                 +", createdAt: "+createdAt
                 +", editedAt: "+editedAt
                 +", rating: "+rating
@@ -82,7 +82,7 @@ public class Comment extends ListItem implements Parcelable, iTextItem
             map.put("parentText", parentText);
             map.put("userId", userId);
             map.put("userName", userName);
-            map.put("userAvatar", userAvatar);
+            map.put("userAvatarURL", userAvatarURL);
             map.put("createdAt", createdAt);
             map.put("editedAt", editedAt);
             map.put("rating", rating);
@@ -120,7 +120,7 @@ public class Comment extends ListItem implements Parcelable, iTextItem
         dest.writeString(parentText);
         dest.writeString(userId);
         dest.writeString(userName);
-        dest.writeString(userAvatar);
+        dest.writeString(userAvatarURL);
         dest.writeString(createdAt);
         dest.writeString(editedAt);
         dest.writeInt(rating);
@@ -136,7 +136,7 @@ public class Comment extends ListItem implements Parcelable, iTextItem
         parentId = in.readString();
         userId = in.readString();
         userName = in.readString();
-        userAvatar = in.readString();
+        userAvatarURL = in.readString();
         createdAt = in.readString();
         editedAt = in.readString();
         rating = in.readInt();
@@ -197,10 +197,10 @@ public class Comment extends ListItem implements Parcelable, iTextItem
     }
 
     public String getUserAvatarURL() {
-        return userAvatar;
+        return userAvatarURL;
     }
-    public void setUserAvatar(String userAvatar) {
-        this.userAvatar = userAvatar;
+    public void setUserAvatarURL(String userAvatarURL) {
+        this.userAvatarURL = userAvatarURL;
     }
 
     public String getCreatedAt() {
