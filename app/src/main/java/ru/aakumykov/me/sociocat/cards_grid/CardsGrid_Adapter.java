@@ -23,6 +23,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -256,12 +257,18 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
 
-        if (usersSingleton.currentUserIsAdmin() || usersSingleton.isCardOwner(cardsList.get(listPosition))) {
-            popupMenu.inflate(R.menu.edit);
-            popupMenu.inflate(R.menu.delete);
-        }
+        User currentUser = usersSingleton.getCurrentUser();
+        Card currentCard = cardsList.get(listPosition);
 
-        popupMenu.inflate(R.menu.share);
+        if (null != currentUser) {
+            if (usersSingleton.currentUserIsAdmin() || usersSingleton.isCardOwner(currentCard)) {
+                popupMenu.inflate(R.menu.edit);
+                popupMenu.inflate(R.menu.delete);
+            }
+        }
+        else {
+            popupMenu.inflate(R.menu.share);
+        }
 
         viewHolderCommon.saveOriginalBackground();
         viewHolderCommon.setPressedBackground();
