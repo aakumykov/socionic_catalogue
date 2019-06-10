@@ -50,7 +50,7 @@ public class Users_Presenter implements
     public void linkView(iUsers.View view) throws IllegalArgumentException {
 
         if (view instanceof iUsers.ListView) {
-            Log.d(TAG, "linkView(ListView)");
+            Log.d(TAG, "linkView(ListAdapter)");
             this.listView = (iUsers.ListView) view;
         }
         else if (view instanceof iUsers.ShowView) {

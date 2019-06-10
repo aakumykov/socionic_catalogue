@@ -31,18 +31,18 @@ import ru.aakumykov.me.sociocat.card_show.list_items.LoadMore_Item;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class ListView extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
+public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         iListAdapter,
         iCardView,
         iCommentsView
 {
-    private final static String TAG = "ListView";
+    private final static String TAG = "ListAdapter";
     private List<ListItem> itemsList;
     private iCardPresenter cardPresenter;
     private iCommentsPresenter commentsPresenter;
     private iCardShow_View view;
 
-    public ListView() {
+    public ListAdapter() {
         this.itemsList = new ArrayList<>();
     }
 

@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.adapter.ListView;
+import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
@@ -68,7 +68,7 @@ public class CardShow_View extends BaseView implements
         this.commentsPresenter = new CommentsPresenter();
         this.cardPresenter = new CardPresenter(commentsPresenter);
 
-        this.listAdapter = new ListView();
+        this.listAdapter = new ListAdapter();
 
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.recyclerView.setAdapter((RecyclerView.Adapter) listAdapter);
