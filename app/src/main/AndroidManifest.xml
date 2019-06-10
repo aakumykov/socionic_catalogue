@@ -58,7 +58,7 @@
 
         <activity android:name=".card_type_chooser.CardTypeChooser" android:noHistory="true" />
 
-        <activity android:name=".external_data_receiver.ExternalDataReceiver" android:noHistory="true">
+        <activity android:name=".external_data_receiver.ExternalDataReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -106,7 +106,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".card_edit.CardEdit_View" android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".card_edit.CardEdit_View"
+            android:windowSoftInputMode="stateHidden" />
 
         <activity android:name=".preferences.PreferencesActivity" />
 

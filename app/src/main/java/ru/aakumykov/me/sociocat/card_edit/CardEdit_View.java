@@ -105,6 +105,41 @@ public class CardEdit_View extends BaseView implements
         tagsContainer.setOnTagClickListener(this);
 
         setupTagWatcher();
+
+//        presenter.linkView(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        presenter.linkView(this);
+
+        switch (requestCode) {
+
+            case Constants.CODE_LOGIN_REQUEST:
+                if (null != data) {
+                    Intent originalIntent = data.getParcelableExtra(Intent.EXTRA_INTENT);
+                    startEditWork(originalIntent);
+                }
+                break;
+
+            case Constants.CODE_SELECT_IMAGE:
+
+                selectImageMode = false;
+
+                try {
+                    if (RESULT_OK == resultCode)
+                        presenter.processIncomingImage(data);
+
+                } catch (Exception e) {
+                    showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
+                    e.printStackTrace();
+                }
+
+                break;
+
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -156,43 +191,11 @@ public class CardEdit_View extends BaseView implements
         presenter.unlinkView();
     }
 
-    @Override protected void onDestroy() {
+    @Override
+    protected void onDestroy() {
         super.onDestroy();
         if (null != youTubePlayer)
             youTubePlayer.release();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        presenter.linkView(this); // обязательно!!!
-
-        switch (requestCode) {
-
-            case Constants.CODE_LOGIN:
-                if (null != data) {
-                    Intent originalIntent = data.getParcelableExtra(Intent.EXTRA_INTENT);
-                    startEditWork(originalIntent);
-                }
-                break;
-
-            case Constants.CODE_SELECT_IMAGE:
-
-                selectImageMode = false;
-
-                try {
-                    if (RESULT_OK == resultCode)
-                        presenter.processIncomingImage(data);
-
-                } catch (Exception e) {
-                    showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
-                    e.printStackTrace();
-                }
-
-                break;
-
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-        }
     }
 
     @Override

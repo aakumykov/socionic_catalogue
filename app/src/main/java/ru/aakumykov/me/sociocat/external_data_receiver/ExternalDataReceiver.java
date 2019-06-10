@@ -14,37 +14,25 @@ import ru.aakumykov.me.sociocat.models.Card;
 
 public class ExternalDataReceiver extends BaseView {
 
-    public static final String TAG = "ExternalDataReceiver";
+    private boolean mWorkDone = false;
 
     // Системные методы
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.data_reciever_activity);
 
+        finishIfDone();
+
+        setContentView(R.layout.data_reciever_activity);
         setPageTitle(R.string.EXTERNAL_DATA_RECIEVER_page_title);
 
         try {
-            makeStartDecision();
-        } catch (Exception e) {
+            processInputIntent(getIntent());
+        }
+        catch (Exception e) {
             showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_error_starting_work, e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onUserLogin() {
-
-    }
-
-    @Override
-    public void onUserLogout() {
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
     }
 
     @Override
@@ -64,33 +52,55 @@ public class ExternalDataReceiver extends BaseView {
         }
     }
 
-    // Внутренние методы
-    private void makeStartDecision() throws Exception {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        finishIfDone();
+    }
 
-        Intent inputEntent = getIntent();
-        if (null == inputEntent)
+    @Override public void onUserLogin() {
+
+    }
+
+    @Override public void onUserLogout() {
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+
+    // Внутренние методы
+    private void processInputIntent(@Nullable Intent inputIntent) throws Exception {
+        if (null == inputIntent)
             throw new IllegalArgumentException("Input intent is NULL");
 
-        Intent outputIntent = new Intent(inputEntent);
-        outputIntent.setClass(this, CardEdit_View.class);
-        outputIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
+        Intent outputIntent = new Intent(this, CardEdit_View.class);
+        outputIntent.setAction(Intent.ACTION_SEND);
+        outputIntent.putExtra(Intent.EXTRA_INTENT, inputIntent);
         startActivityForResult(outputIntent, Constants.CODE_CREATE_CARD);
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
-        if (null == data) {
+        mWorkDone = true;
+
+        if (null == data)
             throw  new IllegalArgumentException("Intent is null");
-        }
 
-        if (RESULT_CANCELED == resultCode) {
+        if (RESULT_OK == resultCode) {
+            Card card = data.getParcelableExtra(Constants.CARD);
+            Intent intent = new Intent(this, CardShow_View.class);
+            intent.putExtra(Constants.CARD_KEY, card.getKey());
+            startActivity(intent);
+        }
+        else {
             finish();
-            return;
         }
+    }
 
-        Card card = data.getParcelableExtra(Constants.CARD);
-        Intent intent = new Intent(this, CardShow_View.class);
-        intent.putExtra(Constants.CARD, card);
-        startActivity(intent);
+    private void finishIfDone() {
+        if (mWorkDone)
+            finish();
     }
 }
