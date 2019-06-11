@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show.view_holders;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.View;
@@ -98,8 +99,7 @@ public class Card_ViewHolder extends Base_ViewHolder
                 MyImageLoader.loadImageToContainer(
                         context,
                         imageContainer,
-                        card.getImageURL(),
-                        true
+                        card.getImageURL()
                 );
                 break;
 

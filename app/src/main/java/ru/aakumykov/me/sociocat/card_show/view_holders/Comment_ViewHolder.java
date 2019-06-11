@@ -66,8 +66,7 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
             MyImageLoader.loadImageToContainer(
                     userAvatarContainer.getContext(),
                     userAvatarContainer,
-                    avatarURL,
-                    true
+                    avatarURL
             );
         }
 
