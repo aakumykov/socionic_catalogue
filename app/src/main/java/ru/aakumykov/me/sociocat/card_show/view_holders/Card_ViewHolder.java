@@ -71,16 +71,19 @@ public class Card_ViewHolder extends Base_ViewHolder
 
     // Внутренние методы
     private void displayCard(Card card) {
-        titleView.setText(card.getTitle());
-        descriptionView.setText(card.getDescription());
-
-        showBaseContent(card);
+        showTitle(card);
+        showDescribedContent(card);
+        showDescription(card);
         showAuthor(card);
         showTime(card.getCTime(), card.getMTime());
         showTags(card.getTags());
     }
 
-    private void showBaseContent(Card card) {
+    private void showTitle(Card card) {
+        titleView.setText(card.getTitle());
+    }
+
+    private void showDescribedContent(Card card) {
         switch (card.getType()) {
 
             case Constants.TEXT_CARD:
@@ -108,6 +111,10 @@ public class Card_ViewHolder extends Base_ViewHolder
                 showYoutubeMedia(card.getAudioCode(), InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER);
                 break;
         }
+    }
+
+    private void showDescription(Card card) {
+        descriptionView.setText(card.getDescription());
     }
 
     private void showAuthor(Card card) {
