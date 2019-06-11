@@ -96,7 +96,7 @@ public class Card_ViewHolder extends Base_ViewHolder
                         context,
                         imageContainer,
                         card.getImageURL(),
-                        R.drawable.ic_image_error
+                        true
                 );
                 break;
 

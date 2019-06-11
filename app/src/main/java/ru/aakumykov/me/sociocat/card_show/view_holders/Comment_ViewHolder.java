@@ -67,7 +67,7 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
                     userAvatarContainer.getContext(),
                     userAvatarContainer,
                     avatarURL,
-                    R.drawable.ic_image_error
+                    true
             );
         }
 
