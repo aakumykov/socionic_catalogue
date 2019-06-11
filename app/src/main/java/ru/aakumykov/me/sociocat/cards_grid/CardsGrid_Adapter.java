@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
@@ -21,6 +22,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
@@ -227,7 +230,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         Card card = cardsList.get(listPosition);
         viewHolder.titleView.setText(card.getTitle());
 
-        MyUtils.show(viewHolder.imageThrobber);
+        /*MyUtils.show(viewHolder.imageThrobber);
 
         Picasso.get().load(card.getImageURL()).into(viewHolder.imageView, new Callback() {
             @Override public void onSuccess() {
@@ -239,7 +242,13 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 MyUtils.hide(viewHolder.imageThrobber);
                 MyUtils.show(viewHolder.imageErrorView);
             }
-        });
+        });*/
+
+        MyImageLoader.loadImageToContainer(
+                viewHolder.imageContainer.getContext(),
+                viewHolder.imageContainer,
+                card.getImageURL()
+        );
     }
 
     private void initAudioLayout(ViewHolderAudio viewHolder, int listPosition) {
@@ -302,14 +311,10 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     static class ViewHolderImage extends ViewHolderCommon {
-        ProgressBar imageThrobber;
-        ImageView imageView;
-        ImageView imageErrorView;
+        FrameLayout imageContainer;
         public ViewHolderImage(@NonNull View itemView) {
             super(itemView);
-            imageThrobber = itemView.findViewById(R.id.imageThrobber);
-            imageView = itemView.findViewById(R.id.imageView);
-            imageErrorView = itemView.findViewById(R.id.imageErrorView);
+            imageContainer = itemView.findViewById(R.id.imageContainer);
         }
     }
 
