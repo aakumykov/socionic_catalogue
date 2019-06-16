@@ -28,7 +28,7 @@ public class CG3_Presenter implements iCG3.Presenter {
 
         view.showProgressMessage(R.string.CARDS_GRID_loading_cards);
 
-        cardsSingleton.loadList(new iCardsSingleton.ListCallbacks() {
+        cardsSingleton.loadList(5, new iCardsSingleton.ListCallbacks() {
 
             @Override
             public void onListLoadSuccess(List<Card> list) {

@@ -7,6 +7,7 @@ import ru.aakumykov.me.sociocat.models.Card;
 public interface iCardsSingleton {
 
     void loadList(ListCallbacks callbacks);
+    void loadList(int limit, ListCallbacks callbacks);
     void loadList(String tagFilter, ListCallbacks callbacks);
     void loadListForUser(String userId, ListCallbacks callbacks);
     void loadNewCards(long newerThanTime, ListCallbacks callbacks);
