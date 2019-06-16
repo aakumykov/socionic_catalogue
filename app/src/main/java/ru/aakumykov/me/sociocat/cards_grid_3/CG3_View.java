@@ -22,6 +22,7 @@ public class CG3_View extends BaseView implements iCG3.View {
     private iCG3.Presenter presenter;
     private CG3_Adapter adapter;
     private StaggeredGridLayoutManager layoutManager;
+    private boolean firstRun = true;
 
 
     @Override
@@ -30,14 +31,14 @@ public class CG3_View extends BaseView implements iCG3.View {
         setContentView(R.layout.cg3_activity);
         ButterKnife.bind(this);
 
+        setPageTitle(R.string.CARDS_GRID_page_title);
+
         presenter = new CG3_Presenter();
         adapter = new CG3_Adapter();
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
-
-        presenter.onWorkBegins();
     }
 
     @Override
@@ -49,11 +50,19 @@ public class CG3_View extends BaseView implements iCG3.View {
     @Override
     protected void onStart() {
         super.onStart();
+
+        presenter.linkView(this);
+
+        if (firstRun) {
+            firstRun = false;
+            presenter.onWorkBegins();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        presenter.unlinkView();
     }
 
     @Override
