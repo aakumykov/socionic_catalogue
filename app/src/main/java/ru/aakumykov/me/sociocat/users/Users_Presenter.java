@@ -50,15 +50,15 @@ public class Users_Presenter implements
     public void linkView(iUsers.View view) throws IllegalArgumentException {
 
         if (view instanceof iUsers.ListView) {
-            Log.d(TAG, "linkView(ListAdapter)");
+            Log.d(TAG, "linkViews(ListAdapter)");
             this.listView = (iUsers.ListView) view;
         }
         else if (view instanceof iUsers.ShowView) {
-            Log.d(TAG, "linkView(ShowView)");
+            Log.d(TAG, "linkViews(ShowView)");
             this.showView = (iUsers.ShowView) view;
         }
         else if (view instanceof iUsers.EditView) {
-            Log.d(TAG, "linkView(EditView)");
+            Log.d(TAG, "linkViews(EditView)");
             this.editView = (iUsers.EditView) view;
         }
         else {
@@ -68,7 +68,7 @@ public class Users_Presenter implements
 
     @Override
     public void unlinkView() {
-        Log.d(TAG, "unlinkView()");
+        Log.d(TAG, "unlinkViews()");
         this.listView = null;
         this.showView = null;
         this.editView = null;

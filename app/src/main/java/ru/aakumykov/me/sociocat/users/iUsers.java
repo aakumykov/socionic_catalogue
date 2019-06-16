@@ -17,7 +17,7 @@ public interface iUsers {
 
     interface View {
 
-    } // Это объединение нужно для работы linkView / unlinkView
+    } // Это объединение нужно для работы linkViews / unlinkViews
 
     interface ListView  extends iBaseView, View {
         void displayList(List<User> list);

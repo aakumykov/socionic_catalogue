@@ -15,7 +15,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.LoadMore_Item;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.Throbber_Item;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
-import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.GridItem_ViewHolder;
+import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -24,7 +24,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         iCG3.iGridView
 {
     private List<iGridItem> list = new ArrayList<>();
-
+    private iCG3.iPresenter presenter;
 
     // Системные методы
     @NonNull @Override
@@ -38,8 +38,8 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         switch (viewType) {
 
             case iGridItem.CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_grid_item, parent, false);
-                viewHolder = new GridItem_ViewHolder(itemView);
+                itemView = layoutInflater.inflate(R.layout.cg3_card_item, parent, false);
+                viewHolder = new Card_ViewHolder(itemView, presenter);
                 break;
 
             case iGridItem.LOAD_MORE_VIEW_TYPE:
@@ -72,8 +72,8 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         if (item instanceof Card) {
             Card card = (Card) item;
-            GridItem_ViewHolder gridItemViewHolder = (GridItem_ViewHolder) viewHolder;
-            gridItemViewHolder.initialize(card);
+            Card_ViewHolder gridItemViewHolder = (Card_ViewHolder) viewHolder;
+            gridItemViewHolder.initialize(card, position);
         }
         else if (item instanceof LoadMore_Item) {
             LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) viewHolder;
@@ -110,6 +110,16 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // iGridView
     @Override
+    public void bindPresenter(iCG3.iPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void unbindPresenter() {
+        this.presenter = null;
+    }
+
+    @Override
     public void setList(List<iGridItem> itemsList) {
         this.list.clear();
         this.list.addAll(itemsList);
@@ -135,5 +145,10 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void updateItem(iGridItem item) {
 
+    }
+
+    @Override
+    public iGridItem getItem(int position) {
+        return list.get(position);
     }
 }

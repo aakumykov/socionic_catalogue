@@ -13,7 +13,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CG3_View extends BaseView implements
@@ -24,7 +26,7 @@ public class CG3_View extends BaseView implements
     private CG3_Adapter adapter;
     private List<Card> cardsList = new ArrayList<>();
 
-    private iCG3.iPresenter iPresenter;
+    private iCG3.iPresenter presenter;
     private boolean firstRun = true;
 
 
@@ -37,7 +39,7 @@ public class CG3_View extends BaseView implements
 
         setPageTitle(R.string.CARDS_GRID_page_title);
 
-        iPresenter = new CG3_Presenter();
+        presenter = new CG3_Presenter();
         adapter = new CG3_Adapter();
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
@@ -48,25 +50,29 @@ public class CG3_View extends BaseView implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        iPresenter.linkView(this, adapter);
+        presenter.linkViews(this, adapter);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        iPresenter.linkView(this, adapter);
+        presenter.linkViews(this, adapter);
+        adapter.bindPresenter(presenter);
 
         if (firstRun) {
             firstRun = false;
-            iPresenter.onWorkBegins();
+            presenter.onWorkBegins();
         }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        iPresenter.unlinkView();
+
+        // В порядке, обратном присоединению...
+        adapter.unbindPresenter();
+        presenter.unlinkViews();
     }
 
     @Override
@@ -91,5 +97,12 @@ public class CG3_View extends BaseView implements
 //            titleString = (String) title;
 //        }
 //        setPageTitle(titleString);
+    }
+
+    @Override
+    public void goShowCard(Card card) {
+        Intent intent = new Intent(this, CardShow_View.class);
+        intent.putExtra(Constants.CARD_KEY, card.getKey());
+        startActivity(intent);
     }
 }

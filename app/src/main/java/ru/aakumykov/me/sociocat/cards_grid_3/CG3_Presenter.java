@@ -17,13 +17,13 @@ public class CG3_Presenter implements iCG3.iPresenter {
 
 
     @Override
-    public void linkView(iCG3.iPageView pageView, iCG3.iGridView gridView) {
+    public void linkViews(iCG3.iPageView pageView, iCG3.iGridView gridView) {
         this.pageView = pageView;
         this.gridView = gridView;
     }
 
     @Override
-    public void unlinkView() {
+    public void unlinkViews() {
         this.pageView = null;
         this.gridView = null;
     }
@@ -47,5 +47,11 @@ public class CG3_Presenter implements iCG3.iPresenter {
                 pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
             }
         });
+    }
+
+    @Override
+    public void onCardClicked(int position) {
+        Card card = (Card) gridView.getItem(position); //TODO: переделать в getCard()
+        pageView.goShowCard(card);
     }
 }

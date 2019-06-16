@@ -106,7 +106,7 @@ public class CardEdit_View extends BaseView implements
 
         setupTagWatcher();
 
-//        presenter.linkView(this);
+//        presenter.linkViews(this);
     }
 
     @Override
