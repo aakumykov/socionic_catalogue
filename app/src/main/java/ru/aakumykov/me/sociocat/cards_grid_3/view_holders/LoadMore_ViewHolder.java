@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.cards_grid_3;
+package ru.aakumykov.me.sociocat.cards_grid_3.view_holders;
 
 import android.view.View;
 import android.widget.TextView;
@@ -11,17 +11,17 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class GridItem_ViewHolder extends RecyclerView.ViewHolder {
+public class LoadMore_ViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.titleView) TextView titleView;
 
-    public GridItem_ViewHolder(@NonNull View itemView) {
+    public LoadMore_ViewHolder(@NonNull View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
 
-    public void initialize(Card card) {
-        titleView.setText(card.getTitle());
+    public void initialize() {
+        titleView.setText(R.string.CARDS_GRID_load_more);
     }
 
 

@@ -13,6 +13,8 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.LoadMore_Item;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
+import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.GridItem_ViewHolder;
+import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
