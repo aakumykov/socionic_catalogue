@@ -33,6 +33,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View itemView;
         RecyclerView.ViewHolder viewHolder;
+        StaggeredGridLayoutManager.LayoutParams layoutParams;
 
         switch (viewType) {
 
@@ -44,11 +45,17 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             case iGridItem.LOAD_MORE_VIEW_TYPE:
                 itemView = layoutInflater.inflate(R.layout.cg3_loadmore_item, parent, false);
                 viewHolder = new LoadMore_ViewHolder(itemView);
+
+                layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+                layoutParams.setFullSpan(true);
                 break;
 
             case iGridItem.THROBBER_VIEW_TYPE:
                 itemView = layoutInflater.inflate(R.layout.cg3_throbber_item, parent, false);
                 viewHolder = new Throbber_ViewHolder(itemView);
+
+                layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+                layoutParams.setFullSpan(true);
                 break;
 
             default:
@@ -71,17 +78,9 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         else if (item instanceof LoadMore_Item) {
             LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) viewHolder;
             loadMoreViewHolder.initialize();
-
-            StaggeredGridLayoutManager.LayoutParams layoutParams =
-                    (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
-            layoutParams.setFullSpan(true);
         }
         else if (item instanceof Throbber_Item) {
             Throbber_ViewHolder throbberViewHolder = (Throbber_ViewHolder) viewHolder;
-
-            StaggeredGridLayoutManager.LayoutParams layoutParams =
-                    (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
-            layoutParams.setFullSpan(true);
         }
         else {
             throw new RuntimeException("Unknown item type: "+item);
