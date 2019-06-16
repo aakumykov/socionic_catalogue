@@ -4,16 +4,24 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
-import ru.aakumykov.me.sociocat.models.Card;
 
 public interface iCG3 {
 
-    interface View extends iBaseView {
-        void displayList(List<iGridItem> list);
+    interface iPageView extends iBaseView {
+        <T> void setTitle(T title);
     }
 
-    interface Presenter {
-        void linkView(iCG3.View view);
+    interface iGridView {
+        void setList(List<iGridItem> list);
+        void appendList(List<iGridItem> list);
+
+        void addItem(iGridItem item);
+        void removeItem(iGridItem item);
+        void updateItem(iGridItem item);
+    }
+
+    interface iPresenter {
+        void linkView(iPageView pageView, iGridView gridView);
         void unlinkView();
 
         void onWorkBegins();

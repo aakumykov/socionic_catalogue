@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -16,20 +14,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class CG3_View extends BaseView implements iCG3.View {
-
+public class CG3_View extends BaseView implements
+        iCG3.iPageView
+{
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     private StaggeredGridLayoutManager layoutManager;
     private CG3_Adapter adapter;
     private List<Card> cardsList = new ArrayList<>();
 
-    private iCG3.Presenter presenter;
+    private iCG3.iPresenter iPresenter;
     private boolean firstRun = true;
 
 
+    // Системные методы
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +37,7 @@ public class CG3_View extends BaseView implements iCG3.View {
 
         setPageTitle(R.string.CARDS_GRID_page_title);
 
-        presenter = new CG3_Presenter();
+        iPresenter = new CG3_Presenter();
         adapter = new CG3_Adapter();
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
@@ -49,25 +48,25 @@ public class CG3_View extends BaseView implements iCG3.View {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        presenter.linkView(this);
+        iPresenter.linkView(this, adapter);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        presenter.linkView(this);
+        iPresenter.linkView(this, adapter);
 
         if (firstRun) {
             firstRun = false;
-            presenter.onWorkBegins();
+            iPresenter.onWorkBegins();
         }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        presenter.unlinkView();
+        iPresenter.unlinkView();
     }
 
     @Override
@@ -81,9 +80,16 @@ public class CG3_View extends BaseView implements iCG3.View {
     }
 
 
-    // iCG3_View
+    // iPage
     @Override
-    public void displayList(List<iGridItem> list) {
-        adapter.setList(list);
+    public <T> void setTitle(T title) {
+//        String titleString = "";
+//        if (title instanceof Integer) {
+//            titleString = getResources().getString((Integer)title);
+//        }
+//        else if (title instanceof String) {
+//            titleString = (String) title;
+//        }
+//        setPageTitle(titleString);
     }
 }

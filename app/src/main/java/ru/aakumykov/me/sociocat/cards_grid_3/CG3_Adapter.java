@@ -20,8 +20,9 @@ import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
+public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
+        iCG3.iGridView
+{
     private List<iGridItem> list = new ArrayList<>();
 
 
@@ -108,12 +109,32 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
 
-    // Внутренние методы
+    // iGridView
+    @Override
     public void setList(List<iGridItem> itemsList) {
         this.list.clear();
         this.list.addAll(itemsList);
         this.list.add(new LoadMore_Item());
-        this.list.add(new Throbber_Item());
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void appendList(List<iGridItem> list) {
+
+    }
+
+    @Override
+    public void addItem(iGridItem item) {
+
+    }
+
+    @Override
+    public void removeItem(iGridItem item) {
+
+    }
+
+    @Override
+    public void updateItem(iGridItem item) {
+
     }
 }
