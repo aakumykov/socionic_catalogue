@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<iGridItem> list = new ArrayList<>();
 
 
+    // Системные методы
     @NonNull @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
@@ -32,12 +34,12 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         switch (viewType) {
 
             case iGridItem.CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_grid_item, null);
+                itemView = layoutInflater.inflate(R.layout.cg3_grid_item, parent, false);
                 viewHolder = new GridItem_ViewHolder(itemView);
                 break;
 
             case iGridItem.LOAD_MORE_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_loadmore_item, null);
+                itemView = layoutInflater.inflate(R.layout.cg3_loadmore_item, parent, false);
                 viewHolder = new LoadMore_ViewHolder(itemView);
                 break;
 
@@ -61,6 +63,10 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         else if (item instanceof LoadMore_Item) {
             LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) viewHolder;
             loadMoreViewHolder.initialize();
+
+            StaggeredGridLayoutManager.LayoutParams layoutParams =
+                    (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+            layoutParams.setFullSpan(true);
         }
         else {
             throw new RuntimeException("Unknown item type: "+item);
@@ -84,8 +90,6 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getItemCount() {
         return list.size();
     }
-
-
 
 
     // Внутренние методы
