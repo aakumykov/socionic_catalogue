@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -61,7 +60,7 @@ public class CardsGrid_View extends BaseView implements
     private final static int COLUMNS_COUNT_PORTRAIT = 2;
 
     @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
-    @BindView(R.id.progressBar) ProgressBar progressBar;
+    @BindView(R.id.progressBar1) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     private SearchView searchView;

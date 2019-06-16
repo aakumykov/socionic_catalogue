@@ -42,7 +42,7 @@ public class UserShow_View extends BaseView implements
         iUsersSingleton.ReadCallbacks,
         AdapterView.OnItemClickListener
 {
-    @BindView(R.id.progressBar) ProgressBar progressBar;
+    @BindView(R.id.progressBar1) ProgressBar progressBar;
     @BindView(R.id.nameView) TextView nameView;
     @BindView(R.id.emailView) TextView emailView;
     @BindView(R.id.aboutView) TextView aboutView;

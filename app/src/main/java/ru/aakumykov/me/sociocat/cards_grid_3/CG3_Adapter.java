@@ -13,9 +13,11 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.LoadMore_Item;
+import ru.aakumykov.me.sociocat.cards_grid_3.items.Throbber_Item;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.GridItem_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.LoadMore_ViewHolder;
+import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -43,6 +45,11 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 viewHolder = new LoadMore_ViewHolder(itemView);
                 break;
 
+            case iGridItem.THROBBER_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.cg3_throbber_item, parent, false);
+                viewHolder = new Throbber_ViewHolder(itemView);
+                break;
+
             default:
                 throw new RuntimeException("Unknown item view type: "+viewType);
         }
@@ -68,6 +75,13 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
             layoutParams.setFullSpan(true);
         }
+        else if (item instanceof Throbber_Item) {
+            Throbber_ViewHolder throbberViewHolder = (Throbber_ViewHolder) viewHolder;
+
+            StaggeredGridLayoutManager.LayoutParams layoutParams =
+                    (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+            layoutParams.setFullSpan(true);
+        }
         else {
             throw new RuntimeException("Unknown item type: "+item);
         }
@@ -82,6 +96,8 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             return iGridItem.CARD_VIEW_TYPE;
         else if (item instanceof LoadMore_Item)
             return iGridItem.LOAD_MORE_VIEW_TYPE;
+        else if (item instanceof Throbber_Item)
+            return iGridItem.THROBBER_VIEW_TYPE;
         else
             return -1;
     }
@@ -97,6 +113,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.list.clear();
         this.list.addAll(itemsList);
         this.list.add(new LoadMore_Item());
+        this.list.add(new Throbber_Item());
         notifyDataSetChanged();
     }
 }
