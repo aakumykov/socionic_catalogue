@@ -14,6 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CG3_View extends BaseView implements iCG3.View {
@@ -80,7 +81,7 @@ public class CG3_View extends BaseView implements iCG3.View {
 
     // iCG3_View
     @Override
-    public void displayList(List<Card> list) {
+    public void displayList(List<iGridItem> list) {
         adapter.setList(list);
     }
 }

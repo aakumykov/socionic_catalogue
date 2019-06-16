@@ -1,8 +1,10 @@
 package ru.aakumykov.me.sociocat.cards_grid_3;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
@@ -32,8 +34,9 @@ public class CG3_Presenter implements iCG3.Presenter {
 
             @Override
             public void onListLoadSuccess(List<Card> list) {
+                List<iGridItem> gridItems = new ArrayList<>(list);
                 view.hideProgressMessage();
-                view.displayList(list);
+                view.displayList(gridItems);
             }
 
             @Override
