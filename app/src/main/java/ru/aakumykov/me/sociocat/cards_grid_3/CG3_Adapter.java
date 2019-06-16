@@ -110,12 +110,12 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // iGridView
     @Override
-    public void bindPresenter(iCG3.iPresenter presenter) {
+    public void linkPresenter(iCG3.iPresenter presenter) {
         this.presenter = presenter;
     }
 
     @Override
-    public void unbindPresenter() {
+    public void unlinkPresenter() {
         this.presenter = null;
     }
 

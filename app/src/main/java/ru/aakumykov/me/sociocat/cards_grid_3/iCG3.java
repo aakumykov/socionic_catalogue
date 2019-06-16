@@ -14,8 +14,8 @@ public interface iCG3 {
     }
 
     interface iGridView {
-        void bindPresenter(iPresenter presenter);
-        void unbindPresenter();
+        void linkPresenter(iPresenter presenter);
+        void unlinkPresenter();
 
         void setList(List<iGridItem> list);
         void appendList(List<iGridItem> list);

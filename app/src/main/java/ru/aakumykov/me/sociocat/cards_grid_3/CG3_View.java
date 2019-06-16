@@ -22,10 +22,7 @@ public class CG3_View extends BaseView implements
         iCG3.iPageView
 {
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
-    private StaggeredGridLayoutManager layoutManager;
     private CG3_Adapter adapter;
-    private List<Card> cardsList = new ArrayList<>();
-
     private iCG3.iPresenter presenter;
     private boolean firstRun = true;
 
@@ -41,7 +38,7 @@ public class CG3_View extends BaseView implements
 
         presenter = new CG3_Presenter();
         adapter = new CG3_Adapter();
-        layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
@@ -50,15 +47,14 @@ public class CG3_View extends BaseView implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        presenter.linkViews(this, adapter);
+        bindComponents();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        presenter.linkViews(this, adapter);
-        adapter.bindPresenter(presenter);
+        bindComponents();
 
         if (firstRun) {
             firstRun = false;
@@ -69,10 +65,8 @@ public class CG3_View extends BaseView implements
     @Override
     protected void onStop() {
         super.onStop();
+        unbindComponents();
 
-        // В порядке, обратном присоединению...
-        adapter.unbindPresenter();
-        presenter.unlinkViews();
     }
 
     @Override
@@ -104,5 +98,18 @@ public class CG3_View extends BaseView implements
         Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
         startActivity(intent);
+    }
+
+
+    // Внутренние методы
+    private void bindComponents() {
+        presenter.linkViews(this, adapter);
+        adapter.linkPresenter(presenter);
+    }
+
+    private void unbindComponents() {
+        // В порядке, обратном bindComponents()
+        adapter.unlinkPresenter();
+        presenter.unlinkViews();
     }
 }
