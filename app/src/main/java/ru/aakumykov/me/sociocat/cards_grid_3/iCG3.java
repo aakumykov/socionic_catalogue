@@ -8,7 +8,7 @@ import ru.aakumykov.me.sociocat.models.Card;
 public interface iCG3 {
 
     interface View extends iBaseView {
-        void displayList(List<Card> card);
+        void displayList(List<Card> list);
     }
 
     interface Presenter {

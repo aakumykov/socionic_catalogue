@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -18,10 +19,11 @@ import ru.aakumykov.me.sociocat.models.Card;
 public class CG3_View extends BaseView implements iCG3.View {
 
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    private StaggeredGridLayoutManager layoutManager;
+    private CG3_Adapter adapter;
+    private List<Card> cardsList = new ArrayList<>();
 
     private iCG3.Presenter presenter;
-    private CG3_Adapter adapter;
-    private StaggeredGridLayoutManager layoutManager;
     private boolean firstRun = true;
 
 
@@ -78,7 +80,7 @@ public class CG3_View extends BaseView implements iCG3.View {
 
     // iCG3_View
     @Override
-    public void displayList(List<Card> card) {
-
+    public void displayList(List<Card> list) {
+        adapter.setList(list);
     }
 }
