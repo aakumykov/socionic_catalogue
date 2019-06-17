@@ -43,7 +43,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 break;
 
             case iGridItem.IMAGE_CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_image_card_item, parent, false);
+                itemView = layoutInflater.inflate(R.layout.cg3_tile_image, parent, false);
                 viewHolder = new Card_ViewHolder(itemView, presenter);
                 break;
 
