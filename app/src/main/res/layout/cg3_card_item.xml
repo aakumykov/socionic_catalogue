@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="18sp"
+        android:textColor="@color/defaultTextColor"
         tools:text="Название карточки" />
 
 </androidx.cardview.widget.CardView>
