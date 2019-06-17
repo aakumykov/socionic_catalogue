@@ -12,7 +12,6 @@ import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CG3_Presenter implements iCG3.iPresenter
 {
@@ -44,7 +43,6 @@ public class CG3_Presenter implements iCG3.iPresenter
         loadCards(
                 LoadMode.REPLACE,
                 null,
-                null,
                 0
         );
     }
@@ -60,7 +58,6 @@ public class CG3_Presenter implements iCG3.iPresenter
             loadCards(
                     LoadMode.APPEND,
                     startKey,
-                    null,
                     position
             );
     }
@@ -70,14 +67,12 @@ public class CG3_Presenter implements iCG3.iPresenter
     private void loadCards(
             LoadMode loadMode,
             @Nullable String startKey,
-            @Nullable String endKey,
             int insertPosition
     )
     {
         gridView.showLoadThrobber();
 
-        cardsSingleton.loadList(15, new iCardsSingleton.ListCallbacks() {
-
+        cardsSingleton.loadList(startKey, null, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 List<iGridItem> gridItems = new ArrayList<>(list);
