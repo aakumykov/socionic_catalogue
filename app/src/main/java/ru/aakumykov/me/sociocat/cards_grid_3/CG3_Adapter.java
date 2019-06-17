@@ -157,7 +157,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         int count = inputList.size();
 
         this.list.addAll(inputList);
-        this.list.add(new LoadMore_Item());
+        this.list.add(new LoadMore_Item(lastCard));
 
         notifyItemRangeChanged(start, count + 1);
     }

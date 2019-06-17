@@ -56,21 +56,13 @@ public class CG3_Presenter implements iCG3.iPresenter
     }
 
     @Override
-    public void onLoadMoreClicked(iGridItem gridItem, int position) {
-        if (gridItem instanceof Card) {
-            Card card = (Card) gridItem;
+    public void onLoadMoreClicked(int position, String startKey) {
             loadCards(
                     LoadMode.APPEND,
-                    card.getKey(),
+                    startKey,
                     null,
                     position
             );
-        }
-        else {
-//            throw new IllegalArgumentException("iGridItem is not Card instance");
-            MyUtils.showCustomToast(pageView.getAppContext(), R.string.CARDS_GRID_loadmore_error);
-            Log.e(TAG, "iGridItem is not Card instance: "+gridItem);
-        }
     }
 
 

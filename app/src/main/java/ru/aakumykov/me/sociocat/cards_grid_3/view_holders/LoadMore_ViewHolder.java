@@ -11,6 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid_3.iCG3;
+import ru.aakumykov.me.sociocat.cards_grid_3.items.LoadMore_Item;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 
 public class LoadMore_ViewHolder extends RecyclerView.ViewHolder {
@@ -35,7 +36,8 @@ public class LoadMore_ViewHolder extends RecyclerView.ViewHolder {
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                presenter.onLoadMoreClicked(gridItem, position);
+                LoadMore_Item loadMoreItem = (LoadMore_Item) gridItem;
+                presenter.onLoadMoreClicked(position, loadMoreItem.getStartKey());
             }
         });
     }

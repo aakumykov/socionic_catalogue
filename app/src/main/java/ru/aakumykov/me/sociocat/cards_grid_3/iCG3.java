@@ -37,6 +37,6 @@ public interface iCG3 {
         void onWorkBegins();
 
         void onCardClicked(int position);
-        void onLoadMoreClicked(iGridItem item, int position);
+        void onLoadMoreClicked(int position, String startKey);
     }
 }
