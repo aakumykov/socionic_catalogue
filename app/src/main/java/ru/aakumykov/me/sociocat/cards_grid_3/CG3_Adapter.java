@@ -37,8 +37,23 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         switch (viewType) {
 
-            case iGridItem.CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_card_item, parent, false);
+            case iGridItem.TEXT_CARD_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.cg3_text_card_item, parent, false);
+                viewHolder = new Card_ViewHolder(itemView, presenter);
+                break;
+
+            case iGridItem.IMAGE_CARD_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.cg3_image_card_item, parent, false);
+                viewHolder = new Card_ViewHolder(itemView, presenter);
+                break;
+
+            case iGridItem.AUDIO_CARD_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.cg3_audio_card_item, parent, false);
+                viewHolder = new Card_ViewHolder(itemView, presenter);
+                break;
+
+            case iGridItem.VIDEO_CARD_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.cg3_video_card_item, parent, false);
                 viewHolder = new Card_ViewHolder(itemView, presenter);
                 break;
 
@@ -92,8 +107,14 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public int getItemViewType(int position) {
         iGridItem item = list.get(position);
 
-        if (item instanceof Card)
-            return iGridItem.CARD_VIEW_TYPE;
+        if (item instanceof Card) {
+            Card card = (Card) item;
+            if (card.isTextCard())  return iGridItem.TEXT_CARD_VIEW_TYPE;
+            if (card.isImageCard()) return iGridItem.IMAGE_CARD_VIEW_TYPE;
+            if (card.isAudioCard()) return iGridItem.AUDIO_CARD_VIEW_TYPE;
+            if (card.isVideoCard()) return iGridItem.VIDEO_CARD_VIEW_TYPE;
+            else return -1;
+        }
         else if (item instanceof LoadMore_Item)
             return iGridItem.LOAD_MORE_VIEW_TYPE;
         else if (item instanceof Throbber_Item)
