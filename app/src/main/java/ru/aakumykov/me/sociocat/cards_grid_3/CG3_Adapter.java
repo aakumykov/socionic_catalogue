@@ -37,29 +37,9 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         switch (viewType) {
 
-            case iGridItem.TEXT_CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_text_card_item, parent, false);
-                viewHolder = new Card_ViewHolder(itemView, presenter);
-                break;
-
-            case iGridItem.IMAGE_CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_tile_image, parent, false);
-                viewHolder = new Card_ViewHolder(itemView, presenter);
-                break;
-
-            case iGridItem.AUDIO_CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_audio_card_item, parent, false);
-                viewHolder = new Card_ViewHolder(itemView, presenter);
-                break;
-
-            case iGridItem.VIDEO_CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_video_card_item, parent, false);
-                viewHolder = new Card_ViewHolder(itemView, presenter);
-                break;
-
             case iGridItem.LOAD_MORE_VIEW_TYPE:
                 itemView = layoutInflater.inflate(R.layout.cg3_loadmore_item, parent, false);
-                viewHolder = new LoadMore_ViewHolder(itemView);
+                viewHolder = new LoadMore_ViewHolder(itemView, presenter);
 
                 layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
                 layoutParams.setFullSpan(true);
@@ -71,6 +51,26 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
                 layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
                 layoutParams.setFullSpan(true);
+                break;
+
+            case iGridItem.TEXT_CARD_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.cg3_text_card_item, parent, false);
+                viewHolder = new Card_ViewHolder(itemView, presenter);
+                break;
+
+            case iGridItem.IMAGE_CARD_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.cg3_image_card_item, parent, false);
+                viewHolder = new Card_ViewHolder(itemView, presenter);
+                break;
+
+            case iGridItem.AUDIO_CARD_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.cg3_audio_card_item, parent, false);
+                viewHolder = new Card_ViewHolder(itemView, presenter);
+                break;
+
+            case iGridItem.VIDEO_CARD_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.cg3_video_card_item, parent, false);
+                viewHolder = new Card_ViewHolder(itemView, presenter);
                 break;
 
             default:
@@ -92,7 +92,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
         else if (item instanceof LoadMore_Item) {
             LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) viewHolder;
-            loadMoreViewHolder.initialize();
+            loadMoreViewHolder.initialize(item, position);
         }
         else if (item instanceof Throbber_Item) {
             Throbber_ViewHolder throbberViewHolder = (Throbber_ViewHolder) viewHolder;
@@ -143,14 +143,23 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void setList(List<iGridItem> itemsList) {
         this.list.clear();
-        this.list.addAll(itemsList);
-        this.list.add(new LoadMore_Item());
-        notifyDataSetChanged();
+        appendList(itemsList);
     }
 
     @Override
-    public void appendList(List<iGridItem> list) {
+    public void appendList(List<iGridItem> inputList) {
 
+        int maxIndex = inputList.size() - 1;
+        Card lastCard = (Card) inputList.get(maxIndex);
+        inputList.remove(maxIndex);
+
+        int start = this.list.size();
+        int count = inputList.size();
+
+        this.list.addAll(inputList);
+        this.list.add(new LoadMore_Item());
+
+        notifyItemRangeChanged(start, count + 1);
     }
 
     @Override
@@ -171,5 +180,15 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public iGridItem getItem(int position) {
         return list.get(position);
+    }
+
+    @Override
+    public void showLoadThrobber() {
+
+    }
+
+    @Override
+    public void hideLoadThrobber() {
+
     }
 }

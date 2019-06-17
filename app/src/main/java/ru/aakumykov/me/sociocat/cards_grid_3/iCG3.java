@@ -17,14 +17,17 @@ public interface iCG3 {
         void linkPresenter(iPresenter presenter);
         void unlinkPresenter();
 
-        void setList(List<iGridItem> list);
-        void appendList(List<iGridItem> list);
+        void setList(List<iGridItem> inputList);
+        void appendList(List<iGridItem> inputList);
 
         void addItem(iGridItem item);
         void removeItem(iGridItem item);
         void updateItem(iGridItem item);
 
         iGridItem getItem(int position);
+
+        void showLoadThrobber();
+        void hideLoadThrobber();
     }
 
     interface iPresenter {
@@ -34,5 +37,6 @@ public interface iCG3 {
         void onWorkBegins();
 
         void onCardClicked(int position);
+        void onLoadMoreClicked(iGridItem item, int position);
     }
 }

@@ -430,4 +430,5 @@
     <string name="MENU_user_logged_in">User logged in</string>
     <string name="MENU_user_logged_out">User logged out</string>
     <string name="CARDS_GRID_load_more">More cards</string>
+    <string name="CARDS_GRID_loadmore_error">Error</string>
 </resources>

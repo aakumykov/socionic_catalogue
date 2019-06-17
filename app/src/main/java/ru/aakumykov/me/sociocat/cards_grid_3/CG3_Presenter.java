@@ -1,5 +1,9 @@
 package ru.aakumykov.me.sociocat.cards_grid_3;
 
+import android.util.Log;
+
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +12,16 @@ import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class CG3_Presenter implements iCG3.iPresenter {
+public class CG3_Presenter implements iCG3.iPresenter
+{
+    enum LoadMode {
+        REPLACE,
+        APPEND
+    }
 
+    private final static String TAG = "CG3_Presenter";
     private iCG3.iPageView pageView;
     private iCG3.iGridView gridView;
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
@@ -30,16 +41,69 @@ public class CG3_Presenter implements iCG3.iPresenter {
 
     @Override
     public void onWorkBegins() {
+        loadCards(
+                LoadMode.REPLACE,
+                null,
+                null,
+                0
+        );
+    }
 
-        pageView.showProgressMessage(R.string.CARDS_GRID_loading_cards);
+    @Override
+    public void onCardClicked(int position) {
+        Card card = (Card) gridView.getItem(position); //TODO: переделать в getCard()
+        pageView.goShowCard(card);
+    }
+
+    @Override
+    public void onLoadMoreClicked(iGridItem gridItem, int position) {
+        if (gridItem instanceof Card) {
+            Card card = (Card) gridItem;
+            loadCards(
+                    LoadMode.APPEND,
+                    card.getKey(),
+                    null,
+                    position
+            );
+        }
+        else {
+//            throw new IllegalArgumentException("iGridItem is not Card instance");
+            MyUtils.showCustomToast(pageView.getAppContext(), R.string.CARDS_GRID_loadmore_error);
+            Log.e(TAG, "iGridItem is not Card instance: "+gridItem);
+        }
+    }
+
+
+    // Внутренние методы
+    private void loadCards(
+            LoadMode loadMode,
+            @Nullable String startKey,
+            @Nullable String endKey,
+            int insertPosition
+    )
+    {
+        gridView.showLoadThrobber();
 
         cardsSingleton.loadList(15, new iCardsSingleton.ListCallbacks() {
 
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 List<iGridItem> gridItems = new ArrayList<>(list);
-                pageView.hideProgressMessage();
-                gridView.setList(gridItems);
+
+                gridView.hideLoadThrobber(); // TODO: перенести в методы set*/append* ...
+
+                switch (loadMode) {
+                    case REPLACE:
+                        gridView.setList(gridItems);
+                        break;
+                    case APPEND:
+                        gridView.appendList(gridItems);
+                        break;
+                    default:
+                        // TODO: показывать ошибку? кидать исключение?
+                        Log.e(TAG, "Wrong LoadMode: "+loadMode);
+                        break;
+                }
             }
 
             @Override
@@ -47,11 +111,5 @@ public class CG3_Presenter implements iCG3.iPresenter {
                 pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
             }
         });
-    }
-
-    @Override
-    public void onCardClicked(int position) {
-        Card card = (Card) gridView.getItem(position); //TODO: переделать в getCard()
-        pageView.goShowCard(card);
     }
 }
