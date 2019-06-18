@@ -258,12 +258,12 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             }
         });
 
-        /*popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
             public void onDismiss(PopupMenu menu) {
                 unfadeItem(position);
             }
-        });*/
+        });
 
         fadeItem(position);
         popupMenu.show();
