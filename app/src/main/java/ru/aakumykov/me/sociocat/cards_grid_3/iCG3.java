@@ -18,7 +18,7 @@ public interface iCG3 {
     interface iPageView extends iBaseView {
         <T> void setTitle(T title);
         void goShowCard(Card card);
-        void goEditCard(Card card);
+        void goEditCard(Card card, int position);
     }
 
     interface iGridView {
@@ -29,6 +29,9 @@ public interface iCG3 {
         void appendList(List<iGridItem> inputList);
 
         iGridItem getItem(int position);
+        int getItemPosition(iGridItem item);
+
+        void updateItem(int position, iGridItem newGridItem);
 
         void hideLoadMoreItem(int position);
 

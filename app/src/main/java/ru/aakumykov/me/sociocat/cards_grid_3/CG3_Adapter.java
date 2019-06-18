@@ -187,6 +187,19 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
+    public int getItemPosition(iGridItem item) {
+        return itemsList.indexOf(item);
+    }
+
+    @Override
+    public void updateItem(int position, iGridItem newGridItem) {
+        if (position > 0) {
+            itemsList.set(position, newGridItem);
+            notifyItemChanged(position);
+        }
+    }
+
+    @Override
     public void hideLoadMoreItem(int position) {
         iGridItem gridItem = itemsList.get(position);
         if (gridItem instanceof GridItem_LoadMore) {
@@ -245,12 +258,12 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             }
         });
 
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+        /*popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
             public void onDismiss(PopupMenu menu) {
                 unfadeItem(position);
             }
-        });
+        });*/
 
         fadeItem(position);
         popupMenu.show();
@@ -298,5 +311,8 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 presenter.onShareClicked(gridItem);
                 break;
         }
+
+        unfadeItem(position);
     }
+
 }

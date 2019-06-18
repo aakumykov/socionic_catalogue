@@ -95,7 +95,8 @@ public class CG3_Presenter implements iCG3.iPresenter
     @Override
     public void onEditClicked(iGridItem gridItem) {
         Card card = (Card) gridItem.getPayload();
-        pageView.goEditCard(card);
+        int position = gridView.getItemPosition(gridItem);
+        pageView.goEditCard(card, position);
     }
 
     @Override

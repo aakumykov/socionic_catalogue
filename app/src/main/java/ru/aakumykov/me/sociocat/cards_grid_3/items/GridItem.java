@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid_3.items;
 
-public class GridItem implements iGridItem {
+public abstract class GridItem implements iGridItem {
 
     private Object mPayload;
     private boolean mIsPressed;

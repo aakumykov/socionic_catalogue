@@ -431,4 +431,6 @@
     <string name="MENU_user_logged_out">User logged out</string>
     <string name="CARDS_GRID_load_more">More cards</string>
     <string name="CARDS_GRID_loadmore_error">Error</string>
+    <string name="CARDS_GRID_card_edit_cancelled">The edit is canceled</string>
+    <string name="CARDS_GRID_data_error">Data error</string>
 </resources>

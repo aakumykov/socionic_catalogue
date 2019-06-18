@@ -388,7 +388,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void onCardEdited(int resultCode, @Nullable Intent data) {
-        MyUtils.showCustomToast(getAppContext(), R.string.not_implemented_yet);
+//        MyUtils.showCustomToast(getAppContext(), R.string.not_implemented_yet);
 //        switch (resultCode) {
 //            case RESULT_OK:
 //                showToast(R.string.INFO_card_saved);
