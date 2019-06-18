@@ -33,7 +33,7 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
     private iCG3.iPresenter mPresenter;
     private int mPosition;
     private iGridItem mGridItem;
-    private ColorStateList mOriginalBackground;
+    private int mOriginalBackground = -1;
 
 
     public Card_ViewHolder(@NonNull View itemView, iCG3.iPresenter presenter) {
@@ -71,7 +71,7 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
     }
 
     public void fade() {
-        mOriginalBackground = mCardView.getCardBackgroundColor();
+        mOriginalBackground = mCardView.getCardBackgroundColor().getDefaultColor();
 
         int color = mCardView.getResources().getColor(R.color.cards_grid_pressed_background_color);
         mCardView.setCardBackgroundColor(color);
@@ -105,13 +105,13 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
         mTitleView.setText(card.getTitle());
 
         if (mGridItem.isPressed()) {
-            mOriginalBackground = mCardView.getCardBackgroundColor();
+            mOriginalBackground = mCardView.getCardBackgroundColor().getDefaultColor();
 
             int color = mCardView.getResources().getColor(R.color.cards_grid_pressed_background_color);
-            mCardView.setBackgroundColor(color);
+            mCardView.setCardBackgroundColor(color);
         }
         else {
-            if (null != mOriginalBackground)
+            if (mOriginalBackground > -1)
                 mCardView.setCardBackgroundColor(mOriginalBackground);
         }
     }
