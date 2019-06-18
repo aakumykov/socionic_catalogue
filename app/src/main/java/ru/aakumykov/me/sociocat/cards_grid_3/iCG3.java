@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid_3;
 
-import androidx.annotation.Nullable;
+import android.view.View;
 
 import java.util.List;
 
@@ -30,6 +30,8 @@ public interface iCG3 {
         void showThrobber(int position);
         void hideThrobber();
         void hideThrobber(int position);
+
+        void showPopupMenu(View view, int position);
     }
 
     interface iPresenter {
@@ -40,5 +42,6 @@ public interface iCG3 {
         void onLoadMoreClicked(int position, String startKey);
 
         void onCardClicked(int position);
+        void onCardLongClicked(View view, int position);
     }
 }

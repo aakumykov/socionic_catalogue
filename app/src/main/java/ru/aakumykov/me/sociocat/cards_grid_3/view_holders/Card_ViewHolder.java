@@ -18,7 +18,8 @@ import ru.aakumykov.me.sociocat.cards_grid_3.iCG3;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class Card_ViewHolder extends RecyclerView.ViewHolder implements
-    View.OnClickListener
+    View.OnClickListener,
+    View.OnLongClickListener
 {
     private final static String TAG = "Card_ViewHolder";
 
@@ -40,6 +41,7 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
         this.position = position;
 
         cardView.setOnClickListener(this);
+        cardView.setOnLongClickListener(this);
 
         commonCardInit(card);
 
@@ -70,6 +72,12 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
             default:
                 break;
         }
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        presenter.onCardLongClicked(view, position);
+        return true;
     }
 
 

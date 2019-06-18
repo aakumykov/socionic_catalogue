@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.cards_grid_3;
 
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 
@@ -10,8 +11,12 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class CG3_Presenter implements iCG3.iPresenter
 {
@@ -24,7 +29,8 @@ public class CG3_Presenter implements iCG3.iPresenter
     private iCG3.iPageView pageView;
     private iCG3.iGridView gridView;
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
-
+//    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
+//    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
     @Override
     public void linkViews(iCG3.iPageView pageView, iCG3.iGridView gridView) {
@@ -62,6 +68,11 @@ public class CG3_Presenter implements iCG3.iPresenter
     public void onCardClicked(int position) {
         Card card = (Card) gridView.getItem(position); //TODO: переделать в getCard()
         pageView.goShowCard(card);
+    }
+
+    @Override
+    public void onCardLongClicked(View view, int position) {
+        gridView.showPopupMenu(view, position);
     }
 
 
