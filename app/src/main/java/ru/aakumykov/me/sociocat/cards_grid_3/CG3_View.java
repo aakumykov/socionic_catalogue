@@ -16,6 +16,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -53,6 +54,12 @@ public class CG3_View extends BaseView implements
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         bindComponents();
+
+        switch (requestCode) {
+            case Constants.CODE_EDIT_CARD:
+                showToast("Возврат из редактирования с кодом "+resultCode);
+                break;
+        }
     }
 
     @Override
@@ -103,6 +110,14 @@ public class CG3_View extends BaseView implements
         Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
         startActivity(intent);
+    }
+
+    @Override
+    public void goEditCard(Card card) {
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.putExtra(Constants.CARD_KEY, card.getKey());
+        intent.setAction(Constants.ACTION_EDIT);
+        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
 

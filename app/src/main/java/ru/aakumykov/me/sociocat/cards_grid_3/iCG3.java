@@ -18,6 +18,7 @@ public interface iCG3 {
     interface iPageView extends iBaseView {
         <T> void setTitle(T title);
         void goShowCard(Card card);
+        void goEditCard(Card card);
     }
 
     interface iGridView {

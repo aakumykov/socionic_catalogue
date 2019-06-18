@@ -86,8 +86,7 @@ public class CG3_Presenter implements iCG3.iPresenter
 
         Card card = (Card) gridView.getItem(position).getPayload();
 
-//        if (card.isCreatedBy(usersSingleton.getCurrentUser()))
-        if (usersSingleton.isCardOwner(card)) {
+        if (card.isCreatedBy(usersSingleton.getCurrentUser())) {
             gridView.showPopupMenu(iCG3.MODE_OWNER, view, position);
             return;
         }
@@ -95,8 +94,8 @@ public class CG3_Presenter implements iCG3.iPresenter
 
     @Override
     public void onEditClicked(iGridItem gridItem) {
-//        if ()
-        pageView.showToast("Правка");
+        Card card = (Card) gridItem.getPayload();
+        pageView.goEditCard(card);
     }
 
     @Override
