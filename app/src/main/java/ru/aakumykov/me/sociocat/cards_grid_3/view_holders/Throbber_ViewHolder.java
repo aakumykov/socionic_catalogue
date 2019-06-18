@@ -18,7 +18,7 @@ public class Throbber_ViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void initialize() {
-        //titleView.setText(R.string.CARDS_GRID_load_more);
+        //mTitleView.setText(R.string.CARDS_GRID_load_more);
     }
 
 

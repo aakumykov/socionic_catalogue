@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid_3.view_holders;
 
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,25 +24,26 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
 {
     private final static String TAG = "Card_ViewHolder";
 
-    @BindView(R.id.cardView) CardView cardView;
-    @BindView(R.id.titleView) TextView titleView;
-    @Nullable @BindView(R.id.imageContainer) ViewGroup imageContainer;
+    @BindView(R.id.cardView) CardView mCardView;
+    @BindView(R.id.titleView) TextView mTitleView;
+    @Nullable @BindView(R.id.imageContainer) ViewGroup mImageContainer;
 
-    private iCG3.iPresenter presenter;
-    private int position;
+    private iCG3.iPresenter mPresenter;
+    private int mPosition;
+    private Drawable mOriginalBackground;
 
 
     public Card_ViewHolder(@NonNull View itemView, iCG3.iPresenter presenter) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-        this.presenter = presenter;
+        this.mPresenter = presenter;
     }
 
     public void initialize(Card card, int position) {
-        this.position = position;
+        this.mPosition = position;
 
-        cardView.setOnClickListener(this);
-        cardView.setOnLongClickListener(this);
+        mCardView.setOnClickListener(this);
+        mCardView.setOnLongClickListener(this);
 
         commonCardInit(card);
 
@@ -62,12 +64,22 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
         }
     }
 
+    public void fade() {
+        mOriginalBackground = mCardView.getBackground();
+        int color = mCardView.getResources().getColor(R.color.cards_grid_pressed_background_color);
+        mCardView.setBackgroundColor(color);
+    }
+
+    public void unfade() {
+        mCardView.setBackground(mOriginalBackground);
+    }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.cardView:
-                presenter.onCardClicked(position);
+                mPresenter.onCardClicked(mPosition);
                 break;
             default:
                 break;
@@ -76,14 +88,14 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
 
     @Override
     public boolean onLongClick(View view) {
-        presenter.onCardLongClicked(view, position);
+        mPresenter.onCardLongClicked(view, mPosition);
         return true;
     }
 
 
     // Внутренние методы
     private void commonCardInit(Card card) {
-        titleView.setText(card.getTitle());
+        mTitleView.setText(card.getTitle());
     }
 
     private void initTextCard(Card card) {
@@ -92,8 +104,8 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
 
     private void initImageCard(Card card) {
         MyImageLoader.loadImageToContainer(
-                imageContainer.getContext(),
-                imageContainer,
+                mImageContainer.getContext(),
+                mImageContainer,
                 card.getImageURL()
             );
     }

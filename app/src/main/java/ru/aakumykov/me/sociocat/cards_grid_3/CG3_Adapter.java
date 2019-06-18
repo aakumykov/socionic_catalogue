@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.cards_grid_3;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,9 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     private iCG3.iPresenter presenter;
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+
+    private Drawable originalBackground;
+
 
     // Системные методы
     @NonNull @Override
@@ -231,7 +236,28 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         popupMenu.inflate(R.menu.share);
 
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+                unfadeItem(view, position);
+            }
+        });
+
+        //Card_ViewHolder cardViewHolder =
         popupMenu.show();
+    }
+
+    @Override
+    public void fadeItem(View view, int position) {
+        this.originalBackground = view.getBackground();
+
+        int color = view.getResources().getColor(R.color.cards_grid_pressed_background_color);
+        view.setBackgroundColor(color);
+    }
+
+    @Override
+    public void unfadeItem(View view, int position) {
+        view.setBackground(this.originalBackground);
     }
 
 
