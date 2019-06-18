@@ -28,6 +28,8 @@ public interface iCG3 {
 
         iGridItem getItem(int position);
 
+        void hideLoadMoreItem(int position);
+
         void showThrobber();
         void showThrobber(int position);
         void hideThrobber();

@@ -184,6 +184,14 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         return itemsList.get(position);
     }
 
+    @Override public void hideLoadMoreItem(int position) {
+        iGridItem gridItem = itemsList.get(position);
+        if (gridItem instanceof LoadMore_Item) {
+            itemsList.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
     @Override
     public void showThrobber() {
         itemsList.add(new Throbber_Item());

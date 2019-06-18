@@ -49,6 +49,8 @@ public class CG3_Presenter implements iCG3.iPresenter
 
     @Override
     public void onLoadMoreClicked(int position, String startKey) {
+        gridView.hideLoadMoreItem(position);
+
         loadCards(
                 LoadMode.APPEND,
                 startKey,
