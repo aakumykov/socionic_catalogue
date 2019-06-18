@@ -13,10 +13,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CG3_View extends BaseView implements
         iCG3.iPageView
@@ -38,7 +40,10 @@ public class CG3_View extends BaseView implements
 
         presenter = new CG3_Presenter();
         adapter = new CG3_Adapter();
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+
+        int colsNum = MyUtils.isPortraitOrientation(this) ?
+                Config.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : Config.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
