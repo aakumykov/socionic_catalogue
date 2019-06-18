@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.LoadMore_Item;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.Throbber_Item;
@@ -143,40 +144,28 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void setItemsList(List<iGridItem> itemsList) {
+    public void setList(List<iGridItem> list) {
         this.itemsList.clear();
-        addList(itemsList);
+        appendList(list);
     }
 
     @Override
-    public void addList(List<iGridItem> inputList) {
+    public void appendList(List<iGridItem> list) {
 
-        int maxIndex = inputList.size() - 1;
-        Card lastCard = (Card) inputList.get(maxIndex);
-        inputList.remove(maxIndex);
+        Card lastCard = null;
+
+        if (list.size() > Config.DEFAULT_CARDS_LOAD_COUNT) {
+            int maxIndex = list.size() - 1;
+            lastCard = (Card) list.get(maxIndex);
+            list.remove(maxIndex);
+        }
 
         int start = this.itemsList.size();
-        int count = inputList.size();
+        int count = list.size();
+        this.itemsList.addAll(list);
+        notifyItemRangeChanged(start, count);
 
-        this.itemsList.addAll(inputList);
-        this.itemsList.add(new LoadMore_Item(lastCard));
-
-        notifyItemRangeChanged(start, count + 1);
-    }
-
-    @Override
-    public void addItem(iGridItem item) {
-
-    }
-
-    @Override
-    public void removeItem(iGridItem item) {
-
-    }
-
-    @Override
-    public void updateItem(iGridItem item) {
-
+        showLoadMoreItem(lastCard);
     }
 
     @Override
@@ -184,7 +173,8 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         return itemsList.get(position);
     }
 
-    @Override public void hideLoadMoreItem(int position) {
+    @Override
+    public void hideLoadMoreItem(int position) {
         iGridItem gridItem = itemsList.get(position);
         if (gridItem instanceof LoadMore_Item) {
             itemsList.remove(position);
@@ -216,5 +206,14 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public void hideThrobber(int position) {
         itemsList.remove(position);
         notifyItemChanged(position);
+    }
+
+
+    // Внутренние методы
+    private void showLoadMoreItem(@Nullable Card card) {
+        if (null != card) {
+            itemsList.add(new LoadMore_Item(card));
+            notifyItemChanged(itemsList.size());
+        }
     }
 }

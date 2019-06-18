@@ -19,12 +19,8 @@ public interface iCG3 {
         void linkPresenter(iPresenter presenter);
         void unlinkPresenter();
 
-        void setItemsList(List<iGridItem> inputList);
-        void addList(List<iGridItem> inputList);
-
-        void addItem(iGridItem item);
-        void removeItem(iGridItem item);
-        void updateItem(iGridItem item);
+        void setList(List<iGridItem> inputList);
+        void appendList(List<iGridItem> inputList);
 
         iGridItem getItem(int position);
 

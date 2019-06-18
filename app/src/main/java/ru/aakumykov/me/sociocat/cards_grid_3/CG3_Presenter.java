@@ -79,14 +79,14 @@ public class CG3_Presenter implements iCG3.iPresenter
             public void onListLoadSuccess(List<Card> list) {
                 List<iGridItem> gridItems = new ArrayList<>(list);
 
-                gridView.hideThrobber(); // TODO: перенести в методы set*/append* ...
+                gridView.hideThrobber();
 
                 switch (loadMode) {
                     case REPLACE:
-                        gridView.setItemsList(gridItems);
+                        gridView.setList(gridItems);
                         break;
                     case APPEND:
-                        gridView.addList(gridItems);
+                        gridView.appendList(gridItems);
                         break;
                     default:
                         // TODO: показывать ошибку? кидать исключение?
