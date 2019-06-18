@@ -12,4 +12,7 @@ public interface iGridItem {
 
     void setPayload(Object payload);
     Object getPayload();
+
+    void setIsPressed(boolean value);
+    boolean isPressed();
 }

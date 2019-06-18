@@ -32,8 +32,9 @@ public interface iCG3 {
         void hideThrobber(int position);
 
         void showPopupMenu(View view, int position);
-        void fadeItem(View view, int position);
-        void unfadeItem(View view, int position);
+
+        void fadeItem(int position);
+        void unfadeItem(int position);
     }
 
     interface iPresenter {

@@ -98,23 +98,23 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
 
-        iGridItem item = itemsList.get(position);
+        iGridItem gridItem = itemsList.get(position);
 
-        Object payload = item.getPayload();
+        Object payload = gridItem.getPayload();
 
-        if (item instanceof GridItem_Card) {
+        if (gridItem instanceof GridItem_Card) {
             Card_ViewHolder cardViewHolder = (Card_ViewHolder) viewHolder;
-            cardViewHolder.initialize(position, payload);
+            cardViewHolder.initialize(gridItem, position, payload);
         }
-        else if (item instanceof GridItem_LoadMore) {
+        else if (gridItem instanceof GridItem_LoadMore) {
             LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) viewHolder;
             loadMoreViewHolder.initialize(position, payload);
         }
-        else if (item instanceof GridItem_Throbber) {
+        else if (gridItem instanceof GridItem_Throbber) {
             Throbber_ViewHolder throbberViewHolder = (Throbber_ViewHolder) viewHolder;
         }
         else {
-            throw new RuntimeException("Unknown item type: "+item);
+            throw new RuntimeException("Unknown item type: "+gridItem);
         }
 
     }
@@ -226,10 +226,13 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
 
         User currentUser = usersSingleton.getCurrentUser();
-        Card card = (Card) itemsList.get(position);
+        Card card = (Card) itemsList.get(position).getPayload();
 
         if (null != currentUser) {
-            if (usersSingleton.currentUserIsAdmin() || usersSingleton.isCardOwner(card)) {
+//            if (usersSingleton.currentUserIsAdmin() || usersSingleton.isCardOwner(card)) {
+            // Карточки из плиточного вида позволено удалять лишь админу
+            // TODO: эту бизнес-логику должно выполнять Презентеру!!!
+            if (usersSingleton.currentUserIsAdmin()) {
                 popupMenu.inflate(R.menu.edit);
                 popupMenu.inflate(R.menu.delete);
             }
@@ -240,25 +243,30 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
             public void onDismiss(PopupMenu menu) {
-                unfadeItem(view, position);
+                unfadeItem(position);
             }
         });
 
-        //Card_ViewHolder cardViewHolder =
+        fadeItem(position);
         popupMenu.show();
     }
 
     @Override
-    public void fadeItem(View view, int position) {
-        this.originalBackground = view.getBackground();
+    public void fadeItem(int position) {
+        iGridItem fadedGridItem = itemsList.get(position);
+        fadedGridItem.setIsPressed(true);
 
-        int color = view.getResources().getColor(R.color.cards_grid_pressed_background_color);
-        view.setBackgroundColor(color);
+        itemsList.set(position, fadedGridItem); // TODO: нужно?
+        notifyItemChanged(position);
     }
 
     @Override
-    public void unfadeItem(View view, int position) {
-        view.setBackground(this.originalBackground);
+    public void unfadeItem(int position) {
+        iGridItem fadedGridItem = itemsList.get(position);
+        fadedGridItem.setIsPressed(false);
+
+        itemsList.set(position, fadedGridItem); // TODO: нужно?
+        notifyItemChanged(position);
     }
 
 

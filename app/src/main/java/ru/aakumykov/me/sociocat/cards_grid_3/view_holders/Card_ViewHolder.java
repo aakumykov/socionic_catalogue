@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid_3.view_holders;
 
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid_3.iCG3;
+import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class Card_ViewHolder extends RecyclerView.ViewHolder implements
@@ -30,7 +32,8 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
 
     private iCG3.iPresenter mPresenter;
     private int mPosition;
-    private Drawable mOriginalBackground;
+    private iGridItem mGridItem;
+    private ColorStateList mOriginalBackground;
 
 
     public Card_ViewHolder(@NonNull View itemView, iCG3.iPresenter presenter) {
@@ -39,8 +42,9 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
         this.mPresenter = presenter;
     }
 
-    public void initialize(int position, Object payload) {
+    public void initialize(iGridItem gridItem, int position, Object payload) {
         this.mPosition = position;
+        this.mGridItem = gridItem;
 
         mCardView.setOnClickListener(this);
         mCardView.setOnLongClickListener(this);
@@ -67,13 +71,14 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
     }
 
     public void fade() {
-        mOriginalBackground = mCardView.getBackground();
+        mOriginalBackground = mCardView.getCardBackgroundColor();
+
         int color = mCardView.getResources().getColor(R.color.cards_grid_pressed_background_color);
-        mCardView.setBackgroundColor(color);
+        mCardView.setCardBackgroundColor(color);
     }
 
     public void unfade() {
-        mCardView.setBackground(mOriginalBackground);
+        mCardView.setCardBackgroundColor(mOriginalBackground);
     }
 
 
@@ -98,6 +103,17 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
     // Внутренние методы
     private void commonCardInit(Card card) {
         mTitleView.setText(card.getTitle());
+
+        if (mGridItem.isPressed()) {
+            mOriginalBackground = mCardView.getCardBackgroundColor();
+
+            int color = mCardView.getResources().getColor(R.color.cards_grid_pressed_background_color);
+            mCardView.setBackgroundColor(color);
+        }
+        else {
+            if (null != mOriginalBackground)
+                mCardView.setCardBackgroundColor(mOriginalBackground);
+        }
     }
 
     private void initTextCard(Card card) {
