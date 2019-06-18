@@ -70,21 +70,21 @@ public class CG3_Presenter implements iCG3.iPresenter
             int insertPosition
     )
     {
-        gridView.showLoadThrobber();
+        gridView.showThrobber();
 
         cardsSingleton.loadList(startKey, null, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 List<iGridItem> gridItems = new ArrayList<>(list);
 
-                gridView.hideLoadThrobber(); // TODO: перенести в методы set*/append* ...
+                gridView.hideThrobber(); // TODO: перенести в методы set*/append* ...
 
                 switch (loadMode) {
                     case REPLACE:
                         gridView.setList(gridItems);
                         break;
                     case APPEND:
-                        gridView.appendList(gridItems);
+                        gridView.addList(gridItems);
                         break;
                     default:
                         // TODO: показывать ошибку? кидать исключение?

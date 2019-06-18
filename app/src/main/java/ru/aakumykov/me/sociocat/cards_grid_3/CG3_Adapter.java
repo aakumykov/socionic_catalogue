@@ -143,11 +143,11 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void setList(List<iGridItem> itemsList) {
         this.list.clear();
-        appendList(itemsList);
+        addList(itemsList);
     }
 
     @Override
-    public void appendList(List<iGridItem> inputList) {
+    public void addList(List<iGridItem> inputList) {
 
         int maxIndex = inputList.size() - 1;
         Card lastCard = (Card) inputList.get(maxIndex);
@@ -183,12 +183,12 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void showLoadThrobber() {
+    public void showThrobber() {
 
     }
 
     @Override
-    public void hideLoadThrobber() {
+    public void hideThrobber() {
 
     }
 }
