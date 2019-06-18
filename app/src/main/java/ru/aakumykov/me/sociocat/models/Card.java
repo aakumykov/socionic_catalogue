@@ -371,6 +371,9 @@ public class Card extends ListItem implements
         return !TextUtils.isEmpty(getImageURL());
     }
 
+    @Exclude public boolean isCreatedBy(User user) {
+        return key.equals(user.getKey());
+    }
 
     // Разные
     @Exclude public void addTag(String tag) {
