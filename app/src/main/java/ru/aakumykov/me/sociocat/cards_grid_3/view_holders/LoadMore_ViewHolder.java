@@ -20,7 +20,7 @@ public class LoadMore_ViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.titleView) TextView titleView;
     private final static String TAG = "LoadMore_ViewHolder";
     private iCG3.iPresenter presenter;
-    private int position;
+//    private int position;
 
 
     public LoadMore_ViewHolder(@NonNull View itemView, iCG3.iPresenter presenter) {
@@ -30,7 +30,7 @@ public class LoadMore_ViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void initialize(iGridItem gridItem, int position) {
-        this.position = position;
+//        this.position = position;
 
         titleView.setText(R.string.CARDS_GRID_load_more);
 

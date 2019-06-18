@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -23,8 +24,9 @@ import ru.aakumykov.me.sociocat.models.Card;
 public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         iCG3.iGridView
 {
-    private List<iGridItem> list = new ArrayList<>();
+    private List<iGridItem> itemsList = new ArrayList<>();
     private iCG3.iPresenter presenter;
+
 
     // Системные методы
     @NonNull @Override
@@ -83,7 +85,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
 
-        iGridItem item = list.get(position);
+        iGridItem item = itemsList.get(position);
 
         if (item instanceof Card) {
             Card card = (Card) item;
@@ -105,7 +107,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public int getItemViewType(int position) {
-        iGridItem item = list.get(position);
+        iGridItem item = itemsList.get(position);
 
         if (item instanceof Card) {
             Card card = (Card) item;
@@ -125,7 +127,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return itemsList.size();
     }
 
 
@@ -141,8 +143,8 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void setList(List<iGridItem> itemsList) {
-        this.list.clear();
+    public void setItemsList(List<iGridItem> itemsList) {
+        this.itemsList.clear();
         addList(itemsList);
     }
 
@@ -153,11 +155,11 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         Card lastCard = (Card) inputList.get(maxIndex);
         inputList.remove(maxIndex);
 
-        int start = this.list.size();
+        int start = this.itemsList.size();
         int count = inputList.size();
 
-        this.list.addAll(inputList);
-        this.list.add(new LoadMore_Item(lastCard));
+        this.itemsList.addAll(inputList);
+        this.itemsList.add(new LoadMore_Item(lastCard));
 
         notifyItemRangeChanged(start, count + 1);
     }
@@ -179,16 +181,32 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public iGridItem getItem(int position) {
-        return list.get(position);
+        return itemsList.get(position);
     }
 
     @Override
     public void showThrobber() {
+        itemsList.add(new Throbber_Item());
+        int index = itemsList.size() - 1;
+        notifyItemChanged(index);
+    }
 
+    @Override
+    public void showThrobber(int position) {
+        itemsList.remove(position);
+        itemsList.add(new Throbber_Item());
+        notifyItemChanged(position);
     }
 
     @Override
     public void hideThrobber() {
+        int index = itemsList.size() - 1;
+        hideThrobber(index);
+    }
 
+    @Override
+    public void hideThrobber(int position) {
+        itemsList.remove(position);
+        notifyItemChanged(position);
     }
 }

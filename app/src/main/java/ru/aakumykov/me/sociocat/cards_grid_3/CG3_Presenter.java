@@ -48,18 +48,18 @@ public class CG3_Presenter implements iCG3.iPresenter
     }
 
     @Override
-    public void onCardClicked(int position) {
-        Card card = (Card) gridView.getItem(position); //TODO: переделать в getCard()
-        pageView.goShowCard(card);
+    public void onLoadMoreClicked(int position, String startKey) {
+        loadCards(
+                LoadMode.APPEND,
+                startKey,
+                position
+        );
     }
 
     @Override
-    public void onLoadMoreClicked(int position, String startKey) {
-            loadCards(
-                    LoadMode.APPEND,
-                    startKey,
-                    position
-            );
+    public void onCardClicked(int position) {
+        Card card = (Card) gridView.getItem(position); //TODO: переделать в getCard()
+        pageView.goShowCard(card);
     }
 
 
@@ -81,7 +81,7 @@ public class CG3_Presenter implements iCG3.iPresenter
 
                 switch (loadMode) {
                     case REPLACE:
-                        gridView.setList(gridItems);
+                        gridView.setItemsList(gridItems);
                         break;
                     case APPEND:
                         gridView.addList(gridItems);

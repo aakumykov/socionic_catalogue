@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.cards_grid_3;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
@@ -17,7 +19,7 @@ public interface iCG3 {
         void linkPresenter(iPresenter presenter);
         void unlinkPresenter();
 
-        void setList(List<iGridItem> inputList);
+        void setItemsList(List<iGridItem> inputList);
         void addList(List<iGridItem> inputList);
 
         void addItem(iGridItem item);
@@ -27,7 +29,9 @@ public interface iCG3 {
         iGridItem getItem(int position);
 
         void showThrobber();
+        void showThrobber(int position);
         void hideThrobber();
+        void hideThrobber(int position);
     }
 
     interface iPresenter {
@@ -35,8 +39,8 @@ public interface iCG3 {
         void unlinkViews();
 
         void onWorkBegins();
+        void onLoadMoreClicked(int position, String startKey);
 
         void onCardClicked(int position);
-        void onLoadMoreClicked(int position, String startKey);
     }
 }
