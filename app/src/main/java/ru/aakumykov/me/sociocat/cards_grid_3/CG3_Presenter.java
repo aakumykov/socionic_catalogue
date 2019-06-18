@@ -9,16 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_grid_3.items.Card_Item;
-import ru.aakumykov.me.sociocat.cards_grid_3.items.GridItem;
+import ru.aakumykov.me.sociocat.cards_grid_3.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class CG3_Presenter implements iCG3.iPresenter
 {
@@ -93,7 +88,7 @@ public class CG3_Presenter implements iCG3.iPresenter
                 List<iGridItem> gridItemsList = new ArrayList<>();
 
                 for (Card card : list) {
-                    Card_Item cardItem = new Card_Item();
+                    GridItem_Card cardItem = new GridItem_Card();
                     cardItem.setPayload(card);
                     gridItemsList.add(cardItem);
                 }

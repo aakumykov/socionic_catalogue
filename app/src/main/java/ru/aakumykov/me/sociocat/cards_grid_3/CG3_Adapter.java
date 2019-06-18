@@ -16,9 +16,9 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_grid_3.items.Card_Item;
-import ru.aakumykov.me.sociocat.cards_grid_3.items.LoadMore_Item;
-import ru.aakumykov.me.sociocat.cards_grid_3.items.Throbber_Item;
+import ru.aakumykov.me.sociocat.cards_grid_3.items.GridItem_Card;
+import ru.aakumykov.me.sociocat.cards_grid_3.items.GridItem_LoadMore;
+import ru.aakumykov.me.sociocat.cards_grid_3.items.GridItem_Throbber;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.LoadMore_ViewHolder;
@@ -102,15 +102,15 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         Object payload = item.getPayload();
 
-        if (item instanceof Card_Item) {
+        if (item instanceof GridItem_Card) {
             Card_ViewHolder cardViewHolder = (Card_ViewHolder) viewHolder;
             cardViewHolder.initialize(position, payload);
         }
-        else if (item instanceof LoadMore_Item) {
+        else if (item instanceof GridItem_LoadMore) {
             LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) viewHolder;
             loadMoreViewHolder.initialize(position, payload);
         }
-        else if (item instanceof Throbber_Item) {
+        else if (item instanceof GridItem_Throbber) {
             Throbber_ViewHolder throbberViewHolder = (Throbber_ViewHolder) viewHolder;
         }
         else {
@@ -123,7 +123,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public int getItemViewType(int position) {
         iGridItem item = itemsList.get(position);
 
-        if (item instanceof Card_Item) {
+        if (item instanceof GridItem_Card) {
             Card card = (Card) item.getPayload();
             if (card.isTextCard())  return iGridItem.TEXT_CARD_VIEW_TYPE;
             if (card.isImageCard()) return iGridItem.IMAGE_CARD_VIEW_TYPE;
@@ -131,9 +131,9 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             if (card.isVideoCard()) return iGridItem.VIDEO_CARD_VIEW_TYPE;
             else return -1;
         }
-        else if (item instanceof LoadMore_Item)
+        else if (item instanceof GridItem_LoadMore)
             return iGridItem.LOAD_MORE_VIEW_TYPE;
-        else if (item instanceof Throbber_Item)
+        else if (item instanceof GridItem_Throbber)
             return iGridItem.THROBBER_VIEW_TYPE;
         else
             return -1;
@@ -189,7 +189,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void hideLoadMoreItem(int position) {
         iGridItem gridItem = itemsList.get(position);
-        if (gridItem instanceof LoadMore_Item) {
+        if (gridItem instanceof GridItem_LoadMore) {
             itemsList.remove(position);
             notifyItemRemoved(position);
         }
@@ -197,7 +197,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void showThrobber() {
-        itemsList.add(new Throbber_Item());
+        itemsList.add(new GridItem_Throbber());
         int index = itemsList.size() - 1;
         notifyItemChanged(index);
     }
@@ -205,7 +205,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void showThrobber(int position) {
         itemsList.remove(position);
-        itemsList.add(new Throbber_Item());
+        itemsList.add(new GridItem_Throbber());
         notifyItemChanged(position);
     }
 
@@ -305,7 +305,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     // Внутренние методы
     private void showLoadMoreItem(@Nullable Card card) {
         if (null != card) {
-            LoadMore_Item loadMoreItem = new LoadMore_Item();
+            GridItem_LoadMore loadMoreItem = new GridItem_LoadMore();
             loadMoreItem.setPayload(card);
             itemsList.add(loadMoreItem);
             notifyItemChanged(itemsList.size());

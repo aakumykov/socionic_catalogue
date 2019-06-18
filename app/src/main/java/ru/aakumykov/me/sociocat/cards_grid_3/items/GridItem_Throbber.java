@@ -1,5 +1,5 @@
 package ru.aakumykov.me.sociocat.cards_grid_3.items;
 
-public class Throbber_Item extends GridItem {
+public class GridItem_Throbber extends GridItem {
 
 }
