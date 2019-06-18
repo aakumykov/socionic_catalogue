@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.cards_grid_3;
 
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.cards_grid_3.items.Card_Item;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.LoadMore_Item;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.Throbber_Item;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
@@ -100,14 +100,15 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         iGridItem item = itemsList.get(position);
 
-        if (item instanceof Card) {
-            Card card = (Card) item;
-            Card_ViewHolder gridItemViewHolder = (Card_ViewHolder) viewHolder;
-            gridItemViewHolder.initialize(card, position);
+        Object payload = item.getPayload();
+
+        if (item instanceof Card_Item) {
+            Card_ViewHolder cardViewHolder = (Card_ViewHolder) viewHolder;
+            cardViewHolder.initialize(position, payload);
         }
         else if (item instanceof LoadMore_Item) {
             LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) viewHolder;
-            loadMoreViewHolder.initialize(item, position);
+            loadMoreViewHolder.initialize(position, payload);
         }
         else if (item instanceof Throbber_Item) {
             Throbber_ViewHolder throbberViewHolder = (Throbber_ViewHolder) viewHolder;
@@ -122,8 +123,8 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public int getItemViewType(int position) {
         iGridItem item = itemsList.get(position);
 
-        if (item instanceof Card) {
-            Card card = (Card) item;
+        if (item instanceof Card_Item) {
+            Card card = (Card) item.getPayload();
             if (card.isTextCard())  return iGridItem.TEXT_CARD_VIEW_TYPE;
             if (card.isImageCard()) return iGridItem.IMAGE_CARD_VIEW_TYPE;
             if (card.isAudioCard()) return iGridItem.AUDIO_CARD_VIEW_TYPE;
@@ -168,7 +169,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         if (list.size() > Config.DEFAULT_CARDS_LOAD_COUNT) {
             int maxIndex = list.size() - 1;
-            lastCard = (Card) list.get(maxIndex);
+            lastCard = (Card) list.get(maxIndex).getPayload();
             list.remove(maxIndex);
         }
 
@@ -304,7 +305,9 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     // Внутренние методы
     private void showLoadMoreItem(@Nullable Card card) {
         if (null != card) {
-            itemsList.add(new LoadMore_Item(card));
+            LoadMore_Item loadMoreItem = new LoadMore_Item();
+            loadMoreItem.setPayload(card);
+            itemsList.add(loadMoreItem);
             notifyItemChanged(itemsList.size());
         }
     }

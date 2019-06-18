@@ -39,11 +39,13 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
         this.mPresenter = presenter;
     }
 
-    public void initialize(Card card, int position) {
+    public void initialize(int position, Object payload) {
         this.mPosition = position;
 
         mCardView.setOnClickListener(this);
         mCardView.setOnLongClickListener(this);
+
+        Card card = (Card) payload;
 
         commonCardInit(card);
 
@@ -60,7 +62,7 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
             initVideoCard(card);
         }
         else {
-            Log.e(TAG, "Unknown card type: "+card);
+            Log.e(TAG, "Unknown card type: "+ payload);
         }
     }
 

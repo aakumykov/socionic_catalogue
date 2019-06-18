@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.cards_grid_3.items.Card_Item;
+import ru.aakumykov.me.sociocat.cards_grid_3.items.GridItem;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
@@ -66,7 +68,7 @@ public class CG3_Presenter implements iCG3.iPresenter
 
     @Override
     public void onCardClicked(int position) {
-        Card card = (Card) gridView.getItem(position); //TODO: переделать в getCard()
+        Card card = (Card) gridView.getItem(position).getPayload();
         pageView.goShowCard(card);
     }
 
@@ -88,16 +90,22 @@ public class CG3_Presenter implements iCG3.iPresenter
         cardsSingleton.loadList(startKey, null, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                List<iGridItem> gridItems = new ArrayList<>(list);
+                List<iGridItem> gridItemsList = new ArrayList<>();
+
+                for (Card card : list) {
+                    Card_Item cardItem = new Card_Item();
+                    cardItem.setPayload(card);
+                    gridItemsList.add(cardItem);
+                }
 
                 gridView.hideThrobber();
 
                 switch (loadMode) {
                     case REPLACE:
-                        gridView.setList(gridItems);
+                        gridView.setList(gridItemsList);
                         break;
                     case APPEND:
-                        gridView.appendList(gridItems);
+                        gridView.appendList(gridItemsList);
                         break;
                     default:
                         // TODO: показывать ошибку? кидать исключение?

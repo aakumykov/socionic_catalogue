@@ -21,8 +21,7 @@ import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 
 public class Card extends ListItem implements
         Parcelable,
-        iTextItem,
-        iGridItem
+        iTextItem
 {
     private String key;
     private String userId;
