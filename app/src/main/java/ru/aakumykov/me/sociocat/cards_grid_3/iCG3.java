@@ -10,6 +10,11 @@ import ru.aakumykov.me.sociocat.models.Card;
 
 public interface iCG3 {
 
+    int MODE_ADMIN = 100;
+    int MODE_OWNER = 20;
+    int MODE_USER = 10;
+    int MODE_GUEST = 0;
+
     interface iPageView extends iBaseView {
         <T> void setTitle(T title);
         void goShowCard(Card card);
@@ -31,10 +36,7 @@ public interface iCG3 {
         void hideThrobber();
         void hideThrobber(int position);
 
-        void showPopupMenu(View view, int position);
-
-        void fadeItem(int position);
-        void unfadeItem(int position);
+        void showPopupMenu(int mode, View view, int position);
     }
 
     interface iPresenter {
@@ -46,5 +48,9 @@ public interface iCG3 {
 
         void onCardClicked(int position);
         void onCardLongClicked(View view, int position);
+
+        void onEditClicked(iGridItem gridItem);
+        void onDeleteClicked(iGridItem gridItem);
+        void onShareClicked(iGridItem gridItem);
     }
 }

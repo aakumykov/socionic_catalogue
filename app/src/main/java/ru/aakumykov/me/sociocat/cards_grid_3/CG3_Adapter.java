@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.cards_grid_3;
 
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -24,7 +25,6 @@ import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
@@ -222,23 +222,28 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void showPopupMenu(View view, int position) {
+    public void showPopupMenu(int mode, View view, int position) {
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
 
-        User currentUser = usersSingleton.getCurrentUser();
-        Card card = (Card) itemsList.get(position).getPayload();
+//        if (mode >= 10)
+//            popupMenu.inflate();
 
-        if (null != currentUser) {
-//            if (usersSingleton.currentUserIsAdmin() || usersSingleton.isCardOwner(card)) {
-            // Карточки из плиточного вида позволено удалять лишь админу
-            // TODO: эту бизнес-логику должно выполнять Презентеру!!!
-            if (usersSingleton.currentUserIsAdmin()) {
-                popupMenu.inflate(R.menu.edit);
-                popupMenu.inflate(R.menu.delete);
-            }
-        }
+        if (mode >= 20)
+            popupMenu.inflate(R.menu.edit);
+
+        if (mode >= 100)
+            popupMenu.inflate(R.menu.delete);
 
         popupMenu.inflate(R.menu.share);
+
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                popupItemClicked(item, position);
+                return true;
+            }
+        });
 
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
@@ -251,64 +256,6 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         popupMenu.show();
     }
 
-    @Override
-    public void fadeItem(int position) {
-        iGridItem fadedGridItem = itemsList.get(position);
-        fadedGridItem.setIsPressed(true);
-
-        itemsList.set(position, fadedGridItem); // TODO: нужно?
-        notifyItemChanged(position);
-    }
-
-    @Override
-    public void unfadeItem(int position) {
-        iGridItem fadedGridItem = itemsList.get(position);
-        fadedGridItem.setIsPressed(false);
-
-        itemsList.set(position, fadedGridItem); // TODO: нужно?
-        notifyItemChanged(position);
-    }
-
-
-    /*
-    private void showPopupMenu(View view, int listPosition, ViewHolderCommon viewHolderCommon) {
-
-        PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-
-        User currentUser = usersSingleton.getCurrentUser();
-        Card currentCard = cardsList.get(listPosition);
-
-        if (null != currentUser) {
-            if (usersSingleton.currentUserIsAdmin() || usersSingleton.isCardOwner(currentCard)) {
-                popupMenu.inflate(R.menu.edit);
-                popupMenu.inflate(R.menu.delete);
-            }
-        }
-        else {
-            popupMenu.inflate(R.menu.share);
-        }
-
-        viewHolderCommon.saveOriginalBackground();
-        viewHolderCommon.setPressedBackground();
-
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-            @Override
-            public void onDismiss(PopupMenu menu) {
-                viewHolderCommon.restoreBackground();
-            }
-        });
-
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                adapterUser.onPopupMenuClick(item, listPosition);
-                return true;
-            }
-        });
-
-        popupMenu.show();
-    }
-    */
 
     // Внутренние методы
     private void showLoadMoreItem(@Nullable Card card) {
@@ -317,6 +264,39 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             loadMoreItem.setPayload(card);
             itemsList.add(loadMoreItem);
             notifyItemChanged(itemsList.size());
+        }
+    }
+
+    private void fadeItem(int position) {
+        iGridItem fadedGridItem = itemsList.get(position);
+        fadedGridItem.setIsPressed(true);
+
+        itemsList.set(position, fadedGridItem); // TODO: нужно?
+        notifyItemChanged(position);
+    }
+
+    private void unfadeItem(int position) {
+        iGridItem fadedGridItem = itemsList.get(position);
+        fadedGridItem.setIsPressed(false);
+
+        itemsList.set(position, fadedGridItem); // TODO: нужно?
+        notifyItemChanged(position);
+    }
+
+    private void popupItemClicked(MenuItem menuItem, int position) {
+
+        iGridItem gridItem = itemsList.get(position);
+
+        switch (menuItem.getItemId()) {
+            case R.id.actionEdit:
+                presenter.onEditClicked(gridItem);
+                break;
+            case R.id.actionDelete:
+                presenter.onDeleteClicked(gridItem);
+                break;
+            case R.id.actionShare:
+                presenter.onShareClicked(gridItem);
+                break;
         }
     }
 }

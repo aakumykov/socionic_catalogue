@@ -12,8 +12,12 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class CG3_Presenter implements iCG3.iPresenter
 {
@@ -26,8 +30,8 @@ public class CG3_Presenter implements iCG3.iPresenter
     private iCG3.iPageView pageView;
     private iCG3.iGridView gridView;
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
-//    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
-//    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
     @Override
     public void linkViews(iCG3.iPageView pageView, iCG3.iGridView gridView) {
@@ -69,7 +73,40 @@ public class CG3_Presenter implements iCG3.iPresenter
 
     @Override
     public void onCardLongClicked(View view, int position) {
-        gridView.showPopupMenu(view, position);
+
+        if (!AuthSingleton.isLoggedIn()) {
+            gridView.showPopupMenu(iCG3.MODE_GUEST, view, position);
+            return;
+        }
+
+        if (usersSingleton.currentUserIsAdmin()) {
+            gridView.showPopupMenu(iCG3.MODE_ADMIN, view, position);
+            return;
+        }
+
+        Card card = (Card) gridView.getItem(position).getPayload();
+
+//        if (card.isCreatedBy(usersSingleton.getCurrentUser()))
+        if (usersSingleton.isCardOwner(card)) {
+            gridView.showPopupMenu(iCG3.MODE_OWNER, view, position);
+            return;
+        }
+    }
+
+    @Override
+    public void onEditClicked(iGridItem gridItem) {
+//        if ()
+        pageView.showToast("Правка");
+    }
+
+    @Override
+    public void onDeleteClicked(iGridItem gridItem) {
+        pageView.showToast("Удаление");
+    }
+
+    @Override
+    public void onShareClicked(iGridItem gridItem) {
+        pageView.showToast("Распространение");
     }
 
 

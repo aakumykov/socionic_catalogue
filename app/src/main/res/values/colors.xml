@@ -52,7 +52,7 @@
     <color name="my_youtube_player_msg_animation_to">@color/background_default</color>
 
     <!-- Плиточный вид карточек -->
-    <color name="cards_grid_pressed_background_color">#E2E2E2</color>
+    <color name="cards_grid_pressed_background_color">#F0F0F0</color>
 
     <!-- Комментарии -->
     <color name="comment_pressed_background_color">#E2E2E2</color>
