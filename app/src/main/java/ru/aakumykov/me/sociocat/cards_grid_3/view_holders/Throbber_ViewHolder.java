@@ -10,7 +10,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.R;
 
-public class Throbber_ViewHolder extends RecyclerView.ViewHolder {
+public class Throbber_ViewHolder extends BaseViewHolder {
 
     public Throbber_ViewHolder(@NonNull View itemView) {
         super(itemView);

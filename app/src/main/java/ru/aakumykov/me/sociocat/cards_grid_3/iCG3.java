@@ -41,8 +41,7 @@ public interface iCG3 {
         void hideThrobber();
         void hideThrobber(int position);
 
-        void showPopupMenu(int mode, View view, int position);
-        void showPopupMenu(int mode, View view, int position, iGridViewHolder gridViewHolder);
+        void showPopupMenu(int mode, int position, View view, iGridViewHolder gridViewHolder);
     }
 
     interface iPresenter {
@@ -53,7 +52,7 @@ public interface iCG3 {
         void onLoadMoreClicked(int position, String startKey);
 
         void onCardClicked(int position);
-        void onCardLongClicked(View view, int position);
+        void onCardLongClicked(int position, View view, iGridViewHolder gridViewHolder);
 
         void onEditClicked(iGridItem gridItem);
         void onDeleteClicked(iGridItem gridItem);

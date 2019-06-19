@@ -1,7 +1,5 @@
 package ru.aakumykov.me.sociocat.cards_grid_3.view_holders;
 
-import android.content.res.ColorStateList;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,7 +17,7 @@ import ru.aakumykov.me.sociocat.cards_grid_3.iCG3;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class Card_ViewHolder extends RecyclerView.ViewHolder implements
+public class Card_ViewHolder extends BaseViewHolder implements
     View.OnClickListener,
     View.OnLongClickListener
 {
@@ -70,16 +67,16 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
         }
     }
 
-    public void fade() {
-        mOriginalBackground = mCardView.getCardBackgroundColor().getDefaultColor();
-
-        int color = mCardView.getResources().getColor(R.color.cards_grid_pressed_background_color);
-        mCardView.setCardBackgroundColor(color);
-    }
-
-    public void unfade() {
-        mCardView.setCardBackgroundColor(mOriginalBackground);
-    }
+//    public void fade() {
+//        mOriginalBackground = mCardView.getCardBackgroundColor().getDefaultColor();
+//
+//        int color = mCardView.getResources().getColor(R.color.cards_grid_pressed_background_color);
+//        mCardView.setCardBackgroundColor(color);
+//    }
+//
+//    public void unfade() {
+//        mCardView.setCardBackgroundColor(mOriginalBackground);
+//    }
 
 
     @Override
@@ -95,7 +92,7 @@ public class Card_ViewHolder extends RecyclerView.ViewHolder implements
 
     @Override
     public boolean onLongClick(View view) {
-        mPresenter.onCardLongClicked(view, mPosition);
+        mPresenter.onCardLongClicked(mPosition, view, this);
         return true;
     }
 

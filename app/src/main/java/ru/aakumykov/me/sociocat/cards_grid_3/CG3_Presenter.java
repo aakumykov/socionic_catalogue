@@ -11,6 +11,7 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
+import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
@@ -72,22 +73,22 @@ public class CG3_Presenter implements iCG3.iPresenter
     }
 
     @Override
-    public void onCardLongClicked(View view, int position) {
+    public void onCardLongClicked(int position, View view, iGridViewHolder gridViewHolder) {
 
         if (!AuthSingleton.isLoggedIn()) {
-            gridView.showPopupMenu(iCG3.MODE_GUEST, view, position);
+            gridView.showPopupMenu(iCG3.MODE_GUEST, position, view, gridViewHolder);
             return;
         }
 
         if (usersSingleton.currentUserIsAdmin()) {
-            gridView.showPopupMenu(iCG3.MODE_ADMIN, view, position);
+            gridView.showPopupMenu(iCG3.MODE_ADMIN, position, view, gridViewHolder);
             return;
         }
 
         Card card = (Card) gridView.getItem(position).getPayload();
 
         if (card.isCreatedBy(usersSingleton.getCurrentUser())) {
-            gridView.showPopupMenu(iCG3.MODE_OWNER, view, position);
+            gridView.showPopupMenu(iCG3.MODE_OWNER, position, view, gridViewHolder);
             return;
         }
     }

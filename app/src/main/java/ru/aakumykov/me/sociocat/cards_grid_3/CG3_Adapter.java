@@ -236,7 +236,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void showPopupMenu(int mode, View view, int position) {
+    public void showPopupMenu(int mode, int position, View view, iGridViewHolder gridViewHolder) {
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
 
 //        if (mode >= 10)
@@ -262,45 +262,11 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
             public void onDismiss(PopupMenu menu) {
-                unfadeItem(position);
+                gridViewHolder.unfade();
             }
         });
 
-        fadeItem(position);
-        popupMenu.show();
-    }
-
-    @Override
-    public void showPopupMenu(int mode, View view, int position, iGridViewHolder gridViewHolder) {
-        PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-
-//        if (mode >= 10)
-//            popupMenu.inflate();
-
-        if (mode >= 20)
-            popupMenu.inflate(R.menu.edit);
-
-        if (mode >= 100)
-            popupMenu.inflate(R.menu.delete);
-
-        popupMenu.inflate(R.menu.share);
-
-
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                popupItemClicked(item, position);
-                return true;
-            }
-        });
-
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-            @Override
-            public void onDismiss(PopupMenu menu) {
-
-            }
-        });
-
+        gridViewHolder.fade();
         popupMenu.show();
     }
 

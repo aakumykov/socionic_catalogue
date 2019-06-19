@@ -13,7 +13,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid_3.iCG3;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class LoadMore_ViewHolder extends RecyclerView.ViewHolder {
+public class LoadMore_ViewHolder extends BaseViewHolder {
 
     @BindView(R.id.cardView) CardView cardView;
     @BindView(R.id.titleView) TextView titleView;
