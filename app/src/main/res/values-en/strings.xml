@@ -433,4 +433,5 @@
     <string name="CARDS_GRID_loadmore_error">Error</string>
     <string name="CARDS_GRID_card_edit_cancelled">The edit is canceled</string>
     <string name="CARDS_GRID_data_error">Data error</string>
+    <string name="ERROR_deleting_card">Error deleting card</string>
 </resources>

@@ -12,6 +12,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.iGridViewHolder;
+import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
@@ -19,6 +20,7 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
 
 public class CG3_Presenter implements iCG3.iPresenter
 {
@@ -102,7 +104,38 @@ public class CG3_Presenter implements iCG3.iPresenter
 
     @Override
     public void onDeleteClicked(iGridItem gridItem) {
-        pageView.showToast("Удаление");
+        Card card = (Card) gridItem.getPayload();
+
+        if (!usersSingleton.currentUserIsAdmin()) {
+            pageView.showToast(R.string.action_denied);
+            return;
+        }
+
+        MyDialogs.cardDeleteDialog(
+                pageView.getActivity(),
+                card.getTitle(),
+                new iMyDialogs.Delete() {
+                    @Override
+                    public void onCancelInDialog() {
+
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        onDeleteCardConfirmed(card, gridItem);
+                    }
+                }
+        );
     }
 
     @Override
@@ -150,6 +183,21 @@ public class CG3_Presenter implements iCG3.iPresenter
             @Override
             public void onListLoadFail(String errorMessage) {
                 pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+            }
+        });
+    }
+
+    private void onDeleteCardConfirmed(Card card, iGridItem gridItem) {
+
+        cardsSingleton.deleteCard(card, new iCardsSingleton.DeleteCallbacks() {
+            @Override
+            public void onCardDeleteSuccess(Card card) {
+                gridView.removeItem(gridItem);
+            }
+
+            @Override
+            public void onCardDeleteError(String msg) {
+                pageView.showErrorMsg(R.string.ERROR_deleting_card, msg);
             }
         });
     }

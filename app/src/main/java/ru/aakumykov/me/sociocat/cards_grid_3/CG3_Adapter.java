@@ -201,6 +201,13 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
+    public void removeItem(iGridItem gridItem) {
+        int index = itemsList.indexOf(gridItem);
+        itemsList.remove(index);
+        notifyItemRemoved(index);
+    }
+
+    @Override
     public void hideLoadMoreItem(int position) {
         iGridItem gridItem = itemsList.get(position);
         if (gridItem instanceof GridItem_LoadMore) {
@@ -254,7 +261,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                popupItemClicked(item, position);
+                onPopupItemClicked(item, position);
                 return true;
             }
         });
@@ -297,7 +304,7 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         notifyItemChanged(position);
     }
 
-    private void popupItemClicked(MenuItem menuItem, int position) {
+    private void onPopupItemClicked(MenuItem menuItem, int position) {
 
         iGridItem gridItem = itemsList.get(position);
 

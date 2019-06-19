@@ -33,6 +33,7 @@ public interface iCG3 {
         int getItemPosition(iGridItem item);
 
         void updateItem(int position, iGridItem newGridItem);
+        void removeItem(iGridItem gridItem);
 
         void hideLoadMoreItem(int position);
 
