@@ -5,6 +5,7 @@ import android.view.View;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
+import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 
@@ -41,6 +42,7 @@ public interface iCG3 {
         void hideThrobber(int position);
 
         void showPopupMenu(int mode, View view, int position);
+        void showPopupMenu(int mode, View view, int position, iGridViewHolder gridViewHolder);
     }
 
     interface iPresenter {

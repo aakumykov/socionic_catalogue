@@ -24,6 +24,7 @@ import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.Throbber_ViewHolder;
+import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
@@ -266,6 +267,40 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         });
 
         fadeItem(position);
+        popupMenu.show();
+    }
+
+    @Override
+    public void showPopupMenu(int mode, View view, int position, iGridViewHolder gridViewHolder) {
+        PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+
+//        if (mode >= 10)
+//            popupMenu.inflate();
+
+        if (mode >= 20)
+            popupMenu.inflate(R.menu.edit);
+
+        if (mode >= 100)
+            popupMenu.inflate(R.menu.delete);
+
+        popupMenu.inflate(R.menu.share);
+
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                popupItemClicked(item, position);
+                return true;
+            }
+        });
+
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+
+            }
+        });
+
         popupMenu.show();
     }
 
