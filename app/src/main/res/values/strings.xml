@@ -442,8 +442,4 @@
     <string name="CARDS_GRID_card_edit_cancelled">Редактирование отменено</string>
     <string name="CARDS_GRID_data_error">Ошибка данных</string>
     <string name="ERROR_deleting_card">Ошибка удаления карточки</string>
-    <string name="MENU_create_text_card">Текст</string>
-    <string name="MENU_create_image_card">Картинка</string>
-    <string name="MENU_create_audio_card">Звук</string>
-    <string name="MENU_create_video_card">Видео</string>
 </resources>

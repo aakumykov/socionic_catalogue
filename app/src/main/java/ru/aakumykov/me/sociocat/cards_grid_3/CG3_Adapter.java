@@ -242,21 +242,8 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         notifyItemChanged(position);
     }
 
-    public void showPopupMenu(View view) {
-
-        PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-
-        popupMenu.inflate(R.menu.create_video_card);
-        popupMenu.inflate(R.menu.create_audio_card);
-        popupMenu.inflate(R.menu.create_image_card);
-        popupMenu.inflate(R.menu.create_text_card);
-
-        popupMenu.show();
-    }
-
     @Override
     public void showPopupMenu(int mode, int position, View view, iGridViewHolder gridViewHolder) {
-
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
 
 //        if (mode >= 10)
