@@ -3,10 +3,13 @@ package ru.aakumykov.me.sociocat.cards_grid_3;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,11 +28,16 @@ public class CG3_View extends BaseView implements
         iCG3.iPageView
 {
     private static final String TAG = "CG3_View";
+
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.floatingActionButton) FloatingActionButton floatingActionButton;
+
     private CG3_Adapter adapter;
     private iCG3.iPresenter presenter;
+
     private boolean firstRun = true;
     private int positionInWork = -1;
+
 
     // Системные методы
     @Override
@@ -49,6 +57,13 @@ public class CG3_View extends BaseView implements
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.showPopupMenu(v);
+            }
+        });
     }
 
     @Override

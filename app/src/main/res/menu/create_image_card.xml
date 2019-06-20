@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/actionCreateImageCard"
+        android:icon="@drawable/ic_shortcut_image"
+        android:title="@string/MENU_create_image_card" />
+</menu>
