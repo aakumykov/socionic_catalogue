@@ -4,6 +4,7 @@ import android.view.View;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
@@ -19,6 +20,7 @@ public interface iCG3 {
     interface iPageView extends iBaseView {
         <T> void setTitle(T title);
         void goShowCard(Card card);
+        void goCreateCard(Constants.CardType cardType);
         void goEditCard(Card card, int position);
     }
 
@@ -55,8 +57,9 @@ public interface iCG3 {
         void onCardClicked(int position);
         void onCardLongClicked(int position, View view, iGridViewHolder gridViewHolder);
 
-        void onEditClicked(iGridItem gridItem);
-        void onDeleteClicked(iGridItem gridItem);
-        void onShareClicked(iGridItem gridItem);
+        void onCreateCardClicked(Constants.CardType cardType);
+        void onEditCardClicked(iGridItem gridItem);
+        void onDeleteCardClicked(iGridItem gridItem);
+        void onShareCardClicked(iGridItem gridItem);
     }
 }

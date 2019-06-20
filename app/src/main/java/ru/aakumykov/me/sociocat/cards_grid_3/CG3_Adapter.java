@@ -310,13 +310,13 @@ public class CG3_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         switch (menuItem.getItemId()) {
             case R.id.actionEdit:
-                presenter.onEditClicked(gridItem);
+                presenter.onEditCardClicked(gridItem);
                 break;
             case R.id.actionDelete:
-                presenter.onDeleteClicked(gridItem);
+                presenter.onDeleteCardClicked(gridItem);
                 break;
             case R.id.actionShare:
-                presenter.onShareClicked(gridItem);
+                presenter.onShareCardClicked(gridItem);
                 break;
         }
 

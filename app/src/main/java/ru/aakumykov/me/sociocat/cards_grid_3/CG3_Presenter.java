@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
@@ -96,14 +97,19 @@ public class CG3_Presenter implements iCG3.iPresenter
     }
 
     @Override
-    public void onEditClicked(iGridItem gridItem) {
+    public void onCreateCardClicked(Constants.CardType cardType) {
+        pageView.goCreateCard(cardType);
+    }
+
+    @Override
+    public void onEditCardClicked(iGridItem gridItem) {
         Card card = (Card) gridItem.getPayload();
         int position = gridView.getItemPosition(gridItem);
         pageView.goEditCard(card, position);
     }
 
     @Override
-    public void onDeleteClicked(iGridItem gridItem) {
+    public void onDeleteCardClicked(iGridItem gridItem) {
         Card card = (Card) gridItem.getPayload();
 
         if (!usersSingleton.currentUserIsAdmin()) {
@@ -139,7 +145,7 @@ public class CG3_Presenter implements iCG3.iPresenter
     }
 
     @Override
-    public void onShareClicked(iGridItem gridItem) {
+    public void onShareCardClicked(iGridItem gridItem) {
         pageView.showToast("Распространение");
     }
 

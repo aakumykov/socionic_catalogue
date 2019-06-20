@@ -1,12 +1,16 @@
 package ru.aakumykov.me.sociocat.cards_grid_3;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import com.leinardi.android.speeddial.SpeedDialActionItem;
+import com.leinardi.android.speeddial.SpeedDialView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +29,10 @@ public class CG3_View extends BaseView implements
         iCG3.iPageView
 {
     private static final String TAG = "CG3_View";
+
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.speedDialView) SpeedDialView speedDialView;
+
     private CG3_Adapter adapter;
     private iCG3.iPresenter presenter;
     private boolean firstRun = true;
@@ -49,6 +56,8 @@ public class CG3_View extends BaseView implements
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
+
+        configureFAB();
     }
 
     @Override
@@ -114,6 +123,33 @@ public class CG3_View extends BaseView implements
     }
 
     @Override
+    public void goCreateCard(Constants.CardType cardType) {
+
+        Card card = new Card();
+
+        switch (cardType) {
+            case TEXT_CARD:
+                card.setType(Constants.TEXT_CARD);
+                break;
+            case IMAGE_CARD:
+                card.setType(Constants.IMAGE_CARD);
+                break;
+            case AUDIO_CARD:
+                card.setType(Constants.AUDIO_CARD);
+                break;
+            case VIDEO_CARD:
+                card.setType(Constants.VIDEO_CARD);
+                break;
+        }
+
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.setAction(Constants.ACTION_CREATE);
+        intent.putExtra(Constants.CARD, card);
+
+        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+    }
+
+    @Override
     public void goEditCard(Card card, int position) {
         this.positionInWork = position;
 
@@ -134,6 +170,76 @@ public class CG3_View extends BaseView implements
         // В порядке, обратном bindComponents()
         adapter.unlinkPresenter();
         presenter.unlinkViews();
+    }
+
+    private void configureFAB() {
+
+        Resources resources = getResources();
+
+        speedDialView.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_audio, R.drawable.ic_fab_audio)
+                        .setFabBackgroundColor(resources.getColor(R.color.audio_mode))
+                        .setLabel(R.string.FAB_subitem_audio)
+                        .setLabelColor(resources.getColor(R.color.white))
+                        .setLabelBackgroundColor(resources.getColor(R.color.audio_mode))
+                        .create()
+        );
+
+        speedDialView.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_video, R.drawable.ic_fab_video)
+                        .setFabBackgroundColor(getResources().getColor(R.color.video_mode))
+                        .setLabel(R.string.FAB_subitem_video)
+                        .setLabelColor(resources.getColor(R.color.white))
+                        .setLabelBackgroundColor(resources.getColor(R.color.video_mode))
+                        .create()
+        );
+
+        speedDialView.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_image, R.drawable.ic_fab_image)
+                        .setFabBackgroundColor(resources.getColor(R.color.image_mode))
+                        .setLabel(R.string.FAB_subitem_image)
+                        .setLabelColor(resources.getColor(R.color.white))
+                        .setLabelBackgroundColor(resources.getColor(R.color.image_mode))
+                        .create()
+        );
+
+        speedDialView.addActionItem(
+                new SpeedDialActionItem.Builder(R.id.fab_quote, R.drawable.ic_fab_text)
+                        .setFabBackgroundColor(resources.getColor(R.color.text_mode))
+                        .setLabel(R.string.FAB_subitem_text)
+                        .setLabelColor(resources.getColor(R.color.white))
+                        .setLabelBackgroundColor(resources.getColor(R.color.text_mode))
+                        .create()
+        );
+
+        speedDialView.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
+            @Override
+            public boolean onActionSelected(SpeedDialActionItem speedDialActionItem) {
+
+                switch (speedDialActionItem.getId()) {
+
+                    case R.id.fab_quote:
+                        presenter.onCreateCardClicked(Constants.CardType.TEXT_CARD);
+                        return false;
+
+                    case R.id.fab_image:
+                        presenter.onCreateCardClicked(Constants.CardType.IMAGE_CARD);
+                        return false;
+
+                    case R.id.fab_audio:
+                        presenter.onCreateCardClicked(Constants.CardType.AUDIO_CARD);
+                        return false;
+
+                    case R.id.fab_video:
+                        presenter.onCreateCardClicked(Constants.CardType.VIDEO_CARD);
+                        return false;
+
+                    default:
+                        return false;
+                }
+            }
+        });
+
     }
 
     private void processCardEditResult(int resultCode, @Nullable Intent data) {

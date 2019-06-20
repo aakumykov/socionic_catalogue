@@ -568,7 +568,7 @@ public class CardsGrid_View extends BaseView implements
 
     private void configureFAB() {
 
-        SpeedDialView speedDialView = findViewById(R.id.speedDial);
+        SpeedDialView speedDialView = findViewById(R.id.speedDialView);
 
         Resources resources = getResources();
 

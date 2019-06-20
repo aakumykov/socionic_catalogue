@@ -3,6 +3,13 @@ package ru.aakumykov.me.sociocat;
 public final class Constants {
     private Constants() {}
 
+    public enum CardType {
+        TEXT_CARD,
+        IMAGE_CARD,
+        AUDIO_CARD,
+        VIDEO_CARD
+    }
+
     public final static String  PACKAGE_NAME = "ru.aakumykov.me.sociocat";
 
     public final static String CARDS_PATH = "/cards";
