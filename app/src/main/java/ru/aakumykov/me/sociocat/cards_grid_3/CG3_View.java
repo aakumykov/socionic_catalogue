@@ -42,7 +42,7 @@ public class CG3_View extends BaseView implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cg3_activity_constraint);
+        setContentView(R.layout.cg3_activity);
         ButterKnife.bind(this);
 
         setPageTitle(R.string.CARDS_GRID_page_title);
