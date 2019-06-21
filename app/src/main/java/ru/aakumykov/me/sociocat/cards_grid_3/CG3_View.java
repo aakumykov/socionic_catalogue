@@ -179,7 +179,7 @@ public class CG3_View extends BaseView implements
     private void configureSwipeRefresh() {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override public void onRefresh() {
-                showToast("Обновление");
+                showToast(R.string.not_implemented_yet);
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
