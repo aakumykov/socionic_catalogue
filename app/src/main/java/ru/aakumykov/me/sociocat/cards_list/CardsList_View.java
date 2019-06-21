@@ -45,7 +45,7 @@ public class CardsList_View extends BaseView implements
         AdapterView.OnItemLongClickListener,
         PopupMenu.OnMenuItemClickListener
 {
-    @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swiperefreshLayout;
     @BindView(R.id.filterView) ConstraintLayout filterView;
     @BindView(R.id.filterCloser) ImageView filterCloser;
     @BindView(R.id.filterName) TextView filterName;

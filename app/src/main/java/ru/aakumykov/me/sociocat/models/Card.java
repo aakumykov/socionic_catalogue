@@ -14,11 +14,14 @@ import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
+import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
 
 // TODO: как сделать так, чтобы графическая карточка не могла сохраниться без картинки?
 // И так далее...
 
-public class Card extends ListItem implements Parcelable, iTextItem
+public class Card extends ListItem implements
+        Parcelable,
+        iTextItem
 {
     private String key;
     private String userId;
@@ -44,7 +47,7 @@ public class Card extends ListItem implements Parcelable, iTextItem
     private Long mTime = 0L;
 
     public Card() {
-        setItemType(ItemType.CARD_ITEM);
+        setItemType(ListItem.ItemType.CARD_ITEM);
     }
 
     @Override @Exclude
@@ -368,6 +371,9 @@ public class Card extends ListItem implements Parcelable, iTextItem
         return !TextUtils.isEmpty(getImageURL());
     }
 
+    @Exclude public boolean isCreatedBy(User user) {
+        return key.equals(user.getKey());
+    }
 
     // Разные
     @Exclude public void addTag(String tag) {

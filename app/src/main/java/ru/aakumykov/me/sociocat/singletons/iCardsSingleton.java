@@ -1,12 +1,16 @@
 package ru.aakumykov.me.sociocat.singletons;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Card;
 
 public interface iCardsSingleton {
 
+    void loadList(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks);
     void loadList(ListCallbacks callbacks);
+    void loadList(int limit, ListCallbacks callbacks);
     void loadList(String tagFilter, ListCallbacks callbacks);
     void loadListForUser(String userId, ListCallbacks callbacks);
     void loadNewCards(long newerThanTime, ListCallbacks callbacks);

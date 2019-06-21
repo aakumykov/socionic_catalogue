@@ -28,7 +28,7 @@ public class TagsList_View extends BaseView implements
         AdapterView.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener
 {
-    @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swiperefreshLayout;
     @BindView(R.id.listView) ListView listView;
 
     private final static String TAG = "TagsList_View";

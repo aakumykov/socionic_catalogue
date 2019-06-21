@@ -345,13 +345,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void showProgressBar() {
-        View progressBar = findViewById(R.id.progressBar);
+        View progressBar = findViewById(R.id.progressBar1);
         if (null != progressBar)
             MyUtils.show(progressBar);
     }
 
     private void hideProgressBar() {
-        View progressBar = findViewById(R.id.progressBar);
+        View progressBar = findViewById(R.id.progressBar1);
         if (null != progressBar)
             MyUtils.hide(progressBar);
     }
@@ -388,7 +388,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void onCardEdited(int resultCode, @Nullable Intent data) {
-        MyUtils.showCustomToast(getAppContext(), R.string.not_implemented_yet);
+//        MyUtils.showCustomToast(getAppContext(), R.string.not_implemented_yet);
 //        switch (resultCode) {
 //            case RESULT_OK:
 //                showToast(R.string.INFO_card_saved);

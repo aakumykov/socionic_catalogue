@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
 
@@ -175,9 +176,58 @@ public class CardsSingleton implements
 
 
     @Override
+    public void loadList(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
+        Query query = cardsRef
+                .orderByKey();
+
+        if (null != startKey)
+            query = query.startAt(startKey);
+
+        if (null != endKey)
+            query = query.endAt(endKey);
+        else
+            query = query.limitToFirst(Config.DEFAULT_CARDS_LOAD_COUNT + 1);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            //        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Card> list = extractCardsFromSnapshot(dataSnapshot);
+                callbacks.onListLoadSuccess(list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callbacks.onListLoadFail(databaseError.getMessage());
+                databaseError.toException().printStackTrace();
+            }
+        });
+    }
+
+    @Override
     public void loadList(ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
         loadList(null, callbacks);
+    }
+
+    @Override
+    public void loadList(int limit, ListCallbacks callbacks) {
+
+        Query query = cardsRef.orderByKey().limitToFirst(limit);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Card> list = extractCardsFromSnapshot(dataSnapshot);
+                callbacks.onListLoadSuccess(list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callbacks.onListLoadFail(databaseError.getMessage());
+                databaseError.toException().printStackTrace();
+            }
+        });
     }
 
     @Override
