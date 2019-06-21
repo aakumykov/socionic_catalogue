@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -81,16 +80,7 @@ public class CardEdit_Presenter implements
             throw new IllegalArgumentException("Intent is NULL");
 
         if (!AuthSingleton.isLoggedIn()) {
-            String action = intent.getAction();
-            if (null != action) {
-                int requestCode = action.startsWith("CREATE_") ?
-                        Constants.CODE_CREATE_CARD :
-                        Constants.CODE_EDIT_CARD;
-                view.requestLogin(requestCode, intent);
-            }
-            else {
-                view.showErrorMsg(R.string.CARD_EDIT_data_error, "There is no action in Intent");
-            }
+            view.requestLogin(Constants.CODE_EDIT_CARD, intent);
             return;
         }
 
