@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
@@ -30,6 +31,7 @@ public class CG3_View extends BaseView implements
 {
     private static final String TAG = "CG3_View";
 
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.speedDialView) SpeedDialView speedDialView;
 
@@ -56,6 +58,8 @@ public class CG3_View extends BaseView implements
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
+
+        configureSwipeRefresh();
 
         configureFAB();
     }
@@ -170,6 +174,17 @@ public class CG3_View extends BaseView implements
         // В порядке, обратном bindComponents()
         adapter.unlinkPresenter();
         presenter.unlinkViews();
+    }
+
+    private void configureSwipeRefresh() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override public void onRefresh() {
+                showToast("Обновление");
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
     }
 
     private void configureFAB() {

@@ -59,7 +59,7 @@ public class CardsGrid_View extends BaseView implements
     private final static int COLUMNS_COUNT_LANDSCAPE = 4;
     private final static int COLUMNS_COUNT_PORTRAIT = 2;
 
-    @BindView(R.id.swiperefresh) SwipeRefreshLayout swiperefreshLayout;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swiperefreshLayout;
     @BindView(R.id.progressBar1) ProgressBar progressBar;
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
