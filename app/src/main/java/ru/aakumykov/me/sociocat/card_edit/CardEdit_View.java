@@ -109,15 +109,14 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
         presenter.linkView(this);
 
         switch (requestCode) {
 
             case Constants.CODE_LOGIN_REQUEST:
-                if (null != data) {
-                    Intent originalIntent = data.getParcelableExtra(Intent.EXTRA_INTENT);
-                    startEditWork(originalIntent);
-                }
+                if (null != data)
+                    startEditWork(data);
                 break;
 
             case Constants.CODE_SELECT_IMAGE:

@@ -130,7 +130,6 @@ public class CardsGrid_View extends BaseView implements
     public void goCreateCard(Constants.CardType cardType) {
 
         Card card = new Card();
-        card.setTitle("Новая карточка");
 
         switch (cardType) {
             case TEXT_CARD:
@@ -148,7 +147,6 @@ public class CardsGrid_View extends BaseView implements
         }
 
         Intent intent = new Intent(this, CardEdit_View.class);
-        //intent.setAction(Constants.ACTION_CREATE);
         intent.putExtra(Constants.CARD, card);
 
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
