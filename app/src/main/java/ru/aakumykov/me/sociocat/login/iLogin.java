@@ -12,7 +12,7 @@ public interface iLogin {
     interface View extends iBaseView {
         void disableForm();
         void enableForm();
-        void finishLogin(boolean isCancelled, @Nullable Bundle transitArguments);
+        void finishLogin(boolean isCancelled, Intent transitIntent, @Nullable Bundle transitArguments);
         void notifyToConfirmEmail(String userId);
     }
 

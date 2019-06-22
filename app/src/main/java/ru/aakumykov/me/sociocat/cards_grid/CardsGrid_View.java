@@ -130,6 +130,7 @@ public class CardsGrid_View extends BaseView implements
     public void goCreateCard(Constants.CardType cardType) {
 
         Card card = new Card();
+        card.setTitle("Новая карточка");
 
         switch (cardType) {
             case TEXT_CARD:

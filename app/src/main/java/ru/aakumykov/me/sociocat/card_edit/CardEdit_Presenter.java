@@ -83,9 +83,9 @@ public class CardEdit_Presenter implements
         if (null == card)
             throw new IllegalArgumentException("There is no Card in Intent");
 
-        int code = (null == card.getKey()) ? Constants.CODE_CREATE_CARD : Constants.CODE_EDIT_CARD;
         if (!AuthSingleton.isLoggedIn()) {
-            view.requestLogin(code, intent);
+            // TODO: requestLogin + CODE_LOGIN_REQUEST ...
+            view.requestLogin(Constants.CODE_LOGIN_REQUEST, intent);
             return;
         }
 
