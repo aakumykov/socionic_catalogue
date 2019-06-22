@@ -90,8 +90,8 @@ public class CardEdit_Presenter implements
 
         if (null == card.getKey())
             startCreateCard(card);
-//        else
-//            startEditCard(card);
+        else
+            startEditCard(card);
     }
 
     @Override
@@ -342,10 +342,10 @@ public class CardEdit_Presenter implements
         view.displayCard(currentCard);
     }
 
-    private void startEditCard(Intent intent) {
-        String cardKey = intent.getStringExtra(Constants.CARD_KEY);
+    private void startEditCard(Card card) {
+        String cardKey = card.getKey();
         if (null == cardKey)
-            throw new IllegalArgumentException("There is no cardKey in Intent");
+            throw new IllegalArgumentException("cardKey is null");
 
         editMode = CardEditMode.EDIT;
 
