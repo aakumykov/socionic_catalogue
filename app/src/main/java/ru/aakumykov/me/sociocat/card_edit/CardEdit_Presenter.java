@@ -88,50 +88,10 @@ public class CardEdit_Presenter implements
 
         // TODO: проверять права доступа к карточке
 
-        startCreateCard(card);
-
-        /*String action = intent.getAction()+"";
-
-        switch (action) {
-
-            case "CREATE_TEXT_CARD":
-                startCreateCard(Constants.TEXT_CARD);
-                break;
-
-            case "CREATE_IMAGE_CARD":
-                startCreateCard(Constants.IMAGE_CARD);
-                break;
-
-            case "CREATE_VIDEO_CARD":
-                startCreateCard(Constants.VIDEO_CARD);
-                break;
-
-            case "CREATE_AUDIO_CARD":
-                startCreateCard(Constants.AUDIO_CARD);
-                break;
-
-            case Constants.ACTION_CREATE:
-                startCreateCard(intent);
-                break;
-
-            case Constants.ACTION_EDIT:
-                startEditCard(intent);
-                break;
-
-            case Constants.ACTION_EDIT_RESUME:
-                restoreEditState();
-                break;
-
-            case Intent.ACTION_SEND:
-                prepareCardCreation();
-                processRecievedData(intent);
-                break;
-
-            default:
-                throw new IllegalArgumentException("Unknown intent's action: '"+action+"'");
-        }*/
-
-
+        if (null == card.getKey())
+            startCreateCard(card);
+//        else
+//            startEditCard(card);
     }
 
     @Override

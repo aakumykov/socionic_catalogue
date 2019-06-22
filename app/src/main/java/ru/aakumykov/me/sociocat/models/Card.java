@@ -90,6 +90,7 @@ public class Card extends ListItem implements
         dest.writeString(this.quote);
         dest.writeString(this.quoteSource);
         dest.writeString(this.imageURL);
+        dest.writeString(this.localImageURI.toString());
         dest.writeString(this.fileName);
         dest.writeString(this.videoCode);
         dest.writeString(this.audioCode);
@@ -114,6 +115,7 @@ public class Card extends ListItem implements
         quote = in.readString();
         quoteSource = in.readString();
         imageURL = in.readString();
+        localImageURI = Uri.parse(in.readString());
         fileName = in.readString();
         videoCode = in.readString();
         audioCode = in.readString();
