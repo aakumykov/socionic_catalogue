@@ -93,26 +93,30 @@ public class ExternalDataReceiver extends BaseView {
             card.setType(Constants.IMAGE_CARD);
             card.setLocalImageURI(imageUri);
             goToEditCard(card);
+            return;
         }
 
-        // Определаю текст, видео
+        // Определаю видео или текст
         String text = MVPUtils.getTextFromIntent(inputIntent);
 
-        if (null != text) {
-            String videoCode = MVPUtils.extractYoutubeVideoCode(text);
-
-            if (null != videoCode) {
-                card.setType(Constants.VIDEO_CARD);
-                card.setVideoCode(videoCode);
-            }
-            else {
-                card.setType(Constants.TEXT_CARD);
-                card.setQuote(text);
-                card.setTitle(MyUtils.cutToLength(text, Config.TITLE_MAX_LENGTH));
-            }
-
-            goToEditCard(card);
+        if (null == text) {
+            showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_unsupported_input_data, "There is no text content in Intent");
+            return;
         }
+
+        String videoCode = MVPUtils.extractYoutubeVideoCode(text);
+
+        if (null != videoCode) {
+            card.setType(Constants.VIDEO_CARD);
+            card.setVideoCode(videoCode);
+        }
+        else {
+            card.setType(Constants.TEXT_CARD);
+            card.setQuote(text);
+            card.setTitle(MyUtils.cutToLength(text, Config.TITLE_MAX_LENGTH));
+        }
+
+        goToEditCard(card);
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
