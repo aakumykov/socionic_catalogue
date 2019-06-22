@@ -157,7 +157,7 @@ public class CardEdit_Presenter implements
         Uri imageUri = MVPUtils.getImageUriFromIntent(view.getAppContext(), data);
 
         if (null != imageUri) {
-            imageType = MyUtils.detectImageType(view.getAppContext(), imageUri.toString());
+            imageType = MyUtils.detectImageType(view.getAppContext(), imageUri);
             currentCard.setLocalImageURI(imageUri);
             view.displayImage(imageUri.toString());
         }

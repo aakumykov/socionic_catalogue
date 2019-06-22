@@ -72,25 +72,23 @@ public final class MyUtils {
         }
     }
 
-    public static String detectImageType(Context context, Uri uri) {
-        ContentResolver contentResolver = context.getContentResolver();
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        String mimeType = contentResolver.getType(uri);
-        if (null == mimeType)
-            mimeType = Config.DEFAULT_IMAGE_TYPE;
-        return mimeTypeMap.getExtensionFromMimeType(mimeType);
-    }
-
-    public static String detectImageType(Context context, String imageURL) {
-        imageURL = imageURL.trim();
-        imageURL = imageURL.toLowerCase();
-
-        Pattern pattern = Pattern.compile("^.+\\.([a-z]+)$");
-        Matcher matcher = pattern.matcher(imageURL); // запомни, РВ должно соответствовать строке целиком!
-
-        if (matcher.matches()) {
-            return matcher.group(1);
-        } else {
+    public static <T> String detectImageType(Context context, T imageUri) {
+        if (imageUri instanceof Uri) {
+            ContentResolver contentResolver = context.getContentResolver();
+            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+            String mimeType = contentResolver.getType((Uri) imageUri);
+            return (null == mimeType) ? null : mimeTypeMap.getExtensionFromMimeType(mimeType);
+        }
+        else if (imageUri instanceof String) {
+            String imageString = (String) imageUri;
+            imageString = imageString.trim();
+            imageString = imageString.toLowerCase();
+            Pattern pattern = Pattern.compile("^.+\\.([a-z]+)$");
+            // запомни, регулярное выражение должно соответствовать строке целиком!
+            Matcher matcher = pattern.matcher(imageString);
+            return (matcher.matches()) ? matcher.group(1) : null;
+        }
+        else {
             return null;
         }
     }
