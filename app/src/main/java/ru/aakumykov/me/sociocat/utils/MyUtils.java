@@ -91,7 +91,7 @@ public final class MyUtils {
         if (matcher.matches()) {
             return matcher.group(1);
         } else {
-            return Config.DEFAULT_IMAGE_TYPE;
+            return null;
         }
     }
 

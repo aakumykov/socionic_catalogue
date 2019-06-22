@@ -45,6 +45,11 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class MVPUtils {
 
+    public interface ImageLoadWithResizeCallbacks {
+        void onImageLoadWithResizeSuccess(FileInfo fileInfo);
+        void onImageLoadWithResizeFail(String errorMsg);
+    }
+
     private final static String TAG = "MVPUtils";
     private static Map<String,String> youtubePatterns = new HashMap<>();
     private static Map<String,String> imagePatterns = new HashMap<>();
@@ -173,12 +178,12 @@ public class MVPUtils {
             return null;
 
         // отклоняю слишком короткие
-        if (tag.length() < Constants.TAG_MIN_LENGTH) {
+        if (tag.length() < Config.TAG_MIN_LENGTH) {
             return null;
         }
 
         // укорачиваю черезмерно длинные
-        tag = MyUtils.cutToLength(tag, Constants.TAG_MAX_LENGTH);
+        tag = MyUtils.cutToLength(tag, Config.TAG_MAX_LENGTH);
 
         // перевожу в нижний регистр
         if (!upperCaseTags.contains(tag)) {
@@ -221,7 +226,7 @@ public class MVPUtils {
             final boolean unprocessedYet,
             final Integer targetWidth,
             final Integer targetHeight,
-            final iMVPUtils.ImageLoadWithResizeCallbacks callbacks
+            final ImageLoadWithResizeCallbacks callbacks
 
     ) throws Exception
     {
@@ -477,16 +482,67 @@ public class MVPUtils {
     }
 
 
-//    public static <T> void showToast(Context context, T messageId, boolean atCenter) {
-//        String message = (messageId instanceof Integer) ?
-//                context.getResources().getString((Integer) messageId) :
-//                String.valueOf(messageId);
-//
-//        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-//
-//        if (atCenter)
-//            toast.setGravity(Gravity.CENTER, 0,0);
-//
-//        toast.show();
-//    }
+
+    public static Uri getImageUriFromIntent(Context context, @Nullable Intent intent) {
+
+        if (null == intent)
+            return null;
+
+        Object imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM); // Первый способ получить содержимое
+
+        if (null == imageUri)
+            imageUri = intent.getData(); // Второй способ получить содержимое
+
+        if (null == imageUri)
+            imageUri = intent.getStringExtra(Intent.EXTRA_TEXT); // Третий способ
+
+        if (null == imageUri)
+            return null;
+
+
+        String imageType = "";
+        Uri resultImageUri = null;
+
+        if (imageUri instanceof Uri) {
+            imageType = MyUtils.detectImageType(context, (Uri) imageUri);
+            resultImageUri = (Uri) imageUri;
+        }
+        else if (imageUri instanceof String) {
+            imageType = MyUtils.detectImageType(context, (String) imageUri);
+            resultImageUri = Uri.parse((String) imageUri);
+        }
+        else
+            return null;
+
+        if (null != imageType)
+            return resultImageUri;
+        else
+            return null;
+    }
+
+    public static String getYoutubeVideoCodeFromIntent(Intent intent) throws Exception {
+
+        String link = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (null == link)
+            throw new IllegalArgumentException("Video link is null");
+
+        String videoCode = MVPUtils.extractYoutubeVideoCode(link);
+        if (null == videoCode)
+            throw new IllegalArgumentException("Where is no video code in link '"+link+"");
+
+        return videoCode;
+    }
+
+    public static String getTextFromIntent(@Nullable Intent intent) {
+
+        if (null == intent)
+            return null;
+
+        String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+        if (TextUtils.isEmpty(text))
+            return null;
+
+        return text;
+    }
 }

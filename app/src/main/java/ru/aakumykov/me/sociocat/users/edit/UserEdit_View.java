@@ -32,7 +32,6 @@ import ru.aakumykov.me.sociocat.users.Users_Presenter;
 import ru.aakumykov.me.sociocat.users.iUsers;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.FileInfo;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.iMVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 // TODO: выбрасывание со страницы при разлогинивании
@@ -166,7 +165,7 @@ public class UserEdit_View extends BaseView implements
                     justSelected,
                     Config.AVATAR_MAX_WIDTH,
                     Config.AVATAR_MAX_HEIGHT,
-                    new iMVPUtils.ImageLoadWithResizeCallbacks() {
+                    new MVPUtils.ImageLoadWithResizeCallbacks() {
                         @Override
                         public void onImageLoadWithResizeSuccess(FileInfo fileInfo) {
                             hideAvatarThrobber();

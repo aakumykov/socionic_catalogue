@@ -3,10 +3,9 @@ package ru.aakumykov.me.sociocat.card_edit;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.net.Uri;
+
 import androidx.annotation.Nullable;
 
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -15,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
@@ -30,9 +30,6 @@ import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
-
-import static ru.aakumykov.me.sociocat.Constants.VIDEO_CARD;
 
 public class CardEdit_Presenter implements
         iCardEdit.Presenter,
@@ -191,41 +188,6 @@ public class CardEdit_Presenter implements
         currentCard.setVideoCode(currentCard.getAudioCode());
         currentCard.removeAudioCode();
         view.convert2video();
-    }
-
-    @Override
-    public void processIncomingImage(@Nullable Intent intent) throws Exception {
-
-        if (null == intent)
-            throw new Exception("Intent is null");
-
-        Object imageURI = intent.getParcelableExtra(Intent.EXTRA_STREAM); // Первый способ получить содержимое
-
-        if (null == imageURI) {
-            imageURI = intent.getData(); // Второй способ получить содержимое
-
-            if (null == imageURI) {
-                imageURI = intent.getStringExtra(Intent.EXTRA_TEXT); // Третий способ
-
-                if (null == imageURI) {
-                    throw new Exception("Where is no image data in intent");
-                }
-            }
-        }
-
-        if (imageURI instanceof Uri) {
-            imageType = MyUtils.detectImageType(view.getAppContext(), (Uri) imageURI);
-            currentCard.setLocalImageURI((Uri) imageURI);
-        }
-        else if (imageURI instanceof String) {
-            imageType = MyUtils.detectImageType(view.getAppContext(), (String) imageURI);
-            currentCard.setLocalImageURI((String) imageURI);
-        }
-        else
-            throw new Exception("Wring type of imageURI variable");
-
-        currentCard.setImageURL("");
-        view.displayImage(imageURI.toString());
     }
 
     @Override
@@ -459,7 +421,7 @@ public class CardEdit_Presenter implements
         currentCard = card;
     }
 
-    private void processRecievedData(Intent intent) {
+    /*private void processRecievedData(Intent intent) {
 
         Intent transitIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
 
@@ -499,7 +461,7 @@ public class CardEdit_Presenter implements
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
     private void updateCurrentCardFromView(){
         if (null != view) {
@@ -526,7 +488,7 @@ public class CardEdit_Presenter implements
 
         view.displayCard(currentCard);
 
-        if (quote.length() > Constants.LONG_TAG_THRESHOLD) {
+        if (quote.length() > Config.LONG_TAG_THRESHOLD) {
             String longTag = view.getString(R.string.TAG_long_text);
             currentCard.addTag(longTag);
         }
@@ -541,11 +503,11 @@ public class CardEdit_Presenter implements
             view.showTitleError(R.string.cannot_be_empty);
             valid = false;
         } else {
-            if (title.length() < Constants.TITLE_MIN_LENGTH) {
+            if (title.length() < Config.TITLE_MIN_LENGTH) {
                 view.showTitleError(R.string.CARD_EDIT_title_too_short);
                 valid = false;
             }
-            if (title.length() > Constants.TITLE_MAX_LENGTH) {
+            if (title.length() > Config.TITLE_MAX_LENGTH) {
                 //int lengthOvershoot = title.length() - Constants.TITLE_MAX_LENGTH;
                 view.showTitleError(R.string.CARD_EDIT_title_too_long);
                 valid = false;
@@ -559,11 +521,11 @@ public class CardEdit_Presenter implements
                 view.showQuoteError(R.string.cannot_be_empty);
                 valid = false;
             } else {
-                if (quote.length() < Constants.QUOTE_MIN_LENGTH) {
+                if (quote.length() < Config.QUOTE_MIN_LENGTH) {
                     view.showQuoteError(R.string.CARD_EDIT_quote_too_short);
                     valid = false;
                 }
-                if (quote.length() > Constants.QUOTE_MAX_LENGTH) {
+                if (quote.length() > Config.QUOTE_MAX_LENGTH) {
                     //int lengthOvershoot = title.length() - Constants.TITLE_MAX_LENGTH;
                     view.showQuoteError(R.string.CARD_EDIT_quote_too_long);
                     valid = false;
@@ -577,11 +539,11 @@ public class CardEdit_Presenter implements
             view.showDescriptionError(R.string.cannot_be_empty);
             valid = false;
         } else {
-            if (description.length() < Constants.DESCRIPTION_MIN_LENGTH) {
+            if (description.length() < Config.DESCRIPTION_MIN_LENGTH) {
                 view.showDescriptionError(R.string.CARD_EDIT_description_too_short);
                 valid = false;
             }
-            if (description.length() > Constants.DESCRIPTION_MAX_LENGTH) {
+            if (description.length() > Config.DESCRIPTION_MAX_LENGTH) {
                 //int lengthOvershoot = title.length() - Constants.TITLE_MAX_LENGTH;
                 view.showDescriptionError(R.string.CARD_EDIT_description_too_long);
                 valid = false;
@@ -632,34 +594,6 @@ public class CardEdit_Presenter implements
 
 
         return valid;
-    }
-
-    private void procesIncomingText(Intent intent) throws Exception {
-        String text = intent.getStringExtra(Intent.EXTRA_TEXT);
-
-        if (!TextUtils.isEmpty(text)) {
-            String title = MyUtils.cutToLength(text, Constants.TITLE_MAX_LENGTH);
-            currentCard.setTitle(title);
-            currentCard.setQuote(text);
-            if (null != view)
-                view.displayCard(currentCard);
-        } else {
-            throw new IllegalArgumentException("There is no text in Intent.");
-        }
-    }
-
-    private void processYoutubeVideo(Intent intent) throws Exception {
-
-        String link = intent.getStringExtra(Intent.EXTRA_TEXT);
-        if (null == link)
-            throw new IllegalArgumentException("Video link is null");
-
-        String videoCode = MVPUtils.extractYoutubeVideoCode(link);
-        if (null == videoCode)
-            throw new IllegalArgumentException("Where is no video code in link '"+link+"");
-
-        currentCard.setVideoCode(videoCode);
-        view.displayVideo(videoCode);
     }
 
     private void updateCardTags(final Card card) {

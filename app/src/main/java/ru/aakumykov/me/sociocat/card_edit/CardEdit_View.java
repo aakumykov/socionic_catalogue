@@ -109,10 +109,10 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
         presenter.linkView(this);
 
-        switch (requestCode) {
+        /*switch (requestCode) {
 
             case Constants.CODE_LOGIN_REQUEST:
                 if (null != data)
@@ -136,7 +136,7 @@ public class CardEdit_View extends BaseView implements
 
             default:
                 super.onActivityResult(requestCode, resultCode, data);
-        }
+        }*/
     }
 
     @Override
