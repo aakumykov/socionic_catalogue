@@ -31,6 +31,7 @@ import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardEdit_Presenter implements
         iCardEdit.Presenter,
@@ -154,7 +155,9 @@ public class CardEdit_Presenter implements
     @Override
     public void processSelectedImage(@Nullable Intent data) {
         Uri imageUri = MVPUtils.getImageUriFromIntent(view.getAppContext(), data);
+
         if (null != imageUri) {
+            imageType = MyUtils.detectImageType(view.getAppContext(), imageUri.toString());
             currentCard.setLocalImageURI(imageUri);
             view.displayImage(imageUri.toString());
         }
