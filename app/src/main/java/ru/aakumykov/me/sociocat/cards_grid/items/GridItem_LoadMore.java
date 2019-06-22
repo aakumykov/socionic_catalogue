@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.cards_grid_3.items;
+package ru.aakumykov.me.sociocat.cards_grid.items;
 
 import ru.aakumykov.me.sociocat.models.Card;
 

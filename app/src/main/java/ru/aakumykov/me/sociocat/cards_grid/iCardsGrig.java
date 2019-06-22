@@ -1,16 +1,16 @@
-package ru.aakumykov.me.sociocat.cards_grid_3;
+package ru.aakumykov.me.sociocat.cards_grid;
 
 import android.view.View;
 
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.cards_grid_3.items.iGridItem;
-import ru.aakumykov.me.sociocat.cards_grid_3.view_holders.iGridViewHolder;
+import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
+import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public interface iCG3 {
+public interface iCardsGrig {
 
     int MODE_ADMIN = 100;
     int MODE_OWNER = 20;

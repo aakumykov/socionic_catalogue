@@ -1,364 +1,326 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
-import android.util.Log;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
-
-import ru.aakumykov.me.myimageloader.MyImageLoader;
-import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
+import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_LoadMore;
+import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Throbber;
+import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
+import ru.aakumykov.me.sociocat.cards_grid.view_holders.Card_ViewHolder;
+import ru.aakumykov.me.sociocat.cards_grid.view_holders.LoadMore_ViewHolder;
+import ru.aakumykov.me.sociocat.cards_grid.view_holders.Throbber_ViewHolder;
+import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
-public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-        implements Filterable
+public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
+        iCardsGrig.iGridView
 {
-    public interface iAdapterUser {
-        void onGridItemClick(int position);
-        void onPopupMenuClick(MenuItem menuItem, int listPosition);
-        void onDataFiltered(List<Card> filteredCardsList);
-    }
-
-    private static final String TAG = "CardsGrid_Adapter";
-
-    private static final int VIEW_TYPE_TEXT_CARD = 10;
-    private static final int VIEW_TYPE_IMAGE_CARD = 20;
-    private static final int VIEW_TYPE_AUDIO_CARD = 30;
-    private static final int VIEW_TYPE_VIDEO_CARD = 40;
-
-    private List<Card> cardsList;
-    private List<Card> originalCardsList;
-    private List<Card> cardsListFiltered;
-    private iAdapterUser adapterUser;
-
-    private Card currentCard; // Используется для отладки ошибки.
-
+    private List<iGridItem> itemsList = new ArrayList<>();
+    private iCardsGrig.iPresenter presenter;
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
-    // Конструктор
-    CardsGrid_Adapter(List<Card> cardsList) {
-        this.cardsList = cardsList;
-        this.originalCardsList = this.cardsList;
-    }
+    private Drawable originalBackground;
 
 
     // Системные методы
+    @NonNull @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View itemView;
+        RecyclerView.ViewHolder viewHolder;
+        StaggeredGridLayoutManager.LayoutParams layoutParams;
+
+        switch (viewType) {
+
+            case iGridItem.LOAD_MORE_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.cg3_loadmore_item, parent, false);
+                viewHolder = new LoadMore_ViewHolder(itemView, presenter);
+
+                layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+                layoutParams.setFullSpan(true);
+                break;
+
+            case iGridItem.THROBBER_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.cg3_throbber_item, parent, false);
+                viewHolder = new Throbber_ViewHolder(itemView);
+
+                layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+                layoutParams.setFullSpan(true);
+                break;
+
+            case iGridItem.TEXT_CARD_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.cg3_text_card_item, parent, false);
+                viewHolder = new Card_ViewHolder(itemView, presenter);
+                break;
+
+            case iGridItem.IMAGE_CARD_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.cg3_image_card_item, parent, false);
+                viewHolder = new Card_ViewHolder(itemView, presenter);
+                break;
+
+            case iGridItem.AUDIO_CARD_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.cg3_audio_card_item, parent, false);
+                viewHolder = new Card_ViewHolder(itemView, presenter);
+                break;
+
+            case iGridItem.VIDEO_CARD_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.cg3_video_card_item, parent, false);
+                viewHolder = new Card_ViewHolder(itemView, presenter);
+                break;
+
+            default:
+                throw new RuntimeException("Unknown item view type: "+viewType);
+        }
+
+        return viewHolder;
+    }
+
     @Override
-    public int getItemCount() {
-        return null == cardsList ? 0 : cardsList.size();
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+
+        iGridItem gridItem = itemsList.get(position);
+
+        Object payload = gridItem.getPayload();
+
+        if (gridItem instanceof GridItem_Card) {
+            Card_ViewHolder cardViewHolder = (Card_ViewHolder) viewHolder;
+            cardViewHolder.initialize(gridItem, position, payload);
+        }
+        else if (gridItem instanceof GridItem_LoadMore) {
+            LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) viewHolder;
+            loadMoreViewHolder.initialize(position, payload);
+        }
+        else if (gridItem instanceof GridItem_Throbber) {
+            Throbber_ViewHolder throbberViewHolder = (Throbber_ViewHolder) viewHolder;
+        }
+        else {
+            throw new RuntimeException("Unknown item type: "+gridItem);
+        }
+
     }
 
     @Override
     public int getItemViewType(int position) {
+        iGridItem item = itemsList.get(position);
 
-        // TODO: по идее, это неустойчиво к отсутствию карточки
-        Card card = cardsList.get(position);
-        currentCard = card;
-        //Log.e(TAG, "Card: "+card);
-        //Log.e(TAG, card.getKey()+" | "+card.getTitle()+" | "+card.getType());
+        if (item instanceof GridItem_Card) {
+            Card card = (Card) item.getPayload();
+            if (card.isTextCard())  return iGridItem.TEXT_CARD_VIEW_TYPE;
+            if (card.isImageCard()) return iGridItem.IMAGE_CARD_VIEW_TYPE;
+            if (card.isAudioCard()) return iGridItem.AUDIO_CARD_VIEW_TYPE;
+            if (card.isVideoCard()) return iGridItem.VIDEO_CARD_VIEW_TYPE;
+            else return -1;
+        }
+        else if (item instanceof GridItem_LoadMore)
+            return iGridItem.LOAD_MORE_VIEW_TYPE;
+        else if (item instanceof GridItem_Throbber)
+            return iGridItem.THROBBER_VIEW_TYPE;
+        else
+            return -1;
+    }
 
-        switch (card.getType()) {
+    @Override
+    public int getItemCount() {
+        return itemsList.size();
+    }
 
-            case Constants.TEXT_CARD:
-                return VIEW_TYPE_TEXT_CARD;
 
-            case Constants.IMAGE_CARD:
-                return VIEW_TYPE_IMAGE_CARD;
+    // iGridView
+    @Override
+    public void linkPresenter(iCardsGrig.iPresenter presenter) {
+        this.presenter = presenter;
+    }
 
-            case Constants.AUDIO_CARD:
-                return VIEW_TYPE_AUDIO_CARD;
+    @Override
+    public void unlinkPresenter() {
+        this.presenter = null;
+    }
 
-            case Constants.VIDEO_CARD:
-                return VIEW_TYPE_VIDEO_CARD;
+    @Override
+    public void setList(List<iGridItem> list) {
+        this.itemsList.clear();
+        appendList(list);
+    }
 
-            default:
-                Log.e(TAG, "UNKNOWN CARD TYPE: "+card);
-                return -1;
+    @Override
+    public void appendList(List<iGridItem> list) {
+
+        Card lastCard = null;
+
+        if (list.size() > Config.DEFAULT_CARDS_LOAD_COUNT) {
+            int maxIndex = list.size() - 1;
+            lastCard = (Card) list.get(maxIndex).getPayload();
+            list.remove(maxIndex);
+        }
+
+        int start = this.itemsList.size();
+        int count = list.size();
+        this.itemsList.addAll(list);
+        notifyItemRangeChanged(start, count);
+
+        showLoadMoreItem(lastCard);
+    }
+
+    @Override
+    public iGridItem getItem(int position) {
+        return itemsList.get(position);
+    }
+
+    @Override
+    public int getItemPosition(iGridItem item) {
+        return itemsList.indexOf(item);
+    }
+
+    @Override
+    public void updateItem(int position, iGridItem newGridItem) {
+        if (position > 0) {
+            itemsList.set(position, newGridItem);
+            notifyItemChanged(position);
         }
     }
 
     @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                String charString = constraint.toString();
-                if (charString.isEmpty()) {
-                    cardsListFiltered = originalCardsList;
-                } else {
-                    List<Card> filteredList = new ArrayList<>();
-                    for (Card row : originalCardsList) {
-
-                        if (row.getTitle().toLowerCase().contains(charString.toLowerCase())) {
-                            filteredList.add(row);
-                        }
-                    }
-                    cardsListFiltered = filteredList;
-                }
-
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = cardsListFiltered;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                cardsList = (ArrayList<Card>) results.values;
-
-                if (null != adapterUser) { // Иначе падает при входе со страницы плиток
-                    adapterUser.onDataFiltered(cardsList);
-                }
-
-                notifyDataSetChanged();
-            }
-        };
+    public void removeItem(iGridItem gridItem) {
+        int index = itemsList.indexOf(gridItem);
+        itemsList.remove(index);
+        notifyItemRemoved(index);
     }
 
-    @NonNull @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view;
-
-        switch (viewType) {
-            case VIEW_TYPE_TEXT_CARD:
-                view = layoutInflater.inflate(R.layout.cards_grid_item_text, parent, false);
-                return new ViewHolderText(view);
-
-            case VIEW_TYPE_IMAGE_CARD:
-                view = layoutInflater.inflate(R.layout.cards_grid_item_image, parent, false);
-                return new ViewHolderImage(view);
-
-            case VIEW_TYPE_AUDIO_CARD:
-                view = layoutInflater.inflate(R.layout.cards_grid_item_audio, parent, false);
-                return new ViewHolderAudio(view);
-
-            case VIEW_TYPE_VIDEO_CARD:
-                view = layoutInflater.inflate(R.layout.cards_grid_item_video, parent, false);
-                return new ViewHolderVideo(view);
-
-            default:
-                // TODO: регистрировать это событие
-                Log.e(TAG, "Unknown view type of card: "+currentCard);
-                view = layoutInflater.inflate(R.layout.cards_grid_item_unknown, parent, false);
-                return new ViewHolderUnknown(view);
+    @Override
+    public void hideLoadMoreItem(int position) {
+        iGridItem gridItem = itemsList.get(position);
+        if (gridItem instanceof GridItem_LoadMore) {
+            itemsList.remove(position);
+            notifyItemRemoved(position);
         }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int listPosition) {
-
-        ViewHolderCommon viewHolderCommon = (ViewHolderCommon) holder;
-
-        viewHolderCommon.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                adapterUser.onGridItemClick(listPosition);
-            }
-        });
-
-        viewHolderCommon.cardView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override public boolean onLongClick(View view) {
-                showPopupMenu(view, listPosition, viewHolderCommon);
-                return true;
-            }
-        });
-
-        switch (holder.getItemViewType()) {
-            case VIEW_TYPE_TEXT_CARD:
-                initTextLayout((ViewHolderText)holder, listPosition);
-                break;
-            case VIEW_TYPE_IMAGE_CARD:
-                initImageLayout((ViewHolderImage)holder, listPosition);
-                break;
-            case VIEW_TYPE_AUDIO_CARD:
-                initAudioLayout((ViewHolderAudio)holder, listPosition);
-                break;
-            case VIEW_TYPE_VIDEO_CARD:
-                initVideoLayout((ViewHolderVideo)holder, listPosition);
-            default:
-                break;
-        }
+    public void showThrobber() {
+        itemsList.add(new GridItem_Throbber());
+        int index = itemsList.size() - 1;
+        notifyItemChanged(index);
     }
 
-
-    // Публичные методы
-    void bindView(iAdapterUser consumer) {
-        this.adapterUser = consumer;
+    @Override
+    public void showThrobber(int position) {
+        itemsList.remove(position);
+        itemsList.add(new GridItem_Throbber());
+        notifyItemChanged(position);
     }
 
-    void unbindView() {
-        this.adapterUser = null;
+    @Override
+    public void hideThrobber() {
+        int index = itemsList.size() - 1;
+        hideThrobber(index);
     }
 
-    void restoreInitialList() {
-        this.cardsList = this.originalCardsList;
-        notifyDataSetChanged();
+    @Override
+    public void hideThrobber(int position) {
+        itemsList.remove(position);
+        notifyItemChanged(position);
     }
 
-
-    // Внутренние методы
-    private void initTextLayout(ViewHolderText viewHolder, int listPosition) {
-        Card card = cardsList.get(listPosition);
-        viewHolder.titleView.setText(card.getTitle());
-    }
-
-    private void initImageLayout(ViewHolderImage viewHolder, int listPosition) {
-        Card card = cardsList.get(listPosition);
-        viewHolder.titleView.setText(card.getTitle());
-
-        /*MyUtils.show(viewHolder.imageThrobber);
-
-        Picasso.get().load(card.getImageURL()).into(viewHolder.imageView, new Callback() {
-            @Override public void onSuccess() {
-                MyUtils.hide(viewHolder.imageThrobber);
-                MyUtils.show(viewHolder.imageView);
-            }
-
-            @Override public void onError(Exception e) {
-                MyUtils.hide(viewHolder.imageThrobber);
-                MyUtils.show(viewHolder.imageErrorView);
-            }
-        });*/
-
-        MyImageLoader.loadImageToContainer(
-                viewHolder.imageContainer.getContext(),
-                viewHolder.imageContainer,
-                card.getImageURL()
-        );
-    }
-
-    private void initAudioLayout(ViewHolderAudio viewHolder, int listPosition) {
-        Card card = cardsList.get(listPosition);
-        viewHolder.titleView.setText(card.getTitle());
-    }
-
-    private void initVideoLayout(ViewHolderVideo viewHolder, int listPosition) {
-        Card card = cardsList.get(listPosition);
-        viewHolder.titleView.setText(card.getTitle());
-    }
-
-
-    private void showPopupMenu(View view, int listPosition, ViewHolderCommon viewHolderCommon) {
-
+    @Override
+    public void showPopupMenu(int mode, int position, View view, iGridViewHolder gridViewHolder) {
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
 
-        User currentUser = usersSingleton.getCurrentUser();
-        Card currentCard = cardsList.get(listPosition);
+//        if (mode >= 10)
+//            popupMenu.inflate();
 
-        if (null != currentUser) {
-            if (usersSingleton.currentUserIsAdmin() || usersSingleton.isCardOwner(currentCard)) {
-                popupMenu.inflate(R.menu.edit);
-                popupMenu.inflate(R.menu.delete);
-            }
-        }
-        else {
-            popupMenu.inflate(R.menu.share);
-        }
+        if (mode >= 20)
+            popupMenu.inflate(R.menu.edit);
 
-        viewHolderCommon.saveOriginalBackground();
-        viewHolderCommon.setPressedBackground();
+        if (mode >= 100)
+            popupMenu.inflate(R.menu.delete);
 
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-            @Override
-            public void onDismiss(PopupMenu menu) {
-                viewHolderCommon.restoreBackground();
-            }
-        });
+        popupMenu.inflate(R.menu.share);
+
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                adapterUser.onPopupMenuClick(item, listPosition);
+                onPopupItemClicked(item, position);
                 return true;
             }
         });
 
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+                gridViewHolder.unfade();
+            }
+        });
+
+        gridViewHolder.fade();
         popupMenu.show();
     }
 
 
-    // Внутренние классы
-    static class ViewHolderText extends ViewHolderCommon {
-        TextView titleView;
-        public ViewHolderText(@NonNull View itemView) {
-            super(itemView);
-            titleView = itemView.findViewById(R.id.titleView);
+    // Внутренние методы
+    private void showLoadMoreItem(@Nullable Card card) {
+        if (null != card) {
+            GridItem_LoadMore loadMoreItem = new GridItem_LoadMore();
+            loadMoreItem.setPayload(card);
+            itemsList.add(loadMoreItem);
+            notifyItemChanged(itemsList.size());
         }
     }
 
-    static class ViewHolderImage extends ViewHolderCommon {
-        FrameLayout imageContainer;
-        public ViewHolderImage(@NonNull View itemView) {
-            super(itemView);
-            imageContainer = itemView.findViewById(R.id.imageContainer);
-        }
+    private void fadeItem(int position) {
+        iGridItem fadedGridItem = itemsList.get(position);
+        fadedGridItem.setIsPressed(true);
+
+        itemsList.set(position, fadedGridItem); // TODO: нужно?
+        notifyItemChanged(position);
     }
 
-    static class ViewHolderAudio extends ViewHolderCommon {
-        public ViewHolderAudio(@NonNull View itemView) {
-            super(itemView);
-        }
+    private void unfadeItem(int position) {
+        iGridItem fadedGridItem = itemsList.get(position);
+        fadedGridItem.setIsPressed(false);
+
+        itemsList.set(position, fadedGridItem); // TODO: нужно?
+        notifyItemChanged(position);
     }
 
-    static class ViewHolderVideo extends ViewHolderCommon {
-        public ViewHolderVideo(@NonNull View itemView) {
-            super(itemView);
-        }
-    }
+    private void onPopupItemClicked(MenuItem menuItem, int position) {
 
-    static class ViewHolderUnknown extends ViewHolderCommon {
-        public ViewHolderUnknown(@NonNull View itemView) {
-            super(itemView);
-        }
-    }
+        iGridItem gridItem = itemsList.get(position);
 
-    static class ViewHolderCommon extends RecyclerView.ViewHolder {
-        CardView cardView;
-        TextView titleView;
-        int oldBackgroundColor;
-
-        ViewHolderCommon(@NonNull View itemView) {
-            super(itemView);
-            cardView = itemView.findViewById(R.id.cardView);
-            titleView = itemView.findViewById(R.id.titleView);
+        switch (menuItem.getItemId()) {
+            case R.id.actionEdit:
+                presenter.onEditCardClicked(gridItem);
+                break;
+            case R.id.actionDelete:
+                presenter.onDeleteCardClicked(gridItem);
+                break;
+            case R.id.actionShare:
+                presenter.onShareCardClicked(gridItem);
+                break;
         }
 
-        void saveOriginalBackground() {
-            oldBackgroundColor = cardView.getCardBackgroundColor().getDefaultColor();
-        }
-
-        void setPressedBackground() {
-            int color = cardView.getContext().getResources().getColor(R.color.selected_list_item_bg);
-            cardView.setCardBackgroundColor(color);
-        }
-
-        void restoreBackground() {
-            cardView.setCardBackgroundColor(oldBackgroundColor);
-        }
+        unfadeItem(position);
     }
 
 }

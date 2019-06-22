@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.cards_grid_3.view_holders;
+package ru.aakumykov.me.sociocat.cards_grid.view_holders;
 
 import android.view.View;
 

@@ -1,14 +1,8 @@
-package ru.aakumykov.me.sociocat.cards_grid_3.view_holders;
+package ru.aakumykov.me.sociocat.cards_grid.view_holders;
 
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import ru.aakumykov.me.sociocat.R;
 
 public class Throbber_ViewHolder extends BaseViewHolder {
 
