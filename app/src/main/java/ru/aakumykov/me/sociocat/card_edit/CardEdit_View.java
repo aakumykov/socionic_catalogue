@@ -105,8 +105,6 @@ public class CardEdit_View extends BaseView implements
         tagsContainer.setOnTagClickListener(this);
 
         setupTagWatcher();
-
-//        presenter.linkViews(this);
     }
 
     @Override
@@ -745,7 +743,8 @@ public class CardEdit_View extends BaseView implements
                 }
             });
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
             e.printStackTrace();
         }

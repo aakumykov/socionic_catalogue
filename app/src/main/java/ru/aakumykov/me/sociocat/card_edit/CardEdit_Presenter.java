@@ -79,14 +79,21 @@ public class CardEdit_Presenter implements
         if (null == intent)
             throw new IllegalArgumentException("Intent is NULL");
 
+        Card card = intent.getParcelableExtra(Constants.CARD);
+        if (null == card)
+            throw new IllegalArgumentException("There is no Card in Intent");
+
+        int code = (null == card.getKey()) ? Constants.CODE_CREATE_CARD : Constants.CODE_EDIT_CARD;
         if (!AuthSingleton.isLoggedIn()) {
-            view.requestLogin(Constants.CODE_EDIT_CARD, intent);
+            view.requestLogin(code, intent);
             return;
         }
 
         // TODO: проверять права доступа к карточке
 
-        String action = intent.getAction()+"";
+        startCreateCard(card);
+
+        /*String action = intent.getAction()+"";
 
         switch (action) {
 
@@ -125,7 +132,7 @@ public class CardEdit_Presenter implements
 
             default:
                 throw new IllegalArgumentException("Unknown intent's action: '"+action+"'");
-        }
+        }*/
 
 
     }
@@ -407,40 +414,9 @@ public class CardEdit_Presenter implements
 
 
     // Внутренние методы
-    private void startCreateCard(String cardType) {
-
-        Card card = new Card();
-
-        switch (cardType) {
-            case Constants.TEXT_CARD:
-                card.setType(Constants.TEXT_CARD);
-                break;
-            case Constants.IMAGE_CARD:
-                card.setType(Constants.IMAGE_CARD);
-                break;
-            case Constants.VIDEO_CARD:
-                card.setType(Constants.VIDEO_CARD);
-                break;
-            case Constants.AUDIO_CARD:
-                card.setType(Constants.AUDIO_CARD);
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown card type '"+cardType+"'");
-        }
-
-        Intent intent = new Intent();
-        intent.putExtra(Constants.CARD, card);
-        startCreateCard(intent);
-    }
-
-    private void startCreateCard(Intent intent) {
-        Card card = intent.getParcelableExtra(Constants.CARD);
-        card.setKey(cardsSingleton.createKey());
-
-        editMode = CardEditMode.CREATE;
-
+    private void startCreateCard(Card card) {
         currentCard = card;
-
+        editMode = CardEditMode.CREATE;
         view.displayCard(currentCard);
     }
 
