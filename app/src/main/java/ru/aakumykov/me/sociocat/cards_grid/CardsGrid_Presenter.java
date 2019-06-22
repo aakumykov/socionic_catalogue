@@ -1,199 +1,210 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import android.util.Log;
+import android.view.View;
 
+import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
-import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
-import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
-import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
+import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
+import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
+import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
-import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
-import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
 
-public class CardsGrid_Presenter implements
-        iCardsGrid.Presenter,
-        iCardsSingleton.DeleteCallbacks
+public class CardsGrid_Presenter implements iCardsGrig.iPresenter
 {
+    enum LoadMode {
+        REPLACE,
+        APPEND
+    }
+
+    private final static String TAG = "CG3_Presenter";
+    private iCardsGrig.iPageView pageView;
+    private iCardsGrig.iGridView gridView;
+    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
-    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
-    private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
-    private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
-    private iCardsGrid.View view;
 
-
-    // Системные методы
     @Override
-    public void linkView(iCardsGrid.View view) {
-        this.view = view;
-    }
-    @Override
-    public void unlinkView() {
-        this.view = null;
-    }
-
-
-    // Интерфейсные методы
-    @Override
-    public void loadCards() {
-        cardsSingleton.loadList(new iCardsSingleton.ListCallbacks() {
-            @Override
-            public void onListLoadSuccess(List<Card> list) {
-                if (null != view) view.displayList(list);
-            }
-
-            @Override
-            public void onListLoadFail(String errorMessage) {
-                if (null != view) view.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
-            }
-        });
+    public void linkViews(iCardsGrig.iPageView pageView, iCardsGrig.iGridView gridView) {
+        this.pageView = pageView;
+        this.gridView = gridView;
     }
 
     @Override
-    public void loadNewCards(long newerThanTime) {
-
-        view.showProgressMessage(R.string.CARDS_GRID_loading_new_cards);
-
-        cardsSingleton.loadNewCards(newerThanTime, new iCardsSingleton.ListCallbacks() {
-            @Override
-            public void onListLoadSuccess(List<Card> list) {
-                if (null != view) {
-                    if (0 == list.size()) {
-                        view.hideProgressMessage();
-                        view.showToast(R.string.CARDS_GRID_no_new_cards);
-                    } else {
-                        view.displayList(list);
-                    }
-                }
-            }
-
-            @Override
-            public void onListLoadFail(String errorMessage) {
-                if (null != view)
-                    view.showErrorMsg(R.string.CARDS_GRID_loading_cards, errorMessage);
-            }
-        });
+    public void unlinkViews() {
+        this.pageView = null;
+        this.gridView = null;
     }
 
     @Override
-    public void loadNewCards() {
-        long timeNow = new Date().getTime();
-        long milliSecondsInDay = TimeUnit.HOURS.toMillis(1);
-        long oneDayAgo = timeNow - milliSecondsInDay;
-        loadNewCards(oneDayAgo);
+    public void onWorkBegins() {
+        loadCards(
+                LoadMode.REPLACE,
+                null,
+                0
+        );
     }
 
     @Override
-    public void deleteCard(final Card card) {
+    public void onLoadMoreClicked(int position, String startKey) {
+        gridView.hideLoadMoreItem(position);
 
-        if (!usersSingleton.isCardOwner(card) && !usersSingleton.currentUserIsAdmin()) {
-            view.showToast(R.string.CARDS_LIST_you_cannot_delete_this_card);
+        loadCards(
+                LoadMode.APPEND,
+                startKey,
+                position
+        );
+    }
+
+    @Override
+    public void onCardClicked(int position) {
+        Card card = (Card) gridView.getItem(position).getPayload();
+        pageView.goShowCard(card);
+    }
+
+    @Override
+    public void onCardLongClicked(int position, View view, iGridViewHolder gridViewHolder) {
+
+        if (!AuthSingleton.isLoggedIn()) {
+            gridView.showPopupMenu(iCardsGrig.MODE_GUEST, position, view, gridViewHolder);
             return;
         }
 
-        try {
-            cardsSingleton.deleteCard(card, this);
-        } catch (Exception e) {
-            onCardDeleteError(e.getMessage());
-            e.printStackTrace();
+        if (usersSingleton.currentUserIsAdmin()) {
+            gridView.showPopupMenu(iCardsGrig.MODE_ADMIN, position, view, gridViewHolder);
+            return;
+        }
+
+        Card card = (Card) gridView.getItem(position).getPayload();
+
+        if (card.isCreatedBy(usersSingleton.getCurrentUser())) {
+            gridView.showPopupMenu(iCardsGrig.MODE_OWNER, position, view, gridViewHolder);
+            return;
         }
     }
 
     @Override
-    public void onCardDeleteSuccess(Card card) {
-        view.hideProgressMessage();
-        view.showToast(R.string.card_deleted);
-        view.removeGridItem(card);
-
-        deleteCardTags(card);
-        deleteCardComments(card);
-        deleteCardImage(card);
+    public void onCreateCardClicked(Constants.CardType cardType) {
+        pageView.goCreateCard(cardType);
     }
 
     @Override
-    public void onCardDeleteError(String msg) {
-        view.hideProgressMessage();
-        view.showErrorMsg(R.string.CARDS_LIST_error_deleting_card, msg);
+    public void onEditCardClicked(iGridItem gridItem) {
+        Card card = (Card) gridItem.getPayload();
+        int position = gridView.getItemPosition(gridItem);
+        pageView.goEditCard(card, position);
+    }
+
+    @Override
+    public void onDeleteCardClicked(iGridItem gridItem) {
+        Card card = (Card) gridItem.getPayload();
+
+        if (!usersSingleton.currentUserIsAdmin()) {
+            pageView.showToast(R.string.action_denied);
+            return;
+        }
+
+        MyDialogs.cardDeleteDialog(
+                pageView.getActivity(),
+                card.getTitle(),
+                new iMyDialogs.Delete() {
+                    @Override
+                    public void onCancelInDialog() {
+
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        onDeleteCardConfirmed(card, gridItem);
+                    }
+                }
+        );
+    }
+
+    @Override
+    public void onShareCardClicked(iGridItem gridItem) {
+        pageView.showToast("Распространение");
     }
 
 
     // Внутренние методы
-    private void deleteCardTags(Card card){
-        try {
-            tagsSingleton.updateCardTags(
-                    card.getKey(),
-                    card.getTags(),
-                    null,
-                    new iTagsSingleton.UpdateCallbacks() {
-                        @Override
-                        public void onUpdateSuccess() {
+    private void loadCards(
+            LoadMode loadMode,
+            @Nullable String startKey,
+            int insertPosition
+    )
+    {
+        gridView.showThrobber();
 
-                        }
+        cardsSingleton.loadList(startKey, null, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                List<iGridItem> gridItemsList = new ArrayList<>();
 
-                        @Override
-                        public void onUpdateFail(String errorMsg) {
-                            view.showErrorMsg(R.string.error_deleting_card_tags, errorMsg);
-                        }
-                    }
-            );
-
-            storageSingleton.deleteImage(card.getFileName(), new iStorageSingleton.FileDeletionCallbacks() {
-                @Override
-                public void onDeleteSuccess() {
-
+                for (Card card : list) {
+                    GridItem_Card cardItem = new GridItem_Card();
+                    cardItem.setPayload(card);
+                    gridItemsList.add(cardItem);
                 }
 
-                @Override
-                public void onDeleteFail(String errorMSg) {
+                gridView.hideThrobber();
 
+                switch (loadMode) {
+                    case REPLACE:
+                        gridView.setList(gridItemsList);
+                        break;
+                    case APPEND:
+                        gridView.appendList(gridItemsList);
+                        break;
+                    default:
+                        // TODO: показывать ошибку? кидать исключение?
+                        Log.e(TAG, "Wrong LoadMode: "+loadMode);
+                        break;
                 }
-            });
+            }
 
-            commentsSingleton.deleteCommentsForCard(card.getKey());
-
-
-        } catch (Exception e) {
-            view.showErrorMsg(R.string.error_updating_card_tags, e.getMessage());
-            e.printStackTrace();
-        }
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+            }
+        });
     }
 
-    private void deleteCardComments(Card card) {
-        try {
-            commentsSingleton.deleteCommentsForCard(card.getKey());
-        } catch (Exception e) {
-            view.showErrorMsg(R.string.error_deleting_card_comments, e.getMessage());
-            e.printStackTrace();
-        }
+    private void onDeleteCardConfirmed(Card card, iGridItem gridItem) {
+
+        cardsSingleton.deleteCard(card, new iCardsSingleton.DeleteCallbacks() {
+            @Override
+            public void onCardDeleteSuccess(Card card) {
+                gridView.removeItem(gridItem);
+            }
+
+            @Override
+            public void onCardDeleteError(String msg) {
+                pageView.showErrorMsg(R.string.ERROR_deleting_card, msg);
+            }
+        });
     }
-
-    private void deleteCardImage(Card card) {
-        try {
-            storageSingleton.deleteImage(card.getFileName(), new iStorageSingleton.FileDeletionCallbacks() {
-                @Override
-                public void onDeleteSuccess() {
-
-                }
-
-                @Override
-                public void onDeleteFail(String errorMSg) {
-
-                }
-            });
-        } catch (Exception e) {
-            view.showErrorMsg(R.string.error_deleting_card_image, e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
 }
