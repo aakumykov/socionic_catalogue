@@ -75,6 +75,7 @@ public interface iCardEdit {
         void convert2audio();
         void convert2video();
 
+        void processSelectedImage(@Nullable Intent data);
         void processYoutubeLink(String youtubeLink) throws Exception;
         void saveCard(boolean alreadyValidated) throws Exception;
 

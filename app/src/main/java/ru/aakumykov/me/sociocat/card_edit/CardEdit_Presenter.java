@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 
 import androidx.annotation.Nullable;
 
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -148,6 +149,15 @@ public class CardEdit_Presenter implements
         currentCard.setVideoCode(currentCard.getAudioCode());
         currentCard.removeAudioCode();
         view.convert2video();
+    }
+
+    @Override
+    public void processSelectedImage(@Nullable Intent data) {
+        Uri imageUri = MVPUtils.getImageUriFromIntent(view.getAppContext(), data);
+        if (null != imageUri) {
+            currentCard.setLocalImageURI(imageUri);
+            view.displayImage(imageUri.toString());
+        }
     }
 
     @Override

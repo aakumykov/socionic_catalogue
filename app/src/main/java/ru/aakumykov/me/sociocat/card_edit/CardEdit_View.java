@@ -112,7 +112,7 @@ public class CardEdit_View extends BaseView implements
         super.onActivityResult(requestCode, resultCode, data);
         presenter.linkView(this);
 
-        /*switch (requestCode) {
+        switch (requestCode) {
 
             case Constants.CODE_LOGIN_REQUEST:
                 if (null != data)
@@ -125,7 +125,7 @@ public class CardEdit_View extends BaseView implements
 
                 try {
                     if (RESULT_OK == resultCode)
-                        presenter.processIncomingImage(data);
+                        presenter.processSelectedImage(data);
 
                 } catch (Exception e) {
                     showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
@@ -136,7 +136,7 @@ public class CardEdit_View extends BaseView implements
 
             default:
                 super.onActivityResult(requestCode, resultCode, data);
-        }*/
+        }
     }
 
     @Override
