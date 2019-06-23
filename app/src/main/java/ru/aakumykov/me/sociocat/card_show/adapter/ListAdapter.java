@@ -85,7 +85,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 return new Card_ViewHolder(itemView, cardPresenter);
 
             case ListItem.COMMENT_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.card_show_comment2, parent, false);
+                itemView = layoutInflater.inflate(R.layout.card_show_comment, parent, false);
                 return new Comment_ViewHolder(itemView, commentsPresenter);
 
             case ListItem.THROBBER_VIEW_TYPE:

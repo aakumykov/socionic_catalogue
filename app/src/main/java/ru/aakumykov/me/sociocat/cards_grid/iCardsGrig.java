@@ -2,6 +2,8 @@ package ru.aakumykov.me.sociocat.cards_grid;
 
 import android.view.View;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
@@ -19,6 +21,9 @@ public interface iCardsGrig {
 
     interface iPageView extends iBaseView {
         <T> void setTitle(T title);
+
+        void scrollToPosition(Integer position);
+
         void goShowCard(Card card);
         void goCreateCard(Constants.CardType cardType);
         void goEditCard(Card card, int position);
@@ -29,7 +34,8 @@ public interface iCardsGrig {
         void unlinkPresenter();
 
         void setList(List<iGridItem> inputList);
-        void appendList(List<iGridItem> inputList);
+        void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition);
+        void appendList(List<iGridItem> inputList, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition);
 
         iGridItem getItem(int position);
         int getItemPosition(iGridItem item);

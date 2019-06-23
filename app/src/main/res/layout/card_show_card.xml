@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:textColor="@color/quoteTextColor"
+        android:textIsSelectable="true"
         android:textSize="18sp"
         android:textStyle="italic"
         android:visibility="gone"
@@ -50,6 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:textColor="@color/defaultTextColor"
+        android:textIsSelectable="true"
         android:textSize="18sp"
         tools:text="Для загрузки доступны iso-образы (3.7 Гб, x86-64), бинарный репозиторий и исходные тексты пакетов. Дистрибутив распространяется в рамках лицензионного соглашения, которое накладывает ряд ограничений на пользователей, в частности, запрещены коммерческое использование, декомпиляция и дизассемблирование продукта." />
 

@@ -13,6 +13,8 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
+import ru.aakumykov.me.sociocat.cards_grid.view_stubs.CardsGrid_AdapterStub;
+import ru.aakumykov.me.sociocat.cards_grid.view_stubs.CardsGrid_ViewStub;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
@@ -36,17 +38,21 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private List<iGridItem> mList = new ArrayList<>();
+    private Integer openedItemPosition;
 
     @Override
     public void linkViews(iCardsGrig.iPageView pageView, iCardsGrig.iGridView gridView) {
         this.pageView = pageView;
         this.gridView = gridView;
+
+        gridView.restoreList(mList, openedItemPosition);
     }
 
     @Override
     public void unlinkViews() {
-        this.pageView = null;
-        this.gridView = null;
+        this.pageView = new CardsGrid_ViewStub();
+        this.gridView = new CardsGrid_AdapterStub();
     }
 
     @Override
@@ -72,6 +78,7 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
     @Override
     public void onCardClicked(int position) {
         Card card = (Card) gridView.getItem(position).getPayload();
+        this.openedItemPosition = position;
         pageView.goShowCard(card);
     }
 
@@ -162,22 +169,26 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
         cardsSingleton.loadList(startKey, null, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                List<iGridItem> gridItemsList = new ArrayList<>();
+
+                List<iGridItem> newItemsList = new ArrayList<>();
 
                 for (Card card : list) {
                     GridItem_Card cardItem = new GridItem_Card();
                     cardItem.setPayload(card);
-                    gridItemsList.add(cardItem);
+                    newItemsList.add(cardItem);
                 }
 
                 gridView.hideThrobber();
 
                 switch (loadMode) {
                     case REPLACE:
-                        gridView.setList(gridItemsList);
+                        mList.clear();
+                        mList.addAll(newItemsList);
+                        gridView.setList(mList);
                         break;
                     case APPEND:
-                        gridView.appendList(gridItemsList);
+                        mList.addAll(newItemsList);
+                        gridView.appendList(newItemsList, false, null);
                         break;
                     default:
                         // TODO: показывать ошибку? кидать исключение?

@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
-import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,20 +26,18 @@ import ru.aakumykov.me.sociocat.cards_grid.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         iCardsGrig.iGridView
 {
+    private final static String TAG = "CardsGrid_Adapter";
     private List<iGridItem> itemsList = new ArrayList<>();
     private iCardsGrig.iPresenter presenter;
-    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iCardsGrig.iPageView pageView;
 
-    private Drawable originalBackground;
+    public CardsGrid_Adapter(iCardsGrig.iPageView pageView) {
+        this.pageView = pageView;
+    }
 
 
     // Системные методы
@@ -54,7 +52,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         switch (viewType) {
 
             case iGridItem.LOAD_MORE_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_loadmore_item, parent, false);
+                itemView = layoutInflater.inflate(R.layout.cards_grid_loadmore_item, parent, false);
                 viewHolder = new LoadMore_ViewHolder(itemView, presenter);
 
                 layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
@@ -62,7 +60,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 break;
 
             case iGridItem.THROBBER_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_throbber_item, parent, false);
+                itemView = layoutInflater.inflate(R.layout.cards_grid_throbber_item, parent, false);
                 viewHolder = new Throbber_ViewHolder(itemView);
 
                 layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
@@ -70,22 +68,22 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 break;
 
             case iGridItem.TEXT_CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_text_card_item, parent, false);
+                itemView = layoutInflater.inflate(R.layout.cards_grid_text_card_item, parent, false);
                 viewHolder = new Card_ViewHolder(itemView, presenter);
                 break;
 
             case iGridItem.IMAGE_CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_image_card_item, parent, false);
+                itemView = layoutInflater.inflate(R.layout.cards_grid_image_card_item, parent, false);
                 viewHolder = new Card_ViewHolder(itemView, presenter);
                 break;
 
             case iGridItem.AUDIO_CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_audio_card_item, parent, false);
+                itemView = layoutInflater.inflate(R.layout.cards_grid_audio_card_item, parent, false);
                 viewHolder = new Card_ViewHolder(itemView, presenter);
                 break;
 
             case iGridItem.VIDEO_CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_video_card_item, parent, false);
+                itemView = layoutInflater.inflate(R.layout.cards_grid_video_card_item, parent, false);
                 viewHolder = new Card_ViewHolder(itemView, presenter);
                 break;
 
@@ -159,16 +157,24 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void setList(List<iGridItem> list) {
-        this.itemsList.clear();
-        appendList(list);
+//        Log.d(TAG, "setList(), list size: "+list.size()+", itemsList size: "+itemsList.size());
+        clearList();
+        appendList(list, false, null);
     }
 
     @Override
-    public void appendList(List<iGridItem> list) {
+    public void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition) {
+        clearList();
+        appendList(inputList, true, scrollToPosition);
+    }
+
+    @Override
+    public void appendList(List<iGridItem> list, boolean forceLoadMoreItem, @Nullable Integer positionToScroll) {
+        Log.d(TAG, "appendList(), list size: "+list.size()+", itemsList size: "+itemsList.size()+", forceLoadMoreItem: "+forceLoadMoreItem);
 
         Card lastCard = null;
 
-        if (list.size() > Config.DEFAULT_CARDS_LOAD_COUNT) {
+        if (list.size() > Config.DEFAULT_CARDS_LOAD_COUNT || forceLoadMoreItem && list.size() > 0) {
             int maxIndex = list.size() - 1;
             lastCard = (Card) list.get(maxIndex).getPayload();
             list.remove(maxIndex);
@@ -180,6 +186,9 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyItemRangeChanged(start, count);
 
         showLoadMoreItem(lastCard);
+
+        if (null != positionToScroll)
+            pageView.scrollToPosition(positionToScroll);
     }
 
     @Override
@@ -219,7 +228,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void showThrobber() {
         itemsList.add(new GridItem_Throbber());
-        int index = itemsList.size() - 1;
+        int index = getMaxIndex();
         notifyItemChanged(index);
     }
 
@@ -232,7 +241,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void hideThrobber() {
-        int index = itemsList.size() - 1;
+        int index = getMaxIndex();
         hideThrobber(index);
     }
 
@@ -284,24 +293,9 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             GridItem_LoadMore loadMoreItem = new GridItem_LoadMore();
             loadMoreItem.setPayload(card);
             itemsList.add(loadMoreItem);
-            notifyItemChanged(itemsList.size());
+            int index = getMaxIndex();
+            notifyItemChanged(index);
         }
-    }
-
-    private void fadeItem(int position) {
-        iGridItem fadedGridItem = itemsList.get(position);
-        fadedGridItem.setIsPressed(true);
-
-        itemsList.set(position, fadedGridItem); // TODO: нужно?
-        notifyItemChanged(position);
-    }
-
-    private void unfadeItem(int position) {
-        iGridItem fadedGridItem = itemsList.get(position);
-        fadedGridItem.setIsPressed(false);
-
-        itemsList.set(position, fadedGridItem); // TODO: нужно?
-        notifyItemChanged(position);
     }
 
     private void onPopupItemClicked(MenuItem menuItem, int position) {
@@ -319,8 +313,16 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 presenter.onShareCardClicked(gridItem);
                 break;
         }
-
-        unfadeItem(position);
     }
 
+    private int getMaxIndex() {
+        return itemsList.size() - 1;
+    }
+
+    private void clearList() {
+        int start = 0;
+        int count = itemsList.size();
+        itemsList.clear();
+        notifyItemRangeRemoved(start, count);
+    }
 }
