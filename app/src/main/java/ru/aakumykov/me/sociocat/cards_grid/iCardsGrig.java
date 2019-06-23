@@ -29,8 +29,8 @@ public interface iCardsGrig {
         void unlinkPresenter();
 
         void setList(List<iGridItem> inputList);
-        void appendList(List<iGridItem> inputList);
         void restoreList(List<iGridItem> inputList);
+        void appendList(List<iGridItem> inputList, boolean forceLoadMoreItem);
 
         iGridItem getItem(int position);
         int getItemPosition(iGridItem item);

@@ -13,6 +13,8 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
+import ru.aakumykov.me.sociocat.cards_grid.view_stubs.CardsGrid_AdapterStub;
+import ru.aakumykov.me.sociocat.cards_grid.view_stubs.CardsGrid_ViewStub;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
@@ -44,7 +46,8 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
         this.pageView = pageView;
         this.gridView = gridView;
 
-        gridView.setList(mList);
+        if (mList.size() > 0)
+            gridView.restoreList(mList);
     }
 
     @Override
@@ -185,7 +188,7 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
                         break;
                     case APPEND:
                         mList.addAll(newItemsList);
-                        gridView.appendList(newItemsList);
+                        gridView.appendList(newItemsList, false);
                         break;
                     default:
                         // TODO: показывать ошибку? кидать исключение?

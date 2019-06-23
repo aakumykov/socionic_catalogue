@@ -160,15 +160,21 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void setList(List<iGridItem> list) {
         this.itemsList.clear();
-        appendList(list);
+        appendList(list, false);
     }
 
     @Override
-    public void appendList(List<iGridItem> list) {
+    public void restoreList(List<iGridItem> inputList) {
+        this.itemsList.clear();
+        appendList(inputList, true);
+    }
+
+    @Override
+    public void appendList(List<iGridItem> list, boolean forceLoadMoreItem) {
 
         Card lastCard = null;
 
-        if (list.size() > Config.DEFAULT_CARDS_LOAD_COUNT) {
+        if (list.size() > Config.DEFAULT_CARDS_LOAD_COUNT || forceLoadMoreItem && list.size() > 0) {
             int maxIndex = list.size() - 1;
             lastCard = (Card) list.get(maxIndex).getPayload();
             list.remove(maxIndex);
@@ -180,11 +186,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyItemRangeChanged(start, count);
 
         showLoadMoreItem(lastCard);
-    }
-
-    @Override
-    public void restoreList(List<iGridItem> inputList) {
-
     }
 
     @Override

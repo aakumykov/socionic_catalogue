@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.cards_grid;
+package ru.aakumykov.me.sociocat.cards_grid.view_stubs;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.cards_grid.iCardsGrig;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardsGrid_ViewStub implements iCardsGrig.iPageView {

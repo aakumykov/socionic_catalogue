@@ -1,9 +1,10 @@
-package ru.aakumykov.me.sociocat.cards_grid;
+package ru.aakumykov.me.sociocat.cards_grid.view_stubs;
 
 import android.view.View;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.cards_grid.iCardsGrig;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 
@@ -25,7 +26,7 @@ public class CardsGrid_AdapterStub implements iCardsGrig.iGridView {
     }
 
     @Override
-    public void appendList(List<iGridItem> inputList) {
+    public void appendList(List<iGridItem> inputList, boolean forceLoadMoreItem) {
 
     }
 

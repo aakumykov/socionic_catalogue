@@ -92,7 +92,6 @@ public class CardsGrid_View extends BaseView implements
     protected void onStop() {
         super.onStop();
         unbindComponents();
-
     }
 
     @Override
