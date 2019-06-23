@@ -77,6 +77,9 @@ public class CardsSingleton implements
     @Override
     public void saveCard(final Card card, final SaveCardCallbacks callbacks) {
 
+        if (null == card.getKey())
+            card.setKey(createKey());
+
         Map<String,Object> updatePool = new HashMap<>();
 
         updatePool.put(Constants.CARDS_PATH+"/"+card.getKey(), card);
