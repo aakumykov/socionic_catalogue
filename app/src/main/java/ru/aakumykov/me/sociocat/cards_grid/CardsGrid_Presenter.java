@@ -46,7 +46,7 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
         this.pageView = pageView;
         this.gridView = gridView;
 
-        //gridView.restoreList(mList, openedItemPosition);
+        gridView.restoreList(mList, openedItemPosition);
     }
 
     @Override

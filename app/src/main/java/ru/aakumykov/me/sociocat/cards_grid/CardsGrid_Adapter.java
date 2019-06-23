@@ -189,7 +189,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.itemsList.addAll(inputList);
         notifyItemRangeChanged(start, count);
 
-        if (loadMoreExpected)
+        if (loadMoreExpected || forceLoadMoreItem)
             showLoadMoreItem();
 
         if (null != positionToScroll)
