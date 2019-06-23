@@ -295,22 +295,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    private void fadeItem(int position) {
-        iGridItem fadedGridItem = itemsList.get(position);
-        fadedGridItem.setIsPressed(true);
-
-        itemsList.set(position, fadedGridItem); // TODO: нужно?
-        notifyItemChanged(position);
-    }
-
-    private void unfadeItem(int position) {
-        iGridItem fadedGridItem = itemsList.get(position);
-        fadedGridItem.setIsPressed(false);
-
-        itemsList.set(position, fadedGridItem); // TODO: нужно?
-        notifyItemChanged(position);
-    }
-
     private void onPopupItemClicked(MenuItem menuItem, int position) {
 
         iGridItem gridItem = itemsList.get(position);
@@ -326,8 +310,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 presenter.onShareCardClicked(gridItem);
                 break;
         }
-
-        unfadeItem(position);
     }
 
     private int getMaxIndex() {
