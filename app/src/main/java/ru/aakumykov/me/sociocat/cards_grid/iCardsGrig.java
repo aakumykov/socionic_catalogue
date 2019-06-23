@@ -30,6 +30,7 @@ public interface iCardsGrig {
 
         void setList(List<iGridItem> inputList);
         void appendList(List<iGridItem> inputList);
+        void restoreList(List<iGridItem> inputList);
 
         iGridItem getItem(int position);
         int getItemPosition(iGridItem item);

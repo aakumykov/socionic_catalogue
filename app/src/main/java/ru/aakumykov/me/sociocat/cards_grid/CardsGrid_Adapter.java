@@ -183,6 +183,11 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
+    public void restoreList(List<iGridItem> inputList) {
+
+    }
+
+    @Override
     public iGridItem getItem(int position) {
         return itemsList.get(position);
     }

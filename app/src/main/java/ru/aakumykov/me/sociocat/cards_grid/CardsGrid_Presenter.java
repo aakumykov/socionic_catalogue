@@ -36,17 +36,21 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private List<iGridItem> mList = new ArrayList<>();
+
 
     @Override
     public void linkViews(iCardsGrig.iPageView pageView, iCardsGrig.iGridView gridView) {
         this.pageView = pageView;
         this.gridView = gridView;
+
+        gridView.setList(mList);
     }
 
     @Override
     public void unlinkViews() {
-        this.pageView = null;
-        this.gridView = null;
+        this.pageView = new CardsGrid_ViewStub();
+        this.gridView = new CardsGrid_AdapterStub();
     }
 
     @Override
@@ -162,22 +166,26 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
         cardsSingleton.loadList(startKey, null, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                List<iGridItem> gridItemsList = new ArrayList<>();
+
+                List<iGridItem> newItemsList = new ArrayList<>();
 
                 for (Card card : list) {
                     GridItem_Card cardItem = new GridItem_Card();
                     cardItem.setPayload(card);
-                    gridItemsList.add(cardItem);
+                    newItemsList.add(cardItem);
                 }
 
                 gridView.hideThrobber();
 
                 switch (loadMode) {
                     case REPLACE:
-                        gridView.setList(gridItemsList);
+                        mList.clear();
+                        mList.addAll(newItemsList);
+                        gridView.setList(mList);
                         break;
                     case APPEND:
-                        gridView.appendList(gridItemsList);
+                        mList.addAll(newItemsList);
+                        gridView.appendList(newItemsList);
                         break;
                     default:
                         // TODO: показывать ошибку? кидать исключение?
