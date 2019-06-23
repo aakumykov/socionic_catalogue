@@ -147,7 +147,6 @@ public class CardsGrid_View extends BaseView implements
         }
 
         Intent intent = new Intent(this, CardEdit_View.class);
-        intent.setAction(Constants.ACTION_CREATE);
         intent.putExtra(Constants.CARD, card);
 
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
@@ -158,7 +157,7 @@ public class CardsGrid_View extends BaseView implements
         this.positionInWork = position;
 
         Intent intent = new Intent(this, CardEdit_View.class);
-        intent.putExtra(Constants.CARD_KEY, card.getKey());
+        intent.putExtra(Constants.CARD, card);
         intent.setAction(Constants.ACTION_EDIT);
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }

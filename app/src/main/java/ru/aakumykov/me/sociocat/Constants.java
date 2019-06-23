@@ -77,18 +77,6 @@ public final class Constants {
     public final static int CODE_RESET_PASSWORD = 60;
     public final static int CODE_SHOW_CARD = 70;
 
-    // Длины
-    public final static int TAG_MIN_LENGTH = 2;
-    public final static int TAG_MAX_LENGTH = 40;
-    public final static int TITLE_MIN_LENGTH = 2;
-    public final static int TITLE_MAX_LENGTH = 70;
-    public final static int QUOTE_MIN_LENGTH = 5;
-    public final static int QUOTE_MAX_LENGTH = 10000;
-    public final static int DESCRIPTION_MIN_LENGTH = 2;
-    public final static int DESCRIPTION_MAX_LENGTH = 500;
-    public final static int DIALOG_MESSAGE_LENGTH = 40;
-    public final static int LONG_TAG_THRESHOLD = 500;
-
     public final static String TAG_NUMBER_BRACE = "*";
 
     public final static String MODE_SEND = "MODE_SEND";

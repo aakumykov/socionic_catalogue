@@ -30,7 +30,7 @@ public class Card extends ListItem implements
     private String quote;
     private String quoteSource;
     private String imageURL;
-    @Exclude private transient Uri localImageURI;
+    @Exclude private transient String localImageURI;
     @Exclude private transient String mimeType;
     private String fileName;
     private String videoCode;
@@ -90,6 +90,7 @@ public class Card extends ListItem implements
         dest.writeString(this.quote);
         dest.writeString(this.quoteSource);
         dest.writeString(this.imageURL);
+        dest.writeString(this.localImageURI);
         dest.writeString(this.fileName);
         dest.writeString(this.videoCode);
         dest.writeString(this.audioCode);
@@ -114,6 +115,7 @@ public class Card extends ListItem implements
         quote = in.readString();
         quoteSource = in.readString();
         imageURL = in.readString();
+        localImageURI = in.readString();
         fileName = in.readString();
         videoCode = in.readString();
         audioCode = in.readString();
@@ -329,13 +331,13 @@ public class Card extends ListItem implements
         return null != this.localImageURI;
     }
     @Exclude public void setLocalImageURI(Uri uri) {
-        this.localImageURI = uri;
+        this.localImageURI = uri.toString();
     }
     @Exclude public void setLocalImageURI(String uri) {
-        this.localImageURI = Uri.parse(uri);
+        this.localImageURI = uri;
     }
     @Exclude public Uri getLocalImageURI() {
-        return this.localImageURI;
+        return (null == this.localImageURI) ? null : Uri.parse(this.localImageURI);
     }
     @Exclude public void clearLocalImageURI() {
         this.localImageURI = null;

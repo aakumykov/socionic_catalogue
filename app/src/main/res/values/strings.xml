@@ -442,4 +442,5 @@
     <string name="CARDS_GRID_card_edit_cancelled">Редактирование отменено</string>
     <string name="CARDS_GRID_data_error">Ошибка данных</string>
     <string name="ERROR_deleting_card">Ошибка удаления карточки</string>
+    <string name="EXTERNAL_DATA_RECIEVER_unsupported_input_data">Неподдерживаемый тип данных</string>
 </resources>

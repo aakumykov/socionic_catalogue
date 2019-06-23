@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.card_show.view_holders;
 
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,9 +17,6 @@ import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
 import ru.aakumykov.me.sociocat.models.Comment;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.FileInfo;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.iMVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Comment_ViewHolder  extends Base_ViewHolder implements

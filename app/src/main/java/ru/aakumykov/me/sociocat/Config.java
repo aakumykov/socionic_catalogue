@@ -8,6 +8,18 @@ public final class Config {
 
     public final static String YOUTUBE_API_KEY = "AIzaSyDmoNN5aMSvJflpt6bjQdTWfPc7CHtz3i4";
 
+    // Длины
+    public final static int TAG_MIN_LENGTH = 2;
+    public final static int TAG_MAX_LENGTH = 40;
+    public final static int TITLE_MIN_LENGTH = 2;
+    public final static int TITLE_MAX_LENGTH = 70;
+    public final static int QUOTE_MIN_LENGTH = 5;
+    public final static int QUOTE_MAX_LENGTH = 10000;
+    public final static int DESCRIPTION_MIN_LENGTH = 2;
+    public final static int DESCRIPTION_MAX_LENGTH = 500;
+    public final static int DIALOG_MESSAGE_LENGTH = 40;
+    public final static int LONG_TAG_THRESHOLD = 500;
+
     public static final int AVATAR_MAX_WIDTH = 256;
     public static final int AVATAR_MAX_HEIGHT = 455;
 

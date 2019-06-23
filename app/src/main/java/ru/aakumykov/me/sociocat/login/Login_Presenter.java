@@ -24,6 +24,7 @@ public class Login_Presenter implements
     private iLogin.View view;
 
     private String mIntentAction;
+    private Intent mTransitIntent;
     private Bundle mTransitArguments;
 
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
@@ -51,12 +52,12 @@ public class Login_Presenter implements
         }
 
         mIntentAction = intent.getAction() + "";
-        //this.arguments = intent.getParcelableExtra(Intent.EXTRA_INTENT);
-//        Intent argumentsIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
-        //Bundle args1 = intent.getBundleExtra(Constants.TRANSIT_ARGUMENTS);
-        //Bundle args2 = intent.getParcelableExtra(Constants.TRANSIT_ARGUMENTS);
 
-        mTransitArguments = intent.getBundleExtra(Constants.TRANSIT_ARGUMENTS);
+        if (intent.hasExtra(Intent.EXTRA_INTENT))
+            mTransitIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
+
+        if (intent.hasExtra(Constants.TRANSIT_ARGUMENTS))
+            mTransitArguments = intent.getBundleExtra(Constants.TRANSIT_ARGUMENTS);
 
         if (mIntentAction.equals(Constants.ACTION_TRY_NEW_PASSWORD)) {
             view.showToast(R.string.LOGIN_try_new_password);
@@ -96,7 +97,7 @@ public class Login_Presenter implements
     @Override
     public void cancelLogin() {
         firebaseAuth.signOut();
-        view.finishLogin(true, mTransitArguments);
+        view.finishLogin(true, mTransitIntent, mTransitArguments);
     }
 
 
@@ -107,12 +108,13 @@ public class Login_Presenter implements
             return;
         }
 
-        if (mIntentAction.equals(Constants.ACTION_CREATE)) {
-            view.goCreateCard();
-            return;
-        }
+//        // Это вообще не его дело!
+//        if (mIntentAction.equals(Constants.ACTION_CREATE)) {
+//            view.goCreateCard();
+//            return;
+//        }
 
-        view.finishLogin(false, mTransitArguments);
+        view.finishLogin(false, mTransitIntent, mTransitArguments);
     }
 
     private void showLoginError(String msg) {

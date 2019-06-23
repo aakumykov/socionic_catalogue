@@ -105,21 +105,18 @@ public class CardEdit_View extends BaseView implements
         tagsContainer.setOnTagClickListener(this);
 
         setupTagWatcher();
-
-//        presenter.linkViews(this);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         presenter.linkView(this);
 
         switch (requestCode) {
 
             case Constants.CODE_LOGIN_REQUEST:
-                if (null != data) {
-                    Intent originalIntent = data.getParcelableExtra(Intent.EXTRA_INTENT);
-                    startEditWork(originalIntent);
-                }
+                if (null != data)
+                    startEditWork(data);
                 break;
 
             case Constants.CODE_SELECT_IMAGE:
@@ -128,7 +125,7 @@ public class CardEdit_View extends BaseView implements
 
                 try {
                     if (RESULT_OK == resultCode)
-                        presenter.processIncomingImage(data);
+                        presenter.processSelectedImage(data);
 
                 } catch (Exception e) {
                     showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
@@ -745,7 +742,8 @@ public class CardEdit_View extends BaseView implements
                 }
             });
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
             e.printStackTrace();
         }

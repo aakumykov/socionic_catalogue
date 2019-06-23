@@ -1,20 +1,25 @@
 package ru.aakumykov.me.sociocat.external_data_receiver;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import android.view.Menu;
 
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class ExternalDataReceiver extends BaseView {
 
     private boolean mWorkDone = false;
+
 
     // Системные методы
     @Override
@@ -58,11 +63,13 @@ public class ExternalDataReceiver extends BaseView {
         finishIfDone();
     }
 
-    @Override public void onUserLogin() {
+    @Override
+    public void onUserLogin() {
 
     }
 
-    @Override public void onUserLogout() {
+    @Override
+    public void onUserLogout() {
 
     }
 
@@ -71,15 +78,45 @@ public class ExternalDataReceiver extends BaseView {
         return true;
     }
 
+
     // Внутренние методы
     private void processInputIntent(@Nullable Intent inputIntent) throws Exception {
+
         if (null == inputIntent)
             throw new IllegalArgumentException("Input intent is NULL");
 
-        Intent outputIntent = new Intent(this, CardEdit_View.class);
-        outputIntent.setAction(Intent.ACTION_SEND);
-        outputIntent.putExtra(Intent.EXTRA_INTENT, inputIntent);
-        startActivityForResult(outputIntent, Constants.CODE_CREATE_CARD);
+        Card card = new Card();
+
+        // Определяю картинку
+        Uri imageUri = MVPUtils.getImageUriFromIntent(this, inputIntent);
+        if (null != imageUri) {
+            card.setType(Constants.IMAGE_CARD);
+            card.setLocalImageURI(imageUri);
+            goToEditCard(card);
+            return;
+        }
+
+        // Определаю видео или текст
+        String text = MVPUtils.getTextFromIntent(inputIntent);
+
+        if (null == text) {
+            showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_unsupported_input_data, "There is no text content in Intent");
+            return;
+        }
+
+        String videoCode = MVPUtils.extractYoutubeVideoCode(text);
+
+        if (null != videoCode) {
+            card.setType(Constants.VIDEO_CARD);
+            card.setVideoCode(videoCode);
+        }
+        else {
+            card.setType(Constants.TEXT_CARD);
+            card.setQuote(text);
+            card.setTitle(MyUtils.cutToLength(text, Config.TITLE_MAX_LENGTH));
+        }
+
+        goToEditCard(card);
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
@@ -102,5 +139,11 @@ public class ExternalDataReceiver extends BaseView {
     private void finishIfDone() {
         if (mWorkDone)
             finish();
+    }
+
+    private void goToEditCard(Card card) {
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.putExtra(Constants.CARD, card);
+        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
     }
 }
