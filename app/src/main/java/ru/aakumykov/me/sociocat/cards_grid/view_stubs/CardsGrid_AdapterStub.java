@@ -2,6 +2,8 @@ package ru.aakumykov.me.sociocat.cards_grid.view_stubs;
 
 import android.view.View;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.cards_grid.iCardsGrig;
@@ -26,12 +28,12 @@ public class CardsGrid_AdapterStub implements iCardsGrig.iGridView {
     }
 
     @Override
-    public void appendList(List<iGridItem> inputList, boolean forceLoadMoreItem) {
+    public void appendList(List<iGridItem> inputList, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition) {
 
     }
 
     @Override
-    public void restoreList(List<iGridItem> inputList) {
+    public void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition) {
 
     }
 

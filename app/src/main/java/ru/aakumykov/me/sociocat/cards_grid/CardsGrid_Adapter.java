@@ -33,6 +33,11 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private final static String TAG = "CardsGrid_Adapter";
     private List<iGridItem> itemsList = new ArrayList<>();
     private iCardsGrig.iPresenter presenter;
+    private iCardsGrig.iPageView pageView;
+
+    public CardsGrid_Adapter(iCardsGrig.iPageView pageView) {
+        this.pageView = pageView;
+    }
 
 
     // Системные методы
@@ -154,17 +159,17 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void setList(List<iGridItem> list) {
 //        Log.d(TAG, "setList(), list size: "+list.size()+", itemsList size: "+itemsList.size());
         clearList();
-        appendList(list, false);
+        appendList(list, false, null);
     }
 
     @Override
-    public void restoreList(List<iGridItem> inputList) {
+    public void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition) {
         clearList();
-        appendList(inputList, true);
+        appendList(inputList, true, scrollToPosition);
     }
 
     @Override
-    public void appendList(List<iGridItem> list, boolean forceLoadMoreItem) {
+    public void appendList(List<iGridItem> list, boolean forceLoadMoreItem, @Nullable Integer positionToScroll) {
         Log.d(TAG, "appendList(), list size: "+list.size()+", itemsList size: "+itemsList.size()+", forceLoadMoreItem: "+forceLoadMoreItem);
 
         Card lastCard = null;
@@ -181,6 +186,9 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyItemRangeChanged(start, count);
 
         showLoadMoreItem(lastCard);
+
+        if (null != positionToScroll)
+            pageView.scrollToPosition(positionToScroll);
     }
 
     @Override

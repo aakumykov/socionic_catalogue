@@ -119,6 +119,11 @@ public class CardsGrid_ViewStub implements iCardsGrig.iPageView {
     }
 
     @Override
+    public void scrollToPosition(Integer position) {
+
+    }
+
+    @Override
     public void goShowCard(Card card) {
 
     }

@@ -50,7 +50,7 @@ public class CardsGrid_View extends BaseView implements
         setPageTitle(R.string.CARDS_GRID_page_title);
 
         presenter = new CardsGrid_Presenter();
-        adapter = new CardsGrid_Adapter();
+        adapter = new CardsGrid_Adapter(this);
 
         int colsNum = MyUtils.isPortraitOrientation(this) ?
                 Config.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : Config.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
@@ -116,6 +116,11 @@ public class CardsGrid_View extends BaseView implements
 //            titleString = (String) title;
 //        }
 //        setPageTitle(titleString);
+    }
+
+    @Override
+    public void scrollToPosition(Integer position) {
+        recyclerView.scrollToPosition(position);
     }
 
     @Override

@@ -39,14 +39,14 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private List<iGridItem> mList = new ArrayList<>();
-
+    private Integer openedItemPosition;
 
     @Override
     public void linkViews(iCardsGrig.iPageView pageView, iCardsGrig.iGridView gridView) {
         this.pageView = pageView;
         this.gridView = gridView;
 
-        gridView.restoreList(mList);
+        gridView.restoreList(mList, openedItemPosition);
     }
 
     @Override
@@ -78,6 +78,7 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
     @Override
     public void onCardClicked(int position) {
         Card card = (Card) gridView.getItem(position).getPayload();
+        this.openedItemPosition = position;
         pageView.goShowCard(card);
     }
 
@@ -187,7 +188,7 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
                         break;
                     case APPEND:
                         mList.addAll(newItemsList);
-                        gridView.appendList(newItemsList, false);
+                        gridView.appendList(newItemsList, false, null);
                         break;
                     default:
                         // TODO: показывать ошибку? кидать исключение?
