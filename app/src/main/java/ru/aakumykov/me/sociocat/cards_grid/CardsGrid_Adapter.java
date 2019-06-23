@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,12 +35,9 @@ import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         iCardsGrig.iGridView
 {
+    private final static String TAG = "CardsGrid_Adapter";
     private List<iGridItem> itemsList = new ArrayList<>();
     private iCardsGrig.iPresenter presenter;
-    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-
-    private Drawable originalBackground;
 
 
     // Системные методы
@@ -159,18 +157,20 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void setList(List<iGridItem> list) {
-        this.itemsList.clear();
+//        Log.d(TAG, "setList(), list size: "+list.size()+", itemsList size: "+itemsList.size());
+        clearList();
         appendList(list, false);
     }
 
     @Override
     public void restoreList(List<iGridItem> inputList) {
-        this.itemsList.clear();
+        clearList();
         appendList(inputList, true);
     }
 
     @Override
     public void appendList(List<iGridItem> list, boolean forceLoadMoreItem) {
+        Log.d(TAG, "appendList(), list size: "+list.size()+", itemsList size: "+itemsList.size()+", forceLoadMoreItem: "+forceLoadMoreItem);
 
         Card lastCard = null;
 
@@ -225,7 +225,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void showThrobber() {
         itemsList.add(new GridItem_Throbber());
-        int index = itemsList.size() - 1;
+        int index = getMaxIndex();
         notifyItemChanged(index);
     }
 
@@ -238,7 +238,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void hideThrobber() {
-        int index = itemsList.size() - 1;
+        int index = getMaxIndex();
         hideThrobber(index);
     }
 
@@ -290,7 +290,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             GridItem_LoadMore loadMoreItem = new GridItem_LoadMore();
             loadMoreItem.setPayload(card);
             itemsList.add(loadMoreItem);
-            notifyItemChanged(itemsList.size());
+            int index = getMaxIndex();
+            notifyItemChanged(index);
         }
     }
 
@@ -329,4 +330,14 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         unfadeItem(position);
     }
 
+    private int getMaxIndex() {
+        return itemsList.size() - 1;
+    }
+
+    private void clearList() {
+        int start = 0;
+        int count = itemsList.size();
+        itemsList.clear();
+        notifyItemRangeRemoved(start, count);
+    }
 }
