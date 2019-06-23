@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -27,10 +26,6 @@ import ru.aakumykov.me.sociocat.cards_grid.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         iCardsGrig.iGridView
@@ -52,7 +47,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         switch (viewType) {
 
             case iGridItem.LOAD_MORE_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_loadmore_item, parent, false);
+                itemView = layoutInflater.inflate(R.layout.cards_grid_loadmore_item, parent, false);
                 viewHolder = new LoadMore_ViewHolder(itemView, presenter);
 
                 layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
@@ -60,7 +55,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 break;
 
             case iGridItem.THROBBER_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_throbber_item, parent, false);
+                itemView = layoutInflater.inflate(R.layout.cards_grid_throbber_item, parent, false);
                 viewHolder = new Throbber_ViewHolder(itemView);
 
                 layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
@@ -68,22 +63,22 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 break;
 
             case iGridItem.TEXT_CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_text_card_item, parent, false);
+                itemView = layoutInflater.inflate(R.layout.cards_grid_text_card_item, parent, false);
                 viewHolder = new Card_ViewHolder(itemView, presenter);
                 break;
 
             case iGridItem.IMAGE_CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_image_card_item, parent, false);
+                itemView = layoutInflater.inflate(R.layout.cards_grid_image_card_item, parent, false);
                 viewHolder = new Card_ViewHolder(itemView, presenter);
                 break;
 
             case iGridItem.AUDIO_CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_audio_card_item, parent, false);
+                itemView = layoutInflater.inflate(R.layout.cards_grid_audio_card_item, parent, false);
                 viewHolder = new Card_ViewHolder(itemView, presenter);
                 break;
 
             case iGridItem.VIDEO_CARD_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cg3_video_card_item, parent, false);
+                itemView = layoutInflater.inflate(R.layout.cards_grid_video_card_item, parent, false);
                 viewHolder = new Card_ViewHolder(itemView, presenter);
                 break;
 
