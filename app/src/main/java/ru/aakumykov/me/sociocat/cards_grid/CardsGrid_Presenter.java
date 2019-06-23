@@ -46,7 +46,7 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
         this.pageView = pageView;
         this.gridView = gridView;
 
-        gridView.restoreList(mList, openedItemPosition);
+        //gridView.restoreList(mList, openedItemPosition);
     }
 
     @Override
@@ -65,8 +65,11 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
     }
 
     @Override
-    public void onLoadMoreClicked(int position, String startKey) {
+    public void onLoadMoreClicked(int position) {
         gridView.hideLoadMoreItem(position);
+
+        Card lastCardInView = (Card) gridView.getLastContentItem().getPayload();
+        String startKey = lastCardInView.getKey();
 
         loadCards(
                 LoadMode.APPEND,

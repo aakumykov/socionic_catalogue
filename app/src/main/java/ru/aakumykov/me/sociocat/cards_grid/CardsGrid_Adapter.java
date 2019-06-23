@@ -169,23 +169,28 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void appendList(List<iGridItem> list, boolean forceLoadMoreItem, @Nullable Integer positionToScroll) {
-        Log.d(TAG, "appendList(), list size: "+list.size()+", itemsList size: "+itemsList.size()+", forceLoadMoreItem: "+forceLoadMoreItem);
+    public void appendList(List<iGridItem> inputList, boolean forceLoadMoreItem, @Nullable Integer positionToScroll) {
+        //Log.d(TAG, "appendList(), list size: "+list.size()+", itemsList size: "+itemsList.size()+", forceLoadMoreItem: "+forceLoadMoreItem);
 
-        Card lastCard = null;
+        boolean loadMoreExpected = inputList.size() == Config.DEFAULT_CARDS_LOAD_COUNT;
 
-        if (list.size() > Config.DEFAULT_CARDS_LOAD_COUNT || forceLoadMoreItem && list.size() > 0) {
-            int maxIndex = list.size() - 1;
-            lastCard = (Card) list.get(maxIndex).getPayload();
-            list.remove(maxIndex);
+        // Удаляю повтор карточки на стыке списков
+        iGridItem lastContentItem = getLastContentItem();
+        if (null != lastContentItem && inputList.size() > 0) {
+            Card lastExistingCard = (Card) lastContentItem.getPayload();
+            Card firstNewCard = (Card) inputList.get(0).getPayload();
+            if (lastExistingCard.getKey().equals(firstNewCard.getKey()))
+                inputList.remove(0);
         }
 
+        // Добавляю новый список к старому
         int start = this.itemsList.size();
-        int count = list.size();
-        this.itemsList.addAll(list);
+        int count = inputList.size();
+        this.itemsList.addAll(inputList);
         notifyItemRangeChanged(start, count);
 
-        showLoadMoreItem(lastCard);
+        if (loadMoreExpected)
+            showLoadMoreItem();
 
         if (null != positionToScroll)
             pageView.scrollToPosition(positionToScroll);
@@ -194,6 +199,21 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public iGridItem getItem(int position) {
         return itemsList.get(position);
+    }
+
+    @Override
+    public iGridItem getLastContentItem() {
+        int index = getMaxIndex();
+
+        if (index < 0)
+            return null;
+
+        iGridItem gridItem = itemsList.get(index);
+
+        while (!(gridItem instanceof GridItem_Card))
+            gridItem = itemsList.get(--index);
+
+        return gridItem;
     }
 
     @Override
@@ -288,14 +308,11 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
     // Внутренние методы
-    private void showLoadMoreItem(@Nullable Card card) {
-        if (null != card) {
-            GridItem_LoadMore loadMoreItem = new GridItem_LoadMore();
-            loadMoreItem.setPayload(card);
-            itemsList.add(loadMoreItem);
-            int index = getMaxIndex();
-            notifyItemChanged(index);
-        }
+    private void showLoadMoreItem() {
+        GridItem_LoadMore loadMoreItem = new GridItem_LoadMore();
+        itemsList.add(loadMoreItem);
+        int index = getMaxIndex();
+        notifyItemChanged(index);
     }
 
     private void onPopupItemClicked(MenuItem menuItem, int position) {

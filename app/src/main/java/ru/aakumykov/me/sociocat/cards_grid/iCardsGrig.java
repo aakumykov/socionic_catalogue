@@ -38,6 +38,7 @@ public interface iCardsGrig {
         void appendList(List<iGridItem> inputList, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition);
 
         iGridItem getItem(int position);
+        iGridItem getLastContentItem();
         int getItemPosition(iGridItem item);
 
         void updateItem(int position, iGridItem newGridItem);
@@ -58,7 +59,7 @@ public interface iCardsGrig {
         void unlinkViews();
 
         void onWorkBegins();
-        void onLoadMoreClicked(int position, String startKey);
+        void onLoadMoreClicked(int position);
 
         void onCardClicked(int position);
         void onCardLongClicked(int position, View view, iGridViewHolder gridViewHolder);
