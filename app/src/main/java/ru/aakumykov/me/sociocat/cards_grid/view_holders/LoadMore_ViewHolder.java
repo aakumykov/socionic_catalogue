@@ -34,7 +34,7 @@ public class LoadMore_ViewHolder extends BaseViewHolder {
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                presenter.onLoadMoreClicked(position, card.getKey());
+                presenter.onLoadMoreClicked(position);
             }
         });
     }

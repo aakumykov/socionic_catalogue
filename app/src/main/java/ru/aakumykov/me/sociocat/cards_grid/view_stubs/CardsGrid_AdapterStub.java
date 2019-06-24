@@ -43,6 +43,11 @@ public class CardsGrid_AdapterStub implements iCardsGrig.iGridView {
     }
 
     @Override
+    public iGridItem getLastContentItem() {
+        return null;
+    }
+
+    @Override
     public int getItemPosition(iGridItem item) {
         return 0;
     }
