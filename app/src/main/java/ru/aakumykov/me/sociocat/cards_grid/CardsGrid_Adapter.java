@@ -165,7 +165,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition) {
         clearList();
-        appendList(inputList, true, scrollToPosition);
+        if (inputList.size() > 0)
+            appendList(inputList, true, scrollToPosition);
     }
 
     @Override
