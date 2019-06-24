@@ -192,8 +192,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (loadMoreExpected || forceLoadMoreItem)
             showLoadMoreItem();
 
-        if (null != positionToScroll)
-            pageView.scrollToPosition(positionToScroll);
+//        if (null != positionToScroll)
+//            pageView.scrollToPosition(positionToScroll);
     }
 
     @Override

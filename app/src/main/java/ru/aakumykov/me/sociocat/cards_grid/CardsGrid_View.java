@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.cards_grid;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -37,8 +38,13 @@ public class CardsGrid_View extends BaseView implements
 
     private CardsGrid_Adapter adapter;
     private iCardsGrig.iPresenter presenter;
+    private StaggeredGridLayoutManager layoutManager;
     private boolean firstRun = true;
     private int positionInWork = -1;
+    private Bundle listStateStorage;
+
+    private final static String KEY_LIST_STATE = "LIST_STATE";
+
 
     // Системные методы
     @Override
@@ -54,7 +60,7 @@ public class CardsGrid_View extends BaseView implements
 
         int colsNum = MyUtils.isPortraitOrientation(this) ?
                 Config.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : Config.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
+        layoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
@@ -86,11 +92,15 @@ public class CardsGrid_View extends BaseView implements
             firstRun = false;
             presenter.onWorkBegins();
         }
+        else {
+            restoreListState();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        saveListState();
         unbindComponents();
     }
 
@@ -258,6 +268,23 @@ public class CardsGrid_View extends BaseView implements
             }
         });
 
+    }
+
+    private void saveListState() {
+        listStateStorage = new Bundle();
+        Parcelable listState = layoutManager.onSaveInstanceState();
+        listStateStorage.putParcelable(KEY_LIST_STATE, listState);
+    }
+
+    private void restoreListState() {
+        if (null != listStateStorage) {
+            Parcelable listState = listStateStorage.getParcelable(KEY_LIST_STATE);
+            if (null != listState) {
+                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                if (null != layoutManager)
+                    layoutManager.onRestoreInstanceState(listState);
+            }
+        }
     }
 
     private void processCardEditResult(int resultCode, @Nullable Intent data) {
