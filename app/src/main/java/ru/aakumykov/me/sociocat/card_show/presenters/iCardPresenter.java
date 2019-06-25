@@ -23,4 +23,7 @@ public interface iCardPresenter {
 
     boolean canEditCard();
     boolean canDeleteCard();
+
+    void onEditClicked();
+    void onDeleteClicked();
 }

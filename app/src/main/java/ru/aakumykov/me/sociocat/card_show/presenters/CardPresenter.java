@@ -98,6 +98,22 @@ public class CardPresenter implements iCardPresenter {
         return canAlterCard();
     }
 
+    @Override
+    public void onEditClicked() {
+        if (canAlterCard()) {
+            pageView.goEditCard(currentCard);
+        } else {
+            pageView.showToast(R.string.CARD_SHOW_you_cannot_edit_this_card);
+        }
+    }
+
+    @Override
+    public void onDeleteClicked() {
+
+    }
+
+
+    // Внутренние методы
     private boolean canAlterCard() {
         User currentUser = usersSingleton.getCurrentUser();
         if (null == currentUser)

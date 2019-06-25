@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
@@ -93,8 +94,11 @@ public class CardShow_View extends BaseView implements
                 break;
             case Constants.CODE_LOGIN:
                 break;
+            case Constants.CODE_EDIT_CARD:
+                processCardEditionResult(resultCode, data);
+                break;
             default:
-                showErrorMsg(R.string.CARD_SHOW_data_error, "onActivityResult(), unknown request code: "+requestCode);
+                showErrorMsg(R.string.CARD_SHOW_data_error, "Unknown request code: "+requestCode);
                 break;
         }
     }
@@ -138,7 +142,17 @@ public class CardShow_View extends BaseView implements
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.actionEdit:
+                cardPresenter.onEditClicked();
+                break;
+            case R.id.actionDelete:
+                cardPresenter.onDeleteClicked();
+                break;
+            default:
+                super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
     @Override public void onUserLogin() {
@@ -154,6 +168,14 @@ public class CardShow_View extends BaseView implements
     public void refreshMenu() {
         invalidateOptionsMenu();
     }
+
+    @Override
+    public void goEditCard(Card card) {
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.putExtra(Constants.CARD, card);
+        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+    }
+
 
     // iPageView
     @Override
@@ -294,5 +316,23 @@ public class CardShow_View extends BaseView implements
 
         iTextItem repliedItem = transitArguments.getParcelable(Constants.REPLIED_ITEM);
         commentsPresenter.onReplyClicked(repliedItem);
+    }
+
+    private void processCardEditionResult(int resultCode, @Nullable Intent data) {
+        try {
+            if (RESULT_OK == resultCode) {
+                Card card = data.getParcelableExtra(Constants.CARD);
+                cardPresenter.onWorkBegins(card.getKey(), null);
+            }
+            else if (RESULT_CANCELED == resultCode) {
+                showToast(R.string.CARD_SHOW_edition_is_cancelled);
+            }
+            else {
+                showToast(R.string.unknown_rsult_code);
+            }
+        }
+        catch (Exception e) {
+            showErrorMsg(R.string.CARD_SHOW_data_error, e.getMessage());
+        }
     }
 }
