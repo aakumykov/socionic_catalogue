@@ -150,6 +150,11 @@ public class CardShow_View extends BaseView implements
     }
 
 
+    @Override
+    public void refreshMenu() {
+        invalidateOptionsMenu();
+    }
+
     // iPageView
     @Override
     public void showCommentForm(iTextItem item, boolean editMode) {

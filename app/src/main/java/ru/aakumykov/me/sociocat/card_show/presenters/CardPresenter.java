@@ -20,7 +20,7 @@ public class CardPresenter implements iCardPresenter {
     private iCommentsPresenter commentsPresenter;
     private iCardsSingleton cardSingleton = CardsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-    private Card currentCard;
+    private @Nullable Card currentCard;
 
 
     public CardPresenter(iCommentsPresenter commentsPresenter) {
@@ -55,6 +55,7 @@ public class CardPresenter implements iCardPresenter {
             @Override
             public void onCardLoadSuccess(Card card) {
                 currentCard = card;
+                pageView.refreshMenu();
 
                 cardView.hideCardThrobber();
                 cardView.displayCard(card);
@@ -99,6 +100,12 @@ public class CardPresenter implements iCardPresenter {
 
     private boolean canAlterCard() {
         User currentUser = usersSingleton.getCurrentUser();
+        if (null == currentUser)
+            return false;
+
+        if (null == currentCard)
+            return false;
+
         return currentCard.isCreatedBy(currentUser) || usersSingleton.currentUserIsAdmin();
     }
 }
