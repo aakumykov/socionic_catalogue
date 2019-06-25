@@ -187,6 +187,35 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     }
 
+    @Override
+    public void showCardDeleteDialog(Card card) {
+        MyDialogs.cardDeleteDialog(
+                view.getActivity(),
+                card.getTitle(),
+                new iMyDialogs.Delete() {
+                    @Override
+                    public void onCancelInDialog() {
+
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        cardPresenter.onDeleteConfirmed();
+                    }
+                }
+        );
+    }
+
 
     // iCommentsView
     @Override

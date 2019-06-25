@@ -14,4 +14,6 @@ public interface iCardView {
 
     void showCardError(int errorMsgId, String errorMsg);
     void hideCardError();
+
+    void showCardDeleteDialog(Card card);
 }

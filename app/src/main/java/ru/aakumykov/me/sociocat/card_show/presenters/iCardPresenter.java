@@ -25,7 +25,9 @@ public interface iCardPresenter {
     boolean canDeleteCard();
 
     void onEditClicked();
-    void onDeleteClicked();
-
     void onCardEdited(Card card);
+
+    void onDeleteClicked();
+    void onDeleteConfirmed();
+
 }

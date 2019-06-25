@@ -1,20 +1,23 @@
 package ru.aakumykov.me.sociocat.card_show.presenters;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
-import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class CardPresenter implements iCardPresenter {
 
+    private final static String TAG = "CardPresenter";
     private iCardView cardView;
     private iPageView pageView;
     private iCommentsPresenter commentsPresenter;
@@ -108,13 +111,32 @@ public class CardPresenter implements iCardPresenter {
     }
 
     @Override
-    public void onDeleteClicked() {
-
+    public void onCardEdited(Card card) {
+        cardView.displayCard(card);
     }
 
     @Override
-    public void onCardEdited(Card card) {
-        cardView.displayCard(card);
+    public void onDeleteClicked() {
+        cardView.showCardDeleteDialog(currentCard);
+    }
+
+    @Override
+    public void onDeleteConfirmed() {
+        pageView.showProgressMessage(R.string.deleting_card);
+
+        cardSingleton.deleteCard(currentCard, new iCardsSingleton.DeleteCallbacks() {
+            @Override
+            public void onCardDeleteSuccess(Card card) {
+                pageView.hideProgressMessage();
+                pageView.showToast(R.string.card_deleted);
+                pageView.closePage();
+            }
+
+            @Override
+            public void onCardDeleteError(String msg) {
+                pageView.showErrorMsg(R.string.CARD_SHOW_error_deleting_card, msg);
+            }
+        });
     }
 
 

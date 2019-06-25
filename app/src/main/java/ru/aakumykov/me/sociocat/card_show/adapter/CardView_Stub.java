@@ -19,6 +19,11 @@ public class CardView_Stub implements iCardView {
 
     }
 
+    @Override
+    public void showCardDeleteDialog(Card card) {
+
+    }
+
     @Override public void displayCard(Card card) {
 
     }

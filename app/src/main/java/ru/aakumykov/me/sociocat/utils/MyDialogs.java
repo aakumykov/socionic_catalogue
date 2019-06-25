@@ -72,16 +72,16 @@ public class MyDialogs {
     }
 
     // Удаление карточки
-    public static void cardDeleteDialog(Activity activity, String message, iMyDialogs.Delete callbacks) {
+    public static void cardDeleteDialog(Activity activity, String cardName, iMyDialogs.Delete callbacks) {
 
         String title = activity.getString(R.string.DIALOG_delete_card);
 
-        message = activity.getString(R.string.aquotes, message);
+        cardName = activity.getString(R.string.aquotes, cardName);
 
         basicDialog(
                 activity,
                 title,
-                message,
+                cardName,
                 R.string.yes,
                 R.string.no,
                 null,
