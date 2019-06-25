@@ -156,11 +156,9 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // iCardView
     @Override
-    public void displayCard(@Nullable Card card) {
-        if (null == card) {
-            pageView.showErrorMsg(R.string.CARD_SHOW_there_is_no_card, "Card is null");
-            return;
-        }
+    public void displayCard(@Nullable Card card) throws Exception {
+        if (null == card)
+            throw new IllegalArgumentException("Card is null");
 
         int cardPosition = 0;
 

@@ -61,9 +61,14 @@ public class CardPresenter implements iCardPresenter {
                 pageView.refreshMenu();
 
                 cardView.hideCardThrobber();
-                cardView.displayCard(card);
 
-                commentsPresenter.onWorkBegins(cardKey, commentKey);
+                try {
+                    cardView.displayCard(card);
+                    commentsPresenter.onWorkBegins(cardKey, commentKey);
+                } catch (Exception e) {
+                    pageView.showErrorMsg(R.string.CARD_SHOW_there_is_no_card, e.getMessage());
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -112,7 +117,13 @@ public class CardPresenter implements iCardPresenter {
 
     @Override
     public void onCardEdited(Card card) {
-        cardView.displayCard(card);
+        try {
+            cardView.displayCard(card);
+        }
+        catch (Exception e) {
+            pageView.showErrorMsg(R.string.CARD_SHOW_error_displaying_card, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override
