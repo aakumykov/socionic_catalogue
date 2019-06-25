@@ -266,7 +266,7 @@ public class CardShow_View extends BaseView implements
         commentsPresenter.bindCommentsView((iCommentsView) listAdapter);
 
         listAdapter.bindPresenters(cardPresenter, commentsPresenter);
-        listAdapter.bindView(this);
+        listAdapter.bindView(this, this);
     }
 
     private void unbindComponents() {

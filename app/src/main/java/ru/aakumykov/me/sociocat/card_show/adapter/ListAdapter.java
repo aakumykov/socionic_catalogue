@@ -16,6 +16,7 @@ import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View_Stub;
 import ru.aakumykov.me.sociocat.card_show.iCardShow_View;
+import ru.aakumykov.me.sociocat.card_show.iPageView;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Throbber_ViewHolder;
@@ -40,7 +41,8 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     private List<ListItem> itemsList;
     private iCardPresenter cardPresenter;
     private iCommentsPresenter commentsPresenter;
-    private iCardShow_View view;
+    private iPageView pageView;
+    private iCardShow_View cardShowView;
 
     public ListAdapter() {
         this.itemsList = new ArrayList<>();
@@ -98,7 +100,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
             default:
                 // TODO: попробовать возвлащать заглушку
-                throw new RuntimeException("Unknown view type: "+viewType);
+                throw new RuntimeException("Unknown cardShowView type: "+viewType);
         }
     }
 
@@ -142,18 +144,24 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         this.cardPresenter = null;
     }
 
-    @Override public void bindView(iCardShow_View view) {
-        this.view = view;
+    @Override public void bindView(iPageView pageView, iCardShow_View cardShowView) {
+        this.pageView = pageView;
+        this.cardShowView = cardShowView;
     }
 
     @Override public void unbindView() {
-        this.view = new CardShow_View_Stub();
+        this.cardShowView = new CardShow_View_Stub();
     }
 
 
     // iCardView
     @Override
-    public void displayCard(Card card) {
+    public void displayCard(@Nullable Card card) {
+        if (null == card) {
+            pageView.showErrorMsg(R.string.CARD_SHOW_there_is_no_card, "Card is null");
+            return;
+        }
+
         int cardPosition = 0;
 
         if (0 == itemsList.size())
@@ -190,7 +198,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void showCardDeleteDialog(Card card) {
         MyDialogs.cardDeleteDialog(
-                view.getActivity(),
+                cardShowView.getActivity(),
                 card.getTitle(),
                 new iMyDialogs.Delete() {
                     @Override
@@ -245,7 +253,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void showCommentsError(int errorMsgId, String consoleErrorMsg) {
-        MyUtils.showCustomToast(view.getAppContext(), errorMsgId);
+        MyUtils.showCustomToast(cardShowView.getAppContext(), errorMsgId);
         Log.e(TAG, consoleErrorMsg);
     }
 
@@ -257,10 +265,10 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void showDeleteDialog(Comment comment) {
         String text = MyUtils.cutToLength(comment.getText(), 20);
-        String msg = view.getString(R.string.CARD_SHOW_delete_comment_dialog_message, text);
+        String msg = cardShowView.getString(R.string.CARD_SHOW_delete_comment_dialog_message, text);
 
         MyDialogs.commentDeleteDialog(
-                view.getActivity(),
+                cardShowView.getActivity(),
                 msg,
                 new iMyDialogs.Delete() {
                     @Override
@@ -387,7 +395,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public void scrollToComment(String commentKey) {
         Comment comment = getComment(commentKey);
         if (null != comment)
-            view.scrollListToPosition(itemsList.indexOf(comment));
+            cardShowView.scrollListToPosition(itemsList.indexOf(comment));
     }
 
 
@@ -430,12 +438,12 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     private void removeLastItemIfType(ListItem.ItemType itemType) {
         int maxIndex = itemsList.size() - 1;
-
-        ListItem lastItem = itemsList.get(maxIndex);
-
-        if (null != lastItem && lastItem.is(itemType)) {
-            itemsList.remove(maxIndex);
-            notifyItemRemoved(maxIndex);
+        if (maxIndex >= 0) {
+            ListItem lastItem = itemsList.get(maxIndex);
+            if (null != lastItem && lastItem.is(itemType)) {
+                itemsList.remove(maxIndex);
+                notifyItemRemoved(maxIndex);
+            }
         }
     }
 

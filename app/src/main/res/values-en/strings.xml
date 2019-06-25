@@ -436,4 +436,5 @@
     <string name="ERROR_deleting_card">Error deleting card</string>
     <string name="EXTERNAL_DATA_RECIEVER_unsupported_input_data">Unsupported data type</string>
     <string name="CARD_SHOW_you_cannot_edit_this_card">You cannot edit this card</string>
+    <string name="CARD_SHOW_there_is_no_card">There is no card</string>
 </resources>
