@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.card_show;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -58,6 +59,7 @@ public class CardShow_View extends BaseView implements
     private iCommentForm commentForm;
     private boolean firstRun = true;
     private boolean mEditMode;
+
 
     // Системные методы
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +125,15 @@ public class CardShow_View extends BaseView implements
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+
+        if (cardPresenter.canEditCard())
+            menuInflater.inflate(R.menu.edit, menu);
+
+        if (cardPresenter.canDeleteCard())
+            menuInflater.inflate(R.menu.delete, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 

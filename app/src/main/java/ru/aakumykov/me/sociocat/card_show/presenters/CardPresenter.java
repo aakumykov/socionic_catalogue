@@ -6,16 +6,20 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
+import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class CardPresenter implements iCardPresenter {
 
     private iCardView cardView;
     private iPageView pageView;
     private iCommentsPresenter commentsPresenter;
-    private CardsSingleton cardSingleton = CardsSingleton.getInstance();
+    private iCardsSingleton cardSingleton = CardsSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private Card currentCard;
 
 
@@ -80,5 +84,21 @@ public class CardPresenter implements iCardPresenter {
     @Override
     public Card getCard() {
         return currentCard;
+    }
+
+
+    @Override
+    public boolean canEditCard() {
+        return canAlterCard();
+    }
+
+    @Override
+    public boolean canDeleteCard() {
+        return canAlterCard();
+    }
+
+    private boolean canAlterCard() {
+        User currentUser = usersSingleton.getCurrentUser();
+        return currentCard.isCreatedBy(currentUser) || usersSingleton.currentUserIsAdmin();
     }
 }

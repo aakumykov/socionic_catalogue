@@ -20,4 +20,7 @@ public interface iCardPresenter {
     void onReplyClicked();
 
     Card getCard();
+
+    boolean canEditCard();
+    boolean canDeleteCard();
 }
