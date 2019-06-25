@@ -26,4 +26,6 @@ public interface iCardPresenter {
 
     void onEditClicked();
     void onDeleteClicked();
+
+    void onCardEdited(Card card);
 }

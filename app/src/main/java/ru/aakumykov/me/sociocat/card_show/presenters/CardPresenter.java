@@ -112,6 +112,11 @@ public class CardPresenter implements iCardPresenter {
 
     }
 
+    @Override
+    public void onCardEdited(Card card) {
+        cardView.displayCard(card);
+    }
+
 
     // Внутренние методы
     private boolean canAlterCard() {

@@ -320,15 +320,19 @@ public class CardShow_View extends BaseView implements
 
     private void processCardEditionResult(int resultCode, @Nullable Intent data) {
         try {
-            if (RESULT_OK == resultCode) {
-                Card card = data.getParcelableExtra(Constants.CARD);
-                cardPresenter.onWorkBegins(card.getKey(), null);
-            }
-            else if (RESULT_CANCELED == resultCode) {
-                showToast(R.string.CARD_SHOW_edition_is_cancelled);
-            }
-            else {
-                showToast(R.string.unknown_rsult_code);
+            switch (resultCode) {
+                case RESULT_OK:
+                    Card card = data.getParcelableExtra(Constants.CARD);
+                    cardPresenter.onCardEdited(card);
+                    break;
+
+                case RESULT_CANCELED:
+                    showToast(R.string.CARD_SHOW_edition_is_cancelled);
+                    break;
+
+                default:
+                    showToast(R.string.unknown_rsult_code);
+                    break;
             }
         }
         catch (Exception e) {
