@@ -430,8 +430,10 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     private void removeLastItemIfType(ListItem.ItemType itemType) {
         int maxIndex = itemsList.size() - 1;
+
         ListItem lastItem = itemsList.get(maxIndex);
-        if (lastItem.is(itemType)) {
+
+        if (null != lastItem && lastItem.is(itemType)) {
             itemsList.remove(maxIndex);
             notifyItemRemoved(maxIndex);
         }
