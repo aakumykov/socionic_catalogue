@@ -75,6 +75,7 @@ public class CardsGrid_View extends BaseView implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         bindComponents();
 
         switch (requestCode) {
@@ -99,7 +100,7 @@ public class CardsGrid_View extends BaseView implements
             presenter.onWorkBegins();
         }
         else {
-            restoreListState();
+            //restoreListState();
         }
     }
 
