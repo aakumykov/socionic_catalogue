@@ -202,10 +202,12 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
                         mList.addAll(newItemsList);
                         gridView.setList(mList);
                         break;
+
                     case APPEND:
                         mList.addAll(newItemsList);
-                        gridView.appendList(newItemsList, false, null);
+                        gridView.appendList(newItemsList, insertPosition, false, null);
                         break;
+
                     default:
                         // TODO: показывать ошибку? кидать исключение?
                         Log.e(TAG, "Wrong LoadMode: "+loadMode);

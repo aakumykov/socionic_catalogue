@@ -35,7 +35,7 @@ public interface iCardsGrig {
 
         void setList(List<iGridItem> inputList);
         void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition);
-        void appendList(List<iGridItem> inputList, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition);
+        void appendList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition);
 
         iGridItem getGridItem(int position);
         iGridItem getLastContentItem();

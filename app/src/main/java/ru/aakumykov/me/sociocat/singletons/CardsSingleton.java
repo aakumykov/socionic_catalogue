@@ -188,8 +188,8 @@ public class CardsSingleton implements
 
         if (null != endKey)
             query = query.endAt(endKey);
-        else
-            query = query.limitToFirst(Config.DEFAULT_CARDS_LOAD_COUNT);
+
+        query = query.limitToFirst(Config.DEFAULT_CARDS_LOAD_COUNT);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             //        query.addValueEventListener(new ValueEventListener() {

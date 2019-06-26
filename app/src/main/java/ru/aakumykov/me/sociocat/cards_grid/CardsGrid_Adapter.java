@@ -16,7 +16,6 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_grid.items.GridItem;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_LoadMore;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Throbber;
@@ -38,6 +37,10 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public CardsGrid_Adapter(iCardsGrig.iPageView pageView) {
         this.pageView = pageView;
     }
+
+
+    // TODO: серьёзнейший баг: при удалении карточек в конце списка в какой-то момент удаляется не та карточка.
+    // TODO: добавил карточку при неполной загрузке, подгрузил, потом при открытии этой (?) новой падение.
 
 
     // Системные методы
@@ -159,18 +162,18 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void setList(List<iGridItem> list) {
 //        Log.d(TAG, "setList(), list size: "+list.size()+", itemsList size: "+itemsList.size());
         clearList();
-        appendList(list, false, null);
+        appendList(list, 0, false, null);
     }
 
     @Override
     public void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition) {
         clearList();
         if (inputList.size() > 0)
-            appendList(inputList, true, scrollToPosition);
+            appendList(inputList, 0, true, scrollToPosition);
     }
 
     @Override
-    public void appendList(List<iGridItem> inputList, boolean forceLoadMoreItem, @Nullable Integer positionToScroll) {
+    public void appendList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer positionToScroll) {
         //Log.d(TAG, "appendList(), list size: "+list.size()+", itemsList size: "+itemsList.size()+", forceLoadMoreItem: "+forceLoadMoreItem);
 
         boolean loadMoreExpected = inputList.size() == Config.DEFAULT_CARDS_LOAD_COUNT;
@@ -187,7 +190,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         // Добавляю новый список к старому
         int start = this.itemsList.size();
         int count = inputList.size();
-        this.itemsList.addAll(inputList);
+        this.itemsList.addAll(position, inputList);
         notifyItemRangeChanged(start, count);
 
         if (loadMoreExpected || forceLoadMoreItem)
