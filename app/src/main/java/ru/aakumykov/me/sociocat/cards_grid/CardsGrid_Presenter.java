@@ -60,27 +60,39 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
         loadCards(
                 LoadMode.REPLACE,
                 null,
+                null,
                 0
         );
     }
 
     @Override
     public void onLoadMoreClicked(int position) {
-        gridView.hideLoadMoreItem(position);
+        try {
+            Card lastCardBefore = (Card) gridView.getItemBeforeLoadmore(position).getPayload();
+            String startKey = lastCardBefore.getKey();
 
-        Card lastCardInView = (Card) gridView.getLastContentItem().getPayload();
-        String startKey = lastCardInView.getKey();
+            iGridItem itemAfter = gridView.getItemAfterLoadmore(position);
+            Card cardAfter = (null != itemAfter) ? (Card) itemAfter.getPayload() : null;
+            String endKey = (null != cardAfter) ? cardAfter.getKey() : null;
 
-        loadCards(
-                LoadMode.APPEND,
-                startKey,
-                position
-        );
+            gridView.hideLoadMoreItem(position);
+
+            loadCards(
+                    LoadMode.APPEND,
+                    startKey,
+                    endKey,
+                    position
+            );
+        }
+        catch (Exception e) {
+            pageView.showErrorMsg(R.string.CARDS_GRID_loadmore_error, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onCardClicked(int position) {
-        Card card = (Card) gridView.getItem(position).getPayload();
+        Card card = (Card) gridView.getGridItem(position).getPayload();
         this.openedItemPosition = position;
         pageView.goShowCard(card);
     }
@@ -98,7 +110,7 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
             return;
         }
 
-        Card card = (Card) gridView.getItem(position).getPayload();
+        Card card = (Card) gridView.getGridItem(position).getPayload();
 
         if (card.isCreatedBy(usersSingleton.getCurrentUser())) {
             gridView.showPopupMenu(iCardsGrig.MODE_OWNER, position, view, gridViewHolder);
@@ -164,12 +176,13 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
     private void loadCards(
             LoadMode loadMode,
             @Nullable String startKey,
+            @Nullable String endKey,
             int insertPosition
     )
     {
         gridView.showThrobber();
 
-        cardsSingleton.loadList(startKey, null, new iCardsSingleton.ListCallbacks() {
+        cardsSingleton.loadList(startKey, endKey, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
 

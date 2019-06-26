@@ -39,7 +39,7 @@ public class CardsGrid_AdapterStub implements iCardsGrig.iGridView {
     }
 
     @Override
-    public iGridItem getItem(int position) {
+    public iGridItem getGridItem(int position) {
         return null;
     }
 
@@ -51,6 +51,16 @@ public class CardsGrid_AdapterStub implements iCardsGrig.iGridView {
     @Override
     public int getItemPosition(iGridItem item) {
         return 0;
+    }
+
+    @Override
+    public iGridItem getItemBeforeLoadmore(int loadmorePosition) {
+        return null;
+    }
+
+    @Override
+    public iGridItem getItemAfterLoadmore(int loadmorePosition) {
+        return null;
     }
 
     @Override public void addItem(Card card) {

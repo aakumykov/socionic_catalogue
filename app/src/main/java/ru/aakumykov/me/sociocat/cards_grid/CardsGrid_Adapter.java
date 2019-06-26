@@ -16,6 +16,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.cards_grid.items.GridItem;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_LoadMore;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Throbber;
@@ -197,8 +198,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public iGridItem getItem(int position) {
-        return itemsList.get(position);
+    public iGridItem getGridItem(int position) {
+        return (position > 0 && position <= getMaxIndex()) ? itemsList.get(position) : null;
     }
 
     @Override
@@ -219,6 +220,26 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public int getItemPosition(iGridItem item) {
         return itemsList.indexOf(item);
+    }
+
+    @Override
+    public iGridItem getItemBeforeLoadmore(int loadmorePosition) {
+        iGridItem loadmoreItem = getGridItem(loadmorePosition);
+        // TODO: выбрасывать исключение бы...
+        if (loadmoreItem instanceof GridItem_LoadMore)
+            return getGridItem(loadmorePosition - 1);
+        else
+            return null;
+    }
+
+    @Override
+    public iGridItem getItemAfterLoadmore(int loadmorePosition) {
+        iGridItem loadmoreItem = getGridItem(loadmorePosition);
+        // TODO: выбрасывать исключение бы...
+        if (loadmoreItem instanceof GridItem_LoadMore)
+            return getGridItem(loadmorePosition + 1);
+        else
+            return null;
     }
 
     @Override
