@@ -438,4 +438,5 @@
     <string name="CARD_SHOW_you_cannot_edit_this_card">You cannot edit this card</string>
     <string name="CARD_SHOW_there_is_no_card">There is no card</string>
     <string name="CARDS_GRID_card_creation_cancelled">Card creation is cancelled</string>
+    <string name="CARDS_GRID_card_creation_error">Card creation error</string>
 </resources>

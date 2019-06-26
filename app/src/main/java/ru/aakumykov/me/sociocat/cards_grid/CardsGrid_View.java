@@ -14,8 +14,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -255,8 +253,8 @@ public class CardsGrid_View extends BaseView implements
                 switch (speedDialActionItem.getId()) {
 
                     case R.id.fab_quote:
-                        addTestItem();
-//                        presenter.onCreateCardClicked(Constants.CardType.TEXT_CARD);
+//                        addTestItem();
+                        presenter.onCreateCardClicked(Constants.CardType.TEXT_CARD);
                         return false;
 
                     case R.id.fab_image:
@@ -297,27 +295,26 @@ public class CardsGrid_View extends BaseView implements
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
+        try {
 
-        switch (resultCode) {
-            case RESULT_OK:
-                if (null != data) {
+            switch (resultCode) {
+                case RESULT_OK:
                     Card card = data.getParcelableExtra(Constants.CARD);
-                    if (null != card)
-                        adapter.addItem(card);
-                    else
-                        showErrorMsg(R.string.CARDS_GRID_data_error, "Card from activity result is null.");
-                }
-                else {
-                    showErrorMsg(R.string.CARDS_GRID_data_error, "Intent from activity result is null.");
-                }
-                break;
+                    addTestItem(card);
+                    break;
 
-            case RESULT_CANCELED:
-                showToast(R.string.CARDS_GRID_card_creation_cancelled);
-                break;
+                case RESULT_CANCELED:
+                    showToast(R.string.CARDS_GRID_card_creation_cancelled);
+                    break;
 
-            default:
-                break;
+                default:
+                    throw new Exception("Unknown result code: "+resultCode);
+            }
+
+        }
+        catch (Exception e) {
+            showErrorMsg(R.string.CARDS_GRID_card_creation_error, e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -351,6 +348,15 @@ public class CardsGrid_View extends BaseView implements
         card.setTitle(num+"_карточка");
         card.setQuote(num+" цитата");
         card.setDescription(num+" описание");
+
+        iGridItem gridItem = new GridItem_Card();
+        gridItem.setPayload(card);
+
+        adapter.addItem(gridItem);
+    }
+
+    private void addTestItem(Card card) {
+        int num = new Random().nextInt();
 
         iGridItem gridItem = new GridItem_Card();
         gridItem.setPayload(card);

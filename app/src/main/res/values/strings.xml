@@ -446,4 +446,5 @@
     <string name="CARD_SHOW_you_cannot_edit_this_card">Вы не можете редактировать эту карточку</string>
     <string name="CARD_SHOW_there_is_no_card">Карточка отсутствует</string>
     <string name="CARDS_GRID_card_creation_cancelled">Создание карточки отменено</string>
+    <string name="CARDS_GRID_card_creation_error">Ошибка создания карточки</string>
 </resources>
