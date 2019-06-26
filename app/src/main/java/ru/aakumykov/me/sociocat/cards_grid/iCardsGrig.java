@@ -41,6 +41,7 @@ public interface iCardsGrig {
         iGridItem getLastContentItem();
         int getItemPosition(iGridItem item);
 
+        void addItem(Card card);
         void updateItem(int position, iGridItem newGridItem);
         void removeItem(iGridItem gridItem);
 

@@ -9,6 +9,7 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.cards_grid.iCardsGrig;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
+import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardsGrid_AdapterStub implements iCardsGrig.iGridView {
 
@@ -50,6 +51,10 @@ public class CardsGrid_AdapterStub implements iCardsGrig.iGridView {
     @Override
     public int getItemPosition(iGridItem item) {
         return 0;
+    }
+
+    @Override public void addItem(Card card) {
+
     }
 
     @Override

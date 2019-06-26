@@ -76,6 +76,10 @@ public class CardsGrid_View extends BaseView implements
         bindComponents();
 
         switch (requestCode) {
+            case Constants.CODE_CREATE_CARD:
+                processCardCreationResult(resultCode, data);
+                break;
+
             case Constants.CODE_EDIT_CARD:
                 processCardEditResult(resultCode, data);
                 break;
@@ -284,6 +288,30 @@ public class CardsGrid_View extends BaseView implements
                 if (null != layoutManager)
                     layoutManager.onRestoreInstanceState(listState);
             }
+        }
+    }
+
+    private void processCardCreationResult(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                if (null != data) {
+                    Card card = data.getParcelableExtra(Constants.CARD);
+                    if (null != card)
+                        adapter.addItem(card);
+                    else
+                        showErrorMsg(R.string.CARDS_GRID_data_error, "Card from activity result is null.");
+                }
+                else {
+                    showErrorMsg(R.string.CARDS_GRID_data_error, "Intent from activity result is null.");
+                }
+                break;
+
+            case RESULT_CANCELED:
+                showToast(R.string.CARDS_GRID_card_creation_cancelled);
+                break;
+
+            default:
+                break;
         }
     }
 

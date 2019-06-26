@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -220,6 +219,14 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public int getItemPosition(iGridItem item) {
         return itemsList.indexOf(item);
+    }
+
+    @Override
+    public void addItem(Card card) {
+        GridItem_Card cardItem = new GridItem_Card();
+        cardItem.setPayload(card);
+        itemsList.add(cardItem);
+        notifyItemChanged(getMaxIndex());
     }
 
     @Override
