@@ -14,6 +14,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
@@ -251,7 +255,8 @@ public class CardsGrid_View extends BaseView implements
                 switch (speedDialActionItem.getId()) {
 
                     case R.id.fab_quote:
-                        presenter.onCreateCardClicked(Constants.CardType.TEXT_CARD);
+                        addTestItem();
+//                        presenter.onCreateCardClicked(Constants.CardType.TEXT_CARD);
                         return false;
 
                     case R.id.fab_image:
@@ -292,6 +297,7 @@ public class CardsGrid_View extends BaseView implements
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
+
         switch (resultCode) {
             case RESULT_OK:
                 if (null != data) {
@@ -335,5 +341,20 @@ public class CardsGrid_View extends BaseView implements
         else {
             Log.w(TAG, "Unknown result code: "+resultCode);
         }
+    }
+
+    private void addTestItem() {
+        int num = new Random().nextInt();
+
+        Card card = new Card();
+        card.setType(Constants.TEXT_CARD);
+        card.setTitle(num+"_карточка");
+        card.setQuote(num+" цитата");
+        card.setDescription(num+" описание");
+
+        iGridItem gridItem = new GridItem_Card();
+        gridItem.setPayload(card);
+
+        adapter.addItem(gridItem);
     }
 }

@@ -57,6 +57,10 @@ public class CardsGrid_AdapterStub implements iCardsGrig.iGridView {
 
     }
 
+    @Override public void addItem(iGridItem gridItem) {
+
+    }
+
     @Override
     public void updateItem(int position, iGridItem newGridItem) {
 

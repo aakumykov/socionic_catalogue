@@ -229,6 +229,11 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyItemChanged(getMaxIndex());
     }
 
+    @Override public void addItem(iGridItem gridItem) {
+        itemsList.add(gridItem);
+        notifyItemChanged(getMaxIndex());
+    }
+
     @Override
     public void updateItem(int position, iGridItem newGridItem) {
         if (position > 0) {
