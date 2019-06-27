@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Config;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_LoadMore;
@@ -33,6 +34,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<iGridItem> itemsList = new ArrayList<>();
     private iCardsGrig.iPresenter presenter;
     private iCardsGrig.iPageView pageView;
+
+    private int fakeIndex = 0;
 
     public CardsGrid_Adapter(iCardsGrig.iPageView pageView) {
         this.pageView = pageView;
@@ -160,36 +163,19 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void setList(List<iGridItem> list) {
-//        Log.d(TAG, "setList(), list size: "+list.size()+", itemsList size: "+itemsList.size());
         clearList();
         addList(list, 0, false, null);
     }
 
     @Override
     public void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer positionToScroll) {
-        //Log.d(TAG, "appendList(), list size: "+list.size()+", itemsList size: "+itemsList.size()+", forceLoadMoreItem: "+forceLoadMoreItem);
 
-        boolean loadMoreExpected = inputList.size() == Config.DEFAULT_CARDS_LOAD_COUNT;
-        if (loadMoreExpected || forceLoadMoreItem)
-            showLoadMoreItem();
+        itemsList.addAll(position, inputList);
 
-        // Удаляю повтор карточки на стыке списков
-        iGridItem lastContentItem = getLastContentItem(position);
-        if (null != lastContentItem && inputList.size() > 0) {
-            Card lastExistingCard = (Card) lastContentItem.getPayload();
-            Card firstNewCard = (Card) inputList.get(0).getPayload();
-            if (lastExistingCard.getKey().equals(firstNewCard.getKey()))
-                inputList.remove(0);
-        }
-
-        // Добавляю новый список к старому
-        int start = this.itemsList.size();
         int count = inputList.size();
-        this.itemsList.addAll(position, inputList);
-        notifyItemRangeChanged(start, count);
+        notifyItemRangeChanged(position, count);
 
-//        if (null != positionToScroll)
-//            pageView.scrollToPosition(positionToScroll);
+        showLoadMoreItem(position + count);
     }
 
     @Override
@@ -330,11 +316,10 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
     // Внутренние методы
-    private void showLoadMoreItem() {
+    private void showLoadMoreItem(int position) {
         GridItem_LoadMore loadMoreItem = new GridItem_LoadMore();
-        itemsList.add(loadMoreItem);
-        int index = getMaxIndex();
-        notifyItemChanged(index);
+        itemsList.add(position, loadMoreItem);
+        notifyItemChanged(position);
     }
 
     private void onPopupItemClicked(MenuItem menuItem, int position) {

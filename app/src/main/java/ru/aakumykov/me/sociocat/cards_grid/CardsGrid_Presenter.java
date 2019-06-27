@@ -38,8 +38,7 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-    private List<iGridItem> mList = new ArrayList<>();
-    private Integer openedItemPosition;
+//    private Integer openedItemPosition;
 
     @Override
     public void linkViews(iCardsGrig.iPageView pageView, iCardsGrig.iGridView gridView) {
@@ -93,7 +92,7 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
     @Override
     public void onCardClicked(int position) {
         Card card = (Card) gridView.getGridItem(position).getPayload();
-        this.openedItemPosition = position;
+//        this.openedItemPosition = position;
         pageView.goShowCard(card);
     }
 
@@ -198,13 +197,13 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
 
                 switch (loadMode) {
                     case REPLACE:
-                        mList.clear();
-                        mList.addAll(newItemsList);
-                        gridView.setList(mList);
+//                        mList.clear();
+//                        mList.addAll(newItemsList);
+                        gridView.setList(newItemsList);
                         break;
 
                     case APPEND:
-                        mList.addAll(newItemsList);
+//                        mList.addAll(newItemsList);
                         gridView.addList(newItemsList, insertPosition, false, null);
                         break;
 
