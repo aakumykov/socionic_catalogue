@@ -26,16 +26,16 @@ import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
-        iCardsGrig.iGridView
+        iCardsGrid.iGridView
 {
     private final static String TAG = "CardsGrid_Adapter";
     private List<iGridItem> itemsList = new ArrayList<>();
-    private iCardsGrig.iPresenter presenter;
-    private iCardsGrig.iPageView pageView;
+    private iCardsGrid.iPresenter presenter;
+    private iCardsGrid.iPageView pageView;
 
     private int fakeIndex = 0;
 
-    public CardsGrid_Adapter(iCardsGrig.iPageView pageView) {
+    public CardsGrid_Adapter(iCardsGrid.iPageView pageView) {
         this.pageView = pageView;
     }
 
@@ -150,7 +150,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     // iGridView
     @Override
-    public void linkPresenter(iCardsGrig.iPresenter presenter) {
+    public void linkPresenter(iCardsGrid.iPresenter presenter) {
         this.presenter = presenter;
     }
 

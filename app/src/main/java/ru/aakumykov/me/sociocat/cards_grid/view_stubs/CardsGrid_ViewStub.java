@@ -8,10 +8,10 @@ import android.content.SharedPreferences;
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.cards_grid.iCardsGrig;
+import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class CardsGrid_ViewStub implements iCardsGrig.iPageView {
+public class CardsGrid_ViewStub implements iCardsGrid.iPageView {
 
     @Override
     public Context getAppContext() {

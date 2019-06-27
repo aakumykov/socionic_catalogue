@@ -12,7 +12,7 @@ import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public interface iCardsGrig {
+public interface iCardsGrid {
 
     int MODE_ADMIN = 100;
     int MODE_OWNER = 20;

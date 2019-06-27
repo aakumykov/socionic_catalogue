@@ -30,7 +30,7 @@ import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsGrid_View extends BaseView implements
-        iCardsGrig.iPageView
+        iCardsGrid.iPageView
 {
     private static final String TAG = "CG3_View";
 
@@ -39,7 +39,7 @@ public class CardsGrid_View extends BaseView implements
     @BindView(R.id.speedDialView) SpeedDialView speedDialView;
 
     private CardsGrid_Adapter adapter;
-    private iCardsGrig.iPresenter presenter;
+    private iCardsGrid.iPresenter presenter;
     private StaggeredGridLayoutManager layoutManager;
     private boolean firstRun = true;
     private int positionInWork = -1;

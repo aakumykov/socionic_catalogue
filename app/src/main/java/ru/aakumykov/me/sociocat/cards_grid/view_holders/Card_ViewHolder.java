@@ -13,7 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_grid.iCardsGrig;
+import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
 
@@ -27,13 +27,13 @@ public class Card_ViewHolder extends BaseViewHolder implements
     @BindView(R.id.titleView) TextView mTitleView;
     @Nullable @BindView(R.id.imageContainer) ViewGroup mImageContainer;
 
-    private iCardsGrig.iPresenter mPresenter;
+    private iCardsGrid.iPresenter mPresenter;
     private int mPosition;
     private iGridItem mGridItem;
     private int mOriginalBackground = -1;
 
 
-    public Card_ViewHolder(@NonNull View itemView, iCardsGrig.iPresenter presenter) {
+    public Card_ViewHolder(@NonNull View itemView, iCardsGrid.iPresenter presenter) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         this.mPresenter = presenter;
