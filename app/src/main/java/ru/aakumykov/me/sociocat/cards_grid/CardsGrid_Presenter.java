@@ -113,7 +113,6 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
         if (card.isCreatedBy(usersSingleton.getCurrentUser())) {
             gridView.showPopupMenu(iCardsGrid.MODE_OWNER, position, view, gridViewHolder);
-            return;
         }
     }
 
