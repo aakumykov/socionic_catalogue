@@ -166,13 +166,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition) {
-        clearList();
-        if (inputList.size() > 0)
-            addList(inputList, 0, true, scrollToPosition);
-    }
-
-    @Override
     public void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer positionToScroll) {
         //Log.d(TAG, "appendList(), list size: "+list.size()+", itemsList size: "+itemsList.size()+", forceLoadMoreItem: "+forceLoadMoreItem);
 
@@ -198,6 +191,42 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 //        if (null != positionToScroll)
 //            pageView.scrollToPosition(positionToScroll);
+    }
+
+    @Override
+    public void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition) {
+        clearList();
+        if (inputList.size() > 0)
+            addList(inputList, 0, true, scrollToPosition);
+    }
+
+    @Override
+    public void addItem(Card card) {
+        GridItem_Card cardItem = new GridItem_Card();
+        cardItem.setPayload(card);
+        itemsList.add(cardItem);
+        notifyItemChanged(getMaxIndex());
+    }
+
+    @Override
+    public void addItem(iGridItem gridItem) {
+        itemsList.add(gridItem);
+        notifyItemChanged(getMaxIndex());
+    }
+
+    @Override
+    public void updateItem(int position, iGridItem newGridItem) {
+        if (position > 0) {
+            itemsList.set(position, newGridItem);
+            notifyItemChanged(position);
+        }
+    }
+
+    @Override
+    public void removeItem(iGridItem gridItem) {
+        int index = itemsList.indexOf(gridItem);
+        itemsList.remove(index);
+        notifyItemRemoved(index);
     }
 
     @Override
@@ -243,34 +272,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             return getGridItem(loadmorePosition + 1);
         else
             return null;
-    }
-
-    @Override
-    public void addItem(Card card) {
-        GridItem_Card cardItem = new GridItem_Card();
-        cardItem.setPayload(card);
-        itemsList.add(cardItem);
-        notifyItemChanged(getMaxIndex());
-    }
-
-    @Override public void addItem(iGridItem gridItem) {
-        itemsList.add(gridItem);
-        notifyItemChanged(getMaxIndex());
-    }
-
-    @Override
-    public void updateItem(int position, iGridItem newGridItem) {
-        if (position > 0) {
-            itemsList.set(position, newGridItem);
-            notifyItemChanged(position);
-        }
-    }
-
-    @Override
-    public void removeItem(iGridItem gridItem) {
-        int index = itemsList.indexOf(gridItem);
-        itemsList.remove(index);
-        notifyItemRemoved(index);
     }
 
     @Override

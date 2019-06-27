@@ -37,17 +37,17 @@ public interface iCardsGrig {
         void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition);
         void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition);
 
+        void addItem(Card card);
+        void addItem(iGridItem gridItem);
+        void updateItem(int position, iGridItem newGridItem);
+        void removeItem(iGridItem gridItem);
+
         iGridItem getGridItem(int position);
         iGridItem getLastContentItem();
         int getItemPosition(iGridItem item);
 
         iGridItem getItemBeforeLoadmore(int loadmorePosition);
         iGridItem getItemAfterLoadmore(int loadmorePosition);
-
-        void addItem(Card card);
-        void addItem(iGridItem gridItem);
-        void updateItem(int position, iGridItem newGridItem);
-        void removeItem(iGridItem gridItem);
 
         void hideLoadMoreItem(int position);
 
