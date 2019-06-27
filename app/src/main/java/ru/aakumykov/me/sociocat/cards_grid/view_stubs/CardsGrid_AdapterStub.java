@@ -29,7 +29,7 @@ public class CardsGrid_AdapterStub implements iCardsGrig.iGridView {
     }
 
     @Override
-    public void appendList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition) {
+    public void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition) {
 
     }
 

@@ -162,18 +162,18 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void setList(List<iGridItem> list) {
 //        Log.d(TAG, "setList(), list size: "+list.size()+", itemsList size: "+itemsList.size());
         clearList();
-        appendList(list, 0, false, null);
+        addList(list, 0, false, null);
     }
 
     @Override
     public void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition) {
         clearList();
         if (inputList.size() > 0)
-            appendList(inputList, 0, true, scrollToPosition);
+            addList(inputList, 0, true, scrollToPosition);
     }
 
     @Override
-    public void appendList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer positionToScroll) {
+    public void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer positionToScroll) {
         //Log.d(TAG, "appendList(), list size: "+list.size()+", itemsList size: "+itemsList.size()+", forceLoadMoreItem: "+forceLoadMoreItem);
 
         boolean loadMoreExpected = inputList.size() == Config.DEFAULT_CARDS_LOAD_COUNT;
