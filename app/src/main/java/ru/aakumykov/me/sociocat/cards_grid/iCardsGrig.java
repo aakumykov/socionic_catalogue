@@ -43,7 +43,6 @@ public interface iCardsGrig {
         void removeItem(iGridItem gridItem);
 
         iGridItem getGridItem(int position);
-        iGridItem getLastContentItem();
         int getItemPosition(iGridItem item);
 
         iGridItem getItemBeforeLoadmore(int loadmorePosition);

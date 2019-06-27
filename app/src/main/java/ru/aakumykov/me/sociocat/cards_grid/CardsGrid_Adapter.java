@@ -170,9 +170,11 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         //Log.d(TAG, "appendList(), list size: "+list.size()+", itemsList size: "+itemsList.size()+", forceLoadMoreItem: "+forceLoadMoreItem);
 
         boolean loadMoreExpected = inputList.size() == Config.DEFAULT_CARDS_LOAD_COUNT;
+        if (loadMoreExpected || forceLoadMoreItem)
+            showLoadMoreItem();
 
         // Удаляю повтор карточки на стыке списков
-        iGridItem lastContentItem = getLastContentItem();
+        iGridItem lastContentItem = getLastContentItem(position);
         if (null != lastContentItem && inputList.size() > 0) {
             Card lastExistingCard = (Card) lastContentItem.getPayload();
             Card firstNewCard = (Card) inputList.get(0).getPayload();
@@ -185,9 +187,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         int count = inputList.size();
         this.itemsList.addAll(position, inputList);
         notifyItemRangeChanged(start, count);
-
-        if (loadMoreExpected || forceLoadMoreItem)
-            showLoadMoreItem();
 
 //        if (null != positionToScroll)
 //            pageView.scrollToPosition(positionToScroll);
@@ -232,21 +231,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public iGridItem getGridItem(int position) {
         return (position > 0 && position <= getMaxIndex()) ? itemsList.get(position) : null;
-    }
-
-    @Override
-    public iGridItem getLastContentItem() {
-        int index = getMaxIndex();
-
-        if (index < 0)
-            return null;
-
-        iGridItem gridItem = itemsList.get(index);
-
-        while (!(gridItem instanceof GridItem_Card))
-            gridItem = itemsList.get(--index);
-
-        return gridItem;
     }
 
     @Override
@@ -379,5 +363,22 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         int count = itemsList.size();
         itemsList.clear();
         notifyItemRangeRemoved(start, count);
+    }
+
+    private iGridItem getLastContentItem(int bottomBorder) {
+        int index = bottomBorder - 1;
+        if (index < 0)
+            return null;
+
+        iGridItem gridItem = itemsList.get(index);
+
+        while (!(gridItem instanceof GridItem_Card)) {
+            index -= 1;
+            if (index < 0)
+                return null;
+            gridItem = itemsList.get(index);
+        }
+
+        return gridItem;
     }
 }
