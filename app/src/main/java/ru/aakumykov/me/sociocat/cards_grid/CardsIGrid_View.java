@@ -27,6 +27,7 @@ import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
+import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -196,7 +197,8 @@ public class CardsIGrid_View extends BaseView implements
     @Override
     public void onGridItemLongClicked(View view) {
         int position = recyclerView.getChildLayoutPosition(view);
-        showToast(String.valueOf(position));
+        iGridViewHolder gridViewHolder = (iGridViewHolder) recyclerView.getChildViewHolder(view);
+        presenter.onCardLongClicked(position, view, gridViewHolder);
     }
 
 
