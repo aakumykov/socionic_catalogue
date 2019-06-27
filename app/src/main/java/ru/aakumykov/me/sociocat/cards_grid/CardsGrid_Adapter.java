@@ -170,6 +170,16 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer positionToScroll) {
 
+        iGridItem lastExistingItem = getLastContentItem(position);
+        iGridItem firstNewItem = (inputList.size()>0) ? inputList.get(0) : null;
+
+        if (null != lastExistingItem && null != firstNewItem) {
+            Card lastExistingCard = (Card) lastExistingItem.getPayload();
+            Card firstNewCard = (Card) firstNewItem.getPayload();
+            if (lastExistingCard.getKey().equals(firstNewCard.getKey()))
+                inputList.remove(0);
+        }
+
         itemsList.addAll(position, inputList);
 
         int count = inputList.size();
@@ -351,19 +361,18 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     private iGridItem getLastContentItem(int bottomBorder) {
-        int index = bottomBorder - 1;
-        if (index < 0)
+        if (0 == itemsList.size())
             return null;
 
-        iGridItem gridItem = itemsList.get(index);
+        bottomBorder -= 1;
 
-        while (!(gridItem instanceof GridItem_Card)) {
-            index -= 1;
-            if (index < 0)
-                return null;
-            gridItem = itemsList.get(index);
+        iGridItem gridItem ;
+
+        for (int i=bottomBorder; i>=0; i--) {
+            gridItem = itemsList.get(i);
+            if (gridItem instanceof GridItem_Card)
+                return gridItem;
         }
-
-        return gridItem;
+        return null;
     }
 }
