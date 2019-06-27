@@ -190,9 +190,13 @@ public class CardsIGrid_View extends BaseView implements
     @Override
     public void onGridItemClicked(View view) {
         int position = recyclerView.getChildLayoutPosition(view);
-        //showToast(String.valueOf(position));
-        //Log.d(TAG, "onGridItemClicked(), position: "+position);
         presenter.onCardClicked(position);
+    }
+
+    @Override
+    public void onGridItemLongClicked(View view) {
+        int position = recyclerView.getChildLayoutPosition(view);
+        showToast(String.valueOf(position));
     }
 
 

@@ -31,15 +31,4 @@ public abstract class BaseViewHolder extends RecyclerView.ViewHolder implements 
         mCardView.setCardBackgroundColor(mOriginalBackgroundColor);
     }
 
-    public void bindClickListener(iCardsGrid.iGridItemClickListener gridItemClickListener) {
-
-        if (this instanceof Card_ViewHolder) {
-            mCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    gridItemClickListener.onGridItemClicked(v);
-                }
-            });
-        }
-    }
 }

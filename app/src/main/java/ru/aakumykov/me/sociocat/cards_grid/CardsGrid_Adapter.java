@@ -43,7 +43,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
-    // TODO: серьёзнейший баг: при удалении карточек в конце списка в какой-то момент удаляется не та карточка.
     // TODO: добавил карточку при неполной загрузке, подгрузил, потом при открытии этой (?) новой падение.
 
 
@@ -111,6 +110,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (gridItem instanceof GridItem_Card) {
             Card_ViewHolder cardViewHolder = (Card_ViewHolder) viewHolder;
             cardViewHolder.initialize(gridItem, position, payload);
+            cardViewHolder.bindClickListener(gridItemClickListener);
+            cardViewHolder.bindLongClickListener(gridItemClickListener);
         }
         else if (gridItem instanceof GridItem_LoadMore) {
             LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) viewHolder;
@@ -122,9 +123,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         else {
             throw new RuntimeException("Unknown item type: "+gridItem);
         }
-
-        BaseViewHolder baseViewHolder = (BaseViewHolder) viewHolder;
-        baseViewHolder.bindClickListener(gridItemClickListener);
     }
 
     @Override

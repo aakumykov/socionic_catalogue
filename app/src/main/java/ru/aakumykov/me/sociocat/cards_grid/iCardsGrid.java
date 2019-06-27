@@ -21,6 +21,7 @@ public interface iCardsGrid {
 
     interface iGridItemClickListener {
         void onGridItemClicked(View view);
+        void onGridItemLongClicked(View view);
     }
 
     interface iPageView extends iBaseView {

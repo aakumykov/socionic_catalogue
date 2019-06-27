@@ -17,20 +17,17 @@ import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class Card_ViewHolder extends BaseViewHolder implements
-    View.OnClickListener,
-    View.OnLongClickListener
+public class Card_ViewHolder extends BaseViewHolder
 {
     private final static String TAG = "Card_ViewHolder";
 
-    //@BindView(R.id.cardView) CardView mCardView;
+    @BindView(R.id.cardView) CardView mCardView;
     @BindView(R.id.titleView) TextView mTitleView;
     @Nullable @BindView(R.id.imageContainer) ViewGroup mImageContainer;
 
     private iCardsGrid.iPresenter mPresenter;
-    private int mPosition;
     private iGridItem mGridItem;
-    private int mOriginalBackground = -1;
+    private int mOriginalBackground = -1; // TODO: это есть и в BaseViewHolder...
 
 
     public Card_ViewHolder(@NonNull View itemView, iCardsGrid.iPresenter presenter) {
@@ -40,11 +37,7 @@ public class Card_ViewHolder extends BaseViewHolder implements
     }
 
     public void initialize(iGridItem gridItem, int position, Object payload) {
-        this.mPosition = position;
         this.mGridItem = gridItem;
-
-        //mCardView.setOnClickListener(this);
-        mCardView.setOnLongClickListener(this);
 
         Card card = (Card) payload;
 
@@ -67,33 +60,23 @@ public class Card_ViewHolder extends BaseViewHolder implements
         }
     }
 
-//    public void fade() {
-//        mOriginalBackground = mCardView.getCardBackgroundColor().getDefaultColor();
-//
-//        int color = mCardView.getResources().getColor(R.color.cards_grid_pressed_background_color);
-//        mCardView.setCardBackgroundColor(color);
-//    }
-//
-//    public void unfade() {
-//        mCardView.setCardBackgroundColor(mOriginalBackground);
-//    }
-
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.cardView:
-                mPresenter.onCardClicked(mPosition);
-                break;
-            default:
-                break;
-        }
+    public void bindClickListener(iCardsGrid.iGridItemClickListener gridItemClickListener) {
+        mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gridItemClickListener.onGridItemClicked(v);
+            }
+        });
     }
 
-    @Override
-    public boolean onLongClick(View view) {
-        mPresenter.onCardLongClicked(mPosition, view, this);
-        return true;
+    public void bindLongClickListener(iCardsGrid.iGridItemClickListener gridItemClickListener) {
+        mCardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                gridItemClickListener.onGridItemLongClicked(v);
+                return true;
+            }
+        });
     }
 
 
