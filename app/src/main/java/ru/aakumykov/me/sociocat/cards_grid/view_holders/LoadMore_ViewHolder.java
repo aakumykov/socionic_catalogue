@@ -9,7 +9,7 @@ import androidx.cardview.widget.CardView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_grid.iCardsGrig;
+import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class LoadMore_ViewHolder extends BaseViewHolder {
@@ -17,10 +17,10 @@ public class LoadMore_ViewHolder extends BaseViewHolder {
     @BindView(R.id.cardView) CardView cardView;
     @BindView(R.id.titleView) TextView titleView;
     private final static String TAG = "LoadMore_ViewHolder";
-    private iCardsGrig.iPresenter presenter;
+    private iCardsGrid.iPresenter presenter;
 
 
-    public LoadMore_ViewHolder(@NonNull View itemView, iCardsGrig.iPresenter presenter) {
+    public LoadMore_ViewHolder(@NonNull View itemView, iCardsGrid.iPresenter presenter) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         this.presenter = presenter;

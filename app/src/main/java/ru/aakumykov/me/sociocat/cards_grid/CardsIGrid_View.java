@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,20 +27,22 @@ import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
+import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class CardsGrid_View extends BaseView implements
-        iCardsGrig.iPageView
+public class CardsIGrid_View extends BaseView implements
+        iCardsGrid.iPageView,
+        iCardsGrid.iGridItemClickListener
 {
-    private static final String TAG = "CG3_View";
+    private static final String TAG = "CardsIGrid_View";
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.speedDialView) SpeedDialView speedDialView;
 
     private CardsGrid_Adapter adapter;
-    private iCardsGrig.iPresenter presenter;
+    private iCardsGrid.iPresenter presenter;
     private StaggeredGridLayoutManager layoutManager;
     private boolean firstRun = true;
     private int positionInWork = -1;
@@ -58,7 +61,7 @@ public class CardsGrid_View extends BaseView implements
         setPageTitle(R.string.CARDS_GRID_page_title);
 
         presenter = new CardsGrid_Presenter();
-        adapter = new CardsGrid_Adapter(this);
+        adapter = new CardsGrid_Adapter(this, this);
 
         int colsNum = MyUtils.isPortraitOrientation(this) ?
                 Config.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : Config.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
@@ -122,7 +125,7 @@ public class CardsGrid_View extends BaseView implements
     }
 
 
-    // iPage
+    // iPageView
     @Override
     public <T> void setTitle(T title) {
 //        String titleString = "";
@@ -181,6 +184,21 @@ public class CardsGrid_View extends BaseView implements
         intent.putExtra(Constants.CARD, card);
         intent.setAction(Constants.ACTION_EDIT);
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+    }
+
+
+    // iGridItemClickListener
+    @Override
+    public void onGridItemClicked(View view) {
+        int position = recyclerView.getChildLayoutPosition(view);
+        presenter.onCardClicked(position);
+    }
+
+    @Override
+    public void onGridItemLongClicked(View view) {
+        int position = recyclerView.getChildLayoutPosition(view);
+        iGridViewHolder gridViewHolder = (iGridViewHolder) recyclerView.getChildViewHolder(view);
+        presenter.onCardLongClicked(position, view, gridViewHolder);
     }
 
 

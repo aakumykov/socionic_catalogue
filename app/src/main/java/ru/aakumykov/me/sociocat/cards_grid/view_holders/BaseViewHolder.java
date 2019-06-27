@@ -7,13 +7,14 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
 
 public abstract class BaseViewHolder extends RecyclerView.ViewHolder implements iGridViewHolder
 {
     private CardView mCardView;
     private int mOriginalBackgroundColor = -1;
 
-    public BaseViewHolder(@NonNull View itemView) {
+    BaseViewHolder(@NonNull View itemView) {
         super(itemView);
         mCardView = itemView.findViewById(R.id.cardView);
     }
@@ -29,4 +30,5 @@ public abstract class BaseViewHolder extends RecyclerView.ViewHolder implements 
     public void unfade() {
         mCardView.setCardBackgroundColor(mOriginalBackgroundColor);
     }
+
 }

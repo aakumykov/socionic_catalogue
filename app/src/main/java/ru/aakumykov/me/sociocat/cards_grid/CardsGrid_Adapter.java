@@ -19,6 +19,7 @@ import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_LoadMore;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Throbber;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
+import ru.aakumykov.me.sociocat.cards_grid.view_holders.BaseViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.Throbber_ViewHolder;
@@ -26,21 +27,22 @@ import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
-        iCardsGrig.iGridView
+        iCardsGrid.iGridView
 {
     private final static String TAG = "CardsGrid_Adapter";
     private List<iGridItem> itemsList = new ArrayList<>();
-    private iCardsGrig.iPresenter presenter;
-    private iCardsGrig.iPageView pageView;
+    private iCardsGrid.iPresenter presenter;
+    private iCardsGrid.iPageView pageView;
+    private iCardsGrid.iGridItemClickListener gridItemClickListener;
 
     private int fakeIndex = 0;
 
-    public CardsGrid_Adapter(iCardsGrig.iPageView pageView) {
+    public CardsGrid_Adapter(iCardsGrid.iPageView pageView, iCardsGrid.iGridItemClickListener gridItemClickListener) {
         this.pageView = pageView;
+        this.gridItemClickListener = gridItemClickListener;
     }
 
 
-    // TODO: серьёзнейший баг: при удалении карточек в конце списка в какой-то момент удаляется не та карточка.
     // TODO: добавил карточку при неполной загрузке, подгрузил, потом при открытии этой (?) новой падение.
 
 
@@ -108,6 +110,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (gridItem instanceof GridItem_Card) {
             Card_ViewHolder cardViewHolder = (Card_ViewHolder) viewHolder;
             cardViewHolder.initialize(gridItem, position, payload);
+            cardViewHolder.bindClickListener(gridItemClickListener);
+            cardViewHolder.bindLongClickListener(gridItemClickListener);
         }
         else if (gridItem instanceof GridItem_LoadMore) {
             LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) viewHolder;
@@ -119,7 +123,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         else {
             throw new RuntimeException("Unknown item type: "+gridItem);
         }
-
     }
 
     @Override
@@ -150,7 +153,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     // iGridView
     @Override
-    public void linkPresenter(iCardsGrig.iPresenter presenter) {
+    public void linkPresenter(iCardsGrid.iPresenter presenter) {
         this.presenter = presenter;
     }
 

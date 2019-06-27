@@ -13,13 +13,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_grid.iCardsGrig;
+import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class Card_ViewHolder extends BaseViewHolder implements
-    View.OnClickListener,
-    View.OnLongClickListener
+public class Card_ViewHolder extends BaseViewHolder
 {
     private final static String TAG = "Card_ViewHolder";
 
@@ -27,24 +25,18 @@ public class Card_ViewHolder extends BaseViewHolder implements
     @BindView(R.id.titleView) TextView mTitleView;
     @Nullable @BindView(R.id.imageContainer) ViewGroup mImageContainer;
 
-    private iCardsGrig.iPresenter mPresenter;
-    private int mPosition;
-    private iGridItem mGridItem;
-    private int mOriginalBackground = -1;
+    private iCardsGrid.iPresenter mPresenter;
+//    private iGridItem mGridItem;
 
 
-    public Card_ViewHolder(@NonNull View itemView, iCardsGrig.iPresenter presenter) {
+    public Card_ViewHolder(@NonNull View itemView, iCardsGrid.iPresenter presenter) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         this.mPresenter = presenter;
     }
 
     public void initialize(iGridItem gridItem, int position, Object payload) {
-        this.mPosition = position;
-        this.mGridItem = gridItem;
-
-        mCardView.setOnClickListener(this);
-        mCardView.setOnLongClickListener(this);
+//        this.mGridItem = gridItem;
 
         Card card = (Card) payload;
 
@@ -67,50 +59,29 @@ public class Card_ViewHolder extends BaseViewHolder implements
         }
     }
 
-//    public void fade() {
-//        mOriginalBackground = mCardView.getCardBackgroundColor().getDefaultColor();
-//
-//        int color = mCardView.getResources().getColor(R.color.cards_grid_pressed_background_color);
-//        mCardView.setCardBackgroundColor(color);
-//    }
-//
-//    public void unfade() {
-//        mCardView.setCardBackgroundColor(mOriginalBackground);
-//    }
-
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.cardView:
-                mPresenter.onCardClicked(mPosition);
-                break;
-            default:
-                break;
-        }
+    public void bindClickListener(iCardsGrid.iGridItemClickListener gridItemClickListener) {
+        mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gridItemClickListener.onGridItemClicked(v);
+            }
+        });
     }
 
-    @Override
-    public boolean onLongClick(View view) {
-        mPresenter.onCardLongClicked(mPosition, view, this);
-        return true;
+    public void bindLongClickListener(iCardsGrid.iGridItemClickListener gridItemClickListener) {
+        mCardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                gridItemClickListener.onGridItemLongClicked(v);
+                return true;
+            }
+        });
     }
 
 
     // Внутренние методы
     private void commonCardInit(Card card) {
         mTitleView.setText(card.getTitle());
-
-        if (mGridItem.isPressed()) {
-            mOriginalBackground = mCardView.getCardBackgroundColor().getDefaultColor();
-
-            int color = mCardView.getResources().getColor(R.color.cards_grid_pressed_background_color);
-            mCardView.setCardBackgroundColor(color);
-        }
-        else {
-            if (mOriginalBackground > -1)
-                mCardView.setCardBackgroundColor(mOriginalBackground);
-        }
     }
 
     private void initTextCard(Card card) {

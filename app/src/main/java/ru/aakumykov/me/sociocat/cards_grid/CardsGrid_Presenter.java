@@ -25,7 +25,7 @@ import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 
-public class CardsGrid_Presenter implements iCardsGrig.iPresenter
+public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 {
     enum LoadMode {
         REPLACE,
@@ -33,15 +33,15 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
     }
 
     private final static String TAG = "CG3_Presenter";
-    private iCardsGrig.iPageView pageView;
-    private iCardsGrig.iGridView gridView;
+    private iCardsGrid.iPageView pageView;
+    private iCardsGrid.iGridView gridView;
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 //    private Integer openedItemPosition;
 
     @Override
-    public void linkViews(iCardsGrig.iPageView pageView, iCardsGrig.iGridView gridView) {
+    public void linkViews(iCardsGrid.iPageView pageView, iCardsGrid.iGridView gridView) {
         this.pageView = pageView;
         this.gridView = gridView;
 
@@ -100,20 +100,19 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
     public void onCardLongClicked(int position, View view, iGridViewHolder gridViewHolder) {
 
         if (!AuthSingleton.isLoggedIn()) {
-            gridView.showPopupMenu(iCardsGrig.MODE_GUEST, position, view, gridViewHolder);
+            gridView.showPopupMenu(iCardsGrid.MODE_GUEST, position, view, gridViewHolder);
             return;
         }
 
         if (usersSingleton.currentUserIsAdmin()) {
-            gridView.showPopupMenu(iCardsGrig.MODE_ADMIN, position, view, gridViewHolder);
+            gridView.showPopupMenu(iCardsGrid.MODE_ADMIN, position, view, gridViewHolder);
             return;
         }
 
         Card card = (Card) gridView.getGridItem(position).getPayload();
 
         if (card.isCreatedBy(usersSingleton.getCurrentUser())) {
-            gridView.showPopupMenu(iCardsGrig.MODE_OWNER, position, view, gridViewHolder);
-            return;
+            gridView.showPopupMenu(iCardsGrid.MODE_OWNER, position, view, gridViewHolder);
         }
     }
 
