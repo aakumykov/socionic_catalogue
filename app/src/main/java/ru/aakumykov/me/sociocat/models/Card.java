@@ -53,10 +53,10 @@ public class Card extends ListItem implements
     public String toString() {
         return "Card {"+
                 "  key: "+getKey()+
+                ", title: "+getTitle()+
                 ", userId: "+getUserId()+
                 ", userName: "+getUserName()+
                 ", type: "+getType()+
-                ", title: "+getTitle()+
                 ", quote: "+getQuote()+
                 ", quoteSource: "+getQuoteSource()+
                 ", imageURL: "+imageURL+
