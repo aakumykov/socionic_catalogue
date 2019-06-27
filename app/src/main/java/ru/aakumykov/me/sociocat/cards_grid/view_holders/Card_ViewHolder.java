@@ -26,8 +26,7 @@ public class Card_ViewHolder extends BaseViewHolder
     @Nullable @BindView(R.id.imageContainer) ViewGroup mImageContainer;
 
     private iCardsGrid.iPresenter mPresenter;
-    private iGridItem mGridItem;
-    private int mOriginalBackground = -1; // TODO: это есть и в BaseViewHolder...
+//    private iGridItem mGridItem;
 
 
     public Card_ViewHolder(@NonNull View itemView, iCardsGrid.iPresenter presenter) {
@@ -37,7 +36,7 @@ public class Card_ViewHolder extends BaseViewHolder
     }
 
     public void initialize(iGridItem gridItem, int position, Object payload) {
-        this.mGridItem = gridItem;
+//        this.mGridItem = gridItem;
 
         Card card = (Card) payload;
 
@@ -83,19 +82,6 @@ public class Card_ViewHolder extends BaseViewHolder
     // Внутренние методы
     private void commonCardInit(Card card) {
         mTitleView.setText(card.getTitle());
-
-        // TODO: а в BaseViewHolder что происходит?
-
-        if (mGridItem.isPressed()) {
-            mOriginalBackground = mCardView.getCardBackgroundColor().getDefaultColor();
-
-            int color = mCardView.getResources().getColor(R.color.cards_grid_pressed_background_color);
-            mCardView.setCardBackgroundColor(color);
-        }
-        else {
-            if (mOriginalBackground > -1)
-                mCardView.setCardBackgroundColor(mOriginalBackground);
-        }
     }
 
     private void initTextCard(Card card) {
