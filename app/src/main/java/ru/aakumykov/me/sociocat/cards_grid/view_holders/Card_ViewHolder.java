@@ -23,7 +23,7 @@ public class Card_ViewHolder extends BaseViewHolder implements
 {
     private final static String TAG = "Card_ViewHolder";
 
-    @BindView(R.id.cardView) CardView mCardView;
+    //@BindView(R.id.cardView) CardView mCardView;
     @BindView(R.id.titleView) TextView mTitleView;
     @Nullable @BindView(R.id.imageContainer) ViewGroup mImageContainer;
 
@@ -43,7 +43,7 @@ public class Card_ViewHolder extends BaseViewHolder implements
         this.mPosition = position;
         this.mGridItem = gridItem;
 
-        mCardView.setOnClickListener(this);
+        //mCardView.setOnClickListener(this);
         mCardView.setOnLongClickListener(this);
 
         Card card = (Card) payload;
@@ -100,6 +100,8 @@ public class Card_ViewHolder extends BaseViewHolder implements
     // Внутренние методы
     private void commonCardInit(Card card) {
         mTitleView.setText(card.getTitle());
+
+        // TODO: а в BaseViewHolder что происходит?
 
         if (mGridItem.isPressed()) {
             mOriginalBackground = mCardView.getCardBackgroundColor().getDefaultColor();

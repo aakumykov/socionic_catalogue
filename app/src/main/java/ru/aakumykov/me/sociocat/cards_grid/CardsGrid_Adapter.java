@@ -19,6 +19,7 @@ import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_LoadMore;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Throbber;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
+import ru.aakumykov.me.sociocat.cards_grid.view_holders.BaseViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.Throbber_ViewHolder;
@@ -32,11 +33,13 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<iGridItem> itemsList = new ArrayList<>();
     private iCardsGrid.iPresenter presenter;
     private iCardsGrid.iPageView pageView;
+    private iCardsGrid.iGridItemClickListener gridItemClickListener;
 
     private int fakeIndex = 0;
 
-    public CardsGrid_Adapter(iCardsGrid.iPageView pageView) {
+    public CardsGrid_Adapter(iCardsGrid.iPageView pageView, iCardsGrid.iGridItemClickListener gridItemClickListener) {
         this.pageView = pageView;
+        this.gridItemClickListener = gridItemClickListener;
     }
 
 
@@ -120,6 +123,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             throw new RuntimeException("Unknown item type: "+gridItem);
         }
 
+        BaseViewHolder baseViewHolder = (BaseViewHolder) viewHolder;
+        baseViewHolder.bindClickListener(gridItemClickListener);
     }
 
     @Override

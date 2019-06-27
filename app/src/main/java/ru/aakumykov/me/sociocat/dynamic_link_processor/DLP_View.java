@@ -4,15 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.Button;
-import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
-import ru.aakumykov.me.sociocat.utils.MyDialogs;
+import ru.aakumykov.me.sociocat.cards_grid.CardsIGrid_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class DLP_View extends BaseView implements
@@ -74,7 +72,7 @@ public class DLP_View extends BaseView implements
 
     @Override
     public void goHomePage() {
-        Intent intent = new Intent(this, CardsGrid_View.class);
+        Intent intent = new Intent(this, CardsIGrid_View.class);
         startActivity(intent);
     }
 
@@ -82,9 +80,9 @@ public class DLP_View extends BaseView implements
     // Нажатия
     @OnClick(R.id.homeButton)
     void homeButtonClicked() {
-        Intent intent = new Intent(this, CardsGrid_View.class);
+        Intent intent = new Intent(this, CardsIGrid_View.class);
         startActivity(intent);
-//        goToPage(CardsGrid_View.class, this);
-//        MyUtils.openPage(CardsGrid_View.class, this);
+//        goToPage(CardsIGrid_View.class, this);
+//        MyUtils.openPage(CardsIGrid_View.class, this);
     }
 }

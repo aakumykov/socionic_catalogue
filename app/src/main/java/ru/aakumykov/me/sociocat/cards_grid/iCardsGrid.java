@@ -19,6 +19,10 @@ public interface iCardsGrid {
     int MODE_USER = 10;
     int MODE_GUEST = 0;
 
+    interface iGridItemClickListener {
+        void onGridItemClicked(View view);
+    }
+
     interface iPageView extends iBaseView {
         <T> void setTitle(T title);
 
