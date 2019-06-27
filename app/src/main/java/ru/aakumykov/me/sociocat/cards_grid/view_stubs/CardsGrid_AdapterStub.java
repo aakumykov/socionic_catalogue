@@ -82,17 +82,7 @@ public class CardsGrid_AdapterStub implements iCardsGrig.iGridView {
     }
 
     @Override
-    public void showThrobber() {
-
-    }
-
-    @Override
     public void showThrobber(int position) {
-
-    }
-
-    @Override
-    public void hideThrobber() {
 
     }
 

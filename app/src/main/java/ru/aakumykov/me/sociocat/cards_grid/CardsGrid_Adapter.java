@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.Config;
-import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_LoadMore;
@@ -264,23 +262,9 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void showThrobber() {
-        itemsList.add(new GridItem_Throbber());
-        int index = getMaxIndex();
-        notifyItemChanged(index);
-    }
-
-    @Override
     public void showThrobber(int position) {
-        itemsList.remove(position);
         itemsList.add(new GridItem_Throbber());
         notifyItemChanged(position);
-    }
-
-    @Override
-    public void hideThrobber() {
-        int index = getMaxIndex();
-        hideThrobber(index);
     }
 
     @Override

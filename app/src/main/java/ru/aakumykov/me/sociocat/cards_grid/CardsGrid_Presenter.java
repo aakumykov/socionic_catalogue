@@ -179,7 +179,7 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
             int insertPosition
     )
     {
-        gridView.showThrobber();
+        gridView.showThrobber(insertPosition);
 
         cardsSingleton.loadList(startKey, endKey, new iCardsSingleton.ListCallbacks() {
             @Override
@@ -193,7 +193,7 @@ public class CardsGrid_Presenter implements iCardsGrig.iPresenter
                     newItemsList.add(cardItem);
                 }
 
-                gridView.hideThrobber();
+                gridView.hideThrobber(insertPosition);
 
                 switch (loadMode) {
                     case REPLACE:

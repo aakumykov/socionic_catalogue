@@ -50,9 +50,7 @@ public interface iCardsGrig {
 
         void hideLoadMoreItem(int position);
 
-        void showThrobber();
         void showThrobber(int position);
-        void hideThrobber();
         void hideThrobber(int position);
 
         void showPopupMenu(int mode, int position, View view, iGridViewHolder gridViewHolder);
