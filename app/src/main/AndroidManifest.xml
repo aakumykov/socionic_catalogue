@@ -21,7 +21,7 @@
         <activity android:name=".cards_list.CardsList_View" />
 
         <!-- Главный экран -->
-        <activity android:name=".cards_grid.CardsIGrid_View">
+        <activity android:name=".cards_grid.CardsGrid_View">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

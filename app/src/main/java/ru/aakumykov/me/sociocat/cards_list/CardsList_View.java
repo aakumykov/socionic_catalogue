@@ -30,7 +30,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
-import ru.aakumykov.me.sociocat.cards_grid.CardsIGrid_View;
+import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
@@ -392,7 +392,7 @@ public class CardsList_View extends BaseView implements
     }
 
     private void goGridView() {
-        Intent intent = new Intent(this, CardsIGrid_View.class);
+        Intent intent = new Intent(this, CardsGrid_View.class);
         startActivity(intent);
     }
 }

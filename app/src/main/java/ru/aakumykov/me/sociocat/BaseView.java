@@ -24,7 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_type_chooser.CardTypeChooser;
-import ru.aakumykov.me.sociocat.cards_grid.CardsIGrid_View;
+import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
@@ -409,7 +409,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void goCardsGrid() {
-        Intent intent = new Intent(this, CardsIGrid_View.class);
+        Intent intent = new Intent(this, CardsGrid_View.class);
         startActivity(intent);
     }
 
