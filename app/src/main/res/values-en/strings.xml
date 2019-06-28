@@ -444,4 +444,6 @@
     <string name="SHORTCUT_PROCESSOR_error_creating_card">Error creating card</string>
     <string name="SHORTCUT_PROCESSOR_error_processing_shortcut">Error processing shortcut</string>
     <string name="SHORTCUT_PROCESSOR_unknown_result_code">Unknown result</string>
+    <string name="CARD_EDIT_create_card_title">Creating a card</string>
+    <string name="CARD_EDIT_edit_card_title">Edit card</string>
 </resources>

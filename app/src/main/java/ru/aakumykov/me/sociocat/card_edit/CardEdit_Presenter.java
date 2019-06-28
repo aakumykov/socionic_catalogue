@@ -352,7 +352,11 @@ public class CardEdit_Presenter implements
     private void startCreateCard(Card card) {
         currentCard = card;
         editMode = CardEditMode.CREATE;
-        view.displayCard(currentCard);
+
+        if (null != view) {
+            view.setPageTitle(R.string.CARD_EDIT_create_card_title);
+            view.displayCard(currentCard);
+        }
     }
 
     private void startEditCard(Card card) {
@@ -363,6 +367,7 @@ public class CardEdit_Presenter implements
         editMode = CardEditMode.EDIT;
 
         if (null != view) {
+            view.setPageTitle(R.string.CARD_EDIT_edit_card_title);
             view.disableForm();
             view.showProgressMessage(R.string.CARD_EDIT_loading_card);
         }
