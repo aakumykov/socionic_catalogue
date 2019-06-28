@@ -31,11 +31,11 @@ import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class CardsIGrid_View extends BaseView implements
+public class CardsGrid_View extends BaseView implements
         iCardsGrid.iPageView,
         iCardsGrid.iGridItemClickListener
 {
-    private static final String TAG = "CardsIGrid_View";
+    private static final String TAG = "CardsGrid_View";
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
@@ -272,7 +272,6 @@ public class CardsIGrid_View extends BaseView implements
                 switch (speedDialActionItem.getId()) {
 
                     case R.id.fab_quote:
-//                        addTestItem();
                         presenter.onCreateCardClicked(Constants.CardType.TEXT_CARD);
                         return false;
 

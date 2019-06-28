@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_grid.CardsIGrid_View;
+import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -148,7 +148,7 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
 
     // Внутренние методы
     void goMainPage() {
-        Intent intent = new Intent(this, CardsIGrid_View.class);
+        Intent intent = new Intent(this, CardsGrid_View.class);
         startActivity(intent);
     }
 }

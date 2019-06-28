@@ -13,15 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".login.Login_View"
-            android:noHistory="true"
-            android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name=".cards_list.CardsList_View" />
-
-        <!-- Главный экран -->
-        <activity android:name=".cards_grid.CardsIGrid_View">
+        <activity android:name=".shortcuts_processor.ShortcutsProcessor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +22,15 @@
             </intent-filter>
             <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
         </activity>
-        <!-- Главный экран -->
+
+        <activity
+            android:name=".login.Login_View"
+            android:noHistory="true"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity android:name=".cards_list.CardsList_View" />
+
+        <activity android:name=".cards_grid.CardsGrid_View" />
 
         <activity
             android:name=".dynamic_link_processor.DLP_View"

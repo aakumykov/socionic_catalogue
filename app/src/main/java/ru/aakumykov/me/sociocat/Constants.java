@@ -99,4 +99,10 @@ public final class Constants {
     public final static String PREFERENCE_KEY_IS_FIRST_RUN = "PREFERENCE_KEY_IS_FIRST_RUN";
 
     public static String DRAFT_DEFERRED = "DRAFT_DEFERRED";
+
+    // Эти значения должны совпадать с атрибутами "action" в файлах shortcuts.xml
+    public final static String SHORTCUT_CREATE_TEXT_CARD = "SHORTCUT_CREATE_TEXT_CARD";
+    public final static String SHORTCUT_CREATE_IMAGE_CARD = "SHORTCUT_CREATE_IMAGE_CARD";
+    public final static String SHORTCUT_CREATE_AUDIO_CARD = "SHORTCUT_CREATE_AUDIO_CARD";
+    public final static String SHORTCUT_CREATE_VIDEO_CARD = "SHORTCUT_CREATE_VIDEO_CARD";
 }
