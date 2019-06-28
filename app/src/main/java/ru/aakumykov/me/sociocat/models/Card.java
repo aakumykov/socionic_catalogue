@@ -32,6 +32,7 @@ public class Card extends ListItem implements
     private String imageURL;
     @Exclude private transient String localImageURI;
     @Exclude private transient String mimeType;
+    @Exclude private transient String imageType;
     private String fileName;
     private String videoCode;
     private String audioCode;
@@ -74,6 +75,7 @@ public class Card extends ListItem implements
                 ", mTime: "+getMTime()+
                 ", localImageURI: "+getLocalImageURI()+
                 ", mimeType: "+getMimeType()+
+                ", imageType: "+getImageType()+
             " }";
     }
 
@@ -91,6 +93,8 @@ public class Card extends ListItem implements
         dest.writeString(this.quoteSource);
         dest.writeString(this.imageURL);
         dest.writeString(this.localImageURI);
+        dest.writeString(this.mimeType);
+        dest.writeString(this.imageType);
         dest.writeString(this.fileName);
         dest.writeString(this.videoCode);
         dest.writeString(this.audioCode);
@@ -116,6 +120,8 @@ public class Card extends ListItem implements
         quoteSource = in.readString();
         imageURL = in.readString();
         localImageURI = in.readString();
+        mimeType = in.readString();
+        imageType = in.readString();
         fileName = in.readString();
         videoCode = in.readString();
         audioCode = in.readString();
@@ -351,6 +357,13 @@ public class Card extends ListItem implements
     }
     @Exclude public void clearMimeType() {
         this.mimeType = null;
+    }
+
+    @Exclude public String getImageType() {
+        return imageType;
+    }
+    @Exclude public void setImageType(String imageType) {
+        this.imageType = imageType;
     }
 
     @Exclude public boolean isTextCard() {

@@ -89,10 +89,15 @@ public class ExternalDataReceiver extends BaseView {
 
         // Определяю картинку
         Uri imageUri = MVPUtils.getImageUriFromIntent(this, inputIntent);
+        // TODO: можно не проверять на null
         if (null != imageUri) {
-            card.setType(Constants.IMAGE_CARD);
-            card.setLocalImageURI(imageUri);
-            goToEditCard(card);
+            String imageType = MVPUtils.detectImageType(this, imageUri);
+            if (null != imageType) {
+                card.setType(Constants.IMAGE_CARD);
+                card.setLocalImageURI(imageUri);
+                card.setImageType(imageType);
+                goToEditCard(card);
+            }
             return;
         }
 

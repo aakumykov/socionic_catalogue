@@ -31,7 +31,6 @@ import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardEdit_Presenter implements
         iCardEdit.Presenter,
@@ -75,18 +74,13 @@ public class CardEdit_Presenter implements
     @Override
     public void processInputIntent(@Nullable Intent intent) throws Exception {
 
-        if (null == intent)
-            throw new IllegalArgumentException("Intent is NULL");
-
-        Card card = intent.getParcelableExtra(Constants.CARD);
-        if (null == card)
-            throw new IllegalArgumentException("There is no Card in Intent");
-
         if (!AuthSingleton.isLoggedIn()) {
             // TODO: requestLogin + CODE_LOGIN_REQUEST ...
             view.requestLogin(Constants.CODE_LOGIN_REQUEST, intent);
             return;
         }
+
+        Card card = intent.getParcelableExtra(Constants.CARD);
 
         // TODO: проверять права доступа к карточке
 
@@ -153,14 +147,11 @@ public class CardEdit_Presenter implements
     }
 
     @Override
-    public void processSelectedImage(@Nullable Intent data) {
+    public void processSelectedImage(@Nullable Intent data) throws Exception {
         Uri imageUri = MVPUtils.getImageUriFromIntent(view.getAppContext(), data);
-
-        if (null != imageUri) {
-            imageType = MyUtils.detectImageType(view.getAppContext(), imageUri);
-            currentCard.setLocalImageURI(imageUri);
-            view.displayImage(imageUri.toString());
-        }
+        imageType = MVPUtils.detectImageType(view.getAppContext(), imageUri);
+        currentCard.setLocalImageURI(imageUri);
+        view.displayImage(imageUri.toString());
     }
 
     @Override
@@ -352,6 +343,7 @@ public class CardEdit_Presenter implements
     private void startCreateCard(Card card) {
         currentCard = card;
         editMode = CardEditMode.CREATE;
+        imageType = card.getImageType();
 
         if (null != view) {
             view.setPageTitle(R.string.CARD_EDIT_create_card_title);
@@ -391,55 +383,6 @@ public class CardEdit_Presenter implements
             }
         });
     }
-
-    private void prepareCardCreation() {
-        editMode = CardEditMode.CREATE;
-        Card card = new Card();
-        card.setKey(cardsSingleton.createKey());
-        currentCard = card;
-    }
-
-    /*private void processRecievedData(Intent intent) {
-
-        Intent transitIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
-
-        String inputDataMode = MVPUtils.detectInputDataMode(transitIntent);
-
-        try {
-            switch (inputDataMode) {
-
-                case Constants.MIME_TYPE_TEXT:
-                    currentCard.setType(Constants.TEXT_CARD);
-                    procesIncomingText(transitIntent);
-                    break;
-
-                case Constants.MIME_TYPE_IMAGE_LINK:
-                    currentCard.setType(Constants.IMAGE_CARD);
-                    processIncomingImage(transitIntent);
-                    break;
-
-                case Constants.MIME_TYPE_IMAGE_DATA:
-                    currentCard.setType(Constants.IMAGE_CARD);
-                    processIncomingImage(transitIntent);
-                    break;
-
-                case Constants.MIME_TYPE_YOUTUBE_VIDEO:
-                    currentCard.setType(VIDEO_CARD);
-                    processYoutubeVideo(transitIntent);
-                    break;
-
-                default:
-                    view.showErrorMsg(R.string.CARD_EDIT_unknown_data_mode, "Unknown input data mode: "+inputDataMode);
-            }
-
-        }
-        catch (Exception e) {
-            if (null != view) {
-                view.showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
-                e.printStackTrace();
-            }
-        }
-    }*/
 
     private void updateCurrentCardFromView(){
         if (null != view) {

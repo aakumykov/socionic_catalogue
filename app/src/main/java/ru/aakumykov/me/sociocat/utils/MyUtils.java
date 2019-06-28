@@ -72,28 +72,7 @@ public final class MyUtils {
         }
     }
 
-    public static <T> String detectImageType(Context context, T imageUri) {
-        if (imageUri instanceof Uri) {
-            ContentResolver contentResolver = context.getContentResolver();
-            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-            String mimeType = contentResolver.getType((Uri) imageUri);
-            return (null == mimeType) ? null : mimeTypeMap.getExtensionFromMimeType(mimeType);
-        }
-        else if (imageUri instanceof String) {
-            String imageString = (String) imageUri;
-            imageString = imageString.trim();
-            imageString = imageString.toLowerCase();
-            Pattern pattern = Pattern.compile("^.+\\.([a-z]+)$");
-            // запомни, регулярное выражение должно соответствовать строке целиком!
-            Matcher matcher = pattern.matcher(imageString);
-            return (matcher.matches()) ? matcher.group(1) : null;
-        }
-        else {
-            return null;
-        }
-    }
-
-//    public static Card snapshot2card(DataSnapshot dataSnapshot) throws IllegalArgumentException {
+    //    public static Card snapshot2card(DataSnapshot dataSnapshot) throws IllegalArgumentException {
 //        Card card_edit = dataSnapshot.getValue(Card.class);
 //        // TODO: протестировать с card_edit == null
 //        if (null != card_edit) {

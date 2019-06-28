@@ -21,7 +21,7 @@ import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
 public class Users_Presenter implements
         iUsers.Presenter,
@@ -192,7 +192,7 @@ public class Users_Presenter implements
 
         setImageSelected(true);
         currentUser.setAvatarURL("");
-        imageType = MyUtils.detectImageType(editView.getApplicationContext(), imageURI);
+        imageType = MVPUtils.detectImageType(editView.getApplicationContext(), imageURI);
         editView.displayAvatar(imageURI.toString(), true);
     }
 
