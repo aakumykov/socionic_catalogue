@@ -10,6 +10,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
+import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class ShortcutsProcessor extends BaseView {
@@ -72,7 +73,10 @@ public class ShortcutsProcessor extends BaseView {
                 break;
 
             default:
-                throw new IllegalArgumentException("Unknown action '"+action+"'");
+                Intent intent = new Intent(this, CardsGrid_View.class);
+                startActivity(intent);
+                return;
+
         }
 
         Intent intent = new Intent(this, CardEdit_View.class);
