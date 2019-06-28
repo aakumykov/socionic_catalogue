@@ -89,15 +89,25 @@ public class ShortcutsProcessor extends BaseView {
         switch (resultCode) {
             case RESULT_OK:
                 Card card = data.getParcelableExtra(Constants.CARD);
-                Intent intent = new Intent(this, CardShow_View.class);
-                intent.putExtra(Constants.CARD, card);
-                startActivity(intent);
+                Intent cardShowIntent = new Intent(this, CardShow_View.class);
+                cardShowIntent.putExtra(Constants.CARD, card);
+                startActivity(cardShowIntent);
                 break;
+
             case RESULT_CANCELED:
                 showToast(R.string.SHORTCUT_PROCESSOR_card_creation_cencelled);
+                goToCardsGrid();
                 break;
+
             default:
+                showToast(R.string.SHORTCUT_PROCESSOR_unknown_result_code);
+                goToCardsGrid();
                 break;
         }
+    }
+
+    private void goToCardsGrid() {
+        Intent cardsGridIntent = new Intent(this, CardsGrid_View.class);
+        startActivity(cardsGridIntent);
     }
 }

@@ -443,4 +443,5 @@
     <string name="SHORTCUT_PROCESSOR_card_creation_cencelled">Card creation cencelled</string>
     <string name="SHORTCUT_PROCESSOR_error_creating_card">Error creating card</string>
     <string name="SHORTCUT_PROCESSOR_error_processing_shortcut">Error processing shortcut</string>
+    <string name="SHORTCUT_PROCESSOR_unknown_result_code">Unknown result</string>
 </resources>

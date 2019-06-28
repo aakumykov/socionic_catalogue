@@ -451,4 +451,5 @@
     <string name="SHORTCUT_PROCESSOR_card_creation_cencelled">Создание карточки отменено</string>
     <string name="SHORTCUT_PROCESSOR_error_creating_card">Ошибка создания карточки</string>
     <string name="SHORTCUT_PROCESSOR_error_processing_shortcut">Ошибка обработки ярлыка</string>
+    <string name="SHORTCUT_PROCESSOR_unknown_result_code">Неизвестный результат</string>
 </resources>

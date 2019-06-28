@@ -13,6 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity android:name=".shortcuts_processor.ShortcutsProcessor">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+        </activity>
+
         <activity
             android:name=".login.Login_View"
             android:noHistory="true"
@@ -20,11 +30,7 @@
 
         <activity android:name=".cards_list.CardsList_View" />
 
-        <!-- Главный экран -->
-        <activity android:name=".cards_grid.CardsGrid_View">
-
-        </activity>
-        <!-- Главный экран -->
+        <activity android:name=".cards_grid.CardsGrid_View" />
 
         <activity
             android:name=".dynamic_link_processor.DLP_View"
@@ -97,15 +103,6 @@
                     android:host="youtu.be"
                     android:scheme="https" />
             </intent-filter>
-        </activity>
-
-        <activity android:name=".shortcuts_processor.ShortcutsProcessor">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
         </activity>
 
         <activity android:name=".card_edit.CardEdit_View"
