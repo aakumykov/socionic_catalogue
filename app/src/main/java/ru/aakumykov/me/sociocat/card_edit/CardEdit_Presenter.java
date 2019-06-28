@@ -367,7 +367,7 @@ public class CardEdit_Presenter implements
         editMode = CardEditMode.EDIT;
 
         if (null != view) {
-            view.setPageTitle(R.string.CARD_EDIT_edit_card_title);
+            view.setPageTitle(R.string.CARD_EDIT_edit_card_title, card.getTitle());
             view.disableForm();
             view.showProgressMessage(R.string.CARD_EDIT_loading_card);
         }

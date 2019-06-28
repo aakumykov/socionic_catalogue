@@ -453,5 +453,5 @@
     <string name="SHORTCUT_PROCESSOR_error_processing_shortcut">Ошибка обработки ярлыка</string>
     <string name="SHORTCUT_PROCESSOR_unknown_result_code">Неизвестный результат</string>
     <string name="CARD_EDIT_create_card_title">Создание карточки</string>
-    <string name="CARD_EDIT_edit_card_title">Правка карточки</string>
+    <string name="CARD_EDIT_edit_card_title">Правка карточки «%1$s»</string>
 </resources>
