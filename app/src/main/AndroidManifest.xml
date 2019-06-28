@@ -104,6 +104,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".shortcuts_processor.ShortcutsProcessor" />
+
         <activity android:name=".card_edit.CardEdit_View"
             android:windowSoftInputMode="stateHidden" />
 

@@ -10,7 +10,7 @@
         android:shortcutDisabledMessage="@string/SHORTCUT_creation_unavailable">
 
         <intent
-            android:action="CREATE_TEXT_CARD"
+            android:action="SHORTCUT_CREATE_TEXT_CARD"
             android:targetPackage="ru.aakumykov.me.sociocat"
             android:targetClass="ru.aakumykov.me.sociocat.card_edit.CardEdit_View" />
     </shortcut>
@@ -24,7 +24,7 @@
         android:shortcutDisabledMessage="@string/SHORTCUT_creation_unavailable">
 
         <intent
-            android:action="CREATE_IMAGE_CARD"
+            android:action="SHORTCUT_CREATE_IMAGE_CARD"
             android:targetPackage="ru.aakumykov.me.sociocat"
             android:targetClass="ru.aakumykov.me.sociocat.card_edit.CardEdit_View" />
     </shortcut>
@@ -38,7 +38,7 @@
         android:shortcutDisabledMessage="@string/SHORTCUT_creation_unavailable">
 
         <intent
-            android:action="CREATE_VIDEO_CARD"
+            android:action="SHORTCUT_CREATE_VIDEO_CARD"
             android:targetPackage="ru.aakumykov.me.sociocat"
             android:targetClass="ru.aakumykov.me.sociocat.card_edit.CardEdit_View" />
     </shortcut>
@@ -52,7 +52,7 @@
         android:shortcutDisabledMessage="@string/SHORTCUT_creation_unavailable">
 
         <intent
-            android:action="CREATE_AUDIO_CARD"
+            android:action="SHORTCUT_CREATE_AUDIO_CARD"
             android:targetPackage="ru.aakumykov.me.sociocat"
             android:targetClass="ru.aakumykov.me.sociocat.card_edit.CardEdit_View" />
     </shortcut>

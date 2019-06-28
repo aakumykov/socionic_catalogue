@@ -272,7 +272,6 @@ public class CardsGrid_View extends BaseView implements
                 switch (speedDialActionItem.getId()) {
 
                     case R.id.fab_quote:
-//                        addTestItem();
                         presenter.onCreateCardClicked(Constants.CardType.TEXT_CARD);
                         return false;
 

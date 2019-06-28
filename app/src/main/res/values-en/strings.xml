@@ -439,4 +439,8 @@
     <string name="CARD_SHOW_there_is_no_card">There is no card</string>
     <string name="CARDS_GRID_card_creation_cancelled">Card creation is cancelled</string>
     <string name="CARDS_GRID_card_creation_error">Card creation error</string>
+    <string name="SHORTCUT_PROCESSOR_unknown_action">Unknown action</string>
+    <string name="SHORTCUT_PROCESSOR_card_creation_cencelled">Card creation cencelled</string>
+    <string name="SHORTCUT_PROCESSOR_error_creating_card">Error creating card</string>
+    <string name="SHORTCUT_PROCESSOR_error_processing_shortcut">Error processing shortcut</string>
 </resources>

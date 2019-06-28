@@ -447,4 +447,8 @@
     <string name="CARD_SHOW_there_is_no_card">Карточка отсутствует</string>
     <string name="CARDS_GRID_card_creation_cancelled">Создание карточки отменено</string>
     <string name="CARDS_GRID_card_creation_error">Ошибка создания карточки</string>
+    <string name="SHORTCUT_PROCESSOR_unknown_action">Неизвестное действие</string>
+    <string name="SHORTCUT_PROCESSOR_card_creation_cencelled">Создание карточки отменено</string>
+    <string name="SHORTCUT_PROCESSOR_error_creating_card">Ошибка создания карточки</string>
+    <string name="SHORTCUT_PROCESSOR_error_processing_shortcut">Ошибка обработки ярлыка</string>
 </resources>
