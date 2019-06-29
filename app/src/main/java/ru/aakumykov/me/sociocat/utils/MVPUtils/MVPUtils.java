@@ -482,28 +482,7 @@ public class MVPUtils {
     }
 
 
-    public static <T> String detectImageType(Context context, T imageUri) {
-        if (imageUri instanceof Uri) {
-            ContentResolver contentResolver = context.getContentResolver();
-            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-            String mimeType = contentResolver.getType((Uri) imageUri);
-            return (null == mimeType) ? null : mimeTypeMap.getExtensionFromMimeType(mimeType);
-        }
-        else if (imageUri instanceof String) {
-            String imageString = (String) imageUri;
-            imageString = imageString.trim();
-            imageString = imageString.toLowerCase();
-            Pattern pattern = Pattern.compile("^.+\\.([a-z]+)$");
-            // запомни, регулярное выражение должно соответствовать строке целиком!
-            Matcher matcher = pattern.matcher(imageString);
-            return (matcher.matches()) ? matcher.group(1) : null;
-        }
-        else {
-            return null;
-        }
-    }
-
-    public static Uri getImageUriFromIntent(Context context, @Nullable Intent intent) {
+    public static Uri extractImageUriFromIntent(Context context, @Nullable Intent intent) {
 
         if (null == intent)
             return null;
@@ -538,6 +517,27 @@ public class MVPUtils {
             return resultImageUri;
         else
             return null;
+    }
+
+    public static <T> String detectImageType(Context context, T imageUri) {
+        if (imageUri instanceof Uri) {
+            ContentResolver contentResolver = context.getContentResolver();
+            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+            String mimeType = contentResolver.getType((Uri) imageUri);
+            return (null == mimeType) ? null : mimeTypeMap.getExtensionFromMimeType(mimeType);
+        }
+        else if (imageUri instanceof String) {
+            String imageString = (String) imageUri;
+            imageString = imageString.trim();
+            imageString = imageString.toLowerCase();
+            Pattern pattern = Pattern.compile("^.+\\.([a-z]+)$");
+            // запомни, регулярное выражение должно соответствовать строке целиком!
+            Matcher matcher = pattern.matcher(imageString);
+            return (matcher.matches()) ? matcher.group(1) : null;
+        }
+        else {
+            return null;
+        }
     }
 
     public static String getYoutubeVideoCodeFromIntent(Intent intent) throws Exception {

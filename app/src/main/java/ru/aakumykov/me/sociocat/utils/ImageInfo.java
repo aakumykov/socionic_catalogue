@@ -2,7 +2,6 @@ package ru.aakumykov.me.sociocat.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.ImageDecoder;
 import android.net.Uri;
 
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
@@ -30,7 +29,7 @@ public class ImageInfo {
 
 
     public static ImageInfo getImageInfo(Context context, Intent intent) {
-        Uri imageLocalURI = MVPUtils.getImageUriFromIntent(context, intent);
+        Uri imageLocalURI = MVPUtils.extractImageUriFromIntent(context, intent);
         String imageType = MVPUtils.detectImageType(context, imageLocalURI);
 
         if (null != imageLocalURI && null != imageType) {
