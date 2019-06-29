@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
-import android.net.Uri;
+
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.util.Log;
 import android.view.Display;
@@ -19,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,10 +27,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ru.aakumykov.me.sociocat.Config;
-import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.login.Login_View;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -259,9 +253,13 @@ public final class MyUtils {
         return stackTrace;
     }
 
-    /*public static String getString(Context context, int msgId) {
+    public static String getString(Context context, int stringResourceId, String insertedText) {
+        return context.getResources().getString(stringResourceId, insertedText);
+    }
+
+    public static String getString(Context context, int msgId) {
         return context.getResources().getString(msgId);
-    } */
+    }
 
     /*public static void requestLogin(Context context, Intent proceedIntent) {
         Intent intent = new Intent(context, Login_View.class);
