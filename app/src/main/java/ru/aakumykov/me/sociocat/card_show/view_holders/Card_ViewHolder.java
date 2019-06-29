@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.card_show.view_holders;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.View;
@@ -88,7 +87,7 @@ public class Card_ViewHolder extends Base_ViewHolder
         switch (card.getType()) {
 
             case Constants.TEXT_CARD:
-                String quote = card.getQuote();
+                String quote = MyUtils.getString(quoteView.getContext(), R.string.aquotes, card.getQuote());
                 if (!TextUtils.isEmpty(quote)) {
                     quoteView.setText(quote);
                     MyUtils.show(quoteView);
