@@ -13,6 +13,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.ImageInfo;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -87,21 +88,17 @@ public class ExternalDataReceiver extends BaseView {
 
         Card card = new Card();
 
-        // Определяю картинку
-        Uri imageUri = MVPUtils.getImageUriFromIntent(this, inputIntent);
-        // TODO: можно не проверять на null
-        if (null != imageUri) {
-            String imageType = MVPUtils.detectImageType(this, imageUri);
-            if (null != imageType) {
-                card.setType(Constants.IMAGE_CARD);
-                card.setLocalImageURI(imageUri);
-                card.setImageType(imageType);
-                goToEditCard(card);
-            }
+        // Картинка?
+        ImageInfo imageInfo = ImageInfo.getImageInfo(this, inputIntent);
+        if (null != imageInfo) {
+            card.setType(Constants.IMAGE_CARD);
+            card.setLocalImageURI(imageInfo.getLocalURI());
+            card.setImageType(imageInfo.getType());
+            goToEditCard(card);
             return;
         }
 
-        // Определаю видео или текст
+        // Видео, Текст?
         String text = MVPUtils.getTextFromIntent(inputIntent);
 
         if (null == text) {

@@ -33,10 +33,13 @@ public class ImageInfo {
         Uri imageLocalURI = MVPUtils.getImageUriFromIntent(context, intent);
         String imageType = MVPUtils.detectImageType(context, imageLocalURI);
 
-        ImageInfo imageInfo = new ImageInfo();
-        imageInfo.setLocalURI(imageLocalURI);
-        imageInfo.setType(imageType);
-
-        return imageInfo;
+        if (null != imageLocalURI && null != imageType) {
+            ImageInfo imageInfo = new ImageInfo();
+            imageInfo.setLocalURI(imageLocalURI);
+            imageInfo.setType(imageType);
+            return imageInfo;
+        }
+        else
+            return null;
     }
 }
