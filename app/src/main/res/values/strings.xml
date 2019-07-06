@@ -210,7 +210,7 @@
     <string name="START_PAGE_tab_cards">Карточки</string>
     <string name="START_PAGE_tab_tags">Метки</string>
     <string name="TAGS_LIST_page_title">Метки</string>
-    <string name="TAGS_LIST_cards_with_tag">Карточек: %d</string>
+    <string name="TAGS_LIST_cards_with_tag">Карточек: %1$d</string>
     <string name="REGISTER_enter_password">Введите пароль</string>
     <string name="REGISTER_enter_password_confirmation">Повторите пароль</string>
     <string name="REGISTER_enter_email">Введите Email</string>
@@ -454,4 +454,5 @@
     <string name="SHORTCUT_PROCESSOR_unknown_result_code">Неизвестный результат</string>
     <string name="CARD_EDIT_create_card_title">Создание карточки</string>
     <string name="CARD_EDIT_edit_card_title">Правка карточки «%1$s»</string>
+    <string name="error_unknown_result_code">Неизвестный код результата</string>
 </resources>

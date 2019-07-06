@@ -255,12 +255,15 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     // Разное
     @Override
     public <T> void requestLogin(int requestCode, @Nullable T transitData) {
+
         Intent intent = new Intent(this, Login_View.class);
 
-        if (transitData instanceof Intent)
+        if (transitData instanceof Intent) {
             intent.putExtra(Intent.EXTRA_INTENT, (Intent) transitData);
-        else if (transitData instanceof Bundle)
+        }
+        else if (transitData instanceof Bundle) {
             intent.putExtra(Constants.TRANSIT_ARGUMENTS, (Bundle) transitData);
+        }
         else {
             throw new RuntimeException("transitData argument must have Intent or Bundle type.");
         }

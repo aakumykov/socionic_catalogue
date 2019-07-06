@@ -115,23 +115,11 @@ public class CardEdit_View extends BaseView implements
         switch (requestCode) {
 
             case Constants.CODE_LOGIN_REQUEST:
-                if (null != data)
-                    startEditWork(data);
+                processLoginRequest(resultCode, data);
                 break;
 
             case Constants.CODE_SELECT_IMAGE:
-
-                selectImageMode = false;
-
-                try {
-                    if (RESULT_OK == resultCode)
-                        presenter.processSelectedImage(data);
-
-                } catch (Exception e) {
-                    showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
-                    e.printStackTrace();
-                }
-
+                processImageSelection(resultCode, data);
                 break;
 
             default:
@@ -726,6 +714,36 @@ public class CardEdit_View extends BaseView implements
 
 
     // Внутренние методы
+    private void processLoginRequest(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                startEditWork(data);
+                break;
+
+            case RESULT_CANCELED:
+                setResult(RESULT_CANCELED);
+                finish();
+                break;
+
+            default:
+                showErrorMsg(R.string.error_unknown_result_code, "Unknown result code: "+resultCode);
+                break;
+        }
+    }
+
+    private void processImageSelection(int resultCode, @Nullable Intent data) {
+        selectImageMode = false;
+
+        try {
+            if (RESULT_OK == resultCode)
+                presenter.processSelectedImage(data);
+        }
+        catch (Exception e) {
+            showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private void startEditWork(Intent intent) {
         try {
             presenter.processInputIntent(intent);
