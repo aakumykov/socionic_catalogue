@@ -172,12 +172,13 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void setList(List<iGridItem> list) {
         clearList();
-        addList(list, 0, false, null);
+        addList(list, 0, false, null, false);
     }
 
     @Override
-    public void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer positionToScroll) {
-
+    public void addList(List<iGridItem> inputList, int position,
+                        boolean forceLoadMoreItem, @Nullable Integer positionToScroll, boolean isTemporaryList)
+    {
         iGridItem lastExistingItem = getLastContentItem(position);
         iGridItem firstNewItem = (inputList.size()>0) ? inputList.get(0) : null;
 
@@ -189,12 +190,19 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         this.itemsList.addAll(position, inputList);
-        this.originalItemsList = this.itemsList;
+
+        if (!isTemporaryList)
+            this.originalItemsList = this.itemsList;
 
         int count = inputList.size();
         notifyItemRangeChanged(position, count);
 
         showLoadMoreItem(position + count);
+    }
+
+    private void setFilteredList(List<iGridItem> list) {
+        clearList();
+        addList(list, 0, false, null, true);
     }
 
     @Override
@@ -356,8 +364,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                itemsList = (ArrayList<iGridItem>) results.values;
-                //setList(itemsList);
+                List<iGridItem> resultsList = (ArrayList<iGridItem>) results.values;
+                setFilteredList(resultsList);
             }
         };
     }
