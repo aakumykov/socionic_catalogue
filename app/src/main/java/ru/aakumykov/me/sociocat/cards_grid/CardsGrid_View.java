@@ -122,10 +122,11 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
 
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.search, menu);
+
+        super.onCreateOptionsMenu(menu);
 
 //        initSearchWidget(menu);
 
