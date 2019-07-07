@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -192,7 +193,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.itemsList.addAll(position, inputList);
 
         if (!isTemporaryList)
-            this.originalItemsList = this.itemsList;
+            this.originalItemsList.addAll(this.itemsList);
 
         int count = inputList.size();
         notifyItemRangeChanged(position, count);
@@ -207,9 +208,10 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void restoreOriginalList() {
-        this.itemsList = this.originalItemsList;
+        List<iGridItem> restoredList = new ArrayList<>(this.originalItemsList);
+        this.originalItemsList.clear();
         this.filteredItemsList.clear();
-        notifyDataSetChanged();
+        setList(restoredList);
     }
 
     @Override
@@ -217,14 +219,14 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         GridItem_Card cardItem = new GridItem_Card();
         cardItem.setPayload(card);
         itemsList.add(cardItem);
-        originalItemsList = itemsList;
+        originalItemsList.addAll(itemsList);
         notifyItemChanged(getMaxIndex());
     }
 
     @Override
     public void addItem(iGridItem gridItem) {
         itemsList.add(gridItem);
-        originalItemsList = itemsList;
+        originalItemsList.addAll(itemsList);
         notifyItemChanged(getMaxIndex());
     }
 
@@ -232,7 +234,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void updateItem(int position, iGridItem newGridItem) {
         if (position > 0) {
             itemsList.set(position, newGridItem);
-            originalItemsList = itemsList;
+            originalItemsList.addAll(itemsList);
             notifyItemChanged(position);
         }
     }
@@ -241,7 +243,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void removeItem(iGridItem gridItem) {
         int index = itemsList.indexOf(gridItem);
         itemsList.remove(index);
-        originalItemsList = itemsList;
+        originalItemsList.addAll(itemsList);
         notifyItemRemoved(index);
     }
 
@@ -338,23 +340,27 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                String filterKey = String.valueOf(constraint);
+                String filterKey = String.valueOf(constraint).toLowerCase();
 
-                if (!filterKey.isEmpty()) {
+                if (filterKey.isEmpty()) {
+                    filteredItemsList.addAll(originalItemsList);
+                }
+                else {
                     List<iGridItem> justFilteredItems = new ArrayList<>();
 
                     for (iGridItem gridItem : originalItemsList) {
                         if (gridItem instanceof GridItem_Card) {
+
                             Card card = (Card) gridItem.getPayload();
-                            if (card.getTitle().contains(constraint))
+
+                            String title = card.getTitle().toLowerCase();
+
+                            if (title.contains(filterKey))
                                 justFilteredItems.add(gridItem);
                         }
                     }
 
-                    filteredItemsList = justFilteredItems;
-                }
-                else {
-                    filteredItemsList = originalItemsList;
+                    filteredItemsList.addAll(justFilteredItems);
                 }
 
                 FilterResults filterResults = new FilterResults();
