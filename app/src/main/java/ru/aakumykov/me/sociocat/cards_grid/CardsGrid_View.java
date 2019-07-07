@@ -20,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 
+import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -49,7 +50,7 @@ public class CardsGrid_View extends BaseView implements
     @BindView(R.id.speedDialView) SpeedDialView speedDialView;
     private SearchView searchView;
 
-    private CardsGrid_Adapter adapter;
+    private CardsGrid_Adapter dataAdapter;
     private iCardsGrid.iPresenter presenter;
     private StaggeredGridLayoutManager layoutManager;
     private boolean firstRun = true;
@@ -69,13 +70,13 @@ public class CardsGrid_View extends BaseView implements
         setPageTitle(R.string.CARDS_GRID_page_title);
 
         presenter = new CardsGrid_Presenter();
-        adapter = new CardsGrid_Adapter(this, this);
+        dataAdapter = new CardsGrid_Adapter(this, this);
 
         int colsNum = MyUtils.isPortraitOrientation(this) ?
                 Config.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : Config.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
         layoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
 
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager(layoutManager);
 
         configureSwipeRefresh();
@@ -149,13 +150,12 @@ public class CardsGrid_View extends BaseView implements
     // SearchView.OnQueryTextListener
     @Override
     public boolean onQueryTextSubmit(String queryText) {
-        showToast(queryText);
+        dataAdapter.getFilter().filter(queryText);
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        Log.d("SEARCH_VIEW", newText);
         return false;
     }
 
@@ -163,6 +163,7 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public boolean onClose() {
         searchView.clearFocus();
+        dataAdapter.restoreOriginalList();
         return false;
     }
 
@@ -246,13 +247,13 @@ public class CardsGrid_View extends BaseView implements
 
     // Внутренние методы
     private void bindComponents() {
-        presenter.linkViews(this, adapter);
-        adapter.linkPresenter(presenter);
+        presenter.linkViews(this, dataAdapter);
+        dataAdapter.linkPresenter(presenter);
     }
 
     private void unbindComponents() {
-        // В порядке, обратном bindComponents()
-        adapter.unlinkPresenter();
+        // В обратном порядке
+        dataAdapter.unlinkPresenter();
         presenter.unlinkViews();
     }
 
@@ -403,7 +404,7 @@ public class CardsGrid_View extends BaseView implements
                 Card card = data.getParcelableExtra(Constants.CARD);
                 iGridItem gridItem = new GridItem_Card();
                 gridItem.setPayload(card);
-                adapter.updateItem(positionInWork, gridItem);
+                dataAdapter.updateItem(positionInWork, gridItem);
                 positionInWork = -1;
             }
             catch (Exception e) {
@@ -425,6 +426,6 @@ public class CardsGrid_View extends BaseView implements
         iGridItem gridItem = new GridItem_Card();
         gridItem.setPayload(card);
 
-        adapter.addItem(gridItem);
+        dataAdapter.addItem(gridItem);
     }
 }

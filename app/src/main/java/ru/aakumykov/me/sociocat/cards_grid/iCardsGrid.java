@@ -40,7 +40,7 @@ public interface iCardsGrid {
 
         void setList(List<iGridItem> inputList);
         void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition);
-        void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition);
+        void restoreOriginalList();
 
         void addItem(Card card);
         void addItem(iGridItem gridItem);
@@ -59,6 +59,10 @@ public interface iCardsGrid {
         void hideThrobber(int position);
 
         void showPopupMenu(int mode, int position, View view, iGridViewHolder gridViewHolder);
+    }
+
+    interface iSearchFilterUser {
+        void onDataFiltered(List<iGridItem> filteredItemsList);
     }
 
     interface iPresenter {

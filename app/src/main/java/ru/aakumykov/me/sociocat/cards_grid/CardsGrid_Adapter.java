@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +21,6 @@ import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_LoadMore;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Throbber;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
-import ru.aakumykov.me.sociocat.cards_grid.view_holders.BaseViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.Throbber_ViewHolder;
@@ -27,18 +28,24 @@ import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
-        iCardsGrid.iGridView
+        iCardsGrid.iGridView,
+        Filterable
 {
     private final static String TAG = "CardsGrid_Adapter";
+
     private List<iGridItem> itemsList = new ArrayList<>();
+    private List<iGridItem> filteredItemsList = new ArrayList<>();
+    private List<iGridItem> originalItemsList = new ArrayList<>();
+
     private iCardsGrid.iPresenter presenter;
-    private iCardsGrid.iPageView pageView;
+//    private iCardsGrid.iPageView pageView;
+    private iCardsGrid.iSearchFilterUser searchFilterUser;
     private iCardsGrid.iGridItemClickListener gridItemClickListener;
 
     private int fakeIndex = 0;
 
     public CardsGrid_Adapter(iCardsGrid.iPageView pageView, iCardsGrid.iGridItemClickListener gridItemClickListener) {
-        this.pageView = pageView;
+//        this.pageView = pageView;
         this.gridItemClickListener = gridItemClickListener;
     }
 
@@ -181,7 +188,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 inputList.remove(0);
         }
 
-        itemsList.addAll(position, inputList);
+        this.itemsList.addAll(position, inputList);
+        this.originalItemsList = this.itemsList;
 
         int count = inputList.size();
         notifyItemRangeChanged(position, count);
@@ -190,10 +198,10 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition) {
-        clearList();
-        if (inputList.size() > 0)
-            addList(inputList, 0, true, scrollToPosition);
+    public void restoreOriginalList() {
+        this.itemsList = this.originalItemsList;
+        this.filteredItemsList.clear();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -201,12 +209,14 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         GridItem_Card cardItem = new GridItem_Card();
         cardItem.setPayload(card);
         itemsList.add(cardItem);
+        originalItemsList = itemsList;
         notifyItemChanged(getMaxIndex());
     }
 
     @Override
     public void addItem(iGridItem gridItem) {
         itemsList.add(gridItem);
+        originalItemsList = itemsList;
         notifyItemChanged(getMaxIndex());
     }
 
@@ -214,6 +224,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void updateItem(int position, iGridItem newGridItem) {
         if (position > 0) {
             itemsList.set(position, newGridItem);
+            originalItemsList = itemsList;
             notifyItemChanged(position);
         }
     }
@@ -222,6 +233,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void removeItem(iGridItem gridItem) {
         int index = itemsList.indexOf(gridItem);
         itemsList.remove(index);
+        originalItemsList = itemsList;
         notifyItemRemoved(index);
     }
 
@@ -309,6 +321,45 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         gridViewHolder.fade();
         popupMenu.show();
+    }
+
+
+    // Filterable
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String filterKey = String.valueOf(constraint);
+
+                if (!filterKey.isEmpty()) {
+                    List<iGridItem> justFilteredItems = new ArrayList<>();
+
+                    for (iGridItem gridItem : originalItemsList) {
+                        if (gridItem instanceof GridItem_Card) {
+                            Card card = (Card) gridItem.getPayload();
+                            if (card.getTitle().contains(constraint))
+                                justFilteredItems.add(gridItem);
+                        }
+                    }
+
+                    filteredItemsList = justFilteredItems;
+                }
+                else {
+                    filteredItemsList = originalItemsList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredItemsList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                itemsList = (ArrayList<iGridItem>) results.values;
+                //setList(itemsList);
+            }
+        };
     }
 
 

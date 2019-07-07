@@ -34,7 +34,7 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
-    public void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition) {
+    public void restoreOriginalList() {
 
     }
 
