@@ -59,10 +59,9 @@ public interface iCardsGrid {
         void hideThrobber(int position);
 
         void showPopupMenu(int mode, int position, View view, iGridViewHolder gridViewHolder);
-    }
 
-    interface iSearchFilterUser {
-        void onDataFiltered(List<iGridItem> filteredItemsList);
+        void enableFiltering();
+        void disableFiltering();
     }
 
     interface iPresenter {

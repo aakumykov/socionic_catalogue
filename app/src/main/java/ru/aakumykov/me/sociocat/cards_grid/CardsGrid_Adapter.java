@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,12 +34,11 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private final static String TAG = "CardsGrid_Adapter";
 
     private List<iGridItem> itemsList = new ArrayList<>();
-    private List<iGridItem> filteredItemsList = new ArrayList<>();
     private List<iGridItem> originalItemsList = new ArrayList<>();
+    private List<iGridItem> filteredItemsList = new ArrayList<>();
+    private boolean filterIsEnabled = false;
 
     private iCardsGrid.iPresenter presenter;
-//    private iCardsGrid.iPageView pageView;
-    private iCardsGrid.iSearchFilterUser searchFilterUser;
     private iCardsGrid.iGridItemClickListener gridItemClickListener;
 
     private int fakeIndex = 0;
@@ -333,6 +331,16 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         popupMenu.show();
     }
 
+    @Override
+    public void enableFiltering() {
+        this.filterIsEnabled = true;
+    }
+
+    @Override
+    public void disableFiltering() {
+        this.filterIsEnabled = false;
+    }
+
 
     // Filterable
     @Override
@@ -371,8 +379,10 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                List<iGridItem> resultsList = (ArrayList<iGridItem>) results.values;
-                setFilteredList(resultsList);
+                if (filterIsEnabled) {
+                    List<iGridItem> resultsList = (ArrayList<iGridItem>) results.values;
+                    setFilteredList(resultsList);
+                }
             }
         };
     }
@@ -428,4 +438,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
         return null;
     }
+
+
 }

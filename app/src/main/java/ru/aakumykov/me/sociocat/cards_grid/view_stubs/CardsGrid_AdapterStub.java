@@ -95,4 +95,14 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     public void showPopupMenu(int mode, int position, View view, iGridViewHolder gridViewHolder) {
 
     }
+
+    @Override
+    public void enableFiltering() {
+
+    }
+
+    @Override
+    public void disableFiltering() {
+
+    }
 }

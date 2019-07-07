@@ -20,7 +20,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 
-import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -137,6 +136,16 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+            dataAdapter.disableFiltering();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public void onUserLogin() {
 
     }
@@ -156,6 +165,7 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        dataAdapter.enableFiltering();
         dataAdapter.getFilter().filter(newText);
         return false;
     }
@@ -164,9 +174,12 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public boolean onClose() {
         searchView.clearFocus();
+        dataAdapter.disableFiltering();
         dataAdapter.restoreOriginalList();
         return false;
     }
+
+    //
 
 
     // iPageView
@@ -350,6 +363,7 @@ public class CardsGrid_View extends BaseView implements
 
             searchView.setOnQueryTextListener(this);
             searchView.setOnCloseListener(this);
+//            searchView.setOnFocusChangeListener();
 //            searchView.setOnClickListener(this);
 
         } catch (Exception e) {
@@ -429,4 +443,6 @@ public class CardsGrid_View extends BaseView implements
 
         dataAdapter.addItem(gridItem);
     }
+
+
 }
