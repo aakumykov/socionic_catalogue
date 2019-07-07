@@ -360,6 +360,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         }
                     }
 
+                    filteredItemsList.clear();
                     filteredItemsList.addAll(justFilteredItems);
                 }
 

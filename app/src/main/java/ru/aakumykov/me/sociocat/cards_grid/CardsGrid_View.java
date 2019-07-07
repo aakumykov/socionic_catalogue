@@ -156,6 +156,7 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        dataAdapter.getFilter().filter(newText);
         return false;
     }
 
