@@ -1,13 +1,18 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -40,6 +45,7 @@ public class CardsGrid_View extends BaseView implements
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.speedDialView) SpeedDialView speedDialView;
+    private SearchView searchView;
 
     private CardsGrid_Adapter adapter;
     private iCardsGrid.iPresenter presenter;
@@ -112,6 +118,18 @@ public class CardsGrid_View extends BaseView implements
         super.onStop();
         saveListState();
         unbindComponents();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.search, menu);
+
+//        initSearchWidget(menu);
+
+        return true;
     }
 
     @Override
@@ -295,6 +313,23 @@ public class CardsGrid_View extends BaseView implements
 
     }
 
+    private void initSearchWidget(Menu menu) {
+        // Ассоциируем настройку поиска с SearchView
+        try {
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            searchView = (SearchView) menu.findItem(R.id.actionSearch).getActionView();
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setMaxWidth(Integer.MAX_VALUE);
+
+//            searchView.setOnQueryTextListener(this);
+//            searchView.setOnCloseListener(this);
+
+        } catch (Exception e) {
+            showErrorMsg(R.string.error_configuring_page, e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private void saveListState() {
         listStateStorage = new Bundle();
         Parcelable listState = layoutManager.onSaveInstanceState();
@@ -318,7 +353,7 @@ public class CardsGrid_View extends BaseView implements
             switch (resultCode) {
                 case RESULT_OK:
                     Card card = data.getParcelableExtra(Constants.CARD);
-                    addTestItem(card);
+                    addItem(card);
                     break;
 
                 case RESULT_CANCELED:
@@ -358,22 +393,7 @@ public class CardsGrid_View extends BaseView implements
         }
     }
 
-    private void addTestItem() {
-        int num = new Random().nextInt();
-
-        Card card = new Card();
-        card.setType(Constants.TEXT_CARD);
-        card.setTitle(num+"_карточка");
-        card.setQuote(num+" цитата");
-        card.setDescription(num+" описание");
-
-        iGridItem gridItem = new GridItem_Card();
-        gridItem.setPayload(card);
-
-        adapter.addItem(gridItem);
-    }
-
-    private void addTestItem(Card card) {
+    private void addItem(Card card) {
         int num = new Random().nextInt();
 
         iGridItem gridItem = new GridItem_Card();
