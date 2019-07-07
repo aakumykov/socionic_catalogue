@@ -199,11 +199,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         showLoadMoreItem(position + count);
     }
 
-    private void setFilteredList(List<iGridItem> list) {
-        clearList();
-        addList(list, 0, false, null, true);
-    }
-
     @Override
     public void restoreOriginalList() {
         List<iGridItem> restoredList = new ArrayList<>(this.originalItemsList);
@@ -439,5 +434,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return null;
     }
 
-
+    private void setFilteredList(List<iGridItem> list) {
+        clearList();
+        addList(list, 0, false, null, true);
+    }
 }

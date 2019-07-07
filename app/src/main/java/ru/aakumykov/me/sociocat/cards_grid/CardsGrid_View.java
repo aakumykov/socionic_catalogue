@@ -159,7 +159,6 @@ public class CardsGrid_View extends BaseView implements
     // SearchView.OnQueryTextListener
     @Override
     public boolean onQueryTextSubmit(String queryText) {
-        dataAdapter.getFilter().filter(queryText);
         return false;
     }
 
@@ -178,8 +177,6 @@ public class CardsGrid_View extends BaseView implements
         dataAdapter.restoreOriginalList();
         return false;
     }
-
-    //
 
 
     // iPageView
@@ -360,6 +357,7 @@ public class CardsGrid_View extends BaseView implements
             searchView = (SearchView) menu.findItem(R.id.actionSearch).getActionView();
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
             searchView.setMaxWidth(Integer.MAX_VALUE);
+//            searchView.setSubmitButtonEnabled(true);
 
             searchView.setOnQueryTextListener(this);
             searchView.setOnCloseListener(this);
