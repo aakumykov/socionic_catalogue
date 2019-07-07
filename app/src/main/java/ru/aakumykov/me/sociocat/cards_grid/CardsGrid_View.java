@@ -12,7 +12,7 @@ import android.view.MenuInflater;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
+import android.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -38,7 +38,9 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsGrid_View extends BaseView implements
         iCardsGrid.iPageView,
-        iCardsGrid.iGridItemClickListener
+        iCardsGrid.iGridItemClickListener,
+        SearchView.OnQueryTextListener,
+        SearchView.OnCloseListener
 {
     private static final String TAG = "CardsGrid_View";
 
@@ -128,7 +130,7 @@ public class CardsGrid_View extends BaseView implements
 
         super.onCreateOptionsMenu(menu);
 
-//        initSearchWidget(menu);
+        initSearchWidget(menu);
 
         return true;
     }
@@ -141,6 +143,27 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public void onUserLogout() {
 
+    }
+
+
+    // SearchView.OnQueryTextListener
+    @Override
+    public boolean onQueryTextSubmit(String queryText) {
+        showToast(queryText);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        Log.d("SEARCH_VIEW", newText);
+        return false;
+    }
+
+    // SearchView.OnCloseListener
+    @Override
+    public boolean onClose() {
+        searchView.clearFocus();
+        return false;
     }
 
 
@@ -318,12 +341,14 @@ public class CardsGrid_View extends BaseView implements
         // Ассоциируем настройку поиска с SearchView
         try {
             SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
             searchView = (SearchView) menu.findItem(R.id.actionSearch).getActionView();
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
             searchView.setMaxWidth(Integer.MAX_VALUE);
 
-//            searchView.setOnQueryTextListener(this);
-//            searchView.setOnCloseListener(this);
+            searchView.setOnQueryTextListener(this);
+            searchView.setOnCloseListener(this);
+//            searchView.setOnClickListener(this);
 
         } catch (Exception e) {
             showErrorMsg(R.string.error_configuring_page, e.getMessage());
