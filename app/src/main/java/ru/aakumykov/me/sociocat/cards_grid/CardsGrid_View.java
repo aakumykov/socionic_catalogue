@@ -41,6 +41,7 @@ public class CardsGrid_View extends BaseView implements
         iCardsGrid.iGridItemClickListener,
         SearchView.OnQueryTextListener,
         SearchView.OnCloseListener,
+        SearchView.OnFocusChangeListener,
         View.OnClickListener
 {
     private static final String TAG = "CardsGrid_View";
@@ -132,7 +133,7 @@ public class CardsGrid_View extends BaseView implements
 
         super.onCreateOptionsMenu(menu);
 
-        initSearchWidget(menu);
+        configureSearchWidget(menu);
 
         return true;
     }
@@ -170,6 +171,13 @@ public class CardsGrid_View extends BaseView implements
             dataAdapter.getFilter().filter(newText);
         }
         return false;
+    }
+
+
+    // SearchView.OnFocusChangeListener
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+
     }
 
 
@@ -366,7 +374,7 @@ public class CardsGrid_View extends BaseView implements
 
     }
 
-    private void initSearchWidget(Menu menu) {
+    private void configureSearchWidget(Menu menu) {
         // Ассоциируем настройку поиска с SearchView
         try {
             SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -378,6 +386,9 @@ public class CardsGrid_View extends BaseView implements
             searchView.setOnQueryTextListener(this);
             searchView.setOnSearchClickListener(this);
             searchView.setOnCloseListener(this);
+            searchView.setOnClickListener(this);
+
+            searchView.setOnFocusChangeListener(this);
 
         } catch (Exception e) {
             showErrorMsg(R.string.error_configuring_page, e.getMessage());
