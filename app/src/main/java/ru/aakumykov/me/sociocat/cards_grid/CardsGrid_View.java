@@ -159,6 +159,17 @@ public class CardsGrid_View extends BaseView implements
     }
 
 
+    // View.OnClickListener
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.actionSearch:
+                Log.d(TAG, "onClick(): R.id.actionSearch");
+                dataAdapter.enableFiltering();
+                break;
+        }
+    }
+
     // SearchView.OnQueryTextListener
     @Override
     public boolean onQueryTextSubmit(String queryText) {
@@ -177,13 +188,18 @@ public class CardsGrid_View extends BaseView implements
     // SearchView.OnFocusChangeListener
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-
+        Log.d(TAG, "View: "+v+", has focus: "+hasFocus);
+        if (v.getId() == R.id.actionSearch && hasFocus) {
+            dataAdapter.enableFiltering();
+        }
     }
 
 
     // SearchView.OnCloseListener
     @Override
     public boolean onClose() {
+        Log.d(TAG, "onClose()");
+
         dataAdapter.disableFiltering();
 
         searchView.clearFocus();
@@ -191,17 +207,6 @@ public class CardsGrid_View extends BaseView implements
         return false;
     }
 
-
-    // View.OnClickListener
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.actionSearch:
-                Log.d(TAG, "onClick(): R.id.actionSearch");
-                dataAdapter.enableFiltering();
-                break;
-        }
-    }
 
 
     // iPageView
@@ -386,9 +391,7 @@ public class CardsGrid_View extends BaseView implements
             searchView.setOnQueryTextListener(this);
             searchView.setOnSearchClickListener(this);
             searchView.setOnCloseListener(this);
-            searchView.setOnClickListener(this);
-
-            searchView.setOnFocusChangeListener(this);
+            searchView.setOnQueryTextFocusChangeListener(this);
 
         } catch (Exception e) {
             showErrorMsg(R.string.error_configuring_page, e.getMessage());
