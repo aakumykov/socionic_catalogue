@@ -105,4 +105,9 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     public void disableFiltering() {
 
     }
+
+    @Override
+    public boolean filterIsEnabled() {
+        return false;
+    }
 }

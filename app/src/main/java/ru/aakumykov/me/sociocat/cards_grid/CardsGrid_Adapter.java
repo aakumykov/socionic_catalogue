@@ -336,6 +336,11 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.filterIsEnabled = false;
     }
 
+    @Override
+    public boolean filterIsEnabled() {
+        return this.filterIsEnabled;
+    }
+
 
     // Filterable
     @Override

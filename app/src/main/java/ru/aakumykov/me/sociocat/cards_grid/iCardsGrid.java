@@ -62,6 +62,7 @@ public interface iCardsGrid {
 
         void enableFiltering();
         void disableFiltering();
+        boolean filterIsEnabled();
     }
 
     interface iPresenter {

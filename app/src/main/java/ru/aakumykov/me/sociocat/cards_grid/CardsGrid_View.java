@@ -40,7 +40,8 @@ public class CardsGrid_View extends BaseView implements
         iCardsGrid.iPageView,
         iCardsGrid.iGridItemClickListener,
         SearchView.OnQueryTextListener,
-        SearchView.OnCloseListener
+        SearchView.OnCloseListener,
+        View.OnClickListener
 {
     private static final String TAG = "CardsGrid_View";
 
@@ -118,7 +119,8 @@ public class CardsGrid_View extends BaseView implements
     @Override
     protected void onStop() {
         super.onStop();
-        saveListState();
+//        saveListState();
+        dataAdapter.disableFiltering();
         unbindComponents();
     }
 
@@ -164,18 +166,33 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        dataAdapter.enableFiltering();
-        dataAdapter.getFilter().filter(newText);
+        if (dataAdapter.filterIsEnabled()) {
+            dataAdapter.getFilter().filter(newText);
+        }
         return false;
     }
+
 
     // SearchView.OnCloseListener
     @Override
     public boolean onClose() {
-        searchView.clearFocus();
         dataAdapter.disableFiltering();
+
+        searchView.clearFocus();
         dataAdapter.restoreOriginalList();
         return false;
+    }
+
+
+    // View.OnClickListener
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.actionSearch:
+                Log.d(TAG, "onClick(): R.id.actionSearch");
+                dataAdapter.enableFiltering();
+                break;
+        }
     }
 
 
@@ -357,12 +374,10 @@ public class CardsGrid_View extends BaseView implements
             searchView = (SearchView) menu.findItem(R.id.actionSearch).getActionView();
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
             searchView.setMaxWidth(Integer.MAX_VALUE);
-//            searchView.setSubmitButtonEnabled(true);
 
             searchView.setOnQueryTextListener(this);
+            searchView.setOnSearchClickListener(this);
             searchView.setOnCloseListener(this);
-//            searchView.setOnFocusChangeListener();
-//            searchView.setOnClickListener(this);
 
         } catch (Exception e) {
             showErrorMsg(R.string.error_configuring_page, e.getMessage());
