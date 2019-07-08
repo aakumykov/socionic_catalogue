@@ -40,6 +40,7 @@ public interface iCardsGrid {
 
         void setList(List<iGridItem> inputList);
         void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition, boolean isTemporaryList);
+        void updateList(List<iGridItem> newList);
         void restoreOriginalList();
 
         void addItem(Card card);
