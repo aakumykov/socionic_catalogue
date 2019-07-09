@@ -34,11 +34,6 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
-    public void updateList(List<iGridItem> newList) {
-
-    }
-
-    @Override
     public void restoreOriginalList() {
 
     }

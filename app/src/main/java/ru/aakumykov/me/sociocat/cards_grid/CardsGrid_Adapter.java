@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.UnaryOperator;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
@@ -203,36 +201,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void updateList(List<iGridItem> newItemsList) {
-
-        int currentItemsCount = itemsList.size() - 1;
-        int newItemsCount = newItemsList.size();
-        int removedItemsCount = (newItemsCount < currentItemsCount) ? currentItemsCount - newItemsCount : 0;
-
-        Log.d(TAG, "currentItemsCount: "+itemsList.size()+", newItemsCount: "+newItemsCount+", removedItemsCount: "+removedItemsCount);
-
-        for (int i=0; i<newItemsCount; i++) {
-            Log.d(TAG, "updated item: "+i);
-            iGridItem newItem = newItemsList.get(i);
-            itemsList.set(i, newItem);
-            notifyItemChanged(i, newItem);
-        }
-
-//        notifyItemRangeChanged(0, newItemsCount, newItemsList);
-//
-//        for (int i=currentItemsCount-1; i>=newItemsCount; i--) {
-//            Log.d(TAG, "removed item: "+i);
-//            itemsList.remove(i);
-//            notifyItemRemoved(i);
-//        }
-////        notifyItemRangeRemoved(newItemsCount, removedItemsCount);
-
-        itemsList.clear();
-        itemsList.addAll(newItemsList);
-        notifyItemRangeChanged(0, newItemsCount, newItemsList);
-    }
-
-    @Override
     public void restoreOriginalList() {
         List<iGridItem> restoredList = new ArrayList<>(this.originalItemsList);
         this.originalItemsList.clear();
@@ -414,7 +382,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (filterIsEnabled) {
                     List<iGridItem> resultsList = (ArrayList<iGridItem>) results.values;
-                    setFilteredList(resultsList);
+                    updateList(resultsList);
                 }
             }
         };
@@ -472,9 +440,12 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return null;
     }
 
-    private void setFilteredList(List<iGridItem> list) {
-//        clearList();
-//        addList(list, 0, false, null, true);
-        updateList(list);
+    private void updateList(List<iGridItem> newItemsList) {
+        final GridItem_DiffCallback gridItemDiffCallback = new GridItem_DiffCallback(this.itemsList, newItemsList);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(gridItemDiffCallback);
+
+        this.itemsList.clear();
+        this.itemsList.addAll(newItemsList);
+        diffResult.dispatchUpdatesTo(this);
     }
 }
