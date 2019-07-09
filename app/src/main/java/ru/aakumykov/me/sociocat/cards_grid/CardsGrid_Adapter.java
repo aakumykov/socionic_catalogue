@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
@@ -197,6 +199,28 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyItemRangeChanged(position, count);
 
         showLoadMoreItem(position + count);
+    }
+
+    @Override
+    public void updateList(List<iGridItem> newList) {
+//        ArrayList<iGridItem> currentItemsList = new ArrayList<>(itemsList);
+        int currentItemsCount = itemsList.size() - 1;
+        int newItemsCount = newList.size();
+        int removedItemsCount = (newItemsCount < currentItemsCount) ? currentItemsCount - newItemsCount : 0;
+
+        Log.d(TAG, "currentItemsCount: "+itemsList.size()+", newItemsCount: "+newItemsCount+", removedItemsCount: "+removedItemsCount);
+
+        for (int i=0; i<newItemsCount; i++) {
+            Log.d(TAG, "updated item: "+i);
+            itemsList.set(i, newList.get(i));
+        }
+        notifyItemRangeChanged(0, newItemsCount);
+
+        for (int i=currentItemsCount-1; i>=newItemsCount; i--) {
+            Log.d(TAG, "removed item: "+i);
+            itemsList.remove(i);
+        }
+        notifyItemRangeRemoved(newItemsCount, removedItemsCount);
     }
 
     @Override
@@ -440,7 +464,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     private void setFilteredList(List<iGridItem> list) {
-        clearList();
-        addList(list, 0, false, null, true);
+//        clearList();
+//        addList(list, 0, false, null, true);
+        updateList(list);
     }
 }
