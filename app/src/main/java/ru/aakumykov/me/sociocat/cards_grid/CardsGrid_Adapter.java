@@ -393,7 +393,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private void showLoadMoreItem(int position) {
         GridItem_LoadMore loadMoreItem = new GridItem_LoadMore();
         itemsList.add(position, loadMoreItem);
-        notifyItemChanged(position);
+//        notifyItemChanged(position);
+        notifyItemInserted(position);
     }
 
     private void onPopupItemClicked(MenuItem menuItem, int position) {
@@ -441,11 +442,41 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     private void updateList(List<iGridItem> newItemsList) {
-        final GridItem_DiffCallback gridItemDiffCallback = new GridItem_DiffCallback(this.itemsList, newItemsList);
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(gridItemDiffCallback);
+        int oldItemsCount = itemsList.size();
+        int newItemsCount = newItemsList.size();
+        int listsSizeDifference = oldItemsCount - newItemsCount;
 
-        this.itemsList.clear();
-        this.itemsList.addAll(newItemsList);
-        diffResult.dispatchUpdatesTo(this);
+        if (listsSizeDifference > 0) { // Элементов стало меньше
+            // Обновляю часть на новые
+            for (int i=0; i<newItemsCount; i++) {
+                iGridItem newItem = newItemsList.get(i);
+                itemsList.set(i, newItem);
+                notifyItemChanged(i, newItem);
+            }
+
+            // Удаляю лишние
+            for (int i=oldItemsCount-1; i>=newItemsCount; i--) {
+                itemsList.remove(i);
+            }
+            notifyItemRangeRemoved(newItemsCount, listsSizeDifference);
+        }
+        else { // Элементов стало больше
+            // Обновляю существующие на новые
+            for (int i=0; i<oldItemsCount; i++) {
+                iGridItem newItem = newItemsList.get(i);
+                itemsList.set(i, newItem);
+                notifyItemChanged(i, newItem);
+            }
+
+            // Добавляю недостающие
+            int diffSize = -1*listsSizeDifference;
+            for (int i=diffSize; i<newItemsCount; i++) {
+                iGridItem newItem = newItemsList.get(i);
+                itemsList.add(newItem);
+            }
+            notifyItemRangeInserted(newItemsCount, diffSize);
+        }
+
+        showLoadMoreItem(newItemsCount);
     }
 }

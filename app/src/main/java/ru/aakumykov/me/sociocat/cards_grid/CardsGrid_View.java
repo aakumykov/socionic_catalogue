@@ -203,7 +203,7 @@ public class CardsGrid_View extends BaseView implements
         dataAdapter.disableFiltering();
 
         searchView.clearFocus();
-        dataAdapter.restoreOriginalList();
+//        dataAdapter.restoreOriginalList();
         return false;
     }
 
