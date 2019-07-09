@@ -11,6 +11,7 @@ import android.widget.Filterable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -202,28 +203,33 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void updateList(List<iGridItem> newList) {
+    public void updateList(List<iGridItem> newItemsList) {
 
         int currentItemsCount = itemsList.size() - 1;
-        int newItemsCount = newList.size();
+        int newItemsCount = newItemsList.size();
         int removedItemsCount = (newItemsCount < currentItemsCount) ? currentItemsCount - newItemsCount : 0;
 
         Log.d(TAG, "currentItemsCount: "+itemsList.size()+", newItemsCount: "+newItemsCount+", removedItemsCount: "+removedItemsCount);
 
         for (int i=0; i<newItemsCount; i++) {
             Log.d(TAG, "updated item: "+i);
-            iGridItem newItem = newList.get(i);
+            iGridItem newItem = newItemsList.get(i);
             itemsList.set(i, newItem);
             notifyItemChanged(i, newItem);
         }
-//        notifyItemRangeChanged(0, newItemsCount);
 
-        for (int i=currentItemsCount-1; i>=newItemsCount; i--) {
-            Log.d(TAG, "removed item: "+i);
-            itemsList.remove(i);
-            notifyItemRemoved(i);
-        }
-//        notifyItemRangeRemoved(newItemsCount, removedItemsCount);
+//        notifyItemRangeChanged(0, newItemsCount, newItemsList);
+//
+//        for (int i=currentItemsCount-1; i>=newItemsCount; i--) {
+//            Log.d(TAG, "removed item: "+i);
+//            itemsList.remove(i);
+//            notifyItemRemoved(i);
+//        }
+////        notifyItemRangeRemoved(newItemsCount, removedItemsCount);
+
+        itemsList.clear();
+        itemsList.addAll(newItemsList);
+        notifyItemRangeChanged(0, newItemsCount, newItemsList);
     }
 
     @Override
