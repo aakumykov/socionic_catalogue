@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -352,12 +353,15 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 String filterKey = String.valueOf(constraint).toLowerCase();
 
                 if (filterKey.isEmpty()) {
+                    filteredItemsList.clear();
                     filteredItemsList.addAll(originalItemsList);
                 }
                 else {
                     List<iGridItem> justFilteredItems = new ArrayList<>();
 
-                    for (iGridItem gridItem : originalItemsList) {
+                    List<iGridItem> haystack = new ArrayList<>(originalItemsList);
+
+                    for (iGridItem gridItem : haystack) {
                         if (gridItem instanceof GridItem_Card) {
 
                             Card card = (Card) gridItem.getPayload();
@@ -382,6 +386,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (filterIsEnabled) {
                     List<iGridItem> resultsList = (ArrayList<iGridItem>) results.values;
+                    Log.d(TAG, "results count: "+resultsList.size());
                     updateList(resultsList);
                 }
             }
@@ -442,41 +447,87 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     private void updateList(List<iGridItem> newItemsList) {
-        int oldItemsCount = itemsList.size();
+
+        hideLoadMoreItem(getMaxIndex());
+
+        int oldItemsCount = getItemCount();
         int newItemsCount = newItemsList.size();
         int listsSizeDifference = oldItemsCount - newItemsCount;
 
-        if (listsSizeDifference > 0) { // Элементов стало меньше
-            // Обновляю часть на новые
-            for (int i=0; i<newItemsCount; i++) {
+        /*Log.d(TAG, " ======> oldItemsCount: "+oldItemsCount+", newItemsCount: "+
+                newItemsCount+", listsSizeDifference: "+listsSizeDifference);*/
+
+        if (listsSizeDifference >= 0) {
+            for (int i = 0; i < newItemsCount; i++) {
                 iGridItem newItem = newItemsList.get(i);
                 itemsList.set(i, newItem);
                 notifyItemChanged(i, newItem);
             }
 
-            // Удаляю лишние
-            for (int i=oldItemsCount-1; i>=newItemsCount; i--) {
+            for (int i = oldItemsCount - 1; i >= newItemsCount; i--) {
+                iGridItem oldItem = itemsList.get(i);
                 itemsList.remove(i);
+                notifyItemRemoved(i);
             }
-            notifyItemRangeRemoved(newItemsCount, listsSizeDifference);
         }
-        else { // Элементов стало больше
-            // Обновляю существующие на новые
-            for (int i=0; i<oldItemsCount; i++) {
+        else {
+            for (int i=0; i<itemsList.size(); i++) {
                 iGridItem newItem = newItemsList.get(i);
                 itemsList.set(i, newItem);
                 notifyItemChanged(i, newItem);
             }
 
-            // Добавляю недостающие
-            int diffSize = -1*listsSizeDifference;
-            for (int i=diffSize; i<newItemsCount; i++) {
+            int addedItemsCount = -1 * listsSizeDifference;
+//            if (0!=itemsList.size())
+//                addedItemsCount += 1;
+            for (int i=0; i<addedItemsCount; i++) {
                 iGridItem newItem = newItemsList.get(i);
                 itemsList.add(newItem);
+                notifyItemInserted(i);
             }
-            notifyItemRangeInserted(newItemsCount, diffSize);
         }
 
         showLoadMoreItem(newItemsCount);
+
+//        int oldItemsCount = itemsList.size(); // I.e. without "Loadmore" element
+//        int newItemsCount = newItemsList.size();
+//        int listsSizeDifference = oldItemsCount - newItemsCount;
+//
+
+//
+////        hideLoadMoreItem(oldItemsCount);
+//
+//        if (listsSizeDifference > 0) { // Элементов стало меньше
+//            // Обновляю часть на новые
+//            for (int i=0; i<newItemsCount; i++) {
+//                iGridItem newItem = newItemsList.get(i);
+//                itemsList.set(i, newItem);
+//                notifyItemChanged(i, newItem);
+//            }
+//
+//            // Удаляю лишние
+//            if (oldItemsCount > newItemsCount) {
+//                itemsList.subList(newItemsCount, oldItemsCount).clear();
+//            }
+//            notifyItemRangeRemoved(newItemsCount, listsSizeDifference);
+//        }
+//        else { // Элементов стало больше
+//            // Обновляю существующие на новые
+//            for (int i=0; i<oldItemsCount; i++) {
+//                iGridItem newItem = newItemsList.get(i);
+//                itemsList.set(i, newItem);
+//                notifyItemChanged(i, newItem);
+//            }
+//
+//            // Добавляю недостающие
+//            int diffSize = -1*listsSizeDifference;
+//            for (int i=diffSize; i<newItemsCount; i++) {
+//                iGridItem newItem = newItemsList.get(i);
+//                itemsList.add(newItem);
+//            }
+//            notifyItemRangeInserted(newItemsCount, diffSize);
+//        }
+//
+////        showLoadMoreItem(newItemsCount);
     }
 }
