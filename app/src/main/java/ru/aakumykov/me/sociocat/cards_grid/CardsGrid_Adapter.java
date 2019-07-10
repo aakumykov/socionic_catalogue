@@ -192,8 +192,10 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         this.itemsList.addAll(position, inputList);
 
-        if (!isTemporaryList)
+        if (!isTemporaryList) {
+            this.originalItemsList.clear();
             this.originalItemsList.addAll(this.itemsList);
+        }
 
         int count = inputList.size();
         notifyItemRangeChanged(position, count);
@@ -214,14 +216,20 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         GridItem_Card cardItem = new GridItem_Card();
         cardItem.setPayload(card);
         itemsList.add(cardItem);
+
+        originalItemsList.clear();
         originalItemsList.addAll(itemsList);
+
         notifyItemChanged(getMaxIndex());
     }
 
     @Override
     public void addItem(iGridItem gridItem) {
         itemsList.add(gridItem);
+
+        originalItemsList.clear();
         originalItemsList.addAll(itemsList);
+
         notifyItemChanged(getMaxIndex());
     }
 
@@ -229,7 +237,10 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void updateItem(int position, iGridItem newGridItem) {
         if (position > 0) {
             itemsList.set(position, newGridItem);
+
+            originalItemsList.clear();
             originalItemsList.addAll(itemsList);
+
             notifyItemChanged(position);
         }
     }
@@ -238,7 +249,10 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void removeItem(iGridItem gridItem) {
         int index = itemsList.indexOf(gridItem);
         itemsList.remove(index);
+
+        originalItemsList.clear();
         originalItemsList.addAll(itemsList);
+
         notifyItemRemoved(index);
     }
 
@@ -386,7 +400,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (filterIsEnabled) {
                     List<iGridItem> resultsList = (ArrayList<iGridItem>) results.values;
-                    Log.d(TAG, "results count: "+resultsList.size());
+//                    Log.d(TAG, "results count: "+resultsList.size());
                     updateList(resultsList);
                 }
             }
@@ -485,46 +499,5 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         showLoadMoreItem(newItemsCount);
-
-//        int oldItemsCount = itemsList.size(); // I.e. without "Loadmore" element
-//        int newItemsCount = newItemsList.size();
-//        int listsSizeDifference = oldItemsCount - newItemsCount;
-//
-
-//
-////        hideLoadMoreItem(oldItemsCount);
-//
-//        if (listsSizeDifference > 0) { // Элементов стало меньше
-//            // Обновляю часть на новые
-//            for (int i=0; i<newItemsCount; i++) {
-//                iGridItem newItem = newItemsList.get(i);
-//                itemsList.set(i, newItem);
-//                notifyItemChanged(i, newItem);
-//            }
-//
-//            // Удаляю лишние
-//            if (oldItemsCount > newItemsCount) {
-//                itemsList.subList(newItemsCount, oldItemsCount).clear();
-//            }
-//            notifyItemRangeRemoved(newItemsCount, listsSizeDifference);
-//        }
-//        else { // Элементов стало больше
-//            // Обновляю существующие на новые
-//            for (int i=0; i<oldItemsCount; i++) {
-//                iGridItem newItem = newItemsList.get(i);
-//                itemsList.set(i, newItem);
-//                notifyItemChanged(i, newItem);
-//            }
-//
-//            // Добавляю недостающие
-//            int diffSize = -1*listsSizeDifference;
-//            for (int i=diffSize; i<newItemsCount; i++) {
-//                iGridItem newItem = newItemsList.get(i);
-//                itemsList.add(newItem);
-//            }
-//            notifyItemRangeInserted(newItemsCount, diffSize);
-//        }
-//
-////        showLoadMoreItem(newItemsCount);
     }
 }
