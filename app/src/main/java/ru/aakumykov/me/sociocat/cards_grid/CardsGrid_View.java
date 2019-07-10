@@ -189,6 +189,7 @@ public class CardsGrid_View extends BaseView implements
         }
     }
 
+
     // SearchView.OnQueryTextListener
     @Override
     public boolean onQueryTextSubmit(String queryText) {
