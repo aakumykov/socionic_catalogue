@@ -24,6 +24,10 @@ public interface iCardsGrid {
         void onGridItemLongClicked(View view);
     }
 
+    interface iLoadMoreClickListener {
+        void onLoadMoreClicked(View view);
+    }
+
     interface iPageView extends iBaseView {
         <T> void setTitle(T title);
 

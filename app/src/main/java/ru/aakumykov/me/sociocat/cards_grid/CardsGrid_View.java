@@ -40,6 +40,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class CardsGrid_View extends BaseView implements
         iCardsGrid.iPageView,
         iCardsGrid.iGridItemClickListener,
+        iCardsGrid.iLoadMoreClickListener,
         SearchView.OnQueryTextListener,
         SearchView.OnCloseListener,
         SearchView.OnFocusChangeListener,
@@ -72,7 +73,7 @@ public class CardsGrid_View extends BaseView implements
         setPageTitle(R.string.CARDS_GRID_page_title);
 
         presenter = new CardsGrid_Presenter();
-        dataAdapter = new CardsGrid_Adapter(this, this);
+        dataAdapter = new CardsGrid_Adapter(this, this, this);
 
         int colsNum = MyUtils.isPortraitOrientation(this) ?
                 Config.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : Config.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
@@ -301,6 +302,14 @@ public class CardsGrid_View extends BaseView implements
         int position = recyclerView.getChildLayoutPosition(view);
         iGridViewHolder gridViewHolder = (iGridViewHolder) recyclerView.getChildViewHolder(view);
         presenter.onCardLongClicked(position, view, gridViewHolder);
+    }
+
+
+    // iLoadMoreClickListener
+    @Override
+    public void onLoadMoreClicked(View view) {
+        int position = recyclerView.getChildAdapterPosition(view);
+        presenter.onLoadMoreClicked(position);
     }
 
 

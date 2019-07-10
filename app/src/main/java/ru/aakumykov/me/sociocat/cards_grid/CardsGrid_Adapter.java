@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.Filterable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -42,12 +40,16 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private iCardsGrid.iPresenter presenter;
     private iCardsGrid.iGridItemClickListener gridItemClickListener;
+    private iCardsGrid.iLoadMoreClickListener loadMoreClickListener;
 
     private int fakeIndex = 0;
 
-    public CardsGrid_Adapter(iCardsGrid.iPageView pageView, iCardsGrid.iGridItemClickListener gridItemClickListener) {
-//        this.pageView = pageView;
+    public CardsGrid_Adapter(iCardsGrid.iPageView pageView,
+                             iCardsGrid.iGridItemClickListener gridItemClickListener,
+                             iCardsGrid.iLoadMoreClickListener loadMoreClickListener
+    ) {
         this.gridItemClickListener = gridItemClickListener;
+        this.loadMoreClickListener = loadMoreClickListener;
     }
 
 
@@ -124,6 +126,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         else if (gridItem instanceof GridItem_LoadMore) {
             LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) viewHolder;
             loadMoreViewHolder.initialize(position, payload);
+            loadMoreViewHolder.bindClickListener(loadMoreClickListener);
         }
         else if (gridItem instanceof GridItem_Throbber) {
             Throbber_ViewHolder throbberViewHolder = (Throbber_ViewHolder) viewHolder;
@@ -192,8 +195,9 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         this.itemsList.addAll(position, inputList);
 
-        if (!isTemporaryList)
-            refreshOriginalItemsList();
+        if (!isTemporaryList) {
+            originalItemsList.addAll(inputList);
+        }
 
         int count = inputList.size();
         notifyItemRangeChanged(position, count);
@@ -204,7 +208,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void restoreOriginalList() {
         List<iGridItem> restoredList = new ArrayList<>(this.originalItemsList);
-        refreshOriginalItemsList();
+
         setList(restoredList);
     }
 
@@ -213,14 +217,14 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         GridItem_Card cardItem = new GridItem_Card();
         cardItem.setPayload(card);
         itemsList.add(cardItem);
-        refreshOriginalItemsList();
+        synchronizeOriginalItemsList();
         notifyItemChanged(getMaxIndex());
     }
 
     @Override
     public void addItem(iGridItem gridItem) {
         itemsList.add(gridItem);
-        refreshOriginalItemsList();
+        synchronizeOriginalItemsList();
         notifyItemChanged(getMaxIndex());
     }
 
@@ -228,7 +232,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void updateItem(int position, iGridItem newGridItem) {
         if (position > 0) {
             itemsList.set(position, newGridItem);
-            refreshOriginalItemsList();
+            synchronizeOriginalItemsList();
             notifyItemChanged(position);
         }
     }
@@ -237,7 +241,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void removeItem(iGridItem gridItem) {
         int index = itemsList.indexOf(gridItem);
         itemsList.remove(index);
-        refreshOriginalItemsList();
+        synchronizeOriginalItemsList();
         notifyItemRemoved(index);
     }
 
@@ -253,12 +257,14 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public iGridItem getItemBeforeLoadmore(int loadmorePosition) {
-        iGridItem loadmoreItem = getGridItem(loadmorePosition);
-        // TODO: выбрасывать исключение бы...
+        /*iGridItem loadmoreItem = getGridItem(loadmorePosition);
+
         if (loadmoreItem instanceof GridItem_LoadMore)
             return getGridItem(loadmorePosition - 1);
         else
-            return null;
+            return null;*/
+
+        return getLastContentItem(originalItemsList.size()-1);
     }
 
     @Override
@@ -425,27 +431,30 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private void clearList() {
         int start = 0;
         int count = itemsList.size();
+
         itemsList.clear();
+        originalItemsList.clear();
+
         notifyItemRangeRemoved(start, count);
     }
 
     private iGridItem getLastContentItem(int bottomBorder) {
-        if (0 == itemsList.size())
+        if (0 == originalItemsList.size())
             return null;
 
-        bottomBorder -= 1;
+//        bottomBorder -= 1;
 
         iGridItem gridItem ;
 
         for (int i=bottomBorder; i>=0; i--) {
-            gridItem = itemsList.get(i);
+            gridItem = originalItemsList.get(i);
             if (gridItem instanceof GridItem_Card)
                 return gridItem;
         }
         return null;
     }
 
-    private void refreshOriginalItemsList() {
+    private void synchronizeOriginalItemsList() {
         originalItemsList.clear();
         originalItemsList.addAll(itemsList);
     }
