@@ -192,10 +192,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         this.itemsList.addAll(position, inputList);
 
-        if (!isTemporaryList) {
-            this.originalItemsList.clear();
-            this.originalItemsList.addAll(this.itemsList);
-        }
+        if (!isTemporaryList)
+            refreshOriginalItemsList();
 
         int count = inputList.size();
         notifyItemRangeChanged(position, count);
@@ -206,8 +204,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void restoreOriginalList() {
         List<iGridItem> restoredList = new ArrayList<>(this.originalItemsList);
-        this.originalItemsList.clear();
-        this.filteredItemsList.clear();
+        refreshOriginalItemsList();
         setList(restoredList);
     }
 
@@ -216,20 +213,14 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         GridItem_Card cardItem = new GridItem_Card();
         cardItem.setPayload(card);
         itemsList.add(cardItem);
-
-        originalItemsList.clear();
-        originalItemsList.addAll(itemsList);
-
+        refreshOriginalItemsList();
         notifyItemChanged(getMaxIndex());
     }
 
     @Override
     public void addItem(iGridItem gridItem) {
         itemsList.add(gridItem);
-
-        originalItemsList.clear();
-        originalItemsList.addAll(itemsList);
-
+        refreshOriginalItemsList();
         notifyItemChanged(getMaxIndex());
     }
 
@@ -237,10 +228,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void updateItem(int position, iGridItem newGridItem) {
         if (position > 0) {
             itemsList.set(position, newGridItem);
-
-            originalItemsList.clear();
-            originalItemsList.addAll(itemsList);
-
+            refreshOriginalItemsList();
             notifyItemChanged(position);
         }
     }
@@ -249,10 +237,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void removeItem(iGridItem gridItem) {
         int index = itemsList.indexOf(gridItem);
         itemsList.remove(index);
-
-        originalItemsList.clear();
-        originalItemsList.addAll(itemsList);
-
+        refreshOriginalItemsList();
         notifyItemRemoved(index);
     }
 
@@ -458,6 +443,11 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 return gridItem;
         }
         return null;
+    }
+
+    private void refreshOriginalItemsList() {
+        originalItemsList.clear();
+        originalItemsList.addAll(itemsList);
     }
 
     private void updateList(List<iGridItem> newItemsList) {
