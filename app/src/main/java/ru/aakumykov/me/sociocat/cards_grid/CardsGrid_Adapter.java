@@ -477,13 +477,10 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 notifyItemChanged(i, newItem);
             }
 
-            int addedItemsCount = -1 * listsSizeDifference;
-//            if (0!=itemsList.size())
-//                addedItemsCount += 1;
-            for (int i=0; i<addedItemsCount; i++) {
+            for (int i=itemsList.size(); i<newItemsCount; i++) {
                 iGridItem newItem = newItemsList.get(i);
                 itemsList.add(newItem);
-                notifyItemInserted(i);
+                notifyItemChanged(i, newItem);
             }
         }
 
