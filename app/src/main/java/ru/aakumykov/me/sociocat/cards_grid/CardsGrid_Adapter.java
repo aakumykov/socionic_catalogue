@@ -244,7 +244,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public iGridItem getGridItem(int position) {
-        return (position > 0 && position <= getMaxIndex()) ? itemsList.get(position) : null;
+        return (position >= 0 && position <= getMaxIndex()) ? itemsList.get(position) : null;
     }
 
     @Override

@@ -91,7 +91,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     @Override
     public void onCardClicked(int position) {
-        Card card = (Card) gridView.getGridItem(position).getPayload();
+        iGridItem gridItem = gridView.getGridItem(position);
+        Card card = (Card) gridItem.getPayload();
 //        this.openedItemPosition = position;
         pageView.goShowCard(card);
     }
