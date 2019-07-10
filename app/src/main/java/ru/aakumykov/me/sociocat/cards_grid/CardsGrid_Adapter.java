@@ -452,42 +452,44 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private void updateList(List<iGridItem> newItemsList) {
 
-        hideLoadMoreItem(getMaxIndex());
+//        hideLoadMoreItem(getMaxIndex());
 
-        int oldItemsCount = getItemCount();
+        int oldItemsCount = getItemCount() - 1;
         int newItemsCount = newItemsList.size();
         int listsSizeDifference = oldItemsCount - newItemsCount;
 
-        /*Log.d(TAG, " ======> oldItemsCount: "+oldItemsCount+", newItemsCount: "+
-                newItemsCount+", listsSizeDifference: "+listsSizeDifference);*/
-
-        if (listsSizeDifference >= 0) {
+        if (listsSizeDifference >= 0) { // после фильтрации элементов стало меньше
+            // обновляю начальные
             for (int i = 0; i < newItemsCount; i++) {
                 iGridItem newItem = newItemsList.get(i);
                 itemsList.set(i, newItem);
                 notifyItemChanged(i, newItem);
             }
 
+            // удаляю лишние
             for (int i = oldItemsCount - 1; i >= newItemsCount; i--) {
                 iGridItem oldItem = itemsList.get(i);
                 itemsList.remove(i);
                 notifyItemRemoved(i);
             }
         }
-        else {
-            for (int i=0; i<itemsList.size(); i++) {
+        else { // после фильтрации элементов стало больше
+            // обновляю начальные
+            for (int i=0; i < oldItemsCount; i++) {
                 iGridItem newItem = newItemsList.get(i);
                 itemsList.set(i, newItem);
                 notifyItemChanged(i, newItem);
             }
 
-            for (int i=itemsList.size(); i<newItemsCount; i++) {
+            // добавляю недостающие
+            for (int i=itemsList.size(); i < newItemsCount; i++) {
                 iGridItem newItem = newItemsList.get(i);
-                itemsList.add(newItem);
-                notifyItemChanged(i, newItem);
+                itemsList.add(i, newItem);
+//                notifyItemChanged(i, newItem);
+                notifyItemInserted(i);
             }
         }
 
-        showLoadMoreItem(newItemsCount);
+//        showLoadMoreItem(newItemsCount);
     }
 }
