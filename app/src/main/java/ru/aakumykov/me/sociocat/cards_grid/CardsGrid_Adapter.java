@@ -452,13 +452,12 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private void updateList(List<iGridItem> newItemsList) {
 
-//        hideLoadMoreItem(getMaxIndex());
-
         int oldItemsCount = getItemCount() - 1;
         int newItemsCount = newItemsList.size();
         int listsSizeDifference = oldItemsCount - newItemsCount;
 
-        if (listsSizeDifference >= 0) { // после фильтрации элементов стало меньше
+        // после фильтрации элементов стало меньше
+        if (listsSizeDifference >= 0) {
             // обновляю начальные
             for (int i = 0; i < newItemsCount; i++) {
                 iGridItem newItem = newItemsList.get(i);
@@ -473,7 +472,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 notifyItemRemoved(i);
             }
         }
-        else { // после фильтрации элементов стало больше
+        // после фильтрации элементов стало больше
+        else {
             // обновляю начальные
             for (int i=0; i < oldItemsCount; i++) {
                 iGridItem newItem = newItemsList.get(i);
@@ -482,14 +482,12 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
 
             // добавляю недостающие
-            for (int i=itemsList.size(); i < newItemsCount; i++) {
+            for (int i=itemsList.size()-1; i < newItemsCount; i++) {
                 iGridItem newItem = newItemsList.get(i);
                 itemsList.add(i, newItem);
 //                notifyItemChanged(i, newItem);
                 notifyItemInserted(i);
             }
         }
-
-//        showLoadMoreItem(newItemsCount);
     }
 }
