@@ -49,6 +49,8 @@ public final class Constants {
     public final static String USER_ID = "USER_ID";
     public final static String USER_EMAIL = "USER_EMAIL";
 
+    public final static String FILTER_KEY = "FILTER_KEY";
+
     public final static String TEXT_CARD = "TEXT_CARD";
     public final static String IMAGE_CARD = "IMAGE_CARD";
     public final static String AUDIO_CARD = "AUDIO_CARD";

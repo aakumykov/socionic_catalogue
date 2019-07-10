@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -123,6 +124,23 @@ public class CardsGrid_View extends BaseView implements
 //        saveListState();
         dataAdapter.disableFiltering();
         unbindComponents();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(Constants.FILTER_KEY, searchView.getQuery().toString());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        String filterKey = savedInstanceState.getString(Constants.FILTER_KEY, "");
+        if (filterKey.isEmpty()) {
+            dataAdapter.restoreOriginalList();
+        } else {
+            searchView.setQuery(filterKey, true);
+        }
     }
 
     @Override
