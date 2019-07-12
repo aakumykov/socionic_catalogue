@@ -183,7 +183,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void addList(List<iGridItem> inputList, int position,
                         boolean forceLoadMoreItem, @Nullable Integer positionToScroll, boolean isTemporaryList)
     {
-        iGridItem lastExistingItem = getLastContentItem(position);
+        iGridItem lastExistingItem = getLastContentItem();
         iGridItem firstNewItem = (inputList.size()>0) ? inputList.get(0) : null;
 
         if (null != lastExistingItem && null != firstNewItem) {
@@ -218,14 +218,14 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         cardItem.setPayload(card);
         itemsList.add(cardItem);
         synchronizeOriginalItemsList();
-        notifyItemChanged(getMaxIndex());
+        notifyItemChanged(itemsList.size()-1);
     }
 
     @Override
     public void addItem(iGridItem gridItem) {
         itemsList.add(gridItem);
         synchronizeOriginalItemsList();
-        notifyItemChanged(getMaxIndex());
+        notifyItemChanged(itemsList.size()-1);
     }
 
     @Override
@@ -257,14 +257,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public iGridItem getItemBeforeLoadmore(int loadmorePosition) {
-        /*iGridItem loadmoreItem = getGridItem(loadmorePosition);
-
-        if (loadmoreItem instanceof GridItem_LoadMore)
-            return getGridItem(loadmorePosition - 1);
-        else
-            return null;*/
-
-        return getLastContentItem(originalItemsList.size()-1);
+        return getLastContentItem();
     }
 
     @Override
@@ -438,20 +431,13 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyItemRangeRemoved(start, count);
     }
 
-    private iGridItem getLastContentItem(int bottomBorder) {
-        if (0 == originalItemsList.size())
+    private iGridItem getLastContentItem() {
+        int index = originalItemsList.size() - 1;
+
+        if (index < 0)
             return null;
 
-//        bottomBorder -= 1;
-
-        iGridItem gridItem ;
-
-        for (int i=bottomBorder; i>=0; i--) {
-            gridItem = originalItemsList.get(i);
-            if (gridItem instanceof GridItem_Card)
-                return gridItem;
-        }
-        return null;
+        return originalItemsList.get(index);
     }
 
     private void synchronizeOriginalItemsList() {
