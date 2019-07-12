@@ -213,15 +213,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void addItem(Card card) {
-        GridItem_Card cardItem = new GridItem_Card();
-        cardItem.setPayload(card);
-        itemsList.add(cardItem);
-        synchronizeOriginalItemsList();
-        notifyItemChanged(itemsList.size()-1);
-    }
-
-    @Override
     public void addItem(iGridItem gridItem) {
         itemsList.add(gridItem);
         synchronizeOriginalItemsList();

@@ -47,7 +47,6 @@ public interface iCardsGrid {
 
         void restoreOriginalList();
 
-        void addItem(Card card);
         void addItem(iGridItem gridItem);
         void updateItem(int position, iGridItem newGridItem);
         void removeItem(iGridItem gridItem);
