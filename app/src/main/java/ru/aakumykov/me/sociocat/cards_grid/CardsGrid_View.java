@@ -243,11 +243,6 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void scrollToPosition(Integer position) {
-        recyclerView.scrollToPosition(position);
-    }
-
-    @Override
     public void goShowCard(Card card) {
         Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, card.getKey());

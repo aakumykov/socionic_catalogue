@@ -31,8 +31,6 @@ public interface iCardsGrid {
     interface iPageView extends iBaseView {
         <T> void setTitle(T title);
 
-        void scrollToPosition(Integer position);
-
         void goShowCard(Card card);
         void goCreateCard(Constants.CardType cardType);
         void goEditCard(Card card, int position);
