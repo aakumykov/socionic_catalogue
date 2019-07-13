@@ -68,7 +68,7 @@ public interface iCardsGrid {
         void disableFiltering();
         boolean filterIsEnabled();
 
-        void applyFilter(String constraintText);
+        void applyFilterToGrid(String filterKey);
     }
 
     interface iPresenter {

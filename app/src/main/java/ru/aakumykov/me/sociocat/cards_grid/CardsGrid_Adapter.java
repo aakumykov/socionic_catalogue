@@ -334,8 +334,12 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void applyFilter(String constraintText) {
-//        getFilter().filter(constraintText);
+    public void applyFilterToGrid(String filterKey) {
+        List<iGridItem> filteredList = filterList(originalItemsList, filterKey);
+        itemsList.clear();
+        itemsList.addAll(filteredList);
+        notifyDataSetChanged();
+        showLoadMoreItem(itemsList.size());
     }
 
 
@@ -351,21 +355,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 resultsList.add(item);
         }
         return resultsList;
-    }
-
-    private void filterAndAppend(List<iGridItem> list) {
-        String filterKey = pageView.getFilterString();
-
-    }
-
-    private void filterAndAppend(iGridItem gridItem) {
-
-    }
-
-    private void displayList(List<iGridItem> list) {
-        this.itemsList.clear();
-        this.itemsList.addAll(list);
-        notifyDataSetChanged();
     }
 
     private void showLoadMoreItem(int position) {

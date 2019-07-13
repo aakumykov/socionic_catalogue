@@ -72,7 +72,7 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
-    public void applyFilter(String constraintText) {
+    public void applyFilterToGrid(String filterKey) {
 
     }
 
