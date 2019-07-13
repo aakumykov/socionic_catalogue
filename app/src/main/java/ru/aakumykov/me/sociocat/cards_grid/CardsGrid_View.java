@@ -198,8 +198,8 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if (dataAdapter.filterIsEnabled())
-            dataAdapter.applyFilter(newText);
+//        if (dataAdapter.filterIsEnabled())
+//            dataAdapter.applyFilter(newText);
         return false;
     }
 

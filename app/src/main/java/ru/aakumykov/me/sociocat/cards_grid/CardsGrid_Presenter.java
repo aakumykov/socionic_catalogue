@@ -205,7 +205,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
                     case APPEND:
 //                        mList.addAll(newItemsList);
-                        gridView.addList(newItemsList, insertPosition, false, null, false);
+                        gridView.addList(newItemsList, insertPosition, false, null);
                         break;
 
                     default:

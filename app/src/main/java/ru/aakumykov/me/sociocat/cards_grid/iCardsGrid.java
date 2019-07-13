@@ -43,7 +43,7 @@ public interface iCardsGrid {
         void unlinkPresenter();
 
         void setList(List<iGridItem> inputList);
-        void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition, boolean isTemporaryList);
+        void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition);
 
         void restoreOriginalList();
 

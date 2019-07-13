@@ -4,8 +4,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,9 +26,7 @@ import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
-        iCardsGrid.iGridView,
-        Filterable,
-        MyFilter.iMyFilterCallbacks
+        iCardsGrid.iGridView
 {
     private final static String TAG = "CardsGrid_Adapter";
 
@@ -179,30 +175,35 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void setList(List<iGridItem> list) {
         clearList();
-        addList(list, 0, false, null, false);
+        addList(list, 0, false, null);
     }
 
     @Override
-    public void addList(List<iGridItem> list, int position,
-                        boolean forceLoadMoreItem, @Nullable Integer positionToScroll, boolean isTemporaryList)
-    {
+    public void addList(List<iGridItem> inputList,
+                        int position,
+                        boolean forceLoadMoreItem,
+                        @Nullable Integer positionToScroll
+    ) {
+        // Удаляю дубликаты на стыке двух списков
         iGridItem lastExistingItem = getLastContentItem();
-        iGridItem firstNewItem = (list.size()>0) ? list.get(0) : null;
+        iGridItem firstNewItem = (inputList.size()>0) ? inputList.get(0) : null;
 
         if (null != lastExistingItem && null != firstNewItem) {
             Card lastExistingCard = (Card) lastExistingItem.getPayload();
             Card firstNewCard = (Card) firstNewItem.getPayload();
             if (lastExistingCard.getKey().equals(firstNewCard.getKey()))
-                list.remove(0);
+                inputList.remove(0);
         }
 
-        if (!isTemporaryList) {
-            originalItemsList.addAll(list);
-        }
+        // Присоединяю добавляемый список к существующему
+        originalItemsList.addAll(inputList);
 
-        filterAndAppend(list);
+        List<iGridItem> filteredList = filterList(inputList, pageView.getFilterString());
+        int filteredItemsCount = filteredList.size();
+        itemsList.addAll(position, filteredList);
+        notifyItemRangeInserted(position, filteredItemsCount);
 
-//        showLoadMoreItem(position + count);
+        showLoadMoreItem(position + filteredItemsCount);
     }
 
     @Override
@@ -216,7 +217,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void addItem(iGridItem gridItem) {
         itemsList.add(gridItem);
         synchronizeOriginalItemsList();
-        notifyItemChanged(itemsList.size()-1);
+        notifyItemChanged(itemsList.size() - 1);
     }
 
     @Override
@@ -334,70 +335,30 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void applyFilter(String constraintText) {
-        getFilter().filter(constraintText);
+//        getFilter().filter(constraintText);
     }
 
 
-    // Filterable
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                String filterKey = String.valueOf(constraint).toLowerCase();
-
-                if (filterKey.isEmpty()) {
-                    filteredItemsList.clear();
-                    filteredItemsList.addAll(originalItemsList);
-                }
-                else {
-                    List<iGridItem> justFilteredItems = new ArrayList<>();
-
-                    List<iGridItem> haystack = new ArrayList<>(originalItemsList);
-
-                    for (iGridItem gridItem : haystack) {
-                        if (gridItem instanceof GridItem_Card) {
-
-                            Card card = (Card) gridItem.getPayload();
-
-                            String title = card.getTitle().toLowerCase();
-
-                            if (title.contains(filterKey))
-                                justFilteredItems.add(gridItem);
-                        }
-                    }
-
-                    filteredItemsList.clear();
-                    filteredItemsList.addAll(justFilteredItems);
-                }
-
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = filteredItemsList;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                if (filterIsEnabled) {
-                    List<iGridItem> resultsList = (ArrayList<iGridItem>) results.values;
-//                    updateList(resultsList);
-                    displayList(resultsList);
-                }
-            }
-        };
-    }
-
-
-    // MyFilter.iFilterCallbacks
-    @Override
-    public void onListFiltered(List<iGridItem> filteredList) {
-
-    }
 
     // Внутренние методы
+    private List<iGridItem> filterList(List<iGridItem> inputList, String filterKey) {
+        List<iGridItem> resultsList = new ArrayList<>();
+        for (iGridItem item : inputList) {
+            Card card = (Card) item.getPayload();
+            String cardTitle = card.getTitle().toLowerCase();
+            filterKey = filterKey.toLowerCase();
+            if (cardTitle.contains(filterKey))
+                resultsList.add(item);
+        }
+        return resultsList;
+    }
+
     private void filterAndAppend(List<iGridItem> list) {
         String filterKey = pageView.getFilterString();
-        MyFilter myFilter = new MyFilter();
+
+    }
+
+    private void filterAndAppend(iGridItem gridItem) {
 
     }
 
