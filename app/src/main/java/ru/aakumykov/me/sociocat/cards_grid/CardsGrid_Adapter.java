@@ -29,7 +29,8 @@ import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         iCardsGrid.iGridView,
-        Filterable
+        Filterable,
+        MyFilter.iMyFilterCallbacks
 {
     private final static String TAG = "CardsGrid_Adapter";
 
@@ -182,29 +183,24 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void addList(List<iGridItem> inputList, int position,
+    public void addList(List<iGridItem> list, int position,
                         boolean forceLoadMoreItem, @Nullable Integer positionToScroll, boolean isTemporaryList)
     {
         iGridItem lastExistingItem = getLastContentItem();
-        iGridItem firstNewItem = (inputList.size()>0) ? inputList.get(0) : null;
+        iGridItem firstNewItem = (list.size()>0) ? list.get(0) : null;
 
         if (null != lastExistingItem && null != firstNewItem) {
             Card lastExistingCard = (Card) lastExistingItem.getPayload();
             Card firstNewCard = (Card) firstNewItem.getPayload();
             if (lastExistingCard.getKey().equals(firstNewCard.getKey()))
-                inputList.remove(0);
+                list.remove(0);
         }
-
-//        this.itemsList.addAll(position, inputList);
 
         if (!isTemporaryList) {
-            originalItemsList.addAll(inputList);
+            originalItemsList.addAll(list);
         }
 
-//        int count = inputList.size();
-//        notifyItemRangeChanged(position, count);
-
-        filterAndShow(inputList);
+        filterAndAppend(list);
 
 //        showLoadMoreItem(position + count);
     }
@@ -392,10 +388,17 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
+    // MyFilter.iFilterCallbacks
+    @Override
+    public void onListFiltered(List<iGridItem> filteredList) {
+
+    }
+
     // Внутренние методы
-    private void filterAndShow(List<iGridItem> list) {
+    private void filterAndAppend(List<iGridItem> list) {
         String filterKey = pageView.getFilterString();
-        getFilter().filter(filterKey);
+        MyFilter myFilter = new MyFilter();
+
     }
 
     private void displayList(List<iGridItem> list) {
