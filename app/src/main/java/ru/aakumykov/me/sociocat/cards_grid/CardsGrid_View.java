@@ -198,9 +198,8 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if (dataAdapter.filterIsEnabled()) {
-            dataAdapter.getFilter().filter(newText);
-        }
+        if (dataAdapter.filterIsEnabled())
+            dataAdapter.applyFilter(newText);
         return false;
     }
 
@@ -283,6 +282,11 @@ public class CardsGrid_View extends BaseView implements
         intent.putExtra(Constants.CARD, card);
         intent.setAction(Constants.ACTION_EDIT);
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+    }
+
+    @Override
+    public String getFilterString() {
+        return searchView.getQuery().toString();
     }
 
 

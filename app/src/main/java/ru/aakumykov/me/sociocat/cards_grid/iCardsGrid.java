@@ -34,6 +34,8 @@ public interface iCardsGrid {
         void goShowCard(Card card);
         void goCreateCard(Constants.CardType cardType);
         void goEditCard(Card card, int position);
+
+        String getFilterString();
     }
 
     interface iGridView {
@@ -65,6 +67,8 @@ public interface iCardsGrid {
         void enableFiltering();
         void disableFiltering();
         boolean filterIsEnabled();
+
+        void applyFilter(String constraintText);
     }
 
     interface iPresenter {

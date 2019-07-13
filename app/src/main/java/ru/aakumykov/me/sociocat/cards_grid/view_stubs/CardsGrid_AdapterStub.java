@@ -72,6 +72,11 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
+    public void applyFilter(String constraintText) {
+
+    }
+
+    @Override
     public void hideLoadMoreItem(int position) {
 
     }
@@ -105,4 +110,5 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     public boolean filterIsEnabled() {
         return false;
     }
+
 }

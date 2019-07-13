@@ -39,6 +39,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private boolean filterIsEnabled = false;
 
     private iCardsGrid.iPresenter presenter;
+    private iCardsGrid.iPageView pageView;
     private iCardsGrid.iGridItemClickListener gridItemClickListener;
     private iCardsGrid.iLoadMoreClickListener loadMoreClickListener;
 
@@ -48,6 +49,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                              iCardsGrid.iGridItemClickListener gridItemClickListener,
                              iCardsGrid.iLoadMoreClickListener loadMoreClickListener
     ) {
+        this.pageView = pageView;
         this.gridItemClickListener = gridItemClickListener;
         this.loadMoreClickListener = loadMoreClickListener;
     }
@@ -193,16 +195,18 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 inputList.remove(0);
         }
 
-        this.itemsList.addAll(position, inputList);
+//        this.itemsList.addAll(position, inputList);
 
         if (!isTemporaryList) {
             originalItemsList.addAll(inputList);
         }
 
-        int count = inputList.size();
-        notifyItemRangeChanged(position, count);
+//        int count = inputList.size();
+//        notifyItemRangeChanged(position, count);
 
-        showLoadMoreItem(position + count);
+        filterAndShow(inputList);
+
+//        showLoadMoreItem(position + count);
     }
 
     @Override
@@ -332,6 +336,11 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return this.filterIsEnabled;
     }
 
+    @Override
+    public void applyFilter(String constraintText) {
+        getFilter().filter(constraintText);
+    }
+
 
     // Filterable
     @Override
@@ -375,8 +384,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (filterIsEnabled) {
                     List<iGridItem> resultsList = (ArrayList<iGridItem>) results.values;
-//                    Log.d(TAG, "results count: "+resultsList.size());
-                    updateList(resultsList);
+//                    updateList(resultsList);
+                    displayList(resultsList);
                 }
             }
         };
@@ -384,6 +393,17 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
     // Внутренние методы
+    private void filterAndShow(List<iGridItem> list) {
+        String filterKey = pageView.getFilterString();
+        getFilter().filter(filterKey);
+    }
+
+    private void displayList(List<iGridItem> list) {
+        this.itemsList.clear();
+        this.itemsList.addAll(list);
+        notifyDataSetChanged();
+    }
+
     private void showLoadMoreItem(int position) {
         GridItem_LoadMore loadMoreItem = new GridItem_LoadMore();
         itemsList.add(position, loadMoreItem);

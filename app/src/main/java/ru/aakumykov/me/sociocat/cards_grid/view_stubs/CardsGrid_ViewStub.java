@@ -132,4 +132,9 @@ public class CardsGrid_ViewStub implements iCardsGrid.iPageView {
     public void goEditCard(Card card, int position) {
 
     }
+
+    @Override
+    public String getFilterString() {
+        return null;
+    }
 }
