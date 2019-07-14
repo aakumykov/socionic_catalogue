@@ -285,6 +285,11 @@ public class CardsGrid_View extends BaseView implements
         return searchView.getQuery() + "";
     }
 
+    @Override
+    public void showTagLabel(String tagName) {
+
+    }
+
 
     // iGridItemClickListener
     @Override
