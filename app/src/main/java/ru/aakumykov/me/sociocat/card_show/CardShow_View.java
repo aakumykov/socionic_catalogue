@@ -181,7 +181,7 @@ public class CardShow_View extends BaseView implements
     public void goShowCardsWithTag(String tagName) {
         Intent intent = new Intent(this, CardsGrid_View.class);
         intent.putExtra(Constants.TAG_NAME, tagName);
-        startActivityForResult(intent, 123);
+        startActivity(intent);
     }
 
 

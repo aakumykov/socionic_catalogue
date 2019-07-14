@@ -450,4 +450,5 @@
     <string name="error_configuring_page">Error configuring page</string>
     <string name="MENU_user_profile">User profile</string>
     <string name="CARDS_GRID_loading_cards_with_tag">Loading cards with tag «%1$s»</string>
+    <string name="CARDS_GRID_cards_with_tag">Cards with tag «%1$s»</string>
 </resources>

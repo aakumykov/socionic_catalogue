@@ -37,6 +37,7 @@ public interface iCardsGrid {
         void goEditCard(Card card, int position);
 
         String getFilterString();
+
     }
 
     interface iGridView {

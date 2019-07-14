@@ -61,6 +61,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         String tagName = (null == intent) ? null : intent.getStringExtra(Constants.TAG_NAME);
 
         if (null != tagName) {
+            pageView.setPageTitle(R.string.CARDS_GRID_cards_with_tag, tagName);
+            pageView.activateUpButton();
             loadCardsWithTag(tagName, null, null);
         }
         else {

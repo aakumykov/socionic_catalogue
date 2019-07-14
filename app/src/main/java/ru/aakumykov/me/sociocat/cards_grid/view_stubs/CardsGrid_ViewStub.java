@@ -142,4 +142,5 @@ public class CardsGrid_ViewStub implements iCardsGrid.iPageView {
     public String getFilterString() {
         return null;
     }
+
 }
