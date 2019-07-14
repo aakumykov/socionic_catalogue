@@ -32,8 +32,8 @@ import ru.aakumykov.me.sociocat.card_show.list_items.LoadMore_Item;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
-        iListAdapter,
+public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
+        iDataAdapter,
         iCardView,
         iCommentsView
 {
@@ -44,7 +44,7 @@ public class ListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     private iPageView pageView;
     private iCardShow_View cardShowView;
 
-    public ListAdapter() {
+    public DataAdapter() {
         this.itemsList = new ArrayList<>();
     }
 
