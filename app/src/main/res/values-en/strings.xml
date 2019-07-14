@@ -86,7 +86,7 @@
     <string name="TAGS_LIST_tags_list">Tags list</string>
     <string name="TAG_SHOW_page_title">Tag «%1$s»</string>
     <string name="CARDS_LIST_page_title">Cards list</string>
-    <string name="CARD_SHOW_page_title_long">«%1$s», card viewing</string>
+    <string name="CARD_SHOW_page_title_long">Card «%1$s»</string>
     <string name="DIALOG_deleted_card_name">Really delete card «%1$s»</string>
     <string name="REGISTER_name">Nickame</string>
     <string name="REGISTER_password">Password</string>

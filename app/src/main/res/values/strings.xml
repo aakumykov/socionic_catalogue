@@ -88,7 +88,7 @@
     <string name="TAGS_LIST_tags_list">Список меток</string>
     <string name="TAG_SHOW_page_title">Метка «%1$s»</string>
     <string name="CARDS_LIST_page_title">Карточки</string>
-    <string name="CARD_SHOW_page_title_long">«%1$s», просмотр карточки</string>
+    <string name="CARD_SHOW_page_title_long">Карточка «%1$s»</string>
     <string name="DIALOG_deleted_card_name">Удалить карточку «%1$s»</string>
     <string name="REGISTER_name">Псевдоним</string>
     <string name="REGISTER_email" translatable="false">E-mail</string>

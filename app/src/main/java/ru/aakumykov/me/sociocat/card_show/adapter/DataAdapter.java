@@ -160,6 +160,8 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         if (null == card)
             throw new IllegalArgumentException("Card is null");
 
+        pageView.setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
+
         int cardPosition = 0;
 
         if (0 == itemsList.size())
