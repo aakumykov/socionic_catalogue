@@ -26,6 +26,15 @@ public class LoadMore_ViewHolder extends BaseViewHolder {
         this.presenter = presenter;
     }
 
+    public void bindClickListener(iCardsGrid.iLoadMoreClickListener loadMoreClickListener) {
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadMoreClickListener.onLoadMoreClicked(v);
+            }
+        });
+    }
+
     public void initialize(int position, Object payload) {
 
         Card card = (Card) payload;

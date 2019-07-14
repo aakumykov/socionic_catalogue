@@ -24,14 +24,18 @@ public interface iCardsGrid {
         void onGridItemLongClicked(View view);
     }
 
+    interface iLoadMoreClickListener {
+        void onLoadMoreClicked(View view);
+    }
+
     interface iPageView extends iBaseView {
         <T> void setTitle(T title);
-
-        void scrollToPosition(Integer position);
 
         void goShowCard(Card card);
         void goCreateCard(Constants.CardType cardType);
         void goEditCard(Card card, int position);
+
+        String getFilterString();
     }
 
     interface iGridView {
@@ -40,9 +44,9 @@ public interface iCardsGrid {
 
         void setList(List<iGridItem> inputList);
         void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition);
-        void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition);
 
-        void addItem(Card card);
+        void restoreOriginalList();
+
         void addItem(iGridItem gridItem);
         void updateItem(int position, iGridItem newGridItem);
         void removeItem(iGridItem gridItem);
@@ -59,6 +63,12 @@ public interface iCardsGrid {
         void hideThrobber(int position);
 
         void showPopupMenu(int mode, int position, View view, iGridViewHolder gridViewHolder);
+
+        void enableFiltering();
+        void disableFiltering();
+        boolean filterIsEnabled();
+
+        void applyFilterToGrid(String filterKey);
     }
 
     interface iPresenter {

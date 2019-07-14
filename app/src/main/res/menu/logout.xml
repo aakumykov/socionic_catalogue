@@ -5,6 +5,5 @@
     <item
         android:id="@+id/actionLogout"
         android:icon="@drawable/ic_logout3"
-        android:title="@string/MENU_logout"
-        app:showAsAction="ifRoom" />
+        android:title="@string/MENU_logout" />
 </menu>

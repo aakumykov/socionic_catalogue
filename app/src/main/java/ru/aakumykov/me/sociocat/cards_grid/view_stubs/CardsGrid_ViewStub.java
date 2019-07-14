@@ -119,11 +119,6 @@ public class CardsGrid_ViewStub implements iCardsGrid.iPageView {
     }
 
     @Override
-    public void scrollToPosition(Integer position) {
-
-    }
-
-    @Override
     public void goShowCard(Card card) {
 
     }
@@ -136,5 +131,10 @@ public class CardsGrid_ViewStub implements iCardsGrid.iPageView {
     @Override
     public void goEditCard(Card card, int position) {
 
+    }
+
+    @Override
+    public String getFilterString() {
+        return null;
     }
 }

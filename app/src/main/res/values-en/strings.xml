@@ -447,4 +447,6 @@
     <string name="CARD_EDIT_create_card_title">Creating a card</string>
     <string name="CARD_EDIT_edit_card_title">Edit card «%1$s»</string>
     <string name="error_unknown_result_code">Unknown result code</string>
+    <string name="error_configuring_page">Error configuring page</string>
+    <string name="MENU_user_profile">User profile</string>
 </resources>

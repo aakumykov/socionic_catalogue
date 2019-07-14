@@ -5,6 +5,5 @@
     <item
         android:id="@+id/actionProfile"
         android:icon="@drawable/ic_user_logged_in"
-        android:title="@string/MENU_user_logged_in"
-        app:showAsAction="ifRoom" />
+        android:title="@string/MENU_user_profile" />
 </menu>

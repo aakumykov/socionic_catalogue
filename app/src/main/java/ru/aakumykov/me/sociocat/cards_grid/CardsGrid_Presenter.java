@@ -67,7 +67,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     @Override
     public void onLoadMoreClicked(int position) {
         try {
-            Card lastCardBefore = (Card) gridView.getItemBeforeLoadmore(position).getPayload();
+            iGridItem gridItem = gridView.getItemBeforeLoadmore(position);
+            Card lastCardBefore = (Card) gridItem.getPayload();
             String startKey = lastCardBefore.getKey();
 
             iGridItem itemAfter = gridView.getItemAfterLoadmore(position);
@@ -91,7 +92,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     @Override
     public void onCardClicked(int position) {
-        Card card = (Card) gridView.getGridItem(position).getPayload();
+        iGridItem gridItem = gridView.getGridItem(position);
+        Card card = (Card) gridItem.getPayload();
 //        this.openedItemPosition = position;
         pageView.goShowCard(card);
     }

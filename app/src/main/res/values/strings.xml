@@ -455,4 +455,6 @@
     <string name="CARD_EDIT_create_card_title">Создание карточки</string>
     <string name="CARD_EDIT_edit_card_title">Правка карточки «%1$s»</string>
     <string name="error_unknown_result_code">Неизвестный код результата</string>
+    <string name="error_configuring_page">Ошибка настройки страницы</string>
+    <string name="MENU_user_profile">Профиль пользователя</string>
 </resources>

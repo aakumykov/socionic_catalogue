@@ -9,7 +9,6 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
-import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
 
@@ -34,7 +33,7 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
-    public void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition) {
+    public void restoreOriginalList() {
 
     }
 
@@ -58,10 +57,6 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
         return null;
     }
 
-    @Override public void addItem(Card card) {
-
-    }
-
     @Override public void addItem(iGridItem gridItem) {
 
     }
@@ -73,6 +68,11 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
 
     @Override
     public void removeItem(iGridItem gridItem) {
+
+    }
+
+    @Override
+    public void applyFilterToGrid(String filterKey) {
 
     }
 
@@ -95,4 +95,20 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     public void showPopupMenu(int mode, int position, View view, iGridViewHolder gridViewHolder) {
 
     }
+
+    @Override
+    public void enableFiltering() {
+
+    }
+
+    @Override
+    public void disableFiltering() {
+
+    }
+
+    @Override
+    public boolean filterIsEnabled() {
+        return false;
+    }
+
 }

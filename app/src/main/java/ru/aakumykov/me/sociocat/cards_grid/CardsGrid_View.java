@@ -1,13 +1,19 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import android.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -33,15 +39,21 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsGrid_View extends BaseView implements
         iCardsGrid.iPageView,
-        iCardsGrid.iGridItemClickListener
+        iCardsGrid.iGridItemClickListener,
+        iCardsGrid.iLoadMoreClickListener,
+        SearchView.OnQueryTextListener,
+        SearchView.OnCloseListener,
+        SearchView.OnFocusChangeListener,
+        View.OnClickListener
 {
     private static final String TAG = "CardsGrid_View";
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.speedDialView) SpeedDialView speedDialView;
+    private SearchView searchView;
 
-    private CardsGrid_Adapter adapter;
+    private CardsGrid_Adapter dataAdapter;
     private iCardsGrid.iPresenter presenter;
     private StaggeredGridLayoutManager layoutManager;
     private boolean firstRun = true;
@@ -61,13 +73,13 @@ public class CardsGrid_View extends BaseView implements
         setPageTitle(R.string.CARDS_GRID_page_title);
 
         presenter = new CardsGrid_Presenter();
-        adapter = new CardsGrid_Adapter(this, this);
+        dataAdapter = new CardsGrid_Adapter(this, this, this);
 
         int colsNum = MyUtils.isPortraitOrientation(this) ?
                 Config.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : Config.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
         layoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
 
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager(layoutManager);
 
         configureSwipeRefresh();
@@ -110,8 +122,49 @@ public class CardsGrid_View extends BaseView implements
     @Override
     protected void onStop() {
         super.onStop();
-        saveListState();
+//        saveListState();
+        dataAdapter.disableFiltering();
         unbindComponents();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(Constants.FILTER_KEY, searchView.getQuery().toString());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        String filterKey = savedInstanceState.getString(Constants.FILTER_KEY, "");
+        if (filterKey.isEmpty()) {
+            dataAdapter.restoreOriginalList();
+        } else {
+            searchView.setQuery(filterKey, true);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.search, menu);
+
+        super.onCreateOptionsMenu(menu);
+
+        configureSearchWidget(menu);
+
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+            dataAdapter.disableFiltering();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -122,6 +175,55 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public void onUserLogout() {
 
+    }
+
+
+    // View.OnClickListener
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.actionSearch:
+                Log.d(TAG, "onClick(): R.id.actionSearch");
+                dataAdapter.enableFiltering();
+                break;
+        }
+    }
+
+
+    // SearchView.OnQueryTextListener
+    @Override
+    public boolean onQueryTextSubmit(String queryText) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if (dataAdapter.filterIsEnabled())
+            dataAdapter.applyFilterToGrid(newText);
+        return false;
+    }
+
+
+    // SearchView.OnFocusChangeListener
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        Log.d(TAG, "View: "+v+", has focus: "+hasFocus);
+        if (v.getId() == R.id.actionSearch && hasFocus) {
+            dataAdapter.enableFiltering();
+        }
+    }
+
+
+    // SearchView.OnCloseListener
+    @Override
+    public boolean onClose() {
+        Log.d(TAG, "onClose()");
+
+        dataAdapter.disableFiltering();
+
+        searchView.clearFocus();
+//        dataAdapter.restoreOriginalList();
+        return false;
     }
 
 
@@ -136,11 +238,6 @@ public class CardsGrid_View extends BaseView implements
 //            titleString = (String) title;
 //        }
 //        setPageTitle(titleString);
-    }
-
-    @Override
-    public void scrollToPosition(Integer position) {
-        recyclerView.scrollToPosition(position);
     }
 
     @Override
@@ -186,6 +283,11 @@ public class CardsGrid_View extends BaseView implements
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
+    @Override
+    public String getFilterString() {
+        return searchView.getQuery() + "";
+    }
+
 
     // iGridItemClickListener
     @Override
@@ -202,15 +304,23 @@ public class CardsGrid_View extends BaseView implements
     }
 
 
+    // iLoadMoreClickListener
+    @Override
+    public void onLoadMoreClicked(View view) {
+        int position = recyclerView.getChildAdapterPosition(view);
+        presenter.onLoadMoreClicked(position);
+    }
+
+
     // Внутренние методы
     private void bindComponents() {
-        presenter.linkViews(this, adapter);
-        adapter.linkPresenter(presenter);
+        presenter.linkViews(this, dataAdapter);
+        dataAdapter.linkPresenter(presenter);
     }
 
     private void unbindComponents() {
-        // В порядке, обратном bindComponents()
-        adapter.unlinkPresenter();
+        // В обратном порядке
+        dataAdapter.unlinkPresenter();
         presenter.unlinkViews();
     }
 
@@ -295,6 +405,26 @@ public class CardsGrid_View extends BaseView implements
 
     }
 
+    private void configureSearchWidget(Menu menu) {
+        // Ассоциируем настройку поиска с SearchView
+        try {
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+            searchView = (SearchView) menu.findItem(R.id.actionSearch).getActionView();
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setMaxWidth(Integer.MAX_VALUE);
+
+            searchView.setOnQueryTextListener(this);
+            searchView.setOnSearchClickListener(this);
+            searchView.setOnCloseListener(this);
+            searchView.setOnQueryTextFocusChangeListener(this);
+
+        } catch (Exception e) {
+            showErrorMsg(R.string.error_configuring_page, e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private void saveListState() {
         listStateStorage = new Bundle();
         Parcelable listState = layoutManager.onSaveInstanceState();
@@ -318,7 +448,7 @@ public class CardsGrid_View extends BaseView implements
             switch (resultCode) {
                 case RESULT_OK:
                     Card card = data.getParcelableExtra(Constants.CARD);
-                    addTestItem(card);
+                    addItem(card);
                     break;
 
                 case RESULT_CANCELED:
@@ -342,7 +472,7 @@ public class CardsGrid_View extends BaseView implements
                 Card card = data.getParcelableExtra(Constants.CARD);
                 iGridItem gridItem = new GridItem_Card();
                 gridItem.setPayload(card);
-                adapter.updateItem(positionInWork, gridItem);
+                dataAdapter.updateItem(positionInWork, gridItem);
                 positionInWork = -1;
             }
             catch (Exception e) {
@@ -358,27 +488,14 @@ public class CardsGrid_View extends BaseView implements
         }
     }
 
-    private void addTestItem() {
-        int num = new Random().nextInt();
-
-        Card card = new Card();
-        card.setType(Constants.TEXT_CARD);
-        card.setTitle(num+"_карточка");
-        card.setQuote(num+" цитата");
-        card.setDescription(num+" описание");
-
-        iGridItem gridItem = new GridItem_Card();
-        gridItem.setPayload(card);
-
-        adapter.addItem(gridItem);
-    }
-
-    private void addTestItem(Card card) {
+    private void addItem(Card card) {
         int num = new Random().nextInt();
 
         iGridItem gridItem = new GridItem_Card();
         gridItem.setPayload(card);
 
-        adapter.addItem(gridItem);
+        dataAdapter.addItem(gridItem);
     }
+
+
 }

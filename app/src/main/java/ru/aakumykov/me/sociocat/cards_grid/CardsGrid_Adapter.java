@@ -19,7 +19,6 @@ import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_LoadMore;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Throbber;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
-import ru.aakumykov.me.sociocat.cards_grid.view_holders.BaseViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.Throbber_ViewHolder;
@@ -30,16 +29,26 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         iCardsGrid.iGridView
 {
     private final static String TAG = "CardsGrid_Adapter";
+
     private List<iGridItem> itemsList = new ArrayList<>();
+    private List<iGridItem> originalItemsList = new ArrayList<>();
+    private List<iGridItem> filteredItemsList = new ArrayList<>();
+    private boolean filterIsEnabled = false;
+
     private iCardsGrid.iPresenter presenter;
     private iCardsGrid.iPageView pageView;
     private iCardsGrid.iGridItemClickListener gridItemClickListener;
+    private iCardsGrid.iLoadMoreClickListener loadMoreClickListener;
 
     private int fakeIndex = 0;
 
-    public CardsGrid_Adapter(iCardsGrid.iPageView pageView, iCardsGrid.iGridItemClickListener gridItemClickListener) {
+    public CardsGrid_Adapter(iCardsGrid.iPageView pageView,
+                             iCardsGrid.iGridItemClickListener gridItemClickListener,
+                             iCardsGrid.iLoadMoreClickListener loadMoreClickListener
+    ) {
         this.pageView = pageView;
         this.gridItemClickListener = gridItemClickListener;
+        this.loadMoreClickListener = loadMoreClickListener;
     }
 
 
@@ -116,6 +125,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         else if (gridItem instanceof GridItem_LoadMore) {
             LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) viewHolder;
             loadMoreViewHolder.initialize(position, payload);
+            loadMoreViewHolder.bindClickListener(loadMoreClickListener);
         }
         else if (gridItem instanceof GridItem_Throbber) {
             Throbber_ViewHolder throbberViewHolder = (Throbber_ViewHolder) viewHolder;
@@ -169,9 +179,13 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer positionToScroll) {
-
-        iGridItem lastExistingItem = getLastContentItem(position);
+    public void addList(List<iGridItem> inputList,
+                        int position,
+                        boolean forceLoadMoreItem,
+                        @Nullable Integer positionToScroll
+    ) {
+        // Удаляю дубликаты на стыке двух списков
+        iGridItem lastExistingItem = getLastContentItem();
         iGridItem firstNewItem = (inputList.size()>0) ? inputList.get(0) : null;
 
         if (null != lastExistingItem && null != firstNewItem) {
@@ -181,39 +195,36 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 inputList.remove(0);
         }
 
-        itemsList.addAll(position, inputList);
+        // Присоединяю добавляемый список к существующему
+        originalItemsList.addAll(inputList);
 
-        int count = inputList.size();
-        notifyItemRangeChanged(position, count);
+        List<iGridItem> filteredList = filterList(inputList, pageView.getFilterString());
+        int filteredItemsCount = filteredList.size();
+        itemsList.addAll(position, filteredList);
+        notifyItemRangeInserted(position, filteredItemsCount);
 
-        showLoadMoreItem(position + count);
+        showLoadMoreItem(position + filteredItemsCount);
     }
 
     @Override
-    public void restoreList(List<iGridItem> inputList, @Nullable Integer scrollToPosition) {
-        clearList();
-        if (inputList.size() > 0)
-            addList(inputList, 0, true, scrollToPosition);
-    }
+    public void restoreOriginalList() {
+        List<iGridItem> restoredList = new ArrayList<>(this.originalItemsList);
 
-    @Override
-    public void addItem(Card card) {
-        GridItem_Card cardItem = new GridItem_Card();
-        cardItem.setPayload(card);
-        itemsList.add(cardItem);
-        notifyItemChanged(getMaxIndex());
+        setList(restoredList);
     }
 
     @Override
     public void addItem(iGridItem gridItem) {
         itemsList.add(gridItem);
-        notifyItemChanged(getMaxIndex());
+        synchronizeOriginalItemsList();
+        notifyItemChanged(itemsList.size() - 1);
     }
 
     @Override
     public void updateItem(int position, iGridItem newGridItem) {
         if (position > 0) {
             itemsList.set(position, newGridItem);
+            synchronizeOriginalItemsList();
             notifyItemChanged(position);
         }
     }
@@ -222,12 +233,13 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void removeItem(iGridItem gridItem) {
         int index = itemsList.indexOf(gridItem);
         itemsList.remove(index);
+        synchronizeOriginalItemsList();
         notifyItemRemoved(index);
     }
 
     @Override
     public iGridItem getGridItem(int position) {
-        return (position > 0 && position <= getMaxIndex()) ? itemsList.get(position) : null;
+        return (position >= 0 && position <= getMaxIndex()) ? itemsList.get(position) : null;
     }
 
     @Override
@@ -237,12 +249,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public iGridItem getItemBeforeLoadmore(int loadmorePosition) {
-        iGridItem loadmoreItem = getGridItem(loadmorePosition);
-        // TODO: выбрасывать исключение бы...
-        if (loadmoreItem instanceof GridItem_LoadMore)
-            return getGridItem(loadmorePosition - 1);
-        else
-            return null;
+        return getLastContentItem();
     }
 
     @Override
@@ -311,12 +318,50 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         popupMenu.show();
     }
 
+    @Override
+    public void enableFiltering() {
+        this.filterIsEnabled = true;
+    }
+
+    @Override
+    public void disableFiltering() {
+        this.filterIsEnabled = false;
+    }
+
+    @Override
+    public boolean filterIsEnabled() {
+        return this.filterIsEnabled;
+    }
+
+    @Override
+    public void applyFilterToGrid(String filterKey) {
+        List<iGridItem> filteredList = filterList(originalItemsList, filterKey);
+        itemsList.clear();
+        itemsList.addAll(filteredList);
+        notifyDataSetChanged();
+        showLoadMoreItem(itemsList.size());
+    }
+
+
 
     // Внутренние методы
+    private List<iGridItem> filterList(List<iGridItem> inputList, String filterKey) {
+        List<iGridItem> resultsList = new ArrayList<>();
+        for (iGridItem item : inputList) {
+            Card card = (Card) item.getPayload();
+            String cardTitle = card.getTitle().toLowerCase();
+            filterKey = filterKey.toLowerCase();
+            if (cardTitle.contains(filterKey))
+                resultsList.add(item);
+        }
+        return resultsList;
+    }
+
     private void showLoadMoreItem(int position) {
         GridItem_LoadMore loadMoreItem = new GridItem_LoadMore();
         itemsList.add(position, loadMoreItem);
-        notifyItemChanged(position);
+//        notifyItemChanged(position);
+        notifyItemInserted(position);
     }
 
     private void onPopupItemClicked(MenuItem menuItem, int position) {
@@ -343,23 +388,65 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private void clearList() {
         int start = 0;
         int count = itemsList.size();
+
         itemsList.clear();
+        originalItemsList.clear();
+
         notifyItemRangeRemoved(start, count);
     }
 
-    private iGridItem getLastContentItem(int bottomBorder) {
-        if (0 == itemsList.size())
+    private iGridItem getLastContentItem() {
+        int index = originalItemsList.size() - 1;
+
+        if (index < 0)
             return null;
 
-        bottomBorder -= 1;
+        return originalItemsList.get(index);
+    }
 
-        iGridItem gridItem ;
+    private void synchronizeOriginalItemsList() {
+        originalItemsList.clear();
+        originalItemsList.addAll(itemsList);
+    }
 
-        for (int i=bottomBorder; i>=0; i--) {
-            gridItem = itemsList.get(i);
-            if (gridItem instanceof GridItem_Card)
-                return gridItem;
+    private void updateList(List<iGridItem> newItemsList) {
+
+        int oldItemsCount = getItemCount() - 1;
+        int newItemsCount = newItemsList.size();
+        int listsSizeDifference = oldItemsCount - newItemsCount;
+
+        // после фильтрации элементов стало меньше
+        if (listsSizeDifference >= 0) {
+            // обновляю начальные
+            for (int i = 0; i < newItemsCount; i++) {
+                iGridItem newItem = newItemsList.get(i);
+                itemsList.set(i, newItem);
+                notifyItemChanged(i, newItem);
+            }
+
+            // удаляю лишние
+            for (int i = oldItemsCount - 1; i >= newItemsCount; i--) {
+                iGridItem oldItem = itemsList.get(i);
+                itemsList.remove(i);
+                notifyItemRemoved(i);
+            }
         }
-        return null;
+        // после фильтрации элементов стало больше
+        else {
+            // обновляю начальные
+            for (int i=0; i < oldItemsCount; i++) {
+                iGridItem newItem = newItemsList.get(i);
+                itemsList.set(i, newItem);
+                notifyItemChanged(i, newItem);
+            }
+
+            // добавляю недостающие
+            for (int i=itemsList.size()-1; i < newItemsCount; i++) {
+                iGridItem newItem = newItemsList.get(i);
+                itemsList.add(i, newItem);
+//                notifyItemChanged(i, newItem);
+                notifyItemInserted(i);
+            }
+        }
     }
 }
