@@ -30,4 +30,5 @@ public interface iCardPresenter {
     void onDeleteClicked();
     void onDeleteConfirmed();
 
+    void onTagClicked(String tag);
 }

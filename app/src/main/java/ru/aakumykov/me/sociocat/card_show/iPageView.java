@@ -9,6 +9,7 @@ public interface iPageView extends iBaseView {
     void refreshMenu();
 
     void goEditCard(Card card);
+    void goShowCardsWithTag(String tagName);
 
     void showCommentForm(iTextItem repliedItem, boolean editMode);
     void hideCommentForm(boolean withQuestion);

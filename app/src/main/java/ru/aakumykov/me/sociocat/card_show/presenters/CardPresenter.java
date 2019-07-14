@@ -4,6 +4,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.util.List;
+
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
@@ -148,6 +150,11 @@ public class CardPresenter implements iCardPresenter {
                 pageView.showErrorMsg(R.string.CARD_SHOW_error_deleting_card, msg);
             }
         });
+    }
+
+    @Override
+    public void onTagClicked(String tag) {
+        pageView.goShowCardsWithTag(tag);
     }
 
 

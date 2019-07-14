@@ -176,6 +176,11 @@ public class CardShow_View extends BaseView implements
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
+    @Override
+    public void goShowCardsWithTag(String tagName) {
+//        Intent intent = new Intent()
+    }
+
 
     // iPageView
     @Override
