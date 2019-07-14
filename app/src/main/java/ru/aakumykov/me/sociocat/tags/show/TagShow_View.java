@@ -126,7 +126,7 @@ public class TagShow_View extends BaseView implements
     // Внутренние методы
     private void processIntent() {
         Intent intent = getIntent();
-        String tagKey = intent.getStringExtra(Constants.TAG_KEY);
+        String tagKey = intent.getStringExtra(Constants.TAG_NAME);
         presenter.onShowPageReady(tagKey);
     }
 }

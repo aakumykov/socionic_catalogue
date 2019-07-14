@@ -30,6 +30,11 @@ public class CardShow_View_Stub implements iCardShow_View {
 
     }
 
+    @Override
+    public void showProgressMessage(int messageId, String insertedText) {
+
+    }
+
     @Override public void hideProgressMessage() {
 
     }

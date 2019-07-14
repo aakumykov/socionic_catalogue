@@ -112,10 +112,7 @@ public class CardsGrid_View extends BaseView implements
 
         if (firstRun) {
             firstRun = false;
-            presenter.onWorkBegins();
-        }
-        else {
-            //restoreListState();
+            presenter.processInputIntent(getIntent());
         }
     }
 

@@ -204,13 +204,14 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     // Сообщения вверху страницы
     @Override
     public void showProgressMessage(int messageId) {
-        Resources resources = getResources();
-        showMsg(
-                resources.getString(messageId),
-                resources.getColor(R.color.info),
-                resources.getColor(R.color.info_background)
-        );
-        showProgressBar();
+        String msg = getResources().getString(messageId);
+        showProgressMessage(msg);
+    }
+
+    @Override
+    public void showProgressMessage(int messageId, String insertedText) {
+        String msg = getResources().getString(messageId, insertedText);
+        showProgressMessage(msg);
     }
 
     @Override
@@ -331,6 +332,16 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
 
     // Внутренние методы
+    private void showProgressMessage(String msg) {
+        Resources resources = getResources();
+        showMsg(
+                msg,
+                resources.getColor(R.color.info),
+                resources.getColor(R.color.info_background)
+        );
+        showProgressBar();
+    }
+
     private void showMsg(String text, int textColor, @Nullable Integer backgroundColor) {
         TextView messageView = findViewById(R.id.messageView);
 

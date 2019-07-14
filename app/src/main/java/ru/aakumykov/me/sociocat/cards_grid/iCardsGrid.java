@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
+import android.content.Intent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -75,7 +76,8 @@ public interface iCardsGrid {
         void linkViews(iPageView pageView, iGridView gridView);
         void unlinkViews();
 
-        void onWorkBegins();
+        void processInputIntent(@Nullable Intent intent);
+
         void onLoadMoreClicked(int position);
 
         void onCardClicked(int position);

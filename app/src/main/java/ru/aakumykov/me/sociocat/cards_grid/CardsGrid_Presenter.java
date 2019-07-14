@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 
@@ -54,14 +55,22 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         this.gridView = new CardsGrid_AdapterStub();
     }
 
+
     @Override
-    public void onWorkBegins() {
-        loadCards(
-                LoadMode.REPLACE,
-                null,
-                null,
-                0
-        );
+    public void processInputIntent(@Nullable Intent intent) {
+        String tagName = (null == intent) ? null : intent.getStringExtra(Constants.TAG_NAME);
+
+        if (null != tagName) {
+            loadCardsWithTag(tagName, null, null);
+        }
+        else {
+            loadCards(
+                    LoadMode.REPLACE,
+                    null,
+                    null,
+                    0
+            );
+        }
     }
 
     @Override
@@ -213,6 +222,37 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
                         Log.e(TAG, "Wrong LoadMode: "+loadMode);
                         break;
                 }
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+            }
+        });
+    }
+
+    private void loadCardsWithTag(
+            String tagName,
+            @Nullable String startKey,
+            @Nullable String endKey
+    )
+    {
+        pageView.showProgressMessage(R.string.CARDS_GRID_loading_cards_with_tag, tagName);
+
+        cardsSingleton.loadList(tagName, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                pageView.hideProgressMessage();
+
+                List<iGridItem> newItemsList = new ArrayList<>();
+
+                for (Card card : list) {
+                    GridItem_Card cardItem = new GridItem_Card();
+                    cardItem.setPayload(card);
+                    newItemsList.add(cardItem);
+                }
+
+                gridView.setList(newItemsList);
             }
 
             @Override

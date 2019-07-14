@@ -29,6 +29,11 @@ public class CardsGrid_ViewStub implements iCardsGrid.iPageView {
     }
 
     @Override
+    public void showProgressMessage(int messageId, String insertedText) {
+
+    }
+
+    @Override
     public void hideProgressMessage() {
 
     }

@@ -16,6 +16,7 @@ public interface iBaseView {
 
     // Сообщения вверху страницы
     void showProgressMessage(int messageId);
+    void showProgressMessage(int messageId, String insertedText);
     void hideProgressMessage();
 
     void showErrorMsg(int userMessageId, String consoleMessage);
