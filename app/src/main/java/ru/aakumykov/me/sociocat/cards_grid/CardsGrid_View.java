@@ -25,6 +25,8 @@ import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import co.lujun.androidtagview.TagContainerLayout;
+import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
@@ -50,6 +52,7 @@ public class CardsGrid_View extends BaseView implements
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.speedDialView) SpeedDialView speedDialView;
     private SearchView searchView;
 
@@ -67,7 +70,7 @@ public class CardsGrid_View extends BaseView implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cards_grid_activity);
+        setContentView(R.layout.cards_grid_activity2);
         ButterKnife.bind(this);
 
         setPageTitle(R.string.CARDS_GRID_page_title);
@@ -83,6 +86,8 @@ public class CardsGrid_View extends BaseView implements
         recyclerView.setLayoutManager(layoutManager);
 
         configureSwipeRefresh();
+
+        configureTagsContainer();
 
         configureFAB();
     }
@@ -286,8 +291,8 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void showTagLabel(String tagName) {
-
+    public void showFilteringTag(String tagName) {
+        tagsContainer.addTag(tagName);
     }
 
 
@@ -335,6 +340,10 @@ public class CardsGrid_View extends BaseView implements
         });
 
         swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
+    }
+
+    private void configureTagsContainer() {
+
     }
 
     private void configureFAB() {

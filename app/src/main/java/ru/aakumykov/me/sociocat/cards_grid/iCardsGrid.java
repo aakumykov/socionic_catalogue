@@ -39,7 +39,7 @@ public interface iCardsGrid {
         void goEditCard(Card card, int position);
 
         String getFilterString();
-        void showTagLabel(String tagName);
+        void showFilteringTag(String tagName);
     }
 
     interface iGridView {

@@ -63,6 +63,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         if (null != tagName) {
             pageView.setPageTitle(R.string.CARDS_GRID_cards_with_tag, tagName);
             pageView.activateUpButton();
+
             loadCardsWithTag(tagName, null, null);
         }
         else {
@@ -245,6 +246,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 pageView.hideProgressMessage();
+                pageView.showFilteringTag(tagName);
 
                 List<iGridItem> newItemsList = new ArrayList<>();
 
