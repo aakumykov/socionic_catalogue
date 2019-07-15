@@ -286,6 +286,12 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
+    public void goCardsGrid() {
+        Intent intent = new Intent(this, CardsGrid_View.class);
+        startActivity(intent);
+    }
+
+    @Override
     public String getFilterString() {
         return searchView.getQuery() + "";
     }
@@ -343,7 +349,27 @@ public class CardsGrid_View extends BaseView implements
     }
 
     private void configureTagsContainer() {
+        tagsContainer.setOnTagClickListener(new TagView.OnTagClickListener() {
+            @Override
+            public void onTagClick(int position, String text) {
 
+            }
+
+            @Override
+            public void onTagLongClick(int position, String text) {
+
+            }
+
+            @Override
+            public void onSelectedTagDrag(int position, String text) {
+
+            }
+
+            @Override
+            public void onTagCrossClick(int position) {
+                presenter.onFilteringTagDiscardClicked();
+            }
+        });
     }
 
     private void configureFAB() {

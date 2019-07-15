@@ -183,6 +183,11 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         pageView.showToast("Распространение");
     }
 
+    @Override
+    public void onFilteringTagDiscardClicked() {
+        pageView.goCardsGrid();
+    }
+
 
     // Внутренние методы
     private void loadCards(

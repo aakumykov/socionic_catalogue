@@ -37,6 +37,7 @@ public interface iCardsGrid {
         void goShowCard(Card card);
         void goCreateCard(Constants.CardType cardType);
         void goEditCard(Card card, int position);
+        void goCardsGrid();
 
         String getFilterString();
         void showFilteringTag(String tagName);
@@ -90,5 +91,7 @@ public interface iCardsGrid {
         void onEditCardClicked(iGridItem gridItem);
         void onDeleteCardClicked(iGridItem gridItem);
         void onShareCardClicked(iGridItem gridItem);
+
+        void onFilteringTagDiscardClicked();
     }
 }
