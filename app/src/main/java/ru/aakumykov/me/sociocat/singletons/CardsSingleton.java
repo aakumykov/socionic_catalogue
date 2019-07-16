@@ -209,7 +209,7 @@ public class CardsSingleton implements
 
     @Override
     public void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
-        Query query = cardsRef.orderByChild(Constants.TAGS_PATH);
+        Query query = cardsRef.orderByChild(Constants.TAGS_PATH + "/" + tagName).equalTo(true);
 
         if (null != startKey)
             query = query.startAt(startKey);

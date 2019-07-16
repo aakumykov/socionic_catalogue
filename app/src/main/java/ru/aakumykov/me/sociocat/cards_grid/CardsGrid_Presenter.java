@@ -1,7 +1,7 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
 import android.content.Intent;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -39,7 +39,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-//    private Integer openedItemPosition;
+    private String tagFilter;
 
     @Override
     public void linkViews(iCardsGrid.iPageView pageView, iCardsGrid.iGridView gridView) {
@@ -58,14 +58,15 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     @Override
     public void processInputIntent(@Nullable Intent intent) {
-        String tagName = (null == intent) ? null : intent.getStringExtra(Constants.TAG_NAME);
 
-        if (null != tagName) {
-            pageView.setPageTitle(R.string.CARDS_GRID_cards_with_tag, tagName);
+        this.tagFilter = (null == intent) ? null : intent.getStringExtra(Constants.TAG_NAME);
+
+        if (null != tagFilter) {
+            pageView.setPageTitle(R.string.CARDS_GRID_cards_with_tag, tagFilter);
 
             loadCardsWithTag(
                     LoadMode.REPLACE,
-                    tagName,
+                    tagFilter,
                     null,
                     null,
                     0);
@@ -93,12 +94,23 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
             gridView.hideLoadMoreItem(position);
 
-            loadCards(
-                    LoadMode.APPEND,
-                    startKey,
-                    endKey,
-                    position
-            );
+            if (TextUtils.isEmpty(tagFilter)) {
+                loadCards(
+                        LoadMode.APPEND,
+                        startKey,
+                        endKey,
+                        position
+                );
+            }
+            else {
+                loadCardsWithTag(
+                        LoadMode.REPLACE,
+                        this.tagFilter,
+                        startKey,
+                        endKey,
+                        position
+                );
+            }
         }
         catch (Exception e) {
             pageView.showErrorMsg(R.string.CARDS_GRID_loadmore_error, e.getMessage());
