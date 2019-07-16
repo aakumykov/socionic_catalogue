@@ -64,7 +64,12 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             pageView.setPageTitle(R.string.CARDS_GRID_cards_with_tag, tagName);
             pageView.activateUpButton();
 
-            loadCardsWithTag(tagName, null, null);
+            loadCardsWithTag(
+                    LoadMode.REPLACE,
+                    tagName,
+                    null,
+                    null,
+                    0);
         }
         else {
             loadCards(
@@ -215,20 +220,15 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
                 switch (loadMode) {
                     case REPLACE:
-//                        mList.clear();
-//                        mList.addAll(newItemsList);
                         gridView.setList(newItemsList);
                         break;
 
                     case APPEND:
-//                        mList.addAll(newItemsList);
                         gridView.addList(newItemsList, insertPosition, false, null);
                         break;
 
                     default:
-                        // TODO: показывать ошибку? кидать исключение?
-                        Log.e(TAG, "Wrong LoadMode: "+loadMode);
-                        break;
+                        throw new IllegalArgumentException("Unknown loadMode: "+loadMode);
                 }
             }
 
@@ -240,9 +240,11 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     }
 
     private void loadCardsWithTag(
+            LoadMode loadMode,
             String tagName,
             @Nullable String startKey,
-            @Nullable String endKey
+            @Nullable String endKey,
+            int insertPosition
     )
     {
         pageView.showProgressMessage(R.string.CARDS_GRID_loading_cards_with_tag, tagName);
@@ -250,6 +252,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         cardsSingleton.loadCardsWithTag(tagName, startKey, endKey, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
+
                 pageView.hideProgressMessage();
                 pageView.showFilteringTag(tagName);
 
@@ -261,7 +264,18 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
                     newItemsList.add(cardItem);
                 }
 
-                gridView.setList(newItemsList);
+                switch (loadMode) {
+                    case REPLACE:
+                        gridView.setList(newItemsList);
+                        break;
+
+                    case APPEND:
+                        gridView.addList(newItemsList, insertPosition, false, null);
+                        break;
+
+                    default:
+                        throw new IllegalArgumentException("Unknown loadMode: "+loadMode);
+                }
             }
 
             @Override
