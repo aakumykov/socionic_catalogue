@@ -208,6 +208,33 @@ public class CardsSingleton implements
     }
 
     @Override
+    public void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
+        Query query = cardsRef.orderByChild(Constants.TAGS_PATH);
+
+        if (null != startKey)
+            query = query.startAt(startKey);
+
+        if (null != endKey)
+            query = query.endAt(endKey);
+
+        query = query.limitToFirst(Config.DEFAULT_CARDS_LOAD_COUNT);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Card> list = extractCardsFromSnapshot(dataSnapshot);
+                callbacks.onListLoadSuccess(list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                callbacks.onListLoadFail(databaseError.getMessage());
+                databaseError.toException().printStackTrace();
+            }
+        });
+    }
+
+    @Override
     public void loadList(ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
         loadList(null, callbacks);
@@ -235,7 +262,7 @@ public class CardsSingleton implements
 
     @Override
     public void loadList(@Nullable String tagName, final ListCallbacks callbacks) {
-        Log.d(TAG, "loadList(tagName: "+ tagName +", ...)");
+//        Log.d(TAG, "loadList(tagName: "+ tagName +", ...)");
 
         Query query = (null != tagName)
             ? cardsRef.orderByChild("tags/"+tagName).equalTo(true)

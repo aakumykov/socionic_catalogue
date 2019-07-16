@@ -293,7 +293,7 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public String getFilterString() {
-        return searchView.getQuery() + "";
+        return (null != searchView) ? searchView.getQuery() + "" : "";
     }
 
     @Override

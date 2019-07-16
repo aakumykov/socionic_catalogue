@@ -247,7 +247,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     {
         pageView.showProgressMessage(R.string.CARDS_GRID_loading_cards_with_tag, tagName);
 
-        cardsSingleton.loadList(tagName, new iCardsSingleton.ListCallbacks() {
+        cardsSingleton.loadCardsWithTag(tagName, startKey, endKey, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 pageView.hideProgressMessage();

@@ -9,6 +9,7 @@ import ru.aakumykov.me.sociocat.models.Card;
 public interface iCardsSingleton {
 
     void loadList(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks);
+    void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks );
     void loadList(ListCallbacks callbacks);
     void loadList(int limit, ListCallbacks callbacks);
     void loadList(String tagFilter, ListCallbacks callbacks);
