@@ -198,7 +198,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         // Присоединяю добавляемый список к существующему
         originalItemsList.addAll(inputList);
 
-        List<iGridItem> filteredList = filterList(inputList, pageView.getFilterString());
+        List<iGridItem> filteredList = filterList(inputList, pageView.getCurrentFilterWord());
         int filteredItemsCount = filteredList.size();
         itemsList.addAll(position, filteredList);
         notifyItemRangeInserted(position, filteredItemsCount);

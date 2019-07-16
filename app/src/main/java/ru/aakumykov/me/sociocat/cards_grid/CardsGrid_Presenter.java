@@ -39,7 +39,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-    private String tagFilter;
+    private String filterTag;
+    private String filterWord;
 
     @Override
     public void linkViews(iCardsGrid.iPageView pageView, iCardsGrid.iGridView gridView) {
@@ -59,14 +60,14 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     @Override
     public void processInputIntent(@Nullable Intent intent) {
 
-        this.tagFilter = (null == intent) ? null : intent.getStringExtra(Constants.TAG_NAME);
+        this.filterTag = (null == intent) ? null : intent.getStringExtra(Constants.TAG_NAME);
 
-        if (null != tagFilter) {
-            pageView.setPageTitle(R.string.CARDS_GRID_cards_with_tag, tagFilter);
+        if (null != filterTag) {
+            pageView.setPageTitle(R.string.CARDS_GRID_cards_with_tag, filterTag);
 
             loadCardsWithTag(
                     LoadMode.REPLACE,
-                    tagFilter,
+                    filterTag,
                     null,
                     null,
                     0);
@@ -94,7 +95,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
             gridView.hideLoadMoreItem(position);
 
-            if (TextUtils.isEmpty(tagFilter)) {
+            if (TextUtils.isEmpty(filterTag)) {
                 loadCards(
                         LoadMode.APPEND,
                         startKey,
@@ -105,7 +106,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             else {
                 loadCardsWithTag(
                         LoadMode.REPLACE,
-                        this.tagFilter,
+                        this.filterTag,
                         startKey,
                         endKey,
                         position
@@ -265,7 +266,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             public void onListLoadSuccess(List<Card> list) {
 
                 pageView.hideProgressMessage();
-                pageView.showFilteringTag(tagName);
+                pageView.showFilterTag(tagName);
 
                 List<iGridItem> newItemsList = new ArrayList<>();
 

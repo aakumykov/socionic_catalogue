@@ -300,12 +300,25 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public String getFilterString() {
+    public String getCurrentFilterWord() {
         return (null != searchView) ? searchView.getQuery() + "" : "";
     }
 
     @Override
-    public void showFilteringTag(String tagName) {
+    public String getCurrentFilterTag() {
+        int tagsCount = tagsContainer.getTags().size();
+        switch (tagsCount) {
+            case 0:
+                return null;
+            case 1:
+                return tagsContainer.getTagText(0);
+            default:
+                throw new RuntimeException("Cards grid page must have only one filter tag!");
+        }
+    }
+
+    @Override
+    public void showFilterTag(String tagName) {
         tagsContainer.removeAllTags();
         tagsContainer.addTag(tagName);
     }

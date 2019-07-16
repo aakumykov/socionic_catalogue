@@ -39,8 +39,10 @@ public interface iCardsGrid {
         void goEditCard(Card card, int position);
         void goCardsGrid();
 
-        String getFilterString();
-        void showFilteringTag(String tagName);
+        String getCurrentFilterWord();
+        String getCurrentFilterTag();
+
+        void showFilterTag(String tagName);
     }
 
     interface iGridView {

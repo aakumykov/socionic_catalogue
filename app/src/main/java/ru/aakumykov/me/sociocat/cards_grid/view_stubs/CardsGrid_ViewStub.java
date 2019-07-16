@@ -144,12 +144,17 @@ public class CardsGrid_ViewStub implements iCardsGrid.iPageView {
     }
 
     @Override
-    public String getFilterString() {
+    public String getCurrentFilterWord() {
         return null;
     }
 
     @Override
-    public void showFilteringTag(String tagName) {
+    public String getCurrentFilterTag() {
+        return null;
+    }
+
+    @Override
+    public void showFilterTag(String tagName) {
 
     }
 
