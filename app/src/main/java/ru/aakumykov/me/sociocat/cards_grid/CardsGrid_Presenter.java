@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
@@ -61,6 +62,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     public void processInputIntent(@Nullable Intent intent) {
 
         this.filterTag = (null == intent) ? null : intent.getStringExtra(Constants.TAG_NAME);
+
+        pageView.setPageTitle(R.string.CARDS_GRID_page_title_tag, filterTag);
 
         loadCards(
                 LoadMode.REPLACE,
@@ -178,6 +181,22 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     }
 
     @Override
+    public List<iGridItem> filterList(List<iGridItem> inputList) {
+        String filterTag = this.filterTag;
+        String filterWord = pageView.getCurrentFilterWord();
+
+        List<iGridItem> resultsList = new ArrayList<>(inputList);
+
+        if (!TextUtils.isEmpty(filterWord))
+            resultsList = filterCardsByTitle(filterWord, inputList);
+
+        if (!TextUtils.isEmpty(filterTag))
+            resultsList = filterCardsByTag(filterTag, inputList);
+
+        return resultsList;
+    }
+
+    @Override
     public void onFilteringTagDiscardClicked() {
         pageView.goCardsGrid();
     }
@@ -205,6 +224,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
                     newItemsList.add(cardItem);
                 }
 
+                newItemsList = filterList(newItemsList);
+
                 gridView.hideThrobber(insertPosition);
 
                 switch (loadMode) {
@@ -228,50 +249,50 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         });
     }
 
-    private void loadCardsWithTag(
-            LoadMode loadMode,
-            String tagName,
-            @Nullable String startKey,
-            @Nullable String endKey,
-            int insertPosition
-    )
-    {
-        pageView.showProgressMessage(R.string.CARDS_GRID_loading_cards_with_tag, tagName);
+    private List<iGridItem> filterCardsByTitle(@Nullable String filterWord, final List<iGridItem> inputList) {
 
-        cardsSingleton.loadCardsWithTag(tagName, startKey, endKey, new iCardsSingleton.ListCallbacks() {
-            @Override
-            public void onListLoadSuccess(List<Card> list) {
+        List<iGridItem> resultsList = new ArrayList<>(inputList);
 
-                pageView.hideProgressMessage();
-                pageView.showFilterTag(tagName);
+        if (null != filterWord) {
+            filterWord = filterWord.toLowerCase();
 
-                List<iGridItem> newItemsList = new ArrayList<>();
+            for (iGridItem item : inputList) {
+                Card card = (Card) item.getPayload();
+                String cardTitle = card.getTitle().toLowerCase();
+                if (!cardTitle.contains(filterWord))
+                    resultsList.remove(card);
+            }
+        }
 
-                for (Card card : list) {
-                    GridItem_Card cardItem = new GridItem_Card();
-                    cardItem.setPayload(card);
-                    newItemsList.add(cardItem);
+        return resultsList;
+    }
+
+    private List<iGridItem> filterCardsByTag(@Nullable String filterTag, final List<iGridItem> inputList) {
+
+        List<iGridItem> resultsList = new ArrayList<>(inputList);
+
+        if (null != filterTag) {
+            pageView.showFilterTag(filterTag);
+
+            filterTag = filterTag.toLowerCase();
+
+            for (iGridItem item : inputList) {
+                Card card = (Card) item.getPayload();
+                HashMap<String, Boolean> cardTags = card.getTags();
+
+                if (! cardTags.containsKey(filterTag)) {
+                    resultsList.remove(item);
                 }
-
-                switch (loadMode) {
-                    case REPLACE:
-                        gridView.setList(newItemsList);
-                        break;
-
-                    case APPEND:
-                        gridView.addList(newItemsList, insertPosition, false, null);
-                        break;
-
-                    default:
-                        throw new IllegalArgumentException("Unknown loadMode: "+loadMode);
+                else {
+                    Boolean tag = cardTags.get(filterTag);
+                    if (null == tag || !tag) {
+                        resultsList.remove(item);
+                    }
                 }
             }
+        }
 
-            @Override
-            public void onListLoadFail(String errorMessage) {
-                pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
-            }
-        });
+        return resultsList;
     }
 
     private void onDeleteCardConfirmed(Card card, iGridItem gridItem) {

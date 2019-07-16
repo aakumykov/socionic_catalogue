@@ -338,7 +338,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void applyFilterToGrid(String filterKey) {
-        List<iGridItem> filteredList = filterList(originalItemsList);
+        List<iGridItem> filteredList = presenter.filterList(originalItemsList);
         itemsList.clear();
         itemsList.addAll(filteredList);
         notifyDataSetChanged();

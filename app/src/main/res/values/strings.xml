@@ -459,4 +459,5 @@
     <string name="MENU_user_profile">Профиль пользователя</string>
     <string name="CARDS_GRID_loading_cards_with_tag">Загрузка карточек с меткой «%1$s»</string>
     <string name="CARDS_GRID_cards_with_tag">Карточки с меткой «%1$s»</string>
+    <string name="CARDS_GRID_page_title_tag">Метка «%1$s»</string>
 </resources>
