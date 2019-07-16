@@ -192,7 +192,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             resultsList = filterCardsByTitle(filterWord, inputList);
 
         if (!TextUtils.isEmpty(filterTag))
-            resultsList = filterCardsByTag(filterTag, inputList);
+            resultsList = filterCardsByTag(filterTag, resultsList);
 
         return resultsList;
     }
@@ -261,7 +261,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
                 Card card = (Card) item.getPayload();
                 String cardTitle = card.getTitle().toLowerCase();
                 if (!cardTitle.contains(filterWord))
-                    resultsList.remove(card);
+                    resultsList.remove(item);
             }
         }
 
