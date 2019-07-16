@@ -63,7 +63,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
         this.filterTag = (null == intent) ? null : intent.getStringExtra(Constants.TAG_NAME);
 
-        pageView.setPageTitle(R.string.CARDS_GRID_page_title_tag, filterTag);
+        if (null != filterTag)
+            pageView.setPageTitle(R.string.CARDS_GRID_page_title_tag, filterTag);
 
         loadCards(
                 LoadMode.REPLACE,
