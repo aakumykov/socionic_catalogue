@@ -59,7 +59,8 @@ public class CardsGrid_View extends BaseView implements
     private CardsGrid_Adapter dataAdapter;
     private iCardsGrid.iPresenter presenter;
     private StaggeredGridLayoutManager layoutManager;
-    private boolean firstRun = true;
+    private static boolean firstRun = true;
+    private boolean dryRun = true;
     private int positionInWork = -1;
     private Bundle listStateStorage;
 
@@ -73,6 +74,11 @@ public class CardsGrid_View extends BaseView implements
         setContentView(R.layout.cards_grid_activity2);
         ButterKnife.bind(this);
 
+        if (!firstRun)
+            activateUpButton();
+        else
+            firstRun = false;
+
         setPageTitle(R.string.CARDS_GRID_page_title);
 
         presenter = new CardsGrid_Presenter();
@@ -84,6 +90,8 @@ public class CardsGrid_View extends BaseView implements
 
         recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager(layoutManager);
+
+
 
         configureSwipeRefresh();
 
@@ -115,8 +123,8 @@ public class CardsGrid_View extends BaseView implements
 
         bindComponents();
 
-        if (firstRun) {
-            firstRun = false;
+        if (dryRun) {
+            dryRun = false;
             presenter.processInputIntent(getIntent());
         }
     }

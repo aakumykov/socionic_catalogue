@@ -62,7 +62,6 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
         if (null != tagName) {
             pageView.setPageTitle(R.string.CARDS_GRID_cards_with_tag, tagName);
-            pageView.activateUpButton();
 
             loadCardsWithTag(
                     LoadMode.REPLACE,
