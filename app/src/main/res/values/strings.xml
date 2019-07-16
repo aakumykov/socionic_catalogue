@@ -230,7 +230,7 @@
     <string name="EXTERNAL_DATA_RECIEVER_page_title">Получатель внешних данных</string>
     <string name="CARDS_LIST_loading_list">Загрузка списка карточек</string>
     <string name="CARDS_GRID_loading_cards">Загрузка карточек</string>
-    <string name="CARDS_GRID_page_title">Карточки</string>
+    <string name="CARDS_GRID_page_title">Все карточки</string>
     <string name="MENU_grid_view">Плитками</string>
     <string name="MENU_list_view">Списком</string>
     <string name="CARDS_GRID_error_no_such_card">Нет такой карточки</string>
