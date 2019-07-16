@@ -62,24 +62,12 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
         this.filterTag = (null == intent) ? null : intent.getStringExtra(Constants.TAG_NAME);
 
-        if (null != filterTag) {
-            pageView.setPageTitle(R.string.CARDS_GRID_cards_with_tag, filterTag);
-
-            loadCardsWithTag(
-                    LoadMode.REPLACE,
-                    filterTag,
-                    null,
-                    null,
-                    0);
-        }
-        else {
-            loadCards(
-                    LoadMode.REPLACE,
-                    null,
-                    null,
-                    0
-            );
-        }
+        loadCards(
+                LoadMode.REPLACE,
+                null,
+                null,
+                0
+        );
     }
 
     @Override
@@ -95,23 +83,12 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
             gridView.hideLoadMoreItem(position);
 
-            if (TextUtils.isEmpty(filterTag)) {
-                loadCards(
-                        LoadMode.APPEND,
-                        startKey,
-                        endKey,
-                        position
-                );
-            }
-            else {
-                loadCardsWithTag(
-                        LoadMode.REPLACE,
-                        this.filterTag,
-                        startKey,
-                        endKey,
-                        position
-                );
-            }
+            loadCards(
+                    LoadMode.APPEND,
+                    startKey,
+                    endKey,
+                    position
+            );
         }
         catch (Exception e) {
             pageView.showErrorMsg(R.string.CARDS_GRID_loadmore_error, e.getMessage());

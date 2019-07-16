@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
@@ -198,7 +200,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         // Присоединяю добавляемый список к существующему
         originalItemsList.addAll(inputList);
 
-        List<iGridItem> filteredList = filterList(inputList, pageView.getCurrentFilterWord());
+        // Фильтрую список перед демонстрацией
+        List<iGridItem> filteredList = filterList(inputList);
         int filteredItemsCount = filteredList.size();
         itemsList.addAll(position, filteredList);
         notifyItemRangeInserted(position, filteredItemsCount);
@@ -335,7 +338,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void applyFilterToGrid(String filterKey) {
-        List<iGridItem> filteredList = filterList(originalItemsList, filterKey);
+        List<iGridItem> filteredList = filterList(originalItemsList);
         itemsList.clear();
         itemsList.addAll(filteredList);
         notifyDataSetChanged();
@@ -345,15 +348,58 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
     // Внутренние методы
-    private List<iGridItem> filterList(List<iGridItem> inputList, String filterKey) {
-        List<iGridItem> resultsList = new ArrayList<>();
-        for (iGridItem item : inputList) {
-            Card card = (Card) item.getPayload();
-            String cardTitle = card.getTitle().toLowerCase();
-            filterKey = filterKey.toLowerCase();
-            if (cardTitle.contains(filterKey))
-                resultsList.add(item);
+    private List<iGridItem> filterList(final List<iGridItem> inputList) {
+        String filterWord = pageView.getCurrentFilterWord();
+        String filterTag = pageView.getCurrentFilterTag();
+
+        List<iGridItem> resultsList = new ArrayList<>(inputList);
+
+        if (!TextUtils.isEmpty(filterWord))
+            resultsList = filterCardsByTitle(filterWord, inputList);
+
+        if (!TextUtils.isEmpty(filterTag))
+            resultsList = filterCardsByTag(filterTag, inputList);
+
+        return resultsList;
+    }
+
+    private List<iGridItem> filterCardsByTitle(@Nullable String filterWord, final List<iGridItem> inputList) {
+
+        List<iGridItem> resultsList = new ArrayList<>(inputList);
+
+        if (null != filterWord) {
+            filterWord = filterWord.toLowerCase();
+
+            for (iGridItem item : inputList) {
+                Card card = (Card) item.getPayload();
+                String cardTitle = card.getTitle().toLowerCase();
+                if (!cardTitle.contains(filterWord))
+                    resultsList.remove(item);
+            }
         }
+
+        return resultsList;
+    }
+
+    private List<iGridItem> filterCardsByTag(@Nullable String filterTag, final List<iGridItem> inputList) {
+
+        List<iGridItem> resultsList = new ArrayList<>(inputList);
+
+        if (null != filterTag) {
+            filterTag = filterTag.toLowerCase();
+
+            for (iGridItem item : inputList) {
+                Card card = (Card) item.getPayload();
+                HashMap<String, Boolean> cardTags = card.getTags();
+                Boolean tag = cardTags.get(filterTag);
+                if (null != tag) {
+                    if (!cardTags.containsKey(filterTag) && tag) {
+                        resultsList.remove(item);
+                    }
+                }
+            }
+        }
+
         return resultsList;
     }
 
