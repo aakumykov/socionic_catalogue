@@ -46,6 +46,21 @@
         android:layout_marginBottom="10dp" />
 
     <TextView
+        android:id="@+id/quoteSourceView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:paddingStart="@dimen/quote_source_indent"
+        android:textAlignment="textEnd"
+        android:textColor="@color/quoteTextColor"
+        android:textIsSelectable="true"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:visibility="gone"
+        tools:text="Источник цитаты/медиа"
+        tools:visibility="visible" />
+
+    <TextView
         android:id="@+id/descriptionView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

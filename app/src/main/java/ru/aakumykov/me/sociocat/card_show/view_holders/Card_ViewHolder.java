@@ -34,6 +34,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.quoteView) TextView quoteView;
     @BindView(R.id.imageContainer) FrameLayout imageContainer;
     @BindView(R.id.videoContainer) FrameLayout videoContainer;
+    @BindView(R.id.quoteSourceView) TextView quoteSourceView;
     @BindView(R.id.descriptionView) TextView descriptionView;
     @BindView(R.id.cTimeView) TextView cTimeView;
     @BindView(R.id.mTimeView) TextView mTimeView;
@@ -102,6 +103,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     private void displayCard(Card card) {
         showTitle(card);
         showDescribedContent(card);
+        showQuoteSource(card);
         showDescription(card);
         showAuthor(card);
         showTime(card.getCTime(), card.getMTime());
@@ -138,6 +140,14 @@ public class Card_ViewHolder extends Base_ViewHolder implements
             case Constants.AUDIO_CARD:
                 showYoutubeMedia(card.getAudioCode(), InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER);
                 break;
+        }
+    }
+
+    private void showQuoteSource(Card card) {
+        String source = card.getQuoteSource();
+        if (!TextUtils.isEmpty(source)) {
+            quoteSourceView.setText(source);
+            MyUtils.show(quoteSourceView);
         }
     }
 
