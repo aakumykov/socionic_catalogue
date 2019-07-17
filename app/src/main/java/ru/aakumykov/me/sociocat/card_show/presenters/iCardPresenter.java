@@ -4,6 +4,8 @@ import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
+import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public interface iCardPresenter {
@@ -31,4 +33,7 @@ public interface iCardPresenter {
     void onDeleteConfirmed();
 
     void onTagClicked(String tag);
+
+    void onRatingUpClicked(iCard_ViewHolder cardViewHolder);
+    void onRatingDownClicked(iCard_ViewHolder cardViewHolder);
 }

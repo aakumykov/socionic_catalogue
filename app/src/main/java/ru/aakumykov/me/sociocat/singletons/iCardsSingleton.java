@@ -48,7 +48,7 @@ public interface iCardsSingleton {
     }
 
     interface RatingCallbacks {
-        void onRetedUp(int newRating);
+        void onRatedUp(int newRating);
         void onRatedDown(int newRating);
         void onRateFail(String errorMsg);
     }

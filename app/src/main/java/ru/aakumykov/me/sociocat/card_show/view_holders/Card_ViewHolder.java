@@ -5,7 +5,9 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
 public class Card_ViewHolder extends Base_ViewHolder implements
+        iCard_ViewHolder,
         TagView.OnTagClickListener
 {
     @BindView(R.id.cardLayout) LinearLayout cardLayout;
@@ -40,6 +43,12 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.mTimeView) TextView mTimeView;
     @BindView(R.id.authorView) TextView authorView;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
+
+    @BindView(R.id.cardRatingUpButton) ImageView cardRatingUpButton;
+    @BindView(R.id.cardRatingDownButton) ImageView cardRatingDownButton;
+    @BindView(R.id.cardRatingView) TextView cardRatingView;
+    @BindView(R.id.cardRatingThrobber) ProgressBar cardRatingThrobber;
+
     @BindView(R.id.replyWidget) TextView replyWidget;
 
     private static final String TAG = "Card_ViewHolder";
@@ -72,6 +81,47 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     @OnClick(R.id.replyWidget)
     void onReplyWidgetClicked() {
         cardPresenter.onReplyClicked();
+    }
+
+    @OnClick(R.id.cardRatingUpButton)
+    void onCardRatingUpClicked() {
+        cardPresenter.onRatingUpClicked(this);
+    }
+
+    @OnClick(R.id.cardRatingDownButton)
+    void onCardRatingDownClicked() {
+        cardPresenter.onRatingDownClicked(this);
+    }
+
+
+    // iCard_ViewHolder
+    @Override
+    public void showRatingThrobber() {
+        MyUtils.hide(cardRatingView);
+        MyUtils.show(cardRatingThrobber);
+    }
+
+    @Override
+    public void hideRatingThrobber() {
+        MyUtils.show(cardRatingView);
+        MyUtils.hide(cardRatingThrobber);
+    }
+
+    @Override
+    public void disableRatingButtons() {
+        MyUtils.disable(cardRatingUpButton);
+        MyUtils.disable(cardRatingDownButton);
+    }
+
+    @Override
+    public void enableRatingContols() {
+        MyUtils.enable(cardRatingUpButton);
+        MyUtils.enable(cardRatingDownButton);
+    }
+
+    @Override
+    public void setRatingValue(int value) {
+        cardRatingView.setText(String.valueOf(value));
     }
 
 

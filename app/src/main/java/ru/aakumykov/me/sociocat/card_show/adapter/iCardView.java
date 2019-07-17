@@ -7,10 +7,8 @@ import ru.aakumykov.me.sociocat.models.Card;
 
 public interface iCardView {
 
-    // Основной метод
     void displayCard(@Nullable Card card) throws Exception;
 
-    // Вспомогательные методы
     void showCardThrobber();
     void hideCardThrobber();
 

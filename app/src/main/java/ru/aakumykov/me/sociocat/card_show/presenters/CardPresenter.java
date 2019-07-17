@@ -1,15 +1,12 @@
 package ru.aakumykov.me.sociocat.card_show.presenters;
 
-import android.util.Log;
-
 import androidx.annotation.Nullable;
-
-import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
+import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
@@ -18,6 +15,10 @@ import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class CardPresenter implements iCardPresenter {
+
+    private enum Rating {
+        UP, DOWN
+    }
 
     private final static String TAG = "CardPresenter";
     private iCardView cardView;
@@ -157,6 +158,16 @@ public class CardPresenter implements iCardPresenter {
         pageView.goShowCardsWithTag(tag);
     }
 
+    @Override
+    public void onRatingUpClicked(iCard_ViewHolder cardViewHolder) {
+        changeCardRating(Rating.UP, cardViewHolder);
+    }
+
+    @Override
+    public void onRatingDownClicked(iCard_ViewHolder cardViewHolder) {
+        changeCardRating(Rating.DOWN, cardViewHolder);
+    }
+
 
     // Внутренние методы
     private boolean canAlterCard() {
@@ -168,5 +179,49 @@ public class CardPresenter implements iCardPresenter {
             return false;
 
         return currentCard.isCreatedBy(currentUser) || usersSingleton.currentUserIsAdmin();
+    }
+
+    private void changeCardRating(Rating rating, iCard_ViewHolder cardViewHolder) {
+        User user = usersSingleton.getCurrentUser();
+
+        if (null == user) {
+            pageView.showToast(R.string.CARD_SHOW_login_required_to_change_rating);
+            return;
+        }
+
+        String cardKey = currentCard.getKey();
+        String userId = user.getKey();
+
+        cardViewHolder.showRatingThrobber();
+
+        iCardsSingleton.RatingCallbacks ratingCallbacks = new iCardsSingleton.RatingCallbacks() {
+            @Override
+            public void onRatedUp(int newRating) {
+                cardViewHolder.setRatingValue(newRating);
+                cardViewHolder.hideRatingThrobber();
+            }
+
+            @Override
+            public void onRatedDown(int newRating) {
+                cardViewHolder.setRatingValue(newRating);
+                cardViewHolder.hideRatingThrobber();
+            }
+
+            @Override
+            public void onRateFail(String errorMsg) {
+                cardViewHolder.hideRatingThrobber();
+                pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
+            }
+        };
+
+        switch (rating) {
+            case UP:
+                cardSingleton.rateUp(cardKey, userId, ratingCallbacks);
+                break;
+
+            case DOWN:
+                cardSingleton.rateDown(cardKey, userId, ratingCallbacks);
+                break;
+        }
     }
 }
