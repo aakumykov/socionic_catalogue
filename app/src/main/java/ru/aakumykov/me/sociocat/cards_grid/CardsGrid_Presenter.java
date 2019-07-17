@@ -279,17 +279,9 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
             for (iGridItem item : inputList) {
                 Card card = (Card) item.getPayload();
-                HashMap<String, Boolean> cardTags = card.getTags();
-
-                if (! cardTags.containsKey(filterTag)) {
+                List<String> cardTags = card.getTagsList(true);
+                if (! cardTags.contains(filterTag))
                     resultsList.remove(item);
-                }
-                else {
-                    Boolean tag = cardTags.get(filterTag);
-                    if (null == tag || !tag) {
-                        resultsList.remove(item);
-                    }
-                }
             }
         }
 
