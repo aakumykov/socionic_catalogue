@@ -7,8 +7,10 @@ import android.text.TextUtils;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
@@ -366,6 +368,17 @@ public class Card extends ListItem implements
         this.imageType = imageType;
     }
 
+    @Exclude public List<String> getTagsList(boolean inLowerCase) {
+        List<String> tagsList = new ArrayList<>(this.getTags().keySet());
+        if (inLowerCase) {
+            List<String> lowerCaseList = new ArrayList<>();
+            for (String tag : tagsList)
+                lowerCaseList.add(tag.toLowerCase());
+            return lowerCaseList;
+        }
+        return tagsList;
+    }
+
     @Exclude public boolean isTextCard() {
         // TODO: метод вызывает исключение, если данные повреждены
 //        return getType().equals(Constants.TEXT_CARD);
@@ -388,6 +401,8 @@ public class Card extends ListItem implements
     @Exclude public boolean isCreatedBy(User user) {
         return key.equals(user.getKey());
     }
+
+
 
     // Разные
     @Exclude public void addTag(String tag) {
