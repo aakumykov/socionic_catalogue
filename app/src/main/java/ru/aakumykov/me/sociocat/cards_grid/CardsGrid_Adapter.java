@@ -126,7 +126,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
         else if (gridItem instanceof GridItem_LoadMore) {
             LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) viewHolder;
-            loadMoreViewHolder.initialize(position, payload);
+            loadMoreViewHolder.initialize(position, gridItem);
             loadMoreViewHolder.bindClickListener(loadMoreClickListener);
         }
         else if (gridItem instanceof GridItem_Throbber) {
@@ -206,7 +206,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         itemsList.addAll(position, filteredList);
         notifyItemRangeInserted(position, filteredItemsCount);
 
-        showLoadMoreItem(position + filteredItemsCount);
+        showLoadMoreItem(position + filteredItemsCount, inputList);
     }
 
     @Override
@@ -339,10 +339,12 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void applyFilterToGrid(String filterKey) {
         List<iGridItem> filteredList = presenter.filterList(originalItemsList);
+
         itemsList.clear();
         itemsList.addAll(filteredList);
         notifyDataSetChanged();
-        showLoadMoreItem(itemsList.size());
+
+        showLoadMoreItem(itemsList.size(), itemsList);
     }
 
 
@@ -403,8 +405,11 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return resultsList;
     }
 
-    private void showLoadMoreItem(int position) {
-        GridItem_LoadMore loadMoreItem = new GridItem_LoadMore();
+    private <T> void showLoadMoreItem(int position, List<T> workableList) {
+        int messageId = (workableList.size() > 0) ? R.string.CARDS_GRID_load_more : R.string.CARDS_GRID_no_more_cards;
+        boolean enableClickListener = workableList.size() > 0;
+
+        GridItem_LoadMore loadMoreItem = new GridItem_LoadMore(messageId, enableClickListener);
         itemsList.add(position, loadMoreItem);
 //        notifyItemChanged(position);
         notifyItemInserted(position);

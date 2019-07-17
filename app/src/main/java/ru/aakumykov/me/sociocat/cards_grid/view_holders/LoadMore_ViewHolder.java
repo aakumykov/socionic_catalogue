@@ -10,6 +10,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
+import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_LoadMore;
+import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class LoadMore_ViewHolder extends BaseViewHolder {
@@ -35,16 +37,20 @@ public class LoadMore_ViewHolder extends BaseViewHolder {
         });
     }
 
-    public void initialize(int position, Object payload) {
+    public void initialize(int position, iGridItem gridItem) {
 
-        Card card = (Card) payload;
+        GridItem_LoadMore gridItemLoadMore = (GridItem_LoadMore) gridItem;
 
-        titleView.setText(R.string.CARDS_GRID_load_more);
+        String textLabel = cardView.getResources().getString(gridItemLoadMore.getMessageId());
+        titleView.setText(textLabel);
 
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                presenter.onLoadMoreClicked(position);
-            }
-        });
+        if (gridItemLoadMore.isClickListenerEnabled()) {
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    presenter.onLoadMoreClicked(position);
+                }
+            });
+        }
     }
 }

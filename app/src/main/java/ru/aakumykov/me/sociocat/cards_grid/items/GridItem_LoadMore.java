@@ -1,10 +1,20 @@
 package ru.aakumykov.me.sociocat.cards_grid.items;
 
-import ru.aakumykov.me.sociocat.models.Card;
-
 public class GridItem_LoadMore extends GridItem {
 
-    public String getStartKey() {
-        return ((Card) getPayload()).getKey();
+    private int messageId = -1;
+    private boolean clickListenerEnabled = true;
+
+    public GridItem_LoadMore(int messageId, boolean clickListenerEnabled) {
+        this.messageId = messageId;
+        this.clickListenerEnabled = clickListenerEnabled;
+    }
+
+    public int getMessageId() {
+        return messageId;
+    }
+
+    public boolean isClickListenerEnabled() {
+        return clickListenerEnabled;
     }
 }
