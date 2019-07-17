@@ -453,4 +453,6 @@
     <string name="CARDS_GRID_cards_with_tag">Cards with tag «%1$s»</string>
     <string name="CARDS_GRID_page_title_tag">Tag «%1$s»</string>
     <string name="CARDS_GRID_no_more_cards">No more cards</string>
+    <string name="CARD_SHOW_error_changing_card_rating">Error changing rating</string>
+    <string name="CARD_SHOW_login_required_to_change_rating">Login required to rate the card</string>
 </resources>

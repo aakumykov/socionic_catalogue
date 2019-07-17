@@ -355,7 +355,7 @@ public class CardsSingleton implements
                     Card card = dataSnapshot.getValue(Card.class);
 
                     if (null != card) {
-                        if (ratingDifference > 0) callbacks.onRetedUp(card.getRating());
+                        if (ratingDifference > 0) callbacks.onRatedUp(card.getRating());
                         else callbacks.onRatedDown(card.getRating());
                     } else {
                         Log.e(TAG, "Card from dataSnapshot is null");
