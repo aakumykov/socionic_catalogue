@@ -77,9 +77,9 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     @Override
     public void onLoadMoreClicked(int position) {
         try {
-            iGridItem gridItem = gridView.getItemBeforeLoadmore(position);
-            Card lastCardBefore = (Card) gridItem.getPayload();
-            String startKey = lastCardBefore.getKey();
+            iGridItem itemBefore = gridView.getItemBeforeLoadmore(position);
+            Card lastCardBefore = (null != itemBefore) ? (Card) itemBefore.getPayload() : null;
+            String startKey = (null != lastCardBefore) ? lastCardBefore.getKey() : null;
 
             iGridItem itemAfter = gridView.getItemAfterLoadmore(position);
             Card cardAfter = (null != itemAfter) ? (Card) itemAfter.getPayload() : null;
