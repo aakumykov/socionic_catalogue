@@ -25,6 +25,8 @@ import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import co.lujun.androidtagview.TagContainerLayout;
+import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
@@ -50,13 +52,15 @@ public class CardsGrid_View extends BaseView implements
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.speedDialView) SpeedDialView speedDialView;
     private SearchView searchView;
 
     private CardsGrid_Adapter dataAdapter;
     private iCardsGrid.iPresenter presenter;
     private StaggeredGridLayoutManager layoutManager;
-    private boolean firstRun = true;
+    private static boolean firstRun = true;
+    private boolean dryRun = true;
     private int positionInWork = -1;
     private Bundle listStateStorage;
 
@@ -67,8 +71,13 @@ public class CardsGrid_View extends BaseView implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cards_grid_activity);
+        setContentView(R.layout.cards_grid_activity2);
         ButterKnife.bind(this);
+
+        if (!firstRun)
+            activateUpButton();
+        else
+            firstRun = false;
 
         setPageTitle(R.string.CARDS_GRID_page_title);
 
@@ -82,7 +91,11 @@ public class CardsGrid_View extends BaseView implements
         recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager(layoutManager);
 
+
+
         configureSwipeRefresh();
+
+        configureTagsContainer();
 
         configureFAB();
     }
@@ -110,12 +123,9 @@ public class CardsGrid_View extends BaseView implements
 
         bindComponents();
 
-        if (firstRun) {
-            firstRun = false;
-            presenter.onWorkBegins();
-        }
-        else {
-            //restoreListState();
+        if (dryRun) {
+            dryRun = false;
+            presenter.processInputIntent(getIntent());
         }
     }
 
@@ -284,8 +294,33 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public String getFilterString() {
-        return searchView.getQuery() + "";
+    public void goCardsGrid() {
+        Intent intent = new Intent(this, CardsGrid_View.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public String getCurrentFilterWord() {
+        return (null != searchView) ? searchView.getQuery() + "" : "";
+    }
+
+    @Override
+    public String getCurrentFilterTag() {
+        int tagsCount = tagsContainer.getTags().size();
+        switch (tagsCount) {
+            case 0:
+                return null;
+            case 1:
+                return tagsContainer.getTagText(0);
+            default:
+                throw new RuntimeException("Cards grid page must have only one filter tag!");
+        }
+    }
+
+    @Override
+    public void showFilterTag(String tagName) {
+        tagsContainer.removeAllTags();
+        tagsContainer.addTag(tagName);
     }
 
 
@@ -333,6 +368,30 @@ public class CardsGrid_View extends BaseView implements
         });
 
         swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
+    }
+
+    private void configureTagsContainer() {
+        tagsContainer.setOnTagClickListener(new TagView.OnTagClickListener() {
+            @Override
+            public void onTagClick(int position, String text) {
+
+            }
+
+            @Override
+            public void onTagLongClick(int position, String text) {
+
+            }
+
+            @Override
+            public void onSelectedTagDrag(int position, String text) {
+
+            }
+
+            @Override
+            public void onTagCrossClick(int position) {
+                presenter.onFilteringTagDiscardClicked();
+            }
+        });
     }
 
     private void configureFAB() {

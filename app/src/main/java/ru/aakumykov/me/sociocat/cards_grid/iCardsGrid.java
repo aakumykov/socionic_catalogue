@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
+import android.content.Intent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ public interface iCardsGrid {
     int MODE_USER = 10;
     int MODE_GUEST = 0;
 
+
     interface iGridItemClickListener {
         void onGridItemClicked(View view);
         void onGridItemLongClicked(View view);
@@ -28,14 +30,19 @@ public interface iCardsGrid {
         void onLoadMoreClicked(View view);
     }
 
+
     interface iPageView extends iBaseView {
         <T> void setTitle(T title);
 
         void goShowCard(Card card);
         void goCreateCard(Constants.CardType cardType);
         void goEditCard(Card card, int position);
+        void goCardsGrid();
 
-        String getFilterString();
+        String getCurrentFilterWord();
+        String getCurrentFilterTag();
+
+        void showFilterTag(String tagName);
     }
 
     interface iGridView {
@@ -75,7 +82,8 @@ public interface iCardsGrid {
         void linkViews(iPageView pageView, iGridView gridView);
         void unlinkViews();
 
-        void onWorkBegins();
+        void processInputIntent(@Nullable Intent intent);
+
         void onLoadMoreClicked(int position);
 
         void onCardClicked(int position);
@@ -85,5 +93,8 @@ public interface iCardsGrid {
         void onEditCardClicked(iGridItem gridItem);
         void onDeleteCardClicked(iGridItem gridItem);
         void onShareCardClicked(iGridItem gridItem);
+
+        List<iGridItem> filterList(List<iGridItem> inputList);
+        void onFilteringTagDiscardClicked();
     }
 }

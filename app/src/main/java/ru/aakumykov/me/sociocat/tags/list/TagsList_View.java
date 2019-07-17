@@ -109,7 +109,7 @@ public class TagsList_View extends BaseView implements
     @Override
     public void goShowPage(String tagId) {
         Intent intent = new Intent(this, TagShow_View.class);
-        intent.putExtra(Constants.TAG_KEY, tagId);
+        intent.putExtra(Constants.TAG_NAME, tagId);
         startActivity(intent);
     }
 

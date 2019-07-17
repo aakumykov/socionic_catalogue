@@ -21,11 +21,12 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
-import ru.aakumykov.me.sociocat.card_show.adapter.ListAdapter;
+import ru.aakumykov.me.sociocat.card_show.adapter.DataAdapter;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
-import ru.aakumykov.me.sociocat.card_show.adapter.iListAdapter;
+import ru.aakumykov.me.sociocat.card_show.adapter.iDataAdapter;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
+import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
@@ -56,7 +57,7 @@ public class CardShow_View extends BaseView implements
 
     private iCardPresenter cardPresenter;
     private iCommentsPresenter commentsPresenter;
-    private iListAdapter listAdapter;
+    private iDataAdapter listAdapter;
     private iCommentForm commentForm;
     private boolean firstRun = true;
     private boolean mEditMode;
@@ -71,7 +72,7 @@ public class CardShow_View extends BaseView implements
         this.commentsPresenter = new CommentsPresenter();
         this.cardPresenter = new CardPresenter(commentsPresenter);
 
-        this.listAdapter = new ListAdapter();
+        this.listAdapter = new DataAdapter();
 
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.recyclerView.setAdapter((RecyclerView.Adapter) listAdapter);
@@ -174,6 +175,13 @@ public class CardShow_View extends BaseView implements
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.putExtra(Constants.CARD, card);
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+    }
+
+    @Override
+    public void goShowCardsWithTag(String tagName) {
+        Intent intent = new Intent(this, CardsGrid_View.class);
+        intent.putExtra(Constants.TAG_NAME, tagName);
+        startActivity(intent);
     }
 
 

@@ -86,7 +86,7 @@
     <string name="TAGS_LIST_tags_list">Tags list</string>
     <string name="TAG_SHOW_page_title">Tag «%1$s»</string>
     <string name="CARDS_LIST_page_title">Cards list</string>
-    <string name="CARD_SHOW_page_title_long">«%1$s», card viewing</string>
+    <string name="CARD_SHOW_page_title_long">Card «%1$s»</string>
     <string name="DIALOG_deleted_card_name">Really delete card «%1$s»</string>
     <string name="REGISTER_name">Nickame</string>
     <string name="REGISTER_password">Password</string>
@@ -226,7 +226,7 @@
     <string name="EXTERNAL_DATA_RECIEVER_page_title">External data receiver</string>
     <string name="CARDS_LIST_loading_list">Loading cards list</string>
     <string name="CARDS_GRID_loading_cards">Loading cards list</string>
-    <string name="CARDS_GRID_page_title">Cards</string>
+    <string name="CARDS_GRID_page_title">All cards</string>
     <string name="MENU_grid_view">Grid view</string>
     <string name="MENU_list_view">List view</string>
     <string name="CARDS_GRID_error_no_such_card">No such card</string>
@@ -449,4 +449,7 @@
     <string name="error_unknown_result_code">Unknown result code</string>
     <string name="error_configuring_page">Error configuring page</string>
     <string name="MENU_user_profile">User profile</string>
+    <string name="CARDS_GRID_loading_cards_with_tag">Loading cards with tag «%1$s»</string>
+    <string name="CARDS_GRID_cards_with_tag">Cards with tag «%1$s»</string>
+    <string name="CARDS_GRID_page_title_tag">Tag «%1$s»</string>
 </resources>

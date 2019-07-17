@@ -43,7 +43,7 @@ public final class Constants {
     public final static String REPLIED_ITEM = "REPLIED_ITEM";
 
     public final static String TAG_FILTER = "TAG_FILTER";
-    public final static String TAG_KEY = "TAG_KEY";
+    public final static String TAG_NAME = "TAG_NAME";
 
     public final static String USER = "USER";
     public final static String USER_ID = "USER_ID";

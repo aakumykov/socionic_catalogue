@@ -5,7 +5,7 @@ import ru.aakumykov.me.sociocat.card_show.iPageView;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
 
-public interface iListAdapter {
+public interface iDataAdapter {
 
     void bindPresenters(iCardPresenter cardPresenter, iCommentsPresenter commentPresenter);
     void unbindPresenters();

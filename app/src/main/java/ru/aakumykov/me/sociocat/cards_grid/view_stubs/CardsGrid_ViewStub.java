@@ -29,6 +29,11 @@ public class CardsGrid_ViewStub implements iCardsGrid.iPageView {
     }
 
     @Override
+    public void showProgressMessage(int messageId, String insertedText) {
+
+    }
+
+    @Override
     public void hideProgressMessage() {
 
     }
@@ -134,7 +139,23 @@ public class CardsGrid_ViewStub implements iCardsGrid.iPageView {
     }
 
     @Override
-    public String getFilterString() {
+    public void goCardsGrid() {
+
+    }
+
+    @Override
+    public String getCurrentFilterWord() {
         return null;
     }
+
+    @Override
+    public String getCurrentFilterTag() {
+        return null;
+    }
+
+    @Override
+    public void showFilterTag(String tagName) {
+
+    }
+
 }

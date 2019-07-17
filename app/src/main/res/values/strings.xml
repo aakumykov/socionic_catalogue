@@ -88,7 +88,7 @@
     <string name="TAGS_LIST_tags_list">Список меток</string>
     <string name="TAG_SHOW_page_title">Метка «%1$s»</string>
     <string name="CARDS_LIST_page_title">Карточки</string>
-    <string name="CARD_SHOW_page_title_long">«%1$s», просмотр карточки</string>
+    <string name="CARD_SHOW_page_title_long">Карточка «%1$s»</string>
     <string name="DIALOG_deleted_card_name">Удалить карточку «%1$s»</string>
     <string name="REGISTER_name">Псевдоним</string>
     <string name="REGISTER_email" translatable="false">E-mail</string>
@@ -230,7 +230,7 @@
     <string name="EXTERNAL_DATA_RECIEVER_page_title">Получатель внешних данных</string>
     <string name="CARDS_LIST_loading_list">Загрузка списка карточек</string>
     <string name="CARDS_GRID_loading_cards">Загрузка карточек</string>
-    <string name="CARDS_GRID_page_title">Карточки</string>
+    <string name="CARDS_GRID_page_title">Все карточки</string>
     <string name="MENU_grid_view">Плитками</string>
     <string name="MENU_list_view">Списком</string>
     <string name="CARDS_GRID_error_no_such_card">Нет такой карточки</string>
@@ -457,4 +457,7 @@
     <string name="error_unknown_result_code">Неизвестный код результата</string>
     <string name="error_configuring_page">Ошибка настройки страницы</string>
     <string name="MENU_user_profile">Профиль пользователя</string>
+    <string name="CARDS_GRID_loading_cards_with_tag">Загрузка карточек с меткой «%1$s»</string>
+    <string name="CARDS_GRID_cards_with_tag">Карточки с меткой «%1$s»</string>
+    <string name="CARDS_GRID_page_title_tag">Метка «%1$s»</string>
 </resources>
