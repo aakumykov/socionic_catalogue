@@ -17,6 +17,12 @@ public class TagsList2_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     iTagsList2.iTagsView
 {
     private List<Tag> tagsList = new ArrayList<>();
+    private iTagsList2.TagItemClickListener tagItemClickListener;
+
+
+    TagsList2_DataAdapter(iTagsList2.TagItemClickListener tagItemClickListener) {
+        this.tagItemClickListener = tagItemClickListener;
+    }
 
 
     @NonNull @Override
@@ -33,7 +39,7 @@ public class TagsList2_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Tag tag = tagsList.get(position);
         TagsList2_ViewHolder viewHolder = (TagsList2_ViewHolder) holder;
-        viewHolder.initialize(tag);
+        viewHolder.initialize(tag, tagItemClickListener);
     }
 
     @Override

@@ -7,6 +7,10 @@ import ru.aakumykov.me.sociocat.models.Tag;
 
 public interface iTagsList2 {
 
+    interface TagItemClickListener {
+        void onTagClicked(Tag tag);
+    }
+
     interface iPageView extends iBaseView {
         void goShowTag(Tag tag);
     }

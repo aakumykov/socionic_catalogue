@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.tags_list2;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -9,11 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.tags.show.TagShow_View;
 
-public class TagsList2_View extends BaseView implements iTagsList2.iPageView {
-
+public class TagsList2_View extends BaseView implements
+        iTagsList2.iPageView,
+        iTagsList2.TagItemClickListener
+{
     private TagsList2_DataAdapter dataAdapter;
     private LinearLayoutManager linearLayoutManager;
     private iTagsList2.iPresenter presenter;
@@ -31,7 +36,7 @@ public class TagsList2_View extends BaseView implements iTagsList2.iPageView {
         setPageTitle(R.string.TAGS_LIST_page_title);
         activateUpButton();
 
-        dataAdapter = new TagsList2_DataAdapter();
+        dataAdapter = new TagsList2_DataAdapter(this);
         linearLayoutManager = new LinearLayoutManager(this);
         presenter = new TagsList2_Presenter();
 
@@ -67,8 +72,19 @@ public class TagsList2_View extends BaseView implements iTagsList2.iPageView {
 
     }
 
+
+    // iTagsList2.iPageView
     @Override
     public void goShowTag(Tag tag) {
+        Intent intent = new Intent(this, TagShow_View.class);
+        intent.putExtra(Constants.TAG_NAME, tag.getName());
+        startActivity(intent);
+    }
 
+
+    // iTagsList2.TagItemClickListener
+    @Override
+    public void onTagClicked(Tag tag) {
+        presenter.onTagClicked(tag);
     }
 }

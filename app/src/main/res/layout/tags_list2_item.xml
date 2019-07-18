@@ -2,11 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tagItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_tags_list_item_background"
     android:layout_marginTop="6dp"
-    android:layout_marginBottom="6dp">
+    android:layout_marginBottom="6dp"
+    android:background="@drawable/shape_tags_list_item_background">
 
     <TextView
         android:id="@+id/nameView"
