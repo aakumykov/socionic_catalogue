@@ -40,7 +40,7 @@ public class TagsList2_Presenter implements iTagsList2.iPresenter {
             public void onTagsListSuccess(List<Tag> tagsList) {
                 pageView.hideProgressMessage();
 
-                sortTagsByCardsCount(tagsList);
+                sortTagsByCardsCount(tagsList, false);
 
                 tagsView.displayList(tagsList);
             }
@@ -69,19 +69,32 @@ public class TagsList2_Presenter implements iTagsList2.iPresenter {
 
 
     // Внутренние методы
-    private void sortTagsByCardsCount(List<Tag> inputList) {
+    private void sortTagsByCardsCount(List<Tag> inputList, boolean reverseOrder) {
         Collections.sort(inputList, new Comparator<Tag>() {
             @Override
             public int compare(Tag tag1, Tag tag2) {
                 int cardsCount1 = tag1.getCards().keySet().size();
                 int cardsCount2 = tag2.getCards().keySet().size();
-                return cardsCount2 - cardsCount1;
+                if (cardsCount1 == cardsCount2) return 0;
+                return (reverseOrder) ? cardsCount2 - cardsCount1 : cardsCount1 - cardsCount2;
             }
         });
     }
 
-    private void sortTagsByName(List<Tag> inputList) {
+    private void sortTagsByName(List<Tag> inputList, boolean reverseOrder) {
+        Collections.sort(inputList, new Comparator<Tag>() {
+            @Override
+            public int compare(Tag tag1, Tag tag2) {
+                String tagName1 = tag1.getName();
+                String tagName2 = tag2.getName();
+                int res = tagName1.compareToIgnoreCase(tagName2);
+                if (0 == res) return 0;
+                else {
+                    return (reverseOrder) ? -1*res : res;
+                }
 
+            }
+        });
     }
 
 }
