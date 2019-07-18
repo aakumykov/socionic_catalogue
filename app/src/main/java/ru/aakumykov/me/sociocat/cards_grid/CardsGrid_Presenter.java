@@ -63,15 +63,18 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
         this.filterTag = (null == intent) ? null : intent.getStringExtra(Constants.TAG_NAME);
 
-        if (null != filterTag)
+        if (null != filterTag) {
             pageView.setPageTitle(R.string.CARDS_GRID_page_title_tag, filterTag);
-
-        loadCards(
-                LoadMode.REPLACE,
-                null,
-                null,
-                0
-        );
+            loadCardsWithTag(filterTag);
+        }
+        else {
+            loadCards(
+                    LoadMode.REPLACE,
+                    null,
+                    null,
+                    0
+            );
+        }
     }
 
     @Override
@@ -250,6 +253,23 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         });
     }
 
+    private void loadCardsWithTag(String filterTag) {
+        pageView.showProgressMessage(R.string.CARDS_GRID_loading_cards_with_tag, filterTag);
+
+        cardsSingleton.loadList(filterTag, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                pageView.hideProgressMessage();
+                gridView.setList(cardsList2gridItemsList(list));
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+            }
+        });
+    }
+
     private List<iGridItem> filterCardsByTitle(@Nullable String filterWord, final List<iGridItem> inputList) {
 
         List<iGridItem> resultsList = new ArrayList<>(inputList);
@@ -301,5 +321,15 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
                 pageView.showErrorMsg(R.string.ERROR_deleting_card, msg);
             }
         });
+    }
+
+    private List<iGridItem> cardsList2gridItemsList(List<Card> cardsList) {
+        List<iGridItem> gridItemsList = new ArrayList<>();
+        for (Card card : cardsList) {
+            iGridItem gridItem = new GridItem_Card();
+            gridItem.setPayload(card);
+            gridItemsList.add(gridItem);
+        }
+        return gridItemsList;
     }
 }

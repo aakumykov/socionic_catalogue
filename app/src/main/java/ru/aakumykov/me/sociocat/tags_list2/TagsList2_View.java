@@ -78,8 +78,8 @@ public class TagsList2_View extends BaseView implements
     // iTagsList2.iPageView
     @Override
     public void goShowTag(Tag tag) {
-        Intent intent = new Intent(this, CardsList_View.class);
-        intent.putExtra(Constants.TAG_FILTER, tag.getName());
+        Intent intent = new Intent(this, CardsGrid_View.class);
+        intent.putExtra(Constants.TAG_NAME, tag.getName());
         startActivity(intent);
     }
 
