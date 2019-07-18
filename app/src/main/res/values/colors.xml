@@ -67,5 +67,7 @@
     <!-- Всплывающие сообщения -->
     <color name="toastBorder">#E2E2E2</color>
 
+    <!-- Метки -->
+    <color name="tags_list_item_background">#98A5FF</color>
 
 </resources>

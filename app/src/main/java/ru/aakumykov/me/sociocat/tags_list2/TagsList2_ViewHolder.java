@@ -24,7 +24,7 @@ public class TagsList2_ViewHolder extends RecyclerView.ViewHolder {
     public void initialize(Tag tag) {
         nameView.setText(tag.getName());
 
-//        int cardsCount = tag.getCards().keySet().size();
-//        counterView.setText(cardsCount);
+        int cardsCount = tag.getCards().keySet().size();
+        counterView.setText(String.valueOf(cardsCount));
     }
 }

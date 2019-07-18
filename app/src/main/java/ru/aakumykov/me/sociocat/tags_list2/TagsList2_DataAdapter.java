@@ -23,7 +23,7 @@ public class TagsList2_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.tags_list_item, parent, false);
+        View itemView = layoutInflater.inflate(R.layout.tags_list2_item, parent, false);
         TagsList2_ViewHolder viewHolder = new TagsList2_ViewHolder(itemView);
 
         return viewHolder;

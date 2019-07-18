@@ -1,5 +1,8 @@
 package ru.aakumykov.me.sociocat.tags_list2;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
@@ -36,6 +39,9 @@ public class TagsList2_Presenter implements iTagsList2.iPresenter {
             @Override
             public void onTagsListSuccess(List<Tag> tagsList) {
                 pageView.hideProgressMessage();
+
+                sortTagsByCardsCount(tagsList);
+
                 tagsView.displayList(tagsList);
             }
 
@@ -60,4 +66,22 @@ public class TagsList2_Presenter implements iTagsList2.iPresenter {
     public void onSortByNameClicked() {
         pageView.showToast(R.string.not_implemented_yet);
     }
+
+
+    // Внутренние методы
+    private void sortTagsByCardsCount(List<Tag> inputList) {
+        Collections.sort(inputList, new Comparator<Tag>() {
+            @Override
+            public int compare(Tag tag1, Tag tag2) {
+                int cardsCount1 = tag1.getCards().keySet().size();
+                int cardsCount2 = tag2.getCards().keySet().size();
+                return cardsCount2 - cardsCount1;
+            }
+        });
+    }
+
+    private void sortTagsByName(List<Tag> inputList) {
+
+    }
+
 }
