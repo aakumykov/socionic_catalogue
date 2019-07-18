@@ -1,7 +1,5 @@
 package ru.aakumykov.me.sociocat.tags_list2;
 
-import android.content.Intent;
-
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
@@ -18,10 +16,10 @@ public interface iTagsList2 {
     }
 
     interface iPresenter {
-        void bindView(iPageView pageView, iTagsView tagsView);
-        void unbindView();
+        void bindViews(iPageView pageView, iTagsView tagsView);
+        void unbindViews();
 
-        void processInputIntent(Intent intent);
+        void startWork();
 
         void onTagClicked(Tag tag);
 
