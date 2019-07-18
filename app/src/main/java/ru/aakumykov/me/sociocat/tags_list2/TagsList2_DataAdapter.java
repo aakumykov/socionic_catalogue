@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.tags_list2;
 
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -8,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Tag;
 
 public class TagsList2_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
@@ -18,12 +21,19 @@ public class TagsList2_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @NonNull @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View itemView = layoutInflater.inflate(R.layout.tags_list_item, parent, false);
+        TagsList2_ViewHolder viewHolder = new TagsList2_ViewHolder(itemView);
+
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+        Tag tag = tagsList.get(position);
+        TagsList2_ViewHolder viewHolder = (TagsList2_ViewHolder) holder;
+        viewHolder.initialize(tag);
     }
 
     @Override
@@ -33,13 +43,15 @@ public class TagsList2_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemCount() {
-        return 0;
+        return tagsList.size();
     }
 
 
     // iTagsView
     @Override
-    public void displayList(List<Tag> tagsList) {
-
+    public void displayList(List<Tag> inputList) {
+        tagsList.clear();
+        tagsList.addAll(inputList);
+        notifyDataSetChanged();
     }
 }

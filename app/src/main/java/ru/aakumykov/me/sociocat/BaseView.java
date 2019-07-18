@@ -34,6 +34,7 @@ import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.tags.list.TagsList_View;
+import ru.aakumykov.me.sociocat.tags_list2.TagsList2_View;
 import ru.aakumykov.me.sociocat.users.show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -130,6 +131,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater menuInflater = getMenuInflater();
+
+        menuInflater.inflate(R.menu.tags, menu);
 
         if (AuthSingleton.isLoggedIn()) {
             menuInflater.inflate(R.menu.user_in, menu);
@@ -428,7 +431,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void goTagsList() {
-        Intent intent = new Intent(this, TagsList_View.class);
+        Intent intent = new Intent(this, TagsList2_View.class);
         startActivity(intent);
     }
 

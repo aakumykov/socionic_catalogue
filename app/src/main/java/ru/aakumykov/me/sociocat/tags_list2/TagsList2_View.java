@@ -26,6 +26,9 @@ public class TagsList2_View extends BaseView implements iTagsList2.iPageView {
         setContentView(R.layout.tags_list2_activity);
         ButterKnife.bind(this);
 
+        setPageTitle(R.string.TAGS_LIST_page_title);
+        activateUpButton();
+
         dataAdapter = new TagsList2_DataAdapter();
         presenter = new TagsList2_Presenter();
 
