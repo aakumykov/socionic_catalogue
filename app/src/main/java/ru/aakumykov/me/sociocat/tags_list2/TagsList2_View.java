@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.tags_list2;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
@@ -14,6 +15,7 @@ import ru.aakumykov.me.sociocat.models.Tag;
 public class TagsList2_View extends BaseView implements iTagsList2.iPageView {
 
     private TagsList2_DataAdapter dataAdapter;
+    private LinearLayoutManager linearLayoutManager;
     private iTagsList2.iPresenter presenter;
     private boolean dryRun = true;
 
@@ -30,9 +32,11 @@ public class TagsList2_View extends BaseView implements iTagsList2.iPageView {
         activateUpButton();
 
         dataAdapter = new TagsList2_DataAdapter();
+        linearLayoutManager = new LinearLayoutManager(this);
         presenter = new TagsList2_Presenter();
 
         recyclerView.setAdapter(dataAdapter);
+        recyclerView.setLayoutManager(linearLayoutManager);
     }
 
     @Override
