@@ -40,7 +40,7 @@ public class TagsList2_Presenter implements iTagsList2.iPresenter {
             public void onTagsListSuccess(List<Tag> tagsList) {
                 pageView.hideProgressMessage();
 
-                sortTagsByCardsCount(tagsList, false);
+                sortTagsByCardsCount(tagsList, true);
 
                 tagsView.displayList(tagsList);
             }

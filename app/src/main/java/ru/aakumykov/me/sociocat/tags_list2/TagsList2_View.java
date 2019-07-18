@@ -12,6 +12,8 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
+import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags.show.TagShow_View;
 
@@ -76,8 +78,8 @@ public class TagsList2_View extends BaseView implements
     // iTagsList2.iPageView
     @Override
     public void goShowTag(Tag tag) {
-        Intent intent = new Intent(this, TagShow_View.class);
-        intent.putExtra(Constants.TAG_NAME, tag.getName());
+        Intent intent = new Intent(this, CardsList_View.class);
+        intent.putExtra(Constants.TAG_FILTER, tag.getName());
         startActivity(intent);
     }
 
