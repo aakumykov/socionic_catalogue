@@ -2,8 +2,11 @@ package ru.aakumykov.me.sociocat.tags_list2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -74,6 +77,14 @@ public class TagsList2_View extends BaseView implements
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuItem menuItem = menu.findItem(R.id.actionTags);
+        menuItem.setVisible(false);
+//        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        return true;
+    }
 
     // iTagsList2.iPageView
     @Override
