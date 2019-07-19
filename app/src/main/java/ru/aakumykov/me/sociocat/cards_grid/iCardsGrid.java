@@ -52,6 +52,8 @@ public interface iCardsGrid {
         void setList(List<iGridItem> inputList);
         void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition);
 
+        void displayCardsWithTag(String tagName, List<iGridItem> list);
+
         void restoreOriginalList();
 
         void addItem(iGridItem gridItem);

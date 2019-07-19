@@ -7,7 +7,6 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
@@ -254,13 +253,15 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     }
 
     private void loadCardsWithTag(String filterTag) {
+
         pageView.showProgressMessage(R.string.CARDS_GRID_loading_cards_with_tag, filterTag);
 
         cardsSingleton.loadList(filterTag, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                pageView.hideProgressMessage();
-                gridView.setList(cardsList2gridItemsList(list));
+//                pageView.hideProgressMessage();
+//                gridView.setList(cardsList2gridItemsList(list));
+                gridView.displayCardsWithTag(filterTag, cardsList2gridItemsList(list));
             }
 
             @Override

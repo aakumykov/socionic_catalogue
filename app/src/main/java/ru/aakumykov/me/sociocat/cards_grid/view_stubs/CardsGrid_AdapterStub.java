@@ -34,6 +34,11 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
+    public void displayCardsWithTag(String tagName, List<iGridItem> list) {
+
+    }
+
+    @Override
     public void restoreOriginalList() {
 
     }
