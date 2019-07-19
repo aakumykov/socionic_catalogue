@@ -318,7 +318,7 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void showFilterTag(String tagName) {
+    public void showTagFilter(String tagName) {
         tagsContainer.removeAllTags();
         tagsContainer.addTag(tagName);
     }

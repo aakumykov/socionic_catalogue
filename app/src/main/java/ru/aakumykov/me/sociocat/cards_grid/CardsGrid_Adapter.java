@@ -210,13 +210,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void displayCardsWithTag(String tagName, List<iGridItem> list) {
-        pageView.hideProgressMessage();
-        pageView.showFilterTag(tagName);
-        setList(list);
-    }
-
-    @Override
     public void restoreOriginalList() {
         List<iGridItem> restoredList = new ArrayList<>(this.originalItemsList);
 

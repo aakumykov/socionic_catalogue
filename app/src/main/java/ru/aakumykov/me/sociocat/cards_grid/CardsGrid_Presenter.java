@@ -259,9 +259,9 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         cardsSingleton.loadList(filterTag, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-//                pageView.hideProgressMessage();
-//                gridView.setList(cardsList2gridItemsList(list));
-                gridView.displayCardsWithTag(filterTag, cardsList2gridItemsList(list));
+                pageView.hideProgressMessage();
+                pageView.showTagFilter(filterTag);
+                gridView.setList(cardsList2gridItemsList(list));
             }
 
             @Override
@@ -294,7 +294,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         List<iGridItem> resultsList = new ArrayList<>(inputList);
 
         if (null != filterTag) {
-            pageView.showFilterTag(filterTag);
+            pageView.showTagFilter(filterTag);
 
             filterTag = filterTag.toLowerCase();
 

@@ -154,7 +154,7 @@ public class CardsGrid_ViewStub implements iCardsGrid.iPageView {
     }
 
     @Override
-    public void showFilterTag(String tagName) {
+    public void showTagFilter(String tagName) {
 
     }
 
