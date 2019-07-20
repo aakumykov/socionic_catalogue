@@ -16,7 +16,7 @@ public class TagsList2_Presenter implements iTagsList2.iPresenter {
     private iTagsList2.iPageView pageView;
     private iTagsList2.iTagsView tagsView;
     private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
-
+    private iTagsList2.SortOrder sortOrder = iTagsList2.SortOrder.NAMES_DIRECT;
 
     @Override
     public void bindViews(iTagsList2.iPageView pageView, iTagsList2.iTagsView tagsView) {
@@ -57,17 +57,40 @@ public class TagsList2_Presenter implements iTagsList2.iPresenter {
     }
 
     @Override
-    public void onSortByNameClicked(boolean directOrder) {
+    public void onSortClicked(iTagsList2.SortOrder sortOrder) {
+
+        this.sortOrder = sortOrder;
         List<Tag> list = tagsView.getTagsList();
-        sortTagsByName(list, directOrder);
+
+        switch (sortOrder) {
+            case NAMES_DIRECT:
+                sortTagsByName(list, true);
+                break;
+
+            case NAMES_REVERSE:
+                sortTagsByName(list, false);
+                break;
+
+            case COUNT_DIRECT:
+                sortTagsByCardsCount(list, true);
+                break;
+
+            case COUNT_REVERSE:
+                sortTagsByCardsCount(list, false);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unknown sort order: "+sortOrder);
+        }
+
+        pageView.refreshMenu();
+
         tagsView.displayList(list);
     }
 
     @Override
-    public void onSortByCardsClicked(boolean directOrder) {
-        List<Tag> list = tagsView.getTagsList();
-        sortTagsByCardsCount(list, directOrder);
-        tagsView.displayList(list);
+    public iTagsList2.SortOrder getSortOrder() {
+        return this.sortOrder;
     }
 
 

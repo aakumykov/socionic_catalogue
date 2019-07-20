@@ -80,8 +80,29 @@ public class TagsList2_View extends BaseView implements
         super.onCreateOptionsMenu(menu);
 
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.sort_by_name, menu);
-        menuInflater.inflate(R.menu.sort_by_count, menu);
+
+        iTagsList2.SortOrder sortOrder = presenter.getSortOrder();
+
+        switch (sortOrder) {
+            case NAMES_DIRECT:
+                menuInflater.inflate(R.menu.sort_by_name_reverse, menu);
+                menuInflater.inflate(R.menu.sort_by_count, menu);
+                break;
+            case NAMES_REVERSE:
+                menuInflater.inflate(R.menu.sort_by_name, menu);
+                menuInflater.inflate(R.menu.sort_by_count, menu);
+                break;
+            case COUNT_DIRECT:
+                menuInflater.inflate(R.menu.sort_by_name, menu);
+                menuInflater.inflate(R.menu.sort_by_count_reverse, menu);
+                break;
+            case COUNT_REVERSE:
+                menuInflater.inflate(R.menu.sort_by_name, menu);
+                menuInflater.inflate(R.menu.sort_by_count, menu);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown sort order: "+sortOrder);
+        }
 
         MenuItem menuItem = menu.findItem(R.id.actionTags);
         menuItem.setVisible(false);
@@ -93,19 +114,19 @@ public class TagsList2_View extends BaseView implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.actionSortByName:
-                presenter.onSortByNameClicked(true);
+                presenter.onSortClicked(iTagsList2.SortOrder.NAMES_DIRECT);
                 break;
 
             case R.id.actionSortByNameReverse:
-                presenter.onSortByNameClicked(false);
+                presenter.onSortClicked(iTagsList2.SortOrder.NAMES_REVERSE);
                 break;
 
             case R.id.actionSortByCount:
-                presenter.onSortByCardsClicked(true);
+                presenter.onSortClicked(iTagsList2.SortOrder.COUNT_DIRECT);
                 break;
 
             case R.id.actionSortByCountReverse:
-                presenter.onSortByCardsClicked(false);
+                presenter.onSortClicked(iTagsList2.SortOrder.COUNT_REVERSE);
                 break;
 
             default:
@@ -120,6 +141,11 @@ public class TagsList2_View extends BaseView implements
         Intent intent = new Intent(this, CardsGrid_View.class);
         intent.putExtra(Constants.TAG_NAME, tag.getName());
         startActivity(intent);
+    }
+
+    @Override
+    public void refreshMenu() {
+        invalidateOptionsMenu();
     }
 
 

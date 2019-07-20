@@ -18,6 +18,11 @@ public class TagsList2_PageViewStub implements iTagsList2.iPageView {
     }
 
     @Override
+    public void refreshMenu() {
+
+    }
+
+    @Override
     public Context getAppContext() {
         return null;
     }

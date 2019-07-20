@@ -7,12 +7,19 @@ import ru.aakumykov.me.sociocat.models.Tag;
 
 public interface iTagsList2 {
 
+    enum SortOrder {
+        NAMES_DIRECT, NAMES_REVERSE,
+        COUNT_DIRECT, COUNT_REVERSE
+    }
+
     interface TagItemClickListener {
         void onTagClicked(Tag tag);
     }
 
     interface iPageView extends iBaseView {
         void goShowTag(Tag tag);
+
+        void refreshMenu();
     }
 
     interface iTagsView {
@@ -29,7 +36,8 @@ public interface iTagsList2 {
 
         void onTagClicked(Tag tag);
 
-        void onSortByNameClicked(boolean directOrder);
-        void onSortByCardsClicked(boolean directOrder);
+        void onSortClicked(SortOrder sortOrder);
+
+        SortOrder getSortOrder();
     }
 }
