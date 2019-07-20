@@ -465,4 +465,8 @@
     <string name="CARD_SHOW_login_required_to_change_rating">Для оценки карточки необходимо войти</string>
     <string name="TAGS_LIST_error_loading_list">Ошибка загрузки списка меток</string>
     <string name="TAGS_LIST_loading_list">Загрузка списка меток</string>
+    <string name="MENU_sort_by_name">Сортировать по алфавиту</string>
+    <string name="MENU_sort_by_name_reverse">Сортировать по алфавиту в обратном порядке</string>
+    <string name="MENU_sort_by_count">Сортировать по количеству</string>
+    <string name="MENU_sort_by_count_reverse">Сортировать по количеству в обратном порядке</string>
 </resources>
