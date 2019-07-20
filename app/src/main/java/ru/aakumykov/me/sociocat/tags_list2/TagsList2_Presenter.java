@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.tags_list2;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -17,7 +16,7 @@ public class TagsList2_Presenter implements iTagsList2.iPresenter {
     private iTagsList2.iPageView pageView;
     private iTagsList2.iTagsView tagsView;
     private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
-
+    private iTagsList2.SortOrder sortOrder = iTagsList2.SortOrder.NAMES_DIRECT;
 
     @Override
     public void bindViews(iTagsList2.iPageView pageView, iTagsList2.iTagsView tagsView) {
@@ -58,30 +57,45 @@ public class TagsList2_Presenter implements iTagsList2.iPresenter {
     }
 
     @Override
-    public void onSortByCardsClicked() {
-        pageView.showToast(R.string.not_implemented_yet);
+    public void onSortClicked(iTagsList2.SortOrder sortOrder) {
+
+        this.sortOrder = sortOrder;
+        List<Tag> list = tagsView.getTagsList();
+
+        switch (sortOrder) {
+            case NAMES_DIRECT:
+                sortTagsByName(list, true);
+                break;
+
+            case NAMES_REVERSE:
+                sortTagsByName(list, false);
+                break;
+
+            case COUNT_DIRECT:
+                sortTagsByCardsCount(list, true);
+                break;
+
+            case COUNT_REVERSE:
+                sortTagsByCardsCount(list, false);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unknown sort order: "+sortOrder);
+        }
+
+        pageView.refreshMenu();
+
+        tagsView.displayList(list);
     }
 
     @Override
-    public void onSortByNameClicked() {
-        pageView.showToast(R.string.not_implemented_yet);
+    public iTagsList2.SortOrder getSortOrder() {
+        return this.sortOrder;
     }
 
 
     // Внутренние методы
-    private void sortTagsByCardsCount(List<Tag> inputList, boolean reverseOrder) {
-        Collections.sort(inputList, new Comparator<Tag>() {
-            @Override
-            public int compare(Tag tag1, Tag tag2) {
-                int cardsCount1 = tag1.getCards().keySet().size();
-                int cardsCount2 = tag2.getCards().keySet().size();
-                if (cardsCount1 == cardsCount2) return 0;
-                return (reverseOrder) ? cardsCount2 - cardsCount1 : cardsCount1 - cardsCount2;
-            }
-        });
-    }
-
-    private void sortTagsByName(List<Tag> inputList, boolean reverseOrder) {
+    private void sortTagsByName(List<Tag> inputList, boolean directOrder) {
         Collections.sort(inputList, new Comparator<Tag>() {
             @Override
             public int compare(Tag tag1, Tag tag2) {
@@ -90,9 +104,21 @@ public class TagsList2_Presenter implements iTagsList2.iPresenter {
                 int res = tagName1.compareToIgnoreCase(tagName2);
                 if (0 == res) return 0;
                 else {
-                    return (reverseOrder) ? -1*res : res;
+                    return (directOrder) ? res : -1*res;
                 }
 
+            }
+        });
+    }
+
+    private void sortTagsByCardsCount(List<Tag> inputList, boolean directOrder) {
+        Collections.sort(inputList, new Comparator<Tag>() {
+            @Override
+            public int compare(Tag tag1, Tag tag2) {
+                int cardsCount1 = tag1.getCards().keySet().size();
+                int cardsCount2 = tag2.getCards().keySet().size();
+                if (cardsCount1 == cardsCount2) return 0;
+                return (directOrder) ? cardsCount1 - cardsCount2 : cardsCount2 - cardsCount1;
             }
         });
     }

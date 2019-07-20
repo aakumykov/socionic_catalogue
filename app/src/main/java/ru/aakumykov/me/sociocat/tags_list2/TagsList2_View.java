@@ -3,10 +3,10 @@ package ru.aakumykov.me.sociocat.tags_list2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,9 +16,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
-import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.tags.show.TagShow_View;
 
 public class TagsList2_View extends BaseView implements
         iTagsList2.iPageView,
@@ -80,9 +78,60 @@ public class TagsList2_View extends BaseView implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+
+        MenuInflater menuInflater = getMenuInflater();
+
+        iTagsList2.SortOrder sortOrder = presenter.getSortOrder();
+
+        switch (sortOrder) {
+            case NAMES_DIRECT:
+                menuInflater.inflate(R.menu.sort_by_name_reverse, menu);
+                menuInflater.inflate(R.menu.sort_by_count, menu);
+                break;
+            case NAMES_REVERSE:
+                menuInflater.inflate(R.menu.sort_by_name, menu);
+                menuInflater.inflate(R.menu.sort_by_count, menu);
+                break;
+            case COUNT_DIRECT:
+                menuInflater.inflate(R.menu.sort_by_name, menu);
+                menuInflater.inflate(R.menu.sort_by_count_reverse, menu);
+                break;
+            case COUNT_REVERSE:
+                menuInflater.inflate(R.menu.sort_by_name, menu);
+                menuInflater.inflate(R.menu.sort_by_count, menu);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown sort order: "+sortOrder);
+        }
+
         MenuItem menuItem = menu.findItem(R.id.actionTags);
         menuItem.setVisible(false);
-//        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.actionSortByName:
+                presenter.onSortClicked(iTagsList2.SortOrder.NAMES_DIRECT);
+                break;
+
+            case R.id.actionSortByNameReverse:
+                presenter.onSortClicked(iTagsList2.SortOrder.NAMES_REVERSE);
+                break;
+
+            case R.id.actionSortByCount:
+                presenter.onSortClicked(iTagsList2.SortOrder.COUNT_DIRECT);
+                break;
+
+            case R.id.actionSortByCountReverse:
+                presenter.onSortClicked(iTagsList2.SortOrder.COUNT_REVERSE);
+                break;
+
+            default:
+                super.onOptionsItemSelected(item);
+        }
         return true;
     }
 
@@ -92,6 +141,11 @@ public class TagsList2_View extends BaseView implements
         Intent intent = new Intent(this, CardsGrid_View.class);
         intent.putExtra(Constants.TAG_NAME, tag.getName());
         startActivity(intent);
+    }
+
+    @Override
+    public void refreshMenu() {
+        invalidateOptionsMenu();
     }
 
 

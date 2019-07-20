@@ -60,4 +60,9 @@ public class TagsList2_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         tagsList.addAll(inputList);
         notifyDataSetChanged();
     }
+
+    @Override
+    public List<Tag> getTagsList() {
+        return new ArrayList<>(tagsList);
+    }
 }

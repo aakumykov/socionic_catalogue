@@ -457,4 +457,8 @@
     <string name="CARD_SHOW_login_required_to_change_rating">Login required to rate the card</string>
     <string name="TAGS_LIST_error_loading_list">Error loading tags list</string>
     <string name="TAGS_LIST_loading_list">Loading tags list</string>
+    <string name="MENU_sort_by_name">Sort alphabetically</string>
+    <string name="MENU_sort_by_name_reverse">Sort alphabetically in reverse order</string>
+    <string name="MENU_sort_by_count">Sort by count</string>
+    <string name="MENU_sort_by_count_reverse">Sort by count in reverse order</string>
 </resources>

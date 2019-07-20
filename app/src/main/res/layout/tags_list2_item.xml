@@ -17,7 +17,7 @@
         android:contentDescription="@string/tag_name"
         android:padding="10dp"
         android:paddingStart="14dp"
-        android:textColor="@android:color/white"
+        android:textColor="?attr/colorPrimaryDark"
         android:textSize="18sp"
         tools:text="Метка 1" />
 
@@ -29,7 +29,7 @@
         android:contentDescription="@string/cards_count_with_tag"
         android:gravity="end"
         android:padding="10dp"
-        android:textColor="@android:color/white"
+        android:textColor="?attr/colorPrimaryDark"
         android:textSize="14sp"
         tools:text="10" />
 
