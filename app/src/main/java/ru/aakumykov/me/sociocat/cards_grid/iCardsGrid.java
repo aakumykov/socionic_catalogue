@@ -42,7 +42,7 @@ public interface iCardsGrid {
         String getCurrentFilterWord();
         String getCurrentFilterTag();
 
-        void showFilterTag(String tagName);
+        void showTagFilter(String tagName);
     }
 
     interface iGridView {

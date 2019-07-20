@@ -2,16 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tagItem"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
+    android:background="@drawable/shape_tags_list_item_background">
 
     <TextView
         android:id="@+id/nameView"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="8"
         android:contentDescription="@string/tag_name"
         android:padding="10dp"
+        android:paddingStart="14dp"
+        android:textColor="@android:color/white"
         android:textSize="18sp"
         tools:text="Метка 1" />
 
@@ -23,7 +29,8 @@
         android:contentDescription="@string/cards_count_with_tag"
         android:gravity="end"
         android:padding="10dp"
+        android:textColor="@android:color/white"
         android:textSize="14sp"
-        tools:text="10 карточек" />
+        tools:text="10" />
 
 </LinearLayout>

@@ -71,7 +71,7 @@ public class CardsGrid_View extends BaseView implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cards_grid_activity2);
+        setContentView(R.layout.cards_grid_activity);
         ButterKnife.bind(this);
 
         if (!firstRun)
@@ -318,7 +318,7 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void showFilterTag(String tagName) {
+    public void showTagFilter(String tagName) {
         tagsContainer.removeAllTags();
         tagsContainer.addTag(tagName);
     }

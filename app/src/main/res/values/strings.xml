@@ -457,10 +457,12 @@
     <string name="error_unknown_result_code">Неизвестный код результата</string>
     <string name="error_configuring_page">Ошибка настройки страницы</string>
     <string name="MENU_user_profile">Профиль пользователя</string>
-    <string name="CARDS_GRID_loading_cards_with_tag">Загрузка карточек с меткой «%1$s»</string>
+    <string name="CARDS_GRID_loading_cards_with_tag">Получаем карточки с меткой «%1$s»</string>
     <string name="CARDS_GRID_cards_with_tag">Карточки с меткой «%1$s»</string>
     <string name="CARDS_GRID_page_title_tag">Метка «%1$s»</string>
     <string name="CARDS_GRID_no_more_cards">Больше нет</string>
     <string name="CARD_SHOW_error_changing_card_rating">Ошибка изменения оценки</string>
     <string name="CARD_SHOW_login_required_to_change_rating">Для оценки карточки необходимо войти</string>
+    <string name="TAGS_LIST_error_loading_list">Ошибка загрузки списка меток</string>
+    <string name="TAGS_LIST_loading_list">Загрузка списка меток</string>
 </resources>

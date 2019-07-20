@@ -113,6 +113,8 @@
         <activity android:name=".card_show.CardShow_View"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".users.show.UserShow_View" />
+        <activity android:name=".tags_list2.TagsList2_View" />
+        <activity android:name=".tags.show.TagShow_View" />
 
         <service android:name=".push_notifications_service.PushNotificationsService" android:exported="false">
             <intent-filter>

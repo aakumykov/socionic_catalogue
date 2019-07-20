@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.cards_grid.view_stubs;
+package ru.aakumykov.me.sociocat.tags_list2.view_stubs;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,11 +7,15 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
-import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.tags_list2.iTagsList2;
 
-public class CardsGrid_ViewStub implements iCardsGrid.iPageView {
+public class TagsList2_PageViewStub implements iTagsList2.iPageView {
+
+    @Override
+    public void goShowTag(Tag tag) {
+
+    }
 
     @Override
     public Context getAppContext() {
@@ -117,45 +121,4 @@ public class CardsGrid_ViewStub implements iCardsGrid.iPageView {
     public void startSomeActivity(Intent intent) {
 
     }
-
-    @Override
-    public <T> void setTitle(T title) {
-
-    }
-
-    @Override
-    public void goShowCard(Card card) {
-
-    }
-
-    @Override
-    public void goCreateCard(Constants.CardType cardType) {
-
-    }
-
-    @Override
-    public void goEditCard(Card card, int position) {
-
-    }
-
-    @Override
-    public void goCardsGrid() {
-
-    }
-
-    @Override
-    public String getCurrentFilterWord() {
-        return null;
-    }
-
-    @Override
-    public String getCurrentFilterTag() {
-        return null;
-    }
-
-    @Override
-    public void showTagFilter(String tagName) {
-
-    }
-
 }
