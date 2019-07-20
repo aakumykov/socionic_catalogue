@@ -27,7 +27,7 @@ public interface iTagsList2 {
 
         void onTagClicked(Tag tag);
 
-        void onSortByCardsClicked();
-        void onSortByNameClicked();
+        void onSortByNameClicked(boolean directOrder);
+        void onSortByCardsClicked(boolean directOrder);
     }
 }

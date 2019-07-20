@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.tags_list2;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -58,12 +57,12 @@ public class TagsList2_Presenter implements iTagsList2.iPresenter {
     }
 
     @Override
-    public void onSortByCardsClicked() {
-        pageView.showToast(R.string.not_implemented_yet);
+    public void onSortByNameClicked(boolean directOrder) {
+
     }
 
     @Override
-    public void onSortByNameClicked() {
+    public void onSortByCardsClicked(boolean directOrder) {
         pageView.showToast(R.string.not_implemented_yet);
     }
 
