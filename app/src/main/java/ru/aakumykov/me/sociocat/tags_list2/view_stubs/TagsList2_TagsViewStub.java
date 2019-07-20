@@ -10,4 +10,9 @@ public class TagsList2_TagsViewStub implements iTagsList2.iTagsView {
     public void displayList(List<Tag> tagsList) {
 
     }
+
+    @Override
+    public List<Tag> getTagsList() {
+        return null;
+    }
 }

@@ -17,6 +17,8 @@ public interface iTagsList2 {
 
     interface iTagsView {
         void displayList(List<Tag> tagsList);
+
+        List<Tag> getTagsList();
     }
 
     interface iPresenter {
