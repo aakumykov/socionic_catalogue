@@ -1,13 +1,24 @@
 package ru.aakumykov.me.sociocat.singletons;
 
-import androidx.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 
 // TODO: разобраться с гостевым пользователем
@@ -45,8 +56,51 @@ public class AuthSingleton implements iAuthSingleton
         return firebaseAuth.getUid();
     }
 
+    public static void createFirebaseCustomToken(String externalToken, iAuthSingleton.CreateFirebaseCustomToken_Callbacks callbacks) {
 
-    // Динамические методы методы
+        OkHttpClient okHttpClient = new OkHttpClient();
+
+        String url = Config.CUSTOM_ACCESS_TOKEN_CREATE_URL + externalToken;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        try {
+            Call call = okHttpClient.newCall(request);
+
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    Log.e(TAG, e.getMessage());
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    try {
+                        String firebaseCustomAccesToken = response.body().string();
+                        callbacks.onCreateFirebaseCustomToken_Success(firebaseCustomAccesToken);
+                    }
+                    catch (NullPointerException e) {
+                        String errorMsg = e.getMessage();
+                        callbacks.onCreateFirebaseCustomToken_Error(errorMsg);
+                        Log.e(TAG, errorMsg);
+                    }
+                }
+            });
+        }
+        catch (Exception e) {
+            String errorMessage = e.getMessage();
+            if (null != errorMessage)
+                Log.e(TAG, errorMessage);
+            e.printStackTrace();
+        }
+    }
+
+
+
+    // Динамические методы
     @Override
     public void resetPasswordEmail(String email, final ResetPasswordCallbacks callbacks) {
 

@@ -1,8 +1,5 @@
 package ru.aakumykov.me.sociocat.singletons;
 
-import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.models.User;
-
 public interface iAuthSingleton {
 
     void resetPasswordEmail(String email, ResetPasswordCallbacks callbacks);
@@ -10,5 +7,10 @@ public interface iAuthSingleton {
     interface ResetPasswordCallbacks {
         void onEmailSendSuccess();
         void onEmailSendFail(String errorMsg);
+    }
+
+    interface CreateFirebaseCustomToken_Callbacks {
+        void onCreateFirebaseCustomToken_Success(String customToken);
+        void onCreateFirebaseCustomToken_Error(String errorMsg);
     }
 }
