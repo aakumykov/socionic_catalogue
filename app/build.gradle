@@ -97,4 +97,8 @@ dependencies {
 
     // VK Android SDK
     implementation 'com.vk:androidsdk:2.1.1'
+
+    // OkHTTP
+    implementation("com.squareup.okhttp3:okhttp:4.0.1")
+
 }
