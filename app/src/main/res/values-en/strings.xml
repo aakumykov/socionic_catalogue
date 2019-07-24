@@ -461,4 +461,5 @@
     <string name="MENU_sort_by_name_reverse">Sort alphabetically in reverse order</string>
     <string name="MENU_sort_by_count">Sort by count</string>
     <string name="MENU_sort_by_count_reverse">Sort by count in reverse order</string>
+    <string name="LOGIN_VIEW_login_via">Or login via</string>
 </resources>

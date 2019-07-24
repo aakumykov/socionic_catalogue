@@ -2,8 +2,6 @@ package ru.aakumykov.me.sociocat.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,14 +9,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.register.register_step_1.RegisterStep1_View;
 import ru.aakumykov.me.sociocat.reset_password_step1.ResetPasswordStep1_View;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Login_View extends BaseView implements iLogin.View
@@ -64,14 +74,29 @@ public class Login_View extends BaseView implements iLogin.View
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
+        VKInteractor.LoginVK_Callbacks loginVKCallbacks = new VKInteractor.LoginVK_Callbacks() {
+            @Override
+            public void onVKLoginSuccess(VKInteractor.VKAuthResult vkAuthResult) {
+                String vk_access_token = vkAuthResult.getAccessToken();
+                int vk_user_id = vkAuthResult.getUserId();
+                processVKLogin(vk_access_token);
+            }
 
-            case Constants.CODE_RESET_PASSWORD:
-                afterResetPasswordRequest(resultCode, data);
-                break;
+            @Override
+            public void onVKLoginError(int errorCode, @Nullable String errorMsg) {
 
-            default:
-                break;
+            }
+        };
+
+        if (!VKInteractor.isVKActivityResult(requestCode, resultCode, data, loginVKCallbacks)) {
+
+            switch (requestCode) {
+                case Constants.CODE_RESET_PASSWORD:
+                    afterResetPasswordRequest(resultCode, data);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -189,6 +214,11 @@ public class Login_View extends BaseView implements iLogin.View
         presenter.cancelLogin();
     }
 
+    @OnClick(R.id.vkButtonView)
+    void onVKButtonClicked() {
+        VKInteractor.login(this);
+    }
+
 
     // Внтуренния методы
     private void afterResetPasswordRequest(int resultCode, Intent data) {
@@ -203,5 +233,38 @@ public class Login_View extends BaseView implements iLogin.View
                 Log.e(TAG,"Unknown result code: "+resultCode);
                 break;
         }
+    }
+
+    private void processVKLogin(String vk_access_token) {
+
+        AuthSingleton.createFirebaseCustomToken(vk_access_token, new iAuthSingleton.CreateFirebaseCustomToken_Callbacks() {
+            @Override
+            public void onCreateFirebaseCustomToken_Success(String customToken) {
+                Log.d(TAG, "customToken: "+customToken);
+
+                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+                firebaseAuth.signInWithCustomToken(customToken)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                                    if (null != firebaseUser) {
+                                        String userName = firebaseUser.getDisplayName();
+                                    }
+                                }
+                                else {
+                                    showToast("Ошибка входа через ВК");
+                                }
+                            }
+                        });
+            }
+
+            @Override
+            public void onCreateFirebaseCustomToken_Error(String errorMsg) {
+
+            }
+        });
     }
 }

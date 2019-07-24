@@ -17,13 +17,11 @@ import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class MyApp extends Application {
 
     private final static String TAG = "=MyApp=";
-    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
     @Override public void onCreate() {
