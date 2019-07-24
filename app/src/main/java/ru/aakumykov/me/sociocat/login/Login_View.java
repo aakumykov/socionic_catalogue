@@ -9,14 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,11 +17,8 @@ import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.register.register_step_1.RegisterStep1_View;
 import ru.aakumykov.me.sociocat.reset_password_step1.ResetPasswordStep1_View;
-import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Login_View extends BaseView implements iLogin.View
@@ -74,7 +64,7 @@ public class Login_View extends BaseView implements iLogin.View
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        VKInteractor.LoginVK_Callbacks loginVKCallbacks = new VKInteractor.LoginVK_Callbacks() {
+        /*VKInteractor.LoginVK_Callbacks loginVKCallbacks = new VKInteractor.LoginVK_Callbacks() {
             @Override
             public void onVKLoginSuccess(VKInteractor.VKAuthResult vkAuthResult) {
                 String vk_access_token = vkAuthResult.getAccessToken();
@@ -97,6 +87,14 @@ public class Login_View extends BaseView implements iLogin.View
                 default:
                     break;
             }
+        }*/
+
+        switch (requestCode) {
+            case Constants.CODE_RESET_PASSWORD:
+                afterResetPasswordRequest(resultCode, data);
+                break;
+            default:
+                break;
         }
     }
 
@@ -216,7 +214,7 @@ public class Login_View extends BaseView implements iLogin.View
 
     @OnClick(R.id.vkButtonView)
     void onVKButtonClicked() {
-        VKInteractor.login(this);
+//        VKInteractor.login(this);
     }
 
 
@@ -237,7 +235,7 @@ public class Login_View extends BaseView implements iLogin.View
 
     private void processVKLogin(String vk_access_token) {
 
-        AuthSingleton.createFirebaseCustomToken(vk_access_token, new iAuthSingleton.CreateFirebaseCustomToken_Callbacks() {
+        /*AuthSingleton.createFirebaseCustomToken(vk_access_token, new iAuthSingleton.CreateFirebaseCustomToken_Callbacks() {
             @Override
             public void onCreateFirebaseCustomToken_Success(String customToken) {
                 Log.d(TAG, "customToken: "+customToken);
@@ -265,6 +263,6 @@ public class Login_View extends BaseView implements iLogin.View
             public void onCreateFirebaseCustomToken_Error(String errorMsg) {
 
             }
-        });
+        });*/
     }
 }
