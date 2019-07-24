@@ -94,4 +94,7 @@ dependencies {
     // RxJava v1
     implementation 'io.reactivex:rxjava:1.2.3'
     implementation 'io.reactivex:rxandroid:1.2.1'
+
+    // VK Android SDK
+    implementation 'com.vk:androidsdk:2.0.0'
 }
