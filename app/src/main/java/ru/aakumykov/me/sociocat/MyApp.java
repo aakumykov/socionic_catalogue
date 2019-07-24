@@ -12,22 +12,25 @@ import org.greenrobot.eventbus.EventBus;
 
 import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
-import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class MyApp extends Application {
 
     private final static String TAG = "=MyApp=";
-    private iUsersSingleton usersSingleton;
+    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
     @Override public void onCreate() {
         super.onCreate();
 
-        usersSingleton = UsersSingleton.getInstance();
-
         // Подписываюсь на события изменения авторизации
+        // Firebase
         FirebaseAuth.getInstance().addAuthStateListener(firebaseAuth -> {
 
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -49,6 +52,13 @@ public class MyApp extends Application {
             } else {
                 Log.e(TAG, "FirebaseUser == NULL");
                 deauthorizeUser();
+            }
+        });
+        // Вконтакте
+        VKInteractor.trackVKAuthExpired(new VKInteractor.VKAuthExpiredCallback() {
+            @Override
+            public void onVKAuthExpired() {
+                AuthSingleton.logout();
             }
         });
 
