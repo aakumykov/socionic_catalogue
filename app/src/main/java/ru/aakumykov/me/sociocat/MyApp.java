@@ -22,10 +22,12 @@ import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 public class MyApp extends Application {
 
     private final static String TAG = "=MyApp=";
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iUsersSingleton usersSingleton;
 
     @Override public void onCreate() {
         super.onCreate();
+
+        usersSingleton = UsersSingleton.getInstance();
 
         // Подписываюсь на события изменения авторизации
         // Firebase
