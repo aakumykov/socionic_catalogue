@@ -71,29 +71,34 @@ public class AuthSingleton implements iAuthSingleton
 
             call.enqueue(new Callback() {
                 @Override
-                public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    Log.e(TAG, e.getMessage());
-                    e.printStackTrace();
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    if (response.isSuccessful()) {
+                        String message = response.message();
+                    }
+//                    try {
+//                        String firebaseCustomAccesToken = response.body().string();
+//                        callbacks.onCreateFirebaseCustomToken_Success(firebaseCustomAccesToken);
+//                    }
+//                    catch (NullPointerException e) {
+//                        String errorMsg = e.getMessage();
+//                        callbacks.onCreateFirebaseCustomToken_Error(errorMsg);
+//                        Log.e(TAG, errorMsg);
+//                    }
                 }
 
                 @Override
-                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    try {
-                        String firebaseCustomAccesToken = response.body().string();
-                        callbacks.onCreateFirebaseCustomToken_Success(firebaseCustomAccesToken);
-                    }
-                    catch (NullPointerException e) {
-                        String errorMsg = e.getMessage();
-                        callbacks.onCreateFirebaseCustomToken_Error(errorMsg);
-                        Log.e(TAG, errorMsg);
-                    }
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    String errorMessage = e.getMessage();
+                    callbacks.onCreateFirebaseCustomToken_Error(errorMessage);
+                    Log.e(TAG, errorMessage);
+                    e.printStackTrace();
                 }
             });
         }
         catch (Exception e) {
             String errorMessage = e.getMessage();
-            if (null != errorMessage)
-                Log.e(TAG, errorMessage);
+            callbacks.onCreateFirebaseCustomToken_Error(errorMessage);
+            Log.e(TAG, errorMessage);
             e.printStackTrace();
         }
     }
