@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -84,7 +86,7 @@ public class Login_View extends BaseView implements iLogin.View
 
             @Override
             public void onVKLoginError(int errorCode, @Nullable String errorMsg) {
-
+                showErrorMsg(R.string.LOGIN_error_login_via_vkontakte, errorMsg);
             }
         };
 
@@ -254,18 +256,20 @@ public class Login_View extends BaseView implements iLogin.View
                 FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
                 firebaseAuth.signInWithCustomToken(customToken)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                             @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                                    if (null != firebaseUser) {
-                                        String userName = firebaseUser.getDisplayName();
-                                    }
+                            public void onSuccess(AuthResult authResult) {
+                                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                                if (null != firebaseUser) {
+                                    String userName = firebaseUser.getDisplayName();
                                 }
-                                else {
-                                    showToast("Ошибка входа через ВК");
-                                }
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                showErrorMsg(R.string.LOGIN_error_login_via_vkontakte, e.getMessage());
+                                e.printStackTrace();
                             }
                         });
             }

@@ -469,5 +469,6 @@
     <string name="MENU_sort_by_name_reverse">Сортировать по алфавиту в обратном порядке</string>
     <string name="MENU_sort_by_count">Сортировать по количеству</string>
     <string name="MENU_sort_by_count_reverse">Сортировать по количеству в обратном порядке</string>
-    <string name="LOGIN_VIEW_login_via">Или войти через</string>
+    <string name="LOGIN_login_via">Или войти через</string>
+    <string name="LOGIN_error_login_via_vkontakte">Ошибка входа через ВКонтакте</string>
 </resources>

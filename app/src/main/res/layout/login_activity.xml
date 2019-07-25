@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="4dp"
-            android:text="@string/LOGIN_VIEW_login_via"
+            android:text="@string/LOGIN_login_via"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
