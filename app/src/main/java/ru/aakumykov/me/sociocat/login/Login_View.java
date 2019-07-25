@@ -12,13 +12,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -261,6 +260,8 @@ public class Login_View extends BaseView implements iLogin.View
                             public void onSuccess(AuthResult authResult) {
                                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                                 if (null != firebaseUser) {
+
+//                                    firebaseUser.updateProfile()
                                     String userName = firebaseUser.getDisplayName();
                                 }
                             }
@@ -276,7 +277,7 @@ public class Login_View extends BaseView implements iLogin.View
 
             @Override
             public void onCreateFirebaseCustomToken_Error(String errorMsg) {
-
+                showErrorMsg(R.string.LOGIN_error_login_via_vkontakte, errorMsg);
             }
         });
     }

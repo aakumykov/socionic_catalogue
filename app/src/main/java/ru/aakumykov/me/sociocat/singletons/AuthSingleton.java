@@ -73,17 +73,16 @@ public class AuthSingleton implements iAuthSingleton
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     if (response.isSuccessful()) {
-                        String message = response.message();
+                        try {
+                            String firebaseCustomAccesToken = response.body().string();
+                            callbacks.onCreateFirebaseCustomToken_Success(firebaseCustomAccesToken);
+                        }
+                        catch (NullPointerException e) {
+                            String errorMsg = e.getMessage();
+                            callbacks.onCreateFirebaseCustomToken_Error(errorMsg);
+                            Log.e(TAG, errorMsg);
+                        }
                     }
-//                    try {
-//                        String firebaseCustomAccesToken = response.body().string();
-//                        callbacks.onCreateFirebaseCustomToken_Success(firebaseCustomAccesToken);
-//                    }
-//                    catch (NullPointerException e) {
-//                        String errorMsg = e.getMessage();
-//                        callbacks.onCreateFirebaseCustomToken_Error(errorMsg);
-//                        Log.e(TAG, errorMsg);
-//                    }
                 }
 
                 @Override
