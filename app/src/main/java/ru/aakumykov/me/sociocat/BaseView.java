@@ -372,13 +372,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void showProgressBar() {
-        View progressBar = findViewById(R.id.progressBar1);
+        View progressBar = findViewById(R.id.progressBar);
         if (null != progressBar)
             MyUtils.show(progressBar);
     }
 
     private void hideProgressBar() {
-        View progressBar = findViewById(R.id.progressBar1);
+        View progressBar = findViewById(R.id.progressBar);
         if (null != progressBar)
             MyUtils.hide(progressBar);
     }

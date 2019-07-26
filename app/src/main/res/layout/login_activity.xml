@@ -88,11 +88,18 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/vkButtonView"
+                android:id="@+id/vkLoginButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/ic_vk_papirus" />
+
+            <ImageButton
+                android:id="@+id/vkLogoutButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_logout3" />
 
         </LinearLayout>
 

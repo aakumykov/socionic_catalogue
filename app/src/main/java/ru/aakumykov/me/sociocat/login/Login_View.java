@@ -9,15 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -225,9 +217,24 @@ public class Login_View extends BaseView implements iLogin.View
         presenter.cancelLogin();
     }
 
-    @OnClick(R.id.vkButtonView)
-    void onVKButtonClicked() {
+    @OnClick(R.id.vkLoginButton)
+    void onVKLoginButtonClicked() {
         VKInteractor.login(this);
+    }
+
+    @OnClick(R.id.vkLogoutButton)
+    void onVKLogoutButtonClicked() {
+        VKInteractor.logout(new VKInteractor.LogoutVK_Callbacks() {
+            @Override
+            public void onVKLogoutSuccess() {
+                showDebugMsg("Вы вышли из ВК");
+            }
+
+            @Override
+            public void onVKLogoutError() {
+                showDebugMsg("ОШИБКА выхода из ВК");
+            }
+        });
     }
 
 
@@ -247,12 +254,18 @@ public class Login_View extends BaseView implements iLogin.View
     }
 
     private void processVKLogin(String vk_access_token) {
+
+        showProgressMessage(R.string.LOGIN_creating_custom_token);
+
         AuthSingleton.createFirebaseCustomToken(vk_access_token, new iAuthSingleton.CreateFirebaseCustomToken_Callbacks() {
             @Override
             public void onCreateFirebaseCustomToken_Success(String customToken) {
+                showDebugMsg(customToken);
+//                MyUtils.showDebugMsg(Login_View.this, customToken);
+
                 Log.d(TAG, "customToken: "+customToken);
 
-                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                /*FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
                 firebaseAuth.signInWithCustomToken(customToken)
                         .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -260,9 +273,9 @@ public class Login_View extends BaseView implements iLogin.View
                             public void onSuccess(AuthResult authResult) {
                                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                                 if (null != firebaseUser) {
-
+                                    showDebugMsg("Успешный вход через Firebase");
 //                                    firebaseUser.updateProfile()
-                                    String userName = firebaseUser.getDisplayName();
+//                                    String userName = firebaseUser.getDisplayName();
                                 }
                             }
                         })
@@ -272,7 +285,7 @@ public class Login_View extends BaseView implements iLogin.View
                                 showErrorMsg(R.string.LOGIN_error_login_via_vkontakte, e.getMessage());
                                 e.printStackTrace();
                             }
-                        });
+                        });*/
             }
 
             @Override

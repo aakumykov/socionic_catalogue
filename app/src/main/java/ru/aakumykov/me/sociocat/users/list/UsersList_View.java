@@ -31,7 +31,7 @@ public class UsersList_View extends BaseView implements
         AdapterView.OnItemClickListener
 {
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.progressBar1) ProgressBar progressBar;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.listView) ListView listView;
 
     private final static String TAG = "UsersList_View";

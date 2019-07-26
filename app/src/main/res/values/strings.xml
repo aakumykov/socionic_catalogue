@@ -471,4 +471,5 @@
     <string name="MENU_sort_by_count_reverse">Сортировать по количеству в обратном порядке</string>
     <string name="LOGIN_login_via">Или войти через</string>
     <string name="LOGIN_error_login_via_vkontakte">Ошибка входа через ВКонтакте</string>
+    <string name="LOGIN_creating_custom_token">Создаётся ключ доступа</string>
 </resources>
