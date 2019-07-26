@@ -43,5 +43,5 @@ public final class Config {
     public static final int CARDS_GRID_COLUMNS_COUNT_LANDSCAPE = 4;
 
     public static final String CUSTOM_ACCESS_TOKEN_CREATE_URL =
-            " https://us-central1-sociocat-debug.cloudfunctions.net/vkAccessToken2FirebaseAccessToken?token=";
+            "https://us-central1-sociocat-debug.cloudfunctions.net/vkAccessToken2FirebaseAccessToken?token=";
 }
