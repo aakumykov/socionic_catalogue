@@ -11,6 +11,7 @@
     <color name="white">#ffffff</color>
 
     <color name="undefined">#a4a4a4</color>
+    <color name="debug">#a4a4a4</color>
     <color name="info">#4CAF50</color>
     <color name="info_background">#E3FFE4</color>
     <color name="warning">#FF7140</color>

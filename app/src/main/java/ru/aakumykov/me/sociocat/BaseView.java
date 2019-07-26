@@ -13,15 +13,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Date;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_type_chooser.CardTypeChooser;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
@@ -33,7 +34,6 @@ import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.tags.list.TagsList_View;
 import ru.aakumykov.me.sociocat.tags_list2.TagsList2_View;
 import ru.aakumykov.me.sociocat.users.show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
@@ -221,6 +221,16 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public void hideProgressMessage() {
         hideProgressBar();
         hideMsg();
+    }
+
+    @Override
+    public <T> void showDebugMsg(T msg) {
+        if (Config.DEBUG_MODE) {
+            String message = String.valueOf(msg);
+            hideProgressMessage();
+            showMsg(message, R.color.debug, R.color.white);
+            Log.d("showDebugMsg(): ", message);
+        }
     }
 
     @Override
