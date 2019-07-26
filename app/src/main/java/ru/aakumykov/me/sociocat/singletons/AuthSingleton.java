@@ -9,16 +9,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.jetbrains.annotations.NotNull;
+import java.util.concurrent.TimeUnit;
 
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 
 // TODO: разобраться с гостевым пользователем
@@ -56,50 +48,57 @@ public class AuthSingleton implements iAuthSingleton
         return firebaseAuth.getUid();
     }
 
-    public static void createFirebaseCustomToken(String externalToken, iAuthSingleton.CreateFirebaseCustomToken_Callbacks callbacks) {
-
-        OkHttpClient okHttpClient = new OkHttpClient();
-
-        String url = Config.CUSTOM_ACCESS_TOKEN_CREATE_URL + externalToken;
-
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
+    public static void createFirebaseCustomToken(String externalToken,
+                                                 iAuthSingleton.CreateFirebaseCustomToken_Callbacks callbacks)
+    {
         try {
-            Call call = okHttpClient.newCall(request);
-
-            call.enqueue(new Callback() {
-                @Override
-                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    if (response.isSuccessful()) {
-                        try {
-                            String firebaseCustomAccesToken = response.body().string();
-                            callbacks.onCreateFirebaseCustomToken_Success(firebaseCustomAccesToken);
-                        }
-                        catch (NullPointerException e) {
-                            String errorMsg = e.getMessage();
-                            callbacks.onCreateFirebaseCustomToken_Error(errorMsg);
-                            Log.e(TAG, errorMsg);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    String errorMessage = e.getMessage();
-                    callbacks.onCreateFirebaseCustomToken_Error(errorMessage);
-                    Log.e(TAG, errorMessage);
-                    e.printStackTrace();
-                }
-            });
+            TimeUnit.SECONDS.sleep(3);
+            callbacks.onCreateFirebaseCustomToken_Success("Хуй, привет.");
+        } catch (InterruptedException e) {
+            callbacks.onCreateFirebaseCustomToken_Error("Пизда");
         }
-        catch (Exception e) {
-            String errorMessage = e.getMessage();
-            callbacks.onCreateFirebaseCustomToken_Error(errorMessage);
-            Log.e(TAG, errorMessage);
-            e.printStackTrace();
-        }
+//        OkHttpClient okHttpClient = new OkHttpClient();
+//
+//        String url = Config.CUSTOM_ACCESS_TOKEN_CREATE_URL + externalToken;
+//
+//        Request request = new Request.Builder()
+//                .url(url)
+//                .build();
+//
+//        try {
+//            Call call = okHttpClient.newCall(request);
+//
+//            call.enqueue(new Callback() {
+//                @Override
+//                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+//                    if (response.isSuccessful()) {
+//                        try {
+//                            String firebaseCustomAccesToken = response.body().string();
+//                            callbacks.onCreateFirebaseCustomToken_Success(firebaseCustomAccesToken);
+//                        }
+//                        catch (NullPointerException e) {
+//                            String errorMsg = e.getMessage();
+//                            callbacks.onCreateFirebaseCustomToken_Error(errorMsg);
+//                            Log.e(TAG, errorMsg);
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+//                    String errorMessage = e.getMessage();
+//                    callbacks.onCreateFirebaseCustomToken_Error(errorMessage);
+//                    Log.e(TAG, errorMessage);
+//                    e.printStackTrace();
+//                }
+//            });
+//        }
+//        catch (Exception e) {
+//            String errorMessage = e.getMessage();
+//            callbacks.onCreateFirebaseCustomToken_Error(errorMessage);
+//            Log.e(TAG, errorMessage);
+//            e.printStackTrace();
+//        }
     }
 
 
