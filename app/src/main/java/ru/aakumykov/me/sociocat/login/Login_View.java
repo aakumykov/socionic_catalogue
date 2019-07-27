@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -32,6 +33,7 @@ public class Login_View extends BaseView implements iLogin.View
     @BindView(R.id.resetPasswordButton) TextView resetPasswordButton;
     @BindView(R.id.registerButton) Button registerButton;
     @BindView(R.id.cancelButton) Button cancelButton;
+    @BindView(R.id.vkLoginButton) ImageView vkLoginButton;
 
     public static final String TAG = "Login_View";
     private iLogin.Presenter presenter;
@@ -147,6 +149,7 @@ public class Login_View extends BaseView implements iLogin.View
         MyUtils.disable(resetPasswordButton);
         MyUtils.disable(registerButton);
 //        MyUtils.disable(cancelButton);
+        MyUtils.disable(vkLoginButton);
     }
 
     @Override
@@ -255,11 +258,13 @@ public class Login_View extends BaseView implements iLogin.View
 
     private void processVKLogin(String vk_access_token) {
 
+        disableForm();
         showProgressMessage(R.string.LOGIN_creating_custom_token);
 
         AuthSingleton.createFirebaseCustomToken(vk_access_token, new iAuthSingleton.CreateFirebaseCustomToken_Callbacks() {
             @Override
             public void onCreateFirebaseCustomToken_Success(String customToken) {
+                enableForm();
                 showDebugMsg(customToken);
 
                 /*FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -287,6 +292,7 @@ public class Login_View extends BaseView implements iLogin.View
 
             @Override
             public void onCreateFirebaseCustomToken_Error(String errorMsg) {
+                enableForm();
                 showErrorMsg(R.string.LOGIN_error_login_via_vkontakte, errorMsg);
             }
         });
