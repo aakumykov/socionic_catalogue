@@ -261,9 +261,6 @@ public class Login_View extends BaseView implements iLogin.View
             @Override
             public void onCreateFirebaseCustomToken_Success(String customToken) {
                 showDebugMsg(customToken);
-//                MyUtils.showDebugMsg(Login_View.this, customToken);
-
-                Log.d(TAG, "customToken: "+customToken);
 
                 /*FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 

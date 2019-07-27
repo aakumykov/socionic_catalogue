@@ -9,8 +9,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.concurrent.TimeUnit;
-
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 
 // TODO: разобраться с гостевым пользователем
@@ -48,62 +51,49 @@ public class AuthSingleton implements iAuthSingleton
         return firebaseAuth.getUid();
     }
 
+
+
+    // Создание Firebase Custom Token
     public static void createFirebaseCustomToken(String externalToken,
                                                  iAuthSingleton.CreateFirebaseCustomToken_Callbacks callbacks)
     {
-        try {
-            TimeUnit.SECONDS.sleep(3);
-            callbacks.onCreateFirebaseCustomToken_Success("Хуй, привет.");
-        } catch (InterruptedException e) {
-            callbacks.onCreateFirebaseCustomToken_Error("Пизда");
-        }
-//        OkHttpClient okHttpClient = new OkHttpClient();
-//
-//        String url = Config.CUSTOM_ACCESS_TOKEN_CREATE_URL + externalToken;
-//
-//        Request request = new Request.Builder()
-//                .url(url)
-//                .build();
-//
-//        try {
-//            Call call = okHttpClient.newCall(request);
-//
-//            call.enqueue(new Callback() {
-//                @Override
-//                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-//                    if (response.isSuccessful()) {
-//                        try {
-//                            String firebaseCustomAccesToken = response.body().string();
-//                            callbacks.onCreateFirebaseCustomToken_Success(firebaseCustomAccesToken);
-//                        }
-//                        catch (NullPointerException e) {
-//                            String errorMsg = e.getMessage();
-//                            callbacks.onCreateFirebaseCustomToken_Error(errorMsg);
-//                            Log.e(TAG, errorMsg);
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(@NotNull Call call, @NotNull IOException e) {
-//                    String errorMessage = e.getMessage();
-//                    callbacks.onCreateFirebaseCustomToken_Error(errorMessage);
-//                    Log.e(TAG, errorMessage);
-//                    e.printStackTrace();
-//                }
-//            });
-//        }
-//        catch (Exception e) {
-//            String errorMessage = e.getMessage();
-//            callbacks.onCreateFirebaseCustomToken_Error(errorMessage);
-//            Log.e(TAG, errorMessage);
-//            e.printStackTrace();
-//        }
+        AuthSingleton.getCustomTokenAPI()
+                .getCustomToken(externalToken)
+                .enqueue(new retrofit2.Callback<String>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<String> call, retrofit2.Response<String> response) {
+                        if (response.isSuccessful()) {
+                            String result = response.body();
+                            callbacks.onCreateFirebaseCustomToken_Success(result);
+                        }
+                        else {
+                            callbacks.onCreateFirebaseCustomToken_Error(response.code() + ": " + response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(retrofit2.Call<String> call, Throwable t) {
+                        callbacks.onCreateFirebaseCustomToken_Error(t.getMessage());
+                        t.printStackTrace();
+                    }
+                });
+    }
+
+    private interface CustomTokenAPI {
+        @GET(Config.CREATE_CUSTOM_TOKEN_PATH)
+        retrofit2.Call<String> getCustomToken(@Query(Config.CREATE_CUSTOM_TOKEN_PARAMETER_NAME) String tokenBase);
+    }
+
+    private static CustomTokenAPI getCustomTokenAPI() {
+        return new Retrofit.Builder()
+                .baseUrl(Config.CREATE_CUSTOM_TOKEN_BASE_URL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build()
+                .create(CustomTokenAPI.class);
     }
 
 
 
-    // Динамические методы
     @Override
     public void resetPasswordEmail(String email, final ResetPasswordCallbacks callbacks) {
 
