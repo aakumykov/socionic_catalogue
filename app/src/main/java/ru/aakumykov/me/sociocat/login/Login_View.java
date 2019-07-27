@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -83,7 +84,7 @@ public class Login_View extends BaseView implements iLogin.View
             public void onVKLoginSuccess(VKInteractor.VKAuthResult vkAuthResult) {
                 String vk_access_token = vkAuthResult.getAccessToken();
                 int vk_user_id = vkAuthResult.getUserId();
-                processVKLogin(vk_user_id, vk_access_token);
+                presenter.processVKLogin(vk_user_id, vk_access_token);
             }
 
             @Override
@@ -150,6 +151,11 @@ public class Login_View extends BaseView implements iLogin.View
 
 
     // Интерфейсные методы
+    @Override
+    public Activity getActivity() {
+        return this;
+    }
+
     @Override
     public void disableForm() {
         MyUtils.disable(emailInput);
@@ -232,9 +238,10 @@ public class Login_View extends BaseView implements iLogin.View
 
     @OnClick(R.id.vkLoginButton)
     void onVKLoginButtonClicked() {
-        VKInteractor.login(this);
+        presenter.onVKLoginButtonClicked();
     }
 
+    // Убрать...
     @OnClick(R.id.vkLogoutButton)
     void onVKLogoutButtonClicked() {
         VKInteractor.logout(new VKInteractor.LogoutVK_Callbacks() {
@@ -266,54 +273,4 @@ public class Login_View extends BaseView implements iLogin.View
         }
     }
 
-    private void processVKLogin(int vm_user_id, String vk_access_token) {
-
-        disableForm();
-        showProgressMessage(R.string.LOGIN_creating_custom_token);
-
-        String externalToken = String.valueOf(vm_user_id);
-        AuthSingleton.createFirebaseCustomToken(externalToken, new iAuthSingleton.CreateFirebaseCustomToken_Callbacks() {
-            @Override
-            public void onCreateFirebaseCustomToken_Success(String customToken) {
-                enableForm();
-                showDebugMsg(customToken);
-
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                } catch (InterruptedException e) {
-
-                }
-
-                showProgressMessage(R.string.LOGIN_logging_in);
-
-                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
-                firebaseAuth.signInWithCustomToken(customToken)
-                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                            @Override
-                            public void onSuccess(AuthResult authResult) {
-                                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                                if (null != firebaseUser) {
-                                    showDebugMsg("Успешный вход через Firebase");
-//                                    firebaseUser.updateProfile()
-//                                    String userName = firebaseUser.getDisplayName();
-                                }
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                showErrorMsg(R.string.LOGIN_error_login_via_vkontakte, e.getMessage());
-                                e.printStackTrace();
-                            }
-                        });
-            }
-
-            @Override
-            public void onCreateFirebaseCustomToken_Error(String errorMsg) {
-                enableForm();
-                showErrorMsg(R.string.LOGIN_error_login_via_vkontakte, errorMsg);
-            }
-        });
-    }
 }
