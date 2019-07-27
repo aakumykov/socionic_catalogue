@@ -203,7 +203,7 @@ public class Login_View extends BaseView implements iLogin.View
 
     // Нажатия
     @OnClick(R.id.loginButton)
-    void login() {
+    void onLoginButtonClicked() {
         String email = emailInput.getText().toString();
         String password = passwordInput.getText().toString();
 
@@ -214,19 +214,19 @@ public class Login_View extends BaseView implements iLogin.View
     }
 
     @OnClick(R.id.resetPasswordButton)
-    void resetPassword() {
+    void onResetPasswordButtonClicked() {
         Intent intent = new Intent(this, ResetPasswordStep1_View.class);
         startActivityForResult(intent, Constants.CODE_RESET_PASSWORD);
     }
 
     @OnClick(R.id.registerButton)
-    void goRegisterPage() {
+    void onGoRegisterPageClicked() {
         Intent intent = new Intent(this, RegisterStep1_View.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.cancelButton)
-    void cancelLogin() {
+    void onCancelLoginButtonClicked() {
         presenter.cancelLogin();
     }
 
