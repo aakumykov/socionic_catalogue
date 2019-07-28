@@ -464,4 +464,8 @@
     <string name="LOGIN_login_via">Or login via</string>
     <string name="LOGIN_error_login_via_vkontakte">Error login via Vkontakte</string>
     <string name="LOGIN_creating_custom_token">Creating custom token</string>
+    <string name="LOGIN_getting_user_info">Getting user info</string>
+    <string name="LOGIN_error_getting_user_info">Error getting user info</string>
+    <string name="LOGIN_updating_user">Updating user</string>
+    <string name="LOGIN_error_updating_user">Error updating user</string>
 </resources>

@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,16 +13,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.concurrent.TimeUnit;
-
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
-import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class Login_Presenter implements
         iLogin.Presenter
@@ -111,23 +109,41 @@ public class Login_Presenter implements
         VKInteractor.login(view.getActivity());
     }
 
-    public void processVKLogin(int vm_user_id, String vk_access_token) {
+    public void processVKLogin(int vk_user_id, String vk_access_token) {
 
         view.disableForm();
+        view.showProgressMessage(R.string.LOGIN_getting_user_info);
+
+        VKInteractor.getUserInfo(vk_user_id, new VKInteractor.GetVKUserInfo_Callbacks() {
+            @Override
+            public void onGetVKUserInfoSuccess(VKInteractor.VKUser vkUser) {
+                String firstName = vkUser.getFirstName();
+                String lastName = vkUser.getLastName();
+                String vkUserName =  firstName;
+                if (!TextUtils.isEmpty(lastName))
+                    vkUserName += " " + vkUserName;
+
+                String vkUserIdString = String.valueOf(vk_user_id);
+
+                loginExternalUserToFirebase(vkUserName, vkUserIdString);
+            }
+
+            @Override
+            public void onGetVKUserInfoError(String errorMsg) {
+                view.enableForm();
+                view.showErrorMsg(R.string.LOGIN_error_getting_user_info, errorMsg);
+            }
+        });
+
+        /*view.disableForm();
         view.showProgressMessage(R.string.LOGIN_creating_custom_token);
 
-        String externalToken = String.valueOf(vm_user_id);
+        String externalToken = String.valueOf(vk_user_id);
         AuthSingleton.createFirebaseCustomToken(externalToken, new iAuthSingleton.CreateFirebaseCustomToken_Callbacks() {
             @Override
             public void onCreateFirebaseCustomToken_Success(String customToken) {
                 view.enableForm();
                 view.showDebugMsg(customToken);
-
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                } catch (InterruptedException e) {
-
-                }
 
                 view.showProgressMessage(R.string.LOGIN_logging_in);
 
@@ -139,9 +155,10 @@ public class Login_Presenter implements
                             public void onSuccess(AuthResult authResult) {
                                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                                 if (null != firebaseUser) {
-                                    view.showDebugMsg("Успешный вход через Firebase");
-//                                    firebaseUser.updateProfile()
-//                                    String userName = firebaseUser.getDisplayName();
+                                    createOrUpdateExternalUser(firebaseUser.getUid(), vk_user_id);
+                                }
+                                else {
+                                    view.showErrorMsg(R.string.LOGIN_login_error, "FirebaseUser == null");
                                 }
                             }
                         })
@@ -159,7 +176,7 @@ public class Login_Presenter implements
                 view.enableForm();
                 view.showErrorMsg(R.string.LOGIN_error_login_via_vkontakte, errorMsg);
             }
-        });
+        });*/
     }
 
 
@@ -185,4 +202,70 @@ public class Login_Presenter implements
         view.showErrorMsg(R.string.LOGIN_login_error, msg);
     }
 
+    private <T> void createOrUpdateExternalUser(String internalUserId, T externalUserId) {
+
+
+
+//        usersSingleton.createOrUpdateUser(userId, new iUsersSingleton.CreateOrUpdateExternalUser_Callbacks(){
+//            void onCreateOrUpdateExternalUser_Success(User user) {
+//
+//            }
+//            void onCreateOrUpdateExternalUser_Error(String errorMsg) {
+//                view.showErrorMsg(R.string.LOGIN_login_error, errorMsg);
+//            }
+//        });
+    }
+
+    private void loginExternalUserToFirebase(String externalUserId, String externalUserName) {
+
+        view.showProgressMessage(R.string.LOGIN_logging_in);
+
+        FirebaseAuth
+                .getInstance()
+                .signInWithCustomToken(externalUserId)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+
+                        FirebaseUser firebaseUser = authResult.getUser();
+                        String firebaseUserId = firebaseUser.getUid();
+
+                        createOrUpdateUser(firebaseUserId, externalUserId, externalUserName);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        AuthSingleton.logout();
+                        view.showErrorMsg(R.string.LOGIN_login_error, e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+
+    }
+
+    private void createOrUpdateUser(String internalUserId, String externalUserId, String userName) {
+        view.showProgressMessage(R.string.LOGIN_updating_user);
+
+        usersSingleton.createOrUpdateExternalUser(
+                internalUserId,
+                externalUserId,
+                userName,
+                new iUsersSingleton.CreateOrUpdateExternalUser_Callbacks() {
+                    @Override
+                    public void onCreateOrUpdateExternalUser_Success(User user) {
+                        view.hideProgressMessage();
+                        view.showToast(R.string.LOGIN_login_success);
+
+                        usersSingleton.storeCurrentUser(user);
+                    }
+
+                    @Override
+                    public void onCreateOrUpdateExternalUser_Error(String errorMsg) {
+                        view.hideProgressMessage();
+                        view.showErrorMsg(R.string.LOGIN_error_updating_user, errorMsg);
+                    }
+                }
+        );
+    }
 }
