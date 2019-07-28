@@ -19,6 +19,7 @@ import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class Login_Presenter implements
@@ -109,6 +110,7 @@ public class Login_Presenter implements
         VKInteractor.login(view.getActivity());
     }
 
+    @Override
     public void processVKLogin(int vk_user_id, String vk_access_token) {
 
         view.disableForm();
@@ -202,21 +204,24 @@ public class Login_Presenter implements
         view.showErrorMsg(R.string.LOGIN_login_error, msg);
     }
 
-    private <T> void createOrUpdateExternalUser(String internalUserId, T externalUserId) {
+    private void createCustomToken(String externalUserId, String userName) {
 
+        view.showProgressMessage(R.string.LOGIN_creating_custom_token);
 
+        AuthSingleton.createFirebaseCustomToken(externalUserId, new iAuthSingleton.CreateFirebaseCustomToken_Callbacks() {
+            @Override
+            public void onCreateFirebaseCustomToken_Success(String customToken) {
+                loginExternalUserToFirebase(customToken, externalUserId, userName);
+            }
 
-//        usersSingleton.createOrUpdateUser(userId, new iUsersSingleton.CreateOrUpdateExternalUser_Callbacks(){
-//            void onCreateOrUpdateExternalUser_Success(User user) {
-//
-//            }
-//            void onCreateOrUpdateExternalUser_Error(String errorMsg) {
-//                view.showErrorMsg(R.string.LOGIN_login_error, errorMsg);
-//            }
-//        });
+            @Override
+            public void onCreateFirebaseCustomToken_Error(String errorMsg) {
+                view.showErrorMsg(R.string.LOGIN_login_error, errorMsg);
+            }
+        });
     }
 
-    private void loginExternalUserToFirebase(String externalUserId, String externalUserName) {
+    private void loginExternalUserToFirebase(String customToken, String externalUserId, String externalUserName) {
 
         view.showProgressMessage(R.string.LOGIN_logging_in);
 
