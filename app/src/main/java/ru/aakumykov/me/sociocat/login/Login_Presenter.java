@@ -35,6 +35,11 @@ public class Login_Presenter implements
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
+    private String externalAccessToken;
+    private String externalUserId;
+    private String userName;
+    private String customToken;
+    private String internalUserId;
 
     // Обязательные методы
     @Override
@@ -113,6 +118,9 @@ public class Login_Presenter implements
     @Override
     public void processVKLogin(int vk_user_id, String vk_access_token) {
 
+        this.externalUserId = String.valueOf(vk_user_id);
+        this.externalAccessToken = vk_access_token;
+
         view.disableForm();
         view.showProgressMessage(R.string.LOGIN_getting_user_info);
 
@@ -121,13 +129,12 @@ public class Login_Presenter implements
             public void onGetVKUserInfoSuccess(VKInteractor.VKUser vkUser) {
                 String firstName = vkUser.getFirstName();
                 String lastName = vkUser.getLastName();
-                String vkUserName =  firstName;
+
+                Login_Presenter.this.userName =  firstName;
                 if (!TextUtils.isEmpty(lastName))
-                    vkUserName += " " + vkUserName;
+                    Login_Presenter.this.userName += " " + lastName;
 
-                String vkUserIdString = String.valueOf(vk_user_id);
-
-                loginExternalUserToFirebase(vkUserName, vkUserIdString);
+                createCustomToken();
             }
 
             @Override
@@ -136,49 +143,6 @@ public class Login_Presenter implements
                 view.showErrorMsg(R.string.LOGIN_error_getting_user_info, errorMsg);
             }
         });
-
-        /*view.disableForm();
-        view.showProgressMessage(R.string.LOGIN_creating_custom_token);
-
-        String externalToken = String.valueOf(vk_user_id);
-        AuthSingleton.createFirebaseCustomToken(externalToken, new iAuthSingleton.CreateFirebaseCustomToken_Callbacks() {
-            @Override
-            public void onCreateFirebaseCustomToken_Success(String customToken) {
-                view.enableForm();
-                view.showDebugMsg(customToken);
-
-                view.showProgressMessage(R.string.LOGIN_logging_in);
-
-                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
-                firebaseAuth.signInWithCustomToken(customToken)
-                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                            @Override
-                            public void onSuccess(AuthResult authResult) {
-                                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                                if (null != firebaseUser) {
-                                    createOrUpdateExternalUser(firebaseUser.getUid(), vk_user_id);
-                                }
-                                else {
-                                    view.showErrorMsg(R.string.LOGIN_login_error, "FirebaseUser == null");
-                                }
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                view.showErrorMsg(R.string.LOGIN_error_login_via_vkontakte, e.getMessage());
-                                e.printStackTrace();
-                            }
-                        });
-            }
-
-            @Override
-            public void onCreateFirebaseCustomToken_Error(String errorMsg) {
-                view.enableForm();
-                view.showErrorMsg(R.string.LOGIN_error_login_via_vkontakte, errorMsg);
-            }
-        });*/
     }
 
 
@@ -204,30 +168,31 @@ public class Login_Presenter implements
         view.showErrorMsg(R.string.LOGIN_login_error, msg);
     }
 
-    private void createCustomToken(String externalUserId, String userName) {
+    private void createCustomToken() {
 
         view.showProgressMessage(R.string.LOGIN_creating_custom_token);
 
         AuthSingleton.createFirebaseCustomToken(externalUserId, new iAuthSingleton.CreateFirebaseCustomToken_Callbacks() {
             @Override
             public void onCreateFirebaseCustomToken_Success(String customToken) {
-                loginExternalUserToFirebase(customToken, externalUserId, userName);
+                Login_Presenter.this.customToken = customToken;
+                loginExternalUserToFirebase();
             }
 
             @Override
             public void onCreateFirebaseCustomToken_Error(String errorMsg) {
-                view.showErrorMsg(R.string.LOGIN_login_error, errorMsg);
+                view.showErrorMsg(R.string.LOGIN_error_creating_custom_token, errorMsg);
             }
         });
     }
 
-    private void loginExternalUserToFirebase(String customToken, String externalUserId, String externalUserName) {
+    private void loginExternalUserToFirebase() {
 
         view.showProgressMessage(R.string.LOGIN_logging_in);
 
         FirebaseAuth
                 .getInstance()
-                .signInWithCustomToken(externalUserId)
+                .signInWithCustomToken(customToken)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
@@ -235,7 +200,7 @@ public class Login_Presenter implements
                         FirebaseUser firebaseUser = authResult.getUser();
                         String firebaseUserId = firebaseUser.getUid();
 
-                        createOrUpdateUser(firebaseUserId, externalUserId, externalUserName);
+                        createOrUpdateUser(firebaseUserId, externalUserId, userName);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

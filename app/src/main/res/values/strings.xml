@@ -476,4 +476,5 @@
     <string name="LOGIN_error_getting_user_info">Ошибка получения данных пользователя</string>
     <string name="LOGIN_updating_user">Обновляем пользователя</string>
     <string name="LOGIN_error_updating_user">Ошибка обновления пользователя</string>
+    <string name="LOGIN_error_creating_custom_token">Ошибка создания ключа доступа</string>
 </resources>
