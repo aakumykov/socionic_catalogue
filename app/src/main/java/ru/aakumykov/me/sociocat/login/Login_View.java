@@ -11,16 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,8 +22,6 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.register.register_step_1.RegisterStep1_View;
 import ru.aakumykov.me.sociocat.reset_password_step1.ResetPasswordStep1_View;
-import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Login_View extends BaseView implements iLogin.View
@@ -77,7 +66,6 @@ public class Login_View extends BaseView implements iLogin.View
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
         VKInteractor.LoginVK_Callbacks loginVKCallbacks = new VKInteractor.LoginVK_Callbacks() {
             @Override
@@ -93,26 +81,19 @@ public class Login_View extends BaseView implements iLogin.View
             }
         };
 
-        if (!VKInteractor.isVKActivityResult(requestCode, resultCode, data, loginVKCallbacks)) {
-
+        if (VKInteractor.isVKActivityResult(requestCode, resultCode, data, loginVKCallbacks)) {
+            // Обработка происходит в loginVKCallbacks
+        }
+        else {
             switch (requestCode) {
                 case Constants.CODE_RESET_PASSWORD:
                     afterResetPasswordRequest(resultCode, data);
                     break;
                 default:
+                    super.onActivityResult(requestCode, resultCode, data);
                     break;
             }
         }
-
-/*
-        switch (requestCode) {
-            case Constants.CODE_RESET_PASSWORD:
-                afterResetPasswordRequest(resultCode, data);
-                break;
-            default:
-                break;
-        }
-*/
     }
 
     @Override
