@@ -228,6 +228,8 @@ public class Login_Presenter implements
                         view.showToast(R.string.LOGIN_login_success);
 
                         usersSingleton.storeCurrentUser(user);
+
+                        view.finishLogin(false, mTransitIntent, mTransitArguments);
                     }
 
                     @Override
