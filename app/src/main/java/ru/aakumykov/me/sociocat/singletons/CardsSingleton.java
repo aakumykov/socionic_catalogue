@@ -170,14 +170,14 @@ public class CardsSingleton implements
     @Override
     public void rateUp(boolean directEffect, String cardId, String byUserId, final RatingCallbacks callbacks) {
         int difference = directEffect ? 1 : -1;
-        changeRating(cardId, byUserId, difference, directEffect, callbacks);
+        changeRating(cardId, byUserId, difference, callbacks);
     }
 
 
     @Override
     public void rateDown(boolean directEffect, String cardId, String byUserId, RatingCallbacks callbacks) {
         int difference = directEffect ? -1 : 1;
-        changeRating(cardId, byUserId, difference, directEffect, callbacks);
+        changeRating(cardId, byUserId, difference, callbacks);
     }
 
 
@@ -335,7 +335,6 @@ public class CardsSingleton implements
             final String cardId,
             final String byUserId,
             final int ratingDifference,
-            boolean isDirectEffect,
             final RatingCallbacks callbacks
     ) {
         DatabaseReference theCardRef = cardsRef.child(cardId);
@@ -348,8 +347,8 @@ public class CardsSingleton implements
 
                 if (null == card) return Transaction.success(mutableData);
 
-                if (ratingDifference > 0) card.rateUp(isDirectEffect, byUserId);
-                else card.rateDown(isDirectEffect, byUserId);
+                if (ratingDifference > 0) card.rateUp(byUserId);
+                else card.rateDown(byUserId);
 
                 mutableData.setValue(card);
                 return Transaction.success(mutableData);

@@ -303,28 +303,53 @@ public class Card extends ListItem implements
 
 
     // Рейтинг
-    @Exclude public boolean isRatedUpBy(String userId) {
+    @Exclude
+    public boolean isRatedUpBy(String userId) {
         return (null != rateUpList && rateUpList.containsKey(userId));
     }
-    @Exclude public boolean isRatedDownBy(String userId) {
+
+    @Exclude
+    public boolean isRatedDownBy(String userId) {
         return (null != rateDownList && rateDownList.containsKey(userId));
     }
 
-    @Exclude public void rateUp(boolean directEffect, String userId) {
+    @Exclude
+    public void rateUp(String userId) {
+        prepareReteUpList();
+
+        if (isRatedDownBy(userId))
+            this.rateDownList.remove(userId);
+        else
+            this.rateUpList.put(userId, true);
+
+        changeRating(+1);
+    }
+
+    @Exclude
+    public void rateDown(String userId) {
+        prepareRateDownList();
+
+        if (isRatedUpBy(userId))
+            this.rateUpList.remove(userId);
+        else
+            this.rateDownList.put(userId, true);
+
+        changeRating(-1);
+    }
+
+    private void prepareReteUpList() {
         if (null == this.rateUpList)
             this.rateUpList = new HashMap<>();
-
-        this.rateUpList.put(userId, directEffect);
     }
-    @Exclude public void rateDown(boolean directEffect, String userId) {
+    private void prepareRateDownList() {
         if (null == this.rateDownList)
             this.rateDownList = new HashMap<>();
-
-        this.rateDownList.put(userId, directEffect);
     }
+    private void changeRating(int value) {
+        if (null == this.rating)
+            this.rating = 0;
 
-    @Exclude private void setRating(int ratingValue) {
-        this.rating = ratingValue;
+        this.rating += value;
     }
 
 
