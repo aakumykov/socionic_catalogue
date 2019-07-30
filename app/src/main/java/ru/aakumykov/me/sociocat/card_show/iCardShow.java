@@ -52,6 +52,16 @@ public interface iCardShow {
     }
 
 
+    interface iDataAdapter {
+
+        void bindPresenters(iCardPresenter cardPresenter, iCommentsPresenter commentPresenter);
+        void unbindPresenters();
+
+        void bindView(iPageView pageView, iCardShow_View cardShowView);
+        void unbindView();
+    }
+
+
     interface iCardPresenter {
 
         void bindPageView(iPageView pageView);

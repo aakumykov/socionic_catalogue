@@ -32,7 +32,7 @@ import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
-        iDataAdapter,
+        iCardShow.iDataAdapter,
         iCardShow.iCardView,
         iCardShow.iCommentsView
 {

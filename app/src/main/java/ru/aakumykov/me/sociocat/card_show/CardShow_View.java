@@ -22,7 +22,6 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.adapter.DataAdapter;
-import ru.aakumykov.me.sociocat.card_show.adapter.iDataAdapter;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
@@ -53,7 +52,7 @@ public class CardShow_View extends BaseView implements
 
     private iCardShow.iCardPresenter cardPresenter;
     private iCardShow.iCommentsPresenter commentsPresenter;
-    private iDataAdapter listAdapter;
+    private iCardShow.iDataAdapter listAdapter;
     private iCommentForm commentForm;
     private boolean firstRun = true;
     private boolean mEditMode;
