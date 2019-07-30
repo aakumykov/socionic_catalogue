@@ -23,8 +23,8 @@ public interface iCardsSingleton {
     void saveCard(Card card, SaveCardCallbacks callbacks);
     void deleteCard(Card card, DeleteCallbacks callbacks);
 
-    void rateUp(boolean directEffect, String cardId, String byUserId, RatingCallbacks callbacks);
-    void rateDown(boolean directEffect, String cardId, String byUserId, RatingCallbacks callbacks);
+    void rateUp(String cardId, String byUserId, RatingCallbacks callbacks);
+    void rateDown(String cardId, String byUserId, RatingCallbacks callbacks);
 
 
     interface ListCallbacks {

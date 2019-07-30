@@ -168,16 +168,14 @@ public class CardsSingleton implements
 
 
     @Override
-    public void rateUp(boolean directEffect, String cardId, String byUserId, final RatingCallbacks callbacks) {
-        int difference = directEffect ? 1 : -1;
-        changeRating(cardId, byUserId, difference, callbacks);
+    public void rateUp(String cardId, String byUserId, final RatingCallbacks callbacks) {
+        changeRating(cardId, byUserId, +1, callbacks);
     }
 
 
     @Override
-    public void rateDown(boolean directEffect, String cardId, String byUserId, RatingCallbacks callbacks) {
-        int difference = directEffect ? -1 : 1;
-        changeRating(cardId, byUserId, difference, callbacks);
+    public void rateDown(String cardId, String byUserId, RatingCallbacks callbacks) {
+        changeRating(cardId, byUserId, -1, callbacks);
     }
 
 

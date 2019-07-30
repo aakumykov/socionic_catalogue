@@ -241,17 +241,11 @@ public class CardPresenter implements iCardShow.iCardPresenter {
 
         switch (rating) {
             case UP:
-                if (currentCard.isRatedDownBy(userId))
-                    cardSingleton.rateDown(false, cardId, userId, ratingCallbacks);
-                else
-                    cardSingleton.rateUp(true, cardId, userId, ratingCallbacks);
+                cardSingleton.rateUp(cardId, userId, ratingCallbacks);
                 break;
 
             case DOWN:
-                if (currentCard.isRatedUpBy(userId))
-                    cardSingleton.rateUp(false, cardId, userId, ratingCallbacks);
-                else
-                    cardSingleton.rateDown(true, cardId, userId, ratingCallbacks);
+                cardSingleton.rateDown(cardId, userId, ratingCallbacks);
                 break;
 
             default:
