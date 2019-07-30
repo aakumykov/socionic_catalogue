@@ -4,6 +4,7 @@
 
     <item
         android:id="@+id/actionProfile"
-        android:icon="@drawable/ic_user_logged_out"
-        android:title="@string/MENU_user_profile" />
+        android:icon="@drawable/ic_user_logged_in"
+        android:title="@string/MENU_user_profile"
+        app:showAsAction="always" />
 </menu>

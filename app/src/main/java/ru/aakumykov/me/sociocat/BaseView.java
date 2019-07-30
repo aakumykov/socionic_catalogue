@@ -135,11 +135,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         menuInflater.inflate(R.menu.tags, menu);
 
         if (AuthSingleton.isLoggedIn()) {
-            menuInflater.inflate(R.menu.user_in, menu);
+            menuInflater.inflate(R.menu.profile_in, menu);
             menuInflater.inflate(R.menu.logout, menu);
         }
         else {
-            menuInflater.inflate(R.menu.user_out, menu);
+            menuInflater.inflate(R.menu.profile_out, menu);
             menuInflater.inflate(R.menu.login, menu);
         }
 
