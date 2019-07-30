@@ -100,12 +100,16 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     // iCard_ViewHolder
     @Override
     public void showRatingThrobber() {
+        disableRatingButtons();
+
         MyUtils.hide(cardRatingView);
         MyUtils.show(cardRatingThrobber);
     }
 
     @Override
     public void hideRatingThrobber() {
+        enableRatingContols();
+
         MyUtils.show(cardRatingView);
         MyUtils.hide(cardRatingThrobber);
     }
