@@ -48,7 +48,7 @@ public class Login_Presenter implements
     }
     @Override
     public void unlinkView() {
-        this.view = null;
+        this.view = new Login_View_Stub();
     }
 
 

@@ -25,7 +25,6 @@
 
         <activity
             android:name=".login.Login_View"
-            android:noHistory="true"
             android:windowSoftInputMode="stateHidden" />
 
         <activity android:name=".cards_list.CardsList_View" />
