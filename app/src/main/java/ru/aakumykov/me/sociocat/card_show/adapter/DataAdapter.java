@@ -33,8 +33,8 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         iDataAdapter,
-        iCardView,
-        iCommentsView
+        iCardShow.iCardView,
+        iCardShow.iCommentsView
 {
     private final static String TAG = "ListAdapter";
     private List<ListItem> itemsList;

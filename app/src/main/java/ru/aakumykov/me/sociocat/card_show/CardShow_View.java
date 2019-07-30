@@ -22,8 +22,6 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.adapter.DataAdapter;
-import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
-import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.adapter.iDataAdapter;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
@@ -266,10 +264,10 @@ public class CardShow_View extends BaseView implements
     // Внутренние методы
     private void bindComponents() {
         cardPresenter.bindPageView(this);
-        cardPresenter.bindListAdapter((iCardView) listAdapter);
+        cardPresenter.bindListAdapter((iCardShow.iCardView) listAdapter);
 
         commentsPresenter.bindPageView(this);
-        commentsPresenter.bindCommentsView((iCommentsView) listAdapter);
+        commentsPresenter.bindCommentsView((iCardShow.iCommentsView) listAdapter);
 
         listAdapter.bindPresenters(cardPresenter, commentsPresenter);
         listAdapter.bindView(this, this);

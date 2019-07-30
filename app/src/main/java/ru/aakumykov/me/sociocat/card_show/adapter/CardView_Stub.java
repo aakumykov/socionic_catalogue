@@ -1,8 +1,9 @@
 package ru.aakumykov.me.sociocat.card_show.adapter;
 
+import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class CardView_Stub implements iCardView {
+public class CardView_Stub implements iCardShow.iCardView {
     @Override public void showCardThrobber() {
 
     }

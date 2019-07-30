@@ -2,8 +2,8 @@ package ru.aakumykov.me.sociocat.card_show;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
-import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
+import java.util.List;
+
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -11,6 +11,46 @@ import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 
 public interface iCardShow {
+
+    interface iCardView {
+
+        void displayCard(@Nullable Card card) throws Exception;
+
+        void showCardThrobber();
+        void hideCardThrobber();
+
+        void showCardError(int errorMsgId, String errorMsg);
+        void hideCardError();
+
+        void showCardDeleteDialog(Card card);
+    }
+
+    interface iCommentsView {
+
+        interface AttachCommentCallbacks {
+            void onCommentAttached(Comment comment);
+        }
+
+        void showCommentsThrobber(int position);
+        void hideCommentsThrobber(int position);
+
+        void showCommentsError(int errorMsgId, String consoleErrorMsg);
+        void hideCommentsError();
+
+        void showDeleteDialog(Comment comment);
+
+        void setList(List<Comment> itemsList);
+        void addList(List<Comment> list, int position, @Nullable Comment alreadyVisibleTailComment);
+
+        void attachComment(Comment comment, @Nullable AttachCommentCallbacks callbacks);
+        void updateComment(Comment oldComment, Comment newComment);
+        void removeComment(Comment comment);
+
+        Comment getComment(String commentKey);
+
+        void scrollToComment(String commentKey);
+    }
+
 
     interface iCardPresenter {
 
@@ -66,4 +106,5 @@ public interface iCardShow {
 
         void onSendCommentClicked(iCommentForm commentForm);
     }
+
 }

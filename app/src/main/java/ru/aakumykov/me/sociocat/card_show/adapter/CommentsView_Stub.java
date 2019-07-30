@@ -4,9 +4,10 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Comment;
 
-public class CommentsView_Stub implements iCommentsView {
+public class CommentsView_Stub implements iCardShow.iCommentsView {
     @Override public void showCommentsThrobber(int position) {
 
     }

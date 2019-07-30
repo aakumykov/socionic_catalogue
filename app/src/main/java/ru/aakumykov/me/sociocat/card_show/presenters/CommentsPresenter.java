@@ -10,7 +10,6 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.CommentsView_Stub;
-import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
@@ -30,7 +29,7 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
         MODE_APPEND, MODE_REPLACE
     }
 
-    private iCommentsView commentsView;
+    private iCardShow.iCommentsView commentsView;
     private iPageView pageView;
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
@@ -51,7 +50,7 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
     }
 
     @Override
-    public void bindCommentsView(iCommentsView commentsView) {
+    public void bindCommentsView(iCardShow.iCommentsView commentsView) {
         this.commentsView = commentsView;
     }
 
@@ -232,7 +231,7 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
                 mRepliedItem = null;
                 mEndComment = comment;
 
-                commentsView.attachComment(comment, new iCommentsView.AttachCommentCallbacks() {
+                commentsView.attachComment(comment, new iCardShow.iCommentsView.AttachCommentCallbacks() {
                     @Override public void onCommentAttached(Comment comment) {
                         commentsView.scrollToComment(comment.getKey());
                     }
