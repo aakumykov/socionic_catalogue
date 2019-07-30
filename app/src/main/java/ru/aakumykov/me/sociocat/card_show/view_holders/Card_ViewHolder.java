@@ -67,7 +67,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
     public void initialize(Card card) {
         if (!this.isInitialized) {
-            this.currentCard = card;
+//            this.currentCard = card;
 
             tagsContainer.setOnTagClickListener(this);
 
@@ -120,18 +120,24 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     }
 
     @Override
-    public void setRatedUp(int ratingValue) {
-        cardRatingView.setText(String.valueOf(ratingValue));
+    public void setRatedUp(Card card, String ratedByUserId) {
+        cardRatingView.setText(String.valueOf(card.getRating()));
 
-        cardRatingUpButton.setImageResource(R.drawable.ic_thumb_up_colored);
+        int thumbUpImageResource = card.isRatedUpBy(ratedByUserId) ?
+                R.drawable.ic_thumb_up_colored : R.drawable.ic_thumb_up_neutral;
+
+        cardRatingUpButton.setImageResource(thumbUpImageResource);
         cardRatingDownButton.setImageResource(R.drawable.ic_thumb_down_neutral);
     }
 
     @Override
-    public void setRatedDown(int ratingValue) {
-        cardRatingView.setText(String.valueOf(ratingValue));
+    public void setRatedDown(Card card, String ratedByUserId) {
+        cardRatingView.setText(String.valueOf(card.getRating()));
 
-        cardRatingDownButton.setImageResource(R.drawable.ic_thumb_down_colored);
+        int thumbDownImageResource = card.isRatedDownBy(ratedByUserId) ?
+                R.drawable.ic_thumb_down_colored : R.drawable.ic_thumb_down_neutral;
+
+        cardRatingDownButton.setImageResource(thumbDownImageResource);
         cardRatingUpButton.setImageResource(R.drawable.ic_thumb_up_neutral);
     }
 
@@ -162,6 +168,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
     // Внутренние методы
     private void displayCard(Card card) {
+        currentCard = card;
+
         showTitle(card);
         showDescribedContent(card);
         showQuoteSource(card);
@@ -169,6 +177,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         showAuthor(card);
         showTime(card.getCTime(), card.getMTime());
         showTags(card.getTags());
+//        showRating();
     }
 
     private void showTitle(Card card) {
@@ -245,6 +254,10 @@ public class Card_ViewHolder extends Base_ViewHolder implements
             tagsContainer.setTags(tagsList);
             MyUtils.show(tagsContainer);
         }
+    }
+
+    private void showRating() {
+
     }
 
     private void showYoutubeMedia(String mediaCode, InsertableYoutubePlayer.PlayerType playerType) {
