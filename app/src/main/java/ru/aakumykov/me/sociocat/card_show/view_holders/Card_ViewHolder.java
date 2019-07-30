@@ -120,8 +120,19 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     }
 
     @Override
-    public void setRatingValue(int value) {
-        cardRatingView.setText(String.valueOf(value));
+    public void setRatedUp(int ratingValue) {
+        cardRatingView.setText(String.valueOf(ratingValue));
+
+        cardRatingUpButton.setImageResource(R.drawable.ic_thumb_up_colored);
+        cardRatingDownButton.setImageResource(R.drawable.ic_thumb_down_neutral);
+    }
+
+    @Override
+    public void setRatedDown(int ratingValue) {
+        cardRatingView.setText(String.valueOf(ratingValue));
+
+        cardRatingDownButton.setImageResource(R.drawable.ic_thumb_down_colored);
+        cardRatingUpButton.setImageResource(R.drawable.ic_thumb_up_neutral);
     }
 
 

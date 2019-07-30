@@ -146,6 +146,7 @@ public interface iCardShow {
         void disableRatingButtons();
         void enableRatingContols();
 
-        void setRatingValue(int value);
+        void setRatedUp(int ratingValue);
+        void setRatedDown(int ratingValue);
     }
 }
