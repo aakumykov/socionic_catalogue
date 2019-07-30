@@ -10,8 +10,7 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.CommentsView_Stub;
-import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
-import ru.aakumykov.me.sociocat.card_show.iPageView;
+import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -23,14 +22,14 @@ import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 
-public class CommentsPresenter implements iCommentsPresenter {
+public class CommentsPresenter implements iCardShow.iCommentsPresenter {
 
     private enum LoadMode {
         MODE_APPEND, MODE_REPLACE
     }
 
-    private iCommentsView commentsView;
-    private iPageView pageView;
+    private iCardShow.iCommentsView commentsView;
+    private iCardShow.iPageView pageView;
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
@@ -40,7 +39,7 @@ public class CommentsPresenter implements iCommentsPresenter {
 
 
     @Override
-    public void bindPageView(iPageView pageView) {
+    public void bindPageView(iCardShow.iPageView pageView) {
         this.pageView = pageView;
     }
 
@@ -50,7 +49,7 @@ public class CommentsPresenter implements iCommentsPresenter {
     }
 
     @Override
-    public void bindCommentsView(iCommentsView commentsView) {
+    public void bindCommentsView(iCardShow.iCommentsView commentsView) {
         this.commentsView = commentsView;
     }
 
@@ -231,7 +230,7 @@ public class CommentsPresenter implements iCommentsPresenter {
                 mRepliedItem = null;
                 mEndComment = comment;
 
-                commentsView.attachComment(comment, new iCommentsView.AttachCommentCallbacks() {
+                commentsView.attachComment(comment, new iCardShow.iCommentsView.AttachCommentCallbacks() {
                     @Override public void onCommentAttached(Comment comment) {
                         commentsView.scrollToComment(comment.getKey());
                     }

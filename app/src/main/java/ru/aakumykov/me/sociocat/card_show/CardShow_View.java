@@ -22,9 +22,6 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.adapter.DataAdapter;
-import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
-import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
-import ru.aakumykov.me.sociocat.card_show.adapter.iDataAdapter;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
@@ -34,14 +31,11 @@ import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 import ru.aakumykov.me.sociocat.card_show.presenters.CardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.CommentsPresenter;
-import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
-import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
 import ru.aakumykov.me.sociocat.models.Comment;
 
 
 public class CardShow_View extends BaseView implements
-        iPageView,
-        iCardShow_View
+        iCardShow.iPageView
 {
     public interface LoadCommentsCallbacks {
         void onLoadCommentsSuccess(List<Comment> list);
@@ -55,9 +49,9 @@ public class CardShow_View extends BaseView implements
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.commentFormContainer) FrameLayout commentFormContainer;
 
-    private iCardPresenter cardPresenter;
-    private iCommentsPresenter commentsPresenter;
-    private iDataAdapter listAdapter;
+    private iCardShow.iCardPresenter cardPresenter;
+    private iCardShow.iCommentsPresenter commentsPresenter;
+    private iCardShow.iDataAdapter listAdapter;
     private iCommentForm commentForm;
     private boolean firstRun = true;
     private boolean mEditMode;
@@ -268,13 +262,13 @@ public class CardShow_View extends BaseView implements
     // Внутренние методы
     private void bindComponents() {
         cardPresenter.bindPageView(this);
-        cardPresenter.bindListAdapter((iCardView) listAdapter);
+        cardPresenter.bindListAdapter((iCardShow.iCardView) listAdapter);
 
         commentsPresenter.bindPageView(this);
-        commentsPresenter.bindCommentsView((iCommentsView) listAdapter);
+        commentsPresenter.bindCommentsView((iCardShow.iCommentsView) listAdapter);
 
         listAdapter.bindPresenters(cardPresenter, commentsPresenter);
-        listAdapter.bindView(this, this);
+        listAdapter.bindView(this);
     }
 
     private void unbindComponents() {

@@ -14,35 +14,31 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.CardShow_View_Stub;
-import ru.aakumykov.me.sociocat.card_show.iCardShow_View;
-import ru.aakumykov.me.sociocat.card_show.iPageView;
-import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
-import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
-import ru.aakumykov.me.sociocat.card_show.view_holders.Throbber_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.PageView_Stub;
+import ru.aakumykov.me.sociocat.card_show.iCardShow;
+import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
+import ru.aakumykov.me.sociocat.card_show.list_items.LoadMore_Item;
+import ru.aakumykov.me.sociocat.card_show.list_items.Throbber_Item;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Comment_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.LoadMore_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
-import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
-import ru.aakumykov.me.sociocat.card_show.list_items.Throbber_Item;
-import ru.aakumykov.me.sociocat.card_show.list_items.LoadMore_Item;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
-        iDataAdapter,
-        iCardView,
-        iCommentsView
+        iCardShow.iDataAdapter,
+        iCardShow.iCardView,
+        iCardShow.iCommentsView
 {
     private final static String TAG = "ListAdapter";
     private List<ListItem> itemsList;
-    private iCardPresenter cardPresenter;
-    private iCommentsPresenter commentsPresenter;
-    private iPageView pageView;
-    private iCardShow_View cardShowView;
+    private iCardShow.iCardPresenter cardPresenter;
+    private iCardShow.iCommentsPresenter commentsPresenter;
+    private iCardShow.iPageView pageView;
 
     public DataAdapter() {
         this.itemsList = new ArrayList<>();
@@ -133,7 +129,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // iListAdapter
     @Override
-    public void bindPresenters(iCardPresenter cardPresenter, iCommentsPresenter commP) {
+    public void bindPresenters(iCardShow.iCardPresenter cardPresenter, iCardShow.iCommentsPresenter commP) {
         this.cardPresenter = cardPresenter;
         this.commentsPresenter = commP;
     }
@@ -144,13 +140,13 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         this.cardPresenter = null;
     }
 
-    @Override public void bindView(iPageView pageView, iCardShow_View cardShowView) {
+    @Override
+    public void bindView(iCardShow.iPageView pageView) {
         this.pageView = pageView;
-        this.cardShowView = cardShowView;
     }
 
     @Override public void unbindView() {
-        this.cardShowView = new CardShow_View_Stub();
+        this.pageView = new PageView_Stub();
     }
 
 
@@ -198,7 +194,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void showCardDeleteDialog(Card card) {
         MyDialogs.cardDeleteDialog(
-                cardShowView.getActivity(),
+                pageView.getActivity(),
                 card.getTitle(),
                 new iMyDialogs.Delete() {
                     @Override
@@ -253,7 +249,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void showCommentsError(int errorMsgId, String consoleErrorMsg) {
-        MyUtils.showCustomToast(cardShowView.getAppContext(), errorMsgId);
+        MyUtils.showCustomToast(pageView.getAppContext(), errorMsgId);
         Log.e(TAG, consoleErrorMsg);
     }
 
@@ -265,10 +261,10 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void showDeleteDialog(Comment comment) {
         String text = MyUtils.cutToLength(comment.getText(), 20);
-        String msg = cardShowView.getString(R.string.CARD_SHOW_delete_comment_dialog_message, text);
+        String msg = pageView.getString(R.string.CARD_SHOW_delete_comment_dialog_message, text);
 
         MyDialogs.commentDeleteDialog(
-                cardShowView.getActivity(),
+                pageView.getActivity(),
                 msg,
                 new iMyDialogs.Delete() {
                     @Override
@@ -395,7 +391,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public void scrollToComment(String commentKey) {
         Comment comment = getComment(commentKey);
         if (null != comment)
-            cardShowView.scrollListToPosition(itemsList.indexOf(comment));
+            pageView.scrollListToPosition(itemsList.indexOf(comment));
     }
 
 

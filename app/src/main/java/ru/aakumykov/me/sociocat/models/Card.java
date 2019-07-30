@@ -303,34 +303,53 @@ public class Card extends ListItem implements
 
 
     // Рейтинг
-    @Exclude public boolean isRatedUpBy(String userId) {
+    @Exclude
+    public boolean isRatedUpBy(String userId) {
         return (null != rateUpList && rateUpList.containsKey(userId));
     }
-    @Exclude public boolean isRatedDownBy(String userId) {
+
+    @Exclude
+    public boolean isRatedDownBy(String userId) {
         return (null != rateDownList && rateDownList.containsKey(userId));
     }
 
-    @Exclude public void rateUp(String userId) {
-        if (!isRatedUpBy(userId)) {
-            if (null == this.rateUpList)
-                this.rateUpList = new HashMap<>();
+    @Exclude
+    public void rateUp(String userId) {
+        prepareReteUpList();
+
+        if (isRatedDownBy(userId))
+            this.rateDownList.remove(userId);
+        else
             this.rateUpList.put(userId, true);
-            setRating(rating+1);
-        }
-        if (null != this.rateDownList) this.rateDownList.remove(userId);
-    }
-    @Exclude public void rateDown(String userId) {
-        if (!isRatedDownBy(userId)) {
-            if (null == this.rateDownList)
-                this.rateDownList = new HashMap<>();
-            this.rateDownList.put(userId, true);
-            setRating(rating-1);
-        }
-        if (null != this.rateUpList) this.rateUpList.remove(userId);
+
+        changeRating(+1);
     }
 
-    @Exclude private void setRating(int ratingValue) {
-        this.rating = ratingValue;
+    @Exclude
+    public void rateDown(String userId) {
+        prepareRateDownList();
+
+        if (isRatedUpBy(userId))
+            this.rateUpList.remove(userId);
+        else
+            this.rateDownList.put(userId, true);
+
+        changeRating(-1);
+    }
+
+    private void prepareReteUpList() {
+        if (null == this.rateUpList)
+            this.rateUpList = new HashMap<>();
+    }
+    private void prepareRateDownList() {
+        if (null == this.rateDownList)
+            this.rateDownList = new HashMap<>();
+    }
+    private void changeRating(int value) {
+        if (null == this.rating)
+            this.rating = 0;
+
+        this.rating += value;
     }
 
 

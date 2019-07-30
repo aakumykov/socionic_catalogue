@@ -48,8 +48,8 @@ public interface iCardsSingleton {
     }
 
     interface RatingCallbacks {
-        void onRatedUp(int newRating);
-        void onRatedDown(int newRating);
+        void onRatedUp(Card ratedCard, int newRating);
+        void onRatedDown(Card ratedCard, int newRating);
         void onRateFail(String errorMsg);
     }
 }

@@ -4,9 +4,7 @@ import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
-import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
-import ru.aakumykov.me.sociocat.card_show.iPageView;
-import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
@@ -14,27 +12,27 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
-public class CardPresenter implements iCardPresenter {
+public class CardPresenter implements iCardShow.iCardPresenter {
 
     private enum Rating {
         UP, DOWN
     }
 
     private final static String TAG = "CardPresenter";
-    private iCardView cardView;
-    private iPageView pageView;
-    private iCommentsPresenter commentsPresenter;
+    private iCardShow.iCardView cardView;
+    private iCardShow.iPageView pageView;
+    private iCardShow.iCommentsPresenter commentsPresenter;
     private iCardsSingleton cardSingleton = CardsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private @Nullable Card currentCard;
 
 
-    public CardPresenter(iCommentsPresenter commentsPresenter) {
+    public CardPresenter(iCardShow.iCommentsPresenter commentsPresenter) {
         this.commentsPresenter = commentsPresenter;
     }
 
 
-    @Override public void bindPageView(iPageView pageView) {
+    @Override public void bindPageView(iCardShow.iPageView pageView) {
         this.pageView = pageView;
     }
 
@@ -43,8 +41,8 @@ public class CardPresenter implements iCardPresenter {
     }
 
     @Override
-    public void bindListAdapter(iCardView listAdapter) {
-        this.cardView = (iCardView) listAdapter;
+    public void bindListAdapter(iCardShow.iCardView listAdapter) {
+        this.cardView = (iCardShow.iCardView) listAdapter;
     }
 
     @Override
@@ -159,12 +157,12 @@ public class CardPresenter implements iCardPresenter {
     }
 
     @Override
-    public void onRatingUpClicked(iCard_ViewHolder cardViewHolder) {
+    public void onRatingUpClicked(iCardShow.iCard_ViewHolder cardViewHolder) {
         changeCardRating(Rating.UP, cardViewHolder);
     }
 
     @Override
-    public void onRatingDownClicked(iCard_ViewHolder cardViewHolder) {
+    public void onRatingDownClicked(iCardShow.iCard_ViewHolder cardViewHolder) {
         changeCardRating(Rating.DOWN, cardViewHolder);
     }
 
@@ -181,7 +179,7 @@ public class CardPresenter implements iCardPresenter {
         return currentCard.isCreatedBy(currentUser) || usersSingleton.currentUserIsAdmin();
     }
 
-    private void changeCardRating(Rating rating, iCard_ViewHolder cardViewHolder) {
+    private void changeCardRating(Rating rating, iCardShow.iCard_ViewHolder cardViewHolder) {
         User user = usersSingleton.getCurrentUser();
 
         if (null == user) {
@@ -189,22 +187,30 @@ public class CardPresenter implements iCardPresenter {
             return;
         }
 
-        String cardKey = currentCard.getKey();
         String userId = user.getKey();
+        String cardId = currentCard.getKey();
 
-        cardViewHolder.showRatingThrobber();
+        changeCardRating_Produce(cardId, userId, rating, cardViewHolder);
+    }
 
+    private void changeCardRating_Produce(
+            String cardId,
+            String userId,
+            Rating rating,
+            iCardShow.iCard_ViewHolder cardViewHolder
+    )
+    {
         iCardsSingleton.RatingCallbacks ratingCallbacks = new iCardsSingleton.RatingCallbacks() {
             @Override
-            public void onRatedUp(int newRating) {
-                cardViewHolder.setRatingValue(newRating);
-                cardViewHolder.hideRatingThrobber();
+            public void onRatedUp(Card ratedCard, int newRating) {
+                currentCard = ratedCard;
+                cardViewHolder.showRating(ratedCard, userId);
             }
 
             @Override
-            public void onRatedDown(int newRating) {
-                cardViewHolder.setRatingValue(newRating);
-                cardViewHolder.hideRatingThrobber();
+            public void onRatedDown(Card ratedCard, int newRating) {
+                currentCard = ratedCard;
+                cardViewHolder.showRating(ratedCard, userId);
             }
 
             @Override
@@ -214,14 +220,34 @@ public class CardPresenter implements iCardPresenter {
             }
         };
 
+        // Проверяю, ставил ли этот пользователь рейтинг такого направления
         switch (rating) {
             case UP:
-                cardSingleton.rateUp(cardKey, userId, ratingCallbacks);
+                if (currentCard.isRatedUpBy(userId))
+                    return;
+                break;
+            case DOWN:
+                if (currentCard.isRatedDownBy(userId))
+                    return;
+                break;
+            default:
+                throw new IllegalArgumentException("Wrong rating argument: "+rating);
+        }
+
+        // Меняю рейтинг
+        cardViewHolder.showRatingThrobber();
+
+        switch (rating) {
+            case UP:
+                cardSingleton.rateUp(cardId, userId, ratingCallbacks);
                 break;
 
             case DOWN:
-                cardSingleton.rateDown(cardKey, userId, ratingCallbacks);
+                cardSingleton.rateDown(cardId, userId, ratingCallbacks);
                 break;
+
+            default:
+                throw new IllegalArgumentException("Wrong rating argument: "+rating);
         }
     }
 }

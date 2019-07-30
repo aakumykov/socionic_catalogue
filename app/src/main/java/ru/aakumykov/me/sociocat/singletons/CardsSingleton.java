@@ -1,8 +1,9 @@
 package ru.aakumykov.me.sociocat.singletons;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -168,7 +169,7 @@ public class CardsSingleton implements
 
     @Override
     public void rateUp(String cardId, String byUserId, final RatingCallbacks callbacks) {
-        changeRating(cardId, byUserId,1, callbacks);
+        changeRating(cardId, byUserId, +1, callbacks);
     }
 
 
@@ -328,8 +329,12 @@ public class CardsSingleton implements
 
 
     // Внутренние методы
-    private void changeRating(final String cardId, final String byUserId, final int ratingDifference, final RatingCallbacks callbacks) {
-
+    private void changeRating(
+            final String cardId,
+            final String byUserId,
+            final int ratingDifference,
+            final RatingCallbacks callbacks
+    ) {
         DatabaseReference theCardRef = cardsRef.child(cardId);
 
         theCardRef.runTransaction(new Transaction.Handler() {
@@ -355,8 +360,8 @@ public class CardsSingleton implements
                     Card card = dataSnapshot.getValue(Card.class);
 
                     if (null != card) {
-                        if (ratingDifference > 0) callbacks.onRatedUp(card.getRating());
-                        else callbacks.onRatedDown(card.getRating());
+                        if (ratingDifference > 0) callbacks.onRatedUp(card, card.getRating());
+                        else callbacks.onRatedDown(card, card.getRating());
                     } else {
                         Log.e(TAG, "Card from dataSnapshot is null");
                     }

@@ -3,12 +3,15 @@ package ru.aakumykov.me.sociocat.card_show.view_holders;
 import android.content.Context;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,13 +26,14 @@ import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
+import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
 public class Card_ViewHolder extends Base_ViewHolder implements
-        iCard_ViewHolder,
+        iCardShow.iCard_ViewHolder,
         TagView.OnTagClickListener
 {
     @BindView(R.id.cardLayout) LinearLayout cardLayout;
@@ -52,13 +56,13 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.replyWidget) TextView replyWidget;
 
     private static final String TAG = "Card_ViewHolder";
+    // TODO: опасненько его здесь хранить!
     private Context context;
-    private Card currentCard;
-    private iCardPresenter cardPresenter;
+    private iCardShow.iCardPresenter cardPresenter;
     private boolean isInitialized = false;
 
     // Конструктор
-    public Card_ViewHolder(View itemView, iCardPresenter cardPresenter) {
+    public Card_ViewHolder(View itemView, iCardShow.iCardPresenter cardPresenter) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         this.context = itemView.getContext();
@@ -67,11 +71,10 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
     public void initialize(Card card) {
         if (!this.isInitialized) {
-            this.currentCard = card;
+            this.isInitialized = true;
 
             tagsContainer.setOnTagClickListener(this);
 
-            this.isInitialized = true;
             displayCard(card);
         }
     }
@@ -120,8 +123,23 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     }
 
     @Override
-    public void setRatingValue(int value) {
-        cardRatingView.setText(String.valueOf(value));
+    public void showRating(Card card, @Nullable String ratedByUserId) {
+        Log.d(TAG, card.toString());
+
+        int thumbUpImageResource = R.drawable.ic_thumb_up_neutral;
+        int thumbDownImageResource = R.drawable.ic_thumb_down_neutral;
+
+        if (null != ratedByUserId) {
+            if (card.isRatedUpBy(ratedByUserId) && !card.isRatedDownBy(ratedByUserId))
+                thumbUpImageResource = R.drawable.ic_thumb_up_colored;
+            else if (!card.isRatedUpBy(ratedByUserId) && card.isRatedDownBy(ratedByUserId))
+                thumbDownImageResource = R.drawable.ic_thumb_down_colored;
+        }
+
+        hideRatingThrobber();
+        cardRatingView.setText(String.valueOf(card.getRating()));
+        cardRatingUpButton.setImageResource(thumbUpImageResource);
+        cardRatingDownButton.setImageResource(thumbDownImageResource);
     }
 
 
@@ -151,6 +169,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
     // Внутренние методы
     private void displayCard(Card card) {
+        String currentUserId = AuthSingleton.currentUserId();
+
         showTitle(card);
         showDescribedContent(card);
         showQuoteSource(card);
@@ -158,6 +178,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         showAuthor(card);
         showTime(card.getCTime(), card.getMTime());
         showTags(card.getTags());
+        showRating(card, currentUserId);
     }
 
     private void showTitle(Card card) {
