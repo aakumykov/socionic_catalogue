@@ -34,8 +34,6 @@ import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 import ru.aakumykov.me.sociocat.card_show.presenters.CardPresenter;
 import ru.aakumykov.me.sociocat.card_show.presenters.CommentsPresenter;
-import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
-import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
 import ru.aakumykov.me.sociocat.models.Comment;
 
 
@@ -55,8 +53,8 @@ public class CardShow_View extends BaseView implements
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.commentFormContainer) FrameLayout commentFormContainer;
 
-    private iCardPresenter cardPresenter;
-    private iCommentsPresenter commentsPresenter;
+    private iCardShow.iCardPresenter cardPresenter;
+    private iCardShow.iCommentsPresenter commentsPresenter;
     private iDataAdapter listAdapter;
     private iCommentForm commentForm;
     private boolean firstRun = true;

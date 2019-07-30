@@ -11,6 +11,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.CommentsView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCommentsView;
+import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -23,7 +24,7 @@ import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 
-public class CommentsPresenter implements iCommentsPresenter {
+public class CommentsPresenter implements iCardShow.iCommentsPresenter {
 
     private enum LoadMode {
         MODE_APPEND, MODE_REPLACE

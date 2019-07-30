@@ -15,10 +15,9 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View_Stub;
+import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.card_show.iCardShow_View;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
-import ru.aakumykov.me.sociocat.card_show.presenters.iCardPresenter;
-import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Comment_ViewHolder;
@@ -39,8 +38,8 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 {
     private final static String TAG = "ListAdapter";
     private List<ListItem> itemsList;
-    private iCardPresenter cardPresenter;
-    private iCommentsPresenter commentsPresenter;
+    private iCardShow.iCardPresenter cardPresenter;
+    private iCardShow.iCommentsPresenter commentsPresenter;
     private iPageView pageView;
     private iCardShow_View cardShowView;
 
@@ -133,7 +132,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // iListAdapter
     @Override
-    public void bindPresenters(iCardPresenter cardPresenter, iCommentsPresenter commP) {
+    public void bindPresenters(iCardShow.iCardPresenter cardPresenter, iCardShow.iCommentsPresenter commP) {
         this.cardPresenter = cardPresenter;
         this.commentsPresenter = commP;
     }

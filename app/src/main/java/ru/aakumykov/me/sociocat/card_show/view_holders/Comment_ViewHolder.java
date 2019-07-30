@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.presenters.iCommentsPresenter;
+import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -33,12 +33,12 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
     @BindView(R.id.replyWidget) TextView replyWidget;
 
     private final static String TAG = "Comment_ViewHolder";
-    private iCommentsPresenter commentsPresenter;
+    private iCardShow.iCommentsPresenter commentsPresenter;
     private Drawable originalBackground = null;
     private Comment currentComment;
 
 
-    public Comment_ViewHolder(View itemView, iCommentsPresenter commentsPresenter) {
+    public Comment_ViewHolder(View itemView, iCardShow.iCommentsPresenter commentsPresenter) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         this.commentsPresenter = commentsPresenter;

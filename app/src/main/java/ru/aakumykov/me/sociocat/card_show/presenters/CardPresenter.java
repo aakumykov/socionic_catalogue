@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
 import ru.aakumykov.me.sociocat.card_show.adapter.iCardView;
+import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.card_show.iPageView;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -14,7 +15,7 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
-public class CardPresenter implements iCardPresenter {
+public class CardPresenter implements iCardShow.iCardPresenter {
 
     private enum Rating {
         UP, DOWN
@@ -23,13 +24,13 @@ public class CardPresenter implements iCardPresenter {
     private final static String TAG = "CardPresenter";
     private iCardView cardView;
     private iPageView pageView;
-    private iCommentsPresenter commentsPresenter;
+    private iCardShow.iCommentsPresenter commentsPresenter;
     private iCardsSingleton cardSingleton = CardsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private @Nullable Card currentCard;
 
 
-    public CardPresenter(iCommentsPresenter commentsPresenter) {
+    public CardPresenter(iCardShow.iCommentsPresenter commentsPresenter) {
         this.commentsPresenter = commentsPresenter;
     }
 
