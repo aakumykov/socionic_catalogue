@@ -310,23 +310,17 @@ public class Card extends ListItem implements
         return (null != rateDownList && rateDownList.containsKey(userId));
     }
 
-    @Exclude public void rateUp(String userId) {
-        if (!isRatedUpBy(userId)) {
-            if (null == this.rateUpList)
-                this.rateUpList = new HashMap<>();
-            this.rateUpList.put(userId, true);
-            setRating(rating+1);
-        }
-        if (null != this.rateDownList) this.rateDownList.remove(userId);
+    @Exclude public void rateUp(boolean directEffect, String userId) {
+        if (null == this.rateUpList)
+            this.rateUpList = new HashMap<>();
+
+        this.rateUpList.put(userId, directEffect);
     }
-    @Exclude public void rateDown(String userId) {
-        if (!isRatedDownBy(userId)) {
-            if (null == this.rateDownList)
-                this.rateDownList = new HashMap<>();
-            this.rateDownList.put(userId, true);
-            setRating(rating-1);
-        }
-        if (null != this.rateUpList) this.rateUpList.remove(userId);
+    @Exclude public void rateDown(boolean directEffect, String userId) {
+        if (null == this.rateDownList)
+            this.rateDownList = new HashMap<>();
+
+        this.rateDownList.put(userId, directEffect);
     }
 
     @Exclude private void setRating(int ratingValue) {

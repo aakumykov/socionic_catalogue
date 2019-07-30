@@ -170,14 +170,14 @@ public class CardsSingleton implements
     @Override
     public void rateUp(boolean directEffect, String cardId, String byUserId, final RatingCallbacks callbacks) {
         int difference = directEffect ? 1 : -1;
-        changeRating(cardId, byUserId,difference, callbacks);
+        changeRating(cardId, byUserId, difference, directEffect, callbacks);
     }
 
 
     @Override
     public void rateDown(boolean directEffect, String cardId, String byUserId, RatingCallbacks callbacks) {
         int difference = directEffect ? -1 : 1;
-        changeRating(cardId, byUserId, difference, callbacks);
+        changeRating(cardId, byUserId, difference, directEffect, callbacks);
     }
 
 
@@ -331,8 +331,13 @@ public class CardsSingleton implements
 
 
     // Внутренние методы
-    private void changeRating(final String cardId, final String byUserId, final int ratingDifference, final RatingCallbacks callbacks) {
-
+    private void changeRating(
+            final String cardId,
+            final String byUserId,
+            final int ratingDifference,
+            boolean isDirectEffect,
+            final RatingCallbacks callbacks
+    ) {
         DatabaseReference theCardRef = cardsRef.child(cardId);
 
         theCardRef.runTransaction(new Transaction.Handler() {
@@ -343,8 +348,8 @@ public class CardsSingleton implements
 
                 if (null == card) return Transaction.success(mutableData);
 
-                if (ratingDifference > 0) card.rateUp(byUserId);
-                else card.rateDown(byUserId);
+                if (ratingDifference > 0) card.rateUp(isDirectEffect, byUserId);
+                else card.rateDown(isDirectEffect, byUserId);
 
                 mutableData.setValue(card);
                 return Transaction.success(mutableData);
