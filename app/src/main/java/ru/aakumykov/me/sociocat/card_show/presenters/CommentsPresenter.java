@@ -11,7 +11,6 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.CommentsView_Stub;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
-import ru.aakumykov.me.sociocat.card_show.iPageView;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -30,7 +29,7 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
     }
 
     private iCardShow.iCommentsView commentsView;
-    private iPageView pageView;
+    private iCardShow.iPageView pageView;
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
@@ -40,7 +39,7 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
 
 
     @Override
-    public void bindPageView(iPageView pageView) {
+    public void bindPageView(iCardShow.iPageView pageView) {
         this.pageView = pageView;
     }
 

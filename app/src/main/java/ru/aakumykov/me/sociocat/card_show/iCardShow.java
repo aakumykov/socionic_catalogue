@@ -6,12 +6,40 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
+import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 
 public interface iCardShow {
 
+    // Страница
+    interface iPageView extends iBaseView {
+
+        void refreshMenu();
+
+        void scrollListToPosition(int position);
+
+        void goEditCard(Card card);
+        void goShowCardsWithTag(String tagName);
+
+        void showCommentForm(iTextItem repliedItem, boolean editMode);
+        void hideCommentForm(boolean withQuestion);
+    }
+
+
+    // Адаптер данных
+    interface iDataAdapter {
+
+        void bindPresenters(iCardPresenter cardPresenter, iCommentsPresenter commentPresenter);
+        void unbindPresenters();
+
+        void bindView(iPageView pageView);
+        void unbindView();
+    }
+
+
+    // Отображение карточки
     interface iCardView {
 
         void displayCard(@Nullable Card card) throws Exception;
@@ -25,6 +53,7 @@ public interface iCardShow {
         void showCardDeleteDialog(Card card);
     }
 
+    // Отображение комментариев
     interface iCommentsView {
 
         interface AttachCommentCallbacks {
@@ -52,16 +81,7 @@ public interface iCardShow {
     }
 
 
-    interface iDataAdapter {
-
-        void bindPresenters(iCardPresenter cardPresenter, iCommentsPresenter commentPresenter);
-        void unbindPresenters();
-
-        void bindView(iPageView pageView, iCardShow_View cardShowView);
-        void unbindView();
-    }
-
-
+    // "Презенторы"
     interface iCardPresenter {
 
         void bindPageView(iPageView pageView);

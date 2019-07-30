@@ -35,8 +35,7 @@ import ru.aakumykov.me.sociocat.models.Comment;
 
 
 public class CardShow_View extends BaseView implements
-        iPageView,
-        iCardShow_View
+        iCardShow.iPageView
 {
     public interface LoadCommentsCallbacks {
         void onLoadCommentsSuccess(List<Comment> list);
@@ -269,7 +268,7 @@ public class CardShow_View extends BaseView implements
         commentsPresenter.bindCommentsView((iCardShow.iCommentsView) listAdapter);
 
         listAdapter.bindPresenters(cardPresenter, commentsPresenter);
-        listAdapter.bindView(this, this);
+        listAdapter.bindView(this);
     }
 
     private void unbindComponents() {

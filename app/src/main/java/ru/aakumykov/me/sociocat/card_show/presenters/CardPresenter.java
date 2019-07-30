@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
-import ru.aakumykov.me.sociocat.card_show.iPageView;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
@@ -22,7 +21,7 @@ public class CardPresenter implements iCardShow.iCardPresenter {
 
     private final static String TAG = "CardPresenter";
     private iCardShow.iCardView cardView;
-    private iPageView pageView;
+    private iCardShow.iPageView pageView;
     private iCardShow.iCommentsPresenter commentsPresenter;
     private iCardsSingleton cardSingleton = CardsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
@@ -34,7 +33,7 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     }
 
 
-    @Override public void bindPageView(iPageView pageView) {
+    @Override public void bindPageView(iCardShow.iPageView pageView) {
         this.pageView = pageView;
     }
 
