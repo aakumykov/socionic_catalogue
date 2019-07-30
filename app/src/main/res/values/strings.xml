@@ -64,7 +64,7 @@
     <string name="not_authorized">Требуется авторизация</string>
     <string name="error_loading_list">Ошибка загрузки списка</string>
     <string name="users">Пользователи</string>
-    <string name="error_displaying_user">Ошибка отображения пользователя</string>
+    <string name="USER_SHOW_error_displaying_user">Ошибка отображения пользователя</string>
     <string name="data_loading_data">Ошибка загрузки данных</string>
     <string name="error_loading_data">Ошибка загрузки данных</string>
     <string name="USER_EDIT_error_saving_user">Ошибка сохранения пользователя</string>
@@ -477,4 +477,5 @@
     <string name="LOGIN_updating_user">Обновляем пользователя</string>
     <string name="LOGIN_error_updating_user">Ошибка обновления пользователя</string>
     <string name="LOGIN_error_creating_custom_token">Ошибка создания ключа доступа</string>
+    <string name="USER_SHOW_user_id_not_found">Не найден id пользователя</string>
 </resources>

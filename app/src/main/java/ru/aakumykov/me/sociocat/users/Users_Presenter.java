@@ -4,23 +4,25 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
-import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
 public class Users_Presenter implements
@@ -74,6 +76,16 @@ public class Users_Presenter implements
         this.editView = null;
     }
 
+    @Override
+    public void processInputIntent(Intent intent) throws Exception {
+       String userId = intent.getStringExtra(Constants.USER_ID);
+
+       if (null == userId)
+           userId = usersSingleton.getCurrentUser().getKey();
+
+       loadUser(userId);
+    }
+
 
     // Пользовательские методы
     @Override
@@ -99,11 +111,18 @@ public class Users_Presenter implements
     }
 
     @Override
-    public void loadUser(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception {
-        if (null == userId) {
-            throw new Exception("userId == null");
-        }
-        usersSingleton.getUserById(userId, callbacks);
+    public void loadUser(String userId) {
+        usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
+            @Override
+            public void onUserReadSuccess(User user) {
+                showView.displayUser(user);
+            }
+
+            @Override
+            public void onUserReadFail(String errorMsg) {
+                showView.showErrorMsg(R.string.USER_SHOW_error_displaying_user, errorMsg);
+            }
+        });
     }
 
     @Override
