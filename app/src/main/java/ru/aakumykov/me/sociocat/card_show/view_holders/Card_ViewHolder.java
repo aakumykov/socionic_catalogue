@@ -29,7 +29,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
 public class Card_ViewHolder extends Base_ViewHolder implements
-        iCard_ViewHolder,
+        iCardShow.iCard_ViewHolder,
         TagView.OnTagClickListener
 {
     @BindView(R.id.cardLayout) LinearLayout cardLayout;

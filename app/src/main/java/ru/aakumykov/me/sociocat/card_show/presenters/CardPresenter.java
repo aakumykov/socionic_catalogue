@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
-import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
@@ -158,12 +157,12 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     }
 
     @Override
-    public void onRatingUpClicked(iCard_ViewHolder cardViewHolder) {
+    public void onRatingUpClicked(iCardShow.iCard_ViewHolder cardViewHolder) {
         changeCardRating(Rating.UP, cardViewHolder);
     }
 
     @Override
-    public void onRatingDownClicked(iCard_ViewHolder cardViewHolder) {
+    public void onRatingDownClicked(iCardShow.iCard_ViewHolder cardViewHolder) {
         changeCardRating(Rating.DOWN, cardViewHolder);
     }
 
@@ -180,7 +179,7 @@ public class CardPresenter implements iCardShow.iCardPresenter {
         return currentCard.isCreatedBy(currentUser) || usersSingleton.currentUserIsAdmin();
     }
 
-    private void changeCardRating(Rating rating, iCard_ViewHolder cardViewHolder) {
+    private void changeCardRating(Rating rating, iCardShow.iCard_ViewHolder cardViewHolder) {
         User user = usersSingleton.getCurrentUser();
 
         if (null == user) {

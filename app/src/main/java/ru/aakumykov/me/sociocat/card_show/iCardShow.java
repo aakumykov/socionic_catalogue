@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
-import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -137,4 +136,16 @@ public interface iCardShow {
         void onSendCommentClicked(iCommentForm commentForm);
     }
 
+
+    // ViewHolder-ы
+    interface iCard_ViewHolder {
+
+        void showRatingThrobber();
+        void hideRatingThrobber();
+
+        void disableRatingButtons();
+        void enableRatingContols();
+
+        void setRatingValue(int value);
+    }
 }
