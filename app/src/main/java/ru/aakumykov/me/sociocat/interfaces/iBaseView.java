@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
@@ -18,6 +17,8 @@ public interface iBaseView {
     void showProgressMessage(int messageId);
     void showProgressMessage(int messageId, String insertedText);
     void hideProgressMessage();
+
+    <T> void showDebugMsg(T msg);
 
     void showErrorMsg(int userMessageId, String consoleMessage);
     void hideMsg();

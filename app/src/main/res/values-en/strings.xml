@@ -63,7 +63,7 @@
     <string name="not_authorized">Not authorized</string>
     <string name="error_loading_list">Error loading list</string>
     <string name="users">Users</string>
-    <string name="error_displaying_user">Error displaying user</string>
+    <string name="USER_SHOW_error_displaying_user">Error displaying user</string>
     <string name="data_loading_data">Error loading data</string>
     <string name="error_loading_data">Error loading data</string>
     <string name="USER_EDIT_error_saving_user">Error saving user</string>
@@ -461,4 +461,13 @@
     <string name="MENU_sort_by_name_reverse">Sort alphabetically in reverse order</string>
     <string name="MENU_sort_by_count">Sort by count</string>
     <string name="MENU_sort_by_count_reverse">Sort by count in reverse order</string>
+    <string name="LOGIN_login_via">Or login via</string>
+    <string name="LOGIN_error_login_via_vkontakte">Error login via Vkontakte</string>
+    <string name="LOGIN_creating_custom_token">Creating custom token</string>
+    <string name="LOGIN_getting_user_info">Getting user info</string>
+    <string name="LOGIN_error_getting_user_info">Error getting user info</string>
+    <string name="LOGIN_updating_user">Updating user</string>
+    <string name="LOGIN_error_updating_user">Error updating user</string>
+    <string name="LOGIN_error_creating_custom_token">Error creating custom token</string>
+    <string name="USER_SHOW_user_id_not_found">There is no user id</string>
 </resources>

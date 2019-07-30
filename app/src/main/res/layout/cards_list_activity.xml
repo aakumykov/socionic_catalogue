@@ -13,7 +13,7 @@
     tools:context=".cards_list.CardsList_View">
 
     <ProgressBar
-        android:id="@+id/progressBar1"
+        android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar1" />
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/filterView"

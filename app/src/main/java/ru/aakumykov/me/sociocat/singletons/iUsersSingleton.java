@@ -30,6 +30,9 @@ public interface iUsersSingleton {
     void subscribeToCardComments(Context context, boolean enableSubscription, String userId, String cardId,
                                  CardCommentsSubscriptionCallbacks callbacks);
 
+    void createOrUpdateExternalUser(String internalUserId, String externalUserId, String userName,
+                                    CreateOrUpdateExternalUser_Callbacks callbacks);
+
     void refreshUserFromServer(@Nullable RefreshCallbacks callbacks);
     void refreshUserFromServer(String userId, @Nullable RefreshCallbacks callbacks);
     void storeCurrentUser(User user);
@@ -104,5 +107,10 @@ public interface iUsersSingleton {
         void onSubscribeFail(String errorMsg);
         void onUnsubscribeSuccess();
         void onUnsubscribeFail(String errorMsg);
+    }
+
+    interface CreateOrUpdateExternalUser_Callbacks {
+        void onCreateOrUpdateExternalUser_Success(User user);
+        void onCreateOrUpdateExternalUser_Error(String errorMsg);
     }
 }

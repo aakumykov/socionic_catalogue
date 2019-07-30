@@ -54,11 +54,13 @@ public interface iUsers {
         void linkView(View view) throws IllegalArgumentException;
         void unlinkView();
 
+        void processInputIntent(Intent intent) throws Exception;
+
         void prepareUserEdit(String userId) throws Exception;
 
         void setImageSelected(boolean isSelected);
 
-        void loadUser(String userId, iUsersSingleton.ReadCallbacks callbacks) throws Exception;
+        void loadUser(String userId);
 
         void processSelectedImage(@Nullable Intent intent);
 

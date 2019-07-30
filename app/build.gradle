@@ -42,10 +42,10 @@ dependencies {
     //androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-beta01'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-core:17.0.0'
-    implementation 'com.google.firebase:firebase-auth:18.0.0'
+    implementation 'com.google.firebase:firebase-core:17.0.1'
+    implementation 'com.google.firebase:firebase-auth:18.1.0'
     implementation 'com.google.firebase:firebase-database:18.0.0'
-    implementation 'com.google.firebase:firebase-storage:18.0.0'
+    implementation 'com.google.firebase:firebase-storage:18.1.0'
     implementation 'com.google.firebase:firebase-dynamic-links:18.0.0'
 
     // AAC
@@ -70,7 +70,7 @@ dependencies {
 
     // Circle image view
     implementation 'de.hdodenhof:circleimageview:2.2.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha07'
+    implementation 'com.google.android.material:material:1.1.0-alpha08'
 
     // Saripaar
     implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
@@ -94,4 +94,15 @@ dependencies {
     // RxJava v1
     implementation 'io.reactivex:rxjava:1.2.3'
     implementation 'io.reactivex:rxandroid:1.2.1'
+
+    // VK Android SDK
+    implementation 'com.vk:androidsdk:2.1.1'
+
+    // OkHTTP
+    // implementation("com.squareup.okhttp3:okhttp:4.0.1")
+
+    // Retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+//    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
 }

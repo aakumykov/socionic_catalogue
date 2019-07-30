@@ -1,15 +1,17 @@
 package ru.aakumykov.me.sociocat.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,6 +19,7 @@ import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.register.register_step_1.RegisterStep1_View;
 import ru.aakumykov.me.sociocat.reset_password_step1.ResetPasswordStep1_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -29,6 +32,7 @@ public class Login_View extends BaseView implements iLogin.View
     @BindView(R.id.resetPasswordButton) TextView resetPasswordButton;
     @BindView(R.id.registerButton) Button registerButton;
     @BindView(R.id.cancelButton) Button cancelButton;
+    @BindView(R.id.vkLoginButton) ImageView vkLoginButton;
 
     public static final String TAG = "Login_View";
     private iLogin.Presenter presenter;
@@ -62,16 +66,33 @@ public class Login_View extends BaseView implements iLogin.View
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
+        VKInteractor.LoginVK_Callbacks loginVKCallbacks = new VKInteractor.LoginVK_Callbacks() {
+            @Override
+            public void onVKLoginSuccess(VKInteractor.VKAuthResult vkAuthResult) {
+                String vk_access_token = vkAuthResult.getAccessToken();
+                int vk_user_id = vkAuthResult.getUserId();
+                presenter.processVKLogin(vk_user_id, vk_access_token);
+            }
 
-            case Constants.CODE_RESET_PASSWORD:
-                afterResetPasswordRequest(resultCode, data);
-                break;
+            @Override
+            public void onVKLoginError(int errorCode, @Nullable String errorMsg) {
+                showErrorMsg(R.string.LOGIN_error_login_via_vkontakte, errorMsg);
+            }
+        };
 
-            default:
-                break;
+        if (VKInteractor.isVKActivityResult(requestCode, resultCode, data, loginVKCallbacks)) {
+            // Обработка происходит в loginVKCallbacks
+        }
+        else {
+            switch (requestCode) {
+                case Constants.CODE_RESET_PASSWORD:
+                    afterResetPasswordRequest(resultCode, data);
+                    break;
+                default:
+                    super.onActivityResult(requestCode, resultCode, data);
+                    break;
+            }
         }
     }
 
@@ -112,6 +133,11 @@ public class Login_View extends BaseView implements iLogin.View
 
     // Интерфейсные методы
     @Override
+    public Activity getActivity() {
+        return this;
+    }
+
+    @Override
     public void disableForm() {
         MyUtils.disable(emailInput);
         MyUtils.disable(passwordInput);
@@ -119,6 +145,7 @@ public class Login_View extends BaseView implements iLogin.View
         MyUtils.disable(resetPasswordButton);
         MyUtils.disable(registerButton);
 //        MyUtils.disable(cancelButton);
+        MyUtils.disable(vkLoginButton);
     }
 
     @Override
@@ -129,6 +156,7 @@ public class Login_View extends BaseView implements iLogin.View
         MyUtils.enable(resetPasswordButton);
         MyUtils.enable(registerButton);
 //        MyUtils.enable(cancelButton);
+        MyUtils.enable(vkLoginButton);
     }
 
     @Override
@@ -162,7 +190,7 @@ public class Login_View extends BaseView implements iLogin.View
 
     // Нажатия
     @OnClick(R.id.loginButton)
-    void login() {
+    void onLoginButtonClicked() {
         String email = emailInput.getText().toString();
         String password = passwordInput.getText().toString();
 
@@ -173,20 +201,41 @@ public class Login_View extends BaseView implements iLogin.View
     }
 
     @OnClick(R.id.resetPasswordButton)
-    void resetPassword() {
+    void onResetPasswordButtonClicked() {
         Intent intent = new Intent(this, ResetPasswordStep1_View.class);
         startActivityForResult(intent, Constants.CODE_RESET_PASSWORD);
     }
 
     @OnClick(R.id.registerButton)
-    void goRegisterPage() {
+    void onGoRegisterPageClicked() {
         Intent intent = new Intent(this, RegisterStep1_View.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.cancelButton)
-    void cancelLogin() {
+    void onCancelLoginButtonClicked() {
         presenter.cancelLogin();
+    }
+
+    @OnClick(R.id.vkLoginButton)
+    void onVKLoginButtonClicked() {
+        presenter.onVKLoginButtonClicked();
+    }
+
+    // Убрать...
+    @OnClick(R.id.vkLogoutButton)
+    void onVKLogoutButtonClicked() {
+        VKInteractor.logout(new VKInteractor.LogoutVK_Callbacks() {
+            @Override
+            public void onVKLogoutSuccess() {
+                showToast("Вы вышли из ВК");
+            }
+
+            @Override
+            public void onVKLogoutError() {
+                showDebugMsg("ОШИБКА выхода из ВК");
+            }
+        });
     }
 
 
@@ -204,4 +253,5 @@ public class Login_View extends BaseView implements iLogin.View
                 break;
         }
     }
+
 }

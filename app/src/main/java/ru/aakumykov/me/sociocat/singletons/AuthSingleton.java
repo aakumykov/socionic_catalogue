@@ -1,13 +1,19 @@
 package ru.aakumykov.me.sociocat.singletons;
 
-import androidx.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 
 // TODO: разобраться с гостевым пользователем
@@ -46,7 +52,48 @@ public class AuthSingleton implements iAuthSingleton
     }
 
 
-    // Динамические методы методы
+
+    // Создание Firebase Custom Token
+    public static void createFirebaseCustomToken(String externalToken,
+                                                 iAuthSingleton.CreateFirebaseCustomToken_Callbacks callbacks)
+    {
+        AuthSingleton.getCustomTokenAPI()
+                .getCustomToken(externalToken)
+                .enqueue(new retrofit2.Callback<String>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<String> call, retrofit2.Response<String> response) {
+                        if (response.isSuccessful()) {
+                            String result = response.body();
+                            callbacks.onCreateFirebaseCustomToken_Success(result);
+                        }
+                        else {
+                            callbacks.onCreateFirebaseCustomToken_Error(response.code() + ": " + response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(retrofit2.Call<String> call, Throwable t) {
+                        callbacks.onCreateFirebaseCustomToken_Error(t.getMessage());
+                        t.printStackTrace();
+                    }
+                });
+    }
+
+    private interface CustomTokenAPI {
+        @GET(Config.CREATE_CUSTOM_TOKEN_PATH)
+        retrofit2.Call<String> getCustomToken(@Query(Config.CREATE_CUSTOM_TOKEN_PARAMETER_NAME) String tokenBase);
+    }
+
+    private static CustomTokenAPI getCustomTokenAPI() {
+        return new Retrofit.Builder()
+                .baseUrl(Config.CREATE_CUSTOM_TOKEN_BASE_URL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build()
+                .create(CustomTokenAPI.class);
+    }
+
+
+
     @Override
     public void resetPasswordEmail(String email, final ResetPasswordCallbacks callbacks) {
 

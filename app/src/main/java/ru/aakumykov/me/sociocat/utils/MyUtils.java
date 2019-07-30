@@ -8,9 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
-
-import androidx.annotation.Nullable;
-
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -20,6 +17,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -260,6 +259,25 @@ public final class MyUtils {
     public static String getString(Context context, int msgId) {
         return context.getResources().getString(msgId);
     }
+
+
+/*    private static void hideProgressBar(Activity activity) {
+        ProgressBar progressBar = activity.findViewById(R.id.progressBar);
+        if (null != progressBar)
+            MyUtils.hide(progressBar);
+    }
+
+    public static void showDebugMsg(Activity activity, String msg) {
+        MyUtils.hideProgressBar(activity);
+
+        TextView messageView = activity.findViewById(R.id.messageView);
+        if (null != messageView) {
+            messageView.setText(msg);
+            MyUtils.show(messageView);
+            messageView.setTextColor(activity.getResources().getColor(R.color.debug));
+            messageView.setBackgroundColor(activity.getResources().getColor(R.color.white));
+        }
+    }*/
 
     /*public static void requestLogin(Context context, Intent proceedIntent) {
         Intent intent = new Intent(context, Login_View.class);

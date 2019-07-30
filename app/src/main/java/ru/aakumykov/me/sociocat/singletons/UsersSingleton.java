@@ -1,10 +1,10 @@
 package ru.aakumykov.me.sociocat.singletons;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.content.Context;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -462,6 +462,44 @@ public class UsersSingleton implements iUsersSingleton {
             });
         }
 
+    }
+
+    @Override
+    public void createOrUpdateExternalUser(String internalUserId, String externalUserId, String userName, CreateOrUpdateExternalUser_Callbacks callbacks) {
+
+        readUser(internalUserId, new ReadCallbacks() {
+            @Override
+            public void onUserReadSuccess(User user) {
+                user.setName(userName);
+                saveUser(user, new SaveCallbacks() {
+                    @Override
+                    public void onUserSaveSuccess(User user) {
+                        callbacks.onCreateOrUpdateExternalUser_Success(user);
+                    }
+
+                    @Override
+                    public void onUserSaveFail(String errorMsg) {
+                        callbacks.onCreateOrUpdateExternalUser_Error(errorMsg);
+                    }
+                });
+            }
+
+            @Override
+            public void onUserReadFail(String errorMsg) {
+
+                createUser(internalUserId, userName, "", new CreateCallbacks() {
+                    @Override
+                    public void onUserCreateSuccess(User user) {
+                        callbacks.onCreateOrUpdateExternalUser_Success(user);
+                    }
+
+                    @Override
+                    public void onUserCreateFail(String errorMsg) {
+                        callbacks.onCreateOrUpdateExternalUser_Error(errorMsg);
+                    }
+                });
+            }
+        });
     }
 
 

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -25,24 +26,24 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.CardsListAdapter;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
-import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.users.Users_Presenter;
 import ru.aakumykov.me.sociocat.users.edit.UserEdit_View;
 import ru.aakumykov.me.sociocat.users.iUsers;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class UserShow_View extends BaseView implements
         iUsers.ShowView,
         iUsersSingleton.ReadCallbacks,
         AdapterView.OnItemClickListener
 {
-    @BindView(R.id.progressBar1) ProgressBar progressBar;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.nameView) TextView nameView;
     @BindView(R.id.emailView) TextView emailView;
     @BindView(R.id.aboutView) TextView aboutView;
@@ -50,6 +51,7 @@ public class UserShow_View extends BaseView implements
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
 
     private final static String TAG = "UserShow_View";
+    boolean dryRun = true;
     private iUsers.Presenter presenter;
 
     // Где должен базироваться currentUser: во вьюхе или презентере?
@@ -71,8 +73,6 @@ public class UserShow_View extends BaseView implements
 
         activateUpButton();
 
-        showProgressMessage(R.string.USER_SHOW_loading_user_info);
-
         presenter = new Users_Presenter();
 
         cardsList = new ArrayList<>();
@@ -80,18 +80,31 @@ public class UserShow_View extends BaseView implements
         cardsListView.setAdapter(cardsListAdapter);
 
         cardsListView.setOnItemClickListener(this);
+    }
 
-        try {
-            Intent intent = getIntent();
-            String userId = intent.getStringExtra(Constants.USER_ID);
-            presenter.loadUser(userId, this);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.linkView(this);
 
-        } catch (Exception e) {
-            // TODO: всунуть сокрытие крутилки внутрь show*Message()
-            hideProgressMessage();
-            showErrorMsg(R.string.error_displaying_user, e.getMessage());
-            e.printStackTrace();
+        if (dryRun) {
+            dryRun = false;
+
+            try {
+                presenter.processInputIntent(getIntent());
+            } catch (Exception e) {
+                // TODO: всунуть сокрытие крутилки внутрь show*Message()
+                hideProgressMessage();
+                showErrorMsg(R.string.USER_SHOW_error_displaying_user, e.getMessage());
+                e.printStackTrace();
+            }
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.unlinkView();
     }
 
     @Override
@@ -123,22 +136,13 @@ public class UserShow_View extends BaseView implements
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        presenter.linkView(this);
-    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (AuthSingleton.isLoggedIn()) {
+            getMenuInflater().inflate(R.menu.edit, menu);
+        }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        presenter.unlinkView();
-    }
+        super.onCreateOptionsMenu(menu);
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        //super.onCreateOptionsMenu(menu);
-        if (AuthSingleton.isLoggedIn())
-            getMenuInflater().inflate(R.menu.edit_profile, menu);
         return true;
     }
 
@@ -225,7 +229,7 @@ public class UserShow_View extends BaseView implements
     public void onUserReadFail(String errorMsg) {
         currentUser = null;
         hideProgressMessage();
-        showErrorMsg(R.string.error_displaying_user, errorMsg);
+        showErrorMsg(R.string.USER_SHOW_error_displaying_user, errorMsg);
     }
 
     @Override
