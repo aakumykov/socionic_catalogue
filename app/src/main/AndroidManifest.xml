@@ -114,6 +114,7 @@
         <activity android:name=".users.show.UserShow_View" />
         <activity android:name=".tags_list2.TagsList2_View" />
         <activity android:name=".tags.show.TagShow_View" />
+        <activity android:name=".users.edit.UserEdit_View" />
 
         <service android:name=".push_notifications_service.PushNotificationsService" android:exported="false">
             <intent-filter>
