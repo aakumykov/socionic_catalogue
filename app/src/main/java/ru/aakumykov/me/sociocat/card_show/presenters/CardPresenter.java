@@ -187,20 +187,30 @@ public class CardPresenter implements iCardShow.iCardPresenter {
             return;
         }
 
-        String cardKey = currentCard.getKey();
         String userId = user.getKey();
+        String cardId = currentCard.getKey();
 
-        cardViewHolder.showRatingThrobber();
+        changeCardRating_Produce(cardId, userId, rating, cardViewHolder);
+    }
 
+    private void changeCardRating_Produce(
+            String cardId,
+            String userId,
+            Rating rating,
+            iCardShow.iCard_ViewHolder cardViewHolder
+    )
+    {
         iCardsSingleton.RatingCallbacks ratingCallbacks = new iCardsSingleton.RatingCallbacks() {
             @Override
-            public void onRatedUp(int newRating) {
+            public void onRatedUp(Card ratedCard, int newRating) {
+                currentCard = ratedCard;
                 cardViewHolder.setRatingValue(newRating);
                 cardViewHolder.hideRatingThrobber();
             }
 
             @Override
-            public void onRatedDown(int newRating) {
+            public void onRatedDown(Card ratedCard, int newRating) {
+                currentCard = ratedCard;
                 cardViewHolder.setRatingValue(newRating);
                 cardViewHolder.hideRatingThrobber();
             }
@@ -212,14 +222,40 @@ public class CardPresenter implements iCardShow.iCardPresenter {
             }
         };
 
+        // Проверяю, ставил ли этот пользователь рейтинг такого направления
         switch (rating) {
             case UP:
-                cardSingleton.rateUp(cardKey, userId, ratingCallbacks);
+                if (currentCard.isRatedUpBy(userId))
+                    return;
+                break;
+            case DOWN:
+                if (currentCard.isRatedDownBy(userId))
+                    return;
+                break;
+            default:
+                throw new IllegalArgumentException("Wrong rating argument: "+rating);
+        }
+
+        // Меняю рейтинг
+        cardViewHolder.showRatingThrobber();
+
+        switch (rating) {
+            case UP:
+                if (currentCard.isRatedDownBy(userId))
+                    cardSingleton.rateDown(false, cardId, userId, ratingCallbacks);
+                else
+                    cardSingleton.rateUp(true, cardId, userId, ratingCallbacks);
                 break;
 
             case DOWN:
-                cardSingleton.rateDown(cardKey, userId, ratingCallbacks);
+                if (currentCard.isRatedUpBy(userId))
+                    cardSingleton.rateUp(false, cardId, userId, ratingCallbacks);
+                else
+                    cardSingleton.rateDown(true, cardId, userId, ratingCallbacks);
                 break;
+
+            default:
+                throw new IllegalArgumentException("Wrong rating argument: "+rating);
         }
     }
 }

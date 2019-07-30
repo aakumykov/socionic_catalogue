@@ -1,8 +1,9 @@
 package ru.aakumykov.me.sociocat.singletons;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -167,14 +168,16 @@ public class CardsSingleton implements
 
 
     @Override
-    public void rateUp(String cardId, String byUserId, final RatingCallbacks callbacks) {
-        changeRating(cardId, byUserId,1, callbacks);
+    public void rateUp(boolean directEffect, String cardId, String byUserId, final RatingCallbacks callbacks) {
+        int difference = directEffect ? 1 : -1;
+        changeRating(cardId, byUserId,difference, callbacks);
     }
 
 
     @Override
-    public void rateDown(String cardId, String byUserId, RatingCallbacks callbacks) {
-        changeRating(cardId, byUserId, -1, callbacks);
+    public void rateDown(boolean directEffect, String cardId, String byUserId, RatingCallbacks callbacks) {
+        int difference = directEffect ? -1 : 1;
+        changeRating(cardId, byUserId, difference, callbacks);
     }
 
 
@@ -355,8 +358,8 @@ public class CardsSingleton implements
                     Card card = dataSnapshot.getValue(Card.class);
 
                     if (null != card) {
-                        if (ratingDifference > 0) callbacks.onRatedUp(card.getRating());
-                        else callbacks.onRatedDown(card.getRating());
+                        if (ratingDifference > 0) callbacks.onRatedUp(card, card.getRating());
+                        else callbacks.onRatedDown(card, card.getRating());
                     } else {
                         Log.e(TAG, "Card from dataSnapshot is null");
                     }
