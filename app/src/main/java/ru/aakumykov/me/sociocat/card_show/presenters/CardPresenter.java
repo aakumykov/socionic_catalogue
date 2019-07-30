@@ -204,15 +204,13 @@ public class CardPresenter implements iCardShow.iCardPresenter {
             @Override
             public void onRatedUp(Card ratedCard, int newRating) {
                 currentCard = ratedCard;
-                cardViewHolder.setRatedUp(ratedCard, userId);
-                cardViewHolder.hideRatingThrobber();
+                cardViewHolder.showRating(ratedCard, userId);
             }
 
             @Override
             public void onRatedDown(Card ratedCard, int newRating) {
                 currentCard = ratedCard;
-                cardViewHolder.setRatedDown(ratedCard, userId);
-                cardViewHolder.hideRatingThrobber();
+                cardViewHolder.showRating(ratedCard, userId);
             }
 
             @Override

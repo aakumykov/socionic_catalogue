@@ -3,12 +3,15 @@ package ru.aakumykov.me.sociocat.card_show.view_holders;
 import android.content.Context;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +28,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
@@ -52,8 +56,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.replyWidget) TextView replyWidget;
 
     private static final String TAG = "Card_ViewHolder";
+    // TODO: опасненько его здесь хранить!
     private Context context;
-    private Card currentCard;
     private iCardShow.iCardPresenter cardPresenter;
     private boolean isInitialized = false;
 
@@ -67,11 +71,10 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
     public void initialize(Card card) {
         if (!this.isInitialized) {
-//            this.currentCard = card;
+            this.isInitialized = true;
 
             tagsContainer.setOnTagClickListener(this);
 
-            this.isInitialized = true;
             displayCard(card);
         }
     }
@@ -120,25 +123,23 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     }
 
     @Override
-    public void setRatedUp(Card card, String ratedByUserId) {
+    public void showRating(Card card, @Nullable String ratedByUserId) {
+        Log.d(TAG, card.toString());
+
+        int thumbUpImageResource = R.drawable.ic_thumb_up_neutral;
+        int thumbDownImageResource = R.drawable.ic_thumb_down_neutral;
+
+        if (null != ratedByUserId) {
+            if (card.isRatedUpBy(ratedByUserId) && !card.isRatedDownBy(ratedByUserId))
+                thumbUpImageResource = R.drawable.ic_thumb_up_colored;
+            else if (!card.isRatedUpBy(ratedByUserId) && card.isRatedDownBy(ratedByUserId))
+                thumbDownImageResource = R.drawable.ic_thumb_down_colored;
+        }
+
+        hideRatingThrobber();
         cardRatingView.setText(String.valueOf(card.getRating()));
-
-        int thumbUpImageResource = card.isRatedUpBy(ratedByUserId) ?
-                R.drawable.ic_thumb_up_colored : R.drawable.ic_thumb_up_neutral;
-
         cardRatingUpButton.setImageResource(thumbUpImageResource);
-        cardRatingDownButton.setImageResource(R.drawable.ic_thumb_down_neutral);
-    }
-
-    @Override
-    public void setRatedDown(Card card, String ratedByUserId) {
-        cardRatingView.setText(String.valueOf(card.getRating()));
-
-        int thumbDownImageResource = card.isRatedDownBy(ratedByUserId) ?
-                R.drawable.ic_thumb_down_colored : R.drawable.ic_thumb_down_neutral;
-
         cardRatingDownButton.setImageResource(thumbDownImageResource);
-        cardRatingUpButton.setImageResource(R.drawable.ic_thumb_up_neutral);
     }
 
 
@@ -168,7 +169,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
     // Внутренние методы
     private void displayCard(Card card) {
-        currentCard = card;
+        String currentUserId = AuthSingleton.currentUserId();
 
         showTitle(card);
         showDescribedContent(card);
@@ -177,7 +178,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         showAuthor(card);
         showTime(card.getCTime(), card.getMTime());
         showTags(card.getTags());
-//        showRating();
+        showRating(card, currentUserId);
     }
 
     private void showTitle(Card card) {
@@ -254,10 +255,6 @@ public class Card_ViewHolder extends Base_ViewHolder implements
             tagsContainer.setTags(tagsList);
             MyUtils.show(tagsContainer);
         }
-    }
-
-    private void showRating() {
-
     }
 
     private void showYoutubeMedia(String mediaCode, InsertableYoutubePlayer.PlayerType playerType) {

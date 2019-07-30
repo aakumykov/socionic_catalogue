@@ -146,8 +146,6 @@ public interface iCardShow {
         void disableRatingButtons();
         void enableRatingContols();
 
-        void setRatedUp(Card card, String ratedByUserId);
-        void setRatedDown(Card card, String ratedByUserId);
-
+        void showRating(Card card, String ratedByUserId);
     }
 }
