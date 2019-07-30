@@ -112,9 +112,13 @@ public class Users_Presenter implements
 
     @Override
     public void loadUser(String userId) {
+
+        showView.showProgressMessage(R.string.USER_SHOW_loading_user_info);
+
         usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
+                showView.hideProgressMessage();
                 showView.displayUser(user);
             }
 

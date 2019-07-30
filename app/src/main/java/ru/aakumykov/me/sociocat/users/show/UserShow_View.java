@@ -73,8 +73,6 @@ public class UserShow_View extends BaseView implements
 
         activateUpButton();
 
-        showProgressMessage(R.string.USER_SHOW_loading_user_info);
-
         presenter = new Users_Presenter();
 
         cardsList = new ArrayList<>();
@@ -138,10 +136,13 @@ public class UserShow_View extends BaseView implements
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        //super.onCreateOptionsMenu(menu);
-        if (AuthSingleton.isLoggedIn())
-            getMenuInflater().inflate(R.menu.edit_profile, menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (AuthSingleton.isLoggedIn()) {
+            getMenuInflater().inflate(R.menu.edit, menu);
+        }
+
+        super.onCreateOptionsMenu(menu);
+
         return true;
     }
 
