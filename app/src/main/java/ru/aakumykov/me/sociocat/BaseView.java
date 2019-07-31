@@ -113,22 +113,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-
-//        MenuInflater menuInflater = getMenuInflater();
-//
-//        if (AuthSingleton.isLoggedIn()) {
-//            menuInflater.inflate(R.menu.preferences, menu);
-//            menuInflater.inflate(R.menu.profile, menu);
-//            menuInflater.inflate(R.menu.logout, menu);
-//        } else {
-//            menuInflater.inflate(R.menu.login, menu);
-//        }
-//
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater menuInflater = getMenuInflater();
