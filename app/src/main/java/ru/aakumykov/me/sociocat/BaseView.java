@@ -344,6 +344,12 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         if (null != actionBar) actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    public Long getLastLoginTime() {
+        SharedPreferences sharedPreferences = getSharedPrefs(Constants.SHARED_PREFERENCES_LOGIN);
+        return sharedPreferences.getLong(Constants.KEY_LAST_LOGIN, new Date().getTime());
+    }
+
 
     // Внутренние методы
     private void showProgressMessage(String msg) {

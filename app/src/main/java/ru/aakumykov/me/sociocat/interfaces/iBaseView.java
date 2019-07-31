@@ -49,4 +49,6 @@ public interface iBaseView {
     String getString(int stringResourceId, String substitutedMessage);
 
     void startSomeActivity(Intent intent);
+
+    Long getLastLoginTime();
 }
