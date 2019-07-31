@@ -118,6 +118,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         MenuInflater menuInflater = getMenuInflater();
 
         menuInflater.inflate(R.menu.tags, menu);
+        menuInflater.inflate(R.menu.new_cards, menu);
 
         if (AuthSingleton.isLoggedIn()) {
             menuInflater.inflate(R.menu.profile_in, menu);
@@ -167,6 +168,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
             case R.id.actionTags:
                 goTagsList();
+                break;
+
+            case R.id.actionNewCards:
+                long llt = getLastLoginTime();
+                showToast("Новые карточки, впв: "+llt);
                 break;
 
             default:
@@ -330,8 +336,15 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public Long getLastLoginTime() {
-        SharedPreferences sharedPreferences = getSharedPrefs(Constants.SHARED_PREFERENCES_LOGIN);
-        return sharedPreferences.getLong(Constants.KEY_LAST_LOGIN, new Date().getTime());
+        long currentTime = new Date().getTime();
+
+        if (!AuthSingleton.isLoggedIn()) {
+            return currentTime;
+        }
+        else {
+            SharedPreferences sharedPreferences = getSharedPrefs(Constants.SHARED_PREFERENCES_LOGIN);
+            return sharedPreferences.getLong(Constants.KEY_LAST_LOGIN, currentTime);
+        }
     }
 
 

@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
 public class BaseView_Stub implements iBaseView {
+
     @Override
     public Context getAppContext() {
         return null;
@@ -118,5 +119,10 @@ public class BaseView_Stub implements iBaseView {
     @Override
     public void startSomeActivity(Intent intent) {
 
+    }
+
+    @Override
+    public Long getLastLoginTime() {
+        return null;
     }
 }
