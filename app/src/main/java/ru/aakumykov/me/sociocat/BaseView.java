@@ -53,7 +53,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public void onUserAuthorized(UserAuthorizedEvent event) {
         invalidateOptionsMenu();
         onUserLogin();
-        saveLastLoginTime();
     }
     @Subscribe
     public void onUserUnauthorized(UserUnauthorizedEvent event) {
@@ -71,6 +70,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         // TODO: попробовать перенести в MyApp
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
+        saveLastLoginTime();
     }
 
     @Override
