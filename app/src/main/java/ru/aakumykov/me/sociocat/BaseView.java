@@ -172,6 +172,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
             case R.id.actionNewCards:
                 long llt = getLastLoginTime();
+//                DateUtils.
                 showToast("Новые карточки, впв: "+llt);
                 break;
 
