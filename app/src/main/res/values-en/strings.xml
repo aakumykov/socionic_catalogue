@@ -310,7 +310,7 @@
     <string name="CARD_SHOW_created">Created at %1$s</string>
     <string name="CARD_SHOW_edited">Edited at %1$s</string>
     <string name="MENU_new_cards">New cards</string>
-    <string name="CARDS_GRID_loading_new_cards">Loading new cards</string>
+    <string name="CARDS_GRID_loading_new_cards">New cards</string>
     <string name="CARDS_GRID_no_new_cards">There is no new cards</string>
     <string name="CARDS_GRID_authorization">Authorization</string>
     <string name="CARDS_GRID_you_must_login_to_add_card">You must login to create card</string>
@@ -470,4 +470,5 @@
     <string name="LOGIN_error_updating_user">Error updating user</string>
     <string name="LOGIN_error_creating_custom_token">Error creating custom token</string>
     <string name="USER_SHOW_user_id_not_found">There is no user id</string>
+    <string name="CARDS_GRID_error_there_is_no_tag">Не найдена метка</string>
 </resources>

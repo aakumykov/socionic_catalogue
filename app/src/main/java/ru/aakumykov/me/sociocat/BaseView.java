@@ -163,7 +163,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
             case R.id.actionCards:
 //                goCardsList();
-                goCardsGrid();
+                goCardsGrid(null);
                 break;
 
             case R.id.actionTags:
@@ -171,9 +171,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 break;
 
             case R.id.actionNewCards:
-                long llt = getLastLoginTime();
-//                DateUtils.
-                showToast("Новые карточки, впв: "+llt);
+                goCardsGrid(Constants.ACTION_SHOW_NEW_CARDS);
                 break;
 
             default:
@@ -440,8 +438,17 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         startActivity(intent);
     }
 
-    private void goCardsGrid() {
+    private void goCardsGrid(@Nullable String action) {
         Intent intent = new Intent(this, CardsGrid_View.class);
+
+        action += "";
+
+        switch (action) {
+            case Constants.ACTION_SHOW_NEW_CARDS:
+                intent.setAction(Constants.ACTION_SHOW_NEW_CARDS);
+                break;
+        }
+
         startActivity(intent);
     }
 
