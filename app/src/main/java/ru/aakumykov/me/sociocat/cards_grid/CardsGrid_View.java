@@ -9,11 +9,12 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -65,6 +66,7 @@ public class CardsGrid_View extends BaseView implements
     private Bundle listStateStorage;
 
     private final static String KEY_LIST_STATE = "LIST_STATE";
+    private Menu menu;
 
 
     // Системные методы
@@ -156,6 +158,8 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        this.menu = menu;
 
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.search, menu);
@@ -321,6 +325,15 @@ public class CardsGrid_View extends BaseView implements
     public void showTagFilter(String tagName) {
         tagsContainer.removeAllTags();
         tagsContainer.addTag(tagName);
+    }
+
+    @Override
+    public void hideNewCardMenuItem() {
+        if (null != menu) {
+            MenuItem menuItem = menu.findItem(R.id.actionNewCards);
+            if (null != menuItem)
+                menuItem.setVisible(false);
+        }
     }
 
 

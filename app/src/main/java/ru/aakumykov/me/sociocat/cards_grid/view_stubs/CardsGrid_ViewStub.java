@@ -46,4 +46,10 @@ public class CardsGrid_ViewStub extends BaseView_Stub implements iCardsGrid.iPag
     public void showTagFilter(String tagName) {
 
     }
+
+    @Override
+    public void hideNewCardMenuItem() {
+
+    }
+
 }
