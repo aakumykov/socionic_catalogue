@@ -24,6 +24,8 @@ public interface iCardShow {
 
         void showCommentForm(iTextItem repliedItem, boolean editMode);
         void hideCommentForm(boolean withQuestion);
+
+        void hideSwipeRefreshThrobber();
     }
 
 
@@ -109,6 +111,8 @@ public interface iCardShow {
 
         void onRatingUpClicked(iCard_ViewHolder cardViewHolder);
         void onRatingDownClicked(iCard_ViewHolder cardViewHolder);
+
+        void onSwipeRefreshRequested();
     }
 
     interface iCommentsPresenter {

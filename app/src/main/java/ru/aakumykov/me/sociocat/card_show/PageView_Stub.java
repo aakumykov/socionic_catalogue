@@ -35,4 +35,9 @@ public class PageView_Stub extends BaseView_Stub implements iCardShow.iPageView 
     public void hideCommentForm(boolean withQuestion) {
 
     }
+
+    @Override
+    public void hideSwipeRefreshThrobber() {
+
+    }
 }
