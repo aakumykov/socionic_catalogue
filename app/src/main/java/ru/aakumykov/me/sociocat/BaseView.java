@@ -118,7 +118,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         MenuInflater menuInflater = getMenuInflater();
 
         menuInflater.inflate(R.menu.tags, menu);
-        menuInflater.inflate(R.menu.new_cards, menu);
 
         if (AuthSingleton.isLoggedIn()) {
             menuInflater.inflate(R.menu.profile_in, menu);
