@@ -160,6 +160,7 @@ public class CardsGrid_View extends BaseView implements
 
         MenuInflater menuInflater = getMenuInflater();
 
+        menuInflater.inflate(R.menu.search_placeholder, menu);
         menuInflater.inflate(R.menu.search, menu);
 
         if (Constants.ACTION_SHOW_NEW_CARDS.equals(action))
