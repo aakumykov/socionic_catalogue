@@ -166,6 +166,31 @@ public class CardPresenter implements iCardShow.iCardPresenter {
         changeCardRating(Rating.DOWN, cardViewHolder);
     }
 
+    @Override
+    public void onSwipeRefreshRequested() {
+
+        cardSingleton.loadCard(currentCard.getKey(), new iCardsSingleton.LoadCallbacks() {
+            @Override
+            public void onCardLoadSuccess(Card card) {
+                pageView.hideSwipeRefreshThrobber();
+
+                try {
+                    cardView.displayCard(card);
+                }
+                catch (Exception e) {
+                    pageView.showErrorMsg(R.string.CARD_SHOW_error_displaying_card, e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCardLoadFailed(String errorMsg) {
+                pageView.hideSwipeRefreshThrobber();
+                pageView.showErrorMsg(R.string.CARD_SHOW_error_loading_card, errorMsg);
+            }
+        });
+    }
+
 
     // Внутренние методы
     private boolean canAlterCard() {

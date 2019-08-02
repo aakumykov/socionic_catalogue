@@ -214,6 +214,20 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
+    public void showProgressBar() {
+        View progressBar = findViewById(R.id.progressBar);
+        if (null != progressBar)
+            MyUtils.show(progressBar);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        View progressBar = findViewById(R.id.progressBar);
+        if (null != progressBar)
+            MyUtils.hide(progressBar);
+    }
+
+    @Override
     public <T> void showDebugMsg(T msg) {
         if (Config.DEBUG_MODE) {
             String message = String.valueOf(msg);
@@ -384,18 +398,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         } else {
             Log.w(TAG, "messageView not found");
         }
-    }
-
-    private void showProgressBar() {
-        View progressBar = findViewById(R.id.progressBar);
-        if (null != progressBar)
-            MyUtils.show(progressBar);
-    }
-
-    private void hideProgressBar() {
-        View progressBar = findViewById(R.id.progressBar);
-        if (null != progressBar)
-            MyUtils.hide(progressBar);
     }
 
     private void setPageTitle(String title) {

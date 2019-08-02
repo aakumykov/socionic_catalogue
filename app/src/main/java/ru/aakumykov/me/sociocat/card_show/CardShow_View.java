@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class CardShow_View extends BaseView implements
 
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.progressBar) ProgressBar progressBar;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.commentFormContainer) FrameLayout commentFormContainer;
 
@@ -76,6 +78,7 @@ public class CardShow_View extends BaseView implements
 
         activateUpButton();
         setPageTitle(R.string.CARD_SHOW_page_title_short);
+        configureSwipeRefresh();
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -252,6 +255,11 @@ public class CardShow_View extends BaseView implements
         }
     }
 
+    @Override
+    public void hideSwipeRefreshThrobber() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
 
     @Override
     public void scrollListToPosition(int position) {
@@ -260,6 +268,17 @@ public class CardShow_View extends BaseView implements
 
 
     // Внутренние методы
+    private void configureSwipeRefresh() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                cardPresenter.onSwipeRefreshRequested();
+            }
+        });
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
+    }
+
     private void bindComponents() {
         cardPresenter.bindPageView(this);
         cardPresenter.bindListAdapter((iCardShow.iCardView) listAdapter);

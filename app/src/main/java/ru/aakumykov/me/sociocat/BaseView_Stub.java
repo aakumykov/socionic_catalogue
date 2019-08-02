@@ -38,6 +38,16 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
+    public void showProgressBar() {
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+
+    }
+
+    @Override
     public <T> void showDebugMsg(T msg) {
 
     }

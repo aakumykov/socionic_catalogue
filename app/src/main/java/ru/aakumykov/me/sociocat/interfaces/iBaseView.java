@@ -19,6 +19,9 @@ public interface iBaseView {
     void showProgressMessage(int messageId, String insertedText);
     void hideProgressMessage();
 
+    void showProgressBar();
+    void hideProgressBar();
+
     <T> void showDebugMsg(T msg);
 
     void showErrorMsg(int userMessageId, String consoleMessage);
