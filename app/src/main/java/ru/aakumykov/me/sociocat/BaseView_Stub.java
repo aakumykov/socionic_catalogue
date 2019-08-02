@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.view.Menu;
 
 import androidx.annotation.Nullable;
 
@@ -124,5 +125,15 @@ public class BaseView_Stub implements iBaseView {
     @Override
     public Long getLastLoginTime() {
         return null;
+    }
+
+    @Override
+    public void reloadMenu() {
+
+    }
+
+    @Override
+    public void hideMenuItem(Menu menu, int menuItemId) {
+
     }
 }

@@ -66,7 +66,7 @@ public class CardsGrid_View extends BaseView implements
     private Bundle listStateStorage;
 
     private final static String KEY_LIST_STATE = "LIST_STATE";
-    private Menu menu;
+    private String action;
 
 
     // Системные методы
@@ -159,14 +159,16 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        this.menu = menu;
-
         MenuInflater menuInflater = getMenuInflater();
+
         menuInflater.inflate(R.menu.search, menu);
 
         super.onCreateOptionsMenu(menu);
 
         configureSearchWidget(menu);
+
+        if (Constants.ACTION_SHOW_NEW_CARDS.equals(action))
+            hideMenuItem(menu, R.id.actionNewCards);
 
         return true;
     }
@@ -328,12 +330,8 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void hideNewCardMenuItem() {
-        if (null != menu) {
-            MenuItem menuItem = menu.findItem(R.id.actionNewCards);
-            if (null != menuItem)
-                menuItem.setVisible(false);
-        }
+    public void storeAction(String action) {
+        this.action = action;
     }
 
 
@@ -568,6 +566,5 @@ public class CardsGrid_View extends BaseView implements
 
         dataAdapter.addItem(gridItem);
     }
-
 
 }

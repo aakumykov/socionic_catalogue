@@ -346,6 +346,18 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         }
     }
 
+    @Override
+    public void reloadMenu() {
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    public void hideMenuItem(Menu menu, int menuItemId) {
+        MenuItem menuItem = menu.findItem(R.id.actionNewCards);
+        if (null != menuItem)
+            menuItem.setVisible(false);
+    }
+
 
     // Внутренние методы
     private void showProgressMessage(String msg) {

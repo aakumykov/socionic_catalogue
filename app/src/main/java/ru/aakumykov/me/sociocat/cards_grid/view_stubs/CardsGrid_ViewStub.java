@@ -48,7 +48,7 @@ public class CardsGrid_ViewStub extends BaseView_Stub implements iCardsGrid.iPag
     }
 
     @Override
-    public void hideNewCardMenuItem() {
+    public void storeAction(String action) {
 
     }
 

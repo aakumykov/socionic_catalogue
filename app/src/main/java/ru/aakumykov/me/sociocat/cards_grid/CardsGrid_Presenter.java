@@ -65,6 +65,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         if (null != intent) {
 
             String action = intent.getAction() + "";
+            pageView.storeAction(action);
 
             switch (action) {
 
@@ -281,7 +282,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     private void loadNewCards() {
 
-        pageView.hideNewCardMenuItem();
+        pageView.reloadMenu();
         pageView.setPageTitle(R.string.CARDS_GRID_new_cards_title);
         pageView.showProgressMessage(R.string.CARDS_GRID_loading_new_cards);
 

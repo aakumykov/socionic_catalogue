@@ -44,7 +44,7 @@ public interface iCardsGrid {
 
         void showTagFilter(String tagName);
 
-        void hideNewCardMenuItem();
+        void storeAction(String action);
     }
 
     interface iGridView {
