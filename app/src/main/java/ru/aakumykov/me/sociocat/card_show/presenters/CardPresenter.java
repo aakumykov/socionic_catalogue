@@ -171,13 +171,18 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     @Override
     public void onSwipeRefreshRequested() {
 
-        pageView.hideSwipeRefreshThrobber();
-        pageView.showProgressMessage(R.string.CARD_SHOW_loading_card);
+//        pageView.hideSwipeRefreshThrobber();
+//        pageView.showProgressMessage(R.string.CARD_SHOW_loading_card);
+//        pageView.showProgressBar();
+        pageView.showToast(R.string.CARD_SHOW_refreshing_card);
 
         cardSingleton.loadCard(currentCard.getKey(), new iCardsSingleton.LoadCallbacks() {
             @Override
             public void onCardLoadSuccess(Card card) {
-                pageView.hideProgressMessage();
+//                pageView.hideProgressMessage();
+//                pageView.hideProgressBar();
+                pageView.hideSwipeRefreshThrobber();
+
                 try {
                     cardView.displayCard(card);
                 }
@@ -189,7 +194,7 @@ public class CardPresenter implements iCardShow.iCardPresenter {
 
             @Override
             public void onCardLoadFailed(String errorMsg) {
-//                pageView.hideSwipeRefreshThrobber();
+                pageView.hideSwipeRefreshThrobber();
 //                pageView.showToast(R.string.CARD_SHOW_error_loading_card);
 //                Log.e(TAG, msg);
                 pageView.showErrorMsg(R.string.CARD_SHOW_error_loading_card, errorMsg);

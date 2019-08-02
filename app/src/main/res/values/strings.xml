@@ -480,4 +480,5 @@
     <string name="USER_SHOW_user_id_not_found">Не найден id пользователя</string>
     <string name="CARDS_GRID_error_there_is_no_tag">Не найдена метка</string>
     <string name="CARDS_GRID_new_cards_title">Новые карточки</string>
+    <string name="CARD_SHOW_refreshing_card">Обновляем карточку</string>
 </resources>
