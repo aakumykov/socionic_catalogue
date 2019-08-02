@@ -1,7 +1,5 @@
 package ru.aakumykov.me.sociocat.card_show.presenters;
 
-import android.util.Log;
-
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.R;
@@ -171,16 +169,9 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     @Override
     public void onSwipeRefreshRequested() {
 
-//        pageView.hideSwipeRefreshThrobber();
-//        pageView.showProgressMessage(R.string.CARD_SHOW_loading_card);
-//        pageView.showProgressBar();
-        pageView.showToast(R.string.CARD_SHOW_refreshing_card);
-
         cardSingleton.loadCard(currentCard.getKey(), new iCardsSingleton.LoadCallbacks() {
             @Override
             public void onCardLoadSuccess(Card card) {
-//                pageView.hideProgressMessage();
-//                pageView.hideProgressBar();
                 pageView.hideSwipeRefreshThrobber();
 
                 try {
@@ -195,8 +186,6 @@ public class CardPresenter implements iCardShow.iCardPresenter {
             @Override
             public void onCardLoadFailed(String errorMsg) {
                 pageView.hideSwipeRefreshThrobber();
-//                pageView.showToast(R.string.CARD_SHOW_error_loading_card);
-//                Log.e(TAG, msg);
                 pageView.showErrorMsg(R.string.CARD_SHOW_error_loading_card, errorMsg);
             }
         });
