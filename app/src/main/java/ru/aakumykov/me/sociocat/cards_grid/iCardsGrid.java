@@ -43,6 +43,8 @@ public interface iCardsGrid {
         String getCurrentFilterTag();
 
         void showTagFilter(String tagName);
+
+        void storeAction(String action);
     }
 
     interface iGridView {

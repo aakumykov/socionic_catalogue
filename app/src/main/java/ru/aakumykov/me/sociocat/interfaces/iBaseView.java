@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.view.Menu;
 
 import androidx.annotation.Nullable;
 
@@ -49,4 +50,9 @@ public interface iBaseView {
     String getString(int stringResourceId, String substitutedMessage);
 
     void startSomeActivity(Intent intent);
+
+    Long getLastLoginTime();
+
+    void reloadMenu();
+    void hideMenuItem(Menu menu, int menuItemId);
 }

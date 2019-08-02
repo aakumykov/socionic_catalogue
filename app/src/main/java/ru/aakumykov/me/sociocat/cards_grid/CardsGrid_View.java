@@ -9,11 +9,12 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -65,6 +66,7 @@ public class CardsGrid_View extends BaseView implements
     private Bundle listStateStorage;
 
     private final static String KEY_LIST_STATE = "LIST_STATE";
+    private String action;
 
 
     // Системные методы
@@ -158,11 +160,15 @@ public class CardsGrid_View extends BaseView implements
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater menuInflater = getMenuInflater();
+
         menuInflater.inflate(R.menu.search, menu);
 
         super.onCreateOptionsMenu(menu);
 
         configureSearchWidget(menu);
+
+        if (Constants.ACTION_SHOW_NEW_CARDS.equals(action))
+            hideMenuItem(menu, R.id.actionNewCards);
 
         return true;
     }
@@ -321,6 +327,11 @@ public class CardsGrid_View extends BaseView implements
     public void showTagFilter(String tagName) {
         tagsContainer.removeAllTags();
         tagsContainer.addTag(tagName);
+    }
+
+    @Override
+    public void storeAction(String action) {
+        this.action = action;
     }
 
 
@@ -555,6 +566,5 @@ public class CardsGrid_View extends BaseView implements
 
         dataAdapter.addItem(gridItem);
     }
-
 
 }

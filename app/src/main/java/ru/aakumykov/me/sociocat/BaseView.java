@@ -53,7 +53,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public void onUserAuthorized(UserAuthorizedEvent event) {
         invalidateOptionsMenu();
         onUserLogin();
-        saveLastLoginTime();
     }
     @Subscribe
     public void onUserUnauthorized(UserUnauthorizedEvent event) {
@@ -71,6 +70,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         // TODO: попробовать перенести в MyApp
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
+        saveLastLoginTime();
     }
 
     @Override
@@ -112,27 +113,12 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-
-//        MenuInflater menuInflater = getMenuInflater();
-//
-//        if (AuthSingleton.isLoggedIn()) {
-//            menuInflater.inflate(R.menu.preferences, menu);
-//            menuInflater.inflate(R.menu.profile, menu);
-//            menuInflater.inflate(R.menu.logout, menu);
-//        } else {
-//            menuInflater.inflate(R.menu.login, menu);
-//        }
-//
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater menuInflater = getMenuInflater();
 
         menuInflater.inflate(R.menu.tags, menu);
+        menuInflater.inflate(R.menu.new_cards, menu);
 
         if (AuthSingleton.isLoggedIn()) {
             menuInflater.inflate(R.menu.profile_in, menu);
@@ -177,11 +163,15 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
             case R.id.actionCards:
 //                goCardsList();
-                goCardsGrid();
+                goCardsGrid(null);
                 break;
 
             case R.id.actionTags:
                 goTagsList();
+                break;
+
+            case R.id.actionNewCards:
+                goCardsGrid(Constants.ACTION_SHOW_NEW_CARDS);
                 break;
 
             default:
@@ -343,6 +333,31 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         if (null != actionBar) actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    public Long getLastLoginTime() {
+        long currentTime = new Date().getTime();
+
+        if (!AuthSingleton.isLoggedIn()) {
+            return currentTime;
+        }
+        else {
+            SharedPreferences sharedPreferences = getSharedPrefs(Constants.SHARED_PREFERENCES_LOGIN);
+            return sharedPreferences.getLong(Constants.KEY_LAST_LOGIN, currentTime);
+        }
+    }
+
+    @Override
+    public void reloadMenu() {
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    public void hideMenuItem(Menu menu, int menuItemId) {
+        MenuItem menuItem = menu.findItem(R.id.actionNewCards);
+        if (null != menuItem)
+            menuItem.setVisible(false);
+    }
+
 
     // Внутренние методы
     private void showProgressMessage(String msg) {
@@ -435,8 +450,17 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         startActivity(intent);
     }
 
-    private void goCardsGrid() {
+    private void goCardsGrid(@Nullable String action) {
         Intent intent = new Intent(this, CardsGrid_View.class);
+
+        action += "";
+
+        switch (action) {
+            case Constants.ACTION_SHOW_NEW_CARDS:
+                intent.setAction(Constants.ACTION_SHOW_NEW_CARDS);
+                break;
+        }
+
         startActivity(intent);
     }
 

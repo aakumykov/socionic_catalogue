@@ -7,8 +7,10 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
@@ -60,20 +62,25 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     @Override
     public void processInputIntent(@Nullable Intent intent) {
 
-        this.filterTag = (null == intent) ? null : intent.getStringExtra(Constants.TAG_NAME);
+        if (null != intent) {
 
-        if (null != filterTag) {
-            pageView.setPageTitle(R.string.CARDS_GRID_page_title_tag, filterTag);
-            loadCardsWithTag(filterTag);
+            String action = intent.getAction() + "";
+            pageView.storeAction(action);
+
+            switch (action) {
+
+                case Constants.ACTION_SHOW_NEW_CARDS:
+                    loadNewCards();
+                    return;
+
+                case Constants.ACTION_FILTER_BY_TAG:
+                    String filteringTag = intent.getStringExtra(Constants.TAG_NAME);
+                    loadCardsWithTag(filteringTag);
+                    return;
+            }
         }
-        else {
-            loadCards(
-                    LoadMode.REPLACE,
-                    null,
-                    null,
-                    0
-            );
-        }
+
+        loadCards(LoadMode.REPLACE, null, null, 0);
     }
 
     @Override
@@ -219,13 +226,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
-                List<iGridItem> newItemsList = new ArrayList<>();
-
-                for (Card card : list) {
-                    GridItem_Card cardItem = new GridItem_Card();
-                    cardItem.setPayload(card);
-                    newItemsList.add(cardItem);
-                }
+                List<iGridItem> newItemsList = cardsList2gridItemsList(list);
 
                 newItemsList = filterList(newItemsList);
 
@@ -252,16 +253,48 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         });
     }
 
-    private void loadCardsWithTag(String filterTag) {
+    private void loadCardsWithTag(@Nullable String filterTag) {
 
-        pageView.showProgressMessage(R.string.CARDS_GRID_loading_cards_with_tag, filterTag);
+        if (null != filterTag)
+        {
+            pageView.setPageTitle(R.string.CARDS_GRID_page_title_tag, filterTag);
 
-        cardsSingleton.loadList(filterTag, new iCardsSingleton.ListCallbacks() {
+            pageView.showProgressMessage(R.string.CARDS_GRID_loading_cards_with_tag, filterTag);
+
+            cardsSingleton.loadList(filterTag, new iCardsSingleton.ListCallbacks() {
+                @Override
+                public void onListLoadSuccess(List<Card> list) {
+                    pageView.hideProgressMessage();
+                    pageView.showTagFilter(filterTag);
+                    gridView.setList(cardsList2gridItemsList(list));
+                }
+
+                @Override
+                public void onListLoadFail(String errorMessage) {
+                    pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+                }
+            });
+        }
+        else {
+            pageView.showErrorMsg(R.string.CARDS_GRID_error_there_is_no_tag, "filterTag == null");
+        }
+    }
+
+    private void loadNewCards() {
+
+        pageView.reloadMenu();
+        pageView.setPageTitle(R.string.CARDS_GRID_new_cards_title);
+        pageView.showProgressMessage(R.string.CARDS_GRID_loading_new_cards);
+
+        Long lastLoginTime = pageView.getLastLoginTime();
+        lastLoginTime = (new Date().getTime()) - Config.DEFAULT_NEW_CARDS_PERIOD;
+
+        cardsSingleton.loadNewCards(lastLoginTime, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 pageView.hideProgressMessage();
-                pageView.showTagFilter(filterTag);
-                gridView.setList(cardsList2gridItemsList(list));
+                List<iGridItem> gridItems = cardsList2gridItemsList(list);
+                gridView.setList(gridItems);
             }
 
             @Override
@@ -269,6 +302,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
                 pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
             }
         });
+
     }
 
     private List<iGridItem> filterCardsByTitle(@Nullable String filterWord, final List<iGridItem> inputList) {
