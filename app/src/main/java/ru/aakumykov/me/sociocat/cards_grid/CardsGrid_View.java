@@ -186,7 +186,9 @@ public class CardsGrid_View extends BaseView implements
 
                 MenuItem searchMenuItem = mMenu.findItem(R.id.actionSearch);
                 searchMenuItem.setVisible(true);
+
                 SearchView searchView = (SearchView) searchMenuItem.getActionView();
+                searchView.setVisibility(View.VISIBLE);
                 searchView.setIconified(false);
 
                 break;
@@ -261,6 +263,12 @@ public class CardsGrid_View extends BaseView implements
         dataAdapter.disableFiltering();
 
         searchView.clearFocus();
+
+        searchView.setVisibility(View.GONE);
+
+        MenuItem searchMenuItem = mMenu.findItem(R.id.actionSearch);
+        searchMenuItem.setVisible(false);
+
 //        dataAdapter.restoreOriginalList();
         return false;
     }
