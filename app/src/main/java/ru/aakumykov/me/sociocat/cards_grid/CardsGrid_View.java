@@ -164,8 +164,8 @@ public class CardsGrid_View extends BaseView implements
 
         MenuInflater menuInflater = getMenuInflater();
 
-        menuInflater.inflate(R.menu.search_placeholder, menu);
         menuInflater.inflate(R.menu.search, menu);
+        menuInflater.inflate(R.menu.search_activation, menu);
 
         if (Constants.ACTION_SHOW_NEW_CARDS.equals(action))
             hideMenuItem(menu, R.id.actionNewCards);
@@ -182,11 +182,12 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.actionSearch:
+            case R.id.actionSearchActivation:
 
-//                MenuItem searchPlaceholderMenuItem = mMenu.findItem(R.id.search_placeholder);
-//                searchPlaceholderMenuItem
-                boolean isSearchPlaceholderClicked = mMenu.performIdentifierAction(R.id.search_placeholder, 0);
+                MenuItem searchMenuItem = mMenu.findItem(R.id.actionSearch);
+                searchMenuItem.setVisible(true);
+                SearchView searchView = (SearchView) searchMenuItem.getActionView();
+                searchView.setIconified(false);
 
                 break;
             default:
