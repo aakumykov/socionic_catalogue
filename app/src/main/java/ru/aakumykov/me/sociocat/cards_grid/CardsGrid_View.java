@@ -9,6 +9,7 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 
@@ -43,9 +44,11 @@ public class CardsGrid_View extends BaseView implements
         iCardsGrid.iPageView,
         iCardsGrid.iGridItemClickListener,
         iCardsGrid.iLoadMoreClickListener,
+
         SearchView.OnQueryTextListener,
         SearchView.OnCloseListener,
         SearchView.OnFocusChangeListener,
+
         View.OnClickListener
 {
     private static final String TAG = "CardsGrid_View";
@@ -54,7 +57,9 @@ public class CardsGrid_View extends BaseView implements
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.speedDialView) SpeedDialView speedDialView;
+
     private SearchView searchView;
+    private MenuItem searchWidget;
 
     private CardsGrid_Adapter dataAdapter;
     private iCardsGrid.iPresenter presenter;
@@ -91,8 +96,6 @@ public class CardsGrid_View extends BaseView implements
 
         recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager(layoutManager);
-
-
 
         configureSwipeRefresh();
 
@@ -160,6 +163,7 @@ public class CardsGrid_View extends BaseView implements
 
         MenuInflater menuInflater = getMenuInflater();
 
+        menuInflater.inflate(R.menu.search_widget, menu);
         menuInflater.inflate(R.menu.search, menu);
 
         if (Constants.ACTION_SHOW_NEW_CARDS.equals(action))
@@ -171,6 +175,18 @@ public class CardsGrid_View extends BaseView implements
 
         configureSearchWidget(menu);
 
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.actionSearch:
+                showSwarchWidget();
+                break;
+            default:
+                super.onOptionsItemSelected(item);
+        }
         return true;
     }
 
@@ -200,7 +216,6 @@ public class CardsGrid_View extends BaseView implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.actionSearch:
-                Log.d(TAG, "onClick(): R.id.actionSearch");
                 dataAdapter.enableFiltering();
                 break;
         }
@@ -234,12 +249,8 @@ public class CardsGrid_View extends BaseView implements
     // SearchView.OnCloseListener
     @Override
     public boolean onClose() {
-        Log.d(TAG, "onClose()");
-
         dataAdapter.disableFiltering();
-
-        searchView.clearFocus();
-//        dataAdapter.restoreOriginalList();
+        hideSearchWidget();
         return false;
     }
 
@@ -479,9 +490,11 @@ public class CardsGrid_View extends BaseView implements
     private void configureSearchWidget(Menu menu) {
         // Ассоциируем настройку поиска с SearchView
         try {
+            searchWidget = menu.findItem(R.id.searchWidget);
+
             SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
-            searchView = (SearchView) menu.findItem(R.id.actionSearch).getActionView();
+            searchView = (SearchView) menu.findItem(R.id.searchWidget).getActionView();
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
             searchView.setMaxWidth(Integer.MAX_VALUE);
 
@@ -568,4 +581,15 @@ public class CardsGrid_View extends BaseView implements
         dataAdapter.addItem(gridItem);
     }
 
+    private void showSwarchWidget() {
+        searchWidget.setVisible(true);
+        searchView.setVisibility(View.VISIBLE);
+        searchView.setIconified(false);
+    }
+
+    private void hideSearchWidget() {
+        searchView.clearFocus();
+        searchView.setVisibility(View.GONE);
+        searchWidget.setVisible(false);
+    }
 }

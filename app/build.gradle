@@ -44,8 +44,8 @@ dependencies {
     // Firebase
     implementation 'com.google.firebase:firebase-core:17.0.1'
     implementation 'com.google.firebase:firebase-auth:18.1.0'
-    implementation 'com.google.firebase:firebase-database:18.0.0'
-    implementation 'com.google.firebase:firebase-storage:18.1.0'
+    implementation 'com.google.firebase:firebase-database:18.0.1'
+    implementation 'com.google.firebase:firebase-storage:18.1.1'
     implementation 'com.google.firebase:firebase-dynamic-links:18.0.0'
 
     // AAC
@@ -70,7 +70,7 @@ dependencies {
 
     // Circle image view
     implementation 'de.hdodenhof:circleimageview:2.2.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha08'
+    implementation 'com.google.android.material:material:1.1.0-alpha09'
 
     // Saripaar
     implementation 'com.mobsandgeeks:android-saripaar:2.0.3'

@@ -67,6 +67,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         super.onCreate(savedInstanceState);
 
         PACKAGE_NAME = getApplicationContext().getPackageName();
+//        ComponentName componentName = getComponentName();
+//        componentName.getClassName();
+//        componentName.getPackageName();
+//        componentName.getShortClassName();
 
         // TODO: попробовать перенести в MyApp
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
