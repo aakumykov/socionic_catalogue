@@ -9,6 +9,7 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 
@@ -43,9 +44,11 @@ public class CardsGrid_View extends BaseView implements
         iCardsGrid.iPageView,
         iCardsGrid.iGridItemClickListener,
         iCardsGrid.iLoadMoreClickListener,
+
         SearchView.OnQueryTextListener,
         SearchView.OnCloseListener,
         SearchView.OnFocusChangeListener,
+
         View.OnClickListener
 {
     private static final String TAG = "CardsGrid_View";
@@ -66,6 +69,7 @@ public class CardsGrid_View extends BaseView implements
 
     private final static String KEY_LIST_STATE = "LIST_STATE";
     private String action;
+    private Menu mMenu;
 
 
     // Системные методы
@@ -91,8 +95,6 @@ public class CardsGrid_View extends BaseView implements
 
         recyclerView.setAdapter(dataAdapter);
         recyclerView.setLayoutManager(layoutManager);
-
-
 
         configureSwipeRefresh();
 
@@ -158,6 +160,8 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
+        mMenu = menu;
+
         MenuInflater menuInflater = getMenuInflater();
 
         menuInflater.inflate(R.menu.search_placeholder, menu);
@@ -172,6 +176,22 @@ public class CardsGrid_View extends BaseView implements
 
         configureSearchWidget(menu);
 
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.actionSearch:
+
+//                MenuItem searchPlaceholderMenuItem = mMenu.findItem(R.id.search_placeholder);
+//                searchPlaceholderMenuItem
+                boolean isSearchPlaceholderClicked = mMenu.performIdentifierAction(R.id.search_placeholder, 0);
+
+                break;
+            default:
+                super.onOptionsItemSelected(item);
+        }
         return true;
     }
 
@@ -482,7 +502,11 @@ public class CardsGrid_View extends BaseView implements
         try {
             SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
-            searchView = (SearchView) menu.findItem(R.id.actionSearch).getActionView();
+            MenuItem menuItem = menu.findItem(R.id.actionSearch);
+            View actionView = menuItem.getActionView();
+            searchView = (SearchView) actionView;
+
+//            searchView = (SearchView) menu.findItem(R.id.actionSearch).getActionView();
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
             searchView.setMaxWidth(Integer.MAX_VALUE);
 
