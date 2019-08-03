@@ -164,8 +164,8 @@ public class CardsGrid_View extends BaseView implements
 
         MenuInflater menuInflater = getMenuInflater();
 
+        menuInflater.inflate(R.menu.search_widget, menu);
         menuInflater.inflate(R.menu.search, menu);
-        menuInflater.inflate(R.menu.search_activation, menu);
 
         if (Constants.ACTION_SHOW_NEW_CARDS.equals(action))
             hideMenuItem(menu, R.id.actionNewCards);
@@ -182,9 +182,9 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.actionSearchActivation:
+            case R.id.actionSearch:
 
-                MenuItem searchMenuItem = mMenu.findItem(R.id.actionSearch);
+                MenuItem searchMenuItem = mMenu.findItem(R.id.searchWidget);
                 searchMenuItem.setVisible(true);
 
                 SearchView searchView = (SearchView) searchMenuItem.getActionView();
@@ -224,7 +224,6 @@ public class CardsGrid_View extends BaseView implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.actionSearch:
-                Log.d(TAG, "onClick(): R.id.actionSearch");
                 dataAdapter.enableFiltering();
                 break;
         }
@@ -258,18 +257,15 @@ public class CardsGrid_View extends BaseView implements
     // SearchView.OnCloseListener
     @Override
     public boolean onClose() {
-        Log.d(TAG, "onClose()");
-
         dataAdapter.disableFiltering();
 
         searchView.clearFocus();
 
         searchView.setVisibility(View.GONE);
 
-        MenuItem searchMenuItem = mMenu.findItem(R.id.actionSearch);
-        searchMenuItem.setVisible(false);
+        MenuItem searchWidget = mMenu.findItem(R.id.searchWidget);
+        searchWidget.setVisible(false);
 
-//        dataAdapter.restoreOriginalList();
         return false;
     }
 
@@ -511,11 +507,7 @@ public class CardsGrid_View extends BaseView implements
         try {
             SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
-            MenuItem menuItem = menu.findItem(R.id.actionSearch);
-            View actionView = menuItem.getActionView();
-            searchView = (SearchView) actionView;
-
-//            searchView = (SearchView) menu.findItem(R.id.actionSearch).getActionView();
+            searchView = (SearchView) menu.findItem(R.id.searchWidget).getActionView();
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
             searchView.setMaxWidth(Integer.MAX_VALUE);
 
