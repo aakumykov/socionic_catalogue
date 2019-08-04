@@ -14,6 +14,8 @@ public interface iBaseView {
     Context getAppContext();
     Activity getActivity();
 
+    Intent getIntent();
+
     // Сообщения вверху страницы
     void showProgressMessage(int messageId);
     void showProgressMessage(int messageId, String insertedText);
