@@ -134,8 +134,24 @@ public class CardsGrid_View extends BaseView implements
 
         bindComponents();
 
+//        if (dryRun) {
+//            dryRun = false;
+//            presenter.processInputIntent(getIntent());
+//        }
+
         if (dryRun) {
             dryRun = false;
+
+            if (isCardsListSaved()) {
+                List<iGridItem> savedList = getSavedCardsList();
+                if (null != savedList && savedList.size() > 0) {
+                    showToast("Восстанавливаю сохранённый список");
+                    dataAdapter.setList(savedList);
+                    return;
+                }
+            }
+
+            showToast("Запрашиваю новый список");
             presenter.processInputIntent(getIntent());
         }
     }
@@ -151,7 +167,10 @@ public class CardsGrid_View extends BaseView implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        saveCardsList(dataAdapter.getList());
+        List<iGridItem> gridItemsList = dataAdapter.getList();
+        if (null != gridItemsList && gridItemsList.size() > 0) {
+            saveCardsList(gridItemsList);
+        }
     }
 
     @Override
@@ -614,7 +633,7 @@ public class CardsGrid_View extends BaseView implements
     }
 
 
-    private boolean isSavedCardsListExists() {
+    private boolean isCardsListSaved() {
         SharedPreferences sharedPreferences = getSharedPrefs(Config.SAVED_CARDS_LIST);
         return sharedPreferences.contains(Config.CARDS_LIST);
     }
@@ -631,6 +650,7 @@ public class CardsGrid_View extends BaseView implements
                     Card card = new Gson().fromJson(cardString, Card.class);
                     GridItem_Card cardGridItem = new GridItem_Card();
                     cardGridItem.setPayload(card);
+                    gridItemsList.add(cardGridItem);
                 }
             }
 
