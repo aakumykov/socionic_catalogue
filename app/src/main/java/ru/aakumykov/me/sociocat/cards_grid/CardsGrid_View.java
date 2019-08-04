@@ -71,6 +71,7 @@ public class CardsGrid_View extends BaseView implements
 
     private final static String KEY_LIST_STATE = "LIST_STATE";
     private String action;
+    private int backPressedCount = 0;
 
 
     // Системные методы
@@ -142,6 +143,12 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        showToast("Плиточный вид уничтожается");
+    }
+
+    @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putString(Constants.FILTER_KEY, searchView.getQuery().toString());
         super.onSaveInstanceState(outState);
@@ -192,11 +199,18 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public void onBackPressed() {
+        backPressedCount += 1;
+
         if (!searchView.isIconified()) {
             searchView.setIconified(true);
             dataAdapter.disableFiltering();
-        } else {
-            super.onBackPressed();
+        }
+        else {
+            if (2 == backPressedCount)
+                super.onBackPressed();
+            else {
+                showToast(R.string.press_again_to_exit);
+            }
         }
     }
 
