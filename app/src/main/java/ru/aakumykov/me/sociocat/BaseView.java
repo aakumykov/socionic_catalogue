@@ -43,7 +43,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 {
     public static String PACKAGE_NAME;
     private final static String TAG = "BaseView";
-    private boolean dryRun = true;
 
     // Абстрактные методы
     public abstract void onUserLogin();
@@ -195,16 +194,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     public Activity getActivity() {
         return (Activity) this;
-    }
-
-    @Override
-    public boolean isDryRun() {
-        return this.dryRun;
-    }
-
-    @Override
-    public void disableDryRun() {
-        this.dryRun = false;
     }
 
 
