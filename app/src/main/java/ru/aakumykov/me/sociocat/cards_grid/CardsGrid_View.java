@@ -24,7 +24,9 @@ import com.google.gson.Gson;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -149,23 +151,7 @@ public class CardsGrid_View extends BaseView implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        SharedPreferences sharedPreferences = getSharedPrefs("SAVED_CARDS_LIST");
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        Set<String> cardsSet = new HashSet<>();
-
-        for (iGridItem gridItem : dataAdapter.getList()) {
-            if (gridItem instanceof GridItem_Card) {
-                Card card = (Card) gridItem.getPayload();
-                String cardString = new Gson().toJson(card);
-                cardsSet.add(cardString);
-            }
-        }
-
-        editor.putStringSet("CARDS_LIST", cardsSet);
-
-        editor.apply();
+        saveCardsList(dataAdapter.getList());
     }
 
     @Override
@@ -625,5 +611,59 @@ public class CardsGrid_View extends BaseView implements
         searchView.clearFocus();
         searchView.setVisibility(View.GONE);
         searchWidget.setVisible(false);
+    }
+
+
+    private boolean isSavedCardsListExists() {
+        SharedPreferences sharedPreferences = getSharedPrefs(Config.SAVED_CARDS_LIST);
+        return sharedPreferences.contains(Config.CARDS_LIST);
+    }
+
+    List<iGridItem> getSavedCardsList() {
+        try {
+            List<iGridItem> gridItemsList = new ArrayList<>();
+
+            SharedPreferences sharedPreferences = getSharedPrefs(Config.SAVED_CARDS_LIST);
+
+            if (sharedPreferences.contains(Config.CARDS_LIST)) {
+                Set<String> cardsSet = sharedPreferences.getStringSet(Config.CARDS_LIST, null);
+                for (String cardString : cardsSet) {
+                    Card card = new Gson().fromJson(cardString, Card.class);
+                    GridItem_Card cardGridItem = new GridItem_Card();
+                    cardGridItem.setPayload(card);
+                }
+            }
+
+            return gridItemsList;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void saveCardsList(List<iGridItem> gridItemsList) {
+        try {
+            SharedPreferences sharedPreferences = getSharedPrefs(Config.SAVED_CARDS_LIST);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            Set<String> cardsSet = new HashSet<>();
+
+            for (iGridItem gridItem : dataAdapter.getList()) {
+                if (gridItem instanceof GridItem_Card) {
+                    Card card = (Card) gridItem.getPayload();
+                    String cardString = new Gson().toJson(card);
+                    cardsSet.add(cardString);
+                }
+            }
+
+            editor.putStringSet(Config.CARDS_LIST, cardsSet);
+
+            editor.apply();
+        }
+        catch (Exception e) {
+            showToast(R.string.CARDS_GRID_error_storing_cards_list);
+            e.printStackTrace();
+        }
     }
 }
