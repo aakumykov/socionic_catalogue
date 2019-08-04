@@ -207,6 +207,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyItemRangeInserted(position, filteredItemsCount);
 
         showLoadMoreItem(position + filteredItemsCount, inputList);
+
+
     }
 
     @Override
@@ -351,7 +353,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         showLoadMoreItem(itemsList.size(), itemsList);
     }
-
 
 
     // Внутренние методы

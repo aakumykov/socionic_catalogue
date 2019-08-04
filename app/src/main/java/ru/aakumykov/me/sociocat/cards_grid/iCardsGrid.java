@@ -45,6 +45,9 @@ public interface iCardsGrid {
         void showTagFilter(String tagName);
 
         void storeAction(String action);
+
+        void showCheckNewCardsThrobber();
+        void hideCheckNewCardsThrobber();
     }
 
     interface iGridView {
@@ -80,6 +83,7 @@ public interface iCardsGrid {
         boolean filterIsEnabled();
 
         void applyFilterToGrid(String filterKey);
+
     }
 
     interface iPresenter {
@@ -88,6 +92,7 @@ public interface iCardsGrid {
 
         void processInputIntent(@Nullable Intent intent);
 
+        void onCheckNewCardsClicked();
         void onLoadMoreClicked(int position);
 
         void onCardClicked(int position);

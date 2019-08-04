@@ -52,4 +52,14 @@ public class CardsGrid_ViewStub extends BaseView_Stub implements iCardsGrid.iPag
 
     }
 
+    @Override
+    public void showCheckNewCardsThrobber() {
+
+    }
+
+    @Override
+    public void hideCheckNewCardsThrobber() {
+
+    }
+
 }

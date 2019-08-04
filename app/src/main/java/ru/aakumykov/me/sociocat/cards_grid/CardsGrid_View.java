@@ -78,7 +78,7 @@ public class CardsGrid_View extends BaseView implements
     private final static String KEY_LIST_STATE = "LIST_STATE";
     private String action;
     private int backPressedCount = 0;
-
+    private Menu menu;
 
     // Системные методы
     @Override
@@ -184,6 +184,8 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
+        this.menu = menu;
+
         MenuInflater menuInflater = getMenuInflater();
 
         menuInflater.inflate(R.menu.search_widget, menu);
@@ -207,6 +209,11 @@ public class CardsGrid_View extends BaseView implements
             case R.id.actionSearch:
                 showSwarchWidget();
                 break;
+
+            case R.id.actionNewCards:
+                presenter.onCheckNewCardsClicked();
+                break;
+
             default:
                 super.onOptionsItemSelected(item);
         }
@@ -374,6 +381,22 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public void storeAction(String action) {
         this.action = action;
+    }
+
+    @Override
+    public void showCheckNewCardsThrobber() {
+        MenuItem menuItem = this.menu.findItem(R.id.actionNewCards);
+        if (null != menuItem) {
+            menuItem.setActionView(R.layout.progress_bar);
+        }
+    }
+
+    @Override
+    public void hideCheckNewCardsThrobber() {
+        MenuItem menuItem = this.menu.findItem(R.id.actionNewCards);
+        if (null != menuItem) {
+            menuItem.setActionView(null);
+        }
     }
 
 
