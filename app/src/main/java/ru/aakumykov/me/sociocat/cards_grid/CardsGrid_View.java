@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.cards_grid;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -19,10 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.gson.Gson;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -145,7 +149,23 @@ public class CardsGrid_View extends BaseView implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        showToast("Плиточный вид уничтожается");
+
+        SharedPreferences sharedPreferences = getSharedPrefs("SAVED_CARDS_LIST");
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        Set<String> cardsSet = new HashSet<>();
+
+        for (iGridItem gridItem : dataAdapter.getList()) {
+            if (gridItem instanceof GridItem_Card) {
+                Card card = (Card) gridItem.getPayload();
+                String cardString = new Gson().toJson(card);
+                cardsSet.add(cardString);
+            }
+        }
+
+        editor.putStringSet("CARDS_LIST", cardsSet);
+
+        editor.apply();
     }
 
     @Override

@@ -63,6 +63,8 @@ public interface iCardsGrid {
         iGridItem getGridItem(int position);
         int getItemPosition(iGridItem item);
 
+        List<iGridItem> getList();
+
         iGridItem getItemBeforeLoadmore(int loadmorePosition);
         iGridItem getItemAfterLoadmore(int loadmorePosition);
 

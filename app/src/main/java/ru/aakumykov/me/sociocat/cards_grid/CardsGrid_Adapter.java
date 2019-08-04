@@ -251,6 +251,11 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
+    public List<iGridItem> getList() {
+        return itemsList;
+    }
+
+    @Override
     public iGridItem getItemBeforeLoadmore(int loadmorePosition) {
         return getLastContentItem();
     }

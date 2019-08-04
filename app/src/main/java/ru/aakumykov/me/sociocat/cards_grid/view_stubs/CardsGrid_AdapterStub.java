@@ -48,6 +48,11 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
+    public List<iGridItem> getList() {
+        return null;
+    }
+
+    @Override
     public iGridItem getItemBeforeLoadmore(int loadmorePosition) {
         return null;
     }
