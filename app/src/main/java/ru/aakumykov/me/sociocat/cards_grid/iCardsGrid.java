@@ -87,6 +87,7 @@ public interface iCardsGrid {
         void unlinkViews();
 
         void processInputIntent(@Nullable Intent intent);
+        void onPageOpened();
 
         void onLoadMoreClicked(int position);
 

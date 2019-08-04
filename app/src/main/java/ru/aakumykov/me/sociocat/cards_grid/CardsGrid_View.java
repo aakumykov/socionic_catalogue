@@ -139,21 +139,7 @@ public class CardsGrid_View extends BaseView implements
 //            presenter.processInputIntent(getIntent());
 //        }
 
-        if (dryRun) {
-            dryRun = false;
-
-            if (isCardsListSaved()) {
-                List<iGridItem> savedList = getSavedCardsList();
-                if (null != savedList && savedList.size() > 0) {
-                    showToast("Восстанавливаю сохранённый список");
-                    dataAdapter.setList(savedList);
-                    return;
-                }
-            }
-
-            showToast("Запрашиваю новый список");
-            presenter.processInputIntent(getIntent());
-        }
+        presenter.onPageOpened();
     }
 
     @Override

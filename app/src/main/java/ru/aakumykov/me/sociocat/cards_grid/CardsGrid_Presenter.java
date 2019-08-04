@@ -84,6 +84,25 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     }
 
     @Override
+    public void onPageOpened() {
+        if (pageView.isDryRun()) {
+            pageView.disableDryRun();
+
+            if (pageView.isCardsListSaved()) {
+                List<iGridItem> savedList = getSavedCardsList();
+                if (null != savedList && savedList.size() > 0) {
+                    showToast("Восстанавливаю сохранённый список");
+                    dataAdapter.setList(savedList);
+                    return;
+                }
+            }
+
+            showToast("Запрашиваю новый список");
+            presenter.processInputIntent(getIntent());
+        }
+    }
+
+    @Override
     public void onLoadMoreClicked(int position) {
         try {
             iGridItem itemBefore = gridView.getItemBeforeLoadmore(position);

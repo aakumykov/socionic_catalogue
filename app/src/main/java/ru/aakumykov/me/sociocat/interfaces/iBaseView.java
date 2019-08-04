@@ -16,6 +16,9 @@ public interface iBaseView {
 
     Intent getIntent();
 
+    boolean isDryRun();
+    void disableDryRun();
+
     // Сообщения вверху страницы
     void showProgressMessage(int messageId);
     void showProgressMessage(int messageId, String insertedText);
