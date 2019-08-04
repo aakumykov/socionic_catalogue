@@ -474,4 +474,5 @@
     <string name="CARDS_GRID_new_cards_title">New cards</string>
     <string name="CARD_SHOW_refreshing_card">Refreshing card</string>
     <string name="MENU_search_widget">Search area</string>
+    <string name="press_again_to_exit">Press again to exit app</string>
 </resources>
