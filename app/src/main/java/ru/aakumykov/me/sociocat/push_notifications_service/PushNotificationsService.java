@@ -8,13 +8,14 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
@@ -35,7 +36,7 @@ public class PushNotificationsService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         try {
-            showNotification(remoteMessage.getData());
+            //showNotification(remoteMessage.getData());
         } catch (Exception e) {
             // TODO: как собирать эту ошибку?
             Log.e(TAG, e.getMessage());
