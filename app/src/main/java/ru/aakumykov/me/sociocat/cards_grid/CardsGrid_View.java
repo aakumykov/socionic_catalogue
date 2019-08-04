@@ -399,6 +399,11 @@ public class CardsGrid_View extends BaseView implements
         }
     }
 
+    @Override
+    public void scroll2position(int position) {
+        recyclerView.scrollToPosition(position);
+    }
+
 
     // iGridItemClickListener
     @Override

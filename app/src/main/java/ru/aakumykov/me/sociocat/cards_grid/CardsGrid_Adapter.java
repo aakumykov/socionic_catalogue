@@ -213,6 +213,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void prependList(List<iGridItem> gridItemsList) {
         itemsList.addAll(0, gridItemsList);
         notifyItemRangeInserted(0, gridItemsList.size());
+        pageView.scroll2position(0);
     }
 
     @Override

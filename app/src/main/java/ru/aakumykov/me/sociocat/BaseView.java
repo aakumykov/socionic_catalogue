@@ -360,6 +360,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
+    public void updateLastLoginTime() {
+        saveLastLoginTime();
+    }
+
+    @Override
     public void reloadMenu() {
         invalidateOptionsMenu();
     }

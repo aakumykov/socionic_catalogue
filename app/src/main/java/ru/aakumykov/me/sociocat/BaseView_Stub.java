@@ -138,6 +138,11 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
+    public void updateLastLoginTime() {
+
+    }
+
+    @Override
     public void reloadMenu() {
 
     }

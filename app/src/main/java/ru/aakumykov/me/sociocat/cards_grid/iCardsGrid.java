@@ -48,6 +48,8 @@ public interface iCardsGrid {
 
         void showCheckNewCardsThrobber();
         void hideCheckNewCardsThrobber();
+
+        void scroll2position(int position);
     }
 
     interface iGridView {

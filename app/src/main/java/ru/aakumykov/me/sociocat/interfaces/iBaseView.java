@@ -55,6 +55,7 @@ public interface iBaseView {
     void startSomeActivity(Intent intent);
 
     Long getLastLoginTime();
+    void updateLastLoginTime();
 
     void reloadMenu();
     void hideMenuItem(Menu menu, int menuItemId);

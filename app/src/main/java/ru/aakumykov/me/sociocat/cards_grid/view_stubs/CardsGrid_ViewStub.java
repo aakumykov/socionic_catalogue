@@ -62,4 +62,9 @@ public class CardsGrid_ViewStub extends BaseView_Stub implements iCardsGrid.iPag
 
     }
 
+    @Override
+    public void scroll2position(int position) {
+
+    }
+
 }
