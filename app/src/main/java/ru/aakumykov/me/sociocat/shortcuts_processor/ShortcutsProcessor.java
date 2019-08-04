@@ -15,10 +15,13 @@ import ru.aakumykov.me.sociocat.models.Card;
 
 public class ShortcutsProcessor extends BaseView {
 
+    private boolean dryRun = true;
+
     @Override public void onUserLogin() {}
     @Override public void onUserLogout() {}
 
-    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         try {
@@ -28,6 +31,15 @@ public class ShortcutsProcessor extends BaseView {
             showErrorMsg(R.string.SHORTCUT_PROCESSOR_error_processing_shortcut, e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (dryRun)
+            dryRun = false;
+        else
+            finish();
     }
 
     @Override
