@@ -134,24 +134,15 @@ public class CardsGrid_View extends BaseView implements
 
         bindComponents();
 
-//        if (dryRun) {
-//            dryRun = false;
-//            presenter.processInputIntent(getIntent());
-//        }
-
         if (dryRun) {
             dryRun = false;
 
-            if (isCardsListSaved()) {
-                List<iGridItem> savedList = getSavedCardsList();
-                if (null != savedList && savedList.size() > 0) {
-                    showToast("Восстанавливаю сохранённый список");
-                    dataAdapter.setList(savedList);
-                    return;
-                }
+            List<iGridItem> savedList = getSavedCardsList();
+            if (null != savedList) {
+                dataAdapter.setList(savedList);
+                return;
             }
 
-            showToast("Запрашиваю новый список");
             presenter.processInputIntent(getIntent());
         }
     }
@@ -632,12 +623,6 @@ public class CardsGrid_View extends BaseView implements
         searchWidget.setVisible(false);
     }
 
-
-    private boolean isCardsListSaved() {
-        SharedPreferences sharedPreferences = getSharedPrefs(Config.SAVED_CARDS_LIST);
-        return sharedPreferences.contains(Config.CARDS_LIST);
-    }
-
     List<iGridItem> getSavedCardsList() {
         try {
             List<iGridItem> gridItemsList = new ArrayList<>();
@@ -645,16 +630,20 @@ public class CardsGrid_View extends BaseView implements
             SharedPreferences sharedPreferences = getSharedPrefs(Config.SAVED_CARDS_LIST);
 
             if (sharedPreferences.contains(Config.CARDS_LIST)) {
+
                 Set<String> cardsSet = sharedPreferences.getStringSet(Config.CARDS_LIST, null);
+
                 for (String cardString : cardsSet) {
                     Card card = new Gson().fromJson(cardString, Card.class);
                     GridItem_Card cardGridItem = new GridItem_Card();
                     cardGridItem.setPayload(card);
                     gridItemsList.add(cardGridItem);
                 }
-            }
 
-            return gridItemsList;
+                return (0 == gridItemsList.size()) ? null : gridItemsList;
+            }
+            else
+                return null;
         }
         catch (Exception e) {
             e.printStackTrace();
