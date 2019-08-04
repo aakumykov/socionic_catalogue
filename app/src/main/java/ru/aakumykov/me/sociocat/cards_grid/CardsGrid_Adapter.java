@@ -207,8 +207,12 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyItemRangeInserted(position, filteredItemsCount);
 
         showLoadMoreItem(position + filteredItemsCount, inputList);
+    }
 
-
+    @Override
+    public void prependList(List<iGridItem> gridItemsList) {
+        itemsList.addAll(0, gridItemsList);
+        notifyItemRangeInserted(0, gridItemsList.size());
     }
 
     @Override

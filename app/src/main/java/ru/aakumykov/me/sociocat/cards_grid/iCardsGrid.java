@@ -56,6 +56,7 @@ public interface iCardsGrid {
 
         void setList(List<iGridItem> inputList);
         void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition);
+        void prependList(List<iGridItem> gridItemsList);
 
         void restoreOriginalList();
 
@@ -83,7 +84,6 @@ public interface iCardsGrid {
         boolean filterIsEnabled();
 
         void applyFilterToGrid(String filterKey);
-
     }
 
     interface iPresenter {

@@ -96,7 +96,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
                 pageView.hideCheckNewCardsThrobber();
 
                 List<iGridItem> gridItemList = cardsList2gridItemsList(list);
-                gridView.addList(gridItemList, 0, false, 0);
+
+                gridView.prependList(gridItemList);
 
                 pageView.showToast("Новых карточек: "+list.size());
             }
