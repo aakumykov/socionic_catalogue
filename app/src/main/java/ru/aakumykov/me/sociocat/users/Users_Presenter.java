@@ -80,10 +80,18 @@ public class Users_Presenter implements
     public void processInputIntent(Intent intent) throws Exception {
        String userId = intent.getStringExtra(Constants.USER_ID);
 
-       if (null == userId)
-           userId = usersSingleton.getCurrentUser().getKey();
-
-       loadUser(userId);
+       if (null != userId) {
+           loadUser(userId);
+       }
+       else {
+           if (AuthSingleton.isLoggedIn()) {
+               userId = AuthSingleton.currentUserId();
+               loadUser(userId);
+           }
+           else {
+               showView.requestLogin(Constants.CODE_USER_SHOW, null);
+           }
+       }
     }
 
 

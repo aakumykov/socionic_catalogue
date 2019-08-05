@@ -109,7 +109,6 @@ public class UserShow_View extends BaseView implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.d(TAG, "onActivityResult()");
         super.onActivityResult(requestCode, resultCode, data);
 
         presenter.linkView(this);
@@ -125,11 +124,16 @@ public class UserShow_View extends BaseView implements
         }
 
         switch (requestCode) {
+            case Constants.CODE_USER_SHOW:
+                Intent intent = new Intent(this, UserShow_View.class);
+                // Не делаю "forResult", чтобы не зацикливать...
+                startActivity(intent);
+                break;
+
             case Constants.CODE_USER_EDIT:
                 displayEditedUser(data);
                 break;
-//            case Constants.CODE_USER_DELETE:
-//                break;
+
             default:
                 break;
         }
