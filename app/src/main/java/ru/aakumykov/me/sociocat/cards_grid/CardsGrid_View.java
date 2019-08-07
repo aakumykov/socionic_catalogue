@@ -137,11 +137,11 @@ public class CardsGrid_View extends BaseView implements
         if (dryRun) {
             dryRun = false;
 
-            List<iGridItem> savedList = getSavedCardsList();
+/*            List<iGridItem> savedList = getSavedCardsList();
             if (null != savedList) {
                 dataAdapter.setList(savedList);
                 return;
-            }
+            }*/
 
             presenter.processInputIntent(getIntent());
         }
@@ -158,10 +158,10 @@ public class CardsGrid_View extends BaseView implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        List<iGridItem> gridItemsList = dataAdapter.getList();
+/*        List<iGridItem> gridItemsList = dataAdapter.getList();
         if (null != gridItemsList && gridItemsList.size() > 0) {
             saveCardsList(gridItemsList);
-        }
+        }*/
     }
 
     @Override
