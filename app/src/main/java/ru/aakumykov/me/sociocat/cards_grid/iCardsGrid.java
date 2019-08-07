@@ -45,6 +45,11 @@ public interface iCardsGrid {
         void showTagFilter(String tagName);
 
         void storeAction(String action);
+
+        void showCheckNewCardsThrobber();
+        void hideCheckNewCardsThrobber();
+
+        void scroll2position(int position);
     }
 
     interface iGridView {
@@ -53,6 +58,7 @@ public interface iCardsGrid {
 
         void setList(List<iGridItem> inputList);
         void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition);
+        void prependList(List<iGridItem> gridItemsList);
 
         void restoreOriginalList();
 
@@ -62,6 +68,8 @@ public interface iCardsGrid {
 
         iGridItem getGridItem(int position);
         int getItemPosition(iGridItem item);
+
+        List<iGridItem> getList();
 
         iGridItem getItemBeforeLoadmore(int loadmorePosition);
         iGridItem getItemAfterLoadmore(int loadmorePosition);
@@ -86,6 +94,7 @@ public interface iCardsGrid {
 
         void processInputIntent(@Nullable Intent intent);
 
+        void onCheckNewCardsClicked();
         void onLoadMoreClicked(int position);
 
         void onCardClicked(int position);

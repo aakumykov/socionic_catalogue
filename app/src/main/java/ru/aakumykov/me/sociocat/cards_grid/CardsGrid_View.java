@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.cards_grid;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -19,10 +20,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.gson.Gson;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,7 +78,7 @@ public class CardsGrid_View extends BaseView implements
     private final static String KEY_LIST_STATE = "LIST_STATE";
     private String action;
     private int backPressedCount = 0;
-
+    private Menu menu;
 
     // Системные методы
     @Override
@@ -130,6 +136,13 @@ public class CardsGrid_View extends BaseView implements
 
         if (dryRun) {
             dryRun = false;
+
+/*            List<iGridItem> savedList = getSavedCardsList();
+            if (null != savedList) {
+                dataAdapter.setList(savedList);
+                return;
+            }*/
+
             presenter.processInputIntent(getIntent());
         }
     }
@@ -145,7 +158,10 @@ public class CardsGrid_View extends BaseView implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        showToast("Плиточный вид уничтожается");
+/*        List<iGridItem> gridItemsList = dataAdapter.getList();
+        if (null != gridItemsList && gridItemsList.size() > 0) {
+            saveCardsList(gridItemsList);
+        }*/
     }
 
     @Override
@@ -167,6 +183,8 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        this.menu = menu;
 
         MenuInflater menuInflater = getMenuInflater();
 
@@ -191,6 +209,11 @@ public class CardsGrid_View extends BaseView implements
             case R.id.actionSearch:
                 showSwarchWidget();
                 break;
+
+            case R.id.actionNewCards:
+                presenter.onCheckNewCardsClicked();
+                break;
+
             default:
                 super.onOptionsItemSelected(item);
         }
@@ -358,6 +381,27 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public void storeAction(String action) {
         this.action = action;
+    }
+
+    @Override
+    public void showCheckNewCardsThrobber() {
+        MenuItem menuItem = this.menu.findItem(R.id.actionNewCards);
+        if (null != menuItem) {
+            menuItem.setActionView(R.layout.progress_bar);
+        }
+    }
+
+    @Override
+    public void hideCheckNewCardsThrobber() {
+        MenuItem menuItem = this.menu.findItem(R.id.actionNewCards);
+        if (null != menuItem) {
+            menuItem.setActionView(null);
+        }
+    }
+
+    @Override
+    public void scroll2position(int position) {
+        recyclerView.scrollToPosition(position);
     }
 
 
@@ -605,5 +649,58 @@ public class CardsGrid_View extends BaseView implements
         searchView.clearFocus();
         searchView.setVisibility(View.GONE);
         searchWidget.setVisible(false);
+    }
+
+    List<iGridItem> getSavedCardsList() {
+        try {
+            List<iGridItem> gridItemsList = new ArrayList<>();
+
+            SharedPreferences sharedPreferences = getSharedPrefs(Config.SAVED_CARDS_LIST);
+
+            if (sharedPreferences.contains(Config.CARDS_LIST)) {
+
+                Set<String> cardsSet = sharedPreferences.getStringSet(Config.CARDS_LIST, null);
+
+                for (String cardString : cardsSet) {
+                    Card card = new Gson().fromJson(cardString, Card.class);
+                    GridItem_Card cardGridItem = new GridItem_Card();
+                    cardGridItem.setPayload(card);
+                    gridItemsList.add(cardGridItem);
+                }
+
+                return (0 == gridItemsList.size()) ? null : gridItemsList;
+            }
+            else
+                return null;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void saveCardsList(List<iGridItem> gridItemsList) {
+        try {
+            SharedPreferences sharedPreferences = getSharedPrefs(Config.SAVED_CARDS_LIST);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            Set<String> cardsSet = new HashSet<>();
+
+            for (iGridItem gridItem : dataAdapter.getList()) {
+                if (gridItem instanceof GridItem_Card) {
+                    Card card = (Card) gridItem.getPayload();
+                    String cardString = new Gson().toJson(card);
+                    cardsSet.add(cardString);
+                }
+            }
+
+            editor.putStringSet(Config.CARDS_LIST, cardsSet);
+
+            editor.apply();
+        }
+        catch (Exception e) {
+            showToast(R.string.CARDS_GRID_error_storing_cards_list);
+            e.printStackTrace();
+        }
     }
 }

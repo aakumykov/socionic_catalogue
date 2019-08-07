@@ -47,4 +47,7 @@ public final class Config {
     public static final String CREATE_CUSTOM_TOKEN_BASE_URL = "https://us-central1-sociocat-debug.cloudfunctions.net";
     public static final String CREATE_CUSTOM_TOKEN_PATH = "/vkAccessToken2FirebaseAccessToken";
     public static final String CREATE_CUSTOM_TOKEN_PARAMETER_NAME = "token";
+
+    public static final String SAVED_CARDS_LIST = "SAVED_CARDS_LIST";
+    public static final String CARDS_LIST = "CARDS_LIST";
 }

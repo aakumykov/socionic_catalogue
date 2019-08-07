@@ -210,6 +210,13 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
+    public void prependList(List<iGridItem> gridItemsList) {
+        itemsList.addAll(0, gridItemsList);
+        notifyItemRangeInserted(0, gridItemsList.size());
+        pageView.scroll2position(0);
+    }
+
+    @Override
     public void restoreOriginalList() {
         List<iGridItem> restoredList = new ArrayList<>(this.originalItemsList);
 
@@ -248,6 +255,11 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public int getItemPosition(iGridItem item) {
         return itemsList.indexOf(item);
+    }
+
+    @Override
+    public List<iGridItem> getList() {
+        return itemsList;
     }
 
     @Override
@@ -346,7 +358,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         showLoadMoreItem(itemsList.size(), itemsList);
     }
-
 
 
     // Внутренние методы

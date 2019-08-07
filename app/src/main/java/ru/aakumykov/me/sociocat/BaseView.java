@@ -173,10 +173,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 goTagsList();
                 break;
 
-            case R.id.actionNewCards:
-                goCardsGrid(Constants.ACTION_SHOW_NEW_CARDS);
-                break;
-
             default:
                 super.onOptionsItemSelected(item);
         }
@@ -361,6 +357,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             SharedPreferences sharedPreferences = getSharedPrefs(Constants.SHARED_PREFERENCES_LOGIN);
             return sharedPreferences.getLong(Constants.KEY_LAST_LOGIN, currentTime);
         }
+    }
+
+    @Override
+    public void updateLastLoginTime() {
+        saveLastLoginTime();
     }
 
     @Override

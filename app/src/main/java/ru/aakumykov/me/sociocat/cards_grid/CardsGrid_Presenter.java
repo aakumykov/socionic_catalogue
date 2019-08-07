@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.cards_grid;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -81,6 +82,33 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         }
 
         loadCards(LoadMode.REPLACE, null, null, 0);
+    }
+
+    @Override
+    public void onCheckNewCardsClicked() {
+        pageView.showCheckNewCardsThrobber();
+
+        long lastLoginTime = pageView.getLastLoginTime();
+
+        cardsSingleton.loadNewCards(lastLoginTime, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                pageView.hideCheckNewCardsThrobber();
+
+                List<iGridItem> gridItemList = cardsList2gridItemsList(list);
+
+                gridView.prependList(gridItemList);
+
+                pageView.showToast("Новых карточек: "+list.size());
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                pageView.hideCheckNewCardsThrobber();
+                pageView.showToast(R.string.CARDS_GRID_error_loading_cards);
+                Log.e(TAG, errorMessage);
+            }
+        });
     }
 
     @Override
