@@ -81,13 +81,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             }
         }
 
-        loadCards(
-                LoadMode.REPLACE,
-                iCardsSingleton.Order.ORDER_REVERSED,
-                null,
-                null,
-                0
-        );
+        loadCards(LoadMode.REPLACE, null, null, 0);
     }
 
     @Override
@@ -132,10 +126,10 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
             loadCards(
                     LoadMode.APPEND,
-                    iCardsSingleton.Order.ORDER_REVERSED,
                     startKey,
                     endKey,
-                    position);
+                    position
+            );
         }
         catch (Exception e) {
             pageView.showErrorMsg(R.string.CARDS_GRID_loadmore_error, e.getMessage());
@@ -249,7 +243,6 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     // Внутренние методы
     private void loadCards(
             LoadMode loadMode,
-            iCardsSingleton.Order order,
             @Nullable String startKey,
             @Nullable String endKey,
             int insertPosition
@@ -257,7 +250,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     {
         gridView.showThrobber(insertPosition);
 
-        cardsSingleton.loadList(startKey, endKey, order, new iCardsSingleton.ListCallbacks() {
+        cardsSingleton.loadList(startKey, endKey, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
 

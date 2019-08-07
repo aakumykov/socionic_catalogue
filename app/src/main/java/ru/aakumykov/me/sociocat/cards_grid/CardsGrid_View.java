@@ -137,11 +137,11 @@ public class CardsGrid_View extends BaseView implements
         if (dryRun) {
             dryRun = false;
 
-//            List<iGridItem> savedList = getSavedCardsList();
-//            if (null != savedList) {
-//                dataAdapter.setList(savedList);
-//                return;
-//            }
+            List<iGridItem> savedList = getSavedCardsList();
+            if (null != savedList) {
+                dataAdapter.setList(savedList);
+                return;
+            }
 
             presenter.processInputIntent(getIntent());
         }

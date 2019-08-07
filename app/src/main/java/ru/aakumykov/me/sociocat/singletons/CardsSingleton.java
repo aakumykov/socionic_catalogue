@@ -180,36 +180,17 @@ public class CardsSingleton implements
 
 
     @Override
-    public void loadList(
-            @Nullable String startKey,
-            @Nullable String endKey,
-            Order order,
-            ListCallbacks callbacks
-    )
-    {
-        Query query = cardsRef;
+    public void loadList(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
+        Query query = cardsRef
+                .orderByKey();
 
-        if (Order.ORDER_REVERSED.equals(order)) {
-            query = query.orderByChild(Constants.CARD_KEY_CTIME_INVERSED);
+        if (null != startKey)
+            query = query.startAt(startKey);
 
-            if (null != startKey)
-                query = query.startAt(Long.valueOf(startKey));
+        if (null != endKey)
+            query = query.endAt(endKey);
 
-            if (null != endKey)
-                query = query.endAt(Long.valueOf(endKey));
-        }
-        else {
-            query = query.orderByKey();
-
-            if (null != startKey)
-                query = query.startAt(startKey);
-
-            if (null != endKey)
-                query = query.endAt(endKey);
-        }
-
-//        query = query.limitToFirst(Config.DEFAULT_CARDS_LOAD_COUNT);
-        query = query.limitToFirst(3);
+        query = query.limitToFirst(Config.DEFAULT_CARDS_LOAD_COUNT);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             //        query.addValueEventListener(new ValueEventListener() {

@@ -110,8 +110,4 @@ public final class Constants {
     public final static String SHORTCUT_CREATE_IMAGE_CARD = "SHORTCUT_CREATE_IMAGE_CARD";
     public final static String SHORTCUT_CREATE_AUDIO_CARD = "SHORTCUT_CREATE_AUDIO_CARD";
     public final static String SHORTCUT_CREATE_VIDEO_CARD = "SHORTCUT_CREATE_VIDEO_CARD";
-
-    // Свойства карточки для сортировки
-    public final static String CARD_KEY_CTIME = "ctime";
-    public final static String CARD_KEY_CTIME_INVERSED = "ctimeInversed";
 }
