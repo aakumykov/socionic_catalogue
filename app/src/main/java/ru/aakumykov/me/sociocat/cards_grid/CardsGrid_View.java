@@ -238,6 +238,13 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
+    public boolean onSearchRequested() {
+        super.onSearchRequested();
+        showSwarchWidget();
+        return true;
+    }
+
+    @Override
     public void onUserLogin() {
 
     }
