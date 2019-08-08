@@ -53,10 +53,10 @@ public class CardsSingleton implements
 
 
     @Override
-    public void loadCard(String key, final LoadCallbacks callbacks) {
-        Log.d(TAG, "loadCard("+key+")");
+    public void loadCard(String cardKey, final LoadCallbacks callbacks) {
+        Log.d(TAG, "loadCard("+ cardKey +")");
 
-        DatabaseReference cardRef = cardsRef.child(key);
+        DatabaseReference cardRef = cardsRef.child(cardKey);
 
         cardRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

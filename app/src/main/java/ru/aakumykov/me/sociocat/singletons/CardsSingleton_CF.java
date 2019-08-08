@@ -110,7 +110,29 @@ public class CardsSingleton_CF implements iCardsSingleton {
     }
 
     @Override
-    public void loadCard(String key, LoadCallbacks callbacks) {
+    public void loadCard(String cardKey, LoadCallbacks callbacks) {
+
+        cardsCollection.document(cardKey).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        try {
+                            Card card = documentSnapshot.toObject(Card.class);
+                            callbacks.onCardLoadSuccess(card);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                            callbacks.onCardLoadFailed(e.getMessage());
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        callbacks.onCardLoadFailed(e.getMessage());
+                    }
+                });
 
     }
 

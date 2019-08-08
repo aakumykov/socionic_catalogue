@@ -366,7 +366,7 @@ public class CardEdit_Presenter implements
             view.showProgressMessage(R.string.CARD_EDIT_loading_card);
         }
 
-        cardsSingleton.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
+        iCardsSingleton.LoadCallbacks loadCallbacks= new iCardsSingleton.LoadCallbacks() {
             @Override
             public void onCardLoadSuccess(Card card) {
                 if (null != card) {
@@ -388,7 +388,11 @@ public class CardEdit_Presenter implements
                     view.enableForm();
                 }
             }
-        });
+        };
+
+//        cardsSingleton.loadCard(cardKey, loadCallbacks);
+
+        CardsSingleton_CF.getInstance().loadCard(cardKey, loadCallbacks);
     }
 
     private void updateCurrentCardFromView(){

@@ -16,7 +16,7 @@ public interface iCardsSingleton {
     void loadListForUser(String userId, ListCallbacks callbacks);
     void loadNewCards(long newerThanTime, ListCallbacks callbacks);
 
-    void loadCard(String key, LoadCallbacks callbacks);
+    void loadCard(String cardKey, LoadCallbacks callbacks);
     void updateCommentsCounter(String cardId, int diffValue);
 
     String createKey();
