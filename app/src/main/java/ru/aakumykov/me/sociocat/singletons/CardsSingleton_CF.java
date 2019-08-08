@@ -64,10 +64,10 @@ public class CardsSingleton_CF implements iCardsSingleton {
                             }
                         }
 
-                        if (cardsList.size() > 0 && !cardsErrors)
-                            callbacks.onListLoadSuccess(cardsList);
-                        else
+                        if (0 == cardsList.size() && cardsErrors)
                             callbacks.onListLoadFail("Error exception(s) on cards loading.");
+                        else
+                            callbacks.onListLoadSuccess(cardsList);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
