@@ -23,6 +23,7 @@ import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
@@ -250,7 +251,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     {
         gridView.showThrobber(insertPosition);
 
-        cardsSingleton.loadList(startKey, endKey, new iCardsSingleton.ListCallbacks() {
+        iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
@@ -278,7 +279,11 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             public void onListLoadFail(String errorMessage) {
                 pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
             }
-        });
+        };
+
+//        cardsSingleton.loadList(startKey, endKey, listCallbacks);
+
+        CardsSingleton_CF.getInstance().loadList(startKey, endKey, listCallbacks);
     }
 
     private void loadCardsWithTag(@Nullable String filterTag) {

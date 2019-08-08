@@ -360,9 +360,6 @@ public class Card extends ListItem implements
     @Exclude public void setLocalImageURI(Uri uri) {
         this.localImageURI = uri.toString();
     }
-    @Exclude public void setLocalImageURI(String uri) {
-        this.localImageURI = uri;
-    }
     @Exclude public Uri getLocalImageURI() {
         return (null == this.localImageURI) ? null : Uri.parse(this.localImageURI);
     }
