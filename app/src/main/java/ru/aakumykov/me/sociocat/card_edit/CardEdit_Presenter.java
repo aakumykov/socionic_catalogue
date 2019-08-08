@@ -3,12 +3,10 @@ package ru.aakumykov.me.sociocat.card_edit;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-
-import androidx.annotation.Nullable;
-
-import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,18 +16,19 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
+import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
-import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
-import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.ImageInfo;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
@@ -301,7 +300,9 @@ public class CardEdit_Presenter implements
 
             view.showProgressMessage(R.string.CARD_EDIT_saving_card);
 
-            cardsSingleton.saveCard(currentCard, this);
+//            cardsSingleton.saveCard(currentCard, this);
+
+            CardsSingleton_CF.getInstance().saveCard(currentCard, this);
         }
     }
 

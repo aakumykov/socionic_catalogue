@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -126,6 +127,30 @@ public class CardsSingleton_CF implements iCardsSingleton {
     @Override
     public void saveCard(Card card, SaveCardCallbacks callbacks) {
 
+        DocumentReference cardReference;
+
+        if (null == card.getKey()) {
+            cardReference = cardsCollection.document();
+            card.setKey(cardReference.getId());
+        }
+        else {
+            cardReference = cardsCollection.document(card.getKey());
+        }
+
+        cardReference.set(card)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onCardSaveSuccess(card);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        callbacks.onCardSaveError(e.getMessage());
+                    }
+                });
     }
 
     @Override
