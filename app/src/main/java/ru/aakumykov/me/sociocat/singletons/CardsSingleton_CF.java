@@ -82,11 +82,12 @@ public class CardsSingleton_CF implements iCardsSingleton {
     @Override
     public void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
 
+
     }
 
     @Override
     public void loadList(ListCallbacks callbacks) {
-
+        loadList(null, null, callbacks);
     }
 
     @Override
