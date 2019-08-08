@@ -8,11 +8,9 @@ import android.text.TextUtils;
 import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
@@ -220,19 +218,8 @@ public class Card extends ListItem implements
     public void setKey(String key) {
         this.key = key;
     }
-    public void setType(String type) throws IllegalArgumentException {
-        String[] availableCardTypes = {
-                Constants.TEXT_CARD,
-                Constants.IMAGE_CARD,
-                Constants.VIDEO_CARD,
-                Constants.AUDIO_CARD
-        };
-
-        if (Arrays.asList(availableCardTypes).contains(type)) {
-            this.type = type;
-        } else {
-            throw new IllegalArgumentException("Unknown card_edit type '"+type+"'");
-        }
+    public void setType(String type) {
+        this.type = type;
     }
     public void setTitle(String title) {
         this.title = title;
@@ -243,12 +230,10 @@ public class Card extends ListItem implements
     public void setQuoteSource(String quoteSource) {
         this.quoteSource = quoteSource;
     }
-    public void setImageURL(String imageURL) throws IllegalArgumentException {
-            Uri uri = Uri.parse(imageURL);
-            if (null == uri) throw new IllegalArgumentException("Error parsing imageURL");
+    public void setImageURL(String imageURL) {
             this.imageURL = imageURL;
     }
-    public void setFileName(String fileName) throws IllegalArgumentException {
+    public void setFileName(String fileName) {
             this.fileName = fileName;
     }
 
@@ -276,9 +261,7 @@ public class Card extends ListItem implements
     }
 
 
-    public void setVideoCode(String videoCode) throws IllegalArgumentException {
-        Uri uri = Uri.parse(videoCode);
-        if (null == uri) throw new IllegalArgumentException("Error parsing videoCode");
+    public void setVideoCode(String videoCode) {
         this.videoCode = videoCode;
     }
     public String getVideoCode() {
@@ -288,11 +271,8 @@ public class Card extends ListItem implements
         this.videoCode = null;
     }
 
-    public void setAudioCode(String audioCode) throws IllegalArgumentException {
-        if (audioCode.matches(Config.YOUTUBE_CODE_REGEX))
-            this.audioCode = audioCode;
-        else
-            throw new IllegalArgumentException("Wrong audio code: "+audioCode);
+    public void setAudioCode(String audioCode)  {
+        this.audioCode = audioCode;
     }
     public String getAudioCode() {
         return audioCode;
