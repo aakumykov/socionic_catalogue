@@ -369,10 +369,15 @@ public class CardEdit_Presenter implements
         cardsSingleton.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
             @Override
             public void onCardLoadSuccess(Card card) {
-                currentCard = card;
-                oldCardTags = card.getTags();
-                if (null != view) {
-                    view.displayCard(card);
+                if (null != card) {
+                    currentCard = card;
+                    oldCardTags = card.getTags();
+                    if (null != view)
+                        view.displayCard(card);
+                }
+                else {
+                    if (null != view)
+                        view.showErrorMsg(R.string.CARD_EDIT_error_loading_card, "Card is null");
                 }
             }
 
