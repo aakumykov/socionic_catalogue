@@ -338,7 +338,8 @@ public class Card extends ListItem implements
         return null != this.localImageURI;
     }
     @Exclude public void setLocalImageURI(Uri uri) {
-        this.localImageURI = uri.toString();
+        if (null != uri)
+            this.localImageURI = uri.toString();
     }
     @Exclude public Uri getLocalImageURI() {
         return (null == this.localImageURI) ? null : Uri.parse(this.localImageURI);
