@@ -51,12 +51,12 @@ public class CardsSingleton_CF implements iCardsSingleton {
                 null,
                 null,
                 null,
-                null,
+                Config.DEFAULT_CARDS_LOAD_COUNT,
                 callbacks);
     }
 
     @Override
-    public void loadList(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
+    public void loadListFromTo(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
         loadListEnhanced(
                 null,
                 null,
@@ -84,22 +84,6 @@ public class CardsSingleton_CF implements iCardsSingleton {
                 null,
                 null,
                 callbacks);
-    }
-
-    @Override
-    public void loadList(int limit, ListCallbacks callbacks) {
-        loadListEnhanced(
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                Config.DEFAULT_CARDS_LOAD_COUNT,
-                callbacks
-        );
     }
 
     @Override

@@ -180,7 +180,7 @@ public class CardsSingleton implements
 
 
     @Override
-    public void loadList(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
+    public void loadListFromTo(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
         Query query = cardsRef
                 .orderByKey();
 
@@ -239,26 +239,6 @@ public class CardsSingleton implements
     public void loadList(ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
         loadList(null, callbacks);
-    }
-
-    @Override
-    public void loadList(int limit, ListCallbacks callbacks) {
-
-        Query query = cardsRef.orderByKey().limitToFirst(limit);
-
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Card> list = extractCardsFromSnapshot(dataSnapshot);
-                callbacks.onListLoadSuccess(list);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                callbacks.onListLoadFail(databaseError.getMessage());
-                databaseError.toException().printStackTrace();
-            }
-        });
     }
 
     @Override

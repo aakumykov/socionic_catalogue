@@ -6,7 +6,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.TagsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.tags_list2.view_stubs.TagsList2_PageViewStub;
 import ru.aakumykov.me.sociocat.tags_list2.view_stubs.TagsList2_TagsViewStub;
@@ -15,7 +15,8 @@ public class TagsList2_Presenter implements iTagsList2.iPresenter {
 
     private iTagsList2.iPageView pageView;
     private iTagsList2.iTagsView tagsView;
-    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
+//    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
+    private iTagsSingleton tagsSingleton = TagsSingleton_CF.getInstance();
     private iTagsList2.SortOrder sortOrder = iTagsList2.SortOrder.NAMES_DIRECT;
 
     @Override

@@ -22,7 +22,6 @@ import ru.aakumykov.me.sociocat.cards_grid.view_stubs.CardsGrid_ViewStub;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
@@ -40,7 +39,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private final static String TAG = "CG3_Presenter";
     private iCardsGrid.iPageView pageView;
     private iCardsGrid.iGridView gridView;
-    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private String filterTag;
@@ -284,10 +283,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             }
         };
 
-//        cardsSingleton.loadList(startKey, endKey, listCallbacks);
-
-        CardsSingleton_CF.getInstance().loadList(listCallbacks);
-//        CardsSingleton_CF.getInstance().loadCardsWithTag("йцукен", null, null, listCallbacks);
+        cardsSingleton.loadList(listCallbacks);
     }
 
     private void loadCardsWithTag(@Nullable String filterTag) {
