@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -311,7 +310,7 @@ public class CardEdit_Presenter implements
     @Override public void onCardSaveSuccess(Card card) {
         updateCardTags(card);
 
-        if (editMode.equals(CardEditMode.CREATE)) {
+        /*if (editMode.equals(CardEditMode.CREATE)) {
 
             MVPUtils.subscribeToTopicNotifications(
                     view.getAppContext(),
@@ -330,7 +329,7 @@ public class CardEdit_Presenter implements
                         }
                     }
             );
-        }
+        }*/
     }
 
     @Override public void onCardSaveError(String message) {
