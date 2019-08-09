@@ -50,8 +50,8 @@ public class CardsSingleton_CF implements iCardsSingleton {
                 null,
                 null,
                 null,
-                callbacks
-        );
+                null,
+                callbacks);
     }
 
     @Override
@@ -63,16 +63,16 @@ public class CardsSingleton_CF implements iCardsSingleton {
     public void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
 
         loadListEnhanced(
-                Card.KEY_CTIME,
-                SortOrder.DIRECT,
-                "tag",
-                FilterOperator.EQUALS,
-                "qwerty",
+                null,
+                null,
+                tagName,
                 null,
                 null,
                 null,
-                callbacks
-            );
+                null,
+                null,
+                null,
+                callbacks);
     }
 
     @Override
@@ -182,6 +182,8 @@ public class CardsSingleton_CF implements iCardsSingleton {
             String orderKey,
             SortOrder sortOrder,
 
+            String withTag,
+
             String filterKey,
             FilterOperator filterOperator,
             String filterValue,
@@ -228,7 +230,9 @@ public class CardsSingleton_CF implements iCardsSingleton {
             }
         }
 
-        query = query.whereArrayContains("tags", "йцукен");
+        // Отбор по метке
+        if (null != withTag)
+            query = query.whereArrayContains(Card.KEY_TAGS, withTag);
 
         // Начальное значение
         if (null != startAt)

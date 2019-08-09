@@ -23,6 +23,7 @@ public class Card extends ListItem implements
         iTextItem
 {
     public final static String KEY_CTIME = "ctime";
+    public static final String KEY_TAGS = "tags";
 
     private String key;
     private String userId;
