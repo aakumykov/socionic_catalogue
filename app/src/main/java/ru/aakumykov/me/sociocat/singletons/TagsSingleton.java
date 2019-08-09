@@ -229,23 +229,4 @@ public class TagsSingleton implements iTagsSingleton {
     }
 
 
-    @Override
-    public void getTagsList() {
-        DatabaseReference tagsCountRef = dbRef.child("/tags_count");
-
-        tagsCountRef.orderByChild("value")
-        .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot oneSnapshot : dataSnapshot.getChildren()) {
-                    Log.d(TAG, "oneSnapshot: "+oneSnapshot);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 }

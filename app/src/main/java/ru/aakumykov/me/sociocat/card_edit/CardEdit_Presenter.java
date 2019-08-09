@@ -22,6 +22,7 @@ import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.TagsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
@@ -48,6 +49,7 @@ public class CardEdit_Presenter implements
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
+    private iTagsSingleton tagsSingleton_CF = TagsSingleton_CF.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
     private Card currentCard;
@@ -531,23 +533,32 @@ public class CardEdit_Presenter implements
         if (null == card)
             throw new IllegalArgumentException("Card is NULL");
 
-        tagsSingleton.updateCardTags(
+        iTagsSingleton.UpdateCallbacks updateCallbacks = new iTagsSingleton.UpdateCallbacks() {
+            @Override
+            public void onUpdateSuccess() {
+                finishWork(card);
+            }
+
+            @Override
+            public void onUpdateFail(String errorMsg) {
+                if (null != view)
+                    view.showErrorMsg(R.string.CARD_EDIT_error_saving_tags, errorMsg);
+                finishWork(card);
+            }
+        };
+
+        /*tagsSingleton.updateCardTags(
                 card.getKey(),
                 oldCardTags,
                 card.getTagsHash(),
-                new iTagsSingleton.UpdateCallbacks() {
-                    @Override
-                    public void onUpdateSuccess() {
-                        finishWork(card);
-                    }
+                updateCallbacks
+        );*/
 
-                    @Override
-                    public void onUpdateFail(String errorMsg) {
-                        if (null != view)
-                            view.showErrorMsg(R.string.CARD_EDIT_error_saving_tags, errorMsg);
-                        finishWork(card);
-                    }
-                }
+        tagsSingleton_CF.updateCardTags(
+                card.getKey(),
+                oldCardTags,
+                card.getTagsHash(),
+                updateCallbacks
         );
     }
 
