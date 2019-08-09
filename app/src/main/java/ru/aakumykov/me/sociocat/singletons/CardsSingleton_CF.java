@@ -42,8 +42,8 @@ public class CardsSingleton_CF implements iCardsSingleton {
     @Override
     public void loadList(ListCallbacks callbacks) {
         loadListEnhanced(
-                null,
-                null,
+                Card.KEY_CTIME,
+                SortOrder.DIRECT,
                 null,
                 null,
                 null,
@@ -63,11 +63,11 @@ public class CardsSingleton_CF implements iCardsSingleton {
     public void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
 
         loadListEnhanced(
-                null,
-                null,
+                Card.KEY_CTIME,
+                SortOrder.DIRECT,
                 "tag",
                 FilterOperator.EQUALS,
-                "йцукен",
+                "qwerty",
                 null,
                 null,
                 null,
