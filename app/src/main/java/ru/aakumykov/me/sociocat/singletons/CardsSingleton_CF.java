@@ -326,19 +326,19 @@ public class CardsSingleton_CF implements iCardsSingleton {
                         List<Card> cardsList = new ArrayList<>();
                         boolean cardsErrors = false;
 
-                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-                            if (documentSnapshot.exists()) {
-                                try {
-                                    Card card = documentSnapshot.toObject(Card.class);
-                                    if (null != card)
-                                        cardsList.add(card);
+                        try {
+                            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                                if (documentSnapshot.exists()) {
+                                    cardsList.add(documentSnapshot.toObject(Card.class));
                                 }
-                                catch (Exception e) {
-                                    Log.e(TAG, e.getMessage());
-                                    e.printStackTrace();
-                                    cardsErrors = true;
-                                }
+                                else
+                                    throw new Exception("DocumentSnapshot does not exists.");
                             }
+                        }
+                        catch (Exception e) {
+                            Log.e(TAG, e.getMessage());
+                            e.printStackTrace();
+                            cardsErrors = true;
                         }
 
                         if (0 == cardsList.size() && cardsErrors)
