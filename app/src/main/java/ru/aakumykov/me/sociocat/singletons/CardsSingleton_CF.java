@@ -40,167 +40,39 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
 
     @Override
-    public void loadListEnhanced(
-            String orderKey,
-            SortOrder sortOrder,
-
-            String filterKey,
-            FilterOperator filterOperator,
-            String filterValue,
-
-            String startAt,
-            String endAt,
-            Integer limit,
-
-            ListCallbacks callbacks
-    )
-    {
-        Query query = cardsCollection;
-
-        // Сортировка
-        if (null != orderKey) {
-            Query.Direction orderDirection = (SortOrder.REVERSED.equals(sortOrder)) ?
-                    Query.Direction.DESCENDING : Query.Direction.ASCENDING;
-            query = query.orderBy(orderKey, orderDirection);
-        }
-        else
-            query = query.orderBy(Card.KEY_CTIME);
-
-
-        // Фильтрация
-        if (null != filterKey) {
-            switch (filterOperator) {
-                case EQUALS:
-                    query = query.whereEqualTo(filterKey, filterValue);
-                    break;
-                case GREATER:
-                    query = query.whereGreaterThan(filterKey, filterValue);
-                    break;
-                case GREATER_OR_EQUALS:
-                    query = query.whereGreaterThanOrEqualTo(filterKey, filterValue);
-                    break;
-                case LOWER:
-                    query = query.whereLessThan(filterKey, filterValue);
-                    break;
-                case LOWER_OR_EQUALS:
-                    query = query.whereLessThanOrEqualTo(filterKey, filterValue);
-                default:
-                    callbacks.onListLoadFail("Wrong filter operator: "+filterOperator);
-                    return;
-            }
-        }
-
-
-        // Начальное значение
-        if (null != startAt)
-            query = query.startAt(startAt);
-
-
-        // Конечное значение
-        if (null != endAt)
-            query = query.endAt(endAt);
-
-
-        // Предельное количество
-        if (null != limit)
-            query = query.limit(limit);
-
-
-        // Собственно запрос
-        query.get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
-                        List<Card> cardsList = new ArrayList<>();
-                        boolean cardsErrors = false;
-
-                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-                            if (documentSnapshot.exists()) {
-                                try {
-                                    Card card = documentSnapshot.toObject(Card.class);
-                                    if (null != card)
-                                        cardsList.add(card);
-                                }
-                                catch (Exception e) {
-                                    Log.e(TAG, e.getMessage());
-                                    e.printStackTrace();
-                                    cardsErrors = true;
-                                }
-                            }
-                        }
-
-                        if (0 == cardsList.size() && cardsErrors)
-                            callbacks.onListLoadFail("Error exception(s) on cards loading.");
-                        else
-                            callbacks.onListLoadSuccess(cardsList);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-                        callbacks.onListLoadFail(e.getMessage());
-                    }
-                });
+    public void loadList(ListCallbacks callbacks) {
+        loadListEnhanced(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                callbacks
+        );
     }
 
     @Override
     public void loadList(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
-
-        cardsCollection.get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        List<Card> cardsList = new ArrayList<>();
-                        boolean cardsErrors = false;
-
-                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-                            if (documentSnapshot.exists()) {
-                                try {
-                                    Card card = documentSnapshot.toObject(Card.class);
-                                    if (null != card)
-                                        cardsList.add(card);
-                                }
-                                catch (Exception e) {
-                                    Log.e(TAG, e.getMessage());
-                                    e.printStackTrace();
-                                    cardsErrors = true;
-                                }
-                            }
-                        }
-
-                        if (0 == cardsList.size() && cardsErrors)
-                            callbacks.onListLoadFail("Error exception(s) on cards loading.");
-                        else
-                            callbacks.onListLoadSuccess(cardsList);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-                        callbacks.onListLoadFail(e.getMessage());
-                    }
-                });
+        throw new RuntimeException("Устаревший метод");
     }
 
     @Override
     public void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
 
-
-    }
-
-    @Override
-    public void loadList(ListCallbacks callbacks) {
-//        loadList(null, null, callbacks);
         loadListEnhanced(
-                null, null,
-                null, null,
-                null,null,
-                null,null,
+                null,
+                null,
+                "tag",
+                FilterOperator.EQUALS,
+                "йцукен",
+                null,
+                null,
+                null,
                 callbacks
-        );
+            );
     }
 
     @Override
@@ -302,5 +174,112 @@ public class CardsSingleton_CF implements iCardsSingleton {
     @Override
     public void rateDown(String cardId, String byUserId, RatingCallbacks callbacks) {
 
+    }
+
+
+    // Внутренниие методы
+    private void loadListEnhanced(
+            String orderKey,
+            SortOrder sortOrder,
+
+            String filterKey,
+            FilterOperator filterOperator,
+            String filterValue,
+
+            String startAt,
+            String endAt,
+            Integer limit,
+
+            ListCallbacks callbacks
+    )
+    {
+        Query query = cardsCollection;
+
+        // Сортировка
+        if (null != orderKey) {
+            Query.Direction orderDirection = (SortOrder.REVERSED.equals(sortOrder)) ?
+                    Query.Direction.DESCENDING : Query.Direction.ASCENDING;
+            query = query.orderBy(orderKey, orderDirection);
+        }
+        else
+            query = query.orderBy(Card.KEY_CTIME, Query.Direction.DESCENDING);
+
+
+        // Фильтрация
+        if (null != filterKey) {
+            switch (filterOperator) {
+                case EQUALS:
+                    query = query.whereEqualTo(filterKey, filterValue);
+                    break;
+                case GREATER:
+                    query = query.whereGreaterThan(filterKey, filterValue);
+                    break;
+                case GREATER_OR_EQUALS:
+                    query = query.whereGreaterThanOrEqualTo(filterKey, filterValue);
+                    break;
+                case LOWER:
+                    query = query.whereLessThan(filterKey, filterValue);
+                    break;
+                case LOWER_OR_EQUALS:
+                    query = query.whereLessThanOrEqualTo(filterKey, filterValue);
+                default:
+                    callbacks.onListLoadFail("Wrong filter operator: "+filterOperator);
+                    return;
+            }
+        }
+
+
+        // Начальное значение
+        if (null != startAt)
+            query = query.startAt(startAt);
+
+
+        // Конечное значение
+        if (null != endAt)
+            query = query.endAt(endAt);
+
+
+        // Предельное количество
+        if (null != limit)
+            query = query.limit(limit);
+
+
+        // Собственно запрос
+        query.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        List<Card> cardsList = new ArrayList<>();
+                        boolean cardsErrors = false;
+
+                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                            if (documentSnapshot.exists()) {
+                                try {
+                                    Card card = documentSnapshot.toObject(Card.class);
+                                    if (null != card)
+                                        cardsList.add(card);
+                                }
+                                catch (Exception e) {
+                                    Log.e(TAG, e.getMessage());
+                                    e.printStackTrace();
+                                    cardsErrors = true;
+                                }
+                            }
+                        }
+
+                        if (0 == cardsList.size() && cardsErrors)
+                            callbacks.onListLoadFail("Error exception(s) on cards loading.");
+                        else
+                            callbacks.onListLoadSuccess(cardsList);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        callbacks.onListLoadFail(e.getMessage());
+                    }
+                });
     }
 }

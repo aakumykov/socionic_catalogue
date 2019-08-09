@@ -20,21 +20,9 @@ public interface iCardsSingleton {
         LOWER_OR_EQUALS
     }
 
-    void loadListEnhanced(
-            String orderKey,
-            SortOrder sortOrder,
-            String filterKey,
-            FilterOperator filterOperator,
-            String filterValue,
-            String startAt,
-            String endAt,
-            Integer limit,
-            ListCallbacks callbacks
-    );
-
+    void loadList(ListCallbacks callbacks);
     void loadList(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks);
     void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks );
-    void loadList(ListCallbacks callbacks);
     void loadList(int limit, ListCallbacks callbacks);
     void loadList(String tagFilter, ListCallbacks callbacks);
     void loadListForUser(String userId, ListCallbacks callbacks);
