@@ -17,6 +17,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
 
@@ -56,12 +57,22 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
     @Override
     public void loadList(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
-        throw new RuntimeException("Устаревший метод");
+        loadListEnhanced(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                startKey,
+                endKey,
+                null,
+                callbacks
+        );
     }
 
     @Override
     public void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
-
         loadListEnhanced(
                 null,
                 null,
@@ -77,22 +88,66 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
     @Override
     public void loadList(int limit, ListCallbacks callbacks) {
-
+        loadListEnhanced(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                Config.DEFAULT_CARDS_LOAD_COUNT,
+                callbacks
+        );
     }
 
     @Override
     public void loadList(String tagFilter, ListCallbacks callbacks) {
-
+        loadListEnhanced(
+                null,
+                null,
+                tagFilter,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                callbacks
+        );
     }
 
     @Override
     public void loadListForUser(String userId, ListCallbacks callbacks) {
-
+        loadListEnhanced(
+                null,
+                null,
+                null,
+                Card.KEY_USER_ID,
+                FilterOperator.EQUALS,
+                userId,
+                null,
+                null,
+                null,
+                callbacks
+        );
     }
 
     @Override
     public void loadNewCards(long newerThanTime, ListCallbacks callbacks) {
-
+        /*loadListEnhanced(
+                null,
+                null,
+                null,
+                Card.KEY_CTIME,
+                FilterOperator.GREATER,
+                newerThanTime,
+                null,
+                null,
+                null,
+                callbacks
+        );*/
     }
 
     @Override
