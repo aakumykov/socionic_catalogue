@@ -8,6 +8,7 @@ import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
@@ -55,7 +56,7 @@ public class CardPresenter implements iCardShow.iCardPresenter {
 
         cardView.showCardThrobber();
 
-        cardSingleton.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
+        iCardsSingleton.LoadCallbacks loadCallbacks = new iCardsSingleton.LoadCallbacks() {
             @Override
             public void onCardLoadSuccess(Card card) {
                 currentCard = card;
@@ -77,7 +78,10 @@ public class CardPresenter implements iCardShow.iCardPresenter {
                 cardView.hideCardThrobber();
                 cardView.showCardError(R.string.CARD_SHOW_error_loading_card, msg);
             }
-        });
+        };
+
+//        cardSingleton.loadCard(cardKey, loadCallbacks);
+        CardsSingleton_CF.getInstance().loadCard(cardKey, loadCallbacks);
     }
 
     @Override
