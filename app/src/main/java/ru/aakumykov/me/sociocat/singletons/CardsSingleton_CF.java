@@ -228,6 +228,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
             }
         }
 
+        query = query.whereArrayContains("tags", "йцукен");
 
         // Начальное значение
         if (null != startAt)
