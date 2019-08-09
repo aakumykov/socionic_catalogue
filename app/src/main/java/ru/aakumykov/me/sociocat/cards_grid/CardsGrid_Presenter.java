@@ -283,7 +283,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
 //        cardsSingleton.loadList(startKey, endKey, listCallbacks);
 
-        CardsSingleton_CF.getInstance().loadList(startKey, endKey, listCallbacks);
+//        CardsSingleton_CF.getInstance().loadList(startKey, endKey, listCallbacks);
+        CardsSingleton_CF.getInstance().loadList(listCallbacks);
     }
 
     private void loadCardsWithTag(@Nullable String filterTag) {

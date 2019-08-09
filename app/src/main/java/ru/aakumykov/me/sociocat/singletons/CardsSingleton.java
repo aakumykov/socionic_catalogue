@@ -180,6 +180,11 @@ public class CardsSingleton implements
 
 
     @Override
+    public void loadListEnhanced(String orderKey, SortOrder sortOrder, String filterKey, FilterOperator filterOperator, String filterValue, String startAt, String endAt, Integer limit, ListCallbacks callbacks) {
+
+    }
+
+    @Override
     public void loadList(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
         Query query = cardsRef
                 .orderByKey();

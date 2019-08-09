@@ -8,6 +8,30 @@ import ru.aakumykov.me.sociocat.models.Card;
 
 public interface iCardsSingleton {
 
+    enum SortOrder {
+        DIRECT, REVERSED
+    }
+
+    enum FilterOperator {
+        EQUALS,
+        GREATER,
+        GREATER_OR_EQUALS,
+        LOWER,
+        LOWER_OR_EQUALS
+    }
+
+    void loadListEnhanced(
+            String orderKey,
+            SortOrder sortOrder,
+            String filterKey,
+            FilterOperator filterOperator,
+            String filterValue,
+            String startAt,
+            String endAt,
+            Integer limit,
+            ListCallbacks callbacks
+    );
+
     void loadList(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks);
     void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks );
     void loadList(ListCallbacks callbacks);

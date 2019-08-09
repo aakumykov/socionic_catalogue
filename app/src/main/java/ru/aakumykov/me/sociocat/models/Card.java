@@ -22,6 +22,8 @@ public class Card extends ListItem implements
         Parcelable,
         iTextItem
 {
+    public final static String KEY_CTIME = "ctime";
+
     private String key;
     private String userId;
     private String userName;
