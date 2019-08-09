@@ -236,12 +236,12 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
     @Override
     public void rateUp(String cardId, String byUserId, RatingCallbacks callbacks) {
-
+        throw new RuntimeException("CardsSingleton_CF.rateUp() ещё не реализван.");
     }
 
     @Override
     public void rateDown(String cardId, String byUserId, RatingCallbacks callbacks) {
-
+        throw new RuntimeException("CardsSingleton_CF.rateDown() ещё не реализван.");
     }
 
 
