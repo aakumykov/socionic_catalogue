@@ -5,7 +5,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.google.firebase.database.Exclude;
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 // TODO: как сделать так, чтобы графическая карточка не могла сохраниться без картинки?
 // И так далее...
 
+@IgnoreExtraProperties
 public class Card extends ListItem implements
         Parcelable,
         iTextItem
