@@ -136,7 +136,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
     @Override
     public void loadNewCards(long newerThanTime, ListCallbacks callbacks) {
-        /*loadListEnhanced(
+        loadListEnhanced(
                 null,
                 null,
                 null,
@@ -147,7 +147,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
                 null,
                 null,
                 callbacks
-        );*/
+        );
     }
 
     @Override
@@ -233,7 +233,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
 
     // Внутренниие методы
-    private void loadListEnhanced(
+    private <T> void loadListEnhanced(
             String orderKey,
             SortOrder sortOrder,
 
@@ -241,7 +241,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
             String filterKey,
             FilterOperator filterOperator,
-            String filterValue,
+            T filterValue,
 
             String startAt,
             String endAt,
