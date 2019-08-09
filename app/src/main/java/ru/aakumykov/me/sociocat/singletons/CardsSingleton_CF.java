@@ -179,12 +179,12 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
     @Override
     public void updateCommentsCounter(String cardId, int diffValue) {
-
+        throw new RuntimeException("CardsSingleton_CF.updateCommentsCounter() ещё не реализван.");
     }
 
     @Override
     public String createKey() {
-        return null;
+        throw new RuntimeException("CardsSingleton_CF.createKey() не используется с Cloud Firestore.");
     }
 
     @Override
@@ -218,7 +218,20 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
     @Override
     public void deleteCard(Card card, DeleteCallbacks callbacks) {
-
+        cardsCollection.document(card.getKey()).delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onCardDeleteSuccess(card);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        callbacks.onCardDeleteError(e.getMessage());
+                    }
+                });
     }
 
     @Override
