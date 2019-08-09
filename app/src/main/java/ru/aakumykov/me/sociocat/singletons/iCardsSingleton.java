@@ -21,9 +21,8 @@ public interface iCardsSingleton {
     }
 
     void loadList(ListCallbacks callbacks);
-    void loadList(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks);
+    void loadListFromTo(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks);
     void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks );
-    void loadList(int limit, ListCallbacks callbacks);
     void loadList(String tagFilter, ListCallbacks callbacks);
     void loadListForUser(String userId, ListCallbacks callbacks);
     void loadNewCards(long newerThanTime, ListCallbacks callbacks);
@@ -40,6 +39,7 @@ public interface iCardsSingleton {
 
 
     interface ListCallbacks {
+        // TODO: добавить в успешный колбек соообщение о сопутствующей ошибке...
         void onListLoadSuccess(List<Card> list);
         void onListLoadFail(String errorMessage);
     }
