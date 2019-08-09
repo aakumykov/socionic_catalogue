@@ -24,6 +24,7 @@ public class Card extends ListItem implements
 {
     public final static String KEY_CTIME = "ctime";
     public static final String KEY_TAGS = "tags";
+    public static final String KEY_USER_ID = "userId";
 
     private String key;
     private String userId;
