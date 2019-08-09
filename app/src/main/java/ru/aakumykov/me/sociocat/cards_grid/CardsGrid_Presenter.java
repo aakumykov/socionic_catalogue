@@ -91,7 +91,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
         long lastLoginTime = pageView.getLastLoginTime();
 
-        cardsSingleton.loadNewCards(lastLoginTime, new iCardsSingleton.ListCallbacks() {
+        iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 pageView.hideCheckNewCardsThrobber();
@@ -109,7 +109,10 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
                 pageView.showToast(R.string.CARDS_GRID_error_loading_cards);
                 Log.e(TAG, errorMessage);
             }
-        });
+        };
+
+//        cardsSingleton.loadNewCards(lastLoginTime, listCallbacks);
+        CardsSingleton_CF.getInstance().loadNewCards(lastLoginTime, listCallbacks);
     }
 
     @Override
