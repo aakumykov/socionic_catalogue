@@ -181,7 +181,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         showDescription(card);
         showAuthor(card);
         showTime(card.getCTime(), card.getMTime());
-        showTags(card.getTags());
+        showTags(card.getTagsHash());
         showRating(card, currentUserId);
     }
 

@@ -6,8 +6,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -23,6 +21,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -799,7 +800,7 @@ public class CardEdit_View extends BaseView implements
     private void displayCommonCardParts(Card card) {
         titleInput.setText(card.getTitle());
         descriptionInput.setText(card.getDescription());
-        tagsContainer.setTags(new ArrayList<String>(card.getTags().keySet()));
+        tagsContainer.setTags(card.getTags());
     }
 
     private void changeFormSate(boolean isEnabled) {

@@ -371,7 +371,7 @@ public class CardEdit_Presenter implements
             public void onCardLoadSuccess(Card card) {
                 if (null != card) {
                     currentCard = card;
-                    oldCardTags = card.getTags();
+                    oldCardTags = card.getTagsHash();
                     if (null != view)
                         view.displayCard(card);
                 }
@@ -401,7 +401,7 @@ public class CardEdit_Presenter implements
             currentCard.setQuote(view.getQuote());
             currentCard.setQuoteSource(view.getQuoteSource());
             currentCard.setDescription(view.getDescription());
-            currentCard.setTags(view.getTags());
+            currentCard.setTags(new ArrayList<>(view.getTags().keySet()));
         }
     }
 
@@ -535,7 +535,7 @@ public class CardEdit_Presenter implements
         tagsSingleton.updateCardTags(
                 card.getKey(),
                 oldCardTags,
-                card.getTags(),
+                card.getTagsHash(),
                 new iTagsSingleton.UpdateCallbacks() {
                     @Override
                     public void onUpdateSuccess() {

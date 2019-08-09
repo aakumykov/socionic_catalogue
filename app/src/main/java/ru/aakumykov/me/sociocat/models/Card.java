@@ -190,6 +190,13 @@ public class Card extends ListItem implements
         if (null == tags) this.tags = new ArrayList<>();
         return tags;
     }
+    @Exclude
+    public HashMap<String, Boolean> getTagsHash() {
+        HashMap<String, Boolean> hashMap = new HashMap<>();
+        for (String tagName : this.tags)
+            hashMap.put(tagName, true);
+        return hashMap;
+    }
     public HashMap<String, Boolean> getRateUpList() {
         if (null == rateUpList) this.rateUpList = new HashMap<>();
         return rateUpList;

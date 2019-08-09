@@ -1,17 +1,12 @@
 package ru.aakumykov.me.sociocat.cards_list;
 
-import androidx.annotation.Nullable;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
-import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
-import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
-import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
@@ -19,6 +14,12 @@ import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
+import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class CardsList_Presenter implements
         iCardsList.Presenter,
@@ -129,7 +130,7 @@ public class CardsList_Presenter implements
         try {
             tagsSingleton.updateCardTags(
                     currentCard.getKey(),
-                    currentCard.getTags(),
+                    currentCard.getTagsHash(),
                     null,
                     new iTagsSingleton.UpdateCallbacks() {
                         @Override

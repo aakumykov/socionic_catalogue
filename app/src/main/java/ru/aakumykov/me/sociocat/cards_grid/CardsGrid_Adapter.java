@@ -403,7 +403,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             for (iGridItem item : inputList) {
                 Card card = (Card) item.getPayload();
-                HashMap<String, Boolean> cardTags = card.getTags();
+                HashMap<String, Boolean> cardTags = card.getTagsHash();
                 Boolean tag = cardTags.get(filterTag);
                 if (null != tag) {
                     if (!cardTags.containsKey(filterTag) && tag) {
