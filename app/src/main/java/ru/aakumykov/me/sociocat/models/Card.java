@@ -45,8 +45,8 @@ public class Card extends ListItem implements
     private int commentsCount = 0;
     private HashMap<String, Boolean> commentsKeys/* = new HashMap<>()*/;
     private Integer rating = 0;
-    private Long cTime = 0L;
-    private Long mTime = 0L;
+    private Long ctime = 0L;
+    private Long mtime = 0L;
 
     public Card() {
         setItemType(ListItem.ItemType.CARD_ITEM);
@@ -73,8 +73,8 @@ public class Card extends ListItem implements
                 ", commentsCount: "+getCommentsCount()+
                 ", commentsKeys: "+getCommentsKeys()+
                 ", rating: "+getRating()+
-                ", cTime: "+getCTime()+
-                ", mTime: "+getMTime()+
+                ", ctime: "+getCTime()+
+                ", mtime: "+getMTime()+
                 ", localImageURI: "+getLocalImageURI()+
                 ", mimeType: "+getMimeType()+
                 ", imageType: "+getImageType()+
@@ -107,8 +107,8 @@ public class Card extends ListItem implements
         dest.writeInt(this.commentsCount);
         dest.writeMap(this.commentsKeys);
         dest.writeInt(this.rating);
-        dest.writeLong(this.cTime);
-        dest.writeLong(this.mTime);
+        dest.writeLong(this.ctime);
+        dest.writeLong(this.mtime);
     }
 
     protected Card(Parcel in) {
@@ -134,8 +134,8 @@ public class Card extends ListItem implements
         commentsCount = in.readInt();
         commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         rating = in.readInt();
-        cTime = in.readLong();
-        mTime = in.readLong();
+        ctime = in.readLong();
+        mtime = in.readLong();
     }
 
     @Override
@@ -205,10 +205,10 @@ public class Card extends ListItem implements
         else return rating;
     }
     public Long getCTime() {
-        return this.cTime;
+        return this.ctime;
     }
     public Long getMTime() {
-        return this.mTime;
+        return this.mtime;
     }
 
 
@@ -256,10 +256,10 @@ public class Card extends ListItem implements
         this.commentsKeys = commentsKeys;
     }
     public void setCTime(Long cTime) {
-        this.cTime = cTime;
+        this.ctime = cTime;
     }
     public void setMTime(Long mTime) {
-        this.mTime = mTime;
+        this.mtime = mTime;
     }
 
 
