@@ -39,7 +39,7 @@ public class Card extends ListItem implements
     private String videoCode;
     private String audioCode;
     private String description;
-    private HashMap<String, Boolean> tags;
+    private List<String> tags;
     private HashMap<String, Boolean> rateUpList;
     private HashMap<String, Boolean> rateDownList;
     private int commentsCount = 0;
@@ -101,7 +101,7 @@ public class Card extends ListItem implements
         dest.writeString(this.videoCode);
         dest.writeString(this.audioCode);
         dest.writeString(this.description);
-        dest.writeMap(this.tags);
+        dest.writeList(this.tags);
         dest.writeMap(this.rateUpList);
         dest.writeMap(this.rateDownList);
         dest.writeInt(this.commentsCount);
@@ -128,7 +128,7 @@ public class Card extends ListItem implements
         videoCode = in.readString();
         audioCode = in.readString();
         description = in.readString();
-        tags = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+        in.readList(tags, ArrayList.class.getClassLoader());
         rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         rateDownList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         commentsCount = in.readInt();
@@ -186,8 +186,8 @@ public class Card extends ListItem implements
     public String getDescription() {
         return description;
     }
-    public HashMap<String, Boolean> getTags() {
-        if (null == tags) this.tags = new HashMap<>();
+    public List<String> getTags() {
+        if (null == tags) this.tags = new ArrayList<>();
         return tags;
     }
     public HashMap<String, Boolean> getRateUpList() {
@@ -242,7 +242,7 @@ public class Card extends ListItem implements
     public void setDescription(String description) {
         this.description = description;
     }
-    public void setTags(HashMap<String, Boolean> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
     public void setRateUpList(HashMap<String, Boolean> rateUpList) {
@@ -368,14 +368,7 @@ public class Card extends ListItem implements
     }
 
     @Exclude public List<String> getTagsList(boolean inLowerCase) {
-        List<String> tagsList = new ArrayList<>(this.getTags().keySet());
-        if (inLowerCase) {
-            List<String> lowerCaseList = new ArrayList<>();
-            for (String tag : tagsList)
-                lowerCaseList.add(tag.toLowerCase());
-            return lowerCaseList;
-        }
-        return tagsList;
+        return this.tags;
     }
 
     @Exclude public boolean isTextCard() {
@@ -405,6 +398,6 @@ public class Card extends ListItem implements
 
     // Разные
     @Exclude public void addTag(String tag) {
-        tags.put(tag, true);
+        this.tags.add(tag);
     }
 }
