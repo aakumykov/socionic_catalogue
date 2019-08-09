@@ -18,9 +18,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class TagsSingleton implements iTagsSingleton {
 
@@ -186,9 +188,7 @@ public class TagsSingleton implements iTagsSingleton {
     ) {
         //Log.d(TAG, "updateCardTags(cardKey: "+cardKey+", oldTags: "+oldTags+", newTags: "+newTags+")");
 
-        callbacks.onUpdateSuccess();
-
-        /*if (null == oldTags) oldTags = new HashMap<>();
+        if (null == oldTags) oldTags = new HashMap<>();
         if (null == newTags) newTags = new HashMap<>();
 
         Map<String, Boolean> addedTags = MyUtils.mapDiff(newTags, oldTags);
@@ -225,7 +225,7 @@ public class TagsSingleton implements iTagsSingleton {
                         Log.e(TAG, e.getMessage());
                         e.printStackTrace();
                     }
-                });*/
+                });
     }
 
 

@@ -16,9 +16,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class TagsSingleton_CF implements iTagsSingleton {
 
@@ -175,6 +177,13 @@ public class TagsSingleton_CF implements iTagsSingleton {
 
     @Override
     public void updateCardTags(String cardKey, @Nullable HashMap<String, Boolean> oldTags, @Nullable HashMap<String, Boolean> newTags, @Nullable UpdateCallbacks callbacks) {
+
+        if (null == oldTags) oldTags = new HashMap<>();
+        if (null == newTags) newTags = new HashMap<>();
+
+        Map<String, Boolean> addedTags = MyUtils.mapDiff(newTags, oldTags);
+        Map<String, Boolean> removedTags = MyUtils.mapDiff(oldTags, newTags);
+
 
     }
 
