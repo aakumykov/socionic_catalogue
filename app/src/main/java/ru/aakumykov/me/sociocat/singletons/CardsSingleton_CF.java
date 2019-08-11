@@ -45,7 +45,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
     private CardsSingleton_CF() {
         firebaseFirestore = FirebaseFirestore.getInstance();
         cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
-        cardsCollection = firebaseFirestore.collection(Constants.TAGS_PATH);
+        tagsCollection = firebaseFirestore.collection(Constants.TAGS_PATH);
     }
     /* Одиночка */
 
@@ -186,47 +186,21 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
 //        throw new RuntimeException("saveCard() не используется в CardsSingleton_CF");
 
-//        DocumentReference cardReference;
+        DocumentReference cardReference;
 
-//        DocumentReference cardReference = cardsCollection.document();
-//        card.setKey(cardReference.getId());
+        if (null == card.getKey()) {
+            cardReference = cardsCollection.document();
+            card.setKey(cardReference.getId());
+        }
+        else {
+            cardReference = cardsCollection.document(card.getKey());
+        }
 
-///*        if (null == card.getKey()) {
-//            cardReference = cardsCollection.document();
-//            card.setKey(cardReference.getId());
-//        }
-//        else {
-//            cardReference = cardsCollection.document(card.getKey());
-//        }*/
-
-//        cardReference
-//                .set(card)
-///*                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
-//                        card.setKey(documentReference.getId());
-//                    }
-//                })*/
-//                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                        callbacks.onCardSaveSuccess(card);
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        e.printStackTrace();
-//                        callbacks.onCardSaveError(e.getMessage());
-//                    }
-//                });
-
-        FirebaseFirestore.getInstance().collection("cards")
-                .add(card)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        cardReference
+                .set(card)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        card.setKey(documentReference.getId());
+                    public void onSuccess(Void aVoid) {
                         callbacks.onCardSaveSuccess(card);
                     }
                 })
