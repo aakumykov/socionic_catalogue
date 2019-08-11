@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import androidx.annotation.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Card;
@@ -32,6 +33,7 @@ public interface iCardsSingleton {
 
     String createKey();
     void saveCard(Card card, SaveCardCallbacks callbacks);
+    void saveCardUpdateTags(Card card, @Nullable HashMap<String,Boolean> oldTags, SaveCardCallbacks cardCallbacks);
     void deleteCard(Card card, DeleteCallbacks callbacks);
 
     void rateUp(String cardId, String byUserId, RatingCallbacks callbacks);

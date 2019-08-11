@@ -304,6 +304,7 @@ public class CardEdit_Presenter implements
 //            cardsSingleton.saveCard(currentCard, this);
 
             CardsSingleton_CF.getInstance().saveCard(currentCard, this);
+//            CardsSingleton_CF.getInstance().saveCardUpdateTags(currentCard, oldCardTags,this);
         }
     }
 

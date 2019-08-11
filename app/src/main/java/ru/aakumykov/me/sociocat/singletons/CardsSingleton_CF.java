@@ -5,26 +5,34 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsSingleton_CF implements iCardsSingleton {
 
     private final static String TAG = "CardsSingleton_CF";
+    private FirebaseFirestore firebaseFirestore;
     private CollectionReference cardsCollection;
+    private CollectionReference tagsCollection;
 
     /* Одиночка */
     private static volatile CardsSingleton_CF ourInstance;
@@ -35,7 +43,9 @@ public class CardsSingleton_CF implements iCardsSingleton {
         }
     }
     private CardsSingleton_CF() {
-        cardsCollection = FirebaseFirestore.getInstance().collection(Constants.CARDS_PATH);
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
+        cardsCollection = firebaseFirestore.collection(Constants.TAGS_PATH);
     }
     /* Одиночка */
 
@@ -43,8 +53,8 @@ public class CardsSingleton_CF implements iCardsSingleton {
     @Override
     public void loadList(ListCallbacks callbacks) {
         loadListEnhanced(
-                Card.KEY_CTIME,
-                SortOrder.DIRECT,
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -174,6 +184,8 @@ public class CardsSingleton_CF implements iCardsSingleton {
     @Override
     public void saveCard(Card card, SaveCardCallbacks callbacks) {
 
+//        throw new RuntimeException("saveCard() не используется в CardsSingleton_CF");
+
         DocumentReference cardReference;
 
         if (null == card.getKey()) {
@@ -196,6 +208,71 @@ public class CardsSingleton_CF implements iCardsSingleton {
                     public void onFailure(@NonNull Exception e) {
                         e.printStackTrace();
                         callbacks.onCardSaveError(e.getMessage());
+                    }
+                });
+    }
+
+    @Override
+    public void saveCardUpdateTags(Card card, @Nullable HashMap<String, Boolean> oldTags, SaveCardCallbacks cardCallbacks) {
+
+        DocumentReference cardReference;
+        if (null == card.getKey())
+            card.setKey(cardsCollection.document().getId());
+        else
+            cardReference = cardsCollection.document(card.getKey());
+
+
+        if (null == oldTags) oldTags = new HashMap<>();
+        HashMap<String, Boolean> newTags = card.getTagsHash();
+
+        Map<String, Boolean> addedTags = MyUtils.mapDiff(newTags, oldTags);
+        Map<String, Boolean> removedTags = MyUtils.mapDiff(oldTags, newTags);
+
+
+        WriteBatch writeBatch = firebaseFirestore.batch();
+
+        writeBatch.set(
+                cardsCollection.document(card.getKey()),
+                card
+        );
+
+        String cardKey = card.getKey();
+
+        for(String tagName : addedTags.keySet()) {
+            writeBatch.update(
+                    tagsCollection
+                            .document(tagName)
+                            .collection("cards")
+                            .document(cardKey),
+                    "title",
+                    card.getTitle()
+            );
+        }
+
+        for (String tagName : removedTags.keySet()) {
+            writeBatch.delete(
+                    tagsCollection
+                        .document(tagName)
+                        .collection("cards")
+                        .document(cardKey)
+            );
+        }
+
+        writeBatch.commit()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful())
+                            cardCallbacks.onCardSaveSuccess(card);
+                        else {
+                            Exception e = task.getException();
+                            String errorMsg = "Error in saveCardUpdateTags() method.";
+                            if (null != e) {
+                                e.printStackTrace();
+                                errorMsg = e.getMessage();
+                            }
+                            cardCallbacks.onCardSaveError(errorMsg);
+                        }
                     }
                 });
     }
@@ -302,7 +379,11 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
 
         // Собственно запрос
-        query.get()
+//        query.get()
+//        cardsCollection.get()
+        FirebaseFirestore.getInstance()
+                .collection("cards")
+                .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -311,7 +392,8 @@ public class CardsSingleton_CF implements iCardsSingleton {
                         boolean cardsErrors = false;
 
                         try {
-                            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                            List<DocumentSnapshot> documentSnapshots = queryDocumentSnapshots.getDocuments();
+                            for (DocumentSnapshot documentSnapshot : documentSnapshots) {
                                 if (documentSnapshot.exists()) {
                                     cardsList.add(documentSnapshot.toObject(Card.class));
                                 }
