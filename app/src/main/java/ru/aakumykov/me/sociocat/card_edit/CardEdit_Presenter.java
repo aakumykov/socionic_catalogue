@@ -311,7 +311,10 @@ public class CardEdit_Presenter implements
 
     // Коллбеки
     @Override public void onCardSaveSuccess(Card card) {
-        updateCardTags(card);
+
+        finishWork(card);
+
+//        updateCardTags(card);
 
         /*if (editMode.equals(CardEditMode.CREATE)) {
 

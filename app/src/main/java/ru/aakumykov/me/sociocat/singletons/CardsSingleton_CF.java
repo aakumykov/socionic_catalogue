@@ -186,20 +186,47 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
 //        throw new RuntimeException("saveCard() не используется в CardsSingleton_CF");
 
-        DocumentReference cardReference;
+//        DocumentReference cardReference;
 
-        if (null == card.getKey()) {
-            cardReference = cardsCollection.document();
-            card.setKey(cardReference.getId());
-        }
-        else {
-            cardReference = cardsCollection.document(card.getKey());
-        }
+//        DocumentReference cardReference = cardsCollection.document();
+//        card.setKey(cardReference.getId());
 
-        cardReference.set(card)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+///*        if (null == card.getKey()) {
+//            cardReference = cardsCollection.document();
+//            card.setKey(cardReference.getId());
+//        }
+//        else {
+//            cardReference = cardsCollection.document(card.getKey());
+//        }*/
+
+//        cardReference
+//                .set(card)
+///*                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        card.setKey(documentReference.getId());
+//                    }
+//                })*/
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        callbacks.onCardSaveSuccess(card);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        e.printStackTrace();
+//                        callbacks.onCardSaveError(e.getMessage());
+//                    }
+//                });
+
+        FirebaseFirestore.getInstance().collection("cards")
+                .add(card)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
+                    public void onSuccess(DocumentReference documentReference) {
+                        card.setKey(documentReference.getId());
                         callbacks.onCardSaveSuccess(card);
                     }
                 })
@@ -324,6 +351,38 @@ public class CardsSingleton_CF implements iCardsSingleton {
             ListCallbacks callbacks
     )
     {
+        /*Card card = new Card();
+        card.setTitle("Пробная карточка 1");
+        card.setQuote("Цытата");
+        card.setDescription("Описанне");
+        card.setType(Constants.TEXT_CARD);
+
+        DocumentReference documentReference = firebaseFirestore
+                .collection("cards")
+                .document();
+
+        String cardKey = documentReference.getId();
+
+        card.setKey(cardKey);
+
+        documentReference.set(card)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful())
+                            callbacks.onListLoadSuccess(new ArrayList<>());
+                        else {
+                            Exception e = task.getException();
+                            String errorMsg = "ERROR";
+                            if (null != e) {
+                                e.printStackTrace();
+                                errorMsg = e.getMessage();
+                                callbacks.onListLoadFail(errorMsg);
+                            }
+                        }
+                    }
+                });*/
+
         Query query = cardsCollection;
 
         // Сортировка
