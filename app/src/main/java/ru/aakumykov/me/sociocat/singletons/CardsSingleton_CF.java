@@ -217,6 +217,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
     public void saveCardUpdateTags(Card card, @Nullable HashMap<String, Boolean> oldTags, SaveCardCallbacks cardCallbacks) {
 
         DocumentReference cardReference;
+
         if (null == card.getKey())
             card.setKey(cardsCollection.document().getId());
         else
