@@ -184,8 +184,6 @@ public class CardsSingleton_CF implements iCardsSingleton {
     @Override
     public void saveCard(Card card, SaveCardCallbacks callbacks) {
 
-//        throw new RuntimeException("saveCard() не используется в CardsSingleton_CF");
-
         DocumentReference cardReference;
 
         if (null == card.getKey()) {
@@ -216,7 +214,9 @@ public class CardsSingleton_CF implements iCardsSingleton {
     @Override
     public void saveCardUpdateTags(Card card, @Nullable HashMap<String, Boolean> oldTags, SaveCardCallbacks cardCallbacks) {
 
-        DocumentReference cardReference;
+        throw new RuntimeException("Метод не используется");
+
+        /*DocumentReference cardReference;
 
         if (null == card.getKey())
             card.setKey(cardsCollection.document().getId());
@@ -276,7 +276,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
                             cardCallbacks.onCardSaveError(errorMsg);
                         }
                     }
-                });
+                });*/
     }
 
     @Override
