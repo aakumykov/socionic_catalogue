@@ -50,6 +50,9 @@ public interface iCardsGrid {
         void hideCheckNewCardsThrobber();
 
         void scroll2position(int position);
+
+        void showRefreshThrobber();
+        void hideRefreshThrobber();
     }
 
     interface iGridView {
@@ -93,6 +96,8 @@ public interface iCardsGrid {
         void unlinkViews();
 
         void processInputIntent(@Nullable Intent intent);
+
+        void onRefreshRequested();
 
         void onCheckNewCardsClicked();
         void onLoadMoreClicked(int position);

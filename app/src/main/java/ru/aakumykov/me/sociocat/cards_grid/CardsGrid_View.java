@@ -411,6 +411,14 @@ public class CardsGrid_View extends BaseView implements
         recyclerView.scrollToPosition(position);
     }
 
+    @Override public void showRefreshThrobber() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override public void hideRefreshThrobber() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
 
     // iGridItemClickListener
     @Override
@@ -450,8 +458,7 @@ public class CardsGrid_View extends BaseView implements
     private void configureSwipeRefresh() {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override public void onRefresh() {
-                showToast(R.string.not_implemented_yet);
-                swipeRefreshLayout.setRefreshing(false);
+                presenter.onRefreshRequested();
             }
         });
 

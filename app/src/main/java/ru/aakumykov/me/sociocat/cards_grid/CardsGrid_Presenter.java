@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
@@ -83,6 +84,26 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         }
 
         loadCards(LoadMode.REPLACE, null, null, 0);
+    }
+
+    @Override public void onRefreshRequested() {
+        pageView.showRefreshThrobber();
+//        pageView.showProgressMessage(R.string.CARDS_GRID_loading_cards);
+
+//        cardsSingleton
+        CardsSingleton_CF.getInstance()
+                .loadList(new iCardsSingleton.ListCallbacks() {
+            @Override public void onListLoadSuccess(List<Card> list) {
+                pageView.hideRefreshThrobber();
+
+                gridView.setList(cardsList2gridItemsList(list));
+            }
+
+            @Override public void onListLoadFail(String errorMessage) {
+                pageView.hideRefreshThrobber();
+                pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+            }
+        });
     }
 
     @Override
