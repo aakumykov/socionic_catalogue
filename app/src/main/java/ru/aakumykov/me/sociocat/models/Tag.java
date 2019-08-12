@@ -5,22 +5,24 @@ import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Tag implements Parcelable {
 
     private String key;
     private String name;
-    private HashMap<String,Boolean> cards = new HashMap<>();
+    private List<String> cards = new ArrayList<>();
     private Integer counter = 0;
 
     public Tag() {}
 
-    public Tag(String name, final HashMap<String,Boolean> cards) {
+    public Tag(String name, final List<String> cards) {
         this.key = name;
         this.name = name;
-        this.cards = cards;
+        this.cards.addAll(cards);
         this.counter = cards.size();
     }
 
@@ -63,7 +65,7 @@ public class Tag implements Parcelable {
         // важен порядок заполнения
         dest.writeString(key);
         dest.writeString(name);
-        dest.writeMap(cards);
+        dest.writeList(cards);
         dest.writeInt(counter);
     }
 
@@ -71,7 +73,8 @@ public class Tag implements Parcelable {
         // важен порядок считывания
         key = in.readString();
         name = in.readString();
-        cards = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+//        cards = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+        in.readList(cards, ArrayList.class.getClassLoader());
         counter = in.readInt();
     }
     /* Parcelable */
@@ -83,7 +86,7 @@ public class Tag implements Parcelable {
     public String getName() {
         return name;
     }
-    public HashMap<String, Boolean> getCards() {
+    public List<String> getCards() {
         return cards;
     }
     public Integer getCounter() {
@@ -96,13 +99,13 @@ public class Tag implements Parcelable {
     public void setName(String name) {
         this.name = name;
     }
-    public void setCards(HashMap<String, Boolean> cards) {
-        this.cards = cards;
+    public void setCards(List<String> cards) {
+        this.cards.clear();
+        this.cards.addAll(cards);
     }
     public void setCounter(Integer counter) {
         this.counter = counter;
     }
-
 
     @Exclude public int getCardsCount() {
         return getCards().size();
