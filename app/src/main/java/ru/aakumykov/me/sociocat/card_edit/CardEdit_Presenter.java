@@ -235,13 +235,13 @@ public class CardEdit_Presenter implements
         // Сохраняю картинку, если этого ещё не сделано
         if (currentCard.isImageCard() && !currentCard.hasImageURL()) {
 
-            String fileName = currentCard.getKey() + "." + imageType;
+            String fileNameWithoutExtension = currentCard.getKey();
             Bitmap imageBitmap = view.getImageBitmap();
 
             if (null != view)
                 view.showImageProgressBar();
 
-            storageSingleton.uploadImage(imageBitmap, imageType, fileName, new iStorageSingleton.FileUploadCallbacks() {
+            storageSingleton.uploadImage(imageBitmap, imageType, fileNameWithoutExtension, new iStorageSingleton.FileUploadCallbacks() {
 
                 @Override public void onFileUploadProgress(int progress) {
 
@@ -303,8 +303,8 @@ public class CardEdit_Presenter implements
 
 //            cardsSingleton.saveCard(currentCard, this);
 
-//            CardsSingleton_CF.getInstance().saveCard(currentCard, this);
-            CardsSingleton_CF.getInstance().saveCardUpdateTags(currentCard, oldCardTags,this);
+            CardsSingleton_CF.getInstance().saveCard(currentCard, this);
+//            CardsSingleton_CF.getInstance().saveCardUpdateTags(currentCard, oldCardTags,this);
         }
     }
 

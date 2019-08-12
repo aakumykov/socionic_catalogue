@@ -183,7 +183,7 @@ public class Users_Presenter implements
         if (!currentUser.hasAvatar() && imageSelected) {
             try {
                 Bitmap imageBitmap = editView.getImageBitmap();
-                String fileName = AuthSingleton.currentUserId() + "."+imageType;
+                String fileName = AuthSingleton.currentUserId();
 
                 editView.showAvatarThrobber();
                 editView.disableEditForm();

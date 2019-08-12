@@ -41,27 +41,32 @@ public class StorageSingleton implements iStorageSingleton {
 
     // Интерфейсные методы
     @Override
-    public void uploadImage(Bitmap imageBitmap, String imageType, @Nullable String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
+    public void uploadImage(Bitmap imageBitmap, String imageType, @Nullable String fileNameWithoutExtension, final FileUploadCallbacks callbacks) {
 
-        if (TextUtils.isEmpty(fileName)) {
-            callbacks.onFileUploadFail("File name cannot be empty: "+fileName);
+        if (TextUtils.isEmpty(fileNameWithoutExtension)) {
+            callbacks.onFileUploadFail("Image file name cannot be empty: "+ fileNameWithoutExtension);
             return;
         }
 
         byte[] imageBytesArray = MVPUtils.compressImage(imageBitmap, imageType);
+
+        String fileName = fileNameWithoutExtension + "." + imageType;
 
         uploadFile(imageBytesArray, Constants.IMAGES_PATH, fileName, callbacks);
     }
 
     @Override
-    public void uploadAvatar(Bitmap imageBitmap, String imageType, @Nullable String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
+    public void uploadAvatar(Bitmap imageBitmap, String imageType, @Nullable String fileNameWithoutExtension, final FileUploadCallbacks callbacks) {
 
-        if (TextUtils.isEmpty(fileName)) {
-            callbacks.onFileUploadFail("File name cannot be empty: "+fileName);
+        if (TextUtils.isEmpty(fileNameWithoutExtension)) {
+            callbacks.onFileUploadFail("Image file name cannot be empty: "+fileNameWithoutExtension);
             return;
         }
 
         byte[] imageBytesArray = MVPUtils.compressImage(imageBitmap, imageType);
+
+        String fileName = fileNameWithoutExtension + "." + imageType;
+
         uploadFile(imageBytesArray, Constants.AVATARS_PATH, fileName, callbacks);
     }
 
@@ -69,7 +74,7 @@ public class StorageSingleton implements iStorageSingleton {
     public void deleteImage(@Nullable String imageFileName, final FileDeletionCallbacks callbacks) {
 
         if (TextUtils.isEmpty(imageFileName)) {
-            callbacks.onDeleteFail("File name cannot be empty: "+imageFileName);
+            callbacks.onDeleteFail("Image file name cannot be empty: "+imageFileName);
             return;
         }
 
@@ -81,7 +86,7 @@ public class StorageSingleton implements iStorageSingleton {
     public void deleteAvatar(@Nullable String avatarFileName, FileDeletionCallbacks callbacks) {
 
         if (TextUtils.isEmpty(avatarFileName)) {
-            callbacks.onDeleteFail("File name cannot be empty: "+avatarFileName);
+            callbacks.onDeleteFail("Image file name cannot be empty: "+avatarFileName);
             return;
         }
 
