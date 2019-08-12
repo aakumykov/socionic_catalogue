@@ -178,7 +178,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
     @Override
     public String createKey() {
-        throw new RuntimeException("CardsSingleton_CF.createKey() не используется с Cloud Firestore.");
+        return cardsCollection.document().getId();
     }
 
     @Override
