@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
@@ -23,7 +22,6 @@ import ru.aakumykov.me.sociocat.cards_grid.view_stubs.CardsGrid_ViewStub;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
@@ -91,9 +89,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         pageView.showRefreshThrobber();
 //        pageView.showProgressMessage(R.string.CARDS_GRID_loading_cards);
 
-//        cardsSingleton
-        CardsSingleton_CF.getInstance()
-                .loadList(new iCardsSingleton.ListCallbacks() {
+        cardsSingleton.loadList(new iCardsSingleton.ListCallbacks() {
             @Override public void onListLoadSuccess(List<Card> list) {
                 pageView.hideRefreshThrobber();
 
@@ -133,8 +129,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             }
         };
 
-//        cardsSingleton.loadNewCards(lastLoginTime, listCallbacks);
-        CardsSingleton_CF.getInstance().loadNewCards(lastLoginTime, listCallbacks);
+        cardsSingleton.loadNewCards(lastLoginTime, listCallbacks);
     }
 
     @Override
@@ -306,9 +301,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             }
         };
 
-//        cardsSingleton.loadList(listCallbacks);
-
-        CardsSingleton_CF.getInstance().loadList(listCallbacks);
+        cardsSingleton.loadList(listCallbacks);
     }
 
     private void loadCardsWithTag(@Nullable String filterTag) {
