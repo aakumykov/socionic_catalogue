@@ -2,7 +2,10 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,7 +41,12 @@ public class StorageSingleton implements iStorageSingleton {
 
     // Интерфейсные методы
     @Override
-    public void uploadImage(Bitmap imageBitmap, String imageType, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
+    public void uploadImage(Bitmap imageBitmap, String imageType, @Nullable String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
+
+        if (TextUtils.isEmpty(fileName)) {
+            callbacks.onFileUploadFail("File name cannot be empty: "+fileName);
+            return;
+        }
 
         byte[] imageBytesArray = MVPUtils.compressImage(imageBitmap, imageType);
 
@@ -46,27 +54,44 @@ public class StorageSingleton implements iStorageSingleton {
     }
 
     @Override
-    public void uploadAvatar(Bitmap imageBitmap, String imageType, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
+    public void uploadAvatar(Bitmap imageBitmap, String imageType, @Nullable String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
+
+        if (TextUtils.isEmpty(fileName)) {
+            callbacks.onFileUploadFail("File name cannot be empty: "+fileName);
+            return;
+        }
+
         byte[] imageBytesArray = MVPUtils.compressImage(imageBitmap, imageType);
         uploadFile(imageBytesArray, Constants.AVATARS_PATH, fileName, callbacks);
     }
 
     @Override
-    public void deleteImage(String imageFileName, final FileDeletionCallbacks callbacks) {
+    public void deleteImage(@Nullable String imageFileName, final FileDeletionCallbacks callbacks) {
+
+        if (TextUtils.isEmpty(imageFileName)) {
+            callbacks.onDeleteFail("File name cannot be empty: "+imageFileName);
+            return;
+        }
 
         String filePath = "/" + Constants.IMAGES_PATH +"/"+ imageFileName;
         deleteFile(filePath, callbacks);
     }
 
     @Override
-    public void deleteAvatar(String avatarFileName, FileDeletionCallbacks callbacks) {
+    public void deleteAvatar(@Nullable String avatarFileName, FileDeletionCallbacks callbacks) {
+
+        if (TextUtils.isEmpty(avatarFileName)) {
+            callbacks.onDeleteFail("File name cannot be empty: "+avatarFileName);
+            return;
+        }
+
         String filePath = "/" + Constants.AVATARS_PATH +"/"+ avatarFileName;
         deleteFile(filePath, callbacks);
     }
 
 
     // Внутренние методы
-    private void uploadFile(Uri fileURI, String remoteDirectoryName, String remoteFileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
+    private void uploadFile(Uri fileURI, String remoteDirectoryName, @Nullable String remoteFileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
 
         final StorageReference fileRef = rootRef.child(remoteDirectoryName+"/"+remoteFileName);
         UploadTask uploadTask = fileRef.putFile(fileURI);
