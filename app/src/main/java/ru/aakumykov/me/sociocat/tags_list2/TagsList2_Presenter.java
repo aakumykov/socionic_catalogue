@@ -116,8 +116,8 @@ public class TagsList2_Presenter implements iTagsList2.iPresenter {
         Collections.sort(inputList, new Comparator<Tag>() {
             @Override
             public int compare(Tag tag1, Tag tag2) {
-                int cardsCount1 = tag1.getCards().size();
-                int cardsCount2 = tag2.getCards().size();
+                int cardsCount1 = tag1.getCards().keySet().size();
+                int cardsCount2 = tag2.getCards().keySet().size();
                 if (cardsCount1 == cardsCount2) return 0;
                 return (directOrder) ? cardsCount1 - cardsCount2 : cardsCount2 - cardsCount1;
             }
