@@ -41,7 +41,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private final static String TAG = "CG3_Presenter";
     private iCardsGrid.iPageView pageView;
     private iCardsGrid.iGridView gridView;
-    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+//    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private String filterTag;
