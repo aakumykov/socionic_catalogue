@@ -43,7 +43,7 @@ public class Card extends ListItem implements
     private String videoCode;
     private String audioCode;
     private String description;
-    private List<String> tags;
+    private List<String> tags = new ArrayList<>();
     private HashMap<String, Boolean> rateUpList;
     private HashMap<String, Boolean> rateDownList;
     private int commentsCount = 0;
