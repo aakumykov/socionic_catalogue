@@ -47,7 +47,8 @@ public class CardEdit_Presenter implements
 
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+//    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
     private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
     private iTagsSingleton tagsSingleton_CF = TagsSingleton_CF.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
@@ -348,6 +349,8 @@ public class CardEdit_Presenter implements
 
     // Внутренние методы
     private void startCreateCard(Card card) {
+        card.setKey(cardsSingleton.createKey());
+
         currentCard = card;
         editMode = CardEditMode.CREATE;
         imageType = card.getImageType();
