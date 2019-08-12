@@ -2,14 +2,14 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import android.graphics.Bitmap;
 
+import androidx.annotation.Nullable;
+
 public interface iStorageSingleton {
 
-    void uploadImage(Bitmap bitmap, String imageType, String fileName, final iStorageSingleton.FileUploadCallbacks callbacks);
-//    void uploadImage(Uri localImageURI, String remoteImagePath, FileUploadCallbacks callbacks);
-//    void uploadImage(byte[] imageByteArray, String remoteImagePath, FileUploadCallbacks callbacks);
-    void uploadAvatar(Bitmap bitmap, String imageType, String remoteImagePath, FileUploadCallbacks callbacks);
-    void deleteImage(String imageFileName, FileDeletionCallbacks callbacks);
-    void deleteAvatar(String avatarFileName, FileDeletionCallbacks callbacks);
+    void uploadImage(Bitmap bitmap, String imageType, @Nullable String fileName, final iStorageSingleton.FileUploadCallbacks callbacks);
+    void uploadAvatar(Bitmap bitmap, String imageType, @Nullable String remoteImagePath, FileUploadCallbacks callbacks);
+    void deleteImage(@Nullable String imageFileName, FileDeletionCallbacks callbacks);
+    void deleteAvatar(@Nullable String avatarFileName, FileDeletionCallbacks callbacks);
 
     interface FileUploadCallbacks {
         void onFileUploadProgress(int progress);
