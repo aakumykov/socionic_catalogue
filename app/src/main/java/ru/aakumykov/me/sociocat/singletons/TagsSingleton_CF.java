@@ -12,20 +12,20 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class TagsSingleton_CF implements iTagsSingleton {
 
     private final static String TAG = "TagsSingleton_CF";
-    private CollectionReference tagsCollection;
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private CollectionReference tagsCollection = firebaseFirestore.collection(Constants.TAGS_PATH);
 
     /* Одиночка */
     private static volatile TagsSingleton_CF ourInstance;
@@ -36,7 +36,7 @@ public class TagsSingleton_CF implements iTagsSingleton {
         }
     }
     private TagsSingleton_CF() {
-        tagsCollection = FirebaseFirestore.getInstance().collection(Constants.TAGS_PATH);
+//        tagsCollection =
     }
     /* Одиночка */
 
@@ -176,15 +176,72 @@ public class TagsSingleton_CF implements iTagsSingleton {
     }
 
     @Override
-    public void updateCardTags(String cardKey, @Nullable HashMap<String, Boolean> oldTags, @Nullable HashMap<String, Boolean> newTags, @Nullable UpdateCallbacks callbacks) {
+    public void updateCardsInTags(String cardKey, @Nullable HashMap<String, Boolean> oldTags, @Nullable HashMap<String, Boolean> newTags, @Nullable UpdateCallbacks callbacks) {
 
-        if (null == oldTags) oldTags = new HashMap<>();
+        WriteBatch writeBatch = firebaseFirestore.batch();
+
+        writeBatch.update(tagsCollection.document("метка-1"), "карточка-1", true);
+
+        writeBatch.commit()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        if (null != callbacks)
+                            callbacks.onUpdateSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        String errorMsg = e.getMessage();
+                        e.printStackTrace();
+                        if (null != callbacks)
+                            callbacks.onUpdateFail(errorMsg);
+                    }
+                });
+
+        /*if (null == oldTags) oldTags = new HashMap<>();
         if (null == newTags) newTags = new HashMap<>();
 
         Map<String, Boolean> addedTags = MyUtils.mapDiff(newTags, oldTags);
         Map<String, Boolean> removedTags = MyUtils.mapDiff(oldTags, newTags);
 
+        WriteBatch writeBatch = firebaseFirestore.batch();
 
+        // Добавляю id карточки к её новым меткам
+        for (String tagName : addedTags.keySet()) {
+            DocumentReference addedTagRef = tagsCollection.document(tagName);
+            writeBatch.update(addedTagRef, cardKey, true);
+        }
+
+        // Удаляю id карточки из меток, которых в карточке больше нет
+        Map<String,Object> updates = new HashMap<>();
+        updates.put(cardKey, FieldValue.delete());
+
+        for (String tagName : removedTags.keySet()) {
+            DocumentReference removedTagRef = tagsCollection.document(tagName);
+            writeBatch.update(removedTagRef, updates);
+        }
+
+
+        // Применяю изменения
+        // TODO: сделать это в виде транзакции?
+        writeBatch.commit()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        if (null != callbacks)
+                            callbacks.onUpdateSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        if (null != callbacks)
+                            callbacks.onUpdateFail(e.getMessage());
+                    }
+                });*/
     }
 
 }

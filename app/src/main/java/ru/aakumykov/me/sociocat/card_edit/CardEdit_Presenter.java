@@ -308,9 +308,7 @@ public class CardEdit_Presenter implements
     // Коллбеки
     @Override public void onCardSaveSuccess(Card card) {
 
-        finishWork(card);
-
-//        updateCardTags(card);
+        updateCardTags(card);
 
         /*if (editMode.equals(CardEditMode.CREATE)) {
 
@@ -532,35 +530,27 @@ public class CardEdit_Presenter implements
     }
 
     private void updateCardTags(final Card card) {
+
         if (null == card)
             throw new IllegalArgumentException("Card is NULL");
 
-        iTagsSingleton.UpdateCallbacks updateCallbacks = new iTagsSingleton.UpdateCallbacks() {
-            @Override
-            public void onUpdateSuccess() {
-                finishWork(card);
-            }
-
-            @Override
-            public void onUpdateFail(String errorMsg) {
-                if (null != view)
-                    view.showErrorMsg(R.string.CARD_EDIT_error_saving_tags, errorMsg);
-                finishWork(card);
-            }
-        };
-
-        /*tagsSingleton.updateCardTags(
+        tagsSingleton.updateCardsInTags(
                 card.getKey(),
                 oldCardTags,
                 card.getTagsHash(),
-                updateCallbacks
-        );*/
+                new iTagsSingleton.UpdateCallbacks() {
+                    @Override
+                    public void onUpdateSuccess() {
+                        finishWork(card);
+                    }
 
-        tagsSingleton.updateCardTags(
-                card.getKey(),
-                oldCardTags,
-                card.getTagsHash(),
-                updateCallbacks
+                    @Override
+                    public void onUpdateFail(String errorMsg) {
+                        if (null != view)
+                            view.showErrorMsg(R.string.CARD_EDIT_error_saving_tags, errorMsg);
+                        finishWork(card);
+                    }
+                }
         );
     }
 
