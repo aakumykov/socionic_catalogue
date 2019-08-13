@@ -18,10 +18,8 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
-import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
@@ -49,8 +47,8 @@ public class CardEdit_Presenter implements
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 //    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
-    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
-    private iTagsSingleton tagsSingleton_CF = TagsSingleton_CF.getInstance();
+//    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
+    private iTagsSingleton tagsSingleton = TagsSingleton_CF.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
     private Card currentCard;
@@ -302,10 +300,7 @@ public class CardEdit_Presenter implements
 
             view.showProgressMessage(R.string.CARD_EDIT_saving_card);
 
-//            cardsSingleton.saveCard(currentCard, this);
-
-            CardsSingleton_CF.getInstance().saveCard(currentCard, this);
-//            CardsSingleton_CF.getInstance().saveCardUpdateTags(currentCard, oldCardTags,this);
+            cardsSingleton.saveCard(currentCard, this);
         }
     }
 
@@ -561,7 +556,7 @@ public class CardEdit_Presenter implements
                 updateCallbacks
         );*/
 
-        tagsSingleton_CF.updateCardTags(
+        tagsSingleton.updateCardTags(
                 card.getKey(),
                 oldCardTags,
                 card.getTagsHash(),
