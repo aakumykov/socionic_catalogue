@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +14,10 @@ import java.util.Map;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 
-public class Comment extends ListItem implements Parcelable, iTextItem
+@IgnoreExtraProperties
+public class Comment extends ListItem implements
+        Parcelable,
+        iTextItem
 {
     public final static int key_commentId = 10;
     public final static String key_createdAt = "createdAt";

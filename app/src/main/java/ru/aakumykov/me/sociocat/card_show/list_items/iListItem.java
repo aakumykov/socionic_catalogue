@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat.card_show.list_items;
 
-import com.google.firebase.database.Exclude;
+import com.google.firebase.firestore.Exclude;
 
 public interface iListItem {
 
@@ -10,7 +10,7 @@ public interface iListItem {
 
     @Exclude boolean is(ListItem.ItemType testItemType);
 
-    public boolean isCardItem();
+    @Exclude boolean isCardItem();
 
     @Exclude boolean isCommentItem();
 
