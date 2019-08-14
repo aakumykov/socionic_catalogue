@@ -40,10 +40,8 @@ public class TagsSingleton_CF implements iTagsSingleton {
         }
     }
     private TagsSingleton_CF() {
-//        tagsCollection =
     }
     /* Одиночка */
-
 
 
     @Override
