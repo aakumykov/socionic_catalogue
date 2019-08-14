@@ -10,16 +10,20 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class TagsSingleton_CF implements iTagsSingleton {
 
@@ -178,29 +182,7 @@ public class TagsSingleton_CF implements iTagsSingleton {
     @Override
     public void updateCardsInTags(String cardKey, @Nullable HashMap<String, Boolean> oldTags, @Nullable HashMap<String, Boolean> newTags, @Nullable UpdateCallbacks callbacks) {
 
-        WriteBatch writeBatch = firebaseFirestore.batch();
-
-        writeBatch.update(tagsCollection.document("метка-1"), "карточка-1", true);
-
-        writeBatch.commit()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        if (null != callbacks)
-                            callbacks.onUpdateSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        String errorMsg = e.getMessage();
-                        e.printStackTrace();
-                        if (null != callbacks)
-                            callbacks.onUpdateFail(errorMsg);
-                    }
-                });
-
-        /*if (null == oldTags) oldTags = new HashMap<>();
+        if (null == oldTags) oldTags = new HashMap<>();
         if (null == newTags) newTags = new HashMap<>();
 
         Map<String, Boolean> addedTags = MyUtils.mapDiff(newTags, oldTags);
@@ -211,7 +193,9 @@ public class TagsSingleton_CF implements iTagsSingleton {
         // Добавляю id карточки к её новым меткам
         for (String tagName : addedTags.keySet()) {
             DocumentReference addedTagRef = tagsCollection.document(tagName);
-            writeBatch.update(addedTagRef, cardKey, true);
+            Map<String,Object> updates = new HashMap<>();
+            updates.put(cardKey, true);
+            writeBatch.set(addedTagRef, updates, SetOptions.merge());
         }
 
         // Удаляю id карточки из меток, которых в карточке больше нет
@@ -238,10 +222,11 @@ public class TagsSingleton_CF implements iTagsSingleton {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         e.printStackTrace();
+                        String errorMsg = e.getMessage();
                         if (null != callbacks)
-                            callbacks.onUpdateFail(e.getMessage());
+                            callbacks.onUpdateFail(errorMsg);
                     }
-                });*/
+                });
     }
 
 }
