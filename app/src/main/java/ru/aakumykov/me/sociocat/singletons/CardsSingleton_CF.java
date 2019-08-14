@@ -5,27 +5,21 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsSingleton_CF implements iCardsSingleton {
 
@@ -209,74 +203,6 @@ public class CardsSingleton_CF implements iCardsSingleton {
                         callbacks.onCardSaveError(e.getMessage());
                     }
                 });
-    }
-
-    @Override
-    public void saveCardUpdateTags(Card card, @Nullable HashMap<String, Boolean> oldTags, SaveCardCallbacks cardCallbacks) {
-
-        throw new RuntimeException("Метод не используется");
-
-        /*DocumentReference cardReference;
-
-        if (null == card.getKey())
-            card.setKey(cardsCollection.document().getId());
-        else
-            cardReference = cardsCollection.document(card.getKey());
-
-
-        if (null == oldTags) oldTags = new HashMap<>();
-        HashMap<String, Boolean> newTags = card.getTagsHash();
-
-        Map<String, Boolean> addedTags = MyUtils.mapDiff(newTags, oldTags);
-        Map<String, Boolean> removedTags = MyUtils.mapDiff(oldTags, newTags);
-
-
-        WriteBatch writeBatch = firebaseFirestore.batch();
-
-        writeBatch.set(
-                cardsCollection.document(card.getKey()),
-                card
-        );
-
-        String cardKey = card.getKey();
-
-        for(String tagName : addedTags.keySet()) {
-            writeBatch.update(
-                    tagsCollection
-                            .document(tagName)
-                            .collection("cards")
-                            .document(cardKey),
-                    "title",
-                    card.getTitle()
-            );
-        }
-
-        for (String tagName : removedTags.keySet()) {
-            writeBatch.delete(
-                    tagsCollection
-                        .document(tagName)
-                        .collection("cards")
-                        .document(cardKey)
-            );
-        }
-
-        writeBatch.commit()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful())
-                            cardCallbacks.onCardSaveSuccess(card);
-                        else {
-                            Exception e = task.getException();
-                            String errorMsg = "Error in saveCardUpdateTags() method.";
-                            if (null != e) {
-                                e.printStackTrace();
-                                errorMsg = e.getMessage();
-                            }
-                            cardCallbacks.onCardSaveError(errorMsg);
-                        }
-                    }
-                });*/
     }
 
     @Override

@@ -103,11 +103,6 @@ public class CardsSingleton implements
                 });
     }
 
-    @Override
-    public void saveCardUpdateTags(Card card, HashMap<String, Boolean> oldTags, SaveCardCallbacks cardCallbacks) {
-
-    }
-
 
     @Override
     public void deleteCard(final Card card, final  DeleteCallbacks callbacks) {
