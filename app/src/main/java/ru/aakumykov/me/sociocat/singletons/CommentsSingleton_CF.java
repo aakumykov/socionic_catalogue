@@ -79,7 +79,9 @@ public class CommentsSingleton_CF implements iCommentsSingleton {
 
     @Override
     public void updateComment(Comment comment, CreateCallbacks callbacks) {
-        commentsCollection.document(comment.getKey()).set(comment)
+        commentsCollection
+                .document(comment.getKey())
+                .set(comment)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

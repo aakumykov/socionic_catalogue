@@ -198,7 +198,8 @@ public class CardShow_View extends BaseView implements
         mEditMode = editMode;
 
         commentForm.addButtonListeners(new iCommentForm.ButtonListeners() {
-            @Override public void onClearQuoteClicked() {
+            @Override
+            public void onClearQuoteClicked() {
                 Card card = cardPresenter.getCard();
                 commentsPresenter.onReplyClicked(card);
             }
