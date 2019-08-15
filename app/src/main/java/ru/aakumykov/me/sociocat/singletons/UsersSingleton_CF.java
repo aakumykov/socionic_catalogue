@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.singletons;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -151,7 +152,27 @@ public class UsersSingleton_CF implements iUsersSingleton {
 
     @Override
     public void saveUser(User user, SaveCallbacks callbacks) {
+        String userId = user.getKey();
 
+        if (TextUtils.isEmpty(userId)) {
+            callbacks.onUserSaveFail("User id is empty.");
+            return;
+        }
+
+        usersCollection.document(userId).set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onUserSaveSuccess(user);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        callbacks.onUserSaveFail(e.getMessage());
+                    }
+                });
     }
 
     @Override
