@@ -239,13 +239,15 @@ public class UsersSingleton_CF implements iUsersSingleton {
 
     @Override
     public void checkNameExists(String name, CheckExistanceCallbacks callbacks) {
-
+        checkUserWithAttributeExists(Constants.USER_NAME_KEY, name, callbacks);
     }
 
     @Override
     public void checkEmailExists(String email, CheckExistanceCallbacks callbacks) {
-
+        checkUserWithAttributeExists(Constants.USER_EMAIL_KEY, email, callbacks);
     }
+
+
 
     @Override
     public void setEmailVerified(String userId, boolean isVerified, EmailVerificationCallbacks callbacks) {
@@ -315,5 +317,29 @@ public class UsersSingleton_CF implements iUsersSingleton {
     @Override
     public boolean isCardOwner(Card card) {
         return false;
+    }
+
+
+    // Внутренние методы
+    private void checkUserWithAttributeExists(String attrName, String attrValue, CheckExistanceCallbacks callbacks) {
+        Query query = usersCollection.whereEqualTo(attrName, attrValue);
+
+        query.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (queryDocumentSnapshots.size() > 0)
+                            callbacks.onExists();
+                        else
+                            callbacks.onNotExists();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        callbacks.onCheckFail(e.getMessage());
+                    }
+                });
     }
 }
