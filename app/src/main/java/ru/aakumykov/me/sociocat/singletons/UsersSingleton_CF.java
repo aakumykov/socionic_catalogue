@@ -13,8 +13,11 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
+import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -112,7 +115,38 @@ public class UsersSingleton_CF implements iUsersSingleton {
 
     @Override
     public void getUserByEmail(String email, ReadCallbacks callbacks) {
+        Query query = usersCollection.whereEqualTo(Constants.USER_EMAIL_KEY, email);
 
+        query.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<DocumentSnapshot> documentSnapshots = queryDocumentSnapshots.getDocuments();
+                        int resultsCount = documentSnapshots.size();
+                        if (resultsCount > 1) {
+                            callbacks.onUserReadFail("Found too more users with email '"+email+"'");
+                        }
+                        else if (0 == resultsCount) {
+                            callbacks.onUserReadFail("There is no user with email '"+email+"'");
+                        }
+                        else {
+                            try {
+                                User user = documentSnapshots.get(0).toObject(User.class);
+                                callbacks.onUserReadSuccess(user);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                callbacks.onUserReadFail(e.getMessage());
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        callbacks.onUserReadFail(e.getMessage());
+                    }
+                });
     }
 
     @Override
