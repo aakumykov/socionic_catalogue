@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat.card_show.list_items;
 
-import com.google.firebase.database.Exclude;
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import ru.aakumykov.me.sociocat.models.Card;
@@ -24,7 +24,7 @@ public abstract class ListItem implements iListItem {
     @Exclude private ItemType itemType;
 
 
-    @Override
+    @Override @Exclude
     public void setItemType(ItemType itemType) {
         this.itemType = itemType;
     }
