@@ -155,7 +155,7 @@ public class UsersSingleton_CF implements iUsersSingleton {
         String userId = user.getKey();
 
         if (TextUtils.isEmpty(userId)) {
-            callbacks.onUserSaveFail("User id is empty.");
+            callbacks.onUserSaveFail("There is no id in User object.");
             return;
         }
 
@@ -177,7 +177,27 @@ public class UsersSingleton_CF implements iUsersSingleton {
 
     @Override
     public void deleteUser(User user, DeleteCallbacks callbacks) {
+        String userId = user.getKey();
 
+        if (TextUtils.isEmpty(userId)) {
+            callbacks.onUserDeleteFail("There is no id in User object.");
+            return;
+        }
+
+        usersCollection.document(userId).delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onUserDeleteSuccess(user);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        callbacks.onUserDeleteFail(e.getMessage());
+                    }
+                });
     }
 
     @Override
