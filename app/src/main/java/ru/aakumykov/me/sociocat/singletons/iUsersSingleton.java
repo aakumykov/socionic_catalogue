@@ -14,8 +14,6 @@ import ru.aakumykov.me.sociocat.models.User;
 
 public interface iUsersSingleton {
 
-    public final static String PUSH_TOKEN_NAME = "push_token";
-
     void createUser(String userId, String userName, String email, CreateCallbacks callbacks);
     void getUserById(String userId, ReadCallbacks callbacks);
     void getUserByEmail(String email, ReadCallbacks callbacks);
@@ -25,7 +23,7 @@ public interface iUsersSingleton {
     void checkNameExists(String name, CheckExistanceCallbacks callbacks);
     void checkEmailExists(String email, CheckExistanceCallbacks callbacks);
     void setEmailVerified(String userId, boolean isVerified, final EmailVerificationCallbacks callbacks);
-    void updatePushToken(String token, PushTokenCallbacks callbacks);
+
     void storeDeviceId(String userId, String deviceId, SaveDeviceIdCallbacks callbacks);
     void subscribeToCardComments(Context context, boolean enableSubscription, String userId, String cardId,
                                  CardCommentsSubscriptionCallbacks callbacks);

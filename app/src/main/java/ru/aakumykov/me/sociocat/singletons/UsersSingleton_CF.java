@@ -274,11 +274,6 @@ public class UsersSingleton_CF implements iUsersSingleton {
     }
 
     @Override
-    public void updatePushToken(String token, PushTokenCallbacks callbacks) {
-
-    }
-
-    @Override
     public void storeDeviceId(String userId, String deviceId, SaveDeviceIdCallbacks callbacks) {
 
     }
