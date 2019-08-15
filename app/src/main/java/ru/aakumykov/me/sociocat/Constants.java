@@ -114,4 +114,5 @@ public final class Constants {
 
     public final static String USER_NAME_KEY = "name";
     public final static String USER_EMAIL_KEY = "email";
+    public final static String USER_EMAIL_VERIFIED_KEY = "emailVerified";
 }

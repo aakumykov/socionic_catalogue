@@ -252,6 +252,25 @@ public class UsersSingleton_CF implements iUsersSingleton {
     @Override
     public void setEmailVerified(String userId, boolean isVerified, EmailVerificationCallbacks callbacks) {
 
+        if (TextUtils.isEmpty(userId)) {
+            callbacks.OnEmailVerificationFail("There is no id in User object.");
+            return;
+        }
+
+        usersCollection.document(userId).update(Constants.USER_EMAIL_VERIFIED_KEY, true)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.OnEmailVerificationSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        callbacks.OnEmailVerificationFail(e.getMessage());
+                    }
+                });
     }
 
     @Override
