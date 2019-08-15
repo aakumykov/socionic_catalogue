@@ -17,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -202,6 +203,37 @@ public class UsersSingleton_CF implements iUsersSingleton {
 
     @Override
     public void listUsers(ListCallbacks callbacks) {
+        usersCollection.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<User> usersList = new ArrayList<>();
+                        boolean error = false;
+
+                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                            try {
+                                usersList.add(documentSnapshot.toObject(User.class));
+                            } catch (Exception e) {
+                                error = true;
+                                e.printStackTrace();
+                            }
+                        }
+
+                        if (usersList.isEmpty() && error) {
+                            callbacks.onListFail("Errors during excract users list.");
+                        }
+                        else {
+                            callbacks.onListRecieved(usersList);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        callbacks.onListFail(e.getMessage());
+                    }
+                });
 
     }
 
