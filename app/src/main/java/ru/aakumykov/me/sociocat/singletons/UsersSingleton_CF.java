@@ -2,9 +2,16 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -34,6 +41,49 @@ public class UsersSingleton_CF implements iUsersSingleton {
     @Override
     public void createUser(String userId, String userName, String email, CreateCallbacks callbacks) {
 
+        final User user = new User(userId);
+        user.setEmail(email);
+        user.setName(userName);
+        user.setEmailVerified(true);
+
+        DocumentReference userDocumentReference = usersCollection.document(userId);
+
+        // Проверка существования такой записи в БД
+        userDocumentReference.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            callbacks.onUserCreateFail("User with id "+userId+" already exists.");
+                        }
+                        else {
+
+                            // Создание новой записи о пользователе в БД
+                            userDocumentReference.set(user)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            callbacks.onUserCreateSuccess(user);
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            e.printStackTrace();
+                                            callbacks.onUserCreateFail(e.getMessage());
+                                        }
+                                    });
+
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        callbacks.onUserCreateFail(e.getMessage());
+                    }
+                });
     }
 
     @Override
