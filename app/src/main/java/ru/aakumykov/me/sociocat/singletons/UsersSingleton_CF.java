@@ -275,12 +275,12 @@ public class UsersSingleton_CF implements iUsersSingleton {
 
     @Override
     public void storeDeviceId(String userId, String deviceId, SaveDeviceIdCallbacks callbacks) {
-
+        throw new RuntimeException("Не реализовано, так как не используется");
     }
 
     @Override
     public void subscribeToCardComments(Context context, boolean enableSubscription, String userId, String cardId, CardCommentsSubscriptionCallbacks callbacks) {
-
+        throw new RuntimeException("Не реализовано, так как не используется");
     }
 
     @Override
