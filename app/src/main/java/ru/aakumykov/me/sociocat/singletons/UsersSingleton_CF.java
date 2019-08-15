@@ -17,6 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -284,8 +286,56 @@ public class UsersSingleton_CF implements iUsersSingleton {
     }
 
     @Override
-    public void createOrUpdateExternalUser(String internalUserId, String externalUserId, String userName, CreateOrUpdateExternalUser_Callbacks callbacks) {
+    public void createOrUpdateExternalUser(String internalUserId, String externalUserId, String userName,
+                                           CreateOrUpdateExternalUser_Callbacks callbacks) {
+        if (TextUtils.isEmpty(internalUserId)) {
+            callbacks.onCreateOrUpdateExternalUser_Error("internalUserId cannot be empty");
+            return;
+        }
 
+        if (TextUtils.isEmpty(externalUserId)) {
+            callbacks.onCreateOrUpdateExternalUser_Error("externalUserId cannot be empty");
+            return;
+        }
+
+        if (TextUtils.isEmpty(userName)) {
+            callbacks.onCreateOrUpdateExternalUser_Error("userName cannot be empty");
+            return;
+        }
+
+        getUserById(internalUserId, new ReadCallbacks() {
+            @Override
+            public void onUserReadSuccess(User user) {
+                user.setName(userName);
+                saveUser(user, new SaveCallbacks() {
+                    @Override
+                    public void onUserSaveSuccess(User user) {
+                        callbacks.onCreateOrUpdateExternalUser_Success(user);
+                    }
+
+                    @Override
+                    public void onUserSaveFail(String errorMsg) {
+                        callbacks.onCreateOrUpdateExternalUser_Error(errorMsg);
+                    }
+                });
+            }
+
+            @Override
+            public void onUserReadFail(String errorMsg) {
+
+                createUser(internalUserId, userName, "", new CreateCallbacks() {
+                    @Override
+                    public void onUserCreateSuccess(User user) {
+                        callbacks.onCreateOrUpdateExternalUser_Success(user);
+                    }
+
+                    @Override
+                    public void onUserCreateFail(String errorMsg) {
+                        callbacks.onCreateOrUpdateExternalUser_Error(errorMsg);
+                    }
+                });
+            }
+        });
     }
 
     @Override
