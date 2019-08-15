@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +32,9 @@ public class UsersSingleton_CF implements iUsersSingleton {
 
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private CollectionReference usersCollection = firebaseFirestore.collection(Constants.USERS_PATH);
+    private final static String TAG = "UsersSingleton_CF";
+    private User currentUser;
+
 
     /* Одиночка */
     private static volatile UsersSingleton_CF ourInstance;
@@ -338,13 +342,26 @@ public class UsersSingleton_CF implements iUsersSingleton {
         });
     }
 
+    // TODO: удалить
     @Override
     public void refreshUserFromServer(@Nullable RefreshCallbacks callbacks) {
 
     }
 
     @Override
-    public void refreshUserFromServer(String userId, @Nullable RefreshCallbacks callbacks) {
+    public void refreshUserFromServer(String userId, RefreshCallbacks callbacks) {
+        if (TextUtils.isEmpty(userId)) {
+            callbacks.onUserRefreshFail("User id cannot be empty");
+            return;
+        }
+
+        if (null != currentUser && currentUser.getKey().equals(userId)) {
+            String errorMsg = "Attempt to refresh user (" + currentUser.getKey() + ") with different userId (" + userId + ")";
+            Log.e(TAG, errorMsg);
+            callbacks.onUserRefreshFail(errorMsg);
+            return;
+        }
+
 
     }
 

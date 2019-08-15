@@ -74,6 +74,7 @@ public class UsersSingleton implements iUsersSingleton {
             Log.e(TAG, errorMsg);
             if (null != callbacks)
                 callbacks.onUserRefreshFail(errorMsg);
+            return;
         }
 
         readUser(userId, new ReadCallbacks() {
