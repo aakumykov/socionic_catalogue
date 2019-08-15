@@ -87,8 +87,27 @@ public class UsersSingleton_CF implements iUsersSingleton {
     }
 
     @Override
-    public void getUserById(String id, ReadCallbacks callbacks) {
-
+    public void getUserById(String userId, ReadCallbacks callbacks) {
+        usersCollection.document(userId).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        try {
+                            User user = documentSnapshot.toObject(User.class);
+                            callbacks.onUserReadSuccess(user);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            callbacks.onUserReadFail(e.getMessage());
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        callbacks.onUserReadFail(e.getMessage());
+                    }
+                });
     }
 
     @Override

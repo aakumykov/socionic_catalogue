@@ -17,7 +17,7 @@ public interface iUsersSingleton {
     public final static String PUSH_TOKEN_NAME = "push_token";
 
     void createUser(String userId, String userName, String email, CreateCallbacks callbacks);
-    void getUserById(String id, ReadCallbacks callbacks);
+    void getUserById(String userId, ReadCallbacks callbacks);
     void getUserByEmail(String email, ReadCallbacks callbacks);
     void saveUser(User user, SaveCallbacks callbacks);
     void deleteUser(User user, DeleteCallbacks callbacks);
