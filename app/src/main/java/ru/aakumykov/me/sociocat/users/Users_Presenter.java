@@ -18,7 +18,7 @@ import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;

@@ -2,8 +2,9 @@ package ru.aakumykov.me.sociocat.register.register_step_1;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -12,8 +13,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
