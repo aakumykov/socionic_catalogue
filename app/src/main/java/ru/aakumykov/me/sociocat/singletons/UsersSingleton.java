@@ -53,12 +53,6 @@ public class UsersSingleton implements iUsersSingleton {
     private DatabaseReference deviceIdRef = rootRef.child(Constants.DEVICE_ID_PATH);
 
 
-    // Интерфейсные методы
-    @Override
-    public void refreshUserFromServer(RefreshCallbacks callbacks) {
-        refreshUserFromServer(currentUser.getKey(), callbacks);
-    }
-
     @Override
     public void refreshUserFromServer(String userId, RefreshCallbacks callbacks) {
 

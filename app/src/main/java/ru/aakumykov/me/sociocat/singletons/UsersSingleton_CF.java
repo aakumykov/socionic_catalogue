@@ -343,12 +343,6 @@ public class UsersSingleton_CF implements iUsersSingleton {
         });
     }
 
-    // TODO: удалить
-    @Override
-    public void refreshUserFromServer(@Nullable RefreshCallbacks callbacks) {
-
-    }
-
     @Override
     public void refreshUserFromServer(String userId, RefreshCallbacks callbacks) throws RuntimeException {
         if (TextUtils.isEmpty(userId))

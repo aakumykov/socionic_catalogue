@@ -31,7 +31,6 @@ public interface iUsersSingleton {
     void createOrUpdateExternalUser(String internalUserId, String externalUserId, String userName,
                                     CreateOrUpdateExternalUser_Callbacks callbacks);
 
-    void refreshUserFromServer(@Nullable RefreshCallbacks callbacks);
     void refreshUserFromServer(String userId, RefreshCallbacks callbacks) throws RuntimeException;
     void storeCurrentUser(User user);
     void clearCurrentUser();
