@@ -379,38 +379,41 @@ public class UsersSingleton_CF implements iUsersSingleton {
     }
 
     @Override
-    public void storeCurrentUser(User user) {
+    public void storeCurrentUser(User user) throws IllegalArgumentException {
+        if (null == user)
+            throw new IllegalArgumentException("User cannot be null");
 
+        currentUser = user;
     }
 
     @Override
     public void clearCurrentUser() {
-
+        currentUser = null;
     }
 
     @Override
     public User getCurrentUser() {
-        return null;
+        return currentUser;
     }
 
     @Override
     public void storeAdminsList(HashMap<String, Boolean> list) {
-
+        throw new RuntimeException("Не используется в реализации на Cloid Firestore");
     }
 
     @Override
     public boolean currentUserIsAdmin() {
-        return false;
+        return adminsList.contains(currentUser.getKey());
     }
 
     @Override
     public String currentUserName() {
-        return null;
+        return currentUser.getName();
     }
 
     @Override
     public boolean isCardOwner(Card card) {
-        return false;
+        return card.getUserId().equals(currentUser.getKey());
     }
 
 
@@ -437,6 +440,7 @@ public class UsersSingleton_CF implements iUsersSingleton {
                 });
     }
 
+/*
     private void readCurrentUserFromServer(ReadCallbacks callbacks) throws Exception {
         if (null == currentUser)
             throw new RuntimeException("Current user id null");
@@ -457,6 +461,7 @@ public class UsersSingleton_CF implements iUsersSingleton {
             }
         });
     }
+*/
 
     private void readAdminsListFromServer(ReadAdminsListCallbacks callbacks) {
         adminsCollection.get()

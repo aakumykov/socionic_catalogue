@@ -32,7 +32,7 @@ public interface iUsersSingleton {
                                     CreateOrUpdateExternalUser_Callbacks callbacks);
 
     void refreshUserFromServer(String userId, RefreshCallbacks callbacks) throws RuntimeException;
-    void storeCurrentUser(User user);
+    void storeCurrentUser(User user) throws IllegalArgumentException;
     void clearCurrentUser();
     User getCurrentUser();
 
