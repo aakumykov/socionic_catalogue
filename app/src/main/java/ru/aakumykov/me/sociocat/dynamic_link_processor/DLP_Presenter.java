@@ -27,7 +27,7 @@ public class DLP_Presenter implements iDLP.Presenter {
     private iDLP.View view;
     private FirebaseDynamicLinks firebaseDynamicLinks = FirebaseDynamicLinks.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
 
 
     @Override

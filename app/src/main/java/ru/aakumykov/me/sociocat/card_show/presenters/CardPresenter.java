@@ -24,7 +24,7 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     private iCardShow.iCommentsPresenter commentsPresenter;
 //    private iCardsSingleton cardSingleton = CardsSingleton.getInstance();
     private iCardsSingleton cardSingleton = CardsSingleton_CF.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
     private @Nullable Card currentCard;
 
 

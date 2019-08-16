@@ -20,7 +20,7 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
 
     private iRegisterStep1.View view;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
 
 
     // Системные методы

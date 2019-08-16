@@ -22,7 +22,7 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
     private iRegisterStep2.View view;
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private boolean userNameIsValid = false;
     private boolean passwordIsValid = false;

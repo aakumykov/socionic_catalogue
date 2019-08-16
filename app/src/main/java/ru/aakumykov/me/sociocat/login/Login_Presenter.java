@@ -32,7 +32,7 @@ public class Login_Presenter implements
     private Intent mTransitIntent;
     private Bundle mTransitArguments;
 
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     private String externalAccessToken;

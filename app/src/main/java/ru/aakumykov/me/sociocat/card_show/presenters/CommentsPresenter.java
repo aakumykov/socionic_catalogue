@@ -32,7 +32,7 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
     private iCardShow.iPageView pageView;
 //    private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iCommentsSingleton commentsSingleton = CommentsSingleton_CF.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
 
     private iTextItem mRepliedItem;
     private Comment mEditedComment;
