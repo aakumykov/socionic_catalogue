@@ -2,10 +2,8 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -348,10 +346,7 @@ public class UsersSingleton_CF implements iUsersSingleton {
         if (TextUtils.isEmpty(userId))
             throw new IllegalArgumentException("User id cannot be empty");
 
-        if (null == currentUser)
-            throw new RuntimeException("Current user id null");
-
-        if (currentUser.getKey().equals(userId))
+        if (null != currentUser && currentUser.getKey().equals(userId))
             throw new RuntimeException("Attempt to refresh user (" + currentUser.getKey() + ") with different userId (" + userId + ")");
 
         getUserById(userId, new ReadCallbacks() {

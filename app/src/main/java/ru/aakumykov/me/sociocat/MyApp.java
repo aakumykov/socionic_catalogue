@@ -38,7 +38,9 @@ public class MyApp extends Application {
 
             if (null != firebaseUser) {
 
-                usersSingleton.refreshUserFromServer(firebaseUser.getUid(), new iUsersSingleton.RefreshCallbacks() {
+                String userId = firebaseUser.getUid();
+
+                usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
                     @Override
                     public void onUserRefreshSuccess(User user) {
                         authorizeUser(user);
