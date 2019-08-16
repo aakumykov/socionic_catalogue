@@ -6,8 +6,6 @@ public final class Config {
 
     public final static boolean DEBUG_MODE = true;
 
-    public final static String YOUTUBE_API_KEY = "AIzaSyDmoNN5aMSvJflpt6bjQdTWfPc7CHtz3i4";
-
     // Длины
     public final static int TAG_MIN_LENGTH = 2;
     public final static int TAG_MAX_LENGTH = 40;
