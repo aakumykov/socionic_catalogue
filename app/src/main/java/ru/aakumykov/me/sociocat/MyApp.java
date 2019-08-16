@@ -16,7 +16,6 @@ import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
@@ -43,7 +42,8 @@ public class MyApp extends Application {
                 usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
                     @Override
                     public void onUserRefreshSuccess(User user) {
-                        authorizeUser(user);
+                        if (null != user)
+                            authorizeUser(user);
                     }
 
                     @Override
