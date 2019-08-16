@@ -32,8 +32,8 @@ public class Comment extends ListItem implements
     private String userId;
     private String userName;
     private String userAvatarURL;
-    private String createdAt;
-    private String editedAt;
+    private Long createdAt;
+    private Long editedAt;
     private Integer rating = 0;
     private List<String> rateUpList = new ArrayList<>();
     private List<String> rateDownList = new ArrayList<>();
@@ -125,8 +125,8 @@ public class Comment extends ListItem implements
         dest.writeString(userId);
         dest.writeString(userName);
         dest.writeString(userAvatarURL);
-        dest.writeString(createdAt);
-        dest.writeString(editedAt);
+        dest.writeLong(createdAt);
+        dest.writeLong(editedAt);
         dest.writeInt(rating);
         dest.writeList(this.rateUpList);
         dest.writeList(this.rateDownList);
@@ -141,8 +141,8 @@ public class Comment extends ListItem implements
         userId = in.readString();
         userName = in.readString();
         userAvatarURL = in.readString();
-        createdAt = in.readString();
-        editedAt = in.readString();
+        createdAt = in.readLong();
+        editedAt = in.readLong();
         rating = in.readInt();
         in.readStringList(rateUpList);
         in.readStringList(rateDownList);
@@ -207,17 +207,17 @@ public class Comment extends ListItem implements
         this.userAvatarURL = userAvatarURL;
     }
 
-    public String getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getEditedAt() {
+    public Long getEditedAt() {
         return editedAt;
     }
-    public void setEditedAt(String editedAt) {
+    public void setEditedAt(Long editedAt) {
         this.editedAt = editedAt;
     }
 
