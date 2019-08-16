@@ -66,9 +66,9 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
             );
         }
 
-        cTimeView.setText(comment.getCreatedAt());
+        cTimeView.setText(String.valueOf(comment.getCreatedAt()));
 
-        mTimeView.setText(comment.getEditedAt());
+        mTimeView.setText(String.valueOf(comment.getEditedAt()));
 
         textView.setText(comment.getText());
 

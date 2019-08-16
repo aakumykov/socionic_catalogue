@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
+import java.util.Date;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
@@ -204,6 +205,7 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
                 newComment.setUserId(user.getKey());
                 newComment.setUserName(user.getName());
                 newComment.setUserAvatarURL(user.getAvatarURL());
+                newComment.setCreatedAt(new Date().getTime());
 
         switch (mRepliedItem.getItemType()) {
             case CARD_ITEM:
@@ -251,6 +253,7 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
 
         Comment modifiedComment = mEditedComment;
                 modifiedComment.setText(text);
+                modifiedComment.setEditedAt(new Date().getTime());
 
         commentForm.disable();
 
