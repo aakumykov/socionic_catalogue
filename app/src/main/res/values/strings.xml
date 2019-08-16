@@ -483,4 +483,5 @@
     <string name="MENU_search_widget">Поле поиска</string>
     <string name="press_again_to_exit">Нажмите ещё раз, чтобы выйти</string>
     <string name="CARDS_GRID_error_storing_cards_list">Ошибка сохранения списка карточек</string>
+    <string name="USER_EDIT_error_updating_user">Ошибка обновления пользователя (рекомендуется выйти из програмы и зайти вновь)</string>
 </resources>

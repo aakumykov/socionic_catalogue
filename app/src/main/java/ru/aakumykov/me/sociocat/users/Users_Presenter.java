@@ -253,8 +253,19 @@ public class Users_Presenter implements
     @Override
     public void onFileUploadSuccess(String fileName, String downloadURL) {
         editView.hideAvatarThrobber();
-        currentUser.setAvatarFileName(fileName);
-        currentUser.setAvatarURL(downloadURL);
+//        currentUser.setAvatarFileName(fileName);
+//        currentUser.setAvatarURL(downloadURL);
+        usersSingleton.refreshUserFromServer(currentUser.getKey(), new iUsersSingleton.RefreshCallbacks() {
+            @Override
+            public void onUserRefreshSuccess(User user) {
+                currentUser = user;
+            }
+
+            @Override
+            public void onUserRefreshFail(String errorMsg) {
+                editView.showErrorMsg(R.string.USER_EDIT_error_updating_user, errorMsg);
+            }
+        });
         saveUser();
     }
 
