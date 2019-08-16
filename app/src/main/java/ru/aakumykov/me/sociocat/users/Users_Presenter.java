@@ -126,8 +126,12 @@ public class Users_Presenter implements
         usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
-                showView.hideProgressMessage();
-                showView.displayUser(user);
+                if (null != user) {
+                    showView.hideProgressMessage();
+                    showView.displayUser(user);
+                }
+                else
+                    showView.showErrorMsg(R.string.USER_SHOW_error_displaying_user, "User is NULL");
             }
 
             @Override
