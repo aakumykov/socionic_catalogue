@@ -145,7 +145,9 @@ public class UserShow_View extends BaseView implements
             getMenuInflater().inflate(R.menu.edit, menu);
         }
 
-        super.onCreateOptionsMenu(menu);
+        MenuItem menuItemEdit = menu.findItem(R.id.actionEdit);
+        if (null != menuItemEdit)
+            menuItemEdit.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         return true;
     }
