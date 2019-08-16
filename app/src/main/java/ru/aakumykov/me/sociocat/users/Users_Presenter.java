@@ -257,25 +257,19 @@ public class Users_Presenter implements
     @Override
     public void onFileUploadSuccess(String fileName, String downloadURL) {
         editView.hideAvatarThrobber();
+//        currentUser.setAvatarFileName(fileName);
+//        currentUser.setAvatarURL(downloadURL);
+        usersSingleton.refreshUserFromServer(currentUser.getKey(), new iUsersSingleton.RefreshCallbacks() {
+            @Override
+            public void onUserRefreshSuccess(User user) {
+                currentUser = user;
+            }
 
-        try {
-            usersSingleton.refreshUserFromServer(currentUser.getKey(), new iUsersSingleton.RefreshCallbacks() {
-                @Override
-                public void onUserRefreshSuccess(User user) {
-                    currentUser = user;
-                }
-
-                @Override
-                public void onUserRefreshFail(String errorMsg) {
-                    editView.showErrorMsg(R.string.USER_EDIT_error_updating_user, errorMsg);
-                }
-            });
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            editView.showErrorMsg(R.string.USER_EDIT_error_updating_user, e.getMessage());
-        }
-
+            @Override
+            public void onUserRefreshFail(String errorMsg) {
+                editView.showErrorMsg(R.string.USER_EDIT_error_updating_user, errorMsg);
+            }
+        });
         saveUser();
     }
 
@@ -294,13 +288,7 @@ public class Users_Presenter implements
 
     @Override
     public void onUserSaveSuccess(User user) {
-        try {
-            usersSingleton.storeCurrentUser(user);
-        } catch (Exception e) {
-            e.printStackTrace();
-            editView.showErrorMsg(R.string.USER_EDIT_error_updating_user, e.getMessage());
-        }
-
+        usersSingleton.storeCurrentUser(user);
         editView.hideProgressMessage();
         editView.finishEdit(user, true);
     }
