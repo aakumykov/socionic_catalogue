@@ -39,18 +39,25 @@ public class MyApp extends Application {
 
                 String userId = firebaseUser.getUid();
 
-                usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
-                    @Override
-                    public void onUserRefreshSuccess(User user) {
-                        if (null != user)
-                            authorizeUser(user);
-                    }
+                try {
+                    usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
+                        @Override
+                        public void onUserRefreshSuccess(User user) {
+                            if (null != user)
+                                authorizeUser(user);
+                        }
 
-                    @Override
-                    public void onUserRefreshFail(String errorMsg) {
-                        deauthorizeUser();
-                    }
-                });
+                        @Override
+                        public void onUserRefreshFail(String errorMsg) {
+                            deauthorizeUser();
+                        }
+                    });
+                }
+                catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                    e.printStackTrace();
+                    deauthorizeUser();
+                }
 
             } else {
                 Log.e(TAG, "FirebaseUser == NULL");

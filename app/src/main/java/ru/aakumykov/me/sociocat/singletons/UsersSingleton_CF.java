@@ -342,12 +342,12 @@ public class UsersSingleton_CF implements iUsersSingleton {
     }
 
     @Override
-    public void refreshUserFromServer(String userId, RefreshCallbacks callbacks) throws RuntimeException {
+    public void refreshUserFromServer(String userId, RefreshCallbacks callbacks) throws Exception {
         if (TextUtils.isEmpty(userId))
-            throw new IllegalArgumentException("User id cannot be empty");
+            throw new Exception("User id cannot be empty");
 
-        if (null != currentUser && currentUser.getKey().equals(userId))
-            throw new RuntimeException("Attempt to refresh user (" + currentUser.getKey() + ") with different userId (" + userId + ")");
+        if (null != currentUser && !currentUser.getKey().equals(userId))
+            throw new Exception("Attempt to refresh user (" + currentUser.getKey() + ") with different userId (" + userId + ")");
 
         getUserById(userId, new ReadCallbacks() {
             @Override
@@ -374,9 +374,9 @@ public class UsersSingleton_CF implements iUsersSingleton {
     }
 
     @Override
-    public void storeCurrentUser(User user) throws IllegalArgumentException {
+    public void storeCurrentUser(User user) throws Exception {
         if (null == user)
-            throw new IllegalArgumentException("User cannot be null");
+            throw new Exception("User cannot be null");
 
         currentUser = user;
     }

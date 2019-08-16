@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +26,7 @@ import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 public class Login_Presenter implements
         iLogin.Presenter
 {
-    //private final static String TAG = "Login_Presenter";
+    private final static String TAG = "Login_Presenter";
     private iLogin.View view;
 
     private String mIntentAction;
@@ -83,23 +84,30 @@ public class Login_Presenter implements
                     public void onSuccess(AuthResult authResult) {
                         String userId = authResult.getUser().getUid();
 
-                        usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
-                            @Override
-                            public void onUserRefreshSuccess(User user) {
-                                processSuccessfullLogin(user);
-                            }
+                        try {
+                            usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
+                                @Override
+                                public void onUserRefreshSuccess(User user) {
+                                    processSuccessfullLogin(user);
+                                }
 
-                            @Override
-                            public void onUserRefreshFail(String errorMsg) {
-                                showLoginError(errorMsg);
-                            }
-                        });
+                                @Override
+                                public void onUserRefreshFail(String errorMsg) {
+                                    showLoginError(errorMsg);
+                                }
+                            });
+                        }
+                        catch (Exception e) {
+                            Log.e(TAG, e.getMessage());
+                            e.printStackTrace();
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        Log.e(TAG, e.getMessage());
+                        e.printStackTrace();
                     }
                 });
     }
@@ -227,7 +235,12 @@ public class Login_Presenter implements
                         view.hideProgressMessage();
                         view.showToast(R.string.LOGIN_login_success);
 
-                        usersSingleton.storeCurrentUser(user);
+                        try {
+                            usersSingleton.storeCurrentUser(user);
+                        } catch (Exception e) {
+                            Log.e(TAG, e.getMessage());
+                            e.printStackTrace();
+                        }
 
                         view.finishLogin(false, mTransitIntent, mTransitArguments);
                     }
