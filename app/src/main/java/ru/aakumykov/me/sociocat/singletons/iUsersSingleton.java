@@ -2,8 +2,6 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import android.content.Context;
 
-import androidx.annotation.Nullable;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,8 +29,8 @@ public interface iUsersSingleton {
     void createOrUpdateExternalUser(String internalUserId, String externalUserId, String userName,
                                     CreateOrUpdateExternalUser_Callbacks callbacks);
 
-    void refreshUserFromServer(String userId, RefreshCallbacks callbacks) throws RuntimeException;
-    void storeCurrentUser(User user) throws IllegalArgumentException;
+    void refreshUserFromServer(String userId, RefreshCallbacks callbacks) throws Exception;
+    void storeCurrentUser(User user) throws Exception;
     void clearCurrentUser();
     User getCurrentUser();
 
