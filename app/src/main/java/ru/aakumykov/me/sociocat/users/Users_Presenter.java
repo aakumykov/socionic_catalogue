@@ -258,7 +258,13 @@ public class Users_Presenter implements
     public void onFileUploadSuccess(String fileName, String downloadURL) {
         editView.hideAvatarThrobber();
 
-        try {
+        // Не очень красивое решение обновлять пользователя здесь, а потом
+        // отдельным методом сохранять. А следующий блок с refreshUserFromServer()
+        // вообще не нужен.
+        currentUser.setAvatarFileName(fileName);
+        currentUser.setAvatarURL(downloadURL);
+
+        /*try {
             usersSingleton.refreshUserFromServer(currentUser.getKey(), new iUsersSingleton.RefreshCallbacks() {
                 @Override
                 public void onUserRefreshSuccess(User user) {
@@ -274,7 +280,7 @@ public class Users_Presenter implements
         catch (Exception e) {
             e.printStackTrace();
             editView.showErrorMsg(R.string.USER_EDIT_error_updating_user, e.getMessage());
-        }
+        }*/
 
         saveUser();
     }
