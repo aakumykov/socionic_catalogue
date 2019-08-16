@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
@@ -266,4 +267,7 @@ public class Comment extends ListItem implements
         return getRateDownList().contains(userId);
     }
 
+    @Exclude public boolean isCreatedBy(String checkedUserId) {
+        return (!TextUtils.isEmpty(checkedUserId) && !TextUtils.isEmpty(checkedUserId) && this.userId.equals(checkedUserId));
+    }
 }

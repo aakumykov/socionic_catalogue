@@ -477,4 +477,7 @@
     <string name="press_again_to_exit">Press again to exit app</string>
     <string name="CARDS_GRID_error_storing_cards_list">Error storing cards list</string>
     <string name="USER_EDIT_error_updating_user">Error updating user (relogin is recommended)</string>
+    <string name="COMMENT_edit">Edit</string>
+    <string name="COMMENT_authorization_required">Authorization required (╯°-°)╯</string>
+    <string name="COMMENT_error_cannot_edit_this_comment">You cannot edit this comment</string>
 </resources>

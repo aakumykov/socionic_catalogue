@@ -103,7 +103,12 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
     @Override
     public void onEditCommentClicked(Comment comment) {
         if (!AuthSingleton.isLoggedIn()) {
-            pageView.showToast("Необходимо авторизоваться (╯°-°)╯");
+            pageView.showToast(R.string.COMMENT_authorization_required);
+            return;
+        }
+
+        if (!comment.isCreatedBy(AuthSingleton.currentUserId())) {
+            pageView.showToast(R.string.COMMENT_error_cannot_edit_this_comment);
             return;
         }
 

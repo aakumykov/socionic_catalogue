@@ -484,4 +484,7 @@
     <string name="press_again_to_exit">Нажмите ещё раз, чтобы выйти</string>
     <string name="CARDS_GRID_error_storing_cards_list">Ошибка сохранения списка карточек</string>
     <string name="USER_EDIT_error_updating_user">Ошибка обновления пользователя (рекомендуется выйти из програмы и зайти вновь)</string>
+    <string name="COMMENT_edit">Изменить</string>
+    <string name="COMMENT_authorization_required">Необходимо авторизоваться (╯°-°)╯</string>
+    <string name="COMMENT_error_cannot_edit_this_comment">Вы не можете редактировать этот комментарий</string>
 </resources>
