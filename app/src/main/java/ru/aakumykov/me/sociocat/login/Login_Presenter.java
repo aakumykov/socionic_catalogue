@@ -88,7 +88,15 @@ public class Login_Presenter implements
                             usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
                                 @Override
                                 public void onUserRefreshSuccess(User user) {
-                                    processSuccessfullLogin(user);
+                                    try {
+                                        processSuccessfullLogin(user);
+                                    }
+                                    catch (Exception e) {
+                                        view.showToast(R.string.LOGIN_login_error);
+                                        cancelLogin();
+                                        Log.e(TAG, e.getMessage());
+                                        e.printStackTrace();
+                                    }
                                 }
 
                                 @Override
