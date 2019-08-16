@@ -7,18 +7,14 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,10 +26,15 @@ import ru.aakumykov.me.sociocat.models.User;
 
 public class UsersSingleton_CF implements iUsersSingleton {
 
-    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private CollectionReference usersCollection = firebaseFirestore.collection(Constants.USERS_PATH);
     private final static String TAG = "UsersSingleton_CF";
+
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+    private CollectionReference usersCollection = firebaseFirestore.collection(Constants.USERS_PATH);
     private User currentUser;
+
+    private CollectionReference adminsCollection = firebaseFirestore.collection(Constants.ADMINS_PATH);
+    private List<String> adminsList = new ArrayList<>();
 
 
     /* Одиночка */
@@ -349,20 +350,38 @@ public class UsersSingleton_CF implements iUsersSingleton {
     }
 
     @Override
-    public void refreshUserFromServer(String userId, RefreshCallbacks callbacks) {
-        if (TextUtils.isEmpty(userId)) {
-            callbacks.onUserRefreshFail("User id cannot be empty");
-            return;
-        }
+    public void refreshUserFromServer(String userId, RefreshCallbacks callbacks) throws RuntimeException {
+        if (TextUtils.isEmpty(userId))
+            throw new IllegalArgumentException("User id cannot be empty");
 
-        if (null != currentUser && currentUser.getKey().equals(userId)) {
-            String errorMsg = "Attempt to refresh user (" + currentUser.getKey() + ") with different userId (" + userId + ")";
-            Log.e(TAG, errorMsg);
-            callbacks.onUserRefreshFail(errorMsg);
-            return;
-        }
+        if (null == currentUser)
+            throw new RuntimeException("Current user id null");
 
+        if (currentUser.getKey().equals(userId))
+            throw new RuntimeException("Attempt to refresh user (" + currentUser.getKey() + ") with different userId (" + userId + ")");
 
+        getUserById(userId, new ReadCallbacks() {
+            @Override
+            public void onUserReadSuccess(User user) {
+                currentUser = user;
+                readAdminsListFromServer(new ReadAdminsListCallbacks() {
+                    @Override
+                    public void onReadAdminsListSuccess() {
+                        callbacks.onUserRefreshSuccess(user);
+                    }
+
+                    @Override
+                    public void onReadAdminsListFail(String errorMsg) {
+                        callbacks.onUserRefreshFail(errorMsg);
+                    }
+                });
+            }
+
+            @Override
+            public void onUserReadFail(String errorMsg) {
+                callbacks.onUserRefreshFail(errorMsg);
+            }
+        });
     }
 
     @Override
@@ -420,6 +439,46 @@ public class UsersSingleton_CF implements iUsersSingleton {
                     public void onFailure(@NonNull Exception e) {
                         e.printStackTrace();
                         callbacks.onCheckFail(e.getMessage());
+                    }
+                });
+    }
+
+    private void readCurrentUserFromServer(ReadCallbacks callbacks) throws Exception {
+        if (null == currentUser)
+            throw new RuntimeException("Current user id null");
+
+        String userId = currentUser.getKey();
+        if (TextUtils.isEmpty(userId))
+            throw new RuntimeException("User id cannot be empty.");
+
+        getUserById(userId, new ReadCallbacks() {
+            @Override
+            public void onUserReadSuccess(User user) {
+                currentUser = user;
+            }
+
+            @Override
+            public void onUserReadFail(String errorMsg) {
+                callbacks.onUserReadFail(errorMsg);
+            }
+        });
+    }
+
+    private void readAdminsListFromServer(ReadAdminsListCallbacks callbacks) {
+        adminsCollection.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments())
+                            adminsList.add(documentSnapshot.getId());
+                        callbacks.onReadAdminsListSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        callbacks.onReadAdminsListFail(e.getMessage());
                     }
                 });
     }
