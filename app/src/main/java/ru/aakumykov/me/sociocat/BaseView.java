@@ -229,10 +229,17 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     public <T> void showDebugMsg(T msg) {
         if (Config.DEBUG_MODE) {
-            String message = String.valueOf(msg);
             hideProgressMessage();
-            showMsg(message, R.color.debug, R.color.white);
-            Log.d("showDebugMsg(): ", message);
+            String text = "";
+            if (msg instanceof Integer) {
+                text = getResources().getString((Integer) msg);
+                showMsg(text, R.color.debug, R.color.white);
+            }
+            else {
+                text = String.valueOf(msg);
+                showMsg(text, R.color.debug, R.color.white);
+            }
+            Log.d("showDebugMsg(): ", text);
         }
     }
 
