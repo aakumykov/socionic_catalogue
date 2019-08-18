@@ -271,7 +271,7 @@ public class UsersSingleton implements iUsersSingleton {
         updatePool.put(Constants.USERS_PATH+"/"+user.getKey(), user);
 
         // Обновляю имя в его карточках
-        Map<String,Boolean> userCards = user.getCardsKeys();
+        Map<String,Boolean> userCards = user.getCardsKeysHash();
         if (null != userCards) {
             for (Map.Entry entry : userCards.entrySet()) {
                 updatePool.put(Constants.CARDS_PATH + "/" + entry.getKey() + "/userName", user.getName());
@@ -279,7 +279,7 @@ public class UsersSingleton implements iUsersSingleton {
         }
 
         // Обновляю имя и аватар в его комментариях
-        Map<String,Boolean> userComments = user.getCommentsKeys();
+        Map<String,Boolean> userComments = user.getCommentsKeysHash();
         if (null != userComments) {
             for (Map.Entry entry : userComments.entrySet()) {
                 updatePool.put(Constants.COMMENTS_PATH + "/" + entry.getKey() + "/userName", user.getName());
