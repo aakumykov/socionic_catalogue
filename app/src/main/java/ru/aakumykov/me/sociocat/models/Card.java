@@ -42,7 +42,7 @@ public class Card extends ListItem implements
     private String fileName;
     private String videoCode;
     private String audioCode;
-    private Float timecode = 0.0f;
+    private Long timecode = 0L;
     private String description;
     private List<String> tags = new ArrayList<>();
     private HashMap<String, Boolean> rateUpList;
@@ -134,7 +134,7 @@ public class Card extends ListItem implements
         fileName = in.readString();
         videoCode = in.readString();
         audioCode = in.readString();
-        timecode = in.readFloat();
+        timecode = in.readLong();
         description = in.readString();
         in.readList(tags, ArrayList.class.getClassLoader());
         rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
@@ -297,10 +297,10 @@ public class Card extends ListItem implements
     }
 
     // Отметка времени
-    public Float getTimecode() {
+    public Long getTimecode() {
         return timecode;
     }
-    public void setTimecode(Float timecode) {
+    public void setTimecode(Long timecode) {
         this.timecode = timecode;
     }
 

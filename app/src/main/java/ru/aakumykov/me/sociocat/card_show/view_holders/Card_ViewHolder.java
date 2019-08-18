@@ -190,6 +190,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     }
 
     private void showMainContent(Card card) {
+        Float timecode = 0.0f;
+
         switch (card.getType()) {
 
             case Constants.TEXT_CARD:
@@ -209,11 +211,13 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                 break;
 
             case Constants.VIDEO_CARD:
-                showYoutubeMedia(card.getVideoCode(), InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER);
+                timecode = Float.valueOf(String.valueOf(card.getTimecode()));
+                showYoutubeMedia(card.getVideoCode(), timecode, InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER);
                 break;
 
             case Constants.AUDIO_CARD:
-                showYoutubeMedia(card.getAudioCode(), InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER);
+                timecode = Float.valueOf(String.valueOf(card.getTimecode()));
+                showYoutubeMedia(card.getAudioCode(), timecode, InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER);
                 break;
         }
     }
@@ -261,7 +265,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         }
     }
 
-    private void showYoutubeMedia(String mediaCode, InsertableYoutubePlayer.PlayerType playerType) {
+    private void showYoutubeMedia(String mediaCode, @Nullable Float timecode, InsertableYoutubePlayer.PlayerType playerType) {
 
         int waitingMessageId = -1;
         switch (playerType){
@@ -283,7 +287,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                 waitingMessageId
         );
 
-        insertableYoutubePlayer.show(mediaCode, playerType);
+        insertableYoutubePlayer.show(mediaCode, timecode, playerType);
     }
 
     private void onReplyWidgetClicked(Card card) {
