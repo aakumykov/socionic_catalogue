@@ -23,15 +23,10 @@ public class User implements Parcelable {
     private String avatarURL;
     private boolean emailVerified = false;
 
-    private List<String> cardsKeysList = new ArrayList<>();
-    private List<String> commentsKeysList = new ArrayList<>();
-    private List<String> unsubscribedCardsList = new ArrayList<>();
+    private List<String> cardsKeys = new ArrayList<>();
+    private List<String> commentsKeys = new ArrayList<>();
+    private List<String> unsubscribedCards = new ArrayList<>();
 
-
-
-    private HashMap<String,Boolean> cardsKeys = new HashMap<>();
-    private HashMap<String,Boolean> commentsKeys = new HashMap<>();
-    private HashMap<String,Boolean> unsubscribedCards = new HashMap<>();
 
     public User() {}
 
@@ -52,9 +47,9 @@ public class User implements Parcelable {
                 ", avatarFileName: "+avatarFileName+
                 ", avatarURL: "+avatarURL+
                 ", emailVerified: "+emailVerified+
-                ", cardsKeys: "+ cardsKeysList +
-                ", commentsKeys: "+ commentsKeysList +
-                ", unsubscribedCards: "+ unsubscribedCardsList +
+                ", cardsKeys: "+ cardsKeys +
+                ", commentsKeys: "+ commentsKeys +
+                ", unsubscribedCards: "+ unsubscribedCards +
                 " }";
     }
 
@@ -69,9 +64,9 @@ public class User implements Parcelable {
         map.put("avatarFileName", avatarFileName);
         map.put("avatarURL", avatarURL);
         map.put("emailVerified", emailVerified);
-        map.put("cardsKeys", cardsKeysList);
-        map.put("commentsKeys", commentsKeysList);
-        map.put("unsubscribedCards", unsubscribedCardsList);
+        map.put("cardsKeys", cardsKeys);
+        map.put("commentsKeys", commentsKeys);
+        map.put("unsubscribedCards", unsubscribedCards);
         return map;
     }
 
@@ -105,9 +100,9 @@ public class User implements Parcelable {
         dest.writeString(avatarFileName);
         dest.writeString(avatarURL);
         dest.writeString(String.valueOf(emailVerified));
-        dest.writeList(this.cardsKeysList);
-        dest.writeList(this.commentsKeysList);
-        dest.writeList(this.unsubscribedCardsList);
+        dest.writeList(this.cardsKeys);
+        dest.writeList(this.commentsKeys);
+        dest.writeList(this.unsubscribedCards);
     }
 
     private User(Parcel in) {
@@ -123,9 +118,9 @@ public class User implements Parcelable {
 //        cardsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
 //        commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
 //        unsubscribedCards = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
-        in.readList(this.cardsKeysList, ArrayList.class.getClassLoader());
-        in.readList(this.commentsKeysList, ArrayList.class.getClassLoader());
-        in.readList(this.unsubscribedCardsList, ArrayList.class.getClassLoader());
+        in.readList(this.cardsKeys, ArrayList.class.getClassLoader());
+        in.readList(this.commentsKeys, ArrayList.class.getClassLoader());
+        in.readList(this.unsubscribedCards, ArrayList.class.getClassLoader());
     }
     /* Parcelable */
 
@@ -187,41 +182,41 @@ public class User implements Parcelable {
     }
 
     public List<String> getCardsKeys() {
-        return new ArrayList<>(cardsKeys.keySet());
+        return this.cardsKeys;
     }
     public void setCardsKeysList(List<String> cardsKeysList) {
-        this.cardsKeysList.clear();
-        this.cardsKeysList.addAll(cardsKeysList);
+        this.cardsKeys.clear();
+        this.cardsKeys.addAll(cardsKeysList);
     }
     @Exclude public HashMap<String, Boolean> getCardsKeysHash() {
         HashMap<String,Boolean> hashMap = new HashMap<>();
-        for (String key : this.cardsKeysList)
+        for (String key : this.cardsKeys)
             hashMap.put(key, true);
         return hashMap;
     }
 
     public List<String> getCommentsKeys() {
-        return new ArrayList<>(commentsKeys.keySet());
+        return this.commentsKeys;
     }
     public void setCommentsKeysList(List<String> commentsKeysList) {
-        this.commentsKeysList.clear();
-        this.commentsKeysList.addAll(commentsKeysList);
+        this.commentsKeys.clear();
+        this.commentsKeys.addAll(commentsKeysList);
     }
     @Exclude public HashMap<String, Boolean> getCommentsKeysHash() {
         HashMap<String,Boolean> hashMap = new HashMap<>();
-        for (String key : this.commentsKeysList)
+        for (String key : this.commentsKeys)
             hashMap.put(key, true);
         return hashMap;
     }
 
-    public List<String> getUnsubscribedCards() { return new ArrayList<>(unsubscribedCards.keySet()); }
+    public List<String> getUnsubscribedCards() { return this.unsubscribedCards; }
     public void setUnsubscribedCardsList(List<String> unsubscribedCardsList) {
-        this.unsubscribedCardsList.clear();
-        this.unsubscribedCardsList.addAll(unsubscribedCardsList);
+        this.unsubscribedCards.clear();
+        this.unsubscribedCards.addAll(unsubscribedCardsList);
     }
     @Exclude public HashMap<String,Boolean> getUnsubscribedCardsHash() {
         HashMap<String,Boolean> hashMap = new HashMap<>();
-        for (String key : this.unsubscribedCardsList)
+        for (String key : this.unsubscribedCards)
             hashMap.put(key, true);
         return hashMap;
     }
@@ -231,20 +226,7 @@ public class User implements Parcelable {
     }
 
     @Exclude public boolean isSubscribedToCardComments(String cardId) {
-        return this.unsubscribedCardsList.contains(cardId);
-    }
-
-
-    public void setCardsKeys(HashMap<String, Boolean> cardsKeys) {
-        this.cardsKeys = cardsKeys;
-    }
-
-    public void setCommentsKeys(HashMap<String, Boolean> commentsKeys) {
-        this.commentsKeys = commentsKeys;
-    }
-
-    public void setUnsubscribedCards(HashMap<String, Boolean> unsubscribedCards) {
-        this.unsubscribedCards = unsubscribedCards;
+        return this.unsubscribedCards.contains(cardId);
     }
 
 }
