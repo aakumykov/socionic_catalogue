@@ -16,8 +16,9 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
@@ -37,8 +38,9 @@ public class Users_Presenter implements
     private iUsers.ShowView showView;
     private iUsers.ListView listView;
     private iUsers.EditView editView;
-    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
-    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iUsersSingleton usersSingleton_CF = UsersSingleton_CF.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
@@ -127,6 +129,7 @@ public class Users_Presenter implements
             @Override
             public void onUserReadSuccess(User user) {
                 if (null != user) {
+                    currentUser = user;
                     showView.hideProgressMessage();
                     showView.displayUser(user);
                 }
@@ -145,6 +148,23 @@ public class Users_Presenter implements
     public void cancelButtonClicked() {
         Log.d(TAG, "cancelButtonClicked()");
         editView.closePage();
+    }
+
+    @Override
+    public void onTransferUserClicked() {
+        showView.showProgressMessage(R.string.USER_SHOW_transferring_user);
+
+        usersSingleton_CF.saveUser(currentUser, new iUsersSingleton.SaveCallbacks() {
+            @Override
+            public void onUserSaveSuccess(User user) {
+                showView.showDebugMsg(R.string.USER_SHOW_user_transfer_success);
+            }
+
+            @Override
+            public void onUserSaveFail(String errorMsg) {
+                showView.showErrorMsg(R.string.USER_SHOW_user_transfer_error, errorMsg);
+            }
+        });
     }
 
     @Override

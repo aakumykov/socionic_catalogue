@@ -7,7 +7,9 @@ import android.text.TextUtils;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @IgnoreExtraProperties
 public class User implements Parcelable {
@@ -20,9 +22,16 @@ public class User implements Parcelable {
     private String avatarFileName;
     private String avatarURL;
     private boolean emailVerified = false;
-    private HashMap<String, Boolean> cardsKeys;
-    private HashMap<String, Boolean> commentsKeys;
-    private HashMap<String, Boolean> unsubscribedCards;
+
+    private List<String> cardsKeysList = new ArrayList<>();
+    private List<String> commentsKeysList = new ArrayList<>();
+    private List<String> unsubscribedCardsList = new ArrayList<>();
+
+
+
+    private HashMap<String,Boolean> cardsKeys = new HashMap<>();
+    private HashMap<String,Boolean> commentsKeys = new HashMap<>();
+    private HashMap<String,Boolean> unsubscribedCards = new HashMap<>();
 
     public User() {}
 
@@ -32,8 +41,7 @@ public class User implements Parcelable {
     }
 
     // Преобразователи
-    @Override
-    @Exclude
+    @Override @Exclude
     public String toString() {
         return "User { "+
                 "key: "+key+
@@ -44,9 +52,9 @@ public class User implements Parcelable {
                 ", avatarFileName: "+avatarFileName+
                 ", avatarURL: "+avatarURL+
                 ", emailVerified: "+emailVerified+
-                ", cardsKeys: "+cardsKeys+
-                ", commentsKeys: "+commentsKeys+
-                ", unsubscribedCards: "+unsubscribedCards+
+                ", cardsKeys: "+ cardsKeysList +
+                ", commentsKeys: "+ commentsKeysList +
+                ", unsubscribedCards: "+ unsubscribedCardsList +
                 " }";
     }
 
@@ -61,9 +69,9 @@ public class User implements Parcelable {
         map.put("avatarFileName", avatarFileName);
         map.put("avatarURL", avatarURL);
         map.put("emailVerified", emailVerified);
-        map.put("cardsKeys", cardsKeys);
-        map.put("commentsKeys", commentsKeys);
-        map.put("unsubscribedCards", unsubscribedCards);
+        map.put("cardsKeys", cardsKeysList);
+        map.put("commentsKeys", commentsKeysList);
+        map.put("unsubscribedCards", unsubscribedCardsList);
         return map;
     }
 
@@ -97,9 +105,9 @@ public class User implements Parcelable {
         dest.writeString(avatarFileName);
         dest.writeString(avatarURL);
         dest.writeString(String.valueOf(emailVerified));
-        dest.writeMap(this.cardsKeys);
-        dest.writeMap(this.commentsKeys);
-        dest.writeMap(this.unsubscribedCards);
+        dest.writeList(this.cardsKeysList);
+        dest.writeList(this.commentsKeysList);
+        dest.writeList(this.unsubscribedCardsList);
     }
 
     private User(Parcel in) {
@@ -112,9 +120,12 @@ public class User implements Parcelable {
         avatarFileName = in.readString();
         avatarURL = in.readString();
         emailVerified = in.readString().equals("1");
-        cardsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
-        commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
-        unsubscribedCards = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+//        cardsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+//        commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+//        unsubscribedCards = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+        in.readList(this.cardsKeysList, ArrayList.class.getClassLoader());
+        in.readList(this.commentsKeysList, ArrayList.class.getClassLoader());
+        in.readList(this.unsubscribedCardsList, ArrayList.class.getClassLoader());
     }
     /* Parcelable */
 
@@ -175,23 +186,44 @@ public class User implements Parcelable {
         this.emailVerified = emailVerified;
     }
 
-    public HashMap<String, Boolean> getCommentsKeys() {
-        return commentsKeys;
+    public List<String> getCardsKeys() {
+        return new ArrayList<>(cardsKeys.keySet());
     }
-    public void setCommentsKeys(HashMap<String, Boolean> commentsKeys) {
-        this.commentsKeys = commentsKeys;
+    public void setCardsKeysList(List<String> cardsKeysList) {
+        this.cardsKeysList.clear();
+        this.cardsKeysList.addAll(cardsKeysList);
+    }
+    @Exclude public HashMap<String, Boolean> getCardsKeysHash() {
+        HashMap<String,Boolean> hashMap = new HashMap<>();
+        for (String key : this.cardsKeysList)
+            hashMap.put(key, true);
+        return hashMap;
     }
 
-    public HashMap<String, Boolean> getCardsKeys() {
-        return cardsKeys;
+    public List<String> getCommentsKeys() {
+        return new ArrayList<>(commentsKeys.keySet());
     }
-    public void setCardsKeys(HashMap<String, Boolean> cardsKeys) {
-        this.cardsKeys = cardsKeys;
+    public void setCommentsKeysList(List<String> commentsKeysList) {
+        this.commentsKeysList.clear();
+        this.commentsKeysList.addAll(commentsKeysList);
+    }
+    @Exclude public HashMap<String, Boolean> getCommentsKeysHash() {
+        HashMap<String,Boolean> hashMap = new HashMap<>();
+        for (String key : this.commentsKeysList)
+            hashMap.put(key, true);
+        return hashMap;
     }
 
-    public HashMap<String,Boolean> getUnsubscribedCards() { return unsubscribedCards; }
-    public void setUnsubscribedCards(HashMap<String,Boolean> unsubscribedCards) {
-        this.unsubscribedCards = unsubscribedCards;
+    public List<String> getUnsubscribedCards() { return new ArrayList<>(unsubscribedCards.keySet()); }
+    public void setUnsubscribedCardsList(List<String> unsubscribedCardsList) {
+        this.unsubscribedCardsList.clear();
+        this.unsubscribedCardsList.addAll(unsubscribedCardsList);
+    }
+    @Exclude public HashMap<String,Boolean> getUnsubscribedCardsHash() {
+        HashMap<String,Boolean> hashMap = new HashMap<>();
+        for (String key : this.unsubscribedCardsList)
+            hashMap.put(key, true);
+        return hashMap;
     }
 
     @Exclude public boolean hasAvatar() {
@@ -199,8 +231,20 @@ public class User implements Parcelable {
     }
 
     @Exclude public boolean isSubscribedToCardComments(String cardId) {
-        HashMap<String,Boolean> unsubscribedCards = getUnsubscribedCards();
-        if (null == unsubscribedCards) return true;
-        return !unsubscribedCards.containsKey(cardId);
+        return this.unsubscribedCardsList.contains(cardId);
     }
+
+
+    public void setCardsKeys(HashMap<String, Boolean> cardsKeys) {
+        this.cardsKeys = cardsKeys;
+    }
+
+    public void setCommentsKeys(HashMap<String, Boolean> commentsKeys) {
+        this.commentsKeys = commentsKeys;
+    }
+
+    public void setUnsubscribedCards(HashMap<String, Boolean> unsubscribedCards) {
+        this.unsubscribedCards = unsubscribedCards;
+    }
+
 }

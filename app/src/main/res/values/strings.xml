@@ -487,4 +487,7 @@
     <string name="COMMENT_edit">Изменить</string>
     <string name="COMMENT_authorization_required">Необходимо авторизоваться (╯°-°)╯</string>
     <string name="COMMENT_error_cannot_edit_this_comment">Вы не можете редактировать этот комментарий</string>
+    <string name="USER_SHOW_transferring_user">Переносим пользователя в CF</string>
+    <string name="USER_SHOW_user_transfer_success">Пользователь перенесён</string>
+    <string name="USER_SHOW_user_transfer_error">Ошибка переноса пользователя</string>
 </resources>
