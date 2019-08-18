@@ -152,7 +152,7 @@ public class UserShow_View extends BaseView implements
         if (null != menuItemEdit)
             menuItemEdit.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        menuInflater.inflate(R.menu.transfer_user, menu);
+//        menuInflater.inflate(R.menu.transfer_user, menu);
 
         return true;
     }
