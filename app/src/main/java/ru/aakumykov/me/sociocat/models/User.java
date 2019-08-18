@@ -187,7 +187,7 @@ public class User implements Parcelable {
     }
 
     public List<String> getCardsKeys() {
-        return cardsKeysList;
+        return new ArrayList<>(cardsKeys.keySet());
     }
     public void setCardsKeysList(List<String> cardsKeysList) {
         this.cardsKeysList.clear();
@@ -201,7 +201,7 @@ public class User implements Parcelable {
     }
 
     public List<String> getCommentsKeys() {
-        return commentsKeysList;
+        return new ArrayList<>(commentsKeys.keySet());
     }
     public void setCommentsKeysList(List<String> commentsKeysList) {
         this.commentsKeysList.clear();
@@ -214,7 +214,7 @@ public class User implements Parcelable {
         return hashMap;
     }
 
-    public List<String> getUnsubscribedCards() { return unsubscribedCardsList; }
+    public List<String> getUnsubscribedCards() { return new ArrayList<>(unsubscribedCards.keySet()); }
     public void setUnsubscribedCardsList(List<String> unsubscribedCardsList) {
         this.unsubscribedCardsList.clear();
         this.unsubscribedCardsList.addAll(unsubscribedCardsList);
@@ -246,4 +246,5 @@ public class User implements Parcelable {
     public void setUnsubscribedCards(HashMap<String, Boolean> unsubscribedCards) {
         this.unsubscribedCards = unsubscribedCards;
     }
+
 }
