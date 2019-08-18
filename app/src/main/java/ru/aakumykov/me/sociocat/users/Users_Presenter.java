@@ -18,7 +18,6 @@ import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
@@ -38,8 +37,7 @@ public class Users_Presenter implements
     private iUsers.ShowView showView;
     private iUsers.ListView listView;
     private iUsers.EditView editView;
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-    private iUsersSingleton usersSingleton_CF = UsersSingleton_CF.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
