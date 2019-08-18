@@ -42,6 +42,7 @@ public class Card extends ListItem implements
     private String fileName;
     private String videoCode;
     private String audioCode;
+    private String timecode;
     private String description;
     private List<String> tags = new ArrayList<>();
     private HashMap<String, Boolean> rateUpList;
@@ -70,6 +71,7 @@ public class Card extends ListItem implements
                 ", fileName: "+fileName+
                 ", videoCode: "+videoCode +
                 ", audioCode: "+audioCode +
+                ", timecode: "+timecode +
                 ", description: "+getDescription()+
                 ", tags: "+ getTags()+
                 ", rateUpList: "+ getRateUpList()+
@@ -86,7 +88,7 @@ public class Card extends ListItem implements
     }
 
 
-    /* Parcelable */
+    // Parcelable
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         // важен порядок заполнения
@@ -104,6 +106,7 @@ public class Card extends ListItem implements
         dest.writeString(this.fileName);
         dest.writeString(this.videoCode);
         dest.writeString(this.audioCode);
+        dest.writeString(this.timecode);
         dest.writeString(this.description);
         dest.writeList(this.tags);
         dest.writeMap(this.rateUpList);
@@ -131,6 +134,7 @@ public class Card extends ListItem implements
         fileName = in.readString();
         videoCode = in.readString();
         audioCode = in.readString();
+        timecode = in.readString();
         description = in.readString();
         in.readList(tags, ArrayList.class.getClassLoader());
         rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
@@ -158,7 +162,7 @@ public class Card extends ListItem implements
             return new Card[size];
         }
     };
-    /* Parcelable */
+    // Parcelable
 
 
     // Геттеры
@@ -194,8 +198,7 @@ public class Card extends ListItem implements
         if (null == tags) this.tags = new ArrayList<>();
         return tags;
     }
-    @Exclude
-    public HashMap<String, Boolean> getTagsHash() {
+    @Exclude public HashMap<String, Boolean> getTagsHash() {
         HashMap<String, Boolean> hashMap = new HashMap<>();
         for (String tagName : this.tags)
             hashMap.put(tagName, true);
@@ -273,7 +276,6 @@ public class Card extends ListItem implements
         this.mtime = mTime;
     }
 
-
     public void setVideoCode(String videoCode) {
         this.videoCode = videoCode;
     }
@@ -292,6 +294,14 @@ public class Card extends ListItem implements
     }
     public void removeAudioCode() {
         this.audioCode = null;
+    }
+
+    // Отметка времени
+    public String getTimecode() {
+        return timecode;
+    }
+    public void setTimecode(String timecode) {
+        this.timecode = timecode;
     }
 
 
