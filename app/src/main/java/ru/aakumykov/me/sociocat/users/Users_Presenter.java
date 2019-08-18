@@ -152,7 +152,9 @@ public class Users_Presenter implements
 
     @Override
     public void onTransferUserClicked() {
-        showView.showProgressMessage(R.string.USER_SHOW_transferring_user);
+        showView.showToast("Метод Users_Presenter.onTransferUserClicked() отключен.");
+
+        /*showView.showProgressMessage(R.string.USER_SHOW_transferring_user);
 
         usersSingleton_CF.saveUser(currentUser, new iUsersSingleton.SaveCallbacks() {
             @Override
@@ -164,7 +166,7 @@ public class Users_Presenter implements
             public void onUserSaveFail(String errorMsg) {
                 showView.showErrorMsg(R.string.USER_SHOW_user_transfer_error, errorMsg);
             }
-        });
+        });*/
     }
 
     @Override

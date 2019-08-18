@@ -171,9 +171,9 @@ public class UserShow_View extends BaseView implements
             case R.id.actionDelete:
 //                presenter.userDeleteClicked(currentUser.getKey());
                 break;
-            case R.id.actionTransferUser:
-                presenter.onTransferUserClicked();
-                break;
+//            case R.id.actionTransferUser:
+//                presenter.onTransferUserClicked();
+//                break;
             default:
                 super.onOptionsItemSelected(item);
         }
