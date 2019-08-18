@@ -84,7 +84,7 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.cancelButton) Button cancelButton;
 
     private final static String TAG = "CardEdit_View";
-    private MyYoutubePlayer youTubePlayer;
+    private MyYoutubePlayer myYoutubePlayer;
     private iCardEdit.Presenter presenter;
     private List<String> tagsList = new ArrayList<>();
     private boolean firstRun = true;
@@ -145,8 +145,8 @@ public class CardEdit_View extends BaseView implements
         if (!exitIsExpected && !selectImageMode) {
             if (isFormFilled()) {
                 try {
-                    if (null != youTubePlayer)
-                        youTubePlayer.pause();
+                    if (null != myYoutubePlayer)
+                        myYoutubePlayer.pause();
                     presenter.saveEditState();
                 } catch (Exception e) {
                     //showLongToast(R.string.CARD_EDIT_error_saving_edit_state);
@@ -160,6 +160,9 @@ public class CardEdit_View extends BaseView implements
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (null != myYoutubePlayer)
+            myYoutubePlayer.pause();
 
         if (!selectImageMode) {
             try {
@@ -180,8 +183,8 @@ public class CardEdit_View extends BaseView implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != youTubePlayer)
-            youTubePlayer.release();
+        if (null != myYoutubePlayer)
+            myYoutubePlayer.release();
     }
 
     @Override
@@ -321,7 +324,7 @@ public class CardEdit_View extends BaseView implements
 
         prepareForVideoCard();
 
-        youTubePlayer.show(youtubeCode, MyYoutubePlayer.PlayerType.VIDEO_PLAYER);
+        myYoutubePlayer.show(youtubeCode, MyYoutubePlayer.PlayerType.VIDEO_PLAYER);
         MyUtils.show(convertToAudioButton);
         MyUtils.show(removeMediaButton);
     }
@@ -336,7 +339,7 @@ public class CardEdit_View extends BaseView implements
 
         prepareForAudioCard();
 
-        youTubePlayer.show(youtubeCode, MyYoutubePlayer.PlayerType.AUDIO_PLAYER);
+        myYoutubePlayer.show(youtubeCode, MyYoutubePlayer.PlayerType.AUDIO_PLAYER);
         MyUtils.show(convertToVideoButton);
         MyUtils.show(removeMediaButton);
     }
@@ -355,7 +358,7 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void removeMedia() {
-        youTubePlayer.remove();
+        myYoutubePlayer.remove();
 
         MyUtils.show(addMediaButton);
 
@@ -404,13 +407,13 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void convert2audio() {
-        youTubePlayer.convert2audio();
+        myYoutubePlayer.convert2audio();
         changeButtonsForAudio();
     }
 
     @Override
     public void convert2video() {
-        youTubePlayer.convert2video();
+        myYoutubePlayer.convert2video();
         changeButtonsForVideo();
     }
 
@@ -483,7 +486,7 @@ public class CardEdit_View extends BaseView implements
         if (!TextUtils.isEmpty(getQuoteSource())) changed = true;
         if (!TextUtils.isEmpty(getDescription())) changed = true;
         if (tagsContainer.getTags().size() > 0) changed = true;
-        if (null != youTubePlayer && youTubePlayer.hasMedia()) changed = true;
+        if (null != myYoutubePlayer && myYoutubePlayer.hasMedia()) changed = true;
 
         return changed;
     }
@@ -888,10 +891,10 @@ public class CardEdit_View extends BaseView implements
     }
 
     private void prepareMediaPlayer() {
-        if (null != youTubePlayer)
+        if (null != myYoutubePlayer)
             return;
 
-        youTubePlayer = new MyYoutubePlayer(
+        myYoutubePlayer = new MyYoutubePlayer(
                 this,
                 playerContainer,
                 R.string.YOUTUBE_PLAYER_preparing_player,
