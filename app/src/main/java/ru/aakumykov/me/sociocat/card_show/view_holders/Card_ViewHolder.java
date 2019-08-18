@@ -176,7 +176,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         String currentUserId = AuthSingleton.currentUserId();
 
         showTitle(card);
-        showDescribedContent(card);
+        showMainContent(card);
         showQuoteSource(card);
         showDescription(card);
         showAuthor(card);
@@ -189,7 +189,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         titleView.setText(card.getTitle());
     }
 
-    private void showDescribedContent(Card card) {
+    private void showMainContent(Card card) {
         switch (card.getType()) {
 
             case Constants.TEXT_CARD:
