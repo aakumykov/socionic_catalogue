@@ -483,4 +483,5 @@
     <string name="USER_SHOW_transferring_user">Transferring user to CF</string>
     <string name="USER_SHOW_user_transfer_success">User transfer success</string>
     <string name="USER_SHOW_user_transfer_error">Ошибка переноса пользователя</string>
+    <string name="CARD_EDIT_waiting_media_data">Waiting for data</string>
 </resources>

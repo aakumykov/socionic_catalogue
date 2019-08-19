@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:id="@+id/scrollView"
+<ScrollView android:id="@+id/scrollView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -141,8 +142,32 @@
                     android:paddingTop="3dp"
                     android:paddingBottom="3dp"
                     android:text="@string/CARD_EDIT_add_youtube_link"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:visibility="visible" />
             </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/timecodeControlsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/timecodeInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:ems="10"
+                    android:inputType="time"
+                    android:text="00:00:00"
+                    android:textAlignment="center" />
+
+                <SeekBar
+                    android:id="@+id/timecodeSeekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/convertToAudioButton"
@@ -151,7 +176,8 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/card_edit_convert_button_background"
                 android:text="@string/CARD_EDIT_convert_to_audio"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:visibility="visible" />
 
             <Button
                 android:id="@+id/convertToVideoButton"
@@ -160,7 +186,8 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/card_edit_convert_button_background"
                 android:text="@string/CARD_EDIT_convert_to_video"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:visibility="visible" />
 
             <Button
                 android:id="@+id/removeMediaButton"
@@ -169,7 +196,8 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/colorAccent"
                 android:text="@string/CARD_EDIT_remove_audio"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:visibility="visible" />
 
         </LinearLayout>
 

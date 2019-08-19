@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -37,6 +38,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
+import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -76,6 +78,10 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.convertToAudioButton) Button convertToAudioButton;
     @BindView(R.id.convertToVideoButton) Button convertToVideoButton;
 
+    @BindView(R.id.timecodeControlsContainer) LinearLayout timecodeControlsContainer;
+    @BindView(R.id.timecodeInput) EditText timecodeInput;
+    @BindView(R.id.timecodeSeekBar) SeekBar timecodeSeekBar;
+
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.newTagInput) AutoCompleteTextView newTagInput;
     @BindView(R.id.addTagButton) Button addTagButton;
@@ -85,6 +91,7 @@ public class CardEdit_View extends BaseView implements
 
     private final static String TAG = "CardEdit_View";
     private MyYoutubePlayer myYoutubePlayer;
+    private InsertableYoutubePlayer insertableYoutubePlayer;
     private iCardEdit.Presenter presenter;
     private List<String> tagsList = new ArrayList<>();
     private boolean firstRun = true;
@@ -248,10 +255,10 @@ public class CardEdit_View extends BaseView implements
                 displayImageFromCard(card);
                 break;
             case Constants.VIDEO_CARD:
-                displayVideo(card.getVideoCode());
+                displayVideo(card.getVideoCode(), card.getTimecode());
                 break;
             case Constants.AUDIO_CARD:
-                displayAudio(card.getAudioCode());
+                displayAudio(card.getAudioCode(), card.getTimecode());
                 break;
             default:
                 showErrorMsg(R.string.wrong_card_type, "Unknown card type: "+cardType);
@@ -315,7 +322,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void displayVideo(final String youtubeCode) {
+    public void displayVideo(final String youtubeCode, @Nullable Double timecode) {
 
         if (TextUtils.isEmpty(youtubeCode)) {
             MyUtils.show(addMediaButton);
@@ -327,10 +334,12 @@ public class CardEdit_View extends BaseView implements
         myYoutubePlayer.show(youtubeCode, MyYoutubePlayer.PlayerType.VIDEO_PLAYER);
         MyUtils.show(convertToAudioButton);
         MyUtils.show(removeMediaButton);
+
+        showTimecodeControls(timecode);
     }
 
     @Override
-    public void displayAudio(final String youtubeCode) {
+    public void displayAudio(final String youtubeCode, @Nullable Double timecode) {
 
         if (null == youtubeCode) {
             MyUtils.show(addMediaButton);
@@ -342,6 +351,8 @@ public class CardEdit_View extends BaseView implements
         myYoutubePlayer.show(youtubeCode, MyYoutubePlayer.PlayerType.AUDIO_PLAYER);
         MyUtils.show(convertToVideoButton);
         MyUtils.show(removeMediaButton);
+
+        showTimecodeControls(timecode);
     }
 
     @Override
@@ -903,7 +914,20 @@ public class CardEdit_View extends BaseView implements
                 R.drawable.ic_player_wait
         );
 
+        insertableYoutubePlayer = new InsertableYoutubePlayer(
+                this,
+                playerContainer,
+                R.string.CARD_EDIT_waiting_media_data
+        );
+
         addMediaButton.setText(R.string.CARD_EDIT_add_youtube_link);
+    }
+
+    private void showTimecodeControls(Double timecode) {
+        String secondsString = MyUtils.seconds2HHMMSS(timecode);
+        timecodeInput.setText(secondsString);
+
+        MyUtils.show(timecodeControlsContainer);
     }
 
     private void changeButtonsForVideo() {

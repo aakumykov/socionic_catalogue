@@ -21,8 +21,8 @@ public interface iCardEdit {
         void displayCard(Card card);
         void displayImageFromCard(Card card);
         void displayImage(String imageURI);
-        void displayVideo(String videoCode);
-        void displayAudio(String audioCode);
+        void displayVideo(String videoCode, @Nullable Double timecode);
+        void displayAudio(String audioCode, @Nullable Double timecode);
 
         void removeImage();
         void removeMedia();
