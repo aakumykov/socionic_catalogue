@@ -20,9 +20,14 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -260,6 +265,17 @@ public final class MyUtils {
         return context.getResources().getString(msgId);
     }
 
+    public static String seconds2HHMMSS(Double seconds) {
+        int sec = new BigDecimal(seconds).intValue();
+        return seconds2HHMMSS(sec);
+    }
+
+    public static String seconds2HHMMSS(int seconds) {
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss", Locale.US);
+        df.setTimeZone(tz);
+        return df.format(new Date(seconds*1000));
+    }
 
 /*    private static void hideProgressBar(Activity activity) {
         ProgressBar progressBar = activity.findViewById(R.id.progressBar);
