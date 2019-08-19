@@ -42,7 +42,7 @@ public class Card extends ListItem implements
     private String fileName;
     private String videoCode;
     private String audioCode;
-    private Double timecode = 0.0d;
+    private Double timecode;
     private String description;
     private List<String> tags = new ArrayList<>();
     private HashMap<String, Boolean> rateUpList;
@@ -303,7 +303,6 @@ public class Card extends ListItem implements
     public void setTimecode(Double timecode) {
         this.timecode = timecode;
     }
-
 
     // Рейтинг
     @Exclude

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -190,8 +191,6 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     }
 
     private void showMainContent(Card card) {
-        Float timecode = 0.0f;
-
         switch (card.getType()) {
 
             case Constants.TEXT_CARD:
@@ -211,13 +210,12 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                 break;
 
             case Constants.VIDEO_CARD:
-                timecode = Float.valueOf(String.valueOf(card.getTimecode()));
-                showYoutubeMedia(card.getVideoCode(), timecode, InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER);
+                Double timecode = card.getTimecode();
+                showYoutubeMedia(card.getVideoCode(), card.getTimecode(), InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER);
                 break;
 
             case Constants.AUDIO_CARD:
-                timecode = Float.valueOf(String.valueOf(card.getTimecode()));
-                showYoutubeMedia(card.getAudioCode(), timecode, InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER);
+                showYoutubeMedia(card.getAudioCode(), card.getTimecode(), InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER);
                 break;
         }
     }
@@ -265,7 +263,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         }
     }
 
-    private void showYoutubeMedia(String mediaCode, @Nullable Float timecode, InsertableYoutubePlayer.PlayerType playerType) {
+    private void showYoutubeMedia(String mediaCode, @Nullable Double timecode, InsertableYoutubePlayer.PlayerType playerType) {
 
         int waitingMessageId = -1;
         switch (playerType){
@@ -287,7 +285,11 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                 waitingMessageId
         );
 
-        insertableYoutubePlayer.show(mediaCode, timecode, playerType);
+        Float timecodeFloat = null;
+        if (null != timecode)
+            timecodeFloat = new BigDecimal(timecode).floatValue();
+
+        insertableYoutubePlayer.show(mediaCode, timecodeFloat, playerType);
     }
 
     private void onReplyWidgetClicked(Card card) {
