@@ -157,6 +157,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             throw new IllegalArgumentException("Card is null");
 
         pageView.setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
+        pageView.refreshMenu();
 
         int cardPosition = 0;
 
