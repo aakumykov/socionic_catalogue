@@ -42,7 +42,7 @@ public class Card extends ListItem implements
     private String fileName;
     private String videoCode;
     private String audioCode;
-    private Double timecode;
+    private Double timecode = 0.0D;
     private String description;
     private List<String> tags = new ArrayList<>();
     private HashMap<String, Boolean> rateUpList;
@@ -411,7 +411,7 @@ public class Card extends ListItem implements
     }
 
     @Exclude public boolean isCreatedBy(User user) {
-        return key.equals(user.getKey());
+        return userId.equals(user.getKey());
     }
 
 
