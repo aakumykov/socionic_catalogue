@@ -91,7 +91,10 @@ public class CardEdit_View extends BaseView implements
     private final static String TAG = "CardEdit_View";
 
     private InsertableYoutubePlayer insertableYoutubePlayer;
-    private int seekbarPorgessValue = 0;
+    private int mSeekbarPorgessValue = 0;
+
+    private float mVideoDuration = 0.0f;
+    private float mVideoTimecode = 0.0f;
 
     private iCardEdit.Presenter presenter;
     private List<String> tagsList = new ArrayList<>();
@@ -330,21 +333,35 @@ public class CardEdit_View extends BaseView implements
             return;
         }
 
+        mVideoTimecode = MyUtils.double2float(timecode);
+
         prepareForVideoCard();
 
-        insertableYoutubePlayer.show(youtubeCode, 0.0f, InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER, new InsertableYoutubePlayer.ShowCallbacks() {
-            @Override
-            public void onVideoShown() {
-                MyUtils.show(convertToAudioButton);
-                MyUtils.show(removeMediaButton);
-                showTimecodeControls(timecode);
-            }
+        insertableYoutubePlayer
+            .addOnAppearListener(new InsertableYoutubePlayer.iAppearListener() {
+                @Override
+                public void onAppear() {
+                    showTimecodeInput(timecode);
+                    timecodeInput.setText(MyUtils.seconds2HHMMSS(timecode));
+                    MyUtils.show(convertToAudioButton);
+                    MyUtils.show(removeMediaButton);
+                }
+            })
+            .addOnReadyListener(new InsertableYoutubePlayer.iReadyListener() {
+                @Override
+                public void onReady(Float duration) {
+                    mVideoDuration = duration;
+                    enableTimecodeInput();
+                }
+            })
+            .addOnSeekListener(new InsertableYoutubePlayer.iSeekListener() {
+                @Override
+                public void onSeek(float timecode) {
+                    setTimecode(timecode);
+                }
+            });
 
-            @Override
-            public void onVideoShowError(String errorMsg) {
-                showErrorMsg(R.string.CARD_EDIT_error_displaying_video, errorMsg);
-            }
-        });
+        insertableYoutubePlayer.show(youtubeCode, 0.0f, InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER);
     }
 
     @Override
@@ -357,19 +374,24 @@ public class CardEdit_View extends BaseView implements
 
         prepareForAudioCard();
 
-        insertableYoutubePlayer.show(youtubeCode, 0.0f, InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER, new InsertableYoutubePlayer.ShowCallbacks() {
+        /*insertableYoutubePlayer.show(youtubeCode, 0.0f, InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER, new InsertableYoutubePlayer.PlayerCallbacks() {
             @Override
-            public void onVideoShown() {
+            public void onReady() {
                 MyUtils.show(convertToVideoButton);
                 MyUtils.show(removeMediaButton);
                 showTimecodeControls(timecode);
             }
 
             @Override
-            public void onVideoShowError(String errorMsg) {
-                showErrorMsg(R.string.CARD_EDIT_error_adding_audio, errorMsg);
+            public void onError(String errorMsg) {
+                showErrorMsg(R.string.CARD_EDIT_error_displaying_video, errorMsg);
             }
-        });
+
+            @Override
+            public void onSeek(float timecode) {
+                timecodeInput.setText(String.valueOf(timecode));
+            }
+        });*/
     }
 
     @Override
@@ -922,55 +944,13 @@ public class CardEdit_View extends BaseView implements
         if (null != insertableYoutubePlayer)
             return;
 
-        /*insertableYoutubePlayer = new MyYoutubePlayer(
-                this,
-                playerContainer,
-                R.string.YOUTUBE_PLAYER_preparing_player,
-                R.drawable.ic_player_play,
-                R.drawable.ic_player_pause,
-                R.drawable.ic_player_wait
-        );*/
-
         insertableYoutubePlayer = new InsertableYoutubePlayer(
                 this,
                 playerContainer,
-                R.string.CARD_EDIT_waiting_media_data
+                R.string.CARD_EDIT_preparing_player
         );
 
         addMediaButton.setText(R.string.CARD_EDIT_add_youtube_link);
-    }
-
-    private void showTimecodeControls(Double timecode) {
-
-        timecodeInput.setText(MyUtils.seconds2HHMMSS(timecode));
-
-        int progressValue = 0;
-
-        timecodeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser) {
-                    seekbarPorgessValue = progress;
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                insertableYoutubePlayer.seekTo(seekbarPorgessValue, new InsertableYoutubePlayer.SeekCallbacks() {
-                    @Override
-                    public void onSeekComplete(float timeCode) {
-                        timecodeInput.setText(String.valueOf(timeCode));
-                    }
-                });
-            }
-        });
-
-        MyUtils.show(timecodeControlsContainer);
     }
 
     private void changeButtonsForVideo() {
@@ -983,5 +963,41 @@ public class CardEdit_View extends BaseView implements
         MyUtils.show(convertToVideoButton);
         MyUtils.hide(convertToAudioButton);
         removeMediaButton.setText(R.string.CARD_EDIT_remove_audio);
+    }
+
+    private void showTimecodeInput(Double timecode) {
+        timecodeInput.setText(MyUtils.seconds2HHMMSS(timecode));
+
+        timecodeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mSeekbarPorgessValue = progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                insertableYoutubePlayer.seekTo(mSeekbarPorgessValue);
+            }
+        });
+
+        MyUtils.show(timecodeControlsContainer);
+    }
+
+    private void setTimecode(Float position) {
+        String timecodeString = MyUtils.seconds2HHMMSS(position);
+        timecodeInput.setText(timecodeString);
+    }
+
+    private void enableTimecodeInput() {
+        int initialVideoProgress = Math.round( (mVideoTimecode / mVideoDuration) * 100);
+        timecodeSeekBar.setProgress(initialVideoProgress);
+
+        MyUtils.enable(timecodeInput);
+        MyUtils.enable(timecodeSeekBar);
     }
 }

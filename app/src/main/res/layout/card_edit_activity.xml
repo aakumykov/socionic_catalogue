@@ -158,6 +158,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="7"
                     android:ems="10"
+                    android:enabled="false"
                     android:inputType="time"
                     android:text="00:00:00"
                     android:textAlignment="center" />
