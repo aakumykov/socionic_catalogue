@@ -303,6 +303,10 @@ public final class MyUtils {
         }
     }
 
+    public static float double2float(Double timecode) {
+        return new BigDecimal(timecode).floatValue();
+    }
+
 /*    private static void hideProgressBar(Activity activity) {
         ProgressBar progressBar = activity.findViewById(R.id.progressBar);
         if (null != progressBar)
