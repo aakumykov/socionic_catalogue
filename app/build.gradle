@@ -90,7 +90,7 @@ dependencies {
     implementation 'com.github.aakumykov:myimageloader:0.14'
 
     // Insertable Youtube Playr
-    implementation 'com.github.aakumykov:insertable-youtube-player:0.10'
+    implementation 'com.github.aakumykov:insertable-youtube-player:93f84d4aa646f0eb96bf7024fa3a05935df57def'
 
     // RxJava v1
     implementation 'io.reactivex:rxjava:1.2.3'
