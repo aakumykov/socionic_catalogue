@@ -266,15 +266,29 @@ public final class MyUtils {
     }
 
     public static String seconds2HHMMSS(Double seconds) {
-        int sec = new BigDecimal(seconds).intValue();
-        return seconds2HHMMSS(sec);
+        try {
+            int sec = new BigDecimal(seconds).intValue();
+            return seconds2HHMMSS(sec);
+        }
+        catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+            return "00:00:00";
+        }
     }
 
     public static String seconds2HHMMSS(int seconds) {
-        TimeZone tz = TimeZone.getTimeZone("UTC");
-        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss", Locale.US);
-        df.setTimeZone(tz);
-        return df.format(new Date(seconds*1000));
+        try {
+            TimeZone tz = TimeZone.getTimeZone("UTC");
+            SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss", Locale.US);
+            df.setTimeZone(tz);
+            return df.format(new Date(seconds * 1000));
+        }
+        catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+            return "00:00:00";
+        }
     }
 
 /*    private static void hideProgressBar(Activity activity) {
