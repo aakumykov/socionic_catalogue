@@ -32,6 +32,7 @@ public interface iCardEdit {
         String getQuoteSource();
         Bitmap getImageBitmap();
         String getDescription();
+        Double getTimecode();
         HashMap<String,Boolean> getTags();
 
         void convert2audio();

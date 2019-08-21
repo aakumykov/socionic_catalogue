@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,9 +29,15 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -444,6 +451,26 @@ public class CardEdit_View extends BaseView implements
     @Override
     public String getDescription() {
         return descriptionInput.getText().toString();
+    }
+
+    @Override
+    public Double getTimecode() {
+        String timecodeString = timecodeInput.getText().toString();
+
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+                   dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        try {
+            Date date = dateFormat.parse(timecodeString);
+            long seconds = date.getTime() / 1000L;
+            return seconds * 1.0d;
+        }
+        catch (ParseException e) {
+            Log.e(TAG, e.getMessage());
+            showToast(R.string.CARD_EDIT_error_parsing_timecode);
+            e.printStackTrace();
+            return 0.0d;
+        }
     }
 
     @Override
@@ -998,6 +1025,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     private void setTimecodeToVideo() {
-        insertableYoutubePlayer.seekTo(mVideoPosition);
+        float position = MyUtils.double2float(getTimecode());
+        insertableYoutubePlayer.seekTo(position);
     }
 }

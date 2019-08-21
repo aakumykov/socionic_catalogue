@@ -485,4 +485,5 @@
     <string name="USER_SHOW_user_transfer_error">Error transferring user</string>
     <string name="CARD_EDIT_waiting_media_data">Waiting for data</string>
     <string name="CARD_EDIT_preparing_player">Preparing player</string>
+    <string name="CARD_EDIT_error_parsing_timecode">Timecode error</string>
 </resources>

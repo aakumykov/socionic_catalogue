@@ -403,6 +403,7 @@ public class CardEdit_Presenter implements
             currentCard.setQuoteSource(view.getQuoteSource());
             currentCard.setDescription(view.getDescription());
             currentCard.setTags(new ArrayList<>(view.getTags().keySet()));
+            currentCard.setTimecode(view.getTimecode());
         }
     }
 

@@ -42,6 +42,7 @@ public class Card extends ListItem implements
     private String fileName;
     private String videoCode;
     private String audioCode;
+    // TODO: превратить во FLoat
     private Double timecode = 0.0D;
     private String description;
     private List<String> tags = new ArrayList<>();
