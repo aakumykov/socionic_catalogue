@@ -99,10 +99,6 @@ public class CardEdit_View extends BaseView implements
 
     private InsertableYoutubePlayer insertableYoutubePlayer;
 
-    private float mVideoDuration = 0.0f;
-    private float mVideoTimecode = 0.0f;
-    private float mVideoPosition = 0.0f;
-
     private iCardEdit.Presenter presenter;
     private List<String> tagsList = new ArrayList<>();
     private boolean firstRun = true;
@@ -340,8 +336,6 @@ public class CardEdit_View extends BaseView implements
             return;
         }
 
-        mVideoTimecode = MyUtils.double2float(timecode);
-
         prepareForVideoCard();
 
         insertableYoutubePlayer
@@ -357,7 +351,6 @@ public class CardEdit_View extends BaseView implements
             .addOnReadyListener(new InsertableYoutubePlayer.iReadyListener() {
                 @Override
                 public void onReady(Float duration) {
-                    mVideoDuration = duration;
                     enableTimecodeInput();
                 }
             })
@@ -1020,8 +1013,9 @@ public class CardEdit_View extends BaseView implements
     }
 
     private void getTimecodeFromVideo() {
-        mVideoPosition = insertableYoutubePlayer.getPosition();
-        timecodeInput.setText(MyUtils.seconds2HHMMSS(mVideoPosition));
+        float mVideoPosition = insertableYoutubePlayer.getPosition();
+        String timecodeString = MyUtils.seconds2HHMMSS(mVideoPosition);
+        timecodeInput.setText(timecodeString);
     }
 
     private void setTimecodeToVideo() {
