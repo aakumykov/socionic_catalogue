@@ -329,7 +329,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void displayVideo(final String youtubeCode, @Nullable Double timecode) {
+    public void displayVideo(final String youtubeCode, @Nullable Float timecode) {
 
         if (TextUtils.isEmpty(youtubeCode)) {
             MyUtils.show(addMediaButton);
@@ -344,7 +344,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void displayAudio(final String youtubeCode, @Nullable Double timecode) {
+    public void displayAudio(final String youtubeCode, @Nullable Float timecode) {
 
         if (null == youtubeCode) {
             MyUtils.show(addMediaButton);
@@ -411,7 +411,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public Double getTimecode() {
+    public Float getTimecode() {
         String timecodeString = timecodeInput.getText().toString();
 
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
@@ -420,13 +420,13 @@ public class CardEdit_View extends BaseView implements
         try {
             Date date = dateFormat.parse(timecodeString);
             long seconds = date.getTime() / 1000L;
-            return seconds * 1.0d;
+            return seconds * 1.0f;
         }
         catch (ParseException e) {
             Log.e(TAG, e.getMessage());
             showToast(R.string.CARD_EDIT_error_parsing_timecode);
             e.printStackTrace();
-            return 0.0d;
+            return 0.0f;
         }
     }
 
@@ -937,7 +937,7 @@ public class CardEdit_View extends BaseView implements
         addMediaButton.setText(R.string.CARD_EDIT_add_youtube_link);
     }
 
-    private void activateMediaPlayer(InsertableYoutubePlayer.PlayerType playerType, final String youtubeCode, @Nullable Double timecode) {
+    private void activateMediaPlayer(InsertableYoutubePlayer.PlayerType playerType, final String youtubeCode, @Nullable Float timecode) {
 
         insertableYoutubePlayer
                 .addOnAppearListener(new InsertableYoutubePlayer.iAppearListener() {
@@ -977,7 +977,7 @@ public class CardEdit_View extends BaseView implements
         removeMediaButton.setText(R.string.CARD_EDIT_remove_audio);
     }
 
-    private void showTimecodeInput(Double timecode) {
+    private void showTimecodeInput(Float timecode) {
         timecodeInput.setText(MyUtils.seconds2HHMMSS(timecode));
 
         MyUtils.show(timecodeControlsContainer);
@@ -1001,7 +1001,6 @@ public class CardEdit_View extends BaseView implements
     }
 
     private void setTimecodeToVideo() {
-        float position = MyUtils.double2float(getTimecode());
-        insertableYoutubePlayer.seekTo(position);
+        insertableYoutubePlayer.seekTo(getTimecode());
     }
 }

@@ -42,8 +42,7 @@ public class Card extends ListItem implements
     private String fileName;
     private String videoCode;
     private String audioCode;
-    // TODO: превратить во FLoat
-    private Double timecode = 0.0D;
+    private Float timecode = 0.0f;
     private String description;
     private List<String> tags = new ArrayList<>();
     private HashMap<String, Boolean> rateUpList;
@@ -68,11 +67,11 @@ public class Card extends ListItem implements
                 ", type: "+getType()+
                 ", quote: "+getQuote()+
                 ", quoteSource: "+getQuoteSource()+
-                ", imageURL: "+imageURL+
-                ", fileName: "+fileName+
-                ", videoCode: "+videoCode +
-                ", audioCode: "+audioCode +
-                ", timecode: "+timecode +
+                ", imageURL: "+getImageURL()+
+                ", fileName: "+getFileName()+
+                ", videoCode: "+getVideoCode() +
+                ", audioCode: "+getAudioCode() +
+                ", timecode: "+getTimecode() +
                 ", description: "+getDescription()+
                 ", tags: "+ getTags()+
                 ", rateUpList: "+ getRateUpList()+
@@ -135,7 +134,7 @@ public class Card extends ListItem implements
         fileName = in.readString();
         videoCode = in.readString();
         audioCode = in.readString();
-        timecode = in.readDouble();
+        timecode = in.readFloat();
         description = in.readString();
         in.readList(tags, ArrayList.class.getClassLoader());
         rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
@@ -298,10 +297,10 @@ public class Card extends ListItem implements
     }
 
     // Отметка времени
-    public Double getTimecode() {
+    public Float getTimecode() {
         return timecode;
     }
-    public void setTimecode(Double timecode) {
+    public void setTimecode(Float timecode) {
         this.timecode = timecode;
     }
 

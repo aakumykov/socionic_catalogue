@@ -216,7 +216,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                 break;
 
             case Constants.VIDEO_CARD:
-                Double timecode = card.getTimecode();
+                Float timecode = card.getTimecode();
                 showYoutubeMedia(card.getVideoCode(), card.getTimecode(), InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER);
                 break;
 
@@ -269,7 +269,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         }
     }
 
-    private void showYoutubeMedia(String mediaCode, @Nullable Double timecode, InsertableYoutubePlayer.PlayerType playerType) {
+    private void showYoutubeMedia(String mediaCode, @Nullable Float timecode, InsertableYoutubePlayer.PlayerType playerType) {
 
         int waitingMessageId = -1;
         switch (playerType){

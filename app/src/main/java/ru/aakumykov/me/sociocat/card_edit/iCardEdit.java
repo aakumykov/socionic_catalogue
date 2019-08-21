@@ -21,8 +21,8 @@ public interface iCardEdit {
         void displayCard(Card card);
         void displayImageFromCard(Card card);
         void displayImage(String imageURI);
-        void displayVideo(String videoCode, @Nullable Double timecode);
-        void displayAudio(String audioCode, @Nullable Double timecode);
+        void displayVideo(String videoCode, @Nullable Float timecode);
+        void displayAudio(String audioCode, @Nullable Float timecode);
 
         void removeImage();
         void removeMedia();
@@ -32,7 +32,7 @@ public interface iCardEdit {
         String getQuoteSource();
         Bitmap getImageBitmap();
         String getDescription();
-        Double getTimecode();
+        Float getTimecode();
         HashMap<String,Boolean> getTags();
 
         void convert2audio();
