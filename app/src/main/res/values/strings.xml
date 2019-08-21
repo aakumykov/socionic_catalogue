@@ -322,7 +322,7 @@
     <string name="CARD_SHOW_quote_source">Источник: %1$s</string>
     <string name="CARD_SHOW_unknown_quote_source">неизвестен</string>
     <string name="CARD_EDIT_cancel_editing_title">Отмена редактирования</string>
-    <string name="CARD_EDIT_cancel_editing_message">Потерять изменения и уйти?</string>
+    <string name="CARD_EDIT_cancel_editing_message">Отказаться от изменений и уйти?</string>
     <string name="CARD_EDIT_resume_dialog_title">Продолжить редактирование?</string>
     <string name="CARD_EDIT_resume_dialog_message">Есть несохранённая карточка. Вернуться к редактированию?</string>
     <string name="EXTERNAL_DATA_RECIEVER_error_creating_card">Ошибка создания карточки</string>
