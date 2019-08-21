@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,15 +29,22 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
+import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -46,7 +54,6 @@ import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
-import ru.aakumykov.me.sociocat.utils.MyYoutubePlayer;
 
 //@RuntimePermissions
 public class CardEdit_View extends BaseView implements
@@ -76,6 +83,11 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.convertToAudioButton) Button convertToAudioButton;
     @BindView(R.id.convertToVideoButton) Button convertToVideoButton;
 
+    @BindView(R.id.timecodeControlsContainer) LinearLayout timecodeControlsContainer;
+    @BindView(R.id.timecodeInput) EditText timecodeInput;
+    @BindView(R.id.getTimecodeButton) Button getTimecodeButton;
+    @BindView(R.id.setTimecodeButton) Button setTimecodeButton;
+
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.newTagInput) AutoCompleteTextView newTagInput;
     @BindView(R.id.addTagButton) Button addTagButton;
@@ -84,7 +96,9 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.cancelButton) Button cancelButton;
 
     private final static String TAG = "CardEdit_View";
-    private MyYoutubePlayer youTubePlayer;
+
+    private InsertableYoutubePlayer insertableYoutubePlayer;
+
     private iCardEdit.Presenter presenter;
     private List<String> tagsList = new ArrayList<>();
     private boolean firstRun = true;
@@ -145,8 +159,8 @@ public class CardEdit_View extends BaseView implements
         if (!exitIsExpected && !selectImageMode) {
             if (isFormFilled()) {
                 try {
-                    if (null != youTubePlayer)
-                        youTubePlayer.pause();
+                    if (null != insertableYoutubePlayer)
+                        insertableYoutubePlayer.pause();
                     presenter.saveEditState();
                 } catch (Exception e) {
                     //showLongToast(R.string.CARD_EDIT_error_saving_edit_state);
@@ -160,6 +174,9 @@ public class CardEdit_View extends BaseView implements
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (null != insertableYoutubePlayer)
+            insertableYoutubePlayer.pause();
 
         if (!selectImageMode) {
             try {
@@ -180,8 +197,8 @@ public class CardEdit_View extends BaseView implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != youTubePlayer)
-            youTubePlayer.release();
+        if (null != insertableYoutubePlayer)
+            insertableYoutubePlayer.release();
     }
 
     @Override
@@ -245,10 +262,10 @@ public class CardEdit_View extends BaseView implements
                 displayImageFromCard(card);
                 break;
             case Constants.VIDEO_CARD:
-                displayVideo(card.getVideoCode());
+                displayVideo(card.getVideoCode(), card.getTimecode());
                 break;
             case Constants.AUDIO_CARD:
-                displayAudio(card.getAudioCode());
+                displayAudio(card.getAudioCode(), card.getTimecode());
                 break;
             default:
                 showErrorMsg(R.string.wrong_card_type, "Unknown card type: "+cardType);
@@ -312,33 +329,33 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void displayVideo(final String youtubeCode) {
+    public void displayVideo(final String youtubeCode, @Nullable Float timecode) {
 
         if (TextUtils.isEmpty(youtubeCode)) {
             MyUtils.show(addMediaButton);
             return;
         }
 
-        prepareForVideoCard();
+        removeMediaButton.setText(R.string.CARD_EDIT_remove_video);
 
-        youTubePlayer.show(youtubeCode, MyYoutubePlayer.PlayerType.VIDEO_PLAYER);
-        MyUtils.show(convertToAudioButton);
-        MyUtils.show(removeMediaButton);
+        prepareMediaPlayer();
+
+        activateMediaPlayer(InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER, youtubeCode, timecode);
     }
 
     @Override
-    public void displayAudio(final String youtubeCode) {
+    public void displayAudio(final String youtubeCode, @Nullable Float timecode) {
 
         if (null == youtubeCode) {
             MyUtils.show(addMediaButton);
             return;
         }
 
-        prepareForAudioCard();
+        removeMediaButton.setText(R.string.CARD_EDIT_remove_video);
 
-        youTubePlayer.show(youtubeCode, MyYoutubePlayer.PlayerType.AUDIO_PLAYER);
-        MyUtils.show(convertToVideoButton);
-        MyUtils.show(removeMediaButton);
+        prepareMediaPlayer();
+
+        activateMediaPlayer(InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER, youtubeCode, timecode);
     }
 
     @Override
@@ -355,7 +372,7 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void removeMedia() {
-        youTubePlayer.remove();
+        insertableYoutubePlayer.remove();
 
         MyUtils.show(addMediaButton);
 
@@ -394,6 +411,26 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
+    public Float getTimecode() {
+        String timecodeString = timecodeInput.getText().toString();
+
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+                   dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        try {
+            Date date = dateFormat.parse(timecodeString);
+            long seconds = date.getTime() / 1000L;
+            return seconds * 1.0f;
+        }
+        catch (ParseException e) {
+            Log.e(TAG, e.getMessage());
+            showToast(R.string.CARD_EDIT_error_parsing_timecode);
+            e.printStackTrace();
+            return 0.0f;
+        }
+    }
+
+    @Override
     public HashMap<String,Boolean> getTags() {
         List<String> tagsList = tagsContainer.getTags();
         HashMap<String,Boolean> tagsMap = new HashMap<>();
@@ -404,13 +441,13 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void convert2audio() {
-        youTubePlayer.convert2audio();
+        insertableYoutubePlayer.convert2audio();
         changeButtonsForAudio();
     }
 
     @Override
     public void convert2video() {
-        youTubePlayer.convert2video();
+        insertableYoutubePlayer.convert2video();
         changeButtonsForVideo();
     }
 
@@ -483,7 +520,7 @@ public class CardEdit_View extends BaseView implements
         if (!TextUtils.isEmpty(getQuoteSource())) changed = true;
         if (!TextUtils.isEmpty(getDescription())) changed = true;
         if (tagsContainer.getTags().size() > 0) changed = true;
-        if (null != youTubePlayer && youTubePlayer.hasMedia()) changed = true;
+        if (null != insertableYoutubePlayer && insertableYoutubePlayer.hasMedia()) changed = true;
 
         return changed;
     }
@@ -601,6 +638,16 @@ public class CardEdit_View extends BaseView implements
     @OnClick(R.id.removeMediaButton)
     void onRemoveMediaClicked() {
         presenter.removeMedia();
+    }
+
+    @OnClick(R.id.getTimecodeButton)
+    void onGetTimecodeButtonClicked() {
+        getTimecodeFromVideo();
+    }
+
+    @OnClick(R.id.setTimecodeButton)
+    void onSetTimecodeButtonClicked() {
+        setTimecodeToVideo();
     }
 
     @OnClick(R.id.convertToAudioButton)
@@ -877,30 +924,45 @@ public class CardEdit_View extends BaseView implements
         }
     }
 
-    private void prepareForVideoCard() {
-        prepareMediaPlayer();
-        removeMediaButton.setText(R.string.CARD_EDIT_remove_video);
-    }
-
-    private void prepareForAudioCard() {
-        prepareMediaPlayer();
-        removeMediaButton.setText(R.string.CARD_EDIT_remove_audio);
-    }
-
     private void prepareMediaPlayer() {
-        if (null != youTubePlayer)
+        if (null != insertableYoutubePlayer)
             return;
 
-        youTubePlayer = new MyYoutubePlayer(
+        insertableYoutubePlayer = new InsertableYoutubePlayer(
                 this,
                 playerContainer,
-                R.string.YOUTUBE_PLAYER_preparing_player,
-                R.drawable.ic_player_play,
-                R.drawable.ic_player_pause,
-                R.drawable.ic_player_wait
+                R.string.CARD_EDIT_preparing_player
         );
 
         addMediaButton.setText(R.string.CARD_EDIT_add_youtube_link);
+    }
+
+    private void activateMediaPlayer(InsertableYoutubePlayer.PlayerType playerType, final String youtubeCode, @Nullable Float timecode) {
+
+        insertableYoutubePlayer
+                .addOnAppearListener(new InsertableYoutubePlayer.iAppearListener() {
+                    @Override
+                    public void onAppear() {
+                        showTimecodeInput(timecode);
+                        timecodeInput.setText(MyUtils.seconds2HHMMSS(timecode));
+                        MyUtils.show(convertToAudioButton);
+                        MyUtils.show(removeMediaButton);
+                    }
+                })
+                .addOnReadyListener(new InsertableYoutubePlayer.iReadyListener() {
+                    @Override
+                    public void onReady(Float duration) {
+                        enableTimecodeInput();
+                    }
+                })
+                .addOnSeekListener(new InsertableYoutubePlayer.iSeekListener() {
+                    @Override
+                    public void onSeek(float timecode) {
+                        setTimecode(timecode);
+                    }
+                });
+
+        insertableYoutubePlayer.show(youtubeCode, 0.0f, playerType);
     }
 
     private void changeButtonsForVideo() {
@@ -913,5 +975,32 @@ public class CardEdit_View extends BaseView implements
         MyUtils.show(convertToVideoButton);
         MyUtils.hide(convertToAudioButton);
         removeMediaButton.setText(R.string.CARD_EDIT_remove_audio);
+    }
+
+    private void showTimecodeInput(Float timecode) {
+        timecodeInput.setText(MyUtils.seconds2HHMMSS(timecode));
+
+        MyUtils.show(timecodeControlsContainer);
+    }
+
+    private void setTimecode(Float position) {
+        String timecodeString = MyUtils.seconds2HHMMSS(position);
+        timecodeInput.setText(timecodeString);
+    }
+
+    private void enableTimecodeInput() {
+        MyUtils.enable(timecodeInput);
+        MyUtils.enable(getTimecodeButton);
+        MyUtils.enable(setTimecodeButton);
+    }
+
+    private void getTimecodeFromVideo() {
+        float mVideoPosition = insertableYoutubePlayer.getPosition();
+        String timecodeString = MyUtils.seconds2HHMMSS(mVideoPosition);
+        timecodeInput.setText(timecodeString);
+    }
+
+    private void setTimecodeToVideo() {
+        insertableYoutubePlayer.seekTo(getTimecode());
     }
 }

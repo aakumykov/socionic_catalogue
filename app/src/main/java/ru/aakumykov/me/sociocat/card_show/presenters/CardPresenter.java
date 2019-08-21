@@ -195,6 +195,11 @@ public class CardPresenter implements iCardShow.iCardPresenter {
         });
     }
 
+    @Override
+    public void onAuthorClicked() {
+        pageView.goToAuthorProfile();
+    }
+
 
     // Внутренние методы
     private boolean canAlterCard() {

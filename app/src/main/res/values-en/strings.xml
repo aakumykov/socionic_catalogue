@@ -482,5 +482,8 @@
     <string name="COMMENT_error_cannot_edit_this_comment">You cannot edit this comment</string>
     <string name="USER_SHOW_transferring_user">Transferring user to CF</string>
     <string name="USER_SHOW_user_transfer_success">User transfer success</string>
-    <string name="USER_SHOW_user_transfer_error">Ошибка переноса пользователя</string>
+    <string name="USER_SHOW_user_transfer_error">Error transferring user</string>
+    <string name="CARD_EDIT_waiting_media_data">Waiting for data</string>
+    <string name="CARD_EDIT_preparing_player">Preparing player</string>
+    <string name="CARD_EDIT_error_parsing_timecode">Timecode error</string>
 </resources>

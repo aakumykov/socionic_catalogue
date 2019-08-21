@@ -161,12 +161,14 @@ public class CardEdit_Presenter implements
         if (null != youtubeCode) {
             if (currentCard.isVideoCard()) {
                 currentCard.setVideoCode(youtubeCode);
-                view.displayVideo(youtubeCode);
-            } else {
-                currentCard.setAudioCode(youtubeCode);
-                view.displayAudio(youtubeCode);
+                view.displayVideo(youtubeCode, 0.0f);
             }
-        } else {
+            else {
+                currentCard.setAudioCode(youtubeCode);
+                view.displayAudio(youtubeCode, 0.0f);
+            }
+        }
+        else {
             view.showErrorMsg(R.string.CARD_EDIT_error_adding_video, "Wrong video code: "+ youtubeLink);
         }
     }
@@ -403,6 +405,7 @@ public class CardEdit_Presenter implements
             currentCard.setQuoteSource(view.getQuoteSource());
             currentCard.setDescription(view.getDescription());
             currentCard.setTags(new ArrayList<>(view.getTags().keySet()));
+            currentCard.setTimecode(view.getTimecode());
         }
     }
 

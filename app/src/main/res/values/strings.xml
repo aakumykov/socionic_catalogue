@@ -490,4 +490,7 @@
     <string name="USER_SHOW_transferring_user">Переносим пользователя в CF</string>
     <string name="USER_SHOW_user_transfer_success">Пользователь перенесён</string>
     <string name="USER_SHOW_user_transfer_error">Ошибка переноса пользователя</string>
+    <string name="CARD_EDIT_waiting_media_data">Ожидание данных</string>
+    <string name="CARD_EDIT_preparing_player">Подготовка выигрывателя</string>
+    <string name="CARD_EDIT_error_parsing_timecode">Ошибка метки времени</string>
 </resources>
