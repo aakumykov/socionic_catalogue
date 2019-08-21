@@ -152,22 +152,35 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                <Button
+                    android:id="@+id/getTimecodeButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:text="⤷"
+                    android:textSize="36sp" />
+
                 <EditText
                     android:id="@+id/timecodeInput"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="7"
+                    android:layout_weight="1"
                     android:ems="10"
                     android:enabled="false"
                     android:inputType="time"
                     android:text="00:00:00"
                     android:textAlignment="center" />
 
-                <SeekBar
-                    android:id="@+id/timecodeSeekBar"
+                <Button
+                    android:id="@+id/setTimecodeButton"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="2" />
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:text="⤴"
+                    android:textSize="36sp" />
+
             </LinearLayout>
 
             <Button

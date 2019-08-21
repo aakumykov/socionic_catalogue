@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
-import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -79,7 +78,8 @@ public class CardEdit_View extends BaseView implements
 
     @BindView(R.id.timecodeControlsContainer) LinearLayout timecodeControlsContainer;
     @BindView(R.id.timecodeInput) EditText timecodeInput;
-    @BindView(R.id.timecodeSeekBar) SeekBar timecodeSeekBar;
+    @BindView(R.id.getTimecodeButton) Button getTimecodeButton;
+    @BindView(R.id.setTimecodeButton) Button setTimecodeButton;
 
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.newTagInput) AutoCompleteTextView newTagInput;
@@ -91,10 +91,10 @@ public class CardEdit_View extends BaseView implements
     private final static String TAG = "CardEdit_View";
 
     private InsertableYoutubePlayer insertableYoutubePlayer;
-    private int mSeekbarPorgessValue = 0;
 
     private float mVideoDuration = 0.0f;
     private float mVideoTimecode = 0.0f;
+    private float mVideoPosition = 0.0f;
 
     private iCardEdit.Presenter presenter;
     private List<String> tagsList = new ArrayList<>();
@@ -656,6 +656,16 @@ public class CardEdit_View extends BaseView implements
         presenter.removeMedia();
     }
 
+    @OnClick(R.id.getTimecodeButton)
+    void onGetTimecodeButtonClicked() {
+        getTimecodeFromVideo();
+    }
+
+    @OnClick(R.id.setTimecodeButton)
+    void onSetTimecodeButtonClicked() {
+        setTimecodeToVideo();
+    }
+
     @OnClick(R.id.convertToAudioButton)
     void onConvertToAudioClicked() {
         presenter.convert2audio();
@@ -968,23 +978,6 @@ public class CardEdit_View extends BaseView implements
     private void showTimecodeInput(Double timecode) {
         timecodeInput.setText(MyUtils.seconds2HHMMSS(timecode));
 
-        timecodeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mSeekbarPorgessValue = progress;
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                insertableYoutubePlayer.seekTo(mSeekbarPorgessValue);
-            }
-        });
-
         MyUtils.show(timecodeControlsContainer);
     }
 
@@ -994,10 +987,17 @@ public class CardEdit_View extends BaseView implements
     }
 
     private void enableTimecodeInput() {
-        int initialVideoProgress = Math.round( (mVideoTimecode / mVideoDuration) * 100);
-        timecodeSeekBar.setProgress(initialVideoProgress);
-
         MyUtils.enable(timecodeInput);
-        MyUtils.enable(timecodeSeekBar);
+        MyUtils.enable(getTimecodeButton);
+        MyUtils.enable(setTimecodeButton);
+    }
+
+    private void getTimecodeFromVideo() {
+        mVideoPosition = insertableYoutubePlayer.getPosition();
+        timecodeInput.setText(MyUtils.seconds2HHMMSS(mVideoPosition));
+    }
+
+    private void setTimecodeToVideo() {
+        insertableYoutubePlayer.seekTo(mVideoPosition);
     }
 }
