@@ -27,6 +27,7 @@ import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.users.show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
@@ -259,6 +260,12 @@ public class CardShow_View extends BaseView implements
     @Override
     public void hideSwipeRefreshThrobber() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void goToAuthorProfile() {
+        Intent intent = new Intent(this, UserShow_View.class);
+        startActivity(intent);
     }
 
 

@@ -82,6 +82,11 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
 
     // Нажатия
+    @OnClick(R.id.authorView)
+    void onAuthorClicked() {
+        cardPresenter.onAuthorClicked();
+    }
+
     @OnClick(R.id.replyWidget)
     void onReplyWidgetClicked() {
         cardPresenter.onReplyClicked();
@@ -96,6 +101,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     void onCardRatingDownClicked() {
         cardPresenter.onRatingDownClicked(this);
     }
+
 
 
     // iCard_ViewHolder
