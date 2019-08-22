@@ -236,6 +236,11 @@ public class CardsSingleton implements
     }
 
     @Override
+    public void loadCardsAfter(Card previousCard, ListCallbacks callbacks) {
+
+    }
+
+    @Override
     public void loadList(ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
         loadList(null, callbacks);

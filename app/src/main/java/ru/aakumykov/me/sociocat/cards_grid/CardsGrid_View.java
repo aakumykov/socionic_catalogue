@@ -439,7 +439,7 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public void onLoadMoreClicked(View view) {
         int position = recyclerView.getChildAdapterPosition(view);
-        presenter.onLoadMoreClicked(position);
+        presenter.onLoadOldClicked(position);
     }
 
 

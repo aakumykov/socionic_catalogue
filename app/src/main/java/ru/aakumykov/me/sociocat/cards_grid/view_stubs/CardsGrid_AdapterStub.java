@@ -28,6 +28,16 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
+    public void insertList(int position, List<iGridItem> list) {
+
+    }
+
+    @Override
+    public void insertItem(int position, iGridItem gridItem) {
+
+    }
+
+    @Override
     public void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition) {
 
     }
@@ -67,6 +77,11 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
         return null;
     }
 
+    @Override
+    public void showLoadOldItem() {
+
+    }
+
     @Override public void addItem(iGridItem gridItem) {
 
     }
@@ -87,7 +102,7 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
-    public void hideLoadMoreItem(int position) {
+    public void hideLoadOldItem(int position) {
 
     }
 

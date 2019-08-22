@@ -60,6 +60,11 @@ public interface iCardsGrid {
         void unlinkPresenter();
 
         void setList(List<iGridItem> inputList);
+
+        void insertList(int position, List<iGridItem> list);
+
+        void insertItem(int position, iGridItem gridItem);
+
         void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition);
         void prependList(List<iGridItem> gridItemsList);
 
@@ -77,7 +82,8 @@ public interface iCardsGrid {
         iGridItem getItemBeforeLoadmore(int loadmorePosition);
         iGridItem getItemAfterLoadmore(int loadmorePosition);
 
-        void hideLoadMoreItem(int position);
+        void showLoadOldItem();
+        void hideLoadOldItem(int position);
 
         void showThrobber(int position);
         void hideThrobber(int position);
@@ -100,7 +106,7 @@ public interface iCardsGrid {
         void onRefreshRequested();
 
         void onCheckNewCardsClicked();
-        void onLoadMoreClicked(int position);
+        void onLoadOldClicked(int position);
 
         void onCardClicked(int position);
         void onCardLongClicked(int position, View view, iGridViewHolder gridViewHolder);

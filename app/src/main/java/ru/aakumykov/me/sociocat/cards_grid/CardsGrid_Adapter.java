@@ -18,11 +18,11 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
-import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_LoadMore;
+import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_LoadOld;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Throbber;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.Card_ViewHolder;
-import ru.aakumykov.me.sociocat.cards_grid.view_holders.LoadMore_ViewHolder;
+import ru.aakumykov.me.sociocat.cards_grid.view_holders.LoadOld_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -57,7 +57,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     // TODO: добавил карточку при неполной загрузке, подгрузил, потом при открытии этой (?) новой падение.
 
 
-    // Системные методы
+    // Системные методы RecyclerView
     @NonNull @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
@@ -70,7 +70,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             case iGridItem.LOAD_MORE_VIEW_TYPE:
                 itemView = layoutInflater.inflate(R.layout.cards_grid_loadmore_item, parent, false);
-                viewHolder = new LoadMore_ViewHolder(itemView, presenter);
+                viewHolder = new LoadOld_ViewHolder(itemView, presenter);
 
                 layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
                 layoutParams.setFullSpan(true);
@@ -124,8 +124,8 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             cardViewHolder.bindClickListener(gridItemClickListener);
             cardViewHolder.bindLongClickListener(gridItemClickListener);
         }
-        else if (gridItem instanceof GridItem_LoadMore) {
-            LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) viewHolder;
+        else if (gridItem instanceof GridItem_LoadOld) {
+            LoadOld_ViewHolder loadMoreViewHolder = (LoadOld_ViewHolder) viewHolder;
             loadMoreViewHolder.initialize(position, gridItem);
             loadMoreViewHolder.bindClickListener(loadMoreClickListener);
         }
@@ -149,7 +149,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             if (card.isVideoCard()) return iGridItem.VIDEO_CARD_VIEW_TYPE;
             else return -1;
         }
-        else if (item instanceof GridItem_LoadMore)
+        else if (item instanceof GridItem_LoadOld)
             return iGridItem.LOAD_MORE_VIEW_TYPE;
         else if (item instanceof GridItem_Throbber)
             return iGridItem.THROBBER_VIEW_TYPE;
@@ -174,11 +174,32 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.presenter = null;
     }
 
+
     @Override
     public void setList(List<iGridItem> list) {
         clearList();
-        addList(list, 0, false, null);
+        insertList(0, list);
+        append_LoadOld_Item();
     }
+
+    @Override
+    public void insertList(int position, List<iGridItem> list) {
+        itemsList.addAll(position, list);
+        notifyItemRangeChanged(position, list.size());
+    }
+
+    @Override
+    public void insertItem(int position, iGridItem gridItem) {
+        itemsList.add(position, gridItem);
+        notifyItemInserted(position);
+    }
+
+    private void append_LoadOld_Item() {
+        GridItem_LoadOld itemLoadOld = new GridItem_LoadOld(R.string.CARDS_GRID_load_old, true);
+        insertItem(itemsList.size(), itemLoadOld);
+    }
+
+
 
     @Override
     public void addList(List<iGridItem> inputList,
@@ -271,16 +292,23 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public iGridItem getItemAfterLoadmore(int loadmorePosition) {
         iGridItem loadmoreItem = getGridItem(loadmorePosition);
         // TODO: выбрасывать исключение бы...
-        if (loadmoreItem instanceof GridItem_LoadMore)
+        if (loadmoreItem instanceof GridItem_LoadOld)
             return getGridItem(loadmorePosition + 1);
         else
             return null;
     }
 
     @Override
-    public void hideLoadMoreItem(int position) {
+    public void showLoadOldItem() {
+        GridItem_LoadOld itemLoadOld = new GridItem_LoadOld(R.string.CARDS_GRID_load_old, true);
+        itemsList.add(itemLoadOld);
+        notifyItemInserted(itemsList.size());
+    }
+
+    @Override
+    public void hideLoadOldItem(int position) {
         iGridItem gridItem = itemsList.get(position);
-        if (gridItem instanceof GridItem_LoadMore) {
+        if (gridItem instanceof GridItem_LoadOld) {
             itemsList.remove(position);
             notifyItemRemoved(position);
         }
@@ -417,10 +445,10 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     private <T> void showLoadMoreItem(int position, List<T> workableList) {
-        int messageId = (workableList.size() > 0) ? R.string.CARDS_GRID_load_more : R.string.CARDS_GRID_no_more_cards;
+        int messageId = (workableList.size() > 0) ? R.string.CARDS_GRID_load_old : R.string.CARDS_GRID_no_more_cards;
         boolean enableClickListener = workableList.size() > 0;
 
-        GridItem_LoadMore loadMoreItem = new GridItem_LoadMore(messageId, enableClickListener);
+        GridItem_LoadOld loadMoreItem = new GridItem_LoadOld(messageId, enableClickListener);
         itemsList.add(position, loadMoreItem);
 //        notifyItemChanged(position);
         notifyItemInserted(position);

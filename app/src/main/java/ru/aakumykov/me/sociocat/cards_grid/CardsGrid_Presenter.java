@@ -133,24 +133,14 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     }
 
     @Override
-    public void onLoadMoreClicked(int position) {
+    public void onLoadOldClicked(int position) {
         try {
-            iGridItem itemBefore = gridView.getItemBeforeLoadmore(position);
-            Card lastCardBefore = (null != itemBefore) ? (Card) itemBefore.getPayload() : null;
-            String startKey = (null != lastCardBefore) ? lastCardBefore.getKey() : null;
+            iGridItem lastGridItem = gridView.getGridItem(position-1);
+            Card lastCard = (null != lastGridItem) ? (Card) lastGridItem.getPayload() : null;
 
-            iGridItem itemAfter = gridView.getItemAfterLoadmore(position);
-            Card cardAfter = (null != itemAfter) ? (Card) itemAfter.getPayload() : null;
-            String endKey = (null != cardAfter) ? cardAfter.getKey() : null;
+            gridView.hideLoadOldItem(position);
 
-            gridView.hideLoadMoreItem(position);
-
-            loadCards(
-                    LoadMode.APPEND,
-                    startKey,
-                    endKey,
-                    position
-            );
+            loadCardsAfter(lastCard, position);
         }
         catch (Exception e) {
             pageView.showErrorMsg(R.string.CARDS_GRID_loadmore_error, e.getMessage());
@@ -262,6 +252,28 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
 
     // Внутренние методы
+    private void loadCardsAfter(
+            Card previousCard,
+            int insertPosition
+    ) {
+        gridView.showThrobber(insertPosition);
+
+        cardsSingleton.loadCardsAfter(previousCard, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                gridView.hideThrobber(insertPosition);
+                gridView.insertList(insertPosition, cardsList2gridItemsList(list));
+                gridView.showLoadOldItem();
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                pageView.showToast(R.string.CARDS_GRID_error_loading_cards);
+                Log.e(TAG, errorMessage);
+            }
+        });
+    }
+
     private void loadCards(
             LoadMode loadMode,
             @Nullable String startKey,
