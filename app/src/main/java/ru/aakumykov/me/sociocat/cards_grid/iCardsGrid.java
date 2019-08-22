@@ -30,6 +30,10 @@ public interface iCardsGrid {
         void onLoadOldClicked(View view);
     }
 
+    interface CheckNewCardsCallbacks {
+        void onNewCardsChecked();
+    }
+
 
     interface iPageView extends iBaseView {
         <T> void setTitle(T title);
@@ -51,8 +55,8 @@ public interface iCardsGrid {
 
         void scroll2position(int position);
 
-        void showRefreshThrobber();
-        void hideRefreshThrobber();
+        void showSwipeRefreshThrobber();
+        void hideSwipeRefreshThrobber();
     }
 
     interface iGridView {

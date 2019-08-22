@@ -411,11 +411,11 @@ public class CardsGrid_View extends BaseView implements
         recyclerView.scrollToPosition(position);
     }
 
-    @Override public void showRefreshThrobber() {
+    @Override public void showSwipeRefreshThrobber() {
         swipeRefreshLayout.setRefreshing(true);
     }
 
-    @Override public void hideRefreshThrobber() {
+    @Override public void hideSwipeRefreshThrobber() {
         swipeRefreshLayout.setRefreshing(false);
     }
 
