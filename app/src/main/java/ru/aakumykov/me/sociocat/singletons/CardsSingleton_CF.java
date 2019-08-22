@@ -131,6 +131,46 @@ public class CardsSingleton_CF implements iCardsSingleton {
     }
 
     @Override
+    public void loadCardsBrfore(Card beforeCard, ListCallbacks callbacks) {
+
+        Query query = cardsCollection
+                .orderBy(Card.KEY_CTIME, Query.Direction.DESCENDING)
+                .endBefore(beforeCard.getCTime());
+
+        query.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<Card> cardsList = new ArrayList<>();
+                        boolean error = false;
+                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                            try {
+                                Card card = documentSnapshot.toObject(Card.class);
+                                cardsList.add(card);
+                            } catch (Exception e) {
+                                error = true;
+                                Log.e(TAG, e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        if (error && 0 == cardsList.size()) {
+                            callbacks.onListLoadFail("Error excracting cards.");
+                        }
+                        else {
+                            callbacks.onListLoadSuccess(cardsList);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onListLoadFail(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+    }
+
+    @Override
     public void loadList(String tagFilter, ListCallbacks callbacks) {
         loadListEnhanced(
                 null,

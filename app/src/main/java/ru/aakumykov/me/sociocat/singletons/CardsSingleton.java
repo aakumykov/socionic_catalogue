@@ -241,6 +241,11 @@ public class CardsSingleton implements
     }
 
     @Override
+    public void loadCardsBrfore(Card beforeCard, ListCallbacks callbacks) {
+
+    }
+
+    @Override
     public void loadList(ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
         loadList(null, callbacks);

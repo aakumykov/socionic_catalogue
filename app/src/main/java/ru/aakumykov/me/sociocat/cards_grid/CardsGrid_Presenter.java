@@ -85,22 +85,33 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         loadCards(LoadMode.REPLACE, null, null, 0);
     }
 
-    @Override public void onRefreshRequested() {
+    @Override
+    public void onRefreshRequested() {
+
         pageView.showRefreshThrobber();
-//        pageView.showProgressMessage(R.string.CARDS_GRID_loading_cards);
 
-        cardsSingleton.loadList(new iCardsSingleton.ListCallbacks() {
-            @Override public void onListLoadSuccess(List<Card> list) {
-                pageView.hideRefreshThrobber();
+        iGridItem firstGridItem = gridView.getGridItem(0);
 
-                gridView.setList(cardsList2gridItemsList(list));
-            }
+        if (firstGridItem instanceof GridItem_Card) {
+            Card firstCard = (Card) firstGridItem.getPayload();
 
-            @Override public void onListLoadFail(String errorMessage) {
-                pageView.hideRefreshThrobber();
-                pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
-            }
-        });
+            cardsSingleton.loadCardsBrfore(firstCard, new iCardsSingleton.ListCallbacks() {
+                @Override
+                public void onListLoadSuccess(List<Card> list) {
+                    pageView.hideRefreshThrobber();
+
+                    if (0 == list.size())
+                        pageView.showToast(R.string.CARDS_GRID_no_new_cards);
+                    else
+                        gridView.insertList(0, cardsList2gridItemsList(list));
+                }
+
+                @Override
+                public void onListLoadFail(String errorMessage) {
+                    pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+                }
+            });
+        }
     }
 
     @Override
