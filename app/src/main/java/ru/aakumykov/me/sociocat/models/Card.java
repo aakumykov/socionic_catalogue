@@ -108,11 +108,11 @@ public class Card extends ListItem implements
         dest.writeString(this.audioCode);
         dest.writeDouble(this.timecode);
         dest.writeString(this.description);
-        dest.writeList(this.tags);
-        dest.writeMap(this.rateUpList);
-        dest.writeMap(this.rateDownList);
+//        dest.writeList(this.tags);
+//        dest.writeMap(this.rateUpList);
+//        dest.writeMap(this.rateDownList);
         dest.writeInt(this.commentsCount);
-        dest.writeMap(this.commentsKeys);
+//        dest.writeMap(this.commentsKeys);
         dest.writeInt(this.rating);
         dest.writeLong(this.ctime);
         dest.writeLong(this.mtime);
@@ -136,11 +136,11 @@ public class Card extends ListItem implements
         audioCode = in.readString();
         timecode = in.readFloat();
         description = in.readString();
-        in.readList(tags, ArrayList.class.getClassLoader());
-        rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
-        rateDownList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+//        in.readList(tags, ArrayList.class.getClassLoader());
+//        rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+//        rateDownList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         commentsCount = in.readInt();
-        commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+//        commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         rating = in.readInt();
         ctime = in.readLong();
         mtime = in.readLong();
@@ -194,16 +194,6 @@ public class Card extends ListItem implements
     public String getDescription() {
         return description;
     }
-    public List<String> getTags() {
-        if (null == tags) this.tags = new ArrayList<>();
-        return tags;
-    }
-    @Exclude public HashMap<String, Boolean> getTagsHash() {
-        HashMap<String, Boolean> hashMap = new HashMap<>();
-        for (String tagName : this.tags)
-            hashMap.put(tagName, true);
-        return hashMap;
-    }
     public HashMap<String, Boolean> getRateUpList() {
         if (null == rateUpList) this.rateUpList = new HashMap<>();
         return rateUpList;
@@ -256,9 +246,7 @@ public class Card extends ListItem implements
     public void setDescription(String description) {
         this.description = description;
     }
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
+
     public void setRateUpList(HashMap<String, Boolean> rateUpList) {
         this.rateUpList = rateUpList;
     }
@@ -294,6 +282,24 @@ public class Card extends ListItem implements
     }
     public void removeAudioCode() {
         this.audioCode = null;
+    }
+
+    // Метки
+    public List<String> getTags() {
+        if (null == tags) this.tags = new ArrayList<>();
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    @Exclude
+    public HashMap<String, Boolean> getTagsHash() {
+        HashMap<String, Boolean> hashMap = new HashMap<>();
+        for (String tagName : this.tags)
+            hashMap.put(tagName, true);
+        return hashMap;
     }
 
     // Отметка времени
