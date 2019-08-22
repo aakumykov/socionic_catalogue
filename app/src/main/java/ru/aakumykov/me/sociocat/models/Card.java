@@ -44,7 +44,7 @@ public class Card extends ListItem implements
     private String audioCode;
     private Float timecode = 0.0f;
     private String description;
-    private List<String> tags = new ArrayList<>();
+    private List<String> tags;
     private HashMap<String, Boolean> rateUpList;
     private HashMap<String, Boolean> rateDownList;
     private int commentsCount = 0;
@@ -418,6 +418,9 @@ public class Card extends ListItem implements
 
     // Разные
     @Exclude public void addTag(String tag) {
+        if (null == this.tags)
+            this.tags = new ArrayList<>();
+
         this.tags.add(tag);
     }
 }
