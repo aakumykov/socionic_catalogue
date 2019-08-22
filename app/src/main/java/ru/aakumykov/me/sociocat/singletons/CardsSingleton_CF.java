@@ -339,38 +339,30 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
 
         // Собственно запрос
-//        query.get()
-//        cardsCollection.get()
-        FirebaseFirestore.getInstance()
-                .collection("cards")
-                .get()
+        query.get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<Card> list = new ArrayList<>();
+                        boolean error = false;
 
-                        List<Card> cardsList = new ArrayList<>();
-                        boolean cardsErrors = false;
-
-                        try {
-                            List<DocumentSnapshot> documentSnapshots = queryDocumentSnapshots.getDocuments();
-                            for (DocumentSnapshot documentSnapshot : documentSnapshots) {
-                                if (documentSnapshot.exists()) {
-                                    cardsList.add(documentSnapshot.toObject(Card.class));
-                                }
-                                else
-                                    throw new Exception("DocumentSnapshot does not exists.");
+                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                            try {
+                                Card card = documentSnapshot.toObject(Card.class);
+                                list.add(card);
+                            }
+                            catch (Exception e) {
+                                error = true;
+                                Log.e(TAG, e.getMessage());
+                                e.printStackTrace();
                             }
                         }
-                        catch (Exception e) {
-                            Log.e(TAG, e.getMessage());
-                            e.printStackTrace();
-                            cardsErrors = true;
-                        }
 
-                        if (0 == cardsList.size() && cardsErrors)
+                        if (error && 0 == list.size()) {
                             callbacks.onListLoadFail("Error exception(s) on cards loading.");
+                        }
                         else
-                            callbacks.onListLoadSuccess(cardsList);
+                            callbacks.onListLoadSuccess(list);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
