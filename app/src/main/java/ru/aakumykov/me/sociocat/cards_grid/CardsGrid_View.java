@@ -49,7 +49,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class CardsGrid_View extends BaseView implements
         iCardsGrid.iPageView,
         iCardsGrid.iGridItemClickListener,
-        iCardsGrid.iLoadMoreClickListener,
+        iCardsGrid.iLoadOldClickListener,
 
         SearchView.OnQueryTextListener,
         SearchView.OnCloseListener,
@@ -435,9 +435,9 @@ public class CardsGrid_View extends BaseView implements
     }
 
 
-    // iLoadMoreClickListener
+    // iLoadOldClickListener
     @Override
-    public void onLoadMoreClicked(View view) {
+    public void onLoadOldClicked(View view) {
         int position = recyclerView.getChildAdapterPosition(view);
         presenter.onLoadOldClicked(position);
     }
@@ -600,11 +600,10 @@ public class CardsGrid_View extends BaseView implements
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
         try {
-
             switch (resultCode) {
                 case RESULT_OK:
                     Card card = data.getParcelableExtra(Constants.CARD);
-                    addItem(card);
+
                     break;
 
                 case RESULT_CANCELED:
@@ -614,7 +613,6 @@ public class CardsGrid_View extends BaseView implements
                 default:
                     throw new Exception("Unknown result code: "+resultCode);
             }
-
         }
         catch (Exception e) {
             showErrorMsg(R.string.CARDS_GRID_card_creation_error, e.getMessage());

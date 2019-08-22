@@ -26,8 +26,8 @@ public interface iCardsGrid {
         void onGridItemLongClicked(View view);
     }
 
-    interface iLoadMoreClickListener {
-        void onLoadMoreClicked(View view);
+    interface iLoadOldClickListener {
+        void onLoadOldClicked(View view);
     }
 
 

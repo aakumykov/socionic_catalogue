@@ -40,13 +40,13 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private iCardsGrid.iPresenter presenter;
     private iCardsGrid.iPageView pageView;
     private iCardsGrid.iGridItemClickListener gridItemClickListener;
-    private iCardsGrid.iLoadMoreClickListener loadMoreClickListener;
+    private iCardsGrid.iLoadOldClickListener loadMoreClickListener;
 
     private int fakeIndex = 0;
 
     public CardsGrid_Adapter(iCardsGrid.iPageView pageView,
                              iCardsGrid.iGridItemClickListener gridItemClickListener,
-                             iCardsGrid.iLoadMoreClickListener loadMoreClickListener
+                             iCardsGrid.iLoadOldClickListener loadMoreClickListener
     ) {
         this.pageView = pageView;
         this.gridItemClickListener = gridItemClickListener;

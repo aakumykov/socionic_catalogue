@@ -27,11 +27,11 @@ public class LoadOld_ViewHolder extends BaseViewHolder {
         this.presenter = presenter;
     }
 
-    public void bindClickListener(iCardsGrid.iLoadMoreClickListener loadMoreClickListener) {
+    public void bindClickListener(iCardsGrid.iLoadOldClickListener loadOldClickListener) {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadMoreClickListener.onLoadMoreClicked(v);
+                loadOldClickListener.onLoadOldClicked(v);
             }
         });
     }
