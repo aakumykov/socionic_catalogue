@@ -63,11 +63,9 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:visibility="gone"
-            tools:visibility="visible"
-            android:background="@color/green_swipe">
+            tools:visibility="visible">
 
             <ImageView
-                android:background="@drawable/shape_red_border"
                 android:id="@+id/imageView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
