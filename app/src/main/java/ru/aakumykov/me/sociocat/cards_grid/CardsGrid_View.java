@@ -603,7 +603,7 @@ public class CardsGrid_View extends BaseView implements
             switch (resultCode) {
                 case RESULT_OK:
                     Card card = data.getParcelableExtra(Constants.CARD);
-
+                    dataAdapter.insertItem(0, new GridItem_Card(card));
                     break;
 
                 case RESULT_CANCELED:
