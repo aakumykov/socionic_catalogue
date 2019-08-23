@@ -353,6 +353,7 @@ public class UsersSingleton_CF implements iUsersSingleton {
             @Override
             public void onUserReadSuccess(User user) {
                 currentUser = user;
+
                 readAdminsListFromServer(new ReadAdminsListCallbacks() {
                     @Override
                     public void onReadAdminsListSuccess() {

@@ -288,21 +288,6 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public iGridItem getItemBeforeLoadmore(int loadmorePosition) {
-        return getLastContentItem();
-    }
-
-    @Override
-    public iGridItem getItemAfterLoadmore(int loadmorePosition) {
-        iGridItem loadmoreItem = getGridItem(loadmorePosition);
-        // TODO: выбрасывать исключение бы...
-        if (loadmoreItem instanceof GridItem_LoadOld)
-            return getGridItem(loadmorePosition + 1);
-        else
-            return null;
-    }
-
-    @Override
     public void showLoadOldItem() {
         GridItem_LoadOld itemLoadOld = new GridItem_LoadOld(R.string.CARDS_GRID_load_old, true);
         itemsList.add(itemLoadOld);
@@ -337,13 +322,13 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //        if (mode >= 10)
 //            popupMenu.inflate();
 
+        popupMenu.inflate(R.menu.share);
+
         if (mode >= 20)
             popupMenu.inflate(R.menu.edit);
 
         if (mode >= 100)
             popupMenu.inflate(R.menu.delete);
-
-        popupMenu.inflate(R.menu.share);
 
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

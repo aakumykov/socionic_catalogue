@@ -69,16 +69,6 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
-    public iGridItem getItemBeforeLoadmore(int loadmorePosition) {
-        return null;
-    }
-
-    @Override
-    public iGridItem getItemAfterLoadmore(int loadmorePosition) {
-        return null;
-    }
-
-    @Override
     public void showLoadOldItem() {
 
     }

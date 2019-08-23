@@ -82,9 +82,6 @@ public interface iCardsGrid {
 
         List<iGridItem> getList();
 
-        iGridItem getItemBeforeLoadmore(int loadmorePosition);
-        iGridItem getItemAfterLoadmore(int loadmorePosition);
-
         void showLoadOldItem();
         void hideLoadOldItem(int position);
 
