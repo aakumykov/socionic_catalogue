@@ -258,7 +258,6 @@ public class CardEdit_View extends BaseView implements
                 displayQuote(card.getQuote(), card.getQuoteSource());
                 break;
             case Constants.IMAGE_CARD:
-                //displayImage(card.getImageURL());
                 displayImageFromCard(card);
                 break;
             case Constants.VIDEO_CARD:
@@ -273,20 +272,6 @@ public class CardEdit_View extends BaseView implements
 
         displayCommonCardParts(card);
         enableForm();
-    }
-
-    @Override public void displayImageFromCard(Card card) {
-        Uri localImageURI = card.getLocalImageURI();
-        String remoteImageURL = card.getImageURL();
-
-        if (null != localImageURI)
-            displayImage(localImageURI.toString());
-        else if (!TextUtils.isEmpty(remoteImageURL)) {
-            displayImage(remoteImageURL);
-        }
-        else {
-            removeImage();
-        }
     }
 
     @Override
@@ -848,6 +833,21 @@ public class CardEdit_View extends BaseView implements
         titleInput.setText(card.getTitle());
         descriptionInput.setText(card.getDescription());
         tagsContainer.setTags(card.getTags());
+    }
+
+    private void displayImageFromCard(Card card) {
+        Uri localImageURI = card.getLocalImageURI();
+        String remoteImageURL = card.getImageURL();
+
+        if (null != localImageURI) {
+            displayImage(localImageURI.toString());
+        }
+        else if (!TextUtils.isEmpty(remoteImageURL)) {
+            displayImage(remoteImageURL);
+        }
+        else {
+            removeImage();
+        }
     }
 
     private void changeFormSate(boolean isEnabled) {
