@@ -11,6 +11,7 @@ import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.utils.CardDeletionHelper;
 
 public class CardPresenter implements iCardShow.iCardPresenter {
 
@@ -140,7 +141,7 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     public void onDeleteConfirmed() {
         pageView.showProgressMessage(R.string.deleting_card);
 
-        cardSingleton.deleteCard(currentCard, new iCardsSingleton.DeleteCallbacks() {
+        CardDeletionHelper.deleteCard(currentCard, new CardDeletionHelper.iDeletionCallbacks() {
             @Override
             public void onCardDeleteSuccess(Card card) {
                 pageView.hideProgressMessage();
@@ -149,8 +150,8 @@ public class CardPresenter implements iCardShow.iCardPresenter {
             }
 
             @Override
-            public void onCardDeleteError(String msg) {
-                pageView.showErrorMsg(R.string.CARD_SHOW_error_deleting_card, msg);
+            public void onCardDeleteError(String errorMsg) {
+                pageView.showErrorMsg(R.string.CARD_SHOW_error_deleting_card, errorMsg);
             }
         });
     }
