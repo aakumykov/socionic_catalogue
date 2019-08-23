@@ -55,14 +55,15 @@ public class CardsGrid_View extends BaseView implements
         SearchView.OnCloseListener,
         SearchView.OnFocusChangeListener,
 
-        View.OnClickListener
+        View.OnClickListener,
+        SpeedDialView.OnActionSelectedListener
 {
     private static final String TAG = "CardsGrid_View";
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
-    @BindView(R.id.speedDialView) SpeedDialView speedDialView;
+    @BindView(R.id.speedDialView) SpeedDialView fabSpeedDialView;
 
     private SearchView searchView;
     private MenuItem searchWidget;
@@ -445,6 +446,33 @@ public class CardsGrid_View extends BaseView implements
     }
 
 
+    // SpeedDialView.OnActionSelectedListener
+    @Override
+    public boolean onActionSelected(SpeedDialActionItem actionItem) {
+        switch (actionItem.getId()) {
+
+            case R.id.fab_quote:
+                presenter.onCreateCardClicked(Constants.CardType.TEXT_CARD);
+                return false;
+
+            case R.id.fab_image:
+                presenter.onCreateCardClicked(Constants.CardType.IMAGE_CARD);
+                return false;
+
+            case R.id.fab_audio:
+                presenter.onCreateCardClicked(Constants.CardType.AUDIO_CARD);
+                return false;
+
+            case R.id.fab_video:
+                presenter.onCreateCardClicked(Constants.CardType.VIDEO_CARD);
+                return false;
+
+            default:
+                return false;
+        }
+    }
+
+
     // Внутренние методы
     private void bindComponents() {
         presenter.linkViews(this, dataAdapter);
@@ -495,7 +523,7 @@ public class CardsGrid_View extends BaseView implements
 
         Resources resources = getResources();
 
-        speedDialView.addActionItem(
+        fabSpeedDialView.addActionItem(
                 new SpeedDialActionItem.Builder(R.id.fab_audio, R.drawable.ic_fab_audio)
                         .setFabBackgroundColor(resources.getColor(R.color.audio_mode))
                         .setLabel(R.string.FAB_subitem_audio)
@@ -504,7 +532,7 @@ public class CardsGrid_View extends BaseView implements
                         .create()
         );
 
-        speedDialView.addActionItem(
+        fabSpeedDialView.addActionItem(
                 new SpeedDialActionItem.Builder(R.id.fab_video, R.drawable.ic_fab_video)
                         .setFabBackgroundColor(getResources().getColor(R.color.video_mode))
                         .setLabel(R.string.FAB_subitem_video)
@@ -513,7 +541,7 @@ public class CardsGrid_View extends BaseView implements
                         .create()
         );
 
-        speedDialView.addActionItem(
+        fabSpeedDialView.addActionItem(
                 new SpeedDialActionItem.Builder(R.id.fab_image, R.drawable.ic_fab_image)
                         .setFabBackgroundColor(resources.getColor(R.color.image_mode))
                         .setLabel(R.string.FAB_subitem_image)
@@ -522,7 +550,7 @@ public class CardsGrid_View extends BaseView implements
                         .create()
         );
 
-        speedDialView.addActionItem(
+        fabSpeedDialView.addActionItem(
                 new SpeedDialActionItem.Builder(R.id.fab_quote, R.drawable.ic_fab_text)
                         .setFabBackgroundColor(resources.getColor(R.color.text_mode))
                         .setLabel(R.string.FAB_subitem_text)
@@ -531,33 +559,7 @@ public class CardsGrid_View extends BaseView implements
                         .create()
         );
 
-        speedDialView.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
-            @Override
-            public boolean onActionSelected(SpeedDialActionItem speedDialActionItem) {
-
-                switch (speedDialActionItem.getId()) {
-
-                    case R.id.fab_quote:
-                        presenter.onCreateCardClicked(Constants.CardType.TEXT_CARD);
-                        return false;
-
-                    case R.id.fab_image:
-                        presenter.onCreateCardClicked(Constants.CardType.IMAGE_CARD);
-                        return false;
-
-                    case R.id.fab_audio:
-                        presenter.onCreateCardClicked(Constants.CardType.AUDIO_CARD);
-                        return false;
-
-                    case R.id.fab_video:
-                        presenter.onCreateCardClicked(Constants.CardType.VIDEO_CARD);
-                        return false;
-
-                    default:
-                        return false;
-                }
-            }
-        });
+        fabSpeedDialView.setOnActionSelectedListener(this);
 
     }
 
@@ -606,6 +608,7 @@ public class CardsGrid_View extends BaseView implements
                 case RESULT_OK:
                     Card card = data.getParcelableExtra(Constants.CARD);
                     dataAdapter.insertItem(0, new GridItem_Card(card));
+                    scroll2position(0);
                     break;
 
                 case RESULT_CANCELED:
@@ -717,4 +720,5 @@ public class CardsGrid_View extends BaseView implements
             e.printStackTrace();
         }
     }
+
 }
