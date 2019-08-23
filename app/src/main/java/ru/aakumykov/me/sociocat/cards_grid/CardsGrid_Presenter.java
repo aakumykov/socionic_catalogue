@@ -21,9 +21,10 @@ import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 
@@ -39,8 +40,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private iCardsGrid.iGridView gridView;
 //    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
-    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
+    private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
     private String filterTag;
     private String filterWord;
 
@@ -404,15 +405,33 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     private void onDeleteCardConfirmed(Card card, iGridItem gridItem) {
 
-        cardsSingleton.deleteCard(card, new iCardsSingleton.DeleteCallbacks() {
+        String imageFileName = card.getFileName();
+        if (null == imageFileName) {
+            pageView.showErrorMsg(R.string.ERROR_deleting_card, "Image file name is NULL");
+            return;
+        }
+
+        storageSingleton.deleteImage(imageFileName, new iStorageSingleton.FileDeletionCallbacks() {
             @Override
-            public void onCardDeleteSuccess(Card card) {
-                gridView.removeItem(gridItem);
+            public void onDeleteSuccess() {
+
+                cardsSingleton.deleteCard(card, new iCardsSingleton.DeleteCallbacks() {
+                    @Override
+                    public void onCardDeleteSuccess(Card card) {
+                        gridView.removeItem(gridItem);
+                    }
+
+                    @Override
+                    public void onCardDeleteError(String msg) {
+                        pageView.showErrorMsg(R.string.ERROR_deleting_card, msg);
+                    }
+                });
+
             }
 
             @Override
-            public void onCardDeleteError(String msg) {
-                pageView.showErrorMsg(R.string.ERROR_deleting_card, msg);
+            public void onDeleteFail(String errorMSg) {
+                pageView.showErrorMsg(R.string.ERROR_deleting_card, errorMSg);
             }
         });
     }
