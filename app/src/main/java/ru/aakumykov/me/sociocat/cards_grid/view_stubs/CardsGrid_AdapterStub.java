@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
+import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 
@@ -60,6 +61,11 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     @Override
     public int getItemPosition(iGridItem item) {
         return 0;
+    }
+
+    @Override
+    public GridItem_Card getLastCardItem() {
+        return null;
     }
 
     @Override

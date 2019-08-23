@@ -279,6 +279,19 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
+    public GridItem_Card getLastCardItem() {
+        if (0 == itemsList.size())
+            return null;
+
+        iGridItem gridItem = itemsList.get(itemsList.size() - 1);
+
+        if (gridItem instanceof GridItem_Card)
+            return (GridItem_Card) gridItem;
+        else
+            return null;
+    }
+
+    @Override
     public List<iGridItem> getList() {
         return itemsList;
     }

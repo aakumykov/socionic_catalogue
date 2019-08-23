@@ -325,7 +325,10 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     private void checkForNewCards(iCardsGrid.CheckNewCardsCallbacks callbacks) {
 
-        iGridItem firstGridItem = gridView.getGridItem(0);
+        /*Это проверка именно новых, а я сейчас буду делать
+        проверку новых вместе с обновлением старых.*/
+
+        /*iGridItem firstGridItem = gridView.getGridItem(0);
 
         if (firstGridItem instanceof GridItem_Card) {
             Card firstCard = (Card) firstGridItem.getPayload();
@@ -347,7 +350,37 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
                     pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
                 }
             });
+        }*/
+
+        iGridItem lastLoadedGridItem = gridView.getLastCardItem();
+
+        if (null != lastLoadedGridItem) {
+
+            Card firstCard = (Card) lastLoadedGridItem.getPayload();
+
+            cardsSingleton.loadCardsBrfore(firstCard, new iCardsSingleton.ListCallbacks() {
+                @Override
+                public void onListLoadSuccess(List<Card> list) {
+                    callbacks.onNewCardsChecked();
+                    gridView.setList(cardsList2gridItemsList(list));
+                    /*if (0 == list.size())
+                        pageView.showToast(R.string.CARDS_GRID_no_new_cards);
+                    else
+                        gridView.insertList(0, cardsList2gridItemsList(list));*/
+                }
+
+                @Override
+                public void onListLoadFail(String errorMessage) {
+                    callbacks.onNewCardsChecked();
+                    pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+                }
+            });
         }
+        else {
+            // TODO: ан, нет. Как сюда это - callbacks.onNewCardsChecked() - прикрутить?
+            loadCards(LoadMode.REPLACE, null, null, 0);
+        }
+
     }
 
     private List<iGridItem> filterCardsByTitle(@Nullable String filterWord, final List<iGridItem> inputList) {

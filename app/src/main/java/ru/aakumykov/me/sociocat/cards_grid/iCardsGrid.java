@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
@@ -78,6 +79,7 @@ public interface iCardsGrid {
 
         iGridItem getGridItem(int position);
         int getItemPosition(iGridItem item);
+        GridItem_Card getLastCardItem();
 
         List<iGridItem> getList();
 
