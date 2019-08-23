@@ -44,7 +44,7 @@ public class Card extends ListItem implements
     private String audioCode;
     private Float timecode = 0.0f;
     private String description;
-    private List<String> tags;
+    private List<String> tags; // TODO: ведь есть методы, которые должны корректно обрабатывать NULL!
     private HashMap<String, Boolean> rateUpList;
     private HashMap<String, Boolean> rateDownList;
     private int commentsCount = 0;
