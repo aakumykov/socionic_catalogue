@@ -297,8 +297,10 @@ public class Card extends ListItem implements
     @Exclude
     public HashMap<String, Boolean> getTagsHash() {
         HashMap<String, Boolean> hashMap = new HashMap<>();
-        for (String tagName : this.tags)
-            hashMap.put(tagName, true);
+        if (null != this.tags) {
+            for (String tagName : this.tags)
+                hashMap.put(tagName, true);
+        }
         return hashMap;
     }
 
