@@ -69,7 +69,6 @@ public interface iCardsGrid {
         void insertItem(int position, iGridItem gridItem);
 
         void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition);
-        void prependList(List<iGridItem> gridItemsList);
 
         void restoreOriginalList();
 
