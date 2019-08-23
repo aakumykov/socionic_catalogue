@@ -246,11 +246,9 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void updateItem(int position, iGridItem newGridItem) {
-        if (position > 0) {
-            itemsList.set(position, newGridItem);
-            synchronizeOriginalItemsList();
-            notifyItemChanged(position);
-        }
+        itemsList.set(position, newGridItem);
+        synchronizeOriginalItemsList();
+        notifyItemChanged(position);
     }
 
     @Override
