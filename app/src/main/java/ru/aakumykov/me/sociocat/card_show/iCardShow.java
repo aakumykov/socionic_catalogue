@@ -28,6 +28,8 @@ public interface iCardShow {
         void hideSwipeRefreshThrobber();
 
         void goToAuthorProfile();
+
+        void closePageAfterDeletion(Card card);
     }
 
 

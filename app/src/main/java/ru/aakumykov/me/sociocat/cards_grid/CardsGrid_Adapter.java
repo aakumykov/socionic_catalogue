@@ -265,6 +265,19 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
+    public iGridItem getGridItem(@NonNull Card searchedCard) {
+        for (iGridItem gridItem : itemsList) {
+            Object object = gridItem.getPayload();
+            if (object instanceof Card) {
+                Card checkedCard = (Card) object;
+                if (checkedCard.getKey().equals(searchedCard.getKey()))
+                    return gridItem;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public int getItemPosition(iGridItem item) {
         return itemsList.indexOf(item);
     }

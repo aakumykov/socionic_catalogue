@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.cards_grid;
 import android.content.Intent;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
@@ -77,6 +78,8 @@ public interface iCardsGrid {
         void removeItem(iGridItem gridItem);
 
         iGridItem getGridItem(int position);
+        iGridItem getGridItem(@NonNull Card searchedCard);
+
         int getItemPosition(iGridItem item);
         GridItem_Card getLastCardItem();
 

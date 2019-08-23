@@ -268,6 +268,15 @@ public class CardShow_View extends BaseView implements
         startActivity(intent);
     }
 
+    @Override
+    public void closePageAfterDeletion(Card card) {
+        Intent intent = new Intent();
+        intent.setAction(Constants.ACTION_DELETE);
+        intent.putExtra(Constants.CARD, card);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
 
     @Override
     public void scrollListToPosition(int position) {

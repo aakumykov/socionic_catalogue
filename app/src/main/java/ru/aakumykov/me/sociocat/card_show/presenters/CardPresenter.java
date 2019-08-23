@@ -146,7 +146,7 @@ public class CardPresenter implements iCardShow.iCardPresenter {
             public void onCardDeleteSuccess(Card card) {
                 pageView.hideProgressMessage();
                 pageView.showToast(R.string.card_deleted);
-                pageView.closePage();
+                pageView.closePageAfterDeletion(card);
             }
 
             @Override

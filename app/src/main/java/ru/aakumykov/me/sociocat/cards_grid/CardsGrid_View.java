@@ -119,6 +119,10 @@ public class CardsGrid_View extends BaseView implements
         bindComponents();
 
         switch (requestCode) {
+            case Constants.CODE_SHOW_CARD:
+                processCardShowResult(resultCode, data);
+                break;
+
             case Constants.CODE_CREATE_CARD:
                 processCardCreationResult(resultCode, data);
                 break;
@@ -317,7 +321,7 @@ public class CardsGrid_View extends BaseView implements
     public void goShowCard(Card card) {
         Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
-        startActivity(intent);
+        startActivityForResult(intent, Constants.CODE_SHOW_CARD);
     }
 
     @Override
@@ -598,6 +602,23 @@ public class CardsGrid_View extends BaseView implements
                 RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
                 if (null != layoutManager)
                     layoutManager.onRestoreInstanceState(listState);
+            }
+        }
+    }
+
+    private void processCardShowResult(int resultCode, @Nullable Intent data) {
+        if (RESULT_OK == resultCode) {
+            if (null != data) {
+                String action = data.getAction();
+                if (Constants.ACTION_DELETE.equals(action)) {
+                    Card card = data.getParcelableExtra(Constants.CARD);
+                    if (null != card) {
+                        iGridItem gridItem = dataAdapter.getGridItem(card);
+                        if (null != gridItem) {
+                            dataAdapter.removeItem(gridItem);
+                        }
+                    }
+                }
             }
         }
     }
