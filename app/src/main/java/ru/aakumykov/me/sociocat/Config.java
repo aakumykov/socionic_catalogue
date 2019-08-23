@@ -14,7 +14,7 @@ public final class Config {
     public final static int QUOTE_MIN_LENGTH = 5;
     public final static int QUOTE_MAX_LENGTH = 10000;
     public final static int DESCRIPTION_MIN_LENGTH = 2;
-    public final static int DESCRIPTION_MAX_LENGTH = 500;
+    public final static int DESCRIPTION_MAX_LENGTH = 2000;
     public final static int DIALOG_MESSAGE_LENGTH = 40;
     public final static int LONG_TAG_THRESHOLD = 500;
 
@@ -36,7 +36,7 @@ public final class Config {
 
     public static final long DEFAULT_NEW_CARDS_PERIOD = 3600 * 24;
 
-    public static final int DEFAULT_CARDS_LOAD_COUNT = 3;
+    public static final int DEFAULT_CARDS_LOAD_COUNT = 10;
     public static final int DEFAULT_COMMENTS_LOAD_COUNT = 20;
 
     public static final int CARDS_GRID_COLUMNS_COUNT_PORTRAIT = 2;
