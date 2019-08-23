@@ -26,6 +26,7 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.utils.CardDeletionHelper;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 
 public class CardsGrid_Presenter implements iCardsGrid.iPresenter
@@ -405,33 +406,15 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     private void onDeleteCardConfirmed(Card card, iGridItem gridItem) {
 
-        String imageFileName = card.getFileName();
-        if (null == imageFileName) {
-            pageView.showErrorMsg(R.string.ERROR_deleting_card, "Image file name is NULL");
-            return;
-        }
-
-        storageSingleton.deleteImage(imageFileName, new iStorageSingleton.FileDeletionCallbacks() {
+        CardDeletionHelper.deleteCard(card, new CardDeletionHelper.iDeletionCallbacks() {
             @Override
-            public void onDeleteSuccess() {
-
-                cardsSingleton.deleteCard(card, new iCardsSingleton.DeleteCallbacks() {
-                    @Override
-                    public void onCardDeleteSuccess(Card card) {
-                        gridView.removeItem(gridItem);
-                    }
-
-                    @Override
-                    public void onCardDeleteError(String msg) {
-                        pageView.showErrorMsg(R.string.ERROR_deleting_card, msg);
-                    }
-                });
-
+            public void onCardDeleteSuccess(Card card) {
+                gridView.removeItem(gridItem);
             }
 
             @Override
-            public void onDeleteFail(String errorMSg) {
-                pageView.showErrorMsg(R.string.ERROR_deleting_card, errorMSg);
+            public void onCardDeleteError(String errorMsg) {
+                pageView.showErrorMsg(R.string.ERROR_deleting_card, errorMsg);
             }
         });
     }
@@ -445,4 +428,6 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         }
         return gridItemsList;
     }
+
+
 }
