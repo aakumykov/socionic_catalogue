@@ -241,7 +241,7 @@ public class CardsSingleton implements
     }
 
     @Override
-    public void loadCardsBrfore(Card beforeCard, ListCallbacks callbacks) {
+    public void loadCardsFromNowTo(Card beforeCard, ListCallbacks callbacks) {
 
     }
 

@@ -131,11 +131,11 @@ public class CardsSingleton_CF implements iCardsSingleton {
     }
 
     @Override
-    public void loadCardsBrfore(Card beforeCard, ListCallbacks callbacks) {
+    public void loadCardsFromNowTo(Card beforeCard, ListCallbacks callbacks) {
 
         Query query = cardsCollection
                 .orderBy(Card.KEY_CTIME, Query.Direction.DESCENDING)
-                .endBefore(beforeCard.getCTime());
+                .endAt(beforeCard.getCTime());
 
         query.get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {

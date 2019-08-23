@@ -391,7 +391,7 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void showCheckNewCardsThrobber() {
+    public void showToolbarThrobber() {
         MenuItem menuItem = this.menu.findItem(R.id.actionNewCards);
         if (null != menuItem) {
             menuItem.setActionView(R.layout.progress_bar);
@@ -399,7 +399,7 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void hideCheckNewCardsThrobber() {
+    public void hideToolbarThrobber() {
         MenuItem menuItem = this.menu.findItem(R.id.actionNewCards);
         if (null != menuItem) {
             menuItem.setActionView(null);
@@ -407,16 +407,18 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void scroll2position(int position) {
-        recyclerView.scrollToPosition(position);
-    }
-
-    @Override public void showSwipeRefreshThrobber() {
+    public void showSwipeThrobber() {
         swipeRefreshLayout.setRefreshing(true);
     }
 
-    @Override public void hideSwipeRefreshThrobber() {
+    @Override
+    public void hideSwipeThrobber() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void scroll2position(int position) {
+        recyclerView.scrollToPosition(position);
     }
 
 

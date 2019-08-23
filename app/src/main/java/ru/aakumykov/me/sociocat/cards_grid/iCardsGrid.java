@@ -51,13 +51,13 @@ public interface iCardsGrid {
 
         void storeAction(String action);
 
-        void showCheckNewCardsThrobber();
-        void hideCheckNewCardsThrobber();
+        void showToolbarThrobber();
+        void hideToolbarThrobber();
+
+        void showSwipeThrobber();
+        void hideSwipeThrobber();
 
         void scroll2position(int position);
-
-        void showSwipeRefreshThrobber();
-        void hideSwipeRefreshThrobber();
     }
 
     interface iGridView {
@@ -110,6 +110,7 @@ public interface iCardsGrid {
         void onRefreshRequested();
 
         void onCheckNewCardsClicked();
+
         void onLoadOldClicked(int position);
 
         void onCardClicked(int position);
