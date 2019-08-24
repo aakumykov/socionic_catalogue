@@ -523,9 +523,11 @@ public class CardEdit_View extends BaseView implements
     @Override
     public void finishEdit(Card card) {
         exitIsExpected = true;
+
         Intent intent = new Intent();
         intent.putExtra(Constants.CARD, card);
         setResult(RESULT_OK, intent);
+
         finish();
     }
 
