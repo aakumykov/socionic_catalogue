@@ -148,12 +148,15 @@ public class TagsSingleton_CF implements iTagsSingleton {
 
                         try {
                             for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                                Tag tag;
                                 if (documentSnapshot.exists()) {
-                                    tagsList.add(documentSnapshot.toObject(Tag.class));
+                                    Tag tag = documentSnapshot.toObject(Tag.class);
+                                    if (tagIsValid(tag)) {
+                                        tagsList.add(tag);
+                                    }
+                                    else {
+                                        Log.e(TAG, "Error extracting Tag object from DocumentSnapshot: "+documentSnapshot);
+                                    }
                                 }
-                                else
-                                    throw new Exception("DocumentSnapshot does not exists.");
                             }
                         }
                         catch (Exception e) {
@@ -225,6 +228,16 @@ public class TagsSingleton_CF implements iTagsSingleton {
                             callbacks.onUpdateFail(errorMsg);
                     }
                 });
+    }
+
+    private boolean tagIsValid(Tag tag) {
+        if (null == tag)
+            return false;
+
+        if (null == tag.getName() || null == tag.getKey())
+            return false;
+
+        return true;
     }
 
 }

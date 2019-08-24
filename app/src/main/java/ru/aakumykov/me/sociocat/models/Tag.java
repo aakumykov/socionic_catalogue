@@ -3,7 +3,7 @@ package ru.aakumykov.me.sociocat.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.firebase.database.Exclude;
+import com.google.firebase.firestore.Exclude;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,9 +12,8 @@ import java.util.Map;
 public class Tag implements Parcelable {
 
     private String key;
-    private String name;
-    @Exclude private HashMap<String,Boolean> cards = new HashMap<>();
-    @Exclude private Integer counter = 0;
+    private String name;private HashMap<String,Boolean> cards = new HashMap<>();
+    private Integer counter = 0;
 
     public Tag() {}
 
