@@ -6,14 +6,15 @@ import android.os.Parcelable;
 import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Tag implements Parcelable {
 
     private String key;
     private String name;
-    private HashMap<String,Boolean> cards = new HashMap<>();
-    private Integer counter = 0;
+    @Exclude private HashMap<String,Boolean> cards = new HashMap<>();
+    @Exclude private Integer counter = 0;
 
     public Tag() {}
 
@@ -77,33 +78,39 @@ public class Tag implements Parcelable {
     /* Parcelable */
 
 
+    // Геттеры и сеттеры
     public String getKey() {
         return key;
     }
-    public String getName() {
-        return name;
-    }
-    public HashMap<String, Boolean> getCards() {
-        return cards;
-    }
-    public Integer getCounter() {
-        return counter;
-    }
-
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getName() {
+        return name;
     }
     public void setName(String name) {
         this.name = name;
     }
-    public void setCards(HashMap<String, Boolean> cards) {
-        this.cards = cards;
+
+    public HashMap<String, Boolean> getCards() {
+        return cards;
+    }
+    public void setCards(List<String> cards) {
+        for (String cardKey : cards)
+            this.cards.put(cardKey, true);
+
+    }
+
+    public Integer getCounter() {
+        return counter;
     }
     public void setCounter(Integer counter) {
         this.counter = counter;
     }
 
 
+    // Дополнительные
     @Exclude public int getCardsCount() {
         return getCards().size();
     }
