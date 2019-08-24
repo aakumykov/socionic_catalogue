@@ -185,9 +185,6 @@ public class Card extends ListItem implements
     public String getQuoteSource() {
         return quoteSource;
     }
-    public String getImageURL() {
-        return imageURL;
-    }
     public String getFileName() {
         return fileName;
     }
@@ -235,9 +232,6 @@ public class Card extends ListItem implements
     }
     public void setQuoteSource(String quoteSource) {
         this.quoteSource = quoteSource;
-    }
-    public void setImageURL(String imageURL) {
-            this.imageURL = imageURL;
     }
     public void setFileName(String fileName) {
             this.fileName = fileName;
@@ -289,11 +283,9 @@ public class Card extends ListItem implements
         if (null == tags) this.tags = new ArrayList<>();
         return tags;
     }
-
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
-
     @Exclude
     public HashMap<String, Boolean> getTagsHash() {
         HashMap<String, Boolean> hashMap = new HashMap<>();
@@ -310,6 +302,17 @@ public class Card extends ListItem implements
     }
     public void setTimecode(Float timecode) {
         this.timecode = timecode;
+    }
+
+    // ImageURL
+    public String getImageURL() {
+        return imageURL;
+    }
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+    public void clearImageURL() {
+        this.imageURL = null;
     }
 
     // Рейтинг
