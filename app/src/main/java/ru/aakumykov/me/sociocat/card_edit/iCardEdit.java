@@ -70,6 +70,7 @@ public interface iCardEdit {
         void loadTagsList(TagsListLoadCallbacks callbacks);
         void processTag(String tag);
 
+        void removeImageClicked();
         void removeMedia();
 
         void convert2audio();

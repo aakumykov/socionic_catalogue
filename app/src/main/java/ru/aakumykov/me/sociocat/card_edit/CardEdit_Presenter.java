@@ -120,6 +120,13 @@ public class CardEdit_Presenter implements
     }
 
     @Override
+    public void removeImageClicked() {
+        view.removeImage();
+        currentCard.clearLocalImageURI();
+        currentCard.clearImageURL();
+    }
+
+    @Override
     public void removeMedia() {
         if (currentCard.isAudioCard())
             currentCard.removeAudioCode();

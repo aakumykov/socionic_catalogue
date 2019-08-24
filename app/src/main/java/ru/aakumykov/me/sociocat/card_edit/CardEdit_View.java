@@ -575,7 +575,7 @@ public class CardEdit_View extends BaseView implements
 
     @OnClick(R.id.discardImageButton)
     void onResetImageClicked() {
-        removeImage();
+        presenter.removeImageClicked();
     }
 
     @OnClick(R.id.addMediaButton)
