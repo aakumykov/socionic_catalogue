@@ -232,7 +232,7 @@ public class CardEdit_Presenter implements
             processBeforeSave();
 
             if (!formIsValid()) {
-                view.showToast(R.string.CARD_EDIT_form_filling_error);
+//                view.showToast(R.string.CARD_EDIT_form_filling_error);
                 return;
             }
         }
@@ -499,12 +499,12 @@ public class CardEdit_Presenter implements
             boolean hasRemoteImageURL = currentCard.hasImageURL();
 
             if (!hasLocalImageURI && !hasRemoteImageURL) {
-                view.showToast(R.string.CARD_EDIT_you_must_select_image);
+                view.showImageError(R.string.CARD_EDIT_you_must_select_image);
                 valid = false;
             }
 
             if (hasLocalImageURI && hasRemoteImageURL) {
-                view.showToast(R.string.CARD_EDIT_image_error);
+                view.showImageError(R.string.CARD_EDIT_image_error);
                 valid = false;
             }
         }

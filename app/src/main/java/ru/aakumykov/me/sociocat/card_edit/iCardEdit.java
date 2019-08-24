@@ -39,12 +39,14 @@ public interface iCardEdit {
 
         void showTitleError(int msgId);
         void showQuoteError(int msgId);
-        void showImageError(int msgId);
         void showVideoError(int msgId);
         void showAudioError(int msgId);
         void showMediaError();
         void hideMediaError();
         void showDescriptionError(int msgId);
+
+        void showImageError(int msgId);
+        void hideImageError();
 
         void disableForm();
         void enableForm();

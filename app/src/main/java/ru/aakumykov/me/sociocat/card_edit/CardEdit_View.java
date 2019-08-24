@@ -285,6 +285,8 @@ public class CardEdit_View extends BaseView implements
             MyUtils.hide(imageHolder);
             MyUtils.show(mediaThrobber);
 
+            hideImageError();
+
             try {
                 Picasso.get().load(imageURI)
                         .into(imageView, new Callback() {
@@ -447,11 +449,6 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void showImageError(int msgId) {
-        showToast(msgId);
-    }
-
-    @Override
     public void showVideoError(int msgId) {
         showToast(msgId);
     }
@@ -472,6 +469,19 @@ public class CardEdit_View extends BaseView implements
     @Override
     public void showDescriptionError(int msgId) {
         descriptionInput.setError(getResources().getString(msgId));
+    }
+
+    @Override
+    public void showImageError(int msgId) {
+        showToast(msgId);
+
+        Drawable redBorderBackground = getResources().getDrawable(R.drawable.shape_image_error);
+        imageHolder.setBackground(redBorderBackground);
+    }
+
+    @Override
+    public void hideImageError() {
+        imageHolder.setBackground(null);
     }
 
     @Override
