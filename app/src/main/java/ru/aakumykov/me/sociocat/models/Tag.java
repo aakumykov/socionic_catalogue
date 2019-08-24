@@ -95,6 +95,11 @@ public class Tag implements Parcelable {
 
     }
 
+    public void addCard(String cardKey) {
+        this.cards.add(cardKey);
+    }
+
+
 
     // Дополнительные
     @Exclude public int getCardsCount() {

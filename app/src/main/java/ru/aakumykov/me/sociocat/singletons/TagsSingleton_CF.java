@@ -18,12 +18,13 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class TagsSingleton_CF implements iTagsSingleton {
 
@@ -181,21 +182,27 @@ public class TagsSingleton_CF implements iTagsSingleton {
     }
 
     @Override
-    public void updateCardsInTags(String cardKey, @Nullable HashMap<String, Boolean> oldTags, @Nullable HashMap<String, Boolean> newTags, @Nullable UpdateCallbacks callbacks) {
+    public void processTags(String cardKey, @Nullable List<Tag> oldTags, @Nullable List<Tag> newTags, @Nullable UpdateCallbacks callbacks) {
 
-        if (null == oldTags) oldTags = new HashMap<>();
-        if (null == newTags) newTags = new HashMap<>();
+        // Компенсирую NULL-аргументы
+        if (null == oldTags) oldTags = new ArrayList<>();
+        if (null == newTags) newTags = new ArrayList<>();
 
-        Map<String, Boolean> addedTags = MyUtils.mapDiff(newTags, oldTags);
-        Map<String, Boolean> removedTags = MyUtils.mapDiff(oldTags, newTags);
+        // Получаю набор добавленных к карточке меток
+        Set<Tag> oldTagsSet = new HashSet<>(oldTags);
+        oldTagsSet.removeAll(new HashSet<>(newTags));
+
+        // Получаю набор удалённых из карточки меток
+        Set<Tag> newTagsSet = new HashSet<>(newTags);
+        newTagsSet.removeAll(new HashSet<>(oldTags));
+
 
         WriteBatch writeBatch = firebaseFirestore.batch();
 
         // Добавляю id карточки к её новым меткам
-        for (String tagName : addedTags.keySet()) {
+        for (String tagName : addedTagsNames) {
             DocumentReference addedTagRef = tagsCollection.document(tagName);
-            Map<String,Object> updates = new HashMap<>();
-            updates.put(cardKey, true);
+
             writeBatch.set(addedTagRef, updates, SetOptions.merge());
         }
 

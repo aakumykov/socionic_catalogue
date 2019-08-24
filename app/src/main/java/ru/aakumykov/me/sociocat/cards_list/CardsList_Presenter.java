@@ -128,7 +128,7 @@ public class CardsList_Presenter implements
 
     private void deleteCardTags(Card card){
         try {
-            tagsSingleton.updateCardsInTags(
+            tagsSingleton.processTags(
                     currentCard.getKey(),
                     currentCard.getTagsHash(),
                     null,

@@ -180,13 +180,13 @@ public class TagsSingleton implements iTagsSingleton {
 
 
     @Override
-    public void updateCardsInTags(
+    public void processTags(
             String cardKey,
             @Nullable HashMap<String,Boolean> oldTags,
             @Nullable HashMap<String,Boolean> newTags,
             @Nullable final iTagsSingleton.UpdateCallbacks callbacks
     ) {
-        //Log.d(TAG, "updateCardsInTags(cardKey: "+cardKey+", oldTags: "+oldTags+", newTags: "+newTags+")");
+        //Log.d(TAG, "processTags(cardKey: "+cardKey+", oldTags: "+oldTags+", newTags: "+newTags+")");
 
         if (null == oldTags) oldTags = new HashMap<>();
         if (null == newTags) newTags = new HashMap<>();

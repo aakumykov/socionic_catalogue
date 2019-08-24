@@ -52,7 +52,7 @@ public class CardEdit_Presenter implements
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
     private Card currentCard;
-    private HashMap<String,Boolean> oldCardTags;
+    private List<String> oldCardTags;
     private String imageType;
     private CardEditMode editMode;
 
@@ -381,7 +381,7 @@ public class CardEdit_Presenter implements
             public void onCardLoadSuccess(Card card) {
                 if (null != card) {
                     currentCard = card;
-                    oldCardTags = card.getTagsHash();
+                    oldCardTags = card.getTags();
                     if (null != view)
                         view.displayCard(card);
                 }
@@ -544,10 +544,10 @@ public class CardEdit_Presenter implements
         if (null == card)
             throw new IllegalArgumentException("Card is NULL");
 
-        tagsSingleton.updateCardsInTags(
+        tagsSingleton.processTags(
                 card.getKey(),
                 oldCardTags,
-                card.getTagsHash(),
+                card.getTags(),
                 new iTagsSingleton.UpdateCallbacks() {
                     @Override
                     public void onUpdateSuccess() {
