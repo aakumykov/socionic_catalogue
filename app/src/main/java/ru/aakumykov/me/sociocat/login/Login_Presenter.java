@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,21 +19,21 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class Login_Presenter implements
         iLogin.Presenter
 {
-    //private final static String TAG = "Login_Presenter";
+    private final static String TAG = "Login_Presenter";
     private iLogin.View view;
 
     private String mIntentAction;
     private Intent mTransitIntent;
     private Bundle mTransitArguments;
 
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     private String externalAccessToken;
@@ -83,23 +84,38 @@ public class Login_Presenter implements
                     public void onSuccess(AuthResult authResult) {
                         String userId = authResult.getUser().getUid();
 
-                        usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
-                            @Override
-                            public void onUserRefreshSuccess(User user) {
-                                processSuccessfullLogin(user);
-                            }
+                        try {
+                            usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
+                                @Override
+                                public void onUserRefreshSuccess(User user) {
+                                    try {
+                                        processSuccessfullLogin(user);
+                                    }
+                                    catch (Exception e) {
+                                        view.showToast(R.string.LOGIN_login_error);
+                                        cancelLogin();
+                                        Log.e(TAG, e.getMessage());
+                                        e.printStackTrace();
+                                    }
+                                }
 
-                            @Override
-                            public void onUserRefreshFail(String errorMsg) {
-                                showLoginError(errorMsg);
-                            }
-                        });
+                                @Override
+                                public void onUserRefreshFail(String errorMsg) {
+                                    showLoginError(errorMsg);
+                                }
+                            });
+                        }
+                        catch (Exception e) {
+                            Log.e(TAG, e.getMessage());
+                            e.printStackTrace();
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        Log.e(TAG, e.getMessage());
+                        e.printStackTrace();
                     }
                 });
     }
@@ -227,7 +243,12 @@ public class Login_Presenter implements
                         view.hideProgressMessage();
                         view.showToast(R.string.LOGIN_login_success);
 
-                        usersSingleton.storeCurrentUser(user);
+                        try {
+                            usersSingleton.storeCurrentUser(user);
+                        } catch (Exception e) {
+                            Log.e(TAG, e.getMessage());
+                            e.printStackTrace();
+                        }
 
                         view.finishLogin(false, mTransitIntent, mTransitArguments);
                     }

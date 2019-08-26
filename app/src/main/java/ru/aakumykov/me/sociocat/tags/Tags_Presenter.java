@@ -5,9 +5,9 @@ import android.util.Log;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.TagsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 
 public class Tags_Presenter implements
         iTags.Presenter,
@@ -19,7 +19,7 @@ public class Tags_Presenter implements
     private iTags.ListView listView;
     private iTags.ShowView showView;
     private iTags.EditView editView;
-    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
+    private iTagsSingleton tagsSingleton = TagsSingleton_CF.getInstance();
 
 
     // Служебные методы
@@ -61,7 +61,7 @@ public class Tags_Presenter implements
     @Override
     public void onShowPageReady(String tagKey) {
         Log.d(TAG, "onShowPageReady('"+tagKey+"')");
-        TagsSingleton.getInstance().readTag(tagKey, this);
+        tagsSingleton.readTag(tagKey, this);
     }
 
     @Override

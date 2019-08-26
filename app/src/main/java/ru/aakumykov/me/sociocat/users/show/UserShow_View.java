@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -141,11 +142,17 @@ public class UserShow_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+
         if (AuthSingleton.isLoggedIn()) {
-            getMenuInflater().inflate(R.menu.edit, menu);
+            menuInflater.inflate(R.menu.edit, menu);
         }
 
-        super.onCreateOptionsMenu(menu);
+        MenuItem menuItemEdit = menu.findItem(R.id.actionEdit);
+        if (null != menuItemEdit)
+            menuItemEdit.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+//        menuInflater.inflate(R.menu.transfer_user, menu);
 
         return true;
     }
@@ -164,6 +171,9 @@ public class UserShow_View extends BaseView implements
             case R.id.actionDelete:
 //                presenter.userDeleteClicked(currentUser.getKey());
                 break;
+//            case R.id.actionTransferUser:
+//                presenter.onTransferUserClicked();
+//                break;
             default:
                 super.onOptionsItemSelected(item);
         }

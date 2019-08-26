@@ -47,9 +47,11 @@ public interface iBaseView {
     // Разное (УБРАТЬ!)
     void proceedLoginRequest(Intent intent);
     void goCreateCard();
+
     void closePage();
 
     String getString(int stringResourceId);
+
     String getString(int stringResourceId, String substitutedMessage);
 
     void startSomeActivity(Intent intent);

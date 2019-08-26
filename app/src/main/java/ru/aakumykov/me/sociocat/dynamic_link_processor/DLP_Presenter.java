@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.dynamic_link_processor;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -14,12 +15,12 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.register.register_step_2.RegisterStep2_View;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 
 public class DLP_Presenter implements iDLP.Presenter {
@@ -27,7 +28,7 @@ public class DLP_Presenter implements iDLP.Presenter {
     private iDLP.View view;
     private FirebaseDynamicLinks firebaseDynamicLinks = FirebaseDynamicLinks.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
 
 
     @Override

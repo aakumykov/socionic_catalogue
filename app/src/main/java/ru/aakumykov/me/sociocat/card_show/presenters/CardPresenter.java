@@ -7,10 +7,11 @@ import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.utils.CardDeletionHelper;
 
 public class CardPresenter implements iCardShow.iCardPresenter {
 
@@ -22,8 +23,9 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     private iCardShow.iCardView cardView;
     private iCardShow.iPageView pageView;
     private iCardShow.iCommentsPresenter commentsPresenter;
-    private iCardsSingleton cardSingleton = CardsSingleton.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+//    private iCardsSingleton cardSingleton = CardsSingleton.getInstance();
+    private iCardsSingleton cardSingleton = CardsSingleton_CF.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
     private @Nullable Card currentCard;
 
 
@@ -55,7 +57,7 @@ public class CardPresenter implements iCardShow.iCardPresenter {
 
         cardView.showCardThrobber();
 
-        cardSingleton.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
+        iCardsSingleton.LoadCallbacks loadCallbacks = new iCardsSingleton.LoadCallbacks() {
             @Override
             public void onCardLoadSuccess(Card card) {
                 currentCard = card;
@@ -77,7 +79,10 @@ public class CardPresenter implements iCardShow.iCardPresenter {
                 cardView.hideCardThrobber();
                 cardView.showCardError(R.string.CARD_SHOW_error_loading_card, msg);
             }
-        });
+        };
+
+//        cardSingleton.loadCard(cardKey, loadCallbacks);
+        CardsSingleton_CF.getInstance().loadCard(cardKey, loadCallbacks);
     }
 
     @Override
@@ -136,17 +141,17 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     public void onDeleteConfirmed() {
         pageView.showProgressMessage(R.string.deleting_card);
 
-        cardSingleton.deleteCard(currentCard, new iCardsSingleton.DeleteCallbacks() {
+        CardDeletionHelper.deleteCard(currentCard, new CardDeletionHelper.iDeletionCallbacks() {
             @Override
             public void onCardDeleteSuccess(Card card) {
                 pageView.hideProgressMessage();
                 pageView.showToast(R.string.card_deleted);
-                pageView.closePage();
+                pageView.closePageAfterDeletion(card);
             }
 
             @Override
-            public void onCardDeleteError(String msg) {
-                pageView.showErrorMsg(R.string.CARD_SHOW_error_deleting_card, msg);
+            public void onCardDeleteError(String errorMsg) {
+                pageView.showErrorMsg(R.string.CARD_SHOW_error_deleting_card, errorMsg);
             }
         });
     }
@@ -189,6 +194,11 @@ public class CardPresenter implements iCardShow.iCardPresenter {
                 pageView.showErrorMsg(R.string.CARD_SHOW_error_loading_card, errorMsg);
             }
         });
+    }
+
+    @Override
+    public void onAuthorClicked() {
+        pageView.goToAuthorProfile();
     }
 
 

@@ -3,30 +3,38 @@ package ru.aakumykov.me.sociocat.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.firebase.database.Exclude;
+import com.google.firebase.firestore.Exclude;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Tag implements Parcelable {
 
+    public static final String KEY_KEY = "key";
+    public static final String NAME_KEY = "name";
+    public static final String CARDS_KEY = "cards";
+
     private String key;
     private String name;
-    private HashMap<String,Boolean> cards = new HashMap<>();
-    private Integer counter = 0;
+    private List<String> cards = new ArrayList<>();
+
 
     public Tag() {}
 
-    public Tag(String name, final HashMap<String,Boolean> cards) {
-        this.key = name;
+    public Tag(String name) {
         this.name = name;
-        this.cards = cards;
-        this.counter = cards.size();
+        this.key = name;
     }
+
 
     @Override
     public String toString() {
-        return "Tag { key: "+key+", name: "+name+", cards: "+cards+", counter: "+counter+" }";
+        return "Tag { key: "+getKey()+
+                ", name: "+getName()+
+                ", cards: "+getCards()+
+                " }";
     }
 
     @Exclude
@@ -35,12 +43,11 @@ public class Tag implements Parcelable {
         map.put("key", key);
         map.put("name", name);
         map.put("cards", cards);
-        map.put("counter", counter);
         return map;
     }
 
 
-    /* Parcelable */
+    // Конверт
     public static final Creator<Tag> CREATOR = new Creator<Tag>() {
         @Override
         public Tag createFromParcel(Parcel in) {
@@ -63,48 +70,49 @@ public class Tag implements Parcelable {
         // важен порядок заполнения
         dest.writeString(key);
         dest.writeString(name);
-        dest.writeMap(cards);
-        dest.writeInt(counter);
+        dest.writeList(cards);
     }
 
     private Tag(Parcel in) {
         // важен порядок считывания
         key = in.readString();
         name = in.readString();
-        cards = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
-        counter = in.readInt();
+        cards.addAll( in.readArrayList(Tag.class.getClassLoader()) );
     }
-    /* Parcelable */
+    // Конверт
 
 
+    // Геттеры и сеттеры
     public String getKey() {
         return key;
     }
-    public String getName() {
-        return name;
-    }
-    public HashMap<String, Boolean> getCards() {
-        return cards;
-    }
-    public Integer getCounter() {
-        return counter;
-    }
-
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getName() {
+        return name;
     }
     public void setName(String name) {
         this.name = name;
     }
-    public void setCards(HashMap<String, Boolean> cards) {
-        this.cards = cards;
+
+    public List<String> getCards() {
+        return cards;
     }
-    public void setCounter(Integer counter) {
-        this.counter = counter;
+    public void setCards(List<String> cards) {
+            this.cards.addAll(cards);
+
+    }
+
+    public void addCard(String cardKey) {
+        this.cards.add(cardKey);
     }
 
 
+
+    // Дополнительные
     @Exclude public int getCardsCount() {
-        return getCards().size();
+        return this.cards.size();
     }
 }

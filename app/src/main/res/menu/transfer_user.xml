@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/actionNewCards"
-        android:icon="@drawable/ic_refresh_white_24dp"
-        android:title="@string/MENU_new_cards"
+        android:id="@+id/actionTransferUser"
+        android:icon="@drawable/ic_transfer"
+        android:title="Перенести пользователя в CF"
         app:showAsAction="always" />
 </menu>

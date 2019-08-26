@@ -26,6 +26,10 @@ public interface iCardShow {
         void hideCommentForm(boolean withQuestion);
 
         void hideSwipeRefreshThrobber();
+
+        void goToAuthorProfile();
+
+        void closePageAfterDeletion(Card card);
     }
 
 
@@ -113,6 +117,8 @@ public interface iCardShow {
         void onRatingDownClicked(iCard_ViewHolder cardViewHolder);
 
         void onSwipeRefreshRequested();
+
+        void onAuthorClicked();
     }
 
     interface iCommentsPresenter {

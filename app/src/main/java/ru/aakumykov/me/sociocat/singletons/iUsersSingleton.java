@@ -2,8 +2,6 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import android.content.Context;
 
-import androidx.annotation.Nullable;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,10 +12,8 @@ import ru.aakumykov.me.sociocat.models.User;
 
 public interface iUsersSingleton {
 
-    public final static String PUSH_TOKEN_NAME = "push_token";
-
     void createUser(String userId, String userName, String email, CreateCallbacks callbacks);
-    void getUserById(String id, ReadCallbacks callbacks);
+    void getUserById(String userId, ReadCallbacks callbacks);
     void getUserByEmail(String email, ReadCallbacks callbacks);
     void saveUser(User user, SaveCallbacks callbacks);
     void deleteUser(User user, DeleteCallbacks callbacks);
@@ -25,7 +21,7 @@ public interface iUsersSingleton {
     void checkNameExists(String name, CheckExistanceCallbacks callbacks);
     void checkEmailExists(String email, CheckExistanceCallbacks callbacks);
     void setEmailVerified(String userId, boolean isVerified, final EmailVerificationCallbacks callbacks);
-    void updatePushToken(String token, PushTokenCallbacks callbacks);
+
     void storeDeviceId(String userId, String deviceId, SaveDeviceIdCallbacks callbacks);
     void subscribeToCardComments(Context context, boolean enableSubscription, String userId, String cardId,
                                  CardCommentsSubscriptionCallbacks callbacks);
@@ -33,9 +29,8 @@ public interface iUsersSingleton {
     void createOrUpdateExternalUser(String internalUserId, String externalUserId, String userName,
                                     CreateOrUpdateExternalUser_Callbacks callbacks);
 
-    void refreshUserFromServer(@Nullable RefreshCallbacks callbacks);
-    void refreshUserFromServer(String userId, @Nullable RefreshCallbacks callbacks);
-    void storeCurrentUser(User user);
+    void refreshUserFromServer(String userId, RefreshCallbacks callbacks) throws Exception;
+    void storeCurrentUser(User user) throws Exception;
     void clearCurrentUser();
     User getCurrentUser();
 

@@ -16,7 +16,7 @@ import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class MyApp extends Application {
@@ -27,7 +27,7 @@ public class MyApp extends Application {
     @Override public void onCreate() {
         super.onCreate();
 
-        usersSingleton = UsersSingleton.getInstance();
+        usersSingleton = UsersSingleton_CF.getInstance();
 
         // Подписываюсь на события изменения авторизации
         // Firebase
@@ -37,17 +37,27 @@ public class MyApp extends Application {
 
             if (null != firebaseUser) {
 
-                usersSingleton.refreshUserFromServer(firebaseUser.getUid(), new iUsersSingleton.RefreshCallbacks() {
-                    @Override
-                    public void onUserRefreshSuccess(User user) {
-                        authorizeUser(user);
-                    }
+                String userId = firebaseUser.getUid();
 
-                    @Override
-                    public void onUserRefreshFail(String errorMsg) {
-                        deauthorizeUser();
-                    }
-                });
+                try {
+                    usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
+                        @Override
+                        public void onUserRefreshSuccess(User user) {
+                            if (null != user)
+                                authorizeUser(user);
+                        }
+
+                        @Override
+                        public void onUserRefreshFail(String errorMsg) {
+                            deauthorizeUser();
+                        }
+                    });
+                }
+                catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                    e.printStackTrace();
+                    deauthorizeUser();
+                }
 
             } else {
                 Log.e(TAG, "FirebaseUser == NULL");

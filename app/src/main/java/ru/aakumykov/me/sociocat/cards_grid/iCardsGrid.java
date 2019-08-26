@@ -3,11 +3,13 @@ package ru.aakumykov.me.sociocat.cards_grid;
 import android.content.Intent;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
@@ -26,8 +28,12 @@ public interface iCardsGrid {
         void onGridItemLongClicked(View view);
     }
 
-    interface iLoadMoreClickListener {
-        void onLoadMoreClicked(View view);
+    interface iLoadOldClickListener {
+        void onLoadOldClicked(View view);
+    }
+
+    interface CheckNewCardsCallbacks {
+        void onNewCardsChecked();
     }
 
 
@@ -46,8 +52,11 @@ public interface iCardsGrid {
 
         void storeAction(String action);
 
-        void showCheckNewCardsThrobber();
-        void hideCheckNewCardsThrobber();
+        void showToolbarThrobber();
+        void hideToolbarThrobber();
+
+        void showSwipeThrobber();
+        void hideSwipeThrobber();
 
         void scroll2position(int position);
     }
@@ -57,8 +66,10 @@ public interface iCardsGrid {
         void unlinkPresenter();
 
         void setList(List<iGridItem> inputList);
+        void insertList(int position, List<iGridItem> list);
+        void insertItem(int position, iGridItem gridItem);
+
         void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition);
-        void prependList(List<iGridItem> gridItemsList);
 
         void restoreOriginalList();
 
@@ -67,14 +78,15 @@ public interface iCardsGrid {
         void removeItem(iGridItem gridItem);
 
         iGridItem getGridItem(int position);
+        iGridItem getGridItem(@NonNull Card searchedCard);
+
         int getItemPosition(iGridItem item);
+        GridItem_Card getLastCardItem();
 
         List<iGridItem> getList();
 
-        iGridItem getItemBeforeLoadmore(int loadmorePosition);
-        iGridItem getItemAfterLoadmore(int loadmorePosition);
-
-        void hideLoadMoreItem(int position);
+        void showLoadOldItem();
+        void hideLoadOldItem(int position);
 
         void showThrobber(int position);
         void hideThrobber(int position);
@@ -94,8 +106,11 @@ public interface iCardsGrid {
 
         void processInputIntent(@Nullable Intent intent);
 
+        void onRefreshRequested();
+
         void onCheckNewCardsClicked();
-        void onLoadMoreClicked(int position);
+
+        void onLoadOldClicked(int position);
 
         void onCardClicked(int position);
         void onCardLongClicked(int position, View view, iGridViewHolder gridViewHolder);

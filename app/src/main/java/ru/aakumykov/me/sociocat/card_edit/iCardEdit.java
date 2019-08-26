@@ -19,10 +19,9 @@ public interface iCardEdit {
 
     interface View extends iBaseView {
         void displayCard(Card card);
-        void displayImageFromCard(Card card);
         void displayImage(String imageURI);
-        void displayVideo(String videoCode);
-        void displayAudio(String audioCode);
+        void displayVideo(String videoCode, @Nullable Float timecode);
+        void displayAudio(String audioCode, @Nullable Float timecode);
 
         void removeImage();
         void removeMedia();
@@ -32,6 +31,7 @@ public interface iCardEdit {
         String getQuoteSource();
         Bitmap getImageBitmap();
         String getDescription();
+        Float getTimecode();
         HashMap<String,Boolean> getTags();
 
         void convert2audio();
@@ -39,12 +39,14 @@ public interface iCardEdit {
 
         void showTitleError(int msgId);
         void showQuoteError(int msgId);
-        void showImageError(int msgId);
         void showVideoError(int msgId);
         void showAudioError(int msgId);
         void showMediaError();
         void hideMediaError();
         void showDescriptionError(int msgId);
+
+        void showImageError(int msgId);
+        void hideImageError();
 
         void disableForm();
         void enableForm();
@@ -70,6 +72,7 @@ public interface iCardEdit {
         void loadTagsList(TagsListLoadCallbacks callbacks);
         void processTag(String tag);
 
+        void removeImageClicked();
         void removeMedia();
 
         void convert2audio();

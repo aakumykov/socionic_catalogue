@@ -8,10 +8,8 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
@@ -22,11 +20,13 @@ import ru.aakumykov.me.sociocat.cards_grid.view_stubs.CardsGrid_ViewStub;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.utils.CardDeletionHelper;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 
 public class CardsGrid_Presenter implements iCardsGrid.iPresenter
@@ -39,9 +39,10 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private final static String TAG = "CG3_Presenter";
     private iCardsGrid.iPageView pageView;
     private iCardsGrid.iGridView gridView;
-    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
-    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+//    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
+    private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
     private String filterTag;
     private String filterWord;
 
@@ -71,10 +72,15 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             switch (action) {
 
                 case Constants.ACTION_SHOW_NEW_CARDS:
-                    loadNewCards();
+                    checkForNewCards(new iCardsGrid.CheckNewCardsCallbacks() {
+                        @Override
+                        public void onNewCardsChecked() {
+
+                        }
+                    });
                     return;
 
-                case Constants.ACTION_FILTER_BY_TAG:
+                case Constants.ACTION_SHOW_CARDS_WITH_TAG:
                     String filteringTag = intent.getStringExtra(Constants.TAG_NAME);
                     loadCardsWithTag(filteringTag);
                     return;
@@ -85,51 +91,40 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     }
 
     @Override
-    public void onCheckNewCardsClicked() {
-        pageView.showCheckNewCardsThrobber();
+    public void onRefreshRequested() {
 
-        long lastLoginTime = pageView.getLastLoginTime();
+        pageView.showSwipeThrobber();
 
-        cardsSingleton.loadNewCards(lastLoginTime, new iCardsSingleton.ListCallbacks() {
+        checkForNewCards(new iCardsGrid.CheckNewCardsCallbacks() {
             @Override
-            public void onListLoadSuccess(List<Card> list) {
-                pageView.hideCheckNewCardsThrobber();
-
-                List<iGridItem> gridItemList = cardsList2gridItemsList(list);
-
-                gridView.prependList(gridItemList);
-
-                pageView.showToast("Новых карточек: "+list.size());
-            }
-
-            @Override
-            public void onListLoadFail(String errorMessage) {
-                pageView.hideCheckNewCardsThrobber();
-                pageView.showToast(R.string.CARDS_GRID_error_loading_cards);
-                Log.e(TAG, errorMessage);
+            public void onNewCardsChecked() {
+                pageView.hideSwipeThrobber();
             }
         });
     }
 
     @Override
-    public void onLoadMoreClicked(int position) {
+    public void onCheckNewCardsClicked() {
+
+        pageView.showToolbarThrobber();
+
+        checkForNewCards(new iCardsGrid.CheckNewCardsCallbacks() {
+            @Override
+            public void onNewCardsChecked() {
+                pageView.hideToolbarThrobber();
+            }
+        });
+    }
+
+    @Override
+    public void onLoadOldClicked(int position) {
         try {
-            iGridItem itemBefore = gridView.getItemBeforeLoadmore(position);
-            Card lastCardBefore = (null != itemBefore) ? (Card) itemBefore.getPayload() : null;
-            String startKey = (null != lastCardBefore) ? lastCardBefore.getKey() : null;
+            iGridItem lastGridItem = gridView.getGridItem(position-1);
+            Card lastCard = (null != lastGridItem) ? (Card) lastGridItem.getPayload() : null;
 
-            iGridItem itemAfter = gridView.getItemAfterLoadmore(position);
-            Card cardAfter = (null != itemAfter) ? (Card) itemAfter.getPayload() : null;
-            String endKey = (null != cardAfter) ? cardAfter.getKey() : null;
+            gridView.hideLoadOldItem(position);
 
-            gridView.hideLoadMoreItem(position);
-
-            loadCards(
-                    LoadMode.APPEND,
-                    startKey,
-                    endKey,
-                    position
-            );
+            loadCardsAfter(lastCard, position);
         }
         catch (Exception e) {
             pageView.showErrorMsg(R.string.CARDS_GRID_loadmore_error, e.getMessage());
@@ -241,6 +236,28 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
 
     // Внутренние методы
+    private void loadCardsAfter(
+            Card previousCard,
+            int insertPosition
+    ) {
+        gridView.showThrobber(insertPosition);
+
+        cardsSingleton.loadCardsAfter(previousCard, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                gridView.hideThrobber(insertPosition);
+                gridView.insertList(insertPosition, cardsList2gridItemsList(list));
+                gridView.showLoadOldItem();
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                pageView.showToast(R.string.CARDS_GRID_error_loading_cards);
+                Log.e(TAG, errorMessage);
+            }
+        });
+    }
+
     private void loadCards(
             LoadMode loadMode,
             @Nullable String startKey,
@@ -250,7 +267,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     {
         gridView.showThrobber(insertPosition);
 
-        cardsSingleton.loadList(startKey, endKey, new iCardsSingleton.ListCallbacks() {
+        iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
@@ -278,7 +295,9 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             public void onListLoadFail(String errorMessage) {
                 pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
             }
-        });
+        };
+
+        cardsSingleton.loadList(listCallbacks);
     }
 
     private void loadCardsWithTag(@Nullable String filterTag) {
@@ -308,28 +327,42 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         }
     }
 
-    private void loadNewCards() {
+    private void checkForNewCards(iCardsGrid.CheckNewCardsCallbacks callbacks) {
 
-        pageView.reloadMenu();
-        pageView.setPageTitle(R.string.CARDS_GRID_new_cards_title);
-        pageView.showProgressMessage(R.string.CARDS_GRID_loading_new_cards);
+        /*Это проверка именно новых, а я сейчас буду делать
+        проверку новых вместе с обновлением старых.*/
 
-        Long lastLoginTime = pageView.getLastLoginTime();
-        lastLoginTime = (new Date().getTime()) - Config.DEFAULT_NEW_CARDS_PERIOD;
+        iGridItem lastLoadedGridItem = gridView.getLastCardItem();
 
-        cardsSingleton.loadNewCards(lastLoginTime, new iCardsSingleton.ListCallbacks() {
-            @Override
-            public void onListLoadSuccess(List<Card> list) {
-                pageView.hideProgressMessage();
-                List<iGridItem> gridItems = cardsList2gridItemsList(list);
-                gridView.setList(gridItems);
-            }
+        if (null != lastLoadedGridItem) {
 
-            @Override
-            public void onListLoadFail(String errorMessage) {
-                pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
-            }
-        });
+            Card oldestCard = (Card) lastLoadedGridItem.getPayload();
+
+            cardsSingleton.loadCardsFromNowTo(oldestCard, new iCardsSingleton.ListCallbacks() {
+                @Override
+                public void onListLoadSuccess(List<Card> list) {
+                    callbacks.onNewCardsChecked();
+                    gridView.setList(cardsList2gridItemsList(list));
+                    /*if (0 == list.size())
+                        pageView.showToast(R.string.CARDS_GRID_no_new_cards);
+                    else
+                        gridView.insertList(0, cardsList2gridItemsList(list));*/
+                }
+
+                @Override
+                public void onListLoadFail(String errorMessage) {
+                    callbacks.onNewCardsChecked();
+                    pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+                }
+            });
+        }
+        else {
+            callbacks.onNewCardsChecked();
+        }
+//        else {
+//            // TODO: ан, нет. Как сюда это - callbacks.onNewCardsChecked() - прикрутить?
+//            loadCards(LoadMode.REPLACE, null, null, 0);
+//        }
 
     }
 
@@ -373,15 +406,15 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     private void onDeleteCardConfirmed(Card card, iGridItem gridItem) {
 
-        cardsSingleton.deleteCard(card, new iCardsSingleton.DeleteCallbacks() {
+        CardDeletionHelper.deleteCard(card, new CardDeletionHelper.iDeletionCallbacks() {
             @Override
             public void onCardDeleteSuccess(Card card) {
                 gridView.removeItem(gridItem);
             }
 
             @Override
-            public void onCardDeleteError(String msg) {
-                pageView.showErrorMsg(R.string.ERROR_deleting_card, msg);
+            public void onCardDeleteError(String errorMsg) {
+                pageView.showErrorMsg(R.string.ERROR_deleting_card, errorMsg);
             }
         });
     }
@@ -395,4 +428,6 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         }
         return gridItemsList;
     }
+
+
 }

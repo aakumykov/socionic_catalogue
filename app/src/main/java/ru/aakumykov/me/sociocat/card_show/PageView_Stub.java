@@ -40,4 +40,14 @@ public class PageView_Stub extends BaseView_Stub implements iCardShow.iPageView 
     public void hideSwipeRefreshThrobber() {
 
     }
+
+    @Override
+    public void goToAuthorProfile() {
+
+    }
+
+    @Override
+    public void closePageAfterDeletion(Card card) {
+
+    }
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +60,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     // TODO: опасненько его здесь хранить!
     private Context context;
     private iCardShow.iCardPresenter cardPresenter;
-    private boolean isInitialized = false;
+
 
     // Конструктор
     public Card_ViewHolder(View itemView, iCardShow.iCardPresenter cardPresenter) {
@@ -70,17 +71,17 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     }
 
     public void initialize(Card card) {
-        if (!this.isInitialized) {
-            this.isInitialized = true;
-
             tagsContainer.setOnTagClickListener(this);
-
             displayCard(card);
-        }
     }
 
 
     // Нажатия
+    @OnClick(R.id.authorView)
+    void onAuthorClicked() {
+        cardPresenter.onAuthorClicked();
+    }
+
     @OnClick(R.id.replyWidget)
     void onReplyWidgetClicked() {
         cardPresenter.onReplyClicked();
@@ -95,6 +96,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     void onCardRatingDownClicked() {
         cardPresenter.onRatingDownClicked(this);
     }
+
 
 
     // iCard_ViewHolder
@@ -176,12 +178,12 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         String currentUserId = AuthSingleton.currentUserId();
 
         showTitle(card);
-        showDescribedContent(card);
+        showMainContent(card);
         showQuoteSource(card);
         showDescription(card);
         showAuthor(card);
         showTime(card.getCTime(), card.getMTime());
-        showTags(card.getTags());
+        showTags(card.getTagsHash());
         showRating(card, currentUserId);
     }
 
@@ -189,7 +191,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         titleView.setText(card.getTitle());
     }
 
-    private void showDescribedContent(Card card) {
+    private void showMainContent(Card card) {
         switch (card.getType()) {
 
             case Constants.TEXT_CARD:
@@ -209,11 +211,12 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                 break;
 
             case Constants.VIDEO_CARD:
-                showYoutubeMedia(card.getVideoCode(), InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER);
+                Float timecode = card.getTimecode();
+                showYoutubeMedia(card.getVideoCode(), card.getTimecode(), InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER);
                 break;
 
             case Constants.AUDIO_CARD:
-                showYoutubeMedia(card.getAudioCode(), InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER);
+                showYoutubeMedia(card.getAudioCode(), card.getTimecode(), InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER);
                 break;
         }
     }
@@ -261,7 +264,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         }
     }
 
-    private void showYoutubeMedia(String mediaCode, InsertableYoutubePlayer.PlayerType playerType) {
+    private void showYoutubeMedia(String mediaCode, @Nullable Float timecode, InsertableYoutubePlayer.PlayerType playerType) {
 
         int waitingMessageId = -1;
         switch (playerType){
@@ -283,7 +286,11 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                 waitingMessageId
         );
 
-        insertableYoutubePlayer.show(mediaCode, playerType);
+        Float timecodeFloat = null;
+        if (null != timecode)
+            timecodeFloat = new BigDecimal(timecode).floatValue();
+
+        insertableYoutubePlayer.show(mediaCode, timecodeFloat, playerType);
     }
 
     private void onReplyWidgetClicked(Card card) {

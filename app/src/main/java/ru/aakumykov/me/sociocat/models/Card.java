@@ -5,14 +5,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import com.google.firebase.database.Exclude;
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
@@ -20,10 +19,15 @@ import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 // TODO: как сделать так, чтобы графическая карточка не могла сохраниться без картинки?
 // И так далее...
 
+@IgnoreExtraProperties
 public class Card extends ListItem implements
         Parcelable,
         iTextItem
 {
+    public final static String KEY_CTIME = "ctime";
+    public static final String KEY_TAGS = "tags";
+    public static final String KEY_USER_ID = "userId";
+
     private String key;
     private String userId;
     private String userName;
@@ -38,15 +42,16 @@ public class Card extends ListItem implements
     private String fileName;
     private String videoCode;
     private String audioCode;
+    private Float timecode = 0.0f;
     private String description;
-    private HashMap<String, Boolean> tags;
+    private List<String> tags; // TODO: ведь есть методы, которые должны корректно обрабатывать NULL!
     private HashMap<String, Boolean> rateUpList;
     private HashMap<String, Boolean> rateDownList;
     private int commentsCount = 0;
     private HashMap<String, Boolean> commentsKeys/* = new HashMap<>()*/;
     private Integer rating = 0;
-    private Long cTime = 0L;
-    private Long mTime = 0L;
+    private Long ctime = 0L;
+    private Long mtime = 0L;
 
     public Card() {
         setItemType(ListItem.ItemType.CARD_ITEM);
@@ -62,10 +67,11 @@ public class Card extends ListItem implements
                 ", type: "+getType()+
                 ", quote: "+getQuote()+
                 ", quoteSource: "+getQuoteSource()+
-                ", imageURL: "+imageURL+
-                ", fileName: "+fileName+
-                ", videoCode: "+videoCode +
-                ", audioCode: "+audioCode +
+                ", imageURL: "+getImageURL()+
+                ", fileName: "+getFileName()+
+                ", videoCode: "+getVideoCode() +
+                ", audioCode: "+getAudioCode() +
+                ", timecode: "+getTimecode() +
                 ", description: "+getDescription()+
                 ", tags: "+ getTags()+
                 ", rateUpList: "+ getRateUpList()+
@@ -73,8 +79,8 @@ public class Card extends ListItem implements
                 ", commentsCount: "+getCommentsCount()+
                 ", commentsKeys: "+getCommentsKeys()+
                 ", rating: "+getRating()+
-                ", cTime: "+getCTime()+
-                ", mTime: "+getMTime()+
+                ", ctime: "+getCTime()+
+                ", mtime: "+getMTime()+
                 ", localImageURI: "+getLocalImageURI()+
                 ", mimeType: "+getMimeType()+
                 ", imageType: "+getImageType()+
@@ -82,7 +88,7 @@ public class Card extends ListItem implements
     }
 
 
-    /* Parcelable */
+    // Parcelable
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         // важен порядок заполнения
@@ -100,15 +106,16 @@ public class Card extends ListItem implements
         dest.writeString(this.fileName);
         dest.writeString(this.videoCode);
         dest.writeString(this.audioCode);
+        dest.writeDouble(this.timecode);
         dest.writeString(this.description);
-        dest.writeMap(this.tags);
-        dest.writeMap(this.rateUpList);
-        dest.writeMap(this.rateDownList);
+//        dest.writeList(this.tags);
+//        dest.writeMap(this.rateUpList);
+//        dest.writeMap(this.rateDownList);
         dest.writeInt(this.commentsCount);
-        dest.writeMap(this.commentsKeys);
+//        dest.writeMap(this.commentsKeys);
         dest.writeInt(this.rating);
-        dest.writeLong(this.cTime);
-        dest.writeLong(this.mTime);
+        dest.writeLong(this.ctime);
+        dest.writeLong(this.mtime);
     }
 
     protected Card(Parcel in) {
@@ -127,15 +134,16 @@ public class Card extends ListItem implements
         fileName = in.readString();
         videoCode = in.readString();
         audioCode = in.readString();
+        timecode = in.readFloat();
         description = in.readString();
-        tags = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
-        rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
-        rateDownList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+//        in.readList(tags, ArrayList.class.getClassLoader());
+//        rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+//        rateDownList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         commentsCount = in.readInt();
-        commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+//        commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         rating = in.readInt();
-        cTime = in.readLong();
-        mTime = in.readLong();
+        ctime = in.readLong();
+        mtime = in.readLong();
     }
 
     @Override
@@ -154,7 +162,7 @@ public class Card extends ListItem implements
             return new Card[size];
         }
     };
-    /* Parcelable */
+    // Parcelable
 
 
     // Геттеры
@@ -177,18 +185,11 @@ public class Card extends ListItem implements
     public String getQuoteSource() {
         return quoteSource;
     }
-    public String getImageURL() {
-        return imageURL;
-    }
     public String getFileName() {
         return fileName;
     }
     public String getDescription() {
         return description;
-    }
-    public HashMap<String, Boolean> getTags() {
-        if (null == tags) this.tags = new HashMap<>();
-        return tags;
     }
     public HashMap<String, Boolean> getRateUpList() {
         if (null == rateUpList) this.rateUpList = new HashMap<>();
@@ -205,10 +206,10 @@ public class Card extends ListItem implements
         else return rating;
     }
     public Long getCTime() {
-        return this.cTime;
+        return this.ctime;
     }
     public Long getMTime() {
-        return this.mTime;
+        return this.mtime;
     }
 
 
@@ -220,19 +221,8 @@ public class Card extends ListItem implements
     public void setKey(String key) {
         this.key = key;
     }
-    public void setType(String type) throws IllegalArgumentException {
-        String[] availableCardTypes = {
-                Constants.TEXT_CARD,
-                Constants.IMAGE_CARD,
-                Constants.VIDEO_CARD,
-                Constants.AUDIO_CARD
-        };
-
-        if (Arrays.asList(availableCardTypes).contains(type)) {
-            this.type = type;
-        } else {
-            throw new IllegalArgumentException("Unknown card_edit type '"+type+"'");
-        }
+    public void setType(String type) {
+        this.type = type;
     }
     public void setTitle(String title) {
         this.title = title;
@@ -243,21 +233,14 @@ public class Card extends ListItem implements
     public void setQuoteSource(String quoteSource) {
         this.quoteSource = quoteSource;
     }
-    public void setImageURL(String imageURL) throws IllegalArgumentException {
-            Uri uri = Uri.parse(imageURL);
-            if (null == uri) throw new IllegalArgumentException("Error parsing imageURL");
-            this.imageURL = imageURL;
-    }
-    public void setFileName(String fileName) throws IllegalArgumentException {
+    public void setFileName(String fileName) {
             this.fileName = fileName;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
-    public void setTags(HashMap<String, Boolean> tags) {
-        this.tags = tags;
-    }
+
     public void setRateUpList(HashMap<String, Boolean> rateUpList) {
         this.rateUpList = rateUpList;
     }
@@ -269,16 +252,13 @@ public class Card extends ListItem implements
         this.commentsKeys = commentsKeys;
     }
     public void setCTime(Long cTime) {
-        this.cTime = cTime;
+        this.ctime = cTime;
     }
     public void setMTime(Long mTime) {
-        this.mTime = mTime;
+        this.mtime = mTime;
     }
 
-
-    public void setVideoCode(String videoCode) throws IllegalArgumentException {
-        Uri uri = Uri.parse(videoCode);
-        if (null == uri) throw new IllegalArgumentException("Error parsing videoCode");
+    public void setVideoCode(String videoCode) {
         this.videoCode = videoCode;
     }
     public String getVideoCode() {
@@ -288,11 +268,8 @@ public class Card extends ListItem implements
         this.videoCode = null;
     }
 
-    public void setAudioCode(String audioCode) throws IllegalArgumentException {
-        if (audioCode.matches(Config.YOUTUBE_CODE_REGEX))
-            this.audioCode = audioCode;
-        else
-            throw new IllegalArgumentException("Wrong audio code: "+audioCode);
+    public void setAudioCode(String audioCode)  {
+        this.audioCode = audioCode;
     }
     public String getAudioCode() {
         return audioCode;
@@ -301,6 +278,42 @@ public class Card extends ListItem implements
         this.audioCode = null;
     }
 
+    // Метки
+    public List<String> getTags() {
+        if (null == tags) this.tags = new ArrayList<>();
+        return tags;
+    }
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+    @Exclude
+    public HashMap<String, Boolean> getTagsHash() {
+        HashMap<String, Boolean> hashMap = new HashMap<>();
+        if (null != this.tags) {
+            for (String tagName : this.tags)
+                hashMap.put(tagName, true);
+        }
+        return hashMap;
+    }
+
+    // Отметка времени
+    public Float getTimecode() {
+        return timecode;
+    }
+    public void setTimecode(Float timecode) {
+        this.timecode = timecode;
+    }
+
+    // ImageURL
+    public String getImageURL() {
+        return imageURL;
+    }
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+    public void clearImageURL() {
+        this.imageURL = null;
+    }
 
     // Рейтинг
     @Exclude
@@ -358,10 +371,8 @@ public class Card extends ListItem implements
         return null != this.localImageURI;
     }
     @Exclude public void setLocalImageURI(Uri uri) {
-        this.localImageURI = uri.toString();
-    }
-    @Exclude public void setLocalImageURI(String uri) {
-        this.localImageURI = uri;
+        if (null != uri)
+            this.localImageURI = uri.toString();
     }
     @Exclude public Uri getLocalImageURI() {
         return (null == this.localImageURI) ? null : Uri.parse(this.localImageURI);
@@ -388,14 +399,7 @@ public class Card extends ListItem implements
     }
 
     @Exclude public List<String> getTagsList(boolean inLowerCase) {
-        List<String> tagsList = new ArrayList<>(this.getTags().keySet());
-        if (inLowerCase) {
-            List<String> lowerCaseList = new ArrayList<>();
-            for (String tag : tagsList)
-                lowerCaseList.add(tag.toLowerCase());
-            return lowerCaseList;
-        }
-        return tagsList;
+        return this.tags;
     }
 
     @Exclude public boolean isTextCard() {
@@ -418,13 +422,16 @@ public class Card extends ListItem implements
     }
 
     @Exclude public boolean isCreatedBy(User user) {
-        return key.equals(user.getKey());
+        return userId.equals(user.getKey());
     }
 
 
 
     // Разные
     @Exclude public void addTag(String tag) {
-        tags.put(tag, true);
+        if (null == this.tags)
+            this.tags = new ArrayList<>();
+
+        this.tags.add(tag);
     }
 }

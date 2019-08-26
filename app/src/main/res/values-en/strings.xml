@@ -429,7 +429,7 @@
     <string name="COMMENTS_VIEW_error_deleting_comment">Error deleting comment</string>
     <string name="MENU_user_logged_in">User logged in</string>
     <string name="MENU_user_logged_out">User logged out</string>
-    <string name="CARDS_GRID_load_more">More</string>
+    <string name="CARDS_GRID_load_old">Previous items</string>
     <string name="CARDS_GRID_loadmore_error">Error</string>
     <string name="CARDS_GRID_card_edit_cancelled">The edit is canceled</string>
     <string name="CARDS_GRID_data_error">Data error</string>
@@ -450,7 +450,7 @@
     <string name="error_configuring_page">Error configuring page</string>
     <string name="MENU_user_profile">User profile</string>
     <string name="CARDS_GRID_loading_cards_with_tag">Loading cards with tag «%1$s»</string>
-    <string name="CARDS_GRID_cards_with_tag">Cards with tag «%1$s»</string>
+    <string name="CARDS_GRID_cards_with_tag">Cards with tag</string>
     <string name="CARDS_GRID_page_title_tag">Tag «%1$s»</string>
     <string name="CARDS_GRID_no_more_cards">No more cards</string>
     <string name="CARD_SHOW_error_changing_card_rating">Error changing rating</string>
@@ -458,9 +458,9 @@
     <string name="TAGS_LIST_error_loading_list">Error loading tags list</string>
     <string name="TAGS_LIST_loading_list">Loading tags list</string>
     <string name="MENU_sort_by_name">Sort alphabetically</string>
-    <string name="MENU_sort_by_name_reverse">Sort alphabetically in reverse order</string>
+    <string name="MENU_sort_by_name_reverse">Sort alphabetically in reverse sortOrder</string>
     <string name="MENU_sort_by_count">Sort by count</string>
-    <string name="MENU_sort_by_count_reverse">Sort by count in reverse order</string>
+    <string name="MENU_sort_by_count_reverse">Sort by count in reverse sortOrder</string>
     <string name="LOGIN_login_via">Or login via</string>
     <string name="LOGIN_error_login_via_vkontakte">Error login via Vkontakte</string>
     <string name="LOGIN_creating_custom_token">Creating custom token</string>
@@ -476,4 +476,14 @@
     <string name="MENU_search_widget">Search area</string>
     <string name="press_again_to_exit">Press again to exit app</string>
     <string name="CARDS_GRID_error_storing_cards_list">Error storing cards list</string>
+    <string name="USER_EDIT_error_updating_user">Error updating user (relogin is recommended)</string>
+    <string name="COMMENT_edit">Edit</string>
+    <string name="COMMENT_authorization_required">Authorization required (╯°-°)╯</string>
+    <string name="COMMENT_error_cannot_edit_this_comment">You cannot edit this comment</string>
+    <string name="USER_SHOW_transferring_user">Transferring user to CF</string>
+    <string name="USER_SHOW_user_transfer_success">User transfer success</string>
+    <string name="USER_SHOW_user_transfer_error">Error transferring user</string>
+    <string name="CARD_EDIT_waiting_media_data">Waiting for data</string>
+    <string name="CARD_EDIT_preparing_player">Preparing player</string>
+    <string name="CARD_EDIT_error_parsing_timecode">Timecode error</string>
 </resources>

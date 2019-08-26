@@ -8,19 +8,35 @@ import ru.aakumykov.me.sociocat.models.Card;
 
 public interface iCardsSingleton {
 
-    void loadList(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks);
-    void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks );
+    enum SortOrder {
+        DIRECT, REVERSED
+    }
+
+    enum FilterOperator {
+        EQUALS,
+        GREATER,
+        GREATER_OR_EQUALS,
+        LOWER,
+        LOWER_OR_EQUALS
+    }
+
     void loadList(ListCallbacks callbacks);
-    void loadList(int limit, ListCallbacks callbacks);
+    void loadListFromTo(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks);
+    void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks );
+
+    void loadCardsAfter(Card previousCard, ListCallbacks callbacks);
+    void loadCardsFromNowTo(Card beforeCard, ListCallbacks callbacks);
+
     void loadList(String tagFilter, ListCallbacks callbacks);
     void loadListForUser(String userId, ListCallbacks callbacks);
     void loadNewCards(long newerThanTime, ListCallbacks callbacks);
 
-    void loadCard(String key, LoadCallbacks callbacks);
+    void loadCard(String cardKey, LoadCallbacks callbacks);
     void updateCommentsCounter(String cardId, int diffValue);
 
     String createKey();
     void saveCard(Card card, SaveCardCallbacks callbacks);
+
     void deleteCard(Card card, DeleteCallbacks callbacks);
 
     void rateUp(String cardId, String byUserId, RatingCallbacks callbacks);
@@ -28,6 +44,7 @@ public interface iCardsSingleton {
 
 
     interface ListCallbacks {
+        // TODO: добавить в успешный колбек соообщение о сопутствующей ошибке...
         void onListLoadSuccess(List<Card> list);
         void onListLoadFail(String errorMessage);
     }

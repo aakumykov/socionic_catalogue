@@ -2,8 +2,10 @@ package ru.aakumykov.me.sociocat.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
-import com.google.firebase.database.Exclude;
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +15,10 @@ import java.util.Map;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 
-public class Comment extends ListItem implements Parcelable, iTextItem
+@IgnoreExtraProperties
+public class Comment extends ListItem implements
+        Parcelable,
+        iTextItem
 {
     public final static int key_commentId = 10;
     public final static String key_createdAt = "createdAt";
@@ -28,8 +33,8 @@ public class Comment extends ListItem implements Parcelable, iTextItem
     private String userId;
     private String userName;
     private String userAvatarURL;
-    private String createdAt;
-    private String editedAt;
+    private Long createdAt;
+    private Long editedAt;
     private Integer rating = 0;
     private List<String> rateUpList = new ArrayList<>();
     private List<String> rateDownList = new ArrayList<>();
@@ -121,8 +126,8 @@ public class Comment extends ListItem implements Parcelable, iTextItem
         dest.writeString(userId);
         dest.writeString(userName);
         dest.writeString(userAvatarURL);
-        dest.writeString(createdAt);
-        dest.writeString(editedAt);
+        dest.writeLong(createdAt);
+        dest.writeLong(editedAt);
         dest.writeInt(rating);
         dest.writeList(this.rateUpList);
         dest.writeList(this.rateDownList);
@@ -137,8 +142,8 @@ public class Comment extends ListItem implements Parcelable, iTextItem
         userId = in.readString();
         userName = in.readString();
         userAvatarURL = in.readString();
-        createdAt = in.readString();
-        editedAt = in.readString();
+        createdAt = in.readLong();
+        editedAt = in.readLong();
         rating = in.readInt();
         in.readStringList(rateUpList);
         in.readStringList(rateDownList);
@@ -203,17 +208,17 @@ public class Comment extends ListItem implements Parcelable, iTextItem
         this.userAvatarURL = userAvatarURL;
     }
 
-    public String getCreatedAt() {
+    public Long getCreatedAt() {
         return createdAt;
     }
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getEditedAt() {
+    public Long getEditedAt() {
         return editedAt;
     }
-    public void setEditedAt(String editedAt) {
+    public void setEditedAt(Long editedAt) {
         this.editedAt = editedAt;
     }
 
@@ -262,4 +267,7 @@ public class Comment extends ListItem implements Parcelable, iTextItem
         return getRateDownList().contains(userId);
     }
 
+    @Exclude public boolean isCreatedBy(String checkedUserId) {
+        return (!TextUtils.isEmpty(checkedUserId) && !TextUtils.isEmpty(checkedUserId) && this.userId.equals(checkedUserId));
+    }
 }

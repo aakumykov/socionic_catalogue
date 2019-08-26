@@ -13,7 +13,6 @@
     <string name="logout_success">Вы вышли из системы</string>
     <string name="logout_error">Ошибка выхода</string>
     <string name="logout">Выйти</string>
-    <string name="LOGIN_testPassword" translatable="false">123456</string>
     <string name="card_load_error">Ошибка загрузки карточки</string>
     <string name="card_load_canceled">Загрузка карточки отменена</string>
     <string name="opening_card">Открываю карточку</string>
@@ -437,7 +436,7 @@
     <string name="COMMENTS_VIEW_error_deleting_comment">Ошибка удаления комментария</string>
     <string name="MENU_user_logged_in">Пользователь вошёл</string>
     <string name="MENU_user_logged_out">Пользователь вышел</string>
-    <string name="CARDS_GRID_load_more">Ещё</string>
+    <string name="CARDS_GRID_load_old">Предыдущие</string>
     <string name="CARDS_GRID_loadmore_error">Ошибка</string>
     <string name="CARDS_GRID_card_edit_cancelled">Редактирование отменено</string>
     <string name="CARDS_GRID_data_error">Ошибка данных</string>
@@ -458,7 +457,7 @@
     <string name="error_configuring_page">Ошибка настройки страницы</string>
     <string name="MENU_user_profile">Профиль пользователя</string>
     <string name="CARDS_GRID_loading_cards_with_tag">Получаем карточки с меткой «%1$s»</string>
-    <string name="CARDS_GRID_cards_with_tag">Карточки с меткой «%1$s»</string>
+    <string name="CARDS_GRID_cards_with_tag">Карточки с меткой</string>
     <string name="CARDS_GRID_page_title_tag">Метка «%1$s»</string>
     <string name="CARDS_GRID_no_more_cards">Карточек больше нет</string>
     <string name="CARD_SHOW_error_changing_card_rating">Ошибка изменения оценки</string>
@@ -484,4 +483,14 @@
     <string name="MENU_search_widget">Поле поиска</string>
     <string name="press_again_to_exit">Нажмите ещё раз, чтобы выйти</string>
     <string name="CARDS_GRID_error_storing_cards_list">Ошибка сохранения списка карточек</string>
+    <string name="USER_EDIT_error_updating_user">Ошибка обновления пользователя (рекомендуется выйти из програмы и зайти вновь)</string>
+    <string name="COMMENT_edit">Изменить</string>
+    <string name="COMMENT_authorization_required">Необходимо авторизоваться (╯°-°)╯</string>
+    <string name="COMMENT_error_cannot_edit_this_comment">Вы не можете редактировать этот комментарий</string>
+    <string name="USER_SHOW_transferring_user">Переносим пользователя в CF</string>
+    <string name="USER_SHOW_user_transfer_success">Пользователь перенесён</string>
+    <string name="USER_SHOW_user_transfer_error">Ошибка переноса пользователя</string>
+    <string name="CARD_EDIT_waiting_media_data">Ожидание данных</string>
+    <string name="CARD_EDIT_preparing_player">Подготовка выигрывателя</string>
+    <string name="CARD_EDIT_error_parsing_timecode">Ошибка метки времени</string>
 </resources>

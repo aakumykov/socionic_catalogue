@@ -16,9 +16,9 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
@@ -37,8 +37,8 @@ public class Users_Presenter implements
     private iUsers.ShowView showView;
     private iUsers.ListView listView;
     private iUsers.EditView editView;
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
@@ -126,8 +126,13 @@ public class Users_Presenter implements
         usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
-                showView.hideProgressMessage();
-                showView.displayUser(user);
+                if (null != user) {
+                    currentUser = user;
+                    showView.hideProgressMessage();
+                    showView.displayUser(user);
+                }
+                else
+                    showView.showErrorMsg(R.string.USER_SHOW_error_displaying_user, "User is NULL");
             }
 
             @Override
@@ -141,6 +146,25 @@ public class Users_Presenter implements
     public void cancelButtonClicked() {
         Log.d(TAG, "cancelButtonClicked()");
         editView.closePage();
+    }
+
+    @Override
+    public void onTransferUserClicked() {
+        showView.showToast("Метод Users_Presenter.onTransferUserClicked() отключен.");
+
+        /*showView.showProgressMessage(R.string.USER_SHOW_transferring_user);
+
+        usersSingleton_CF.saveUser(currentUser, new iUsersSingleton.SaveCallbacks() {
+            @Override
+            public void onUserSaveSuccess(User user) {
+                showView.showDebugMsg(R.string.USER_SHOW_user_transfer_success);
+            }
+
+            @Override
+            public void onUserSaveFail(String errorMsg) {
+                showView.showErrorMsg(R.string.USER_SHOW_user_transfer_error, errorMsg);
+            }
+        });*/
     }
 
     @Override
@@ -183,7 +207,7 @@ public class Users_Presenter implements
         if (!currentUser.hasAvatar() && imageSelected) {
             try {
                 Bitmap imageBitmap = editView.getImageBitmap();
-                String fileName = AuthSingleton.currentUserId() + "."+imageType;
+                String fileName = AuthSingleton.currentUserId();
 
                 editView.showAvatarThrobber();
                 editView.disableEditForm();
@@ -253,8 +277,31 @@ public class Users_Presenter implements
     @Override
     public void onFileUploadSuccess(String fileName, String downloadURL) {
         editView.hideAvatarThrobber();
+
+        // Не очень красивое решение обновлять пользователя здесь, а потом
+        // отдельным методом сохранять. А следующий блок с refreshUserFromServer()
+        // вообще не нужен.
         currentUser.setAvatarFileName(fileName);
         currentUser.setAvatarURL(downloadURL);
+
+        /*try {
+            usersSingleton.refreshUserFromServer(currentUser.getKey(), new iUsersSingleton.RefreshCallbacks() {
+                @Override
+                public void onUserRefreshSuccess(User user) {
+                    currentUser = user;
+                }
+
+                @Override
+                public void onUserRefreshFail(String errorMsg) {
+                    editView.showErrorMsg(R.string.USER_EDIT_error_updating_user, errorMsg);
+                }
+            });
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            editView.showErrorMsg(R.string.USER_EDIT_error_updating_user, e.getMessage());
+        }*/
+
         saveUser();
     }
 
@@ -273,7 +320,13 @@ public class Users_Presenter implements
 
     @Override
     public void onUserSaveSuccess(User user) {
-        usersSingleton.storeCurrentUser(user);
+        try {
+            usersSingleton.storeCurrentUser(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            editView.showErrorMsg(R.string.USER_EDIT_error_updating_user, e.getMessage());
+        }
+
         editView.hideProgressMessage();
         editView.finishEdit(user, true);
     }

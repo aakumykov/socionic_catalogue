@@ -35,7 +35,7 @@ public final class Constants {
     public final static String ACTION_REPLY_TO_CARD = "ACTION_REPLY_TO_CARD";
     public final static String ACTION_REPLY_TO_COMMENT = "ACTION_REPLY_TO_COMMENT";
     public static final String ACTION_SHOW_NEW_CARDS = "ACTION_SHOW_NEW_CARDS";
-    public static final String ACTION_FILTER_BY_TAG = "ACTION_FILTER_BY_TAG";
+    public static final String ACTION_SHOW_CARDS_WITH_TAG = "ACTION_SHOW_CARDS_WITH_TAG";
 
     public final static String CARD = "CARD";
     public final static String CARD_DRAFT = "CARD_DRAFT";
@@ -111,4 +111,13 @@ public final class Constants {
     public final static String SHORTCUT_CREATE_IMAGE_CARD = "SHORTCUT_CREATE_IMAGE_CARD";
     public final static String SHORTCUT_CREATE_AUDIO_CARD = "SHORTCUT_CREATE_AUDIO_CARD";
     public final static String SHORTCUT_CREATE_VIDEO_CARD = "SHORTCUT_CREATE_VIDEO_CARD";
+
+    // TODO: перенести в модель User
+    public final static String USER_NAME_KEY = "name";
+    public final static String USER_EMAIL_KEY = "email";
+    public final static String USER_EMAIL_VERIFIED_KEY = "emailVerified";
+
+    // TODO: перенести в модель Comment
+    public final static String COMMENT_KEY_CARD_ID = "cardId";
+    public final static String COMMENT_KEY_CREATED_AT = "createdAt";
 }

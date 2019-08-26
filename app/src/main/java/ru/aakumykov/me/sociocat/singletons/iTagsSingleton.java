@@ -16,13 +16,18 @@ public interface iTagsSingleton {
     void deleteTag(Tag tag, DeleteCallbacks callbacks);
     void listTags(ListCallbacks callbacks);
 
-    void updateCardTags(String cardKey,
-                        @Nullable HashMap<String,Boolean> oldTags,
-                        @Nullable HashMap<String,Boolean> newTags,
-                        @Nullable UpdateCallbacks callbacks
+    void processTags(String cardKey,
+                     @Nullable List<String> oldTagsNames,
+                     @Nullable List<String> newTagsNames,
+                     @Nullable UpdateCallbacks callbacks
     );
 
-    void getTagsList();
+    void processTags(
+            String cardKey,
+            @Nullable HashMap<String, Boolean> oldTags,
+            @Nullable HashMap<String, Boolean> newTags,
+            @Nullable UpdateCallbacks callbacks
+    );
 
     interface TagCallbacks {
         void onTagSuccess(Tag tag);

@@ -17,6 +17,7 @@ import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Comment_ViewHolder  extends Base_ViewHolder implements
@@ -31,6 +32,7 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
     @BindView(R.id.quoteView) TextView quoteView;
     @BindView(R.id.textView) TextView textView;
     @BindView(R.id.replyWidget) TextView replyWidget;
+    @BindView(R.id.editWidget) TextView editWidget;
 
     private final static String TAG = "Comment_ViewHolder";
     private iCardShow.iCommentsPresenter commentsPresenter;
@@ -66,11 +68,19 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
             );
         }
 
-        cTimeView.setText(comment.getCreatedAt());
+        cTimeView.setText(String.valueOf(comment.getCreatedAt()));
 
-        mTimeView.setText(comment.getEditedAt());
+        mTimeView.setText(String.valueOf(comment.getEditedAt()));
 
         textView.setText(comment.getText());
+
+        String currentUserId = AuthSingleton.currentUserId();
+        String commentAuthorId = currentComment.getUserId();
+        if (!TextUtils.isEmpty(currentUserId) && !TextUtils.isEmpty(commentAuthorId)) {
+            if (commentAuthorId.equals(currentUserId)) {
+                MyUtils.show(editWidget);
+            }
+        }
 
         commentRow.setOnLongClickListener(this);
     }
@@ -80,6 +90,11 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
     @OnClick(R.id.replyWidget)
     void openCommentForm() {
         commentsPresenter.onReplyClicked(currentComment);
+    }
+
+    @OnClick(R.id.editWidget)
+    void startEditingComment() {
+        commentsPresenter.onEditCommentClicked(currentComment);
     }
 
     @Override

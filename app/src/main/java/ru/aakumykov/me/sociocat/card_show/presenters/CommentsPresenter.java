@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
+import java.util.Date;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
@@ -16,8 +17,8 @@ import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.CommentsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
@@ -30,8 +31,9 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
 
     private iCardShow.iCommentsView commentsView;
     private iCardShow.iPageView pageView;
-    private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+//    private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
+    private iCommentsSingleton commentsSingleton = CommentsSingleton_CF.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
 
     private iTextItem mRepliedItem;
     private Comment mEditedComment;
@@ -101,7 +103,12 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
     @Override
     public void onEditCommentClicked(Comment comment) {
         if (!AuthSingleton.isLoggedIn()) {
-            pageView.showToast("Необходимо авторизоваться (╯°-°)╯");
+            pageView.showToast(R.string.COMMENT_authorization_required);
+            return;
+        }
+
+        if (!comment.isCreatedBy(AuthSingleton.currentUserId())) {
+            pageView.showToast(R.string.COMMENT_error_cannot_edit_this_comment);
             return;
         }
 
@@ -203,6 +210,7 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
                 newComment.setUserId(user.getKey());
                 newComment.setUserName(user.getName());
                 newComment.setUserAvatarURL(user.getAvatarURL());
+                newComment.setCreatedAt(new Date().getTime());
 
         switch (mRepliedItem.getItemType()) {
             case CARD_ITEM:
@@ -250,6 +258,7 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
 
         Comment modifiedComment = mEditedComment;
                 modifiedComment.setText(text);
+                modifiedComment.setEditedAt(new Date().getTime());
 
         commentForm.disable();
 

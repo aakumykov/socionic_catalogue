@@ -3,12 +3,9 @@ package ru.aakumykov.me.sociocat.card_edit;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
-
-import android.net.Uri;
-import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,18 +15,18 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
+import ru.aakumykov.me.sociocat.singletons.TagsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
-import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
-import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.ImageInfo;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
@@ -47,13 +44,15 @@ public class CardEdit_Presenter implements
     private SharedPreferences sharedPreferences;
 
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
-    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
+//    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
+//    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
+    private iTagsSingleton tagsSingleton = TagsSingleton_CF.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
     private Card currentCard;
-    private HashMap<String,Boolean> oldCardTags;
+    private List<String> oldCardTags;
     private String imageType;
     private CardEditMode editMode;
 
@@ -121,6 +120,13 @@ public class CardEdit_Presenter implements
     }
 
     @Override
+    public void removeImageClicked() {
+        view.removeImage();
+        currentCard.clearLocalImageURI();
+        currentCard.clearImageURL();
+    }
+
+    @Override
     public void removeMedia() {
         if (currentCard.isAudioCard())
             currentCard.removeAudioCode();
@@ -162,12 +168,14 @@ public class CardEdit_Presenter implements
         if (null != youtubeCode) {
             if (currentCard.isVideoCard()) {
                 currentCard.setVideoCode(youtubeCode);
-                view.displayVideo(youtubeCode);
-            } else {
-                currentCard.setAudioCode(youtubeCode);
-                view.displayAudio(youtubeCode);
+                view.displayVideo(youtubeCode, 0.0f);
             }
-        } else {
+            else {
+                currentCard.setAudioCode(youtubeCode);
+                view.displayAudio(youtubeCode, 0.0f);
+            }
+        }
+        else {
             view.showErrorMsg(R.string.CARD_EDIT_error_adding_video, "Wrong video code: "+ youtubeLink);
         }
     }
@@ -224,7 +232,7 @@ public class CardEdit_Presenter implements
             processBeforeSave();
 
             if (!formIsValid()) {
-                view.showToast(R.string.CARD_EDIT_form_filling_error);
+//                view.showToast(R.string.CARD_EDIT_form_filling_error);
                 return;
             }
         }
@@ -235,13 +243,13 @@ public class CardEdit_Presenter implements
         // Сохраняю картинку, если этого ещё не сделано
         if (currentCard.isImageCard() && !currentCard.hasImageURL()) {
 
-            String fileName = currentCard.getKey() + "." + imageType;
+            String fileNameWithoutExtension = currentCard.getKey();
             Bitmap imageBitmap = view.getImageBitmap();
 
             if (null != view)
                 view.showImageProgressBar();
 
-            storageSingleton.uploadImage(imageBitmap, imageType, fileName, new iStorageSingleton.FileUploadCallbacks() {
+            storageSingleton.uploadImage(imageBitmap, imageType, fileNameWithoutExtension, new iStorageSingleton.FileUploadCallbacks() {
 
                 @Override public void onFileUploadProgress(int progress) {
 
@@ -308,9 +316,10 @@ public class CardEdit_Presenter implements
 
     // Коллбеки
     @Override public void onCardSaveSuccess(Card card) {
+
         updateCardTags(card);
 
-        if (editMode.equals(CardEditMode.CREATE)) {
+        /*if (editMode.equals(CardEditMode.CREATE)) {
 
             MVPUtils.subscribeToTopicNotifications(
                     view.getAppContext(),
@@ -329,7 +338,7 @@ public class CardEdit_Presenter implements
                         }
                     }
             );
-        }
+        }*/
     }
 
     @Override public void onCardSaveError(String message) {
@@ -342,6 +351,8 @@ public class CardEdit_Presenter implements
 
     // Внутренние методы
     private void startCreateCard(Card card) {
+        card.setKey(cardsSingleton.createKey());
+
         currentCard = card;
         editMode = CardEditMode.CREATE;
         imageType = card.getImageType();
@@ -365,13 +376,18 @@ public class CardEdit_Presenter implements
             view.showProgressMessage(R.string.CARD_EDIT_loading_card);
         }
 
-        cardsSingleton.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
+        iCardsSingleton.LoadCallbacks loadCallbacks= new iCardsSingleton.LoadCallbacks() {
             @Override
             public void onCardLoadSuccess(Card card) {
-                currentCard = card;
-                oldCardTags = card.getTags();
-                if (null != view) {
-                    view.displayCard(card);
+                if (null != card) {
+                    currentCard = card;
+                    oldCardTags = card.getTags();
+                    if (null != view)
+                        view.displayCard(card);
+                }
+                else {
+                    if (null != view)
+                        view.showErrorMsg(R.string.CARD_EDIT_error_loading_card, "Card is null");
                 }
             }
 
@@ -382,7 +398,11 @@ public class CardEdit_Presenter implements
                     view.enableForm();
                 }
             }
-        });
+        };
+
+//        cardsSingleton.loadCard(cardKey, loadCallbacks);
+
+        CardsSingleton_CF.getInstance().loadCard(cardKey, loadCallbacks);
     }
 
     private void updateCurrentCardFromView(){
@@ -391,7 +411,8 @@ public class CardEdit_Presenter implements
             currentCard.setQuote(view.getQuote());
             currentCard.setQuoteSource(view.getQuoteSource());
             currentCard.setDescription(view.getDescription());
-            currentCard.setTags(view.getTags());
+            currentCard.setTags(new ArrayList<>(view.getTags().keySet()));
+            currentCard.setTimecode(view.getTimecode());
         }
     }
 
@@ -478,12 +499,12 @@ public class CardEdit_Presenter implements
             boolean hasRemoteImageURL = currentCard.hasImageURL();
 
             if (!hasLocalImageURI && !hasRemoteImageURL) {
-                view.showToast(R.string.CARD_EDIT_you_must_select_image);
+                view.showImageError(R.string.CARD_EDIT_you_must_select_image);
                 valid = false;
             }
 
             if (hasLocalImageURI && hasRemoteImageURL) {
-                view.showToast(R.string.CARD_EDIT_image_error);
+                view.showImageError(R.string.CARD_EDIT_image_error);
                 valid = false;
             }
         }
@@ -519,10 +540,11 @@ public class CardEdit_Presenter implements
     }
 
     private void updateCardTags(final Card card) {
+
         if (null == card)
             throw new IllegalArgumentException("Card is NULL");
 
-        tagsSingleton.updateCardTags(
+        tagsSingleton.processTags(
                 card.getKey(),
                 oldCardTags,
                 card.getTags(),

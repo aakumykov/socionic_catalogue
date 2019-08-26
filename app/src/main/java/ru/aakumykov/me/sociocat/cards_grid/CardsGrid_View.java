@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -49,20 +50,22 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class CardsGrid_View extends BaseView implements
         iCardsGrid.iPageView,
         iCardsGrid.iGridItemClickListener,
-        iCardsGrid.iLoadMoreClickListener,
+        iCardsGrid.iLoadOldClickListener,
 
         SearchView.OnQueryTextListener,
         SearchView.OnCloseListener,
         SearchView.OnFocusChangeListener,
 
-        View.OnClickListener
+        View.OnClickListener,
+        SpeedDialView.OnActionSelectedListener
 {
     private static final String TAG = "CardsGrid_View";
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.tagsParentContainer) LinearLayout tagsParentContainer;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
-    @BindView(R.id.speedDialView) SpeedDialView speedDialView;
+    @BindView(R.id.speedDialView) SpeedDialView fabSpeedDialView;
 
     private SearchView searchView;
     private MenuItem searchWidget;
@@ -118,6 +121,10 @@ public class CardsGrid_View extends BaseView implements
         bindComponents();
 
         switch (requestCode) {
+            case Constants.CODE_SHOW_CARD:
+                processCardShowResult(resultCode, data);
+                break;
+
             case Constants.CODE_CREATE_CARD:
                 processCardCreationResult(resultCode, data);
                 break;
@@ -316,7 +323,7 @@ public class CardsGrid_View extends BaseView implements
     public void goShowCard(Card card) {
         Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
-        startActivity(intent);
+        startActivityForResult(intent, Constants.CODE_SHOW_CARD);
     }
 
     @Override
@@ -381,6 +388,7 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public void showTagFilter(String tagName) {
+        MyUtils.show(tagsParentContainer);
         tagsContainer.removeAllTags();
         tagsContainer.addTag(tagName);
     }
@@ -391,7 +399,7 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void showCheckNewCardsThrobber() {
+    public void showToolbarThrobber() {
         MenuItem menuItem = this.menu.findItem(R.id.actionNewCards);
         if (null != menuItem) {
             menuItem.setActionView(R.layout.progress_bar);
@@ -399,11 +407,21 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void hideCheckNewCardsThrobber() {
+    public void hideToolbarThrobber() {
         MenuItem menuItem = this.menu.findItem(R.id.actionNewCards);
         if (null != menuItem) {
             menuItem.setActionView(null);
         }
+    }
+
+    @Override
+    public void showSwipeThrobber() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    public void hideSwipeThrobber() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -427,11 +445,38 @@ public class CardsGrid_View extends BaseView implements
     }
 
 
-    // iLoadMoreClickListener
+    // iLoadOldClickListener
     @Override
-    public void onLoadMoreClicked(View view) {
+    public void onLoadOldClicked(View view) {
         int position = recyclerView.getChildAdapterPosition(view);
-        presenter.onLoadMoreClicked(position);
+        presenter.onLoadOldClicked(position);
+    }
+
+
+    // SpeedDialView.OnActionSelectedListener
+    @Override
+    public boolean onActionSelected(SpeedDialActionItem actionItem) {
+        switch (actionItem.getId()) {
+
+            case R.id.fab_quote:
+                presenter.onCreateCardClicked(Constants.CardType.TEXT_CARD);
+                return false;
+
+            case R.id.fab_image:
+                presenter.onCreateCardClicked(Constants.CardType.IMAGE_CARD);
+                return false;
+
+            case R.id.fab_audio:
+                presenter.onCreateCardClicked(Constants.CardType.AUDIO_CARD);
+                return false;
+
+            case R.id.fab_video:
+                presenter.onCreateCardClicked(Constants.CardType.VIDEO_CARD);
+                return false;
+
+            default:
+                return false;
+        }
     }
 
 
@@ -450,8 +495,7 @@ public class CardsGrid_View extends BaseView implements
     private void configureSwipeRefresh() {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override public void onRefresh() {
-                showToast(R.string.not_implemented_yet);
-                swipeRefreshLayout.setRefreshing(false);
+                presenter.onRefreshRequested();
             }
         });
 
@@ -486,7 +530,7 @@ public class CardsGrid_View extends BaseView implements
 
         Resources resources = getResources();
 
-        speedDialView.addActionItem(
+        fabSpeedDialView.addActionItem(
                 new SpeedDialActionItem.Builder(R.id.fab_audio, R.drawable.ic_fab_audio)
                         .setFabBackgroundColor(resources.getColor(R.color.audio_mode))
                         .setLabel(R.string.FAB_subitem_audio)
@@ -495,7 +539,7 @@ public class CardsGrid_View extends BaseView implements
                         .create()
         );
 
-        speedDialView.addActionItem(
+        fabSpeedDialView.addActionItem(
                 new SpeedDialActionItem.Builder(R.id.fab_video, R.drawable.ic_fab_video)
                         .setFabBackgroundColor(getResources().getColor(R.color.video_mode))
                         .setLabel(R.string.FAB_subitem_video)
@@ -504,7 +548,7 @@ public class CardsGrid_View extends BaseView implements
                         .create()
         );
 
-        speedDialView.addActionItem(
+        fabSpeedDialView.addActionItem(
                 new SpeedDialActionItem.Builder(R.id.fab_image, R.drawable.ic_fab_image)
                         .setFabBackgroundColor(resources.getColor(R.color.image_mode))
                         .setLabel(R.string.FAB_subitem_image)
@@ -513,7 +557,7 @@ public class CardsGrid_View extends BaseView implements
                         .create()
         );
 
-        speedDialView.addActionItem(
+        fabSpeedDialView.addActionItem(
                 new SpeedDialActionItem.Builder(R.id.fab_quote, R.drawable.ic_fab_text)
                         .setFabBackgroundColor(resources.getColor(R.color.text_mode))
                         .setLabel(R.string.FAB_subitem_text)
@@ -522,33 +566,7 @@ public class CardsGrid_View extends BaseView implements
                         .create()
         );
 
-        speedDialView.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
-            @Override
-            public boolean onActionSelected(SpeedDialActionItem speedDialActionItem) {
-
-                switch (speedDialActionItem.getId()) {
-
-                    case R.id.fab_quote:
-                        presenter.onCreateCardClicked(Constants.CardType.TEXT_CARD);
-                        return false;
-
-                    case R.id.fab_image:
-                        presenter.onCreateCardClicked(Constants.CardType.IMAGE_CARD);
-                        return false;
-
-                    case R.id.fab_audio:
-                        presenter.onCreateCardClicked(Constants.CardType.AUDIO_CARD);
-                        return false;
-
-                    case R.id.fab_video:
-                        presenter.onCreateCardClicked(Constants.CardType.VIDEO_CARD);
-                        return false;
-
-                    default:
-                        return false;
-                }
-            }
-        });
+        fabSpeedDialView.setOnActionSelectedListener(this);
 
     }
 
@@ -591,13 +609,30 @@ public class CardsGrid_View extends BaseView implements
         }
     }
 
+    private void processCardShowResult(int resultCode, @Nullable Intent data) {
+        if (RESULT_OK == resultCode) {
+            if (null != data) {
+                String action = data.getAction();
+                if (Constants.ACTION_DELETE.equals(action)) {
+                    Card card = data.getParcelableExtra(Constants.CARD);
+                    if (null != card) {
+                        iGridItem gridItem = dataAdapter.getGridItem(card);
+                        if (null != gridItem) {
+                            dataAdapter.removeItem(gridItem);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
         try {
-
             switch (resultCode) {
                 case RESULT_OK:
                     Card card = data.getParcelableExtra(Constants.CARD);
-                    addItem(card);
+                    dataAdapter.insertItem(0, new GridItem_Card(card));
+                    scroll2position(0);
                     break;
 
                 case RESULT_CANCELED:
@@ -607,7 +642,6 @@ public class CardsGrid_View extends BaseView implements
                 default:
                     throw new Exception("Unknown result code: "+resultCode);
             }
-
         }
         catch (Exception e) {
             showErrorMsg(R.string.CARDS_GRID_card_creation_error, e.getMessage());
@@ -710,4 +744,5 @@ public class CardsGrid_View extends BaseView implements
             e.printStackTrace();
         }
     }
+
 }

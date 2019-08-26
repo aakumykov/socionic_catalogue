@@ -73,6 +73,8 @@ public interface iUsers {
         void saveProfile() throws Exception;
 
         void cancelButtonClicked();
+
+        void onTransferUserClicked();
     }
 
 }

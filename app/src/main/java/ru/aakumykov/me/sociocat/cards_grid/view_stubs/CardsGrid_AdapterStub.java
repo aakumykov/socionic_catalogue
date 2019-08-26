@@ -2,13 +2,16 @@ package ru.aakumykov.me.sociocat.cards_grid.view_stubs;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
+import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
+import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
 
@@ -28,12 +31,17 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
-    public void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition) {
+    public void insertList(int position, List<iGridItem> list) {
 
     }
 
     @Override
-    public void prependList(List<iGridItem> gridItemList) {
+    public void insertItem(int position, iGridItem gridItem) {
+
+    }
+
+    @Override
+    public void addList(List<iGridItem> inputList, int position, boolean forceLoadMoreItem, @Nullable Integer scrollToPosition) {
 
     }
 
@@ -48,8 +56,18 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
+    public iGridItem getGridItem(@NonNull Card searchedCard) {
+        return null;
+    }
+
+    @Override
     public int getItemPosition(iGridItem item) {
         return 0;
+    }
+
+    @Override
+    public GridItem_Card getLastCardItem() {
+        return null;
     }
 
     @Override
@@ -58,13 +76,8 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
-    public iGridItem getItemBeforeLoadmore(int loadmorePosition) {
-        return null;
-    }
+    public void showLoadOldItem() {
 
-    @Override
-    public iGridItem getItemAfterLoadmore(int loadmorePosition) {
-        return null;
     }
 
     @Override public void addItem(iGridItem gridItem) {
@@ -87,7 +100,7 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
-    public void hideLoadMoreItem(int position) {
+    public void hideLoadOldItem(int position) {
 
     }
 

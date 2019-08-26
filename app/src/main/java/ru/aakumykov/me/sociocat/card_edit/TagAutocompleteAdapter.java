@@ -1,13 +1,14 @@
 package ru.aakumykov.me.sociocat.card_edit;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import ru.aakumykov.me.sociocat.R;
 
 public class TagAutocompleteAdapter extends ArrayAdapter<String> {
 
+    private final static String TAG = "TagAutocompleteAdapter";
     private LayoutInflater inflater;
     private int layout;
     private List<String> list;
@@ -75,14 +77,17 @@ public class TagAutocompleteAdapter extends ArrayAdapter<String> {
                 suggestedTags.clear();
                 pattern = pattern.toString().toLowerCase();
 
-                for (String tag : allTags) {
-                    tag = tag.toLowerCase();
-                    String[] tagPieces = tag.split("\\s+");
+                for (String tagName : allTags) {
+                    if (null != tagName) {
+                        tagName = tagName.toLowerCase();
 
-                    for (String word : tagPieces) {
-                        if (word.startsWith(pattern.toString())) {
-                            suggestedTags.add(tag);
-                            break;
+                        String[] tagPieces = tagName.split("\\s+");
+
+                        for (String word : tagPieces) {
+                            if (word.startsWith(pattern.toString())) {
+                                suggestedTags.add(tagName);
+//                            break;
+                            }
                         }
                     }
                 }

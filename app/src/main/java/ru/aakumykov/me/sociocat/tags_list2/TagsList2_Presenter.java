@@ -6,7 +6,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.TagsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.tags_list2.view_stubs.TagsList2_PageViewStub;
 import ru.aakumykov.me.sociocat.tags_list2.view_stubs.TagsList2_TagsViewStub;
@@ -15,7 +15,8 @@ public class TagsList2_Presenter implements iTagsList2.iPresenter {
 
     private iTagsList2.iPageView pageView;
     private iTagsList2.iTagsView tagsView;
-    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
+//    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
+    private iTagsSingleton tagsSingleton = TagsSingleton_CF.getInstance();
     private iTagsList2.SortOrder sortOrder = iTagsList2.SortOrder.NAMES_DIRECT;
 
     @Override
@@ -115,9 +116,8 @@ public class TagsList2_Presenter implements iTagsList2.iPresenter {
         Collections.sort(inputList, new Comparator<Tag>() {
             @Override
             public int compare(Tag tag1, Tag tag2) {
-                int cardsCount1 = tag1.getCards().keySet().size();
-                int cardsCount2 = tag2.getCards().keySet().size();
-                if (cardsCount1 == cardsCount2) return 0;
+                int cardsCount1 = tag1.getCardsCount();
+                int cardsCount2 = tag2.getCardsCount();
                 return (directOrder) ? cardsCount1 - cardsCount2 : cardsCount2 - cardsCount1;
             }
         });

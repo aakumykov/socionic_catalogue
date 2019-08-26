@@ -27,6 +27,7 @@ import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.users.show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
@@ -177,6 +178,7 @@ public class CardShow_View extends BaseView implements
     @Override
     public void goShowCardsWithTag(String tagName) {
         Intent intent = new Intent(this, CardsGrid_View.class);
+        intent.setAction(Constants.ACTION_SHOW_CARDS_WITH_TAG);
         intent.putExtra(Constants.TAG_NAME, tagName);
         startActivity(intent);
     }
@@ -198,7 +200,8 @@ public class CardShow_View extends BaseView implements
         mEditMode = editMode;
 
         commentForm.addButtonListeners(new iCommentForm.ButtonListeners() {
-            @Override public void onClearQuoteClicked() {
+            @Override
+            public void onClearQuoteClicked() {
                 Card card = cardPresenter.getCard();
                 commentsPresenter.onReplyClicked(card);
             }
@@ -258,6 +261,21 @@ public class CardShow_View extends BaseView implements
     @Override
     public void hideSwipeRefreshThrobber() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void goToAuthorProfile() {
+        Intent intent = new Intent(this, UserShow_View.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void closePageAfterDeletion(Card card) {
+        Intent intent = new Intent();
+        intent.setAction(Constants.ACTION_DELETE);
+        intent.putExtra(Constants.CARD, card);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
 

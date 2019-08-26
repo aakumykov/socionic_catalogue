@@ -15,14 +15,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:id="@+id/tagsParentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        tools:visibility="visible"
+        android:paddingTop="6dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/CARDS_GRID_cards_with_tag"
+            android:textAlignment="center"
+            tools:text="Карточки с меткой" />
+
         <co.lujun.androidtagview.TagContainerLayout
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include"
             android:id="@+id/tagsContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:visibility="visible"
             app:container_background_color="@color/transparent"
             app:container_border_color="@color/transparent"
@@ -33,9 +49,11 @@
             app:tag_ripple_duration="400"
             app:tag_text_size="@dimen/tag_font_size"
             app:tag_theme="pure_teal"
-            app:vertical_interval="10dp"
-            android:padding="8dp"
-            />
+            app:vertical_interval="10dp">
+
+        </co.lujun.androidtagview.TagContainerLayout>
+
+    </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
@@ -45,7 +63,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tagsContainer">
+        app:layout_constraintTop_toBottomOf="@+id/tagsParentContainer">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
