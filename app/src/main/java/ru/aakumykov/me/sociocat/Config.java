@@ -21,7 +21,6 @@ public final class Config {
     public static final int AVATAR_MAX_WIDTH = 256;
     public static final int AVATAR_MAX_HEIGHT = 455;
 
-    public static final String DEFAULT_IMAGE_TYPE = "jpg";
     public static final int DEFAULT_JPEG_QUALITY = 90;
 
     public static final int MAX_CARD_IMAGE_WIDTH = 1920;
