@@ -34,9 +34,6 @@ public final class Config {
     public static final String YOUTUBE_LONG_LINK_REGEX_1 = "^https?://youtube\\.com/watch\\?v=([\\w-]+)";
     public static final String YOUTUBE_LONG_LINK_REGEX_2 = "^https?://www\\.youtube\\.com/watch\\?v=([\\w-]+)";
 
-    public static final long DEFAULT_NEW_CARDS_PERIOD = 3600 * 24;
-
-
     public static final int DEFAULT_CARDS_LOAD_COUNT = 10;
 
     public static final int DEFAULT_COMMENTS_LOAD_COUNT = 20;
