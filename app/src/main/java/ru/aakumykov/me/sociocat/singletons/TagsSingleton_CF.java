@@ -212,7 +212,7 @@ public class TagsSingleton_CF implements iTagsSingleton {
                     transaction.set(
                             tagRef,
                             newTag,
-                            SetOptions.mergeFields("name", "key")
+                            SetOptions.mergeFields(Tag.NAME_KEY, Tag.KEY_KEY)
                     );
 
                     transaction.update(
