@@ -36,11 +36,9 @@ public final class Config {
 
     public static final long DEFAULT_NEW_CARDS_PERIOD = 3600 * 24;
 
-<<<<<<< HEAD
-    public static final int DEFAULT_CARDS_LOAD_COUNT = 10;
-=======
+
     public static final int DEFAULT_CARDS_LOAD_COUNT = 3;
->>>>>>> cloud-firestore
+
     public static final int DEFAULT_COMMENTS_LOAD_COUNT = 20;
 
     public static final int CARDS_GRID_COLUMNS_COUNT_PORTRAIT = 2;

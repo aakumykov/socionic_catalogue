@@ -41,17 +41,11 @@ public class StorageSingleton implements iStorageSingleton {
 
     // Интерфейсные методы
     @Override
-<<<<<<< HEAD
-    public void uploadImage(Bitmap imageBitmap, String imageType, @Nullable String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
-
-        if (TextUtils.isEmpty(fileName)) {
-            callbacks.onFileUploadFail("File name cannot be empty: "+fileName);
-=======
     public void uploadImage(Bitmap imageBitmap, String imageType, @Nullable String fileNameWithoutExtension, final FileUploadCallbacks callbacks) {
 
         if (TextUtils.isEmpty(fileNameWithoutExtension)) {
             callbacks.onFileUploadFail("Image file name cannot be empty: "+ fileNameWithoutExtension);
->>>>>>> cloud-firestore
+
             return;
         }
 
@@ -63,17 +57,10 @@ public class StorageSingleton implements iStorageSingleton {
     }
 
     @Override
-<<<<<<< HEAD
-    public void uploadAvatar(Bitmap imageBitmap, String imageType, @Nullable String fileName, final iStorageSingleton.FileUploadCallbacks callbacks) {
-
-        if (TextUtils.isEmpty(fileName)) {
-            callbacks.onFileUploadFail("File name cannot be empty: "+fileName);
-=======
     public void uploadAvatar(Bitmap imageBitmap, String imageType, @Nullable String fileNameWithoutExtension, final FileUploadCallbacks callbacks) {
 
         if (TextUtils.isEmpty(fileNameWithoutExtension)) {
             callbacks.onFileUploadFail("Image file name cannot be empty: "+fileNameWithoutExtension);
->>>>>>> cloud-firestore
             return;
         }
 
@@ -88,11 +75,7 @@ public class StorageSingleton implements iStorageSingleton {
     public void deleteImage(@Nullable String imageFileName, final FileDeletionCallbacks callbacks) {
 
         if (TextUtils.isEmpty(imageFileName)) {
-<<<<<<< HEAD
-            callbacks.onDeleteFail("File name cannot be empty: "+imageFileName);
-=======
             callbacks.onDeleteFail("Image file name cannot be empty: "+imageFileName);
->>>>>>> cloud-firestore
             return;
         }
 
@@ -104,11 +87,7 @@ public class StorageSingleton implements iStorageSingleton {
     public void deleteAvatar(@Nullable String avatarFileName, FileDeletionCallbacks callbacks) {
 
         if (TextUtils.isEmpty(avatarFileName)) {
-<<<<<<< HEAD
-            callbacks.onDeleteFail("File name cannot be empty: "+avatarFileName);
-=======
             callbacks.onDeleteFail("Image file name cannot be empty: "+avatarFileName);
->>>>>>> cloud-firestore
             return;
         }
 
