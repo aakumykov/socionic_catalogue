@@ -21,10 +21,8 @@ import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
-import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.CardDeletionHelper;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
@@ -39,12 +37,11 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private final static String TAG = "CG3_Presenter";
     private iCardsGrid.iPageView pageView;
     private iCardsGrid.iGridView gridView;
-//    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
-    private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
     private String filterTag;
     private String filterWord;
+
 
     @Override
     public void linkViews(iCardsGrid.iPageView pageView, iCardsGrid.iGridView gridView) {
@@ -69,10 +66,9 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             String action = intent.getAction() + "";
             pageView.storeAction(action);
 
-            switch (action) {
-                case Constants.ACTION_SHOW_CARDS_WITH_TAG:
-                    String filteringTag = intent.getStringExtra(Constants.TAG_NAME);
-                    loadCardsWithTag(filteringTag);
+            if (Constants.ACTION_SHOW_CARDS_WITH_TAG.equals(action)) {
+                    this.filterTag = intent.getStringExtra(Constants.TAG_NAME);
+                    loadCardsWithTag(this.filterTag);
                     return;
             }
         }
