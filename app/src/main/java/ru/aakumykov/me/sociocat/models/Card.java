@@ -434,4 +434,8 @@ public class Card extends ListItem implements
 
         this.tags.add(tag);
     }
+
+    @Exclude public boolean hasTag(String tagName) {
+        return tags.contains(tagName);
+    }
 }

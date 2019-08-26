@@ -122,5 +122,7 @@ public interface iCardsGrid {
 
         List<iGridItem> filterList(List<iGridItem> inputList);
         void onFilteringTagDiscardClicked();
+
+        void processCardCreationResult(@Nullable Intent data);
     }
 }

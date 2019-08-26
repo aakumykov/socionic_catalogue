@@ -493,4 +493,5 @@
     <string name="CARD_EDIT_waiting_media_data">Ожидание данных</string>
     <string name="CARD_EDIT_preparing_player">Подготовка выигрывателя</string>
     <string name="CARD_EDIT_error_parsing_timecode">Ошибка метки времени</string>
+    <string name="CARDS_GRID_error_processing_card">Ошибка обработки карточки</string>
 </resources>

@@ -625,9 +625,7 @@ public class CardsGrid_View extends BaseView implements
         try {
             switch (resultCode) {
                 case RESULT_OK:
-                    Card card = data.getParcelableExtra(Constants.CARD);
-                    dataAdapter.insertItem(0, new GridItem_Card(card));
-                    scroll2position(0);
+                    presenter.processCardCreationResult(data);
                     break;
 
                 case RESULT_CANCELED:

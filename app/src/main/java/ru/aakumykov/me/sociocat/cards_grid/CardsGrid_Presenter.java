@@ -39,7 +39,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private iCardsGrid.iGridView gridView;
     private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
-    private String filterTag;
+    private String tagFilter;
     private String filterWord;
 
 
@@ -67,8 +67,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             pageView.storeAction(action);
 
             if (Constants.ACTION_SHOW_CARDS_WITH_TAG.equals(action)) {
-                    this.filterTag = intent.getStringExtra(Constants.TAG_NAME);
-                    loadCardsWithTag(this.filterTag);
+                    this.tagFilter = intent.getStringExtra(Constants.TAG_NAME);
+                    loadCardsWithTag(this.tagFilter);
                     return;
             }
         }
@@ -110,7 +110,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
             gridView.hideLoadOldItem(position);
 
-            loadCardsAfter(lastCard, position, this.filterTag);
+            loadCardsAfter(lastCard, position, this.tagFilter);
         }
         catch (Exception e) {
             pageView.showErrorMsg(R.string.CARDS_GRID_loadmore_error, e.getMessage());
@@ -201,7 +201,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     @Override
     public List<iGridItem> filterList(List<iGridItem> inputList) {
-        String filterTag = this.filterTag;
+        String filterTag = this.tagFilter;
         String filterWord = pageView.getCurrentFilterWord();
 
         List<iGridItem> resultsList = new ArrayList<>(inputList);
@@ -218,6 +218,25 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     @Override
     public void onFilteringTagDiscardClicked() {
         pageView.goCardsGrid();
+    }
+
+    @Override
+    public void processCardCreationResult(@Nullable Intent data) {
+        try {
+            Card card = data.getParcelableExtra(Constants.CARD);
+
+            // Игнорирую карточку, не подходящую под активную фильтрующую метку
+            if (null != tagFilter)
+                if (!card.hasTag(tagFilter))
+                    return;
+
+            gridView.insertItem(0, new GridItem_Card(card));
+            pageView.scroll2position(0);
+        }
+        catch (Exception e) {
+            pageView.showErrorMsg(R.string.CARDS_GRID_error_processing_card, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 
@@ -314,7 +333,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             });
         }
         else {
-            pageView.showErrorMsg(R.string.CARDS_GRID_error_there_is_no_tag, "filterTag == null");
+            pageView.showErrorMsg(R.string.CARDS_GRID_error_there_is_no_tag, "tagFilter == null");
         }
     }
 
