@@ -60,7 +60,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     // TODO: опасненько его здесь хранить!
     private Context context;
     private iCardShow.iCardPresenter cardPresenter;
-    private boolean isInitialized = false;
+
 
     // Конструктор
     public Card_ViewHolder(View itemView, iCardShow.iCardPresenter cardPresenter) {
@@ -71,13 +71,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     }
 
     public void initialize(Card card) {
-        if (!this.isInitialized) {
-            this.isInitialized = true;
-
             tagsContainer.setOnTagClickListener(this);
-
             displayCard(card);
-        }
     }
 
 
