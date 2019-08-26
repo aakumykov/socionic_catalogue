@@ -110,7 +110,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
             gridView.hideLoadOldItem(position);
 
-            loadCardsAfter(lastCard, position);
+            loadCardsAfter(lastCard, position, this.filterTag);
         }
         catch (Exception e) {
             pageView.showErrorMsg(R.string.CARDS_GRID_loadmore_error, e.getMessage());
@@ -224,24 +224,29 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     // Внутренние методы
     private void loadCardsAfter(
             Card previousCard,
-            int insertPosition
+            int insertPosition,
+            @Nullable String filterTag
     ) {
         gridView.showThrobber(insertPosition);
 
-        cardsSingleton.loadCardsAfter(previousCard, new iCardsSingleton.ListCallbacks() {
-            @Override
-            public void onListLoadSuccess(List<Card> list) {
-                gridView.hideThrobber(insertPosition);
-                gridView.insertList(insertPosition, cardsList2gridItemsList(list));
-                gridView.showLoadOldItem();
-            }
+        cardsSingleton.loadCardsAfter(
+                previousCard,
+                filterTag,
+                new iCardsSingleton.ListCallbacks() {
+                    @Override
+                    public void onListLoadSuccess(List<Card> list) {
+                        gridView.hideThrobber(insertPosition);
+                        gridView.insertList(insertPosition, cardsList2gridItemsList(list));
+                        gridView.showLoadOldItem();
+                    }
 
-            @Override
-            public void onListLoadFail(String errorMessage) {
-                pageView.showToast(R.string.CARDS_GRID_error_loading_cards);
-                Log.e(TAG, errorMessage);
-            }
-        });
+                    @Override
+                    public void onListLoadFail(String errorMessage) {
+                        pageView.showToast(R.string.CARDS_GRID_error_loading_cards);
+                        Log.e(TAG, errorMessage);
+                    }
+                }
+        );
     }
 
     private void loadCards(

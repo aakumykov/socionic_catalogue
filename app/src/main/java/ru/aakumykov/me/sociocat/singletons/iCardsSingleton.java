@@ -24,7 +24,7 @@ public interface iCardsSingleton {
     void loadListFromTo(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks);
     void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks );
 
-    void loadCardsAfter(Card previousCard, ListCallbacks callbacks);
+    void loadCardsAfter(Card previousCard, @Nullable String tagFilter, ListCallbacks callbacks);
     void loadCardsFromNowTo(Card beforeCard, ListCallbacks callbacks);
 
     void loadList(String tagFilter, ListCallbacks callbacks);

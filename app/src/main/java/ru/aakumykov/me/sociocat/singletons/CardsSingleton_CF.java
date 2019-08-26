@@ -86,30 +86,20 @@ public class CardsSingleton_CF implements iCardsSingleton {
                 null,
                 null,
                 null,
-                null,
+                Config.DEFAULT_CARDS_LOAD_COUNT,
                 callbacks);
     }
 
     @Override
-    public void loadCardsAfter(Card previousCard, ListCallbacks callbacks) {
-        /*loadListEnhanced(
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                previousCard.getKey(),
-                null,
-                null,
-                callbacks
-        );*/
+    public void loadCardsAfter(Card previousCard, @Nullable String tagFilter, ListCallbacks callbacks) {
 
         Query query = cardsCollection
                 .orderBy(Card.KEY_CTIME, Query.Direction.DESCENDING)
                 .startAfter(previousCard.getCTime())
                 .limit(Config.DEFAULT_CARDS_LOAD_COUNT);
 
+        if (null != tagFilter)
+            query = query.whereArrayContains(Card.KEY_TAGS, tagFilter);
 
         query.get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -181,7 +171,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
                 null,
                 null,
                 null,
-                null,
+                Config.DEFAULT_CARDS_LOAD_COUNT,
                 callbacks
         );
     }
@@ -332,38 +322,6 @@ public class CardsSingleton_CF implements iCardsSingleton {
             ListCallbacks callbacks
     )
     {
-        /*Card card = new Card();
-        card.setTitle("Пробная карточка 1");
-        card.setQuote("Цытата");
-        card.setDescription("Описанне");
-        card.setType(Constants.TEXT_CARD);
-
-        DocumentReference documentReference = firebaseFirestore
-                .collection("cards")
-                .document();
-
-        String cardKey = documentReference.getId();
-
-        card.setKey(cardKey);
-
-        documentReference.set(card)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful())
-                            callbacks.onListLoadSuccess(new ArrayList<>());
-                        else {
-                            Exception e = task.getException();
-                            String errorMsg = "ERROR";
-                            if (null != e) {
-                                e.printStackTrace();
-                                errorMsg = e.getMessage();
-                                callbacks.onListLoadFail(errorMsg);
-                            }
-                        }
-                    }
-                });*/
-
         Query query = cardsCollection;
 
         // Сортировка
