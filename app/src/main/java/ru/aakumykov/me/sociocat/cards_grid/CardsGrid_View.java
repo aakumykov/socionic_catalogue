@@ -198,11 +198,6 @@ public class CardsGrid_View extends BaseView implements
         menuInflater.inflate(R.menu.search_widget, menu);
         menuInflater.inflate(R.menu.search, menu);
 
-        if (Constants.ACTION_SHOW_NEW_CARDS.equals(action))
-            hideMenuItem(menu, R.id.actionNewCards);
-        else
-            menuInflater.inflate(R.menu.new_cards, menu);
-
         super.onCreateOptionsMenu(menu);
 
         configureSearchWidget(menu);

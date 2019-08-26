@@ -70,16 +70,6 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             pageView.storeAction(action);
 
             switch (action) {
-
-                case Constants.ACTION_SHOW_NEW_CARDS:
-                    checkForNewCards(new iCardsGrid.CheckNewCardsCallbacks() {
-                        @Override
-                        public void onNewCardsChecked() {
-
-                        }
-                    });
-                    return;
-
                 case Constants.ACTION_SHOW_CARDS_WITH_TAG:
                     String filteringTag = intent.getStringExtra(Constants.TAG_NAME);
                     loadCardsWithTag(filteringTag);
