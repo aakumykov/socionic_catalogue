@@ -22,8 +22,11 @@ import androidx.annotation.Nullable;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -98,6 +101,11 @@ public final class MyUtils {
         return difference;
     }
 
+    public static <T> List<T> listDiff(List<T> list1, List<T> list2) {
+        Set<T> set1 = new HashSet<>(list1);
+        set1.removeAll(new HashSet<>(list2));
+        return new ArrayList<>(set1);
+    }
 
 
 //    public static String getMimeTypeFromIntent(@Nullable Intent intent) throws IllegalArgumentException {
