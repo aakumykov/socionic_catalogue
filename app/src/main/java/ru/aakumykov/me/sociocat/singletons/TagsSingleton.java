@@ -178,6 +178,11 @@ public class TagsSingleton implements iTagsSingleton {
         });
     }
 
+    @Override
+    public void processTags(String cardKey, @Nullable List<String> oldTagsNames, @Nullable List<String> newTagsNames, @Nullable UpdateCallbacks callbacks) {
+
+    }
+
 
     @Override
     public void processTags(

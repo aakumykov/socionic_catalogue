@@ -12,19 +12,18 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.firestore.Transaction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class TagsSingleton_CF implements iTagsSingleton {
 
@@ -182,59 +181,70 @@ public class TagsSingleton_CF implements iTagsSingleton {
     }
 
     @Override
-    public void processTags(String cardKey, @Nullable List<Tag> oldTags, @Nullable List<Tag> newTags, @Nullable UpdateCallbacks callbacks) {
+    public void processTags(String cardKey, @Nullable List<String> oldTagsNames, @Nullable List<String> newTagsNames, @Nullable UpdateCallbacks callbacks) {
 
         // Компенсирую NULL-аргументы
-        if (null == oldTags) oldTags = new ArrayList<>();
-        if (null == newTags) newTags = new ArrayList<>();
+        if (null == oldTagsNames) oldTagsNames = new ArrayList<>();
+        if (null == newTagsNames) newTagsNames = new ArrayList<>();
 
-        // Получаю набор добавленных к карточке меток
-        Set<Tag> oldTagsSet = new HashSet<>(oldTags);
-        oldTagsSet.removeAll(new HashSet<>(newTags));
+        // Определяю, что добавлено, что удалено
+        List<String> addedTagsNames = MyUtils.listDiff(newTagsNames, oldTagsNames);
+        List<String> removedTagsNames = MyUtils.listDiff(oldTagsNames, newTagsNames);
 
-        // Получаю набор удалённых из карточки меток
-        Set<Tag> newTagsSet = new HashSet<>(newTags);
-        newTagsSet.removeAll(new HashSet<>(oldTags));
+        firebaseFirestore.runTransaction(new Transaction.Function<Void>() {
+            @Nullable @Override
+            public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
 
+                for (String tagName : removedTagsNames) {
+                    DocumentReference tagRef = tagsCollection.document(tagName);
+                    transaction.update(
+                            tagRef,
+                            Tag.CARDS_KEY,
+                            FieldValue.arrayRemove(cardKey)
+                    );
+                }
 
-        WriteBatch writeBatch = firebaseFirestore.batch();
+                for (String tagName : addedTagsNames) {
+                    DocumentReference tagRef = tagsCollection.document(tagName);
+                    Tag newTag = new Tag(tagName);
 
-        // Добавляю id карточки к её новым меткам
-        for (String tagName : addedTagsNames) {
-            DocumentReference addedTagRef = tagsCollection.document(tagName);
+                    // Добавляю метку
+                    transaction.set(
+                            tagRef,
+                            newTag,
+                            SetOptions.mergeFields("name", "key")
+                    );
 
-            writeBatch.set(addedTagRef, updates, SetOptions.merge());
-        }
+                    transaction.update(
+                            tagRef,
+                            Tag.CARDS_KEY,
+                            FieldValue.arrayUnion(cardKey)
+                    );
+                }
 
-        // Удаляю id карточки из меток, которых в карточке больше нет
-        Map<String,Object> updates = new HashMap<>();
-        updates.put(cardKey, FieldValue.delete());
+                return null;
+            }
+        })
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                if (null != callbacks)
+                    callbacks.onUpdateSuccess();
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                e.printStackTrace();
+                if (null != callbacks)
+                    callbacks.onUpdateFail(e.getMessage());
+            }
+        });
+    }
 
-        for (String tagName : removedTags.keySet()) {
-            DocumentReference removedTagRef = tagsCollection.document(tagName);
-            writeBatch.update(removedTagRef, updates);
-        }
+    @Override
+    public void processTags(String cardKey, @Nullable HashMap<String, Boolean> oldTags, @Nullable HashMap<String, Boolean> newTags, @Nullable UpdateCallbacks callbacks) {
 
-
-        // Применяю изменения
-        // TODO: сделать это в виде транзакции?
-        writeBatch.commit()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        if (null != callbacks)
-                            callbacks.onUpdateSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-                        String errorMsg = e.getMessage();
-                        if (null != callbacks)
-                            callbacks.onUpdateFail(errorMsg);
-                    }
-                });
     }
 
     private boolean tagIsValid(Tag tag) {

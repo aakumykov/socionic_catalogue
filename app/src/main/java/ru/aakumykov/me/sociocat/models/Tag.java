@@ -12,12 +12,19 @@ import java.util.Map;
 
 public class Tag implements Parcelable {
 
+    public static final String CARDS_KEY = "cards";
     private String key;
     private String name;
     private List<String> cards = new ArrayList<>();
 
 
     public Tag() {}
+
+    public Tag(String name) {
+        this.name = name;
+        this.key = name;
+    }
+
 
     @Override
     public String toString() {

@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import androidx.annotation.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Tag;
@@ -16,9 +17,16 @@ public interface iTagsSingleton {
     void listTags(ListCallbacks callbacks);
 
     void processTags(String cardKey,
-                     @Nullable List<Tag> oldTags,
-                     @Nullable List<Tag> newTags,
+                     @Nullable List<String> oldTagsNames,
+                     @Nullable List<String> newTagsNames,
                      @Nullable UpdateCallbacks callbacks
+    );
+
+    void processTags(
+            String cardKey,
+            @Nullable HashMap<String, Boolean> oldTags,
+            @Nullable HashMap<String, Boolean> newTags,
+            @Nullable UpdateCallbacks callbacks
     );
 
     interface TagCallbacks {
