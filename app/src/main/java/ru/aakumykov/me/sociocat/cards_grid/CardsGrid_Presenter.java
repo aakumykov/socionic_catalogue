@@ -80,7 +80,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
                     });
                     return;
 
-                case Constants.ACTION_FILTER_BY_TAG:
+                case Constants.ACTION_SHOW_CARDS_WITH_TAG:
                     String filteringTag = intent.getStringExtra(Constants.TAG_NAME);
                     loadCardsWithTag(filteringTag);
                     return;

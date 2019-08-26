@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -62,6 +63,7 @@ public class CardsGrid_View extends BaseView implements
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.tagsParentContainer) LinearLayout tagsParentContainer;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.speedDialView) SpeedDialView fabSpeedDialView;
 
@@ -386,6 +388,7 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public void showTagFilter(String tagName) {
+        MyUtils.show(tagsParentContainer);
         tagsContainer.removeAllTags();
         tagsContainer.addTag(tagName);
     }

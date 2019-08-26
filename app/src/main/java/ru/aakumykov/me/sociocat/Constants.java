@@ -35,7 +35,7 @@ public final class Constants {
     public final static String ACTION_REPLY_TO_CARD = "ACTION_REPLY_TO_CARD";
     public final static String ACTION_REPLY_TO_COMMENT = "ACTION_REPLY_TO_COMMENT";
     public static final String ACTION_SHOW_NEW_CARDS = "ACTION_SHOW_NEW_CARDS";
-    public static final String ACTION_FILTER_BY_TAG = "ACTION_FILTER_BY_TAG";
+    public static final String ACTION_SHOW_CARDS_WITH_TAG = "ACTION_SHOW_CARDS_WITH_TAG";
 
     public final static String CARD = "CARD";
     public final static String CARD_DRAFT = "CARD_DRAFT";
