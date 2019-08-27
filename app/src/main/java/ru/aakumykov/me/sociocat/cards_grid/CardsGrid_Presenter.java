@@ -112,6 +112,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
+                gridView.hideThrobber(position);
                 gridView.addList(cardsList2gridItemsList(list), position, false, null);
             }
 
