@@ -71,6 +71,11 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
+    public GridItem_Card getFirstCardItem() {
+        return null;
+    }
+
+    @Override
     public List<iGridItem> getList() {
         return null;
     }

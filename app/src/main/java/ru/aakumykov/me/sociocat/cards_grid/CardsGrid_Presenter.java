@@ -77,15 +77,33 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     @Override
     public void onRefreshRequested() {
-
         pageView.showSwipeThrobber();
 
-        checkForNewCards(new iCardsGrid.CheckNewCardsCallbacks() {
+        iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
             @Override
-            public void onNewCardsChecked() {
+            public void onListLoadSuccess(List<Card> list) {
                 pageView.hideSwipeThrobber();
+                gridView.setList(cardsList2gridItemsList(list));
             }
-        });
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+            }
+        };
+
+        iGridItem lastCardItem = gridView.getLastCardItem();
+        if (null != lastCardItem) {
+
+            Card lastCard = (Card) lastCardItem.getPayload();
+            if (null != lastCard) {
+
+                if (null == tagFilter)
+                    cardsSingleton.loadCardsFromNewestTo(lastCard, listCallbacks);
+                else
+                    cardsSingleton.loadCardsWithTagFromNewestTo(this.tagFilter, lastCard, listCallbacks);
+            }
+        }
     }
 
     @Override

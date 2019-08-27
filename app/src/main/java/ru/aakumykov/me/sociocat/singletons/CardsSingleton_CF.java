@@ -107,6 +107,38 @@ public class CardsSingleton_CF implements iCardsSingleton {
         );
     }
 
+    @Override
+    public void loadCardsFromNewestTo(Card endAtCard, ListCallbacks callbacks) {
+        loadListEnhanced(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                endAtCard,
+                null,
+                callbacks
+        );
+    }
+
+    @Override
+    public void loadCardsWithTagFromNewestTo(String tag, Card endAtCard, ListCallbacks callbacks) {
+        loadListEnhanced(
+                null,
+                null,
+                tag,
+                null,
+                null,
+                null,
+                null,
+                endAtCard,
+                null,
+                callbacks
+        );
+    }
+
     /*@Override
         public void loadList(ListCallbacks callbacks) {
             loadListEnhanced(
@@ -436,8 +468,12 @@ public class CardsSingleton_CF implements iCardsSingleton {
         // Предельное количество
         if (null != limit)
             query = query.limit(limit);
-        else
-            query = query.limit(Config.DEFAULT_CARDS_LOAD_COUNT);
+        else {
+            /* Если установлена нижняя граница через карточку,
+               количество по умолчанию ставить не нужно. */
+            if (null == endAtCard)
+                query = query.limit(Config.DEFAULT_CARDS_LOAD_COUNT);
+        }
 
 
         // Собственно запрос
