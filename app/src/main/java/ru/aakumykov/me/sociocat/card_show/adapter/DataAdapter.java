@@ -317,7 +317,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 //        int start = this.itemsList.size();
 //        int count = inputList.size();
 //
-//        hideLoadOldItem(position);
+//        hideLoadMoreItem(position);
 //
 //        this.itemsList.addAll(position, inputList);
 //        notifyItemRangeChanged(start, count);

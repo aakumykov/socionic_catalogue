@@ -28,8 +28,8 @@ public interface iCardsGrid {
         void onGridItemLongClicked(View view);
     }
 
-    interface iLoadOldClickListener {
-        void onLoadOldClicked(View view);
+    interface iLoadMoreClickListener {
+        void onLoadMoreClicked(View view);
     }
 
     interface CheckNewCardsCallbacks {
@@ -85,8 +85,8 @@ public interface iCardsGrid {
 
         List<iGridItem> getList();
 
-        void showLoadOldItem();
-        void hideLoadOldItem(int position);
+        void showLoadMoreItem();
+        void hideLoadMoreItem(int position);
 
         void showThrobber(int position);
         void hideThrobber(int position);
@@ -110,7 +110,7 @@ public interface iCardsGrid {
 
         void onCheckNewCardsClicked();
 
-        void onLoadOldClicked(int position);
+        void onLoadMoreClicked(int position);
 
         void onCardClicked(int position);
         void onCardLongClicked(int position, View view, iGridViewHolder gridViewHolder);

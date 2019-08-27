@@ -102,11 +102,11 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     }
 
     @Override
-    public void onLoadOldClicked(int position) {
+    public void onLoadMoreClicked(int position) {
         iGridItem lastGridItem = gridView.getGridItem(position - 1);
         Card lastCard = (null != lastGridItem) ? (Card) lastGridItem.getPayload() : null;
 
-        gridView.hideLoadOldItem(position);
+        gridView.hideLoadMoreItem(position);
         gridView.showThrobber(position);
 
         iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {

@@ -15,7 +15,7 @@ import ru.aakumykov.me.sociocat.models.Comment;
 
 public class LoadMore_ViewHolder extends Base_ViewHolder
 {
-    private final static String TAG = "LoadOld_ViewHolder";
+    private final static String TAG = "LoadMore_ViewHolder";
     private iCardShow.iCommentsPresenter commentsPresenter;
     private Comment startAtComment;
     private int position;

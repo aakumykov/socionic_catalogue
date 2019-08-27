@@ -76,7 +76,7 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
-    public void showLoadOldItem() {
+    public void showLoadMoreItem() {
 
     }
 
@@ -100,7 +100,7 @@ public class CardsGrid_AdapterStub implements iCardsGrid.iGridView {
     }
 
     @Override
-    public void hideLoadOldItem(int position) {
+    public void hideLoadMoreItem(int position) {
 
     }
 

@@ -50,7 +50,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class CardsGrid_View extends BaseView implements
         iCardsGrid.iPageView,
         iCardsGrid.iGridItemClickListener,
-        iCardsGrid.iLoadOldClickListener,
+        iCardsGrid.iLoadMoreClickListener,
 
         SearchView.OnQueryTextListener,
         SearchView.OnCloseListener,
@@ -440,11 +440,11 @@ public class CardsGrid_View extends BaseView implements
     }
 
 
-    // iLoadOldClickListener
+    // iLoadMoreClickListener
     @Override
-    public void onLoadOldClicked(View view) {
+    public void onLoadMoreClicked(View view) {
         int position = recyclerView.getChildAdapterPosition(view);
-        presenter.onLoadOldClicked(position);
+        presenter.onLoadMoreClicked(position);
     }
 
 
