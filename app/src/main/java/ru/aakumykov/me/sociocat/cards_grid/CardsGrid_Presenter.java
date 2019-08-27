@@ -241,24 +241,6 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
 
     // Внутренние методы
-    private void loadCards(iCardsSingleton.ListCallbacks callbacks) {
-
-    }
-
-    private void loadCardsAfter(Card lastCard, iCardsSingleton.ListCallbacks callbacks) {
-
-    }
-
-    private void loadCardsWithTag(String tagName, iCardsSingleton.ListCallbacks callbacks) {
-
-    }
-
-    private void loadCardsWithTagAfter(String tagName, Card lastCard, iCardsSingleton.ListCallbacks callbacks) {
-
-    }
-
-
-
     private void loadCardsAfter(
             Card previousCard,
             int insertPosition,
