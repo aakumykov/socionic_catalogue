@@ -428,11 +428,13 @@ public class CardsSingleton_CF implements iCardsSingleton {
         if (null != startAt)
             query = query.startAt(startAt);
 
+        if (null != startAfter)
+            query = query.startAfter(startAfter);
+
 
         // Конечное значение
         if (null != endAt)
             query = query.endAt(endAt);
-
 
         // Предельное количество
         if (null != limit)
