@@ -20,16 +20,21 @@ public interface iCardsSingleton {
         LOWER_OR_EQUALS
     }
 
-    void loadList(ListCallbacks callbacks);
-    void loadListFromTo(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks);
-    void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks );
+    void loadCards(ListCallbacks callbacks);
+    void loadCardsAfter(Card cardToLoadAfter, ListCallbacks callbacks);
+    void loadCardsWithTag(String tagName, ListCallbacks callbacks);
+    void loadCardsWithTagAfter(String tagName, Card cardToLoadAfter, ListCallbacks callbacks);
 
-    void loadCardsAfter(Card previousCard, @Nullable String tagFilter, ListCallbacks callbacks);
-    void loadCardsFromNowTo(Card beforeCard, ListCallbacks callbacks);
-
-    void loadList(String tagFilter, ListCallbacks callbacks);
-    void loadListForUser(String userId, ListCallbacks callbacks);
-    void loadNewCards(long newerThanTime, ListCallbacks callbacks);
+//    void loadList(ListCallbacks callbacks);
+//    void loadListFromTo(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks);
+//    void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks );
+//
+//    void loadCardsAfter(Card previousCard, @Nullable String tagFilter, ListCallbacks callbacks);
+//    void loadCardsFromNowTo(Card beforeCard, ListCallbacks callbacks);
+//
+//    void loadList(String tagFilter, ListCallbacks callbacks);
+//    void loadListForUser(String userId, ListCallbacks callbacks);
+//    void loadNewCards(long newerThanTime, ListCallbacks callbacks);
 
     void loadCard(String cardKey, LoadCallbacks callbacks);
     void updateCommentsCounter(String cardId, int diffValue);

@@ -175,7 +175,7 @@ public class Users_Presenter implements
 
     @Override
     public void loadCardsOfUser(String userId) {
-        cardsSingleton.loadListForUser(userId, this);
+//        cardsSingleton.loadListForUser(userId, this);
     }
 
     @Override

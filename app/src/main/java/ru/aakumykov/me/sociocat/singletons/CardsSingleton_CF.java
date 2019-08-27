@@ -45,7 +45,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
 
     @Override
-    public void loadList(ListCallbacks callbacks) {
+    public void loadCards(ListCallbacks callbacks) {
         loadListEnhanced(
                 null,
                 null,
@@ -55,28 +55,29 @@ public class CardsSingleton_CF implements iCardsSingleton {
                 null,
                 null,
                 null,
-                Config.DEFAULT_CARDS_LOAD_COUNT,
-                callbacks);
-    }
-
-    @Override
-    public void loadListFromTo(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
-        loadListEnhanced(
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                startKey,
-                endKey,
                 null,
                 callbacks
         );
     }
 
     @Override
-    public void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
+    public void loadCardsAfter(Card cardToLoadAfter, ListCallbacks callbacks) {
+        loadListEnhanced(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                cardToLoadAfter.getKey(),
+                null,
+                null,
+                callbacks
+        );
+    }
+
+    @Override
+    public void loadCardsWithTag(String tagName, ListCallbacks callbacks) {
         loadListEnhanced(
                 null,
                 null,
@@ -86,128 +87,191 @@ public class CardsSingleton_CF implements iCardsSingleton {
                 null,
                 null,
                 null,
-                Config.DEFAULT_CARDS_LOAD_COUNT,
-                callbacks);
+                null,
+                callbacks
+        );
     }
 
     @Override
-    public void loadCardsAfter(Card previousCard, @Nullable String tagFilter, ListCallbacks callbacks) {
-
-        Query query = cardsCollection
-                .orderBy(Card.KEY_CTIME, Query.Direction.DESCENDING)
-                .startAfter(previousCard.getCTime())
-                .limit(Config.DEFAULT_CARDS_LOAD_COUNT);
-
-        if (null != tagFilter)
-            query = query.whereArrayContains(Card.KEY_TAGS, tagFilter);
-
-        query.get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        List<Card> list = new ArrayList<>();
-                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments())
-                            list.add(documentSnapshot.toObject(Card.class));
-                        callbacks.onListLoadSuccess(list);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-                        callbacks.onListLoadFail(e.getMessage());
-                    }
-                });
+    public void loadCardsWithTagAfter(String tagName, Card cardToLoadAfter, ListCallbacks callbacks) {
+        loadListEnhanced(
+                null,
+                null,
+                tagName,
+                null,
+                null,
+                null,
+                cardToLoadAfter.getKey(),
+                null,
+                null,
+                callbacks
+        );
     }
 
-    @Override
-    public void loadCardsFromNowTo(Card beforeCard, ListCallbacks callbacks) {
+    /*@Override
+        public void loadList(ListCallbacks callbacks) {
+            loadListEnhanced(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    Config.DEFAULT_CARDS_LOAD_COUNT,
+                    callbacks);
+        }
 
-        Query query = cardsCollection
-                .orderBy(Card.KEY_CTIME, Query.Direction.DESCENDING)
-                .endAt(beforeCard.getCTime());
+        @Override
+        public void loadListFromTo(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
+            loadListEnhanced(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    startKey,
+                    endKey,
+                    null,
+                    callbacks
+            );
+        }
 
-        query.get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        List<Card> cardsList = new ArrayList<>();
-                        boolean error = false;
-                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-                            try {
-                                Card card = documentSnapshot.toObject(Card.class);
-                                cardsList.add(card);
-                            } catch (Exception e) {
-                                error = true;
-                                Log.e(TAG, e.getMessage());
-                                e.printStackTrace();
+        @Override
+        public void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
+            loadListEnhanced(
+                    null,
+                    null,
+                    tagName,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    Config.DEFAULT_CARDS_LOAD_COUNT,
+                    callbacks);
+        }
+
+        @Override
+        public void loadCardsAfter(Card previousCard, @Nullable String tagFilter, ListCallbacks callbacks) {
+
+            Query query = cardsCollection
+                    .orderBy(Card.KEY_CTIME, Query.Direction.DESCENDING)
+                    .startAfter(previousCard.getCTime())
+                    .limit(Config.DEFAULT_CARDS_LOAD_COUNT);
+
+            if (null != tagFilter)
+                query = query.whereArrayContains(Card.KEY_TAGS, tagFilter);
+
+            query.get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            List<Card> list = new ArrayList<>();
+                            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments())
+                                list.add(documentSnapshot.toObject(Card.class));
+                            callbacks.onListLoadSuccess(list);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            e.printStackTrace();
+                            callbacks.onListLoadFail(e.getMessage());
+                        }
+                    });
+        }
+
+        @Override
+        public void loadCardsFromNowTo(Card beforeCard, ListCallbacks callbacks) {
+
+            Query query = cardsCollection
+                    .orderBy(Card.KEY_CTIME, Query.Direction.DESCENDING)
+                    .endAt(beforeCard.getCTime());
+
+            query.get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            List<Card> cardsList = new ArrayList<>();
+                            boolean error = false;
+                            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                                try {
+                                    Card card = documentSnapshot.toObject(Card.class);
+                                    cardsList.add(card);
+                                } catch (Exception e) {
+                                    error = true;
+                                    Log.e(TAG, e.getMessage());
+                                    e.printStackTrace();
+                                }
+                            }
+                            if (error && 0 == cardsList.size()) {
+                                callbacks.onListLoadFail("Error excracting cards.");
+                            }
+                            else {
+                                callbacks.onListLoadSuccess(cardsList);
                             }
                         }
-                        if (error && 0 == cardsList.size()) {
-                            callbacks.onListLoadFail("Error excracting cards.");
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            callbacks.onListLoadFail(e.getMessage());
+                            e.printStackTrace();
                         }
-                        else {
-                            callbacks.onListLoadSuccess(cardsList);
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onListLoadFail(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
-    }
+                    });
+        }
 
-    @Override
-    public void loadList(String tagFilter, ListCallbacks callbacks) {
-        loadListEnhanced(
-                null,
-                null,
-                tagFilter,
-                null,
-                null,
-                null,
-                null,
-                null,
-                Config.DEFAULT_CARDS_LOAD_COUNT,
-                callbacks
-        );
-    }
+        @Override
+        public void loadList(String tagFilter, ListCallbacks callbacks) {
+            loadListEnhanced(
+                    null,
+                    null,
+                    tagFilter,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    Config.DEFAULT_CARDS_LOAD_COUNT,
+                    callbacks
+            );
+        }
 
-    @Override
-    public void loadListForUser(String userId, ListCallbacks callbacks) {
-        loadListEnhanced(
-                null,
-                null,
-                null,
-                Card.KEY_USER_ID,
-                FilterOperator.EQUALS,
-                userId,
-                null,
-                null,
-                null,
-                callbacks
-        );
-    }
+        @Override
+        public void loadListForUser(String userId, ListCallbacks callbacks) {
+            loadListEnhanced(
+                    null,
+                    null,
+                    null,
+                    Card.KEY_USER_ID,
+                    FilterOperator.EQUALS,
+                    userId,
+                    null,
+                    null,
+                    null,
+                    callbacks
+            );
+        }
 
-    @Override
-    public void loadNewCards(long newerThanTime, ListCallbacks callbacks) {
-        loadListEnhanced(
-                null,
-                null,
-                null,
-                Card.KEY_CTIME,
-                FilterOperator.GREATER,
-                newerThanTime,
-                null,
-                null,
-                null,
-                callbacks
-        );
-    }
-
+        @Override
+        public void loadNewCards(long newerThanTime, ListCallbacks callbacks) {
+            loadListEnhanced(
+                    null,
+                    null,
+                    null,
+                    Card.KEY_CTIME,
+                    FilterOperator.GREATER,
+                    newerThanTime,
+                    null,
+                    null,
+                    null,
+                    callbacks
+            );
+        }
+    */
     @Override
     public void loadCard(String cardKey, LoadCallbacks callbacks) {
 

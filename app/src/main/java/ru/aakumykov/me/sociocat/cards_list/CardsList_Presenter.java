@@ -58,11 +58,10 @@ public class CardsList_Presenter implements
 
         if (null != tagFilter) {
             this.tagFilter = tagFilter;
-            cardsSingleton.loadList(tagFilter,this);
+            cardsSingleton.loadCardsWithTag(tagFilter,this);
         }
         else {
-            this.tagFilter = null;
-            cardsSingleton.loadList(this);
+            cardsSingleton.loadCards(this);
         }
     }
 
