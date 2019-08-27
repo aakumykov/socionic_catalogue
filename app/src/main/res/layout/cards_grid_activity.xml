@@ -32,6 +32,7 @@
             android:layout_height="wrap_content"
             android:text="@string/CARDS_GRID_cards_with_tag"
             android:textAlignment="center"
+            android:textSize="16sp"
             tools:text="Карточки с меткой" />
 
         <co.lujun.androidtagview.TagContainerLayout
