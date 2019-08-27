@@ -68,7 +68,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
                 null,
                 null,
                 null,
-                cardToLoadAfter.getKey(),
+                cardToLoadAfter,
                 null,
                 null,
                 callbacks
@@ -100,7 +100,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
                 null,
                 null,
                 null,
-                cardToLoadAfter.getKey(),
+                cardToLoadAfter,
                 null,
                 null,
                 callbacks
@@ -378,8 +378,9 @@ public class CardsSingleton_CF implements iCardsSingleton {
             FilterOperator filterOperator,
             T filterValue,
 
-            String startAt,
-            String endAt,
+            Card startAfterCard,
+            Card endAtCard,
+
             Integer limit,
 
             ListCallbacks callbacks
@@ -425,16 +426,12 @@ public class CardsSingleton_CF implements iCardsSingleton {
             query = query.whereArrayContains(Card.KEY_TAGS, withTag);
 
         // Начальное значение
-        if (null != startAt)
-            query = query.startAt(startAt);
-
-        if (null != startAfter)
-            query = query.startAfter(startAfter);
-
+        if (null != startAfterCard)
+            query = query.startAfter(startAfterCard.getCTime());
 
         // Конечное значение
-        if (null != endAt)
-            query = query.endAt(endAt);
+        if (null != endAtCard)
+            query = query.endAt(endAtCard.getCTime());
 
         // Предельное количество
         if (null != limit)
