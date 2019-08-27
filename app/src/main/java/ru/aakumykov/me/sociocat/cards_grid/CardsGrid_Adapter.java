@@ -289,10 +289,17 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         iGridItem gridItem = itemsList.get(itemsList.size() - 2);
 
-        if (gridItem instanceof GridItem_Card)
-            return (GridItem_Card) gridItem;
-        else
+        return (gridItem instanceof GridItem_Card) ? (GridItem_Card) gridItem : null;
+    }
+
+    @Override
+    public GridItem_Card getFirstCardItem() {
+        if (0 == itemsList.size())
             return null;
+
+        iGridItem gridItem = itemsList.get(0);
+
+        return (gridItem instanceof GridItem_Card) ? (GridItem_Card) gridItem : null;
     }
 
     @Override

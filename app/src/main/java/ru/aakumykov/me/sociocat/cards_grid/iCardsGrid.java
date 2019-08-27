@@ -82,6 +82,7 @@ public interface iCardsGrid {
 
         int getItemPosition(iGridItem item);
         GridItem_Card getLastCardItem();
+        GridItem_Card getFirstCardItem();
 
         List<iGridItem> getList();
 
