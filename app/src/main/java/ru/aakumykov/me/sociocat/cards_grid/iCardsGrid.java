@@ -109,8 +109,6 @@ public interface iCardsGrid {
 
         void onRefreshRequested();
 
-        void onCheckNewCardsClicked();
-
         void onLoadMoreClicked(int position);
 
         void onCardClicked(int position);

@@ -212,10 +212,6 @@ public class CardsGrid_View extends BaseView implements
                 showSwarchWidget();
                 break;
 
-            case R.id.actionNewCards:
-                presenter.onCheckNewCardsClicked();
-                break;
-
             default:
                 super.onOptionsItemSelected(item);
         }

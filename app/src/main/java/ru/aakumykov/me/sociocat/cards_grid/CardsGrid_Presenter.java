@@ -107,19 +107,6 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     }
 
     @Override
-    public void onCheckNewCardsClicked() {
-
-        pageView.showToolbarThrobber();
-
-        checkForNewCards(new iCardsGrid.CheckNewCardsCallbacks() {
-            @Override
-            public void onNewCardsChecked() {
-                pageView.hideToolbarThrobber();
-            }
-        });
-    }
-
-    @Override
     public void onLoadMoreClicked(int position) {
         iGridItem lastGridItem = gridView.getGridItem(position - 1);
         Card lastCard = (null != lastGridItem) ? (Card) lastGridItem.getPayload() : null;
@@ -313,10 +300,6 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         else {
             pageView.showErrorMsg(R.string.CARDS_GRID_error_there_is_no_tag, "tagFilter == null");
         }
-    }
-
-    private void checkForNewCards(iCardsGrid.CheckNewCardsCallbacks callbacks) {
-
     }
 
     private List<iGridItem> filterCardsByTitle(@Nullable String filterWord, final List<iGridItem> inputList) {
