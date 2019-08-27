@@ -120,7 +120,6 @@ public interface iCardsGrid {
         void onDeleteCardClicked(iGridItem gridItem);
         void onShareCardClicked(iGridItem gridItem);
 
-        List<iGridItem> filterList(List<iGridItem> inputList);
         void onFilteringTagDiscardClicked();
 
         void processCardCreationResult(@Nullable Intent data);

@@ -2,7 +2,6 @@ package ru.aakumykov.me.sociocat.cards_grid;
 
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -211,8 +210,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         pageView.showToast("Распространение");
     }
 
-    @Override
-    public List<iGridItem> filterList(List<iGridItem> inputList) {
+    private List<iGridItem> filterList(List<iGridItem> inputList) {
         String filterTag = this.tagFilter;
         String filterWord = pageView.getCurrentFilterWord();
 
@@ -252,32 +250,23 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
 
     // Внутренние методы
-    private void loadCards()
-    {
+    private void loadCards() {
         int insertPosition = 0;
 
         gridView.showThrobber(0);
 
-        iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
+        cardsSingleton.loadCards(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-
-                List<iGridItem> newItemsList = cardsList2gridItemsList(list);
-
-                newItemsList = filterList(newItemsList);
-
                 gridView.hideThrobber(insertPosition);
-
-                gridView.setList(newItemsList);
-                }
+                gridView.setList(cardsList2gridItemsList(list));
+            }
 
             @Override
             public void onListLoadFail(String errorMessage) {
                 pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
             }
-        };
-
-        cardsSingleton.loadCards(listCallbacks);
+        });
     }
 
     private void loadCardsWithTag(@Nullable String filterTag) {

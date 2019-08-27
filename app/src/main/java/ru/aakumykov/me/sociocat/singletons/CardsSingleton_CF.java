@@ -3,7 +3,6 @@ package ru.aakumykov.me.sociocat.singletons;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,7 +27,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
     private CollectionReference cardsCollection;
     private CollectionReference tagsCollection;
 
-    /* Одиночка */
+    // Одиночка
     private static volatile CardsSingleton_CF ourInstance;
     public synchronized static CardsSingleton_CF getInstance() {
         synchronized (CardsSingleton_CF.class) {
@@ -41,7 +40,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
         cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
         tagsCollection = firebaseFirestore.collection(Constants.TAGS_PATH);
     }
-    /* Одиночка */
+    // Одиночка
 
 
     @Override
@@ -438,6 +437,8 @@ public class CardsSingleton_CF implements iCardsSingleton {
         // Предельное количество
         if (null != limit)
             query = query.limit(limit);
+        else
+            query = query.limit(Config.DEFAULT_CARDS_LOAD_COUNT);
 
 
         // Собственно запрос
