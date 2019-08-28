@@ -348,9 +348,6 @@ public class Card extends ListItem implements
     }
 
     private void changeRating(int value) {
-        if (null == this.rating)
-            this.rating = 0;
-
         this.rating += value;
     }
 
