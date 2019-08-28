@@ -36,22 +36,25 @@ public class Card extends ListItem implements
     private String quote;
     private String quoteSource;
     private String imageURL;
-    @Exclude private transient String localImageURI;
-    @Exclude private transient String mimeType;
-    @Exclude private transient String imageType;
     private String fileName;
     private String videoCode;
     private String audioCode;
     private Float timecode = 0.0f;
     private String description;
-    private List<String> tags = new ArrayList<>();
-    private HashMap<String, Boolean> rateUpList = new HashMap<>();
-    private HashMap<String, Boolean> rateDownList = new HashMap<>();
     private int commentsCount = 0;
-    private HashMap<String, Boolean> commentsKeys = new HashMap<>();
     private Integer rating = 0;
     private Long ctime = 0L;
     private Long mtime = 0L;
+
+    private List<String> tags = new ArrayList<>();
+    private HashMap<String, Boolean> rateUpList = new HashMap<>();
+    private HashMap<String, Boolean> rateDownList = new HashMap<>();
+    private HashMap<String, Boolean> commentsKeys = new HashMap<>();
+
+    @Exclude private transient String localImageURI;
+    @Exclude private transient String mimeType;
+    @Exclude private transient String imageType;
+
 
     public Card() {
         setItemType(ListItem.ItemType.CARD_ITEM);
@@ -192,7 +195,6 @@ public class Card extends ListItem implements
         return description;
     }
     public HashMap<String, Boolean> getRateUpList() {
-        if (null == rateUpList) this.rateUpList = new HashMap<>();
         return rateUpList;
     }
     public HashMap<String, Boolean> getRateDownList() {
@@ -242,7 +244,8 @@ public class Card extends ListItem implements
     }
 
     public void setRateUpList(HashMap<String, Boolean> rateUpList) {
-        this.rateUpList = rateUpList;
+        this.rateUpList.clear();
+        this.rateUpList.putAll(rateUpList);
     }
     public void setRateDownList(HashMap<String, Boolean> rateDownList) {
         this.rateDownList = rateDownList;
@@ -316,7 +319,7 @@ public class Card extends ListItem implements
     // Рейтинг
     @Exclude
     public boolean isRatedUpBy(String userId) {
-        return (null != rateUpList && rateUpList.containsKey(userId));
+        return rateUpList.containsKey(userId);
     }
 
     @Exclude
@@ -326,8 +329,6 @@ public class Card extends ListItem implements
 
     @Exclude
     public void rateUp(String userId) {
-        prepareReteUpList();
-
         if (isRatedDownBy(userId))
             this.rateDownList.remove(userId);
         else
@@ -338,8 +339,6 @@ public class Card extends ListItem implements
 
     @Exclude
     public void rateDown(String userId) {
-        prepareRateDownList();
-
         if (isRatedUpBy(userId))
             this.rateUpList.remove(userId);
         else
@@ -348,14 +347,6 @@ public class Card extends ListItem implements
         changeRating(-1);
     }
 
-    private void prepareReteUpList() {
-        if (null == this.rateUpList)
-            this.rateUpList = new HashMap<>();
-    }
-    private void prepareRateDownList() {
-        if (null == this.rateDownList)
-            this.rateDownList = new HashMap<>();
-    }
     private void changeRating(int value) {
         if (null == this.rating)
             this.rating = 0;
