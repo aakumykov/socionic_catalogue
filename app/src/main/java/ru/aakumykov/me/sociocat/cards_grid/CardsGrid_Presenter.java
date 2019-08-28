@@ -243,7 +243,11 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             // Игнорирую карточку, не подходящую под активную фильтрующую метку
             if (null != tagFilter) {
                 if (!card.hasTag(tagFilter)) {
-                    pageView.showInfoMsg(R.string.CARDS_GRID_new_card_is_filtered);
+                    pageView.showInfoMsg(
+                            R.string.CARDS_GRID_new_card_is_filtered,
+                            card.getTitle(),
+                            tagFilter
+                    );
                     return;
                 }
             }

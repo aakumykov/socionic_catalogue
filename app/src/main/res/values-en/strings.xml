@@ -487,5 +487,5 @@
     <string name="CARD_EDIT_preparing_player">Preparing player</string>
     <string name="CARD_EDIT_error_parsing_timecode">Timecode error</string>
     <string name="CARDS_GRID_error_processing_card">Error processing card</string>
-    <string name="CARDS_GRID_new_card_is_filtered">New card is hidden by filter</string>
+    <string name="CARDS_GRID_new_card_is_filtered">Card «%1$s» is added, but not contains tag «%2$s»</string>
 </resources>

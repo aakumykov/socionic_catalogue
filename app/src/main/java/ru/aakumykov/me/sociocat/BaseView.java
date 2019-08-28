@@ -243,8 +243,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public void showInfoMsg(int messageId) {
-        String text = getResources().getString(messageId);
+    public void showInfoMsg(int messageId, String... formatArguments) {
+        String text = getResources().getString(messageId, formatArguments);
         hideProgressMessage();
         showMsg(text, R.color.info, R.color.info_background);
     }
