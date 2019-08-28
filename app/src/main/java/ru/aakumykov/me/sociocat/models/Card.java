@@ -44,11 +44,11 @@ public class Card extends ListItem implements
     private String audioCode;
     private Float timecode = 0.0f;
     private String description;
-    private List<String> tags; // TODO: ведь есть методы, которые должны корректно обрабатывать NULL!
-    private HashMap<String, Boolean> rateUpList;
-    private HashMap<String, Boolean> rateDownList;
+    private List<String> tags = new ArrayList<>();
+    private HashMap<String, Boolean> rateUpList = new HashMap<>();
+    private HashMap<String, Boolean> rateDownList = new HashMap<>();
     private int commentsCount = 0;
-    private HashMap<String, Boolean> commentsKeys/* = new HashMap<>()*/;
+    private HashMap<String, Boolean> commentsKeys = new HashMap<>();
     private Integer rating = 0;
     private Long ctime = 0L;
     private Long mtime = 0L;
@@ -280,19 +280,17 @@ public class Card extends ListItem implements
 
     // Метки
     public List<String> getTags() {
-        if (null == tags) this.tags = new ArrayList<>();
         return tags;
     }
-    public void setTags(List<String> tags) {
-        this.tags = tags;
+    public void setTags(List<String> inputTagsList) {
+        this.tags.clear();
+        this.tags.addAll(inputTagsList);
     }
     @Exclude
     public HashMap<String, Boolean> getTagsHash() {
         HashMap<String, Boolean> hashMap = new HashMap<>();
-        if (null != this.tags) {
-            for (String tagName : this.tags)
-                hashMap.put(tagName, true);
-        }
+        for (String tagName : this.tags)
+            hashMap.put(tagName, true);
         return hashMap;
     }
 
@@ -429,9 +427,6 @@ public class Card extends ListItem implements
 
     // Разные
     @Exclude public void addTag(String tag) {
-        if (null == this.tags)
-            this.tags = new ArrayList<>();
-
         this.tags.add(tag);
     }
 
