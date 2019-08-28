@@ -50,7 +50,6 @@ public class Card extends ListItem implements
     private List<String> tags = new ArrayList<>();
     private HashMap<String, Boolean> rateUpList = new HashMap<>();
     private HashMap<String, Boolean> rateDownList = new HashMap<>();
-    private HashMap<String, Boolean> commentsKeys = new HashMap<>();
 
     @Exclude private transient String localImageURI;
     @Exclude private transient String mimeType;
@@ -81,7 +80,6 @@ public class Card extends ListItem implements
                 ", rateUpList: "+ getRateUpList()+
                 ", rateDownList: "+ getRateDownList()+
                 ", commentsCount: "+getCommentsCount()+
-                ", commentsKeys: "+getCommentsKeys()+
                 ", rating: "+getRating()+
                 ", ctime: "+getCTime()+
                 ", mtime: "+getMTime()+
@@ -203,7 +201,6 @@ public class Card extends ListItem implements
         return rateDownList;
     }
     public int getCommentsCount() { return commentsCount; }
-    public HashMap<String, Boolean> getCommentsKeys() { return commentsKeys; }
     public int getRating() {
         if (null == this.rating) return 0;
         else return rating;
@@ -252,9 +249,7 @@ public class Card extends ListItem implements
         this.rateDownList = rateDownList;
     }
     public void setCommentsCount(int count) { this.commentsCount = count; }
-    public void setCommentsKeys(HashMap<String, Boolean> commentsKeys) {
-        this.commentsKeys = commentsKeys;
-    }
+
     public void setCTime(Long cTime) {
         this.ctime = cTime;
     }
