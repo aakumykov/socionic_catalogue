@@ -55,7 +55,8 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     @Override
     public void onWorkBegins(@Nullable String cardKey, @Nullable String commentKey) {
 
-        cardView.showCardThrobber();
+//        cardView.showCardThrobber();
+        pageView.showProgressMessage(R.string.CARD_SHOW_loading_card);
 
         iCardsSingleton.LoadCallbacks loadCallbacks = new iCardsSingleton.LoadCallbacks() {
             @Override
@@ -63,7 +64,8 @@ public class CardPresenter implements iCardShow.iCardPresenter {
                 currentCard = card;
                 pageView.refreshMenu();
 
-                cardView.hideCardThrobber();
+//                cardView.hideCardThrobber();
+                pageView.hideProgressMessage();
 
                 try {
                     cardView.displayCard(card);
@@ -81,8 +83,7 @@ public class CardPresenter implements iCardShow.iCardPresenter {
             }
         };
 
-//        cardSingleton.loadCard(cardKey, loadCallbacks);
-        CardsSingleton_CF.getInstance().loadCard(cardKey, loadCallbacks);
+        cardSingleton.loadCard(cardKey, loadCallbacks);
     }
 
     @Override
