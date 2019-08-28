@@ -28,6 +28,7 @@ public class Card extends ListItem implements
     public static final String KEY_TAGS = "tags";
     public static final String KEY_USER_ID = "userId";
 
+    // TODO: а может, все свойства здесь инициализировать?
     private String key;
     private String userId;
     private String userName;
