@@ -395,22 +395,22 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         Resources resources = getResources();
         showMsg(
                 msg,
-                resources.getColor(R.color.info),
-                resources.getColor(R.color.info_background)
+                R.color.info,
+                R.color.info_background
         );
         showProgressBar();
     }
 
-    private void showMsg(String text, int textColor, @Nullable Integer backgroundColor) {
+    private void showMsg(String text, int textColorId, @Nullable Integer backgroundColorId) {
         TextView messageView = findViewById(R.id.messageView);
 
-        if (null == backgroundColor)
-            backgroundColor = getResources().getColor(R.color.background_default);
+        int fgColor = getResources().getColor(textColorId);
+        int bgColor = getResources().getColor(null != backgroundColorId ? backgroundColorId : R.color.background_default);
 
         if (null != messageView) {
             messageView.setText(text);
-            messageView.setTextColor(textColor);
-            messageView.setBackgroundColor(backgroundColor);
+            messageView.setTextColor(fgColor);
+            messageView.setBackgroundColor(bgColor);
             MyUtils.show(messageView);
         } else {
             Log.w(TAG, "messageView not found");
