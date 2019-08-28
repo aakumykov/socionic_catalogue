@@ -241,9 +241,12 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             Card card = data.getParcelableExtra(Constants.CARD);
 
             // Игнорирую карточку, не подходящую под активную фильтрующую метку
-            if (null != tagFilter)
-                if (!card.hasTag(tagFilter))
+            if (null != tagFilter) {
+                if (!card.hasTag(tagFilter)) {
+                    pageView.showInfoMsg(R.string.CARDS_GRID_new_card_is_filtered);
                     return;
+                }
+            }
 
             gridView.insertItem(0, new GridItem_Card(card));
             pageView.scroll2position(0);

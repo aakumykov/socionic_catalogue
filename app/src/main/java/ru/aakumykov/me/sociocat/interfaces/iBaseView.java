@@ -24,6 +24,8 @@ public interface iBaseView {
 
     <T> void showDebugMsg(T msg);
 
+    void showInfoMsg(int messageId);
+
     void showErrorMsg(int userMessageId, String consoleMessage);
     void hideMsg();
 
