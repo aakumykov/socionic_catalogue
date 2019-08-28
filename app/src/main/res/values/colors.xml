@@ -31,6 +31,7 @@
     <color name="selected_list_item_bg">#e1e1e1</color>
 
     <color name="tag_filter">#92a4ff</color>
+    <color name="tag_filter_label">#73c4bd</color>
 
     <!-- Кнопки рейтинга -->
     <color name="rating_up">#a7ffb0</color>

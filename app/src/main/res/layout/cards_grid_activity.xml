@@ -28,10 +28,12 @@
         android:paddingTop="6dp">
 
         <TextView
+            android:id="@+id/filterTagLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/CARDS_GRID_cards_with_tag"
             android:textAlignment="center"
+            android:textColor="@color/tag_filter_label"
             android:textSize="16sp"
             tools:text="Карточки с меткой" />
 
