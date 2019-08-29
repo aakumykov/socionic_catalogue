@@ -87,7 +87,7 @@ dependencies {
     implementation "com.leinardi.android:speed-dial:2.0.1"
 
     // MyImageLoader
-    implementation 'com.github.aakumykov:myimageloader:0.14'
+    implementation 'com.github.aakumykov:myimageloader:0.15'
 
     // Insertable Youtube Playr
     implementation 'com.github.aakumykov:insertable-youtube-player:e62961cf'

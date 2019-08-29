@@ -63,8 +63,8 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
         if (!TextUtils.isEmpty(avatarURL)) {
             MyImageLoader.loadImageToContainer(
                     userAvatarContainer.getContext(),
-                    userAvatarContainer,
-                    avatarURL
+                    avatarURL,
+                    userAvatarContainer
             );
         }
 

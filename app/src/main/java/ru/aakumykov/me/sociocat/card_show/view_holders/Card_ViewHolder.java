@@ -205,9 +205,9 @@ public class Card_ViewHolder extends Base_ViewHolder implements
             case Constants.IMAGE_CARD:
                 MyImageLoader.loadImageToContainer(
                         context,
-                        imageContainer,
-                        card.getImageURL()
-                );
+                        card.getImageURL(),
+                        imageContainer
+                        );
                 break;
 
             case Constants.VIDEO_CARD:

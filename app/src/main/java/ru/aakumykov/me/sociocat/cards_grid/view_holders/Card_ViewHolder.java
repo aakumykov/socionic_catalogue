@@ -91,8 +91,8 @@ public class Card_ViewHolder extends BaseViewHolder
     private void initImageCard(Card card) {
         MyImageLoader.loadImageToContainer(
                 mImageContainer.getContext(),
-                mImageContainer,
-                card.getImageURL()
+                card.getImageURL(),
+                mImageContainer
             );
     }
 
