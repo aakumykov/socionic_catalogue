@@ -33,11 +33,12 @@
         tools:text='Компании "НПО РусБИТех" опубликовала выпуск дистрибутива Astra Linux Common Edition 2.12.13, построенного на пакетной базе Debian GNU/Linux и поставляемого с собственным проприетарным рабочим столом Fly (интерактивная демонстрация), использующим библиотеку Qt.'
         tools:visibility="visible" />
 
-    <FrameLayout
-        android:id="@+id/imageContainer"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:adjustViewBounds="true" />
 
     <FrameLayout
         android:id="@+id/videoContainer"

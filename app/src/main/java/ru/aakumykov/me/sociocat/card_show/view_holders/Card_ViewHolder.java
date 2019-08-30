@@ -40,7 +40,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.cardLayout) LinearLayout cardLayout;
     @BindView(R.id.titleView) TextView titleView;
     @BindView(R.id.quoteView) TextView quoteView;
-    @BindView(R.id.imageContainer) FrameLayout imageContainer;
+    @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.videoContainer) FrameLayout videoContainer;
     @BindView(R.id.quoteSourceView) TextView quoteSourceView;
     @BindView(R.id.descriptionView) TextView descriptionView;
@@ -206,7 +206,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                 MyImageLoader.loadImageToContainer(
                         context,
                         card.getImageURL(),
-                        imageContainer
+                        imageView
                         );
                 break;
 

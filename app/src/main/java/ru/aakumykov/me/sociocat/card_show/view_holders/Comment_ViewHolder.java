@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -25,7 +25,7 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
         PopupMenu.OnMenuItemClickListener
 {
     @BindView(R.id.commentRow) ConstraintLayout commentRow;
-    @BindView(R.id.userAvatarContainer) FrameLayout userAvatarContainer;
+    @BindView(R.id.userAvatarView) ImageView userAvatarView;
     @BindView(R.id.userNameView) TextView userNameView;
     @BindView(R.id.cTimeView) TextView cTimeView;
     @BindView(R.id.mTimeView) TextView mTimeView;
@@ -62,9 +62,9 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
         String avatarURL = comment.getUserAvatarURL();
         if (!TextUtils.isEmpty(avatarURL)) {
             MyImageLoader.loadImageToContainer(
-                    userAvatarContainer.getContext(),
+                    userAvatarView.getContext(),
                     avatarURL,
-                    userAvatarContainer
+                    userAvatarView
             );
         }
 
