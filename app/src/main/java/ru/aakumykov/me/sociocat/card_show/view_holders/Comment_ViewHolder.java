@@ -10,10 +10,11 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -61,11 +62,11 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
 
         String avatarURL = comment.getUserAvatarURL();
         if (!TextUtils.isEmpty(avatarURL)) {
-            MyImageLoader.loadImageToContainer(
-                    userAvatarView.getContext(),
-                    avatarURL,
-                    userAvatarView
-            );
+            Glide.with(userAvatarView.getContext())
+                    .load(avatarURL)
+                    .placeholder(R.drawable.ic_image_placeholder)
+                    .error(R.drawable.ic_image_error)
+                    .into(userAvatarView);
         }
 
         cTimeView.setText(String.valueOf(comment.getCreatedAt()));

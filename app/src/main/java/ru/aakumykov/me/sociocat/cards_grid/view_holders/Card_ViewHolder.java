@@ -10,9 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
@@ -90,29 +91,13 @@ public class Card_ViewHolder extends BaseViewHolder
     }
 
     private void initImageCard(Card card) {
-        Log.d(TAG, "initImageCard(), "+card.getTitle()+", mImageView: "+ mImageView);
-
-        /*MyImageLoader.loadImageToContainer(
-                mImageContainer.getContext(),
-                card.getImageURL(),
-                mImageContainer
-            );*/
-
-        /*if (null != mImageView) {
+        if (null != mImageView) {
             Glide.with(mImageView.getContext())
                     .load(card.getImageURL())
                     .placeholder(R.drawable.ic_image_placeholder)
                     .error(R.drawable.ic_image_error)
                     .into(mImageView);
-        }*/
-
-        MyImageLoader.loadImageToContainer(
-                mImageView.getContext(),
-                card.getImageURL(),
-                mImageView,
-                R.drawable.ic_image_placeholder,
-                R.drawable.ic_image_error
-        );
+        }
     }
 
     private void initAudioCard(Card card) {

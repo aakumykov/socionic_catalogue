@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +26,6 @@ import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
-import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
@@ -203,11 +204,11 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                 break;
 
             case Constants.IMAGE_CARD:
-                MyImageLoader.loadImageToContainer(
-                        context,
-                        card.getImageURL(),
-                        imageView
-                        );
+                Glide.with(imageView.getContext())
+                        .load(card.getImageURL())
+                        .placeholder(R.drawable.ic_image_placeholder)
+                        .error(R.drawable.ic_image_error)
+                        .into(imageView);
                 break;
 
             case Constants.VIDEO_CARD:
