@@ -26,7 +26,7 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
         PopupMenu.OnMenuItemClickListener
 {
     @BindView(R.id.commentRow) ConstraintLayout commentRow;
-    @BindView(R.id.userAvatarView) ImageView userAvatarView;
+    @BindView(R.id.imageView) ImageView userAvatarView;
     @BindView(R.id.userNameView) TextView userNameView;
     @BindView(R.id.cTimeView) TextView cTimeView;
     @BindView(R.id.mTimeView) TextView mTimeView;

@@ -28,15 +28,8 @@
             android:textStyle="bold"
             tools:text="Заголовок" />
 
-        <FrameLayout
-            android:id="@+id/imageContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </FrameLayout>
-
         <ImageView
-            android:id="@+id/userAvatarView"
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true" />

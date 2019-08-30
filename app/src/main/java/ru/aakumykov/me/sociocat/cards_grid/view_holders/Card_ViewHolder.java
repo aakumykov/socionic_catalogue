@@ -2,7 +2,6 @@ package ru.aakumykov.me.sociocat.cards_grid.view_holders;
 
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,8 +24,7 @@ public class Card_ViewHolder extends BaseViewHolder
 
     @BindView(R.id.cardView) CardView mCardView;
     @BindView(R.id.titleView) TextView mTitleView;
-    @Nullable @BindView(R.id.imageContainer) ViewGroup mImageContainer;
-    @Nullable @BindView(R.id.userAvatarView) ImageView mImageView;
+    @Nullable @BindView(R.id.imageView) ImageView mImageView;
 
     private iCardsGrid.iPresenter mPresenter;
 

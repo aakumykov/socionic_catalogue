@@ -71,7 +71,7 @@ public class CardEdit_View extends BaseView implements
 
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
     @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
-    @BindView(R.id.userAvatarView) ImageView imageView;
+    @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.imagePlaceholder) ImageView imagePlaceholder;
     @BindView(R.id.discardImageButton) ImageView discardImageButton;
 
