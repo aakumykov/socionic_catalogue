@@ -3,15 +3,17 @@ package ru.aakumykov.me.sociocat.cards_grid.view_holders;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
@@ -24,9 +26,9 @@ public class Card_ViewHolder extends BaseViewHolder
     @BindView(R.id.cardView) CardView mCardView;
     @BindView(R.id.titleView) TextView mTitleView;
     @Nullable @BindView(R.id.imageContainer) ViewGroup mImageContainer;
+    @Nullable @BindView(R.id.imageView) ImageView mImageView;
 
     private iCardsGrid.iPresenter mPresenter;
-//    private iGridItem mGridItem;
 
 
     public Card_ViewHolder(@NonNull View itemView, iCardsGrid.iPresenter presenter) {
@@ -89,11 +91,21 @@ public class Card_ViewHolder extends BaseViewHolder
     }
 
     private void initImageCard(Card card) {
-        MyImageLoader.loadImageToContainer(
+        Log.d(TAG, "initImageCard(), "+card.getTitle()+", mImageView: "+ mImageView);
+
+        /*MyImageLoader.loadImageToContainer(
                 mImageContainer.getContext(),
                 card.getImageURL(),
                 mImageContainer
-            );
+            );*/
+
+        if (null != mImageView) {
+            Glide.with(mImageView.getContext())
+                    .load(card.getImageURL())
+                    .placeholder(R.drawable.ic_image_placeholder)
+                    .error(R.drawable.ic_image_error)
+                    .into(mImageView);
+        }
     }
 
     private void initAudioCard(Card card) {

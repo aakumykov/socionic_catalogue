@@ -31,9 +31,15 @@
         <FrameLayout
             android:id="@+id/imageContainer"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/cards_grid_image_height">
+            android:layout_height="wrap_content">
 
         </FrameLayout>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true" />
 
     </LinearLayout>
 
