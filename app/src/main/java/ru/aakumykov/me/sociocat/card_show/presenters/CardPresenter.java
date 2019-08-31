@@ -56,6 +56,8 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     public void onWorkBegins(@Nullable Card card, @Nullable String commentKey) {
 
         if (null != card) {
+            currentCard = card;
+
             try {
                 cardView.displayCard(card);
                 commentsPresenter.onWorkBegins(card.getKey(), commentKey);
