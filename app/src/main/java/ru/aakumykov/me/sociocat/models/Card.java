@@ -108,7 +108,7 @@ public class Card extends ListItem implements
         dest.writeString(this.fileName);
         dest.writeString(this.videoCode);
         dest.writeString(this.audioCode);
-        dest.writeDouble(this.timecode);
+        dest.writeFloat(this.timecode);
         dest.writeString(this.description);
 //        dest.writeList(this.tags);
 //        dest.writeMap(this.rateUpList);
