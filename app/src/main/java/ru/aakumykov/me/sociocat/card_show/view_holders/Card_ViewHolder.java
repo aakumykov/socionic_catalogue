@@ -3,7 +3,6 @@ package ru.aakumykov.me.sociocat.card_show.view_holders;
 import android.content.Context;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -131,7 +130,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
     @Override
     public void showRating(Card card, @Nullable String ratedByUserId) {
-        Log.d(TAG, card.toString());
+//        Log.d(TAG, card.toString());
 
         int thumbUpImageResource = R.drawable.ic_thumb_up_neutral;
         int thumbDownImageResource = R.drawable.ic_thumb_down_neutral;
