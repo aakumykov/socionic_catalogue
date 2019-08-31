@@ -15,33 +15,41 @@ public class CardDeletionHelper {
 
     public static void deleteCard(Card card, iDeletionCallbacks callbacks) {
 
-        String imageFileName = card.getFileName();
-        if (null == imageFileName) {
-            callbacks.onCardDeleteError("Image file name is NULL");
-            return;
+        if (card.isImageCard()) {
+
+            String imageFileName = card.getFileName();
+            if (null == imageFileName) {
+                callbacks.onCardDeleteError("Image file name is NULL");
+                return;
+            }
+
+            StorageSingleton.getInstance().deleteImage(imageFileName, new iStorageSingleton.FileDeletionCallbacks() {
+                @Override
+                public void onDeleteSuccess() {
+                    deleteCardReal(card, callbacks);
+                }
+
+                @Override
+                public void onDeleteFail(String errorMsg) {
+                    callbacks.onCardDeleteError(errorMsg);
+                }
+            });
         }
+        else {
+            deleteCardReal(card, callbacks);
+        }
+    }
 
-        StorageSingleton.getInstance().deleteImage(imageFileName, new iStorageSingleton.FileDeletionCallbacks() {
+    private static void deleteCardReal(Card card, iDeletionCallbacks callbacks) {
+        CardsSingleton_CF.getInstance().deleteCard(card, new iCardsSingleton.DeleteCallbacks() {
             @Override
-            public void onDeleteSuccess() {
-
-                CardsSingleton_CF.getInstance().deleteCard(card, new iCardsSingleton.DeleteCallbacks() {
-                    @Override
-                    public void onCardDeleteSuccess(Card card) {
-                        callbacks.onCardDeleteSuccess(card);
-                    }
-
-                    @Override
-                    public void onCardDeleteError(String msg) {
-                        callbacks.onCardDeleteError(msg);
-                    }
-                });
-
+            public void onCardDeleteSuccess(Card card) {
+                callbacks.onCardDeleteSuccess(card);
             }
 
             @Override
-            public void onDeleteFail(String errorMsg) {
-                callbacks.onCardDeleteError(errorMsg);
+            public void onCardDeleteError(String msg) {
+                callbacks.onCardDeleteError(msg);
             }
         });
     }
