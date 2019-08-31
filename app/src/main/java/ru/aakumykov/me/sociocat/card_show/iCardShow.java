@@ -95,7 +95,7 @@ public interface iCardShow {
         void bindListAdapter(iCardView listAdapter);
         void unbindListAdapter();
 
-        void onWorkBegins(@Nullable String cardKey, @Nullable String commentKey);
+        void onWorkBegins(@Nullable Card card, @Nullable String commentKey);
         void onErrorOccurs();
 
         void onReplyClicked();
