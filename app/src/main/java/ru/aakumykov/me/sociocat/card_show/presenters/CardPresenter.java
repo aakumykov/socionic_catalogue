@@ -53,23 +53,37 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     }
 
     @Override
-    public void onWorkBegins(@Nullable Card card, @Nullable String commentKey) {
+    public void onWorkBegins(@Nullable String cardKey, @Nullable String commentKey) {
 
-        if (null != card) {
-            currentCard = card;
+//        cardView.showCardThrobber();
+        pageView.showProgressMessage(R.string.CARD_SHOW_loading_card);
 
-            try {
-                cardView.displayCard(card);
-                commentsPresenter.onWorkBegins(card.getKey(), commentKey);
+        iCardsSingleton.LoadCallbacks loadCallbacks = new iCardsSingleton.LoadCallbacks() {
+            @Override
+            public void onCardLoadSuccess(Card card) {
+                currentCard = card;
+                pageView.refreshMenu();
+
+//                cardView.hideCardThrobber();
+                pageView.hideProgressMessage();
+
+                try {
+                    cardView.displayCard(card);
+                    commentsPresenter.onWorkBegins(cardKey, commentKey);
+                } catch (Exception e) {
+                    pageView.showErrorMsg(R.string.CARD_SHOW_there_is_no_card, e.getMessage());
+                    e.printStackTrace();
+                }
             }
-            catch (Exception e) {
-                pageView.showErrorMsg(R.string.CARD_SHOW_error_displaying_card, e.getMessage());
-                e.printStackTrace();
+
+            @Override
+            public void onCardLoadFailed(String msg) {
+                cardView.hideCardThrobber();
+                cardView.showCardError(R.string.CARD_SHOW_error_loading_card, msg);
             }
-        }
-        else {
-            pageView.showErrorMsg(R.string.CARD_SHOW_there_is_no_card, "Card is NULL");
-        }
+        };
+
+        cardSingleton.loadCard(cardKey, loadCallbacks);
     }
 
     @Override

@@ -323,10 +323,10 @@ public class CardShow_View extends BaseView implements
         Intent intent = getIntent();
 
         try {
-            Card card = intent.getParcelableExtra(Constants.CARD);
+            String cardKey = intent.getStringExtra(Constants.CARD_KEY);
             String commentKey =intent.getStringExtra(Constants.COMMENT_KEY);
 
-            cardPresenter.onWorkBegins(card, commentKey);
+            cardPresenter.onWorkBegins(cardKey, commentKey);
         }
         catch (Exception e) {
             cardPresenter.onErrorOccurs();

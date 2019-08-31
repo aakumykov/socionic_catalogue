@@ -313,7 +313,7 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public void goShowCard(Card card) {
         Intent intent = new Intent(this, CardShow_View.class);
-        intent.putExtra(Constants.CARD, card);
+        intent.putExtra(Constants.CARD_KEY, card.getKey());
         startActivityForResult(intent, Constants.CODE_SHOW_CARD);
     }
 
