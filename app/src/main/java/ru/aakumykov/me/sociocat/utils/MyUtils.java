@@ -1,6 +1,10 @@
 package ru.aakumykov.me.sociocat.utils;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
@@ -19,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -37,6 +42,7 @@ import java.util.regex.Pattern;
 import ru.aakumykov.me.sociocat.R;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 public final class MyUtils {
 
@@ -315,29 +321,84 @@ public final class MyUtils {
         return new BigDecimal(timecode).floatValue();
     }
 
-/*    private static void hideProgressBar(Activity activity) {
-        ProgressBar progressBar = activity.findViewById(R.id.progressBar);
-        if (null != progressBar)
-            MyUtils.hide(progressBar);
+    // Уведомления
+    public static void createNotificationChannel(
+            Context context,
+            String channelId,
+            String channelName,
+            String channelDescription,
+            int channelImportance
+    ) {
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+        {
+            NotificationChannel channel = new NotificationChannel(
+                    channelId,
+                    channelName,
+                    channelImportance
+            );
+            channel.setDescription(channelDescription);
+
+//            channel.enableLights(true);
+//            channel.setLightColor(Color.GREEN);
+//            channel.setImportance(channelImportance); // TODO: нужно ли это дублировать здесь?
+//            channel.enableVibration(true);
+
+            NotificationManager notificationManager =
+                    (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
-    public static void showDebugMsg(Activity activity, String msg) {
-        MyUtils.hideProgressBar(activity);
+    public static Notification prepareNotification(
+            Context context,
+            String channelId,
+            int iconId,
+            String title,
+            @Nullable String text,
+            boolean withProgressBar,
+            boolean isOngoing
+    ) {
+        return prepareNotification(
+                context,
+                channelId,
+                iconId,
+                title,
+                text,
+                withProgressBar,
+                isOngoing,
+                null
+        );
+    }
 
-        TextView messageView = activity.findViewById(R.id.messageView);
-        if (null != messageView) {
-            messageView.setText(msg);
-            MyUtils.show(messageView);
-            messageView.setTextColor(activity.getResources().getColor(R.color.debug));
-            messageView.setBackgroundColor(activity.getResources().getColor(R.color.white));
-        }
-    }*/
+    public static Notification prepareNotification(
+            Context context,
+            String channelId,
+            int iconId,
+            String title,
+            @Nullable String text,
+            boolean withProgressBar,
+            boolean isOngoing,
+            @Nullable PendingIntent pendingIntent
+    )
+    {
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(context, channelId)
+                        .setSmallIcon(iconId)
+                        .setContentTitle(title)
+                        .setAutoCancel(true);
 
-    /*public static void requestLogin(Context context, Intent proceedIntent) {
-        Intent intent = new Intent(context, Login_View.class);
-        intent.setAction(Constants.ACTION_LOGIN_REQUEST);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        intent.putExtra(Intent.EXTRA_INTENT, proceedIntent);
-        context.startActivity(intent);
-    }*/
+        if (null != text)
+            builder.setContentText(text);
+
+        if (null != pendingIntent)
+            builder.setContentIntent(pendingIntent);
+
+        if (isOngoing)
+            builder.setOngoing(true);
+
+        return builder.build();
+    }
+
+
 }
