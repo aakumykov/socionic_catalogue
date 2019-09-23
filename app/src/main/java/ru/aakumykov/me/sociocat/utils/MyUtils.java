@@ -401,4 +401,11 @@ public final class MyUtils {
     }
 
 
+    // Date to string
+    public static String date2string() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.CANADA);
+        return format.format(new Date());
+    }
+
+
 }
