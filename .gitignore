@@ -9,7 +9,8 @@
 /captures
 .externalNativeBuild
 /*/build
-
 /.idea/caches/
-.idea/misc.xml
-app/release/
+/.idea/misc.xml
+/app/release/
+/app/src/main/res/values/credentials.xml
+
