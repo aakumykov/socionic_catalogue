@@ -77,7 +77,7 @@ public class BackupActivity extends BaseView {
     @OnClick(R.id.startButton)
     void onStartButonClicked() {
         Map<String, Class> collectionsMap = new HashMap<>();
-//        collectionsMap.put("users", User.class);
+        collectionsMap.put("users", User.class);
 //        collectionsMap.put("admins", User.class);
 //        collectionsMap.put("cards", Card.class);
 //        collectionsMap.put("comments", Comment.class);
@@ -167,7 +167,7 @@ public class BackupActivity extends BaseView {
     ) {
         callbacks.onCollectionBackupStart();
 
-        loadCollection("users", User.class, new iLoadCollectionCallbacks() {
+        loadCollection(collectionName, itemClassDefinition, new iLoadCollectionCallbacks() {
             @Override
             public void onLoadCollectionComplete() {
                 callbacks.onCollectionBackupFinish();
