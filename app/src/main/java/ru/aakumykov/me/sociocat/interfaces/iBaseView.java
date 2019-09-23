@@ -26,7 +26,12 @@ public interface iBaseView {
 
     void showInfoMsg(int messageId, String... formatArguments);
 
+    void showInfoMsg(String message);
+
     void showErrorMsg(int userMessageId, String consoleMessage);
+
+    void showErrorMsg(String message, @Nullable String consoleMessage);
+
     void hideMsg();
 
     void showToast(int msgId);
