@@ -101,7 +101,17 @@ public class BackupActivity extends BaseView {
                 public void onLoadCollectionSuccess(List<Object> itemsList, List<String> errorsList) {
                     String json = listOfObjects2JSON(itemsList);
 
+                    upload2dropbox(json, new iUpload2DropboxCalbacks() {
+                        @Override
+                        public void onUpload2DropboxSuccess() {
 
+                        }
+
+                        @Override
+                        public void onUpload2DropboxError(String errorMsg) {
+
+                        }
+                    });
                 }
 
                 @Override
@@ -279,6 +289,7 @@ public class BackupActivity extends BaseView {
     }
 
     private interface iUpload2DropboxCalbacks {
-
+        void onUpload2DropboxSuccess();
+        void onUpload2DropboxError(String errorMsg);
     }
 }
