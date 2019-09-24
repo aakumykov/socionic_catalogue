@@ -28,6 +28,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -83,6 +85,7 @@ public class BackupActivity extends BaseView {
 //        collectionsMap.put("comments", Comment.class);
         collectionsMap.put("tags", Tag.class);
 
+/*
         for (String collectionName : collectionsMap.keySet())
         {
             Log.d(TAG, "collectionName: "+collectionName);
@@ -115,50 +118,182 @@ public class BackupActivity extends BaseView {
                     Log.e(TAG, errorsList.toString());
                 }
             });
-
-/*
-            try {
-                TimeUnit.SECONDS.sleep(5);
-            } catch (InterruptedException e) {}
-*/
         }
+*/
 
-        /*String collectionName = "users";
-
-        backupFirestoreCollection2Dropbox(
-                MyUtils.date2string(),
-                collectionName,
-                User.class,
-                new iFirestoreCollectionBackupCallbacks() {
-                    @Override
-                    public void onCollectionBackupStart() {
-                        MyUtils.disable(startButton);
-                        showInfoMsg("Обработка коллекции "+collectionName);
-                        showProgressBar();
-                    }
-
-                    @Override
-                    public void onCollectionBackupFinish() {
-                        MyUtils.enable(startButton);
-                    }
-
-                    @Override
-                    public void onCollectionBackupSuccess() {
-                        showInfoMsg("Коллекция "+collectionName+" обработана");
-                    }
-
-                    @Override
-                    public void onCollectionBackupError(String errorMsg, List<String> errorsList) {
-                        showErrorMsg(errorMsg, errorMsg);
-                        Log.e(TAG, errorsList.toString());
-                    }
-                }
-        );*/
+        adminsCollectionTest();
 
     }
 
 
     // Внутренние методы
+    private void adminsCollectionTest() {
+
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        CollectionReference collectionReference;
+
+        // Admins
+        Log.d(TAG, "== Admins ==");
+        showProgressBar();
+
+        collectionReference = firebaseFirestore.collection("admins");
+
+        collectionReference.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            try {
+                                User user = documentSnapshot.toObject(User.class);
+                                Log.d(TAG, user.toString());
+                            }
+                            catch (Exception e) {
+                                Log.e(TAG, e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        hideProgressBar();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        hideProgressBar();
+                        showErrorMsg(TAG, e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+
+
+        // Users
+        Log.d(TAG, "== Users ==");
+        showProgressBar();
+
+        collectionReference = firebaseFirestore.collection("users");
+
+        collectionReference.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            try {
+                                User user = documentSnapshot.toObject(User.class);
+                                Log.d(TAG, user.toString());
+                            }
+                            catch (Exception e) {
+                                Log.e(TAG, e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        hideProgressBar();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        hideProgressBar();
+                        showErrorMsg(TAG, e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+
+        // Cards
+        Log.d(TAG, "== Cards ==");
+        showProgressBar();
+
+        collectionReference = firebaseFirestore.collection("cards");
+
+        collectionReference.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            try {
+                                Card user = documentSnapshot.toObject(Card.class);
+                                Log.d(TAG, user.toString());
+                            }
+                            catch (Exception e) {
+                                Log.e(TAG, e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        hideProgressBar();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        hideProgressBar();
+                        showErrorMsg(TAG, e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+
+        // Cards
+        Log.d(TAG, "== Tags ==");
+        showProgressBar();
+
+        collectionReference = firebaseFirestore.collection("tags");
+
+        collectionReference.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            try {
+                                Tag user = documentSnapshot.toObject(Tag.class);
+                                Log.d(TAG, user.toString());
+                            }
+                            catch (Exception e) {
+                                Log.e(TAG, e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        hideProgressBar();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        hideProgressBar();
+                        showErrorMsg(TAG, e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+
+        // Comments
+        Log.d(TAG, "== Comments ==");
+        showProgressBar();
+
+        collectionReference = firebaseFirestore.collection("comments");
+
+        collectionReference.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            try {
+                                Comment user = documentSnapshot.toObject(Comment.class);
+                                Log.d(TAG, user.toString());
+                            }
+                            catch (Exception e) {
+                                Log.e(TAG, e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                        hideProgressBar();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        hideProgressBar();
+                        showErrorMsg(TAG, e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+    }
+
     private void backupFirestoreCollection2Dropbox(
             String dirName,
             String collectionName,
@@ -227,6 +362,7 @@ public class BackupActivity extends BaseView {
             }
         });
     }
+
 
     private void loadCollection(String collectionName, Class itemClass, iLoadCollectionCallbacks callbacks) {
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
