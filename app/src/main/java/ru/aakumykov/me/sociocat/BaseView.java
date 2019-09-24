@@ -269,7 +269,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public void showErrorMsg(String message, @Nullable String consoleMessage) {
         hideProgressMessage();
         showMsg(message, R.color.error, R.color.error_background);
-        Log.e(TAG, consoleMessage);
+        if (null != consoleMessage)
+            Log.e(TAG, consoleMessage);
     }
 
     @Override
