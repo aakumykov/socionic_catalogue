@@ -28,6 +28,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -76,16 +78,6 @@ public class BackupActivity extends BaseView {
     @BindView(R.id.startButton) Button startButton;
     @OnClick(R.id.startButton)
     void onStartButonClicked() {
-        /*try {
-            String json = "{a";
-            new Gson().fromJson(json, Object.class);
-        }
-        catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-            Log.e(TAG, TextUtils.join("\n", e.getStackTrace()));
-            e.printStackTrace();
-        }*/
-
         collectionsTest();
     }
 
@@ -95,10 +87,10 @@ public class BackupActivity extends BaseView {
 
         Map<String,Class> collectionsMap = new HashMap<>();
         collectionsMap.put("admins", User.class);
-//        collectionsMap.put("users", User.class);
-//        collectionsMap.put("cards", Card.class);
-//        collectionsMap.put("comments", Comment.class);
-//        collectionsMap.put("tags", Tag.class);
+        collectionsMap.put("users", User.class);
+        collectionsMap.put("cards", Card.class);
+        collectionsMap.put("comments", Comment.class);
+        collectionsMap.put("tags", Tag.class);
 
         for (String collectionName : collectionsMap.keySet())
         {
@@ -119,7 +111,8 @@ public class BackupActivity extends BaseView {
                         showErrorMsg("Ошибки преобразования ", null);
                     }
 
-                    Log.d(TAG, pair.first);
+                    String fullCollectionJSON = pair.first;
+                    Log.d(TAG, fullCollectionJSON);
 
                     hideProgressBar();
                     hideMsg();
