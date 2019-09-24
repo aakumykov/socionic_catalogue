@@ -78,12 +78,12 @@ public class BackupActivity extends BaseView {
     @BindView(R.id.startButton) Button startButton;
     @OnClick(R.id.startButton)
     void onStartButonClicked() {
-        collectionsTest();
+        performCollectionsBackup();
     }
 
 
     // Внутренние методы
-    private void collectionsTest() {
+    private void performCollectionsBackup() {
 
         Map<String,Class> collectionsMap = new HashMap<>();
         collectionsMap.put("admins", User.class);
@@ -96,26 +96,12 @@ public class BackupActivity extends BaseView {
         {
             Class itemClass = collectionsMap.get(collectionName);
 
-            showInfoMsg(collectionName);
-            showProgressBar();
-
             loadCollection(collectionName, itemClass, new iLoadCollectionCallbacks() {
                 @Override
                 public void onLoadCollectionSuccess(List<Object> itemsList, List<String> errorsList) {
+                    String json = listOfObjects2JSON(itemsList);
 
-                    Pair<String,List<String>> pair = listOfObjects2JSON(itemsList);
 
-                    List<String> jsonErrors = pair.second;
-                    if (jsonErrors.size() > 0) {
-                        Log.e(TAG, jsonErrors.toString());
-                        showErrorMsg("Ошибки преобразования ", null);
-                    }
-
-                    String fullCollectionJSON = pair.first;
-                    Log.d(TAG, fullCollectionJSON);
-
-                    hideProgressBar();
-                    hideMsg();
                 }
 
                 @Override
@@ -134,6 +120,7 @@ public class BackupActivity extends BaseView {
         Log.e(TAG, TextUtils.join("\n", e.getStackTrace()));
     }
 
+/*
     private void backupFirestoreCollection2Dropbox(
             String dirName,
             String collectionName,
@@ -197,6 +184,7 @@ public class BackupActivity extends BaseView {
             }
         });
     }
+*/
 
 
     private void loadCollection(String collectionName, Class itemClass, iLoadCollectionCallbacks callbacks) {
@@ -227,6 +215,10 @@ public class BackupActivity extends BaseView {
                 });
     }
 
+    private void upload2dropbox(String json, iUpload2DropboxCalbacks calbacks) {
+
+    }
+
     private Pair<List<Object>, List<String>> extractCollectionObjects(QuerySnapshot queryDocumentSnapshots, Class itemClass) {
 
         List<String> errorsList = new ArrayList<>();
@@ -246,7 +238,7 @@ public class BackupActivity extends BaseView {
         return new Pair<>(itemsList, errorsList);
     }
 
-    private Pair<String, List<String>> listOfObjects2JSON(List<Object> itemsList) {
+    private String listOfObjects2JSON(List<Object> itemsList) {
 
         List<String> jsonList = new ArrayList<>();
         List<String> errorsList = new ArrayList<>();
@@ -262,9 +254,11 @@ public class BackupActivity extends BaseView {
             }
         }
 
-        String resultJSON = "[" + TextUtils.join(",", jsonList) + "]";
+        if (errorsList.size() > 0) {
+            Log.e(TAG, errorsList.toString());
+        }
 
-        return new Pair<>(resultJSON, errorsList);
+        return "[" + TextUtils.join(",", jsonList) + "]";
     }
 
     private String object2JSON(Object o) {
@@ -284,5 +278,7 @@ public class BackupActivity extends BaseView {
         void onLoadCollectionError(String errorMsg);
     }
 
+    private interface iUpload2DropboxCalbacks {
 
+    }
 }
