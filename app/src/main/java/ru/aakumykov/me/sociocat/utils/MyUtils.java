@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -435,4 +436,19 @@ public final class MyUtils {
 
         return md5Hex.toString();
     }
+
+    // Обработка исключений
+    public static String processException(String logTag, Exception e) {
+        String errorMsg = e.getMessage();
+
+        if (null == errorMsg)
+            errorMsg = e.toString();
+
+        Log.e(logTag, errorMsg);
+
+        Log.e(logTag, TextUtils.join("\n", e.getStackTrace()));
+
+        return errorMsg;
+    }
+
 }
