@@ -125,11 +125,6 @@ public class BackupActivity extends BaseView {
         }
     }
 
-    private void showConsoleError(String tag, Exception e) {
-        Log.e(TAG, e.getMessage());
-        Log.e(TAG, TextUtils.join("\n", e.getStackTrace()));
-    }
-
 /*
     private void backupFirestoreCollection2Dropbox(
             String dirName,
@@ -274,6 +269,12 @@ public class BackupActivity extends BaseView {
     private String object2JSON(Object o) {
         return new Gson().toJson(o);
     }
+
+    private void showConsoleError(String tag, Exception e) {
+        Log.e(TAG, e.getMessage());
+        Log.e(TAG, TextUtils.join("\n", e.getStackTrace()));
+    }
+
 
     // Внутренние интерфейсы
     private interface iFirestoreCollectionBackupCallbacks {
