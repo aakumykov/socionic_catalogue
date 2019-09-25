@@ -37,13 +37,19 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class BackupActivity extends BaseView {
 
     private final static String TAG = "BackupActivity";
-
+    private String backupDirName;
+    private String dropboxAccessToken;
+    private DropboxBackuper dropboxBackuper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.backup_activity);
         ButterKnife.bind(this);
+
+        backupDirName = MyUtils.date2string();
+        dropboxAccessToken = getResources().getString(R.string.DROPBOX_ACCESS_TOKEN);
+        dropboxBackuper = new DropboxBackuper(dropboxAccessToken);
     }
 
     @Override
@@ -99,17 +105,30 @@ public class BackupActivity extends BaseView {
             loadCollection(collectionName, itemClass, new iLoadCollectionCallbacks() {
                 @Override
                 public void onLoadCollectionSuccess(List<Object> itemsList, List<String> errorsList) {
-                    String json = listOfObjects2JSON(itemsList);
+                    String jsonData = listOfObjects2JSON(itemsList);
 
-                    upload2dropbox(json, new iUpload2DropboxCalbacks() {
+                    dropboxBackuper.backupString(backupDirName, collectionName, "json", jsonData, new DropboxBackuper.iDropboxBackuperCallbacks() {
                         @Override
-                        public void onUpload2DropboxSuccess() {
-
+                        public void onBackupStart() {
+                            showProgressBar();
+                            showInfoMsg("Выгрузка "+collectionName);
+                            Log.d(TAG, "Коллекция '"+collectionName+"' выгружается в каталог '"+backupDirName+"' ...");
                         }
 
                         @Override
-                        public void onUpload2DropboxError(String errorMsg) {
+                        public void onBackupFinish() {
+                            hideProgressBar();
+                            Log.d(TAG, "... '"+collectionName+"' готово.");
+                        }
 
+                        @Override
+                        public void onBackupSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
+                            showInfoMsg(backupItemInfo.getFileName()+" сохранено в облаке");
+                        }
+
+                        @Override
+                        public void onBackupFail(String errorMsg) {
+                            showErrorMsg(errorMsg, errorMsg);
                         }
                     });
                 }
@@ -220,10 +239,6 @@ public class BackupActivity extends BaseView {
                 });
     }
 
-    private void upload2dropbox(String json, iUpload2DropboxCalbacks calbacks) {
-
-    }
-
     private Pair<List<Object>, List<String>> extractCollectionObjects(QuerySnapshot queryDocumentSnapshots, Class itemClass) {
 
         List<String> errorsList = new ArrayList<>();
@@ -287,10 +302,5 @@ public class BackupActivity extends BaseView {
     private interface iLoadCollectionCallbacks {
         void onLoadCollectionSuccess(List<Object> itemsList, List<String> errorsList);
         void onLoadCollectionError(String errorMsg);
-    }
-
-    private interface iUpload2DropboxCalbacks {
-        void onUpload2DropboxSuccess();
-        void onUpload2DropboxError(String errorMsg);
     }
 }

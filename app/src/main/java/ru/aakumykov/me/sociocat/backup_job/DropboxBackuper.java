@@ -120,8 +120,12 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
             callbacks.onCreateDirSuccess(createdFolderName);
         }
         catch (Exception e) {
-            Log.e(TAG, e.getMessage()); e.printStackTrace();
-            callbacks.onCreateDirFail(e.getMessage());
+            String msg = e.getMessage();
+            if (null == msg)
+                msg = "Неизвестная ошибка";
+            e.printStackTrace();
+
+            callbacks.onCreateDirFail(msg);
         }
     }
 
