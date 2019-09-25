@@ -26,6 +26,18 @@
             android:layout_height="wrap_content"
             android:text="Button" />
 
+        <Button
+            android:id="@+id/exceptionTestButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Проверка исключения" />
+
+        <Button
+            android:id="@+id/dropboxTestButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Проверить Dropbox" />
+
     </LinearLayout>
 
 </ScrollView>

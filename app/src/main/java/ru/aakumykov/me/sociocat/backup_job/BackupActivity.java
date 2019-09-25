@@ -9,6 +9,10 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.Metadata;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -87,6 +91,68 @@ public class BackupActivity extends BaseView {
         performCollectionsBackup();
     }
 
+    @OnClick(R.id.exceptionTestButton)
+    void onExceptionTestButtonClicked() {
+        try {
+            float a = 1 / 0;
+        }
+        catch (Exception e) {
+            processException(TAG, e);
+        }
+
+        try {
+            new Gson().fromJson("{a", Object.class);
+        }
+        catch (Exception e) {
+            processException(TAG, e);
+        }
+    }
+
+    @OnClick(R.id.dropboxTestButton)
+    void onDropboxTestButtonClicked() {
+        String dirName = "qwerty";
+
+        DbxRequestConfig dbxRequestConfig = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
+        DbxClientV2 client = new DbxClientV2(dbxRequestConfig, dropboxAccessToken);
+
+        try {
+            dirName = "/" + dirName;
+            Metadata metadata = client.files().getMetadata(dirName);
+            Log.d(TAG, "File '"+dirName+"' exitst");
+        }
+        catch (DbxException e) {
+            Log.d(TAG, "File does not '"+dirName+"' exitst");
+            processException(TAG, e);
+        }
+        catch (Exception e) {
+            processException(TAG, e);
+        }
+
+        /*try {
+            CreateFolderResult createFolderResult = client.files().createFolderV2(dirName);
+
+            FolderMetadata folderMetadata = createFolderResult.getMetadata();
+
+            String createdFolderName = folderMetadata.getName();
+        }
+        catch (Exception e) {
+            String msg = e.getMessage();
+            if (null == msg)
+                msg = "Неизвестная ошибка";
+            e.printStackTrace();
+        }*/
+    }
+
+    private void processException(String logTag, Exception e) {
+        String errorMsg = e.getMessage();
+
+        if (null != errorMsg) {
+            Log.e(logTag, errorMsg);
+            showErrorMsg(errorMsg, errorMsg);
+        }
+
+        TextUtils.join("\n", e.getStackTrace());
+    }
 
     // Внутренние методы
     private void performCollectionsBackup() {
