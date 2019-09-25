@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.CreateFolderResult;
+import com.dropbox.core.v2.files.FolderMetadata;
 import com.dropbox.core.v2.files.Metadata;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -68,91 +70,50 @@ public class BackupActivity extends BaseView {
 
 
     // Нажатия
-    @BindView(R.id.button2) Button button2;
-    @OnClick(R.id.button2)
-    void onButton2Click() {
-
-        showProgressMessage(R.string.CARDS_GRID_load_old);
-
-        MyUtils.disable(button2);
-
-        button2.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                hideProgressMessage();
-                MyUtils.enable(button2);
-            }
-        }, 1000);
-    }
-
     @BindView(R.id.startButton) Button startButton;
     @OnClick(R.id.startButton)
     void onStartButonClicked() {
         performCollectionsBackup();
     }
 
-    @OnClick(R.id.exceptionTestButton)
-    void onExceptionTestButtonClicked() {
-        try {
-            float a = 1 / 0;
-        }
-        catch (Exception e) {
-            processException(TAG, e);
-        }
-
-        try {
-            new Gson().fromJson("{a", Object.class);
-        }
-        catch (Exception e) {
-            processException(TAG, e);
-        }
-    }
-
     @OnClick(R.id.dropboxTestButton)
     void onDropboxTestButtonClicked() {
-        String dirName = "qwerty";
 
-        DbxRequestConfig dbxRequestConfig = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
-        DbxClientV2 client = new DbxClientV2(dbxRequestConfig, dropboxAccessToken);
+        final String dirName = "qwerty";
 
-        try {
-            dirName = "/" + dirName;
-            Metadata metadata = client.files().getMetadata(dirName);
-            Log.d(TAG, "File '"+dirName+"' exitst");
-        }
-        catch (DbxException e) {
-            Log.d(TAG, "File does not '"+dirName+"' exitst");
-            processException(TAG, e);
-        }
-        catch (Exception e) {
-            processException(TAG, e);
-        }
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                DbxRequestConfig dbxRequestConfig = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
+                DbxClientV2 client = new DbxClientV2(dbxRequestConfig, dropboxAccessToken);
 
-        /*try {
-            CreateFolderResult createFolderResult = client.files().createFolderV2(dirName);
+                /*try {
+                    Metadata metadata = client.files().getMetadata("/" + dirName);
+                    Log.d(TAG, "File '"+dirName+"' exitst");
+                }
+                catch (DbxException e) {
 
-            FolderMetadata folderMetadata = createFolderResult.getMetadata();
+                    Log.d(TAG, "File '"+dirName+"' does not exitst");
+                    processException(TAG, e);
+                }
+                catch (Exception e) {
+                    processException(TAG, e);
+                }*/
 
-            String createdFolderName = folderMetadata.getName();
-        }
-        catch (Exception e) {
-            String msg = e.getMessage();
-            if (null == msg)
-                msg = "Неизвестная ошибка";
-            e.printStackTrace();
-        }*/
+                try {
+                    CreateFolderResult createFolderResult = client.files().createFolderV2("/" + dirName);
+                    FolderMetadata folderMetadata = createFolderResult.getMetadata();
+                    String createdFolderName = folderMetadata.getName();
+                }
+                catch (Exception e) {
+                    processException(TAG, e);
+                }
+            }
+        };
+
+        new Thread(runnable).start();
     }
 
-    private void processException(String logTag, Exception e) {
-        String errorMsg = e.getMessage();
-
-        if (null != errorMsg) {
-            Log.e(logTag, errorMsg);
-            showErrorMsg(errorMsg, errorMsg);
-        }
-
-        TextUtils.join("\n", e.getStackTrace());
-    }
 
     // Внутренние методы
     private void performCollectionsBackup() {
@@ -354,6 +315,26 @@ public class BackupActivity extends BaseView {
     private void showConsoleError(String tag, Exception e) {
         Log.e(TAG, e.getMessage());
         Log.e(TAG, TextUtils.join("\n", e.getStackTrace()));
+    }
+
+    private static String processException(String logTag, Exception e) {
+        return processException(logTag, e, false);
+    }
+
+    private static String processException(String logTag, Exception e, boolean printOriginalStackTrace) {
+        String errorMsg = e.getMessage();
+
+        if (null == errorMsg)
+            errorMsg = e.toString();
+
+        Log.e(logTag, errorMsg);
+
+        Log.e(logTag, TextUtils.join("\n", e.getStackTrace()));
+
+        if (printOriginalStackTrace)
+            e.printStackTrace();
+
+        return errorMsg;
     }
 
 
