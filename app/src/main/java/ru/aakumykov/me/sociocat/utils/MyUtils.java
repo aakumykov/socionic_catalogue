@@ -44,6 +44,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.backup_job.BackupActivity;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -456,5 +457,9 @@ public final class MyUtils {
         if (null == errorMsg)
             errorMsg = e.toString();
         return errorMsg;
+    }
+
+    public static String quoteString(Context context, String dirName) {
+        return context.getResources().getString(R.string.aquotes, dirName);
     }
 }
