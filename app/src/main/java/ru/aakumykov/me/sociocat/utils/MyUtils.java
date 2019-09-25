@@ -451,4 +451,10 @@ public final class MyUtils {
         return errorMsg;
     }
 
+    public static String getExceptionMessage(Exception e) {
+        String errorMsg = e.getMessage();
+        if (null == errorMsg)
+            errorMsg = e.toString();
+        return errorMsg;
+    }
 }
