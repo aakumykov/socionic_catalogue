@@ -9,12 +9,8 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
-import com.dropbox.core.v2.files.CreateFolderResult;
-import com.dropbox.core.v2.files.FolderMetadata;
-import com.dropbox.core.v2.files.Metadata;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -47,6 +43,14 @@ public class BackupActivity extends BaseView {
     private String dropboxAccessToken;
     private DropboxBackuper dropboxBackuper;
 
+    private List<String> backupSuccessList = new ArrayList<>();
+    private List<String> backupErrorsList = new ArrayList<>();
+
+    /*private static class BackupInfo {
+
+    }*/
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +66,6 @@ public class BackupActivity extends BaseView {
     public void onUserLogin() {
 
     }
-
     @Override
     public void onUserLogout() {
 
@@ -73,7 +76,7 @@ public class BackupActivity extends BaseView {
     @BindView(R.id.startButton) Button startButton;
     @OnClick(R.id.startButton)
     void onStartButonClicked() {
-        performCollectionsBackup();
+        startBackup();
     }
 
     @OnClick(R.id.dropboxTestButton)
@@ -100,14 +103,45 @@ public class BackupActivity extends BaseView {
                     processException(TAG, e);
                 }*/
 
-                try {
-                    CreateFolderResult createFolderResult = client.files().createFolderV2("/" + dirName);
+                /*try {
+                    CreateFolderResult createFolderResult = client.files()
+                            .createFolderV2("/" + dirName, true);
                     FolderMetadata folderMetadata = createFolderResult.getMetadata();
                     String createdFolderName = folderMetadata.getName();
+                    throw new Exception("Создан каталог '"+createdFolderName+"'");
                 }
                 catch (Exception e) {
-                    processException(TAG, e);
+                    MyUtils.processException(TAG, e);
+                }*/
+
+                /*String stringData = "Строка текста";
+                String fileName = "файл";
+                String fileExtension = "txt";
+
+                try {
+                    String firstHash = MyUtils.md5sum(stringData) + "";
+                    String remoteFileName = "/" + dirName + "/" + fileName + "." + fileExtension;
+                    byte[] textBytes = stringData.getBytes();
+
+                    try (InputStream byteArrayInputStream = new ByteArrayInputStream(textBytes)) {
+                        // Отправка на сервер
+                        FileMetadata uploadMetadata = client.files()
+                                .uploadBuilder(remoteFileName)
+                                .withAutorename(true)
+                                .uploadAndFinish(byteArrayInputStream);
+
+                        String uploadedFileName = uploadMetadata.getName();
+                        Log.d(TAG, "uploadedFileName: "+uploadedFileName);
+
+                        hideProgressBar();
+                    }
+                    catch (Exception e) {
+                        MyUtils.processException(TAG, e);
+                    }
                 }
+                catch (Exception e) {
+                    MyUtils.processException(TAG, e);
+                }*/
             }
         };
 
@@ -116,7 +150,33 @@ public class BackupActivity extends BaseView {
 
 
     // Внутренние методы
-    private void performCollectionsBackup() {
+    private void startBackup() {
+        String dirName = "qwerty";
+        String initialDirName = MyUtils.quoteString(this, dirName);
+
+        showProgressBar();
+        showInfoMsg("Создаётся каталог "+initialDirName);
+
+        dropboxBackuper.createDir(dirName, true, new DropboxBackuper.iCreateDirCallbacks() {
+            @Override
+            public void onCreateDirSuccess(String createdDirName) {
+                hideProgressBar();
+                showInfoMsg("Создан каталог "+MyUtils.quoteString(BackupActivity.this, createdDirName));
+
+                //performCollectionsBackup(createdDirName);
+            }
+
+            @Override
+            public void onCreateDirFail(String errorMsg) {
+                backupErrorsList.add(errorMsg);
+
+                hideProgressBar();
+                showErrorMsg("Ошибка создания кталога "+initialDirName, errorMsg);
+            }
+        });
+    }
+
+    private void performCollectionsBackup(String targetDirName) {
 
         Map<String,Class> collectionsMap = new HashMap<>();
         collectionsMap.put("admins", User.class);
@@ -134,30 +194,24 @@ public class BackupActivity extends BaseView {
                 public void onLoadCollectionSuccess(List<Object> itemsList, List<String> errorsList) {
                     String jsonData = listOfObjects2JSON(itemsList);
 
-                    dropboxBackuper.backupString(backupDirName, collectionName, "json", jsonData, new DropboxBackuper.iDropboxBackuperCallbacks() {
-                        @Override
-                        public void onBackupStart() {
-                            showProgressBar();
-                            showInfoMsg("Выгрузка "+collectionName);
-                            Log.d(TAG, "Коллекция '"+collectionName+"' выгружается в каталог '"+backupDirName+"' ...");
-                        }
+                    dropboxBackuper.backupString(
+                            backupDirName,
+                            collectionName,
+                            "json",
+                            jsonData,
+                            true,
+                            new DropboxBackuper.iBackupStringCallbacks() {
+                                @Override
+                                public void onBackupSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
+                                    showInfoMsg(backupItemInfo.getFileName()+" сохранено в облаке");
+                                }
 
-                        @Override
-                        public void onBackupFinish() {
-                            hideProgressBar();
-                            Log.d(TAG, "... '"+collectionName+"' готово.");
-                        }
-
-                        @Override
-                        public void onBackupSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
-                            showInfoMsg(backupItemInfo.getFileName()+" сохранено в облаке");
-                        }
-
-                        @Override
-                        public void onBackupFail(String errorMsg) {
-                            showErrorMsg(errorMsg, errorMsg);
-                        }
-                    });
+                                @Override
+                                public void onBackupFail(String errorMsg) {
+                                    showErrorMsg(errorMsg, errorMsg);
+                                }
+                            }
+                    );
                 }
 
                 @Override
@@ -170,72 +224,6 @@ public class BackupActivity extends BaseView {
             });
         }
     }
-
-/*
-    private void backupFirestoreCollection2Dropbox(
-            String dirName,
-            String collectionName,
-            Class itemClassDefinition,
-            iFirestoreCollectionBackupCallbacks callbacks
-    ) {
-        callbacks.onCollectionBackupStart();
-
-        loadCollection(collectionName, itemClassDefinition, new iLoadCollectionCallbacks() {
-            @Override
-            public void onLoadCollectionSuccess(List<Object> itemsList, List<String> errorsList) {
-                if (0 != errorsList.size()) {
-//                    showError("Ошибки при получении списка", null);
-                    Log.e(TAG, errorsList.toString());
-                }
-
-                Pair<String, List<String>> pair = listOfObjects2JSON(itemsList);
-                String collectionJSON = pair.first;
-                if (0 != pair.second.size()) {
-//                    showError("Ошибка преобразования объектов в JSON");
-                    Log.e(TAG, "Errors converting objects list to JSON: "+pair.second.toString());
-                }
-
-                String accessToken = getResources().getString(R.string.DROPBOX_ACCESS_TOKEN);
-
-                DropboxBackuper dropboxBackuper = new DropboxBackuper(accessToken);
-
-                dropboxBackuper.backupString(
-                        dirName,
-                        collectionName,
-                        "json",
-                        collectionJSON,
-                        new DropboxBackuper.iDropboxBackuperCallbacks() {
-                            @Override
-                            public void onBackupStart() {
-
-                            }
-
-                            @Override
-                            public void onBackupFinish() {
-
-                            }
-
-                            @Override
-                            public void onBackupSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
-//                                showInfo("Успех: "+ backupItemInfo.getFileName() + " в каталоге '" + backupItemInfo.getDirName() + "'");
-                                callbacks.onCollectionBackupSuccess();
-                            }
-
-                            @Override
-                            public void onBackupFail(String errorMsg) {
-                                callbacks.onCollectionBackupError(errorMsg, null);
-                            }
-                        }
-                );
-            }
-
-            @Override
-            public void onLoadCollectionError(String errorMsg) {
-                callbacks.onCollectionBackupError(errorMsg, null);
-            }
-        });
-    }
-*/
 
 
     private void loadCollection(String collectionName, Class itemClass, iLoadCollectionCallbacks callbacks) {
@@ -306,35 +294,6 @@ public class BackupActivity extends BaseView {
         }
 
         return "[" + TextUtils.join(",", jsonList) + "]";
-    }
-
-    private String object2JSON(Object o) {
-        return new Gson().toJson(o);
-    }
-
-    private void showConsoleError(String tag, Exception e) {
-        Log.e(TAG, e.getMessage());
-        Log.e(TAG, TextUtils.join("\n", e.getStackTrace()));
-    }
-
-    private static String processException(String logTag, Exception e) {
-        return processException(logTag, e, false);
-    }
-
-    private static String processException(String logTag, Exception e, boolean printOriginalStackTrace) {
-        String errorMsg = e.getMessage();
-
-        if (null == errorMsg)
-            errorMsg = e.toString();
-
-        Log.e(logTag, errorMsg);
-
-        Log.e(logTag, TextUtils.join("\n", e.getStackTrace()));
-
-        if (printOriginalStackTrace)
-            e.printStackTrace();
-
-        return errorMsg;
     }
 
 

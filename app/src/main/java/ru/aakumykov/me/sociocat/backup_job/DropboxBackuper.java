@@ -19,28 +19,21 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class DropboxBackuper /*implements iCloudBackuper*/ {
 
-    public interface iDropboxBackuperCallbacks {
-        void onBackupStart();
-        void onBackupFinish();
-        void onBackupSuccess(BackupItemInfo backupItemInfo);
-        void onBackupFail(String errorMsg);
-    }
     public interface iCreateDirCallbacks {
-        void onCreateDirSuccess(String dirName);
+        void onCreateDirSuccess(String createdDirName);
         void onCreateDirFail(String errorMsg);
     }
-    public interface iUploadStringCallbacks {
-        void onUploadStringSuccess(String fileName, String md5sum);
-        void onUploadStringFail(String errorMsg);
+    public interface iBackupStringCallbacks {
+        void onBackupSuccess(BackupItemInfo backupItemInfo);
+        void onBackupFail(String errorMsg);
     }
     public interface iDownloadStringCallbacks {
         void onStringDownloadSuccess(String text);
         void onStringDownloadError(String errorMsg);
     }
 
-    public final static int MESSAGE_BACKUP_START = 10;
-    public final static int MESSAGE_BACKUP_SUCCESS = 20;
-    public final static int MESSAGE_BACKUP_FAIL = 30;
+    public final static int MESSAGE_WORK_SUCCESS = 20;
+    public final static int MESSAGE_WORK_FAIL = 30;
 
     private final static String TAG = "DropboxBackuper";
     private DbxClientV2 client;
@@ -54,47 +47,125 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
 
 
     // Внешние методы
-    public void backupString(String dirName, String fileName, String fileExtension, String textData, iDropboxBackuperCallbacks callbacks) {
+    public void createDir(String dirName, boolean autorename, iCreateDirCallbacks callbacks) {
 
-        Handler handler = prepareHandler(callbacks);
-
-        BackupItemInfo backupItemInfo = new BackupItemInfo();
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case MESSAGE_WORK_SUCCESS:
+                        String dirName = (String) msg.obj;
+                        callbacks.onCreateDirSuccess(dirName);
+                        break;
+                    case MESSAGE_WORK_FAIL:
+                        String errorMsg = (String) msg.obj;
+                        callbacks.onCreateDirFail(errorMsg);
+                        break;
+                    default:
+                        super.handleMessage(msg);
+                }
+            }
+        };
 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
+                try {
+                    CreateFolderResult createFolderResult = client.files().createFolderV2(
+                            "/" + dirName,
+                            autorename
+                    );
 
-                handler.sendEmptyMessage(MESSAGE_BACKUP_START);
+                    FolderMetadata folderMetadata = createFolderResult.getMetadata();
 
-                createDir(dirName, new iCreateDirCallbacks() {
-                    @Override
-                    public void onCreateDirSuccess(String dirName) {
-                        backupItemInfo.setDirName(dirName);
+                    String createdFolderName = folderMetadata.getName();
 
-                        uploadString(dirName, fileName, fileExtension, textData, true, new iUploadStringCallbacks() {
-                            @Override
-                            public void onUploadStringSuccess(String fileName, String md5sum) {
-                                backupItemInfo.setFileName(fileName);
-                                backupItemInfo.setMd5hash(md5sum);
+                    Message message = handler.obtainMessage(MESSAGE_WORK_SUCCESS, createdFolderName);
+                    handler.sendMessage(message);
+                }
+                catch (Exception e) {
+                    MyUtils.processException(TAG, e);
 
-                                Message message = handler.obtainMessage(MESSAGE_BACKUP_SUCCESS, backupItemInfo);
-                                handler.sendMessage(message);
-                            }
+                    Message message = handler.obtainMessage(MESSAGE_WORK_FAIL, MyUtils.getExceptionMessage(e));
+                    handler.sendMessage(message);
+                }
+            }
+        };
 
-                            @Override
-                            public void onUploadStringFail(String errorMsg) {
-                                Message message = handler.obtainMessage(MESSAGE_BACKUP_FAIL, errorMsg);
-                                handler.sendMessage(message);
-                            }
-                        });
-                    }
+        new Thread(runnable).start();
+    }
 
-                    @Override
-                    public void onCreateDirFail(String errorMsg) {
-                        Message message = handler.obtainMessage(MESSAGE_BACKUP_FAIL, errorMsg);
-                        handler.sendMessage(message);
-                    }
-                });
+    public void backupString(
+            String dirName,
+            String fileName,
+            String fileExtension,
+            String inputString,
+            boolean autorenameFile,
+            iBackupStringCallbacks callbacks
+    ) {
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case MESSAGE_WORK_SUCCESS:
+                        BackupItemInfo backupItemInfo = (BackupItemInfo) msg.obj;
+                        callbacks.onBackupSuccess(backupItemInfo);
+                        break;
+                    case MESSAGE_WORK_FAIL:
+                        String errorMsg = (String) msg.obj;
+                        callbacks.onBackupFail(errorMsg);
+                        break;
+                    default:
+                        super.handleMessage(msg);
+                }
+            }
+        };
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                String fileNameWithExtention = fileName + "." + fileExtension;
+                String remoteFileName = "/" + dirName + "/" + fileNameWithExtention;
+
+                try (InputStream byteArrayInputStream = new ByteArrayInputStream(inputString.getBytes())) {
+
+                    FileMetadata uploadMetadata = client.files()
+                            .uploadBuilder(remoteFileName)
+                            .withAutorename(autorenameFile)
+                            .uploadAndFinish(byteArrayInputStream);
+
+
+                    String uploadedFileName = uploadMetadata.getName();
+
+                    downloadString(remoteFileName, new iDownloadStringCallbacks() {
+                        @Override
+                        public void onStringDownloadSuccess(String text) {
+
+                            String firstHash = MyUtils.md5sum(inputString) + "";
+                            String secondHash = MyUtils.md5sum(text);
+
+                            BackupItemInfo backupItemInfo = new BackupItemInfo();
+                            backupItemInfo.setDirName(dirName);
+                            backupItemInfo.setFileName(fileNameWithExtention);
+                            backupItemInfo.setMd5hash(secondHash);
+
+                            if (firstHash.equals(secondHash))
+                                callbacks.onBackupSuccess(backupItemInfo);
+                            else
+                                callbacks.onBackupFail("Hashes of string '"+inputString+"' are mismatch: "+firstHash+" - "+secondHash);
+                        }
+
+                        @Override
+                        public void onStringDownloadError(String errorMsg) {
+                            callbacks.onBackupFail(errorMsg);
+                        }
+                    });
+
+                }
+                catch (Exception e) {
+                    callbacks.onBackupFail(MyUtils.getExceptionMessage(e));
+                    MyUtils.processException(TAG, e);
+                }
             }
         };
 
@@ -107,73 +178,6 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
 
 
     // Внутренние методы
-    private void createDir(String dirName, iCreateDirCallbacks callbacks) {
-        try {
-            dirName = "/" + dirName;
-
-            CreateFolderResult createFolderResult = client.files().createFolderV2(dirName);
-
-            FolderMetadata folderMetadata = createFolderResult.getMetadata();
-
-            String createdFolderName = folderMetadata.getName();
-
-            callbacks.onCreateDirSuccess(createdFolderName);
-        }
-        catch (Exception e) {
-            String msg = e.getMessage();
-            if (null == msg)
-                msg = "Неизвестная ошибка";
-            e.printStackTrace();
-
-            callbacks.onCreateDirFail(msg);
-        }
-    }
-
-    private void uploadString(String dirName, String fileName, String fileExtension, String stringData, boolean verifyHash, iUploadStringCallbacks callbacks) {
-        try {
-            String firstHash = MyUtils.md5sum(stringData) + "";
-            String remoteFileName = "/" + dirName + "/" + fileName + "." + fileExtension;
-            byte[] textBytes = stringData.getBytes();
-
-            try (InputStream byteArrayInputStream = new ByteArrayInputStream(textBytes)) {
-                // Отправка на сервер
-                FileMetadata uploadMetadata = client.files()
-                        .uploadBuilder(remoteFileName)
-                        .uploadAndFinish(byteArrayInputStream);
-
-
-                String uploadedFileName = uploadMetadata.getName();
-                Log.d(TAG, "uploadedFileName: "+uploadedFileName);
-
-                downloadString(remoteFileName, new iDownloadStringCallbacks() {
-                    @Override
-                    public void onStringDownloadSuccess(String text) {
-                        String secondHash = MyUtils.md5sum(text);
-                        if (firstHash.equals(secondHash))
-                            callbacks.onUploadStringSuccess(uploadedFileName, secondHash);
-                        else
-                            callbacks.onUploadStringFail(
-                                    "Hashes of string '"+stringData+"' are mismatch: "+firstHash+" - "+secondHash
-                            );
-                    }
-
-                    @Override
-                    public void onStringDownloadError(String errorMsg) {
-
-                    }
-                });
-            }
-            catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-                e.printStackTrace();
-            }
-        }
-        catch (Exception e) {
-            Log.e(TAG, e.getMessage()); e.printStackTrace();
-            callbacks.onUploadStringFail(e.getMessage());
-        }
-    }
-
     private void downloadString(String remoteFileName, iDownloadStringCallbacks callbacks) {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -190,29 +194,6 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
             Log.e(TAG, ex.getMessage());
             ex.printStackTrace();
         }
-    }
-
-    private Handler prepareHandler(iDropboxBackuperCallbacks callbacks) {
-        return new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case MESSAGE_BACKUP_START:
-                        callbacks.onBackupStart();
-                        break;
-                    case MESSAGE_BACKUP_SUCCESS:
-                        BackupItemInfo backupItemInfo = (BackupItemInfo) msg.obj;
-                        callbacks.onBackupSuccess(backupItemInfo);
-                        break;
-                    case MESSAGE_BACKUP_FAIL:
-                        String errorMsg = (String) msg.obj;
-                        callbacks.onBackupFail(errorMsg);
-                        break;
-                    default:
-                        super.handleMessage(msg);
-                }
-            }
-        };
     }
 
 
