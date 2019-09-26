@@ -26,6 +26,18 @@
             android:layout_height="wrap_content"
             android:text="Проверить Dropbox" />
 
+        <Button
+            android:id="@+id/scheduleJobButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Запланировать задачу" />
+
+        <Button
+            android:id="@+id/unscheduleJobButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Раз-планировать задачу" />
+
     </LinearLayout>
 
 </ScrollView>

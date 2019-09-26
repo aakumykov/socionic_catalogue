@@ -153,6 +153,16 @@ public class BackupActivity extends BaseView {
         new Thread(runnable).start();*/
     }
 
+    @OnClick(R.id.scheduleJobButton)
+    void onScheduleJobButtonClicked() {
+        Backup_JobService.scheduleJob(this);
+    }
+
+    @OnClick(R.id.unscheduleJobButton)
+    void onUnscheduleJobButtonClicked() {
+        Backup_JobService.unscheduleJob(this);
+    }
+
 
     // Внутренние методы
     private void startBackup() {

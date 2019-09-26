@@ -60,7 +60,7 @@ public class Backup_JobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters params) {
         Log.d(TAG, "onStartJob()");
-        return false;
+        return true;
     }
 
     @Override
