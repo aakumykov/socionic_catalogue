@@ -9,8 +9,6 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.dropbox.core.DbxRequestConfig;
-import com.dropbox.core.v2.DbxClientV2;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -21,11 +19,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,6 +42,8 @@ public class BackupActivity extends BaseView {
     private List<String> backupSuccessList = new ArrayList<>();
     private List<String> backupErrorsList = new ArrayList<>();
 
+    private CollectionPool collectionPool = new CollectionPool();
+
     /*private static class BackupInfo {
 
     }*/
@@ -58,6 +54,12 @@ public class BackupActivity extends BaseView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.backup_activity);
         ButterKnife.bind(this);
+
+        collectionPool.push(new CollectionPair("admins", User.class));
+        collectionPool.push(new CollectionPair("user", User.class));
+        collectionPool.push(new CollectionPair("cards", Card.class));
+        collectionPool.push(new CollectionPair("tags", Tag.class));
+        collectionPool.push(new CollectionPair("comments", Comment.class));
 
         dropboxAccessToken = getResources().getString(R.string.DROPBOX_ACCESS_TOKEN);
         dropboxBackuper = new DropboxBackuper(dropboxAccessToken);
@@ -83,7 +85,9 @@ public class BackupActivity extends BaseView {
     @OnClick(R.id.dropboxTestButton)
     void onDropboxTestButtonClicked() {
 
-        final String dirName = "qwerty";
+        showToast("Не реализовано");
+
+        /*final String dirName = "qwerty";
 
         Runnable runnable = new Runnable() {
             @Override
@@ -91,7 +95,7 @@ public class BackupActivity extends BaseView {
                 DbxRequestConfig dbxRequestConfig = new DbxRequestConfig("dropbox/java-tutorial", "en_US");
                 DbxClientV2 client = new DbxClientV2(dbxRequestConfig, dropboxAccessToken);
 
-                /*try {
+                *//*try {
                     Metadata metadata = client.files().getMetadata("/" + dirName);
                     Log.d(TAG, "File '"+dirName+"' exitst");
                 }
@@ -102,9 +106,9 @@ public class BackupActivity extends BaseView {
                 }
                 catch (Exception e) {
                     processException(TAG, e);
-                }*/
+                }*//*
 
-                /*try {
+                *//*try {
                     CreateFolderResult createFolderResult = client.files()
                             .createFolderV2("/" + dirName, true);
                     FolderMetadata folderMetadata = createFolderResult.getMetadata();
@@ -113,9 +117,9 @@ public class BackupActivity extends BaseView {
                 }
                 catch (Exception e) {
                     MyUtils.processException(TAG, e);
-                }*/
+                }*//*
 
-                /*String stringData = "Строка текста";
+                *//*String stringData = "Строка текста";
                 String fileName = "файл";
                 String fileExtension = "txt";
 
@@ -142,11 +146,11 @@ public class BackupActivity extends BaseView {
                 }
                 catch (Exception e) {
                     MyUtils.processException(TAG, e);
-                }*/
+                }*//*
             }
         };
 
-        new Thread(runnable).start();
+        new Thread(runnable).start();*/
     }
 
 
@@ -161,7 +165,7 @@ public class BackupActivity extends BaseView {
         dropboxBackuper.createDir(dirName, true, new DropboxBackuper.iCreateDirCallbacks() {
             @Override
             public void onCreateDirSuccess(String createdDirName) {
-                String successMsg = "Создан каталог "+MyUtils.quoteString(BackupActivity.this, createdDirName);
+                String successMsg = "Создан каталог " + MyUtils.quoteString(BackupActivity.this, createdDirName);
                 backupSuccessList.add(successMsg);
 
                 hideProgressBar();
@@ -175,26 +179,23 @@ public class BackupActivity extends BaseView {
                 backupErrorsList.add(errorMsg);
 
                 hideProgressBar();
-                showErrorMsg("Ошибка создания кталога "+initialDirName, errorMsg);
+                showErrorMsg("Ошибка создания кталога " + initialDirName, errorMsg);
             }
         });
     }
 
     private void performCollectionsBackup(String targetDirName) {
 
-        HashMap<String,Class> collectionsMap = new HashMap<>();
-        collectionsMap.put("admins", User.class);
-        collectionsMap.put("users", User.class);
-        collectionsMap.put("cards", Card.class);
-        collectionsMap.put("comments", Comment.class);
-        collectionsMap.put("tags", Tag.class);
+        CollectionPair collectionPair = collectionPool.pop();
 
-        for (String collectionName : collectionsMap.keySet())
+        if (null != collectionPair)
         {
-            Class itemClass = collectionsMap.get(collectionName);
+            String collectionName = collectionPair.name;
+            Class itemClass = collectionPair.itemClass;
 
             showProgressBar();
-            showInfoMsg("Загрузка коллекции "+collectionName);
+            showInfoMsg("Загрузка коллекции "+collectionPair.getName());
+            Log.d(TAG, collectionName);
 
             loadCollection(collectionName, itemClass, new iLoadCollectionCallbacks() {
                 @Override
@@ -210,6 +211,11 @@ public class BackupActivity extends BaseView {
                             jsonData,
                             true,
                             new DropboxBackuper.iBackupStringCallbacks() {
+                                @Override
+                                public void onBackupComplete() {
+                                    performCollectionsBackup(targetDirName);
+                                }
+
                                 @Override
                                 public void onBackupSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
                                     backupSuccessList.add("Коллекция "+collectionName+" обработана");
@@ -234,19 +240,15 @@ public class BackupActivity extends BaseView {
                     hideMsg();
                     hideProgressBar();
                     showErrorMsg("Ошибка получения коллекции "+collectionName, errorMsg);
+
+                    performCollectionsBackup(targetDirName);
                 }
             });
-
-            try {
-                TimeUnit.SECONDS.sleep(5); }
-            catch (InterruptedException e) {
-                Log.e(TAG, e.getMessage());
-                MyUtils.processException(TAG, e);
-            }
         }
-
-        showInfoMsg("Все коллекции обработаны");
-        Log.d(TAG, "Все коллекции обработаны");
+        else {
+            showInfoMsg("Все коллекции обработаны");
+            Log.d(TAG, "Все коллекции обработаны");
+        }
     }
 
 
@@ -332,5 +334,44 @@ public class BackupActivity extends BaseView {
     private interface iLoadCollectionCallbacks {
         void onLoadCollectionSuccess(List<Object> itemsList, List<String> errorsList);
         void onLoadCollectionError(String errorMsg);
+    }
+
+
+    // Внутренние классы
+    private static class CollectionPair {
+        private String name;
+        private Class itemClass;
+
+        public CollectionPair(String name, Class itemClass) {
+            this.name = name;
+            this.itemClass = itemClass;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Class getItemClass() {
+            return itemClass;
+        }
+    }
+    private static class CollectionPool {
+        private List<CollectionPair> list = new ArrayList<>();
+
+        public CollectionPair pop() {
+            int index = list.size()-1;
+            if (index >= 0) {
+                CollectionPair collectionPair = list.get(index);
+                list.remove(index);
+                return collectionPair;
+            }
+            else {
+                return null;
+            }
+        }
+
+        public void push(CollectionPair collectionPair) {
+            list.add(collectionPair);
+        }
     }
 }

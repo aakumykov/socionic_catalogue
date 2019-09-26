@@ -24,6 +24,8 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
         void onCreateDirFail(String errorMsg);
     }
     public interface iBackupStringCallbacks {
+        void onBackupComplete();
+
         void onBackupSuccess(BackupItemInfo backupItemInfo);
         void onBackupFail(String errorMsg);
     }
@@ -109,10 +111,12 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
                 switch (msg.what) {
                     case MESSAGE_WORK_SUCCESS:
                         BackupItemInfo backupItemInfo = (BackupItemInfo) msg.obj;
+                        callbacks.onBackupComplete();
                         callbacks.onBackupSuccess(backupItemInfo);
                         break;
                     case MESSAGE_WORK_FAIL:
                         String errorMsg = (String) msg.obj;
+                        callbacks.onBackupComplete();
                         callbacks.onBackupFail(errorMsg);
                         break;
                     default:
