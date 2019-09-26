@@ -4,4 +4,6 @@
     <item name="fab_image" type="id" />
     <item name="fab_video" type="id" />
     <item name="fab_audio" type="id" />
+
+    <item name="backup_job_service_id" type="id" />
 </resources>

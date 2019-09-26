@@ -495,4 +495,6 @@
     <string name="CARD_EDIT_error_parsing_timecode">Ошибка метки времени</string>
     <string name="CARDS_GRID_error_processing_card">Ошибка обработки карточки</string>
     <string name="CARDS_GRID_new_card_is_filtered">Карточка «%1$s» добавлена, но не содержит метки «%2$s»</string>
+    <string name="BACKUP_JOB_SERVICE_job_is_scheduled">Задача резервного копирования запланирована</string>
+    <string name="BACKUP_JOB_SERVICE_error_scheduling_job">Ошибка планирования задачи резервного копирования</string>
 </resources>
