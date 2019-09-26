@@ -58,17 +58,7 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
-    public void showInfoMsg(String message) {
-
-    }
-
-    @Override
     public void showErrorMsg(int userMessageId, String consoleMessage) {
-
-    }
-
-    @Override
-    public void showErrorMsg(String message, @Nullable String consoleMessage) {
 
     }
 

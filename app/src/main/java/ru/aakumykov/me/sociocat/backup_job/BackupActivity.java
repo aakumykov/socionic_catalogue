@@ -159,17 +159,15 @@ public class BackupActivity extends BaseView {
         String dirName = "qwerty";
         String initialDirName = MyUtils.quoteString(this, dirName);
 
-        showProgressBar();
-        showInfoMsg("Создаётся каталог "+initialDirName);
+        String msg = "Создаётся каталог "+initialDirName;
+        Log.d(TAG, msg);
 
         dropboxBackuper.createDir(dirName, true, new DropboxBackuper.iCreateDirCallbacks() {
             @Override
             public void onCreateDirSuccess(String createdDirName) {
                 String successMsg = "Создан каталог " + MyUtils.quoteString(BackupActivity.this, createdDirName);
                 backupSuccessList.add(successMsg);
-
-                hideProgressBar();
-                showInfoMsg(successMsg);
+                Log.d(TAG, successMsg);
 
                 performCollectionsBackup(createdDirName);
             }
@@ -178,8 +176,8 @@ public class BackupActivity extends BaseView {
             public void onCreateDirFail(String errorMsg) {
                 backupErrorsList.add(errorMsg);
 
-                hideProgressBar();
-                showErrorMsg("Ошибка создания кталога " + initialDirName, errorMsg);
+                String msg = "Ошибка создания кталога " + initialDirName;
+                Log.e(TAG, msg);
             }
         });
     }
@@ -193,16 +191,16 @@ public class BackupActivity extends BaseView {
             String collectionName = collectionPair.name;
             Class itemClass = collectionPair.itemClass;
 
-            showProgressBar();
-            showInfoMsg("Загрузка коллекции "+collectionPair.getName());
-            Log.d(TAG, collectionName);
+            String msg = "Загрузка коллекции "+collectionPair.getName();
+            Log.d(TAG, msg);
 
             loadCollection(collectionName, itemClass, new iLoadCollectionCallbacks() {
                 @Override
                 public void onLoadCollectionSuccess(List<Object> itemsList, List<String> errorsList) {
                     String jsonData = listOfObjects2JSON(itemsList);
 
-                    showInfoMsg("Сохранение коллекции "+collectionName);
+                    String msg = "Сохранение коллекции "+collectionName;
+                    Log.d(TAG, msg);
 
                     dropboxBackuper.backupString(
                             targetDirName,
@@ -212,24 +210,21 @@ public class BackupActivity extends BaseView {
                             true,
                             new DropboxBackuper.iBackupStringCallbacks() {
                                 @Override
-                                public void onBackupComplete() {
+                                public void onBackupSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
+                                    backupSuccessList.add("Коллекция "+collectionName+" обработана");
+                                    String msg = "Коллекция "+collectionName+" сохранена";
+                                    Log.d(TAG, msg);
+
                                     performCollectionsBackup(targetDirName);
                                 }
 
                                 @Override
-                                public void onBackupSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
-                                    backupSuccessList.add("Коллекция "+collectionName+" обработана");
-
-                                    hideProgressBar();
-                                    showInfoMsg("Коллекция "+collectionName+" сохранена");
-                                }
-
-                                @Override
                                 public void onBackupFail(String errorMsg) {
-                                    backupErrorsList.add("Ошибка обработки "+collectionName+": "+errorMsg);
+                                    String msg = "Ошибка обработки "+collectionName+": "+errorMsg;
+                                    backupErrorsList.add(msg);
+                                    Log.e(TAG, msg);
 
-                                    hideProgressBar();
-                                    showErrorMsg(errorMsg, errorMsg);
+                                    performCollectionsBackup(targetDirName);
                                 }
                             }
                     );
@@ -237,16 +232,14 @@ public class BackupActivity extends BaseView {
 
                 @Override
                 public void onLoadCollectionError(String errorMsg) {
-                    hideMsg();
-                    hideProgressBar();
-                    showErrorMsg("Ошибка получения коллекции "+collectionName, errorMsg);
+                    String msg = "Ошибка получения коллекции "+collectionName;
+                    Log.e(TAG, msg);
 
                     performCollectionsBackup(targetDirName);
                 }
             });
         }
         else {
-            showInfoMsg("Все коллекции обработаны");
             Log.d(TAG, "Все коллекции обработаны");
         }
     }
