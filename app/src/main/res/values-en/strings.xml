@@ -492,4 +492,5 @@
     <string name="BACKUP_JOB_SERVICE_error_scheduling_job">Error scheduling backup job</string>
     <string name="BACKUP_JOB_SERVICE_channel_title">Backup job</string>
     <string name="BACKUP_JOB_SERVICE_channel_description">Backup job events notifications channel</string>
+    <string name="BACKUP_JOB_SERVICE_notification_title">Backup job is running</string>
 </resources>

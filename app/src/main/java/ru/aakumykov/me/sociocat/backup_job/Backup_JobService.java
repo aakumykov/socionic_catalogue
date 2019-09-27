@@ -8,7 +8,6 @@ import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -21,16 +20,11 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class Backup_JobService extends JobService {
 
     private final static String TAG = "Backup_JobService";
-    private final static int sJobId = R.id.backup_job_service_id;
+    private final static int backupJobServiceId = R.id.backup_job_service_id;
 
     public final static String BACKUP_JOB_NOTIFICATION_CHANNEL = "BACKUP_JOB_NOTIFICATION_CHANNEL";
     private NotificationManagerCompat notificationManager;
-
-
-    public Backup_JobService() {
-        super();
-        notificationManager = NotificationManagerCompat.from(this);
-    }
+    private int notificationRunningId = R.id.backup_job_running_notification_id;
 
 
     public static void createNotificationChannel(Context context)
@@ -46,9 +40,11 @@ public class Backup_JobService extends JobService {
 
     public static void scheduleJob(Context context)
     {
+        Log.d(TAG, "scheduleJob()");
+
         ComponentName backupJobService = new ComponentName(context, Backup_JobService.class);
 
-        JobInfo.Builder jobBuilder = new JobInfo.Builder(sJobId, backupJobService);
+        JobInfo.Builder jobBuilder = new JobInfo.Builder(backupJobServiceId, backupJobService);
                         jobBuilder.setPeriodic(TimeUnit.MINUTES.toMillis(1));
                         jobBuilder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
                         jobBuilder.setRequiresDeviceIdle(false);
@@ -77,8 +73,10 @@ public class Backup_JobService extends JobService {
 
     public static void unscheduleJob(Context context)
     {
+        Log.d(TAG, "scheduleJob()");
+
         JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
-        jobScheduler.cancel(sJobId);
+        jobScheduler.cancel(backupJobServiceId);
         Log.d(TAG, "Задача (должно быть) удалена из планировщика");
     }
 
@@ -87,13 +85,22 @@ public class Backup_JobService extends JobService {
     public boolean onStartJob(JobParameters params) {
         Log.d(TAG, "onStartJob()");
 
-        /*NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this, )
-                        .setSmallIcon(iconId)
-                        .setContentTitle(title)
-                        .setAutoCancel(true);*/
+        notificationManager = NotificationManagerCompat.from(this);
 
-//        startForeground();
+        String notificationTitle = getResources().getString(R.string.BACKUP_JOB_SERVICE_notification_title);
+
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
+                        .setSmallIcon(R.drawable.ic_backup_job_colored)
+                        .setContentTitle(notificationTitle)
+                        .setUsesChronometer(true)
+                        .setOngoing(true)
+                        .setProgress(0,0,true)
+                        .setAutoCancel(true);
+
+        Notification notification = notificationBuilder.build();
+
+        startForeground(notificationRunningId, notification);
 
         return true;
     }
@@ -101,6 +108,7 @@ public class Backup_JobService extends JobService {
     @Override
     public boolean onStopJob(JobParameters params) {
         Log.d(TAG, "onStopJob()");
+
         return false;
     }
 }

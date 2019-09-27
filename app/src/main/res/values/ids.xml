@@ -6,4 +6,5 @@
     <item name="fab_audio" type="id" />
 
     <item name="backup_job_service_id" type="id" />
+    <item name="backup_job_running_notification_id" type="id" />
 </resources>
