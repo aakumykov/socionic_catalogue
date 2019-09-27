@@ -54,6 +54,7 @@ public class Backup_JobService extends JobService {
     {
         JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
         jobScheduler.cancel(sJobId);
+        Log.d(TAG, "Задача (должно быть) удалена из планировщика");
     }
 
 
