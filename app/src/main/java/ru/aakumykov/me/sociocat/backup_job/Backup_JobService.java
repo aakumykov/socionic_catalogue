@@ -25,8 +25,11 @@ public class Backup_JobService extends JobService {
     private final static int backupJobServiceId = R.id.backup_job_service_id;
 
     public final static String BACKUP_JOB_NOTIFICATION_CHANNEL = "BACKUP_JOB_NOTIFICATION_CHANNEL";
-    private NotificationManagerCompat notificationManager;
-    private int notificationRunningId = R.id.backup_job_running_notification_id;
+    private int notificationIdProgress = R.id.backup_job_notification_id_progress;
+    private int notificationIdResult = R.id.backup_job_notification_id_result;
+
+    public final static int ACTION_BACKUP_PROGRESS = 10;
+    public final static int ACTION_BACKUP_RESULT = 20;
 
 
     public static void createNotificationChannel(Context context)
@@ -87,26 +90,26 @@ public class Backup_JobService extends JobService {
     public boolean onStartJob(JobParameters params) {
         Log.d(TAG, "onStartJob()");
 
-        notificationManager = NotificationManagerCompat.from(this);
-
-
         Intent intent = new Intent(this, BackupStatus_Activity.class);
 //        intent.setAction(ACTION_BACKUP_PROGRESS);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this,
-                0,
+                ACTION_BACKUP_PROGRESS,
                 intent,
                 PendingIntent.FLAG_CANCEL_CURRENT
         );
 
 
-        String notificationTitle = getResources().getString(R.string.BACKUP_JOB_SERVICE_notification_title);
+        String notificationTitle = getResources().getString(R.string.BACKUP_JOB_notification_title);
+        String notificationDescription = getResources().getString(R.string.BACKUP_JOB_progress_notification_description);
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
                         .setSmallIcon(R.drawable.ic_backup_job_colored)
                         .setContentTitle(notificationTitle)
+                        .setContentText(notificationDescription)
+//                        .setContentInfo("Content Info") // На новых версиях не отображается
                         .setUsesChronometer(true)
                         .setOngoing(true)
                         .setProgress(0,0,true)
@@ -115,7 +118,7 @@ public class Backup_JobService extends JobService {
 
         Notification notification = notificationBuilder.build();
 
-        startForeground(notificationRunningId, notification);
+        startForeground(notificationIdProgress, notification);
 
         return true;
     }
@@ -123,6 +126,32 @@ public class Backup_JobService extends JobService {
     @Override
     public boolean onStopJob(JobParameters params) {
         Log.d(TAG, "onStopJob()");
+
+        Intent intent = new Intent(this, BackupStatus_Activity.class);
+//        intent.setAction(ACTION_BACKUP_PROGRESS);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this,
+                ACTION_BACKUP_RESULT,
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT
+        );
+
+        String notificationTitle = getResources().getString(R.string.BACKUP_JOB_notification_title);
+        String notificationDescription = getResources().getString(R.string.BACKUP_JOB_result_notification_description);
+
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
+                        .setSmallIcon(R.drawable.ic_backup_job_colored)
+                        .setContentTitle(notificationTitle)
+                        .setContentText(notificationDescription)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
+
+        Notification notification = notificationBuilder.build();
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(notificationIdResult, notification);
 
         return false;
     }

@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.backup_job;
 
 import android.os.Bundle;
+import android.view.Menu;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,5 +29,10 @@ public class BackupStatus_Activity extends BaseView {
     @Override
     public void onUserLogout() {
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
     }
 }
