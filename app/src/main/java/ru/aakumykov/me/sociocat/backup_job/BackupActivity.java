@@ -63,6 +63,8 @@ public class BackupActivity extends BaseView {
 
         dropboxAccessToken = getResources().getString(R.string.DROPBOX_ACCESS_TOKEN);
         dropboxBackuper = new DropboxBackuper(dropboxAccessToken);
+
+        Backup_JobService.createNotificationChannel(this);
     }
 
     @Override

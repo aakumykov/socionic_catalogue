@@ -490,4 +490,6 @@
     <string name="CARDS_GRID_new_card_is_filtered">Card «%1$s» is added, but not contains tag «%2$s»</string>
     <string name="BACKUP_JOB_SERVICE_job_is_scheduled">Backup job is scheduled</string>
     <string name="BACKUP_JOB_SERVICE_error_scheduling_job">Error scheduling backup job</string>
+    <string name="BACKUP_JOB_SERVICE_channel_title">Backup job</string>
+    <string name="BACKUP_JOB_SERVICE_channel_description">Backup job events notifications channel</string>
 </resources>
