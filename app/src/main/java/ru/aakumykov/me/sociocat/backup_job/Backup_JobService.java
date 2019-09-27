@@ -1,12 +1,14 @@
 package ru.aakumykov.me.sociocat.backup_job;
 
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobParameters;
 import android.app.job.JobScheduler;
 import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -87,6 +89,18 @@ public class Backup_JobService extends JobService {
 
         notificationManager = NotificationManagerCompat.from(this);
 
+
+        Intent intent = new Intent(this, BackupStatus_Activity.class);
+//        intent.setAction(ACTION_BACKUP_PROGRESS);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT
+        );
+
+
         String notificationTitle = getResources().getString(R.string.BACKUP_JOB_SERVICE_notification_title);
 
         NotificationCompat.Builder notificationBuilder =
@@ -96,6 +110,7 @@ public class Backup_JobService extends JobService {
                         .setUsesChronometer(true)
                         .setOngoing(true)
                         .setProgress(0,0,true)
+                        .setContentIntent(pendingIntent)
                         .setAutoCancel(true);
 
         Notification notification = notificationBuilder.build();

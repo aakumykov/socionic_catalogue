@@ -500,4 +500,5 @@
     <string name="BACKUP_JOB_SERVICE_channel_title">Резервное копирование</string>
     <string name="BACKUP_JOB_SERVICE_channel_description">Уведомления о событиях резервного копирования</string>
     <string name="BACKUP_JOB_SERVICE_notification_title">Выполняется резервное копирование</string>
+    <string name="BACKUP_STATUS_page_title">Информация о резервном копировании</string>
 </resources>
