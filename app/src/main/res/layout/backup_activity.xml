@@ -18,13 +18,7 @@
             android:id="@+id/startButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Запустить бэкап" />
-
-        <Button
-            android:id="@+id/dropboxTestButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Проверить Dropbox" />
+            android:text="Запустить службу" />
 
         <Button
             android:id="@+id/scheduleJobButton"

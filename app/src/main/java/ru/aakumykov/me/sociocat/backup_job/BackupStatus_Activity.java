@@ -70,21 +70,21 @@ public class BackupStatus_Activity extends BaseView {
             }
         };
 
-        IntentFilter intentFilter = new IntentFilter(/*BackupJobService.BROADCAST_ACTION_BACKUP_STATUS*/);
+        IntentFilter intentFilter = new IntentFilter(/*BackupJobService.BROADCAST_BACKUP_SERVICE_STATUS*/);
 
         registerReceiver(broadcastReceiver, intentFilter);
     }
 
     private void processInputIntent(@Nullable Intent intent) {
-        if (null != intent) {
+        /*if (null != intent) {
             Backup_JobService.BackupInfo backupInfo = intent.getParcelableExtra(Backup_JobService.INTENT_EXTRA_BACKUP_INFO);
             if (null != backupInfo) {
                 displayBackupInfo(backupInfo);
             }
-        }
+        }*/
     }
 
-    private void displayBackupInfo(Backup_JobService.BackupInfo backupInfo) {
+    /*private void displayBackupInfo(Backup_JobService.BackupInfo backupInfo) {
 
         String name = backupInfo.getName();
 
@@ -100,5 +100,5 @@ public class BackupStatus_Activity extends BaseView {
             default:
                 break;
         }
-    }
+    }*/
 }

@@ -42,7 +42,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class Backup_JobService extends JobService {
 
     public final static String BACKUP_JOB_NOTIFICATION_CHANNEL = "BACKUP_JOB_NOTIFICATION_CHANNEL";
-    public static final String INTENT_EXTRA_BACKUP_INFO = "INTENT_EXTRA_BACKUP_INFO";
+    public static final String INTENT_EXTRA_BACKUP_INFO = "EXTRA_KEY_BACKUP_INFO";
 
     public final static int ACTION_BACKUP_PROGRESS = 10;
     public final static int ACTION_BACKUP_RESULT = 20;
@@ -184,7 +184,7 @@ public class Backup_JobService extends JobService {
     private void displayResultNotification(String name) {
         Log.d(TAG, "displayResultNotification()");
 
-        BackupInfo backupInfo = new BackupInfo();
+        /*BackupInfo backupInfo = new BackupInfo();
                    backupInfo.setStatus(BackupStatus.BACKUP_SUCCESS);
                    backupInfo.setName(name + ": " + resultNotificationId);
 
@@ -213,84 +213,7 @@ public class Backup_JobService extends JobService {
         Notification notification = notificationBuilder.build();
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(resultNotificationId++, notification);
-    }
-
-    public static class BackupInfo implements Parcelable {
-
-        private String name;
-        private BackupStatus backupStatus;
-        private long progress;
-        private int progressMax;
-
-        public BackupInfo() {
-
-        }
-
-        public String getName() {
-            return name;
-        }
-        public BackupStatus getStatus() {
-            return backupStatus;
-        }
-        public long getProgress() {
-            return progress;
-        }
-        public int getProgressMax() {
-            return progressMax;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-        public void setStatus(BackupStatus backupStatus) {
-            this.backupStatus = backupStatus;
-        }
-        public void setProgress(long progress) {
-            this.progress = progress;
-        }
-        public void setProgressMax(int progressMax) {
-            this.progressMax = progressMax;
-        }
-
-        // Конверт
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(name);
-            dest.writeString(backupStatus.name());
-            dest.writeLong(progress);
-            dest.writeInt(progressMax);
-        }
-
-        protected BackupInfo(Parcel in) {
-            name = in.readString();
-            backupStatus = BackupStatus.valueOf(in.readString());
-            progress = in.readLong();
-            progressMax = in.readInt();
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        public static final Creator<BackupInfo> CREATOR = new Creator<BackupInfo>() {
-            @Override
-            public BackupInfo createFromParcel(Parcel in) {
-                return new BackupInfo(in);
-            }
-
-            @Override
-            public BackupInfo[] newArray(int size) {
-                return new BackupInfo[size];
-            }
-        };
-        // Конверт
-    }
-    public enum BackupStatus {
-        BACKUP_SUCCESS,
-        BACKUP_ERROR,
-        BACKUP_RUNNING
+        notificationManager.notify(resultNotificationId++, notification);*/
     }
 
     // Внутренние методы резервного копирования
