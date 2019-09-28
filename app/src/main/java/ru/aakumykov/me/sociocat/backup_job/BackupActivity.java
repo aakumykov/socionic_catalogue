@@ -256,7 +256,6 @@ public class BackupActivity extends BaseView {
         }
     }
 
-
     private void loadCollection(String collectionName, Class itemClass, iLoadCollectionCallbacks callbacks) {
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = firebaseFirestore.collection(collectionName);
