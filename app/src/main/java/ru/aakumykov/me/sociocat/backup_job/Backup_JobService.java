@@ -100,7 +100,7 @@ public class Backup_JobService extends JobService {
 
 //        jobFinished(params, false);
 
-        displayResultNotification("Пробное резервное");
+        displayResultNotification("Пробное резервное копирование");
 
         return true;
     }

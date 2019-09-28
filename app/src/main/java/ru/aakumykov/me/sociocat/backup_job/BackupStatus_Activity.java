@@ -79,6 +79,18 @@ public class BackupStatus_Activity extends BaseView {
     }
 
     private void displayBackupInfo(Backup_JobService.BackupInfo backupInfo) {
+
         textView.setText(backupInfo.getName());
+
+        switch (backupInfo.getStatus()) {
+            case BACKUP_SUCCESS:
+                break;
+            case BACKUP_ERROR:
+                break;
+            case BACKUP_RUNNING:
+                break;
+            default:
+                break;
+        }
     }
 }
