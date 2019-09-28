@@ -4,9 +4,9 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Сведения о резервном копировании"
         android:textAlignment="center"
         android:textSize="18sp" />
 </LinearLayout>
