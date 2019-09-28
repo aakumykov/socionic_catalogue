@@ -34,6 +34,7 @@ public class Backup_JobService extends JobService {
     public final static int ACTION_BACKUP_RESULT = 20;
 
     public static final String INTENT_EXTRA_BACKUP_INFO = "INTENT_EXTRA_BACKUP_INFO";
+    private static int r_n_Id = 1;
 
 
     // Внешние статические методы
@@ -151,7 +152,7 @@ public class Backup_JobService extends JobService {
 
         BackupInfo backupInfo = new BackupInfo();
                    backupInfo.setStatus(BackupStatus.BACKUP_SUCCESS);
-                   backupInfo.setName(name);
+                   backupInfo.setName(name + ": " + r_n_Id);
 
         Intent intent = new Intent(this, BackupStatus_Activity.class);
         intent.putExtra(INTENT_EXTRA_BACKUP_INFO, backupInfo);
@@ -178,7 +179,7 @@ public class Backup_JobService extends JobService {
         Notification notification = notificationBuilder.build();
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(notificationIdResult, notification);
+        notificationManager.notify(r_n_Id++, notification);
     }
 
 

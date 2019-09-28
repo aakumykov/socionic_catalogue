@@ -35,6 +35,12 @@ public class BackupStatus_Activity extends BaseView {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        processInputIntent(getIntent());
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
@@ -80,7 +86,9 @@ public class BackupStatus_Activity extends BaseView {
 
     private void displayBackupInfo(Backup_JobService.BackupInfo backupInfo) {
 
-        textView.setText(backupInfo.getName());
+        String name = backupInfo.getName();
+
+        textView.setText(name);
 
         switch (backupInfo.getStatus()) {
             case BACKUP_SUCCESS:
