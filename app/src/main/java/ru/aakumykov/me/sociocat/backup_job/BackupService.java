@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.backup_job;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.Parcel;
@@ -65,7 +66,6 @@ public class BackupService extends Service {
         }
         // Конверт
     }
-
     public static class BackupProgressInfo implements Parcelable {
 
         private String name;
@@ -218,7 +218,7 @@ public class BackupService extends Service {
         }
     }
 
-
+    // Публичные свойства
     public static final String BROADCAST_BACKUP_SERVICE_STATUS = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_SERVICE_STATUS";
     public static final String BROADCAST_BACKUP_PROGRESS_STATUS = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_PROGRESS_STATUS";
 
@@ -232,8 +232,8 @@ public class BackupService extends Service {
     public final static String BACKUP_RESULT_SUCCESS = "BACKUP_RESULT_SUCCESS";
     public final static String BACKUP_RESULT_ERROR =   "BACKUP_RESULT_ERROR";
 
+    // Внутренние свойства
     private final static String TAG = "BackupService";
-
     private String dropboxAccessToken;
     private DropboxBackuper dropboxBackuper;
     private CollectionPool collectionPool = new CollectionPool(
@@ -246,6 +246,23 @@ public class BackupService extends Service {
 
     private List<String> backupSuccessList = new ArrayList<>();
     private List<String> backupErrorsList = new ArrayList<>();
+
+    public final static String BACKUP_JOB_NOTIFICATION_CHANNEL = "BACKUP_JOB_NOTIFICATION_CHANNEL";
+    private int progressNotificationId = 10;
+    private int resultNotificationId = 20;
+
+
+    // Внешние статические методы
+    public static void createNotificationChannel(Context context)
+    {
+        /*MyUtils.createNotificationChannel(
+                context,
+                BACKUP_JOB_NOTIFICATION_CHANNEL,
+                context.getResources().getString(R.string.BACKUP_JOB_SERVICE_channel_title),
+                context.getResources().getString(R.string.BACKUP_JOB_SERVICE_channel_description),
+                NotificationManagerCompat.IMPORTANCE_HIGH
+        );*/
+    }
 
 
     // Системные методы
