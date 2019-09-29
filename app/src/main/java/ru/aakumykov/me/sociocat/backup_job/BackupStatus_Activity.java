@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class BackupStatus_Activity extends BaseView {
 
@@ -69,8 +70,8 @@ public class BackupStatus_Activity extends BaseView {
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                BackupService.BackupProgressInfo backupProgressInfo = intent.getParcelableExtra(BackupService.EXTRA_BACKUP_PROGRESS);
-                displayBackupInfo(backupProgressInfo);
+                if (null != intent)
+                    displayBackupProgress(intent);
             }
         };
 
@@ -78,17 +79,22 @@ public class BackupStatus_Activity extends BaseView {
     }
 
     private void processInputIntent(@Nullable Intent intent) {
-        /*if (null != intent) {
-            Backup_JobService.BackupProgressInfo backupInfo = intent.getParcelableExtra(Backup_JobService.INTENT_EXTRA_BACKUP_INFO);
-            if (null != backupInfo) {
-                displayBackupInfo(backupInfo);
-            }
-        }*/
+        if (null != intent) {
+//            BackupService.ProgressInfo progressInfo = intent.getParcelableExtra(BackupService.EXTRA_BACKUP_PROGRESS);
+        }
     }
 
-    private void displayBackupInfo(BackupService.BackupProgressInfo backupProgressInfo) {
-        textView.setText(backupProgressInfo.getMessage());
-        progressBar.setProgress(backupProgressInfo.getProgress());
-        progressBar.setMax(backupProgressInfo.getProgressMax());
+    private void displayBackupResult(Intent intent) {
+        MyUtils.show(progressBar);
+    }
+
+    private void displayBackupProgress(Intent intent) {
+        MyUtils.hide(progressBar);
+    }
+
+    private void displayBackupInfo(BackupService.ProgressInfo progressInfo) {
+        textView.setText(progressInfo.getMessage());
+        progressBar.setProgress(progressInfo.getProgress());
+        progressBar.setMax(progressInfo.getProgressMax());
     }
 }
