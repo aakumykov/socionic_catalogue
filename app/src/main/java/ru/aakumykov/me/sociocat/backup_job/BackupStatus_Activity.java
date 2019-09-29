@@ -79,13 +79,11 @@ public class BackupStatus_Activity extends BaseView {
     }
 
     private void processInputIntent(@Nullable Intent intent) {
-
         if (null != intent) {
             String action = intent.getAction() + "";
-
             switch (action) {
                 case BackupService.INTENT_ACTION_BACKUP_PROGRESS:
-                    displayBackupProgress(intent);
+                    prepageDisplayBackupProgress();
                     break;
                 case BackupService.INTENT_ACTION_BACKUP_RESULT:
                     displayBackupResult(intent);
@@ -100,12 +98,15 @@ public class BackupStatus_Activity extends BaseView {
         MyUtils.show(progressBar);
     }
 
-    private void displayBackupProgress(Intent intent) {
-        MyUtils.hide(progressBar);
+    private void prepageDisplayBackupProgress() {
+        progressBar.setIndeterminate(true);
+        MyUtils.show(progressBar);
     }
 
-    private void displayBackupInfo(BackupService.ProgressInfo progressInfo) {
+    private void displayBackupProgress(Intent intent) {
+        BackupService.ProgressInfo progressInfo = intent.getParcelableExtra(BackupService.EXTRA_BACKUP_PROGRESS);
         textView.setText(progressInfo.getMessage());
+        progressBar.setIndeterminate(false);
         progressBar.setProgress(progressInfo.getProgress());
         progressBar.setMax(progressInfo.getProgressMax());
     }
