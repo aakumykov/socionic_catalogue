@@ -17,7 +17,6 @@ import ru.aakumykov.me.sociocat.R;
 public class BackupActivity extends BaseView {
 
     private final static String TAG = "BackupActivity";
-    private BroadcastReceiver broadcastReceiver;
 
 
     @Override
@@ -32,7 +31,6 @@ public class BackupActivity extends BaseView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(broadcastReceiver);
     }
 
     @Override

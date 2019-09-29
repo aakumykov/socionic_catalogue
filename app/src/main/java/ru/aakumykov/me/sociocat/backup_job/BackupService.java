@@ -180,8 +180,7 @@ public class BackupService extends Service {
             });
         }
         else {
-            Log.d(TAG, "Все коллекции обработаны");
-            finishWithSuccess();
+            finishWithSuccess("Все коллекции обработаны");
         }
     }
 
@@ -421,8 +420,9 @@ public class BackupService extends Service {
         sendBroadcast(intent);
     }
 
-    private void sendBackupStatusBroadcase() {
-
+    private void sendBackupStatusBroadcast(BackupProgressInfo backupProgressInfo) {
+        Intent intent = new Intent(BROADCAST_BACKUP_PROGRESS_STATUS);
+        intent.putExtra(EXTRA_BACKUP_STATUS, backupProgressInfo);
     }
 
 
@@ -484,7 +484,7 @@ public class BackupService extends Service {
         stopForeground(true);
     }
 
-    private void displayResultNotification(String text) {
+    private void displayResultNotification(@Nullable String text) {
         Log.d(TAG, "displayResultNotification()");
 
 //        BackupProgressInfo backupInfo = new BackupProgressInfo();
@@ -511,9 +511,11 @@ public class BackupService extends Service {
                         .setSmallIcon(R.drawable.ic_backup_job_colored)
                         .setContentTitle(notificationTitle)
 //                        .setContentText(notificationDescription)
-                        .setContentText(text)
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true);
+
+        if (null != text)
+            notificationBuilder.setContentText(text);
 
         Notification notification = notificationBuilder.build();
 
@@ -556,11 +558,16 @@ public class BackupService extends Service {
                     catch (InterruptedException e) {}
 
                     sendServiceStatusBroadcast(SERVICE_STATUS_RUNNING);
+
+                    sendBackupStatusBroadcast(
+                            new BackupProgressInfo()
+                            .setMessage("Шаг "+i)
+                            .setProgress(i)
+                            .setProgressMax(max)
+                    );
                 }
 
-                finishWithSuccess();
-
-                displayResultNotification("Работа выполнена "+MyUtils.date2string());
+                finishWithSuccess("Работа выполнена "+MyUtils.date2string());
             }
         }).start();
 
@@ -586,9 +593,15 @@ public class BackupService extends Service {
         sendServiceStatusBroadcast(SERVICE_STATUS_FINISH);
     }
 
-    private void finishWithSuccess() {
+    private void finishWithSuccess(@Nullable String message) {
+        Log.d(TAG, message);
+
         stopSelf();
+
         removeProgressNotification();
+
+        displayResultNotification(message);
+
         sendServiceStatusBroadcast(SERVICE_STATUS_FINISH);
     }
 
