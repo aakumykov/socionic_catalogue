@@ -12,6 +12,7 @@ import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,146 +36,14 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class BackupService extends Service {
 
-    // Вложенные классы
-    public static class BackupServiceInfo implements Parcelable {
-
-        private String status;
-
-        // Конверт
-        protected BackupServiceInfo(Parcel in) {
-
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-
-        }
-
-        public static final Creator<BackupServiceInfo> CREATOR = new Creator<BackupServiceInfo>() {
-            @Override
-            public BackupServiceInfo createFromParcel(Parcel in) {
-                return new BackupServiceInfo(in);
-            }
-
-            @Override
-            public BackupServiceInfo[] newArray(int size) {
-                return new BackupServiceInfo[size];
-            }
-        };
-        @Override public int describeContents() {
-            return 0;
-        }
-        // Конверт
-    }
-    public static class BackupProgressInfo implements Parcelable {
-
-        private String name;
-        private String backupStatus;
-        private String backupResult;
-        private String message;
-        private long progress;
-        private int progressMax;
-
-        public BackupProgressInfo() {
-
-        }
-
-        public BackupProgressInfo(String name, String backupStatus) {
-            this.name = name;
-            this.backupStatus = backupStatus;
-        }
-
-        public String getName() {
-            return name;
-        }
-        public String getBackupStatus() {
-            return backupStatus;
-        }
-        public String getBackupResult() {
-            return backupResult;
-        }
-        public String getMessage() {
-            return this.message;
-        }
-        public long getProgress() {
-            return progress;
-        }
-        public int getProgressMax() {
-            return progressMax;
-        }
-
-        public BackupProgressInfo setName(String name) {
-            this.name = name;
-            return this;
-        }
-        public BackupProgressInfo setBackupStatus(String backupStatus) {
-            this.backupStatus = backupStatus;
-            return this;
-        }
-        public BackupProgressInfo setBackupResult(String backupResult) {
-            this.backupResult = backupResult;
-            return this;
-        }
-        public BackupProgressInfo setMessage(String message) {
-            this.message = message;
-            return this;
-        }
-        public BackupProgressInfo setProgress(long progress) {
-            this.progress = progress;
-            return this;
-        }
-        public BackupProgressInfo setProgressMax(int progressMax) {
-            this.progressMax = progressMax;
-            return this;
-        }
-
-        @NonNull
-        @Override
-        public String toString() {
-            return "BackupProgressInfo {" +
-                    "name: " + getName() +
-                    ", backupStatus: " + getBackupStatus() +
-                    ", backupResult: " + getBackupResult() +
-                    ", progress: " + getProgress() +
-                    ", progressMax: " + getProgressMax() +
-                    "}";
-        }
-
-        // Конверт
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(name);
-            dest.writeString(backupStatus);
-            dest.writeLong(progress);
-            dest.writeInt(progressMax);
-        }
-
-        protected BackupProgressInfo(Parcel in) {
-            name = in.readString();
-            backupStatus = in.readString();
-            progress = in.readLong();
-            progressMax = in.readInt();
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        public static final Creator<BackupProgressInfo> CREATOR = new Creator<BackupProgressInfo>() {
-            @Override
-            public BackupProgressInfo createFromParcel(Parcel in) {
-                return new BackupProgressInfo(in);
-            }
-
-            @Override
-            public BackupProgressInfo[] newArray(int size) {
-                return new BackupProgressInfo[size];
-            }
-        };
-        // Конверт
-    }
-
+    // ======== НАСТРОЙКА ОБЪЕКТОВ РЕЗЕРВНОГО КОПИРОВАНИЯ ========
+    private CollectionPool collectionPool = new CollectionPool(
+            new CollectionPair("admins", User.class),
+            new CollectionPair("user", User.class),
+            new CollectionPair("cards", Card.class),
+            new CollectionPair("tags", Tag.class),
+            new CollectionPair("comments", Comment.class)
+    );
     private static class CollectionPair {
         private String name;
         private Class itemClass;
@@ -218,105 +87,99 @@ public class BackupService extends Service {
         }
     }
 
-    // Публичные свойства
-    public static final String BROADCAST_BACKUP_SERVICE_STATUS = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_SERVICE_STATUS";
-    public static final String BROADCAST_BACKUP_PROGRESS_STATUS = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_PROGRESS_STATUS";
 
-    public static final String EXTRA_SERVICE_STATUS = "EXTRA_SERVICE_STATUS";
-    public static final String EXTRA_BACKUP_STATUS = "EXTRA_BACKUP_STATUS";
 
-    public final static String SERVICE_STATUS_START =   "SERVICE_STATUS_START";
-    public final static String SERVICE_STATUS_RUNNING = "SERVICE_STATUS_RUNNING";
-    public final static String SERVICE_STATUS_FINISH =  "SERVICE_STATUS_FINISH";
-
-    public final static String BACKUP_RESULT_SUCCESS = "BACKUP_RESULT_SUCCESS";
-    public final static String BACKUP_RESULT_ERROR =   "BACKUP_RESULT_ERROR";
-
-    // Внутренние свойства
-    private final static String TAG = "BackupService";
-    private String dropboxAccessToken;
-    private DropboxBackuper dropboxBackuper;
-    private CollectionPool collectionPool = new CollectionPool(
-            new CollectionPair("admins", User.class),
-            new CollectionPair("user", User.class),
-            new CollectionPair("cards", Card.class),
-            new CollectionPair("tags", Tag.class),
-            new CollectionPair("comments", Comment.class)
-    );
-
-    private List<String> backupSuccessList = new ArrayList<>();
-    private List<String> backupErrorsList = new ArrayList<>();
-
+    // ======================== УВЕДОМЛЕНИЯ ========================
     public final static String BACKUP_JOB_NOTIFICATION_CHANNEL = "BACKUP_JOB_NOTIFICATION_CHANNEL";
     private int progressNotificationId = 10;
     private int resultNotificationId = 20;
 
-
-    // Внешние статические методы
     public static void createNotificationChannel(Context context)
     {
-        /*MyUtils.createNotificationChannel(
+        MyUtils.createNotificationChannel(
                 context,
                 BACKUP_JOB_NOTIFICATION_CHANNEL,
                 context.getResources().getString(R.string.BACKUP_JOB_SERVICE_channel_title),
                 context.getResources().getString(R.string.BACKUP_JOB_SERVICE_channel_description),
                 NotificationManagerCompat.IMPORTANCE_HIGH
-        );*/
+        );
+    }
+
+    private void displayProgressNotification() {
+        Log.d(TAG, "displayProgressNotification()");
+
+        /*Intent intent = new Intent(this, BackupStatus_Activity.class);
+//        intent.setAction(ACTION_BACKUP_PROGRESS);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this,
+                ACTION_BACKUP_PROGRESS,
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT
+        );
+
+        String notificationTitle = getResources().getString(R.string.BACKUP_JOB_notification_title);
+        String notificationDescription = getResources().getString(R.string.BACKUP_JOB_progress_notification_description);
+
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
+                        .setSmallIcon(R.drawable.ic_backup_job_colored)
+                        .setContentTitle(notificationTitle)
+                        .setContentText(notificationDescription)
+//                        .setContentInfo("Content Info") // На новых версиях не отображается
+                        .setUsesChronometer(true)
+                        .setOngoing(true)
+                        .setProgress(0,0,true)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
+
+        Notification notification = notificationBuilder.build();
+
+        startForeground(progressNotificationId, notification);*/
+    }
+
+    private void displayResultNotification(String name) {
+        Log.d(TAG, "displayResultNotification()");
+
+        /*BackupProgressInfo backupInfo = new BackupProgressInfo();
+                   backupInfo.setStatus(BackupStatus.BACKUP_SUCCESS);
+                   backupInfo.setName(name + ": " + resultNotificationId);
+
+        Intent intent = new Intent(this, BackupStatus_Activity.class);
+        intent.putExtra(INTENT_EXTRA_BACKUP_INFO, backupInfo);
+//        intent.setAction(ACTION_BACKUP_PROGRESS);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this,
+                ACTION_BACKUP_RESULT,
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT
+        );
+
+        String notificationTitle = getResources().getString(R.string.BACKUP_JOB_notification_title);
+        String notificationDescription = getResources().getString(R.string.BACKUP_JOB_result_notification_description);
+
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
+                        .setSmallIcon(R.drawable.ic_backup_job_colored)
+                        .setContentTitle(notificationTitle)
+                        .setContentText(notificationDescription)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
+
+        Notification notification = notificationBuilder.build();
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(resultNotificationId++, notification);*/
     }
 
 
-    // Системные методы
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.d(TAG, "onCreate()");
-        dropboxAccessToken = getResources().getString(R.string.DROPBOX_ACCESS_TOKEN);
-        dropboxBackuper = new DropboxBackuper(dropboxAccessToken);
-    }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        super.onStartCommand(intent, flags, startId);
-        Log.d(TAG, "onStartCommand()");
+    // ======================== РЕЗЕРВНОЕ КОПИРОВАНИЕ ========================
+    private DropboxBackuper dropboxBackuper;
+    private List<String> backupSuccessList = new ArrayList<>();
+    private List<String> backupErrorsList = new ArrayList<>();
 
-        sendServiceStatusBroadcast(SERVICE_STATUS_START);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int max = 5;
-
-                for (int i=0; i<max; i++) {
-                    try {
-                        TimeUnit.SECONDS.sleep(1);
-                    }
-                    catch (InterruptedException e) {}
-
-                    sendServiceStatusBroadcast(SERVICE_STATUS_RUNNING);
-                }
-
-                finishWithSuccess();
-            }
-        }).start();
-
-//        startBackup();
-
-        return START_NOT_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy()");
-    }
-
-    @Nullable @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-
-    // Главные внутренние методы
     private void startBackup() {
         String dirName = "qwerty";
         String initialDirName = MyUtils.quoteString(this, dirName);
@@ -478,15 +341,159 @@ public class BackupService extends Service {
     }
 
 
-    // Служебные внутренние методы
-    private void finishWithError(String errorMsg) {
-        sendServiceStatusBroadcast(SERVICE_STATUS_FINISH);
-        stopSelf();
+
+    // ======================== ШИРОКОВЕЩАТЕЛЬНЫЕ СООБЩЕНИЯ ========================
+    public static class BackupServiceInfo implements Parcelable {
+
+        private String status;
+
+        // Конверт
+        protected BackupServiceInfo(Parcel in) {
+
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+
+        }
+
+        public static final Creator<BackupServiceInfo> CREATOR = new Creator<BackupServiceInfo>() {
+            @Override
+            public BackupServiceInfo createFromParcel(Parcel in) {
+                return new BackupServiceInfo(in);
+            }
+
+            @Override
+            public BackupServiceInfo[] newArray(int size) {
+                return new BackupServiceInfo[size];
+            }
+        };
+        @Override public int describeContents() {
+            return 0;
+        }
+        // Конверт
     }
-    private void finishWithSuccess() {
-        sendServiceStatusBroadcast(SERVICE_STATUS_FINISH);
-        stopSelf();
+    public static class BackupProgressInfo implements Parcelable {
+
+        private String name;
+        private String backupStatus;
+        private String backupResult;
+        private String message;
+        private long progress;
+        private int progressMax;
+
+        public BackupProgressInfo() {
+
+        }
+
+        public BackupProgressInfo(String name, String backupStatus) {
+            this.name = name;
+            this.backupStatus = backupStatus;
+        }
+
+        public String getName() {
+            return name;
+        }
+        public String getBackupStatus() {
+            return backupStatus;
+        }
+        public String getBackupResult() {
+            return backupResult;
+        }
+        public String getMessage() {
+            return this.message;
+        }
+        public long getProgress() {
+            return progress;
+        }
+        public int getProgressMax() {
+            return progressMax;
+        }
+
+        public BackupProgressInfo setName(String name) {
+            this.name = name;
+            return this;
+        }
+        public BackupProgressInfo setBackupStatus(String backupStatus) {
+            this.backupStatus = backupStatus;
+            return this;
+        }
+        public BackupProgressInfo setBackupResult(String backupResult) {
+            this.backupResult = backupResult;
+            return this;
+        }
+        public BackupProgressInfo setMessage(String message) {
+            this.message = message;
+            return this;
+        }
+        public BackupProgressInfo setProgress(long progress) {
+            this.progress = progress;
+            return this;
+        }
+        public BackupProgressInfo setProgressMax(int progressMax) {
+            this.progressMax = progressMax;
+            return this;
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return "BackupProgressInfo {" +
+                    "name: " + getName() +
+                    ", backupStatus: " + getBackupStatus() +
+                    ", backupResult: " + getBackupResult() +
+                    ", progress: " + getProgress() +
+                    ", progressMax: " + getProgressMax() +
+                    "}";
+        }
+
+        // Конверт
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(name);
+            dest.writeString(backupStatus);
+            dest.writeLong(progress);
+            dest.writeInt(progressMax);
+        }
+
+        protected BackupProgressInfo(Parcel in) {
+            name = in.readString();
+            backupStatus = in.readString();
+            progress = in.readLong();
+            progressMax = in.readInt();
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Creator<BackupProgressInfo> CREATOR = new Creator<BackupProgressInfo>() {
+            @Override
+            public BackupProgressInfo createFromParcel(Parcel in) {
+                return new BackupProgressInfo(in);
+            }
+
+            @Override
+            public BackupProgressInfo[] newArray(int size) {
+                return new BackupProgressInfo[size];
+            }
+        };
+        // Конверт
     }
+
+    public static final String BROADCAST_BACKUP_SERVICE_STATUS = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_SERVICE_STATUS";
+    public static final String BROADCAST_BACKUP_PROGRESS_STATUS = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_PROGRESS_STATUS";
+
+    public static final String EXTRA_SERVICE_STATUS = "EXTRA_SERVICE_STATUS";
+    public static final String EXTRA_BACKUP_STATUS = "EXTRA_BACKUP_STATUS";
+
+    public final static String SERVICE_STATUS_START =   "SERVICE_STATUS_START";
+    public final static String SERVICE_STATUS_RUNNING = "SERVICE_STATUS_RUNNING";
+    public final static String SERVICE_STATUS_FINISH =  "SERVICE_STATUS_FINISH";
+
+    public final static String BACKUP_RESULT_SUCCESS = "BACKUP_RESULT_SUCCESS";
+    public final static String BACKUP_RESULT_ERROR =   "BACKUP_RESULT_ERROR";
 
     private void sendServiceStatusBroadcast(String serviceStatus) {
         Intent intent = new Intent(BROADCAST_BACKUP_SERVICE_STATUS);
@@ -494,71 +501,73 @@ public class BackupService extends Service {
         sendBroadcast(intent);
     }
 
-    private void displayProgressNotification() {
-        Log.d(TAG, "displayProgressNotification()");
+    private void sendBackupStatusBroadcase() {
 
-        /*Intent intent = new Intent(this, BackupStatus_Activity.class);
-//        intent.setAction(ACTION_BACKUP_PROGRESS);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                this,
-                ACTION_BACKUP_PROGRESS,
-                intent,
-                PendingIntent.FLAG_CANCEL_CURRENT
-        );
-
-        String notificationTitle = getResources().getString(R.string.BACKUP_JOB_notification_title);
-        String notificationDescription = getResources().getString(R.string.BACKUP_JOB_progress_notification_description);
-
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
-                        .setSmallIcon(R.drawable.ic_backup_job_colored)
-                        .setContentTitle(notificationTitle)
-                        .setContentText(notificationDescription)
-//                        .setContentInfo("Content Info") // На новых версиях не отображается
-                        .setUsesChronometer(true)
-                        .setOngoing(true)
-                        .setProgress(0,0,true)
-                        .setContentIntent(pendingIntent)
-                        .setAutoCancel(true);
-
-        Notification notification = notificationBuilder.build();
-
-        startForeground(progressNotificationId, notification);*/
     }
-    private void displayResultNotification(String name) {
-        Log.d(TAG, "displayResultNotification()");
 
-        /*BackupProgressInfo backupInfo = new BackupProgressInfo();
-                   backupInfo.setStatus(BackupStatus.BACKUP_SUCCESS);
-                   backupInfo.setName(name + ": " + resultNotificationId);
 
-        Intent intent = new Intent(this, BackupStatus_Activity.class);
-        intent.putExtra(INTENT_EXTRA_BACKUP_INFO, backupInfo);
-//        intent.setAction(ACTION_BACKUP_PROGRESS);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                this,
-                ACTION_BACKUP_RESULT,
-                intent,
-                PendingIntent.FLAG_CANCEL_CURRENT
-        );
+    // ======================== УПРАВЛЕНИЕ СЛУЖБОЙ ========================
+    private final static String TAG = "BackupService";
 
-        String notificationTitle = getResources().getString(R.string.BACKUP_JOB_notification_title);
-        String notificationDescription = getResources().getString(R.string.BACKUP_JOB_result_notification_description);
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "onCreate()");
+        // ========  ========
+        String dropboxAccessToken = getResources().getString(R.string.DROPBOX_ACCESS_TOKEN);
+        dropboxBackuper = new DropboxBackuper(dropboxAccessToken);
+    }
 
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
-                        .setSmallIcon(R.drawable.ic_backup_job_colored)
-                        .setContentTitle(notificationTitle)
-                        .setContentText(notificationDescription)
-                        .setContentIntent(pendingIntent)
-                        .setAutoCancel(true);
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
+        Log.d(TAG, "onStartCommand()");
 
-        Notification notification = notificationBuilder.build();
+        sendServiceStatusBroadcast(SERVICE_STATUS_START);
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(resultNotificationId++, notification);*/
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int max = 5;
+
+                for (int i=0; i<max; i++) {
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                    }
+                    catch (InterruptedException e) {}
+
+                    sendServiceStatusBroadcast(SERVICE_STATUS_RUNNING);
+                }
+
+                finishWithSuccess();
+            }
+        }).start();
+
+//        startBackup();
+
+        return START_NOT_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy()");
+    }
+
+    @Nullable @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    private void finishWithError(String errorMsg) {
+        sendServiceStatusBroadcast(SERVICE_STATUS_FINISH);
+        stopSelf();
+    }
+
+    private void finishWithSuccess() {
+        sendServiceStatusBroadcast(SERVICE_STATUS_FINISH);
+        stopSelf();
     }
 
 }

@@ -26,7 +26,7 @@ public class BackupActivity extends BaseView {
         setContentView(R.layout.backup_activity);
         ButterKnife.bind(this);
 
-//        Backup_JobService.createNotificationChannel(this);
+        BackupService.createNotificationChannel(this);
     }
 
     @Override
