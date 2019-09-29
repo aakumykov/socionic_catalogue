@@ -51,37 +51,6 @@ public class Backup_JobService extends JobService {
     private final static int backupJobServiceId = R.id.backup_job_service_id;
     private BroadcastReceiver broadcastReceiver;
 
-    // Конструктор
-    public Backup_JobService() {
-        super();
-
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                BackupService.BackupProgressInfo backupProgressInfo = intent.getParcelableExtra(BackupService.EXTRA_SERVICE_STATUS);
-
-                switch (backupProgressInfo.getBackupStatus()) {
-                    case BackupService.SERVICE_STATUS_START:
-                        Log.d(TAG, "SERVICE_STATUS_START");
-                        break;
-                    case BackupService.SERVICE_STATUS_RUNNING:
-                        Log.d(TAG, "SERVICE_STATUS_RUNNING: "+ backupProgressInfo.getProgress()+" из "+ backupProgressInfo.getProgressMax());
-                        break;
-                    case BackupService.SERVICE_STATUS_FINISH:
-                        Log.d(TAG, "SERVICE_STATUS_FINISH");
-                        break;
-                    default:
-                        throw new RuntimeException("Unknown backup status");
-                }
-            }
-        };
-
-        registerReceiver(
-                broadcastReceiver,
-                new IntentFilter(BackupService.BROADCAST_BACKUP_SERVICE_STATUS)
-        );
-    }
-
 
     // Внешние статические методы
     public static void createNotificationChannel(Context context)
@@ -140,12 +109,45 @@ public class Backup_JobService extends JobService {
 
     // Системные методы
     @Override
+    public void onCreate() {
+        super.onCreate();
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+//                Log.d(TAG, "onReceive()");
+
+                String serviceStatus = intent.getStringExtra(BackupService.EXTRA_SERVICE_STATUS);
+                Log.d(TAG, "service status: "+serviceStatus);
+
+                /*switch (backupProgressInfo.getBackupStatus()) {
+                    case BackupService.SERVICE_STATUS_START:
+                        Log.d(TAG, "SERVICE_STATUS_START");
+                        break;
+                    case BackupService.SERVICE_STATUS_RUNNING:
+                        Log.d(TAG, "SERVICE_STATUS_RUNNING: "+ backupProgressInfo.getProgress()+" из "+ backupProgressInfo.getProgressMax());
+                        break;
+                    case BackupService.SERVICE_STATUS_FINISH:
+                        Log.d(TAG, "SERVICE_STATUS_FINISH");
+                        break;
+                    default:
+                        throw new RuntimeException("Unknown backup status");
+                }*/
+            }
+        };
+
+        registerReceiver(
+                broadcastReceiver,
+                new IntentFilter(BackupService.BROADCAST_BACKUP_SERVICE_STATUS)
+        );
+    }
+
+
+    @Override
     public boolean onStartJob(JobParameters params) {
         Log.d(TAG, "onStartJob()");
 
-        displayProgressNotification();
-
-//        jobFinished(params, false);
+        startService(new Intent(this, BackupService.class));
 
         return true;
     }

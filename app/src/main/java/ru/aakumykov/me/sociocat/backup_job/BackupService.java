@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -263,11 +264,6 @@ public class BackupService extends Service {
 
         sendServiceStatusBroadcast(SERVICE_STATUS_START);
 
-/*
-        String name = "Служба резервного копирования";
-
-        sendBroadcast(new BackupProgressInfo(name, SERVICE_STATUS_START));
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -279,17 +275,14 @@ public class BackupService extends Service {
                     }
                     catch (InterruptedException e) {}
 
-                    sendBroadcast(new BackupProgressInfo(name, SERVICE_STATUS_RUNNING).setProgress(i).setProgressMax(max));
+                    sendServiceStatusBroadcast(SERVICE_STATUS_RUNNING);
                 }
 
-                stopSelf(startId);
-
-                sendBroadcast(new BackupProgressInfo(name, SERVICE_STATUS_FINISH));
+                finishWithSuccess();
             }
         }).start();
-*/
 
-        startBackup();
+//        startBackup();
 
         return START_NOT_STICKY;
     }
@@ -298,7 +291,6 @@ public class BackupService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
-        sendServiceStatusBroadcast(SERVICE_STATUS_FINISH);
     }
 
     @Nullable @Override
@@ -326,6 +318,7 @@ public class BackupService extends Service {
             @Override
             public void onCreateDirFail(String errorMsg) {
                 backupErrorsList.add(errorMsg);
+                finishWithError(errorMsg);
             }
         });
     }
@@ -388,7 +381,7 @@ public class BackupService extends Service {
         }
         else {
             Log.d(TAG, "Все коллекции обработаны");
-
+            finishWithSuccess();
         }
     }
 
@@ -469,6 +462,16 @@ public class BackupService extends Service {
 
 
     // Служебные внутренние методы
+    private void finishWithError(String errorMsg) {
+        sendServiceStatusBroadcast(SERVICE_STATUS_FINISH);
+        stopSelf();
+    }
+
+    private void finishWithSuccess() {
+        sendServiceStatusBroadcast(SERVICE_STATUS_FINISH);
+        stopSelf();
+    }
+
     private void sendServiceStatusBroadcast(String serviceStatus) {
         Intent intent = new Intent(BROADCAST_BACKUP_SERVICE_STATUS);
         intent.putExtra(EXTRA_SERVICE_STATUS, serviceStatus);
