@@ -6,9 +6,11 @@ import android.app.job.JobInfo;
 import android.app.job.JobParameters;
 import android.app.job.JobScheduler;
 import android.app.job.JobService;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -41,32 +43,56 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Backup_JobService extends JobService {
 
-    public final static String BACKUP_JOB_NOTIFICATION_CHANNEL = "BACKUP_JOB_NOTIFICATION_CHANNEL";
-    public static final String INTENT_EXTRA_BACKUP_INFO = "EXTRA_KEY_BACKUP_INFO";
-
-    public final static int ACTION_BACKUP_PROGRESS = 10;
-    public final static int ACTION_BACKUP_RESULT = 20;
+//    public final static String BACKUP_JOB_NOTIFICATION_CHANNEL = "BACKUP_JOB_NOTIFICATION_CHANNEL";
+//    private int progressNotificationId = 10;
+//    private int resultNotificationId = 20;
 
     private final static String TAG = "Backup_JobService";
     private final static int backupJobServiceId = R.id.backup_job_service_id;
-    private int progressNotificationId = 10;
-    private int resultNotificationId = 20;
+    private BroadcastReceiver broadcastReceiver;
 
+    // Конструктор
     public Backup_JobService() {
         super();
 
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                BackupService.BackupProgressInfo backupProgressInfo = intent.getParcelableExtra(BackupService.EXTRA_SERVICE_STATUS);
+
+                switch (backupProgressInfo.getBackupStatus()) {
+                    case BackupService.SERVICE_STATUS_START:
+                        Log.d(TAG, "SERVICE_STATUS_START");
+                        break;
+                    case BackupService.SERVICE_STATUS_RUNNING:
+                        Log.d(TAG, "SERVICE_STATUS_RUNNING: "+ backupProgressInfo.getProgress()+" из "+ backupProgressInfo.getProgressMax());
+                        break;
+                    case BackupService.SERVICE_STATUS_FINISH:
+                        Log.d(TAG, "SERVICE_STATUS_FINISH");
+                        break;
+                    default:
+                        throw new RuntimeException("Unknown backup status");
+                }
+            }
+        };
+
+        registerReceiver(
+                broadcastReceiver,
+                new IntentFilter(BackupService.BROADCAST_BACKUP_SERVICE_STATUS)
+        );
     }
+
 
     // Внешние статические методы
     public static void createNotificationChannel(Context context)
     {
-        MyUtils.createNotificationChannel(
+        /*MyUtils.createNotificationChannel(
                 context,
                 BACKUP_JOB_NOTIFICATION_CHANNEL,
                 context.getResources().getString(R.string.BACKUP_JOB_SERVICE_channel_title),
                 context.getResources().getString(R.string.BACKUP_JOB_SERVICE_channel_description),
                 NotificationManagerCompat.IMPORTANCE_HIGH
-        );
+        );*/
     }
 
     public static void scheduleJob(Context context)
@@ -135,7 +161,7 @@ public class Backup_JobService extends JobService {
     private void displayProgressNotification() {
         Log.d(TAG, "displayProgressNotification()");
 
-        Intent intent = new Intent(this, BackupStatus_Activity.class);
+        /*Intent intent = new Intent(this, BackupStatus_Activity.class);
 //        intent.setAction(ACTION_BACKUP_PROGRESS);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -162,12 +188,12 @@ public class Backup_JobService extends JobService {
 
         Notification notification = notificationBuilder.build();
 
-        startForeground(progressNotificationId, notification);
+        startForeground(progressNotificationId, notification);*/
     }
     private void displayResultNotification(String name) {
         Log.d(TAG, "displayResultNotification()");
 
-        /*BackupInfo backupInfo = new BackupInfo();
+        /*BackupProgressInfo backupInfo = new BackupProgressInfo();
                    backupInfo.setStatus(BackupStatus.BACKUP_SUCCESS);
                    backupInfo.setName(name + ": " + resultNotificationId);
 

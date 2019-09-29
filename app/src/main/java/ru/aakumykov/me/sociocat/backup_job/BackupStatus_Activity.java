@@ -77,14 +77,14 @@ public class BackupStatus_Activity extends BaseView {
 
     private void processInputIntent(@Nullable Intent intent) {
         /*if (null != intent) {
-            Backup_JobService.BackupInfo backupInfo = intent.getParcelableExtra(Backup_JobService.INTENT_EXTRA_BACKUP_INFO);
+            Backup_JobService.BackupProgressInfo backupInfo = intent.getParcelableExtra(Backup_JobService.INTENT_EXTRA_BACKUP_INFO);
             if (null != backupInfo) {
                 displayBackupInfo(backupInfo);
             }
         }*/
     }
 
-    /*private void displayBackupInfo(Backup_JobService.BackupInfo backupInfo) {
+    /*private void displayBackupInfo(Backup_JobService.BackupProgressInfo backupInfo) {
 
         String name = backupInfo.getName();
 

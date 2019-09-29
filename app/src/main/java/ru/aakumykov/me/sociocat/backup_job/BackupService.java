@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -35,7 +34,38 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class BackupService extends Service {
 
     // Вложенные классы
-    public static class BackupInfo implements Parcelable {
+    public static class BackupServiceInfo implements Parcelable {
+
+        private String status;
+
+        // Конверт
+        protected BackupServiceInfo(Parcel in) {
+
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+
+        }
+
+        public static final Creator<BackupServiceInfo> CREATOR = new Creator<BackupServiceInfo>() {
+            @Override
+            public BackupServiceInfo createFromParcel(Parcel in) {
+                return new BackupServiceInfo(in);
+            }
+
+            @Override
+            public BackupServiceInfo[] newArray(int size) {
+                return new BackupServiceInfo[size];
+            }
+        };
+        @Override public int describeContents() {
+            return 0;
+        }
+        // Конверт
+    }
+
+    public static class BackupProgressInfo implements Parcelable {
 
         private String name;
         private String backupStatus;
@@ -44,11 +74,11 @@ public class BackupService extends Service {
         private long progress;
         private int progressMax;
 
-        public BackupInfo() {
+        public BackupProgressInfo() {
 
         }
 
-        public BackupInfo(String name, String backupStatus) {
+        public BackupProgressInfo(String name, String backupStatus) {
             this.name = name;
             this.backupStatus = backupStatus;
         }
@@ -72,27 +102,27 @@ public class BackupService extends Service {
             return progressMax;
         }
 
-        public BackupInfo setName(String name) {
+        public BackupProgressInfo setName(String name) {
             this.name = name;
             return this;
         }
-        public BackupInfo setBackupStatus(String backupStatus) {
+        public BackupProgressInfo setBackupStatus(String backupStatus) {
             this.backupStatus = backupStatus;
             return this;
         }
-        public BackupInfo setBackupResult(String backupResult) {
+        public BackupProgressInfo setBackupResult(String backupResult) {
             this.backupResult = backupResult;
             return this;
         }
-        public BackupInfo setMessage(String message) {
+        public BackupProgressInfo setMessage(String message) {
             this.message = message;
             return this;
         }
-        public BackupInfo setProgress(long progress) {
+        public BackupProgressInfo setProgress(long progress) {
             this.progress = progress;
             return this;
         }
-        public BackupInfo setProgressMax(int progressMax) {
+        public BackupProgressInfo setProgressMax(int progressMax) {
             this.progressMax = progressMax;
             return this;
         }
@@ -100,7 +130,7 @@ public class BackupService extends Service {
         @NonNull
         @Override
         public String toString() {
-            return "BackupInfo {" +
+            return "BackupProgressInfo {" +
                     "name: " + getName() +
                     ", backupStatus: " + getBackupStatus() +
                     ", backupResult: " + getBackupResult() +
@@ -118,7 +148,7 @@ public class BackupService extends Service {
             dest.writeInt(progressMax);
         }
 
-        protected BackupInfo(Parcel in) {
+        protected BackupProgressInfo(Parcel in) {
             name = in.readString();
             backupStatus = in.readString();
             progress = in.readLong();
@@ -130,19 +160,20 @@ public class BackupService extends Service {
             return 0;
         }
 
-        public static final Creator<BackupInfo> CREATOR = new Creator<BackupInfo>() {
+        public static final Creator<BackupProgressInfo> CREATOR = new Creator<BackupProgressInfo>() {
             @Override
-            public BackupInfo createFromParcel(Parcel in) {
-                return new BackupInfo(in);
+            public BackupProgressInfo createFromParcel(Parcel in) {
+                return new BackupProgressInfo(in);
             }
 
             @Override
-            public BackupInfo[] newArray(int size) {
-                return new BackupInfo[size];
+            public BackupProgressInfo[] newArray(int size) {
+                return new BackupProgressInfo[size];
             }
         };
         // Конверт
     }
+
     private static class CollectionPair {
         private String name;
         private Class itemClass;
@@ -187,13 +218,19 @@ public class BackupService extends Service {
     }
 
 
-    public static final String BROADCAST_BACKUP_SERVICE = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_SERVICE";
-    public static final String EXTRA_BACKUP_INFO = "EXTRA_BACKUP_INFO";
-    public final static String BACKUP_STATUS_START =   "BACKUP_STATUS_START";
-    public final static String BACKUP_STATUS_RUNNING = "BACKUP_STATUS_RUNNING";
-    public final static String BACKUP_STATUS_FINISH =  "BACKUP_STATUS_FINISH";
+    public static final String BROADCAST_BACKUP_SERVICE_STATUS = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_SERVICE_STATUS";
+    public static final String BROADCAST_BACKUP_PROGRESS_STATUS = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_PROGRESS_STATUS";
+
+    public static final String EXTRA_SERVICE_STATUS = "EXTRA_SERVICE_STATUS";
+    public static final String EXTRA_BACKUP_STATUS = "EXTRA_BACKUP_STATUS";
+
+    public final static String SERVICE_STATUS_START =   "SERVICE_STATUS_START";
+    public final static String SERVICE_STATUS_RUNNING = "SERVICE_STATUS_RUNNING";
+    public final static String SERVICE_STATUS_FINISH =  "SERVICE_STATUS_FINISH";
+
     public final static String BACKUP_RESULT_SUCCESS = "BACKUP_RESULT_SUCCESS";
     public final static String BACKUP_RESULT_ERROR =   "BACKUP_RESULT_ERROR";
+
     private final static String TAG = "BackupService";
 
     private String dropboxAccessToken;
@@ -224,10 +261,12 @@ public class BackupService extends Service {
         super.onStartCommand(intent, flags, startId);
         Log.d(TAG, "onStartCommand()");
 
+        sendServiceStatusBroadcast(SERVICE_STATUS_START);
+
 /*
         String name = "Служба резервного копирования";
 
-        sendBroadcast(new BackupInfo(name, BACKUP_STATUS_START));
+        sendBroadcast(new BackupProgressInfo(name, SERVICE_STATUS_START));
 
         new Thread(new Runnable() {
             @Override
@@ -240,12 +279,12 @@ public class BackupService extends Service {
                     }
                     catch (InterruptedException e) {}
 
-                    sendBroadcast(new BackupInfo(name, BACKUP_STATUS_RUNNING).setProgress(i).setProgressMax(max));
+                    sendBroadcast(new BackupProgressInfo(name, SERVICE_STATUS_RUNNING).setProgress(i).setProgressMax(max));
                 }
 
                 stopSelf(startId);
 
-                sendBroadcast(new BackupInfo(name, BACKUP_STATUS_FINISH));
+                sendBroadcast(new BackupProgressInfo(name, SERVICE_STATUS_FINISH));
             }
         }).start();
 */
@@ -259,6 +298,7 @@ public class BackupService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
+        sendServiceStatusBroadcast(SERVICE_STATUS_FINISH);
     }
 
     @Nullable @Override
@@ -273,8 +313,6 @@ public class BackupService extends Service {
         String initialDirName = MyUtils.quoteString(this, dirName);
         Log.d(TAG, "startBackup(), initialDirName: "+initialDirName);
 
-        sendBroadcast(new BackupInfo(TAG, BACKUP_STATUS_START));
-
         dropboxBackuper.createDir(dirName, true, new DropboxBackuper.iCreateDirCallbacks() {
             @Override
             public void onCreateDirSuccess(String createdDirName) {
@@ -288,11 +326,6 @@ public class BackupService extends Service {
             @Override
             public void onCreateDirFail(String errorMsg) {
                 backupErrorsList.add(errorMsg);
-                sendBroadcast(
-                        new BackupInfo(TAG, BACKUP_STATUS_FINISH)
-                        .setBackupResult(BACKUP_RESULT_ERROR)
-                        .setMessage(errorMsg)
-                );
             }
         });
     }
@@ -329,12 +362,6 @@ public class BackupService extends Service {
                                     String msg = "Коллекция "+collectionName+" сохранена";
                                     Log.d(TAG, msg);
 
-                                    sendBroadcast(
-                                            new BackupInfo(TAG, BACKUP_STATUS_RUNNING)
-                                                    .setBackupResult(BACKUP_RESULT_SUCCESS)
-                                                    .setMessage(msg)
-                                    );
-
                                     performCollectionsBackup(targetDirName);
                                 }
 
@@ -343,12 +370,6 @@ public class BackupService extends Service {
                                     String msg = "Ошибка обработки "+collectionName+": "+errorMsg;
                                     backupErrorsList.add(msg);
                                     Log.e(TAG, msg);
-
-                                    sendBroadcast(
-                                            new BackupInfo(TAG, BACKUP_STATUS_RUNNING)
-                                                    .setBackupResult(BACKUP_RESULT_ERROR)
-                                                    .setMessage(msg)
-                                    );
 
                                     performCollectionsBackup(targetDirName);
                                 }
@@ -361,23 +382,13 @@ public class BackupService extends Service {
                     String msg = "Ошибка получения коллекции "+collectionName;
                     Log.e(TAG, msg);
 
-                    sendBroadcast(
-                            new BackupInfo(TAG, BACKUP_STATUS_RUNNING)
-                                    .setBackupResult(BACKUP_RESULT_ERROR)
-                                    .setMessage(msg)
-                    );
-
                     performCollectionsBackup(targetDirName);
                 }
             });
         }
         else {
             Log.d(TAG, "Все коллекции обработаны");
-            sendBroadcast(
-                    new BackupInfo(TAG, BACKUP_STATUS_FINISH)
-                    .setBackupResult(BACKUP_RESULT_SUCCESS)
-                    .setMessage("Все коллекции обработаны")
-            );
+
         }
     }
 
@@ -458,9 +469,9 @@ public class BackupService extends Service {
 
 
     // Служебные внутренние методы
-    private void sendBroadcast(BackupInfo backupInfo) {
-        Intent intent = new Intent(BROADCAST_BACKUP_SERVICE);
-        intent.putExtra(EXTRA_BACKUP_INFO, backupInfo);
+    private void sendServiceStatusBroadcast(String serviceStatus) {
+        Intent intent = new Intent(BROADCAST_BACKUP_SERVICE_STATUS);
+        intent.putExtra(EXTRA_SERVICE_STATUS, serviceStatus);
         sendBroadcast(intent);
     }
 

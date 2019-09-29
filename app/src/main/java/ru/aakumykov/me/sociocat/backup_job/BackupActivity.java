@@ -26,33 +26,7 @@ public class BackupActivity extends BaseView {
         setContentView(R.layout.backup_activity);
         ButterKnife.bind(this);
 
-        Backup_JobService.createNotificationChannel(this);
-
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                BackupService.BackupInfo backupInfo = intent.getParcelableExtra(BackupService.EXTRA_BACKUP_INFO);
-
-                switch (backupInfo.getBackupStatus()) {
-                    case BackupService.BACKUP_STATUS_START:
-                        Log.d(TAG, "BACKUP_STATUS_START");
-                        break;
-                    case BackupService.BACKUP_STATUS_RUNNING:
-                        Log.d(TAG, "BACKUP_STATUS_RUNNING: "+backupInfo.getProgress()+" из "+backupInfo.getProgressMax());
-                        break;
-                    case BackupService.BACKUP_STATUS_FINISH:
-                        Log.d(TAG, "BACKUP_STATUS_FINISH");
-                        break;
-                    default:
-                        throw new RuntimeException("Unknown backup status");
-                }
-            }
-        };
-
-        registerReceiver(
-                broadcastReceiver,
-                new IntentFilter(BackupService.BROADCAST_BACKUP_SERVICE)
-        );
+//        Backup_JobService.createNotificationChannel(this);
     }
 
     @Override
