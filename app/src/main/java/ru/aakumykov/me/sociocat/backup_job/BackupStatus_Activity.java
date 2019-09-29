@@ -79,8 +79,20 @@ public class BackupStatus_Activity extends BaseView {
     }
 
     private void processInputIntent(@Nullable Intent intent) {
+
         if (null != intent) {
-//            BackupService.ProgressInfo progressInfo = intent.getParcelableExtra(BackupService.EXTRA_BACKUP_PROGRESS);
+            String action = intent.getAction() + "";
+
+            switch (action) {
+                case BackupService.INTENT_ACTION_BACKUP_PROGRESS:
+                    displayBackupProgress(intent);
+                    break;
+                case BackupService.INTENT_ACTION_BACKUP_RESULT:
+                    displayBackupResult(intent);
+                    break;
+                default:
+                    throw new RuntimeException("Unknown intent's action: "+action);
+            }
         }
     }
 

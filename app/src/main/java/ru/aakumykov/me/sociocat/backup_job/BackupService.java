@@ -435,7 +435,7 @@ public class BackupService extends Service {
     public static final String INTENT_ACTION_BACKUP_RESULT = "INTENT_ACTION_BACKUP_RESULT";
     public static final String INTENT_EXTRA_BACKUP_RESULT_TEXT = "INTENT_EXTRA_BACKUP_RESULT_TEXT";
     private int progressNotificationId = 10;
-    private int resultNotificationId = 20;
+    private static int resultNotificationId = 20;
 
     public static void createNotificationChannel(Context context) {
         MyUtils.createNotificationChannel(
