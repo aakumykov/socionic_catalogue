@@ -298,7 +298,7 @@ public class BackupService extends Service {
         private String backupStatus;
         private String backupResult;
         private String message;
-        private long progress;
+        private int progress;
         private int progressMax;
 
         public BackupProgressInfo() {
@@ -322,7 +322,7 @@ public class BackupService extends Service {
         public String getMessage() {
             return this.message;
         }
-        public long getProgress() {
+        public int getProgress() {
             return progress;
         }
         public int getProgressMax() {
@@ -345,7 +345,7 @@ public class BackupService extends Service {
             this.message = message;
             return this;
         }
-        public BackupProgressInfo setProgress(long progress) {
+        public BackupProgressInfo setProgress(int progress) {
             this.progress = progress;
             return this;
         }
@@ -378,7 +378,7 @@ public class BackupService extends Service {
         protected BackupProgressInfo(Parcel in) {
             name = in.readString();
             backupStatus = in.readString();
-            progress = in.readLong();
+            progress = in.readInt();
             progressMax = in.readInt();
         }
 
@@ -405,7 +405,7 @@ public class BackupService extends Service {
     public static final String BROADCAST_BACKUP_PROGRESS_STATUS = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_PROGRESS_STATUS";
 
     public static final String EXTRA_SERVICE_STATUS = "EXTRA_SERVICE_STATUS";
-    public static final String EXTRA_BACKUP_STATUS = "EXTRA_BACKUP_STATUS";
+    public static final String EXTRA_BACKUP_PROGRESS = "EXTRA_BACKUP_PROGRESS";
 
     public final static String SERVICE_STATUS_START =   "SERVICE_STATUS_START";
     public final static String SERVICE_STATUS_RUNNING = "SERVICE_STATUS_RUNNING";
@@ -420,9 +420,9 @@ public class BackupService extends Service {
         sendBroadcast(intent);
     }
 
-    private void sendBackupStatusBroadcast(BackupProgressInfo backupProgressInfo) {
+    private void sendBackupProgressBroadcast(BackupProgressInfo backupProgressInfo) {
         Intent intent = new Intent(BROADCAST_BACKUP_PROGRESS_STATUS);
-        intent.putExtra(EXTRA_BACKUP_STATUS, backupProgressInfo);
+        intent.putExtra(EXTRA_BACKUP_PROGRESS, backupProgressInfo);
     }
 
 
@@ -559,7 +559,7 @@ public class BackupService extends Service {
 
                     sendServiceStatusBroadcast(SERVICE_STATUS_RUNNING);
 
-                    sendBackupStatusBroadcast(
+                    sendBackupProgressBroadcast(
                             new BackupProgressInfo()
                             .setMessage("Шаг "+i)
                             .setProgress(i)

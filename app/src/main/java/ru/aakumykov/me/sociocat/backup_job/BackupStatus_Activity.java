@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -18,6 +19,8 @@ import ru.aakumykov.me.sociocat.R;
 public class BackupStatus_Activity extends BaseView {
 
     @BindView(R.id.textView) TextView textView;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
+
     private BroadcastReceiver broadcastReceiver;
 
 
@@ -66,13 +69,12 @@ public class BackupStatus_Activity extends BaseView {
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-//                updateBackupInfo(intent);
+                BackupService.BackupProgressInfo backupProgressInfo = intent.getParcelableExtra(BackupService.EXTRA_BACKUP_PROGRESS);
+                displayBackupInfo(backupProgressInfo);
             }
         };
 
-        IntentFilter intentFilter = new IntentFilter(/*BackupJobService.BROADCAST_BACKUP_SERVICE_STATUS*/);
-
-        registerReceiver(broadcastReceiver, intentFilter);
+        registerReceiver(broadcastReceiver, new IntentFilter(BackupService.BROADCAST_BACKUP_PROGRESS_STATUS));
     }
 
     private void processInputIntent(@Nullable Intent intent) {
@@ -84,21 +86,9 @@ public class BackupStatus_Activity extends BaseView {
         }*/
     }
 
-    /*private void displayBackupInfo(Backup_JobService.BackupProgressInfo backupInfo) {
-
-        String name = backupInfo.getName();
-
-        textView.setText(name);
-
-        switch (backupInfo.getStatus()) {
-            case BACKUP_SUCCESS:
-                break;
-            case BACKUP_ERROR:
-                break;
-            case BACKUP_RUNNING:
-                break;
-            default:
-                break;
-        }
-    }*/
+    private void displayBackupInfo(BackupService.BackupProgressInfo backupProgressInfo) {
+        textView.setText(backupProgressInfo.getMessage());
+        progressBar.setProgress(backupProgressInfo.getProgress());
+        progressBar.setMax(backupProgressInfo.getProgressMax());
+    }
 }
