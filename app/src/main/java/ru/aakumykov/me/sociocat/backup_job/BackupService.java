@@ -466,7 +466,6 @@ public class BackupService extends Service {
         sendServiceStatusBroadcast(SERVICE_STATUS_FINISH);
         stopSelf();
     }
-
     private void finishWithSuccess() {
         sendServiceStatusBroadcast(SERVICE_STATUS_FINISH);
         stopSelf();
@@ -476,6 +475,73 @@ public class BackupService extends Service {
         Intent intent = new Intent(BROADCAST_BACKUP_SERVICE_STATUS);
         intent.putExtra(EXTRA_SERVICE_STATUS, serviceStatus);
         sendBroadcast(intent);
+    }
+
+    private void displayProgressNotification() {
+        Log.d(TAG, "displayProgressNotification()");
+
+        /*Intent intent = new Intent(this, BackupStatus_Activity.class);
+//        intent.setAction(ACTION_BACKUP_PROGRESS);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this,
+                ACTION_BACKUP_PROGRESS,
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT
+        );
+
+        String notificationTitle = getResources().getString(R.string.BACKUP_JOB_notification_title);
+        String notificationDescription = getResources().getString(R.string.BACKUP_JOB_progress_notification_description);
+
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
+                        .setSmallIcon(R.drawable.ic_backup_job_colored)
+                        .setContentTitle(notificationTitle)
+                        .setContentText(notificationDescription)
+//                        .setContentInfo("Content Info") // На новых версиях не отображается
+                        .setUsesChronometer(true)
+                        .setOngoing(true)
+                        .setProgress(0,0,true)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
+
+        Notification notification = notificationBuilder.build();
+
+        startForeground(progressNotificationId, notification);*/
+    }
+    private void displayResultNotification(String name) {
+        Log.d(TAG, "displayResultNotification()");
+
+        /*BackupProgressInfo backupInfo = new BackupProgressInfo();
+                   backupInfo.setStatus(BackupStatus.BACKUP_SUCCESS);
+                   backupInfo.setName(name + ": " + resultNotificationId);
+
+        Intent intent = new Intent(this, BackupStatus_Activity.class);
+        intent.putExtra(INTENT_EXTRA_BACKUP_INFO, backupInfo);
+//        intent.setAction(ACTION_BACKUP_PROGRESS);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this,
+                ACTION_BACKUP_RESULT,
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT
+        );
+
+        String notificationTitle = getResources().getString(R.string.BACKUP_JOB_notification_title);
+        String notificationDescription = getResources().getString(R.string.BACKUP_JOB_result_notification_description);
+
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
+                        .setSmallIcon(R.drawable.ic_backup_job_colored)
+                        .setContentTitle(notificationTitle)
+                        .setContentText(notificationDescription)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
+
+        Notification notification = notificationBuilder.build();
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(resultNotificationId++, notification);*/
     }
 
 }

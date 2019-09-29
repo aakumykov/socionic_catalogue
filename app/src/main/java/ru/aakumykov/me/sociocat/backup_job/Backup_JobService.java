@@ -43,27 +43,12 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Backup_JobService extends JobService {
 
-//    public final static String BACKUP_JOB_NOTIFICATION_CHANNEL = "BACKUP_JOB_NOTIFICATION_CHANNEL";
-//    private int progressNotificationId = 10;
-//    private int resultNotificationId = 20;
-
     private final static String TAG = "Backup_JobService";
     private final static int backupJobServiceId = R.id.backup_job_service_id;
     private BroadcastReceiver broadcastReceiver;
 
 
     // Внешние статические методы
-    public static void createNotificationChannel(Context context)
-    {
-        /*MyUtils.createNotificationChannel(
-                context,
-                BACKUP_JOB_NOTIFICATION_CHANNEL,
-                context.getResources().getString(R.string.BACKUP_JOB_SERVICE_channel_title),
-                context.getResources().getString(R.string.BACKUP_JOB_SERVICE_channel_description),
-                NotificationManagerCompat.IMPORTANCE_HIGH
-        );*/
-    }
-
     public static void scheduleJob(Context context)
     {
         Log.d(TAG, "scheduleJob()");
@@ -141,92 +126,23 @@ public class Backup_JobService extends JobService {
                 new IntentFilter(BackupService.BROADCAST_BACKUP_SERVICE_STATUS)
         );
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
 
 
     @Override
     public boolean onStartJob(JobParameters params) {
         Log.d(TAG, "onStartJob()");
-
         startService(new Intent(this, BackupService.class));
-
         return true;
     }
-
     @Override
     public boolean onStopJob(JobParameters params) {
         Log.d(TAG, "onStopJob()");
         return false;
     }
-
-
-    // Внутренние методы уведомлений
-    private void displayProgressNotification() {
-        Log.d(TAG, "displayProgressNotification()");
-
-        /*Intent intent = new Intent(this, BackupStatus_Activity.class);
-//        intent.setAction(ACTION_BACKUP_PROGRESS);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                this,
-                ACTION_BACKUP_PROGRESS,
-                intent,
-                PendingIntent.FLAG_CANCEL_CURRENT
-        );
-
-        String notificationTitle = getResources().getString(R.string.BACKUP_JOB_notification_title);
-        String notificationDescription = getResources().getString(R.string.BACKUP_JOB_progress_notification_description);
-
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
-                        .setSmallIcon(R.drawable.ic_backup_job_colored)
-                        .setContentTitle(notificationTitle)
-                        .setContentText(notificationDescription)
-//                        .setContentInfo("Content Info") // На новых версиях не отображается
-                        .setUsesChronometer(true)
-                        .setOngoing(true)
-                        .setProgress(0,0,true)
-                        .setContentIntent(pendingIntent)
-                        .setAutoCancel(true);
-
-        Notification notification = notificationBuilder.build();
-
-        startForeground(progressNotificationId, notification);*/
-    }
-    private void displayResultNotification(String name) {
-        Log.d(TAG, "displayResultNotification()");
-
-        /*BackupProgressInfo backupInfo = new BackupProgressInfo();
-                   backupInfo.setStatus(BackupStatus.BACKUP_SUCCESS);
-                   backupInfo.setName(name + ": " + resultNotificationId);
-
-        Intent intent = new Intent(this, BackupStatus_Activity.class);
-        intent.putExtra(INTENT_EXTRA_BACKUP_INFO, backupInfo);
-//        intent.setAction(ACTION_BACKUP_PROGRESS);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                this,
-                ACTION_BACKUP_RESULT,
-                intent,
-                PendingIntent.FLAG_CANCEL_CURRENT
-        );
-
-        String notificationTitle = getResources().getString(R.string.BACKUP_JOB_notification_title);
-        String notificationDescription = getResources().getString(R.string.BACKUP_JOB_result_notification_description);
-
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
-                        .setSmallIcon(R.drawable.ic_backup_job_colored)
-                        .setContentTitle(notificationTitle)
-                        .setContentText(notificationDescription)
-                        .setContentIntent(pendingIntent)
-                        .setAutoCancel(true);
-
-        Notification notification = notificationBuilder.build();
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(resultNotificationId++, notification);*/
-    }
-
-
 
 }
