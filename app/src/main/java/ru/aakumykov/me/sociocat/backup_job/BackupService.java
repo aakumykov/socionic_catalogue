@@ -491,7 +491,7 @@ public class BackupService extends Service {
                 this,
                 PENDING_INTENT_ACTION_BACKUP_PROGRESS,
                 intent,
-                PendingIntent.FLAG_CANCEL_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT
         );
 
         String notificationTitle = getResources().getString(R.string.BACKUP_JOB_notification_title);
@@ -521,21 +521,15 @@ public class BackupService extends Service {
     private void displayResultNotification(BackupResultInfo backupResultInfo) {
         Log.d(TAG, "displayResultNotification()");
 
-//        BackupProgressInfo backupInfo = new BackupProgressInfo();
-//                   backupInfo.setStatus(BackupStatus.BACKUP_SUCCESS);
-//                   backupInfo.setName(name + ": " + resultNotificationId);
-
         Intent intent = new Intent(this, BackupStatus_Activity.class);
         intent.setAction(INTENT_ACTION_BACKUP_RESULT);
         intent.putExtra(INTENT_EXTRA_BACKUP_RESULT_INFO, backupResultInfo);
-//        intent.putExtra(INTENT_EXTRA_BACKUP_INFO, backupInfo);
-//        intent.setAction(ACTION_BACKUP_PROGRESS);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this,
                 PENDING_INTENT_ACTION_BACKUP_RESULT,
                 intent,
-                PendingIntent.FLAG_CANCEL_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT
         );
 
         String notificationTitle = getResources().getString(R.string.BACKUP_JOB_notification_title);
@@ -552,7 +546,7 @@ public class BackupService extends Service {
         Notification notification = notificationBuilder.build();
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(resultNotificationId++, notification);
+        notificationManager.notify(resultNotificationId, notification);
     }
 
 
@@ -584,7 +578,7 @@ public class BackupService extends Service {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int max = 50;
+                int max = 20;
 
                 for (int i=0; i<max; i++) {
                     try {

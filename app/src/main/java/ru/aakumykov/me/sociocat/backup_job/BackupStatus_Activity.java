@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,12 +23,15 @@ public class BackupStatus_Activity extends BaseView {
     @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.progressBar) ProgressBar progressBar;
 
+    private final static String TAG = "BackupStatus_Activity";
     private BroadcastReceiver broadcastReceiver;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate()");
+
         setContentView(R.layout.backup_status_activity);
         ButterKnife.bind(this);
 
@@ -41,6 +45,7 @@ public class BackupStatus_Activity extends BaseView {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        Log.d(TAG, "onNewIntent()");
         processInputIntent(getIntent());
     }
 
@@ -95,9 +100,15 @@ public class BackupStatus_Activity extends BaseView {
     }
 
     private void displayBackupResult(Intent intent) {
+        Log.d(TAG, "displayBackupResult()");
+
         BackupService.BackupResultInfo backupResultInfo = intent.getParcelableExtra(BackupService.INTENT_EXTRA_BACKUP_RESULT_INFO);
+
         MyUtils.hide(progressBar);
-        messageView.setText(backupResultInfo.getMessage());
+
+        String message = backupResultInfo.getMessage();
+        Log.d(TAG, "message: "+message);
+        messageView.setText(message);
     }
 
     private void prepareDisplayBackupProgress(Intent intent) {
@@ -110,6 +121,8 @@ public class BackupStatus_Activity extends BaseView {
     }
 
     private void displayBackupProgress(Intent intent) {
+        Log.d(TAG, "displayBackupProgress()");
+
         BackupService.BackupProgressInfo backupProgressInfo = intent.getParcelableExtra(BackupService.INTENT_EXTRA_BACKUP_PROGRESS_INFO);
         messageView.setText(backupProgressInfo.getMessage());
         progressBar.setIndeterminate(false);
