@@ -104,7 +104,7 @@ public class BackupService extends Service {
         Log.d(TAG, "startBackup(), initialDirName: "+initialDirName);
 
         displayProgressNotification(
-                new BackupProgressInfo().setMessage("Выполняется резервное копирование")
+                new BackupProgressInfo().setMessage("Начато резервное копирование")
         );
 
         dropboxBackuper.createDir(dirName, true, new DropboxBackuper.iCreateDirCallbacks() {
@@ -442,13 +442,13 @@ public class BackupService extends Service {
     public final static String BACKUP_RESULT_SUCCESS = "BACKUP_RESULT_SUCCESS";
     public final static String BACKUP_RESULT_ERROR =   "BACKUP_RESULT_ERROR";
 
-    private void sendServiceStatusBroadcast(String serviceStatus) {
+    private void sendServiceBroadcast(String serviceStatus) {
         Intent intent = new Intent(BROADCAST_BACKUP_SERVICE_STATUS);
         intent.putExtra(EXTRA_SERVICE_STATUS, serviceStatus);
         sendBroadcast(intent);
     }
 
-    private void sendBackupProgressBroadcast(BackupProgressInfo backupProgressInfo) {
+    private void sendBackupBroadcast(BackupProgressInfo backupProgressInfo) {
         Intent intent = new Intent(BROADCAST_BACKUP_PROGRESS_STATUS);
         intent.putExtra(EXTRA_BACKUP_PROGRESS, backupProgressInfo);
     }
@@ -574,10 +574,11 @@ public class BackupService extends Service {
         super.onStartCommand(intent, flags, startId);
         Log.d(TAG, "onStartCommand()");
 
-        sendServiceStatusBroadcast(SERVICE_STATUS_START);
+        sendServiceBroadcast(SERVICE_STATUS_START);
 
         displayProgressNotification(
-                new BackupProgressInfo().setMessage("Выполняется резервное копирование")
+                new BackupProgressInfo()
+                        .setMessage("Начато резервное копирование")
         );
 
         new Thread(new Runnable() {
@@ -591,9 +592,9 @@ public class BackupService extends Service {
                     }
                     catch (InterruptedException e) {}
 
-                    sendServiceStatusBroadcast(SERVICE_STATUS_RUNNING);
+                    sendServiceBroadcast(SERVICE_STATUS_RUNNING);
 
-                    sendBackupProgressBroadcast(
+                    sendBackupBroadcast(
                             new BackupProgressInfo()
                             .setMessage("Шаг "+i)
                             .setProgress(i)
@@ -623,22 +624,30 @@ public class BackupService extends Service {
 
     private void finishWithError(String errorMsg) {
         stopSelf();
+
         removeProgressNotification();
-        sendServiceStatusBroadcast(SERVICE_STATUS_FINISH);
+
+        displayResultNotification(
+                new BackupResultInfo().
+                        setMessage(errorMsg).
+                        setResult(BACKUP_RESULT_ERROR)
+        );
+
+        sendServiceBroadcast(SERVICE_STATUS_FINISH);
     }
 
     private void finishWithSuccess(@Nullable String message) {
-        Log.d(TAG, message);
-
         stopSelf();
 
         removeProgressNotification();
 
         displayResultNotification(
-                new BackupResultInfo()
+                new BackupResultInfo().
+                        setMessage(message).
+                        setResult(BACKUP_RESULT_SUCCESS)
         );
 
-        sendServiceStatusBroadcast(SERVICE_STATUS_FINISH);
+        sendServiceBroadcast(SERVICE_STATUS_FINISH);
     }
 
 }
