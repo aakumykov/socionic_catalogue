@@ -75,6 +75,7 @@ public class BackupStatus_Activity extends BaseView {
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                Log.d(TAG, "onReceive()");
                 if (null != intent)
                     displayBackupProgress(intent);
             }
@@ -124,6 +125,8 @@ public class BackupStatus_Activity extends BaseView {
         Log.d(TAG, "displayBackupProgress()");
 
         BackupService.BackupProgressInfo backupProgressInfo = intent.getParcelableExtra(BackupService.INTENT_EXTRA_BACKUP_PROGRESS_INFO);
+        Log.d(TAG, backupProgressInfo.toString());
+
         messageView.setText(backupProgressInfo.getMessage());
         progressBar.setIndeterminate(false);
         progressBar.setProgress(backupProgressInfo.getProgress());

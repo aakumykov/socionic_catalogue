@@ -1,7 +1,5 @@
 package ru.aakumykov.me.sociocat.backup_job;
 
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobParameters;
 import android.app.job.JobScheduler;
@@ -11,34 +9,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.text.TextUtils;
 import android.util.Log;
-import android.util.Pair;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.models.Comment;
-import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Backup_JobService extends JobService {
@@ -57,7 +32,7 @@ public class Backup_JobService extends JobService {
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                String serviceStatus = intent.getStringExtra(BackupService.EXTRA_SERVICE_STATUS);
+                String serviceStatus = intent.getStringExtra(BackupService.INTENT_EXTRA_SERVICE_STATUS);
                 Log.d(TAG, "onReceive(), serviceStatus: "+serviceStatus);
 
                 // TODO: обработать результат "успех/поражение"
