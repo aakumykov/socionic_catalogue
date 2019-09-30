@@ -83,7 +83,7 @@ public class BackupStatus_Activity extends BaseView {
             String action = intent.getAction() + "";
             switch (action) {
                 case BackupService.INTENT_ACTION_BACKUP_PROGRESS:
-                    prepareDisplayBackupProgress();
+                    prepareDisplayBackupProgress(intent);
                     break;
                 case BackupService.INTENT_ACTION_BACKUP_RESULT:
                     displayBackupResult(intent);
@@ -98,8 +98,12 @@ public class BackupStatus_Activity extends BaseView {
         MyUtils.show(progressBar);
     }
 
-    private void prepareDisplayBackupProgress() {
+    private void prepareDisplayBackupProgress(Intent intent) {
+        BackupService.BackupProgressInfo backupProgressInfo = intent.getParcelableExtra(BackupService.EXTRA_BACKUP_PROGRESS);
+
         progressBar.setIndeterminate(true);
+        textView.setText(backupProgressInfo.getMessage());
+
         MyUtils.show(progressBar);
     }
 
