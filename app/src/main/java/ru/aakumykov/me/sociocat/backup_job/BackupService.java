@@ -103,7 +103,9 @@ public class BackupService extends Service {
         String initialDirName = MyUtils.quoteString(this, dirName);
         Log.d(TAG, "startBackup(), initialDirName: "+initialDirName);
 
-        displayProgressNotification();
+        displayProgressNotification(
+                new BackupProgressInfo().setMessage("Выполняется резервное копирование")
+        );
 
         dropboxBackuper.createDir(dirName, true, new DropboxBackuper.iCreateDirCallbacks() {
             @Override
@@ -292,33 +294,16 @@ public class BackupService extends Service {
         }
         // Конверт
     }
-    public static class ProgressInfo implements Parcelable {
+    public static class BackupProgressInfo implements Parcelable {
 
-        private String name;
-        private String backupStatus;
-        private String backupResult;
         private String message;
-        private int progress;
-        private int progressMax;
+        private int progress = -1;
+        private int progressMax = -1;
 
-        public ProgressInfo() {
+        public BackupProgressInfo() {
 
-        }
-
-        public ProgressInfo(String name, String backupStatus) {
-            this.name = name;
-            this.backupStatus = backupStatus;
         }
 
-        public String getName() {
-            return name;
-        }
-        public String getBackupStatus() {
-            return backupStatus;
-        }
-        public String getBackupResult() {
-            return backupResult;
-        }
         public String getMessage() {
             return this.message;
         }
@@ -329,27 +314,15 @@ public class BackupService extends Service {
             return progressMax;
         }
 
-        public ProgressInfo setName(String name) {
-            this.name = name;
-            return this;
-        }
-        public ProgressInfo setBackupStatus(String backupStatus) {
-            this.backupStatus = backupStatus;
-            return this;
-        }
-        public ProgressInfo setBackupResult(String backupResult) {
-            this.backupResult = backupResult;
-            return this;
-        }
-        public ProgressInfo setMessage(String message) {
+        public BackupProgressInfo setMessage(String message) {
             this.message = message;
             return this;
         }
-        public ProgressInfo setProgress(int progress) {
+        public BackupProgressInfo setProgress(int progress) {
             this.progress = progress;
             return this;
         }
-        public ProgressInfo setProgressMax(int progressMax) {
+        public BackupProgressInfo setProgressMax(int progressMax) {
             this.progressMax = progressMax;
             return this;
         }
@@ -357,10 +330,8 @@ public class BackupService extends Service {
         @NonNull
         @Override
         public String toString() {
-            return "ProgressInfo {" +
-                    "name: " + getName() +
-                    ", backupStatus: " + getBackupStatus() +
-                    ", backupResult: " + getBackupResult() +
+            return "BackupProgressInfo {" +
+                    ", message: " + getMessage() +
                     ", progress: " + getProgress() +
                     ", progressMax: " + getProgressMax() +
                     "}";
@@ -369,15 +340,13 @@ public class BackupService extends Service {
         // Конверт
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(name);
-            dest.writeString(backupStatus);
+            dest.writeString(message);
             dest.writeLong(progress);
             dest.writeInt(progressMax);
         }
 
-        protected ProgressInfo(Parcel in) {
-            name = in.readString();
-            backupStatus = in.readString();
+        protected BackupProgressInfo(Parcel in) {
+            message = in.readString();
             progress = in.readInt();
             progressMax = in.readInt();
         }
@@ -387,17 +356,76 @@ public class BackupService extends Service {
             return 0;
         }
 
-        public static final Creator<ProgressInfo> CREATOR = new Creator<ProgressInfo>() {
+        public static final Creator<BackupProgressInfo> CREATOR = new Creator<BackupProgressInfo>() {
             @Override
-            public ProgressInfo createFromParcel(Parcel in) {
-                return new ProgressInfo(in);
+            public BackupProgressInfo createFromParcel(Parcel in) {
+                return new BackupProgressInfo(in);
             }
 
             @Override
-            public ProgressInfo[] newArray(int size) {
-                return new ProgressInfo[size];
+            public BackupProgressInfo[] newArray(int size) {
+                return new BackupProgressInfo[size];
             }
         };
+        // Конверт
+    }
+    public static class BackupResultInfo implements Parcelable {
+
+        private String message;
+        private String result;
+
+        public String getMessage() {
+            return message;
+        }
+        public String getResult() {
+            return result;
+        }
+
+        public BackupResultInfo setMessage(String message) {
+            this.message = message;
+            return this;
+        }
+        public BackupResultInfo setResult(String result) {
+            this.result = result;
+            return this;
+        }
+
+        public BackupResultInfo() {
+        }
+
+        public BackupResultInfo(String message, String result) {
+            this.message = message;
+            this.result = result;
+        }
+
+        // Конверт
+        protected BackupResultInfo(Parcel in) {
+            this.message = in.readString();
+            this.result = in.readString();
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(message);
+            dest.writeString(result);
+        }
+
+        public static final Creator<BackupResultInfo> CREATOR = new Creator<BackupResultInfo>() {
+            @Override
+            public BackupResultInfo createFromParcel(Parcel in) {
+                return new BackupResultInfo(in);
+            }
+
+            @Override
+            public BackupResultInfo[] newArray(int size) {
+                return new BackupResultInfo[size];
+            }
+        };
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
         // Конверт
     }
 
@@ -420,20 +448,25 @@ public class BackupService extends Service {
         sendBroadcast(intent);
     }
 
-    private void sendBackupProgressBroadcast(ProgressInfo progressInfo) {
+    private void sendBackupProgressBroadcast(BackupProgressInfo backupProgressInfo) {
         Intent intent = new Intent(BROADCAST_BACKUP_PROGRESS_STATUS);
-        intent.putExtra(EXTRA_BACKUP_PROGRESS, progressInfo);
+        intent.putExtra(EXTRA_BACKUP_PROGRESS, backupProgressInfo);
     }
 
 
 
     // ======================== УВЕДОМЛЕНИЯ ========================
     public static final String BACKUP_JOB_NOTIFICATION_CHANNEL = "BACKUP_JOB_NOTIFICATION_CHANNEL";
+
     public static final int PENDING_INTENT_ACTION_BACKUP_PROGRESS = 10;
     public static final int PENDING_INTENT_ACTION_BACKUP_RESULT = 20;
+
     public static final String INTENT_ACTION_BACKUP_PROGRESS = "INTENT_ACTION_BACKUP_PROGRESS";
     public static final String INTENT_ACTION_BACKUP_RESULT = "INTENT_ACTION_BACKUP_RESULT";
-    public static final String INTENT_EXTRA_BACKUP_RESULT_TEXT = "INTENT_EXTRA_BACKUP_RESULT_TEXT";
+
+    public static final String INTENT_EXTRA_BACKUP_PROGRESS_INFO = "INTENT_EXTRA_BACKUP_PROGRESS";
+    public static final String INTENT_EXTRA_BACKUP_RESULT_INFO = "INTENT_EXTRA_BACKUP_PROGRESS";
+
     private int progressNotificationId = 10;
     private static int resultNotificationId = 20;
 
@@ -447,11 +480,12 @@ public class BackupService extends Service {
         );
     }
 
-    private void displayProgressNotification() {
+    private void displayProgressNotification(BackupProgressInfo backupProgressInfo) {
         Log.d(TAG, "displayProgressNotification()");
 
         Intent intent = new Intent(this, BackupStatus_Activity.class);
         intent.setAction(INTENT_ACTION_BACKUP_PROGRESS);
+        intent.putExtra(INTENT_EXTRA_BACKUP_PROGRESS_INFO, backupProgressInfo);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this,
@@ -484,16 +518,16 @@ public class BackupService extends Service {
         stopForeground(true);
     }
 
-    private void displayResultNotification(@Nullable String text) {
+    private void displayResultNotification(BackupResultInfo backupResultInfo) {
         Log.d(TAG, "displayResultNotification()");
 
-//        ProgressInfo backupInfo = new ProgressInfo();
+//        BackupProgressInfo backupInfo = new BackupProgressInfo();
 //                   backupInfo.setStatus(BackupStatus.BACKUP_SUCCESS);
 //                   backupInfo.setName(name + ": " + resultNotificationId);
 
         Intent intent = new Intent(this, BackupStatus_Activity.class);
         intent.setAction(INTENT_ACTION_BACKUP_RESULT);
-        intent.putExtra(INTENT_EXTRA_BACKUP_RESULT_TEXT, text);
+        intent.putExtra(INTENT_EXTRA_BACKUP_RESULT_INFO, backupResultInfo);
 //        intent.putExtra(INTENT_EXTRA_BACKUP_INFO, backupInfo);
 //        intent.setAction(ACTION_BACKUP_PROGRESS);
 
@@ -511,12 +545,9 @@ public class BackupService extends Service {
                 new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
                         .setSmallIcon(R.drawable.ic_backup_job_colored)
                         .setContentTitle(notificationTitle)
-//                        .setContentText(notificationDescription)
+                        .setContentText(backupResultInfo.getMessage())
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true);
-
-        if (null != text)
-            notificationBuilder.setContentText(text);
 
         Notification notification = notificationBuilder.build();
 
@@ -545,7 +576,9 @@ public class BackupService extends Service {
 
         sendServiceStatusBroadcast(SERVICE_STATUS_START);
 
-        displayProgressNotification();
+        displayProgressNotification(
+                new BackupProgressInfo().setMessage("Выполняется резервное копирование")
+        );
 
         new Thread(new Runnable() {
             @Override
@@ -561,7 +594,7 @@ public class BackupService extends Service {
                     sendServiceStatusBroadcast(SERVICE_STATUS_RUNNING);
 
                     sendBackupProgressBroadcast(
-                            new ProgressInfo()
+                            new BackupProgressInfo()
                             .setMessage("Шаг "+i)
                             .setProgress(i)
                             .setProgressMax(max)
@@ -601,7 +634,9 @@ public class BackupService extends Service {
 
         removeProgressNotification();
 
-        displayResultNotification(message);
+        displayResultNotification(
+                new BackupResultInfo()
+        );
 
         sendServiceStatusBroadcast(SERVICE_STATUS_FINISH);
     }
