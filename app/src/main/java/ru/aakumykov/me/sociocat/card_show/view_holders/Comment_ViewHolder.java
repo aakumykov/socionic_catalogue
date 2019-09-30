@@ -31,7 +31,7 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
     @BindView(R.id.cTimeView) TextView cTimeView;
     @BindView(R.id.mTimeView) TextView mTimeView;
     @BindView(R.id.quoteView) TextView quoteView;
-    @BindView(R.id.textView) TextView textView;
+    @BindView(R.id.messageView) TextView textView;
     @BindView(R.id.replyWidget) TextView replyWidget;
     @BindView(R.id.editWidget) TextView editWidget;
 

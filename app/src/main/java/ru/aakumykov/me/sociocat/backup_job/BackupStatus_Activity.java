@@ -19,7 +19,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class BackupStatus_Activity extends BaseView {
 
-    @BindView(R.id.textView) TextView textView;
+    @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.progressBar) ProgressBar progressBar;
 
     private BroadcastReceiver broadcastReceiver;
@@ -95,21 +95,23 @@ public class BackupStatus_Activity extends BaseView {
     }
 
     private void displayBackupResult(Intent intent) {
-        MyUtils.show(progressBar);
+        BackupService.BackupResultInfo backupResultInfo = intent.getParcelableExtra(BackupService.INTENT_EXTRA_BACKUP_RESULT_INFO);
+        MyUtils.hide(progressBar);
+        messageView.setText(backupResultInfo.getMessage());
     }
 
     private void prepareDisplayBackupProgress(Intent intent) {
-        BackupService.BackupProgressInfo backupProgressInfo = intent.getParcelableExtra(BackupService.EXTRA_BACKUP_PROGRESS);
+        BackupService.BackupProgressInfo backupProgressInfo = intent.getParcelableExtra(BackupService.INTENT_EXTRA_BACKUP_PROGRESS_INFO);
 
         progressBar.setIndeterminate(true);
-        textView.setText(backupProgressInfo.getMessage());
+        messageView.setText(backupProgressInfo.getMessage());
 
         MyUtils.show(progressBar);
     }
 
     private void displayBackupProgress(Intent intent) {
-        BackupService.BackupProgressInfo backupProgressInfo = intent.getParcelableExtra(BackupService.EXTRA_BACKUP_PROGRESS);
-        textView.setText(backupProgressInfo.getMessage());
+        BackupService.BackupProgressInfo backupProgressInfo = intent.getParcelableExtra(BackupService.INTENT_EXTRA_BACKUP_PROGRESS_INFO);
+        messageView.setText(backupProgressInfo.getMessage());
         progressBar.setIndeterminate(false);
         progressBar.setProgress(backupProgressInfo.getProgress());
         progressBar.setMax(backupProgressInfo.getProgressMax());

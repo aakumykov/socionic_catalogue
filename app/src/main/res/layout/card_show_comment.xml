@@ -87,7 +87,7 @@
         tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/messageView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -115,7 +115,7 @@
         android:textSize="16sp"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/replyWidget"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/messageView"
         tools:visibility="visible" />
 
     <TextView
@@ -129,6 +129,6 @@
         android:textColor="@color/colorPrimary"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/messageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
