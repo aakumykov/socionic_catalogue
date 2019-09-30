@@ -130,8 +130,7 @@
 
         <activity
             android:name=".backup_job.BackupStatus_Activity"
-            android:noHistory="true"
-            android:launchMode="singleTop"
+            android:launchMode="singleInstance"
         />
 
 

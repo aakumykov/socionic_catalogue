@@ -99,13 +99,10 @@ public class BackupService extends Service {
     private List<String> backupErrorsList = new ArrayList<>();
 
     private void startBackup() {
-        String dirName = "qwerty";
+        String dirName = MyUtils.date2string();
         String initialDirName = MyUtils.quoteString(this, dirName);
-        Log.d(TAG, "startBackup(), initialDirName: "+initialDirName);
 
-        displayProgressNotification(
-                new BackupProgressInfo().setMessage("Начато резервное копирование")
-        );
+        notifyAboutBackupProgress("Начато резервное копирование");
 
         dropboxBackuper.createDir(dirName, true, new DropboxBackuper.iCreateDirCallbacks() {
             @Override
@@ -133,16 +130,22 @@ public class BackupService extends Service {
             String collectionName = collectionPair.name;
             Class itemClass = collectionPair.itemClass;
 
-            String msg = "Загрузка коллекции "+collectionPair.getName();
-            Log.d(TAG, msg);
+            notifyAboutBackupProgress(MyUtils.getString(
+                    this,
+                    R.string.BACKUP_SERVICE_progress_notification_description,
+                    collectionPair.getName())
+            );
 
             loadCollection(collectionName, itemClass, new iLoadCollectionCallbacks() {
                 @Override
                 public void onLoadCollectionSuccess(List<Object> itemsList, List<String> errorsList) {
                     String jsonData = listOfObjects2JSON(itemsList);
 
-                    String msg = "Сохранение коллекции "+collectionName;
-                    Log.d(TAG, msg);
+                    notifyAboutBackupProgress(MyUtils.getString(
+                            BackupService.this,
+                            R.string.BACKUP_SERVICE_saving_collection,
+                            collectionName
+                    ));
 
                     dropboxBackuper.backupString(
                             targetDirName,
@@ -302,6 +305,10 @@ public class BackupService extends Service {
 
         public BackupProgressInfo() {
 
+        }
+
+        public BackupProgressInfo(String message) {
+            this.message = message;
         }
 
         public String getMessage() {
@@ -474,8 +481,8 @@ public class BackupService extends Service {
         MyUtils.createNotificationChannel(
                 context,
                 BACKUP_JOB_NOTIFICATION_CHANNEL,
-                context.getResources().getString(R.string.BACKUP_JOB_SERVICE_channel_title),
-                context.getResources().getString(R.string.BACKUP_JOB_SERVICE_channel_description),
+                context.getResources().getString(R.string.BACKUP_SERVICE_channel_title),
+                context.getResources().getString(R.string.BACKUP_SERVICE_channel_description),
                 NotificationManagerCompat.IMPORTANCE_HIGH
         );
     }
@@ -494,8 +501,8 @@ public class BackupService extends Service {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
-        String notificationTitle = getResources().getString(R.string.BACKUP_JOB_notification_title);
-        String notificationDescription = getResources().getString(R.string.BACKUP_JOB_progress_notification_description);
+        String notificationTitle = getResources().getString(R.string.BACKUP_SERVICE_notification_title);
+        String notificationDescription = backupProgressInfo.getMessage();
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
@@ -532,8 +539,8 @@ public class BackupService extends Service {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
-        String notificationTitle = getResources().getString(R.string.BACKUP_JOB_notification_title);
-        String notificationDescription = getResources().getString(R.string.BACKUP_JOB_result_notification_description);
+        String notificationTitle = getResources().getString(R.string.BACKUP_SERVICE_notification_title);
+        String notificationDescription = getResources().getString(R.string.BACKUP_SERVICE_result_notification_description);
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
@@ -570,21 +577,20 @@ public class BackupService extends Service {
 
         sendServiceBroadcast(SERVICE_STATUS_START);
 
-        displayProgressNotification(
-                new BackupProgressInfo()
-                        .setMessage("Начато резервное копирование")
-        );
+        displayProgressNotification(new BackupProgressInfo("Начато резервное копирование"));
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int max = 20;
+                int max = 5;
 
                 for (int i=0; i<max; i++) {
                     try {
-                        TimeUnit.SECONDS.sleep(1);
+                        TimeUnit.SECONDS.sleep(5);
                     }
                     catch (InterruptedException e) {}
+
+                    displayProgressNotification(new BackupProgressInfo("Обработка "+i));
 
                     sendServiceBroadcast(SERVICE_STATUS_RUNNING);
 
@@ -644,4 +650,12 @@ public class BackupService extends Service {
         sendServiceBroadcast(SERVICE_STATUS_FINISH);
     }
 
+
+
+    // ======================== СЛУЖЕБНЫЕ МЕТОДЫ ========================
+    private void notifyAboutBackupProgress(String message) {
+        BackupProgressInfo backupProgressInfo = new BackupProgressInfo(message);
+        displayProgressNotification(backupProgressInfo);
+        sendBackupBroadcast(backupProgressInfo);
+    }
 }
