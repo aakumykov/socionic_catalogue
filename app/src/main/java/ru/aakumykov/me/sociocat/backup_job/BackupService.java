@@ -457,9 +457,10 @@ public class BackupService extends Service {
     public final static String BACKUP_STATUS_SUCCESS = "BACKUP_STATUS_SUCCESS";
     public final static String BACKUP_STATUS_ERROR = "BACKUP_STATUS_ERROR";
 
+    public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
+
     public static final String EXTRA_SERVICE_STATUS = "EXTRA_SERVICE_STATUS";
     public static final String EXTRA_BACKUP_STATUS = "EXTRA_BACKUP_STATUS";
-    public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
 
     private void sendServiceBroadcast(String serviceStatus) {
         Intent intent = new Intent(BROADCAST_SERVICE_STATUS);
@@ -474,6 +475,24 @@ public class BackupService extends Service {
         sendBroadcast(intent);
     }
 
+
+    // ======================== УВЕДОМЛЕНИЯ-2 ========================
+    public static final String NOTIFICATION_BACKUP_STATUS = "ru.aakumykov.me.sociocat.NOTIFICATION_BACKUP_STATUS";
+    public static final int PENDING_INTENT_ACTION_BACKUP_STATUS = 5;
+
+    private void sendNotification(String status, String message) {
+        Intent broadcastIntent = new Intent(NOTIFICATION_BACKUP_STATUS);
+        Intent notificationIntent = new Intent(this, BackupStatus_Activity.class);
+
+        PendingIntent notificationPendingIntent = PendingIntent.getActivity(
+                this,
+                PENDING_INTENT_ACTION_BACKUP_STATUS,
+                notificationIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT
+        );
+
+
+    }
 
 
     // ======================== УВЕДОМЛЕНИЯ ========================
