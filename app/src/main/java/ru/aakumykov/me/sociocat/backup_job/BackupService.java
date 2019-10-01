@@ -46,6 +46,7 @@ public class BackupService extends Service {
             new CollectionPair("tags", Tag.class),
             new CollectionPair("comments", Comment.class)
     );
+
     private static class CollectionPair {
         private String name;
         private Class itemClass;
@@ -461,6 +462,7 @@ public class BackupService extends Service {
     public static final String EXTRA_SERVICE_STATUS = "EXTRA_SERVICE_STATUS";
     public static final String EXTRA_BACKUP_STATUS = "EXTRA_BACKUP_STATUS";
     public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
+    public static final String EXTRA_RESULT_NOTIFICATION_ID = "EXTRA_RESULT_NOTIFICATION_ID";
 
     private void sendServiceBroadcast(String serviceStatus) {
         Intent intent = new Intent(BROADCAST_SERVICE_STATUS);
@@ -477,8 +479,9 @@ public class BackupService extends Service {
 
     private void sendBackupResultBroadcast(String message, String backupStatus) {
         Intent intent = new Intent(BROADCAST_BACKUP_RESULT);
-        intent.putExtra(EXTRA_MESSAGE, message);
         intent.putExtra(EXTRA_BACKUP_STATUS, backupStatus);
+        intent.putExtra(EXTRA_MESSAGE, message);
+        intent.putExtra(EXTRA_RESULT_NOTIFICATION_ID, resultNotificationId);
         sendBroadcast(intent);
     }
 
@@ -576,6 +579,9 @@ public class BackupService extends Service {
         notificationManager.notify(resultNotificationId, notification);
     }
 
+    public static void removeResultNotification(Context context, int resultNotificationId) {
+        NotificationManagerCompat.from(context).cancel(resultNotificationId);
+    }
 
 
     // ======================== УПРАВЛЕНИЕ СЛУЖБОЙ ========================

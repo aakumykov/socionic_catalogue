@@ -117,5 +117,8 @@ public class BackupStatus_Activity extends BaseView {
         String message = intent.getStringExtra(BackupService.EXTRA_MESSAGE);
         messageView.setText(message);
         MyUtils.hide(progressBar);
+
+        int resultNotificationId = intent.getIntExtra(BackupService.EXTRA_RESULT_NOTIFICATION_ID, -1);
+        BackupService.removeResultNotification(this, resultNotificationId);
     }
 }
