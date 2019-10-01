@@ -602,6 +602,9 @@ public class BackupService extends Service {
         Log.d(TAG, "onStartCommand()");
 
         sendServiceBroadcast(SERVICE_STATUS_START);
+
+/*
+
         notifyAboutBackupProgress("Начато резервное копирование");
 
         new Thread(new Runnable() {
@@ -621,8 +624,9 @@ public class BackupService extends Service {
                 finishWithSuccess("Работа выполнена "+MyUtils.date2string());
             }
         }).start();
+*/
 
-//        startBackup();
+        startBackup();
 
         return START_NOT_STICKY;
     }
