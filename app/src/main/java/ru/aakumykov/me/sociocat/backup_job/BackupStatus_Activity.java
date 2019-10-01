@@ -77,22 +77,25 @@ public class BackupStatus_Activity extends BaseView {
             public void onReceive(Context context, Intent intent) {
                 Log.d(TAG, "onReceive()");
                 if (null != intent)
-                    displayBackupProgress(intent);
+                    processInputIntent(intent);
             }
         };
 
-        registerReceiver(broadcastReceiver, new IntentFilter(BackupService.BROADCAST_BACKUP_PROGRESS_STATUS));
+        registerReceiver(broadcastReceiver, new IntentFilter(BackupService.BROADCAST_BACKUP_STATUS));
     }
 
     private void processInputIntent(@Nullable Intent intent) {
         if (null != intent) {
             String action = intent.getAction() + "";
             switch (action) {
-                case BackupService.INTENT_ACTION_BACKUP_PROGRESS:
-                    prepareDisplayBackupProgress(intent);
+                case BackupService.ACTION_BACKUP_PROGRESS:
+                    displayBackupProgress(intent);
                     break;
-                case BackupService.INTENT_ACTION_BACKUP_RESULT:
+                case BackupService.ACTION_BACKUP_RESULT:
                     displayBackupResult(intent);
+                    break;
+                case BackupService.BROADCAST_BACKUP_STATUS:
+                    displayBackupProgress(intent);
                     break;
                 default:
                     throw new RuntimeException("Unknown intent's action: "+action);
@@ -100,36 +103,15 @@ public class BackupStatus_Activity extends BaseView {
         }
     }
 
-    private void displayBackupResult(Intent intent) {
-        Log.d(TAG, "displayBackupResult()");
-
-        BackupService.BackupResultInfo backupResultInfo = intent.getParcelableExtra(BackupService.INTENT_EXTRA_BACKUP_RESULT_INFO);
-
-        MyUtils.hide(progressBar);
-
-        String message = backupResultInfo.getMessage();
-        Log.d(TAG, "message: "+message);
+    private void displayBackupProgress(Intent intent) {
+        String message = intent.getStringExtra(BackupService.EXTRA_MESSAGE);
         messageView.setText(message);
-    }
-
-    private void prepareDisplayBackupProgress(Intent intent) {
-        BackupService.BackupProgressInfo backupProgressInfo = intent.getParcelableExtra(BackupService.INTENT_EXTRA_BACKUP_PROGRESS_INFO);
-
-        progressBar.setIndeterminate(true);
-        messageView.setText(backupProgressInfo.getMessage());
-
         MyUtils.show(progressBar);
     }
 
-    private void displayBackupProgress(Intent intent) {
-        Log.d(TAG, "displayBackupProgress()");
-
-        BackupService.BackupProgressInfo backupProgressInfo = intent.getParcelableExtra(BackupService.INTENT_EXTRA_BACKUP_PROGRESS_INFO);
-        Log.d(TAG, backupProgressInfo.toString());
-
-        messageView.setText(backupProgressInfo.getMessage());
-        progressBar.setIndeterminate(false);
-        progressBar.setProgress(backupProgressInfo.getProgress());
-        progressBar.setMax(backupProgressInfo.getProgressMax());
+    private void displayBackupResult(Intent intent) {
+        String message = intent.getStringExtra(BackupService.EXTRA_MESSAGE);
+        messageView.setText(message);
+        MyUtils.hide(progressBar);
     }
 }

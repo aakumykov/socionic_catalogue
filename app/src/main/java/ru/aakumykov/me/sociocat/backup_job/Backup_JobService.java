@@ -32,7 +32,7 @@ public class Backup_JobService extends JobService {
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                String serviceStatus = intent.getStringExtra(BackupService.INTENT_EXTRA_SERVICE_STATUS);
+                String serviceStatus = intent.getStringExtra(BackupService.EXTRA_SERVICE_STATUS);
                 Log.d(TAG, "onReceive(), serviceStatus: "+serviceStatus);
 
                 // TODO: обработать результат "успех/поражение"
@@ -45,7 +45,7 @@ public class Backup_JobService extends JobService {
 
         registerReceiver(
                 broadcastReceiver,
-                new IntentFilter(BackupService.BROADCAST_BACKUP_SERVICE_STATUS)
+                new IntentFilter(BackupService.BROADCAST_SERVICE_STATUS)
         );
     }
 

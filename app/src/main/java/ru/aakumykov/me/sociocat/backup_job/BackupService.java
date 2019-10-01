@@ -6,8 +6,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -267,6 +265,7 @@ public class BackupService extends Service {
 
 
     // ======================== ШИРОКОВЕЩАТЕЛЬНЫЕ СООБЩЕНИЯ ========================
+/*
     public static class BackupServiceInfo implements Parcelable {
 
         private String status;
@@ -444,32 +443,34 @@ public class BackupService extends Service {
         }
         // Конверт
     }
+*/
 
-    public static final String BROADCAST_BACKUP_SERVICE_STATUS = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_SERVICE_STATUS";
-    public static final String BROADCAST_BACKUP_PROGRESS_STATUS = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_PROGRESS_STATUS";
-
-    public static final String INTENT_EXTRA_SERVICE_STATUS = "INTENT_EXTRA_SERVICE_STATUS";
-
-    public static final String INTENT_EXTRA_BACKUP_PROGRESS_INFO = "INTENT_EXTRA_BACKUP_PROGRESS_INFO";
-    public static final String INTENT_EXTRA_BACKUP_RESULT_INFO = "INTENT_EXTRA_BACKUP_RESULT_INFO";
+    public static final String BROADCAST_SERVICE_STATUS = "ru.aakumykov.me.sociocat.BROADCAST_SERVICE_STATUS";
+    public static final String BROADCAST_BACKUP_STATUS = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_STATUS";
 
     public final static String SERVICE_STATUS_START =   "SERVICE_STATUS_START";
     public final static String SERVICE_STATUS_RUNNING = "SERVICE_STATUS_RUNNING";
     public final static String SERVICE_STATUS_FINISH =  "SERVICE_STATUS_FINISH";
 
-    public final static String BACKUP_RESULT_SUCCESS = "BACKUP_RESULT_SUCCESS";
-    public final static String BACKUP_RESULT_ERROR =   "BACKUP_RESULT_ERROR";
+    public final static String BACKUP_STATUS_START = "BACKUP_STATUS_START";
+    public final static String BACKUP_STATUS_RUNNING = "BACKUP_STATUS_START";
+    public final static String BACKUP_STATUS_SUCCESS = "BACKUP_STATUS_SUCCESS";
+    public final static String BACKUP_STATUS_ERROR = "BACKUP_STATUS_ERROR";
+
+    public static final String EXTRA_SERVICE_STATUS = "EXTRA_SERVICE_STATUS";
+    public static final String EXTRA_BACKUP_STATUS = "EXTRA_BACKUP_STATUS";
+    public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
 
     private void sendServiceBroadcast(String serviceStatus) {
-        Intent intent = new Intent(BROADCAST_BACKUP_SERVICE_STATUS);
-        intent.putExtra(INTENT_EXTRA_SERVICE_STATUS, serviceStatus);
+        Intent intent = new Intent(BROADCAST_SERVICE_STATUS);
+        intent.putExtra(EXTRA_SERVICE_STATUS, serviceStatus);
         sendBroadcast(intent);
     }
 
-    private void sendBackupBroadcast(BackupProgressInfo backupProgressInfo) {
-        Intent intent = new Intent(BROADCAST_BACKUP_PROGRESS_STATUS);
-//        intent.setAction(INTENT_ACTION_BACKUP_PROGRESS);
-        intent.putExtra(INTENT_EXTRA_BACKUP_PROGRESS_INFO, backupProgressInfo);
+    private void sendBackupBroadcast(String message, String backupStatus) {
+        Intent intent = new Intent(BROADCAST_BACKUP_STATUS);
+        intent.putExtra(EXTRA_MESSAGE, message);
+        intent.putExtra(EXTRA_BACKUP_STATUS, backupStatus);
         sendBroadcast(intent);
     }
 
@@ -481,8 +482,8 @@ public class BackupService extends Service {
     public static final int PENDING_INTENT_ACTION_BACKUP_PROGRESS = 10;
     public static final int PENDING_INTENT_ACTION_BACKUP_RESULT = 20;
 
-    public static final String INTENT_ACTION_BACKUP_PROGRESS = "INTENT_ACTION_BACKUP_PROGRESS";
-    public static final String INTENT_ACTION_BACKUP_RESULT = "INTENT_ACTION_BACKUP_RESULT";
+    public static final String ACTION_BACKUP_PROGRESS = "ACTION_BACKUP_PROGRESS";
+    public static final String ACTION_BACKUP_RESULT = "ACTION_BACKUP_RESULT";
 
     private int progressNotificationId = 10;
     private static int resultNotificationId = 20;
@@ -497,12 +498,13 @@ public class BackupService extends Service {
         );
     }
 
-    private void displayProgressNotification(BackupProgressInfo backupProgressInfo) {
-        Log.d(TAG, "displayProgressNotification()");
+    private void displayProgressNotification(String message, String status) {
 
+        // Сведения для страницы сведений о РК
         Intent intent = new Intent(this, BackupStatus_Activity.class);
-        intent.setAction(INTENT_ACTION_BACKUP_PROGRESS);
-        intent.putExtra(INTENT_EXTRA_BACKUP_PROGRESS_INFO, backupProgressInfo);
+        intent.setAction(ACTION_BACKUP_PROGRESS);
+        intent.putExtra(EXTRA_BACKUP_STATUS, status);
+        intent.putExtra(EXTRA_MESSAGE, message);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this,
@@ -511,15 +513,14 @@ public class BackupService extends Service {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
+        // Для уведомления
         String notificationTitle = getResources().getString(R.string.BACKUP_SERVICE_notification_title);
-        String notificationDescription = backupProgressInfo.getMessage();
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
                         .setSmallIcon(R.drawable.ic_backup_job_colored)
                         .setContentTitle(notificationTitle)
-                        .setContentText(notificationDescription)
-//                        .setContentInfo("Content Info") // На новых версиях не отображается
+                        .setContentText(message)
                         .setUsesChronometer(true)
                         .setOngoing(true)
                         .setProgress(0,0,true)
@@ -535,12 +536,13 @@ public class BackupService extends Service {
         stopForeground(true);
     }
 
-    private void displayResultNotification(BackupResultInfo backupResultInfo) {
-        Log.d(TAG, "displayResultNotification()");
+    private void displayResultNotification(String message, String status) {
 
+        // Сведения для страницы сведений о РК
         Intent intent = new Intent(this, BackupStatus_Activity.class);
-        intent.setAction(INTENT_ACTION_BACKUP_RESULT);
-        intent.putExtra(INTENT_EXTRA_BACKUP_RESULT_INFO, backupResultInfo);
+        intent.setAction(ACTION_BACKUP_RESULT);
+        intent.putExtra(EXTRA_BACKUP_STATUS, status);
+        intent.putExtra(EXTRA_MESSAGE, message);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this,
@@ -549,14 +551,14 @@ public class BackupService extends Service {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
+        // Для уведомления
         String notificationTitle = getResources().getString(R.string.BACKUP_SERVICE_notification_title);
-        String notificationDescription = getResources().getString(R.string.BACKUP_SERVICE_result_notification_description);
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
                         .setSmallIcon(R.drawable.ic_backup_job_colored)
                         .setContentTitle(notificationTitle)
-                        .setContentText(backupResultInfo.getMessage())
+                        .setContentText(message)
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true);
 
@@ -586,14 +588,13 @@ public class BackupService extends Service {
         Log.d(TAG, "onStartCommand()");
 
         sendServiceBroadcast(SERVICE_STATUS_START);
-
-        displayProgressNotification(new BackupProgressInfo("Начато резервное копирование"));
+        notifyAboutBackupProgress("Начато резервное копирование");
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int max = 10;
-                int sleepStep = 3;
+                int max = 30;
+                int sleepStep = 1;
 
                 for (int i=0; i<max; i++) {
                     try { TimeUnit.SECONDS.sleep(sleepStep); }
@@ -625,22 +626,24 @@ public class BackupService extends Service {
 
     private void finishWithError(String errorMsg) {
 
-        notifyAboutBackupProgress(errorMsg);
+        removeProgressNotification();
+
+        displayResultNotification(errorMsg, BACKUP_STATUS_ERROR);
 
         sendServiceBroadcast(SERVICE_STATUS_FINISH);
-
-        removeProgressNotification();
 
         stopSelf();
     }
 
-    private void finishWithSuccess(@Nullable String message) {
-
-        notifyAboutBackupProgress(message);
-
-        sendServiceBroadcast(SERVICE_STATUS_FINISH);
+    private void finishWithSuccess(String message) {
 
         removeProgressNotification();
+
+        displayResultNotification(message, BACKUP_STATUS_SUCCESS);
+
+        sendBackupBroadcast(message, BACKUP_STATUS_SUCCESS);
+
+        sendServiceBroadcast(SERVICE_STATUS_FINISH);
 
         stopSelf();
     }
@@ -649,12 +652,7 @@ public class BackupService extends Service {
 
     // ======================== СЛУЖЕБНЫЕ МЕТОДЫ ========================
     private void notifyAboutBackupProgress(String message) {
-        Log.d(TAG, "notifyAboutBackupProgress('"+message+"')");
-
-        BackupProgressInfo backupProgressInfo = new BackupProgressInfo(message);
-
-        displayProgressNotification(backupProgressInfo);
-
-        sendBackupBroadcast(backupProgressInfo);
+        displayProgressNotification(message, BACKUP_STATUS_RUNNING);
+        sendBackupBroadcast(message, BACKUP_STATUS_RUNNING);
     }
 }
