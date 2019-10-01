@@ -446,7 +446,8 @@ public class BackupService extends Service {
 */
 
     public static final String BROADCAST_SERVICE_STATUS = "ru.aakumykov.me.sociocat.BROADCAST_SERVICE_STATUS";
-    public static final String BROADCAST_BACKUP_STATUS = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_STATUS";
+    public static final String BROADCAST_BACKUP_PROGRESS = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_PROGRESS";
+    public static final String BROADCAST_BACKUP_RESULT = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_RESULT";
 
     public final static String SERVICE_STATUS_START =   "SERVICE_STATUS_START";
     public final static String SERVICE_STATUS_RUNNING = "SERVICE_STATUS_RUNNING";
@@ -467,8 +468,15 @@ public class BackupService extends Service {
         sendBroadcast(intent);
     }
 
-    private void sendBackupBroadcast(String message, String backupStatus) {
-        Intent intent = new Intent(BROADCAST_BACKUP_STATUS);
+    private void sendBackupProgressBroadcast(String message, String backupStatus) {
+        Intent intent = new Intent(BROADCAST_BACKUP_PROGRESS);
+        intent.putExtra(EXTRA_MESSAGE, message);
+        intent.putExtra(EXTRA_BACKUP_STATUS, backupStatus);
+        sendBroadcast(intent);
+    }
+
+    private void sendBackupResultBroadcast(String message, String backupStatus) {
+        Intent intent = new Intent(BROADCAST_BACKUP_RESULT);
         intent.putExtra(EXTRA_MESSAGE, message);
         intent.putExtra(EXTRA_BACKUP_STATUS, backupStatus);
         sendBroadcast(intent);
@@ -627,25 +635,23 @@ public class BackupService extends Service {
     private void finishWithError(String errorMsg) {
 
         removeProgressNotification();
-
         displayResultNotification(errorMsg, BACKUP_STATUS_ERROR);
 
-        sendServiceBroadcast(SERVICE_STATUS_FINISH);
+        sendBackupResultBroadcast(errorMsg, BACKUP_STATUS_ERROR);
 
         stopSelf();
+        sendServiceBroadcast(SERVICE_STATUS_FINISH);
     }
 
     private void finishWithSuccess(String message) {
 
         removeProgressNotification();
-
         displayResultNotification(message, BACKUP_STATUS_SUCCESS);
 
-        sendBackupBroadcast(message, BACKUP_STATUS_SUCCESS);
-
-        sendServiceBroadcast(SERVICE_STATUS_FINISH);
+        sendBackupResultBroadcast(message, BACKUP_STATUS_SUCCESS);
 
         stopSelf();
+        sendServiceBroadcast(SERVICE_STATUS_FINISH);
     }
 
 
@@ -653,6 +659,6 @@ public class BackupService extends Service {
     // ======================== СЛУЖЕБНЫЕ МЕТОДЫ ========================
     private void notifyAboutBackupProgress(String message) {
         displayProgressNotification(message, BACKUP_STATUS_RUNNING);
-        sendBackupBroadcast(message, BACKUP_STATUS_RUNNING);
+        sendBackupProgressBroadcast(message, BACKUP_STATUS_RUNNING);
     }
 }

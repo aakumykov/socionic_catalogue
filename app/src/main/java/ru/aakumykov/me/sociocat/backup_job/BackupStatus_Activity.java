@@ -81,7 +81,8 @@ public class BackupStatus_Activity extends BaseView {
             }
         };
 
-        registerReceiver(broadcastReceiver, new IntentFilter(BackupService.BROADCAST_BACKUP_STATUS));
+        registerReceiver(broadcastReceiver, new IntentFilter(BackupService.BROADCAST_BACKUP_PROGRESS));
+        registerReceiver(broadcastReceiver, new IntentFilter(BackupService.BROADCAST_BACKUP_RESULT));
     }
 
     private void processInputIntent(@Nullable Intent intent) {
@@ -94,8 +95,11 @@ public class BackupStatus_Activity extends BaseView {
                 case BackupService.ACTION_BACKUP_RESULT:
                     displayBackupResult(intent);
                     break;
-                case BackupService.BROADCAST_BACKUP_STATUS:
+                case BackupService.BROADCAST_BACKUP_PROGRESS:
                     displayBackupProgress(intent);
+                    break;
+                case BackupService.BROADCAST_BACKUP_RESULT:
+                    displayBackupResult(intent);
                     break;
                 default:
                     throw new RuntimeException("Unknown intent's action: "+action);
