@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            layout="@layout/progress_and_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Запустить службу" />
+
+        <Button
+            android:id="@+id/scheduleJobButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Запланировать задачу" />
+
+        <Button
+            android:id="@+id/unscheduleJobButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Раз-планировать задачу" />
+
+    </LinearLayout>
+
+</ScrollView>

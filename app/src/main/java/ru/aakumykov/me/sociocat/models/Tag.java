@@ -4,12 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@IgnoreExtraProperties
 public class Tag implements Parcelable {
 
     public static final String KEY_KEY = "key";
@@ -112,7 +114,8 @@ public class Tag implements Parcelable {
 
 
     // Дополнительные
-    @Exclude public int getCardsCount() {
+    @Exclude
+    public int getCardsCount() {
         return this.cards.size();
     }
 }

@@ -5,6 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:name=".MyApp"
         android:allowBackup="true"
@@ -15,12 +19,20 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".shortcuts_processor.ShortcutsProcessor">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+        </activity>
+
+        <activity android:name=".backup_job.BackupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
         </activity>
 
         <activity
@@ -116,6 +128,12 @@
         <activity android:name=".tags.show.TagShow_View" />
         <activity android:name=".users.edit.UserEdit_View" />
 
+        <activity
+            android:name=".backup_job.BackupStatus_Activity"
+            android:launchMode="singleTop"
+        />
+
+
         <service android:name=".push_notifications_service.PushNotificationsService" android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -127,6 +145,14 @@
                 android:name="com.google.firebase.messaging.default_notification_color"
                 android:resource="@color/white" />
         </service>
+
+        <service
+            android:name=".backup_job.Backup_JobService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            />
+        <service android:name=".backup_job.BackupService" />
 
     </application>
 
