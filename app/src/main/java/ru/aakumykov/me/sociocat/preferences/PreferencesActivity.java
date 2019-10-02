@@ -16,7 +16,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         if (null != actionBar) {
-            actionBar.setTitle(R.string.PREFERENCES_page_title);
+            actionBar.setTitle(R.string.PREFERENCES_ACTIVITY_page_title);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 

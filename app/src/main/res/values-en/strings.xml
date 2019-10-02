@@ -372,7 +372,7 @@
 
     <string name="PREFERENCES_notify_on_new_cards_summary">Send or not notifications on new cards</string>
     <string name="PREFERENCES_notify_on_new_cards_title">Notify on new cards</string>
-    <string name="PREFERENCES_page_title">App preferences</string>
+    <string name="PREFERENCES_ACTIVITY_page_title">App preferences</string>
     <string name="MENU_preferences">Preferences</string>
     <string name="PREFERENCES_you_are_subscribed_to_new_cards">You are subscribed to new cards notifications</string>
     <string name="PREFERENCES_error_subscribing_to_new_cards">Error subscribing to new cards notifications</string>
@@ -497,5 +497,11 @@
     <string name="BACKUP_SERVICE_result_notification_description">Is done</string>
     <string name="BACKUP_STATUS_page_title">Backup info</string>
     <string name="BACKUP_SERVICE_saving_collection">Сохранение коллекции «%1$s»</string>
+    <string name="PREFERENCE_backup_category">Резервное копирование</string>
+
+    <string name="PREFERENCE_database_backup_title">Database</string>
+    <string name="PREFERENCE_database_backup_description">Perform database backup with this phone</string>
+    <string name="PREFERENCE_database_backup_switched_on_text">Enabled</string>
+    <string name="PREFERENCE_database_backup_switched_off_text">Disabled</string>
 </resources>
 <!-- «%1$s» -->

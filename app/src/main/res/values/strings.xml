@@ -378,7 +378,7 @@
 
     <string name="PREFERENCES_notify_on_new_cards_summary">Присылать или нет уведомления о новых карточках</string>
     <string name="PREFERENCES_notify_on_new_cards_title">Уведомлять о новых карточках</string>
-    <string name="PREFERENCES_page_title">Настройки приложения</string>
+    <string name="PREFERENCES_ACTIVITY_page_title">Настройки приложения</string>
     <string name="PREFERENCES_notify_on_new_cards" translatable="false">PREFERENCES_notify_on_new_cards</string>
     <string name="MENU_preferences">Настройки</string>
     <string name="PREFERENCES_you_are_subscribed_to_new_cards">Вы подписаны на уведомления о новых карточках</string>
@@ -504,5 +504,11 @@
     <string name="BACKUP_SERVICE_progress_notification_description">Обработка «%1$s»</string>
     <string name="BACKUP_SERVICE_result_notification_description">Завершено</string>
     <string name="BACKUP_SERVICE_saving_collection">Сохранение коллекции «%1$s»</string>
-</resources>
-<!-- «%1$s» -->
+    <string name="PREFERENCE_backup_category">Резервное копирование</string>
+
+    <string name="PREFERENCE_database_backup_title">База данных</string>
+    <string name="PREFERENCE_database_backup_description">Выполнять рез. копирование базы данных силами телефона</string>
+    <string name="PREFERENCE_database_backup_switched_on_text">Включено</string>
+    <string name="PREFERENCE_database_backup_switched_off_text">Выключено</string>
+
+</resources><!-- «%1$s» -->
