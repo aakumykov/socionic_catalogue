@@ -8,6 +8,7 @@ import java.util.Map;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class PreferencesProcessor {
 
@@ -31,7 +32,7 @@ public class PreferencesProcessor {
     }
 
     private static void processNewCardsSubscription(Context context, boolean isEnabled) {
-        if (isEnabled)
+        /*if (isEnabled)
             MVPUtils.subscribeToTopicNotifications(
                     context,
                     Constants.TOPIC_NEW_CARDS,
@@ -41,6 +42,8 @@ public class PreferencesProcessor {
             MVPUtils.unsubscribeFromTopicNotifications(
                     context,
                     Constants.TOPIC_NEW_CARDS,
-                    null);
+                    null);*/
+
+        throw new RuntimeException(MyUtils.getString(context, R.string.not_implemented_yet));
     }
 }
