@@ -41,7 +41,7 @@ public class BackupService extends Service {
     // ======== НАСТРОЙКА ОБЪЕКТОВ РЕЗЕРВНОГО КОПИРОВАНИЯ ========
     private CollectionPool collectionPool = new CollectionPool(
             new CollectionPair("admins", User.class),
-            new CollectionPair("user", User.class),
+            new CollectionPair("users", User.class),
             new CollectionPair("cards", Card.class),
             new CollectionPair("tags", Tag.class),
             new CollectionPair("comments", Comment.class)
