@@ -78,7 +78,7 @@ public class Backup_JobService extends JobService {
         ComponentName backupJobService = new ComponentName(context, Backup_JobService.class);
 
         JobInfo.Builder jobBuilder = new JobInfo.Builder(backupJobServiceId, backupJobService);
-        jobBuilder.setPeriodic(TimeUnit.MINUTES.toMillis(1));
+        jobBuilder.setPeriodic(TimeUnit.HOURS.toMillis(12));
         jobBuilder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
         jobBuilder.setRequiresDeviceIdle(false);
         jobBuilder.setRequiresCharging(false);
