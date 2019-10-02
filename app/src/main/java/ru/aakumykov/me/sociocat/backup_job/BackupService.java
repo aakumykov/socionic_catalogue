@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -40,11 +41,11 @@ public class BackupService extends Service {
 
     // ======== НАСТРОЙКА ОБЪЕКТОВ РЕЗЕРВНОГО КОПИРОВАНИЯ ========
     private CollectionPool collectionPool = new CollectionPool(
-            new CollectionPair("admins", User.class),
-            new CollectionPair("users", User.class),
-            new CollectionPair("cards", Card.class),
-            new CollectionPair("tags", Tag.class),
-            new CollectionPair("comments", Comment.class)
+            new CollectionPair(Constants.USERS_PATH, User.class),
+            new CollectionPair(Constants.ADMINS_PATH, User.class),
+            new CollectionPair(Constants.CARDS_PATH, Card.class),
+            new CollectionPair(Constants.TAGS_PATH, Tag.class),
+            new CollectionPair(Constants.COMMENTS_PATH, Comment.class)
     );
 
     private static class CollectionPair {
@@ -200,6 +201,8 @@ public class BackupService extends Service {
 
                         List<Object> itemsList = resultPair.first;
                         List<String> errorsList = resultPair.second;
+
+                        // TODO: выводить предупреждение, если коллекция пуста
 
                         callbacks.onLoadCollectionSuccess(itemsList, errorsList);
                     }
