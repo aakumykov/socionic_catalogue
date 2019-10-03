@@ -488,20 +488,28 @@
     <string name="CARD_EDIT_error_parsing_timecode">Timecode error</string>
     <string name="CARDS_GRID_error_processing_card">Error processing card</string>
     <string name="CARDS_GRID_new_card_is_filtered">Card «%1$s» is added, but not contains tag «%2$s»</string>
-    <string name="BACKUP_JOB_SERVICE_job_is_scheduled">Backup job is scheduled</string>
-    <string name="BACKUP_JOB_SERVICE_error_scheduling_job">Error scheduling backup job</string>
-    <string name="BACKUP_SERVICE_channel_title">Backup job</string>
-    <string name="BACKUP_SERVICE_channel_description">Backup job events notifications channel</string>
-    <string name="BACKUP_SERVICE_notification_title">Backup job</string>
-    <string name="BACKUP_SERVICE_progress_notification_description">Processing «%1$s»</string>
-    <string name="BACKUP_SERVICE_result_notification_description">Is done</string>
-    <string name="BACKUP_STATUS_page_title">Backup info</string>
-    <string name="BACKUP_SERVICE_saving_collection">Сохранение коллекции «%1$s»</string>
-    <string name="PREFERENCE_backup_category">Резервное копирование</string>
 
+    <string name="BACKUP_STATUS_page_title">Backup info</string>
+
+    <string name="PREFERENCE_backup_category">Backup</string>
     <string name="PREFERENCE_database_backup_title">Database</string>
     <string name="PREFERENCE_database_backup_description">Perform database backup with this phone</string>
     <string name="PREFERENCE_database_backup_switched_on_text">Enabled</string>
     <string name="PREFERENCE_database_backup_switched_off_text">Disabled</string>
+
+    <string name="BACKUP_JOB_SERVICE_job_is_scheduled">Backup job is scheduled</string>
+    <string name="BACKUP_JOB_SERVICE_error_scheduling_job">Error scheduling backup job</string>
+
+    <string name="BACKUP_SERVICE_channel_title">Backup job</string>
+    <string name="BACKUP_SERVICE_channel_description">Backup job events notifications channel</string>
+    <string name="BACKUP_SERVICE_backup">Backup job</string>
+    <string name="BACKUP_SERVICE_loading_collection">Loading «%1$s»</string>
+    <string name="BACKUP_SERVICE_saving_collection">Saving «%1$s»</string>
+    <string name="BACKUP_SERVICE_all_collections_are_processed">All collections are processed %1$s</string>
+    <string name="BACKUP_SERVICE_error_loading_collection">Error loading collection «%1$s»</string>
+    <string name="BACKUP_SERVICE_error_saving_collection">Error processing collection «%1$s»</string>
+    <string name="BACKUP_SERVICE_collection_is_saved">Collection «%1$s» is saved</string>
+    <string name="BACKUP_SERVICE_directory_created">Directory «%1$s» created</string>
+    <string name="BACKUP_SERVICE_backup_started">Backup started</string>
 </resources>
 <!-- «%1$s» -->
