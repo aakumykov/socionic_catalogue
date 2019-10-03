@@ -375,11 +375,9 @@ public class UsersSingleton_CF implements iUsersSingleton {
     }
 
     @Override
-    public void storeCurrentUser(User user) throws Exception {
-        if (null == user)
-            throw new Exception("User cannot be null");
-
-        currentUser = user;
+    public void storeCurrentUser(User user) {
+        if (null != user)
+            currentUser = user;
     }
 
     @Override

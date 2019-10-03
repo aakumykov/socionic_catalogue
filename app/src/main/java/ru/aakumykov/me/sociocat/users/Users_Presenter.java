@@ -360,6 +360,8 @@ public class Users_Presenter implements
                 public void onUserSaveSuccess(User user) {
                     editView.showToast(R.string.USER_EDIT_profile_saved);
                     editView.finishEdit(user, true);
+
+                    usersSingleton.storeCurrentUser(currentUser);
                 }
 
                 @Override
