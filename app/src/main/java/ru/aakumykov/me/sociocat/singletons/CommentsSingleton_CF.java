@@ -120,7 +120,7 @@ public class CommentsSingleton_CF implements iCommentsSingleton {
 
     @Override
     public void deleteCommentsForCard(String cardId) throws Exception {
-        throw new RuntimeException("Метод deleteCommentsForCard() не реализован");
+
     }
 
     @Override
