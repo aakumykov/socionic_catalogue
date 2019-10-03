@@ -508,7 +508,7 @@ public class BackupService extends Service {
                 BACKUP_JOB_NOTIFICATION_CHANNEL,
                 context.getResources().getString(R.string.BACKUP_SERVICE_channel_title),
                 context.getResources().getString(R.string.BACKUP_SERVICE_channel_description),
-                NotificationManagerCompat.IMPORTANCE_HIGH
+                NotificationManagerCompat.IMPORTANCE_LOW
         );
     }
 
