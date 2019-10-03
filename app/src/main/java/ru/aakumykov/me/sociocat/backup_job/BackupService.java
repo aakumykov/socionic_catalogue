@@ -26,7 +26,6 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -102,16 +101,16 @@ public class BackupService extends Service {
         String dirName = MyUtils.date2string();
         String initialDirName = MyUtils.quoteString(this, dirName);
 
-        notifyAboutBackupProgress("Начато резервное копирование");
+        notifyAboutBackupProgress(MyUtils.getString(this, R.string.BACKUP_SERVICE_backup_started));
 
         dropboxBackuper.createDir(dirName, true, new DropboxBackuper.iCreateDirCallbacks() {
             @Override
-            public void onCreateDirSuccess(String createdDirName) {
-                String successMsg = "Создан каталог " + MyUtils.quoteString(BackupService.this, createdDirName);
+            public void onCreateDirSuccess(String dirName) {
+                String successMsg = MyUtils.getString(BackupService.this, R.string.BACKUP_SERVICE_directory_created, dirName);
                 backupSuccessList.add(successMsg);
                 Log.d(TAG, successMsg);
 
-                performCollectionsBackup(createdDirName);
+                performCollectionsBackup(dirName);
             }
 
             @Override
@@ -132,7 +131,7 @@ public class BackupService extends Service {
 
             notifyAboutBackupProgress(MyUtils.getString(
                     this,
-                    R.string.BACKUP_SERVICE_progress_notification_description,
+                    R.string.BACKUP_SERVICE_loading_collection,
                     collectionPair.getName())
             );
 
@@ -156,8 +155,13 @@ public class BackupService extends Service {
                             new DropboxBackuper.iBackupStringCallbacks() {
                                 @Override
                                 public void onBackupSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
-                                    backupSuccessList.add("Коллекция "+collectionName+" обработана");
-                                    String msg = "Коллекция "+collectionName+" сохранена";
+                                    String msg = MyUtils.getString(
+                                            BackupService.this,
+                                            R.string.BACKUP_SERVICE_collection_is_saved,
+                                            collectionName
+                                    );
+
+                                    backupSuccessList.add(msg);
                                     Log.d(TAG, msg);
 
                                     performCollectionsBackup(targetDirName);
@@ -165,7 +169,12 @@ public class BackupService extends Service {
 
                                 @Override
                                 public void onBackupFail(String errorMsg) {
-                                    String msg = "Ошибка обработки "+collectionName+": "+errorMsg;
+                                    String msg = MyUtils.getString(
+                                            BackupService.this,
+                                            R.string.BACKUP_SERVICE_error_saving_collection,
+                                            collectionName,
+                                            errorMsg
+                                    );
                                     backupErrorsList.add(msg);
                                     Log.e(TAG, msg);
 
@@ -177,7 +186,7 @@ public class BackupService extends Service {
 
                 @Override
                 public void onLoadCollectionError(String errorMsg) {
-                    String msg = "Ошибка получения коллекции "+collectionName;
+                    String msg = MyUtils.getString(BackupService.this, R.string.BACKUP_SERVICE_error_loading_collection, collectionName);
                     Log.e(TAG, msg);
 
                     performCollectionsBackup(targetDirName);
@@ -185,7 +194,12 @@ public class BackupService extends Service {
             });
         }
         else {
-            finishWithSuccess("Все коллекции обработаны");
+            String msg = MyUtils.getString(
+                    this,
+                    R.string.BACKUP_SERVICE_all_collections_are_processed,
+                    MyUtils.date2string()
+            );
+            finishWithSuccess(msg);
         }
     }
 
@@ -508,7 +522,7 @@ public class BackupService extends Service {
                 BACKUP_JOB_NOTIFICATION_CHANNEL,
                 context.getResources().getString(R.string.BACKUP_SERVICE_channel_title),
                 context.getResources().getString(R.string.BACKUP_SERVICE_channel_description),
-                NotificationManagerCompat.IMPORTANCE_HIGH
+                NotificationManagerCompat.IMPORTANCE_LOW
         );
     }
 
@@ -528,7 +542,7 @@ public class BackupService extends Service {
         );
 
         // Для уведомления
-        String notificationTitle = getResources().getString(R.string.BACKUP_SERVICE_notification_title);
+        String notificationTitle = getResources().getString(R.string.BACKUP_SERVICE_backup);
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
@@ -566,7 +580,7 @@ public class BackupService extends Service {
         );
 
         // Для уведомления
-        String notificationTitle = getResources().getString(R.string.BACKUP_SERVICE_notification_title);
+        String notificationTitle = getResources().getString(R.string.BACKUP_SERVICE_backup);
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
@@ -605,29 +619,6 @@ public class BackupService extends Service {
         Log.d(TAG, "onStartCommand()");
 
         sendServiceBroadcast(SERVICE_STATUS_START);
-
-/*
-
-        notifyAboutBackupProgress("Начато резервное копирование");
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int max = 30;
-                int sleepStep = 1;
-
-                for (int i=0; i<max; i++) {
-                    try { TimeUnit.SECONDS.sleep(sleepStep); }
-                    catch (InterruptedException e) {}
-
-                    sendServiceBroadcast(SERVICE_STATUS_RUNNING);
-                    notifyAboutBackupProgress("Обработка "+i);
-                }
-
-                finishWithSuccess("Работа выполнена "+MyUtils.date2string());
-            }
-        }).start();
-*/
 
         startBackup();
 

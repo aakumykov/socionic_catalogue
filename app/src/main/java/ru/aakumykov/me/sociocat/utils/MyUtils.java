@@ -275,12 +275,16 @@ public final class MyUtils {
         return stackTrace;
     }
 
+    public static String getString(Context context, int msgId) {
+        return context.getResources().getString(msgId);
+    }
+
     public static String getString(Context context, int stringResourceId, String insertedText) {
         return context.getResources().getString(stringResourceId, insertedText);
     }
 
-    public static String getString(Context context, int msgId) {
-        return context.getResources().getString(msgId);
+    public static String getString(Context context, int stringResourceId, String... insertedTextPieces) {
+        return context.getResources().getString(stringResourceId, insertedTextPieces);
     }
 
     public static String seconds2HHMMSS(Double seconds) {

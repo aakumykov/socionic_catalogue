@@ -75,6 +75,8 @@ public class Backup_JobService extends JobService {
     {
         Log.d(TAG, "scheduleJob()");
 
+        BackupService.createNotificationChannel(context);
+
         ComponentName backupJobService = new ComponentName(context, Backup_JobService.class);
 
         JobInfo.Builder jobBuilder = new JobInfo.Builder(backupJobServiceId, backupJobService);

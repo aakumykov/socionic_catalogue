@@ -46,8 +46,9 @@ public class PreferencesFragment extends PreferenceFragment implements
         switch (key) {
             case "perform_database_backup":
                 boolean enabled = sharedPreferences.getBoolean(key, false);
-                if (enabled)
+                if (enabled) {
                     Backup_JobService.scheduleJob(getActivity());
+                }
                 else
                     Backup_JobService.unscheduleJob(getActivity());
                 break;
