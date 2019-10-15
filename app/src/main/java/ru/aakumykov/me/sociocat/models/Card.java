@@ -11,6 +11,7 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
@@ -27,6 +28,8 @@ public class Card extends ListItem implements
     public final static String KEY_CTIME = "ctime";
     public static final String KEY_TAGS = "tags";
     public static final String KEY_USER_ID = "userId";
+
+    public final static String GHOST_TAG_PREFIX = "TAG_";
 
     // TODO: а может, все свойства здесь инициализировать?
     private String key;
@@ -89,8 +92,40 @@ public class Card extends ListItem implements
             " }";
     }
 
+    @Exclude
+    public Map<String, Object> toMap() {
+        Map<String, Object> cardMap = new HashMap<>();
 
-    // Parcelable
+        cardMap.put("key", getKey());
+        cardMap.put("userId", getUserId());
+        cardMap.put("userName", getUserName());
+        cardMap.put("type", getType());
+        cardMap.put("title", getTitle());
+        cardMap.put("quote", getQuote());
+        cardMap.put("quoteSource", getQuoteSource());
+        cardMap.put("imageURL", getImageURL());
+        cardMap.put("localImageURI", getLocalImageURI());
+        cardMap.put("mimeType", getMimeType());
+        cardMap.put("imageType", getImageType());
+        cardMap.put("fileName", getFileName());
+        cardMap.put("videoCode", getVideoCode());
+        cardMap.put("audioCode", getAudioCode());
+        cardMap.put("timecode", getTimecode());
+        cardMap.put("description", getDescription());
+        cardMap.put("tags", getTags());
+        cardMap.put("commentsCount", getCommentsCount());
+        cardMap.put("rating", this.getRating());
+        cardMap.put("ctime", this.getCTime());
+        cardMap.put("mtime", this.getMTime());
+
+        for (String tagName : this.getTags())
+            cardMap.put(Card.GHOST_TAG_PREFIX+tagName, true);
+
+        return cardMap;
+    }
+
+
+    // Конверт
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         // важен порядок заполнения
@@ -162,7 +197,7 @@ public class Card extends ListItem implements
             return new Card[size];
         }
     };
-    // Parcelable
+    // Конверт
 
 
     // Геттеры
@@ -415,4 +450,6 @@ public class Card extends ListItem implements
     @Exclude public boolean hasTag(String tagName) {
         return tags.contains(tagName);
     }
+
+
 }

@@ -15,6 +15,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
@@ -353,8 +354,10 @@ public class CardsSingleton_CF implements iCardsSingleton {
             cardReference = cardsCollection.document(card.getKey());
         }
 
+        Map<String,Object> cardAsMap = card.toMap();
+
         cardReference
-                .set(card)
+                .set(cardAsMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
