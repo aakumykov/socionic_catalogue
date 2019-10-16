@@ -10,9 +10,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,15 +24,16 @@ import java.util.Map;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.User;
 
 public class CardsSingleton_CF implements iCardsSingleton {
 
     private final static String TAG = "CardsSingleton_CF";
-    private FirebaseFirestore firebaseFirestore;
-    private CollectionReference cardsCollection;
-    private CollectionReference tagsCollection;
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private CollectionReference cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
+    private CollectionReference usersCollection = firebaseFirestore.collection(Constants.USERS_PATH);
 
-    // Одиночка
+    // Шаблона Одиночки начало
     private static volatile CardsSingleton_CF ourInstance;
     public synchronized static CardsSingleton_CF getInstance() {
         synchronized (CardsSingleton_CF.class) {
@@ -38,12 +41,8 @@ public class CardsSingleton_CF implements iCardsSingleton {
             return ourInstance;
         }
     }
-    private CardsSingleton_CF() {
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
-        tagsCollection = firebaseFirestore.collection(Constants.TAGS_PATH);
-    }
-    // Одиночка
+    private CardsSingleton_CF() { }
+    // Шаблона Одиночки конец
 
 
     @Override
@@ -210,8 +209,16 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
         Map<String,Object> cardAsMap = card.toMap();
 
-        cardReference
-                .set(cardAsMap)
+        String userId = UsersSingleton_CF.getInstance().getCurrentUser().getKey();
+        DocumentReference cardAuthorRef = usersCollection.document(userId);
+
+        WriteBatch writeBatch = firebaseFirestore.batch();
+
+        writeBatch.set(cardReference, cardAsMap);
+
+        writeBatch.update(cardAuthorRef, User.KEY_CARDS_KEYS, FieldValue.arrayUnion(card.getKey()));
+
+        writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -221,8 +228,8 @@ public class CardsSingleton_CF implements iCardsSingleton {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
                         callbacks.onCardSaveError(e.getMessage());
+                        Log.e(TAG, Arrays.toString(e.getStackTrace()));
                     }
                 });
     }

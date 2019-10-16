@@ -10,10 +10,13 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @IgnoreExtraProperties
 public class User implements Parcelable {
-    
+
+    public static final String KEY_CARDS_KEYS = "cardsKeys";
+
     private String key;
     private String name;
     private String email;
