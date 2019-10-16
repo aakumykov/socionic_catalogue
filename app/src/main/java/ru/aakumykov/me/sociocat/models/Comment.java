@@ -20,9 +20,8 @@ public class Comment extends ListItem implements
         Parcelable,
         iTextItem
 {
-    public final static int key_commentId = 10;
-    public final static String key_createdAt = "createdAt";
-    public final static String key_cardId = "cardId";
+    public static final String KEY_USER_NAME = "userName";
+    public static final String KEY_USER_AVATAR = "userAvatarURL";
 
     private String key;
     private String text;

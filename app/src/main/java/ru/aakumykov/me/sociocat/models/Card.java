@@ -11,7 +11,6 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
@@ -450,6 +449,4 @@ public class Card extends ListItem implements
     @Exclude public boolean hasTag(String tagName) {
         return tags.contains(tagName);
     }
-
-
 }
