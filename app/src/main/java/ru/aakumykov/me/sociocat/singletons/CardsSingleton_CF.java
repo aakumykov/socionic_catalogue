@@ -312,7 +312,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
         // Отбор по метке
         if (null != withTag)
-            query = query.whereArrayContains(Card.TAGS_KEY, withTag);
+            query = query.whereArrayContains(Card.KEY_TAGS, withTag);
 
         // Начальное значение
         if (null != startAfterCard)

@@ -11,6 +11,7 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
@@ -25,8 +26,7 @@ public class Card extends ListItem implements
         iTextItem
 {
     public final static String KEY_CTIME = "ctime";
-    public static final String TAGS_KEY = "tags";
-    public static final String KEY_USER_ID = "userId";
+    public static final String KEY_TAGS = "tags";
 
     public final static String GHOST_TAG_PREFIX = "TAG_";
 
