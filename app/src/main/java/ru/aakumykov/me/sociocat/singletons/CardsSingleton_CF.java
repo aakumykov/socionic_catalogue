@@ -24,6 +24,7 @@ import java.util.Map;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
 
 public class CardsSingleton_CF implements iCardsSingleton {
@@ -31,6 +32,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
     private final static String TAG = "CardsSingleton_CF";
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private CollectionReference cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
+    private CollectionReference tagsCollection = firebaseFirestore.collection(Constants.TAGS_PATH);
     private CollectionReference usersCollection = firebaseFirestore.collection(Constants.USERS_PATH);
 
     // Шаблона Одиночки начало
@@ -207,16 +209,18 @@ public class CardsSingleton_CF implements iCardsSingleton {
             cardReference = cardsCollection.document(card.getKey());
         }
 
-        Map<String,Object> cardAsMap = card.toMap();
-
-        String userId = UsersSingleton_CF.getInstance().getCurrentUser().getKey();
-        DocumentReference cardAuthorRef = usersCollection.document(userId);
 
         WriteBatch writeBatch = firebaseFirestore.batch();
 
+        Map<String,Object> cardAsMap = card.toMap();
         writeBatch.set(cardReference, cardAsMap);
 
+        String userId = UsersSingleton_CF.getInstance().getCurrentUser().getKey();
+        DocumentReference cardAuthorRef = usersCollection.document(userId);
         writeBatch.update(cardAuthorRef, User.KEY_CARDS_KEYS, FieldValue.arrayUnion(card.getKey()));
+
+        for (String tagName : card.getTags())
+            writeBatch.set(tagsCollection.document(tagName), new Tag(tagName));
 
         writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

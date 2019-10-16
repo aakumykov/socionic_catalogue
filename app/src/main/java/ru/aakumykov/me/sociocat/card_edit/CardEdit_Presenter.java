@@ -318,7 +318,7 @@ public class CardEdit_Presenter implements
     @Override public void onCardSaveSuccess(Card card) {
 
         finishWork(card);
-        
+
         //updateCardTags(card);
 
         /*if (editMode.equals(CardEditMode.CREATE)) {
