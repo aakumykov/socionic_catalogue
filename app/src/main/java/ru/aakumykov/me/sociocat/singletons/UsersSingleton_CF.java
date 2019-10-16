@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -13,13 +14,16 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
 
 public class UsersSingleton_CF implements iUsersSingleton {
@@ -27,11 +31,12 @@ public class UsersSingleton_CF implements iUsersSingleton {
     private final static String TAG = "UsersSingleton_CF";
 
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-
     private CollectionReference usersCollection = firebaseFirestore.collection(Constants.USERS_PATH);
-    private User currentUser;
-
+    private CollectionReference cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
+    private CollectionReference commentsCollection = firebaseFirestore.collection(Constants.COMMENTS_PATH);
     private CollectionReference adminsCollection = firebaseFirestore.collection(Constants.ADMINS_PATH);
+
+    private User currentUser;
     private List<String> adminsList = new ArrayList<>();
 
 
@@ -165,7 +170,7 @@ public class UsersSingleton_CF implements iUsersSingleton {
             return;
         }
 
-        usersCollection.document(userId).set(user)
+        /*usersCollection.document(userId).set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -177,6 +182,34 @@ public class UsersSingleton_CF implements iUsersSingleton {
                     public void onFailure(@NonNull Exception e) {
                         e.printStackTrace();
                         callbacks.onUserSaveFail(e.getMessage());
+                    }
+                });*/
+
+        WriteBatch writeBatch = firebaseFirestore.batch();
+
+        writeBatch.set(usersCollection.document(user.getKey()), user);
+
+        for (String cardKey : user.getCardsKeys()) {
+            writeBatch.update(cardsCollection.document(cardKey), Card.KEY_USER_NAME, user.getName());
+        }
+
+        for (String commentKey : user.getCommentsKeys()) {
+            writeBatch.update(commentsCollection.document(commentKey), Comment.KEY_USER_NAME, user.getName());
+            writeBatch.update(commentsCollection.document(commentKey), Comment.KEY_USER_AVATAR, user.getAvatarURL());
+        }
+
+        writeBatch.commit()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onUserSaveSuccess(user);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onUserSaveFail(e.getMessage());
+                        Log.e(TAG, Arrays.toString(e.getStackTrace()));
                     }
                 });
     }

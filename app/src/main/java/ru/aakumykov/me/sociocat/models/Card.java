@@ -26,7 +26,7 @@ public class Card extends ListItem implements
 {
     public final static String KEY_CTIME = "ctime";
     public static final String KEY_TAGS = "tags";
-    public static final String KEY_USER_ID = "userId";
+    public static final String KEY_USER_NAME = "userName";
 
     // TODO: а может, все свойства здесь инициализировать?
     private String key;
