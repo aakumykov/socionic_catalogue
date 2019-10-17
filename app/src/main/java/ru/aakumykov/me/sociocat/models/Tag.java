@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +33,7 @@ public class Tag implements Parcelable {
     }
 
 
+    @NotNull
     @Override
     public String toString() {
         return "Tag { key: "+getKey()+
