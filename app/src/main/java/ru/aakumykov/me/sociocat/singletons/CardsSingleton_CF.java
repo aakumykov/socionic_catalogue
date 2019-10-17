@@ -259,7 +259,19 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
     @Override
     public void deleteCard(Card card, DeleteCallbacks callbacks) {
-        cardsCollection.document(card.getKey()).delete()
+
+        String cardKey = card.getKey();
+
+        WriteBatch writeBatch = firebaseFirestore.batch();
+
+        writeBatch.delete(cardsCollection.document(cardKey));
+
+        writeBatch.update(usersCollection.document(card.getUserId()), User.KEY_CARDS_KEYS, FieldValue.arrayRemove(cardKey));
+
+        for (String tagName : card.getTags())
+            writeBatch.update(tagsCollection.document(tagName), Tag.CARDS_KEY, FieldValue.arrayRemove(cardKey));
+
+        writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -269,8 +281,8 @@ public class CardsSingleton_CF implements iCardsSingleton {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
                         callbacks.onCardDeleteError(e.getMessage());
+                        Log.e(TAG, Arrays.toString(e.getStackTrace()));
                     }
                 });
     }
