@@ -48,7 +48,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.1.0'
     implementation 'com.google.firebase:firebase-dynamic-links:19.0.0'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
-    implementation 'com.google.firebase:firebase-firestore:21.1.1'
+    implementation 'com.google.firebase:firebase-firestore:21.2.0'
 
     // AAC
 //    implementation "android.arch.lifecycle:extensions:1.1.1"
