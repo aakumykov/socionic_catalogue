@@ -7,9 +7,10 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Config;
@@ -52,7 +53,8 @@ public class CardEdit_Presenter implements
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
     private Card currentCard;
-    private List<String> oldCardTags;
+    private Card oldCard;
+
     private String imageType;
     private CardEditMode editMode;
 
@@ -309,7 +311,7 @@ public class CardEdit_Presenter implements
 
             view.showProgressMessage(R.string.CARD_EDIT_saving_card);
 
-            cardsSingleton.saveCard(currentCard, this);
+            cardsSingleton.saveCard(currentCard, oldCard, this);
         }
     }
 
@@ -383,7 +385,10 @@ public class CardEdit_Presenter implements
             public void onCardLoadSuccess(Card card) {
                 if (null != card) {
                     currentCard = card;
-                    oldCardTags = card.getTags();
+
+                    Gson gson = new Gson();
+                    oldCard = gson.fromJson(gson.toJson(card), Card.class);
+
                     if (null != view)
                         view.displayCard(card);
                 }
@@ -539,31 +544,6 @@ public class CardEdit_Presenter implements
 
 
         return valid;
-    }
-
-    private void updateCardTags(final Card card) {
-
-        if (null == card)
-            throw new IllegalArgumentException("Card is NULL");
-
-        tagsSingleton.processTags(
-                card.getKey(),
-                oldCardTags,
-                card.getTags(),
-                new iTagsSingleton.UpdateCallbacks() {
-                    @Override
-                    public void onUpdateSuccess() {
-                        finishWork(card);
-                    }
-
-                    @Override
-                    public void onUpdateFail(String errorMsg) {
-                        if (null != view)
-                            view.showErrorMsg(R.string.CARD_EDIT_error_saving_tags, errorMsg);
-                        finishWork(card);
-                    }
-                }
-        );
     }
 
     private void finishWork(Card card) {

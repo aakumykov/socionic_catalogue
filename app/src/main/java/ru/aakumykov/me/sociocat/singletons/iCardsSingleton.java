@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.singletons;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Card;
@@ -29,7 +31,7 @@ public interface iCardsSingleton {
     void updateCommentsCounter(String cardId, int diffValue);
 
     String createKey();
-    void saveCard(Card card, SaveCardCallbacks callbacks);
+    void saveCard(Card card, @Nullable Card oldCard, SaveCardCallbacks callbacks);
 
     void deleteCard(Card card, DeleteCallbacks callbacks);
 

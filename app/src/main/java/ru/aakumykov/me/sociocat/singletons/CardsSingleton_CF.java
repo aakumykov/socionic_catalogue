@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,6 +27,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsSingleton_CF implements iCardsSingleton {
 
@@ -197,7 +199,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
     }
 
     @Override
-    public void saveCard(Card card, SaveCardCallbacks callbacks) {
+    public void saveCard(Card card, @Nullable Card oldCard, SaveCardCallbacks callbacks) {
 
         DocumentReference cardReference;
 
@@ -213,14 +215,31 @@ public class CardsSingleton_CF implements iCardsSingleton {
         WriteBatch writeBatch = firebaseFirestore.batch();
 
         Map<String,Object> cardAsMap = card.toMap();
+
+        // В коллекцию "карточки"
         writeBatch.set(cardReference, cardAsMap);
 
+        // Пользователю
         String userId = UsersSingleton_CF.getInstance().getCurrentUser().getKey();
         DocumentReference cardAuthorRef = usersCollection.document(userId);
         writeBatch.update(cardAuthorRef, User.KEY_CARDS_KEYS, FieldValue.arrayUnion(card.getKey()));
 
-        for (String tagName : card.getTags())
+        // В метки
+        List<String> newTagNames = card.getTags();
+        List<String> oldTagNames = (null != oldCard) ? oldCard.getTags() : new ArrayList<>();
+
+        List<String> addedTagNames = MyUtils.listDiff(newTagNames, oldTagNames);
+        List<String> removedTagNames = MyUtils.listDiff(oldTagNames, newTagNames);
+
+        for (String tagName : addedTagNames) {
+            // Создаю объект Tag в коллекции меток (а автоматом? нет, автоматом не добавляется)
             writeBatch.set(tagsCollection.document(tagName), new Tag(tagName));
+            // TODO: CARDS_KEY --> KEY_CARDS
+            writeBatch.update(tagsCollection.document(tagName), Tag.CARDS_KEY, FieldValue.arrayUnion(card.getKey()));
+        }
+
+        for (String tagName : removedTagNames)
+            writeBatch.update(tagsCollection.document(tagName), Tag.CARDS_KEY, FieldValue.arrayRemove(card.getKey()));
 
         writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
