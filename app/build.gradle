@@ -76,7 +76,7 @@ dependencies {
 
     // Circle image view
     implementation 'de.hdodenhof:circleimageview:2.2.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha10'
+    implementation 'com.google.android.material:material:1.1.0-beta01'
 
     // Saripaar
     implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
