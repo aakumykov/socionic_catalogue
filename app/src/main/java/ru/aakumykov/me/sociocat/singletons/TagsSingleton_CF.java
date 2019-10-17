@@ -199,7 +199,7 @@ public class TagsSingleton_CF implements iTagsSingleton {
                     DocumentReference tagRef = tagsCollection.document(tagName);
                     transaction.update(
                             tagRef,
-                            Tag.CARDS_KEY,
+                            Tag.KEY_CARDS,
                             FieldValue.arrayRemove(cardKey)
                     );
                 }
@@ -212,12 +212,12 @@ public class TagsSingleton_CF implements iTagsSingleton {
                     transaction.set(
                             tagRef,
                             newTag,
-                            SetOptions.mergeFields(Tag.NAME_KEY, Tag.KEY_KEY)
+                            SetOptions.mergeFields(Tag.KEY_NAME, Tag.KEY_KEY)
                     );
 
                     transaction.update(
                             tagRef,
-                            Tag.CARDS_KEY,
+                            Tag.KEY_CARDS,
                             FieldValue.arrayUnion(cardKey)
                     );
                 }

@@ -15,8 +15,8 @@ import java.util.Map;
 public class Tag implements Parcelable {
 
     public static final String KEY_KEY = "key";
-    public static final String NAME_KEY = "name";
-    public static final String CARDS_KEY = "cards";
+    public static final String KEY_NAME = "name";
+    public static final String KEY_CARDS = "cards";
 
     private String key;
     private String name;

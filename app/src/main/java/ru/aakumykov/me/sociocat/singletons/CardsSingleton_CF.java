@@ -234,12 +234,12 @@ public class CardsSingleton_CF implements iCardsSingleton {
         for (String tagName : addedTagNames) {
             // Создаю объект Tag в коллекции меток (а автоматом? нет, автоматом не добавляется)
             writeBatch.set(tagsCollection.document(tagName), new Tag(tagName));
-            // TODO: CARDS_KEY --> KEY_CARDS
-            writeBatch.update(tagsCollection.document(tagName), Tag.CARDS_KEY, FieldValue.arrayUnion(card.getKey()));
+            // TODO: KEY_CARDS --> KEY_CARDS
+            writeBatch.update(tagsCollection.document(tagName), Tag.KEY_CARDS, FieldValue.arrayUnion(card.getKey()));
         }
 
         for (String tagName : removedTagNames)
-            writeBatch.update(tagsCollection.document(tagName), Tag.CARDS_KEY, FieldValue.arrayRemove(card.getKey()));
+            writeBatch.update(tagsCollection.document(tagName), Tag.KEY_CARDS, FieldValue.arrayRemove(card.getKey()));
 
         writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -269,7 +269,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
         writeBatch.update(usersCollection.document(card.getUserId()), User.KEY_CARDS_KEYS, FieldValue.arrayRemove(cardKey));
 
         for (String tagName : card.getTags())
-            writeBatch.update(tagsCollection.document(tagName), Tag.CARDS_KEY, FieldValue.arrayRemove(cardKey));
+            writeBatch.update(tagsCollection.document(tagName), Tag.KEY_CARDS, FieldValue.arrayRemove(cardKey));
 
         writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
