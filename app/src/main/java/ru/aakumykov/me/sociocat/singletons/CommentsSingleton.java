@@ -17,7 +17,9 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -54,9 +56,9 @@ public class CommentsSingleton implements iCommentsSingleton {
 
         WriteBatch writeBatch = firebaseFirestore.batch();
 
+        writeBatch.set(commentsCollection.document(commentKey), comment);
         writeBatch.update(cardsCollection.document(comment.getCardId()), Card.KEY_COMMENTS_KEYS, FieldValue.arrayUnion(commentKey));
         writeBatch.update(usersCollection.document(comment.getUserId()), User.KEY_COMMENTS_KEYS, FieldValue.arrayUnion(commentKey));
-        writeBatch.set(commentsCollection.document(), comment);
 
         writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -76,9 +78,14 @@ public class CommentsSingleton implements iCommentsSingleton {
 
     @Override
     public void updateComment(Comment comment, CreateCallbacks callbacks) {
+
+        Map<String,Object> updatesMap = new HashMap<>();
+        updatesMap.put(Comment.KEY_TEXT, comment.getText());
+        updatesMap.put(Comment.KEY_EDITED_AT, comment.getEditedAt());
+
         commentsCollection
                 .document(comment.getKey())
-                .set(comment)
+                .update(updatesMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
