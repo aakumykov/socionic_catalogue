@@ -16,6 +16,7 @@ import java.util.Map;
 public class User implements Parcelable {
 
     public static final String KEY_CARDS_KEYS = "cardsKeys";
+    public static final String KEY_COMMENTS_KEYS = "commentsKeys";
 
     private String key;
     private String name;
