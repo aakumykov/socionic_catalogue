@@ -278,10 +278,14 @@ public class CardShow_View extends BaseView implements
         finish();
     }
 
-
     @Override
     public void scrollListToPosition(int position) {
         recyclerView.scrollToPosition(position);
+    }
+
+    @Override
+    public void refreshComments() {
+        commentsPresenter.onSwipeRefreshRequested();
     }
 
 
@@ -291,7 +295,6 @@ public class CardShow_View extends BaseView implements
             @Override
             public void onRefresh() {
                 cardPresenter.onSwipeRefreshRequested();
-                commentsPresenter.onSwipeRefreshRequested();
             }
         });
 

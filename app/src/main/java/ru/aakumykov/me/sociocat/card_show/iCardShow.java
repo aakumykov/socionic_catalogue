@@ -30,6 +30,8 @@ public interface iCardShow {
         void goToAuthorProfile();
 
         void closePageAfterDeletion(Card card);
+
+        void refreshComments();
     }
 
 

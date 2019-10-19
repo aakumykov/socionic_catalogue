@@ -180,6 +180,8 @@ public class CardPresenter implements iCardShow.iCardPresenter {
             public void onCardLoadSuccess(Card card) {
                 pageView.hideSwipeRefreshThrobber();
 
+                pageView.refreshComments();
+
                 try {
                     cardView.displayCard(card);
                 }
