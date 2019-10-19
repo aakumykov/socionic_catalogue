@@ -25,21 +25,21 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class TagsSingleton_CF implements iTagsSingleton {
+public class TagsSingleton implements iTagsSingleton {
 
-    private final static String TAG = "TagsSingleton_CF";
+    private final static String TAG = "TagsSingleton";
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private CollectionReference tagsCollection = firebaseFirestore.collection(Constants.TAGS_PATH);
 
     /* Одиночка */
-    private static volatile TagsSingleton_CF ourInstance;
-    public synchronized static TagsSingleton_CF getInstance() {
-        synchronized (TagsSingleton_CF.class) {
-            if (null == ourInstance) ourInstance = new TagsSingleton_CF();
+    private static volatile TagsSingleton ourInstance;
+    public synchronized static TagsSingleton getInstance() {
+        synchronized (TagsSingleton.class) {
+            if (null == ourInstance) ourInstance = new TagsSingleton();
             return ourInstance;
         }
     }
-    private TagsSingleton_CF() {
+    private TagsSingleton() {
     }
     /* Одиночка */
 

@@ -12,7 +12,7 @@ import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
-import ru.aakumykov.me.sociocat.singletons.TagsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
@@ -31,7 +31,7 @@ public class CardsList_Presenter implements
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
-    private iTagsSingleton tagsSingleton = TagsSingleton_CF.getInstance();
+    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
