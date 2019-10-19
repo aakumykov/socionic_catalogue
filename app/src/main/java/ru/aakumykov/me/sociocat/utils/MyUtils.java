@@ -468,9 +468,12 @@ public final class MyUtils {
     }
 
     public static String getHumanTimeAgo(Context context, Long timestamp, @Nullable Integer stringToEmbedTime_ResourceId) {
-        CharSequence relatedTime = DateUtils.getRelativeTimeSpanString(timestamp, new Date().getTime(), DateUtils.SECOND_IN_MILLIS);
+        CharSequence relatedTimeCharSequence = DateUtils.getRelativeTimeSpanString(timestamp, new Date().getTime(), DateUtils.SECOND_IN_MILLIS);
+
+        String relatedTimeString = relatedTimeCharSequence.toString().toLowerCase();
+
         return (null != stringToEmbedTime_ResourceId) ?
-                context.getString(stringToEmbedTime_ResourceId, relatedTime)
-                : relatedTime.toString();
+                context.getString(stringToEmbedTime_ResourceId, relatedTimeString)
+                : relatedTimeString;
     }
 }
