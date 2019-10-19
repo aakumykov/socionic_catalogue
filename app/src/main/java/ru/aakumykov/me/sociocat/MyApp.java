@@ -16,7 +16,7 @@ import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class MyApp extends Application {
@@ -27,7 +27,7 @@ public class MyApp extends Application {
     @Override public void onCreate() {
         super.onCreate();
 
-        usersSingleton = UsersSingleton_CF.getInstance();
+        usersSingleton = UsersSingleton.getInstance();
 
         // Подписываюсь на события изменения авторизации
         // Firebase

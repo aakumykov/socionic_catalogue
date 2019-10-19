@@ -220,7 +220,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
         writeBatch.set(cardReference, cardAsMap);
 
         // Пользователю
-        String userId = UsersSingleton_CF.getInstance().getCurrentUser().getKey();
+        String userId = UsersSingleton.getInstance().getCurrentUser().getKey();
         DocumentReference cardAuthorRef = usersCollection.document(userId);
         writeBatch.update(cardAuthorRef, User.KEY_CARDS_KEYS, FieldValue.arrayUnion(card.getKey()));
 

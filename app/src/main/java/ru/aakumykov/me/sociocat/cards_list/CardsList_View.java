@@ -36,7 +36,7 @@ import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -250,7 +250,7 @@ public class CardsList_View extends BaseView implements
 
         PopupMenu popupMenu = new PopupMenu(this, view);
 
-        if (UsersSingleton_CF.getInstance().currentUserIsAdmin() || UsersSingleton_CF.getInstance().isCardOwner(card)) {
+        if (UsersSingleton.getInstance().currentUserIsAdmin() || UsersSingleton.getInstance().isCardOwner(card)) {
             popupMenu.inflate(R.menu.edit);
             popupMenu.inflate(R.menu.delete);
         }

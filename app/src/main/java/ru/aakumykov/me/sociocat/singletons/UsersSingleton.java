@@ -26,9 +26,9 @@ import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
 
-public class UsersSingleton_CF implements iUsersSingleton {
+public class UsersSingleton implements iUsersSingleton {
 
-    private final static String TAG = "UsersSingleton_CF";
+    private final static String TAG = "UsersSingleton";
 
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private CollectionReference usersCollection = firebaseFirestore.collection(Constants.USERS_PATH);
@@ -41,14 +41,14 @@ public class UsersSingleton_CF implements iUsersSingleton {
 
 
     /* Одиночка */
-    private static volatile UsersSingleton_CF ourInstance;
-    public synchronized static UsersSingleton_CF getInstance() {
-        synchronized (UsersSingleton_CF.class) {
-            if (null == ourInstance) ourInstance = new UsersSingleton_CF();
+    private static volatile UsersSingleton ourInstance;
+    public synchronized static UsersSingleton getInstance() {
+        synchronized (UsersSingleton.class) {
+            if (null == ourInstance) ourInstance = new UsersSingleton();
             return ourInstance;
         }
     }
-    private UsersSingleton_CF() { }
+    private UsersSingleton() { }
     /* Одиночка */
 
 

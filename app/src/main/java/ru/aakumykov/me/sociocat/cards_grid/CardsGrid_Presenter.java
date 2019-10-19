@@ -20,7 +20,7 @@ import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.CardDeletionHelper;
@@ -37,7 +37,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private iCardsGrid.iPageView pageView;
     private iCardsGrid.iGridView gridView;
     private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private String tagFilter;
     private String filterWord;
 

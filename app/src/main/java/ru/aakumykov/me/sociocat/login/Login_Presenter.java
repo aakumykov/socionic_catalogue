@@ -19,7 +19,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
@@ -33,7 +33,7 @@ public class Login_Presenter implements
     private Intent mTransitIntent;
     private Bundle mTransitArguments;
 
-    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     private String externalAccessToken;

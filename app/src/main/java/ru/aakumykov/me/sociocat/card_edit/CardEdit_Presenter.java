@@ -22,7 +22,7 @@ import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton_CF;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
@@ -45,7 +45,7 @@ public class CardEdit_Presenter implements
     private SharedPreferences sharedPreferences;
 
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 //    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
 //    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();

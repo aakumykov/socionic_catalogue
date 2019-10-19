@@ -18,7 +18,7 @@ import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton_CF;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
@@ -33,7 +33,7 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
     private iCardShow.iPageView pageView;
 //    private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iCommentsSingleton commentsSingleton = CommentsSingleton_CF.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
     private iTextItem mRepliedItem;
     private Comment mEditedComment;

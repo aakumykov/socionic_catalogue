@@ -13,7 +13,7 @@ import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton_CF;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
@@ -29,7 +29,7 @@ public class CardsList_Presenter implements
     private final static String TAG = "CardsList_Presenter";
     private iCardsList.View view;
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
     private iTagsSingleton tagsSingleton = TagsSingleton_CF.getInstance();
     private iCommentsSingleton commentsSingleton = CommentsSingleton_CF.getInstance();
