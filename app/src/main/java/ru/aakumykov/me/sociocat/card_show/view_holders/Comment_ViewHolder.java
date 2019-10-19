@@ -69,9 +69,17 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
                     .into(userAvatarView);
         }
 
-        cTimeView.setText(String.valueOf(comment.getCreatedAt()));
+        Long createdAt = comment.getCreatedAt();
+        String createdAgoString = MyUtils.getHumanTimeAgo(textView.getContext(), createdAt, R.string.COMMENT_created_at);
+        cTimeView.setText(createdAgoString);
+        MyUtils.show(cTimeView);
 
-        mTimeView.setText(String.valueOf(comment.getEditedAt()));
+        Long editedAt = comment.getEditedAt();
+        if (null != editedAt) {
+            String editedAgoString = MyUtils.getHumanTimeAgo(textView.getContext(), createdAt, R.string.COMMENT_edited_at);
+            mTimeView.setText(editedAgoString);
+            MyUtils.show(mTimeView);
+        }
 
         textView.setText(comment.getText());
 
@@ -85,7 +93,6 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
 
         commentRow.setOnLongClickListener(this);
     }
-
 
     // Нажатия
     @OnClick(R.id.replyWidget)

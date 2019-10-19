@@ -8,7 +8,7 @@
     android:background="@drawable/shape_bottom_line"
     android:orientation="vertical"
     android:paddingTop="8dp"
-    android:paddingBottom="6dp">
+    android:paddingBottom="12dp">
 
     <ImageView
         android:id="@+id/imageView"
@@ -36,12 +36,13 @@
 
     <TextView
         android:id="@+id/cTimeView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:textSize="12sp"
         android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/userNameView"
         tools:text="Создано 2 минуты назад"
@@ -49,14 +50,14 @@
 
     <TextView
         android:id="@+id/mTimeView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:textSize="12sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cTimeView"
-        app:layout_constraintTop_toBottomOf="@+id/userNameView"
+        app:layout_constraintStart_toStartOf="@+id/cTimeView"
+        app:layout_constraintTop_toBottomOf="@+id/cTimeView"
         tools:text="Изменено 1 минуту назад"
         tools:visibility="visible" />
 
@@ -65,14 +66,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="64dp" />
+        app:layout_constraintGuide_begin="72dp" />
 
     <TextView
         android:id="@+id/quoteView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/shape_comment_quote_background"
         android:paddingStart="8dp"
@@ -91,7 +91,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:paddingStart="8dp"
         android:paddingTop="6dp"
@@ -107,6 +106,7 @@
         android:id="@+id/editWidget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="12dp"
         android:layout_weight="1"
         android:text="@string/COMMENT_edit"
@@ -122,6 +122,7 @@
         android:id="@+id/replyWidget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_weight="1"
         android:text="@string/COMMENT_reply"
