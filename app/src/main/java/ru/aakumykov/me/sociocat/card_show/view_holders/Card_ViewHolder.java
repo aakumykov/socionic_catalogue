@@ -239,18 +239,15 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     }
 
     private void showTime(Long cTime, Long mTime) {
-        Long currentTime = System.currentTimeMillis();
 
         if (0L != cTime) {
-            CharSequence createTime = DateUtils.getRelativeTimeSpanString(cTime, currentTime, DateUtils.SECOND_IN_MILLIS);
-            String fullCreateTime = context.getString(R.string.CARD_SHOW_created, createTime);
+            String fullCreateTime = MyUtils.getHumanTimeAgo(context, cTime, R.string.CARD_SHOW_created);
             cTimeView.setText(fullCreateTime);
             MyUtils.show(cTimeView);
         }
 
         if (0L != mTime && !cTime.equals(mTime)) {
-            CharSequence editTime = DateUtils.getRelativeTimeSpanString(mTime, currentTime, DateUtils.SECOND_IN_MILLIS);
-            String fullEditTime = context.getString(R.string.CARD_SHOW_edited, editTime);
+            String fullEditTime = MyUtils.getHumanTimeAgo(context, mTime, R.string.CARD_SHOW_edited);
             mTimeView.setText(fullEditTime);
             MyUtils.show(mTimeView);
         }
