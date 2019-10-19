@@ -17,6 +17,7 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,7 +104,16 @@ public class CommentsSingleton implements iCommentsSingleton {
 
     @Override
     public void deleteComment(Comment comment, DeleteCallbacks callbacks) {
-        commentsCollection.document(comment.getKey()).delete()
+
+        String commentKey = comment.getKey();
+
+        WriteBatch writeBatch = firebaseFirestore.batch();
+
+        writeBatch.delete(commentsCollection.document(commentKey));
+        writeBatch.update(cardsCollection.document(comment.getCardId()), Card.KEY_COMMENTS_KEYS, FieldValue.arrayRemove(commentKey));
+        writeBatch.update(usersCollection.document(comment.getCardId()), User.KEY_COMMENTS_KEYS, FieldValue.arrayRemove(commentKey));
+
+        writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -113,8 +123,8 @@ public class CommentsSingleton implements iCommentsSingleton {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
                         callbacks.onDeleteError(e.getMessage());
+                        Log.e(TAG, Arrays.toString(e.getStackTrace()));
                     }
                 });
     }
