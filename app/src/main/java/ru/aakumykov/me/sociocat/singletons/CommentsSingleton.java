@@ -24,9 +24,9 @@ import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
 
-public class CommentsSingleton_CF implements iCommentsSingleton {
+public class CommentsSingleton implements iCommentsSingleton {
 
-    private final static String TAG = "CommentsSingleton_CF";
+    private final static String TAG = "CommentsSingleton";
 
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private CollectionReference commentsCollection = firebaseFirestore.collection(Constants.COMMENTS_PATH);
@@ -34,14 +34,14 @@ public class CommentsSingleton_CF implements iCommentsSingleton {
     private CollectionReference usersCollection = firebaseFirestore.collection(Constants.USERS_PATH);
 
     /* Одиночка */
-    private static volatile CommentsSingleton_CF ourInstance;
-    public synchronized static CommentsSingleton_CF getInstance() {
-        synchronized (CommentsSingleton_CF.class) {
-            if (null == ourInstance) ourInstance = new CommentsSingleton_CF();
+    private static volatile CommentsSingleton ourInstance;
+    public synchronized static CommentsSingleton getInstance() {
+        synchronized (CommentsSingleton.class) {
+            if (null == ourInstance) ourInstance = new CommentsSingleton();
             return ourInstance;
         }
     }
-    private CommentsSingleton_CF() { }
+    private CommentsSingleton() { }
     /* Одиночка */
 
 

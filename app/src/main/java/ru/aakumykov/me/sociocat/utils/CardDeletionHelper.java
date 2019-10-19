@@ -4,7 +4,7 @@ import android.util.Log;
 
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.CommentsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
@@ -52,7 +52,7 @@ public class CardDeletionHelper {
             @Override
             public void onCardDeleteSuccess(Card card) {
                 try {
-                    CommentsSingleton_CF.getInstance().deleteCommentsForCard(card.getKey());
+                    CommentsSingleton.getInstance().deleteCommentsForCard(card.getKey());
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                     e.printStackTrace();
