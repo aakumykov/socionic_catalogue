@@ -7,7 +7,7 @@ import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
@@ -24,7 +24,7 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     private iCardShow.iPageView pageView;
     private iCardShow.iCommentsPresenter commentsPresenter;
 //    private iCardsSingleton cardSingleton = CardsSingleton.getInstance();
-    private iCardsSingleton cardSingleton = CardsSingleton_CF.getInstance();
+    private iCardsSingleton cardSingleton = CardsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private @Nullable Card currentCard;
 

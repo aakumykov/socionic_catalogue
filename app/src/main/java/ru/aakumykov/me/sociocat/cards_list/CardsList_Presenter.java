@@ -9,7 +9,7 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton_CF;
@@ -30,7 +30,7 @@ public class CardsList_Presenter implements
     private iCardsList.View view;
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-    private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iTagsSingleton tagsSingleton = TagsSingleton_CF.getInstance();
     private iCommentsSingleton commentsSingleton = CommentsSingleton_CF.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();

@@ -19,7 +19,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
@@ -47,7 +47,7 @@ public class CardEdit_Presenter implements
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 //    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
-    private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
 //    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
     private iTagsSingleton tagsSingleton = TagsSingleton_CF.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
@@ -409,7 +409,7 @@ public class CardEdit_Presenter implements
 
 //        cardsSingleton.loadCard(cardKey, loadCallbacks);
 
-        CardsSingleton_CF.getInstance().loadCard(cardKey, loadCallbacks);
+        CardsSingleton.getInstance().loadCard(cardKey, loadCallbacks);
     }
 
     private void updateCurrentCardFromView(){

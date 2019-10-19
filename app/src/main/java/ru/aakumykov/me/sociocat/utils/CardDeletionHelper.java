@@ -2,16 +2,11 @@ package ru.aakumykov.me.sociocat.utils;
 
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.models.Comment;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.CommentsSingleton_CF;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 
 public class CardDeletionHelper {
@@ -53,7 +48,7 @@ public class CardDeletionHelper {
 
     private static void deleteCardReal(Card card, iDeletionCallbacks callbacks) {
 
-        CardsSingleton_CF.getInstance().deleteCard(card, new iCardsSingleton.DeleteCallbacks() {
+        CardsSingleton.getInstance().deleteCard(card, new iCardsSingleton.DeleteCallbacks() {
             @Override
             public void onCardDeleteSuccess(Card card) {
                 try {

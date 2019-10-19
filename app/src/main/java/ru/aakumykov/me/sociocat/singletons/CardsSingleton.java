@@ -29,23 +29,23 @@ import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class CardsSingleton_CF implements iCardsSingleton {
+public class CardsSingleton implements iCardsSingleton {
 
-    private final static String TAG = "CardsSingleton_CF";
+    private final static String TAG = "CardsSingleton";
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private CollectionReference cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
     private CollectionReference tagsCollection = firebaseFirestore.collection(Constants.TAGS_PATH);
     private CollectionReference usersCollection = firebaseFirestore.collection(Constants.USERS_PATH);
 
     // Шаблона Одиночки начало
-    private static volatile CardsSingleton_CF ourInstance;
-    public synchronized static CardsSingleton_CF getInstance() {
-        synchronized (CardsSingleton_CF.class) {
-            if (null == ourInstance) ourInstance = new CardsSingleton_CF();
+    private static volatile CardsSingleton ourInstance;
+    public synchronized static CardsSingleton getInstance() {
+        synchronized (CardsSingleton.class) {
+            if (null == ourInstance) ourInstance = new CardsSingleton();
             return ourInstance;
         }
     }
-    private CardsSingleton_CF() { }
+    private CardsSingleton() { }
     // Шаблона Одиночки конец
 
 
@@ -190,7 +190,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
     @Override
     public void updateCommentsCounter(String cardId, int diffValue) {
-        throw new RuntimeException("CardsSingleton_CF.updateCommentsCounter() ещё не реализван.");
+        throw new RuntimeException("CardsSingleton.updateCommentsCounter() ещё не реализван.");
     }
 
     @Override
@@ -289,12 +289,12 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
     @Override
     public void rateUp(String cardId, String byUserId, RatingCallbacks callbacks) {
-        throw new RuntimeException("CardsSingleton_CF.rateUp() ещё не реализван.");
+        throw new RuntimeException("CardsSingleton.rateUp() ещё не реализван.");
     }
 
     @Override
     public void rateDown(String cardId, String byUserId, RatingCallbacks callbacks) {
-        throw new RuntimeException("CardsSingleton_CF.rateDown() ещё не реализван.");
+        throw new RuntimeException("CardsSingleton.rateDown() ещё не реализван.");
     }
 
 
