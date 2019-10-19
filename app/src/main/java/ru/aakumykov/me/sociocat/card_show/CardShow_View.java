@@ -291,6 +291,7 @@ public class CardShow_View extends BaseView implements
             @Override
             public void onRefresh() {
                 cardPresenter.onSwipeRefreshRequested();
+                commentsPresenter.onSwipeRefreshRequested();
             }
         });
 

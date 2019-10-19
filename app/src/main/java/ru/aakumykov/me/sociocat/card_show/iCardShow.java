@@ -144,6 +144,8 @@ public interface iCardShow {
         void onDeleteConfirmed(Comment comment);
 
         void onSendCommentClicked(iCommentForm commentForm);
+
+        void onSwipeRefreshRequested();
     }
 
 

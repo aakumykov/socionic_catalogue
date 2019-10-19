@@ -31,13 +31,14 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
 
     private iCardShow.iCommentsView commentsView;
     private iCardShow.iPageView pageView;
-//    private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iCommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
     private iTextItem mRepliedItem;
     private Comment mEditedComment;
     private @Nullable Comment mEndComment;
+
+    private String cardKey;
 
 
     @Override
@@ -62,6 +63,8 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
 
     @Override
     public void onWorkBegins(String cardKey, @Nullable String scrollToCommentKey) {
+        this.cardKey = cardKey;
+
         loadComments(
                 LoadMode.MODE_REPLACE,
                 cardKey,
@@ -157,6 +160,18 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
             createComment(commentText, commentForm);
         else if (null != mEditedComment)
             updateComment(commentText, commentForm);
+    }
+
+    @Override
+    public void onSwipeRefreshRequested() {
+        loadComments(
+                LoadMode.MODE_REPLACE,
+                this.cardKey,
+                null,
+                null,
+                0,
+                null
+        );
     }
 
 
