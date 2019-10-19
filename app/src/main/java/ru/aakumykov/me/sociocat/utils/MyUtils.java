@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -464,5 +465,12 @@ public final class MyUtils {
 
     public static String quoteString(Context context, String dirName) {
         return context.getResources().getString(R.string.aquotes, dirName);
+    }
+
+    public static String getHumanTimeAgo(Context context, Long timestamp, @Nullable Integer stringToEmbedTime_ResourceId) {
+        CharSequence relatedTime = DateUtils.getRelativeTimeSpanString(timestamp, new Date().getTime(), DateUtils.SECOND_IN_MILLIS);
+        return (null != stringToEmbedTime_ResourceId) ?
+                context.getString(stringToEmbedTime_ResourceId, relatedTime)
+                : relatedTime.toString();
     }
 }
