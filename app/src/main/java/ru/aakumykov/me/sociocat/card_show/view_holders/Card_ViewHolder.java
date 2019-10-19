@@ -2,7 +2,6 @@ package ru.aakumykov.me.sociocat.card_show.view_holders;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -241,13 +240,13 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     private void showTime(Long cTime, Long mTime) {
 
         if (0L != cTime) {
-            String fullCreateTime = MyUtils.getHumanTimeAgo(context, cTime, R.string.CARD_SHOW_created);
+            String fullCreateTime = MyUtils.getHumanTimeAgo(context, cTime, R.string.CARD_SHOW_created_at);
             cTimeView.setText(fullCreateTime);
             MyUtils.show(cTimeView);
         }
 
         if (0L != mTime && !cTime.equals(mTime)) {
-            String fullEditTime = MyUtils.getHumanTimeAgo(context, mTime, R.string.CARD_SHOW_edited);
+            String fullEditTime = MyUtils.getHumanTimeAgo(context, mTime, R.string.CARD_SHOW_edited_at);
             mTimeView.setText(fullEditTime);
             MyUtils.show(mTimeView);
         }
