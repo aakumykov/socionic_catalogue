@@ -513,5 +513,6 @@
     <string name="BACKUP_SERVICE_collection_is_saved">Collection «%1$s» is saved</string>
     <string name="BACKUP_SERVICE_directory_created">Directory «%1$s» created</string>
     <string name="BACKUP_SERVICE_backup_started">Backup started</string>
+    <string name="COMMENT_delete">Delete</string>
 </resources>
 <!-- «%1$s» -->

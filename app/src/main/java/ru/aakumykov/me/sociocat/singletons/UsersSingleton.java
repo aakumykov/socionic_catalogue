@@ -430,7 +430,7 @@ public class UsersSingleton implements iUsersSingleton {
 
     @Override
     public boolean currentUserIsAdmin() {
-        return adminsList.contains(currentUser.getKey());
+        return null != currentUser && adminsList.contains(currentUser.getKey());
     }
 
     @Override

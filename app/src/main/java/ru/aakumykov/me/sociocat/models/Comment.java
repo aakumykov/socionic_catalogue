@@ -34,7 +34,7 @@ public class Comment extends ListItem implements
     private String userName;
     private String userAvatarURL;
     private Long createdAt;
-    private Long editedAt;
+    private Long editedAt = 0L;
     private Integer rating = 0;
     private List<String> rateUpList = new ArrayList<>();
     private List<String> rateDownList = new ArrayList<>();

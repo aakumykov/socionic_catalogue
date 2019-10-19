@@ -521,5 +521,6 @@
     <string name="BACKUP_SERVICE_collection_is_saved">Коллекция «%1$s» сохранена</string>
     <string name="BACKUP_SERVICE_directory_created">Создан каталог «%1$s»</string>
     <string name="BACKUP_SERVICE_backup_started">Начато резервное копирование</string>
+    <string name="COMMENT_delete">Удалить</string>
 
 </resources><!-- «%1$s» -->

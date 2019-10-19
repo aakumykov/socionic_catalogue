@@ -111,7 +111,7 @@ public class CommentsSingleton implements iCommentsSingleton {
 
         writeBatch.delete(commentsCollection.document(commentKey));
         writeBatch.update(cardsCollection.document(comment.getCardId()), Card.KEY_COMMENTS_KEYS, FieldValue.arrayRemove(commentKey));
-        writeBatch.update(usersCollection.document(comment.getCardId()), User.KEY_COMMENTS_KEYS, FieldValue.arrayRemove(commentKey));
+        writeBatch.update(usersCollection.document(comment.getUserId()), User.KEY_COMMENTS_KEYS, FieldValue.arrayRemove(commentKey));
 
         writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

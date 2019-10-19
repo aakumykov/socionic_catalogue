@@ -19,6 +19,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Comment_ViewHolder  extends Base_ViewHolder implements
@@ -34,6 +35,7 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
     @BindView(R.id.messageView) TextView textView;
     @BindView(R.id.replyWidget) TextView replyWidget;
     @BindView(R.id.editWidget) TextView editWidget;
+    @BindView(R.id.deleteWidget) TextView deleteWidget;
 
     private final static String TAG = "Comment_ViewHolder";
     private iCardShow.iCommentsPresenter commentsPresenter;
@@ -75,7 +77,7 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
         MyUtils.show(cTimeView);
 
         Long editedAt = comment.getEditedAt();
-        if (null != editedAt) {
+        if (null != editedAt && editedAt > 0L) {
             String editedAgoString = MyUtils.getHumanTimeAgo(textView.getContext(), createdAt, R.string.COMMENT_edited_at);
             mTimeView.setText(editedAgoString);
             MyUtils.show(mTimeView);
@@ -83,11 +85,16 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
 
         textView.setText(comment.getText());
 
-        String currentUserId = AuthSingleton.currentUserId();
-        String commentAuthorId = currentComment.getUserId();
-        if (!TextUtils.isEmpty(currentUserId) && !TextUtils.isEmpty(commentAuthorId)) {
-            if (commentAuthorId.equals(currentUserId)) {
+        String userId = AuthSingleton.currentUserId();
+        String authorId = currentComment.getUserId();
+        boolean isAdmin = UsersSingleton.getInstance().currentUserIsAdmin();
+
+        if (null != userId) {
+            MyUtils.show(replyWidget);
+
+            if (userId.equals(authorId) || isAdmin) {
                 MyUtils.show(editWidget);
+                MyUtils.show(deleteWidget);
             }
         }
 
@@ -96,13 +103,18 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
 
     // Нажатия
     @OnClick(R.id.replyWidget)
-    void openCommentForm() {
+    void onReplyClicked() {
         commentsPresenter.onReplyClicked(currentComment);
     }
 
     @OnClick(R.id.editWidget)
-    void startEditingComment() {
+    void onEditClicked() {
         commentsPresenter.onEditCommentClicked(currentComment);
+    }
+
+    @OnClick(R.id.deleteWidget)
+    void onDeleteClicked() {
+        commentsPresenter.onDeleteCommentClicked(currentComment);
     }
 
     @Override
