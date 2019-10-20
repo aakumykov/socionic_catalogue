@@ -68,7 +68,7 @@ public class CardPresenter implements iCardShow.iCardPresenter {
                 pageView.hideProgressMessage();
 
                 try {
-                    cardView.displayCard(card);
+                    cardView.displayCard(card, null);
                     commentsPresenter.onWorkBegins(cardKey, commentKey);
                 } catch (Exception e) {
                     pageView.showErrorMsg(R.string.CARD_SHOW_there_is_no_card, e.getMessage());
@@ -125,7 +125,7 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     @Override
     public void onCardEdited(Card card) {
         try {
-            cardView.displayCard(card);
+            cardView.displayCard(card, null);
         }
         catch (Exception e) {
             pageView.showErrorMsg(R.string.CARD_SHOW_error_displaying_card, e.getMessage());
@@ -180,10 +180,13 @@ public class CardPresenter implements iCardShow.iCardPresenter {
             public void onCardLoadSuccess(Card card) {
                 pageView.hideSwipeRefreshThrobber();
 
-                pageView.refreshComments();
-
                 try {
-                    cardView.displayCard(card);
+                    cardView.displayCard(card, new iCardShow.iCardView.iDisplayCardCallbacks() {
+                        @Override
+                        public void onCardDisplayed() {
+                            pageView.refreshComments();
+                        }
+                    });
                 }
                 catch (Exception e) {
                     pageView.showErrorMsg(R.string.CARD_SHOW_error_displaying_card, e.getMessage());

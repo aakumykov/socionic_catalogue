@@ -49,7 +49,11 @@ public interface iCardShow {
     // Отображение карточки
     interface iCardView {
 
-        void displayCard(@Nullable Card card) throws Exception;
+        interface iDisplayCardCallbacks {
+            void onCardDisplayed();
+        }
+
+        void displayCard(@Nullable Card card, @Nullable iDisplayCardCallbacks callbacks) throws Exception;
 
         void showCardThrobber();
         void hideCardThrobber();
