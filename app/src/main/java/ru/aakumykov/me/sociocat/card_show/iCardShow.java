@@ -49,10 +49,6 @@ public interface iCardShow {
     // Отображение карточки
     interface iCardView {
 
-        interface iDisplayCardCallbacks {
-            void onCardDisplayed();
-        }
-
         void displayCard(@Nullable Card card, @Nullable iDisplayCardCallbacks callbacks) throws Exception;
 
         void showCardThrobber();
@@ -165,5 +161,11 @@ public interface iCardShow {
         void enableRatingContols();
 
         void showRating(Card card, String ratedByUserId);
+    }
+
+
+    // Методы обратного вызова
+    interface iDisplayCardCallbacks {
+        void onCardDisplayed();
     }
 }

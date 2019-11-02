@@ -8,7 +8,7 @@ import ru.aakumykov.me.sociocat.models.Card;
 public class CardView_Stub implements iCardShow.iCardView {
 
     @Override
-    public void displayCard(@Nullable Card card, @Nullable iDisplayCardCallbacks callbacks) throws Exception {
+    public void displayCard(@Nullable Card card, @Nullable iCardShow.iDisplayCardCallbacks callbacks) throws Exception {
 
     }
 

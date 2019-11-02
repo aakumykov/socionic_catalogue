@@ -181,10 +181,11 @@ public class CardPresenter implements iCardShow.iCardPresenter {
                 pageView.hideSwipeRefreshThrobber();
 
                 try {
-                    cardView.displayCard(card, new iCardShow.iCardView.iDisplayCardCallbacks() {
+                    cardView.displayCard(card, new iCardShow.iDisplayCardCallbacks() {
                         @Override
                         public void onCardDisplayed() {
-                            pageView.refreshComments();
+                            //pageView.refreshComments();
+                            pageView.showToast("Обновление комментариев не реализовано");
                         }
                     });
                 }
