@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -204,6 +205,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements
             case Constants.IMAGE_CARD:
                 Glide.with(imageView.getContext())
                         .load(card.getImageURL())
+//                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .placeholder(R.drawable.ic_image_placeholder)
                         .error(R.drawable.ic_image_error)
                         .into(imageView);
