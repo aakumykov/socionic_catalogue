@@ -476,4 +476,17 @@ public final class MyUtils {
                 context.getString(stringToEmbedTime_ResourceId, relatedTimeString)
                 : relatedTimeString;
     }
+
+    public static <T> void printError(String tag, T e) {
+        if (e instanceof Exception) {
+            Exception exception = ((Exception) e);
+            Log.e(TAG, ((Exception) e).getMessage());
+            for (StackTraceElement stackTraceElement : exception.getStackTrace()) {
+                Log.e(TAG, stackTraceElement.toString());
+            }
+        }
+        else {
+            Log.e(TAG, String.valueOf(e));
+        }
+    }
 }
