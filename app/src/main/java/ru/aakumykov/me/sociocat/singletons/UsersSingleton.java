@@ -25,6 +25,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class UsersSingleton implements iUsersSingleton {
 
@@ -204,15 +205,32 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void deleteUser(User user, DeleteCallbacks callbacks) {
+    public void deleteUser(User user, boolean recursive, DeleteCallbacks callbacks) {
         String userId = user.getKey();
 
         if (TextUtils.isEmpty(userId)) {
-            callbacks.onUserDeleteFail("There is no id in User object.");
+            callbacks.onUserDeleteFail("There is no userId.");
             return;
         }
 
-        usersCollection.document(userId).delete()
+        WriteBatch writeBatch = firebaseFirestore.batch();
+
+        // Сам пользователь
+        writeBatch.delete(usersCollection.document(userId));
+
+        if (recursive) {
+            // Карточки пользователя
+            for (String cardKey : user.getCardsKeys()) {
+                writeBatch.delete(cardsCollection.document(cardKey));
+            }
+
+            // Комментарии пользователя
+            for (String commentKey : user.getCommentsKeys()) {
+                writeBatch.delete(commentsCollection.document(commentKey));
+            }
+        }
+
+        writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -222,8 +240,8 @@ public class UsersSingleton implements iUsersSingleton {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
                         callbacks.onUserDeleteFail(e.getMessage());
+                        MyUtils.printError(TAG, e);
                     }
                 });
     }

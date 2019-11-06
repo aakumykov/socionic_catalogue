@@ -16,7 +16,7 @@ public interface iUsersSingleton {
     void getUserById(String userId, ReadCallbacks callbacks);
     void getUserByEmail(String email, ReadCallbacks callbacks);
     void saveUser(User user, SaveCallbacks callbacks);
-    void deleteUser(User user, DeleteCallbacks callbacks);
+    void deleteUser(User user, boolean recursive, DeleteCallbacks callbacks);
     void listUsers(ListCallbacks callbacks);
     void checkNameExists(String name, CheckExistanceCallbacks callbacks);
     void checkEmailExists(String email, CheckExistanceCallbacks callbacks);

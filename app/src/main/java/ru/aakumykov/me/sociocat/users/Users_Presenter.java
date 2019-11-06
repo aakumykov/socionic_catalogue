@@ -298,7 +298,7 @@ public class Users_Presenter implements
             });
         }
         catch (Exception e) {
-            e.printStackTrace();
+            e.printError();
             editView.showErrorMsg(R.string.USER_EDIT_error_updating_user, e.getMessage());
         }*/
 
