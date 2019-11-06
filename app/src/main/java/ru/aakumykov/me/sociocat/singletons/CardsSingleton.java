@@ -201,6 +201,7 @@ public class CardsSingleton implements iCardsSingleton {
     @Override
     public void saveCard(Card card, @Nullable Card oldCard, SaveCardCallbacks callbacks) {
 
+        // Получаю ссылку на объект карточки в БД
         DocumentReference cardReference;
 
         if (null == card.getKey()) {
@@ -231,6 +232,7 @@ public class CardsSingleton implements iCardsSingleton {
         List<String> addedTagNames = MyUtils.listDiff(newTagNames, oldTagNames);
         List<String> removedTagNames = MyUtils.listDiff(oldTagNames, newTagNames);
 
+        // добавленные метки
         for (String tagName : addedTagNames) {
             // Создаю объект Tag в коллекции меток (а автоматом? нет, автоматом не добавляется)
             writeBatch.set(tagsCollection.document(tagName), new Tag(tagName));
@@ -238,9 +240,12 @@ public class CardsSingleton implements iCardsSingleton {
             writeBatch.update(tagsCollection.document(tagName), Tag.KEY_CARDS, FieldValue.arrayUnion(card.getKey()));
         }
 
-        for (String tagName : removedTagNames)
+        // удалённые метки
+        for (String tagName : removedTagNames) {
             writeBatch.update(tagsCollection.document(tagName), Tag.KEY_CARDS, FieldValue.arrayRemove(card.getKey()));
+        }
 
+        // Применение изменений
         writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
