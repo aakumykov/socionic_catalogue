@@ -23,14 +23,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -293,7 +288,7 @@ public class CardEdit_View extends BaseView implements
             hideImageError();
 
             try {
-                /*Picasso.get().load(imageURI)
+                Picasso.get().load(imageURI)
                         .into(imageView, new Callback() {
                             @Override
                             public void onSuccess() {
@@ -310,33 +305,9 @@ public class CardEdit_View extends BaseView implements
                                 showErrorMsg(R.string.CARD_EDIT_error_displaying_image, e.getMessage());
                                 e.printStackTrace();
                             }
-                        });*/
-
-                Glide.with(this)
-                        .load(imageURI)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .placeholder(R.drawable.ic_image_placeholder)
-                        .error(R.drawable.ic_image_error)
-                        .into(new CustomTarget<Drawable>() {
-                            @Override
-                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                                imageView.setImageDrawable(resource);
-
-                                MyUtils.hide(mediaThrobber);
-                                MyUtils.hide(imagePlaceholder);
-                                MyUtils.show(imageHolder);
-                                MyUtils.show(imageView);
-                                MyUtils.show(discardImageButton);
-                            }
-
-                            @Override
-                            public void onLoadCleared(@Nullable Drawable placeholder) {
-                                presenter.removeImageClicked();
-                            }
                         });
-            }
-            catch (Exception e) {
+
+            } catch (Exception e) {
                 showBrokenImage();
                 showErrorMsg(R.string.CARD_EDIT_error_displaying_image, e.getMessage());
                 e.printStackTrace();
