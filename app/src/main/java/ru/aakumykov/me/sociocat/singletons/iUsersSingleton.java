@@ -40,6 +40,7 @@ public interface iUsersSingleton {
 
     boolean isCardOwner(Card card);
 
+
     interface CreateCallbacks {
         void onUserCreateSuccess(User user);
         void onUserCreateFail(String errorMsg);

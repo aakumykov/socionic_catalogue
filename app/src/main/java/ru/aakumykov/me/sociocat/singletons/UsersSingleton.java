@@ -166,33 +166,22 @@ public class UsersSingleton implements iUsersSingleton {
         String userId = user.getKey();
 
         if (TextUtils.isEmpty(userId)) {
-            callbacks.onUserSaveFail("There is no id in User object.");
+            callbacks.onUserSaveFail("There is no userId.");
             return;
         }
 
-        /*usersCollection.document(userId).set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onUserSaveSuccess(user);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-                        callbacks.onUserSaveFail(e.getMessage());
-                    }
-                });*/
 
         WriteBatch writeBatch = firebaseFirestore.batch();
 
-        writeBatch.set(usersCollection.document(user.getKey()), user);
+        // Обновляю пользователя
+        writeBatch.set(usersCollection.document(userId), user);
 
+        // Обновляю карточки пользователя
         for (String cardKey : user.getCardsKeys()) {
             writeBatch.update(cardsCollection.document(cardKey), Card.KEY_USER_NAME, user.getName());
         }
 
+        // Обновляю комментарии пользователя
         for (String commentKey : user.getCommentsKeys()) {
             writeBatch.update(commentsCollection.document(commentKey), Comment.KEY_USER_NAME, user.getName());
             writeBatch.update(commentsCollection.document(commentKey), Comment.KEY_USER_AVATAR, user.getAvatarURL());
