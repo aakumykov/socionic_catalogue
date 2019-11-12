@@ -311,6 +311,7 @@ public class CardEdit_Presenter implements
 
             view.showProgressMessage(R.string.CARD_EDIT_saving_card);
 
+//            cardsSingleton.saveCard(currentCard, oldCard, this);
             cardsSingleton.saveCard(currentCard, oldCard, this);
         }
     }

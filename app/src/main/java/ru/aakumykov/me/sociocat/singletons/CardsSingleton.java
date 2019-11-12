@@ -15,6 +15,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
@@ -201,163 +202,6 @@ public class CardsSingleton implements iCardsSingleton {
     @Override
     public void saveCard(Card card, @Nullable Card oldCard, SaveCardCallbacks callbacks) {
 
-        // Получаю ссылку на объект карточки в БД
-        DocumentReference cardReference;
-
-        if (null == card.getKey()) {
-            cardReference = cardsCollection.document();
-            card.setKey(cardReference.getId());
-        }
-        else {
-            cardReference = cardsCollection.document(card.getKey());
-        }
-
-
-        WriteBatch writeBatch = firebaseFirestore.batch();
-
-        Map<String,Object> cardAsMap = card.toMap();
-
-        // В коллекцию "карточки"
-        writeBatch.set(cardReference, cardAsMap);
-
-        // Пользователю
-        String userId = UsersSingleton.getInstance().getCurrentUser().getKey();
-        DocumentReference cardAuthorRef = usersCollection.document(userId);
-        writeBatch.update(cardAuthorRef, User.KEY_CARDS_KEYS, FieldValue.arrayUnion(card.getKey()));
-
-        // В метки
-        List<String> newTagNames = card.getTags();
-        List<String> oldTagNames = (null != oldCard) ? oldCard.getTags() : new ArrayList<>();
-
-        List<String> addedTagNames = MyUtils.listDiff(newTagNames, oldTagNames);
-        List<String> removedTagNames = MyUtils.listDiff(oldTagNames, newTagNames);
-
-        // добавленные метки
-        for (String tagName : addedTagNames) {
-            // Создаю объект Tag в коллекции меток (а автоматом? нет, автоматом не добавляется)
-            writeBatch.set(tagsCollection.document(tagName), new Tag(tagName));
-            // TODO: KEY_CARDS --> KEY_CARDS
-            writeBatch.update(tagsCollection.document(tagName), Tag.KEY_CARDS, FieldValue.arrayUnion(card.getKey()));
-        }
-
-        // удалённые метки
-        for (String tagName : removedTagNames) {
-            writeBatch.update(tagsCollection.document(tagName), Tag.KEY_CARDS, FieldValue.arrayRemove(card.getKey()));
-        }
-
-        // Применение изменений
-        writeBatch.commit()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onCardSaveSuccess(card);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onCardSaveError(e.getMessage());
-                        Log.e(TAG, Arrays.toString(e.getStackTrace()));
-                    }
-                });
-    }
-
-    public void saveCard_v1_only_card(Card card, @Nullable Card oldCard, SaveCardCallbacks callbacks) {
-
-        // Получаю ссылку на объект карточки в БД
-        DocumentReference cardReference;
-
-        String cardId = card.getKey();
-
-        if (null == card.getKey()) {
-            cardReference = cardsCollection.document();
-            card.setKey(cardReference.getId());
-        }
-        else {
-            cardReference = cardsCollection.document(card.getKey());
-        }
-
-        WriteBatch writeBatch = firebaseFirestore.batch();
-
-        // В коллекцию "карточки"
-        writeBatch.set(cardReference, card.toMap());
-
-        // В пользователя
-        writeBatch.update(
-                usersCollection.document(card.getUserId()),
-                User.KEY_CARDS_KEYS,
-                FieldValue.arrayUnion(cardId)
-        );
-
-        writeBatch.commit()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onCardSaveSuccess(card);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onCardSaveError(e.getMessage());
-                        MyUtils.printError(TAG, e);
-                    }
-                });
-    }
-
-    public void saveCard_v2_card_with_one_tag(Card card, @Nullable Card oldCard, SaveCardCallbacks callbacks) {
-
-        // Ссылка на карточку
-        DocumentReference cardReference;
-
-        String cardId = card.getKey();
-
-        if (null == card.getKey()) {
-            cardReference = cardsCollection.document();
-            card.setKey(cardReference.getId());
-        }
-        else {
-            cardReference = cardsCollection.document(card.getKey());
-        }
-
-        WriteBatch writeBatch = firebaseFirestore.batch();
-
-        // В коллекцию "карточки"
-        writeBatch.set(cardReference, card.toMap());
-
-        // В пользователя
-        writeBatch.update(
-                usersCollection.document(card.getUserId()),
-                User.KEY_CARDS_KEYS,
-                FieldValue.arrayUnion(cardId)
-        );
-
-        // В метки
-        List<String> tagsList = card.getTags();
-        for (String tagName : tagsList) {
-            DocumentReference tagRef = tagsCollection.document(tagName);
-            writeBatch.update(tagRef, Tag.KEY_NAME, tagName);
-            writeBatch.update(tagRef, Tag.KEY_CARDS, FieldValue.arrayUnion(cardId));
-        }
-
-        writeBatch.commit()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onCardSaveSuccess(card);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onCardSaveError(e.getMessage());
-                        MyUtils.printError(TAG, e);
-                    }
-                });
-    }
-
-    public void saveCard_v3_card_with_added_and_removed_tags(Card card, @Nullable Card oldCard, SaveCardCallbacks callbacks) {
-
         // Ссылка на карточку
         DocumentReference cardReference;
 
@@ -393,7 +237,7 @@ public class CardsSingleton implements iCardsSingleton {
         // Новые
         for (String tagName : addedTags) {
             DocumentReference tagRef = tagsCollection.document(tagName);
-            writeBatch.update(tagRef, Tag.KEY_NAME, tagName);
+            writeBatch.set(tagRef, new Tag(tagName), SetOptions.mergeFields(Tag.KEY_NAME, Tag.KEY_KEY));
             writeBatch.update(tagRef, Tag.KEY_CARDS, FieldValue.arrayUnion(cardId));
         }
 
@@ -416,6 +260,7 @@ public class CardsSingleton implements iCardsSingleton {
                         MyUtils.printError(TAG, e);
                     }
                 });
+
     }
 
     @Override
