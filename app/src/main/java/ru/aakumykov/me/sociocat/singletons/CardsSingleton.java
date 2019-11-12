@@ -391,8 +391,16 @@ public class CardsSingleton implements iCardsSingleton {
         List<String> removedTags = MyUtils.listDiff(oldCardTags, newCardTags);
 
         // Новые
+        for (String tagName : addedTags) {
+            DocumentReference tagRef = tagsCollection.document(tagName);
+            writeBatch.update(tagRef, Tag.KEY_NAME, tagName);
+            writeBatch.update(tagRef, Tag.KEY_CARDS, FieldValue.arrayUnion(cardId));
+        }
 
         // Старые
+        for (String tagName : removedTags) {
+            writeBatch.update(tagsCollection.document(tagName), Tag.KEY_CARDS, FieldValue.arrayRemove(cardId));
+        }
 
         writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
