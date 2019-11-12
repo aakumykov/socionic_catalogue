@@ -356,6 +356,60 @@ public class CardsSingleton implements iCardsSingleton {
                 });
     }
 
+    public void saveCard_v3_card_with_added_and_removed_tags(Card card, @Nullable Card oldCard, SaveCardCallbacks callbacks) {
+
+        // Ссылка на карточку
+        DocumentReference cardReference;
+
+        String cardId = card.getKey();
+
+        if (null == card.getKey()) {
+            cardReference = cardsCollection.document();
+            card.setKey(cardReference.getId());
+        }
+        else {
+            cardReference = cardsCollection.document(card.getKey());
+        }
+
+        WriteBatch writeBatch = firebaseFirestore.batch();
+
+        // В коллекцию "карточки"
+        writeBatch.set(cardReference, card.toMap());
+
+        // В пользователя
+        writeBatch.update(
+                usersCollection.document(card.getUserId()),
+                User.KEY_CARDS_KEYS,
+                FieldValue.arrayUnion(cardId)
+        );
+
+        // В метки
+        List<String> newCardTags = card.getTags();
+        List<String> oldCardTags = (null != oldCard) ? oldCard.getTags() : new ArrayList<>();
+
+        List<String> addedTags = MyUtils.listDiff(newCardTags, oldCardTags);
+        List<String> removedTags = MyUtils.listDiff(oldCardTags, newCardTags);
+
+        // Новые
+
+        // Старые
+
+        writeBatch.commit()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onCardSaveSuccess(card);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onCardSaveError(e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
+    }
+
     @Override
     public void deleteCard(Card card, DeleteCallbacks callbacks) {
 
