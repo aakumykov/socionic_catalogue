@@ -480,7 +480,7 @@ public final class MyUtils {
     public static <T> void printError(String tag, T e) {
         if (e instanceof Exception) {
             Exception exception = ((Exception) e);
-            Log.e(TAG, ((Exception) e).getMessage());
+            Log.e(TAG, exception.getMessage());
             for (StackTraceElement stackTraceElement : exception.getStackTrace()) {
                 Log.e(TAG, stackTraceElement.toString());
             }
