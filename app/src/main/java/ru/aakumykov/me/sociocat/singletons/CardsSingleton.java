@@ -262,6 +262,49 @@ public class CardsSingleton implements iCardsSingleton {
                 });
     }
 
+    public void saveCard_v1_only_card(Card card, @Nullable Card oldCard, SaveCardCallbacks callbacks) {
+
+        // Получаю ссылку на объект карточки в БД
+        DocumentReference cardReference;
+
+        String cardId = card.getKey();
+
+        if (null == card.getKey()) {
+            cardReference = cardsCollection.document();
+            card.setKey(cardReference.getId());
+        }
+        else {
+            cardReference = cardsCollection.document(card.getKey());
+        }
+
+        WriteBatch writeBatch = firebaseFirestore.batch();
+
+        // В коллекцию "карточки"
+        writeBatch.set(cardReference, card.toMap());
+
+        // В пользователя
+        writeBatch.update(
+                usersCollection.document(card.getUserId()),
+                User.KEY_CARDS_KEYS,
+                FieldValue.arrayUnion(cardId)
+        );
+
+        writeBatch.commit()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onCardSaveSuccess(card);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onCardSaveError(e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
+    }
+
     @Override
     public void deleteCard(Card card, DeleteCallbacks callbacks) {
 
