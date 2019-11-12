@@ -6,8 +6,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -35,6 +37,7 @@ public class CardsSingleton implements iCardsSingleton {
     private final static String TAG = "CardsSingleton";
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private CollectionReference cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
+    private CollectionReference commentsCollection = firebaseFirestore.collection(Constants.COMMENTS_PATH);
     private CollectionReference tagsCollection = firebaseFirestore.collection(Constants.TAGS_PATH);
     private CollectionReference usersCollection = firebaseFirestore.collection(Constants.USERS_PATH);
 
@@ -270,17 +273,44 @@ public class CardsSingleton implements iCardsSingleton {
 
         WriteBatch writeBatch = firebaseFirestore.batch();
 
+        // Карточка
         writeBatch.delete(cardsCollection.document(cardKey));
 
-        writeBatch.update(usersCollection.document(card.getUserId()), User.KEY_CARDS_KEYS, FieldValue.arrayRemove(cardKey));
 
-        for (String tagName : card.getTags())
-            writeBatch.update(tagsCollection.document(tagName), Tag.KEY_CARDS, FieldValue.arrayRemove(cardKey));
+        // Комментарии
+        for (String commentKey : card.getCommentsKeys()) {
+            writeBatch.delete(commentsCollection.document(commentKey));
+        }
+
+        // Метки
+        for (String tagName : card.getTags()) {
+            writeBatch.update(
+                    tagsCollection.document(tagName),
+                    Tag.KEY_CARDS,
+                    FieldValue.arrayRemove(cardKey)
+            );
+        }
+
+        // Пользователь
+        // id-комментариев
+        for (String commentKey : card.getCommentsKeys()) {
+            writeBatch.update(
+                    usersCollection.document(card.getUserId()),
+                    User.KEY_COMMENTS_KEYS,
+                    FieldValue.arrayRemove(commentKey)
+            );
+        }
+        // id-карточки
+        writeBatch.update(
+                usersCollection.document(card.getUserId()),
+                User.KEY_CARDS_KEYS,
+                FieldValue.arrayRemove(cardKey)
+        );
 
         writeBatch.commit()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
+                    public void onComplete(@NonNull Task<Void> task) {
                         callbacks.onCardDeleteSuccess(card);
                     }
                 })
@@ -288,7 +318,7 @@ public class CardsSingleton implements iCardsSingleton {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         callbacks.onCardDeleteError(e.getMessage());
-                        Log.e(TAG, Arrays.toString(e.getStackTrace()));
+                        MyUtils.printError(TAG, e);
                     }
                 });
     }
