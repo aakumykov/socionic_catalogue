@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -13,37 +14,42 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class UsersSingleton_CF implements iUsersSingleton {
+public class UsersSingleton implements iUsersSingleton {
 
-    private final static String TAG = "UsersSingleton_CF";
+    private final static String TAG = "UsersSingleton";
 
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-
     private CollectionReference usersCollection = firebaseFirestore.collection(Constants.USERS_PATH);
-    private User currentUser;
-
+    private CollectionReference cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
+    private CollectionReference commentsCollection = firebaseFirestore.collection(Constants.COMMENTS_PATH);
     private CollectionReference adminsCollection = firebaseFirestore.collection(Constants.ADMINS_PATH);
+
+    private User currentUser;
     private List<String> adminsList = new ArrayList<>();
 
 
     /* Одиночка */
-    private static volatile UsersSingleton_CF ourInstance;
-    public synchronized static UsersSingleton_CF getInstance() {
-        synchronized (UsersSingleton_CF.class) {
-            if (null == ourInstance) ourInstance = new UsersSingleton_CF();
+    private static volatile UsersSingleton ourInstance;
+    public synchronized static UsersSingleton getInstance() {
+        synchronized (UsersSingleton.class) {
+            if (null == ourInstance) ourInstance = new UsersSingleton();
             return ourInstance;
         }
     }
-    private UsersSingleton_CF() { }
+    private UsersSingleton() { }
     /* Одиночка */
 
 
@@ -161,11 +167,28 @@ public class UsersSingleton_CF implements iUsersSingleton {
         String userId = user.getKey();
 
         if (TextUtils.isEmpty(userId)) {
-            callbacks.onUserSaveFail("There is no id in User object.");
+            callbacks.onUserSaveFail("There is no userId.");
             return;
         }
 
-        usersCollection.document(userId).set(user)
+
+        WriteBatch writeBatch = firebaseFirestore.batch();
+
+        // Обновляю пользователя
+        writeBatch.set(usersCollection.document(userId), user);
+
+        // Обновляю карточки пользователя
+        for (String cardKey : user.getCardsKeys()) {
+            writeBatch.update(cardsCollection.document(cardKey), Card.KEY_USER_NAME, user.getName());
+        }
+
+        // Обновляю комментарии пользователя
+        for (String commentKey : user.getCommentsKeys()) {
+            writeBatch.update(commentsCollection.document(commentKey), Comment.KEY_USER_NAME, user.getName());
+            writeBatch.update(commentsCollection.document(commentKey), Comment.KEY_USER_AVATAR, user.getAvatarURL());
+        }
+
+        writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -175,22 +198,39 @@ public class UsersSingleton_CF implements iUsersSingleton {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
                         callbacks.onUserSaveFail(e.getMessage());
+                        Log.e(TAG, Arrays.toString(e.getStackTrace()));
                     }
                 });
     }
 
     @Override
-    public void deleteUser(User user, DeleteCallbacks callbacks) {
+    public void deleteUser(User user, boolean recursive, DeleteCallbacks callbacks) {
         String userId = user.getKey();
 
         if (TextUtils.isEmpty(userId)) {
-            callbacks.onUserDeleteFail("There is no id in User object.");
+            callbacks.onUserDeleteFail("There is no userId.");
             return;
         }
 
-        usersCollection.document(userId).delete()
+        WriteBatch writeBatch = firebaseFirestore.batch();
+
+        // Сам пользователь
+        writeBatch.delete(usersCollection.document(userId));
+
+        if (recursive) {
+            // Карточки пользователя
+            for (String cardKey : user.getCardsKeys()) {
+                writeBatch.delete(cardsCollection.document(cardKey));
+            }
+
+            // Комментарии пользователя
+            for (String commentKey : user.getCommentsKeys()) {
+                writeBatch.delete(commentsCollection.document(commentKey));
+            }
+        }
+
+        writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -200,8 +240,8 @@ public class UsersSingleton_CF implements iUsersSingleton {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
                         callbacks.onUserDeleteFail(e.getMessage());
+                        MyUtils.printError(TAG, e);
                     }
                 });
     }
@@ -375,11 +415,9 @@ public class UsersSingleton_CF implements iUsersSingleton {
     }
 
     @Override
-    public void storeCurrentUser(User user) throws Exception {
-        if (null == user)
-            throw new Exception("User cannot be null");
-
-        currentUser = user;
+    public void storeCurrentUser(User user) {
+        if (null != user)
+            currentUser = user;
     }
 
     @Override
@@ -399,7 +437,7 @@ public class UsersSingleton_CF implements iUsersSingleton {
 
     @Override
     public boolean currentUserIsAdmin() {
-        return adminsList.contains(currentUser.getKey());
+        return null != currentUser && adminsList.contains(currentUser.getKey());
     }
 
     @Override

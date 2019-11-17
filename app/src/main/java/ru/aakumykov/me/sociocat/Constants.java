@@ -13,14 +13,14 @@ public final class Constants {
 
     public final static String  PACKAGE_NAME = "ru.aakumykov.me.sociocat";
 
-    public final static String CARDS_PATH = "/cards";
-    public final static String TAGS_PATH = "/tags";
-    public final static String COMMENTS_PATH = "/comments";
-    public final static String IMAGES_PATH = "/images";
-    public final static String USERS_PATH = "/users";
-    public final static String ADMINS_PATH = "/admins";
-    public final static String AVATARS_PATH = "/avatars";
-    public final static String DEVICE_ID_PATH = "/device_id";
+    public final static String CARDS_PATH = "cards";
+    public final static String TAGS_PATH = "tags";
+    public final static String COMMENTS_PATH = "comments";
+    public final static String IMAGES_PATH = "images";
+    public final static String USERS_PATH = "users";
+    public final static String ADMINS_PATH = "admins";
+    public final static String AVATARS_PATH = "avatars";
+    public final static String DEVICE_ID_PATH = "device_id";
 
     public final static String ACTION_CREATE = "ACTION_CREATE";
     public final static String ACTION_EDIT = "ACTION_EDIT";

@@ -21,33 +21,34 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 
     // TODO: попробовать это удалить
-    implementation 'androidx.media:media:1.1.0-rc01'
+    implementation 'androidx.media:media:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.exifinterface:exifinterface:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
-    implementation 'com.google.firebase:firebase-messaging:20.0.0'
-    implementation 'com.google.firebase:firebase-firestore:21.0.0'
-    testImplementation 'junit:junit:4.12'
+    implementation 'androidx.preference:preference:1.1.0'
+//    testImplementation 'junit:junit:4.12'
     //androidTestImplementation 'androidx.test:runner:1.2.0-beta01'
     //androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-beta01'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-core:17.1.0'
-    implementation 'com.google.firebase:firebase-auth:19.0.0'
-    implementation 'com.google.firebase:firebase-database:19.0.0'
-    implementation 'com.google.firebase:firebase-storage:19.0.0'
+    implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.google.firebase:firebase-auth:19.1.0'
+//    implementation 'com.google.firebase:firebase-database:19.1.0'
+    implementation 'com.google.firebase:firebase-storage:19.1.0'
     implementation 'com.google.firebase:firebase-dynamic-links:19.0.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
+    implementation 'com.google.firebase:firebase-firestore:21.2.0'
 
     // AAC
 //    implementation "android.arch.lifecycle:extensions:1.1.1"
@@ -58,6 +59,10 @@ dependencies {
 
     // Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
     // Диспетчер разрешений
     implementation "com.github.hotchemi:permissionsdispatcher:3.1.0"
@@ -71,7 +76,7 @@ dependencies {
 
     // Circle image view
     implementation 'de.hdodenhof:circleimageview:2.2.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha09'
+    implementation 'com.google.android.material:material:1.1.0-beta01'
 
     // Saripaar
     implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
@@ -85,9 +90,6 @@ dependencies {
 
     // FloatingActionButtonSpeedDial
     implementation "com.leinardi.android:speed-dial:2.0.1"
-
-    // MyImageLoader
-    implementation 'com.github.aakumykov:myimageloader:0.14'
 
     // Insertable Youtube Playr
     implementation 'com.github.aakumykov:insertable-youtube-player:e62961cf'
@@ -106,4 +108,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
 //    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
+
+    // Dropbox Java SDK
+    implementation 'com.dropbox.core:dropbox-core-sdk:3.1.1'
 }

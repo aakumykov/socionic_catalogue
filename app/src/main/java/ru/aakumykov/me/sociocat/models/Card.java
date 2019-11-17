@@ -11,6 +11,7 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
@@ -26,7 +27,10 @@ public class Card extends ListItem implements
 {
     public final static String KEY_CTIME = "ctime";
     public static final String KEY_TAGS = "tags";
-    public static final String KEY_USER_ID = "userId";
+    public static final String KEY_USER_NAME = "userName";
+    public static final String KEY_COMMENTS_KEYS = "commentsKeys";
+
+    public final static String GHOST_TAG_PREFIX = "TAG_";
 
     // TODO: а может, все свойства здесь инициализировать?
     private String key;
@@ -43,6 +47,7 @@ public class Card extends ListItem implements
     private Float timecode = 0.0f;
     private String description;
     private int commentsCount = 0;
+    private List<String> commentsKeys = new ArrayList<>();
     private Integer rating = 0;
     private Long ctime = 0L;
     private Long mtime = 0L;
@@ -50,7 +55,6 @@ public class Card extends ListItem implements
     private List<String> tags = new ArrayList<>();
     private HashMap<String, Boolean> rateUpList = new HashMap<>();
     private HashMap<String, Boolean> rateDownList = new HashMap<>();
-    private HashMap<String, Boolean> commentsKeys = new HashMap<>();
 
     @Exclude private transient String localImageURI;
     @Exclude private transient String mimeType;
@@ -91,8 +95,41 @@ public class Card extends ListItem implements
             " }";
     }
 
+    @Exclude
+    public Map<String, Object> toMap() {
+        Map<String, Object> cardMap = new HashMap<>();
 
-    // Parcelable
+        cardMap.put("key", getKey());
+        cardMap.put("userId", getUserId());
+        cardMap.put("userName", getUserName());
+        cardMap.put("type", getType());
+        cardMap.put("title", getTitle());
+        cardMap.put("quote", getQuote());
+        cardMap.put("quoteSource", getQuoteSource());
+        cardMap.put("imageURL", getImageURL());
+        cardMap.put("localImageURI", getLocalImageURI());
+        cardMap.put("mimeType", getMimeType());
+        cardMap.put("imageType", getImageType());
+        cardMap.put("fileName", getFileName());
+        cardMap.put("videoCode", getVideoCode());
+        cardMap.put("audioCode", getAudioCode());
+        cardMap.put("timecode", getTimecode());
+        cardMap.put("description", getDescription());
+        cardMap.put("tags", getTags());
+        cardMap.put("commentsCount", getCommentsCount());
+        cardMap.put("commentsKeys", getCommentsKeys());
+        cardMap.put("rating", this.getRating());
+        cardMap.put("ctime", this.getCTime());
+        cardMap.put("mtime", this.getMTime());
+
+        for (String tagName : this.getTags())
+            cardMap.put(Card.GHOST_TAG_PREFIX+tagName, true);
+
+        return cardMap;
+    }
+
+
+    // Конверт
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         // важен порядок заполнения
@@ -110,13 +147,13 @@ public class Card extends ListItem implements
         dest.writeString(this.fileName);
         dest.writeString(this.videoCode);
         dest.writeString(this.audioCode);
-        dest.writeDouble(this.timecode);
+        dest.writeFloat(this.timecode);
         dest.writeString(this.description);
-//        dest.writeList(this.tags);
+        dest.writeList(this.tags);
 //        dest.writeMap(this.rateUpList);
 //        dest.writeMap(this.rateDownList);
         dest.writeInt(this.commentsCount);
-//        dest.writeMap(this.commentsKeys);
+        dest.writeList(this.commentsKeys);
         dest.writeInt(this.rating);
         dest.writeLong(this.ctime);
         dest.writeLong(this.mtime);
@@ -140,11 +177,11 @@ public class Card extends ListItem implements
         audioCode = in.readString();
         timecode = in.readFloat();
         description = in.readString();
-//        in.readList(tags, ArrayList.class.getClassLoader());
+        in.readStringList(tags);
 //        rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
 //        rateDownList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         commentsCount = in.readInt();
-//        commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+        in.readList(commentsKeys, ArrayList.class.getClassLoader());
         rating = in.readInt();
         ctime = in.readLong();
         mtime = in.readLong();
@@ -166,7 +203,7 @@ public class Card extends ListItem implements
             return new Card[size];
         }
     };
-    // Parcelable
+    // Конверт
 
 
     // Геттеры
@@ -203,7 +240,9 @@ public class Card extends ListItem implements
         return rateDownList;
     }
     public int getCommentsCount() { return commentsCount; }
-    public HashMap<String, Boolean> getCommentsKeys() { return commentsKeys; }
+    public List<String> getCommentsKeys() {
+        return new ArrayList<>(this.commentsKeys);
+    }
     public int getRating() {
         if (null == this.rating) return 0;
         else return rating;
@@ -252,9 +291,10 @@ public class Card extends ListItem implements
         this.rateDownList = rateDownList;
     }
     public void setCommentsCount(int count) { this.commentsCount = count; }
-    public void setCommentsKeys(HashMap<String, Boolean> commentsKeys) {
-        this.commentsKeys = commentsKeys;
+    public void setCommentsKeys(List<String> commentsKeys) {
+        this.commentsKeys.addAll(commentsKeys);
     }
+
     public void setCTime(Long cTime) {
         this.ctime = cTime;
     }

@@ -6,7 +6,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.singletons.TagsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 
 public class Tags_Presenter implements
@@ -19,7 +19,7 @@ public class Tags_Presenter implements
     private iTags.ListView listView;
     private iTags.ShowView showView;
     private iTags.EditView editView;
-    private iTagsSingleton tagsSingleton = TagsSingleton_CF.getInstance();
+    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
 
 
     // Служебные методы

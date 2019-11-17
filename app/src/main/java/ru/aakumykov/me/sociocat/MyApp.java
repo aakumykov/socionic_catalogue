@@ -16,7 +16,7 @@ import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class MyApp extends Application {
@@ -27,7 +27,7 @@ public class MyApp extends Application {
     @Override public void onCreate() {
         super.onCreate();
 
-        usersSingleton = UsersSingleton_CF.getInstance();
+        usersSingleton = UsersSingleton.getInstance();
 
         // Подписываюсь на события изменения авторизации
         // Firebase
@@ -99,7 +99,7 @@ public class MyApp extends Application {
 
         // Если это первый запуск, устанавдиваю в механизме настроек значения по умолчанию и обрабатываю их все
         if (isFirstRun) {
-            PreferenceManager.setDefaultValues(this, R.xml.settings, true);
+            PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
             PreferencesProcessor.processAllPreferences(this, defaultSharedPreferences);
 
             // Помечаю, что теперь это не первый запуск

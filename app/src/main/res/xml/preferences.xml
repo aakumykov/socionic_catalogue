@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--<SwitchPreference
+        android:defaultValue="true"
+        android:key="@string/PREFERENCES_notify_on_new_cards"
+        android:summary="@string/PREFERENCES_notify_on_new_cards_summary"
+        android:title="@string/PREFERENCES_notify_on_new_cards_title"
+        />-->
+
+    <PreferenceCategory android:title="@string/PREFERENCE_backup_category">
+        <SwitchPreference
+        android:key="perform_database_backup"
+        android:title="@string/PREFERENCE_database_backup_title"
+        android:summary="@string/PREFERENCE_database_backup_description"
+        />
+    </PreferenceCategory>
+
+</PreferenceScreen>

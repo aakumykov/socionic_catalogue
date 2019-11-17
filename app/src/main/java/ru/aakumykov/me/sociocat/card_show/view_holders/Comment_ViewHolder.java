@@ -4,20 +4,22 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Comment_ViewHolder  extends Base_ViewHolder implements
@@ -25,14 +27,15 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
         PopupMenu.OnMenuItemClickListener
 {
     @BindView(R.id.commentRow) ConstraintLayout commentRow;
-    @BindView(R.id.userAvatarContainer) FrameLayout userAvatarContainer;
+    @BindView(R.id.imageView) ImageView userAvatarView;
     @BindView(R.id.userNameView) TextView userNameView;
     @BindView(R.id.cTimeView) TextView cTimeView;
     @BindView(R.id.mTimeView) TextView mTimeView;
     @BindView(R.id.quoteView) TextView quoteView;
-    @BindView(R.id.textView) TextView textView;
+    @BindView(R.id.messageView) TextView textView;
     @BindView(R.id.replyWidget) TextView replyWidget;
     @BindView(R.id.editWidget) TextView editWidget;
+    @BindView(R.id.deleteWidget) TextView deleteWidget;
 
     private final static String TAG = "Comment_ViewHolder";
     private iCardShow.iCommentsPresenter commentsPresenter;
@@ -61,40 +64,57 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
 
         String avatarURL = comment.getUserAvatarURL();
         if (!TextUtils.isEmpty(avatarURL)) {
-            MyImageLoader.loadImageToContainer(
-                    userAvatarContainer.getContext(),
-                    userAvatarContainer,
-                    avatarURL
-            );
+            Glide.with(userAvatarView.getContext())
+                    .load(avatarURL)
+                    .placeholder(R.drawable.ic_image_placeholder)
+                    .error(R.drawable.ic_image_error)
+                    .into(userAvatarView);
         }
 
-        cTimeView.setText(String.valueOf(comment.getCreatedAt()));
+        Long createdAt = comment.getCreatedAt();
+        String createdAgoString = MyUtils.getHumanTimeAgo(textView.getContext(), createdAt, R.string.COMMENT_created_at);
+        cTimeView.setText(createdAgoString);
+        MyUtils.show(cTimeView);
 
-        mTimeView.setText(String.valueOf(comment.getEditedAt()));
+        Long editedAt = comment.getEditedAt();
+        if (null != editedAt && editedAt > 0L) {
+            String editedAgoString = MyUtils.getHumanTimeAgo(textView.getContext(), createdAt, R.string.COMMENT_edited_at);
+            mTimeView.setText(editedAgoString);
+            MyUtils.show(mTimeView);
+        }
 
         textView.setText(comment.getText());
 
-        String currentUserId = AuthSingleton.currentUserId();
-        String commentAuthorId = currentComment.getUserId();
-        if (!TextUtils.isEmpty(currentUserId) && !TextUtils.isEmpty(commentAuthorId)) {
-            if (commentAuthorId.equals(currentUserId)) {
+        String userId = AuthSingleton.currentUserId();
+        String authorId = currentComment.getUserId();
+        boolean isAdmin = UsersSingleton.getInstance().currentUserIsAdmin();
+
+        if (null != userId) {
+            MyUtils.show(replyWidget);
+
+            if (userId.equals(authorId) || isAdmin) {
                 MyUtils.show(editWidget);
+                MyUtils.show(deleteWidget);
             }
         }
 
         commentRow.setOnLongClickListener(this);
     }
 
-
     // Нажатия
     @OnClick(R.id.replyWidget)
-    void openCommentForm() {
+    void onReplyClicked() {
         commentsPresenter.onReplyClicked(currentComment);
     }
 
     @OnClick(R.id.editWidget)
-    void startEditingComment() {
+    void onEditClicked() {
         commentsPresenter.onEditCommentClicked(currentComment);
+    }
+
+    @OnClick(R.id.deleteWidget)
+    void onDeleteClicked() {
+        commentsPresenter.onDeleteCommentClicked(currentComment);
     }
 
     @Override

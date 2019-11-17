@@ -25,21 +25,21 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class TagsSingleton_CF implements iTagsSingleton {
+public class TagsSingleton implements iTagsSingleton {
 
-    private final static String TAG = "TagsSingleton_CF";
+    private final static String TAG = "TagsSingleton";
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private CollectionReference tagsCollection = firebaseFirestore.collection(Constants.TAGS_PATH);
 
     /* Одиночка */
-    private static volatile TagsSingleton_CF ourInstance;
-    public synchronized static TagsSingleton_CF getInstance() {
-        synchronized (TagsSingleton_CF.class) {
-            if (null == ourInstance) ourInstance = new TagsSingleton_CF();
+    private static volatile TagsSingleton ourInstance;
+    public synchronized static TagsSingleton getInstance() {
+        synchronized (TagsSingleton.class) {
+            if (null == ourInstance) ourInstance = new TagsSingleton();
             return ourInstance;
         }
     }
-    private TagsSingleton_CF() {
+    private TagsSingleton() {
     }
     /* Одиночка */
 
@@ -199,7 +199,7 @@ public class TagsSingleton_CF implements iTagsSingleton {
                     DocumentReference tagRef = tagsCollection.document(tagName);
                     transaction.update(
                             tagRef,
-                            Tag.CARDS_KEY,
+                            Tag.KEY_CARDS,
                             FieldValue.arrayRemove(cardKey)
                     );
                 }
@@ -212,12 +212,12 @@ public class TagsSingleton_CF implements iTagsSingleton {
                     transaction.set(
                             tagRef,
                             newTag,
-                            SetOptions.mergeFields(Tag.NAME_KEY, Tag.KEY_KEY)
+                            SetOptions.mergeFields(Tag.KEY_NAME, Tag.KEY_KEY)
                     );
 
                     transaction.update(
                             tagRef,
-                            Tag.CARDS_KEY,
+                            Tag.KEY_CARDS,
                             FieldValue.arrayUnion(cardKey)
                     );
                 }

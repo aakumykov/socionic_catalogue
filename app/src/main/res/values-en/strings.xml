@@ -307,8 +307,10 @@
     <string name="REGISTER1_email_already_used">Email address already used</string>
     <string name="REGISTER1_error_check_email">Error checking email address</string>
     <string name="LOGIN_password_recovery_email_sent">Password recovery email is sent to you</string>
-    <string name="CARD_SHOW_created">Created at %1$s</string>
-    <string name="CARD_SHOW_edited">Edited at %1$s</string>
+    <string name="CARD_SHOW_created_at">Created at %1$s</string>
+    <string name="CARD_SHOW_edited_at">Edited at %1$s</string>
+    <string name="COMMENT_created_at">Created at %1$s</string>
+    <string name="COMMENT_edited_at">Edited at %1$s</string>
     <string name="MENU_new_cards">New cards</string>
     <string name="CARDS_GRID_loading_new_cards">New cards</string>
     <string name="CARDS_GRID_no_new_cards">There is no new cards</string>
@@ -372,7 +374,7 @@
 
     <string name="PREFERENCES_notify_on_new_cards_summary">Send or not notifications on new cards</string>
     <string name="PREFERENCES_notify_on_new_cards_title">Notify on new cards</string>
-    <string name="PREFERENCES_page_title">App preferences</string>
+    <string name="PREFERENCES_ACTIVITY_page_title">App preferences</string>
     <string name="MENU_preferences">Preferences</string>
     <string name="PREFERENCES_you_are_subscribed_to_new_cards">You are subscribed to new cards notifications</string>
     <string name="PREFERENCES_error_subscribing_to_new_cards">Error subscribing to new cards notifications</string>
@@ -488,4 +490,29 @@
     <string name="CARD_EDIT_error_parsing_timecode">Timecode error</string>
     <string name="CARDS_GRID_error_processing_card">Error processing card</string>
     <string name="CARDS_GRID_new_card_is_filtered">Card «%1$s» is added, but not contains tag «%2$s»</string>
+
+    <string name="BACKUP_STATUS_page_title">Backup info</string>
+
+    <string name="PREFERENCE_backup_category">Backup</string>
+    <string name="PREFERENCE_database_backup_title">Database</string>
+    <string name="PREFERENCE_database_backup_description">Perform database backup with this phone</string>
+    <string name="PREFERENCE_database_backup_switched_on_text">Enabled</string>
+    <string name="PREFERENCE_database_backup_switched_off_text">Disabled</string>
+
+    <string name="BACKUP_JOB_SERVICE_job_is_scheduled">Backup job is scheduled</string>
+    <string name="BACKUP_JOB_SERVICE_error_scheduling_job">Error scheduling backup job</string>
+
+    <string name="BACKUP_SERVICE_channel_title">Backup job</string>
+    <string name="BACKUP_SERVICE_channel_description">Backup job events notifications channel</string>
+    <string name="BACKUP_SERVICE_backup">Backup job</string>
+    <string name="BACKUP_SERVICE_loading_collection">Loading «%1$s»</string>
+    <string name="BACKUP_SERVICE_saving_collection">Saving «%1$s»</string>
+    <string name="BACKUP_SERVICE_all_collections_are_processed">All collections are processed %1$s</string>
+    <string name="BACKUP_SERVICE_error_loading_collection">Error loading collection «%1$s»</string>
+    <string name="BACKUP_SERVICE_error_saving_collection">Error processing collection «%1$s»</string>
+    <string name="BACKUP_SERVICE_collection_is_saved">Collection «%1$s» is saved</string>
+    <string name="BACKUP_SERVICE_directory_created">Directory «%1$s» created</string>
+    <string name="BACKUP_SERVICE_backup_started">Backup started</string>
+    <string name="COMMENT_delete">Delete</string>
 </resources>
+<!-- «%1$s» -->

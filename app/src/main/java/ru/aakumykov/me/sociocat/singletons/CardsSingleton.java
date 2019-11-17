@@ -1,46 +1,56 @@
 package ru.aakumykov.me.sociocat.singletons;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class CardsSingleton_CF implements iCardsSingleton {
+public class CardsSingleton implements iCardsSingleton {
 
-    private final static String TAG = "CardsSingleton_CF";
-    private FirebaseFirestore firebaseFirestore;
-    private CollectionReference cardsCollection;
-    private CollectionReference tagsCollection;
+    private final static String TAG = "CardsSingleton";
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private CollectionReference cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
+    private CollectionReference commentsCollection = firebaseFirestore.collection(Constants.COMMENTS_PATH);
+    private CollectionReference tagsCollection = firebaseFirestore.collection(Constants.TAGS_PATH);
+    private CollectionReference usersCollection = firebaseFirestore.collection(Constants.USERS_PATH);
 
-    // Одиночка
-    private static volatile CardsSingleton_CF ourInstance;
-    public synchronized static CardsSingleton_CF getInstance() {
-        synchronized (CardsSingleton_CF.class) {
-            if (null == ourInstance) ourInstance = new CardsSingleton_CF();
+    // Шаблона Одиночки начало
+    private static volatile CardsSingleton ourInstance;
+    public synchronized static CardsSingleton getInstance() {
+        synchronized (CardsSingleton.class) {
+            if (null == ourInstance) ourInstance = new CardsSingleton();
             return ourInstance;
         }
     }
-    private CardsSingleton_CF() {
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        cardsCollection = firebaseFirestore.collection(Constants.CARDS_PATH);
-        tagsCollection = firebaseFirestore.collection(Constants.TAGS_PATH);
-    }
-    // Одиночка
+    private CardsSingleton() { }
+    // Шаблона Одиночки конец
 
 
     @Override
@@ -77,18 +87,34 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
     @Override
     public void loadCardsWithTag(String tagName, ListCallbacks callbacks) {
-        loadListEnhanced(
-                null,
-                null,
-                tagName,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                callbacks
-        );
+
+        Query query = cardsCollection.whereEqualTo(Card.GHOST_TAG_PREFIX+tagName, true);
+
+        query.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        extractCardsFromQuerySnapshot(queryDocumentSnapshots, new iExtractQuerySnapshotCallbacks() {
+                            @Override
+                            public void OnExtractSuccess(List<Card> cardsList) {
+                                callbacks.onListLoadSuccess(cardsList);
+                            }
+                            @Override
+                            public void OnExtractFail(List<String> errorsList) {
+                                callbacks.onListLoadFail("Error exception(s) on cards loading.");
+                                Log.e(TAG, TextUtils.join("\n", errorsList));
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onListLoadFail(e.getMessage());
+                        Log.e(TAG, Arrays.toString(e.getStackTrace()));
+                    }
+                });
     }
 
     @Override
@@ -139,170 +165,6 @@ public class CardsSingleton_CF implements iCardsSingleton {
         );
     }
 
-    /*@Override
-        public void loadList(ListCallbacks callbacks) {
-            loadListEnhanced(
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    Config.DEFAULT_CARDS_LOAD_COUNT,
-                    callbacks);
-        }
-
-        @Override
-        public void loadListFromTo(@Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
-            loadListEnhanced(
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    startKey,
-                    endKey,
-                    null,
-                    callbacks
-            );
-        }
-
-        @Override
-        public void loadCardsWithTag(String tagName, @Nullable String startKey, @Nullable String endKey, ListCallbacks callbacks) {
-            loadListEnhanced(
-                    null,
-                    null,
-                    tagName,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    Config.DEFAULT_CARDS_LOAD_COUNT,
-                    callbacks);
-        }
-
-        @Override
-        public void loadCardsAfter(Card previousCard, @Nullable String tagFilter, ListCallbacks callbacks) {
-
-            Query query = cardsCollection
-                    .orderBy(Card.KEY_CTIME, Query.Direction.DESCENDING)
-                    .startAfter(previousCard.getCTime())
-                    .limit(Config.DEFAULT_CARDS_LOAD_COUNT);
-
-            if (null != tagFilter)
-                query = query.whereArrayContains(Card.KEY_TAGS, tagFilter);
-
-            query.get()
-                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            List<Card> list = new ArrayList<>();
-                            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments())
-                                list.add(documentSnapshot.toObject(Card.class));
-                            callbacks.onListLoadSuccess(list);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            e.printStackTrace();
-                            callbacks.onListLoadFail(e.getMessage());
-                        }
-                    });
-        }
-
-        @Override
-        public void loadCardsFromNowTo(Card beforeCard, ListCallbacks callbacks) {
-
-            Query query = cardsCollection
-                    .orderBy(Card.KEY_CTIME, Query.Direction.DESCENDING)
-                    .endAt(beforeCard.getCTime());
-
-            query.get()
-                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            List<Card> cardsList = new ArrayList<>();
-                            boolean error = false;
-                            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-                                try {
-                                    Card card = documentSnapshot.toObject(Card.class);
-                                    cardsList.add(card);
-                                } catch (Exception e) {
-                                    error = true;
-                                    Log.e(TAG, e.getMessage());
-                                    e.printStackTrace();
-                                }
-                            }
-                            if (error && 0 == cardsList.size()) {
-                                callbacks.onListLoadFail("Error excracting cards.");
-                            }
-                            else {
-                                callbacks.onListLoadSuccess(cardsList);
-                            }
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            callbacks.onListLoadFail(e.getMessage());
-                            e.printStackTrace();
-                        }
-                    });
-        }
-
-        @Override
-        public void loadList(String tagFilter, ListCallbacks callbacks) {
-            loadListEnhanced(
-                    null,
-                    null,
-                    tagFilter,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    Config.DEFAULT_CARDS_LOAD_COUNT,
-                    callbacks
-            );
-        }
-
-        @Override
-        public void loadListForUser(String userId, ListCallbacks callbacks) {
-            loadListEnhanced(
-                    null,
-                    null,
-                    null,
-                    Card.KEY_USER_ID,
-                    FilterOperator.EQUALS,
-                    userId,
-                    null,
-                    null,
-                    null,
-                    callbacks
-            );
-        }
-
-        @Override
-        public void loadNewCards(long newerThanTime, ListCallbacks callbacks) {
-            loadListEnhanced(
-                    null,
-                    null,
-                    null,
-                    Card.KEY_CTIME,
-                    FilterOperator.GREATER,
-                    newerThanTime,
-                    null,
-                    null,
-                    null,
-                    callbacks
-            );
-        }
-    */
     @Override
     public void loadCard(String cardKey, LoadCallbacks callbacks) {
 
@@ -332,7 +194,7 @@ public class CardsSingleton_CF implements iCardsSingleton {
 
     @Override
     public void updateCommentsCounter(String cardId, int diffValue) {
-        throw new RuntimeException("CardsSingleton_CF.updateCommentsCounter() ещё не реализван.");
+        throw new RuntimeException("CardsSingleton.updateCommentsCounter() ещё не реализван.");
     }
 
     @Override
@@ -341,9 +203,12 @@ public class CardsSingleton_CF implements iCardsSingleton {
     }
 
     @Override
-    public void saveCard(Card card, SaveCardCallbacks callbacks) {
+    public void saveCard(Card card, @Nullable Card oldCard, SaveCardCallbacks callbacks) {
 
+        // Ссылка на карточку
         DocumentReference cardReference;
+
+        String cardId = card.getKey();
 
         if (null == card.getKey()) {
             cardReference = cardsCollection.document();
@@ -353,8 +218,38 @@ public class CardsSingleton_CF implements iCardsSingleton {
             cardReference = cardsCollection.document(card.getKey());
         }
 
-        cardReference
-                .set(card)
+        WriteBatch writeBatch = firebaseFirestore.batch();
+
+        // В коллекцию "карточки"
+        writeBatch.set(cardReference, card.toMap());
+
+        // В пользователя
+        writeBatch.update(
+                usersCollection.document(card.getUserId()),
+                User.KEY_CARDS_KEYS,
+                FieldValue.arrayUnion(cardId)
+        );
+
+        // В метки
+        List<String> newCardTags = card.getTags();
+        List<String> oldCardTags = (null != oldCard) ? oldCard.getTags() : new ArrayList<>();
+
+        List<String> addedTags = MyUtils.listDiff(newCardTags, oldCardTags);
+        List<String> removedTags = MyUtils.listDiff(oldCardTags, newCardTags);
+
+        // Новые
+        for (String tagName : addedTags) {
+            DocumentReference tagRef = tagsCollection.document(tagName);
+            writeBatch.set(tagRef, new Tag(tagName), SetOptions.mergeFields(Tag.KEY_NAME, Tag.KEY_KEY));
+            writeBatch.update(tagRef, Tag.KEY_CARDS, FieldValue.arrayUnion(cardId));
+        }
+
+        // Старые
+        for (String tagName : removedTags) {
+            writeBatch.update(tagsCollection.document(tagName), Tag.KEY_CARDS, FieldValue.arrayRemove(cardId));
+        }
+
+        writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -364,38 +259,78 @@ public class CardsSingleton_CF implements iCardsSingleton {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
                         callbacks.onCardSaveError(e.getMessage());
+                        MyUtils.printError(TAG, e);
                     }
                 });
+
     }
 
     @Override
     public void deleteCard(Card card, DeleteCallbacks callbacks) {
-        cardsCollection.document(card.getKey()).delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+
+        String cardKey = card.getKey();
+
+        WriteBatch writeBatch = firebaseFirestore.batch();
+
+        // Карточка
+        writeBatch.delete(cardsCollection.document(cardKey));
+
+
+        // Комментарии
+        for (String commentKey : card.getCommentsKeys()) {
+            writeBatch.delete(commentsCollection.document(commentKey));
+        }
+
+        // Метки
+        for (String tagName : card.getTags()) {
+            writeBatch.update(
+                    tagsCollection.document(tagName),
+                    Tag.KEY_CARDS,
+                    FieldValue.arrayRemove(cardKey)
+            );
+        }
+
+        // Пользователь
+        // id-комментариев
+        for (String commentKey : card.getCommentsKeys()) {
+            writeBatch.update(
+                    usersCollection.document(card.getUserId()),
+                    User.KEY_COMMENTS_KEYS,
+                    FieldValue.arrayRemove(commentKey)
+            );
+        }
+        // id-карточки
+        writeBatch.update(
+                usersCollection.document(card.getUserId()),
+                User.KEY_CARDS_KEYS,
+                FieldValue.arrayRemove(cardKey)
+        );
+
+        writeBatch.commit()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
+                    public void onComplete(@NonNull Task<Void> task) {
                         callbacks.onCardDeleteSuccess(card);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
                         callbacks.onCardDeleteError(e.getMessage());
+                        MyUtils.printError(TAG, e);
                     }
                 });
     }
 
     @Override
     public void rateUp(String cardId, String byUserId, RatingCallbacks callbacks) {
-        throw new RuntimeException("CardsSingleton_CF.rateUp() ещё не реализван.");
+        throw new RuntimeException("CardsSingleton.rateUp() ещё не реализван.");
     }
 
     @Override
     public void rateDown(String cardId, String byUserId, RatingCallbacks callbacks) {
-        throw new RuntimeException("CardsSingleton_CF.rateDown() ещё не реализван.");
+        throw new RuntimeException("CardsSingleton.rateDown() ещё не реализван.");
     }
 
 
@@ -481,26 +416,18 @@ public class CardsSingleton_CF implements iCardsSingleton {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        List<Card> list = new ArrayList<>();
-                        boolean error = false;
 
-                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-                            try {
-                                Card card = documentSnapshot.toObject(Card.class);
-                                list.add(card);
+                        extractCardsFromQuerySnapshot(queryDocumentSnapshots, new iExtractQuerySnapshotCallbacks() {
+                            @Override
+                            public void OnExtractSuccess(List<Card> cardsList) {
+                                callbacks.onListLoadSuccess(cardsList);
                             }
-                            catch (Exception e) {
-                                error = true;
-                                Log.e(TAG, e.getMessage());
-                                e.printStackTrace();
+                            @Override
+                            public void OnExtractFail(List<String> errorsList) {
+                                callbacks.onListLoadFail("Error exception(s) on cards loading.");
+                                Log.e(TAG, TextUtils.join("\n", errorsList));
                             }
-                        }
-
-                        if (error && 0 == list.size()) {
-                            callbacks.onListLoadFail("Error exception(s) on cards loading.");
-                        }
-                        else
-                            callbacks.onListLoadSuccess(list);
+                        });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -510,5 +437,32 @@ public class CardsSingleton_CF implements iCardsSingleton {
                         callbacks.onListLoadFail(e.getMessage());
                     }
                 });
+    }
+
+    private void extractCardsFromQuerySnapshot(QuerySnapshot queryDocumentSnapshots, iExtractQuerySnapshotCallbacks callbacks) {
+        List<Card> cardsList = new ArrayList<>();
+        List<String> errorsList = new ArrayList<>();
+
+        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+            try {
+                Card card = documentSnapshot.toObject(Card.class);
+                cardsList.add(card);
+            }
+            catch (Exception e) {
+                String errorText = e.getMessage();
+                errorText += Arrays.toString(e.getStackTrace());
+                errorsList.add(errorText);
+            }
+        }
+
+        if (errorsList.size() > 0 && 0 == cardsList.size())
+            callbacks.OnExtractFail(errorsList);
+        else
+            callbacks.OnExtractSuccess(cardsList);
+    }
+
+    private interface iExtractQuerySnapshotCallbacks {
+        void OnExtractSuccess(List<Card> cardsList);
+        void OnExtractFail(List<String> errorsList);
     }
 }

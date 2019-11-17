@@ -16,9 +16,9 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
@@ -37,8 +37,8 @@ public class Users_Presenter implements
     private iUsers.ShowView showView;
     private iUsers.ListView listView;
     private iUsers.EditView editView;
-    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
-    private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
@@ -298,7 +298,7 @@ public class Users_Presenter implements
             });
         }
         catch (Exception e) {
-            e.printStackTrace();
+            e.printError();
             editView.showErrorMsg(R.string.USER_EDIT_error_updating_user, e.getMessage());
         }*/
 
@@ -360,6 +360,8 @@ public class Users_Presenter implements
                 public void onUserSaveSuccess(User user) {
                     editView.showToast(R.string.USER_EDIT_profile_saved);
                     editView.finishEdit(user, true);
+
+                    usersSingleton.storeCurrentUser(currentUser);
                 }
 
                 @Override

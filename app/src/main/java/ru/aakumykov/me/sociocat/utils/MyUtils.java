@@ -1,6 +1,10 @@
 package ru.aakumykov.me.sociocat.utils;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
@@ -8,6 +12,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -19,8 +25,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +47,7 @@ import java.util.regex.Pattern;
 import ru.aakumykov.me.sociocat.R;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 public final class MyUtils {
 
@@ -249,7 +260,7 @@ public final class MyUtils {
         LayoutInflater myInflater = LayoutInflater.from(context);
         View view = myInflater.inflate(R.layout.toast, null);
 
-        TextView textView = view.findViewById(R.id.textView);
+        TextView textView = view.findViewById(R.id.messageView);
         textView.setText(message);
 
         Toast mytoast = new Toast(context);
@@ -265,12 +276,16 @@ public final class MyUtils {
         return stackTrace;
     }
 
+    public static String getString(Context context, int msgId) {
+        return context.getResources().getString(msgId);
+    }
+
     public static String getString(Context context, int stringResourceId, String insertedText) {
         return context.getResources().getString(stringResourceId, insertedText);
     }
 
-    public static String getString(Context context, int msgId) {
-        return context.getResources().getString(msgId);
+    public static String getString(Context context, int stringResourceId, String... insertedTextPieces) {
+        return context.getResources().getString(stringResourceId, insertedTextPieces);
     }
 
     public static String seconds2HHMMSS(Double seconds) {
@@ -315,29 +330,163 @@ public final class MyUtils {
         return new BigDecimal(timecode).floatValue();
     }
 
-/*    private static void hideProgressBar(Activity activity) {
-        ProgressBar progressBar = activity.findViewById(R.id.progressBar);
-        if (null != progressBar)
-            MyUtils.hide(progressBar);
+    // Уведомления
+    public static void createNotificationChannel(
+            Context context,
+            String channelId,
+            String channelName,
+            String channelDescription,
+            int channelImportance
+    ) {
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+        {
+            NotificationChannel channel = new NotificationChannel(
+                    channelId,
+                    channelName,
+                    channelImportance
+            );
+            channel.setDescription(channelDescription);
+
+//            channel.enableLights(true);
+//            channel.setLightColor(Color.GREEN);
+//            channel.setImportance(channelImportance); // TODO: нужно ли это дублировать здесь?
+//            channel.enableVibration(true);
+
+            NotificationManager notificationManager =
+                    (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
-    public static void showDebugMsg(Activity activity, String msg) {
-        MyUtils.hideProgressBar(activity);
+    public static Notification prepareNotification(
+            Context context,
+            String channelId,
+            int iconId,
+            String title,
+            @Nullable String text,
+            boolean withProgressBar,
+            boolean isOngoing
+    ) {
+        return prepareNotification(
+                context,
+                channelId,
+                iconId,
+                title,
+                text,
+                withProgressBar,
+                isOngoing,
+                null
+        );
+    }
 
-        TextView messageView = activity.findViewById(R.id.messageView);
-        if (null != messageView) {
-            messageView.setText(msg);
-            MyUtils.show(messageView);
-            messageView.setTextColor(activity.getResources().getColor(R.color.debug));
-            messageView.setBackgroundColor(activity.getResources().getColor(R.color.white));
+    public static Notification prepareNotification(
+            Context context,
+            String channelId,
+            int iconId,
+            String title,
+            @Nullable String text,
+            boolean withProgressBar,
+            boolean isOngoing,
+            @Nullable PendingIntent pendingIntent
+    )
+    {
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(context, channelId)
+                        .setSmallIcon(iconId)
+                        .setContentTitle(title)
+                        .setAutoCancel(true);
+
+        if (null != text)
+            builder.setContentText(text);
+
+        if (null != pendingIntent)
+            builder.setContentIntent(pendingIntent);
+
+        if (isOngoing)
+            builder.setOngoing(true);
+
+        return builder.build();
+    }
+
+
+    // Date to string
+    public static String date2string() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.CANADA);
+        return format.format(new Date());
+    }
+
+    // MD5Sum
+    public static String md5sum(String string) {
+        MessageDigest messageDigest = null;
+        byte[] digest = new byte[0];
+
+        try {
+            messageDigest = MessageDigest.getInstance("MD5");
+            messageDigest.reset();
+            messageDigest.update(string.getBytes());
+            digest = messageDigest.digest();
         }
-    }*/
+        catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
 
-    /*public static void requestLogin(Context context, Intent proceedIntent) {
-        Intent intent = new Intent(context, Login_View.class);
-        intent.setAction(Constants.ACTION_LOGIN_REQUEST);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        intent.putExtra(Intent.EXTRA_INTENT, proceedIntent);
-        context.startActivity(intent);
-    }*/
+        BigInteger bigInt = new BigInteger(1, digest);
+        StringBuilder md5Hex = new StringBuilder(bigInt.toString(16));
+
+        while( md5Hex.length() < 32 ){
+            md5Hex.insert(0, "0");
+        }
+
+        return md5Hex.toString();
+    }
+
+    // Обработка исключений
+    public static String processException(String logTag, Exception e) {
+        String errorMsg = e.getMessage();
+
+        if (null == errorMsg)
+            errorMsg = e.toString();
+
+        Log.e(logTag, errorMsg);
+
+        Log.e(logTag, TextUtils.join("\n", e.getStackTrace()));
+
+        return errorMsg;
+    }
+
+    public static String getExceptionMessage(Exception e) {
+        String errorMsg = e.getMessage();
+        if (null == errorMsg)
+            errorMsg = e.toString();
+        return errorMsg;
+    }
+
+    public static String quoteString(Context context, String dirName) {
+        return context.getResources().getString(R.string.aquotes, dirName);
+    }
+
+    public static String getHumanTimeAgo(Context context, Long timestamp, @Nullable Integer stringToEmbedTime_ResourceId) {
+        CharSequence relatedTimeCharSequence = DateUtils.getRelativeTimeSpanString(timestamp, new Date().getTime(), DateUtils.SECOND_IN_MILLIS);
+
+        String relatedTimeString = relatedTimeCharSequence.toString().toLowerCase();
+
+        return (null != stringToEmbedTime_ResourceId) ?
+                context.getString(stringToEmbedTime_ResourceId, relatedTimeString)
+                : relatedTimeString;
+    }
+
+    public static <T> void printError(String tag, T e) {
+        if (e instanceof Exception) {
+            Exception exception = ((Exception) e);
+            Log.e(TAG, exception.getMessage());
+            for (StackTraceElement stackTraceElement : exception.getStackTrace()) {
+                Log.e(TAG, stackTraceElement.toString());
+            }
+        }
+        else {
+            Log.e(TAG, String.valueOf(e));
+        }
+    }
 }

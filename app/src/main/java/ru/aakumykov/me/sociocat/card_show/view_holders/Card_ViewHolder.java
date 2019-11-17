@@ -2,8 +2,6 @@ package ru.aakumykov.me.sociocat.card_show.view_holders;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -12,6 +10,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,7 +25,6 @@ import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
-import ru.aakumykov.me.myimageloader.MyImageLoader;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
@@ -40,7 +40,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.cardLayout) LinearLayout cardLayout;
     @BindView(R.id.titleView) TextView titleView;
     @BindView(R.id.quoteView) TextView quoteView;
-    @BindView(R.id.imageContainer) FrameLayout imageContainer;
+    @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.videoContainer) FrameLayout videoContainer;
     @BindView(R.id.quoteSourceView) TextView quoteSourceView;
     @BindView(R.id.descriptionView) TextView descriptionView;
@@ -130,7 +130,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
     @Override
     public void showRating(Card card, @Nullable String ratedByUserId) {
-        Log.d(TAG, card.toString());
+//        Log.d(TAG, card.toString());
 
         int thumbUpImageResource = R.drawable.ic_thumb_up_neutral;
         int thumbDownImageResource = R.drawable.ic_thumb_down_neutral;
@@ -203,11 +203,13 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                 break;
 
             case Constants.IMAGE_CARD:
-                MyImageLoader.loadImageToContainer(
-                        context,
-                        imageContainer,
-                        card.getImageURL()
-                );
+                Glide.with(imageView.getContext())
+                        .load(card.getImageURL())
+//                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .placeholder(R.drawable.ic_image_placeholder)
+                        .error(R.drawable.ic_image_error)
+                        .into(imageView);
                 break;
 
             case Constants.VIDEO_CARD:
@@ -239,18 +241,15 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     }
 
     private void showTime(Long cTime, Long mTime) {
-        Long currentTime = System.currentTimeMillis();
 
         if (0L != cTime) {
-            CharSequence createTime = DateUtils.getRelativeTimeSpanString(cTime, currentTime, DateUtils.SECOND_IN_MILLIS);
-            String fullCreateTime = context.getString(R.string.CARD_SHOW_created, createTime);
+            String fullCreateTime = MyUtils.getHumanTimeAgo(context, cTime, R.string.CARD_SHOW_created_at);
             cTimeView.setText(fullCreateTime);
             MyUtils.show(cTimeView);
         }
 
         if (0L != mTime && !cTime.equals(mTime)) {
-            CharSequence editTime = DateUtils.getRelativeTimeSpanString(mTime, currentTime, DateUtils.SECOND_IN_MILLIS);
-            String fullEditTime = context.getString(R.string.CARD_SHOW_edited, editTime);
+            String fullEditTime = MyUtils.getHumanTimeAgo(context, mTime, R.string.CARD_SHOW_edited_at);
             mTimeView.setText(fullEditTime);
             MyUtils.show(mTimeView);
         }

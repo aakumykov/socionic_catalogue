@@ -124,6 +124,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         menuInflater.inflate(R.menu.tags, menu);
 
         if (AuthSingleton.isLoggedIn()) {
+            menuInflater.inflate(R.menu.preferences, menu);
             menuInflater.inflate(R.menu.profile_in, menu);
             menuInflater.inflate(R.menu.logout, menu);
         }
@@ -251,7 +252,9 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public void showErrorMsg(int messageId, @Nullable String consoleMessage) {
-        String msg = (Config.DEBUG_MODE) ? consoleMessage : getResources().getString(messageId);
+        String msg = getResources().getString(messageId);
+        if (Config.DEBUG_MODE)
+            msg = msg + ": " + consoleMessage;
         hideProgressMessage();
         showMsg(msg, R.color.error, R.color.error_background);
         Log.e(TAG, consoleMessage);

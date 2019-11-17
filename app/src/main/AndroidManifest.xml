@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".MyApp"
@@ -20,17 +23,26 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
-        </activity>
 
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+        <activity android:name=".backup_job.BackupActivity">
+
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+        </activity>
         <activity
             android:name=".login.Login_View"
             android:windowSoftInputMode="stateHidden" />
-
         <activity android:name=".cards_list.CardsList_View" />
-
         <activity android:name=".cards_grid.CardsGrid_View" />
-
         <activity
             android:name=".dynamic_link_processor.DLP_View"
             android:noHistory="true">
@@ -48,30 +60,33 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-
         <activity android:name=".register.register_step_1.RegisterStep1_View" />
         <activity android:name=".register.register_step_2.RegisterStep2_View" />
         <activity android:name=".reset_password_step1.ResetPasswordStep1_View" />
         <activity android:name=".reset_password_step_2.ResetPasswordStep2_View" />
-
-        <activity android:name=".card_type_chooser.CardTypeChooser" android:noHistory="true" />
-
+        <activity
+            android:name=".card_type_chooser.CardTypeChooser"
+            android:noHistory="true" />
         <activity android:name=".external_data_receiver.ExternalDataReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="www.youtube.com"
                     android:pathPrefix="/watch"
@@ -94,7 +109,9 @@
             <!-- https://stackoverflow.com/questions/31002909/android-deeplink-pathprefix-attribute-is-being-ignored -->
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="youtu.be"
                     android:scheme="http" />
@@ -103,23 +120,28 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".card_edit.CardEdit_View"
+        <activity
+            android:name=".card_edit.CardEdit_View"
             android:windowSoftInputMode="stateHidden" />
-
         <activity android:name=".preferences.PreferencesActivity" />
-
-        <activity android:name=".card_show.CardShow_View"
+        <activity
+            android:name=".card_show.CardShow_View"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".users.show.UserShow_View" />
         <activity android:name=".tags_list2.TagsList2_View" />
         <activity android:name=".tags.show.TagShow_View" />
         <activity android:name=".users.edit.UserEdit_View" />
+        <activity
+            android:name=".backup_job.BackupStatus_Activity"
+            android:launchMode="singleTop" />
 
-        <service android:name=".push_notifications_service.PushNotificationsService" android:exported="false">
+        <service
+            android:name=".push_notifications_service.PushNotificationsService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
+
             <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
                 android:resource="@drawable/ic_notification_default" />
@@ -127,7 +149,12 @@
                 android:name="com.google.firebase.messaging.default_notification_color"
                 android:resource="@color/white" />
         </service>
-
+        <service
+            android:name=".backup_job.Backup_JobService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service android:name=".backup_job.BackupService" />
     </application>
 
 </manifest>

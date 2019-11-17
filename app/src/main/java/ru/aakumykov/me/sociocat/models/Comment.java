@@ -20,13 +20,13 @@ public class Comment extends ListItem implements
         Parcelable,
         iTextItem
 {
-    public final static int key_commentId = 10;
-    public final static String key_createdAt = "createdAt";
-    public final static String key_cardId = "cardId";
+    public static final String KEY_USER_NAME = "userName";
+    public static final String KEY_USER_AVATAR = "userAvatarURL";
+    public static final String KEY_TEXT = "text";
+    public static final String KEY_EDITED_AT = "editedAt";
 
     private String key;
     private String text;
-
     private String cardId;
     private String parentId;
     private String parentText;
@@ -34,7 +34,7 @@ public class Comment extends ListItem implements
     private String userName;
     private String userAvatarURL;
     private Long createdAt;
-    private Long editedAt;
+    private Long editedAt = 0L;
     private Integer rating = 0;
     private List<String> rateUpList = new ArrayList<>();
     private List<String> rateDownList = new ArrayList<>();

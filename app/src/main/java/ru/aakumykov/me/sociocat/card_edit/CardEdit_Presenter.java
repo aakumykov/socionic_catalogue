@@ -7,9 +7,10 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Config;
@@ -18,10 +19,10 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
-import ru.aakumykov.me.sociocat.singletons.TagsSingleton_CF;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
@@ -44,15 +45,16 @@ public class CardEdit_Presenter implements
     private SharedPreferences sharedPreferences;
 
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 //    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
-    private iCardsSingleton cardsSingleton = CardsSingleton_CF.getInstance();
+    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
 //    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
-    private iTagsSingleton tagsSingleton = TagsSingleton_CF.getInstance();
+    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
     private Card currentCard;
-    private List<String> oldCardTags;
+    private Card oldCard;
+
     private String imageType;
     private CardEditMode editMode;
 
@@ -309,7 +311,8 @@ public class CardEdit_Presenter implements
 
             view.showProgressMessage(R.string.CARD_EDIT_saving_card);
 
-            cardsSingleton.saveCard(currentCard, this);
+//            cardsSingleton.saveCard(currentCard, oldCard, this);
+            cardsSingleton.saveCard(currentCard, oldCard, this);
         }
     }
 
@@ -317,7 +320,9 @@ public class CardEdit_Presenter implements
     // Коллбеки
     @Override public void onCardSaveSuccess(Card card) {
 
-        updateCardTags(card);
+        finishWork(card);
+
+        //updateCardTags(card);
 
         /*if (editMode.equals(CardEditMode.CREATE)) {
 
@@ -381,7 +386,10 @@ public class CardEdit_Presenter implements
             public void onCardLoadSuccess(Card card) {
                 if (null != card) {
                     currentCard = card;
-                    oldCardTags = card.getTags();
+
+                    Gson gson = new Gson();
+                    oldCard = gson.fromJson(gson.toJson(card), Card.class);
+
                     if (null != view)
                         view.displayCard(card);
                 }
@@ -402,7 +410,7 @@ public class CardEdit_Presenter implements
 
 //        cardsSingleton.loadCard(cardKey, loadCallbacks);
 
-        CardsSingleton_CF.getInstance().loadCard(cardKey, loadCallbacks);
+        CardsSingleton.getInstance().loadCard(cardKey, loadCallbacks);
     }
 
     private void updateCurrentCardFromView(){
@@ -537,31 +545,6 @@ public class CardEdit_Presenter implements
 
 
         return valid;
-    }
-
-    private void updateCardTags(final Card card) {
-
-        if (null == card)
-            throw new IllegalArgumentException("Card is NULL");
-
-        tagsSingleton.processTags(
-                card.getKey(),
-                oldCardTags,
-                card.getTags(),
-                new iTagsSingleton.UpdateCallbacks() {
-                    @Override
-                    public void onUpdateSuccess() {
-                        finishWork(card);
-                    }
-
-                    @Override
-                    public void onUpdateFail(String errorMsg) {
-                        if (null != view)
-                            view.showErrorMsg(R.string.CARD_EDIT_error_saving_tags, errorMsg);
-                        finishWork(card);
-                    }
-                }
-        );
     }
 
     private void finishWork(Card card) {

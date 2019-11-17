@@ -30,6 +30,8 @@ public interface iCardShow {
         void goToAuthorProfile();
 
         void closePageAfterDeletion(Card card);
+
+        void refreshComments();
     }
 
 
@@ -47,7 +49,7 @@ public interface iCardShow {
     // Отображение карточки
     interface iCardView {
 
-        void displayCard(@Nullable Card card) throws Exception;
+        void displayCard(@Nullable Card card, @Nullable iDisplayCardCallbacks callbacks) throws Exception;
 
         void showCardThrobber();
         void hideCardThrobber();
@@ -144,6 +146,8 @@ public interface iCardShow {
         void onDeleteConfirmed(Comment comment);
 
         void onSendCommentClicked(iCommentForm commentForm);
+
+        void onSwipeRefreshRequested();
     }
 
 
@@ -157,5 +161,11 @@ public interface iCardShow {
         void enableRatingContols();
 
         void showRating(Card card, String ratedByUserId);
+    }
+
+
+    // Методы обратного вызова
+    interface iDisplayCardCallbacks {
+        void onCardDisplayed();
     }
 }

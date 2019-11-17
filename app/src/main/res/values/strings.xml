@@ -310,8 +310,10 @@
     <string name="REGISTER1_email_already_used">Электронная почта уже используется</string>
     <string name="REGISTER1_error_check_email">Ошибка проверки электронной почты</string>
     <string name="LOGIN_password_recovery_email_sent">Вам отправлено письмо для восстановления пароля</string>
-    <string name="CARD_SHOW_created">Создано %1$s</string>
-    <string name="CARD_SHOW_edited">Изменено %1$s</string>
+    <string name="CARD_SHOW_created_at">Создано %1$s</string>
+    <string name="CARD_SHOW_edited_at">Изменено %1$s</string>
+    <string name="COMMENT_created_at">Создано %1$s</string>
+    <string name="COMMENT_edited_at">Изменено %1$s</string>
     <string name="MENU_new_cards">Новые карточки</string>
     <string name="CARDS_GRID_loading_new_cards">Новые карточки</string>
     <string name="CARDS_GRID_no_new_cards">Нет новых карточек</string>
@@ -378,7 +380,7 @@
 
     <string name="PREFERENCES_notify_on_new_cards_summary">Присылать или нет уведомления о новых карточках</string>
     <string name="PREFERENCES_notify_on_new_cards_title">Уведомлять о новых карточках</string>
-    <string name="PREFERENCES_page_title">Настройки приложения</string>
+    <string name="PREFERENCES_ACTIVITY_page_title">Настройки приложения</string>
     <string name="PREFERENCES_notify_on_new_cards" translatable="false">PREFERENCES_notify_on_new_cards</string>
     <string name="MENU_preferences">Настройки</string>
     <string name="PREFERENCES_you_are_subscribed_to_new_cards">Вы подписаны на уведомления о новых карточках</string>
@@ -495,4 +497,30 @@
     <string name="CARD_EDIT_error_parsing_timecode">Ошибка метки времени</string>
     <string name="CARDS_GRID_error_processing_card">Ошибка обработки карточки</string>
     <string name="CARDS_GRID_new_card_is_filtered">Карточка «%1$s» добавлена, но не содержит метки «%2$s»</string>
-</resources>
+
+    <string name="BACKUP_STATUS_page_title">Информация о резервном копировании</string>
+
+    <string name="PREFERENCE_backup_category">Резервное копирование</string>
+    <string name="PREFERENCE_database_backup_title">База данных</string>
+    <string name="PREFERENCE_database_backup_description">Выполнять рез. копирование базы данных силами телефона</string>
+    <string name="PREFERENCE_database_backup_switched_on_text">Включено</string>
+    <string name="PREFERENCE_database_backup_switched_off_text">Выключено</string>
+
+    <string name="BACKUP_JOB_SERVICE_job_is_scheduled">Задача резервного копирования запланирована</string>
+    <string name="BACKUP_JOB_SERVICE_error_scheduling_job">Ошибка планирования задачи резервного копирования</string>
+
+    <string name="BACKUP_SERVICE_channel_title">Резервное копирование</string>
+    <string name="BACKUP_SERVICE_channel_description">Уведомления о событиях резервного копирования</string>
+
+    <string name="BACKUP_SERVICE_backup">Резервное копирование</string>
+    <string name="BACKUP_SERVICE_loading_collection">Загрузка «%1$s»</string>
+    <string name="BACKUP_SERVICE_saving_collection">Сохранение «%1$s»</string>
+    <string name="BACKUP_SERVICE_all_collections_are_processed">Все коллекции обработаны %1$s</string>
+    <string name="BACKUP_SERVICE_error_loading_collection">Ошибка получения коллекции «%1$s»</string>
+    <string name="BACKUP_SERVICE_error_saving_collection">Ошибка обработки коллекции «%1$s»</string>
+    <string name="BACKUP_SERVICE_collection_is_saved">Коллекция «%1$s» сохранена</string>
+    <string name="BACKUP_SERVICE_directory_created">Создан каталог «%1$s»</string>
+    <string name="BACKUP_SERVICE_backup_started">Начато резервное копирование</string>
+    <string name="COMMENT_delete">Удалить</string>
+
+</resources><!-- «%1$s» -->

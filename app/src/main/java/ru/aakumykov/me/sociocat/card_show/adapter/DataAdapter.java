@@ -152,7 +152,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     // iCardView
     @Override
-    public void displayCard(@Nullable Card card) throws Exception {
+    public void displayCard(@Nullable Card card, @Nullable iCardShow.iDisplayCardCallbacks callbacks) throws Exception {
         if (null == card)
             throw new IllegalArgumentException("Card is null");
 
@@ -167,6 +167,9 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             itemsList.set(cardPosition, card);
 
         notifyItemChanged(cardPosition);
+
+        if (null != callbacks)
+            callbacks.onCardDisplayed();
     }
 
 

@@ -7,8 +7,8 @@ import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton_CF;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton_CF;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.CardDeletionHelper;
@@ -24,8 +24,8 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     private iCardShow.iPageView pageView;
     private iCardShow.iCommentsPresenter commentsPresenter;
 //    private iCardsSingleton cardSingleton = CardsSingleton.getInstance();
-    private iCardsSingleton cardSingleton = CardsSingleton_CF.getInstance();
-    private iUsersSingleton usersSingleton = UsersSingleton_CF.getInstance();
+    private iCardsSingleton cardSingleton = CardsSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private @Nullable Card currentCard;
 
 
@@ -68,7 +68,7 @@ public class CardPresenter implements iCardShow.iCardPresenter {
                 pageView.hideProgressMessage();
 
                 try {
-                    cardView.displayCard(card);
+                    cardView.displayCard(card, null);
                     commentsPresenter.onWorkBegins(cardKey, commentKey);
                 } catch (Exception e) {
                     pageView.showErrorMsg(R.string.CARD_SHOW_there_is_no_card, e.getMessage());
@@ -125,7 +125,7 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     @Override
     public void onCardEdited(Card card) {
         try {
-            cardView.displayCard(card);
+            cardView.displayCard(card, null);
         }
         catch (Exception e) {
             pageView.showErrorMsg(R.string.CARD_SHOW_error_displaying_card, e.getMessage());
@@ -142,19 +142,21 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     public void onDeleteConfirmed() {
         pageView.showProgressMessage(R.string.deleting_card);
 
-        CardDeletionHelper.deleteCard(currentCard, new CardDeletionHelper.iDeletionCallbacks() {
-            @Override
-            public void onCardDeleteSuccess(Card card) {
-                pageView.hideProgressMessage();
-                pageView.showToast(R.string.card_deleted);
-                pageView.closePageAfterDeletion(card);
-            }
+        if (null != currentCard) {
+            CardDeletionHelper.deleteCard(currentCard.getKey(), new CardDeletionHelper.iDeletionCallbacks() {
+                @Override
+                public void onCardDeleteSuccess(Card card) {
+                    pageView.hideProgressMessage();
+                    pageView.showToast(R.string.card_deleted);
+                    pageView.closePageAfterDeletion(card);
+                }
 
-            @Override
-            public void onCardDeleteError(String errorMsg) {
-                pageView.showErrorMsg(R.string.CARD_SHOW_error_deleting_card, errorMsg);
-            }
-        });
+                @Override
+                public void onCardDeleteError(String errorMsg) {
+                    pageView.showErrorMsg(R.string.CARD_SHOW_error_deleting_card, errorMsg);
+                }
+            });
+        }
     }
 
     @Override
@@ -181,7 +183,13 @@ public class CardPresenter implements iCardShow.iCardPresenter {
                 pageView.hideSwipeRefreshThrobber();
 
                 try {
-                    cardView.displayCard(card);
+                    cardView.displayCard(card, new iCardShow.iDisplayCardCallbacks() {
+                        @Override
+                        public void onCardDisplayed() {
+                            //pageView.refreshComments();
+                            pageView.showToast("Обновление комментариев не реализовано");
+                        }
+                    });
                 }
                 catch (Exception e) {
                     pageView.showErrorMsg(R.string.CARD_SHOW_error_displaying_card, e.getMessage());
