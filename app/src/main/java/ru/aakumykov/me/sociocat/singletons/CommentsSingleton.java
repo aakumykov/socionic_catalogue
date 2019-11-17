@@ -57,9 +57,16 @@ public class CommentsSingleton implements iCommentsSingleton {
 
         WriteBatch writeBatch = firebaseFirestore.batch();
 
+
+        // Коллекция комментариев
         writeBatch.set(commentsCollection.document(commentKey), comment);
+
+        // Прописываю в карточку
         writeBatch.update(cardsCollection.document(comment.getCardId()), Card.KEY_COMMENTS_KEYS, FieldValue.arrayUnion(commentKey));
+
+        // Прописываюсь у пользователя
         writeBatch.update(usersCollection.document(comment.getUserId()), User.KEY_COMMENTS_KEYS, FieldValue.arrayUnion(commentKey));
+
 
         writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -109,9 +116,16 @@ public class CommentsSingleton implements iCommentsSingleton {
 
         WriteBatch writeBatch = firebaseFirestore.batch();
 
+
+        // Удаляю из коллекции коментариев
         writeBatch.delete(commentsCollection.document(commentKey));
+
+        // Удаляю из списка комментариев к карточке
         writeBatch.update(cardsCollection.document(comment.getCardId()), Card.KEY_COMMENTS_KEYS, FieldValue.arrayRemove(commentKey));
+
+        // Удаляю из списка комментариев пользователя
         writeBatch.update(usersCollection.document(comment.getUserId()), User.KEY_COMMENTS_KEYS, FieldValue.arrayRemove(commentKey));
+
 
         writeBatch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -131,7 +145,7 @@ public class CommentsSingleton implements iCommentsSingleton {
 
     @Override
     public void deleteCommentsForCard(String cardId) throws Exception {
-
+        throw new RuntimeException("deleteCommentsForCard() not implemented");
     }
 
     @Override
