@@ -19,31 +19,45 @@ public class CardDeletionHelper {
         void onCardDeleteError(String errorMsg);
     }
 
-    public static void deleteCard(Card card, iDeletionCallbacks callbacks) {
+    public static void deleteCard(String cardKey, iDeletionCallbacks callbacks) {
 
-        if (card.isImageCard()) {
+        // Получаю свежий объект карточки с сервера
+        CardsSingleton.getInstance().loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
+            @Override
+            public void onCardLoadSuccess(Card card) {
 
-            String imageFileName = card.getFileName();
-            if (null == imageFileName) {
-                callbacks.onCardDeleteError("Image file name is NULL");
-                return;
-            }
+                // Если это карточка с картинкой
+                if (card.isImageCard()) {
 
-            StorageSingleton.getInstance().deleteImage(imageFileName, new iStorageSingleton.FileDeletionCallbacks() {
-                @Override
-                public void onDeleteSuccess() {
+                    String imageFileName = card.getFileName();
+                    if (null == imageFileName) {
+                        callbacks.onCardDeleteError("Image file name is NULL");
+                        return;
+                    }
+
+                    StorageSingleton.getInstance().deleteImage(imageFileName, new iStorageSingleton.FileDeletionCallbacks() {
+                        @Override
+                        public void onDeleteSuccess() {
+                            deleteCardReal(card, callbacks);
+                        }
+
+                        @Override
+                        public void onDeleteFail(String errorMsg) {
+                            callbacks.onCardDeleteError(errorMsg);
+                        }
+                    });
+                }
+                // Если без картинки
+                else {
                     deleteCardReal(card, callbacks);
                 }
+            }
 
-                @Override
-                public void onDeleteFail(String errorMsg) {
-                    callbacks.onCardDeleteError(errorMsg);
-                }
-            });
-        }
-        else {
-            deleteCardReal(card, callbacks);
-        }
+            @Override
+            public void onCardLoadFailed(String msg) {
+                callbacks.onCardDeleteError(msg);
+            }
+        });
     }
 
     private static void deleteCardReal(Card card, iDeletionCallbacks callbacks) {

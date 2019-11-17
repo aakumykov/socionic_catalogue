@@ -349,7 +349,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     private void onDeleteCardConfirmed(Card card, iGridItem gridItem) {
 
-        CardDeletionHelper.deleteCard(card, new CardDeletionHelper.iDeletionCallbacks() {
+        CardDeletionHelper.deleteCard(card.getKey(), new CardDeletionHelper.iDeletionCallbacks() {
             @Override
             public void onCardDeleteSuccess(Card card) {
                 gridView.removeItem(gridItem);

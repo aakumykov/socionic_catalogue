@@ -142,19 +142,21 @@ public class CardPresenter implements iCardShow.iCardPresenter {
     public void onDeleteConfirmed() {
         pageView.showProgressMessage(R.string.deleting_card);
 
-        CardDeletionHelper.deleteCard(currentCard, new CardDeletionHelper.iDeletionCallbacks() {
-            @Override
-            public void onCardDeleteSuccess(Card card) {
-                pageView.hideProgressMessage();
-                pageView.showToast(R.string.card_deleted);
-                pageView.closePageAfterDeletion(card);
-            }
+        if (null != currentCard) {
+            CardDeletionHelper.deleteCard(currentCard.getKey(), new CardDeletionHelper.iDeletionCallbacks() {
+                @Override
+                public void onCardDeleteSuccess(Card card) {
+                    pageView.hideProgressMessage();
+                    pageView.showToast(R.string.card_deleted);
+                    pageView.closePageAfterDeletion(card);
+                }
 
-            @Override
-            public void onCardDeleteError(String errorMsg) {
-                pageView.showErrorMsg(R.string.CARD_SHOW_error_deleting_card, errorMsg);
-            }
-        });
+                @Override
+                public void onCardDeleteError(String errorMsg) {
+                    pageView.showErrorMsg(R.string.CARD_SHOW_error_deleting_card, errorMsg);
+                }
+            });
+        }
     }
 
     @Override
