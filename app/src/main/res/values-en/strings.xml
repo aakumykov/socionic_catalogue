@@ -307,7 +307,7 @@
     <string name="REGISTER1_email_already_used">Email address already used</string>
     <string name="REGISTER1_error_check_email">Error checking email address</string>
     <string name="LOGIN_password_recovery_email_sent">Password recovery email is sent to you</string>
-    <string name="CARD_SHOW_created_at">Created at %1$s</string>
+    <string name="CARD_SHOW_created_at">%1$s</string>
     <string name="CARD_SHOW_edited_at">Edited at %1$s</string>
     <string name="COMMENT_created_at">Created at %1$s</string>
     <string name="COMMENT_edited_at">Edited at %1$s</string>
@@ -514,5 +514,6 @@
     <string name="BACKUP_SERVICE_directory_created">Directory «%1$s» created</string>
     <string name="BACKUP_SERVICE_backup_started">Backup started</string>
     <string name="COMMENT_delete">Delete</string>
+    <string name="CARD_SHOW_unknown_create_time">Unknown create time</string>
 </resources>
 <!-- «%1$s» -->
