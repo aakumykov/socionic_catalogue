@@ -309,7 +309,7 @@
     <string name="LOGIN_password_recovery_email_sent">Password recovery email is sent to you</string>
     <string name="CARD_SHOW_created_at">%1$s</string>
     <string name="CARD_SHOW_edited_at">Edited at %1$s</string>
-    <string name="COMMENT_created_at">Created at %1$s</string>
+    <string name="COMMENT_created_at">%1$s</string>
     <string name="COMMENT_edited_at">Edited at %1$s</string>
     <string name="MENU_new_cards">New cards</string>
     <string name="CARDS_GRID_loading_new_cards">New cards</string>
@@ -515,5 +515,6 @@
     <string name="BACKUP_SERVICE_backup_started">Backup started</string>
     <string name="COMMENT_delete">Delete</string>
     <string name="CARD_SHOW_unknown_create_time">Unknown create time</string>
+    <string name="COMMENT_unknown_create_time">Время создания неизвестно</string>
 </resources>
 <!-- «%1$s» -->

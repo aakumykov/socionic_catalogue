@@ -71,16 +71,24 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
                     .into(userAvatarView);
         }
 
+        // Время создания, правки
         Long createdAt = comment.getCreatedAt();
-        String createdAgoString = MyUtils.getHumanTimeAgo(textView.getContext(), createdAt, R.string.COMMENT_created_at);
-        cTimeView.setText(createdAgoString);
-        MyUtils.show(cTimeView);
-
         Long editedAt = comment.getEditedAt();
+
         if (null != editedAt && editedAt > 0L) {
             String editedAgoString = MyUtils.getHumanTimeAgo(textView.getContext(), createdAt, R.string.COMMENT_edited_at);
             mTimeView.setText(editedAgoString);
             MyUtils.show(mTimeView);
+        }
+        else if (null != createdAt && createdAt > 0L) {
+            String createdAgoString = MyUtils.getHumanTimeAgo(textView.getContext(), createdAt, R.string.COMMENT_created_at);
+            cTimeView.setText(createdAgoString);
+            MyUtils.show(cTimeView);
+        }
+        else {
+            String createdAgoString = MyUtils.getString(cTimeView.getContext(), R.string.COMMENT_unknown_create_time);
+            cTimeView.setText(createdAgoString);
+            MyUtils.show(cTimeView);
         }
 
         textView.setText(comment.getText());

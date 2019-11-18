@@ -312,8 +312,8 @@
     <string name="LOGIN_password_recovery_email_sent">Вам отправлено письмо для восстановления пароля</string>
     <string name="CARD_SHOW_created_at">%1$s</string>
     <string name="CARD_SHOW_edited_at">Изменено %1$s</string>
-    <string name="COMMENT_created_at">Создано %1$s</string>
-    <string name="COMMENT_edited_at">Изменено %1$s</string>
+    <string name="COMMENT_created_at">%1$s</string>
+    <string name="COMMENT_edited_at">Изменён %1$s</string>
     <string name="MENU_new_cards">Новые карточки</string>
     <string name="CARDS_GRID_loading_new_cards">Новые карточки</string>
     <string name="CARDS_GRID_no_new_cards">Нет новых карточек</string>
@@ -523,5 +523,6 @@
     <string name="BACKUP_SERVICE_backup_started">Начато резервное копирование</string>
     <string name="COMMENT_delete">Удалить</string>
     <string name="CARD_SHOW_unknown_create_time">Время создания неизвестно</string>
+    <string name="COMMENT_unknown_create_time">Время создания неизвестно</string>
 
 </resources><!-- «%1$s» -->
