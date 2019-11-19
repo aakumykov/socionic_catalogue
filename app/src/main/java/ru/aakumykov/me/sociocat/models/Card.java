@@ -46,7 +46,6 @@ public class Card extends ListItem implements
     private String audioCode;
     private Float timecode = 0.0f;
     private String description;
-    private int commentsCount = 0;
     private Integer rating = 0;
     private Long ctime = 0L;
     private Long mtime = 0L;
@@ -84,7 +83,6 @@ public class Card extends ListItem implements
                 ", tags: "+ getTags()+
                 ", rateUpList: "+ getRateUpList()+
                 ", rateDownList: "+ getRateDownList()+
-                ", commentsCount: "+getCommentsCount()+
                 ", commentsKeys: "+getCommentsKeys()+
                 ", rating: "+getRating()+
                 ", ctime: "+getCTime()+
@@ -116,7 +114,6 @@ public class Card extends ListItem implements
         cardMap.put("timecode", getTimecode());
         cardMap.put("description", getDescription());
         cardMap.put("tags", getTags());
-        cardMap.put("commentsCount", getCommentsCount());
         cardMap.put("commentsKeys", getCommentsKeys());
         cardMap.put("rating", this.getRating());
         cardMap.put("ctime", this.getCTime());
@@ -152,7 +149,6 @@ public class Card extends ListItem implements
         dest.writeList(this.tags);
 //        dest.writeMap(this.rateUpList);
 //        dest.writeMap(this.rateDownList);
-        dest.writeInt(this.commentsCount);
         dest.writeList(this.commentsKeys);
         dest.writeInt(this.rating);
         dest.writeLong(this.ctime);
@@ -181,8 +177,6 @@ public class Card extends ListItem implements
         in.readStringList(commentsKeys);
 //        rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
 //        rateDownList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
-        commentsCount = in.readInt();
-
         rating = in.readInt();
         ctime = in.readLong();
         mtime = in.readLong();
@@ -240,7 +234,6 @@ public class Card extends ListItem implements
         if (null == rateDownList) this.rateDownList = new HashMap<>();
         return rateDownList;
     }
-    public int getCommentsCount() { return commentsCount; }
     public List<String> getCommentsKeys() {
         return new ArrayList<>(this.commentsKeys);
     }
@@ -291,7 +284,6 @@ public class Card extends ListItem implements
     public void setRateDownList(HashMap<String, Boolean> rateDownList) {
         this.rateDownList = rateDownList;
     }
-    public void setCommentsCount(int count) { this.commentsCount = count; }
     public void setCommentsKeys(List<String> commentsKeys) {
         this.commentsKeys.addAll(commentsKeys);
     }
