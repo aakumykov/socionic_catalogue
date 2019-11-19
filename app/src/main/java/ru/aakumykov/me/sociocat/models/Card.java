@@ -90,7 +90,7 @@ public class Card extends ListItem implements
                 ", localImageURI: "+getLocalImageURI()+
                 ", mimeType: "+getMimeType()+
                 ", imageType: "+getImageType()+
-            " }";
+                " }";
     }
 
     @Exclude
@@ -146,10 +146,13 @@ public class Card extends ListItem implements
         dest.writeString(this.audioCode);
         dest.writeFloat(this.timecode);
         dest.writeString(this.description);
+
         dest.writeList(this.tags);
+        dest.writeList(this.commentsKeys);
+
 //        dest.writeMap(this.rateUpList);
 //        dest.writeMap(this.rateDownList);
-//        dest.writeList(this.commentsKeys);
+
         dest.writeInt(this.rating);
         dest.writeLong(this.ctime);
         dest.writeLong(this.mtime);
@@ -173,10 +176,13 @@ public class Card extends ListItem implements
         audioCode = in.readString();
         timecode = in.readFloat();
         description = in.readString();
-        in.readStringList(tags);
-//        in.readStringList(commentsKeys);
+
+        in.readList(tags, ArrayList.class.getClassLoader());
+        in.readList(commentsKeys, ArrayList.class.getClassLoader());
+
 //        rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
 //        rateDownList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
+
         rating = in.readInt();
         ctime = in.readLong();
         mtime = in.readLong();
@@ -270,7 +276,7 @@ public class Card extends ListItem implements
         this.quoteSource = quoteSource;
     }
     public void setFileName(String fileName) {
-            this.fileName = fileName;
+        this.fileName = fileName;
     }
 
     public void setDescription(String description) {
