@@ -29,7 +29,6 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
-import ru.aakumykov.me.sociocat.cards_list.CardsListAdapter;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
@@ -58,7 +57,6 @@ public class UserShow_View extends BaseView implements
     // Где должен базироваться currentUser: во вьюхе или презентере?
     private User currentUser;
 
-    private CardsListAdapter cardsListAdapter;
     private List<Card> cardsList;
     @BindView(R.id.cardsListView) ListView cardsListView;
 
@@ -77,8 +75,6 @@ public class UserShow_View extends BaseView implements
         presenter = new Users_Presenter();
 
         cardsList = new ArrayList<>();
-        cardsListAdapter = new CardsListAdapter(this, R.layout.cards_list_item, cardsList);
-        cardsListView.setAdapter(cardsListAdapter);
 
         cardsListView.setOnItemClickListener(this);
     }
@@ -217,7 +213,6 @@ public class UserShow_View extends BaseView implements
     public void displayCardsList(List<Card> list) {
         if (null != list) {
             cardsList.addAll(list);
-            cardsListAdapter.notifyDataSetChanged();
         }
     }
 

@@ -2,22 +2,22 @@ package ru.aakumykov.me.sociocat.tags.show;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags.Tags_Presenter;
 import ru.aakumykov.me.sociocat.tags.iTags;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
 // TODO: попробовать extends iBaseView
@@ -116,10 +116,10 @@ public class TagShow_View extends BaseView implements
 
     @Override
     public void goCardsListPage(@Nullable String tagFilter) {
-        Log.d(TAG, "goCardsListPage('"+tagFilter+"'");
+        /*Log.d(TAG, "goCardsListPage('"+tagFilter+"'");
         Intent intent = new Intent(this, CardsList_View.class);
         intent.putExtra(Constants.TAG_FILTER, tagFilter);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
 

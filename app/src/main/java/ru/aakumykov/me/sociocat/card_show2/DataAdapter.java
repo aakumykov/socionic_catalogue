@@ -21,12 +21,12 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     iCardShow2.iDataAdapter
 {
     private final static int CARD_INDEX = 0;
-    private List<iList_Item> list = new ArrayList<>();
+    private List<iList_Item> itemsList = new ArrayList<>();
 
 
     @Override
     public int getItemViewType(int position) {
-        iList_Item listItem = list.get(position);
+        iList_Item listItem = itemsList.get(position);
         return listItem.getItemType();
     }
 
@@ -51,7 +51,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        iList_Item listItem = list.get(position);
+        iList_Item listItem = itemsList.get(position);
 
         int itemType = listItem.getItemType();
         switch (itemType) {
@@ -76,6 +76,16 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void setCard(Card card) {
-        list.set(CARD_INDEX, new List_Item(card));
+        iList_Item listItem = new List_Item(card);
+
+        if (0 == itemsList.size())
+            itemsList.add(listItem);
+        else {
+            if (itemsList.get(CARD_INDEX).isCardItem())
+                itemsList.set(CARD_INDEX, listItem);
+            else {
+                itemsList.add(CARD_INDEX, listItem);
+            }
+        }
     }
 }

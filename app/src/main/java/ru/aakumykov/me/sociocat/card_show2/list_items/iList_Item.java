@@ -7,4 +7,6 @@ public interface iList_Item {
     int UNKNOWN = -1;
 
     int getItemType();
+
+    boolean isCardItem();
 }

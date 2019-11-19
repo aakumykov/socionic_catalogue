@@ -27,4 +27,9 @@ public class List_Item implements iList_Item {
     public int getItemType() {
         return this.itemType;
     }
+
+    @Override
+    public boolean isCardItem() {
+        return CARD == itemType;
+    }
 }
