@@ -14,7 +14,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.PageView_Stub;
+import ru.aakumykov.me.sociocat.card_show.view_stubs.PageView_Stub;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
 import ru.aakumykov.me.sociocat.card_show.list_items.LoadMore_Item;

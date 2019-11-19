@@ -10,7 +10,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.adapter.CommentsView_Stub;
+import ru.aakumykov.me.sociocat.card_show.view_stubs.CommentsView_Stub;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 import ru.aakumykov.me.sociocat.models.Card;

@@ -3,7 +3,7 @@ package ru.aakumykov.me.sociocat.card_show.presenters;
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show.adapter.CardView_Stub;
+import ru.aakumykov.me.sociocat.card_show.view_stubs.CardView_Stub;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
