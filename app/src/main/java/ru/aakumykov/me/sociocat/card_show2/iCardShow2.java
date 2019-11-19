@@ -1,24 +1,27 @@
 package ru.aakumykov.me.sociocat.card_show2;
 
+import java.util.List;
+
+import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Comment;
 
 public interface iCardShow2 {
 
     interface iDataAdapter {
         void setCard(Card card);
+        void setComments(List<Comment> commentsList);
     }
 
-    interface iPageView {
-        void showCardThrobber();
-        void hideCardThrobber();
-
-        void showCommentsThrobber();
-        void hideCommentsThrobber();
-
+    interface iPageView extends iBaseView {
         void displayCard(Card card);
-        void displayComments(String cardKey);
+        void displayComments(List<Comment> commentsList);
+    }
 
-        void refreshCard(Card card);
-        void refreshComments(String cardKey);
+    interface iPresenter {
+        void bindView(iPageView view);
+        void unbindView();
+
+        void onCardLoaded(Card card);
     }
 }

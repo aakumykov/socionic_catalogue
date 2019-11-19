@@ -2,10 +2,13 @@ package ru.aakumykov.me.sociocat.card_show2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -13,6 +16,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardShow2 extends BaseView implements
@@ -23,6 +27,7 @@ public class CardShow2 extends BaseView implements
     private final static String TAG = "CardShow2";
     private boolean firstRun = true;
     private iCardShow2.iDataAdapter dataAdapter;
+    private iCardShow2.iPresenter presenter;
 
 
     @Override
@@ -37,16 +42,25 @@ public class CardShow2 extends BaseView implements
         dataAdapter = new DataAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
+        presenter = new CardShow2_Presenter();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
+        presenter.bindView(this);
+
         if (firstRun) {
             firstRun = false;
             processInputIntent();
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.unbindView();
     }
 
     @Override
@@ -60,46 +74,18 @@ public class CardShow2 extends BaseView implements
     }
 
 
-    // iCardShow2.iPageView
-    @Override
-    public void showCardThrobber() {
-
-    }
-
-    @Override
-    public void hideCardThrobber() {
-
-    }
-
-    @Override
-    public void showCommentsThrobber() {
-
-    }
-
-    @Override
-    public void hideCommentsThrobber() {
-
-    }
 
     @Override
     public void displayCard(Card card) {
         dataAdapter.setCard(card);
+        presenter.onCardLoaded(card);
     }
 
     @Override
-    public void displayComments(String cardKey) {
-
+    public void displayComments(List<Comment> commentsList) {
+        dataAdapter.setComments(commentsList);
     }
 
-    @Override
-    public void refreshCard(Card card) {
-
-    }
-
-    @Override
-    public void refreshComments(String cardKey) {
-
-    }
 
 
     // Внутренние методы

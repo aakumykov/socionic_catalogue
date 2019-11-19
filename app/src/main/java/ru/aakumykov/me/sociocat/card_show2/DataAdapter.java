@@ -16,6 +16,7 @@ import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Comment_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Comment;
 
 public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
     iCardShow2.iDataAdapter
@@ -87,11 +88,25 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         if (0 == itemsList.size())
             itemsList.add(listItem);
         else {
-            if (itemsList.get(CARD_INDEX).isCardItem())
-                itemsList.set(CARD_INDEX, listItem);
-            else {
-                itemsList.add(CARD_INDEX, listItem);
-            }
+            itemsList.set(CARD_INDEX, listItem);
         }
+
+        notifyItemChanged(CARD_INDEX);
+    }
+
+    @Override
+    public void setComments(List<Comment> commentsList) {
+
+        iList_Item cardItem = itemsList.get(CARD_INDEX);
+
+        itemsList = new ArrayList<>();
+
+        setCard((Card) cardItem.getPayload());
+
+        for (Comment comment : commentsList) {
+            itemsList.add(new List_Item(comment));
+        }
+
+        notifyDataSetChanged();
     }
 }
