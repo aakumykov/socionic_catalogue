@@ -15,19 +15,18 @@ public interface iCardShow {
     // Страница
     interface iPageView extends iBaseView {
 
-        void refreshMenu();
-
-        void scrollListToPosition(int position);
-
         void goEditCard(Card card);
         void goShowCardsWithTag(String tagName);
+        void goToAuthorProfile();
 
         void showCommentForm(iTextItem repliedItem, boolean editMode);
         void hideCommentForm(boolean withQuestion);
 
+        void refreshMenu();
+
         void hideSwipeRefreshThrobber();
 
-        void goToAuthorProfile();
+        void scrollListToPosition(int position);
 
         void closePageAfterDeletion(Card card);
 
