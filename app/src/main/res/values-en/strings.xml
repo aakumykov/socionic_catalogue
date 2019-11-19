@@ -134,7 +134,7 @@
     <string name="CARDS_LIST_tag_filter">Cards with tag «%1$s»</string>
     <string name="CARDS_LIST_tag_filter_close_button">Tag filter close button</string>
     <string name="COMMENT_user_avatar">Avatar</string>
-    <string name="CARD_SHOW_add_comment">Add a comment</string>
+    <string name="CARD_SHOW_add_comment">Comment it</string>
     <string name="CARD_SHOW_send_comment_button">Comment send button</string>
     <string name="CARD_SHOW_error_displaying_comments">Error displaying comments</string>
     <string name="CARD_SHOW_error_loading_comments">Error loading comments</string>
