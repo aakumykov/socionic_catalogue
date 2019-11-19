@@ -1,9 +1,8 @@
 package ru.aakumykov.me.sociocat.card_show2.list_items;
 
-public class Card_Item implements iList_Item {
+public class Card_Item extends List_Item implements iList_Item {
 
-    @Override
-    public int getItemType() {
-        return iList_Item.CARD;
+    public Card_Item(Object payload) {
+        super(payload);
     }
 }

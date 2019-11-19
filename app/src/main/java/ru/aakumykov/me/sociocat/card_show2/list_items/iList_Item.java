@@ -4,6 +4,7 @@ public interface iList_Item {
 
     int CARD = 10;
     int COMMENT = 20;
+    int UNKNOWN = -1;
 
     int getItemType();
 }

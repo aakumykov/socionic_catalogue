@@ -5,7 +5,7 @@ import ru.aakumykov.me.sociocat.models.Card;
 public interface iCardShow2 {
 
     interface iDataAdapter {
-
+        void setCard(Card card);
     }
 
     interface iPageView {

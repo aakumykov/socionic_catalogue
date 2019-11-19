@@ -11,30 +11,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.list_items.Card_Item;
-import ru.aakumykov.me.sociocat.card_show2.list_items.Comment_Item;
+import ru.aakumykov.me.sociocat.card_show2.list_items.List_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Comment_ViewHolder;
+import ru.aakumykov.me.sociocat.models.Card;
 
 public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
     iCardShow2.iDataAdapter
 {
+    private final static int CARD_INDEX = 0;
     private List<iList_Item> list = new ArrayList<>();
+
 
     @Override
     public int getItemViewType(int position) {
         iList_Item listItem = list.get(position);
-
-        if (listItem instanceof Card_Item) {
-            return iList_Item.CARD;
-        }
-        else if (listItem instanceof Comment_Item) {
-            return iList_Item.COMMENT;
-        }
-        else {
-            return super.getItemViewType(position);
-        }
+        return listItem.getItemType();
     }
 
     @NonNull @Override
@@ -78,5 +71,11 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public int getItemCount() {
         return 0;
+    }
+
+
+    @Override
+    public void setCard(Card card) {
+        list.set(CARD_INDEX, new List_Item(card));
     }
 }

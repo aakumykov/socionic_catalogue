@@ -40,7 +40,7 @@ import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
-import ru.aakumykov.me.sociocat.card_show.CardShow_View;
+import ru.aakumykov.me.sociocat.card_show2.CardShow2;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
@@ -312,8 +312,9 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public void goShowCard(Card card) {
-        Intent intent = new Intent(this, CardShow_View.class);
+        Intent intent = new Intent(this, CardShow2.class);
         intent.putExtra(Constants.CARD_KEY, card.getKey());
+        intent.putExtra(Constants.CARD, card);
         startActivityForResult(intent, Constants.CODE_SHOW_CARD);
     }
 
