@@ -41,7 +41,6 @@
         <activity
             android:name=".login.Login_View"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".cards_list.CardsList_View" />
         <activity android:name=".cards_grid.CardsGrid_View" />
         <activity
             android:name=".dynamic_link_processor.DLP_View"

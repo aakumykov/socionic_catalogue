@@ -26,7 +26,6 @@ import java.util.Date;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_type_chooser.CardTypeChooser;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
-import ru.aakumykov.me.sociocat.cards_list.CardsList_View;
 import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
@@ -465,11 +464,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 //                Log.e(TAG, "data: "+data);
 //                break;
 //        }
-    }
-
-    private void goCardsList() {
-        Intent intent = new Intent(this, CardsList_View.class);
-        startActivity(intent);
     }
 
     private void goCardsGrid() {
