@@ -1,12 +1,13 @@
 package ru.aakumykov.me.sociocat.cards_list;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import java.util.List;
 
@@ -43,14 +44,6 @@ public class CardsListAdapter extends ArrayAdapter<Card> {
 
         TextView authorView  = view.findViewById(R.id.authorView);
         authorView.setText(view.getResources().getString(R.string.CARDS_LIST_author, card.getUserName()));
-
-        // Comments count
-        int cc = card.getCommentsCount();
-        if (cc > 0) {
-            TextView commentsCountView = view.findViewById(R.id.commentsCountView);
-            String ccText = view.getResources().getString(R.string.CARDS_LIST_comments_count, cc);
-            commentsCountView.setText(ccText);
-        }
 
         return view;
     }
