@@ -47,11 +47,11 @@ public class Card extends ListItem implements
     private Float timecode = 0.0f;
     private String description;
     private int commentsCount = 0;
-    private List<String> commentsKeys = new ArrayList<>();
     private Integer rating = 0;
     private Long ctime = 0L;
     private Long mtime = 0L;
 
+    private List<String> commentsKeys = new ArrayList<>();
     private List<String> tags = new ArrayList<>();
     private HashMap<String, Boolean> rateUpList = new HashMap<>();
     private HashMap<String, Boolean> rateDownList = new HashMap<>();
@@ -178,10 +178,11 @@ public class Card extends ListItem implements
         timecode = in.readFloat();
         description = in.readString();
         in.readStringList(tags);
+        in.readStringList(commentsKeys);
 //        rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
 //        rateDownList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         commentsCount = in.readInt();
-        in.readList(commentsKeys, ArrayList.class.getClassLoader());
+
         rating = in.readInt();
         ctime = in.readLong();
         mtime = in.readLong();
