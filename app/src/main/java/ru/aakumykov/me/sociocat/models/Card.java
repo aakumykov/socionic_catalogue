@@ -149,7 +149,7 @@ public class Card extends ListItem implements
         dest.writeList(this.tags);
 //        dest.writeMap(this.rateUpList);
 //        dest.writeMap(this.rateDownList);
-        dest.writeList(this.commentsKeys);
+//        dest.writeList(this.commentsKeys);
         dest.writeInt(this.rating);
         dest.writeLong(this.ctime);
         dest.writeLong(this.mtime);
@@ -174,7 +174,7 @@ public class Card extends ListItem implements
         timecode = in.readFloat();
         description = in.readString();
         in.readStringList(tags);
-        in.readStringList(commentsKeys);
+//        in.readStringList(commentsKeys);
 //        rateUpList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
 //        rateDownList = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         rating = in.readInt();
