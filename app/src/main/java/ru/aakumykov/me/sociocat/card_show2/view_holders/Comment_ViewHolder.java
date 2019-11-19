@@ -15,6 +15,6 @@ public class Comment_ViewHolder extends Base_ViewHolder {
 
     @Override
     public void initialize(iList_Item listItem) {
-        Comment comment = (Comment) listItem;
+        Comment comment = (Comment) listItem.getPayload();
     }
 }

@@ -21,7 +21,13 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     iCardShow2.iDataAdapter
 {
     private final static int CARD_INDEX = 0;
-    private List<iList_Item> itemsList = new ArrayList<>();
+//    private List<iList_Item> itemsList = new ArrayList<>();
+    private List<iList_Item> itemsList;
+
+
+    DataAdapter() {
+        this.itemsList = new ArrayList<>();
+    }
 
 
     @Override
@@ -70,7 +76,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public int getItemCount() {
-        return 0;
+        return itemsList.size();
     }
 
 

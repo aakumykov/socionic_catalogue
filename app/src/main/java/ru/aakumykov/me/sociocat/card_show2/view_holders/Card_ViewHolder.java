@@ -24,7 +24,7 @@ public class Card_ViewHolder extends Base_ViewHolder {
 
     @Override
     public void initialize(iList_Item listItem) {
-        Card card = (Card) listItem;
+        Card card = (Card) listItem.getPayload();
         displayCard(card);
     }
 

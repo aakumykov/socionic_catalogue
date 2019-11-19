@@ -32,4 +32,9 @@ public class List_Item implements iList_Item {
     public boolean isCardItem() {
         return CARD == itemType;
     }
+
+    @Override
+    public Object getPayload() {
+        return this.payload;
+    }
 }

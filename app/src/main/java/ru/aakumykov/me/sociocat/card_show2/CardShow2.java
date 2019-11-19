@@ -83,7 +83,7 @@ public class CardShow2 extends BaseView implements
 
     @Override
     public void displayCard(Card card) {
-
+        dataAdapter.setCard(card);
     }
 
     @Override
@@ -108,10 +108,7 @@ public class CardShow2 extends BaseView implements
 
         try {
             Card card = intent.getParcelableExtra(Constants.CARD);
-            String cardKey = intent.getStringExtra(Constants.CARD_KEY);
-            String commentKey =intent.getStringExtra(Constants.COMMENT_KEY);
-
-            dataAdapter.setCard(card);
+            displayCard(card);
         }
         catch (Exception e) {
             showErrorMsg(R.string.CARD_SHOW_error_displaying_card, e.getMessage());
