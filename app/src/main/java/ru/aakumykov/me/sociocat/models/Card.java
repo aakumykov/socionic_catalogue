@@ -31,6 +31,10 @@ public class Card extends ListItem implements
     public static final String KEY_COMMENTS_KEYS = "commentsKeys";
 
     public final static String GHOST_TAG_PREFIX = "TAG_";
+    public static final String TEXT_CARD = "TEXT_CARD";
+    public static final String IMAGE_CARD = "IMAGE_CARD";
+    public static final String VIDEO_CARD = "VIDEO_CARD";
+    public static final String AUDIO_CARD = "AUDIO_CARD";
 
     // TODO: а может, все свойства здесь инициализировать?
     private String key;
