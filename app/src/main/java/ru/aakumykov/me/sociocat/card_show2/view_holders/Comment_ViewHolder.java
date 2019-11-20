@@ -5,7 +5,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.bumptech.glide.Glide;
 
@@ -19,6 +18,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class Comment_ViewHolder extends Base_ViewHolder {
 
 //    @BindView(R.id.commentRow) ConstraintLayout commentRow;
+
     @BindView(R.id.imageView) ImageView userAvatarView;
     @BindView(R.id.userNameView) TextView userNameView;
 
@@ -83,8 +83,13 @@ public class Comment_ViewHolder extends Base_ViewHolder {
         // Изображение автора
         Glide.with(userAvatarView)
                 .load(comment.getUserAvatarURL())
+                .placeholder(R.drawable.ic_user)
                 .into(userAvatarView);
 
 
+        // Кнопки управления
+        MyUtils.show(replyWidget);
+        MyUtils.show(editWidget);
+        MyUtils.show(deleteWidget);
     }
 }
