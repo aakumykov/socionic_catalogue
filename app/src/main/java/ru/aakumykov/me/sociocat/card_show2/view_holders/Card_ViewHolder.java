@@ -3,7 +3,6 @@ package ru.aakumykov.me.sociocat.card_show2.view_holders;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -14,7 +13,7 @@ import com.bumptech.glide.Glide;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.lujun.androidtagview.TagContainerLayout;
-import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -44,6 +43,9 @@ public class Card_ViewHolder extends Base_ViewHolder {
 
     @BindView(R.id.replyWidget) TextView replyWidget;
 
+    private enum MediaType { AUDIO, VIDEO }
+    private Card currentCard = null;
+
 
     public Card_ViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -57,6 +59,9 @@ public class Card_ViewHolder extends Base_ViewHolder {
     }
 
     private void displayCard(Card card) {
+
+        currentCard = card;
+
         titleView.setText(card.getTitle());
         descriptionView.setText(card.getDescription());
 
@@ -79,13 +84,46 @@ public class Card_ViewHolder extends Base_ViewHolder {
                 break;
 
             case Card.VIDEO_CARD:
+                displayMedia(MediaType.VIDEO);
                 break;
 
             case Card.AUDIO_CARD:
+                displayMedia(MediaType.AUDIO);
                 break;
 
             default:
                 break;
+        }
+    }
+
+    private void displayMedia(MediaType mediaType) {
+
+        InsertableYoutubePlayer insertableYoutubePlayer =
+                new InsertableYoutubePlayer(
+                        videoContainer.getContext(),
+                        videoContainer
+                );
+
+        switch (mediaType) {
+            case AUDIO:
+                insertableYoutubePlayer.show(
+                        currentCard.getAudioCode(),
+                        currentCard.getTimecode(),
+                        InsertableYoutubePlayer.PlayerType.AUDIO_PLAYER,
+                        R.string.YOUTUBE_PLAYER_waiting_for_audio
+                );
+                break;
+
+            case VIDEO:
+                insertableYoutubePlayer.show(
+                        currentCard.getVideoCode(),
+                        currentCard.getTimecode(),
+                        InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER,
+                        R.string.YOUTUBE_PLAYER_waiting_for_video
+                );
+
+            default:
+                throw new RuntimeException("Unknown mediaType: "+mediaType);
         }
     }
 }
