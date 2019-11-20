@@ -99,10 +99,7 @@ public class Card_ViewHolder extends Base_ViewHolder {
     private void displayMedia(MediaType mediaType) {
 
         InsertableYoutubePlayer insertableYoutubePlayer =
-                new InsertableYoutubePlayer(
-                        videoContainer.getContext(),
-                        videoContainer
-                );
+                new InsertableYoutubePlayer(videoContainer.getContext(), videoContainer);
 
         switch (mediaType) {
             case AUDIO:
@@ -121,6 +118,7 @@ public class Card_ViewHolder extends Base_ViewHolder {
                         InsertableYoutubePlayer.PlayerType.VIDEO_PLAYER,
                         R.string.YOUTUBE_PLAYER_waiting_for_video
                 );
+                break;
 
             default:
                 throw new RuntimeException("Unknown mediaType: "+mediaType);
