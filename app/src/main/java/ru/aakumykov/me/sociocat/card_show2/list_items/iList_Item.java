@@ -4,10 +4,9 @@ public interface iList_Item {
 
     int CARD = 10;
     int COMMENT = 20;
-    int UNKNOWN = -1;
+    int LOAD_MORE = 30;
 
     int getItemType();
-    boolean isCardItem();
 
     Object getPayload();
 }

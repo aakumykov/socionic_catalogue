@@ -11,10 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.list_items.List_Item;
+import ru.aakumykov.me.sociocat.card_show2.list_items.Base_Item;
+import ru.aakumykov.me.sociocat.card_show2.list_items.Card_Item;
+import ru.aakumykov.me.sociocat.card_show2.list_items.Comment_Item;
+import ru.aakumykov.me.sociocat.card_show2.list_items.LoadMore_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Comment_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show2.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 
@@ -51,6 +55,10 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 itemView = layoutInflater.inflate(R.layout.card_show_comment, parent, false);
                 return new Comment_ViewHolder(itemView);
 
+            case iList_Item.LOAD_MORE:
+                itemView = layoutInflater.inflate(R.layout.card_show_load_more, parent, false);
+                return new LoadMore_ViewHolder(itemView);
+
             default:
                 throw new RuntimeException("Unknown vew type: "+viewType);
         }
@@ -70,6 +78,10 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 ((Comment_ViewHolder) holder).initialize(listItem);
                 break;
 
+            case iList_Item.LOAD_MORE:
+                ((LoadMore_ViewHolder) holder).initialize(listItem);
+                break;
+
             default:
                 throw new RuntimeException("Unknown item type: "+itemType);
         }
@@ -83,7 +95,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void setCard(Card card) {
-        iList_Item listItem = new List_Item(card);
+        iList_Item listItem = new Card_Item(card);
 
         if (0 == itemsList.size())
             itemsList.add(listItem);
@@ -97,16 +109,29 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void setComments(List<Comment> commentsList) {
 
+        // Сохраняю карточку
         iList_Item cardItem = itemsList.get(CARD_INDEX);
 
+        // Очищаю список
         itemsList = new ArrayList<>();
 
+        // Возвращаю карточку в список
         setCard((Card) cardItem.getPayload());
 
+        // Добавляю комментарии
         for (Comment comment : commentsList) {
-            itemsList.add(new List_Item(comment));
+            itemsList.add(new Comment_Item(comment));
         }
 
+        // Добавляю кнопку под комментариями
+        int loadMoreButtonTextId =
+                (0 == commentsList.size()) ?
+                R.string.COMMENTS_there_is_no_comments_yet :
+                R.string.COMMENTS_load_more_comments;
+
+        itemsList.add(new LoadMore_Item(loadMoreButtonTextId));
+
+        // Уведомляю об изменившемся списке
         notifyDataSetChanged();
     }
 }
