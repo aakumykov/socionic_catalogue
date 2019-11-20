@@ -13,7 +13,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     private final static String TAG = "CardShow2_Presenter";
     private CommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iCardShow2.iPageView pageView = null;
-
+    private Card currentCard;
 
     @Override
     public void bindView(iCardShow2.iPageView view) {
@@ -25,9 +25,31 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         this.pageView = new CardShow2_ViewStub();
     }
 
+
+    // iCardShow2.iPresenter
     @Override
     public void onCardLoaded(Card card) {
+        currentCard = card;
         loadComments(card.getKey());
+    }
+
+    @Override
+    public void onLoadMoreClicked() {
+
+        Comment lastComment = pageView.getLastComment();
+        String lastCommentKey = (null == lastComment) ? null : lastComment.getKey();
+
+        commentsSingleton.loadList(currentCard.getKey(), lastCommentKey, null, new iCommentsSingleton.ListCallbacks() {
+            @Override
+            public void onCommentsLoadSuccess(List<Comment> list) {
+                pageView.appendComments(list);
+            }
+
+            @Override
+            public void onCommentsLoadError(String errorMessage) {
+                pageView.showErrorMsg(R.string.CARD_SHOW_error_loading_comments, errorMessage);
+            }
+        });
     }
 
 

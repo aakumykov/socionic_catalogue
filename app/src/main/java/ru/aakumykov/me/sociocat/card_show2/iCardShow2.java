@@ -8,14 +8,21 @@ import ru.aakumykov.me.sociocat.models.Comment;
 
 public interface iCardShow2 {
 
-    interface iDataAdapter {
-        void setCard(Card card);
-        void setComments(List<Comment> commentsList);
-    }
-
     interface iPageView extends iBaseView {
         void displayCard(Card card);
         void displayComments(List<Comment> commentsList);
+
+        Comment getLastComment();
+
+        void appendComments(List<Comment> list);
+    }
+
+    interface iDataAdapter {
+        void setCard(Card card);
+        void setComments(List<Comment> commentsList);
+        void appendComments(List<Comment> commentsList);
+
+        Comment getLastComment();
     }
 
     interface iPresenter {
@@ -23,5 +30,6 @@ public interface iCardShow2 {
         void unbindView();
 
         void onCardLoaded(Card card);
+        void onLoadMoreClicked();
     }
 }

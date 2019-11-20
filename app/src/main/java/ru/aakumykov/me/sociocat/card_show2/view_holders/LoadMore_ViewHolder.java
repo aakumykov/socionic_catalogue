@@ -10,6 +10,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show2.iCardShow2;
 import ru.aakumykov.me.sociocat.card_show2.list_items.LoadMore_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 
@@ -17,9 +18,12 @@ public class LoadMore_ViewHolder extends Base_ViewHolder {
 
     @BindView(R.id.loadMoreTextView) TextView loadMoreTextView;
 
+    private iCardShow2.iPresenter presenter;
 
-    public LoadMore_ViewHolder(@NonNull View itemView) {
+
+    public LoadMore_ViewHolder(@NonNull View itemView, iCardShow2.iPresenter presenter) {
         super(itemView);
+        this.presenter = presenter;
         ButterKnife.bind(this, itemView);
     }
 
@@ -31,6 +35,6 @@ public class LoadMore_ViewHolder extends Base_ViewHolder {
 
     @OnClick(R.id.loadMoreView)
     void onLoadMoreClicked() {
-
+        presenter.onLoadMoreClicked();
     }
 }

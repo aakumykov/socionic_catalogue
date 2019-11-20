@@ -26,15 +26,19 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     iCardShow2.iDataAdapter
 {
     private final static int CARD_INDEX = 0;
+    private final static int MINIMAL_LIST_SIZE = 3; // Минимальный размер списка: карточка + кнопка списка комментариев
 //    private List<iList_Item> itemsList = new ArrayList<>();
     private List<iList_Item> itemsList;
+    private iCardShow2.iPresenter presenter;
 
 
-    DataAdapter() {
+    DataAdapter(iCardShow2.iPresenter presenter) {
         this.itemsList = new ArrayList<>();
+        this.presenter = presenter;
     }
 
 
+    // RecyclerView
     @Override
     public int getItemViewType(int position) {
         iList_Item listItem = itemsList.get(position);
@@ -57,7 +61,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
             case iList_Item.LOAD_MORE:
                 itemView = layoutInflater.inflate(R.layout.card_show_load_more, parent, false);
-                return new LoadMore_ViewHolder(itemView);
+                return new LoadMore_ViewHolder(itemView, presenter);
 
             default:
                 throw new RuntimeException("Unknown vew type: "+viewType);
@@ -133,5 +137,26 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         // Уведомляю об изменившемся списке
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void appendComments(List<Comment> commentsList) {
+        int firstIndex = itemsList.size()-1;
+
+        for (Comment comment : commentsList)
+            itemsList.add(itemsList.size()-1, new Comment_Item(comment));
+
+        notifyItemRangeChanged(firstIndex, commentsList.size()+1);
+    }
+
+    @Override
+    public Comment getLastComment() {
+        if (itemsList.size() > MINIMAL_LIST_SIZE) {
+            Comment_Item commentItem = (Comment_Item) itemsList.get(itemsList.size()-2);
+            return (Comment) commentItem.getPayload();
+        }
+        else {
+            return null;
+        }
     }
 }

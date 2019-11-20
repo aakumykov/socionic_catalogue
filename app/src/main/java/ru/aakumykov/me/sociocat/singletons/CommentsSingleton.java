@@ -152,7 +152,10 @@ public class CommentsSingleton implements iCommentsSingleton {
     public void loadList(String cardId, @Nullable String startAtKey, @Nullable String endAtKey, ListCallbacks callbacks) {
         Query query = commentsCollection
                 .whereEqualTo(Constants.COMMENT_KEY_CARD_ID, cardId)
-                .orderBy(Constants.COMMENT_KEY_CREATED_AT, Query.Direction.ASCENDING);
+                .orderBy(Comment.KEY_KEY, Query.Direction.ASCENDING);
+
+        if (null != startAtKey)
+            query = query.startAfter(startAtKey);
 
         query.get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {

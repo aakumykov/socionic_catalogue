@@ -22,6 +22,16 @@ public class CardShow2_ViewStub extends BaseView implements iCardShow2.iPageView
     }
 
     @Override
+    public Comment getLastComment() {
+        return null;
+    }
+
+    @Override
+    public void appendComments(List<Comment> list) {
+
+    }
+
+    @Override
     public void onUserLogin() {
 
     }
