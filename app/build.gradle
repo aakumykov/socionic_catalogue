@@ -91,8 +91,8 @@ dependencies {
     // FloatingActionButtonSpeedDial
     implementation "com.leinardi.android:speed-dial:2.0.1"
 
-    // Insertable Youtube Playr
-    implementation 'com.github.aakumykov:insertable-youtube-player:e791f67'
+    // Insertable Youtube Player
+    implementation 'com.github.aakumykov:insertable-youtube-player:0.13'
 
     // RxJava v1
     implementation 'io.reactivex:rxjava:1.2.3'
