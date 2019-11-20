@@ -19,6 +19,7 @@
             android:paddingTop="8dp"
             android:paddingEnd="8dp"
             android:paddingBottom="8dp"
+            android:textIsSelectable="true"
             android:textSize="@dimen/top_message_font_size"
             android:visibility="gone"
             tools:text="Весть"
