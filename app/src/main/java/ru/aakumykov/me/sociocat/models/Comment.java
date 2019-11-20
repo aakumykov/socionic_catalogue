@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
+
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
@@ -269,5 +271,9 @@ public class Comment extends ListItem implements
 
     @Exclude public boolean isCreatedBy(String checkedUserId) {
         return (!TextUtils.isEmpty(checkedUserId) && !TextUtils.isEmpty(checkedUserId) && this.userId.equals(checkedUserId));
+    }
+
+    @Exclude public boolean isCreatedBy(@Nullable User user) {
+        return ( null != user && userId.equals(user.getKey()) );
     }
 }
