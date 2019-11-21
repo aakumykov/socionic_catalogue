@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.list_items.Base_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.Card_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.Comment_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.LoadMore_Item;
@@ -145,6 +144,12 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         for (Comment comment : commentsList)
             itemsList.add(itemsList.size()-1, new Comment_Item(comment));
+
+        int loadMoreButtonTextId = (0 == commentsList.size()) ?
+                R.string.COMMENTS_no_more_comments :
+                R.string.COMMENTS_load_more_comments;
+
+        itemsList.set(itemsList.size()-1, new LoadMore_Item(loadMoreButtonTextId));
 
         notifyItemRangeChanged(firstIndex, commentsList.size()+1);
     }

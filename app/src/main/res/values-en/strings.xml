@@ -516,5 +516,6 @@
     <string name="COMMENT_delete">Delete</string>
     <string name="CARD_SHOW_unknown_create_time">Unknown create time</string>
     <string name="COMMENT_unknown_create_time">Время создания неизвестно</string>
+    <string name="COMMENTS_no_more_comments">No more comments</string>
 </resources>
 <!-- «%1$s» -->
