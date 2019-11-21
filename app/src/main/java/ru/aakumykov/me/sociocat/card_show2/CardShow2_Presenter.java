@@ -39,6 +39,8 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         Comment lastComment = pageView.getLastComment();
         String lastCommentKey = (null == lastComment) ? null : lastComment.getKey();
 
+        pageView.showCommentsThrobber();
+
         commentsSingleton.loadList(currentCard.getKey(), lastCommentKey, null, new iCommentsSingleton.ListCallbacks() {
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
@@ -55,6 +57,8 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     // Внутренние методы
     private void loadComments(String cardKey) {
+
+        pageView.showCommentsThrobber();
 
         commentsSingleton.loadList(cardKey, null, null, new iCommentsSingleton.ListCallbacks() {
             @Override

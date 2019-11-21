@@ -32,6 +32,11 @@ public class CardShow2_ViewStub extends BaseView implements iCardShow2.iPageView
     }
 
     @Override
+    public void showCommentsThrobber() {
+
+    }
+
+    @Override
     public void onUserLogin() {
 
     }

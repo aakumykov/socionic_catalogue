@@ -2,13 +2,11 @@ package ru.aakumykov.me.sociocat.card_show2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -95,6 +93,11 @@ public class CardShow2 extends BaseView implements
     @Override
     public void appendComments(List<Comment> list) {
         dataAdapter.appendComments(list);
+    }
+
+    @Override
+    public void showCommentsThrobber() {
+        dataAdapter.showCommentsThrobber();
     }
 
 

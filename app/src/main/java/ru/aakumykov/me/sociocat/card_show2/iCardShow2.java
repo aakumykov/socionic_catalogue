@@ -15,6 +15,8 @@ public interface iCardShow2 {
         Comment getLastComment();
 
         void appendComments(List<Comment> list);
+
+        void showCommentsThrobber();
     }
 
     interface iDataAdapter {
@@ -23,6 +25,8 @@ public interface iCardShow2 {
         void appendComments(List<Comment> commentsList);
 
         Comment getLastComment();
+
+        void showCommentsThrobber();
     }
 
     interface iPresenter {

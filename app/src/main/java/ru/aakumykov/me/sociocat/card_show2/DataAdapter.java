@@ -12,10 +12,12 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.list_items.Card_Item;
+import ru.aakumykov.me.sociocat.card_show2.list_items.CommentThrobber_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.Comment_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.LoadMore_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show2.view_holders.CommentThrobber_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Comment_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -62,6 +64,10 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 itemView = layoutInflater.inflate(R.layout.card_show_load_more, parent, false);
                 return new LoadMore_ViewHolder(itemView, presenter);
 
+            case iList_Item.COMMENT_THROBBER:
+                itemView = layoutInflater.inflate(R.layout.card_show_comment_throbber, parent, false);
+                return new CommentThrobber_ViewHolder(itemView);
+
             default:
                 throw new RuntimeException("Unknown vew type: "+viewType);
         }
@@ -83,6 +89,10 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
             case iList_Item.LOAD_MORE:
                 ((LoadMore_ViewHolder) holder).initialize(listItem);
+                break;
+
+            case iList_Item.COMMENT_THROBBER:
+                ((CommentThrobber_ViewHolder) holder).initialize(listItem);
                 break;
 
             default:
@@ -164,4 +174,16 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             return null;
         }
     }
+
+    @Override
+    public void showCommentsThrobber() {
+        int maxIndex = itemsList.size() - 1;
+        itemsList.set(maxIndex, new CommentThrobber_Item());
+        notifyItemChanged(maxIndex);
+    }
+
+    /*private iList_Item getLastItem() {
+        if (itemsList.size() > MINIMAL_LIST_SIZE)
+        return itemsList.get(itemsList.size()-1);
+    }*/
 }
