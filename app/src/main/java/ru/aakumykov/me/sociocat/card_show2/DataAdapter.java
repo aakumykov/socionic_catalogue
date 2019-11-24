@@ -13,6 +13,9 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.list_items.CardThrobber_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.Card_Item;
+import ru.aakumykov.me.sociocat.card_show2.list_items.Comment_Item;
+import ru.aakumykov.me.sociocat.card_show2.list_items.CommentsThrobber_Item;
+import ru.aakumykov.me.sociocat.card_show2.list_items.LoadMore_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.CardThrobber_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
@@ -118,7 +121,17 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void showCommentsThrobber() {
+        CommentsThrobber_Item commentsThrobberItem = new CommentsThrobber_Item();
 
+        if (listSize() > 1) {
+            int index = maxIndex() + 1;
+            itemsList.set(index, commentsThrobberItem);
+            notifyItemChanged(index);
+        }
+        else {
+            itemsList.add(commentsThrobberItem);
+            notifyItemChanged(maxIndex());
+        }
     }
 
     @Override
@@ -136,12 +149,25 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void showComments(List<Comment> commentsList) {
+    public void appendComments(List<Comment> commentsList) {
+//        itemsList.remove(maxIndex());
 
+        for (Comment comment : commentsList) {
+            itemsList.add(maxIndex(), new Comment_Item(comment));
+        }
+
+        itemsList.set(maxIndex(), new LoadMore_Item(R.string.COMMENTS_load_more_comments));
+
+        notifyDataSetChanged();
     }
 
 
+    // Внутренние методы
     private int listSize() {
         return itemsList.size();
+    }
+
+    private int maxIndex() {
+        return itemsList.size() - 1;
     }
 }

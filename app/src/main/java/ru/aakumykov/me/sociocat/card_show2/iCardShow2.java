@@ -16,7 +16,7 @@ public interface iCardShow2 {
         void showCommentsThrobber();
 
         void showCard(Card card);
-        void showComments(List<Comment> commentsList);
+        void appendComments(List<Comment> commentsList);
     }
 
     interface iPresenter {

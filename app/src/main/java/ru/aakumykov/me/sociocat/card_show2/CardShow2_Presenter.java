@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show2;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
@@ -43,12 +45,14 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onPageOpened(String cardKey) {
+
         dataAdapter.showCardThrobber();
 
         cardsSingleton.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
             @Override
             public void onCardLoadSuccess(Card card) {
                 dataAdapter.showCard(card);
+                loadComments(card.getKey(), null);
             }
 
             @Override
@@ -61,5 +65,26 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     @Override
     public void onLoadMoreClicked() {
 
+    }
+
+
+    // Внутренние методы
+    private void loadComments(String cardKey, @Nullable Comment lastComment) {
+
+        dataAdapter.showCommentsThrobber();
+
+        String lastCommentKey = (null != lastComment) ? lastComment.getKey() : null;
+
+        commentsSingleton.loadList(cardKey, lastCommentKey, null, new iCommentsSingleton.ListCallbacks() {
+            @Override
+            public void onCommentsLoadSuccess(List<Comment> list) {
+                dataAdapter.appendComments(list);
+            }
+
+            @Override
+            public void onCommentsLoadError(String errorMessage) {
+                pageView.showErrorMsg(R.string.COMMENTS_error_loading_comments, errorMessage);
+            }
+        });
     }
 }
