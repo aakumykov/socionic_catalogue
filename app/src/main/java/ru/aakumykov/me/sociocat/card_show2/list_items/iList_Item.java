@@ -5,7 +5,8 @@ public interface iList_Item {
     int CARD = 10;
     int COMMENT = 20;
     int LOAD_MORE = 30;
-    int COMMENT_THROBBER = 40;
+    int CARD_THROBBER = 40;
+    int COMMENT_THROBBER = 50;
 
     int getItemType();
 

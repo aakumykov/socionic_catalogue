@@ -12,31 +12,6 @@ import ru.aakumykov.me.sociocat.models.Comment;
 public class CardShow2_ViewStub extends BaseView implements iCardShow2.iPageView {
 
     @Override
-    public void displayCard(Card card) {
-
-    }
-
-    @Override
-    public void displayComments(List<Comment> commentsList) {
-
-    }
-
-    @Override
-    public Comment getLastComment() {
-        return null;
-    }
-
-    @Override
-    public void appendComments(List<Comment> list) {
-
-    }
-
-    @Override
-    public void showCommentsThrobber() {
-
-    }
-
-    @Override
     public void onUserLogin() {
 
     }

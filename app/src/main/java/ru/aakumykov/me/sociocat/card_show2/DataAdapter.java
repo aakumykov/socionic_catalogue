@@ -11,11 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show2.list_items.CardThrobber_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.Card_Item;
-import ru.aakumykov.me.sociocat.card_show2.list_items.CommentThrobber_Item;
-import ru.aakumykov.me.sociocat.card_show2.list_items.Comment_Item;
-import ru.aakumykov.me.sociocat.card_show2.list_items.LoadMore_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
+import ru.aakumykov.me.sociocat.card_show2.view_holders.CardThrobber_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.CommentThrobber_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Comment_ViewHolder;
@@ -27,14 +26,11 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     iCardShow2.iDataAdapter
 {
     private final static int CARD_INDEX = 0;
-    private final static int MINIMAL_LIST_SIZE = 3; // Минимальный размер списка: карточка + кнопка списка комментариев
-//    private List<iList_Item> itemsList = new ArrayList<>();
-    private List<iList_Item> itemsList;
+    private List<iList_Item> itemsList = new ArrayList<>();
     private iCardShow2.iPresenter presenter;
 
 
     DataAdapter(iCardShow2.iPresenter presenter) {
-        this.itemsList = new ArrayList<>();
         this.presenter = presenter;
     }
 
@@ -64,6 +60,10 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 itemView = layoutInflater.inflate(R.layout.card_show_load_more, parent, false);
                 return new LoadMore_ViewHolder(itemView, presenter);
 
+            case iList_Item.CARD_THROBBER:
+                itemView = layoutInflater.inflate(R.layout.card_show_card_throbber, parent, false);
+                return new CardThrobber_ViewHolder(itemView);
+
             case iList_Item.COMMENT_THROBBER:
                 itemView = layoutInflater.inflate(R.layout.card_show_comment_throbber, parent, false);
                 return new CommentThrobber_ViewHolder(itemView);
@@ -91,6 +91,10 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 ((LoadMore_ViewHolder) holder).initialize(listItem);
                 break;
 
+            case iList_Item.CARD_THROBBER:
+                ((CardThrobber_ViewHolder) holder).initialize(listItem);
+                break;
+
             case iList_Item.COMMENT_THROBBER:
                 ((CommentThrobber_ViewHolder) holder).initialize(listItem);
                 break;
@@ -106,84 +110,38 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
 
+    // iDataAdapter
     @Override
-    public void setCard(Card card) {
-        iList_Item listItem = new Card_Item(card);
+    public void showCardThrobber() {
+        displayAtCardPosition(new CardThrobber_Item());
+    }
 
-        if (0 == itemsList.size())
-            itemsList.add(listItem);
-        else {
+    @Override
+    public void showCommentsThrobber() {
+
+    }
+
+    @Override
+    public void showCard(Card card) {
+        displayAtCardPosition(new Card_Item(card));
+    }
+
+    private void displayAtCardPosition(iList_Item listItem) {
+        if (listSize() > 0)
             itemsList.set(CARD_INDEX, listItem);
-        }
+        else
+            itemsList.add(CARD_INDEX, listItem);
 
         notifyItemChanged(CARD_INDEX);
     }
 
     @Override
-    public void setComments(List<Comment> commentsList) {
+    public void showComments(List<Comment> commentsList) {
 
-        // Сохраняю карточку
-        iList_Item cardItem = itemsList.get(CARD_INDEX);
-
-        // Очищаю список
-        itemsList = new ArrayList<>();
-
-        // Возвращаю карточку в список
-        setCard((Card) cardItem.getPayload());
-
-        // Добавляю комментарии
-        for (Comment comment : commentsList) {
-            itemsList.add(new Comment_Item(comment));
-        }
-
-        // Добавляю кнопку под комментариями
-        int loadMoreButtonTextId =
-                (0 == commentsList.size()) ?
-                R.string.COMMENTS_there_is_no_comments_yet :
-                R.string.COMMENTS_load_more_comments;
-
-        itemsList.add(new LoadMore_Item(loadMoreButtonTextId));
-
-        // Уведомляю об изменившемся списке
-        notifyDataSetChanged();
     }
 
-    @Override
-    public void appendComments(List<Comment> commentsList) {
-        int firstIndex = itemsList.size()-1;
 
-        for (Comment comment : commentsList)
-            itemsList.add(itemsList.size()-1, new Comment_Item(comment));
-
-        int loadMoreButtonTextId = (0 == commentsList.size()) ?
-                R.string.COMMENTS_no_more_comments :
-                R.string.COMMENTS_load_more_comments;
-
-        itemsList.set(itemsList.size()-1, new LoadMore_Item(loadMoreButtonTextId));
-
-        notifyItemRangeChanged(firstIndex, commentsList.size()+1);
+    private int listSize() {
+        return itemsList.size();
     }
-
-    @Override
-    public Comment getLastComment() {
-        if (itemsList.size() > MINIMAL_LIST_SIZE) {
-            Comment_Item commentItem = (Comment_Item) itemsList.get(itemsList.size()-2);
-            return (Comment) commentItem.getPayload();
-        }
-        else {
-            return null;
-        }
-    }
-
-    @Override
-    public void showCommentsThrobber() {
-        int maxIndex = itemsList.size() - 1;
-        itemsList.set(maxIndex, new CommentThrobber_Item());
-        notifyItemChanged(maxIndex);
-    }
-
-    /*private iList_Item getLastItem() {
-        if (itemsList.size() > MINIMAL_LIST_SIZE)
-        return itemsList.get(itemsList.size()-1);
-    }*/
 }

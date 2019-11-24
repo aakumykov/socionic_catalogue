@@ -49,6 +49,7 @@ public class CardShow2 extends BaseView implements
         super.onStart();
 
         presenter.bindView(this);
+        presenter.bindDataAdapter(dataAdapter);
 
         if (firstRun) {
             firstRun = false;
@@ -59,6 +60,7 @@ public class CardShow2 extends BaseView implements
     @Override
     protected void onStop() {
         super.onStop();
+        presenter.unbindDataAdapter();
         presenter.unbindView();
     }
 
@@ -74,31 +76,6 @@ public class CardShow2 extends BaseView implements
 
 
 
-    @Override
-    public void displayCard(Card card) {
-        dataAdapter.setCard(card);
-        presenter.onCardLoaded(card);
-    }
-
-    @Override
-    public void displayComments(List<Comment> commentsList) {
-        dataAdapter.setComments(commentsList);
-    }
-
-    @Override
-    public Comment getLastComment() {
-        return dataAdapter.getLastComment();
-    }
-
-    @Override
-    public void appendComments(List<Comment> list) {
-        dataAdapter.appendComments(list);
-    }
-
-    @Override
-    public void showCommentsThrobber() {
-        dataAdapter.showCommentsThrobber();
-    }
 
 
     // Внутренние методы
@@ -107,7 +84,7 @@ public class CardShow2 extends BaseView implements
 
         try {
             Card card = intent.getParcelableExtra(Constants.CARD);
-            displayCard(card);
+            presenter.onPageOpened(card.getKey());
         }
         catch (Exception e) {
             showErrorMsg(R.string.CARD_SHOW_error_displaying_card, e.getMessage());
