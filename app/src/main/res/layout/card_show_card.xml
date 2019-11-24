@@ -29,7 +29,7 @@
         android:textSize="18sp"
         android:textStyle="italic"
         android:visibility="gone"
-        tools:text='Компании "НПО РусБИТех" опубликовала выпуск дистрибутива Astra Linux Common Edition 2.12.13, построенного на пакетной базе Debian GNU/Linux и поставляемого с собственным проприетарным рабочим столом Fly (интерактивная демонстрация), использующим библиотеку Qt.'
+        tools:text='Компании "НПО РусБИТех" опубликовала выпуск дистрибутива Astra Linux Common Edition 2.12.13'
         tools:visibility="visible" />
 
     <ImageView
@@ -70,7 +70,7 @@
         android:textColor="@color/defaultTextColor"
         android:textIsSelectable="true"
         android:textSize="18sp"
-        tools:text="Для загрузки доступны iso-образы (3.7 Гб, x86-64), бинарный репозиторий и исходные тексты пакетов. Дистрибутив распространяется в рамках лицензионного соглашения, которое накладывает ряд ограничений на пользователей, в частности, запрещены коммерческое использование, декомпиляция и дизассемблирование продукта." />
+        tools:text="Для загрузки доступны iso-образы" />
 
     <TextView
         android:id="@+id/authorView"
@@ -82,7 +82,7 @@
         android:textAlignment="viewEnd"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/author_text_size"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:text="Автор: Разработчик"
         tools:visibility="visible" />
 
@@ -111,9 +111,8 @@
         android:id="@+id/tagsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="25dp"
-        android:visibility="visible"
+        android:visibility="gone"
+        tools:visibility="visible"
         app:container_background_color="@color/transparent"
         app:container_border_color="@color/transparent"
         app:container_enable_drag="false"
@@ -127,9 +126,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/controlsHolder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/cardRatingUpButton"
