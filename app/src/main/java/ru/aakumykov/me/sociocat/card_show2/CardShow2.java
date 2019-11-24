@@ -75,9 +75,6 @@ public class CardShow2 extends BaseView implements
     }
 
 
-
-
-
     // Внутренние методы
     private void processInputIntent() {
         Intent intent = getIntent();

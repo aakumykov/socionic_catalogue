@@ -17,6 +17,8 @@ public interface iCardShow2 {
 
         void showCard(Card card);
         void appendComments(List<Comment> commentsList);
+
+        Comment getLastComment();
     }
 
     interface iPresenter {

@@ -51,6 +51,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         cardsSingleton.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
             @Override
             public void onCardLoadSuccess(Card card) {
+                currentCard = card;
                 dataAdapter.showCard(card);
                 loadComments(card.getKey(), null);
             }
@@ -64,7 +65,8 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onLoadMoreClicked() {
-
+        Comment lastComment = dataAdapter.getLastComment();
+        loadComments(currentCard.getKey(), lastComment);
     }
 
 

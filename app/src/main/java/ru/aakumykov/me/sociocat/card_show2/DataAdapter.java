@@ -124,7 +124,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         CommentsThrobber_Item commentsThrobberItem = new CommentsThrobber_Item();
 
         if (listSize() > 1) {
-            int index = maxIndex() + 1;
+            int index = maxIndex();
             itemsList.set(index, commentsThrobberItem);
             notifyItemChanged(index);
         }
@@ -159,6 +159,16 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         itemsList.set(maxIndex(), new LoadMore_Item(R.string.COMMENTS_load_more_comments));
 
         notifyDataSetChanged();
+    }
+
+    @Override
+    public Comment getLastComment() {
+        if (listSize() < 3)
+            return null;
+        else {
+            iList_Item lastCommentItem = itemsList.get(maxIndex()-1);
+            return (Comment) lastCommentItem.getPayload();
+        }
     }
 
 
