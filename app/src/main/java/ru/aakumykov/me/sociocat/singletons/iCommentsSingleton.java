@@ -8,7 +8,7 @@ import ru.aakumykov.me.sociocat.models.Comment;
 
 public interface iCommentsSingleton {
 
-    void loadList(String cardId, @Nullable String startAtKey, @Nullable String endAtKey, ListCallbacks callbacks);
+    void loadList(String cardId, @Nullable Comment startAtComment, @Nullable Comment endAtComment, ListCallbacks callbacks);
     void createComment(Comment commentDraft, CreateCallbacks callbacks);
     void updateComment(Comment comment, CreateCallbacks callbacks);
     void deleteComment(Comment comment, DeleteCallbacks callbacks);

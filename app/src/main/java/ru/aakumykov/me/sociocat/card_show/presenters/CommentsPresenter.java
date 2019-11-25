@@ -191,8 +191,8 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
 
         commentsSingleton.loadList(
                 cardKey,
-                startCommentKey,
-                endCommentKey,
+                startComment,
+                endComment,
                 new iCommentsSingleton.ListCallbacks() {
                     @Override
                     public void onCommentsLoadSuccess(List<Comment> list) {

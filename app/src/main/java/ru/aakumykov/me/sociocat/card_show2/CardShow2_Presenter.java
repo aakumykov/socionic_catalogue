@@ -122,9 +122,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
         dataAdapter.showCommentsThrobber();
 
-        String lastCommentKey = (null != lastComment) ? lastComment.getKey() : null;
-
-        commentsSingleton.loadList(cardKey, lastCommentKey, null, new iCommentsSingleton.ListCallbacks() {
+        commentsSingleton.loadList(cardKey, lastComment, null, new iCommentsSingleton.ListCallbacks() {
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
                 dataAdapter.appendComments(list);
