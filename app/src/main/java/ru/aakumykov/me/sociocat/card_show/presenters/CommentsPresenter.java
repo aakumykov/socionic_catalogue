@@ -221,7 +221,7 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
         User user = usersSingleton.getCurrentUser();
 
         Comment newComment = new Comment();
-                newComment.setText(commentText);
+                newComment.setCommentText(commentText);
                 newComment.setUserId(user.getKey());
                 newComment.setUserName(user.getName());
                 newComment.setUserAvatarURL(user.getAvatarURL());
@@ -272,7 +272,7 @@ public class CommentsPresenter implements iCardShow.iCommentsPresenter {
     private void updateComment(String text, iCommentForm commentForm) {
 
         Comment modifiedComment = mEditedComment;
-                modifiedComment.setText(text);
+                modifiedComment.setCommentText(text);
                 modifiedComment.setEditedAt(new Date().getTime());
 
         commentForm.disable();

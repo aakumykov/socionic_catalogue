@@ -201,7 +201,7 @@ public class CardShow_View extends BaseView implements
 
         commentForm.addButtonListeners(new iCommentForm.ButtonListeners() {
             @Override
-            public void onClearQuoteClicked() {
+            public void onRemoveQuoteClicked() {
                 Card card = cardPresenter.getCard();
                 commentsPresenter.onReplyClicked(card);
             }

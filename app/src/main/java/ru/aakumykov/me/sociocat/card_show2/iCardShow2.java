@@ -12,6 +12,13 @@ public interface iCardShow2 {
     interface iPageView extends iBaseView {
         void showCommentForm();
         void hideCommentForm();
+
+        void disableCommentForm();
+
+        String getCommentText();
+        void clearCommentForm();
+
+        void showCommentError(int errorMessageId, String errorMsg);
     }
 
     interface iDataAdapter {
@@ -20,6 +27,7 @@ public interface iCardShow2 {
 
         void showCard(Card card);
         void appendComments(List<Comment> commentsList);
+        void appendOneComment(Comment comment);
 
         Comment getLastComment();
     }
@@ -34,5 +42,6 @@ public interface iCardShow2 {
         void onPageOpened(String cardKey);
         void onLoadMoreClicked();
         void onAddCommentClicked(iList_Item listItem);
+        void onSendCommentClicked();
     }
 }

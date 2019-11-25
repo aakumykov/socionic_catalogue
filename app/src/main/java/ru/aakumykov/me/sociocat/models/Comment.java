@@ -20,7 +20,8 @@ import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 @IgnoreExtraProperties
 public class Comment extends ListItem implements
         Parcelable,
-        iTextItem
+        iTextItem,
+        iCommentable
 {
     public static final String KEY_USER_NAME = "userName";
     public static final String KEY_USER_AVATAR = "userAvatarURL";
@@ -36,7 +37,7 @@ public class Comment extends ListItem implements
     private String userId;
     private String userName;
     private String userAvatarURL;
-    private Long createdAt;
+    private Long createdAt = 0L;
     private Long editedAt = 0L;
     private Integer rating = 0;
     private List<String> rateUpList = new ArrayList<>();
@@ -46,9 +47,20 @@ public class Comment extends ListItem implements
     public Comment(){
         setItemType(ItemType.COMMENT_ITEM);
     }
-    
-    public Comment(String text, String cardId, String parentId,
-                   String parentText, String userId, String userName, String userAvatarURL) {
+
+    public Comment(String text) {
+        this.text = text;
+    }
+
+    public Comment(
+            String text,
+            String cardId,
+            String parentId,
+            String parentText,
+            String userId,
+            String userName,
+            String userAvatarURL
+    ) {
         this.text = text;
         this.cardId = cardId;
         this.parentId = parentId;
@@ -154,18 +166,24 @@ public class Comment extends ListItem implements
     /* Parcelable */
 
 
-    // Геттеры и сеттеры
+    // iCommentable
+    @Override
     public String getKey() {
         return key;
     }
+
+    @Override
+    public String getText() {
+        return text;
+    }
+
+
+    // Геттеры и сеттеры
     public void setKey(String key) {
         this.key = key;
     }
 
-    public String getText() {
-        return text;
-    }
-    public void setText(String text) {
+    public void setCommentText(String text) {
         this.text = text;
     }
 
@@ -179,6 +197,7 @@ public class Comment extends ListItem implements
     public String getParentId() {
         return parentId;
     }
+    @Deprecated
     public void setParentId(String parentId) {
         this.parentId = parentId;
     }
@@ -186,6 +205,7 @@ public class Comment extends ListItem implements
     public String getParentText() {
         return parentText;
     }
+    @Deprecated
     public void setParentText(String parentText) {
         this.parentText = parentText;
     }
@@ -193,6 +213,7 @@ public class Comment extends ListItem implements
     public String getUserId() {
         return userId;
     }
+    @Deprecated
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -200,6 +221,7 @@ public class Comment extends ListItem implements
     public String getUserName() {
         return userName;
     }
+    @Deprecated
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -207,6 +229,7 @@ public class Comment extends ListItem implements
     public String getUserAvatarURL() {
         return userAvatarURL;
     }
+    @Deprecated
     public void setUserAvatarURL(String userAvatarURL) {
         this.userAvatarURL = userAvatarURL;
     }
@@ -276,5 +299,18 @@ public class Comment extends ListItem implements
 
     @Exclude public boolean isCreatedBy(@Nullable User user) {
         return ( null != user && userId.equals(user.getKey()) );
+    }
+
+    public void setParent(iCommentable commentableObject) {
+        this.parentId = commentableObject.getKey();
+
+        if (commentableObject instanceof Comment)
+            this.parentText = commentableObject.getText();
+    }
+
+    public void setUser(User user) {
+        this.userId = user.getKey();
+        this.userName = user.getName();
+        this.userAvatarURL = user.getAvatarURL();
     }
 }

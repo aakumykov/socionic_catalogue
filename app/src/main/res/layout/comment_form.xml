@@ -25,6 +25,15 @@
         tools:text="Ошибка отправки комментария"
         tools:visibility="visible" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
     <LinearLayout
         android:id="@+id/quoteContainer"
         android:layout_width="match_parent"

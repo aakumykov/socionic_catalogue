@@ -150,14 +150,14 @@ public class CommentsSingleton implements iCommentsSingleton {
     }
 
     @Override
-    public void loadList(String cardId, @Nullable String startAtKey, @Nullable String endAtKey, ListCallbacks callbacks) {
+    public void loadList(String cardId, @Nullable String startAfterKey, @Nullable String endAtKey, ListCallbacks callbacks) {
         Query query = commentsCollection
                 .whereEqualTo(Constants.COMMENT_KEY_CARD_ID, cardId)
                 .orderBy(Comment.KEY_KEY, Query.Direction.ASCENDING)
                 .limit(Config.DEFAULT_COMMENTS_LOAD_COUNT);
 
-        if (null != startAtKey)
-            query = query.startAfter(startAtKey);
+        if (null != startAfterKey)
+            query = query.startAfter(startAfterKey);
 
         query.get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {

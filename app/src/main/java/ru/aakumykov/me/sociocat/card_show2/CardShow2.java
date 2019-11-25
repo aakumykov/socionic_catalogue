@@ -2,10 +2,14 @@ package ru.aakumykov.me.sociocat.card_show2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,7 +24,11 @@ import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 public class CardShow2 extends BaseView implements
         iCardShow2.iPageView
 {
+    @BindView(R.id.messageView) TextView messageView;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.commentFormContainer) FrameLayout commentFormContainer;
 
     private final static String TAG = "CardShow2";
     private boolean firstRun = true;
@@ -43,7 +51,18 @@ public class CardShow2 extends BaseView implements
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
 
-        this.commentForm = new CommentForm(this);
+        this.commentForm = new CommentForm(this, commentFormContainer);
+        this.commentForm.addButtonListeners(new iCommentForm.ButtonListeners() {
+            @Override
+            public void onRemoveQuoteClicked() {
+
+            }
+
+            @Override
+            public void onSendCommentClicked(String commentText) {
+                presenter.onSendCommentClicked();
+            }
+        });
     }
 
     @Override
@@ -98,6 +117,28 @@ public class CardShow2 extends BaseView implements
 
     @Override
     public void hideCommentForm() {
+        this.commentForm.hideError();
+        this.commentForm.hide();
+    }
 
+    @Override
+    public void disableCommentForm() {
+        this.commentForm.disable();
+    }
+
+    @Override
+    public void clearCommentForm() {
+        this.commentForm.clear();
+    }
+
+    @Override
+    public void showCommentError(int errorMessageId, String errorMsg) {
+        this.commentForm.enable();
+        this.commentForm.showError(errorMessageId, errorMsg);
+    }
+
+    @Override
+    public String getCommentText() {
+        return this.commentForm.getText();
     }
 }

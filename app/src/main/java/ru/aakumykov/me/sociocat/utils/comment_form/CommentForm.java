@@ -7,13 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CommentForm implements
@@ -33,6 +33,8 @@ public class CommentForm implements
     private TextView quoteTextView;
     private View clearQuoteWidget;
 
+    private ProgressBar progressBar;
+
     private View commentContainer;
     private EditText commentTextInput;
     private View sendCommentWidget;
@@ -42,6 +44,11 @@ public class CommentForm implements
 
     public CommentForm(Context context) {
         this.context = context;
+    }
+
+    public CommentForm(Context context, ViewGroup container) {
+        this.context = context;
+        attachTo(container);
     }
 
 
@@ -57,6 +64,7 @@ public class CommentForm implements
         quoteContainer = layout.findViewById(R.id.quoteContainer);
         quoteTextView = layout.findViewById(R.id.quoteTextView);
         clearQuoteWidget = layout.findViewById(R.id.clearQuoteWidget);
+        progressBar = layout.findViewById(R.id.progressBar);
         commentContainer = layout.findViewById(R.id.commentContainer);
         commentTextInput = layout.findViewById(R.id.commentTextInput);
         sendCommentWidget = layout.findViewById(R.id.sendCommentWidget);
@@ -117,6 +125,8 @@ public class CommentForm implements
         MyUtils.enable(clearQuoteWidget);
         MyUtils.enable(commentTextInput);
         MyUtils.enable(sendCommentWidget);
+
+        MyUtils.hide(progressBar);
     }
 
     @Override
@@ -124,6 +134,8 @@ public class CommentForm implements
         MyUtils.disable(clearQuoteWidget);
         MyUtils.disable(commentTextInput);
         MyUtils.disable(sendCommentWidget);
+
+        MyUtils.show(progressBar);
     }
 
     @Override
@@ -185,7 +197,7 @@ public class CommentForm implements
     private void clearQuote() {
         quoteTextView.setText("");
         MyUtils.hide(quoteContainer);
-        buttonListeners.onClearQuoteClicked();
+        buttonListeners.onRemoveQuoteClicked();
     }
 
     private void hideKeyboard() {

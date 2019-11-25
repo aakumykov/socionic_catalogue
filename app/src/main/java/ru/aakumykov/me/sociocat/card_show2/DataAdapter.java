@@ -162,6 +162,13 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
+    public void appendOneComment(Comment comment) {
+        List<Comment> list = new ArrayList<>();
+        list.add(comment);
+        appendComments(list);
+    }
+
+    @Override
     public Comment getLastComment() {
         if (listSize() < 3)
             return null;

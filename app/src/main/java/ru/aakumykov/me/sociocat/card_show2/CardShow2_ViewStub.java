@@ -26,4 +26,24 @@ public class CardShow2_ViewStub extends BaseView implements iCardShow2.iPageView
     public void hideCommentForm() {
 
     }
+
+    @Override
+    public void disableCommentForm() {
+
+    }
+
+    @Override
+    public void clearCommentForm() {
+
+    }
+
+    @Override
+    public void showCommentError(int errorMessageId, String errorMsg) {
+
+    }
+
+    @Override
+    public String getCommentText() {
+        return null;
+    }
 }

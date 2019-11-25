@@ -23,7 +23,8 @@ import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
 @IgnoreExtraProperties
 public class Card extends ListItem implements
         Parcelable,
-        iTextItem
+        iTextItem,
+        iCommentable
 {
     public final static String KEY_CTIME = "ctime";
     public static final String KEY_TAGS = "tags";
@@ -130,7 +131,7 @@ public class Card extends ListItem implements
     }
 
 
-    // Конверт
+    // Parcelable
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         // важен порядок заполнения
@@ -208,7 +209,29 @@ public class Card extends ListItem implements
             return new Card[size];
         }
     };
-    // Конверт
+
+
+    // iCommentable
+    @Override
+    public String getKey() {
+        return key;
+    }
+
+    @Override
+    public String getText() {
+        switch (getType()) {
+            case Constants.TEXT_CARD:
+                return getQuote();
+            case Constants.AUDIO_CARD:
+                return getTitle();
+            case Constants.VIDEO_CARD:
+                return getTitle();
+            case Constants.IMAGE_CARD:
+                return getTitle();
+            default:
+                return "";
+        }
+    }
 
 
     // Геттеры
@@ -216,9 +239,6 @@ public class Card extends ListItem implements
         return userId;
     }
     public String getUserName() { return userName; }
-    public String getKey() {
-        return key;
-    }
     public String getType() {
         return type + "";
     }

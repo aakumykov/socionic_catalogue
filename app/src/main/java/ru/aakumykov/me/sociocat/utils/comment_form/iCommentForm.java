@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 public interface iCommentForm {
 
     interface ButtonListeners {
-        void onClearQuoteClicked();
+        void onRemoveQuoteClicked();
         void onSendCommentClicked(String commentText);
     }
 

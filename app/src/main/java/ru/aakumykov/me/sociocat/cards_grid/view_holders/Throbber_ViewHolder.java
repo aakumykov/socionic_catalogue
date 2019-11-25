@@ -12,7 +12,7 @@ public class Throbber_ViewHolder extends BaseViewHolder {
     }
 
     public void initialize() {
-        //mTitleView.setText(R.string.CARDS_GRID_load_more);
+        //mTitleView.setCommentText(R.string.CARDS_GRID_load_more);
     }
 
 
