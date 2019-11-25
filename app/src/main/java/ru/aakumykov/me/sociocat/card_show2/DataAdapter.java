@@ -53,7 +53,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         switch (viewType) {
             case iList_Item.CARD:
                 itemView = layoutInflater.inflate(R.layout.card_show_card, parent, false);
-                return new Card_ViewHolder(itemView);
+                return new Card_ViewHolder(itemView, presenter);
 
             case iList_Item.COMMENT:
                 itemView = layoutInflater.inflate(R.layout.card_show_comment, parent, false);

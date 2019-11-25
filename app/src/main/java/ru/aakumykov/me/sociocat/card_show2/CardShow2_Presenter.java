@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
@@ -67,6 +68,11 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     public void onLoadMoreClicked() {
         Comment lastComment = dataAdapter.getLastComment();
         loadComments(currentCard.getKey(), lastComment);
+    }
+
+    @Override
+    public void onAddCommentClicked(iList_Item listItem) {
+        pageView.showCommentForm();
     }
 
 

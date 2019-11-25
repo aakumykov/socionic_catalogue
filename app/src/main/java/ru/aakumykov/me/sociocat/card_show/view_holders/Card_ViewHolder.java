@@ -54,7 +54,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.cardRatingView) TextView cardRatingView;
     @BindView(R.id.cardRatingThrobber) ProgressBar cardRatingThrobber;
 
-    @BindView(R.id.replyWidget) TextView replyWidget;
+    @BindView(R.id.addCommentWidget) TextView replyWidget;
 
     private static final String TAG = "Card_ViewHolder";
     // TODO: опасненько его здесь хранить!
@@ -82,7 +82,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         cardPresenter.onAuthorClicked();
     }
 
-    @OnClick(R.id.replyWidget)
+    @OnClick(R.id.addCommentWidget)
     void onReplyWidgetClicked() {
         cardPresenter.onReplyClicked();
     }

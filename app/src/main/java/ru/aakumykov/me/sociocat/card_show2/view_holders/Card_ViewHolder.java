@@ -12,9 +12,11 @@ import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show2.iCardShow2;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Card;
 
@@ -41,23 +43,37 @@ public class Card_ViewHolder extends Base_ViewHolder {
     @BindView(R.id.cardRatingView) TextView cardRatingView;
     @BindView(R.id.cardRatingThrobber) ProgressBar cardRatingThrobber;
 
-    @BindView(R.id.replyWidget) TextView replyWidget;
+    @BindView(R.id.addCommentWidget) TextView addCommentWidget;
 
     private enum MediaType { AUDIO, VIDEO }
     private Card currentCard = null;
+    private iCardShow2.iPresenter presenter = null;
+    private iList_Item currentItem = null;
 
 
-    public Card_ViewHolder(@NonNull View itemView) {
+    public Card_ViewHolder(@NonNull View itemView, iCardShow2.iPresenter presenter) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+        this.presenter = presenter;
     }
+
 
     @Override
     public void initialize(iList_Item listItem) {
+        this.currentItem = listItem;
         Card card = (Card) listItem.getPayload();
         displayCard(card);
     }
 
+
+    // Нажатия
+    @OnClick(R.id.addCommentWidget)
+    void onAddCommentClicked() {
+        presenter.onAddCommentClicked(currentItem);
+    }
+
+
+    // Внутренние методы
     private void displayCard(Card card) {
 
         currentCard = card;

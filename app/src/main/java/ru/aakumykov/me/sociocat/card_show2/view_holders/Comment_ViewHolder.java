@@ -28,7 +28,7 @@ public class Comment_ViewHolder extends Base_ViewHolder {
     @BindView(R.id.quoteView) TextView quoteView;
     @BindView(R.id.messageView) TextView messageView;
 
-    @BindView(R.id.replyWidget) TextView replyWidget;
+    @BindView(R.id.addCommentWidget) TextView replyWidget;
     @BindView(R.id.editWidget) TextView editWidget;
     @BindView(R.id.deleteWidget) TextView deleteWidget;
 

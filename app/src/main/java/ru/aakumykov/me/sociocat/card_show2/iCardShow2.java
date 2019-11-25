@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.card_show2;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -9,6 +10,8 @@ import ru.aakumykov.me.sociocat.models.Comment;
 public interface iCardShow2 {
 
     interface iPageView extends iBaseView {
+        void showCommentForm();
+        void hideCommentForm();
     }
 
     interface iDataAdapter {
@@ -30,5 +33,6 @@ public interface iCardShow2 {
 
         void onPageOpened(String cardKey);
         void onLoadMoreClicked();
+        void onAddCommentClicked(iList_Item listItem);
     }
 }
