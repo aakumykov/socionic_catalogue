@@ -154,6 +154,7 @@ public class CommentsSingleton implements iCommentsSingleton {
         Query query = commentsCollection
                 .whereEqualTo(Constants.COMMENT_KEY_CARD_ID, cardId)
                 .orderBy(Comment.KEY_KEY, Query.Direction.ASCENDING)
+                .orderBy(Comment.KEY_CREATED_AT)
                 .limit(Config.DEFAULT_COMMENTS_LOAD_COUNT);
 
         if (null != startAfterKey)

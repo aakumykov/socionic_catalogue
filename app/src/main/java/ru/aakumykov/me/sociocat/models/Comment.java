@@ -26,6 +26,7 @@ public class Comment extends ListItem implements
     public static final String KEY_USER_NAME = "userName";
     public static final String KEY_USER_AVATAR = "userAvatarURL";
     public static final String KEY_TEXT = "text";
+    public static final String KEY_CREATED_AT = "createdAt";
     public static final String KEY_EDITED_AT = "editedAt";
     public static final String KEY_KEY = "key";
 
