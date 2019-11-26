@@ -30,8 +30,8 @@ public class LoadMore_ViewHolder extends Base_ViewHolder {
     }
 
     @Override
-    public void initialize(iList_Item listItem) {
-        //Log.d(TAG, "initialize()");
+    public void initialize(iList_Item listItem, int position) {
+        this.position = position;
         LoadMore_Item loadMoreItem = (LoadMore_Item) listItem;
         loadMoreTextView.setText(loadMoreItem.getTextId());
     }
@@ -41,8 +41,4 @@ public class LoadMore_ViewHolder extends Base_ViewHolder {
         presenter.onLoadMoreClicked(this.position);
     }
 
-    public void setPosition(int position) {
-        //Log.d(TAG, "setPosition("+position+")");
-        this.position = position;
-    }
 }

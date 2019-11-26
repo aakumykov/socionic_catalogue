@@ -60,7 +60,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
             case iList_Item.COMMENT:
                 itemView = layoutInflater.inflate(R.layout.card_show_comment, parent, false);
-                return new Comment_ViewHolder(itemView);
+                return new Comment_ViewHolder(itemView, presenter);
 
             case iList_Item.LOAD_MORE:
                 itemView = layoutInflater.inflate(R.layout.card_show_load_more, parent, false);
@@ -86,25 +86,25 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         int itemType = listItem.getItemType();
         switch (itemType) {
             case iList_Item.CARD:
-                ((Card_ViewHolder) holder).initialize(listItem);
+                ((Card_ViewHolder) holder).initialize(listItem, position);
                 break;
 
             case iList_Item.COMMENT:
-                ((Comment_ViewHolder) holder).initialize(listItem);
+                Comment_ViewHolder commentViewHolder = (Comment_ViewHolder) holder;
+                commentViewHolder.initialize(listItem, position);
                 break;
 
             case iList_Item.LOAD_MORE:
                 LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) holder;
-                loadMoreViewHolder.initialize(listItem);
-                loadMoreViewHolder.setPosition(position);
+                loadMoreViewHolder.initialize(listItem, position);
                 break;
 
             case iList_Item.CARD_THROBBER:
-                ((CardThrobber_ViewHolder) holder).initialize(listItem);
+                ((CardThrobber_ViewHolder) holder).initialize(listItem, position);
                 break;
 
             case iList_Item.COMMENT_THROBBER:
-                ((CommentThrobber_ViewHolder) holder).initialize(listItem);
+                ((CommentThrobber_ViewHolder) holder).initialize(listItem, position);
                 break;
 
             default:

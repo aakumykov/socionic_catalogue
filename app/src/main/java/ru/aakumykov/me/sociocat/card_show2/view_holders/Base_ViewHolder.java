@@ -13,5 +13,5 @@ public abstract class Base_ViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
     }
 
-    public abstract void initialize(iList_Item listItem);
+    public abstract void initialize(iList_Item listItem, int position);
 }

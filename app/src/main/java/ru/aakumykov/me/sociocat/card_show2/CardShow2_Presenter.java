@@ -118,6 +118,11 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     }
 
+    @Override
+    public void onDeleteCommentClicked(int position) {
+        pageView.showToast("Удаление комментария "+position);
+    }
+
 
     // Внутренние методы
     private void loadComments(String cardKey, @Nullable Comment startAfterComment, @Nullable Comment endBoundaryComment) {

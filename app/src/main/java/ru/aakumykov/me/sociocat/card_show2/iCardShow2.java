@@ -52,5 +52,7 @@ public interface iCardShow2 {
         void onAddCommentClicked(iList_Item listItem);
 
         void onSendCommentClicked();
+
+        void onDeleteCommentClicked(int position);
     }
 }
