@@ -23,13 +23,16 @@ public interface iCardShow2 {
         void showCommentError(int errorMessageId, String errorMsg);
     }
 
-    interface iDataAdapter {
+    interface iDataAdapter
+    {
         void showCardThrobber();
         void showCommentsThrobber(@Nullable Integer position);
 
         void showCard(Card card);
+
         void appendComments(List<Comment> commentsList);
-        void insertComments(int position, List<Comment> commentsList);
+        void insertComments(List<Comment> commentsList, int position);
+
         void appendOneComment(Comment comment);
 
         Comment getComment(int position);

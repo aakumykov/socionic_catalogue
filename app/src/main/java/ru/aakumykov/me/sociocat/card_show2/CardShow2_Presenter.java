@@ -132,7 +132,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
                 if (null != insertPosition)
-                    dataAdapter.insertComments(insertPosition, list);
+                    dataAdapter.insertComments(list, insertPosition);
                 else
                     dataAdapter.appendComments(list);
             }

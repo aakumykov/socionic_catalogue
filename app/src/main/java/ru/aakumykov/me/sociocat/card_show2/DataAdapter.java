@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.list_items.CardThrobber_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.Card_Item;
@@ -125,8 +126,15 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void showCommentsThrobber(@Nullable Integer position) {
-        int index = (null != position) ? position : FIRST_COMMENT_POSITION;
-        itemsList.set(index, new CommentsThrobber_Item());
+        CommentsThrobber_Item commentsThrobberItem = new CommentsThrobber_Item();
+        if (null == position)
+            itemsList.add(commentsThrobberItem);
+        else {
+            itemsList.add(position, commentsThrobberItem);
+            itemsList.remove(position+1);
+            notifyItemChanged(position);
+            notifyItemChanged(position+1);
+        }
     }
 
     @Override
@@ -145,17 +153,22 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void appendComments(List<Comment> commentsList) {
-        insertComments(FIRST_COMMENT_POSITION, commentsList);
+        insertComments(commentsList, FIRST_COMMENT_POSITION);
     }
 
     @Override
-    public void insertComments(int position, List<Comment> commentsList) {
+    public void insertComments(List<Comment> commentsList, int position) {
+
+        int currentInsertPosition = position;
 
         for (Comment comment : commentsList) {
-            itemsList.add(maxIndex(), new Comment_Item(comment));
+            itemsList.add(currentInsertPosition++, new Comment_Item(comment));
         }
 
-        itemsList.set(position + commentsList.size(), new LoadMore_Item(R.string.COMMENTS_load_more_comments));
+        if (commentsList.size() >= Config.DEFAULT_COMMENTS_LOAD_COUNT)
+            itemsList.set(currentInsertPosition, new LoadMore_Item(R.string.COMMENTS_load_more_comments));
+        else
+            itemsList.remove(currentInsertPosition);
 
         notifyDataSetChanged();
     }

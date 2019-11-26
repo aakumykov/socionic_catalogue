@@ -35,7 +35,7 @@ public final class Config {
 
     public static final int DEFAULT_CARDS_LOAD_COUNT = 10;
 
-    public static final int DEFAULT_COMMENTS_LOAD_COUNT = 2;
+    public static final int DEFAULT_COMMENTS_LOAD_COUNT = 3;
 
     public static final int CARDS_GRID_COLUMNS_COUNT_PORTRAIT = 2;
     public static final int CARDS_GRID_COLUMNS_COUNT_LANDSCAPE = 4;
