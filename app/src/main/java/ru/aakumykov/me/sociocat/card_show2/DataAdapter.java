@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -28,7 +29,8 @@ import ru.aakumykov.me.sociocat.models.Comment;
 public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
     iCardShow2.iDataAdapter
 {
-    private final static int CARD_INDEX = 0;
+    private final static int CARD_POSITION = 0;
+    private final static int FIRST_COMMENT_POSITION = 1;
     private List<iList_Item> itemsList = new ArrayList<>();
     private iCardShow2.iPresenter presenter;
 
@@ -91,7 +93,9 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 break;
 
             case iList_Item.LOAD_MORE:
-                ((LoadMore_ViewHolder) holder).initialize(listItem);
+                LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) holder;
+                loadMoreViewHolder.initialize(listItem);
+                loadMoreViewHolder.setPosition(position);
                 break;
 
             case iList_Item.CARD_THROBBER:
@@ -120,18 +124,9 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void showCommentsThrobber() {
-        CommentsThrobber_Item commentsThrobberItem = new CommentsThrobber_Item();
-
-        if (listSize() > 1) {
-            int index = maxIndex();
-            itemsList.set(index, commentsThrobberItem);
-            notifyItemChanged(index);
-        }
-        else {
-            itemsList.add(commentsThrobberItem);
-            notifyItemChanged(maxIndex());
-        }
+    public void showCommentsThrobber(@Nullable Integer position) {
+        int index = (null != position) ? position : FIRST_COMMENT_POSITION;
+        itemsList.set(index, new CommentsThrobber_Item());
     }
 
     @Override
@@ -141,40 +136,47 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     private void displayAtCardPosition(iList_Item listItem) {
         if (listSize() > 0)
-            itemsList.set(CARD_INDEX, listItem);
+            itemsList.set(CARD_POSITION, listItem);
         else
-            itemsList.add(CARD_INDEX, listItem);
+            itemsList.add(CARD_POSITION, listItem);
 
-        notifyItemChanged(CARD_INDEX);
+        notifyItemChanged(CARD_POSITION);
     }
 
     @Override
     public void appendComments(List<Comment> commentsList) {
-//        itemsList.remove(maxIndex());
+        insertComments(FIRST_COMMENT_POSITION, commentsList);
+    }
+
+    @Override
+    public void insertComments(int position, List<Comment> commentsList) {
 
         for (Comment comment : commentsList) {
             itemsList.add(maxIndex(), new Comment_Item(comment));
         }
 
-        itemsList.set(maxIndex(), new LoadMore_Item(R.string.COMMENTS_load_more_comments));
+        itemsList.set(position + commentsList.size(), new LoadMore_Item(R.string.COMMENTS_load_more_comments));
 
         notifyDataSetChanged();
     }
 
     @Override
     public void appendOneComment(Comment comment) {
-        List<Comment> list = new ArrayList<>();
-        list.add(comment);
-        appendComments(list);
+        itemsList.add(new Comment_Item(comment));
     }
 
     @Override
-    public Comment getLastComment() {
-        if (listSize() < 3)
-            return null;
+    public Comment getComment(int position) {
+        if (itemsList.size() > position) {
+            Object payload = itemsList.get(position).getPayload();
+
+            if (payload instanceof Comment)
+                return (Comment) payload;
+            else
+                return null;
+        }
         else {
-            iList_Item lastCommentItem = itemsList.get(maxIndex()-1);
-            return (Comment) lastCommentItem.getPayload();
+            return null;
         }
     }
 

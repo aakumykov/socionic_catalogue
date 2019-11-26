@@ -62,8 +62,9 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
             @Override
             public void onCardLoadSuccess(Card card) {
                 currentCard = card;
+                pageView.setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
                 dataAdapter.showCard(card);
-                loadComments(card.getKey(), null);
+                loadComments(card.getKey(), null, null);
             }
 
             @Override
@@ -74,9 +75,10 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     }
 
     @Override
-    public void onLoadMoreClicked() {
-        Comment lastComment = dataAdapter.getLastComment();
-        loadComments(currentCard.getKey(), lastComment);
+    public void onLoadMoreClicked(int position) {
+        Comment previousComment = dataAdapter.getComment(position-1);
+        Comment nextComment = dataAdapter.getComment(position+1);
+        loadComments(currentCard.getKey(), previousComment, nextComment, position);
     }
 
     @Override
@@ -118,14 +120,21 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
 
     // Внутренние методы
-    private void loadComments(String cardKey, @Nullable Comment lastComment) {
+    private void loadComments(String cardKey, @Nullable Comment startAfterComment, @Nullable Comment endBoundaryComment) {
+        loadComments(cardKey, startAfterComment, endBoundaryComment, null);
+    }
 
-        dataAdapter.showCommentsThrobber();
+    private void loadComments(String cardKey, @Nullable Comment startAfterComment, @Nullable Comment endBoundaryComment, @Nullable Integer insertPosition) {
 
-        commentsSingleton.loadList(cardKey, lastComment, null, new iCommentsSingleton.ListCallbacks() {
+        dataAdapter.showCommentsThrobber(insertPosition);
+
+        commentsSingleton.loadList(cardKey, startAfterComment, endBoundaryComment, new iCommentsSingleton.ListCallbacks() {
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
-                dataAdapter.appendComments(list);
+                if (null != insertPosition)
+                    dataAdapter.insertComments(insertPosition, list);
+                else
+                    dataAdapter.appendComments(list);
             }
 
             @Override

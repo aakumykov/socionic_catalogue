@@ -18,7 +18,9 @@ public class LoadMore_ViewHolder extends Base_ViewHolder {
 
     @BindView(R.id.loadMoreTextView) TextView loadMoreTextView;
 
+    private final static String TAG = "LoadMore_ViewHolder";
     private iCardShow2.iPresenter presenter;
+    private int position = -1;
 
 
     public LoadMore_ViewHolder(@NonNull View itemView, iCardShow2.iPresenter presenter) {
@@ -29,12 +31,18 @@ public class LoadMore_ViewHolder extends Base_ViewHolder {
 
     @Override
     public void initialize(iList_Item listItem) {
+        //Log.d(TAG, "initialize()");
         LoadMore_Item loadMoreItem = (LoadMore_Item) listItem;
         loadMoreTextView.setText(loadMoreItem.getTextId());
     }
 
     @OnClick(R.id.loadMoreView)
     void onLoadMoreClicked() {
-        presenter.onLoadMoreClicked();
+        presenter.onLoadMoreClicked(this.position);
+    }
+
+    public void setPosition(int position) {
+        //Log.d(TAG, "setPosition("+position+")");
+        this.position = position;
     }
 }

@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show2;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
@@ -23,13 +25,14 @@ public interface iCardShow2 {
 
     interface iDataAdapter {
         void showCardThrobber();
-        void showCommentsThrobber();
+        void showCommentsThrobber(@Nullable Integer position);
 
         void showCard(Card card);
         void appendComments(List<Comment> commentsList);
+        void insertComments(int position, List<Comment> commentsList);
         void appendOneComment(Comment comment);
 
-        Comment getLastComment();
+        Comment getComment(int position);
     }
 
     interface iPresenter {
@@ -40,8 +43,11 @@ public interface iCardShow2 {
         void unbindDataAdapter();
 
         void onPageOpened(String cardKey);
-        void onLoadMoreClicked();
+
+        void onLoadMoreClicked(int position);
+
         void onAddCommentClicked(iList_Item listItem);
+
         void onSendCommentClicked();
     }
 }
