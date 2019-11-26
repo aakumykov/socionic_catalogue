@@ -150,7 +150,7 @@ public class CommentsSingleton implements iCommentsSingleton {
     }
 
     @Override
-    public void loadList(String cardId, @Nullable Comment startAfterComment, @Nullable Comment endAtComment, ListCallbacks callbacks) {
+    public void loadList(String cardId, @Nullable Comment startAfterComment, @Nullable Comment endBeforeComment, ListCallbacks callbacks) {
         Query query = commentsCollection
                 .whereEqualTo(Constants.COMMENT_KEY_CARD_ID, cardId)
                 .orderBy(Comment.KEY_CREATED_AT)
@@ -158,6 +158,10 @@ public class CommentsSingleton implements iCommentsSingleton {
 
         if (null != startAfterComment)
             query = query.startAfter(startAfterComment.getCreatedAt());
+
+        if (null != endBeforeComment) {
+            query = query.endBefore(endBeforeComment.getCreatedAt());
+        }
 
         query.get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
