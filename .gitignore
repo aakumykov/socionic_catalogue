@@ -14,3 +14,4 @@
 /app/release/
 /app/src/main/res/values/credentials.xml
 
+.idea/misc.xml
