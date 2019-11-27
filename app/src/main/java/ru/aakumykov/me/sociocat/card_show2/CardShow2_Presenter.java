@@ -119,8 +119,8 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     }
 
     @Override
-    public void onDeleteCommentClicked(int position) {
-        pageView.showToast("Удаление комментария "+position);
+    public void onDeleteCommentClicked(int position, iCardShow2.iCommentViewHolder commentViewHolder) {
+        commentViewHolder.fadeBackground();
     }
 
 

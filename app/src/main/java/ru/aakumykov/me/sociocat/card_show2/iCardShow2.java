@@ -53,6 +53,11 @@ public interface iCardShow2 {
 
         void onSendCommentClicked();
 
-        void onDeleteCommentClicked(int position);
+        void onDeleteCommentClicked(int position, iCommentViewHolder commentViewHolder);
+    }
+
+    interface iCommentViewHolder {
+        void fadeBackground();
+        void unfadeBackground();
     }
 }

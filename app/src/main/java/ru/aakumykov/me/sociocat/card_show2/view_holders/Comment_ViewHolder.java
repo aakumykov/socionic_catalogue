@@ -1,10 +1,12 @@
 package ru.aakumykov.me.sociocat.card_show2.view_holders;
 
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.bumptech.glide.Glide;
 
@@ -17,9 +19,11 @@ import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class Comment_ViewHolder extends Base_ViewHolder {
+public class Comment_ViewHolder extends Base_ViewHolder implements
+        iCardShow2.iCommentViewHolder
+{
 
-//    @BindView(R.id.commentRow) ConstraintLayout commentRow;
+    @BindView(R.id.commentRow) ConstraintLayout commentRow;
 
     @BindView(R.id.imageView) ImageView userAvatarView;
     @BindView(R.id.userNameView) TextView userNameView;
@@ -36,6 +40,7 @@ public class Comment_ViewHolder extends Base_ViewHolder {
 
     private final iCardShow2.iPresenter presenter;
     private int position = -1;
+    private Drawable initialBackground;
 
 
     public Comment_ViewHolder(@NonNull View itemView, iCardShow2.iPresenter presenter) {
@@ -55,7 +60,20 @@ public class Comment_ViewHolder extends Base_ViewHolder {
     // Нажатия
     @OnClick(R.id.deleteWidget)
     void onDeleteCommentClicked() {
-        presenter.onDeleteCommentClicked(this.position);
+        presenter.onDeleteCommentClicked(this.position, this);
+    }
+
+
+    // iCommentViewHolder
+    @Override
+    public void fadeBackground() {
+        this.initialBackground = commentRow.getBackground();
+        commentRow.setBackgroundResource(R.drawable.shape_comment_background_faded);
+    }
+
+    @Override
+    public void unfadeBackground() {
+        commentRow.setBackground(this.initialBackground);
     }
 
 
@@ -107,4 +125,5 @@ public class Comment_ViewHolder extends Base_ViewHolder {
         MyUtils.show(editWidget);
         MyUtils.show(deleteWidget);
     }
+
 }

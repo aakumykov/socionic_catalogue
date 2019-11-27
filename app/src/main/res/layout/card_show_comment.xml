@@ -5,7 +5,7 @@
     android:id="@+id/commentRow"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_bottom_line"
+    android:background="@drawable/shape_comment_background"
     android:orientation="vertical"
     android:paddingTop="8dp"
     android:paddingBottom="12dp">
