@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.card_show2.view_holders;
 
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,7 +38,7 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.deleteWidget) TextView deleteWidget;
 
     private final iCardShow2.iPresenter presenter;
-    private iList_Item bindedListItem;
+    private iList_Item currentListItem;
 
 
     public Comment_ViewHolder(@NonNull View itemView, iCardShow2.iPresenter presenter) {
@@ -49,8 +48,8 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
     }
 
     @Override
-    public void initialize(iList_Item listItem, int position) {
-        this.bindedListItem = listItem;
+    public void initialize(iList_Item listItem) {
+        this.currentListItem = listItem;
         Comment comment = (Comment) listItem.getPayload();
         unfadeBackground();
         displayComment(comment);
@@ -60,7 +59,7 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
     // Нажатия
     @OnClick(R.id.deleteWidget)
     void onDeleteCommentClicked() {
-        presenter.onDeleteCommentClicked(this.bindedListItem, this);
+        presenter.onDeleteCommentClicked(this.currentListItem, this);
     }
 
 
@@ -68,11 +67,17 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
     @Override
     public void fadeBackground() {
         commentRow.setBackgroundResource(R.drawable.shape_comment_background_faded);
+        MyUtils.disable(replyWidget);
+        MyUtils.disable(editWidget);
+        MyUtils.disable(deleteWidget);
     }
 
     @Override
     public void unfadeBackground() {
         commentRow.setBackgroundResource(R.drawable.shape_comment_background);
+        MyUtils.enable(replyWidget);
+        MyUtils.enable(editWidget);
+        MyUtils.enable(deleteWidget);
     }
 
 

@@ -86,25 +86,25 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         int itemType = listItem.getItemType();
         switch (itemType) {
             case iList_Item.CARD:
-                ((Card_ViewHolder) holder).initialize(listItem, position);
+                ((Card_ViewHolder) holder).initialize(listItem);
                 break;
 
             case iList_Item.COMMENT:
                 Comment_ViewHolder commentViewHolder = (Comment_ViewHolder) holder;
-                commentViewHolder.initialize(listItem, position);
+                commentViewHolder.initialize(listItem);
                 break;
 
             case iList_Item.LOAD_MORE:
                 LoadMore_ViewHolder loadMoreViewHolder = (LoadMore_ViewHolder) holder;
-                loadMoreViewHolder.initialize(listItem, position);
+                loadMoreViewHolder.initialize(listItem);
                 break;
 
             case iList_Item.CARD_THROBBER:
-                ((CardThrobber_ViewHolder) holder).initialize(listItem, position);
+                ((CardThrobber_ViewHolder) holder).initialize(listItem);
                 break;
 
             case iList_Item.COMMENT_THROBBER:
-                ((CommentThrobber_ViewHolder) holder).initialize(listItem, position);
+                ((CommentThrobber_ViewHolder) holder).initialize(listItem);
                 break;
 
             default:

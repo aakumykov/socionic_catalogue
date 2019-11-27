@@ -120,9 +120,9 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onDeleteCommentClicked(iList_Item listItem, iCardShow2.iCommentViewHolder commentViewHolder) {
-        Comment comment = dataAdapter.getComment(listItem);
-
         commentViewHolder.fadeBackground();
+
+        Comment comment = dataAdapter.getComment(listItem);
 
         commentsSingleton.deleteComment(comment, new iCommentsSingleton.DeleteCallbacks() {
             @Override

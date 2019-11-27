@@ -15,7 +15,7 @@ public class CardThrobber_ViewHolder extends Base_ViewHolder {
     }
 
     @Override
-    public void initialize(iList_Item listItem, int position) {
+    public void initialize(iList_Item listItem) {
 
     }
 }

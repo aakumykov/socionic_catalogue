@@ -30,7 +30,7 @@ public class LoadMore_ViewHolder extends Base_ViewHolder {
     }
 
     @Override
-    public void initialize(iList_Item listItem, int position) {
+    public void initialize(iList_Item listItem) {
         this.position = position;
         LoadMore_Item loadMoreItem = (LoadMore_Item) listItem;
         loadMoreTextView.setText(loadMoreItem.getTextId());
