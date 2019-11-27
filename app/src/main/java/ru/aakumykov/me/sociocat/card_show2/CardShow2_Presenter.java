@@ -112,15 +112,30 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
             @Override
             public void onCommentSaveError(String errorMsg) {
-                pageView.showCommentError(R.string.COMMENT_error_adding_comment, errorMsg);
+                pageView.showCommentFormError(R.string.COMMENT_error_adding_comment, errorMsg);
             }
         });
 
     }
 
     @Override
-    public void onDeleteCommentClicked(int position, iCardShow2.iCommentViewHolder commentViewHolder) {
+    public void onDeleteCommentClicked(iList_Item listItem, iCardShow2.iCommentViewHolder commentViewHolder) {
+        Comment comment = dataAdapter.getComment(listItem);
+
         commentViewHolder.fadeBackground();
+
+        commentsSingleton.deleteComment(comment, new iCommentsSingleton.DeleteCallbacks() {
+            @Override
+            public void onDeleteSuccess(Comment commentd) {
+                dataAdapter.removeComment(listItem);
+            }
+
+            @Override
+            public void onDeleteError(String msg) {
+                pageView.showToast(R.string.COMMENT_delete_error);
+                commentViewHolder.unfadeBackground();
+            }
+        });
     }
 
 

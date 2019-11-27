@@ -179,18 +179,33 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
+    public void removeComment(iList_Item listItem) {
+        int index = itemsList.indexOf(listItem);
+        if (index > 0) {
+            itemsList.remove(listItem);
+            notifyItemRemoved(index);
+        }
+    }
+
+    @Override
     public Comment getComment(int position) {
         if (itemsList.size() > position) {
             Object payload = itemsList.get(position).getPayload();
-
             if (payload instanceof Comment)
                 return (Comment) payload;
-            else
-                return null;
         }
-        else {
-            return null;
+        return null;
+    }
+
+    @Override
+    public Comment getComment(iList_Item listItem) {
+        if (itemsList.contains(listItem)) {
+            iList_Item item = itemsList.get(itemsList.indexOf(listItem));
+            Object payload = item.getPayload();
+            if (payload instanceof Comment)
+                return (Comment) payload;
         }
+        return null;
     }
 
 

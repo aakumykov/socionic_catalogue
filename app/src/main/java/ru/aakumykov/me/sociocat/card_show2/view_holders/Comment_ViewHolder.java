@@ -39,8 +39,7 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.deleteWidget) TextView deleteWidget;
 
     private final iCardShow2.iPresenter presenter;
-    private int position = -1;
-    private Drawable initialBackground;
+    private iList_Item bindedListItem;
 
 
     public Comment_ViewHolder(@NonNull View itemView, iCardShow2.iPresenter presenter) {
@@ -51,8 +50,9 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
 
     @Override
     public void initialize(iList_Item listItem, int position) {
-        this.position = position;
+        this.bindedListItem = listItem;
         Comment comment = (Comment) listItem.getPayload();
+        unfadeBackground();
         displayComment(comment);
     }
 
@@ -60,20 +60,19 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
     // Нажатия
     @OnClick(R.id.deleteWidget)
     void onDeleteCommentClicked() {
-        presenter.onDeleteCommentClicked(this.position, this);
+        presenter.onDeleteCommentClicked(this.bindedListItem, this);
     }
 
 
     // iCommentViewHolder
     @Override
     public void fadeBackground() {
-        this.initialBackground = commentRow.getBackground();
         commentRow.setBackgroundResource(R.drawable.shape_comment_background_faded);
     }
 
     @Override
     public void unfadeBackground() {
-        commentRow.setBackground(this.initialBackground);
+        commentRow.setBackgroundResource(R.drawable.shape_comment_background);
     }
 
 

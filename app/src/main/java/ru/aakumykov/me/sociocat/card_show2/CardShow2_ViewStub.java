@@ -38,7 +38,7 @@ public class CardShow2_ViewStub extends BaseView implements iCardShow2.iPageView
     }
 
     @Override
-    public void showCommentError(int errorMessageId, String errorMsg) {
+    public void showCommentFormError(int errorMessageId, String errorMsg) {
 
     }
 

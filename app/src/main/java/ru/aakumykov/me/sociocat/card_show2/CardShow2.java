@@ -132,7 +132,7 @@ public class CardShow2 extends BaseView implements
     }
 
     @Override
-    public void showCommentError(int errorMessageId, String errorMsg) {
+    public void showCommentFormError(int errorMessageId, String errorMsg) {
         this.commentForm.enable();
         this.commentForm.showError(errorMessageId, errorMsg);
     }

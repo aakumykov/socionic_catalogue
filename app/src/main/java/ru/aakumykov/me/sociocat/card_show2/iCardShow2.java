@@ -20,7 +20,7 @@ public interface iCardShow2 {
         String getCommentText();
         void clearCommentForm();
 
-        void showCommentError(int errorMessageId, String errorMsg);
+        void showCommentFormError(int errorMessageId, String errorMsg);
     }
 
     interface iDataAdapter
@@ -34,8 +34,10 @@ public interface iCardShow2 {
         void insertComments(List<Comment> commentsList, int position);
 
         void appendOneComment(Comment comment);
+        void removeComment(iList_Item listItem);
 
         Comment getComment(int position);
+        Comment getComment(iList_Item listItem);
     }
 
     interface iPresenter {
@@ -53,7 +55,7 @@ public interface iCardShow2 {
 
         void onSendCommentClicked();
 
-        void onDeleteCommentClicked(int position, iCommentViewHolder commentViewHolder);
+        void onDeleteCommentClicked(iList_Item listItem, iCommentViewHolder commentViewHolder);
     }
 
     interface iCommentViewHolder {
