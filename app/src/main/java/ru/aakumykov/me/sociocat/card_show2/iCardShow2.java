@@ -38,6 +38,8 @@ public interface iCardShow2 {
 
         Comment getComment(int position);
         Comment getComment(iList_Item listItem);
+
+        int getIndexOf(iList_Item listItem);
     }
 
     interface iPresenter {
@@ -49,7 +51,7 @@ public interface iCardShow2 {
 
         void onPageOpened(String cardKey);
 
-        void onLoadMoreClicked(int position);
+        void onLoadMoreClicked(iList_Item listItem);
 
         void onAddCommentClicked(iList_Item listItem);
 

@@ -130,10 +130,8 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         if (null == position)
             itemsList.add(commentsThrobberItem);
         else {
-            itemsList.add(position, commentsThrobberItem);
-            itemsList.remove(position+1);
+            itemsList.set(position, commentsThrobberItem);
             notifyItemChanged(position);
-            notifyItemChanged(position+1);
         }
     }
 
@@ -206,6 +204,11 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 return (Comment) payload;
         }
         return null;
+    }
+
+    @Override
+    public int getIndexOf(iList_Item listItem) {
+        return itemsList.indexOf(listItem);
     }
 
 

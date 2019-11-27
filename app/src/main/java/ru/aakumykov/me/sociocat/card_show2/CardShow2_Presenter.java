@@ -75,9 +75,10 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     }
 
     @Override
-    public void onLoadMoreClicked(int position) {
-        Comment previousComment = dataAdapter.getComment(position-1);
-        Comment nextComment = dataAdapter.getComment(position+1);
+    public void onLoadMoreClicked(iList_Item listItem) {
+        int position = dataAdapter.getIndexOf(listItem);
+        Comment previousComment = dataAdapter.getComment(position -1);
+        Comment nextComment = dataAdapter.getComment(position +1);
         loadComments(currentCard.getKey(), previousComment, nextComment, position);
     }
 
@@ -144,8 +145,11 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         loadComments(cardKey, startAfterComment, endBoundaryComment, null);
     }
 
-    private void loadComments(String cardKey, @Nullable Comment startAfterComment, @Nullable Comment endBoundaryComment, @Nullable Integer insertPosition) {
-
+    private void loadComments(String cardKey,
+                              @Nullable Comment startAfterComment,
+                              @Nullable Comment endBoundaryComment,
+                              @Nullable Integer insertPosition)
+    {
         dataAdapter.showCommentsThrobber(insertPosition);
 
         commentsSingleton.loadList(cardKey, startAfterComment, endBoundaryComment, new iCommentsSingleton.ListCallbacks() {
