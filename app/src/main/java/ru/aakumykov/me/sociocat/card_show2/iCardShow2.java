@@ -21,6 +21,8 @@ public interface iCardShow2 {
         void clearCommentForm();
 
         void showCommentFormError(int errorMessageId, String errorMsg);
+
+        void scrollToComment(int position);
     }
 
     interface iDataAdapter
@@ -33,7 +35,7 @@ public interface iCardShow2 {
         void appendComments(List<Comment> commentsList);
         void insertComments(List<Comment> commentsList, int position);
 
-        void appendOneComment(Comment comment);
+        int appendOneComment(Comment comment);
         void removeComment(iList_Item listItem);
 
         Comment getComment(int position);

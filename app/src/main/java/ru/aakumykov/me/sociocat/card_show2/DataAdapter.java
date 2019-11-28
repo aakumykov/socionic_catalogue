@@ -172,8 +172,12 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void appendOneComment(Comment comment) {
-        itemsList.add(new Comment_Item(comment));
+    public int appendOneComment(Comment comment) {
+        iList_Item commentItem = new Comment_Item(comment);
+        itemsList.add(commentItem);
+        int position = itemsList.indexOf(commentItem);
+        notifyItemChanged(position);
+        return position;
     }
 
     @Override

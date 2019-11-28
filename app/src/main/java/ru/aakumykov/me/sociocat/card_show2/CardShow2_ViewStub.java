@@ -43,6 +43,11 @@ public class CardShow2_ViewStub extends BaseView implements iCardShow2.iPageView
     }
 
     @Override
+    public void scrollToComment(int position) {
+
+    }
+
+    @Override
     public String getCommentText() {
         return null;
     }

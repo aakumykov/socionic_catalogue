@@ -106,9 +106,10 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         commentsSingleton.createComment(comment, new iCommentsSingleton.CreateCallbacks() {
             @Override
             public void onCommentSaveSuccess(Comment comment) {
-                dataAdapter.appendOneComment(comment);
+                int position = dataAdapter.appendOneComment(comment);
                 pageView.clearCommentForm();
                 pageView.hideCommentForm();
+                pageView.scrollToComment(position);
             }
 
             @Override

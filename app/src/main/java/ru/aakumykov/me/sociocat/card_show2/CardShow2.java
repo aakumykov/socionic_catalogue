@@ -138,6 +138,12 @@ public class CardShow2 extends BaseView implements
     }
 
     @Override
+    public void scrollToComment(int position) {
+        recyclerView.scrollToPosition(position);
+//        recyclerView.smoothScrollToPosition(position);
+    }
+
+    @Override
     public String getCommentText() {
         return this.commentForm.getText();
     }
