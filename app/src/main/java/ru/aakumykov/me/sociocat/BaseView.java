@@ -40,7 +40,6 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public abstract class BaseView extends AppCompatActivity implements iBaseView
 {
-    public static String PACKAGE_NAME;
     private final static String TAG = "BaseView";
 
     // Абстрактные методы
@@ -64,16 +63,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        PACKAGE_NAME = getApplicationContext().getPackageName();
-//        ComponentName componentName = getComponentName();
-//        componentName.getClassName();
-//        componentName.getPackageName();
-//        componentName.getShortClassName();
-
-        // TODO: попробовать перенести в MyApp
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-
         saveLastLoginTime();
     }
 
@@ -296,7 +285,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             } else if (transitData instanceof Bundle) {
                 intent.putExtra(Constants.TRANSIT_ARGUMENTS, (Bundle) transitData);
             } else {
-                throw new RuntimeException("transitData argument must have Intent or Bundle type.");
+                throw new RuntimeException("transitData argument must be Intent or Bundle type.");
             }
         }
 

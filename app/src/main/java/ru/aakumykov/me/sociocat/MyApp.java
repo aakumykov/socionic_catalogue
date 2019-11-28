@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -24,13 +26,13 @@ public class MyApp extends Application {
     private final static String TAG = "=MyApp=";
     private iUsersSingleton usersSingleton;
 
-    @Override public void onCreate() {
+    @Override
+    public void onCreate() {
         super.onCreate();
 
         usersSingleton = UsersSingleton.getInstance();
 
-        // Подписываюсь на события изменения авторизации
-        // Firebase
+        // Подписываюсь на события изменения авторизации Firebase
         FirebaseAuth.getInstance().addAuthStateListener(firebaseAuth -> {
 
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -64,13 +66,16 @@ public class MyApp extends Application {
                 deauthorizeUser();
             }
         });
-        // Вконтакте
+
+        // Подписываюсь на события изменения авторизации Вконтакте
         VKInteractor.trackVKAuthExpired(new VKInteractor.VKAuthExpiredCallback() {
             @Override
             public void onVKAuthExpired() {
                 AuthSingleton.logout();
             }
         });
+
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         prepareDefaultPreferences();
     }
@@ -86,7 +91,6 @@ public class MyApp extends Application {
         EventBus.getDefault().post(new UserUnauthorizedEvent());
         usersSingleton.clearCurrentUser();
     }
-
 
     private void prepareDefaultPreferences() {
 
@@ -108,7 +112,6 @@ public class MyApp extends Application {
             editor.apply();
         }
     }
-
 
 //    private void registerPushToken(User user) {
 //        Log.d(TAG, "registerPushToken()");
