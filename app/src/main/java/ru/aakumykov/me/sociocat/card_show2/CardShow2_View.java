@@ -150,6 +150,13 @@ public class CardShow2_View extends BaseView implements
 
     @Override
     public void showCommentForm() {
+        showCommentForm(null);
+    }
+
+    @Override
+    public void showCommentForm(@Nullable String text) {
+        if (null != text)
+            this.commentForm.setText(text);
         this.commentForm.show(false);
     }
 

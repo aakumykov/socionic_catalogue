@@ -1,7 +1,5 @@
 package ru.aakumykov.me.sociocat.card_show2;
 
-import android.os.Bundle;
-
 import androidx.annotation.Nullable;
 
 import java.util.List;
@@ -21,6 +19,7 @@ public interface iCardShow2
 
     interface iPageView extends iBaseView {
         void showCommentForm();
+        void showCommentForm(String text);
         void hideCommentForm();
 
         void disableCommentForm();
@@ -66,6 +65,8 @@ public interface iCardShow2
 
         void onDeleteCommentClicked(iList_Item listItem, iCommentViewHolder commentViewHolder);
         void onDeleteCommentConfirmed(iList_Item listItem, iCardShow2.iCommentViewHolder commentViewHolder);
+
+        void onEditCommentClicked(iList_Item listItem);
 
         boolean canEditCard();
         boolean canDeleteCard();

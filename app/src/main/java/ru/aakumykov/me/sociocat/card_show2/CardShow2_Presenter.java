@@ -197,6 +197,18 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     }
 
     @Override
+    public void onEditCommentClicked(iList_Item listItem) {
+        Comment comment = (Comment) listItem.getPayload();
+
+        if (!canAlterComment(comment)) {
+            pageView.showToast(R.string.COMMENT_error_cannot_edit_this_comment);
+            return;
+        }
+
+        pageView.showCommentForm(comment.getText());
+    }
+
+    @Override
     public boolean canEditCard() {
         return canAlterCard();
     }
