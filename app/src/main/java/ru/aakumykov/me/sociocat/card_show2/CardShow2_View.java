@@ -83,26 +83,22 @@ public class CardShow2_View extends BaseView implements
         }
     }
 
-    private void processLoginRequest(int resultCode, @Nullable Intent data) {
-        if (RESULT_OK != resultCode && RESULT_CANCELED != resultCode) {
-            showToast(R.string.LOGIN_login_error);
-            return;
-        }
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-        if (null == data) {
-            showToast(R.string.CARD_SHOW_data_error);
-            return;
-        }
+        presenter.bindViewAndAdapter(this, dataAdapter);
 
-        Bundle transitArguments = data.getBundleExtra(Constants.TRANSIT_ARGUMENTS);
-        if (null == transitArguments) {
-            showToast(R.string.CARD_SHOW_data_error);
-            return;
+        if (firstRun) {
+            firstRun = false;
+            processInputIntent();
         }
+    }
 
-        String replyAction = transitArguments.getString(iCardShow2.REPLY_ACTION, "");
-        iCommentable repliedObject = transitArguments.getParcelable(iCardShow2.REPLIED_OBJECT);
-        presenter.processLoginRequest(replyAction, repliedObject);
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.unbindViewAndAdapter();
     }
 
     @Override
@@ -135,21 +131,11 @@ public class CardShow2_View extends BaseView implements
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        presenter.bindViewAndAdapter(this, dataAdapter);
-
-        if (firstRun) {
-            firstRun = false;
-            processInputIntent();
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        presenter.unbindViewAndAdapter();
+    public void onBackPressed() {
+        if (commentForm.isVisible())
+            commentForm.hide();
+        else
+            super.onBackPressed();
     }
 
     @Override
@@ -160,21 +146,6 @@ public class CardShow2_View extends BaseView implements
     @Override
     public void onUserLogout() {
 
-    }
-
-
-    // Внутренние методы
-    private void processInputIntent() {
-        Intent intent = getIntent();
-
-        try {
-            Card card = intent.getParcelableExtra(Constants.CARD);
-            presenter.onPageOpened(card.getKey());
-        }
-        catch (Exception e) {
-            showErrorMsg(R.string.CARD_SHOW_error_displaying_card, e.getMessage());
-            MyUtils.printError(TAG, e);
-        }
     }
 
     @Override
@@ -214,4 +185,42 @@ public class CardShow2_View extends BaseView implements
     public String getCommentText() {
         return this.commentForm.getText();
     }
+
+
+    // Внутренние методы
+    private void processInputIntent() {
+        Intent intent = getIntent();
+
+        try {
+            Card card = intent.getParcelableExtra(Constants.CARD);
+            presenter.onPageOpened(card.getKey());
+        }
+        catch (Exception e) {
+            showErrorMsg(R.string.CARD_SHOW_error_displaying_card, e.getMessage());
+            MyUtils.printError(TAG, e);
+        }
+    }
+
+    private void processLoginRequest(int resultCode, @Nullable Intent data) {
+        if (RESULT_OK != resultCode && RESULT_CANCELED != resultCode) {
+            showToast(R.string.LOGIN_login_error);
+            return;
+        }
+
+        if (null == data) {
+            showToast(R.string.CARD_SHOW_data_error);
+            return;
+        }
+
+        Bundle transitArguments = data.getBundleExtra(Constants.TRANSIT_ARGUMENTS);
+        if (null == transitArguments) {
+            showToast(R.string.CARD_SHOW_data_error);
+            return;
+        }
+
+        String replyAction = transitArguments.getString(iCardShow2.REPLY_ACTION, "");
+        iCommentable repliedObject = transitArguments.getParcelable(iCardShow2.REPLIED_OBJECT);
+        presenter.processLoginRequest(replyAction, repliedObject);
+    }
+
 }
