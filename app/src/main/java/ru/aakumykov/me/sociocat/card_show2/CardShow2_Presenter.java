@@ -127,6 +127,11 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     public void onDeleteCommentClicked(iList_Item listItem, iCardShow2.iCommentViewHolder commentViewHolder) {
         Comment comment = (Comment) listItem.getPayload();
 
+        if (!canAlterComment(comment)) {
+            pageView.showToast(R.string.COMMENT_error_cannot_delete_this_comment);
+            return;
+        }
+
         MyDialogs.commentDeleteDialog(
                 pageView.getActivity(),
                 comment.getText(),
@@ -156,9 +161,12 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onDeleteCommentConfirmed(iList_Item listItem, iCardShow2.iCommentViewHolder commentViewHolder) {
-        commentViewHolder.fadeBackground();
-
         Comment comment = dataAdapter.getComment(listItem);
+
+        if (!canAlterComment(comment))
+            return;
+
+        commentViewHolder.fadeBackground();
 
         commentsSingleton.deleteComment(comment, new iCommentsSingleton.DeleteCallbacks() {
             @Override
@@ -224,5 +232,15 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         return currentCard.isCreatedBy(currentUser) || usersSingleton.currentUserIsAdmin();
     }
 
+    private boolean canAlterComment(@Nullable Comment comment) {
+        User currentUser = usersSingleton.getCurrentUser();
 
+        if (null == currentUser)
+            return false;
+
+        if (null == comment)
+            return false;
+
+        return comment.isCreatedBy(currentUser.getKey()) || usersSingleton.currentUserIsAdmin();
+    }
 }

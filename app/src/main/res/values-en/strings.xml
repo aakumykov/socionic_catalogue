@@ -517,5 +517,6 @@
     <string name="CARD_SHOW_unknown_create_time">Unknown create time</string>
     <string name="COMMENT_unknown_create_time">Время создания неизвестно</string>
     <string name="COMMENTS_no_more_comments">No more comments</string>
+    <string name="COMMENT_error_cannot_delete_this_comment">You cannot delete this comment</string>
 </resources>
 <!-- «%1$s» -->
