@@ -9,6 +9,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
+import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
@@ -19,6 +20,7 @@ import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
 
 public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
@@ -123,6 +125,37 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onDeleteCommentClicked(iList_Item listItem, iCardShow2.iCommentViewHolder commentViewHolder) {
+        Comment comment = (Comment) listItem.getPayload();
+
+        MyDialogs.commentDeleteDialog(
+                pageView.getActivity(),
+                comment.getText(),
+                new iMyDialogs.Delete() {
+                    @Override
+                    public void onCancelInDialog() {
+
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        onDeleteCommentConfirmed(listItem, commentViewHolder);
+                    }
+                }
+        );
+    }
+
+    @Override
+    public void onDeleteCommentConfirmed(iList_Item listItem, iCardShow2.iCommentViewHolder commentViewHolder) {
         commentViewHolder.fadeBackground();
 
         Comment comment = dataAdapter.getComment(listItem);

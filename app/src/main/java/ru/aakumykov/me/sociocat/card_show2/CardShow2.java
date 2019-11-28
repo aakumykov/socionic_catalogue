@@ -84,7 +84,14 @@ public class CardShow2 extends BaseView implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
+            case R.id.actionEdit:
+                showToast(R.string.not_implemented_yet);
+                break;
+            case R.id.actionDelete:
+                showToast(R.string.not_implemented_yet);
+                break;
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
