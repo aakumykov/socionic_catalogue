@@ -202,7 +202,11 @@ public class CardShow2_View extends BaseView implements
     }
 
     private void processLoginRequest(int resultCode, @Nullable Intent data) {
-        if (RESULT_OK != resultCode && RESULT_CANCELED != resultCode) {
+        if (RESULT_CANCELED == resultCode) {
+            return;
+        }
+
+        if (RESULT_OK != resultCode) {
             showToast(R.string.LOGIN_login_error);
             return;
         }
