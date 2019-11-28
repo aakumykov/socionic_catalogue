@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show2;
 
+import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 
 import java.util.List;
@@ -8,8 +10,14 @@ import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.models.iCommentable;
 
-public interface iCardShow2 {
+public interface iCardShow2
+{
+    String REPLY_ACTION = "REPLY_ACTION";
+    String ACTION_REPLY_TO_CARD = "ACTION_REPLY_TO_CARD";
+    String ACTION_REPLY_TO_COMMENT = "ACTION_REPLY_TO_COMMENT";
+    String REPLIED_OBJECT = "REPLIED_OBJECT";
 
     interface iPageView extends iBaseView {
         void showCommentForm();
@@ -45,17 +53,14 @@ public interface iCardShow2 {
     }
 
     interface iPresenter {
-        void bindView(iPageView view);
-        void unbindView();
-
-        void bindDataAdapter(iDataAdapter dataAdapter);
-        void unbindDataAdapter();
+        void bindViewAndAdapter(iPageView pageView, iDataAdapter dataAdapter);
+        void unbindViewAndAdapter();
 
         void onPageOpened(String cardKey);
 
         void onLoadMoreClicked(iList_Item listItem);
 
-        void onAddCommentClicked(iList_Item listItem);
+        void onReplyClicked(iList_Item listItem);
 
         void onSendCommentClicked();
 
@@ -64,6 +69,8 @@ public interface iCardShow2 {
 
         boolean canEditCard();
         boolean canDeleteCard();
+
+        void processLoginRequest(String replyAction, iCommentable repliedObject);
     }
 
     interface iCommentViewHolder {

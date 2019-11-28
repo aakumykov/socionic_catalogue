@@ -20,11 +20,12 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.iCommentable;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 
-public class CardShow2 extends BaseView implements
+public class CardShow2_View extends BaseView implements
         iCardShow2.iPageView
 {
     @BindView(R.id.messageView) TextView messageView;
@@ -33,7 +34,7 @@ public class CardShow2 extends BaseView implements
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.commentFormContainer) FrameLayout commentFormContainer;
 
-    private final static String TAG = "CardShow2";
+    private final static String TAG = "CardShow2_View";
     private boolean firstRun = true;
     private iCardShow2.iDataAdapter dataAdapter;
     private iCardShow2.iPresenter presenter;
@@ -68,7 +69,44 @@ public class CardShow2 extends BaseView implements
         });
     }
 
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        presenter.bindViewAndAdapter(this, dataAdapter);
+
+        switch (requestCode) {
+            case Constants.CODE_LOGIN_REQUEST:
+                processLoginRequest(resultCode, data);
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void processLoginRequest(int resultCode, @Nullable Intent data) {
+        if (RESULT_OK != resultCode && RESULT_CANCELED != resultCode) {
+            showToast(R.string.LOGIN_login_error);
+            return;
+        }
+
+        if (null == data) {
+            showToast(R.string.CARD_SHOW_data_error);
+            return;
+        }
+
+        Bundle transitArguments = data.getBundleExtra(Constants.TRANSIT_ARGUMENTS);
+        if (null == transitArguments) {
+            showToast(R.string.CARD_SHOW_data_error);
+            return;
+        }
+
+        String replyAction = transitArguments.getString(iCardShow2.REPLY_ACTION, "");
+        iCommentable repliedObject = transitArguments.getParcelable(iCardShow2.REPLIED_OBJECT);
+        presenter.processLoginRequest(replyAction, repliedObject);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater menuInflater = getMenuInflater();
 
@@ -100,8 +138,7 @@ public class CardShow2 extends BaseView implements
     protected void onStart() {
         super.onStart();
 
-        presenter.bindView(this);
-        presenter.bindDataAdapter(dataAdapter);
+        presenter.bindViewAndAdapter(this, dataAdapter);
 
         if (firstRun) {
             firstRun = false;
@@ -112,8 +149,7 @@ public class CardShow2 extends BaseView implements
     @Override
     protected void onStop() {
         super.onStop();
-        presenter.unbindDataAdapter();
-        presenter.unbindView();
+        presenter.unbindViewAndAdapter();
     }
 
     @Override

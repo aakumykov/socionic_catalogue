@@ -1,5 +1,10 @@
 package ru.aakumykov.me.sociocat.card_show2.list_items;
 
+import android.os.Parcelable;
+
+import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Comment;
+
 public interface iList_Item {
 
     int CARD = 10;
@@ -11,4 +16,12 @@ public interface iList_Item {
     int getItemType();
 
     Object getPayload();
+
+    static boolean isCardItem(iList_Item listItem) {
+        return listItem.getPayload() instanceof Card;
+    }
+
+    static boolean isCommentItem(iList_Item listItem) {
+        return listItem.getPayload() instanceof Comment;
+    }
 }

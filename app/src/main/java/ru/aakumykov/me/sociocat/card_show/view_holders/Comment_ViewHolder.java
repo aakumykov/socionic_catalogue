@@ -33,7 +33,7 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
     @BindView(R.id.mTimeView) TextView mTimeView;
     @BindView(R.id.quoteView) TextView quoteView;
     @BindView(R.id.messageView) TextView textView;
-    @BindView(R.id.addCommentWidget) TextView replyWidget;
+    @BindView(R.id.replyWidget) TextView replyWidget;
     @BindView(R.id.editWidget) TextView editWidget;
     @BindView(R.id.deleteWidget) TextView deleteWidget;
 
@@ -110,7 +110,7 @@ public class Comment_ViewHolder  extends Base_ViewHolder implements
     }
 
     // Нажатия
-    @OnClick(R.id.addCommentWidget)
+    @OnClick(R.id.replyWidget)
     void onReplyClicked() {
         commentsPresenter.onReplyClicked(currentComment);
     }

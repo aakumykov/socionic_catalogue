@@ -41,6 +41,7 @@ public final class Constants {
     public final static String CARD_KEY = "CARD_KEY";
     public final static String COMMENT_KEY = "COMMENT_KEY";
 
+    public final static String TRANSIT_ACTION = "TRANSIT_ACTION";
     public final static String TRANSIT_ARGUMENTS = "TRANSIT_ARGUMENTS";
     public final static String REPLIED_ITEM = "REPLIED_ITEM";
 

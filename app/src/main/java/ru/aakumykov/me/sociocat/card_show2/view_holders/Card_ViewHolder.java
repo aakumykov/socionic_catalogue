@@ -43,12 +43,12 @@ public class Card_ViewHolder extends Base_ViewHolder {
     @BindView(R.id.cardRatingView) TextView cardRatingView;
     @BindView(R.id.cardRatingThrobber) ProgressBar cardRatingThrobber;
 
-    @BindView(R.id.addCommentWidget) TextView addCommentWidget;
+    @BindView(R.id.replyWidget) TextView replyWidget;
 
     private enum MediaType { AUDIO, VIDEO }
+    private iList_Item currentListItem = null;
     private Card currentCard = null;
     private iCardShow2.iPresenter presenter = null;
-    private iList_Item currentItem = null;
 
 
     public Card_ViewHolder(@NonNull View itemView, iCardShow2.iPresenter presenter) {
@@ -60,40 +60,38 @@ public class Card_ViewHolder extends Base_ViewHolder {
 
     @Override
     public void initialize(iList_Item listItem) {
-        this.currentItem = listItem;
-        Card card = (Card) listItem.getPayload();
-        displayCard(card);
+        this.currentListItem = listItem;
+        this.currentCard = (Card) listItem.getPayload();
+        displayCard();
     }
 
 
     // Нажатия
-    @OnClick(R.id.addCommentWidget)
-    void onAddCommentClicked() {
-        presenter.onAddCommentClicked(currentItem);
+    @OnClick(R.id.replyWidget)
+    void onReplyClicked() {
+        presenter.onReplyClicked(currentListItem);
     }
 
 
     // Внутренние методы
-    private void displayCard(Card card) {
+    private void displayCard() {
 
-        currentCard = card;
+        titleView.setText(currentCard.getTitle());
+        descriptionView.setText(currentCard.getDescription());
 
-        titleView.setText(card.getTitle());
-        descriptionView.setText(card.getDescription());
-
-        String quoteSource = card.getQuoteSource();
+        String quoteSource = currentCard.getQuoteSource();
         if (null != quoteSource) {
             quoteSourceView.setText(quoteSource);
         }
 
-        switch (card.getType()) {
+        switch (currentCard.getType()) {
             case Card.TEXT_CARD:
-                quoteView.setText(card.getQuote());
+                quoteView.setText(currentCard.getQuote());
                 break;
 
             case Card.IMAGE_CARD:
                 Glide.with(imageView)
-                        .load(card.getImageURL())
+                        .load(currentCard.getImageURL())
                         .placeholder(R.drawable.ic_image_placeholder)
                         .error(R.drawable.ic_image_error)
                         .into(imageView);

@@ -104,7 +104,7 @@
         tools:text="Комментарий, комментарий, это комментарий. Глубокомысленный, лучше, чем начальное сообщение, комментарий." />
 
     <TextView
-        android:id="@+id/addCommentWidget"
+        android:id="@+id/replyWidget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

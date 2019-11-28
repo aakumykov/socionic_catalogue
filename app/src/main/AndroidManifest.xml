@@ -133,7 +133,7 @@
         <activity
             android:name=".backup_job.BackupStatus_Activity"
             android:launchMode="singleTop" />
-        <activity android:name=".card_show2.CardShow2" />
+        <activity android:name=".card_show2.CardShow2_View" />
 
         <service
             android:name=".push_notifications_service.PushNotificationsService"

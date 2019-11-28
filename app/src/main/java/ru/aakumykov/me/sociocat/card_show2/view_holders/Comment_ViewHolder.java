@@ -21,7 +21,6 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class Comment_ViewHolder extends Base_ViewHolder implements
         iCardShow2.iCommentViewHolder
 {
-
     @BindView(R.id.commentRow) ConstraintLayout commentRow;
 
     @BindView(R.id.imageView) ImageView userAvatarView;
@@ -33,7 +32,7 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.quoteView) TextView quoteView;
     @BindView(R.id.messageView) TextView messageView;
 
-    @BindView(R.id.addCommentWidget) TextView replyWidget;
+    @BindView(R.id.replyWidget) TextView replyWidget;
     @BindView(R.id.editWidget) TextView editWidget;
     @BindView(R.id.deleteWidget) TextView deleteWidget;
 
@@ -57,6 +56,11 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
 
 
     // Нажатия
+    @OnClick(R.id.replyWidget)
+    void onReplyToCommentClicked() {
+        presenter.onReplyClicked(this.currentListItem);
+    }
+
     @OnClick(R.id.deleteWidget)
     void onDeleteCommentClicked() {
         presenter.onDeleteCommentClicked(this.currentListItem, this);

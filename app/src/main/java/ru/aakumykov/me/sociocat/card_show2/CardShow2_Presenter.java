@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.card_show2;
 
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
@@ -7,6 +8,7 @@ import androidx.annotation.Nullable;
 import java.util.Date;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
@@ -32,28 +34,20 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     private iCardShow2.iPageView pageView = null;
     private iCardShow2.iDataAdapter dataAdapter = null;
     private Card currentCard = null;
-    private iList_Item commentedItem = null;
+    private iCommentable repliedItem = null;
 
-
-    // iCardShow2.iPresenter
-    @Override
-    public void bindView(iCardShow2.iPageView view) {
-        this.pageView = view;
-    }
 
     @Override
-    public void unbindView() {
-        this.pageView = new CardShow2_ViewStub();
-    }
-
-    @Override
-    public void bindDataAdapter(iCardShow2.iDataAdapter dataAdapter) {
+    public void bindViewAndAdapter(iCardShow2.iPageView pageView, iCardShow2.iDataAdapter dataAdapter) {
+        this.pageView = pageView;
         this.dataAdapter = dataAdapter;
     }
 
     @Override
-    public void unbindDataAdapter() {
+    public void unbindViewAndAdapter() {
+        // Вроде как, присвоение null должно производиться в обратном bindViewAndAdapter() порядке.
         this.dataAdapter = null;
+        this.pageView = null;
     }
 
     @Override
@@ -86,9 +80,29 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     }
 
     @Override
-    public void onAddCommentClicked(iList_Item listItem) {
-        this.pageView.showCommentForm();
-        this.commentedItem = listItem;
+    public void onReplyClicked(iList_Item listItem) {
+        if (AuthSingleton.isLoggedIn()) {
+            this.repliedItem = (iCommentable) listItem.getPayload();
+            pageView.showCommentForm();
+            return;
+        }
+
+        Bundle transitArguments = new Bundle();
+        Object payload = listItem.getPayload();
+
+        if (iList_Item.isCardItem(listItem)) {
+            transitArguments.putString(iCardShow2.REPLY_ACTION, iCardShow2.ACTION_REPLY_TO_CARD);
+            transitArguments.putParcelable(iCardShow2.REPLIED_OBJECT, (Card) payload);
+        }
+        else if (iList_Item.isCommentItem(listItem)) {
+            transitArguments.putString(iCardShow2.REPLY_ACTION, iCardShow2.ACTION_REPLY_TO_COMMENT);
+            transitArguments.putParcelable(iCardShow2.REPLIED_OBJECT, (Comment) payload);
+        }
+        else {
+            throw new RuntimeException("Payload is instance of Card or Comment");
+        }
+
+        pageView.requestLogin(Constants.CODE_LOGIN_REQUEST, transitArguments);
     }
 
     @Override
@@ -100,7 +114,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         Comment comment = new Comment(pageView.getCommentText());
                 comment.setCardId(currentCard.getKey());
                 comment.setCommentText(pageView.getCommentText());
-                comment.setParent((iCommentable) this.commentedItem.getPayload());
+                comment.setParent(this.repliedItem);
                 comment.setUser(usersSingleton.getCurrentUser());
                 comment.setCreatedAt(new Date().getTime());
 
@@ -190,6 +204,20 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     @Override
     public boolean canDeleteCard() {
         return canAlterCard();
+    }
+
+    @Override
+    public void processLoginRequest(String replyAction, iCommentable repliedItem) {
+        switch (replyAction) {
+            case iCardShow2.ACTION_REPLY_TO_CARD:
+            case iCardShow2.ACTION_REPLY_TO_COMMENT:
+                this.repliedItem = repliedItem;
+                pageView.showCommentForm();
+                break;
+
+            default:
+                throw new RuntimeException("Unknown replyAction: "+replyAction);
+        }
     }
 
 
