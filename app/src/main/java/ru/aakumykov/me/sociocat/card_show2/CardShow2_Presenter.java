@@ -11,6 +11,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.models.iCommentable;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
@@ -140,6 +141,16 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         });
     }
 
+    @Override
+    public boolean canEditCard() {
+        return canAlterCard();
+    }
+
+    @Override
+    public boolean canDeleteCard() {
+        return canAlterCard();
+    }
+
 
     // Внутренние методы
     private void loadComments(String cardKey, @Nullable Comment startAfterComment, @Nullable Comment endBoundaryComment) {
@@ -168,4 +179,17 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
             }
         });
     }
+
+    private boolean canAlterCard() {
+        User currentUser = usersSingleton.getCurrentUser();
+        if (null == currentUser)
+            return false;
+
+        if (null == currentCard)
+            return false;
+
+        return currentCard.isCreatedBy(currentUser) || usersSingleton.currentUserIsAdmin();
+    }
+
+
 }

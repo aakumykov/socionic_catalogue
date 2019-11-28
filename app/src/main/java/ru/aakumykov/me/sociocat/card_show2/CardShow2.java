@@ -2,6 +2,9 @@ package ru.aakumykov.me.sociocat.card_show2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -63,6 +66,27 @@ public class CardShow2 extends BaseView implements
                 presenter.onSendCommentClicked();
             }
         });
+    }
+
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+
+        if (presenter.canEditCard())
+            menuInflater.inflate(R.menu.edit, menu);
+
+        if (presenter.canDeleteCard())
+            menuInflater.inflate(R.menu.delete, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

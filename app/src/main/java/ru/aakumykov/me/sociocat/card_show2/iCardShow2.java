@@ -60,6 +60,9 @@ public interface iCardShow2 {
         void onSendCommentClicked();
 
         void onDeleteCommentClicked(iList_Item listItem, iCommentViewHolder commentViewHolder);
+
+        boolean canEditCard();
+        boolean canDeleteCard();
     }
 
     interface iCommentViewHolder {
