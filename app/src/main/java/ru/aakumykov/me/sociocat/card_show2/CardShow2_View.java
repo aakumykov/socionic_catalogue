@@ -20,6 +20,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.iCommentable;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
@@ -59,7 +60,7 @@ public class CardShow2_View extends BaseView implements
         this.commentForm.addButtonListeners(new iCommentForm.ButtonListeners() {
             @Override
             public void onRemoveQuoteClicked() {
-
+                presenter.onCommentQuoteRemoveClicked();
             }
 
             @Override
@@ -154,9 +155,13 @@ public class CardShow2_View extends BaseView implements
     }
 
     @Override
-    public void showCommentForm(@Nullable String text) {
-        if (null != text)
-            this.commentForm.setText(text);
+    public void showCommentForm(@Nullable Comment editedComment) {
+        if (null != editedComment) {
+            this.commentForm.setText(editedComment.getText());
+            String parentText = editedComment.getParentText();
+            if (null != parentText)
+                this.commentForm.setQuote(parentText);
+        }
         this.commentForm.show(false);
     }
 

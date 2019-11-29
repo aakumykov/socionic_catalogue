@@ -56,6 +56,11 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
 
 
     // Нажатия
+    @OnClick(R.id.editWidget)
+    void onEditCommentClicked() {
+        presenter.onEditCommentClicked(currentListItem);
+    }
+
     @OnClick(R.id.replyWidget)
     void onReplyToCommentClicked() {
         presenter.onReplyClicked(this.currentListItem);

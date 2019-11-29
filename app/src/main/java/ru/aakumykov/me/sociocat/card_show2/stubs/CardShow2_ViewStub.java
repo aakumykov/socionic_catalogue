@@ -1,8 +1,12 @@
-package ru.aakumykov.me.sociocat.card_show2;
+package ru.aakumykov.me.sociocat.card_show2.stubs;
 
 import android.annotation.SuppressLint;
 
+import androidx.annotation.Nullable;
+
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.card_show2.iCardShow2;
+import ru.aakumykov.me.sociocat.models.Comment;
 
 @SuppressLint("Registered")
 public class CardShow2_ViewStub extends BaseView implements iCardShow2.iPageView {
@@ -23,7 +27,7 @@ public class CardShow2_ViewStub extends BaseView implements iCardShow2.iPageView
     }
 
     @Override
-    public void showCommentForm(String text) {
+    public void showCommentForm(@Nullable Comment editedComment) {
 
     }
 
@@ -56,4 +60,5 @@ public class CardShow2_ViewStub extends BaseView implements iCardShow2.iPageView
     public String getCommentText() {
         return null;
     }
+
 }

@@ -19,12 +19,13 @@ public interface iCardShow2
 
     interface iPageView extends iBaseView {
         void showCommentForm();
-        void showCommentForm(String text);
+        void showCommentForm(@Nullable Comment editedComment);
         void hideCommentForm();
 
         void disableCommentForm();
 
         String getCommentText();
+
         void clearCommentForm();
 
         void showCommentFormError(int errorMessageId, String errorMsg);
@@ -61,12 +62,13 @@ public interface iCardShow2
 
         void onReplyClicked(iList_Item listItem);
 
-        void onSendCommentClicked();
-
         void onDeleteCommentClicked(iList_Item listItem, iCommentViewHolder commentViewHolder);
         void onDeleteCommentConfirmed(iList_Item listItem, iCardShow2.iCommentViewHolder commentViewHolder);
 
         void onEditCommentClicked(iList_Item listItem);
+
+        void onCommentQuoteRemoveClicked();
+        void onSendCommentClicked();
 
         boolean canEditCard();
         boolean canDeleteCard();

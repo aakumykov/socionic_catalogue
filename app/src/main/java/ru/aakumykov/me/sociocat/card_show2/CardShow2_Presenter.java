@@ -5,12 +5,13 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
-import java.util.Date;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
+import ru.aakumykov.me.sociocat.card_show2.stubs.CardShow2_ViewStub;
+import ru.aakumykov.me.sociocat.card_show2.stubs.DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -35,6 +36,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     private iCardShow2.iDataAdapter dataAdapter = null;
     private Card currentCard = null;
     private iCommentable repliedItem = null;
+    private Comment editedComment = null;
 
 
     @Override
@@ -46,8 +48,8 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     @Override
     public void unbindViewAndAdapter() {
         // Вроде как, присвоение null должно производиться в обратном bindViewAndAdapter() порядке.
-        this.dataAdapter = null;
-        this.pageView = null;
+        this.dataAdapter = new DataAdapter_Stub();
+        this.pageView = new CardShow2_ViewStub();
     }
 
     @Override
@@ -87,16 +89,17 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
             return;
         }
 
+        this.repliedItem = (iCommentable) listItem.getPayload();
+
         Bundle transitArguments = new Bundle();
-        Object payload = listItem.getPayload();
 
         if (iList_Item.isCardItem(listItem)) {
             transitArguments.putString(iCardShow2.REPLY_ACTION, iCardShow2.ACTION_REPLY_TO_CARD);
-            transitArguments.putParcelable(iCardShow2.REPLIED_OBJECT, (Card) payload);
+            transitArguments.putParcelable(iCardShow2.REPLIED_OBJECT, (Card) this.repliedItem);
         }
         else if (iList_Item.isCommentItem(listItem)) {
             transitArguments.putString(iCardShow2.REPLY_ACTION, iCardShow2.ACTION_REPLY_TO_COMMENT);
-            transitArguments.putParcelable(iCardShow2.REPLIED_OBJECT, (Comment) payload);
+            transitArguments.putParcelable(iCardShow2.REPLIED_OBJECT, (Comment) this.repliedItem);
         }
         else {
             throw new RuntimeException("Payload is instance of Card or Comment");
@@ -111,30 +114,10 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         if (TextUtils.isEmpty(commentText))
             return;
 
-        Comment comment = new Comment(pageView.getCommentText());
-                comment.setCardId(currentCard.getKey());
-                comment.setCommentText(pageView.getCommentText());
-                comment.setParent(this.repliedItem);
-                comment.setUser(usersSingleton.getCurrentUser());
-                comment.setCreatedAt(new Date().getTime());
-
-        pageView.disableCommentForm();
-
-        commentsSingleton.createComment(comment, new iCommentsSingleton.CreateCallbacks() {
-            @Override
-            public void onCommentSaveSuccess(Comment comment) {
-                int position = dataAdapter.appendOneComment(comment);
-                pageView.clearCommentForm();
-                pageView.hideCommentForm();
-                pageView.scrollToComment(position);
-            }
-
-            @Override
-            public void onCommentSaveError(String errorMsg) {
-                pageView.showCommentFormError(R.string.COMMENT_error_adding_comment, errorMsg);
-            }
-        });
-
+        if (null == editedComment)
+            createComment();
+        else
+            updateComment();
     }
 
     @Override
@@ -198,14 +181,21 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onEditCommentClicked(iList_Item listItem) {
-        Comment comment = (Comment) listItem.getPayload();
+        this.editedComment = (Comment) listItem.getPayload();
 
-        if (!canAlterComment(comment)) {
+        if (!canAlterComment(this.editedComment)) {
             pageView.showToast(R.string.COMMENT_error_cannot_edit_this_comment);
             return;
         }
 
-        pageView.showCommentForm(comment.getText());
+        pageView.showCommentForm(this.editedComment);
+    }
+
+    @Override
+    public void onCommentQuoteRemoveClicked() {
+        if (null != this.editedComment) {
+            this.editedComment.removeParent();
+        }
     }
 
     @Override
@@ -282,5 +272,60 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
             return false;
 
         return comment.isCreatedBy(currentUser.getKey()) || usersSingleton.currentUserIsAdmin();
+    }
+
+    private void createComment() {
+        editedComment = new Comment(
+                pageView.getCommentText(),
+                currentCard.getKey(),
+                this.repliedItem,
+                usersSingleton.getCurrentUser()
+        );
+
+        pageView.disableCommentForm();
+
+        commentsSingleton.createComment(editedComment, new iCommentsSingleton.CreateCallbacks() {
+            @Override
+            public void onCommentSaveSuccess(Comment comment) {
+                clearEditedComment();
+
+                int position = dataAdapter.appendOneComment(comment);
+                pageView.scrollToComment(position);
+
+                pageView.clearCommentForm();
+                pageView.hideCommentForm();
+            }
+
+            @Override
+            public void onCommentSaveError(String errorMsg) {
+                pageView.showCommentFormError(R.string.COMMENT_error_adding_comment, errorMsg);
+            }
+        });
+    }
+
+    private void updateComment() {
+        this.editedComment.updateCommentText(pageView.getCommentText());
+
+        pageView.disableCommentForm();
+
+        commentsSingleton.updateComment(editedComment, new iCommentsSingleton.CreateCallbacks() {
+            @Override
+            public void onCommentSaveSuccess(Comment comment) {
+                clearEditedComment();
+
+                pageView.clearCommentForm();
+                pageView.hideCommentForm();
+            }
+
+            @Override
+            public void onCommentSaveError(String errorMsg) {
+                pageView.showCommentFormError(R.string.COMMENT_error_saving_comment, errorMsg);
+            }
+        });
+    }
+
+    private void clearEditedComment() {
+        this.repliedItem = null;
+        this.editedComment = null;
     }
 }
