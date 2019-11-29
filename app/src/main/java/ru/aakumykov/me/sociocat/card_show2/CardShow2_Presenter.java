@@ -85,7 +85,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     public void onReplyClicked(iList_Item listItem) {
         if (AuthSingleton.isLoggedIn()) {
             this.repliedItem = (iCommentable) listItem.getPayload();
-            pageView.showCommentForm();
+            pageView.showCommentForm(this.repliedItem, null);
             return;
         }
 
@@ -188,7 +188,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
             return;
         }
 
-        pageView.showCommentForm(this.editedComment);
+        pageView.showCommentForm(this.repliedItem, this.editedComment);
     }
 
     @Override
@@ -214,7 +214,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
             case iCardShow2.ACTION_REPLY_TO_CARD:
             case iCardShow2.ACTION_REPLY_TO_COMMENT:
                 this.repliedItem = repliedItem;
-                pageView.showCommentForm();
+                pageView.showCommentForm(this.repliedItem, null);
                 break;
 
             default:
