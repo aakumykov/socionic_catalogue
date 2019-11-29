@@ -10,6 +10,7 @@ import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,8 +50,18 @@ public class Comment extends ListItem implements
         setItemType(ItemType.COMMENT_ITEM);
     }
 
-    public Comment(String text) {
-        this.text = text;
+    public Comment(
+            String text,
+            String cardId,
+            iCommentable parent,
+            User user
+    ) {
+        setCommentText(text);
+        setCardId(cardId);
+        setParent(parent);
+        setUser(user);
+
+        setCreatedAt(new Date().getTime());
     }
 
     public Comment(
@@ -309,9 +320,19 @@ public class Comment extends ListItem implements
             this.parentText = commentableObject.getText();
     }
 
+    public void removeParent() {
+        this.parentId = null;
+        this.parentText = null;
+    }
+
     public void setUser(User user) {
         this.userId = user.getKey();
         this.userName = user.getName();
         this.userAvatarURL = user.getAvatarURL();
+    }
+
+    public void updateCommentText(String commentText) {
+        this.text = commentText;
+        this.editedAt = new Date().getTime();
     }
 }
