@@ -102,6 +102,9 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
             quoteView.setText(parentText);
             MyUtils.show(quoteView);
         }
+        else {
+            MyUtils.hide(quoteView);
+        }
 
         // Время создания, правки
         Long createdAt = comment.getCreatedAt();
@@ -111,16 +114,19 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
             String editedAgoString = MyUtils.getHumanTimeAgo(messageView.getContext(), createdAt, R.string.COMMENT_edited_at);
             mTimeView.setText(editedAgoString);
             MyUtils.show(mTimeView);
+            MyUtils.hide(cTimeView);
         }
         else if (null != createdAt && createdAt > 0L) {
             String createdAgoString = MyUtils.getHumanTimeAgo(messageView.getContext(), createdAt, R.string.COMMENT_created_at);
             cTimeView.setText(createdAgoString);
             MyUtils.show(cTimeView);
+            MyUtils.hide(mTimeView);
         }
         else {
             String createdAgoString = MyUtils.getString(cTimeView.getContext(), R.string.COMMENT_unknown_create_time);
             cTimeView.setText(createdAgoString);
             MyUtils.show(cTimeView);
+            MyUtils.hide(mTimeView);
         }
 
         // Имя автора

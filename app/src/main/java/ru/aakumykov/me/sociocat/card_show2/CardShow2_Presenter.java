@@ -183,6 +183,10 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onEditCommentClicked(iList_Item listItem) {
+        /*Comment comment = (Comment) listItem.getPayload();
+        comment.setCommentText("qwerty");
+        dataAdapter.updateComment(listItem, comment);*/
+
         this.currentListItem = listItem;
         this.editedComment = (Comment) listItem.getPayload();
 
@@ -315,9 +319,8 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         commentsSingleton.updateComment(editedComment, new iCommentsSingleton.CreateCallbacks() {
             @Override
             public void onCommentSaveSuccess(Comment comment) {
-                clearEditedElements();
-
                 dataAdapter.updateComment(currentListItem, comment);
+                clearEditedElements(); // Это нужно делать после dataAdapter.updateComment()
 
                 pageView.clearCommentForm();
                 pageView.hideCommentForm();
