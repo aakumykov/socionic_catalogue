@@ -34,7 +34,9 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     private CommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
     private iCardShow2.iPageView pageView = null;
     private iCardShow2.iDataAdapter dataAdapter = null;
+
     private Card currentCard = null;
+    private iList_Item currentListItem = null;
     private iCommentable repliedItem = null;
     private Comment editedComment = null;
 
@@ -85,7 +87,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     public void onReplyClicked(iList_Item listItem) {
         if (AuthSingleton.isLoggedIn()) {
             this.repliedItem = (iCommentable) listItem.getPayload();
-            pageView.showCommentForm(this.repliedItem, null);
+            pageView.showCommentForm(null, repliedItem.getText());
             return;
         }
 
@@ -181,14 +183,16 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onEditCommentClicked(iList_Item listItem) {
+        this.currentListItem = listItem;
         this.editedComment = (Comment) listItem.getPayload();
 
         if (!canAlterComment(this.editedComment)) {
             pageView.showToast(R.string.COMMENT_error_cannot_edit_this_comment);
+            clearEditedElements();
             return;
         }
 
-        pageView.showCommentForm(this.repliedItem, this.editedComment);
+        pageView.showCommentForm(this.editedComment, this.editedComment.getParentText());
     }
 
     @Override
@@ -214,7 +218,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
             case iCardShow2.ACTION_REPLY_TO_CARD:
             case iCardShow2.ACTION_REPLY_TO_COMMENT:
                 this.repliedItem = repliedItem;
-                pageView.showCommentForm(this.repliedItem, null);
+                pageView.showCommentForm(null, repliedItem.getText());
                 break;
 
             default:
@@ -287,7 +291,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         commentsSingleton.createComment(editedComment, new iCommentsSingleton.CreateCallbacks() {
             @Override
             public void onCommentSaveSuccess(Comment comment) {
-                clearEditedComment();
+                clearEditedElements();
 
                 int position = dataAdapter.appendOneComment(comment);
                 pageView.scrollToComment(position);
@@ -311,7 +315,9 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         commentsSingleton.updateComment(editedComment, new iCommentsSingleton.CreateCallbacks() {
             @Override
             public void onCommentSaveSuccess(Comment comment) {
-                clearEditedComment();
+                clearEditedElements();
+
+                dataAdapter.updateComment(currentListItem, comment);
 
                 pageView.clearCommentForm();
                 pageView.hideCommentForm();
@@ -324,7 +330,8 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         });
     }
 
-    private void clearEditedComment() {
+    private void clearEditedElements() {
+        this.currentListItem = null;
         this.repliedItem = null;
         this.editedComment = null;
     }

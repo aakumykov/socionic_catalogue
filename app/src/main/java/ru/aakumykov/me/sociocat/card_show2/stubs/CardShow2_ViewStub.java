@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.card_show2.iCardShow2;
 import ru.aakumykov.me.sociocat.models.Comment;
-import ru.aakumykov.me.sociocat.models.iCommentable;
 
 @SuppressLint("Registered")
 public class CardShow2_ViewStub extends BaseView implements iCardShow2.iPageView {
@@ -23,7 +22,7 @@ public class CardShow2_ViewStub extends BaseView implements iCardShow2.iPageView
     }
 
     @Override
-    public void showCommentForm(iCommentable repliedItem, @Nullable Comment editedComment) {
+    public void showCommentForm(@Nullable Comment editedComment, @Nullable String quotedText) {
 
     }
 

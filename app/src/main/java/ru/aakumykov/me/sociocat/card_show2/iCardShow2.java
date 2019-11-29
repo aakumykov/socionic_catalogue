@@ -18,7 +18,7 @@ public interface iCardShow2
     String REPLIED_OBJECT = "REPLIED_OBJECT";
 
     interface iPageView extends iBaseView {
-        void showCommentForm(iCommentable repliedItem, @Nullable Comment editedComment);
+        void showCommentForm(@Nullable Comment editedComment, @Nullable String quotedText);
         void hideCommentForm();
 
         void disableCommentForm();
@@ -32,8 +32,7 @@ public interface iCardShow2
         void scrollToComment(int position);
     }
 
-    interface iDataAdapter
-    {
+    interface iDataAdapter {
         void showCardThrobber();
         void showCommentsThrobber(@Nullable Integer position);
 
@@ -44,6 +43,7 @@ public interface iCardShow2
 
         int appendOneComment(Comment comment);
         void removeComment(iList_Item listItem);
+        void updateComment(iList_Item listItem, Comment newComment);
 
         Comment getComment(int position);
         Comment getComment(iList_Item listItem);

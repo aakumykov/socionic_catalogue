@@ -46,6 +46,11 @@ public class DataAdapter_Stub implements iCardShow2.iDataAdapter {
     }
 
     @Override
+    public void updateComment(iList_Item listItem, Comment newComment) {
+
+    }
+
+    @Override
     public Comment getComment(int position) {
         return null;
     }

@@ -190,6 +190,15 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
+    public void updateComment(iList_Item listItem, Comment newComment) {
+        int position = itemsList.indexOf(listItem);
+        if (position > 0) {
+            itemsList.set(position, new Comment_Item(newComment));
+            notifyItemChanged(position);
+        }
+    }
+
+    @Override
     public Comment getComment(int position) {
         if (itemsList.size() > position) {
             Object payload = itemsList.get(position).getPayload();
