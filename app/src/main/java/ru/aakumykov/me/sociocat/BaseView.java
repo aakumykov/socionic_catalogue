@@ -16,7 +16,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -250,7 +249,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public void hideMsg() {
-        TextView messageView = findViewById(R.id.messageView);
+        TextView messageView = findViewById(R.id.commentTextView);
         TextView stackTraceView = findViewById(R.id.stackTraceView);
 
         if (null != messageView) {
@@ -393,7 +392,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void showMsg(String text, int textColorId, @Nullable Integer backgroundColorId) {
-        TextView messageView = findViewById(R.id.messageView);
+        TextView messageView = findViewById(R.id.commentTextView);
 
         int fgColor = getResources().getColor(textColorId);
         int bgColor = getResources().getColor(null != backgroundColorId ? backgroundColorId : R.color.background_default);

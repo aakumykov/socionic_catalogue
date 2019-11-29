@@ -41,7 +41,7 @@ public class UserEdit_View extends BaseView implements
         iUsers.EditView
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
-    @BindView(R.id.messageView) TextView messageView;
+    @BindView(R.id.commentTextView) TextView messageView;
 
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
     @BindView(R.id.avatarView) ImageView avatarView;

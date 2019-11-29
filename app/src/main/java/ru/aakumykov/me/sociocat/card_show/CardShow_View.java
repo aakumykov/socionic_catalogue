@@ -46,7 +46,7 @@ public class CardShow_View extends BaseView implements
 
     private final static String TAG ="CardShow_View";
 
-    @BindView(R.id.messageView) TextView messageView;
+    @BindView(R.id.commentTextView) TextView messageView;
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
