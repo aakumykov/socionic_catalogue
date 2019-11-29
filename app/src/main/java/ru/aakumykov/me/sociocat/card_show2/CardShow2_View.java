@@ -60,7 +60,7 @@ public class CardShow2_View extends BaseView implements
         this.commentForm.addButtonListeners(new iCommentForm.ButtonListeners() {
             @Override
             public void onRemoveQuoteClicked() {
-                presenter.onCommentQuoteRemoveClicked();
+                presenter.onRemoveCommentQuoteClicked();
             }
 
             @Override

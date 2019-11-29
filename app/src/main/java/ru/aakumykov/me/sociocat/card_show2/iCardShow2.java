@@ -66,7 +66,7 @@ public interface iCardShow2
 
         void onEditCommentClicked(iList_Item listItem);
 
-        void onCommentQuoteRemoveClicked();
+        void onRemoveCommentQuoteClicked();
         void onSendCommentClicked();
 
         boolean canEditCard();

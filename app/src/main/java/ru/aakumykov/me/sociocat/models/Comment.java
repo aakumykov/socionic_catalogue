@@ -30,6 +30,8 @@ public class Comment extends ListItem implements
     public static final String KEY_CREATED_AT = "createdAt";
     public static final String KEY_EDITED_AT = "editedAt";
     public static final String KEY_KEY = "key";
+    public static final String KEY_PARENT_ID = "parentKey";
+    public static final String KEY_PARENT_TEXT = "parentText";
 
     private String key;
     private String text;

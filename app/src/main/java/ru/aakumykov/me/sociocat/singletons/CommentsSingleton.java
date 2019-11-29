@@ -17,7 +17,6 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +90,8 @@ public class CommentsSingleton implements iCommentsSingleton {
         Map<String,Object> updatesMap = new HashMap<>();
         updatesMap.put(Comment.KEY_TEXT, comment.getText());
         updatesMap.put(Comment.KEY_EDITED_AT, comment.getEditedAt());
+        updatesMap.put(Comment.KEY_PARENT_ID, comment.getParentId());
+        updatesMap.put(Comment.KEY_PARENT_TEXT, comment.getParentText());
 
         commentsCollection
                 .document(comment.getKey())

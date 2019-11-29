@@ -196,7 +196,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     }
 
     @Override
-    public void onCommentQuoteRemoveClicked() {
+    public void onRemoveCommentQuoteClicked() {
         if (null != this.editedComment) {
             this.editedComment.removeParent();
         }
