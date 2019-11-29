@@ -30,7 +30,7 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.mTimeView) TextView mTimeView;
 
     @BindView(R.id.quoteView) TextView quoteView;
-    @BindView(R.id.messageView) TextView messageView;
+    @BindView(R.id.messageView) TextView commentTextView;
 
     @BindView(R.id.replyWidget) TextView replyWidget;
     @BindView(R.id.editWidget) TextView editWidget;
@@ -94,7 +94,7 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
     private void displayComment(Comment comment) {
 
         // Текст комментария
-        messageView.setText(comment.getText());
+        commentTextView.setText(comment.getText());
 
         // Текст родительского комментария
         String parentText = comment.getParentText();
@@ -111,13 +111,13 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
         Long editedAt = comment.getEditedAt();
 
         if (null != editedAt && editedAt > 0L) {
-            String editedAgoString = MyUtils.getHumanTimeAgo(messageView.getContext(), createdAt, R.string.COMMENT_edited_at);
+            String editedAgoString = MyUtils.getHumanTimeAgo(commentTextView.getContext(), createdAt, R.string.COMMENT_edited_at);
             mTimeView.setText(editedAgoString);
             MyUtils.show(mTimeView);
             MyUtils.hide(cTimeView);
         }
         else if (null != createdAt && createdAt > 0L) {
-            String createdAgoString = MyUtils.getHumanTimeAgo(messageView.getContext(), createdAt, R.string.COMMENT_created_at);
+            String createdAgoString = MyUtils.getHumanTimeAgo(commentTextView.getContext(), createdAt, R.string.COMMENT_created_at);
             cTimeView.setText(createdAgoString);
             MyUtils.show(cTimeView);
             MyUtils.hide(mTimeView);
