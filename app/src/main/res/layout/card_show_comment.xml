@@ -97,6 +97,7 @@
         android:paddingTop="6dp"
         android:paddingEnd="8dp"
         android:textSize="18sp"
+        android:textIsSelectable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
