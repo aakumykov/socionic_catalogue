@@ -84,30 +84,32 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     }
 
     @Override
-    public void onReplyClicked(iList_Item listItem) {
-        if (AuthSingleton.isLoggedIn()) {
+    public void onReplyClicked(iList_Item listItem)
+    {
+        if (AuthSingleton.isLoggedIn())
+        {
             this.repliedItem = (iCommentable) listItem.getPayload();
             pageView.showCommentForm(null, repliedItem.getText());
-            return;
-        }
-
-        this.repliedItem = (iCommentable) listItem.getPayload();
-
-        Bundle transitArguments = new Bundle();
-
-        if (iList_Item.isCardItem(listItem)) {
-            transitArguments.putString(iCardShow2.REPLY_ACTION, iCardShow2.ACTION_REPLY_TO_CARD);
-            transitArguments.putParcelable(iCardShow2.REPLIED_OBJECT, (Card) this.repliedItem);
-        }
-        else if (iList_Item.isCommentItem(listItem)) {
-            transitArguments.putString(iCardShow2.REPLY_ACTION, iCardShow2.ACTION_REPLY_TO_COMMENT);
-            transitArguments.putParcelable(iCardShow2.REPLIED_OBJECT, (Comment) this.repliedItem);
         }
         else {
-            throw new RuntimeException("Payload is instance of Card or Comment");
-        }
+            this.repliedItem = (iCommentable) listItem.getPayload();
 
-        pageView.requestLogin(Constants.CODE_LOGIN_REQUEST, transitArguments);
+            Bundle transitArguments = new Bundle();
+
+            if (iList_Item.isCardItem(listItem)) {
+                transitArguments.putString(iCardShow2.REPLY_ACTION, iCardShow2.ACTION_REPLY_TO_CARD);
+                transitArguments.putParcelable(iCardShow2.REPLIED_OBJECT, (Card) this.repliedItem);
+            }
+            else if (iList_Item.isCommentItem(listItem)) {
+                transitArguments.putString(iCardShow2.REPLY_ACTION, iCardShow2.ACTION_REPLY_TO_COMMENT);
+                transitArguments.putParcelable(iCardShow2.REPLIED_OBJECT, (Comment) this.repliedItem);
+            }
+            else {
+                throw new RuntimeException("Payload is instance of Card or Comment");
+            }
+
+            pageView.requestLogin(Constants.CODE_LOGIN_REQUEST, transitArguments);
+        }
     }
 
     @Override
@@ -217,8 +219,10 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     }
 
     @Override
-    public void processLoginRequest(String replyAction, iCommentable repliedItem) {
-        switch (replyAction) {
+    public void processLoginRequest(String replyAction, iCommentable repliedItem)
+    {
+        switch (replyAction)
+        {
             case iCardShow2.ACTION_REPLY_TO_CARD:
             case iCardShow2.ACTION_REPLY_TO_COMMENT:
                 this.repliedItem = repliedItem;

@@ -2,6 +2,8 @@ package ru.aakumykov.me.sociocat.utils.comment_form;
 
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
+
 public interface iCommentForm {
 
     interface ButtonListeners {
@@ -12,7 +14,7 @@ public interface iCommentForm {
     void attachTo(ViewGroup container);
     void addButtonListeners(ButtonListeners listeners);
 
-    void setQuote(String text);
+    void setQuote(@Nullable String text);
 
     void setText(String text);
     String getText();

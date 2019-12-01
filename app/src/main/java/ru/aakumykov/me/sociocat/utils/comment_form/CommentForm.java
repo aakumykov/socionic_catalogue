@@ -79,9 +79,11 @@ public class CommentForm implements
     }
 
     @Override
-    public void setQuote(String text) {
-        quoteTextView.setText(text);
-        MyUtils.show(quoteContainer);
+    public void setQuote(@Nullable String text) {
+        if (null != text) {
+            quoteTextView.setText(text);
+            MyUtils.show(quoteContainer);
+        }
     }
 
     @Override

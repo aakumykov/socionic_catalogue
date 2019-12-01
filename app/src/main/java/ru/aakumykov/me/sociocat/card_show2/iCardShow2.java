@@ -18,7 +18,9 @@ public interface iCardShow2
     String REPLIED_OBJECT = "REPLIED_OBJECT";
 
     interface iPageView extends iBaseView {
-        void showCommentForm(@Nullable Comment editedComment, @Nullable String quotedText);
+        void showCommentForm();
+        void showCommentForm(Comment editedComment);
+        void showCommentForm(iCommentable repliedItem);
         void hideCommentForm();
 
         void disableCommentForm();

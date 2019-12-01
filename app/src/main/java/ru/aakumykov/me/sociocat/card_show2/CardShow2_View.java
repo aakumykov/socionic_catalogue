@@ -158,7 +158,27 @@ public class CardShow2_View extends BaseView implements
         if (null != editedComment)
             commentForm.setText(editedComment.getText());
 
-        commentForm.show(false);
+        commentForm.show();
+    }
+
+    @Override
+    public void showCommentForm() {
+        commentForm.show();
+    }
+
+    @Override
+    public void showCommentForm(Comment editedComment) {
+        commentForm.setText(editedComment.getText());
+        commentForm.show();
+    }
+
+    @Override
+    public void showCommentForm(iCommentable repliedItem) {
+        if (repliedItem instanceof Comment) {
+            Comment repliedComment = (Comment) repliedItem;
+            commentForm.setQuote(repliedComment.getParentText());
+        }
+        commentForm.show();
     }
 
     @Override
