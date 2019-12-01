@@ -19,7 +19,8 @@ public interface iCommentForm {
 
     void clear();
 
-    void show(boolean isEditMode);
+    void show();
+    @Deprecated void show(boolean isEditMode);
     void hide();
 
     void enable();

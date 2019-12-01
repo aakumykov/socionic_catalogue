@@ -100,12 +100,18 @@ public class CommentForm implements
     }
 
     @Override
-    public void show(boolean isEditMode) {
-        this.isEditMode = isEditMode;
+    public void show() {
         enable();
         MyUtils.show(commentContainer);
         MyUtils.show(commentForm);
         MyUtils.showKeyboardOnFocus(context, commentTextInput);
+    }
+
+    @Override
+    @Deprecated
+    public void show(boolean isEditMode) {
+        this.isEditMode = isEditMode;
+        show();
     }
 
     @Override
