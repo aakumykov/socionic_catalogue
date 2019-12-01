@@ -63,11 +63,6 @@ public class CardShow2_ViewStub extends BaseView implements iCardShow2.iPageView
     }
 
     @Override
-    public void startTestActivity(Comment comment) {
-
-    }
-
-    @Override
     public String getCommentText() {
         return null;
     }
