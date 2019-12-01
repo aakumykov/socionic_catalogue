@@ -186,7 +186,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     @Override
     public void onEditCommentClicked(iList_Item listItem) {
 
-        this.currentListItem = listItem;
+        /*this.currentListItem = listItem;
         this.editedComment = (Comment) listItem.getPayload();
 
         if (!canAlterComment(this.editedComment)) {
@@ -195,7 +195,10 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
             return;
         }
 
-        pageView.showCommentForm(this.editedComment);
+        pageView.showCommentForm(this.editedComment);*/
+
+        Comment comment = (Comment) listItem.getPayload();
+        pageView.startTestActivity(comment);
     }
 
     @Override

@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.card_show2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -71,6 +72,13 @@ public class CardShow2_View extends BaseView implements
     }
 
     @Override
+    public void startTestActivity(Comment comment) {
+        Intent intent = new Intent(this, TestActivity.class);
+        intent.putExtra("COMMENT", comment);
+        startActivityForResult(intent, 1000);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
         presenter.bindViewAndAdapter(this, dataAdapter);
@@ -79,6 +87,22 @@ public class CardShow2_View extends BaseView implements
             case Constants.CODE_LOGIN_REQUEST:
                 processLoginRequest(resultCode, data);
                 break;
+
+            case 1000:
+                if (RESULT_OK == resultCode) {
+                    if (null != data) {
+                        Comment comment = data.getParcelableExtra("RETURNED_COMMENT");
+                        Log.d(TAG, comment.toString());
+                    }
+                    else {
+                        Log.e(TAG, "Intent's data is null");
+                    }
+                }
+                else {
+                    Log.e(TAG, "Not OK result");
+                }
+                break;
+
             default:
                 super.onActivityResult(requestCode, resultCode, data);
         }

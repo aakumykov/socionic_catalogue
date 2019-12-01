@@ -34,6 +34,8 @@ public interface iCardShow2
         void showCommentFormError(int errorMessageId, String errorMsg);
 
         void scrollToComment(int position);
+
+        void startTestActivity(Comment comment);
     }
 
     interface iDataAdapter {
