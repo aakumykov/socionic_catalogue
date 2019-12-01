@@ -315,25 +315,25 @@ public class Comment extends ListItem implements
         return ( null != user && userId.equals(user.getKey()) );
     }
 
-    public void setParent(iCommentable commentableObject) {
+    @Exclude public void setParent(iCommentable commentableObject) {
         this.parentId = commentableObject.getKey();
 
         if (commentableObject instanceof Comment)
             this.parentText = commentableObject.getText();
     }
 
-    public void removeParent() {
+    @Exclude public void removeParent() {
         this.parentId = null;
         this.parentText = null;
     }
 
-    public void setUser(User user) {
+    @Exclude public void setUser(User user) {
         this.userId = user.getKey();
         this.userName = user.getName();
         this.userAvatarURL = user.getAvatarURL();
     }
 
-    public void updateCommentText(String commentText) {
+    @Exclude public void updateCommentText(String commentText) {
         this.text = commentText;
         this.editedAt = new Date().getTime();
     }

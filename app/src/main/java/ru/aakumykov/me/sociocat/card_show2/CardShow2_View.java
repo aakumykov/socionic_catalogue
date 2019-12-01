@@ -150,18 +150,6 @@ public class CardShow2_View extends BaseView implements
     }
 
     @Override
-    public void showCommentForm(@Nullable Comment editedComment, @Nullable String quotedText) {
-
-        if (null != quotedText)
-            commentForm.setQuote(quotedText);
-
-        if (null != editedComment)
-            commentForm.setText(editedComment.getText());
-
-        commentForm.show();
-    }
-
-    @Override
     public void showCommentForm() {
         commentForm.show();
     }
@@ -230,6 +218,8 @@ public class CardShow2_View extends BaseView implements
     }
 
     private void processLoginRequest(int resultCode, @Nullable Intent data) {
+        // TODO: переделать это на работу через исключения
+
         if (RESULT_CANCELED == resultCode) {
             return;
         }
@@ -250,9 +240,12 @@ public class CardShow2_View extends BaseView implements
             return;
         }
 
-        String replyAction = transitArguments.getString(iCardShow2.REPLY_ACTION, "");
-        iCommentable repliedObject = transitArguments.getParcelable(iCardShow2.REPLIED_OBJECT);
-        presenter.processLoginRequest(replyAction, repliedObject);
+        try {
+            presenter.processLoginRequest(transitArguments);
+        }
+        catch (IllegalArgumentException e) {
+
+        }
     }
 
 }

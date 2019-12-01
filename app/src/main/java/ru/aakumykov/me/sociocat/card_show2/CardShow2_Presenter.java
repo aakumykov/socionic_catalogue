@@ -89,7 +89,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         if (AuthSingleton.isLoggedIn())
         {
             this.repliedItem = (iCommentable) listItem.getPayload();
-            pageView.showCommentForm(null, repliedItem.getText());
+            pageView.showCommentForm(repliedItem);
         }
         else {
             this.repliedItem = (iCommentable) listItem.getPayload();
@@ -97,12 +97,12 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
             Bundle transitArguments = new Bundle();
 
             if (iList_Item.isCardItem(listItem)) {
-                transitArguments.putString(iCardShow2.REPLY_ACTION, iCardShow2.ACTION_REPLY_TO_CARD);
                 transitArguments.putParcelable(iCardShow2.REPLIED_OBJECT, (Card) this.repliedItem);
+                transitArguments.putString(iCardShow2.REPLY_ACTION, iCardShow2.ACTION_REPLY_TO_CARD);
             }
             else if (iList_Item.isCommentItem(listItem)) {
-                transitArguments.putString(iCardShow2.REPLY_ACTION, iCardShow2.ACTION_REPLY_TO_COMMENT);
                 transitArguments.putParcelable(iCardShow2.REPLIED_OBJECT, (Comment) this.repliedItem);
+                transitArguments.putString(iCardShow2.REPLY_ACTION, iCardShow2.ACTION_REPLY_TO_COMMENT);
             }
             else {
                 throw new RuntimeException("Payload is instance of Card or Comment");
@@ -185,9 +185,6 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onEditCommentClicked(iList_Item listItem) {
-        /*Comment comment = (Comment) listItem.getPayload();
-        comment.setCommentText("qwerty");
-        dataAdapter.updateComment(listItem, comment);*/
 
         this.currentListItem = listItem;
         this.editedComment = (Comment) listItem.getPayload();
@@ -198,7 +195,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
             return;
         }
 
-        pageView.showCommentForm(this.editedComment, this.editedComment.getParentText());
+        pageView.showCommentForm(this.editedComment);
     }
 
     @Override
@@ -219,14 +216,17 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     }
 
     @Override
-    public void processLoginRequest(String replyAction, iCommentable repliedItem)
+    public void processLoginRequest(Bundle transitArguments) throws IllegalArgumentException
     {
+        String replyAction = transitArguments.getString(iCardShow2.REPLY_ACTION, "");
+        iCommentable repliedObject = transitArguments.getParcelable(iCardShow2.REPLIED_OBJECT);
+
         switch (replyAction)
         {
             case iCardShow2.ACTION_REPLY_TO_CARD:
             case iCardShow2.ACTION_REPLY_TO_COMMENT:
-                this.repliedItem = repliedItem;
-                pageView.showCommentForm(null, repliedItem.getText());
+                this.repliedItem = repliedObject;
+                pageView.showCommentForm(repliedItem);
                 break;
 
             default:

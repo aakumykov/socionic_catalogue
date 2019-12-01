@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show2;
 
+import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 
 import java.util.List;
@@ -74,7 +76,7 @@ public interface iCardShow2
         boolean canEditCard();
         boolean canDeleteCard();
 
-        void processLoginRequest(String replyAction, iCommentable repliedObject);
+        void processLoginRequest(Bundle transitArguments) throws IllegalArgumentException;
     }
 
     interface iCommentViewHolder {
