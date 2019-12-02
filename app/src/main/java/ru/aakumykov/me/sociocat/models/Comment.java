@@ -126,7 +126,7 @@ public class Comment extends ListItem implements
     }
 
 
-    /* Parcelable */
+    // Конверт, начало
     public static final Creator<Comment> CREATOR = new Creator<Comment>() {
         @Override
         public Comment createFromParcel(Parcel in) {
@@ -147,37 +147,38 @@ public class Comment extends ListItem implements
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         // важен порядок заполнения
-        dest.writeString(key);
-        dest.writeString(text);
-        dest.writeString(cardId);
-        dest.writeString(parentId);
-        dest.writeString(parentText);
-        dest.writeString(userId);
-        dest.writeString(userName);
-        dest.writeString(userAvatarURL);
-        dest.writeLong(createdAt);
-        dest.writeLong(editedAt);
-        dest.writeInt(rating);
-        dest.writeList(this.rateUpList);
-        dest.writeList(this.rateDownList);
+        dest.writeString(key); // 01
+        dest.writeString(text); // 02
+        dest.writeString(cardId); // 03
+        dest.writeString(parentId); // 04
+        dest.writeString(parentText); // 05
+        dest.writeString(userId); // 06
+        dest.writeString(userName); // 07
+        dest.writeString(userAvatarURL); // 08
+        dest.writeLong(createdAt); // 09
+        dest.writeLong(editedAt); // 10
+        dest.writeInt(rating); // 11
+        dest.writeList(this.rateUpList); // 12
+        dest.writeList(this.rateDownList); // 13
     }
 
     public Comment(Parcel in) {
         // важен порядок считывания
-        key = in.readString();
-        text = in.readString();
-        cardId = in.readString();
-        parentId = in.readString();
-        userId = in.readString();
-        userName = in.readString();
-        userAvatarURL = in.readString();
-        createdAt = in.readLong();
-        editedAt = in.readLong();
-        rating = in.readInt();
-        in.readStringList(rateUpList);
-        in.readStringList(rateDownList);
+        key = in.readString(); // 01
+        text = in.readString(); // 02
+        cardId = in.readString(); // 03
+        parentId = in.readString(); // 04
+        parentText = in.readString(); // 05
+        userId = in.readString(); // 06
+        userName = in.readString(); // 07
+        userAvatarURL = in.readString(); // 08
+        createdAt = in.readLong(); // 09
+        editedAt = in.readLong(); // 10
+        rating = in.readInt(); // 11
+        in.readStringList(rateUpList); // 12
+        in.readStringList(rateDownList); // 13
     }
-    /* Parcelable */
+    // Конверт, конец
 
 
     // iCommentable
