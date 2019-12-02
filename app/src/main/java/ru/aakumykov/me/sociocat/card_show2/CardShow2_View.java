@@ -164,7 +164,7 @@ public class CardShow2_View extends BaseView implements
     public void showCommentForm(iCommentable repliedItem) {
         if (repliedItem instanceof Comment) {
             Comment repliedComment = (Comment) repliedItem;
-            commentForm.setQuote(repliedComment.getParentText());
+            commentForm.setQuote(repliedComment.getText());
         }
         commentForm.show();
     }
