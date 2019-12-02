@@ -72,6 +72,11 @@ public class Card_ViewHolder extends Base_ViewHolder {
         presenter.onReplyClicked(currentListItem);
     }
 
+    @OnClick(R.id.button)
+    void onButtonClicked() {
+        presenter.onButtonClicked();
+    }
+
     @OnClick(R.id.cardRateUpWidget)
     void onRateUpClicked() {
         presenter.onRateUpClicked();

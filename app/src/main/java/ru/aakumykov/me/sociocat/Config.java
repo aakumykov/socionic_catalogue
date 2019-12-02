@@ -46,4 +46,6 @@ public final class Config {
 
     public static final String SAVED_CARDS_LIST = "SAVED_CARDS_LIST";
     public static final String CARDS_LIST = "CARDS_LIST";
+
+    public static final int CARDS_RATING_COUNTERS_NUMBER = 10;
 }

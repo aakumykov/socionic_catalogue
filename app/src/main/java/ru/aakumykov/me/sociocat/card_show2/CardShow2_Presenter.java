@@ -3,10 +3,20 @@ package ru.aakumykov.me.sociocat.card_show2;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
@@ -252,6 +262,11 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         this.ratingChangeInProgress = true;
     }
 
+    @Override
+    public void onButtonClicked() {
+        initRatingCounter(currentCard.getKey());
+    }
+
 
     // Внутренние методы
     private void loadComments(String cardKey, @Nullable Comment startAfterComment, @Nullable Comment endBoundaryComment) {
@@ -360,5 +375,37 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         this.currentListItem = null;
         this.repliedItem = null;
         this.editedComment = null;
+    }
+
+
+    private Task<Void> initRatingCounter(String cardKey) {
+        CollectionReference collectionOfCardRatings = FirebaseFirestore.getInstance().collection("cards_rating");
+        DocumentReference cardRatingDocument = collectionOfCardRatings.document(cardKey);
+
+        int numShards = Config.CARDS_RATING_COUNTERS_NUMBER;
+
+        return cardRatingDocument.set(new Counter(numShards))
+                .continueWithTask(new Continuation<Void, Task<Void>>() {
+                    @Override
+                    public Task<Void> then(@NonNull Task<Void> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+
+                        List<Task<Void>> tasks = new ArrayList<>();
+
+                        // Initialize each shard with count=0
+                        for (int i = 0; i < numShards; i++) {
+                            Task<Void> makeShard = cardRatingDocument.collection("shards")
+                                    .document(String.valueOf(i))
+                                    .set(new Shard(0));
+
+                            tasks.add(makeShard);
+                        }
+
+                        return Tasks.whenAll(tasks);
+                    }
+                });
+
     }
 }

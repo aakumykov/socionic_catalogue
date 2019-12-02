@@ -79,6 +79,8 @@ public interface iCardShow2
 
         void onRateUpClicked();
         void onRateDownClicked();
+
+        void onButtonClicked();
     }
 
     interface iCommentViewHolder {
