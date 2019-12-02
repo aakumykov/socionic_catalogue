@@ -114,6 +114,11 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onSendCommentClicked() {
+        if (!AuthSingleton.isLoggedIn()) {
+            pageView.showToast(R.string.CARD_SHOW_login_required_to_comment);
+            return;
+        }
+
         String commentText = pageView.getCommentText().trim();
         if (TextUtils.isEmpty(commentText))
             return;
@@ -287,6 +292,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     }
 
     private void createComment() {
+
         editedComment = new Comment(
                 pageView.getCommentText(),
                 currentCard.getKey(),
