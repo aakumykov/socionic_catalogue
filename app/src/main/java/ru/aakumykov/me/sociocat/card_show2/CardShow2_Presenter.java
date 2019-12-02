@@ -2,18 +2,20 @@ package ru.aakumykov.me.sociocat.card_show2;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Config;
@@ -252,14 +254,14 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onRateUpClicked() {
-        this.ratingChangeInProgress = true;
-
-
+//        this.ratingChangeInProgress = true;
+        incrementRatingCounter();
     }
 
     @Override
     public void onRateDownClicked() {
-        this.ratingChangeInProgress = true;
+//        this.ratingChangeInProgress = true;
+        decrementRatingCounter();
     }
 
     @Override
@@ -378,13 +380,31 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     }
 
 
-    private Task<Void> initRatingCounter(String cardKey) {
+    private void initRatingCounter(String cardKey) {
         CollectionReference collectionOfCardRatings = FirebaseFirestore.getInstance().collection("cards_rating");
-        DocumentReference cardRatingDocument = collectionOfCardRatings.document(cardKey);
+        DocumentReference ratingDocumentReference = collectionOfCardRatings.document(cardKey);
 
         int numShards = Config.CARDS_RATING_COUNTERS_NUMBER;
 
-        return cardRatingDocument.set(new Counter(numShards))
+        ratingDocumentReference.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists())
+                            Log.d(TAG, "rating for card "+cardKey+" exists");
+                        else
+                            Log.d(TAG, "rating for card "+cardKey+" NOT exists");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, e.getMessage());
+                        Log.e(TAG, Arrays.asList(e.getStackTrace()).toString());
+                    }
+                });
+
+        /*ratingDocumentReference.set(new Counter(numShards))
                 .continueWithTask(new Continuation<Void, Task<Void>>() {
                     @Override
                     public Task<Void> then(@NonNull Task<Void> task) throws Exception {
@@ -394,9 +414,8 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
                         List<Task<Void>> tasks = new ArrayList<>();
 
-                        // Initialize each shard with count=0
                         for (int i = 0; i < numShards; i++) {
-                            Task<Void> makeShard = cardRatingDocument.collection("shards")
+                            Task<Void> makeShard = ratingDocumentReference.collection("shards")
                                     .document(String.valueOf(i))
                                     .set(new Shard(0));
 
@@ -405,7 +424,51 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
                         return Tasks.whenAll(tasks);
                     }
-                });
+                });*/
 
+    }
+
+    private void incrementRatingCounter() {
+        CollectionReference collectionOfCardRatings = FirebaseFirestore.getInstance().collection("cards_rating");
+        DocumentReference cardRatingDocument = collectionOfCardRatings.document(currentCard.getKey());
+
+        int shardId = (int) Math.floor(Math.random() * Config.CARDS_RATING_COUNTERS_NUMBER);
+        DocumentReference shardRef = cardRatingDocument.collection("shards").document(String.valueOf(shardId));
+
+        shardRef.update("count", FieldValue.increment(1))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+    }
+
+    private void decrementRatingCounter() {
+        CollectionReference collectionOfCardRatings = FirebaseFirestore.getInstance().collection("cards_rating");
+        DocumentReference cardRatingDocument = collectionOfCardRatings.document(currentCard.getKey());
+
+        int shardId = (int) Math.floor(Math.random() * Config.CARDS_RATING_COUNTERS_NUMBER);
+        DocumentReference shardRef = cardRatingDocument.collection("shards").document(String.valueOf(shardId));
+
+        shardRef.update("count", FieldValue.increment(-1))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
     }
 }

@@ -87,4 +87,8 @@ public interface iCardShow2
         void fadeBackground();
         void unfadeBackground();
     }
+
+    interface iRatingChangeCallbacks {
+        void onRatingChangeComplete(int value);
+    }
 }
