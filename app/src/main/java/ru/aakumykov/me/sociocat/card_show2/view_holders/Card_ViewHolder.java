@@ -38,8 +38,8 @@ public class Card_ViewHolder extends Base_ViewHolder {
 
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
 
-    @BindView(R.id.cardRatingUpButton) ImageView cardRatingUpButton;
-    @BindView(R.id.cardRatingDownButton) ImageView cardRatingDownButton;
+    @BindView(R.id.cardRateUpWidget) ImageView cardRatingUpButton;
+    @BindView(R.id.cardRateDownWidget) ImageView cardRatingDownButton;
     @BindView(R.id.cardRatingView) TextView cardRatingView;
     @BindView(R.id.cardRatingThrobber) ProgressBar cardRatingThrobber;
 
@@ -70,6 +70,16 @@ public class Card_ViewHolder extends Base_ViewHolder {
     @OnClick(R.id.replyWidget)
     void onReplyClicked() {
         presenter.onReplyClicked(currentListItem);
+    }
+
+    @OnClick(R.id.cardRateUpWidget)
+    void onRateUpClicked() {
+        presenter.onRateUpClicked();
+    }
+
+    @OnClick(R.id.cardRateDownWidget)
+    void onRateDownClicked() {
+        presenter.onRateDownClicked();
     }
 
 

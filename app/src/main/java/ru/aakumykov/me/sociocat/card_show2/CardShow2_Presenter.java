@@ -39,6 +39,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     private iList_Item currentListItem = null;
     private iCommentable repliedItem = null;
     private Comment editedComment = null;
+    private boolean ratingChangeInProgress = false;
 
 
     @Override
@@ -237,6 +238,18 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
             default:
                 throw new RuntimeException("Unknown replyAction: "+replyAction);
         }
+    }
+
+    @Override
+    public void onRateUpClicked() {
+        this.ratingChangeInProgress = true;
+
+
+    }
+
+    @Override
+    public void onRateDownClicked() {
+        this.ratingChangeInProgress = true;
     }
 
 

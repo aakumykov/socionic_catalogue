@@ -76,6 +76,9 @@ public interface iCardShow2
         boolean canDeleteCard();
 
         void processLoginRequest(Bundle transitArguments) throws IllegalArgumentException;
+
+        void onRateUpClicked();
+        void onRateDownClicked();
     }
 
     interface iCommentViewHolder {

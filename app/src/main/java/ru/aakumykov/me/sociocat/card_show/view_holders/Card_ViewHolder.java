@@ -49,8 +49,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.authorView) TextView authorView;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
 
-    @BindView(R.id.cardRatingUpButton) ImageView cardRatingUpButton;
-    @BindView(R.id.cardRatingDownButton) ImageView cardRatingDownButton;
+    @BindView(R.id.cardRateUpWidget) ImageView cardRatingUpButton;
+    @BindView(R.id.cardRateDownWidget) ImageView cardRatingDownButton;
     @BindView(R.id.cardRatingView) TextView cardRatingView;
     @BindView(R.id.cardRatingThrobber) ProgressBar cardRatingThrobber;
 
@@ -87,12 +87,12 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         cardPresenter.onReplyClicked();
     }
 
-    @OnClick(R.id.cardRatingUpButton)
+    @OnClick(R.id.cardRateUpWidget)
     void onCardRatingUpClicked() {
         cardPresenter.onRatingUpClicked(this);
     }
 
-    @OnClick(R.id.cardRatingDownButton)
+    @OnClick(R.id.cardRateDownWidget)
     void onCardRatingDownClicked() {
         cardPresenter.onRatingDownClicked(this);
     }
