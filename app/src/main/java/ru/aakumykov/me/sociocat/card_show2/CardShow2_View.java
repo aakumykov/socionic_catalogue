@@ -150,11 +150,6 @@ public class CardShow2_View extends BaseView implements
     }
 
     @Override
-    public void showCommentForm() {
-        commentForm.show();
-    }
-
-    @Override
     public void showCommentForm(Comment editedComment) {
         commentForm.setText(editedComment.getText());
         commentForm.show();

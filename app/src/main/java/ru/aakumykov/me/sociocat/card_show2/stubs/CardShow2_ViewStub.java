@@ -2,8 +2,6 @@ package ru.aakumykov.me.sociocat.card_show2.stubs;
 
 import android.annotation.SuppressLint;
 
-import androidx.annotation.Nullable;
-
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.card_show2.iCardShow2;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -19,11 +17,6 @@ public class CardShow2_ViewStub extends BaseView implements iCardShow2.iPageView
 
     @Override
     public void onUserLogout() {
-
-    }
-
-    @Override
-    public void showCommentForm() {
 
     }
 

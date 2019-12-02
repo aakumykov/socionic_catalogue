@@ -20,7 +20,6 @@ public interface iCardShow2
     String REPLIED_OBJECT = "REPLIED_OBJECT";
 
     interface iPageView extends iBaseView {
-        void showCommentForm();
         void showCommentForm(Comment editedComment);
         void showCommentForm(iCommentable repliedItem);
         void hideCommentForm();
@@ -77,9 +76,6 @@ public interface iCardShow2
         boolean canDeleteCard();
 
         void processLoginRequest(Bundle transitArguments) throws IllegalArgumentException;
-
-//        void onRateUpClicked();
-//        void onRateDownClicked();
     }
 
     interface iCommentViewHolder {
