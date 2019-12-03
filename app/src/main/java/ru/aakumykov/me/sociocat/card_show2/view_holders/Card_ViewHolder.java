@@ -73,17 +73,20 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
     public void disableRatingControls() {
         MyUtils.disable(cardRatingUpButton);
         MyUtils.disable(cardRatingDownButton);
+
         MyUtils.hide(cardRatingView);
         MyUtils.show(cardRatingThrobber);
     }
 
     @Override
     public void enableRatingControls(int ratingValue) {
-        cardRatingView.setText(String.valueOf(ratingValue));
-        MyUtils.show(cardRatingView);
-        MyUtils.hide(cardRatingThrobber);
         MyUtils.enable(cardRatingUpButton);
         MyUtils.enable(cardRatingDownButton);
+//
+//        cardRatingView.setText("5");
+
+        MyUtils.show(cardRatingView);
+        MyUtils.hide(cardRatingThrobber);
     }
 
     // Нажатия

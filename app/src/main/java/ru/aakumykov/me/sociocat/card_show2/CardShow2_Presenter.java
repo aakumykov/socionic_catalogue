@@ -256,16 +256,21 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     public void onRateUpClicked(iCard_ViewHolder cardViewHolder) {
         cardViewHolder.disableRatingControls();
 
+/*
         incrementRatingCounter(new iCardShow2.iRatingChangeCallbacks() {
             @Override
             public void onRatingChangeComplete(int ratingValue) {
                 cardViewHolder.enableRatingControls(ratingValue);
             }
         });
+*/
     }
 
     @Override
     public void onRateDownClicked(iCard_ViewHolder cardViewHolder) {
+        cardViewHolder.enableRatingControls(5);
+
+/*
         cardViewHolder.disableRatingControls();
 
         decrementRatingCounter(new iCardShow2.iRatingChangeCallbacks() {
@@ -274,6 +279,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
                 cardViewHolder.enableRatingControls(ratingValue);
             }
         });
+*/
     }
 
     @Override

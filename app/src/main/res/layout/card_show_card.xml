@@ -153,10 +153,12 @@
             android:text="0"
             android:textAlignment="center"
             android:textSize="@dimen/card_rating_text_size"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cardRateUpWidget"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            tools:visibility="visible" />
 
         <ProgressBar
             android:id="@+id/cardRatingThrobber"
@@ -166,7 +168,8 @@
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cardRatingView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/cardRateDownWidget"
