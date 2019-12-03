@@ -12,11 +12,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
@@ -24,6 +24,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.card_show2.stubs.CardShow2_ViewStub;
 import ru.aakumykov.me.sociocat.card_show2.stubs.DataAdapter_Stub;
+import ru.aakumykov.me.sociocat.card_show2.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -51,7 +52,6 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     private iList_Item currentListItem = null;
     private iCommentable repliedItem = null;
     private Comment editedComment = null;
-    private boolean ratingChangeInProgress = false;
 
 
     @Override
@@ -253,15 +253,27 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     }
 
     @Override
-    public void onRateUpClicked() {
-//        this.ratingChangeInProgress = true;
-        incrementRatingCounter();
+    public void onRateUpClicked(iCard_ViewHolder cardViewHolder) {
+        cardViewHolder.disableRatingControls();
+
+        incrementRatingCounter(new iCardShow2.iRatingChangeCallbacks() {
+            @Override
+            public void onRatingChangeComplete(int ratingValue) {
+                cardViewHolder.enableRatingControls(ratingValue);
+            }
+        });
     }
 
     @Override
-    public void onRateDownClicked() {
-//        this.ratingChangeInProgress = true;
-        decrementRatingCounter();
+    public void onRateDownClicked(iCard_ViewHolder cardViewHolder) {
+        cardViewHolder.disableRatingControls();
+
+        decrementRatingCounter(new iCardShow2.iRatingChangeCallbacks() {
+            @Override
+            public void onRatingChangeComplete(int ratingValue) {
+                cardViewHolder.enableRatingControls(ratingValue);
+            }
+        });
     }
 
     @Override
@@ -428,8 +440,16 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     }
 
-    private void incrementRatingCounter() {
-        CollectionReference collectionOfCardRatings = FirebaseFirestore.getInstance().collection("cards_rating");
+    private void incrementRatingCounter(iCardShow2.iRatingChangeCallbacks callbacks) {
+
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+
+        }
+        callbacks.onRatingChangeComplete( (int)(Math.round(Math.random()*10)) );
+
+        /*CollectionReference collectionOfCardRatings = FirebaseFirestore.getInstance().collection("cards_rating");
         DocumentReference cardRatingDocument = collectionOfCardRatings.document(currentCard.getKey());
 
         int shardId = (int) Math.floor(Math.random() * Config.CARDS_RATING_COUNTERS_NUMBER);
@@ -447,11 +467,18 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
                     public void onFailure(@NonNull Exception e) {
 
                     }
-                });
+                });*/
     }
 
-    private void decrementRatingCounter() {
-        CollectionReference collectionOfCardRatings = FirebaseFirestore.getInstance().collection("cards_rating");
+    private void decrementRatingCounter(iCardShow2.iRatingChangeCallbacks callbacks) {
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+
+        }
+        callbacks.onRatingChangeComplete( -1 * (int)(Math.round(Math.random()*10)) );
+
+        /*CollectionReference collectionOfCardRatings = FirebaseFirestore.getInstance().collection("cards_rating");
         DocumentReference cardRatingDocument = collectionOfCardRatings.document(currentCard.getKey());
 
         int shardId = (int) Math.floor(Math.random() * Config.CARDS_RATING_COUNTERS_NUMBER);
@@ -469,6 +496,6 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
                     public void onFailure(@NonNull Exception e) {
 
                     }
-                });
+                });*/
     }
 }

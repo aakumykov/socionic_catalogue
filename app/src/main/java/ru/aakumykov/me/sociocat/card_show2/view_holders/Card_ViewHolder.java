@@ -19,8 +19,9 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.iCardShow2;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class Card_ViewHolder extends Base_ViewHolder {
+public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder {
 
 //    @BindView(R.id.cardLayout) LinearLayout cardLayout;
 
@@ -58,6 +59,7 @@ public class Card_ViewHolder extends Base_ViewHolder {
     }
 
 
+    // Base_ViewHolder
     @Override
     public void initialize(iList_Item listItem) {
         this.currentListItem = listItem;
@@ -65,6 +67,24 @@ public class Card_ViewHolder extends Base_ViewHolder {
         displayCard();
     }
 
+
+    // iCardViewHolder
+    @Override
+    public void disableRatingControls() {
+        MyUtils.disable(cardRatingUpButton);
+        MyUtils.disable(cardRatingDownButton);
+        MyUtils.hide(cardRatingView);
+        MyUtils.show(cardRatingThrobber);
+    }
+
+    @Override
+    public void enableRatingControls(int ratingValue) {
+        cardRatingView.setText(String.valueOf(ratingValue));
+        MyUtils.show(cardRatingView);
+        MyUtils.hide(cardRatingThrobber);
+        MyUtils.enable(cardRatingUpButton);
+        MyUtils.enable(cardRatingDownButton);
+    }
 
     // Нажатия
     @OnClick(R.id.replyWidget)
@@ -79,12 +99,12 @@ public class Card_ViewHolder extends Base_ViewHolder {
 
     @OnClick(R.id.cardRateUpWidget)
     void onRateUpClicked() {
-        presenter.onRateUpClicked();
+        presenter.onRateUpClicked(this);
     }
 
     @OnClick(R.id.cardRateDownWidget)
     void onRateDownClicked() {
-        presenter.onRateDownClicked();
+        presenter.onRateDownClicked(this);
     }
 
 

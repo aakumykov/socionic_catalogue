@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
+import ru.aakumykov.me.sociocat.card_show2.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -77,8 +78,8 @@ public interface iCardShow2
 
         void processLoginRequest(Bundle transitArguments) throws IllegalArgumentException;
 
-        void onRateUpClicked();
-        void onRateDownClicked();
+        void onRateUpClicked(iCard_ViewHolder cardViewHolder);
+        void onRateDownClicked(iCard_ViewHolder cardViewHolder);
 
         void onButtonClicked();
     }
@@ -89,6 +90,6 @@ public interface iCardShow2
     }
 
     interface iRatingChangeCallbacks {
-        void onRatingChangeComplete(int value);
+        void onRatingChangeComplete(int ratingValue);
     }
 }
