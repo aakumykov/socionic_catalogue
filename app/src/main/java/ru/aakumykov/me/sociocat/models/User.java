@@ -32,6 +32,8 @@ public class User implements Parcelable {
     private List<String> cardsKeys = new ArrayList<>();
     private List<String> commentsKeys = new ArrayList<>();
     private List<String> unsubscribedCards = new ArrayList<>();
+    private List<String> ratedUpCardKeys = new ArrayList<>();
+    private List<String> ratedDownCardKeys = new ArrayList<>();
 
 
     public User() {}
@@ -56,6 +58,8 @@ public class User implements Parcelable {
                 ", cardsKeys: "+ cardsKeys +
                 ", commentsKeys: "+ commentsKeys +
                 ", unsubscribedCards: "+ unsubscribedCards +
+                ", ratedUpCardKeys: "+ ratedUpCardKeys +
+                ", ratedDownCardKeys: "+ ratedDownCardKeys +
                 " }";
     }
 
@@ -73,6 +77,8 @@ public class User implements Parcelable {
         map.put("cardsKeys", cardsKeys);
         map.put("commentsKeys", commentsKeys);
         map.put("unsubscribedCards", unsubscribedCards);
+        map.put("ratedUpCardKeys", ratedUpCardKeys);
+        map.put("ratedDownCardKeys", ratedDownCardKeys);
         return map;
     }
 
@@ -109,6 +115,8 @@ public class User implements Parcelable {
         dest.writeList(this.cardsKeys);
         dest.writeList(this.commentsKeys);
         dest.writeList(this.unsubscribedCards);
+        dest.writeList(this.ratedUpCardKeys);
+        dest.writeList(this.ratedDownCardKeys);
     }
 
     private User(Parcel in) {
@@ -127,6 +135,8 @@ public class User implements Parcelable {
         in.readList(this.cardsKeys, ArrayList.class.getClassLoader());
         in.readList(this.commentsKeys, ArrayList.class.getClassLoader());
         in.readList(this.unsubscribedCards, ArrayList.class.getClassLoader());
+        in.readList(this.ratedUpCardKeys, ArrayList.class.getClassLoader());
+        in.readList(this.ratedDownCardKeys, ArrayList.class.getClassLoader());
     }
     /* Parcelable */
 
@@ -235,4 +245,24 @@ public class User implements Parcelable {
         return this.unsubscribedCards.contains(cardId);
     }
 
+    /*public void addRatedUpCard(String cardKey) {
+
+    }
+    public void addRatedDownCard(String cardKey) {
+
+    }
+    private void removeRatedUpCard(String cardKey) {
+
+    }
+    private void removeRatedDownCard(String cardKey) {
+
+    }
+
+    public boolean alreadyRateUpCard(String cardKey) {
+        return true;
+    }
+
+    public boolean alreadyRateDownCard(String cardKey) {
+        return true;
+    }*/
 }
