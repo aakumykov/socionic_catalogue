@@ -2,23 +2,15 @@ package ru.aakumykov.me.sociocat.card_show2;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
@@ -268,7 +260,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onRateDownClicked(iCard_ViewHolder cardViewHolder) {
-        cardViewHolder.enableRatingControls(5);
+        cardViewHolder.enableRatingControls((int)(Math.round(Math.random()*10)));
 
 /*
         cardViewHolder.disableRatingControls();
@@ -400,7 +392,10 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     private void initRatingCounter(String cardKey) {
         CollectionReference collectionOfCardRatings = FirebaseFirestore.getInstance().collection("cards_rating");
-        DocumentReference ratingDocumentReference = collectionOfCardRatings.document(cardKey);
+
+
+
+        /*DocumentReference ratingDocumentReference = collectionOfCardRatings.document(cardKey);
 
         int numShards = Config.CARDS_RATING_COUNTERS_NUMBER;
 
@@ -420,7 +415,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
                         Log.e(TAG, e.getMessage());
                         Log.e(TAG, Arrays.asList(e.getStackTrace()).toString());
                     }
-                });
+                });*/
 
         /*ratingDocumentReference.set(new Counter(numShards))
                 .continueWithTask(new Continuation<Void, Task<Void>>() {

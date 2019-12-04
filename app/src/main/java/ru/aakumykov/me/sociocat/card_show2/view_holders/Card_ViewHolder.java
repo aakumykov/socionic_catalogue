@@ -82,12 +82,13 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
     public void enableRatingControls(int ratingValue) {
         MyUtils.enable(cardRatingUpButton);
         MyUtils.enable(cardRatingDownButton);
-//
-//        cardRatingView.setText("5");
+
+        cardRatingView.setText(String.valueOf(ratingValue));
 
         MyUtils.show(cardRatingView);
         MyUtils.hide(cardRatingThrobber);
     }
+
 
     // Нажатия
     @OnClick(R.id.replyWidget)
