@@ -245,24 +245,27 @@ public class User implements Parcelable {
         return this.unsubscribedCards.contains(cardId);
     }
 
-    /*public void addRatedUpCard(String cardKey) {
 
+    // Манипуляция ключами карточек с изменённым рейтингом
+    public void addRatedUpCard(String cardKey) {
+        if (!ratedUpCardKeys.contains(cardKey)) {
+            ratedUpCardKeys.add(cardKey);
+        }
+        ratedDownCardKeys.remove(cardKey);
     }
+
     public void addRatedDownCard(String cardKey) {
-
-    }
-    private void removeRatedUpCard(String cardKey) {
-
-    }
-    private void removeRatedDownCard(String cardKey) {
-
+        if (!ratedDownCardKeys.contains(cardKey)) {
+            ratedDownCardKeys.add(cardKey);
+        }
+        ratedUpCardKeys.remove(cardKey);
     }
 
-    public boolean alreadyRateUpCard(String cardKey) {
-        return true;
+    @Exclude public boolean alreadyRateUpCard(String cardKey) {
+        return ratedUpCardKeys.contains(cardKey);
     }
 
-    public boolean alreadyRateDownCard(String cardKey) {
-        return true;
-    }*/
+    @Exclude public boolean alreadyRateDownCard(String cardKey) {
+        return ratedDownCardKeys.contains(cardKey);
+    }
 }
