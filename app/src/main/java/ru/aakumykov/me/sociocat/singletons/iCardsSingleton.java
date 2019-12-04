@@ -35,7 +35,9 @@ public interface iCardsSingleton {
 
     void deleteCard(Card card, DeleteCallbacks callbacks);
 
+    @Deprecated
     void rateUp(String cardId, String byUserId, RatingCallbacks callbacks);
+    @Deprecated
     void rateDown(String cardId, String byUserId, RatingCallbacks callbacks);
 
     void rateUp(Card card, String userId, RatingChangeCallbacks callbacks);

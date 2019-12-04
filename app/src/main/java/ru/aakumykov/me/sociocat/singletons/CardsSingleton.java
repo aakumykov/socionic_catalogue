@@ -508,21 +508,17 @@ public class CardsSingleton implements iCardsSingleton {
         DocumentReference userRef = usersCollection.document(userId);
         DocumentReference cardRef = cardsCollection.document(card.getKey());
 
-        HashMap<String,String> ratedUpKeysFiller = new HashMap<>();
-        ratedUpKeysFiller.put("name", "rated up cards");
-
-        HashMap<String,String> ratedDownKeysFiller = new HashMap<>();
-        ratedDownKeysFiller.put("name", "rated down cards");
-
-//        writeBatch.set(userRef, ratedUpKeysFiller, SetOptions.mergeFields(User.KEY_RATED_UP_CARD_KEYS));
-//        writeBatch.set(userRef, ratedDownKeysFiller, SetOptions.mergeFields(User.KEY_RATED_DOWN_CARD_KEYS));
-
-        if (changeValue > 0)
+        if (changeValue > 0) {
             writeBatch.update(userRef, User.KEY_RATED_UP_CARD_KEYS, FieldValue.arrayUnion(cardKey));
-        else if (changeValue < 0)
+            writeBatch.update(userRef, User.KEY_RATED_DOWN_CARD_KEYS, FieldValue.arrayRemove(cardKey));
+        }
+        else if (changeValue < 0) {
             writeBatch.update(userRef, User.KEY_RATED_DOWN_CARD_KEYS, FieldValue.arrayUnion(cardKey));
-        else
+            writeBatch.update(userRef, User.KEY_RATED_UP_CARD_KEYS, FieldValue.arrayRemove(cardKey));
+        }
+        else {
             throw new IllegalArgumentException("changeValue cannot equals zero");
+        }
 
         writeBatch.update(cardRef, Card.KEY_RATING, FieldValue.increment(changeValue));
 

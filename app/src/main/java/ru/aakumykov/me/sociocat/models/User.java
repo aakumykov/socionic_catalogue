@@ -247,6 +247,14 @@ public class User implements Parcelable {
 
 
     // Манипуляция ключами карточек с изменённым рейтингом
+    public List<String> getRatedUpCardKeys() {
+        return ratedUpCardKeys;
+    }
+
+    public List<String> getRatedDownCardKeys() {
+        return ratedDownCardKeys;
+    }
+
     public void addRatedUpCard(String cardKey) {
         if (!ratedUpCardKeys.contains(cardKey)) {
             ratedUpCardKeys.add(cardKey);

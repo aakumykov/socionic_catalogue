@@ -450,6 +450,22 @@ public class UsersSingleton implements iUsersSingleton {
         return card.getUserId().equals(currentUser.getKey());
     }
 
+    @Override
+    public void updateUserFromServer(String userId) {
+
+        getUserById(userId, new ReadCallbacks() {
+            @Override
+            public void onUserReadSuccess(User user) {
+                currentUser = user;
+            }
+
+            @Override
+            public void onUserReadFail(String errorMsg) {
+                Log.e(TAG, errorMsg);
+            }
+        });
+    }
+
 
     // Внутренние методы
     private void checkUserWithAttributeExists(String attrName, String attrValue, CheckExistanceCallbacks callbacks) {

@@ -5,8 +5,6 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
-import com.dropbox.core.android.Auth;
-
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
@@ -29,6 +27,10 @@ import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 
 public class CardShow2_Presenter implements iCardShow2.iPresenter {
+
+    private enum RatingChange {
+        INCREASE, DECREASE
+    }
 
     private final static String TAG = "CardShow2_Presenter";
     private AuthSingleton authSingleton = AuthSingleton.getInstance();
@@ -244,38 +246,70 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onRateUpClicked(iCard_ViewHolder cardViewHolder) {
-        if (!AuthSingleton.isLoggedIn()) {
-            pageView.showToast(R.string.CARD_SHOW_login_required_to_change_rating);
-            return;
-        }
-
-        cardViewHolder.disableRatingControls();
-
-        cardsSingleton.rateUp(currentCard, AuthSingleton.currentUserId(), new iCardsSingleton.RatingChangeCallbacks() {
-            @Override
-            public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
-                cardViewHolder.enableRatingControls(value);
-                if (null != errorMsg)
-                    pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
-            }
-        });
+        changeCardRating(RatingChange.INCREASE, cardViewHolder);
     }
 
     @Override
     public void onRateDownClicked(iCard_ViewHolder cardViewHolder) {
+        changeCardRating(RatingChange.DECREASE, cardViewHolder);
+    }
+
+    private void changeCardRating(RatingChange ratingChange, iCard_ViewHolder cardViewHolder) {
+
         if (!AuthSingleton.isLoggedIn()) {
             pageView.showToast(R.string.CARD_SHOW_login_required_to_change_rating);
             return;
         }
 
-        cardsSingleton.rateDown(currentCard, AuthSingleton.currentUserId(), new iCardsSingleton.RatingChangeCallbacks() {
+        User user = usersSingleton.getCurrentUser();
+        String cardKey = currentCard.getKey();
+
+        switch (ratingChange) {
+            case INCREASE:
+                if (user.alreadyRateUpCard(cardKey))
+                    return;
+                break;
+            case DECREASE:
+                if (user.alreadyRateDownCard(cardKey))
+                    return;
+                break;
+            default:
+                return;
+        }
+
+        cardViewHolder.disableRatingControls();
+
+        iCardsSingleton.RatingChangeCallbacks callbacks = new iCardsSingleton.RatingChangeCallbacks() {
             @Override
             public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
                 cardViewHolder.enableRatingControls(value);
-                if (null != errorMsg)
-                    pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
+
+                switch (ratingChange) {
+                    case INCREASE:
+                        user.addRatedUpCard(cardKey);
+                        break;
+                    case DECREASE:
+                        user.addRatedDownCard(cardKey);
+                        break;
+                    default:
+                        break;
+                }
+
+                if (null != errorMsg) pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
             }
-        });
+        };
+
+        switch (ratingChange) {
+            case INCREASE:
+                cardsSingleton.rateUp(currentCard, user.getKey(), callbacks);
+                break;
+            case DECREASE:
+                cardsSingleton.rateDown(currentCard, user.getKey(), callbacks);
+                break;
+            default:
+                throw new IllegalArgumentException("No such ratingChange enum value");
+        }
+
     }
 
 
