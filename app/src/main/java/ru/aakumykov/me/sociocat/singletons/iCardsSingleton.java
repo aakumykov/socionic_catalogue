@@ -38,6 +38,9 @@ public interface iCardsSingleton {
     void rateUp(String cardId, String byUserId, RatingCallbacks callbacks);
     void rateDown(String cardId, String byUserId, RatingCallbacks callbacks);
 
+    void rateUp(String cardId, String userId, RatingChangeCallbacks callbacks);
+    void rateDown(String cardId, String userId, RatingChangeCallbacks callbacks);
+
 
     interface ListCallbacks {
         // TODO: добавить в успешный колбек соообщение о сопутствующей ошибке...
@@ -64,5 +67,9 @@ public interface iCardsSingleton {
         void onRatedUp(Card ratedCard, int newRating);
         void onRatedDown(Card ratedCard, int newRating);
         void onRateFail(String errorMsg);
+    }
+
+    interface RatingChangeCallbacks {
+        void onRatingChangeComplete(int value, @Nullable String errorMsg);
     }
 }

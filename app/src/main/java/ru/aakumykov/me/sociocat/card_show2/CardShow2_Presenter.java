@@ -242,32 +242,46 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onRateUpClicked(iCard_ViewHolder cardViewHolder) {
+        if (!AuthSingleton.isLoggedIn()) {
+            pageView.showToast(R.string.CARD_SHOW_login_required_to_change_rating);
+            return;
+        }
+
         cardViewHolder.disableRatingControls();
 
-/*
-        incrementRatingCounter(new iCardShow2.iRatingChangeCallbacks() {
+        cardsSingleton.rateUp(currentCard.getKey(), AuthSingleton.currentUserId(), new iCardsSingleton.RatingChangeCallbacks() {
             @Override
-            public void onRatingChangeComplete(int ratingValue) {
-                cardViewHolder.enableRatingControls(ratingValue);
+            public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
+                if (null != errorMsg) {
+                    pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
+                    cardViewHolder.enableRatingControls(currentCard.getRating());
+                }
+                else {
+                    cardViewHolder.enableRatingControls(value);
+                }
             }
         });
-*/
     }
 
     @Override
     public void onRateDownClicked(iCard_ViewHolder cardViewHolder) {
-        cardViewHolder.enableRatingControls((int)(Math.round(Math.random()*10)));
+        if (!AuthSingleton.isLoggedIn()) {
+            pageView.showToast(R.string.CARD_SHOW_login_required_to_change_rating);
+            return;
+        }
 
-/*
-        cardViewHolder.disableRatingControls();
-
-        decrementRatingCounter(new iCardShow2.iRatingChangeCallbacks() {
+        cardsSingleton.rateDown(currentCard.getKey(), AuthSingleton.currentUserId(), new iCardsSingleton.RatingChangeCallbacks() {
             @Override
-            public void onRatingChangeComplete(int ratingValue) {
-                cardViewHolder.enableRatingControls(ratingValue);
+            public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
+                if (null != errorMsg) {
+                    pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
+                    cardViewHolder.enableRatingControls(currentCard.getRating());
+                }
+                else {
+                    cardViewHolder.enableRatingControls(value);
+                }
             }
         });
-*/
     }
 
 

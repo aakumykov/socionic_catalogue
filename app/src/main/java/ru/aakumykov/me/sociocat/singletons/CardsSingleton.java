@@ -23,7 +23,6 @@ import com.google.firebase.firestore.WriteBatch;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
@@ -331,6 +330,16 @@ public class CardsSingleton implements iCardsSingleton {
     @Override
     public void rateDown(String cardId, String byUserId, RatingCallbacks callbacks) {
         throw new RuntimeException("CardsSingleton.rateDown() ещё не реализван.");
+    }
+
+    @Override
+    public void rateUp(String cardId, String userId, RatingChangeCallbacks callbacks) {
+        callbacks.onRatingChangeComplete(0, "Изменение рейтинга не реализовано");
+    }
+
+    @Override
+    public void rateDown(String cardId, String userId, RatingChangeCallbacks callbacks) {
+        callbacks.onRatingChangeComplete(0, "Изменение рейтинга не реализовано");
     }
 
 
