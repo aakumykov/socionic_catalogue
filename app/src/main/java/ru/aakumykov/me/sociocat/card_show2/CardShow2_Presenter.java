@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import androidx.annotation.Nullable;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -271,11 +270,6 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 */
     }
 
-    @Override
-    public void onButtonClicked() {
-        initRatingCounter(currentCard.getKey());
-    }
-
 
     // Внутренние методы
     private void loadComments(String cardKey, @Nullable Comment startAfterComment, @Nullable Comment endBoundaryComment) {
@@ -386,66 +380,9 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         this.editedComment = null;
     }
 
-    private void initRatingCounter(String cardKey) {
-
-    }
-
     private void incrementRatingCounter(iCardShow2.iRatingChangeCallbacks callbacks) {
-
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-
-        }
-        callbacks.onRatingChangeComplete( (int)(Math.round(Math.random()*10)) );
-
-        /*CollectionReference collectionOfCardRatings = FirebaseFirestore.getInstance().collection("cards_rating");
-        DocumentReference cardRatingDocument = collectionOfCardRatings.document(currentCard.getKey());
-
-        int shardId = (int) Math.floor(Math.random() * Config.CARDS_RATING_COUNTERS_NUMBER);
-        DocumentReference shardRef = cardRatingDocument.collection("shards").document(String.valueOf(shardId));
-
-        shardRef.update("count", FieldValue.increment(1))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });*/
     }
 
     private void decrementRatingCounter(iCardShow2.iRatingChangeCallbacks callbacks) {
-        try {
-            TimeUnit.SECONDS.sleep(10);
-        } catch (InterruptedException e) {
-
-        }
-        callbacks.onRatingChangeComplete( -1 * (int)(Math.round(Math.random()*10)) );
-
-        /*CollectionReference collectionOfCardRatings = FirebaseFirestore.getInstance().collection("cards_rating");
-        DocumentReference cardRatingDocument = collectionOfCardRatings.document(currentCard.getKey());
-
-        int shardId = (int) Math.floor(Math.random() * Config.CARDS_RATING_COUNTERS_NUMBER);
-        DocumentReference shardRef = cardRatingDocument.collection("shards").document(String.valueOf(shardId));
-
-        shardRef.update("count", FieldValue.increment(-1))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });*/
     }
 }

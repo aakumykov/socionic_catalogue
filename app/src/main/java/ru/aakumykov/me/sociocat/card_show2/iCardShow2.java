@@ -80,8 +80,6 @@ public interface iCardShow2
 
         void onRateUpClicked(iCard_ViewHolder cardViewHolder);
         void onRateDownClicked(iCard_ViewHolder cardViewHolder);
-
-        void onButtonClicked();
     }
 
     interface iCommentViewHolder {
