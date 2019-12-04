@@ -22,6 +22,7 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Config;
@@ -322,24 +323,52 @@ public class CardsSingleton implements iCardsSingleton {
                 });
     }
 
+    @Deprecated
     @Override
     public void rateUp(String cardId, String byUserId, RatingCallbacks callbacks) {
         throw new RuntimeException("CardsSingleton.rateUp() ещё не реализван.");
     }
 
+    @Deprecated
     @Override
     public void rateDown(String cardId, String byUserId, RatingCallbacks callbacks) {
         throw new RuntimeException("CardsSingleton.rateDown() ещё не реализван.");
     }
 
     @Override
-    public void rateUp(String cardId, String userId, RatingChangeCallbacks callbacks) {
-        callbacks.onRatingChangeComplete(0, "Изменение рейтинга не реализовано");
+    public void rateUp(Card card, String userId, RatingChangeCallbacks callbacks) {
+        changeRating(1, card, userId, callbacks);
     }
 
     @Override
-    public void rateDown(String cardId, String userId, RatingChangeCallbacks callbacks) {
-        callbacks.onRatingChangeComplete(0, "Изменение рейтинга не реализовано");
+    public void rateDown(Card card, String userId, RatingChangeCallbacks callbacks) {
+        changeRating(-1, card, userId, callbacks);
+    }
+
+    @Override
+    public void getCardRating(String cardKey, GetCardRatingCallbacks callbacks) {
+
+        cardsCollection.document(cardKey).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        try {
+                            Card card = documentSnapshot.toObject(Card.class);
+                            callbacks.onGetCardRatingSuccess(card.getRating());
+                        }
+                        catch (Exception e) {
+                            callbacks.onGetCardRatingError(e.getMessage());
+                            MyUtils.printError(TAG, e);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onGetCardRatingError(e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
     }
 
 
@@ -469,6 +498,62 @@ public class CardsSingleton implements iCardsSingleton {
         else
             callbacks.OnExtractSuccess(cardsList);
     }
+
+    private void changeRating(int changeValue, Card card, String userId, iCardsSingleton.RatingChangeCallbacks callbacks) {
+
+        String cardKey = card.getKey();
+
+        WriteBatch writeBatch = firebaseFirestore.batch();
+
+        DocumentReference userRef = usersCollection.document(userId);
+        DocumentReference cardRef = cardsCollection.document(card.getKey());
+
+        HashMap<String,String> ratedUpKeysFiller = new HashMap<>();
+        ratedUpKeysFiller.put("name", "rated up cards");
+
+        HashMap<String,String> ratedDownKeysFiller = new HashMap<>();
+        ratedDownKeysFiller.put("name", "rated down cards");
+
+//        writeBatch.set(userRef, ratedUpKeysFiller, SetOptions.mergeFields(User.KEY_RATED_UP_CARD_KEYS));
+//        writeBatch.set(userRef, ratedDownKeysFiller, SetOptions.mergeFields(User.KEY_RATED_DOWN_CARD_KEYS));
+
+        if (changeValue > 0)
+            writeBatch.update(userRef, User.KEY_RATED_UP_CARD_KEYS, FieldValue.arrayUnion(cardKey));
+        else if (changeValue < 0)
+            writeBatch.update(userRef, User.KEY_RATED_DOWN_CARD_KEYS, FieldValue.arrayUnion(cardKey));
+        else
+            throw new IllegalArgumentException("changeValue cannot equals zero");
+
+        writeBatch.update(cardRef, Card.KEY_RATING, FieldValue.increment(changeValue));
+
+        writeBatch.commit()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        getCardRating(cardKey, new GetCardRatingCallbacks() {
+                            @Override
+                            public void onGetCardRatingSuccess(int value) {
+                                callbacks.onRatingChangeComplete(value, null);
+                            }
+
+                            @Override
+                            public void onGetCardRatingError(String errorMsg) {
+                                callbacks.onRatingChangeComplete(card.getRating(), errorMsg);
+                            }
+                        });
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onRatingChangeComplete(card.getRating(), e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
+    }
+
 
     private interface iExtractQuerySnapshotCallbacks {
         void OnExtractSuccess(List<Card> cardsList);

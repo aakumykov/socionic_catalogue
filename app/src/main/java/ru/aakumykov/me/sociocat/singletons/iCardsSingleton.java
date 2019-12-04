@@ -38,8 +38,15 @@ public interface iCardsSingleton {
     void rateUp(String cardId, String byUserId, RatingCallbacks callbacks);
     void rateDown(String cardId, String byUserId, RatingCallbacks callbacks);
 
-    void rateUp(String cardId, String userId, RatingChangeCallbacks callbacks);
-    void rateDown(String cardId, String userId, RatingChangeCallbacks callbacks);
+    void rateUp(Card card, String userId, RatingChangeCallbacks callbacks);
+    void rateDown(Card card, String userId, RatingChangeCallbacks callbacks);
+
+    void getCardRating(String cardKey, GetCardRatingCallbacks callbacks);
+
+    interface GetCardRatingCallbacks {
+        void onGetCardRatingSuccess(int value);
+        void onGetCardRatingError(String errorMsg);
+    }
 
 
     interface ListCallbacks {

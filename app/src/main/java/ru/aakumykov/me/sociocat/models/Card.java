@@ -30,6 +30,7 @@ public class Card extends ListItem implements
     public static final String KEY_TAGS = "tags";
     public static final String KEY_USER_NAME = "userName";
     public static final String KEY_COMMENTS_KEYS = "commentsKeys";
+    public static final String KEY_RATING = "rating";
 
     public final static String GHOST_TAG_PREFIX = "TAG_";
     public static final String TEXT_CARD = "TEXT_CARD";

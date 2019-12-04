@@ -5,6 +5,8 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
+import com.dropbox.core.android.Auth;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
@@ -249,16 +251,12 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
         cardViewHolder.disableRatingControls();
 
-        cardsSingleton.rateUp(currentCard.getKey(), AuthSingleton.currentUserId(), new iCardsSingleton.RatingChangeCallbacks() {
+        cardsSingleton.rateUp(currentCard, AuthSingleton.currentUserId(), new iCardsSingleton.RatingChangeCallbacks() {
             @Override
             public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
-                if (null != errorMsg) {
+                cardViewHolder.enableRatingControls(value);
+                if (null != errorMsg)
                     pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
-                    cardViewHolder.enableRatingControls(currentCard.getRating());
-                }
-                else {
-                    cardViewHolder.enableRatingControls(value);
-                }
             }
         });
     }
@@ -270,16 +268,12 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
             return;
         }
 
-        cardsSingleton.rateDown(currentCard.getKey(), AuthSingleton.currentUserId(), new iCardsSingleton.RatingChangeCallbacks() {
+        cardsSingleton.rateDown(currentCard, AuthSingleton.currentUserId(), new iCardsSingleton.RatingChangeCallbacks() {
             @Override
             public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
-                if (null != errorMsg) {
+                cardViewHolder.enableRatingControls(value);
+                if (null != errorMsg)
                     pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
-                    cardViewHolder.enableRatingControls(currentCard.getRating());
-                }
-                else {
-                    cardViewHolder.enableRatingControls(value);
-                }
             }
         });
     }
