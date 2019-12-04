@@ -3,22 +3,11 @@ package ru.aakumykov.me.sociocat.card_show2;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.WriteBatch;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
@@ -37,7 +26,6 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
@@ -398,44 +386,8 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         this.editedComment = null;
     }
 
-
     private void initRatingCounter(String cardKey) {
-        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-        CollectionReference cardsRatingCollection = firebaseFirestore.collection("cards_rating");
-        DocumentReference ratingDocument = cardsRatingCollection.document(cardKey);
-        CollectionReference shardsCollection = ratingDocument.collection("shards");
-
-        HashMap<String,Object> documentMap = new HashMap<>();
-        documentMap.put("name", "Rating Document"); // TODO: убрать
-
-        class RatingHolder {
-            public String name = "RatingHolder";
-        }
-
-        WriteBatch writeBatch = firebaseFirestore.batch();
-        writeBatch.set(ratingDocument, documentMap, SetOptions.mergeFields("name"));
-
-        for (int i=0; i<Config.CARDS_RATING_COUNTERS_NUMBER; i++) {
-            writeBatch.set(shardsCollection.document(String.valueOf(i)), new RatingHolder(), SetOptions.mergeFields("name"));
-        }
-
-        pageView.showProgressBar();
-
-        writeBatch.commit()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        pageView.hideProgressBar();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        pageView.showErrorMsg(R.string.error_saving_user, e.getMessage());
-                        MyUtils.printError(TAG, e);
-                    }
-                });
     }
 
     private void incrementRatingCounter(iCardShow2.iRatingChangeCallbacks callbacks) {
