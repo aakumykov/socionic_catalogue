@@ -68,7 +68,7 @@ public class UserShow_View extends BaseView implements
         setContentView(R.layout.user_show_activity);
         ButterKnife.bind(this);
 
-        setPageTitle(R.string.USER_page_title);
+        setPageTitle(R.string.USER_SHOW_simple_page_title);
 
         activateUpButton();
 
@@ -223,6 +223,11 @@ public class UserShow_View extends BaseView implements
             intent.putExtra(Constants.USER_ID, currentUser.getKey());
             startActivityForResult(intent, Constants.CODE_USER_EDIT);
         }
+    }
+
+    @Override
+    public void setPageTitle(String userName) {
+        setPageTitle(R.string.USER_SHOW_complex_page_title, userName);
     }
 
 

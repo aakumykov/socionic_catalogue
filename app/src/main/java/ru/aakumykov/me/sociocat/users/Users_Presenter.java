@@ -129,6 +129,7 @@ public class Users_Presenter implements
                 if (null != user) {
                     currentUser = user;
                     showView.hideProgressMessage();
+                    showView.setPageTitle(user.getName());
                     showView.displayUser(user);
                 }
                 else

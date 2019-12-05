@@ -112,7 +112,7 @@
     <string name="ERROR_saving_card">Ошибка сохранения карточки</string>
     <string name="LOGIN_register">Зарегистрироваться</string>
     <string name="LOGIN_register_label">Впервые здесь?</string>
-    <string name="USER_page_title">Профиль прользователя</string>
+    <string name="USER_SHOW_simple_page_title">Профиль прользователя</string>
     <string name="CARD_EDIT_edit_denied">Редактирование запрещено</string>
     <string name="CARD_EDIT_editing_error">Ошибка редактирования</string>
     <string name="CARD_EDIT_error_saving_card">Ошибка сохранения карточки</string>
@@ -527,5 +527,6 @@
     <string name="COMMENTS_no_more_comments">Комментариев больше нет</string>
     <string name="COMMENT_error_cannot_delete_this_comment">Вы не можете удалить этот комментарий</string>
     <string name="error">Ошибка</string>
+    <string name="USER_SHOW_complex_page_title">Профиль пользователя «%1$s»</string>
 
 </resources><!-- «%1$s» -->

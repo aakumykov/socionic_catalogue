@@ -28,6 +28,7 @@ public interface iUsers {
         void displayUser(User user);
         void displayCardsList(List<Card> list);
         void goUserEdit();
+        void setPageTitle(String userName);
     }
 
     interface EditView  extends iBaseView, View {
