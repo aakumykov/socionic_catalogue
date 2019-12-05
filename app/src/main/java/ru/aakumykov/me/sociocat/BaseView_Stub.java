@@ -156,4 +156,9 @@ public class BaseView_Stub implements iBaseView {
     public void hideMenuItem(Menu menu, int menuItemId) {
 
     }
+
+    @Override
+    public void showUserProfile(String userId) {
+
+    }
 }

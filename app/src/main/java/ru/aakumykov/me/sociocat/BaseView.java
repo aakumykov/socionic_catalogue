@@ -379,6 +379,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             menuItem.setVisible(false);
     }
 
+    @Override
+    public void showUserProfile(String userId) {
+        Intent intent = new Intent(this, UserShow_View.class);
+        intent.putExtra(Constants.USER_ID, userId);
+        startActivity(intent);
+    }
+
 
     // Внутренние методы
     private void showProgressMessage(String msg) {
