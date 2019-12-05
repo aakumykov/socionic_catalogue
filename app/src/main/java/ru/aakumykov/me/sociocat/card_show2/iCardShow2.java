@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
+import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -59,27 +60,23 @@ public interface iCardShow2
         void bindViewAndAdapter(iPageView pageView, iDataAdapter dataAdapter);
         void unbindViewAndAdapter();
 
-        void onPageOpened(String cardKey);
-
-        void onLoadMoreClicked(iList_Item listItem);
-
-        void onReplyClicked(iList_Item listItem);
-
-        void onDeleteCommentClicked(iList_Item listItem, iCommentViewHolder commentViewHolder);
-        void onDeleteCommentConfirmed(iList_Item listItem, iCardShow2.iCommentViewHolder commentViewHolder);
-
-        void onEditCommentClicked(iList_Item listItem);
-
-        void onRemoveCommentQuoteClicked();
-        void onSendCommentClicked();
-
         boolean canEditCard();
         boolean canDeleteCard();
 
+        void onPageOpened(String cardKey);
+        void onCardAlmostDisplayed(Card_ViewHolder cardViewHolder);
         void processLoginRequest(Bundle transitArguments) throws IllegalArgumentException;
 
+        void onLoadMoreClicked(iList_Item listItem);
+        void onReplyClicked(iList_Item listItem);
+        void onDeleteCommentClicked(iList_Item listItem, iCommentViewHolder commentViewHolder);
+        void onDeleteCommentConfirmed(iList_Item listItem, iCardShow2.iCommentViewHolder commentViewHolder);
+        void onEditCommentClicked(iList_Item listItem);
+        void onRemoveCommentQuoteClicked();
+        void onSendCommentClicked();
         void onRateUpClicked(iCard_ViewHolder cardViewHolder);
         void onRateDownClicked(iCard_ViewHolder cardViewHolder);
+        void onAuthorClicked();
     }
 
     interface iCommentViewHolder {

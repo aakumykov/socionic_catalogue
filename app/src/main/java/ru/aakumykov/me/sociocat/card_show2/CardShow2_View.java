@@ -204,6 +204,7 @@ public class CardShow2_View extends BaseView implements
 
         try {
             Card card = intent.getParcelableExtra(Constants.CARD);
+            // TODO: перенести в Card_ViewHolder
             presenter.onPageOpened(card.getKey());
         }
         catch (Exception e) {

@@ -7,6 +7,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 
@@ -19,6 +20,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.iCardShow2;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder {
@@ -39,8 +41,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
 
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
 
-    @BindView(R.id.cardRateUpWidget) ImageView cardRatingUpButton;
-    @BindView(R.id.cardRateDownWidget) ImageView cardRatingDownButton;
+    @BindView(R.id.cardRateUpWidget) ImageView cardRatingUpWidget;
+    @BindView(R.id.cardRateDownWidget) ImageView cardRatingDownWidget;
     @BindView(R.id.cardRatingView) TextView cardRatingView;
     @BindView(R.id.cardRatingThrobber) ProgressBar cardRatingThrobber;
 
@@ -71,8 +73,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
     // iCardViewHolder
     @Override
     public void disableRatingControls() {
-        MyUtils.disable(cardRatingUpButton);
-        MyUtils.disable(cardRatingDownButton);
+        MyUtils.disable(cardRatingUpWidget);
+        MyUtils.disable(cardRatingDownWidget);
 
         MyUtils.hide(cardRatingView);
         MyUtils.show(cardRatingThrobber);
@@ -80,14 +82,29 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
 
     @Override
     public void enableRatingControls(int ratingValue) {
-        MyUtils.enable(cardRatingUpButton);
-        MyUtils.enable(cardRatingDownButton);
+        MyUtils.enable(cardRatingUpWidget);
+        MyUtils.enable(cardRatingDownWidget);
 
         cardRatingView.setText(String.valueOf(ratingValue));
 
         MyUtils.show(cardRatingView);
         MyUtils.hide(cardRatingThrobber);
     }
+
+    @Override
+    public void colorizeRatingControls(@Nullable User currentUser) {
+        String cardKey = currentCard.getKey();
+
+        if (null != currentUser) {
+            if (currentUser.alreadyRateUpCard(cardKey)) {
+                showCardIsRatedUp();
+            } else if (currentUser.alreadyRateDownCard(cardKey)) {
+                showCardIsRatedDown();
+            }
+        }
+    }
+
+
 
 
     // Нажатия
@@ -148,13 +165,9 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
                 break;
         }
 
-        authorView.setText(
-                MyUtils.getString(
-                        authorView.getContext(),
-                        R.string.CARD_SHOW_author,
-                        currentCard.getUserName()
-                )
-        );
+        displayAuthor();
+
+        presenter.onCardAlmostDisplayed(this);
     }
 
     private void displayMedia(MediaType mediaType) {
@@ -184,5 +197,25 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
             default:
                 throw new RuntimeException("Unknown mediaType: "+mediaType);
         }
+    }
+
+    private void displayAuthor() {
+        authorView.setText(
+                MyUtils.getString(
+                        authorView.getContext(),
+                        R.string.CARD_SHOW_author,
+                        currentCard.getUserName()
+                )
+        );
+    }
+
+    private void showCardIsRatedUp() {
+        cardRatingUpWidget.setImageResource(R.drawable.ic_thumb_up_colored);
+        cardRatingDownWidget.setImageResource(R.drawable.ic_thumb_down_neutral);
+    }
+
+    private void showCardIsRatedDown() {
+        cardRatingUpWidget.setImageResource(R.drawable.ic_thumb_down_colored);
+        cardRatingDownWidget.setImageResource(R.drawable.ic_thumb_up_neutral);
     }
 }

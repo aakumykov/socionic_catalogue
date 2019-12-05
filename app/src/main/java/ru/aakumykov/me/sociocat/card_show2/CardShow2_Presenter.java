@@ -12,6 +12,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.card_show2.stubs.CardShow2_ViewStub;
 import ru.aakumykov.me.sociocat.card_show2.stubs.DataAdapter_Stub;
+import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -78,6 +79,11 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
                 pageView.showErrorMsg(R.string.CARD_SHOW_error_displaying_card, msg);
             }
         });
+    }
+
+    @Override
+    public void onCardAlmostDisplayed(Card_ViewHolder cardViewHolder) {
+        cardViewHolder.colorizeRatingControls(usersSingleton.getCurrentUser());
     }
 
     @Override
@@ -252,6 +258,11 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     @Override
     public void onRateDownClicked(iCard_ViewHolder cardViewHolder) {
         changeCardRating(RatingChange.DECREASE, cardViewHolder);
+    }
+
+    @Override
+    public void onAuthorClicked() {
+        pageView.showUserProfile(currentCard.getUserId());
     }
 
     private void changeCardRating(RatingChange ratingChange, iCard_ViewHolder cardViewHolder) {
