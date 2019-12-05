@@ -142,6 +142,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
             default:
                 break;
         }
+
+        authorView.setText(currentCard.getUserName());
     }
 
     private void displayMedia(MediaType mediaType) {
