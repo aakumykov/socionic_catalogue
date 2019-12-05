@@ -169,12 +169,6 @@ public class Login_Presenter implements
             return;
         }
 
-//        // Это вообще не его дело!
-//        if (mIntentAction.equals(Constants.ACTION_CREATE)) {
-//            view.goCreateCard();
-//            return;
-//        }
-
         view.finishLogin(false, mTransitIntent, mTransitArguments);
     }
 

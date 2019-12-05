@@ -520,5 +520,6 @@
     <string name="COMMENT_error_cannot_delete_this_comment">You cannot delete this comment</string>
     <string name="error">Error</string>
     <string name="USER_SHOW_complex_page_title">Profile of user «%1$s»</string>
+    <string name="LOGIN_email_confirmation_required">Confirm your Email (●\'◡\'●)</string>
 </resources>
 <!-- «%1$s» -->

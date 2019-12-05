@@ -523,6 +523,7 @@
     <string name="BACKUP_SERVICE_backup_started">Начато резервное копирование</string>
     <string name="COMMENT_delete">Удалить</string>
     <string name="CARD_SHOW_unknown_create_time">Время создания неизвестно</string>
+    <string name="LOGIN_email_confirmation_required">Подтведите ваш Email (●\'◡\'●)</string>
     <string name="COMMENT_unknown_create_time">Время создания неизвестно</string>
     <string name="COMMENTS_no_more_comments">Комментариев больше нет</string>
     <string name="COMMENT_error_cannot_delete_this_comment">Вы не можете удалить этот комментарий</string>
