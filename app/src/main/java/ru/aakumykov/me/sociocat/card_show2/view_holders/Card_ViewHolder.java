@@ -106,6 +106,11 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
         presenter.onRateDownClicked(this);
     }
 
+    @OnClick(R.id.authorView)
+    void onAuthorClicked() {
+        presenter.onAuthorClicked();
+    }
+
 
     // Внутренние методы
     private void displayCard() {
@@ -143,7 +148,13 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
                 break;
         }
 
-        authorView.setText(currentCard.getUserName());
+        authorView.setText(
+                MyUtils.getString(
+                        authorView.getContext(),
+                        R.string.CARD_SHOW_author,
+                        currentCard.getUserName()
+                )
+        );
     }
 
     private void displayMedia(MediaType mediaType) {
