@@ -252,21 +252,6 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onRateUpClicked(iCard_ViewHolder cardViewHolder) {
-        changeCardRating(RatingChange.INCREASE, cardViewHolder);
-    }
-
-    @Override
-    public void onRateDownClicked(iCard_ViewHolder cardViewHolder) {
-        changeCardRating(RatingChange.DECREASE, cardViewHolder);
-    }
-
-    @Override
-    public void onAuthorClicked() {
-        pageView.showUserProfile(currentCard.getUserId());
-    }
-
-    private void changeCardRating(RatingChange ratingChange, iCard_ViewHolder cardViewHolder) {
-
         if (!AuthSingleton.isLoggedIn()) {
             pageView.showToast(R.string.CARD_SHOW_login_required_to_change_rating);
             return;
@@ -275,52 +260,53 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         User user = usersSingleton.getCurrentUser();
         String cardKey = currentCard.getKey();
 
-        switch (ratingChange) {
-            case INCREASE:
-                if (user.alreadyRateUpCard(cardKey))
-                    return;
-                break;
-            case DECREASE:
-                if (user.alreadyRateDownCard(cardKey))
-                    return;
-                break;
-            default:
-                return;
-        }
+        if (user.alreadyRateUpCard(cardKey))
+            return;
 
         cardViewHolder.disableRatingControls();
 
-        iCardsSingleton.RatingChangeCallbacks callbacks = new iCardsSingleton.RatingChangeCallbacks() {
+        cardsSingleton.rateUp(currentCard, user.getKey(), new iCardsSingleton.RatingChangeCallbacks() {
             @Override
             public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
+                user.addRatedUpCard(cardKey); // пользователь должен обновляться раньше, как расцвечивания кнопок
+                cardViewHolder.colorizeRatingControls(user);
                 cardViewHolder.enableRatingControls(value);
-
-                switch (ratingChange) {
-                    case INCREASE:
-                        user.addRatedUpCard(cardKey);
-                        break;
-                    case DECREASE:
-                        user.addRatedDownCard(cardKey);
-                        break;
-                    default:
-                        break;
-                }
-
-                if (null != errorMsg) pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
+                if (null != errorMsg)
+                    pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
             }
-        };
+        });
+    }
 
-        switch (ratingChange) {
-            case INCREASE:
-                cardsSingleton.rateUp(currentCard, user.getKey(), callbacks);
-                break;
-            case DECREASE:
-                cardsSingleton.rateDown(currentCard, user.getKey(), callbacks);
-                break;
-            default:
-                throw new IllegalArgumentException("No such ratingChange enum value");
+    @Override
+    public void onRateDownClicked(iCard_ViewHolder cardViewHolder) {
+        if (!AuthSingleton.isLoggedIn()) {
+            pageView.showToast(R.string.CARD_SHOW_login_required_to_change_rating);
+            return;
         }
 
+        User user = usersSingleton.getCurrentUser();
+        String cardKey = currentCard.getKey();
+
+        if (user.alreadyRateDownCard(cardKey))
+            return;
+
+        cardViewHolder.disableRatingControls();
+
+        cardsSingleton.rateDown(currentCard, user.getKey(), new iCardsSingleton.RatingChangeCallbacks() {
+            @Override
+            public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
+                user.addRatedDownCard(cardKey); // пользователь должен обновляться раньше, как расцвечивания кнопок
+                cardViewHolder.colorizeRatingControls(user);
+                cardViewHolder.enableRatingControls(value);
+                if (null != errorMsg)
+                    pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
+            }
+        });
+    }
+
+    @Override
+    public void onAuthorClicked() {
+        pageView.showUserProfile(currentCard.getUserId());
     }
 
 
@@ -433,9 +419,4 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         this.editedComment = null;
     }
 
-    private void incrementRatingCounter(iCardShow2.iRatingChangeCallbacks callbacks) {
-    }
-
-    private void decrementRatingCounter(iCardShow2.iRatingChangeCallbacks callbacks) {
-    }
 }

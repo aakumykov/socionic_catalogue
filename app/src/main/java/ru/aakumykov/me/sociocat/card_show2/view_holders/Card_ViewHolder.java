@@ -215,7 +215,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
     }
 
     private void showCardIsRatedDown() {
-        cardRatingUpWidget.setImageResource(R.drawable.ic_thumb_down_colored);
-        cardRatingDownWidget.setImageResource(R.drawable.ic_thumb_up_neutral);
+        cardRatingDownWidget.setImageResource(R.drawable.ic_thumb_down_colored);
+        cardRatingUpWidget.setImageResource(R.drawable.ic_thumb_up_neutral);
     }
 }

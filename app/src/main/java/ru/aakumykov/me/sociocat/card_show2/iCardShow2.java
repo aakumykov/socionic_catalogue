@@ -67,6 +67,7 @@ public interface iCardShow2
         void onCardAlmostDisplayed(Card_ViewHolder cardViewHolder);
         void processLoginRequest(Bundle transitArguments) throws IllegalArgumentException;
 
+        void onAuthorClicked();
         void onLoadMoreClicked(iList_Item listItem);
         void onReplyClicked(iList_Item listItem);
         void onDeleteCommentClicked(iList_Item listItem, iCommentViewHolder commentViewHolder);
@@ -76,7 +77,6 @@ public interface iCardShow2
         void onSendCommentClicked();
         void onRateUpClicked(iCard_ViewHolder cardViewHolder);
         void onRateDownClicked(iCard_ViewHolder cardViewHolder);
-        void onAuthorClicked();
     }
 
     interface iCommentViewHolder {
