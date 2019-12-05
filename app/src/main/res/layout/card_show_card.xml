@@ -84,7 +84,6 @@
         android:textAlignment="viewEnd"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/author_text_size"
-        android:visibility="gone"
         tools:text="Автор: Разработчик"
         tools:visibility="visible" />
 
