@@ -199,11 +199,11 @@ public class CommentsSingleton implements iCommentsSingleton {
 
     @Override
     public void rateUp(String commentId, String userId, RatingCallbacks callbacks) {
-        throw new RuntimeException("Метод rateUp() не реализован");
+        throw new RuntimeException("Метод setRatedUp() не реализован");
     }
 
     @Override
     public void rateDown(String commentId, String userId, RatingCallbacks callbacks) {
-        throw new RuntimeException("Метод rateDown() не реализован");
+        throw new RuntimeException("Метод setRatedDown() не реализован");
     }
 }

@@ -36,12 +36,12 @@ public interface iCardsSingleton {
     void deleteCard(Card card, DeleteCallbacks callbacks);
 
     @Deprecated
-    void rateUp(String cardId, String byUserId, RatingCallbacks callbacks);
+    void setRatedUp(String cardId, String byUserId, RatingCallbacks callbacks);
     @Deprecated
-    void rateDown(String cardId, String byUserId, RatingCallbacks callbacks);
+    void setRatedDown(String cardId, String byUserId, RatingCallbacks callbacks);
 
-    void rateUp(Card card, String userId, RatingChangeCallbacks callbacks);
-    void rateDown(Card card, String userId, RatingChangeCallbacks callbacks);
+    void setRatedUp(boolean setFlag, Card card, String userId, RatingChangeCallbacks callbacks);
+    void setRatedDown(boolean setFlag, Card card, String userId, RatingChangeCallbacks callbacks);
 
     void getCardRating(String cardKey, GetCardRatingCallbacks callbacks);
 

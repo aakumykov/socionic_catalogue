@@ -9,5 +9,7 @@ public interface iCard_ViewHolder {
     void disableRatingControls();
     void enableRatingControls(int ratingValue);
 
-    void colorizeRatingControls(@Nullable User currentUser);
+    void setCardRatedUp();
+    void setCardRatedDown();
+    void setCardNotRated();
 }

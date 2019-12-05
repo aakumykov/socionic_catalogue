@@ -91,20 +91,24 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
         MyUtils.hide(cardRatingThrobber);
     }
 
-    @Override
-    public void colorizeRatingControls(@Nullable User currentUser) {
-        String cardKey = currentCard.getKey();
 
-        if (null != currentUser) {
-            if (currentUser.alreadyRateUpCard(cardKey)) {
-                showCardIsRatedUp();
-            } else if (currentUser.alreadyRateDownCard(cardKey)) {
-                showCardIsRatedDown();
-            }
-        }
+    @Override
+    public void setCardRatedUp() {
+        cardRatingUpWidget.setImageResource(R.drawable.ic_thumb_up_colored);
+        cardRatingDownWidget.setImageResource(R.drawable.ic_thumb_down_neutral);
     }
 
+    @Override
+    public void setCardRatedDown() {
+        cardRatingUpWidget.setImageResource(R.drawable.ic_thumb_up_neutral);
+        cardRatingDownWidget.setImageResource(R.drawable.ic_thumb_down_colored);
+    }
 
+    @Override
+    public void setCardNotRated() {
+        cardRatingUpWidget.setImageResource(R.drawable.ic_thumb_up_neutral);
+        cardRatingDownWidget.setImageResource(R.drawable.ic_thumb_down_neutral);
+    }
 
 
     // Нажатия

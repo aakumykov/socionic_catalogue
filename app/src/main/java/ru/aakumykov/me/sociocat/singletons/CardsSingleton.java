@@ -22,7 +22,6 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Config;
@@ -325,23 +324,23 @@ public class CardsSingleton implements iCardsSingleton {
 
     @Deprecated
     @Override
-    public void rateUp(String cardId, String byUserId, RatingCallbacks callbacks) {
-        throw new RuntimeException("CardsSingleton.rateUp() ещё не реализван.");
+    public void setRatedUp(String cardId, String byUserId, RatingCallbacks callbacks) {
+        throw new RuntimeException("CardsSingleton.setRatedUp() ещё не реализван.");
     }
 
     @Deprecated
     @Override
-    public void rateDown(String cardId, String byUserId, RatingCallbacks callbacks) {
-        throw new RuntimeException("CardsSingleton.rateDown() ещё не реализван.");
+    public void setRatedDown(String cardId, String byUserId, RatingCallbacks callbacks) {
+        throw new RuntimeException("CardsSingleton.setRatedDown() ещё не реализван.");
     }
 
     @Override
-    public void rateUp(Card card, String userId, RatingChangeCallbacks callbacks) {
+    public void setRatedUp(boolean setFlag, Card card, String userId, RatingChangeCallbacks callbacks) {
         changeRating(1, card, userId, callbacks);
     }
 
     @Override
-    public void rateDown(Card card, String userId, RatingChangeCallbacks callbacks) {
+    public void setRatedDown(boolean setFlag, Card card, String userId, RatingChangeCallbacks callbacks) {
         changeRating(-1, card, userId, callbacks);
     }
 

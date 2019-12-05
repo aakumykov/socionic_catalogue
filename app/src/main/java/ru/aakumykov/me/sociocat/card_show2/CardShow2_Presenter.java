@@ -83,7 +83,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onCardAlmostDisplayed(Card_ViewHolder cardViewHolder) {
-        cardViewHolder.colorizeRatingControls(usersSingleton.getCurrentUser());
+        colorizeCardRatingWidgets(cardViewHolder);
     }
 
     @Override
@@ -265,11 +265,10 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
         cardViewHolder.disableRatingControls();
 
-        cardsSingleton.rateUp(currentCard, user.getKey(), new iCardsSingleton.RatingChangeCallbacks() {
+        cardsSingleton.setRatedUp(, currentCard, user.getKey(), new iCardsSingleton.RatingChangeCallbacks() {
             @Override
             public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
                 user.addRatedUpCard(cardKey); // пользователь должен обновляться раньше, как расцвечивания кнопок
-                cardViewHolder.colorizeRatingControls(user);
                 cardViewHolder.enableRatingControls(value);
                 if (null != errorMsg)
                     pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
@@ -292,11 +291,10 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
         cardViewHolder.disableRatingControls();
 
-        cardsSingleton.rateDown(currentCard, user.getKey(), new iCardsSingleton.RatingChangeCallbacks() {
+        cardsSingleton.setRatedDown(, currentCard, user.getKey(), new iCardsSingleton.RatingChangeCallbacks() {
             @Override
             public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
                 user.addRatedDownCard(cardKey); // пользователь должен обновляться раньше, как расцвечивания кнопок
-                cardViewHolder.colorizeRatingControls(user);
                 cardViewHolder.enableRatingControls(value);
                 if (null != errorMsg)
                     pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
@@ -419,4 +417,18 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         this.editedComment = null;
     }
 
+    private void colorizeCardRatingWidgets(iCard_ViewHolder cardViewHolder) {
+        String cardKey = currentCard.getKey();
+        User user = usersSingleton.getCurrentUser();
+
+        if (user.alreadyRateDownCard(cardKey)) {
+            cardViewHolder.setCardRatedUp();
+        }
+        else if (user.alreadyRateUpCard(cardKey)) {
+            cardViewHolder.setCardRatedDown();
+        }
+        else {
+            cardViewHolder.setCardNotRated();
+        }
+    }
 }
