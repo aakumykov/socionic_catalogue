@@ -20,6 +20,14 @@ public interface iCardsSingleton {
         LOWER_OR_EQUALS
     }
 
+    enum CardRatingStatus {
+        RATED_UP,
+        UNRATED_UP,
+        RATED_DOWN,
+        UNRATED_DOWN
+    }
+
+
     void loadCards(ListCallbacks callbacks);
     void loadCardsAfter(Card cardToLoadAfter, ListCallbacks callbacks);
     void loadCardsWithTag(String tagName, ListCallbacks callbacks);
@@ -43,12 +51,16 @@ public interface iCardsSingleton {
     void setRatedUp(boolean setFlag, Card card, String userId, RatingChangeCallbacks callbacks);
     void setRatedDown(boolean setFlag, Card card, String userId, RatingChangeCallbacks callbacks);
 
+    void changeCardRating(CardRatingStatus cardRatingStatus, Card card, String userId, RatingChangeCallbacks callbacks) throws CardsSingleton.UnknownRatingStatusException;
+
     void getCardRating(String cardKey, GetCardRatingCallbacks callbacks);
 
     interface GetCardRatingCallbacks {
         void onGetCardRatingSuccess(int value);
         void onGetCardRatingError(String errorMsg);
     }
+
+
 
 
     interface ListCallbacks {
@@ -72,6 +84,7 @@ public interface iCardsSingleton {
         void onCardDeleteError(String msg);
     }
 
+    @Deprecated
     interface RatingCallbacks {
         void onRatedUp(Card ratedCard, int newRating);
         void onRatedDown(Card ratedCard, int newRating);

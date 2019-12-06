@@ -345,8 +345,52 @@ public class CardsSingleton implements iCardsSingleton {
     }
 
     @Override
-    public void getCardRating(String cardKey, GetCardRatingCallbacks callbacks) {
+    public void changeCardRating(CardRatingStatus cardRatingStatus, Card card, String userId, RatingChangeCallbacks callbacks)
+            throws UnknownRatingStatusException
+    {
+        String cardKey = card.getKey();
+        int oldCardRating = card.getRating();
 
+        WriteBatch writeBatch = firebaseFirestore.batch();
+        DocumentReference userRef = usersCollection.document(userId);
+        DocumentReference cardRef = cardsCollection.document(card.getKey());
+
+        switch (cardRatingStatus) {
+            case RATED_UP:
+                writeBatch.update(cardRef, Card.KEY_RATING, FieldValue.increment(1));
+                writeBatch.update(userRef, User.KEY_RATED_UP_CARD_KEYS, FieldValue.arrayUnion(card.getKey()));
+                break;
+            case UNRATED_UP:
+                writeBatch.update(cardRef, Card.KEY_RATING, FieldValue.increment(-1));
+                writeBatch.update(userRef, User.KEY_RATED_UP_CARD_KEYS, FieldValue.arrayRemove(cardKey));
+                break;
+            case RATED_DOWN:
+                writeBatch.update(cardRef, Card.KEY_RATING, FieldValue.increment(-1));
+                writeBatch.update(userRef, User.KEY_RATED_DOWN_CARD_KEYS, FieldValue.arrayUnion(cardKey));
+                break;
+            case UNRATED_DOWN:
+                writeBatch.update(cardRef, Card.KEY_RATING, FieldValue.increment(1));
+                writeBatch.update(userRef, User.KEY_RATED_DOWN_CARD_KEYS, FieldValue.arrayRemove(cardKey));
+                break;
+            default:
+                throw new UnknownRatingStatusException("Bad rating status argument: "+cardRatingStatus);
+        }
+
+        getCardRating(cardKey, new GetCardRatingCallbacks() {
+            @Override
+            public void onGetCardRatingSuccess(int value) {
+                callbacks.onRatingChangeComplete(value, null);
+            }
+
+            @Override
+            public void onGetCardRatingError(String errorMsg) {
+                callbacks.onRatingChangeComplete(oldCardRating, errorMsg);
+            }
+        });
+    }
+
+    @Override
+    public void getCardRating(String cardKey, GetCardRatingCallbacks callbacks) {
         cardsCollection.document(cardKey).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -553,5 +597,13 @@ public class CardsSingleton implements iCardsSingleton {
     private interface iExtractQuerySnapshotCallbacks {
         void OnExtractSuccess(List<Card> cardsList);
         void OnExtractFail(List<String> errorsList);
+    }
+
+
+
+    public static class UnknownRatingStatusException extends IllegalArgumentException {
+        public UnknownRatingStatusException(String message) {
+            super(message);
+        }
     }
 }
