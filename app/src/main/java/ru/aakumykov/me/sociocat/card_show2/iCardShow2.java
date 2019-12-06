@@ -22,16 +22,14 @@ public interface iCardShow2
     String REPLIED_OBJECT = "REPLIED_OBJECT";
 
     interface iPageView extends iBaseView {
+        void hideSwipeThrobber();
+
         void showCommentForm(Comment editedComment);
         void showCommentForm(iCommentable repliedItem);
         void hideCommentForm();
-
         void disableCommentForm();
-
         String getCommentText();
-
         void clearCommentForm();
-
         void showCommentFormError(int errorMessageId, String errorMsg);
 
         void scrollToComment(int position);
@@ -77,6 +75,7 @@ public interface iCardShow2
         void onSendCommentClicked();
         void onRateUpClicked(iCard_ViewHolder cardViewHolder);
         void onRateDownClicked(iCard_ViewHolder cardViewHolder);
+        void onRefreshRequested();
     }
 
     interface iCommentViewHolder {

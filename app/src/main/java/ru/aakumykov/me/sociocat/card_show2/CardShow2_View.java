@@ -68,6 +68,8 @@ public class CardShow2_View extends BaseView implements
                 presenter.onSendCommentClicked();
             }
         });
+
+        configureSwipeRefresh();
     }
 
     @Override
@@ -147,6 +149,11 @@ public class CardShow2_View extends BaseView implements
     @Override
     public void onUserLogout() {
 
+    }
+
+    @Override
+    public void hideSwipeThrobber() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -244,4 +251,13 @@ public class CardShow2_View extends BaseView implements
         }
     }
 
+    private void configureSwipeRefresh() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override public void onRefresh() {
+                presenter.onRefreshRequested();
+            }
+        });
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
+    }
 }

@@ -21,6 +21,11 @@ public class CardShow2_ViewStub extends BaseView implements iCardShow2.iPageView
     }
 
     @Override
+    public void hideSwipeThrobber() {
+
+    }
+
+    @Override
     public void showCommentForm(Comment editedComment) {
 
     }

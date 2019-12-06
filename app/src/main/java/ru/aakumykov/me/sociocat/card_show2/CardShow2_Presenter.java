@@ -63,21 +63,11 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onPageOpened(String cardKey) {
-
         dataAdapter.showCardThrobber();
-
-        cardsSingleton.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
+        loadData(cardKey, new iLoadDataCallbacks() {
             @Override
-            public void onCardLoadSuccess(Card card) {
-                currentCard = card;
-                pageView.setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
-                dataAdapter.showCard(card);
-                loadComments(card.getKey(), null, null);
-            }
+            public void onLoadDataComplete() {
 
-            @Override
-            public void onCardLoadFailed(String msg) {
-                pageView.showErrorMsg(R.string.CARD_SHOW_error_displaying_card, msg);
             }
         });
     }
@@ -262,12 +252,44 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     }
 
     @Override
+    public void onRefreshRequested() {
+        loadData(currentCard.getKey(), new iLoadDataCallbacks() {
+            @Override
+            public void onLoadDataComplete() {
+                pageView.hideSwipeThrobber();
+            }
+        });
+    }
+
+    @Override
     public void onAuthorClicked() {
         pageView.showUserProfile(currentCard.getUserId());
     }
 
 
     // Внутренние методы
+    private void loadData(String cardKey, iLoadDataCallbacks callbacks) {
+        cardsSingleton.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
+            @Override
+            public void onCardLoadSuccess(Card card) {
+                callbacks.onLoadDataComplete();
+
+                currentCard = card;
+                pageView.setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
+                dataAdapter.showCard(card);
+
+                loadComments(card.getKey(), null, null);
+            }
+
+            @Override
+            public void onCardLoadFailed(String msg) {
+                callbacks.onLoadDataComplete();
+
+                pageView.showErrorMsg(R.string.CARD_SHOW_error_displaying_card, msg);
+            }
+        });
+    }
+
     private void loadComments(String cardKey, @Nullable Comment startAfterComment, @Nullable Comment endBoundaryComment) {
         loadComments(cardKey, startAfterComment, endBoundaryComment, null);
     }
@@ -468,4 +490,8 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         );
     }
 
+
+    private interface iLoadDataCallbacks {
+        void onLoadDataComplete();
+    }
 }
