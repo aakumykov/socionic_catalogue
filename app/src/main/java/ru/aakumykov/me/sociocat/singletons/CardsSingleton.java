@@ -376,17 +376,33 @@ public class CardsSingleton implements iCardsSingleton {
                 throw new UnknownRatingStatusException("Bad rating status argument: "+cardRatingStatus);
         }
 
-        getCardRating(cardKey, new GetCardRatingCallbacks() {
-            @Override
-            public void onGetCardRatingSuccess(int value) {
-                callbacks.onRatingChangeComplete(value, null);
-            }
+        writeBatch.commit()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
 
-            @Override
-            public void onGetCardRatingError(String errorMsg) {
-                callbacks.onRatingChangeComplete(oldCardRating, errorMsg);
-            }
-        });
+                        getCardRating(cardKey, new GetCardRatingCallbacks() {
+                            @Override
+                            public void onGetCardRatingSuccess(int value) {
+                                callbacks.onRatingChangeComplete(value, null);
+                            }
+
+                            @Override
+                            public void onGetCardRatingError(String errorMsg) {
+                                callbacks.onRatingChangeComplete(oldCardRating, errorMsg);
+                            }
+                        });
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onRatingChangeComplete(oldCardRating, e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
+
     }
 
     @Override
