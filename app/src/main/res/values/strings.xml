@@ -463,7 +463,7 @@
     <string name="CARDS_GRID_page_title_tag">Метка «%1$s»</string>
     <string name="CARDS_GRID_no_more_cards">Карточек больше нет</string>
     <string name="CARD_SHOW_error_changing_card_rating">Ошибка изменения оценки</string>
-    <string name="CARD_SHOW_login_required_to_change_rating">Для оценки карточки необходимо войти</string>
+    <string name="CARD_SHOW_login_required_to_change_rating">Войдите, чтобы ставить оценки</string>
     <string name="TAGS_LIST_error_loading_list">Ошибка загрузки списка меток</string>
     <string name="TAGS_LIST_loading_list">Загрузка списка меток</string>
     <string name="MENU_sort_by_name">Сортировать по алфавиту</string>

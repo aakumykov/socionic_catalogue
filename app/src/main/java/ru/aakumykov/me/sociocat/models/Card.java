@@ -121,7 +121,7 @@ public class Card extends ListItem implements
         cardMap.put("description", getDescription());
         cardMap.put("tags", getTags());
         cardMap.put("commentsKeys", getCommentsKeys());
-        cardMap.put("rating", this.getRating());
+        //cardMap.put("rating", this.getRating());
         cardMap.put("ctime", this.getCTime());
         cardMap.put("mtime", this.getMTime());
 
@@ -268,10 +268,6 @@ public class Card extends ListItem implements
     public List<String> getCommentsKeys() {
         return new ArrayList<>(this.commentsKeys);
     }
-    @Exclude public int getRating() {
-        if (null == this.rating) return 0;
-        else return rating;
-    }
     public Long getCTime() {
         return this.ctime;
     }
@@ -308,9 +304,6 @@ public class Card extends ListItem implements
         this.description = description;
     }
 
-    @Exclude public void setRating(Integer rating) {
-        this.rating = rating;
-    }
     public void setRateUpList(HashMap<String, Boolean> rateUpList) {
         this.rateUpList.clear();
         this.rateUpList.putAll(rateUpList);
@@ -385,6 +378,14 @@ public class Card extends ListItem implements
     }
 
     // Рейтинг
+    public int getRating() {
+        if (null == this.rating) return 0;
+        else return rating;
+    }
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
     @Exclude
     public boolean isRatedUpBy(String userId) {
         return rateUpList.containsKey(userId);

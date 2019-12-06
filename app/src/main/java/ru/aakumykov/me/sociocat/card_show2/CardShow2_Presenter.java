@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.card_show2;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -252,74 +253,12 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
 
     @Override
     public void onRateUpClicked(iCard_ViewHolder cardViewHolder) {
-        // Игнорирую гостей
-        if (!AuthSingleton.isLoggedIn()) {
-            pageView.showToast(R.string.CARD_SHOW_login_required_to_change_rating);
-            return;
-        }
-
-        // Подготавливаю инвентарь
-        User user = usersSingleton.getCurrentUser();
-        String cardKey = currentCard.getKey();
-
-        // Определяю параметры
-        if (user.alreadyRateUpCard(cardKey))
-            return;
-
-        iCardsSingleton.CardRatingStatus cardRatingStatus =
-                user.alreadyRateDownCard(cardKey) ?
-                        iCardsSingleton.CardRatingStatus.UNRATED_DOWN :
-                        iCardsSingleton.CardRatingStatus.RATED_UP;
-
-
-        cardViewHolder.disableRatingControls();
-
-        // Выполняю изменение рейтинга
-        cardsSingleton.changeCardRating(
-                cardRatingStatus,
-                currentCard,
-                user.getKey(),
-                new iCardsSingleton.ChangeRatingCallbacks() {
-                    @Override
-                    public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
-                        user.addRatedUpCard(cardKey); // пользователь должен обновляться раньше, как расцвечивания кнопок
-                        currentCard.setRating(value);
-
-                        cardViewHolder.setRating(value);
-                        cardViewHolder.enableRatingControls();
-                        colorizeCardRatingWidgets(cardViewHolder);
-
-                        if (null != errorMsg)
-                            pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
-                    }
-                }
-        );
+        changeCardRating(true, cardViewHolder);
     }
 
     @Override
     public void onRateDownClicked(iCard_ViewHolder cardViewHolder) {
-        if (!AuthSingleton.isLoggedIn()) {
-            pageView.showToast(R.string.CARD_SHOW_login_required_to_change_rating);
-            return;
-        }
-
-        User user = usersSingleton.getCurrentUser();
-        String cardKey = currentCard.getKey();
-
-        if (user.alreadyRateDownCard(cardKey))
-            return;
-
-        cardViewHolder.disableRatingControls();
-
-        /*cardsSingleton.setRatedDown(, currentCard, user.getKey(), new iCardsSingleton.ChangeRatingCallbacks() {
-            @Override
-            public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
-                user.addRatedDownCard(cardKey); // пользователь должен обновляться раньше, как расцвечивания кнопок
-                cardViewHolder.enableRatingControls(value);
-                if (null != errorMsg)
-                    pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
-            }
-        });*/
+        changeCardRating(false, cardViewHolder);
     }
 
     @Override
@@ -454,4 +393,79 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
             cardViewHolder.setCardNotRated();
         }
     }
+
+    private void changeCardRating(boolean trueUpFalseDown, iCard_ViewHolder cardViewHolder) {
+        // Игнорирую гостей
+        if (!AuthSingleton.isLoggedIn()) {
+            pageView.showToast(R.string.CARD_SHOW_login_required_to_change_rating);
+            return;
+        }
+
+        // Подготавливаю инвентарь
+        User user = usersSingleton.getCurrentUser();
+        String cardKey = currentCard.getKey();
+        iCardsSingleton.CardRatingStatus cardRatingStatus;
+
+        // Определяю направление изменения рейтинга
+        if (trueUpFalseDown) { // повышение
+            if (user.alreadyRateUpCard(cardKey))
+                return;
+
+            cardRatingStatus = user.alreadyRateDownCard(cardKey) ?
+                    iCardsSingleton.CardRatingStatus.UNRATED_DOWN :
+                    iCardsSingleton.CardRatingStatus.RATED_UP;
+        }
+        else { // понижение
+            if (user.alreadyRateDownCard(cardKey))
+                return;
+
+            cardRatingStatus = user.alreadyRateUpCard(cardKey) ?
+                    iCardsSingleton.CardRatingStatus.UNRATED_UP :
+                    iCardsSingleton.CardRatingStatus.RATED_DOWN;
+        }
+
+        // Изменяю рейтинг
+        cardViewHolder.disableRatingControls();
+
+        cardsSingleton.changeCardRating(
+                cardRatingStatus,
+                currentCard,
+                user.getKey(),
+                new iCardsSingleton.ChangeRatingCallbacks() {
+                    @Override
+                    public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
+
+                        switch (cardRatingStatus) {
+                            case RATED_UP:
+                                user.addRatedUpCard(cardKey);
+                                break;
+                            case UNRATED_UP:
+                                user.removeRatedUpCard(cardKey);
+                                break;
+                            case RATED_DOWN:
+                                user.addRatedDownCard(cardKey);
+                                break;
+                            case UNRATED_DOWN:
+                                user.removeRatedDownCard(cardKey);
+                                break;
+                            default:
+                                Log.e(TAG, "Unknown CardRatingStatus value: "+cardRatingStatus);
+                                break;
+                        }
+
+                        // TODO: или проще обновлять пользователя с сервера?
+
+                        currentCard.setRating(value);
+
+                        cardViewHolder.setRating(value);
+                        cardViewHolder.enableRatingControls();
+                        colorizeCardRatingWidgets(cardViewHolder);
+
+                        if (null != errorMsg)
+                            pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
+                    }
+                }
+        );
+    }
+
 }

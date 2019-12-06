@@ -171,6 +171,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
 
         displayAuthor();
 
+        cardRatingView.setText(String.valueOf(currentCard.getRating()));
+
         presenter.onCardAlmostDisplayed(this);
     }
 

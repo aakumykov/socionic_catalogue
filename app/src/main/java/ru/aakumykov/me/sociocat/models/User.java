@@ -10,7 +10,6 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @IgnoreExtraProperties
 public class User implements Parcelable {
@@ -250,7 +249,6 @@ public class User implements Parcelable {
     public List<String> getRatedUpCardKeys() {
         return ratedUpCardKeys;
     }
-
     public List<String> getRatedDownCardKeys() {
         return ratedDownCardKeys;
     }
@@ -259,14 +257,18 @@ public class User implements Parcelable {
         if (!ratedUpCardKeys.contains(cardKey)) {
             ratedUpCardKeys.add(cardKey);
         }
-        ratedDownCardKeys.remove(cardKey);
+    }
+    public void removeRatedUpCard(String cardKey) {
+        ratedUpCardKeys.remove(cardKey);
     }
 
     public void addRatedDownCard(String cardKey) {
         if (!ratedDownCardKeys.contains(cardKey)) {
             ratedDownCardKeys.add(cardKey);
         }
-        ratedUpCardKeys.remove(cardKey);
+    }
+    public void removeRatedDownCard(String cardKey) {
+        ratedDownCardKeys.remove(cardKey);
     }
 
     @Exclude public boolean alreadyRateUpCard(String cardKey) {

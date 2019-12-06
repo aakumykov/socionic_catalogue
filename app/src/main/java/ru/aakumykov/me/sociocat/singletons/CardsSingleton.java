@@ -335,19 +335,7 @@ public class CardsSingleton implements iCardsSingleton {
     }
 
     @Override
-    public void setRatedUp(boolean setFlag, Card card, String userId, ChangeRatingCallbacks callbacks) {
-        changeRating(1, card, userId, callbacks);
-    }
-
-    @Override
-    public void setRatedDown(boolean setFlag, Card card, String userId, ChangeRatingCallbacks callbacks) {
-        changeRating(-1, card, userId, callbacks);
-    }
-
-    @Override
-    public void changeCardRating(CardRatingStatus cardRatingStatus, Card card, String userId, ChangeRatingCallbacks callbacks)
-            throws UnknownRatingStatusException
-    {
+    public void changeCardRating(CardRatingStatus cardRatingStatus, Card card, String userId, ChangeRatingCallbacks callbacks) {
         String cardKey = card.getKey();
         int oldCardRating = card.getRating();
 
@@ -381,15 +369,15 @@ public class CardsSingleton implements iCardsSingleton {
                     @Override
                     public void onSuccess(Void aVoid) {
 
-                        getCardRating(cardKey, new GetCardRatingCallbacks() {
+                        loadCard(cardKey, new LoadCallbacks() {
                             @Override
-                            public void onGetCardRatingSuccess(int value) {
-                                callbacks.onRatingChangeComplete(value, null);
+                            public void onCardLoadSuccess(Card card) {
+                                callbacks.onRatingChangeComplete(card.getRating(), null);
                             }
 
                             @Override
-                            public void onGetCardRatingError(String errorMsg) {
-                                callbacks.onRatingChangeComplete(oldCardRating, errorMsg);
+                            public void onCardLoadFailed(String msg) {
+                                callbacks.onRatingChangeComplete(oldCardRating, msg);
                             }
                         });
 
@@ -403,31 +391,6 @@ public class CardsSingleton implements iCardsSingleton {
                     }
                 });
 
-    }
-
-    @Override
-    public void getCardRating(String cardKey, GetCardRatingCallbacks callbacks) {
-        cardsCollection.document(cardKey).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        try {
-                            Card card = documentSnapshot.toObject(Card.class);
-                            callbacks.onGetCardRatingSuccess(card.getRating());
-                        }
-                        catch (Exception e) {
-                            callbacks.onGetCardRatingError(e.getMessage());
-                            MyUtils.printError(TAG, e);
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onGetCardRatingError(e.getMessage());
-                        MyUtils.printError(TAG, e);
-                    }
-                });
     }
 
 
@@ -557,58 +520,6 @@ public class CardsSingleton implements iCardsSingleton {
         else
             callbacks.OnExtractSuccess(cardsList);
     }
-
-    private void changeRating(int changeValue, Card card, String userId, ChangeRatingCallbacks callbacks) {
-
-        String cardKey = card.getKey();
-
-        WriteBatch writeBatch = firebaseFirestore.batch();
-
-        DocumentReference userRef = usersCollection.document(userId);
-        DocumentReference cardRef = cardsCollection.document(card.getKey());
-
-        if (changeValue > 0) {
-            writeBatch.update(userRef, User.KEY_RATED_UP_CARD_KEYS, FieldValue.arrayUnion(cardKey));
-            writeBatch.update(userRef, User.KEY_RATED_DOWN_CARD_KEYS, FieldValue.arrayRemove(cardKey));
-        }
-        else if (changeValue < 0) {
-            writeBatch.update(userRef, User.KEY_RATED_DOWN_CARD_KEYS, FieldValue.arrayUnion(cardKey));
-            writeBatch.update(userRef, User.KEY_RATED_UP_CARD_KEYS, FieldValue.arrayRemove(cardKey));
-        }
-        else {
-            throw new IllegalArgumentException("changeValue cannot equals zero");
-        }
-
-        writeBatch.update(cardRef, Card.KEY_RATING, FieldValue.increment(changeValue));
-
-        writeBatch.commit()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                        getCardRating(cardKey, new GetCardRatingCallbacks() {
-                            @Override
-                            public void onGetCardRatingSuccess(int value) {
-                                callbacks.onRatingChangeComplete(value, null);
-                            }
-
-                            @Override
-                            public void onGetCardRatingError(String errorMsg) {
-                                callbacks.onRatingChangeComplete(card.getRating(), errorMsg);
-                            }
-                        });
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onRatingChangeComplete(card.getRating(), e.getMessage());
-                        MyUtils.printError(TAG, e);
-                    }
-                });
-    }
-
 
     private interface iExtractQuerySnapshotCallbacks {
         void OnExtractSuccess(List<Card> cardsList);

@@ -456,7 +456,7 @@
     <string name="CARDS_GRID_page_title_tag">Tag «%1$s»</string>
     <string name="CARDS_GRID_no_more_cards">No more cards</string>
     <string name="CARD_SHOW_error_changing_card_rating">Error changing rating</string>
-    <string name="CARD_SHOW_login_required_to_change_rating">Login required to rate the card</string>
+    <string name="CARD_SHOW_login_required_to_change_rating">Login to set ratings</string>
     <string name="TAGS_LIST_error_loading_list">Error loading tags list</string>
     <string name="TAGS_LIST_loading_list">Loading tags list</string>
     <string name="MENU_sort_by_name">Sort alphabetically</string>
