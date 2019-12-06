@@ -268,7 +268,7 @@ public class Card extends ListItem implements
     public List<String> getCommentsKeys() {
         return new ArrayList<>(this.commentsKeys);
     }
-    public int getRating() {
+    @Exclude public int getRating() {
         if (null == this.rating) return 0;
         else return rating;
     }
@@ -308,6 +308,9 @@ public class Card extends ListItem implements
         this.description = description;
     }
 
+    @Exclude public void setRating(Integer rating) {
+        this.rating = rating;
+    }
     public void setRateUpList(HashMap<String, Boolean> rateUpList) {
         this.rateUpList.clear();
         this.rateUpList.putAll(rateUpList);
