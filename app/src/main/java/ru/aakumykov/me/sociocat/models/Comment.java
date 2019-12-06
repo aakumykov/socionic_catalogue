@@ -15,13 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
-import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
-
 @IgnoreExtraProperties
-public class Comment extends ListItem implements
+public class Comment implements
         Parcelable,
-        iTextItem,
         iCommentable
 {
     public static final String KEY_USER_NAME = "userName";
@@ -49,7 +45,7 @@ public class Comment extends ListItem implements
 
 
     public Comment(){
-        setItemType(ItemType.COMMENT_ITEM);
+
     }
 
     public Comment(

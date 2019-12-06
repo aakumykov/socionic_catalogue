@@ -9,7 +9,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
-import ru.aakumykov.me.sociocat.card_show.CardShow_View;
+import ru.aakumykov.me.sociocat.card_show2.CardShow2_View;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.models.Card;
 
@@ -101,7 +101,7 @@ public class ShortcutsProcessor extends BaseView {
         switch (resultCode) {
             case RESULT_OK:
                 Card card = data.getParcelableExtra(Constants.CARD);
-                Intent cardShowIntent = new Intent(this, CardShow_View.class);
+                Intent cardShowIntent = new Intent(this, CardShow2_View.class);
                 cardShowIntent.putExtra(Constants.CARD, card);
                 startActivity(cardShowIntent);
                 break;

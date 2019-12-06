@@ -14,16 +14,14 @@ import java.util.List;
 import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.card_show.list_items.ListItem;
-import ru.aakumykov.me.sociocat.card_show.list_items.iTextItem;
+
 
 // TODO: как сделать так, чтобы графическая карточка не могла сохраниться без картинки?
 // И так далее...
 
 @IgnoreExtraProperties
-public class Card extends ListItem implements
+public class Card implements
         Parcelable,
-        iTextItem,
         iCommentable
 {
     public final static String KEY_CTIME = "ctime";
@@ -65,7 +63,7 @@ public class Card extends ListItem implements
 
 
     public Card() {
-        setItemType(ListItem.ItemType.CARD_ITEM);
+
     }
 
     @Override @Exclude
