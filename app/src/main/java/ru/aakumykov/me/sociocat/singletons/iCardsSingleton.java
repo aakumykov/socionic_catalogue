@@ -48,10 +48,10 @@ public interface iCardsSingleton {
     @Deprecated
     void setRatedDown(String cardId, String byUserId, RatingCallbacks callbacks);
 
-    void setRatedUp(boolean setFlag, Card card, String userId, RatingChangeCallbacks callbacks);
-    void setRatedDown(boolean setFlag, Card card, String userId, RatingChangeCallbacks callbacks);
+    void setRatedUp(boolean setFlag, Card card, String userId, ChangeRatingCallbacks callbacks);
+    void setRatedDown(boolean setFlag, Card card, String userId, ChangeRatingCallbacks callbacks);
 
-    void changeCardRating(CardRatingStatus cardRatingStatus, Card card, String userId, RatingChangeCallbacks callbacks) throws CardsSingleton.UnknownRatingStatusException;
+    void changeCardRating(CardRatingStatus cardRatingStatus, Card card, String userId, ChangeRatingCallbacks callbacks) throws CardsSingleton.UnknownRatingStatusException;
 
     void getCardRating(String cardKey, GetCardRatingCallbacks callbacks);
 
@@ -91,7 +91,7 @@ public interface iCardsSingleton {
         void onRateFail(String errorMsg);
     }
 
-    interface RatingChangeCallbacks {
+    interface ChangeRatingCallbacks {
         void onRatingChangeComplete(int value, @Nullable String errorMsg);
     }
 }

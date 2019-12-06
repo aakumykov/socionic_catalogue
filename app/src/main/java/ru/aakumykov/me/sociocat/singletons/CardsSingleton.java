@@ -335,17 +335,17 @@ public class CardsSingleton implements iCardsSingleton {
     }
 
     @Override
-    public void setRatedUp(boolean setFlag, Card card, String userId, RatingChangeCallbacks callbacks) {
+    public void setRatedUp(boolean setFlag, Card card, String userId, ChangeRatingCallbacks callbacks) {
         changeRating(1, card, userId, callbacks);
     }
 
     @Override
-    public void setRatedDown(boolean setFlag, Card card, String userId, RatingChangeCallbacks callbacks) {
+    public void setRatedDown(boolean setFlag, Card card, String userId, ChangeRatingCallbacks callbacks) {
         changeRating(-1, card, userId, callbacks);
     }
 
     @Override
-    public void changeCardRating(CardRatingStatus cardRatingStatus, Card card, String userId, RatingChangeCallbacks callbacks)
+    public void changeCardRating(CardRatingStatus cardRatingStatus, Card card, String userId, ChangeRatingCallbacks callbacks)
             throws UnknownRatingStatusException
     {
         String cardKey = card.getKey();
@@ -542,7 +542,7 @@ public class CardsSingleton implements iCardsSingleton {
             callbacks.OnExtractSuccess(cardsList);
     }
 
-    private void changeRating(int changeValue, Card card, String userId, iCardsSingleton.RatingChangeCallbacks callbacks) {
+    private void changeRating(int changeValue, Card card, String userId, ChangeRatingCallbacks callbacks) {
 
         String cardKey = card.getKey();
 
