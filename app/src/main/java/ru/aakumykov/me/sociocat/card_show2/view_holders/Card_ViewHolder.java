@@ -7,7 +7,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 
@@ -20,7 +19,6 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.iCardShow2;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder {
@@ -81,14 +79,16 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
     }
 
     @Override
-    public void enableRatingControls(int ratingValue) {
-        MyUtils.enable(cardRatingUpWidget);
-        MyUtils.enable(cardRatingDownWidget);
-
-        cardRatingView.setText(String.valueOf(ratingValue));
-
+    public void setRating(int value) {
+        cardRatingView.setText(String.valueOf(value));
         MyUtils.show(cardRatingView);
         MyUtils.hide(cardRatingThrobber);
+    }
+
+    @Override
+    public void enableRatingControls() {
+        MyUtils.enable(cardRatingUpWidget);
+        MyUtils.enable(cardRatingDownWidget);
     }
 
 
