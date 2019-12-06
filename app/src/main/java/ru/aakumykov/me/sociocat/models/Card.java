@@ -246,9 +246,7 @@ public class Card implements
     public String getDescription() {
         return description;
     }
-    public List<String> getCommentsKeys() {
-        return new ArrayList<>(this.commentsKeys);
-    }
+
     public Long getCTime() {
         return this.ctime;
     }
@@ -285,6 +283,11 @@ public class Card implements
         this.description = description;
     }
 
+    // Список комментариев к карточке
+    public List<String> getCommentsKeys() {
+        return new ArrayList<>(this.commentsKeys);
+    }
+    // Сеттер не используется неявно при считывании карточки из БД
     public void setCommentsKeys(List<String> commentsKeys) {
         this.commentsKeys.addAll(commentsKeys);
     }
@@ -358,9 +361,6 @@ public class Card implements
     }
     public void setRating(Integer rating) {
         this.rating = rating;
-    }
-    private void changeRating(int value) {
-        this.rating += value;
     }
 
 
