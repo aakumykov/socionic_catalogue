@@ -64,4 +64,34 @@ public class DataAdapter_Stub implements iCardShow2.iDataAdapter {
     public int getIndexOf(iList_Item listItem) {
         return 0;
     }
+
+    @Override
+    public void addCommentsList(List<Comment> list) {
+
+    }
+
+    @Override
+    public void addCommentsList(List<Comment> list, int position) {
+
+    }
+
+    @Override
+    public void addComment(Comment comment) {
+
+    }
+
+    @Override
+    public void addComment(Comment comment, int position) {
+
+    }
+
+    @Override
+    public void removeComment(int position) {
+
+    }
+
+    @Override
+    public void replaceComments(List<Comment> list) {
+
+    }
 }

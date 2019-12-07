@@ -64,6 +64,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     @Override
     public void onPageOpened(String cardKey) {
         dataAdapter.showCardThrobber();
+
         loadData(cardKey, new iLoadDataCallbacks() {
             @Override
             public void onLoadDataComplete() {
@@ -299,15 +300,15 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
                               @Nullable Comment endBoundaryComment,
                               @Nullable Integer insertPosition)
     {
-        dataAdapter.showCommentsThrobber(insertPosition);
+        //dataAdapter.showCommentsThrobber(insertPosition);
 
         commentsSingleton.loadList(cardKey, startAfterComment, endBoundaryComment, new iCommentsSingleton.ListCallbacks() {
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
-                if (null != insertPosition)
-                    dataAdapter.insertComments(list, insertPosition);
+                if (null == insertPosition)
+                    dataAdapter.addCommentsList(list);
                 else
-                    dataAdapter.appendComments(list);
+                    dataAdapter.addCommentsList(list, insertPosition);
             }
 
             @Override

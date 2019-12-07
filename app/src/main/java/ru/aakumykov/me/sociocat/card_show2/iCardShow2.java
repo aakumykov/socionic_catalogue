@@ -41,17 +41,26 @@ public interface iCardShow2
 
         void showCard(Card card);
 
-        void appendComments(List<Comment> commentsList);
-        void insertComments(List<Comment> commentsList, int position);
+        @Deprecated void appendComments(List<Comment> commentsList);
+        @Deprecated void insertComments(List<Comment> commentsList, int position);
 
-        int appendOneComment(Comment comment);
-        void removeComment(iList_Item listItem);
+        @Deprecated int appendOneComment(Comment comment);
+        @Deprecated void removeComment(iList_Item listItem);
+
         void updateComment(iList_Item listItem, Comment newComment);
 
         Comment getComment(int position);
         Comment getComment(iList_Item listItem);
 
         int getIndexOf(iList_Item listItem);
+
+        // Новые (улучшенные) методы работы по списком
+        void addCommentsList(List<Comment> list);
+        void addCommentsList(List<Comment> list, int position);
+        void addComment(Comment comment);
+        void addComment(Comment comment, int position);
+        void removeComment(int position);
+        void replaceComments(List<Comment> list);
     }
 
     interface iPresenter {

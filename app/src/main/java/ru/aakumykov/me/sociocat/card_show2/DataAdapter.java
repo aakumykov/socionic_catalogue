@@ -225,6 +225,60 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
 
+    // Новые (улучшенные) методы работы по списком
+    @Override
+    public void addCommentsList(List<Comment> list) {
+        addCommentsList(list, FIRST_COMMENT_POSITION);
+    }
+
+    @Override
+    public void addCommentsList(List<Comment> list, int position) {
+        List<iList_Item> commentItemsList = new ArrayList<>();
+        for (Comment comment : list)
+            commentItemsList.add(new Comment_Item(comment));
+
+        itemsList.addAll(position, commentItemsList);
+
+        notifyItemRangeInserted(position, list.size());
+    }
+
+    @Override
+    public void addComment(Comment comment) {
+        addComment(comment, FIRST_COMMENT_POSITION);
+    }
+
+    @Override
+    public void addComment(Comment comment, int position) {
+        itemsList.add(position, new Comment_Item(comment));
+
+        notifyItemInserted(position);
+    }
+
+    @Override
+    public void removeComment(int position) {
+        itemsList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    @Override
+    public void replaceComments(List<Comment> newList) {
+        int oldListSize = listSize() - FIRST_COMMENT_POSITION;
+        int newListSize = newList.size();
+        int sizeOfChanges = (oldListSize > newListSize) ? oldListSize : newListSize;
+
+        for (int i=FIRST_COMMENT_POSITION; i <= listSize(); i++) {
+            itemsList.remove(i);
+        }
+
+        List<iList_Item> commentItemsList = new ArrayList<>();
+        for (Comment comment : newList)
+            commentItemsList.add(new Comment_Item(comment));
+        itemsList.addAll(FIRST_COMMENT_POSITION, commentItemsList);
+
+        notifyItemRangeChanged(FIRST_COMMENT_POSITION, sizeOfChanges);
+    }
+
+
     // Внутренние методы
     private int listSize() {
         return itemsList.size();
