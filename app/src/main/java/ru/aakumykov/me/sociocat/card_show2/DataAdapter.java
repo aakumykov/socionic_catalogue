@@ -263,6 +263,13 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         notifyItemRemoved(position);
     }
 
+    @Override
+    public void clearCommentsList() {
+        List<iList_Item> comments2remove = new ArrayList<>();
+        comments2remove.addAll(itemsList.subList(FIRST_COMMENT_POSITION, listSize()));
+        itemsList.removeAll(comments2remove);
+        notifyItemRangeRemoved(FIRST_COMMENT_POSITION, comments2remove.size());
+    }
 
 
     // Внутренние методы

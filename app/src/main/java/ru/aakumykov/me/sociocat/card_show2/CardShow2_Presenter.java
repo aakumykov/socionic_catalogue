@@ -28,12 +28,8 @@ import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 
-public class CardShow2_Presenter implements iCardShow2.iPresenter {
-
-    private enum RatingChange {
-        INCREASE, DECREASE
-    }
-
+public class CardShow2_Presenter implements iCardShow2.iPresenter
+{
     private final static String TAG = "CardShow2_Presenter";
     private AuthSingleton authSingleton = AuthSingleton.getInstance();
     private UsersSingleton usersSingleton = UsersSingleton.getInstance();
@@ -65,10 +61,32 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     public void onPageOpened(String cardKey) {
         dataAdapter.showCardThrobber();
 
-        loadData(cardKey, new iLoadDataCallbacks() {
+        loadCard(cardKey, new iLoadCardCallbacks() {
             @Override
-            public void onLoadDataComplete() {
+            public void onCardLoaded(Card card) {
+                currentCard = card;
+                pageView.setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
+                dataAdapter.showCard(card);
 
+                loadComments(cardKey, null,null);
+            }
+        });
+    }
+
+    @Override
+    public void onRefreshRequested() {
+
+        loadCard(currentCard.getKey(), new iLoadCardCallbacks() {
+            @Override
+            public void onCardLoaded(Card card) {
+                pageView.hideSwipeThrobber();
+
+                currentCard = card;
+                pageView.setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
+                dataAdapter.showCard(card);
+
+                dataAdapter.clearCommentsList();
+                loadComments(currentCard.getKey(), null, null);
             }
         });
     }
@@ -253,39 +271,21 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
     }
 
     @Override
-    public void onRefreshRequested() {
-        loadData(currentCard.getKey(), new iLoadDataCallbacks() {
-            @Override
-            public void onLoadDataComplete() {
-                pageView.hideSwipeThrobber();
-            }
-        });
-    }
-
-    @Override
     public void onAuthorClicked() {
         pageView.showUserProfile(currentCard.getUserId());
     }
 
 
     // Внутренние методы
-    private void loadData(String cardKey, iLoadDataCallbacks callbacks) {
+    private void loadCard(String cardKey, iLoadCardCallbacks callbacks) {
         cardsSingleton.loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
             @Override
             public void onCardLoadSuccess(Card card) {
-                callbacks.onLoadDataComplete();
-
-                currentCard = card;
-                pageView.setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
-                dataAdapter.showCard(card);
-
-                loadComments(card.getKey(), null, null);
+                callbacks.onCardLoaded(card);
             }
 
             @Override
             public void onCardLoadFailed(String msg) {
-                callbacks.onLoadDataComplete();
-
                 pageView.showErrorMsg(R.string.CARD_SHOW_error_displaying_card, msg);
             }
         });
@@ -311,8 +311,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
                 if (null == insertPosition) {
                     dataAdapter.hideCommentsThrobber2();
                     dataAdapter.addCommentsList(list);
-                }
-                else {
+                } else {
                     dataAdapter.hideCommentsThrobber2(insertPosition);
                     dataAdapter.addCommentsList(list, insertPosition);
                 }
@@ -498,6 +497,10 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
         );
     }
 
+
+    private interface iLoadCardCallbacks {
+        void onCardLoaded(Card card);
+    }
 
     private interface iLoadDataCallbacks {
         void onLoadDataComplete();

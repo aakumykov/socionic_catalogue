@@ -60,6 +60,8 @@ public interface iCardShow2
         void showCommentsThrobber2(int position);
         void hideCommentsThrobber2();
         void hideCommentsThrobber2(int position);
+
+        void clearCommentsList();
     }
 
     interface iPresenter {
@@ -70,7 +72,10 @@ public interface iCardShow2
         boolean canDeleteCard();
 
         void onPageOpened(String cardKey);
+        void onRefreshRequested();
+
         void onCardAlmostDisplayed(Card_ViewHolder cardViewHolder);
+
         void processLoginRequest(Bundle transitArguments) throws IllegalArgumentException;
 
         void onAuthorClicked();
@@ -83,7 +88,6 @@ public interface iCardShow2
         void onSendCommentClicked();
         void onRateUpClicked(iCard_ViewHolder cardViewHolder);
         void onRateDownClicked(iCard_ViewHolder cardViewHolder);
-        void onRefreshRequested();
     }
 
     interface iCommentViewHolder {
