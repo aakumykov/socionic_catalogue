@@ -206,7 +206,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         itemsList.addAll(position, commentItemsList);
 
         if (list.size() >= Config.DEFAULT_COMMENTS_LOAD_COUNT)
-            itemsList.add(maxIndex()+1, new LoadMore_Item(R.string.COMMENTS_load_more_comments));
+            itemsList.add(position + list.size(), new LoadMore_Item(R.string.COMMENTS_load_more_comments));
 
         notifyItemRangeInserted(position, list.size() + 1);
     }
