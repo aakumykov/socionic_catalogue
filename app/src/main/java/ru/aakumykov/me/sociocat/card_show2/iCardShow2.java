@@ -37,15 +37,11 @@ public interface iCardShow2
 
     interface iDataAdapter {
         void showCardThrobber();
-        void showCommentsThrobber(@Nullable Integer position);
 
         void showCard(Card card);
 
-        @Deprecated void appendComments(List<Comment> commentsList);
-        @Deprecated void insertComments(List<Comment> commentsList, int position);
-
-        @Deprecated int appendOneComment(Comment comment);
-        @Deprecated void removeComment(iList_Item listItem);
+        int appendOneComment(Comment comment);
+        void removeComment(iList_Item listItem);
 
         void updateComment(iList_Item listItem, Comment newComment);
 
@@ -57,9 +53,7 @@ public interface iCardShow2
         // Новые (улучшенные) методы работы по списком
         void addCommentsList(List<Comment> list);
         void addCommentsList(List<Comment> list, int position);
-        void addComment(Comment comment);
-        void addComment(Comment comment, int position);
-        void removeComment(int position);
+
         void replaceComments(List<Comment> list);
 
         void showCommentsThrobber2();

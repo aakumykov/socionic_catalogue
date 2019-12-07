@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -125,17 +124,6 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void showCommentsThrobber(@Nullable Integer position) {
-        CommentsThrobber_Item commentsThrobberItem = new CommentsThrobber_Item();
-        if (null == position)
-            itemsList.add(commentsThrobberItem);
-        else {
-            itemsList.set(position, commentsThrobberItem);
-            notifyItemChanged(position);
-        }
-    }
-
-    @Override
     public void showCard(Card card) {
         displayAtCardPosition(new Card_Item(card));
     }
@@ -147,28 +135,6 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             itemsList.add(CARD_POSITION, listItem);
 
         notifyItemChanged(CARD_POSITION);
-    }
-
-    @Override
-    public void appendComments(List<Comment> commentsList) {
-        insertComments(commentsList, FIRST_COMMENT_POSITION);
-    }
-
-    @Override
-    public void insertComments(List<Comment> commentsList, int position) {
-
-        int currentInsertPosition = position;
-
-        for (Comment comment : commentsList) {
-            itemsList.add(currentInsertPosition++, new Comment_Item(comment));
-        }
-
-        if (commentsList.size() >= Config.DEFAULT_COMMENTS_LOAD_COUNT)
-            itemsList.set(currentInsertPosition, new LoadMore_Item(R.string.COMMENTS_load_more_comments));
-        else
-            itemsList.remove(currentInsertPosition);
-
-        notifyDataSetChanged();
     }
 
     @Override
@@ -243,24 +209,6 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             itemsList.add(maxIndex()+1, new LoadMore_Item(R.string.COMMENTS_load_more_comments));
 
         notifyItemRangeInserted(position, list.size() + 1);
-    }
-
-    @Override
-    public void addComment(Comment comment) {
-        addComment(comment, FIRST_COMMENT_POSITION);
-    }
-
-    @Override
-    public void addComment(Comment comment, int position) {
-        itemsList.add(position, new Comment_Item(comment));
-
-        notifyItemInserted(position);
-    }
-
-    @Override
-    public void removeComment(int position) {
-        itemsList.remove(position);
-        notifyItemRemoved(position);
     }
 
     @Override

@@ -1,7 +1,5 @@
 package ru.aakumykov.me.sociocat.card_show2.stubs;
 
-import androidx.annotation.Nullable;
-
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.card_show2.iCardShow2;
@@ -16,22 +14,7 @@ public class DataAdapter_Stub implements iCardShow2.iDataAdapter {
     }
 
     @Override
-    public void showCommentsThrobber(@Nullable Integer position) {
-
-    }
-
-    @Override
     public void showCard(Card card) {
-
-    }
-
-    @Override
-    public void appendComments(List<Comment> commentsList) {
-
-    }
-
-    @Override
-    public void insertComments(List<Comment> commentsList, int position) {
 
     }
 
@@ -72,21 +55,6 @@ public class DataAdapter_Stub implements iCardShow2.iDataAdapter {
 
     @Override
     public void addCommentsList(List<Comment> list, int position) {
-
-    }
-
-    @Override
-    public void addComment(Comment comment) {
-
-    }
-
-    @Override
-    public void addComment(Comment comment, int position) {
-
-    }
-
-    @Override
-    public void removeComment(int position) {
 
     }
 
