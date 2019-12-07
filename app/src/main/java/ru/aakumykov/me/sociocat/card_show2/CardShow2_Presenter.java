@@ -300,8 +300,10 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
                               @Nullable Comment endBoundaryComment,
                               @Nullable Integer insertPosition)
     {
-        //dataAdapter.showCommentsThrobber(insertPosition);
-        dataAdapter.showCommentsThrobber2();
+        if (null == insertPosition)
+            dataAdapter.showCommentsThrobber2();
+        else
+            dataAdapter.showCommentsThrobber2(insertPosition);
 
         commentsSingleton.loadList(cardKey, startAfterComment, endBoundaryComment, new iCommentsSingleton.ListCallbacks() {
             @Override
