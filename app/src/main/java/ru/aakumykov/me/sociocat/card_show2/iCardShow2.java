@@ -61,6 +61,11 @@ public interface iCardShow2
         void addComment(Comment comment, int position);
         void removeComment(int position);
         void replaceComments(List<Comment> list);
+
+        void showCommentsThrobber2();
+        void showCommentsThrobber2(int position);
+        void hideCommentsThrobber2();
+        void hideCommentsThrobber2(int position);
     }
 
     interface iPresenter {

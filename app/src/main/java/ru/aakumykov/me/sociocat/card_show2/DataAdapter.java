@@ -278,6 +278,41 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         notifyItemRangeChanged(FIRST_COMMENT_POSITION, sizeOfChanges);
     }
 
+    @Override
+    public void showCommentsThrobber2() {
+        showCommentsThrobber2(maxIndex()+1);
+    }
+
+    @Override
+    public void showCommentsThrobber2(int position) {
+        if (position < FIRST_COMMENT_POSITION)
+            throw new IllegalArgumentException("Position cannot be smaller than FIRST_COMMENT_POSITION");
+
+        if (listSize() <= FIRST_COMMENT_POSITION) {
+            itemsList.add(new CommentsThrobber_Item());
+            notifyItemChanged(maxIndex());
+        }
+        else {
+            itemsList.set(position, new CommentsThrobber_Item());
+            notifyItemChanged(position);
+        }
+    }
+
+    @Override
+    public void hideCommentsThrobber2() {
+        itemsList.remove(FIRST_COMMENT_POSITION);
+        notifyItemRemoved(FIRST_COMMENT_POSITION);
+    }
+
+    @Override
+    public void hideCommentsThrobber2(int position) {
+        if (position < FIRST_COMMENT_POSITION)
+            throw new IllegalArgumentException("Position cannot be smaller than FIRST_COMMENT_POSITION");
+        itemsList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+
 
     // Внутренние методы
     private int listSize() {

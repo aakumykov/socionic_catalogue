@@ -301,14 +301,19 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter {
                               @Nullable Integer insertPosition)
     {
         //dataAdapter.showCommentsThrobber(insertPosition);
+        dataAdapter.showCommentsThrobber2();
 
         commentsSingleton.loadList(cardKey, startAfterComment, endBoundaryComment, new iCommentsSingleton.ListCallbacks() {
             @Override
             public void onCommentsLoadSuccess(List<Comment> list) {
-                if (null == insertPosition)
+                if (null == insertPosition) {
+                    dataAdapter.hideCommentsThrobber2();
                     dataAdapter.addCommentsList(list);
-                else
+                }
+                else {
+                    dataAdapter.hideCommentsThrobber2(insertPosition);
                     dataAdapter.addCommentsList(list, insertPosition);
+                }
             }
 
             @Override
