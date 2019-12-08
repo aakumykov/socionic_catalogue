@@ -18,7 +18,7 @@ public class User implements Parcelable {
     public static final String KEY_COMMENTS_KEYS = "commentsKeys";
     public static final String KEY_RATED_UP_CARD_KEYS = "ratedUpCardKeys";
     public static final String KEY_RATED_DOWN_CARD_KEYS = "ratedDownCardKeys";
-    public static final String KEY_RATED_UP_COMMENT_KEYS = "ratedUPCommentKeys";
+    public static final String KEY_RATED_UP_COMMENT_KEYS = "ratedUpCommentKeys";
     public static final String KEY_RATED_DOWN_COMMENT_KEYS = "ratedDownCommentKeys";
 
     private String key;
