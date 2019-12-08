@@ -417,20 +417,22 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter
     }
 
     private void colorizeCardRatingWidgets(iCard_ViewHolder cardViewHolder) {
-        if (!AuthSingleton.isLoggedIn())
-            return;
-
         String cardKey = currentCard.getKey();
         User user = usersSingleton.getCurrentUser();
 
-        if (user.alreadyRateUpCard(cardKey)) {
-            cardViewHolder.setCardRatedUp();
-        }
-        else if (user.alreadyRateDownCard(cardKey)) {
-            cardViewHolder.setCardRatedDown();
+        if (null == user) {
+            cardViewHolder.setCardNotRated();
         }
         else {
-            cardViewHolder.setCardNotRated();
+            if (user.alreadyRateUpCard(cardKey)) {
+                cardViewHolder.setCardRatedUp();
+            }
+            else if (user.alreadyRateDownCard(cardKey)) {
+                cardViewHolder.setCardRatedDown();
+            }
+            else {
+                cardViewHolder.setCardNotRated();
+            }
         }
     }
 
