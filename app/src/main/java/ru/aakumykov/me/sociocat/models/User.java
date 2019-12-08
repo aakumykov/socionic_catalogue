@@ -279,6 +279,20 @@ public class User implements Parcelable {
         return ratedDownCardKeys.contains(cardKey);
     }
 
+    @Exclude public List<String> getRatedUpCardKeys() {
+        return ratedUpCardKeys;
+    }
+    public void setRatedUpCardKeys(List<String> ratedUpCardKeys) {
+        this.ratedUpCardKeys = ratedUpCardKeys;
+    }
+
+    @Exclude public List<String> getRatedDownCardKeys() {
+        return ratedDownCardKeys;
+    }
+    public void setRatedDownCardKeys(List<String> ratedDownCardKeys) {
+        this.ratedDownCardKeys = ratedDownCardKeys;
+    }
+
     // Манипуляция ключами комментариев с изменённым рейтингом
     public void addRatedUpCommentKey(String commentKey) {
         if (!ratedUpCommentKeys.contains(commentKey))
@@ -300,5 +314,19 @@ public class User implements Parcelable {
     }
     @Exclude public boolean alreadyRateDownComment(String commentKey) {
         return ratedDownCommentKeys.contains(commentKey);
+    }
+
+    @Exclude public List<String> getRatedUpCommentKeys() {
+        return ratedUpCommentKeys;
+    }
+    public void setRatedUpCommentKeys(List<String> ratedUpCommentKeys) {
+        this.ratedUpCommentKeys = ratedUpCommentKeys;
+    }
+
+    @Exclude public List<String> getRatedDownCommentKeys() {
+        return ratedDownCommentKeys;
+    }
+    public void setRatedDownCommentKeys(List<String> ratedDownCommentKeys) {
+        this.ratedDownCommentKeys = ratedDownCommentKeys;
     }
 }
