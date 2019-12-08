@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -25,6 +26,10 @@ import ru.aakumykov.me.sociocat.card_show2.view_holders.Comment_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 
 public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
     iCardShow2.iDataAdapter
@@ -89,8 +94,13 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 break;
 
             case iList_Item.COMMENT:
+                User user = UsersSingleton.getInstance().getCurrentUser();
+                Comment comment = (Comment) itemsList.get(position).getPayload();
+                iCommentsSingleton.CommentRatingAction commentRatingAction = CommentsSingleton.determineRatingAction(user, comment.getKey());
+
                 Comment_ViewHolder commentViewHolder = (Comment_ViewHolder) holder;
                 commentViewHolder.initialize(listItem);
+                commentViewHolder.colorizeRatingWidget(commentRatingAction);
                 break;
 
             case iList_Item.LOAD_MORE:
@@ -110,6 +120,8 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 throw new RuntimeException("Unknown item type: "+itemType);
         }
     }
+
+
 
     @Override
     public int getItemCount() {

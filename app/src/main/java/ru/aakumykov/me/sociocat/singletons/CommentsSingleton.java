@@ -283,6 +283,23 @@ public class CommentsSingleton implements iCommentsSingleton {
     }
 
 
+    public static iCommentsSingleton.CommentRatingAction determineRatingAction(@Nullable User user, String commentKey) {
+        if (null == user) {
+            return iCommentsSingleton.CommentRatingAction.NO_RATING;
+        }
+        else {
+            if (user.alreadyRateUpComment(commentKey)) {
+                return CommentRatingAction.RATE_UP;
+            } else if (user.alreadyRateDownComment(commentKey)) {
+                return CommentRatingAction.RATE_DOWN;
+            } else {
+                return CommentRatingAction.NO_RATING;
+            }
+        }
+    }
+
+
+
     public static class UnknownCommentRatingActionException extends IllegalArgumentException {
         public UnknownCommentRatingActionException(String message) {
             super(message);

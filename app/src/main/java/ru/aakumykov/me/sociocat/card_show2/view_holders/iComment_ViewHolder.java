@@ -1,5 +1,9 @@
 package ru.aakumykov.me.sociocat.card_show2.view_holders;
 
+import androidx.annotation.Nullable;
+
+import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
+
 public interface iComment_ViewHolder {
     void fadeBackground();
     void unfadeBackground();
@@ -9,7 +13,5 @@ public interface iComment_ViewHolder {
 
     void setRating(int value);
 
-    void setRatedUp();
-    void setRatedDown();
-    void setNotRated();
+    void colorizeRatingWidget(@Nullable iCommentsSingleton.CommentRatingAction commentRatingAction);
 }

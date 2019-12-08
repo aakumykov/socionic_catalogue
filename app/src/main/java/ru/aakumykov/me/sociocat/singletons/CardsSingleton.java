@@ -325,13 +325,13 @@ public class CardsSingleton implements iCardsSingleton {
     @Deprecated
     @Override
     public void setRatedUp(String cardId, String byUserId, RatingCallbacks callbacks) {
-        throw new RuntimeException("CardsSingleton.setRatedUp() ещё не реализван.");
+        throw new RuntimeException("CardsSingleton.showRatedUp() ещё не реализван.");
     }
 
     @Deprecated
     @Override
     public void setRatedDown(String cardId, String byUserId, RatingCallbacks callbacks) {
-        throw new RuntimeException("CardsSingleton.setRatedDown() ещё не реализван.");
+        throw new RuntimeException("CardsSingleton.showRatedDown() ещё не реализван.");
     }
 
     @Override

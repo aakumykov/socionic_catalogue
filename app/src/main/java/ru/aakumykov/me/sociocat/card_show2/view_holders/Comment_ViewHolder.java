@@ -6,6 +6,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +18,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show2.iCardShow2;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Comment_ViewHolder extends Base_ViewHolder implements
@@ -130,23 +132,27 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
     }
 
     @Override
-    public void setRatedUp() {
-        rateUpWidget.setImageResource(R.drawable.ic_thumb_up_colored);
-        rateDownWidget.setImageResource(R.drawable.ic_thumb_down_neutral);
+    public void colorizeRatingWidget(@Nullable iCommentsSingleton.CommentRatingAction commentRatingAction) {
+        if (null != commentRatingAction) {
+            switch (commentRatingAction) {
+                case UNRATE_UP:
+                case UNRATE_DOWN:
+                    showNotRated();
+                    break;
+                case RATE_UP:
+                    showRatedUp();
+                    break;
+                case RATE_DOWN:
+                    showRatedDown();
+                    break;
+                default:
+                    break;
+            }
+        }
+        else {
+            showNotRated();
+        }
     }
-
-    @Override
-    public void setRatedDown() {
-        rateUpWidget.setImageResource(R.drawable.ic_thumb_up_neutral);
-        rateDownWidget.setImageResource(R.drawable.ic_thumb_down_colored);
-    }
-
-    @Override
-    public void setNotRated() {
-        rateUpWidget.setImageResource(R.drawable.ic_thumb_up_neutral);
-        rateDownWidget.setImageResource(R.drawable.ic_thumb_down_neutral);
-    }
-
 
     // Внутренние методы
     private void displayComment(Comment comment) {
@@ -201,6 +207,21 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
         MyUtils.show(replyWidget);
         MyUtils.show(editWidget);
         MyUtils.show(deleteWidget);
+    }
+
+    private void showRatedUp() {
+        rateUpWidget.setImageResource(R.drawable.ic_thumb_up_colored);
+        rateDownWidget.setImageResource(R.drawable.ic_thumb_down_neutral);
+    }
+
+    private void showRatedDown() {
+        rateUpWidget.setImageResource(R.drawable.ic_thumb_up_neutral);
+        rateDownWidget.setImageResource(R.drawable.ic_thumb_down_colored);
+    }
+
+    private void showNotRated() {
+        rateUpWidget.setImageResource(R.drawable.ic_thumb_up_neutral);
+        rateDownWidget.setImageResource(R.drawable.ic_thumb_down_neutral);
     }
 
 }

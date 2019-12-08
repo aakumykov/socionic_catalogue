@@ -12,7 +12,8 @@ public interface iCommentsSingleton {
         RATE_UP,
         UNRATE_UP,
         RATE_DOWN,
-        UNRATE_DOWN
+        UNRATE_DOWN,
+        NO_RATING
     }
 
     void loadList(String cardId, @Nullable Comment startAtComment, @Nullable Comment endAtComment, ListCallbacks callbacks);
