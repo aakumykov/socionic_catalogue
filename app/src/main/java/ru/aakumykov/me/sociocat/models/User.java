@@ -279,7 +279,7 @@ public class User implements Parcelable {
         return ratedDownCardKeys.contains(cardKey);
     }
 
-    @Exclude public List<String> getRatedUpCardKeys() {
+    public List<String> getRatedUpCardKeys() {
         return ratedUpCardKeys;
     }
     public void setRatedUpCardKeys(List<String> ratedUpCardKeys) {
@@ -316,14 +316,14 @@ public class User implements Parcelable {
         return ratedDownCommentKeys.contains(commentKey);
     }
 
-    @Exclude public List<String> getRatedUpCommentKeys() {
+    public List<String> getRatedUpCommentKeys() {
         return ratedUpCommentKeys;
     }
     public void setRatedUpCommentKeys(List<String> ratedUpCommentKeys) {
         this.ratedUpCommentKeys = ratedUpCommentKeys;
     }
 
-    @Exclude public List<String> getRatedDownCommentKeys() {
+    public List<String> getRatedDownCommentKeys() {
         return ratedDownCommentKeys;
     }
     public void setRatedDownCommentKeys(List<String> ratedDownCommentKeys) {

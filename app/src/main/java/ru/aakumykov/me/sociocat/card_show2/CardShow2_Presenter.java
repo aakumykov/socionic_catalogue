@@ -555,8 +555,27 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter
                 new iCommentsSingleton.ChangeRatingCallbacks() {
                     @Override
                     public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
+                        switch (commentRatingAction) {
+                            case RATE_UP:
+                                user.addRatedUpCommentKey(commentKey);
+                                break;
+                            case UNRATE_UP:
+                                user.removeRatedUpCommentKey(commentKey);
+                                break;
+                            case RATE_DOWN:
+                                user.addRatedDownCommentKey(commentKey);
+                                break;
+                            case UNRATE_DOWN:
+                                user.removeRatedDownCommentKey(commentKey);
+                                break;
+                            default:
+                                Log.e(TAG, "Unknown commentRatingAction value: "+commentRatingAction);
+                        }
+
                         commentViewHolder.setRating(value);
                         commentViewHolder.enablRatingControls();
+
+                        commentViewHolder.colorizeRatingWidget(commentRatingAction);
 
                         if (null != errorMsg)
                             pageView.showToast(R.string.COMMENT_error_cannot_change_comment_rating);
