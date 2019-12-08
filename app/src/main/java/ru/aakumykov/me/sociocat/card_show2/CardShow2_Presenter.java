@@ -10,13 +10,12 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.list_items.Comment_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.card_show2.stubs.CardShow2_ViewStub;
 import ru.aakumykov.me.sociocat.card_show2.stubs.DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.Comment_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.iCard_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show2.view_holders.iComment_ViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -158,7 +157,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter
     }
 
     @Override
-    public void onDeleteCommentClicked(iList_Item listItem, iCardShow2.iCommentViewHolder commentViewHolder) {
+    public void onDeleteCommentClicked(iList_Item listItem, iComment_ViewHolder commentViewHolder) {
         Comment comment = (Comment) listItem.getPayload();
 
         if (!canAlterComment(comment)) {
@@ -194,7 +193,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter
     }
 
     @Override
-    public void onDeleteCommentConfirmed(iList_Item listItem, iCardShow2.iCommentViewHolder commentViewHolder) {
+    public void onDeleteCommentConfirmed(iList_Item listItem, iComment_ViewHolder commentViewHolder) {
         Comment comment = dataAdapter.getComment(listItem);
 
         if (!canAlterComment(comment))
@@ -278,13 +277,13 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter
     }
 
     @Override
-    public void onCommentRateUpClicked(iList_Item commentItem) {
-        pageView.showToast(String.valueOf(dataAdapter.getIndexOf(commentItem)));
+    public void onCommentRateUpClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem) {
+        changeCommentRating(true, commentViewHolder, commentItem);
     }
 
     @Override
-    public void onCommentRateDownClicked(iList_Item commentItem) {
-        pageView.showToast(String.valueOf(dataAdapter.getIndexOf(commentItem)));
+    public void onCommentRateDownClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem) {
+        changeCommentRating(false, commentViewHolder, commentItem);
     }
 
 
@@ -445,52 +444,52 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter
         // Подготавливаю инвентарь
         User user = usersSingleton.getCurrentUser();
         String cardKey = currentCard.getKey();
-        iCardsSingleton.CardRatingStatus cardRatingStatus;
+        iCardsSingleton.CardRatingAction cardRatingAction;
 
         // Определяю направление изменения рейтинга
         if (trueUpFalseDown) { // повышение
             if (user.alreadyRateUpCard(cardKey))
                 return;
 
-            cardRatingStatus = user.alreadyRateDownCard(cardKey) ?
-                    iCardsSingleton.CardRatingStatus.UNRATED_DOWN :
-                    iCardsSingleton.CardRatingStatus.RATED_UP;
+            cardRatingAction = user.alreadyRateDownCard(cardKey) ?
+                    iCardsSingleton.CardRatingAction.UNRATE_DOWN :
+                    iCardsSingleton.CardRatingAction.RATE_UP;
         }
         else { // понижение
             if (user.alreadyRateDownCard(cardKey))
                 return;
 
-            cardRatingStatus = user.alreadyRateUpCard(cardKey) ?
-                    iCardsSingleton.CardRatingStatus.UNRATED_UP :
-                    iCardsSingleton.CardRatingStatus.RATED_DOWN;
+            cardRatingAction = user.alreadyRateUpCard(cardKey) ?
+                    iCardsSingleton.CardRatingAction.UNRATE_UP :
+                    iCardsSingleton.CardRatingAction.RATE_DOWN;
         }
 
         // Изменяю рейтинг
         cardViewHolder.disableRatingControls();
 
         cardsSingleton.changeCardRating(
-                cardRatingStatus,
+                cardRatingAction,
                 currentCard,
                 user.getKey(),
                 new iCardsSingleton.ChangeRatingCallbacks() {
                     @Override
                     public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
 
-                        switch (cardRatingStatus) {
-                            case RATED_UP:
+                        switch (cardRatingAction) {
+                            case RATE_UP:
                                 user.addRatedUpCard(cardKey);
                                 break;
-                            case UNRATED_UP:
+                            case UNRATE_UP:
                                 user.removeRatedUpCard(cardKey);
                                 break;
-                            case RATED_DOWN:
+                            case RATE_DOWN:
                                 user.addRatedDownCard(cardKey);
                                 break;
-                            case UNRATED_DOWN:
+                            case UNRATE_DOWN:
                                 user.removeRatedDownCard(cardKey);
                                 break;
                             default:
-                                Log.e(TAG, "Unknown CardRatingStatus value: "+cardRatingStatus);
+                                Log.e(TAG, "Unknown CardRatingAction value: "+ cardRatingAction);
                                 break;
                         }
 
@@ -507,6 +506,64 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter
                     }
                 }
         );
+    }
+
+    private void changeCommentRating(boolean trueUpFalseDown, iComment_ViewHolder commentViewHolder, iList_Item commentItem) {
+        // Отпинываю неавторизованных
+        if (!AuthSingleton.isLoggedIn()) {
+            pageView.showToast(R.string.CARD_SHOW_login_required_to_change_rating);
+            return;
+        }
+
+        // Готовлю инвентарь
+        Comment comment = (Comment) commentItem.getPayload();
+        String commentKey = comment.getKey();
+        User user = usersSingleton.getCurrentUser();
+        iCommentsSingleton.CommentRatingAction commentRatingAction;
+
+        // Определяю направление изменения рейтинга
+        if (trueUpFalseDown) {
+            if (user.alreadyRateUpComment(commentKey)) {
+                return;
+            }
+            else if (user.alreadyRateDownComment(commentKey)) {
+                commentRatingAction = iCommentsSingleton.CommentRatingAction.UNRATE_DOWN;
+            }
+            else {
+                commentRatingAction = iCommentsSingleton.CommentRatingAction.RATE_UP;
+            }
+        }
+        else {
+            if (user.alreadyRateDownComment(commentKey)) {
+                return;
+            }
+            else if (user.alreadyRateUpComment(commentKey)) {
+                commentRatingAction = iCommentsSingleton.CommentRatingAction.UNRATE_UP;
+            }
+            else {
+                commentRatingAction = iCommentsSingleton.CommentRatingAction.RATE_DOWN;
+            }
+        }
+
+        // Изменяю рейтинг
+        commentViewHolder.disableRatingControls();
+
+        commentsSingleton.changeCommentRating(
+                commentRatingAction,
+                comment,
+                user.getKey(),
+                new iCommentsSingleton.ChangeRatingCallbacks() {
+                    @Override
+                    public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
+                        commentViewHolder.setRating(value);
+                        commentViewHolder.enablRatingControls();
+
+                        if (null != errorMsg)
+                            pageView.showToast(R.string.COMMENT_error_cannot_change_comment_rating);
+                    }
+                }
+        );
+
     }
 
 

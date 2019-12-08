@@ -26,7 +26,7 @@
     <ProgressBar
         android:id="@+id/ratingThrobber"
         style="?android:attr/progressBarStyle"
-        android:layout_width="16dp"
+        android:layout_width="20dp"
         android:layout_height="match_parent"
         android:visibility="gone"
         tools:visibility="visible" />

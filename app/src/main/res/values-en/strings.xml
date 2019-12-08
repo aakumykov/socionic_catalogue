@@ -521,5 +521,6 @@
     <string name="error">Error</string>
     <string name="USER_SHOW_complex_page_title">Profile of user «%1$s»</string>
     <string name="LOGIN_email_confirmation_required">Confirm your Email (●\'◡\'●)</string>
+    <string name="COMMENT_error_cannot_change_comment_rating">Error rating comment</string>
 </resources>
 <!-- «%1$s» -->

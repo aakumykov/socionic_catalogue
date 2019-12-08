@@ -2,15 +2,12 @@ package ru.aakumykov.me.sociocat.card_show2;
 
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
-
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.card_show2.list_items.Comment_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.Comment_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.iCard_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show2.view_holders.iComment_ViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -83,21 +80,17 @@ public interface iCardShow2
         void onAuthorClicked();
         void onLoadMoreClicked(iList_Item listItem);
         void onReplyClicked(iList_Item listItem);
-        void onDeleteCommentClicked(iList_Item listItem, iCommentViewHolder commentViewHolder);
-        void onDeleteCommentConfirmed(iList_Item listItem, iCardShow2.iCommentViewHolder commentViewHolder);
+        void onDeleteCommentClicked(iList_Item listItem, iComment_ViewHolder commentViewHolder);
+        void onDeleteCommentConfirmed(iList_Item listItem, iComment_ViewHolder commentViewHolder);
         void onEditCommentClicked(iList_Item listItem);
         void onRemoveCommentQuoteClicked();
         void onSendCommentClicked();
+
         void onCardRateUpClicked(iCard_ViewHolder cardViewHolder);
         void onCardRateDownClicked(iCard_ViewHolder cardViewHolder);
 
-        void onCommentRateUpClicked(iList_Item commentItem);
-        void onCommentRateDownClicked(iList_Item commentItem);
-    }
-
-    interface iCommentViewHolder {
-        void fadeBackground();
-        void unfadeBackground();
+        void onCommentRateUpClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem);
+        void onCommentRateDownClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem);
     }
 
     interface iRatingChangeCallbacks {

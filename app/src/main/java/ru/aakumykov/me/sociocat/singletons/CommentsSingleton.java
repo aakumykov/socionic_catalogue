@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,6 +27,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CommentsSingleton implements iCommentsSingleton {
 
@@ -198,12 +200,92 @@ public class CommentsSingleton implements iCommentsSingleton {
     }
 
     @Override
-    public void rateUp(String commentId, String userId, RatingCallbacks callbacks) {
-        throw new RuntimeException("Метод setRatedUp() не реализован");
+    public void loadComment(String commentKey, LoadCommentCallbacks callbacks) {
+        commentsCollection.document(commentKey).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        try {
+                            Comment comment = documentSnapshot.toObject(Comment.class);
+                            callbacks.onLoadCommentSuccess(comment);
+                        }
+                        catch (Exception e) {
+                            callbacks.onLoadCommentError(e.getMessage());
+                            MyUtils.printError(TAG, e);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onLoadCommentError(e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
     }
 
     @Override
-    public void rateDown(String commentId, String userId, RatingCallbacks callbacks) {
-        throw new RuntimeException("Метод setRatedDown() не реализован");
+    public void changeCommentRating(CommentRatingAction commentRatingAction, Comment comment, String userId, ChangeRatingCallbacks callbacks) {
+        String commentKey = comment.getKey();
+        int oldCommentRating = comment.getRating();
+
+        WriteBatch writeBatch = firebaseFirestore.batch();
+        DocumentReference userRef = usersCollection.document(userId);
+        DocumentReference commentRef = commentsCollection.document(commentKey);
+
+        switch (commentRatingAction) {
+            case RATE_UP:
+                writeBatch.update(commentRef, Comment.KEY_RATING, FieldValue.increment(1));
+                writeBatch.update(userRef, User.KEY_RATED_UP_COMMENT_KEYS, FieldValue.arrayUnion(commentKey));
+                break;
+            case UNRATE_UP:
+                writeBatch.update(commentRef, Comment.KEY_RATING, FieldValue.increment(-1));
+                writeBatch.update(userRef, User.KEY_RATED_UP_COMMENT_KEYS, FieldValue.arrayRemove(commentKey));
+                break;
+            case RATE_DOWN:
+                writeBatch.update(commentRef, Comment.KEY_RATING, FieldValue.increment(-1));
+                writeBatch.update(userRef, User.KEY_RATED_DOWN_COMMENT_KEYS, FieldValue.arrayUnion(commentKey));
+                break;
+            case UNRATE_DOWN:
+                writeBatch.update(commentRef, Comment.KEY_RATING, FieldValue.increment(1));
+                writeBatch.update(userRef, User.KEY_RATED_DOWN_COMMENT_KEYS, FieldValue.arrayRemove(commentKey));
+                break;
+            default:
+                throw new UnknownCommentRatingActionException("Bad rating action argument: "+commentRatingAction);
+        }
+
+        writeBatch.commit()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        loadComment(commentKey, new LoadCommentCallbacks() {
+                            @Override
+                            public void onLoadCommentSuccess(Comment comment) {
+                                callbacks.onRatingChangeComplete(comment.getRating(), null);
+                            }
+
+                            @Override
+                            public void onLoadCommentError(String errorMsg) {
+                                callbacks.onRatingChangeComplete(oldCommentRating, errorMsg);
+                            }
+                        });
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onRatingChangeComplete(oldCommentRating, e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
+    }
+
+
+    public static class UnknownCommentRatingActionException extends IllegalArgumentException {
+        public UnknownCommentRatingActionException(String message) {
+            super(message);
+        }
     }
 }

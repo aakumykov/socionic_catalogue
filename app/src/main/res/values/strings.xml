@@ -529,5 +529,6 @@
     <string name="COMMENT_error_cannot_delete_this_comment">Вы не можете удалить этот комментарий</string>
     <string name="error">Ошибка</string>
     <string name="USER_SHOW_complex_page_title">Профиль пользователя «%1$s»</string>
+    <string name="COMMENT_error_cannot_change_comment_rating">Ошибка изменения рейтинга</string>
 
 </resources><!-- «%1$s» -->

@@ -20,7 +20,7 @@ import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Comment_ViewHolder extends Base_ViewHolder implements
-        iCardShow2.iCommentViewHolder
+        iComment_ViewHolder
 {
     @BindView(R.id.commentRow) ConstraintLayout commentRow;
 
@@ -79,12 +79,12 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
 
     @OnClick(R.id.rateUpWidget)
     void onCommentRateUpClicked() {
-        presenter.onCommentRateUpClicked(currentListItem);
+        presenter.onCommentRateUpClicked(this, currentListItem);
     }
 
     @OnClick(R.id.rateDownWidget)
     void onCommentRateDownClicked() {
-        presenter.onCommentRateDownClicked(currentListItem);
+        presenter.onCommentRateDownClicked(this, currentListItem);
     }
 
 
@@ -104,6 +104,47 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
         MyUtils.enable(replyWidget);
         MyUtils.enable(editWidget);
         MyUtils.enable(deleteWidget);
+    }
+
+    @Override
+    public void disableRatingControls() {
+        MyUtils.disable(rateUpWidget);
+        MyUtils.disable(rateDownWidget);
+
+        MyUtils.hide(ratingView);
+        MyUtils.show(ratingThrobber);
+    }
+
+    @Override
+    public void enablRatingControls() {
+        MyUtils.enable(rateUpWidget);
+        MyUtils.enable(rateDownWidget);
+
+        MyUtils.hide(ratingThrobber);
+        MyUtils.show(ratingView);
+    }
+
+    @Override
+    public void setRating(int value) {
+        ratingView.setText(String.valueOf(value));
+    }
+
+    @Override
+    public void setRatedUp() {
+        rateUpWidget.setImageResource(R.drawable.ic_thumb_up_colored);
+        rateDownWidget.setImageResource(R.drawable.ic_thumb_down_neutral);
+    }
+
+    @Override
+    public void setRatedDown() {
+        rateUpWidget.setImageResource(R.drawable.ic_thumb_up_neutral);
+        rateDownWidget.setImageResource(R.drawable.ic_thumb_down_colored);
+    }
+
+    @Override
+    public void setNotRated() {
+        rateUpWidget.setImageResource(R.drawable.ic_thumb_up_neutral);
+        rateDownWidget.setImageResource(R.drawable.ic_thumb_down_neutral);
     }
 
 

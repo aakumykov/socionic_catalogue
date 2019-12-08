@@ -335,7 +335,7 @@ public class CardsSingleton implements iCardsSingleton {
     }
 
     @Override
-    public void changeCardRating(CardRatingStatus cardRatingStatus, Card card, String userId, ChangeRatingCallbacks callbacks) {
+    public void changeCardRating(CardRatingAction cardRatingAction, Card card, String userId, ChangeRatingCallbacks callbacks) {
         String cardKey = card.getKey();
         int oldCardRating = card.getRating();
 
@@ -343,25 +343,25 @@ public class CardsSingleton implements iCardsSingleton {
         DocumentReference userRef = usersCollection.document(userId);
         DocumentReference cardRef = cardsCollection.document(card.getKey());
 
-        switch (cardRatingStatus) {
-            case RATED_UP:
+        switch (cardRatingAction) {
+            case RATE_UP:
                 writeBatch.update(cardRef, Card.KEY_RATING, FieldValue.increment(1));
                 writeBatch.update(userRef, User.KEY_RATED_UP_CARD_KEYS, FieldValue.arrayUnion(card.getKey()));
                 break;
-            case UNRATED_UP:
+            case UNRATE_UP:
                 writeBatch.update(cardRef, Card.KEY_RATING, FieldValue.increment(-1));
                 writeBatch.update(userRef, User.KEY_RATED_UP_CARD_KEYS, FieldValue.arrayRemove(cardKey));
                 break;
-            case RATED_DOWN:
+            case RATE_DOWN:
                 writeBatch.update(cardRef, Card.KEY_RATING, FieldValue.increment(-1));
                 writeBatch.update(userRef, User.KEY_RATED_DOWN_CARD_KEYS, FieldValue.arrayUnion(cardKey));
                 break;
-            case UNRATED_DOWN:
+            case UNRATE_DOWN:
                 writeBatch.update(cardRef, Card.KEY_RATING, FieldValue.increment(1));
                 writeBatch.update(userRef, User.KEY_RATED_DOWN_CARD_KEYS, FieldValue.arrayRemove(cardKey));
                 break;
             default:
-                throw new UnknownRatingStatusException("Bad rating status argument: "+cardRatingStatus);
+                throw new UnknownCardRatingActionException("Bad rating action argument: "+ cardRatingAction);
         }
 
         writeBatch.commit()
@@ -528,8 +528,8 @@ public class CardsSingleton implements iCardsSingleton {
 
 
 
-    public static class UnknownRatingStatusException extends IllegalArgumentException {
-        public UnknownRatingStatusException(String message) {
+    public static class UnknownCardRatingActionException extends IllegalArgumentException {
+        public UnknownCardRatingActionException(String message) {
             super(message);
         }
     }

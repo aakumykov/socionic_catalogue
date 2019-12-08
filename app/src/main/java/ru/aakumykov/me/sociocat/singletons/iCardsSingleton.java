@@ -20,11 +20,11 @@ public interface iCardsSingleton {
         LOWER_OR_EQUALS
     }
 
-    enum CardRatingStatus {
-        RATED_UP,
-        UNRATED_UP,
-        RATED_DOWN,
-        UNRATED_DOWN
+    enum CardRatingAction {
+        RATE_UP,
+        UNRATE_UP,
+        RATE_DOWN,
+        UNRATE_DOWN
     }
 
 
@@ -48,7 +48,7 @@ public interface iCardsSingleton {
     @Deprecated
     void setRatedDown(String cardId, String byUserId, RatingCallbacks callbacks);
 
-    void changeCardRating(CardRatingStatus cardRatingStatus, Card card, String userId, ChangeRatingCallbacks callbacks);
+    void changeCardRating(CardRatingAction cardRatingAction, Card card, String userId, ChangeRatingCallbacks callbacks);
 
 
 
