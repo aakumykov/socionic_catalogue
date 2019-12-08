@@ -205,7 +205,7 @@ public class User implements Parcelable {
         this.emailVerified = emailVerified;
     }
 
-    public List<String> getCardsKeys() {
+    @Exclude public List<String> getCardsKeys() {
         return this.cardsKeys;
     }
     public void setCardsKeysList(List<String> cardsKeysList) {
@@ -219,7 +219,7 @@ public class User implements Parcelable {
         return hashMap;
     }
 
-    public List<String> getCommentsKeys() {
+    @Exclude public List<String> getCommentsKeys() {
         return this.commentsKeys;
     }
     public void setCommentsKeysList(List<String> commentsKeysList) {
@@ -233,7 +233,7 @@ public class User implements Parcelable {
         return hashMap;
     }
 
-    public List<String> getUnsubscribedCards() { return this.unsubscribedCards; }
+    @Exclude public List<String> getUnsubscribedCards() { return this.unsubscribedCards; }
     public void setUnsubscribedCardsList(List<String> unsubscribedCardsList) {
         this.unsubscribedCards.clear();
         this.unsubscribedCards.addAll(unsubscribedCardsList);
