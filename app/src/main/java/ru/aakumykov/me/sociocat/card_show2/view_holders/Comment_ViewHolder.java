@@ -32,6 +32,11 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.quoteView) TextView quoteView;
     @BindView(R.id.commentTextView) TextView commentTextView;
 
+    @BindView(R.id.rateUpWidget) ImageView rateUpWidget;
+    @BindView(R.id.rateDownWidget) ImageView rateDownWidget;
+    @BindView(R.id.ratingView) TextView ratingView;
+    @BindView(R.id.ratingThrobber) TextView ratingThrobber;
+
     @BindView(R.id.replyWidget) TextView replyWidget;
     @BindView(R.id.editWidget) TextView editWidget;
     @BindView(R.id.deleteWidget) TextView deleteWidget;
@@ -70,6 +75,17 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
     void onDeleteCommentClicked() {
         presenter.onDeleteCommentClicked(this.currentListItem, this);
     }
+
+    @OnClick(R.id.rateUpWidget)
+    void onCommentRateUpClicked() {
+        presenter.onCommentRateUpClicked(this);
+    }
+
+    @OnClick(R.id.rateDownWidget)
+    void onCommentRateDownClicked() {
+        presenter.onCommentRateDownClicked(this);
+    }
+
 
 
     // iCommentViewHolder

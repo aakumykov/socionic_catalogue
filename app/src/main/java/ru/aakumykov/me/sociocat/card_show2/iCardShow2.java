@@ -8,6 +8,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show2.view_holders.Comment_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -88,6 +89,9 @@ public interface iCardShow2
         void onSendCommentClicked();
         void onRateUpClicked(iCard_ViewHolder cardViewHolder);
         void onRateDownClicked(iCard_ViewHolder cardViewHolder);
+
+        void onCommentRateUpClicked(Comment_ViewHolder commentViewHolder);
+        void onCommentRateDownClicked(Comment_ViewHolder commentViewHolder);
     }
 
     interface iCommentViewHolder {
