@@ -104,17 +104,11 @@
         app:layout_constraintTop_toBottomOf="@+id/quoteView"
         tools:text="Комментарий, комментарий, это комментарий. Глубокомысленный, лучше, чем начальное сообщение, комментарий." />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="192dp" />
-
     <TextView
         android:id="@+id/replyWidget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_weight="1"
         android:text="@string/COMMENT_reply"
@@ -123,13 +117,14 @@
         android:textSize="16sp"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/editWidget"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/commentTextView"
         tools:visibility="visible" />
 
     <TextView
         android:id="@+id/editWidget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_weight="1"
         android:text="@string/COMMENT_edit"
@@ -138,13 +133,14 @@
         android:textSize="16sp"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/deleteWidget"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/commentTextView"
         tools:visibility="visible" />
 
     <TextView
         android:id="@+id/deleteWidget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_weight="1"
         android:text="@string/COMMENT_delete"
@@ -153,7 +149,7 @@
         android:textSize="16sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/commentTextView"
         tools:visibility="visible" />
 
     <include
@@ -161,7 +157,8 @@
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline4" />
+        app:layout_constraintTop_toBottomOf="@+id/commentTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

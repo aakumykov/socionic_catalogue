@@ -10,10 +10,12 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_show2.list_items.Comment_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.card_show2.stubs.CardShow2_ViewStub;
 import ru.aakumykov.me.sociocat.card_show2.stubs.DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show2.view_holders.Comment_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -94,6 +96,11 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter
     @Override
     public void onCardAlmostDisplayed(Card_ViewHolder cardViewHolder) {
         colorizeCardRatingWidgets(cardViewHolder);
+    }
+
+    @Override
+    public void onAuthorClicked() {
+        pageView.showUserProfile(currentCard.getUserId());
     }
 
     @Override
@@ -261,18 +268,23 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter
     }
 
     @Override
-    public void onRateUpClicked(iCard_ViewHolder cardViewHolder) {
+    public void onCardRateUpClicked(iCard_ViewHolder cardViewHolder) {
         changeCardRating(true, cardViewHolder);
     }
 
     @Override
-    public void onRateDownClicked(iCard_ViewHolder cardViewHolder) {
+    public void onCardRateDownClicked(iCard_ViewHolder cardViewHolder) {
         changeCardRating(false, cardViewHolder);
     }
 
     @Override
-    public void onAuthorClicked() {
-        pageView.showUserProfile(currentCard.getUserId());
+    public void onCommentRateUpClicked(iList_Item commentItem) {
+        pageView.showToast(String.valueOf(dataAdapter.getIndexOf(commentItem)));
+    }
+
+    @Override
+    public void onCommentRateDownClicked(iList_Item commentItem) {
+        pageView.showToast(String.valueOf(dataAdapter.getIndexOf(commentItem)));
     }
 
 

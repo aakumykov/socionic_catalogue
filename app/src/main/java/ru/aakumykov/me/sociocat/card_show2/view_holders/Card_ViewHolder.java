@@ -119,12 +119,12 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
 
     @OnClick(R.id.cardRateUpWidget)
     void onRateUpClicked() {
-        presenter.onRateUpClicked(this);
+        presenter.onCardRateUpClicked(this);
     }
 
     @OnClick(R.id.cardRateDownWidget)
     void onRateDownClicked() {
-        presenter.onRateDownClicked(this);
+        presenter.onCardRateDownClicked(this);
     }
 
     @OnClick(R.id.authorView)

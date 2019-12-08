@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.card_show2.list_items.Comment_Item;
 import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show2.view_holders.Comment_ViewHolder;
@@ -87,11 +88,11 @@ public interface iCardShow2
         void onEditCommentClicked(iList_Item listItem);
         void onRemoveCommentQuoteClicked();
         void onSendCommentClicked();
-        void onRateUpClicked(iCard_ViewHolder cardViewHolder);
-        void onRateDownClicked(iCard_ViewHolder cardViewHolder);
+        void onCardRateUpClicked(iCard_ViewHolder cardViewHolder);
+        void onCardRateDownClicked(iCard_ViewHolder cardViewHolder);
 
-        void onCommentRateUpClicked(Comment_ViewHolder commentViewHolder);
-        void onCommentRateDownClicked(Comment_ViewHolder commentViewHolder);
+        void onCommentRateUpClicked(iList_Item commentItem);
+        void onCommentRateDownClicked(iList_Item commentItem);
     }
 
     interface iCommentViewHolder {

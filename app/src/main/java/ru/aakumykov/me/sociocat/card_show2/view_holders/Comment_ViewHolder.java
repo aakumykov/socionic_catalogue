@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.card_show2.view_holders;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,7 +36,7 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.rateUpWidget) ImageView rateUpWidget;
     @BindView(R.id.rateDownWidget) ImageView rateDownWidget;
     @BindView(R.id.ratingView) TextView ratingView;
-    @BindView(R.id.ratingThrobber) TextView ratingThrobber;
+    @BindView(R.id.ratingThrobber) ProgressBar ratingThrobber;
 
     @BindView(R.id.replyWidget) TextView replyWidget;
     @BindView(R.id.editWidget) TextView editWidget;
@@ -78,12 +79,12 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
 
     @OnClick(R.id.rateUpWidget)
     void onCommentRateUpClicked() {
-        presenter.onCommentRateUpClicked(this);
+        presenter.onCommentRateUpClicked(currentListItem);
     }
 
     @OnClick(R.id.rateDownWidget)
     void onCommentRateDownClicked() {
-        presenter.onCommentRateDownClicked(this);
+        presenter.onCommentRateDownClicked(currentListItem);
     }
 
 
