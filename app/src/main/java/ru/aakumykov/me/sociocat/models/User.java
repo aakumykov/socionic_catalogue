@@ -18,6 +18,8 @@ public class User implements Parcelable {
     public static final String KEY_COMMENTS_KEYS = "commentsKeys";
     public static final String KEY_RATED_UP_CARD_KEYS = "ratedUpCardKeys";
     public static final String KEY_RATED_DOWN_CARD_KEYS = "ratedDownCardKeys";
+    public static final String KEY_RATED_UP_COMMENT_KEYS = "ratedUPCommentKeys";
+    public static final String KEY_RATED_DOWN_COMMENT_KEYS = "ratedDownCommentKeys";
 
     private String key;
     private String name;
@@ -33,6 +35,8 @@ public class User implements Parcelable {
     private List<String> unsubscribedCards = new ArrayList<>();
     private List<String> ratedUpCardKeys = new ArrayList<>();
     private List<String> ratedDownCardKeys = new ArrayList<>();
+    private List<String> ratedUpCommentKeys = new ArrayList<>();
+    private List<String> ratedDownCommentKeys = new ArrayList<>();
 
 
     public User() {}
@@ -59,6 +63,8 @@ public class User implements Parcelable {
                 ", unsubscribedCards: "+ unsubscribedCards +
                 ", ratedUpCardKeys: "+ ratedUpCardKeys +
                 ", ratedDownCardKeys: "+ ratedDownCardKeys +
+                ", ratedUpCommentKeys: "+ ratedUpCommentKeys +
+                ", ratedDownCommentKeys: "+ ratedDownCommentKeys +
                 " }";
     }
 
@@ -73,16 +79,18 @@ public class User implements Parcelable {
         map.put("avatarFileName", avatarFileName);
         map.put("avatarURL", avatarURL);
         map.put("emailVerified", emailVerified);
-        map.put("cardsKeys", cardsKeys);
-        map.put("commentsKeys", commentsKeys);
+        map.put(KEY_CARDS_KEYS, cardsKeys);
+        map.put(KEY_COMMENTS_KEYS, commentsKeys);
         map.put("unsubscribedCards", unsubscribedCards);
-        map.put("ratedUpCardKeys", ratedUpCardKeys);
-        map.put("ratedDownCardKeys", ratedDownCardKeys);
+        map.put(KEY_RATED_UP_CARD_KEYS, ratedUpCardKeys);
+        map.put(KEY_RATED_DOWN_CARD_KEYS, ratedDownCardKeys);
+        map.put(KEY_RATED_UP_COMMENT_KEYS, ratedUpCommentKeys);
+        map.put(KEY_RATED_DOWN_COMMENT_KEYS, ratedDownCommentKeys);
         return map;
     }
 
 
-    /* Parcelable */
+    // Конверт: начало
     public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel in) {
@@ -116,6 +124,8 @@ public class User implements Parcelable {
         dest.writeList(this.unsubscribedCards);
         dest.writeList(this.ratedUpCardKeys);
         dest.writeList(this.ratedDownCardKeys);
+        dest.writeList(this.ratedUpCommentKeys);
+        dest.writeList(this.ratedDownCommentKeys);
     }
 
     private User(Parcel in) {
@@ -128,16 +138,15 @@ public class User implements Parcelable {
         avatarFileName = in.readString();
         avatarURL = in.readString();
         emailVerified = in.readString().equals("1");
-//        cardsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
-//        commentsKeys = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
-//        unsubscribedCards = (HashMap<String,Boolean>) in.readHashMap(HashMap.class.getClassLoader());
         in.readList(this.cardsKeys, ArrayList.class.getClassLoader());
         in.readList(this.commentsKeys, ArrayList.class.getClassLoader());
         in.readList(this.unsubscribedCards, ArrayList.class.getClassLoader());
         in.readList(this.ratedUpCardKeys, ArrayList.class.getClassLoader());
         in.readList(this.ratedDownCardKeys, ArrayList.class.getClassLoader());
+        in.readList(this.ratedUpCommentKeys, ArrayList.class.getClassLoader());
+        in.readList(this.ratedDownCommentKeys, ArrayList.class.getClassLoader());
     }
-    /* Parcelable */
+    // Конверт: конец
 
 
     public String getKey() {
@@ -246,13 +255,6 @@ public class User implements Parcelable {
 
 
     // Манипуляция ключами карточек с изменённым рейтингом
-    public List<String> getRatedUpCardKeys() {
-        return ratedUpCardKeys;
-    }
-    public List<String> getRatedDownCardKeys() {
-        return ratedDownCardKeys;
-    }
-
     public void addRatedUpCard(String cardKey) {
         if (!ratedUpCardKeys.contains(cardKey)) {
             ratedUpCardKeys.add(cardKey);
@@ -261,7 +263,6 @@ public class User implements Parcelable {
     public void removeRatedUpCard(String cardKey) {
         ratedUpCardKeys.remove(cardKey);
     }
-
     public void addRatedDownCard(String cardKey) {
         if (!ratedDownCardKeys.contains(cardKey)) {
             ratedDownCardKeys.add(cardKey);
@@ -274,8 +275,30 @@ public class User implements Parcelable {
     @Exclude public boolean alreadyRateUpCard(String cardKey) {
         return ratedUpCardKeys.contains(cardKey);
     }
-
     @Exclude public boolean alreadyRateDownCard(String cardKey) {
         return ratedDownCardKeys.contains(cardKey);
+    }
+
+    // Манипуляция ключами комментариев с изменённым рейтингом
+    public void addRatedUpCommentKey(String commentKey) {
+        if (!ratedUpCommentKeys.contains(commentKey))
+            ratedUpCommentKeys.add(commentKey);
+    }
+    public void removeRatedUpCommentKey(String commentKey) {
+        ratedUpCommentKeys.remove(commentKey);
+    }
+    public void addRatedDownCommentKey(String commentKey) {
+        if (!ratedDownCommentKeys.contains(commentKey))
+            ratedDownCommentKeys.add(commentKey);
+    }
+    public void removeRatedDownCommentKey(String commentKey) {
+        ratedDownCommentKeys.remove(commentKey);
+    }
+
+    @Exclude public boolean alreadyRateUpComment(String commentKey) {
+        return ratedUpCommentKeys.contains(commentKey);
+    }
+    @Exclude public boolean alreadyRateDownComment(String commentKey) {
+        return ratedDownCommentKeys.contains(commentKey);
     }
 }
