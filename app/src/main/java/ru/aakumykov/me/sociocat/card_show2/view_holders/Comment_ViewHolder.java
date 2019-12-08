@@ -133,10 +133,12 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
 
     @Override
     public void colorizeRatingWidget(@Nullable iCommentsSingleton.CommentRatingAction commentRatingAction) {
-        if (null != commentRatingAction) {
+        if (null != commentRatingAction)
+        {
             switch (commentRatingAction) {
                 case UNRATE_UP:
                 case UNRATE_DOWN:
+                case NO_RATING:
                     showNotRated();
                     break;
                 case RATE_UP:
@@ -146,6 +148,7 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
                     showRatedDown();
                     break;
                 default:
+                    showNotRated();
                     break;
             }
         }
@@ -202,6 +205,8 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
                 .placeholder(R.drawable.ic_user)
                 .into(userAvatarView);
 
+        // Рейтинг
+        setRating(comment.getRating());
 
         // Кнопки управления
         MyUtils.show(replyWidget);
