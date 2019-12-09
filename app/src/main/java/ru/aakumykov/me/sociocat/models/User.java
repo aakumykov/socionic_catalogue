@@ -210,7 +210,9 @@ public class User implements Parcelable {
     }
     public void setCardsKeysList(List<String> cardsKeysList) {
         this.cardsKeys.clear();
-        this.cardsKeys.addAll(cardsKeysList);
+        if (null != cardsKeysList) {
+            this.cardsKeys.addAll(cardsKeysList);
+        }
     }
     @Exclude public HashMap<String, Boolean> getCardsKeysHash() {
         HashMap<String,Boolean> hashMap = new HashMap<>();
@@ -224,7 +226,9 @@ public class User implements Parcelable {
     }
     public void setCommentsKeysList(List<String> commentsKeysList) {
         this.commentsKeys.clear();
-        this.commentsKeys.addAll(commentsKeysList);
+        if (null != commentsKeysList) {
+            this.commentsKeys.addAll(commentsKeysList);
+        }
     }
     @Exclude public HashMap<String, Boolean> getCommentsKeysHash() {
         HashMap<String,Boolean> hashMap = new HashMap<>();
@@ -236,7 +240,9 @@ public class User implements Parcelable {
     @Exclude public List<String> getUnsubscribedCards() { return this.unsubscribedCards; }
     public void setUnsubscribedCardsList(List<String> unsubscribedCardsList) {
         this.unsubscribedCards.clear();
-        this.unsubscribedCards.addAll(unsubscribedCardsList);
+        if (null != unsubscribedCardsList) {
+            this.unsubscribedCards.addAll(unsubscribedCardsList);
+        }
     }
     @Exclude public HashMap<String,Boolean> getUnsubscribedCardsHash() {
         HashMap<String,Boolean> hashMap = new HashMap<>();
