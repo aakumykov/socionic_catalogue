@@ -126,8 +126,8 @@ public class BackupService extends Service {
         CollectionPair collectionPair = collectionPool.pop();
 
         if (null != collectionPair) {
-            String collectionName = collectionPair.name;
-            Class itemClass = collectionPair.itemClass;
+            String collectionName = collectionPair.getName();
+            Class itemClass = collectionPair.getItemClass();
 
             notifyAboutBackupProgress(MyUtils.getString(
                     this,
@@ -139,6 +139,14 @@ public class BackupService extends Service {
                 @Override
                 public void onLoadCollectionSuccess(List<Object> itemsList, List<String> errorsList) {
                     String jsonData = listOfObjects2JSON(itemsList);
+
+                    if (errorsList.size() > 0) {
+                        Log.e(TAG, "== КОЛЛЕКЦИЯ ЗАГРУЖЕНА С ОШИБКАМИ ==");
+                        Log.e(TAG, "(успех: "+itemsList.size()+", провал: "+errorsList.size()+")");
+                        for (String errorMsg : errorsList) {
+                            Log.e(TAG, errorMsg);
+                        }
+                    }
 
                     notifyAboutBackupProgress(MyUtils.getString(
                             BackupService.this,
@@ -245,6 +253,10 @@ public class BackupService extends Service {
                 itemsList.add(item);
             }
             catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                e.printStackTrace();
+                //MyUtils.printError(TAG, e);
+
                 errorsList.add(Arrays.toString(e.getStackTrace()));
             }
         }
