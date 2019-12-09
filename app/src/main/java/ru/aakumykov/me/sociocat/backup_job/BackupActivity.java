@@ -1,11 +1,7 @@
 package ru.aakumykov.me.sociocat.backup_job;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -44,7 +40,7 @@ public class BackupActivity extends BaseView {
 
 
     // Нажатия
-    @OnClick(R.id.startButton)
+    @OnClick(R.id.startServiceButton)
     void onStartButtonClicked() {
 
         Intent intent = new Intent(this, BackupService.class);

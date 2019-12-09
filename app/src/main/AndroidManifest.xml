@@ -18,26 +18,25 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".shortcuts_processor.ShortcutsProcessor">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
 
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
-        <activity android:name=".backup_job.BackupActivity">
 
-            <!--
+        <activity android:name=".backup_job.BackupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
         </activity>
+
         <activity
             android:name=".login.Login_View"
             android:windowSoftInputMode="stateHidden" />
