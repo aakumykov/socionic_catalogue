@@ -106,7 +106,9 @@ public class Tag implements Parcelable {
         return cards;
     }
     public void setCards(List<String> cards) {
+        if (null != cards) {
             this.cards.addAll(cards);
+        }
 
     }
 
