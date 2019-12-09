@@ -288,8 +288,10 @@ public class Card implements
         return new ArrayList<>(this.commentsKeys);
     }
     // Сеттер не используется неявно при считывании карточки из БД
-    public void setCommentsKeys(List<String> commentsKeys) {
-        this.commentsKeys.addAll(commentsKeys);
+    public void setCommentsKeys(List<String> inputCommentsKeys) {
+        if (null != inputCommentsKeys) {
+            this.commentsKeys.addAll(inputCommentsKeys);
+        }
     }
 
     public void setCTime(Long cTime) {
@@ -325,7 +327,9 @@ public class Card implements
     }
     public void setTags(List<String> inputTagsList) {
         this.tags.clear();
-        this.tags.addAll(inputTagsList);
+        if (null != inputTagsList) {
+            this.tags.addAll(inputTagsList);
+        }
     }
     @Exclude
     public HashMap<String, Boolean> getTagsHash() {
