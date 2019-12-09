@@ -171,11 +171,17 @@ public class UsersSingleton implements iUsersSingleton {
             return;
         }
 
-
         WriteBatch writeBatch = firebaseFirestore.batch();
 
         // Обновляю пользователя
-        writeBatch.set(usersCollection.document(userId), user);
+        HashMap<String,Object> userMap = new HashMap<>();
+            userMap.put(User.KEY_NAME, user.getName());
+            userMap.put(User.KEY_EMAIL, user.getEmail());
+            userMap.put(User.KEY_ABOUT, user.getAbout());
+            userMap.put(User.KEY_AVATAR_URL, user.getAvatarURL());
+            userMap.put(User.KEY_AVATAR_FILE_NAME, user.getAvatarFileName());
+
+        writeBatch.update(usersCollection.document(userId), userMap);
 
         // Обновляю карточки пользователя
         for (String cardKey : user.getCardsKeys()) {

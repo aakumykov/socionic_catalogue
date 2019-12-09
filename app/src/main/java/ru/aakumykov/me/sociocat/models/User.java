@@ -14,6 +14,14 @@ import java.util.List;
 @IgnoreExtraProperties
 public class User implements Parcelable {
 
+    // Ключи простых свойств, используются при сохранении пользователя
+    public static final String KEY_NAME = "name";
+    public static final String KEY_EMAIL = "email";
+    public static final String KEY_ABOUT = "about";
+    public static final String KEY_AVATAR_URL = "avatarURL";
+    public static final String KEY_AVATAR_FILE_NAME = "avatarFileName";
+
+    // Ключи сложных (списочных) свойств, используются при манипуляциях
     public static final String KEY_CARDS_KEYS = "cardsKeys";
     public static final String KEY_COMMENTS_KEYS = "commentsKeys";
     public static final String KEY_RATED_UP_CARD_KEYS = "ratedUpCardKeys";
