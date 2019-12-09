@@ -1,14 +1,14 @@
-package ru.aakumykov.me.sociocat.card_show2.stubs;
+package ru.aakumykov.me.sociocat.card_show.stubs;
 
 import android.annotation.SuppressLint;
 
 import ru.aakumykov.me.sociocat.BaseView;
-import ru.aakumykov.me.sociocat.card_show2.iCardShow2;
+import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.iCommentable;
 
 @SuppressLint("Registered")
-public class CardShow2_ViewStub extends BaseView implements iCardShow2.iPageView {
+public class CardShow_ViewStub extends BaseView implements iCardShow.iPageView {
 
     @Override
     public void onUserLogin() {

@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show2.view_holders;
+package ru.aakumykov.me.sociocat.card_show.view_holders;
 
 import android.view.View;
 import android.widget.FrameLayout;
@@ -16,8 +16,8 @@ import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.iCardShow2;
-import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
+import ru.aakumykov.me.sociocat.card_show.iCardShow;
+import ru.aakumykov.me.sociocat.card_show.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -49,10 +49,10 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
     private enum MediaType { AUDIO, VIDEO }
     private iList_Item currentListItem = null;
     private Card currentCard = null;
-    private iCardShow2.iPresenter presenter = null;
+    private iCardShow.iPresenter presenter = null;
 
 
-    public Card_ViewHolder(@NonNull View itemView, iCardShow2.iPresenter presenter) {
+    public Card_ViewHolder(@NonNull View itemView, iCardShow.iPresenter presenter) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         this.presenter = presenter;

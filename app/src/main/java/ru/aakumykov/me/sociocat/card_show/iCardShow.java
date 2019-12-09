@@ -1,19 +1,19 @@
-package ru.aakumykov.me.sociocat.card_show2;
+package ru.aakumykov.me.sociocat.card_show;
 
 import android.os.Bundle;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.iCard_ViewHolder;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.iComment_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.list_items.iList_Item;
+import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.view_holders.iComment_ViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.iCommentable;
 
-public interface iCardShow2
+public interface iCardShow
 {
     String REPLY_ACTION = "REPLY_ACTION";
     String ACTION_REPLY_TO_CARD = "ACTION_REPLY_TO_CARD";

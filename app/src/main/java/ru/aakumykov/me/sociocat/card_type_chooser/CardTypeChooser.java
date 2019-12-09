@@ -11,7 +11,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
-import ru.aakumykov.me.sociocat.card_show2.CardShow2_View;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardTypeChooser extends BaseView {
@@ -95,7 +95,7 @@ public class CardTypeChooser extends BaseView {
                 } else {
                     Card card = data.getParcelableExtra(Constants.CARD);
                     if (null != card) {
-                        Intent intent = new Intent(this, CardShow2_View.class);
+                        Intent intent = new Intent(this, CardShow_View.class);
                         intent.putExtra(Constants.CARD_KEY, card.getKey());
                         startActivity(intent);
                     } else {

@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show2.view_holders;
+package ru.aakumykov.me.sociocat.card_show.view_holders;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -15,8 +15,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.iCardShow2;
-import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
+import ru.aakumykov.me.sociocat.card_show.iCardShow;
+import ru.aakumykov.me.sociocat.card_show.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -44,11 +44,11 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.editWidget) TextView editWidget;
     @BindView(R.id.deleteWidget) TextView deleteWidget;
 
-    private final iCardShow2.iPresenter presenter;
+    private final iCardShow.iPresenter presenter;
     private iList_Item currentListItem;
 
 
-    public Comment_ViewHolder(@NonNull View itemView, iCardShow2.iPresenter presenter) {
+    public Comment_ViewHolder(@NonNull View itemView, iCardShow.iPresenter presenter) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         this.presenter = presenter;

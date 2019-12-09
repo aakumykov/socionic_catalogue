@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show2;
+package ru.aakumykov.me.sociocat.card_show;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,8 +26,8 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 
-public class CardShow2_View extends BaseView implements
-        iCardShow2.iPageView
+public class CardShow_View extends BaseView implements
+        iCardShow.iPageView
 {
     @BindView(R.id.commentTextView) TextView messageView;
     @BindView(R.id.progressBar) ProgressBar progressBar;
@@ -35,10 +35,10 @@ public class CardShow2_View extends BaseView implements
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.commentFormContainer) FrameLayout commentFormContainer;
 
-    private final static String TAG = "CardShow2_View";
+    private final static String TAG = "CardShow_View";
     private boolean firstRun = true;
-    private iCardShow2.iDataAdapter dataAdapter;
-    private iCardShow2.iPresenter presenter;
+    private iCardShow.iDataAdapter dataAdapter;
+    private iCardShow.iPresenter presenter;
     private iCommentForm commentForm;
 
 
@@ -51,7 +51,7 @@ public class CardShow2_View extends BaseView implements
         activateUpButton();
         setPageTitle(R.string.CARD_SHOW_page_title_short);
 
-        this.presenter = new CardShow2_Presenter();
+        this.presenter = new CardShow_Presenter();
         this.dataAdapter = new DataAdapter(presenter);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);

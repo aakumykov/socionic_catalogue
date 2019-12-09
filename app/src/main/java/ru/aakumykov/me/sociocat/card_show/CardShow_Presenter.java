@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show2;
+package ru.aakumykov.me.sociocat.card_show;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,12 +10,12 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
-import ru.aakumykov.me.sociocat.card_show2.stubs.CardShow2_ViewStub;
-import ru.aakumykov.me.sociocat.card_show2.stubs.DataAdapter_Stub;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.iCard_ViewHolder;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.iComment_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.list_items.iList_Item;
+import ru.aakumykov.me.sociocat.card_show.stubs.CardShow_ViewStub;
+import ru.aakumykov.me.sociocat.card_show.stubs.DataAdapter_Stub;
+import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.view_holders.iComment_ViewHolder;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -29,15 +29,15 @@ import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 
-public class CardShow2_Presenter implements iCardShow2.iPresenter
+public class CardShow_Presenter implements iCardShow.iPresenter
 {
-    private final static String TAG = "CardShow2_Presenter";
+    private final static String TAG = "CardShow_Presenter";
     private AuthSingleton authSingleton = AuthSingleton.getInstance();
     private UsersSingleton usersSingleton = UsersSingleton.getInstance();
     private CardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private CommentsSingleton commentsSingleton = CommentsSingleton.getInstance();
-    private iCardShow2.iPageView pageView = null;
-    private iCardShow2.iDataAdapter dataAdapter = null;
+    private iCardShow.iPageView pageView = null;
+    private iCardShow.iDataAdapter dataAdapter = null;
 
     private Card currentCard = null;
     private iList_Item currentListItem = null;
@@ -46,7 +46,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter
 
 
     @Override
-    public void bindViewAndAdapter(iCardShow2.iPageView pageView, iCardShow2.iDataAdapter dataAdapter) {
+    public void bindViewAndAdapter(iCardShow.iPageView pageView, iCardShow.iDataAdapter dataAdapter) {
         this.pageView = pageView;
         this.dataAdapter = dataAdapter;
     }
@@ -55,7 +55,7 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter
     public void unbindViewAndAdapter() {
         // Вроде как, присвоение null должно производиться в обратном bindViewAndAdapter() порядке.
         this.dataAdapter = new DataAdapter_Stub();
-        this.pageView = new CardShow2_ViewStub();
+        this.pageView = new CardShow_ViewStub();
     }
 
     @Override
@@ -124,12 +124,12 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter
             Bundle transitArguments = new Bundle();
 
             if (iList_Item.isCardItem(listItem)) {
-                transitArguments.putParcelable(iCardShow2.REPLIED_OBJECT, (Card) this.repliedItem);
-                transitArguments.putString(iCardShow2.REPLY_ACTION, iCardShow2.ACTION_REPLY_TO_CARD);
+                transitArguments.putParcelable(iCardShow.REPLIED_OBJECT, (Card) this.repliedItem);
+                transitArguments.putString(iCardShow.REPLY_ACTION, iCardShow.ACTION_REPLY_TO_CARD);
             }
             else if (iList_Item.isCommentItem(listItem)) {
-                transitArguments.putParcelable(iCardShow2.REPLIED_OBJECT, (Comment) this.repliedItem);
-                transitArguments.putString(iCardShow2.REPLY_ACTION, iCardShow2.ACTION_REPLY_TO_COMMENT);
+                transitArguments.putParcelable(iCardShow.REPLIED_OBJECT, (Comment) this.repliedItem);
+                transitArguments.putString(iCardShow.REPLY_ACTION, iCardShow.ACTION_REPLY_TO_COMMENT);
             }
             else {
                 throw new RuntimeException("Payload is instance of Card or Comment");
@@ -250,13 +250,13 @@ public class CardShow2_Presenter implements iCardShow2.iPresenter
     @Override
     public void processLoginRequest(Bundle transitArguments) throws IllegalArgumentException
     {
-        String replyAction = transitArguments.getString(iCardShow2.REPLY_ACTION, "");
-        iCommentable repliedObject = transitArguments.getParcelable(iCardShow2.REPLIED_OBJECT);
+        String replyAction = transitArguments.getString(iCardShow.REPLY_ACTION, "");
+        iCommentable repliedObject = transitArguments.getParcelable(iCardShow.REPLIED_OBJECT);
 
         switch (replyAction)
         {
-            case iCardShow2.ACTION_REPLY_TO_CARD:
-            case iCardShow2.ACTION_REPLY_TO_COMMENT:
+            case iCardShow.ACTION_REPLY_TO_CARD:
+            case iCardShow.ACTION_REPLY_TO_COMMENT:
                 this.repliedItem = repliedObject;
                 pageView.showCommentForm(repliedItem);
                 break;

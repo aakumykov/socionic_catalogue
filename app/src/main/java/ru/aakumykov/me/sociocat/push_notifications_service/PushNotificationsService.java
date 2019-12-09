@@ -18,7 +18,7 @@ import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.CardShow2_View;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
 public class PushNotificationsService extends FirebaseMessagingService {
@@ -91,7 +91,7 @@ public class PushNotificationsService extends FirebaseMessagingService {
         String notificationMessage = getResources()
                 .getString(R.string.PUSH_NOTIFICATION_SERVICE_new_card_created_message, cardUserName);
 
-        Intent intent = new Intent(this, CardShow2_View.class);
+        Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, cardId);
 
         showNotification(notificationTitle, notificationMessage, intent);
@@ -118,7 +118,7 @@ public class PushNotificationsService extends FirebaseMessagingService {
                 .getString(R.string.PUSH_NOTIFICATION_SERVICE_new_comment_created_message, commentUserName);
 
         // TODO: сделать переход к комментарию !
-        Intent intent = new Intent(this, CardShow2_View.class);
+        Intent intent = new Intent(this, CardShow_View.class);
         intent.putExtra(Constants.CARD_KEY, cardId);
         intent.putExtra(Constants.COMMENT_KEY, commentId);
 

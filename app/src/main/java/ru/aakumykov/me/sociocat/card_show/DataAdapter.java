@@ -1,11 +1,10 @@
-package ru.aakumykov.me.sociocat.card_show2;
+package ru.aakumykov.me.sociocat.card_show;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -13,17 +12,17 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.list_items.CardThrobber_Item;
-import ru.aakumykov.me.sociocat.card_show2.list_items.Card_Item;
-import ru.aakumykov.me.sociocat.card_show2.list_items.Comment_Item;
-import ru.aakumykov.me.sociocat.card_show2.list_items.CommentsThrobber_Item;
-import ru.aakumykov.me.sociocat.card_show2.list_items.LoadMore_Item;
-import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.CardThrobber_ViewHolder;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.Card_ViewHolder;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.CommentThrobber_ViewHolder;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.Comment_ViewHolder;
-import ru.aakumykov.me.sociocat.card_show2.view_holders.LoadMore_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.list_items.CardThrobber_Item;
+import ru.aakumykov.me.sociocat.card_show.list_items.Card_Item;
+import ru.aakumykov.me.sociocat.card_show.list_items.Comment_Item;
+import ru.aakumykov.me.sociocat.card_show.list_items.CommentsThrobber_Item;
+import ru.aakumykov.me.sociocat.card_show.list_items.LoadMore_Item;
+import ru.aakumykov.me.sociocat.card_show.list_items.iList_Item;
+import ru.aakumykov.me.sociocat.card_show.view_holders.CardThrobber_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.view_holders.CommentThrobber_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.view_holders.Comment_ViewHolder;
+import ru.aakumykov.me.sociocat.card_show.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
@@ -32,15 +31,15 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 
 public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
-    iCardShow2.iDataAdapter
+    iCardShow.iDataAdapter
 {
     private final static int CARD_POSITION = 0;
     private final static int FIRST_COMMENT_POSITION = 1;
     private List<iList_Item> itemsList = new ArrayList<>();
-    private iCardShow2.iPresenter presenter;
+    private iCardShow.iPresenter presenter;
 
 
-    DataAdapter(iCardShow2.iPresenter presenter) {
+    DataAdapter(iCardShow.iPresenter presenter) {
         this.presenter = presenter;
     }
 

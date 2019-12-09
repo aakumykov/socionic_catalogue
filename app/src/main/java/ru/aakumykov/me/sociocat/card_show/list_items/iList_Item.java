@@ -1,6 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show2.list_items;
-
-import android.os.Parcelable;
+package ru.aakumykov.me.sociocat.card_show.list_items;
 
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;

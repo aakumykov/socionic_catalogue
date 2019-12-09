@@ -11,7 +11,7 @@ import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
-import ru.aakumykov.me.sociocat.card_show2.CardShow2_View;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.ImageInfo;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
@@ -129,7 +129,7 @@ public class ExternalDataReceiver extends BaseView {
 
         if (RESULT_OK == resultCode) {
             Card card = data.getParcelableExtra(Constants.CARD);
-            Intent intent = new Intent(this, CardShow2_View.class);
+            Intent intent = new Intent(this, CardShow_View.class);
             intent.putExtra(Constants.CARD_KEY, card.getKey());
             startActivity(intent);
         }

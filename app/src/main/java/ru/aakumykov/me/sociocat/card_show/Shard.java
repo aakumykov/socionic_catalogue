@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.card_show2;
+package ru.aakumykov.me.sociocat.card_show;
 
 public class Shard {
     private int count;

@@ -1,9 +1,6 @@
-package ru.aakumykov.me.sociocat.card_show2.list_items;
+package ru.aakumykov.me.sociocat.card_show.list_items;
 
 import androidx.annotation.Nullable;
-
-import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.models.Comment;
 
 public class Base_Item implements iList_Item {
 

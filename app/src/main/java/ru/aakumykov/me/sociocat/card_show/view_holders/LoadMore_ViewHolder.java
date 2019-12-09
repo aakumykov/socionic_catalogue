@@ -1,6 +1,5 @@
-package ru.aakumykov.me.sociocat.card_show2.view_holders;
+package ru.aakumykov.me.sociocat.card_show.view_holders;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,19 +9,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.card_show2.iCardShow2;
-import ru.aakumykov.me.sociocat.card_show2.list_items.LoadMore_Item;
-import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
+import ru.aakumykov.me.sociocat.card_show.iCardShow;
+import ru.aakumykov.me.sociocat.card_show.list_items.LoadMore_Item;
+import ru.aakumykov.me.sociocat.card_show.list_items.iList_Item;
 
 public class LoadMore_ViewHolder extends Base_ViewHolder {
 
     @BindView(R.id.loadMoreTextView) TextView loadMoreTextView;
 
     private final static String TAG = "LoadMore_ViewHolder";
-    private iCardShow2.iPresenter presenter;
+    private iCardShow.iPresenter presenter;
     private iList_Item currentItem;
 
-    public LoadMore_ViewHolder(@NonNull View itemView, iCardShow2.iPresenter presenter) {
+    public LoadMore_ViewHolder(@NonNull View itemView, iCardShow.iPresenter presenter) {
         super(itemView);
         this.presenter = presenter;
         ButterKnife.bind(this, itemView);

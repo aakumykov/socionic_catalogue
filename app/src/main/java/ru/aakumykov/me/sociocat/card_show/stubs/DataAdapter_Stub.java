@@ -1,13 +1,13 @@
-package ru.aakumykov.me.sociocat.card_show2.stubs;
+package ru.aakumykov.me.sociocat.card_show.stubs;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.card_show2.iCardShow2;
-import ru.aakumykov.me.sociocat.card_show2.list_items.iList_Item;
+import ru.aakumykov.me.sociocat.card_show.iCardShow;
+import ru.aakumykov.me.sociocat.card_show.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 
-public class DataAdapter_Stub implements iCardShow2.iDataAdapter {
+public class DataAdapter_Stub implements iCardShow.iDataAdapter {
     @Override
     public void showCardThrobber() {
 

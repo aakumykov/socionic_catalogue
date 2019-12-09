@@ -130,7 +130,7 @@
         <activity
             android:name=".backup_job.BackupStatus_Activity"
             android:launchMode="singleTop" />
-        <activity android:name=".card_show2.CardShow2_View" />
+        <activity android:name=".card_show.CardShow_View" />
         <!-- android:windowSoftInputMode="stateHidden" -->
 
         <service
