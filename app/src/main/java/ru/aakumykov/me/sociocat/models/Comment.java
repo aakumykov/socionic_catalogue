@@ -40,8 +40,6 @@ public class Comment implements
     private Long createdAt = 0L;
     private Long editedAt = 0L;
     private Integer rating = 0;
-    private List<String> rateUpList = new ArrayList<>();
-    private List<String> rateDownList = new ArrayList<>();
 
 
     public Comment(){
@@ -79,8 +77,6 @@ public class Comment implements
         this.userName = userName;
         this.userAvatarURL = userAvatarURL;
         this.rating = 0;
-        this.rateUpList = new ArrayList<>();
-        this.rateDownList = new ArrayList<>();
     }
 
     @Override @Exclude
@@ -97,8 +93,6 @@ public class Comment implements
                 +", createdAt: "+createdAt
                 +", editedAt: "+editedAt
                 +", rating: "+rating
-                +", rateUpList: "+rateUpList
-                +", rateDownList: "+rateDownList
             +" }";
     }
 
@@ -116,8 +110,6 @@ public class Comment implements
             map.put("createdAt", createdAt);
             map.put("editedAt", editedAt);
             map.put("rating", rating);
-            map.put("rateUpList", rateUpList);
-            map.put("rateDownList", rateDownList);
         return map;
     }
 
@@ -154,8 +146,6 @@ public class Comment implements
         dest.writeLong(createdAt); // 09
         dest.writeLong(editedAt); // 10
         dest.writeInt(rating); // 11
-        dest.writeList(this.rateUpList); // 12
-        dest.writeList(this.rateDownList); // 13
     }
 
     public Comment(Parcel in) {
@@ -171,8 +161,6 @@ public class Comment implements
         createdAt = in.readLong(); // 09
         editedAt = in.readLong(); // 10
         rating = in.readInt(); // 11
-        in.readStringList(rateUpList); // 12
-        in.readStringList(rateDownList); // 13
     }
     // Конверт, конец
 
@@ -265,43 +253,6 @@ public class Comment implements
     }
     public void setRating(int rating) {
         this.rating = rating;
-    }
-
-    public List<String> getRateUpList() {
-        return rateUpList;
-    }
-    public void setRateUpList(List<String> rateUpList) {
-        this.rateUpList = rateUpList;
-    }
-
-    public List<String> getRateDownList() {
-        return rateDownList;
-    }
-    public void setRateDownList(List<String> rateDownList) {
-        this.rateDownList = rateDownList;
-    }
-
-
-    @Exclude public void rateUp(String userId) {
-        if (!rateUpList.contains(userId)) {
-            rateUpList.add(userId);
-            setRating(rating+1);
-        }
-        rateDownList.remove(userId);
-    }
-    @Exclude public void rateDown(String userId) {
-        if (!rateDownList.contains(userId)) {
-            rateDownList.add(userId);
-            setRating(rating-1);
-        }
-        rateUpList.remove(userId);
-    }
-
-    @Exclude public boolean isRatedUpBy(String userId) {
-        return getRateUpList().contains(userId);
-    }
-    @Exclude public boolean isRatedDownBy(String userId) {
-        return getRateDownList().contains(userId);
     }
 
     @Exclude public boolean isCreatedBy(String checkedUserId) {
