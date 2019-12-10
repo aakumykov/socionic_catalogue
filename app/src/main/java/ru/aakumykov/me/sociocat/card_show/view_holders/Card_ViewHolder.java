@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -171,6 +173,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
 
         displayAuthor();
 
+        displayTags();
+
         cardRatingView.setText(String.valueOf(currentCard.getRating()));
 
         presenter.onCardAlmostDisplayed(this);
@@ -215,13 +219,12 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
         );
     }
 
-    private void showCardIsRatedUp() {
-        cardRatingUpWidget.setImageResource(R.drawable.ic_thumb_up_colored);
-        cardRatingDownWidget.setImageResource(R.drawable.ic_thumb_down_neutral);
-    }
-
-    private void showCardIsRatedDown() {
-        cardRatingDownWidget.setImageResource(R.drawable.ic_thumb_down_colored);
-        cardRatingUpWidget.setImageResource(R.drawable.ic_thumb_up_neutral);
+    private void displayTags() {
+        List<String> tagsList = currentCard.getTags();
+        if (tagsList.size() > 0) {
+            for (String tag : tagsList)
+                tagsContainer.addTag(tag);
+            MyUtils.show(tagsContainer);
+        }
     }
 }
