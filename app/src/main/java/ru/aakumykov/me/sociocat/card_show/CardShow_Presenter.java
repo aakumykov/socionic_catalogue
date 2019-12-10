@@ -103,6 +103,11 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     }
 
     @Override
+    public void onTagClicked(String tagName) {
+        pageView.showCardsWithTag(tagName);
+    }
+
+    @Override
     public void onLoadMoreClicked(iList_Item listItem) {
         int position = dataAdapter.getIndexOf(listItem);
         Comment previousComment = dataAdapter.getComment(position -1);

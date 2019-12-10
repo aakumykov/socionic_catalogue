@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
+import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
@@ -23,8 +24,10 @@ import ru.aakumykov.me.sociocat.card_show.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder {
-
+public class Card_ViewHolder extends Base_ViewHolder implements
+        iCard_ViewHolder,
+        TagView.OnTagClickListener
+{
 //    @BindView(R.id.cardLayout) LinearLayout cardLayout;
 
     @BindView(R.id.titleView) TextView titleView;
@@ -66,6 +69,9 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
     public void initialize(iList_Item listItem) {
         this.currentListItem = listItem;
         this.currentCard = (Card) listItem.getPayload();
+
+        tagsContainer.setOnTagClickListener(this);
+
         displayCard();
     }
 
@@ -132,6 +138,28 @@ public class Card_ViewHolder extends Base_ViewHolder implements iCard_ViewHolder
     @OnClick(R.id.authorView)
     void onAuthorClicked() {
         presenter.onAuthorClicked();
+    }
+
+
+    // TagView.OnTagClickListener
+    @Override
+    public void onTagClick(int position, String text) {
+        presenter.onTagClicked(text);
+    }
+
+    @Override
+    public void onTagLongClick(int position, String text) {
+
+    }
+
+    @Override
+    public void onSelectedTagDrag(int position, String text) {
+
+    }
+
+    @Override
+    public void onTagCrossClick(int position) {
+
     }
 
 

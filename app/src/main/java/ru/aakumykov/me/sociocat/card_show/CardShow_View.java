@@ -16,9 +16,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.iCommentable;
@@ -197,6 +199,14 @@ public class CardShow_View extends BaseView implements
     public void scrollToComment(int position) {
         recyclerView.scrollToPosition(position);
 //        recyclerView.smoothScrollToPosition(position);
+    }
+
+    @Override
+    public void showCardsWithTag(String tagName) {
+        Intent intent = new Intent(this, CardsGrid_View.class);
+        intent.setAction(Constants.ACTION_SHOW_CARDS_WITH_TAG);
+        intent.putExtra(Constants.TAG_NAME, tagName);
+        startActivity(intent);
     }
 
     @Override

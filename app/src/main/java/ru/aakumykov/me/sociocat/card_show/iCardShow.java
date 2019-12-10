@@ -32,6 +32,8 @@ public interface iCardShow
         void showCommentFormError(int errorMessageId, String errorMsg);
 
         void scrollToComment(int position);
+
+        void showCardsWithTag(String tagName);
     }
 
     interface iDataAdapter {
@@ -78,6 +80,8 @@ public interface iCardShow
         void processLoginRequest(Bundle transitArguments) throws IllegalArgumentException;
 
         void onAuthorClicked();
+        void onTagClicked(String tagName);
+
         void onLoadMoreClicked(iList_Item listItem);
         void onReplyClicked(iList_Item listItem);
         void onDeleteCommentClicked(iList_Item listItem, iComment_ViewHolder commentViewHolder);
