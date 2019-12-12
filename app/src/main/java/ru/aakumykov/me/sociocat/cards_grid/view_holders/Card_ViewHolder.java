@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -93,7 +92,7 @@ public class Card_ViewHolder extends BaseViewHolder
         if (null != mImageView) {
             Glide.with(mImageView.getContext())
                     .load(card.getImageURL())
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .placeholder(R.drawable.ic_image_placeholder)
                     .error(R.drawable.ic_image_error)
                     .into(mImageView);
