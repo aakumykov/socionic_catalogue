@@ -27,7 +27,7 @@
     <string name="description">Описание</string>
     <string name="save">Сохранить</string>
     <string name="cancel">Отменить</string>
-    <string name="edit">Изменить</string>
+    <string name="edit">Редактировать</string>
     <string name="delete">Удалить</string>
     <string name="saving_cancel">Сохранение отменено</string>
     <string name="saving_error">Ошибка сохранения</string>
