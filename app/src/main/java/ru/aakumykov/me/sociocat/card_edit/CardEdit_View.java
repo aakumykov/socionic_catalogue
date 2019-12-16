@@ -23,9 +23,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -125,6 +129,7 @@ public class CardEdit_View extends BaseView implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         presenter.linkView(this);
 
         switch (requestCode) {
@@ -288,10 +293,13 @@ public class CardEdit_View extends BaseView implements
             hideImageError();
 
             try {
-                Picasso.get().load(imageURI)
-                        .into(imageView, new Callback() {
+                Glide.with(getAppContext())
+                        .load(imageURI)
+                        .into(new CustomTarget<Drawable>() {
                             @Override
-                            public void onSuccess() {
+                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                imageView.setImageDrawable(resource);
+
                                 MyUtils.hide(mediaThrobber);
                                 MyUtils.hide(imagePlaceholder);
                                 MyUtils.show(imageHolder);
@@ -300,10 +308,9 @@ public class CardEdit_View extends BaseView implements
                             }
 
                             @Override
-                            public void onError(Exception e) {
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
                                 showBrokenImage();
-                                showErrorMsg(R.string.CARD_EDIT_error_displaying_image, e.getMessage());
-                                e.printStackTrace();
+                                showErrorMsg(R.string.CARD_EDIT_error_displaying_image, "Glide.onLoadCleared()");
                             }
                         });
 
