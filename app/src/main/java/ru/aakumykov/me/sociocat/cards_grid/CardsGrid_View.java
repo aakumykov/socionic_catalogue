@@ -45,6 +45,7 @@ import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsGrid_View extends BaseView implements
@@ -197,6 +198,9 @@ public class CardsGrid_View extends BaseView implements
 
         menuInflater.inflate(R.menu.search_widget, menu);
         menuInflater.inflate(R.menu.search, menu);
+
+        if (AuthSingleton.isLoggedIn())
+            menuInflater.inflate(R.menu.preferences, menu);
 
         super.onCreateOptionsMenu(menu);
 

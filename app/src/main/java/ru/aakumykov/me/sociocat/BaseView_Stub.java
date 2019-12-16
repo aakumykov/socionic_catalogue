@@ -148,7 +148,7 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
-    public void reloadMenu() {
+    public void refreshMenu() {
 
     }
 
