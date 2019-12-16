@@ -65,7 +65,8 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         loadCard(cardKey, new iLoadCardCallbacks() {
             @Override
             public void onCardLoaded(Card card) {
-                currentCard = card;
+                storeCurrentCard(card);
+
                 pageView.setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
                 dataAdapter.showCard(card);
 
@@ -82,7 +83,8 @@ public class CardShow_Presenter implements iCardShow.iPresenter
             public void onCardLoaded(Card card) {
                 pageView.hideSwipeThrobber();
 
-                currentCard = card;
+                storeCurrentCard(card);
+
                 pageView.setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
                 dataAdapter.showCard(card);
 
@@ -340,8 +342,14 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         });
     }
 
+    private void storeCurrentCard(Card card) {
+        currentCard = card;
+        pageView.refreshMenu();
+    }
+
     private boolean canAlterCard() {
         User currentUser = usersSingleton.getCurrentUser();
+
         if (null == currentUser)
             return false;
 

@@ -210,6 +210,11 @@ public class CardShow_View extends BaseView implements
     }
 
     @Override
+    public void refreshMenu() {
+        invalidateOptionsMenu();
+    }
+
+    @Override
     public String getCommentText() {
         return this.commentForm.getText();
     }

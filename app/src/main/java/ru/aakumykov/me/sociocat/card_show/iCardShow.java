@@ -34,6 +34,8 @@ public interface iCardShow
         void scrollToComment(int position);
 
         void showCardsWithTag(String tagName);
+
+        void refreshMenu();
     }
 
     interface iDataAdapter {

@@ -66,6 +66,11 @@ public class CardShow_ViewStub extends BaseView implements iCardShow.iPageView {
     }
 
     @Override
+    public void refreshMenu() {
+
+    }
+
+    @Override
     public String getCommentText() {
         return null;
     }
