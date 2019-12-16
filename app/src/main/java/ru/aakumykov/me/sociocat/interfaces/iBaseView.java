@@ -62,7 +62,7 @@ public interface iBaseView {
     Long getLastLoginTime();
     void updateLastLoginTime();
 
-    void reloadMenu();
+    void refreshMenu();
     void hideMenuItem(Menu menu, int menuItemId);
 
     void showUserProfile(String userId);

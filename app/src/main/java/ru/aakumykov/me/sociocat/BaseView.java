@@ -368,7 +368,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public void reloadMenu() {
+    public void refreshMenu() {
         invalidateOptionsMenu();
     }
 
