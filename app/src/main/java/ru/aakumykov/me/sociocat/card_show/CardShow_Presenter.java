@@ -328,6 +328,21 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         );
     }
 
+    @Override
+    public void onEditCardClicked() {
+        if (!canEditCard()) {
+            pageView.showToast(R.string.cannot_edit_card);
+            return;
+        }
+
+        pageView.goEditCard(currentCard);
+    }
+
+    @Override
+    public void onCardEdited(Card card) {
+        dataAdapter.showCard(card);
+    }
+
 
     // Внутренние методы
     private void loadCard(String cardKey, iLoadCardCallbacks callbacks) {

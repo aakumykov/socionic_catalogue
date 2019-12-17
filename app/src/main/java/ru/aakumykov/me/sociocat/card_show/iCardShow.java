@@ -34,6 +34,8 @@ public interface iCardShow
         void scrollToComment(int position);
 
         void showCardsWithTag(String tagName);
+
+        void goEditCard(Card card);
     }
 
     interface iDataAdapter {
@@ -97,6 +99,9 @@ public interface iCardShow
         void onCommentRateDownClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem);
 
         void onDeleteCardClicked();
+        void onEditCardClicked();
+
+        void onCardEdited(Card card);
     }
 
     interface iRatingChangeCallbacks {

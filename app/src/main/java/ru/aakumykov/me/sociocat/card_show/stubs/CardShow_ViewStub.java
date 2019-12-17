@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.iCommentable;
 
@@ -62,6 +63,11 @@ public class CardShow_ViewStub extends BaseView implements iCardShow.iPageView {
 
     @Override
     public void showCardsWithTag(String tagName) {
+
+    }
+
+    @Override
+    public void goEditCard(Card card) {
 
     }
 

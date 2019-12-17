@@ -16,15 +16,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.iCommentable;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
@@ -84,6 +83,9 @@ public class CardShow_View extends BaseView implements
             case Constants.CODE_LOGIN_REQUEST:
                 processLoginRequest(resultCode, data);
                 break;
+            case Constants.CODE_EDIT_CARD:
+                processCardEditionResult(resultCode, data);
+                break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
         }
@@ -125,7 +127,7 @@ public class CardShow_View extends BaseView implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionEdit:
-                showToast(R.string.not_implemented_yet);
+                presenter.onEditCardClicked();
                 break;
             case R.id.actionDelete:
                 presenter.onDeleteCardClicked();
@@ -211,6 +213,14 @@ public class CardShow_View extends BaseView implements
     }
 
     @Override
+    public void goEditCard(Card card) {
+        Intent intent = new Intent(this, CardEdit_View.class);
+        intent.setAction(Constants.ACTION_EDIT);
+        intent.putExtra(Constants.CARD, card);
+        startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+    }
+
+    @Override
     public void refreshMenu() {
         invalidateOptionsMenu();
     }
@@ -222,6 +232,16 @@ public class CardShow_View extends BaseView implements
 
 
     // Внутренние методы
+    private void configureSwipeRefresh() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override public void onRefresh() {
+                presenter.onRefreshRequested();
+            }
+        });
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
+    }
+
     private void processInputIntent() {
         Intent intent = getIntent();
 
@@ -267,13 +287,23 @@ public class CardShow_View extends BaseView implements
         }
     }
 
-    private void configureSwipeRefresh() {
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override public void onRefresh() {
-                presenter.onRefreshRequested();
-            }
-        });
-
-        swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
+    // TODO: этому место в Presenter-е
+    private void processCardEditionResult(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                if (null != data) {
+                    Card card = data.getParcelableExtra(Constants.CARD);
+                    presenter.onCardEdited(card);
+                }
+                else {
+                    showErrorMsg(R.string.data_error, "Edited card is null");
+                }
+                break;
+            case RESULT_CANCELED:
+                showToast(R.string.CARD_SHOW_edit_cancelled);
+                break;
+            default:
+                break;
+        }
     }
 }

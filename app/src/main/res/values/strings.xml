@@ -531,5 +531,7 @@
     <string name="USER_SHOW_complex_page_title">Профиль пользователя «%1$s»</string>
     <string name="COMMENT_error_cannot_change_comment_rating">Ошибка изменения рейтинга</string>
     <string name="error_deleting_card">Ошибка удаления карточки</string>
+    <string name="cannot_edit_card">Редактирование запрещено</string>
+    <string name="CARD_SHOW_edit_cancelled">Редактирование отменено</string>
 
 </resources><!-- «%1$s» -->
