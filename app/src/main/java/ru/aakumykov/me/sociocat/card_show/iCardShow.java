@@ -95,6 +95,8 @@ public interface iCardShow
 
         void onCommentRateUpClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem);
         void onCommentRateDownClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem);
+
+        void onDeleteCardClicked();
     }
 
     interface iRatingChangeCallbacks {

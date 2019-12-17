@@ -23,7 +23,7 @@ import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
-import ru.aakumykov.me.sociocat.utils.CardDeletionHelper;
+import ru.aakumykov.me.sociocat.utils.DeleteCard_Helper;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 
 public class CardsGrid_Presenter implements iCardsGrid.iPresenter
@@ -349,7 +349,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     private void onDeleteCardConfirmed(Card card, iGridItem gridItem) {
 
-        CardDeletionHelper.deleteCard(card.getKey(), new CardDeletionHelper.iDeletionCallbacks() {
+        DeleteCard_Helper.deleteCard(card.getKey(), new DeleteCard_Helper.iDeletionCallbacks() {
             @Override
             public void onCardDeleteSuccess(Card card) {
                 gridView.removeItem(gridItem);

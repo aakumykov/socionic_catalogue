@@ -24,6 +24,7 @@ import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.iCommentable;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
@@ -127,7 +128,7 @@ public class CardShow_View extends BaseView implements
                 showToast(R.string.not_implemented_yet);
                 break;
             case R.id.actionDelete:
-                showToast(R.string.not_implemented_yet);
+                presenter.onDeleteCardClicked();
                 break;
             default:
                 break;

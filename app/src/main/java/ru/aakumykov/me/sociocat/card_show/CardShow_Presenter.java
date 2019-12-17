@@ -27,6 +27,7 @@ import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
+import ru.aakumykov.me.sociocat.utils.DeleteCard_Helper;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 
 public class CardShow_Presenter implements iCardShow.iPresenter
@@ -291,6 +292,40 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     @Override
     public void onCommentRateDownClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem) {
         changeCommentRating(false, commentViewHolder, commentItem);
+    }
+
+    @Override
+    public void onDeleteCardClicked() {
+        if (!canDeleteCard()) {
+            pageView.showToast(R.string.action_denied);
+            return;
+        }
+
+        MyDialogs.cardDeleteDialog(
+                pageView.getActivity(),
+                currentCard.getTitle(),
+                new iMyDialogs.Delete() {
+                    @Override
+                    public void onCancelInDialog() {
+
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        onDeleteCardConfirmed();
+                    }
+                }
+        );
     }
 
 
@@ -598,6 +633,22 @@ public class CardShow_Presenter implements iCardShow.iPresenter
                 }
         );
 
+    }
+
+    private void onDeleteCardConfirmed() {
+
+        DeleteCard_Helper.deleteCard(currentCard.getKey(), new DeleteCard_Helper.iDeletionCallbacks() {
+            @Override
+            public void onCardDeleteSuccess(Card card) {
+                pageView.showToast(R.string.card_deleted);
+
+            }
+
+            @Override
+            public void onCardDeleteError(String errorMsg) {
+                pageView.showErrorMsg(R.string.error_deleting_card, errorMsg);
+            }
+        });
     }
 
 

@@ -9,9 +9,9 @@ import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 
-public class CardDeletionHelper {
+public class DeleteCard_Helper {
 
-    private final static String TAG = "CardDeletionHelper";
+    private final static String TAG = "DeleteCard_Helper";
 
 
     public interface iDeletionCallbacks {
@@ -65,13 +65,6 @@ public class CardDeletionHelper {
         CardsSingleton.getInstance().deleteCard(card, new iCardsSingleton.DeleteCallbacks() {
             @Override
             public void onCardDeleteSuccess(Card card) {
-                try {
-                    CommentsSingleton.getInstance().deleteCommentsForCard(card.getKey());
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
-                    e.printStackTrace();
-                }
-
                 callbacks.onCardDeleteSuccess(card);
             }
 
