@@ -63,7 +63,6 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         if (null != intent) {
 
             String action = intent.getAction() + "";
-            pageView.storeAction(action);
 
             if (Constants.ACTION_SHOW_CARDS_WITH_TAG.equals(action)) {
                     this.tagFilter = intent.getStringExtra(Constants.TAG_NAME);

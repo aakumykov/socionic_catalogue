@@ -50,8 +50,6 @@ public interface iCardsGrid {
 
         void showTagFilter(String tagName);
 
-        void storeAction(String action);
-
         void showToolbarThrobber();
         void hideToolbarThrobber();
 

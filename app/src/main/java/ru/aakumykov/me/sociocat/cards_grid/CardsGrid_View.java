@@ -28,7 +28,6 @@ import com.leinardi.android.speeddial.SpeedDialView;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import butterknife.BindView;
@@ -74,13 +73,10 @@ public class CardsGrid_View extends BaseView implements
     private CardsGrid_Adapter dataAdapter;
     private iCardsGrid.iPresenter presenter;
     private StaggeredGridLayoutManager layoutManager;
-    private static boolean firstRun = true;
     private boolean dryRun = true;
     private int positionInWork = -1;
     private Bundle listStateStorage;
-
     private final static String KEY_LIST_STATE = "LIST_STATE";
-    private String action;
     private int backPressedCount = 0;
     private Menu menu;
 
@@ -91,10 +87,8 @@ public class CardsGrid_View extends BaseView implements
         setContentView(R.layout.cards_grid_activity);
         ButterKnife.bind(this);
 
-        if (!firstRun)
-            activateUpButton();
-        else
-            firstRun = false;
+//        if (!dryRun)
+//            activateUpButton();
 
         setPageTitle(R.string.CARDS_GRID_page_title);
 
@@ -391,11 +385,6 @@ public class CardsGrid_View extends BaseView implements
         MyUtils.show(tagsParentContainer);
         tagsContainer.removeAllTags();
         tagsContainer.addTag(tagName);
-    }
-
-    @Override
-    public void storeAction(String action) {
-        this.action = action;
     }
 
     @Override
