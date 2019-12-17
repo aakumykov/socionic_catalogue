@@ -293,7 +293,7 @@ public class CardShow_View extends BaseView implements
             case RESULT_OK:
                 if (null != data) {
                     Card card = data.getParcelableExtra(Constants.CARD);
-                    presenter.onCardEdited(card);
+                    presenter.onCardEditComplete(card);
                 }
                 else {
                     showErrorMsg(R.string.data_error, "Edited card is null");

@@ -339,7 +339,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     }
 
     @Override
-    public void onCardEdited(Card card) {
+    public void onCardEditComplete(Card card) {
         dataAdapter.showCard(card);
     }
 
@@ -652,9 +652,12 @@ public class CardShow_Presenter implements iCardShow.iPresenter
 
     private void onDeleteCardConfirmed() {
 
+        pageView.showProgressMessage(R.string.deleting_card);
+
         DeleteCard_Helper.deleteCard(currentCard.getKey(), new DeleteCard_Helper.iDeletionCallbacks() {
             @Override
             public void onCardDeleteSuccess(Card card) {
+                pageView.hideProgressMessage();
                 pageView.showToast(R.string.card_deleted);
 
             }

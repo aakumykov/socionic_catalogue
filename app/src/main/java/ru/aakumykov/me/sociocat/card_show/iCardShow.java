@@ -101,7 +101,7 @@ public interface iCardShow
         void onDeleteCardClicked();
         void onEditCardClicked();
 
-        void onCardEdited(Card card);
+        void onCardEditComplete(Card card);
     }
 
     interface iRatingChangeCallbacks {
