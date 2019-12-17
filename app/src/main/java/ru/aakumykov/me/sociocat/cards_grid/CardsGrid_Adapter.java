@@ -243,25 +243,25 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void addItem(iGridItem gridItem) {
-        itemsList.add(gridItem);
-        synchronizeOriginalItemsList();
-        notifyItemChanged(itemsList.size() - 1);
-    }
-
-    @Override
-    public void updateItem(int position, iGridItem newGridItem) {
-        itemsList.set(position, newGridItem);
-        synchronizeOriginalItemsList();
-        notifyItemChanged(position);
-    }
-
-    @Override
     public void removeItem(iGridItem gridItem) {
         int index = itemsList.indexOf(gridItem);
         itemsList.remove(index);
         synchronizeOriginalItemsList();
         notifyItemRemoved(index);
+    }
+
+    @Override
+    public void removeItem(int position) {
+        itemsList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    @Override
+    public void updateItem(int position, Card card) {
+        iGridItem gridItem = new GridItem_Card();
+        gridItem.setPayload(card);
+        itemsList.set(position, gridItem);
+        notifyItemChanged(position);
     }
 
     @Override

@@ -315,11 +315,13 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void goShowCard(Card card) {
+    public void goShowCard(Card card, int position) {
+        this.positionInWork = position;
+
         Intent intent = new Intent(this, CardShow_View.class);
-        String cardKey = card.getKey();
-        intent.putExtra(Constants.CARD_KEY, cardKey);
+        intent.putExtra(Constants.CARD_KEY, card.getKey());
         intent.putExtra(Constants.CARD, card);
+
         startActivityForResult(intent, Constants.CODE_SHOW_CARD);
     }
 
@@ -356,6 +358,7 @@ public class CardsGrid_View extends BaseView implements
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.putExtra(Constants.CARD, card);
         intent.setAction(Constants.ACTION_EDIT);
+
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
@@ -609,16 +612,27 @@ public class CardsGrid_View extends BaseView implements
     private void processCardShowResult(int resultCode, @Nullable Intent data) {
         if (RESULT_OK == resultCode) {
             if (null != data) {
+
                 String action = data.getAction();
-                if (Constants.ACTION_DELETE.equals(action)) {
-                    Card card = data.getParcelableExtra(Constants.CARD);
-                    if (null != card) {
-                        iGridItem gridItem = dataAdapter.getGridItem(card);
-                        if (null != gridItem) {
-                            dataAdapter.removeItem(gridItem);
-                        }
-                    }
+                if (null == action) action = "";
+
+                Card card = data.getParcelableExtra(Constants.CARD);
+
+                switch (action) {
+                    case Constants.ACTION_DELETE:
+                        dataAdapter.removeItem(positionInWork);
+                        positionInWork = -1;
+                        break;
+
+                    case Constants.ACTION_EDIT:
+                        dataAdapter.updateItem(positionInWork, card);
+                        positionInWork = -1;
+                        break;
+
+                    default:
+                        break;
                 }
+
             }
         }
     }
@@ -647,10 +661,10 @@ public class CardsGrid_View extends BaseView implements
     private void processCardEditResult(int resultCode, @Nullable Intent data) {
         if (RESULT_OK == resultCode) {
             try {
-                Card card = data.getParcelableExtra(Constants.CARD);
-                iGridItem gridItem = new GridItem_Card();
-                gridItem.setPayload(card);
-                dataAdapter.updateItem(positionInWork, gridItem);
+                if (null != data) {
+                    Card card = data.getParcelableExtra(Constants.CARD);
+                    dataAdapter.updateItem(positionInWork, card);
+                }
                 positionInWork = -1;
             }
             catch (Exception e) {
@@ -664,15 +678,6 @@ public class CardsGrid_View extends BaseView implements
         else {
             Log.w(TAG, "Unknown result code: "+resultCode);
         }
-    }
-
-    private void addItem(Card card) {
-        int num = new Random().nextInt();
-
-        iGridItem gridItem = new GridItem_Card();
-        gridItem.setPayload(card);
-
-        dataAdapter.addItem(gridItem);
     }
 
     private void showSwarchWidget() {

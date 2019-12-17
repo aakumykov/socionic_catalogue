@@ -123,6 +123,11 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
+    public void closePage(int resultCode, String action) {
+
+    }
+
+    @Override
     public String getString(int stringResourceId) {
         return null;
     }

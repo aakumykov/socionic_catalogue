@@ -40,7 +40,7 @@ public interface iCardsGrid {
     interface iPageView extends iBaseView {
         <T> void setTitle(T title);
 
-        void goShowCard(Card card);
+        void goShowCard(Card card, int position);
         void goCreateCard(Constants.CardType cardType);
         void goEditCard(Card card, int position);
         void goCardsGrid();
@@ -73,9 +73,9 @@ public interface iCardsGrid {
 
         void restoreOriginalList();
 
-        void addItem(iGridItem gridItem);
-        void updateItem(int position, iGridItem newGridItem);
         void removeItem(iGridItem gridItem);
+        void removeItem(int position);
+        void updateItem(int position, Card card);
 
         iGridItem getGridItem(int position);
         iGridItem getGridItem(@NonNull Card searchedCard);

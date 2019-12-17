@@ -52,6 +52,7 @@ public interface iBaseView {
     void goCreateCard();
 
     void closePage();
+    void closePage(int resultCode, String action);
 
     String getString(int stringResourceId);
 

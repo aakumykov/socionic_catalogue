@@ -322,7 +322,14 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public void closePage() {
-        //Log.d(TAG, "closePage()");
+        finish();
+    }
+
+    @Override
+    public void closePage(int resultCode, String action) {
+        Intent intent = new Intent();
+        intent.setAction(action);
+        setResult(resultCode, intent);
         finish();
     }
 

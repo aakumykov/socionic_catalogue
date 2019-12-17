@@ -139,8 +139,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     public void onCardClicked(int position) {
         iGridItem gridItem = gridView.getGridItem(position);
         Card card = (Card) gridItem.getPayload();
-//        this.openedItemPosition = position;
-        pageView.goShowCard(card);
+        pageView.goShowCard(card, position);
     }
 
     @Override
@@ -231,7 +230,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         return resultsList;
     }
 
-    @Override    public void onFilteringTagDiscardClicked() {
+    @Override public void onFilteringTagDiscardClicked() {
         pageView.goCardsGrid();
     }
 

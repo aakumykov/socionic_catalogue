@@ -30,6 +30,8 @@ import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.utils.DeleteCard_Helper;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 
+import static android.app.Activity.RESULT_OK;
+
 public class CardShow_Presenter implements iCardShow.iPresenter
 {
     private final static String TAG = "CardShow_Presenter";
@@ -659,7 +661,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
             public void onCardDeleteSuccess(Card card) {
                 pageView.hideProgressMessage();
                 pageView.showToast(R.string.card_deleted);
-
+                pageView.closePage(RESULT_OK, Constants.ACTION_DELETE);
             }
 
             @Override
