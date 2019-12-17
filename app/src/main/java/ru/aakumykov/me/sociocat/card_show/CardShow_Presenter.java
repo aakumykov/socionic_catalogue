@@ -341,8 +341,9 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     }
 
     @Override
-    public void onCardEditComplete(Card card) {
+    public void onEditCardComplete(Card card) {
         dataAdapter.showCard(card);
+        pageView.setSuccessEditionResult(card);
     }
 
 

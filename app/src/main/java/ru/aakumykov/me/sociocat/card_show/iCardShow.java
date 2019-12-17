@@ -36,6 +36,8 @@ public interface iCardShow
         void showCardsWithTag(String tagName);
 
         void goEditCard(Card card);
+
+        void setSuccessEditionResult(Card card);
     }
 
     interface iDataAdapter {
@@ -99,9 +101,9 @@ public interface iCardShow
         void onCommentRateDownClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem);
 
         void onDeleteCardClicked();
-        void onEditCardClicked();
 
-        void onCardEditComplete(Card card);
+        void onEditCardClicked();
+        void onEditCardComplete(Card card);
     }
 
     interface iRatingChangeCallbacks {

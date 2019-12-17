@@ -220,6 +220,15 @@ public class CardShow_View extends BaseView implements
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
     }
 
+    // Установка результата для Плиточного вида, чтобы там обновилась отредактированная карточка
+    @Override
+    public void setSuccessEditionResult(Card card) {
+        Intent intent = new Intent();
+        intent.setAction(Constants.ACTION_EDIT);
+        intent.putExtra(Constants.CARD, card);
+        setResult(RESULT_OK, intent);
+    }
+
     @Override
     public void refreshMenu() {
         invalidateOptionsMenu();
@@ -293,7 +302,7 @@ public class CardShow_View extends BaseView implements
             case RESULT_OK:
                 if (null != data) {
                     Card card = data.getParcelableExtra(Constants.CARD);
-                    presenter.onCardEditComplete(card);
+                    presenter.onEditCardComplete(card);
                 }
                 else {
                     showErrorMsg(R.string.data_error, "Edited card is null");

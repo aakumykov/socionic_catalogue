@@ -72,6 +72,11 @@ public class CardShow_ViewStub extends BaseView implements iCardShow.iPageView {
     }
 
     @Override
+    public void setSuccessEditionResult(Card card) {
+
+    }
+
+    @Override
     public void refreshMenu() {
 
     }
