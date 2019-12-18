@@ -130,7 +130,7 @@ public class ExternalDataReceiver extends BaseView {
         if (RESULT_OK == resultCode) {
             Card card = data.getParcelableExtra(Constants.CARD);
             Intent intent = new Intent(this, CardShow_View.class);
-            intent.putExtra(Constants.CARD_KEY, card.getKey());
+            intent.putExtra(Constants.CARD, card);
             startActivity(intent);
         }
         else {
