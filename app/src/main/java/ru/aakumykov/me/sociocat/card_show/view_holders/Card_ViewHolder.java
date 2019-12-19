@@ -171,7 +171,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
         String quoteSource = currentCard.getQuoteSource();
         if (null != quoteSource) {
-            quoteSourceView.setText(quoteSource);
+            quoteSourceView.setText(MyUtils.getString(quoteSourceView.getContext(), R.string.CARD_SHOW_quote_source, quoteSource));
+            MyUtils.show(quoteSourceView);
         }
 
         switch (currentCard.getType()) {

@@ -42,7 +42,7 @@
             android:id="@+id/quoteSourceInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/CARD_EDIT_quote_source"
+            android:hint="@string/CARD_EDIT_quote_source_label"
             android:inputType=""
             android:selectAllOnFocus="false"
             android:textAlignment="textEnd"
