@@ -51,9 +51,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
     implementation 'com.google.firebase:firebase-firestore:21.3.1'
 
-    // AAC
-//    implementation "android.arch.lifecycle:extensions:1.1.1"
-
     // ButterKnife
     implementation 'com.jakewharton:butterknife:10.2.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
@@ -113,6 +110,12 @@ dependencies {
     // Dropbox Java SDK
     implementation 'com.dropbox.core:dropbox-core-sdk:3.1.1'
 
+    // Crashlitics
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+
+    // ViewModel
+    def lifecycle_version = "2.1.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
 }
