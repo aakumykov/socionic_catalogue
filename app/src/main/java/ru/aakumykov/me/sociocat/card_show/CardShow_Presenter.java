@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.card_show;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -344,6 +345,32 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     public void onEditCardComplete(Card card) {
         dataAdapter.showCard(card);
         pageView.setSuccessEditionResult(card);
+    }
+
+    @Override
+    public boolean hasHard() {
+        return null != currentCard;
+    }
+
+    @Override
+    public void onPageRecreated() {
+        dataAdapter.showCard(currentCard);
+    }
+
+    @Override
+    public void processInputIntent(@Nullable Intent data) {
+        if (null == data) {
+            pageView.showErrorMsg(R.string.data_error, "Intent is NULL");
+            return;
+        }
+
+        Card card = data.getParcelableExtra(Constants.CARD);
+        if (null == card) {
+            pageView.showErrorMsg(R.string.data_error, "Card from Intent is null");
+            return;
+        }
+
+        dataAdapter.showCard(card);
     }
 
 

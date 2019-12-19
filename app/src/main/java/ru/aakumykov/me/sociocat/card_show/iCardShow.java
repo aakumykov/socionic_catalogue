@@ -1,6 +1,9 @@
 package ru.aakumykov.me.sociocat.card_show;
 
+import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 
 import java.util.List;
 
@@ -104,6 +107,12 @@ public interface iCardShow
 
         void onEditCardClicked();
         void onEditCardComplete(Card card);
+
+        boolean hasHard();
+
+        void onPageRecreated();
+
+        void processInputIntent(@Nullable Intent data);
     }
 
     interface iRatingChangeCallbacks {
