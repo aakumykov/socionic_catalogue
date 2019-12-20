@@ -9,6 +9,11 @@ import ru.aakumykov.me.sociocat.models.Comment;
 
 public class DataAdapter_Stub implements iCardShow.iDataAdapter {
     @Override
+    public boolean isFilled() {
+        return false;
+    }
+
+    @Override
     public void showCardThrobber() {
 
     }

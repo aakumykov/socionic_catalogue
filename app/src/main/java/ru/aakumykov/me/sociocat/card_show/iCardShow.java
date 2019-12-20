@@ -44,6 +44,8 @@ public interface iCardShow
     }
 
     interface iDataAdapter {
+        boolean isFilled();
+
         void showCardThrobber();
 
         void showCard(Card card);

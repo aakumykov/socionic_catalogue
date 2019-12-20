@@ -128,6 +128,11 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
 
+    @Override
+    public boolean isFilled() {
+        return itemsList.size() > 0;
+    }
+
     // iDataAdapter
     @Override
     public void showCardThrobber() {
