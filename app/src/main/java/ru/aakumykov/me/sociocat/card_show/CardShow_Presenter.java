@@ -371,6 +371,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         }
 
         dataAdapter.showCard(currentCard);
+        loadComments(currentCard.getKey());
     }
 
 
@@ -387,6 +388,10 @@ public class CardShow_Presenter implements iCardShow.iPresenter
                 pageView.showErrorMsg(R.string.CARD_SHOW_error_displaying_card, msg);
             }
         });
+    }
+
+    private void loadComments(String cardKey) {
+        loadComments(cardKey, null, null);
     }
 
     private void loadComments(String cardKey, @Nullable Comment startAfterComment, @Nullable Comment endBoundaryComment) {
