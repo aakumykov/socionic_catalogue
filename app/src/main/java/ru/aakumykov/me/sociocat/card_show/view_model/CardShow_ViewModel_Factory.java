@@ -1,10 +1,8 @@
-package ru.aakumykov.me.sociocat.card_show;
+package ru.aakumykov.me.sociocat.card_show.view_model;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-
-import ru.aakumykov.me.sociocat.card_show.CardShow_ViewModel;
 
 public class CardShow_ViewModel_Factory extends ViewModelProvider.NewInstanceFactory {
     @NonNull

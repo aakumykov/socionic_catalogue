@@ -1,6 +1,8 @@
-package ru.aakumykov.me.sociocat.card_show;
+package ru.aakumykov.me.sociocat.card_show.view_model;
 
 import androidx.lifecycle.ViewModel;
+
+import ru.aakumykov.me.sociocat.card_show.iCardShow;
 
 public class CardShow_ViewModel extends ViewModel {
 
