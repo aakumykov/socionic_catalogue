@@ -56,7 +56,20 @@ public class CardShow_View extends BaseView implements
         activateUpButton();
         setPageTitle(R.string.CARD_SHOW_page_title_short);
 
-        this.dataAdapter = new DataAdapter(presenter);
+        cardShowViewModel = new ViewModelProvider(this, new CardShow_ViewModel_Factory()).get(CardShow_ViewModel.class);
+
+        this.presenter = cardShowViewModel.getPresenter();
+        if (null == this.presenter) {
+            this.presenter = new CardShow_Presenter();
+            cardShowViewModel.storePresenter(this.presenter);
+        }
+
+        this.dataAdapter = cardShowViewModel.getDataAdapter();
+        if (null == this.dataAdapter) {
+            this.dataAdapter = new DataAdapter(presenter);
+            cardShowViewModel.storeDataAdapter(this.dataAdapter);
+        }
+
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
 
@@ -72,17 +85,6 @@ public class CardShow_View extends BaseView implements
                 presenter.onSendCommentClicked();
             }
         });
-
-        cardShowViewModel = new ViewModelProvider(this, new CardShow_ViewModel_Factory()).get(CardShow_ViewModel.class);
-
-        this.presenter = cardShowViewModel.getPresenter();
-        if (null == this.presenter) {
-            this.presenter = new CardShow_Presenter();
-            cardShowViewModel.storePresenter(new CardShow_Presenter());
-        }
-
-//        this.dataAdapter = cardShowViewModel.getDataAdapter();
-//        this.dataAdapter = new DataAdapter(presenter);
 
         configureSwipeRefresh();
     }
@@ -110,10 +112,15 @@ public class CardShow_View extends BaseView implements
 
         presenter.bindViewAndAdapter(this, dataAdapter);
 
-        if (presenter.hasHard())
+        if (firstRun) {
+            firstRun = false;
+            processInputIntent();
+        }
+
+        /*if (presenter.hasHard())
             presenter.onPageRecreated();
         else
-            presenter.processInputIntent(getIntent());
+            presenter.processInputIntent(getIntent());*/
     }
 
     @Override
