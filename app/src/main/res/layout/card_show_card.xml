@@ -40,7 +40,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerInside"
         tools:srcCompat="@tools:sample/backgrounds/scenic[9]" />
 
     <FrameLayout
