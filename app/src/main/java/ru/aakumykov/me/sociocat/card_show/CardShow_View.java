@@ -112,15 +112,10 @@ public class CardShow_View extends BaseView implements
 
         presenter.bindViewAndAdapter(this, dataAdapter);
 
-        if (firstRun) {
-            firstRun = false;
-            processInputIntent();
-        }
-
-        /*if (presenter.hasHard())
+        if (presenter.hasHard())
             presenter.onPageRecreated();
         else
-            presenter.processInputIntent(getIntent());*/
+            presenter.processInputIntent(getIntent());
     }
 
     @Override

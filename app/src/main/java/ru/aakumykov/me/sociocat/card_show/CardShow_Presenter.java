@@ -364,13 +364,13 @@ public class CardShow_Presenter implements iCardShow.iPresenter
             return;
         }
 
-        Card card = data.getParcelableExtra(Constants.CARD);
-        if (null == card) {
+        currentCard = data.getParcelableExtra(Constants.CARD);
+        if (null == currentCard) {
             pageView.showErrorMsg(R.string.data_error, "Card from Intent is null");
             return;
         }
 
-        dataAdapter.showCard(card);
+        dataAdapter.showCard(currentCard);
     }
 
 
