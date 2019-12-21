@@ -14,8 +14,8 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
-import ru.aakumykov.me.sociocat.cards_grid.view_stubs.CardsGrid_AdapterStub;
-import ru.aakumykov.me.sociocat.cards_grid.view_stubs.CardsGrid_ViewStub;
+import ru.aakumykov.me.sociocat.cards_grid.stubs.CardsGrid_DataAdapter_Stub;
+import ru.aakumykov.me.sociocat.cards_grid.stubs.CardsGrid_View_Stub;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
@@ -52,26 +52,27 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     @Override
     public void unlinkViews() {
-        this.pageView = new CardsGrid_ViewStub();
-        this.dataAdapter = new CardsGrid_AdapterStub();
+        this.pageView = new CardsGrid_View_Stub();
+        this.dataAdapter = new CardsGrid_DataAdapter_Stub();
     }
 
 
     @Override
     public void processInputIntent(@Nullable Intent intent) {
-
-        if (null != intent) {
-
-            String action = intent.getAction() + "";
-
-            if (Constants.ACTION_SHOW_CARDS_WITH_TAG.equals(action)) {
-                    this.tagFilter = intent.getStringExtra(Constants.TAG_NAME);
-                    loadCardsWithTag(this.tagFilter);
-                    return;
-            }
+        if (null == intent) {
+            pageView.showErrorMsg(R.string.data_error, "Intent is NULL");
+            return;
         }
 
-        loadCards();
+        String action = intent.getAction() + "";
+
+        if (Constants.ACTION_SHOW_CARDS_WITH_TAG.equals(action)) {
+                this.tagFilter = intent.getStringExtra(Constants.TAG_NAME);
+                loadCardsWithTag(this.tagFilter);
+        }
+        else {
+            loadCards();
+        }
     }
 
     @Override

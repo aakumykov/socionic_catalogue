@@ -100,11 +100,13 @@ public class CardsGrid_View extends BaseView implements
         this.presenter = viewModel.getPresenter();
         if (null == this.presenter) {
             this.presenter = new CardsGrid_Presenter();
+            viewModel.storePresenter(this.presenter);
         }
 
         this.dataAdapter = viewModel.getDataAdapter();
         if (null == this.dataAdapter) {
-            dataAdapter = new CardsGrid_DataAdapter(this, this, this);
+            this.dataAdapter = new CardsGrid_DataAdapter(this, this, this);
+            viewModel.storeDataAdapter(this.dataAdapter);
         }
 
         int colsNum = MyUtils.isPortraitOrientation(this) ?
@@ -148,23 +150,13 @@ public class CardsGrid_View extends BaseView implements
 
         bindComponents();
 
-        if (dryRun) {
-            dryRun = false;
-
-/*            List<iGridItem> savedList = getSavedCardsList();
-            if (null != savedList) {
-                dataAdapter.setList(savedList);
-                return;
-            }*/
-
+        if (!dataAdapter.hasData())
             presenter.processInputIntent(getIntent());
-        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-//        saveListState();
         dataAdapter.disableFiltering();
         unbindComponents();
     }
@@ -172,27 +164,6 @@ public class CardsGrid_View extends BaseView implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-/*        List<iGridItem> gridItemsList = dataAdapter.getList();
-        if (null != gridItemsList && gridItemsList.size() > 0) {
-            saveCardsList(gridItemsList);
-        }*/
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putString(Constants.FILTER_KEY, searchView.getQuery().toString());
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        String filterKey = savedInstanceState.getString(Constants.FILTER_KEY, "");
-        if (filterKey.isEmpty()) {
-            dataAdapter.restoreOriginalList();
-        } else {
-            searchView.setQuery(filterKey, true);
-        }
     }
 
     @Override

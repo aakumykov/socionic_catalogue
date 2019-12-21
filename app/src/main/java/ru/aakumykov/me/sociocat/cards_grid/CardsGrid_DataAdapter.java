@@ -402,6 +402,11 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         showLoadMoreItem(itemsList.size(), itemsList);*/
     }
 
+    @Override
+    public boolean hasData() {
+        return itemsList.size() > 0;
+    }
+
 
     // Внутренние методы
     private List<iGridItem> filterList(final List<iGridItem> inputList) {

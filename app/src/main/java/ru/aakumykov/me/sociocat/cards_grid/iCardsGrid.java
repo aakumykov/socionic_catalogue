@@ -97,6 +97,8 @@ public interface iCardsGrid {
         boolean filterIsEnabled();
 
         void applyFilterToGrid(String filterKey);
+
+        boolean hasData();
     }
 
     interface iPresenter {
