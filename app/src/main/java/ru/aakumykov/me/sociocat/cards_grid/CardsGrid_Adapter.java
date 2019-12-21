@@ -28,7 +28,7 @@ import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 
 public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
-        iCardsGrid.iGridView
+        iCardsGrid.iDataAdapter
 {
     private final static String TAG = "CardsGrid_Adapter";
 
@@ -168,7 +168,7 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
-    // iGridView
+    // iDataAdapter
     @Override
     public void linkPresenter(iCardsGrid.iPresenter presenter) {
         this.presenter = presenter;

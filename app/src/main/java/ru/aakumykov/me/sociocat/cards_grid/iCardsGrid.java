@@ -59,7 +59,7 @@ public interface iCardsGrid {
         void scroll2position(int position);
     }
 
-    interface iGridView {
+    interface iDataAdapter {
         void linkPresenter(iPresenter presenter);
         void unlinkPresenter();
 
@@ -100,7 +100,7 @@ public interface iCardsGrid {
     }
 
     interface iPresenter {
-        void linkViews(iPageView pageView, iGridView gridView);
+        void linkViews(iPageView pageView, iDataAdapter dataAdapter);
         void unlinkViews();
 
         void processInputIntent(@Nullable Intent intent);

@@ -35,7 +35,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     private final static String TAG = "CG3_Presenter";
     private iCardsGrid.iPageView pageView;
-    private iCardsGrid.iGridView gridView;
+    private iCardsGrid.iDataAdapter dataAdapter;
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private String tagFilter;
@@ -43,17 +43,17 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
 
     @Override
-    public void linkViews(iCardsGrid.iPageView pageView, iCardsGrid.iGridView gridView) {
+    public void linkViews(iCardsGrid.iPageView pageView, iCardsGrid.iDataAdapter dataAdapter) {
         this.pageView = pageView;
-        this.gridView = gridView;
+        this.dataAdapter = dataAdapter;
 
-        //gridView.restoreList(mList, openedItemPosition);
+        //dataAdapter.restoreList(mList, openedItemPosition);
     }
 
     @Override
     public void unlinkViews() {
         this.pageView = new CardsGrid_ViewStub();
-        this.gridView = new CardsGrid_AdapterStub();
+        this.dataAdapter = new CardsGrid_AdapterStub();
     }
 
 
@@ -82,7 +82,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 pageView.hideSwipeThrobber();
-                gridView.setList(cardsList2gridItemsList(list));
+                dataAdapter.setList(cardsList2gridItemsList(list));
             }
 
             @Override
@@ -91,7 +91,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             }
         };
 
-        iGridItem lastCardItem = gridView.getLastCardItem();
+        iGridItem lastCardItem = dataAdapter.getLastCardItem();
         if (null != lastCardItem) {
 
             Card lastCard = (Card) lastCardItem.getPayload();
@@ -107,17 +107,17 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     @Override
     public void onLoadMoreClicked(int position) {
-        iGridItem lastGridItem = gridView.getGridItem(position - 1);
+        iGridItem lastGridItem = dataAdapter.getGridItem(position - 1);
         Card lastCard = (null != lastGridItem) ? (Card) lastGridItem.getPayload() : null;
 
-        gridView.hideLoadMoreItem(position);
-        gridView.showThrobber(position);
+        dataAdapter.hideLoadMoreItem(position);
+        dataAdapter.showThrobber(position);
 
         iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                gridView.hideThrobber(position);
-                gridView.addList(cardsList2gridItemsList(list), position, false, null);
+                dataAdapter.hideThrobber(position);
+                dataAdapter.addList(cardsList2gridItemsList(list), position, false, null);
             }
 
             @Override
@@ -136,7 +136,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     @Override
     public void onCardClicked(int position) {
-        iGridItem gridItem = gridView.getGridItem(position);
+        iGridItem gridItem = dataAdapter.getGridItem(position);
         Card card = (Card) gridItem.getPayload();
         pageView.goShowCard(card, position);
     }
@@ -145,19 +145,19 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     public void onCardLongClicked(int position, View view, iGridViewHolder gridViewHolder) {
 
         if (!AuthSingleton.isLoggedIn()) {
-            gridView.showPopupMenu(iCardsGrid.MODE_GUEST, position, view, gridViewHolder);
+            dataAdapter.showPopupMenu(iCardsGrid.MODE_GUEST, position, view, gridViewHolder);
             return;
         }
 
         if (usersSingleton.currentUserIsAdmin()) {
-            gridView.showPopupMenu(iCardsGrid.MODE_ADMIN, position, view, gridViewHolder);
+            dataAdapter.showPopupMenu(iCardsGrid.MODE_ADMIN, position, view, gridViewHolder);
             return;
         }
 
-        Card card = (Card) gridView.getGridItem(position).getPayload();
+        Card card = (Card) dataAdapter.getGridItem(position).getPayload();
 
         if (card.isCreatedBy(usersSingleton.getCurrentUser())) {
-            gridView.showPopupMenu(iCardsGrid.MODE_OWNER, position, view, gridViewHolder);
+            dataAdapter.showPopupMenu(iCardsGrid.MODE_OWNER, position, view, gridViewHolder);
         }
     }
 
@@ -169,7 +169,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     @Override
     public void onEditCardClicked(iGridItem gridItem) {
         Card card = (Card) gridItem.getPayload();
-        int position = gridView.getItemPosition(gridItem);
+        int position = dataAdapter.getItemPosition(gridItem);
         pageView.goEditCard(card, position);
     }
 
@@ -250,7 +250,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
                 }
             }
 
-            gridView.insertItem(0, new GridItem_Card(card));
+            dataAdapter.insertItem(0, new GridItem_Card(card));
             pageView.scroll2position(0);
         }
         catch (Exception e) {
@@ -264,13 +264,13 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private void loadCards() {
         int insertPosition = 0;
 
-        gridView.showThrobber(0);
+        dataAdapter.showThrobber(0);
 
         cardsSingleton.loadCards(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                gridView.hideThrobber(insertPosition);
-                gridView.setList(cardsList2gridItemsList(list));
+                dataAdapter.hideThrobber(insertPosition);
+                dataAdapter.setList(cardsList2gridItemsList(list));
             }
 
             @Override
@@ -293,7 +293,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
                 public void onListLoadSuccess(List<Card> list) {
                     pageView.hideProgressMessage();
                     pageView.showTagFilter(filterTag);
-                    gridView.setList(cardsList2gridItemsList(list));
+                    dataAdapter.setList(cardsList2gridItemsList(list));
                 }
 
                 @Override
@@ -350,7 +350,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         DeleteCard_Helper.deleteCard(card.getKey(), new DeleteCard_Helper.iDeletionCallbacks() {
             @Override
             public void onCardDeleteSuccess(Card card) {
-                gridView.removeItem(gridItem);
+                dataAdapter.removeItem(gridItem);
             }
 
             @Override
