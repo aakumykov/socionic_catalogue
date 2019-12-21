@@ -27,10 +27,10 @@ import ru.aakumykov.me.sociocat.cards_grid.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
+public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
         iCardsGrid.iDataAdapter
 {
-    private final static String TAG = "CardsGrid_Adapter";
+    private final static String TAG = "CardsGrid_DataAdapter";
 
     private List<iGridItem> itemsList = new ArrayList<>();
     private List<iGridItem> originalItemsList = new ArrayList<>();
@@ -44,9 +44,9 @@ public class CardsGrid_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private int fakeIndex = 0;
 
-    public CardsGrid_Adapter(iCardsGrid.iPageView pageView,
-                             iCardsGrid.iGridItemClickListener gridItemClickListener,
-                             iCardsGrid.iLoadMoreClickListener loadMoreClickListener
+    public CardsGrid_DataAdapter(iCardsGrid.iPageView pageView,
+                                 iCardsGrid.iGridItemClickListener gridItemClickListener,
+                                 iCardsGrid.iLoadMoreClickListener loadMoreClickListener
     ) {
         this.pageView = pageView;
         this.gridItemClickListener = gridItemClickListener;

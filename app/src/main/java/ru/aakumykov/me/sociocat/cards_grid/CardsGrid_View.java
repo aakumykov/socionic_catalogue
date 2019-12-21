@@ -17,6 +17,7 @@ import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -40,9 +41,12 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
+import ru.aakumykov.me.sociocat.card_show.view_model.CardShow_ViewModel_Factory;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
+import ru.aakumykov.me.sociocat.cards_grid.view_model.CardsGrid_ViewModel;
+import ru.aakumykov.me.sociocat.cards_grid.view_model.CardsGrid_ViewModel_Factory;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -70,8 +74,10 @@ public class CardsGrid_View extends BaseView implements
     private SearchView searchView;
     private MenuItem searchWidget;
 
-    private CardsGrid_Adapter dataAdapter;
+    private CardsGrid_ViewModel viewModel;
+    private iCardsGrid.iDataAdapter dataAdapter;
     private iCardsGrid.iPresenter presenter;
+
     private StaggeredGridLayoutManager layoutManager;
     private boolean dryRun = true;
     private int positionInWork = -1;
@@ -87,19 +93,25 @@ public class CardsGrid_View extends BaseView implements
         setContentView(R.layout.cards_grid_activity);
         ButterKnife.bind(this);
 
-//        if (!dryRun)
-//            activateUpButton();
-
         setPageTitle(R.string.CARDS_GRID_page_title);
 
-        presenter = new CardsGrid_Presenter();
-        dataAdapter = new CardsGrid_Adapter(this, this, this);
+        viewModel = new ViewModelProvider(this, new CardsGrid_ViewModel_Factory()).get(CardsGrid_ViewModel.class);
+
+        this.presenter = viewModel.getPresenter();
+        if (null == this.presenter) {
+            this.presenter = new CardsGrid_Presenter();
+        }
+
+        this.dataAdapter = viewModel.getDataAdapter();
+        if (null == this.dataAdapter) {
+            dataAdapter = new CardsGrid_DataAdapter(this, this, this);
+        }
 
         int colsNum = MyUtils.isPortraitOrientation(this) ?
                 Config.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : Config.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
         layoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
 
-        recyclerView.setAdapter(dataAdapter);
+        recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
         recyclerView.setLayoutManager(layoutManager);
 
         configureSwipeRefresh();
