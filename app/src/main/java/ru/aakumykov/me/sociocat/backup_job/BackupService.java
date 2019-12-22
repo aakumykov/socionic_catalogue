@@ -5,7 +5,9 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -88,6 +90,88 @@ public class BackupService extends Service {
         public void push(CollectionPair collectionPair) {
             list.add(collectionPair);
         }
+    }
+
+
+    // ======================== УПРАВЛЕНИЕ СЛУЖБОЙ ========================
+    private final static String TAG = "BackupService";
+    private static boolean backupImpossible = true;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final String KEY_NAME = "dropbox_access_token";
+
+        String dropboxAccessToken = (sharedPreferences.contains(KEY_NAME)) ?
+                sharedPreferences.getString(KEY_NAME, null) : null;
+        String dropboxAccessTokenStub = getString(R.string.PREFERENCE_dropbox_access_token_stub);
+
+        if (dropboxAccessTokenStub.equals(dropboxAccessToken)) {
+
+            showCustomNotification(
+                    R.string.BACKUP_SERVICE_backup_impossible,
+                    R.string.BACKUP_SERVICE_dropbox_access_token_missing
+            );
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("perform_database_backup", false);
+            editor.commit();
+
+            return;
+        }
+
+        backupImpossible = false;
+        dropboxBackuper = new DropboxBackuper(dropboxAccessToken);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
+        //Log.d(TAG, "onStartCommand()");
+
+        if (backupImpossible)
+            return START_NOT_STICKY;
+
+        sendServiceBroadcast(SERVICE_STATUS_START);
+
+        startBackup();
+
+        return START_NOT_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy()");
+    }
+
+    @Nullable @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    private void finishWithError(String errorMsg) {
+
+        removeProgressNotification();
+        displayResultNotification(errorMsg, BACKUP_STATUS_ERROR);
+
+        sendBackupResultBroadcast(errorMsg, BACKUP_STATUS_ERROR);
+
+        stopSelf();
+        sendServiceBroadcast(SERVICE_STATUS_FINISH);
+    }
+
+    private void finishWithSuccess(String message) {
+
+        removeProgressNotification();
+        displayResultNotification(message, BACKUP_STATUS_SUCCESS);
+
+        sendBackupResultBroadcast(message, BACKUP_STATUS_SUCCESS);
+
+        stopSelf();
+        sendServiceBroadcast(SERVICE_STATUS_FINISH);
     }
 
 
@@ -295,186 +379,6 @@ public class BackupService extends Service {
 
 
     // ======================== ШИРОКОВЕЩАТЕЛЬНЫЕ СООБЩЕНИЯ ========================
-/*
-    public static class BackupServiceInfo implements Parcelable {
-
-        private String status;
-
-        // Конверт
-        protected BackupServiceInfo(Parcel in) {
-
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-
-        }
-
-        public static final Creator<BackupServiceInfo> CREATOR = new Creator<BackupServiceInfo>() {
-            @Override
-            public BackupServiceInfo createFromParcel(Parcel in) {
-                return new BackupServiceInfo(in);
-            }
-
-            @Override
-            public BackupServiceInfo[] newArray(int size) {
-                return new BackupServiceInfo[size];
-            }
-        };
-        @Override public int describeContents() {
-            return 0;
-        }
-        // Конверт
-    }
-    public static class BackupProgressInfo implements Parcelable {
-
-        private String message;
-        private int progress = -1;
-        private int progressMax = -1;
-
-        public BackupProgressInfo() {
-
-        }
-
-        public BackupProgressInfo(String message) {
-            this.message = message;
-        }
-
-        public String getMessage() {
-            return this.message;
-        }
-        public int getProgress() {
-            return progress;
-        }
-        public int getProgressMax() {
-            return progressMax;
-        }
-
-        public BackupProgressInfo setMessage(String message) {
-            this.message = message;
-            return this;
-        }
-        public BackupProgressInfo setProgress(int progress) {
-            this.progress = progress;
-            return this;
-        }
-        public BackupProgressInfo setProgressMax(int progressMax) {
-            this.progressMax = progressMax;
-            return this;
-        }
-
-        @NonNull
-        @Override
-        public String toString() {
-            return "BackupProgressInfo {" +
-                    ", message: " + getMessage() +
-                    ", progress: " + getProgress() +
-                    ", progressMax: " + getProgressMax() +
-                    "}";
-        }
-
-        // Конверт
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(message);
-            dest.writeLong(progress);
-            dest.writeInt(progressMax);
-        }
-
-        protected BackupProgressInfo(Parcel in) {
-            message = in.readString();
-            progress = in.readInt();
-            progressMax = in.readInt();
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        public static final Creator<BackupProgressInfo> CREATOR = new Creator<BackupProgressInfo>() {
-            @Override
-            public BackupProgressInfo createFromParcel(Parcel in) {
-                return new BackupProgressInfo(in);
-            }
-
-            @Override
-            public BackupProgressInfo[] newArray(int size) {
-                return new BackupProgressInfo[size];
-            }
-        };
-        // Конверт
-    }
-    public static class BackupResultInfo implements Parcelable {
-
-        private String message;
-        private String result;
-
-        public String getMessage() {
-            return message;
-        }
-        public String getResult() {
-            return result;
-        }
-
-        public BackupResultInfo setMessage(String message) {
-            this.message = message;
-            return this;
-        }
-        public BackupResultInfo setResult(String result) {
-            this.result = result;
-            return this;
-        }
-
-        public BackupResultInfo() {
-        }
-
-        public BackupResultInfo(String message, String result) {
-            this.message = message;
-            this.result = result;
-        }
-
-        @NonNull
-        @Override
-        public String toString() {
-            return "BackupResultInfo {" +
-                    ", message: " + getMessage() +
-                    ", result: " + getResult() +
-                "}";
-        }
-
-        // Конверт
-        protected BackupResultInfo(Parcel in) {
-            this.message = in.readString();
-            this.result = in.readString();
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(message);
-            dest.writeString(result);
-        }
-
-        public static final Creator<BackupResultInfo> CREATOR = new Creator<BackupResultInfo>() {
-            @Override
-            public BackupResultInfo createFromParcel(Parcel in) {
-                return new BackupResultInfo(in);
-            }
-
-            @Override
-            public BackupResultInfo[] newArray(int size) {
-                return new BackupResultInfo[size];
-            }
-        };
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-        // Конверт
-    }
-*/
-
     public static final String BROADCAST_SERVICE_STATUS = "ru.aakumykov.me.sociocat.BROADCAST_SERVICE_STATUS";
     public static final String BROADCAST_BACKUP_PROGRESS = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_PROGRESS";
     public static final String BROADCAST_BACKUP_RESULT = "ru.aakumykov.me.sociocat.BROADCAST_BACKUP_RESULT";
@@ -536,6 +440,10 @@ public class BackupService extends Service {
                 context.getResources().getString(R.string.BACKUP_SERVICE_channel_description),
                 NotificationManagerCompat.IMPORTANCE_LOW
         );
+    }
+
+    public static void removeResultNotification(Context context, int resultNotificationId) {
+        NotificationManagerCompat.from(context).cancel(resultNotificationId);
     }
 
     private void displayProgressNotification(String message, String status) {
@@ -608,68 +516,23 @@ public class BackupService extends Service {
         notificationManager.notify(resultNotificationId, notification);
     }
 
-    public static void removeResultNotification(Context context, int resultNotificationId) {
-        NotificationManagerCompat.from(context).cancel(resultNotificationId);
+    private void showCustomNotification(int titleID, int messageId) {
+
+        String title = getResources().getString(titleID);
+        String message = getResources().getString(messageId);
+
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
+                        .setSmallIcon(R.drawable.ic_backup_job_colored)
+                        .setContentTitle(title)
+                        .setContentText(message)
+                        .setAutoCancel(true);
+
+        Notification notification = notificationBuilder.build();
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(resultNotificationId, notification);
     }
-
-
-    // ======================== УПРАВЛЕНИЕ СЛУЖБОЙ ========================
-    private final static String TAG = "BackupService";
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.d(TAG, "onCreate()");
-        // ========  ========
-        String dropboxAccessToken = getResources().getString(R.string.DROPBOX_ACCESS_TOKEN);
-        dropboxBackuper = new DropboxBackuper(dropboxAccessToken);
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        super.onStartCommand(intent, flags, startId);
-        Log.d(TAG, "onStartCommand()");
-
-        sendServiceBroadcast(SERVICE_STATUS_START);
-
-        startBackup();
-
-        return START_NOT_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy()");
-    }
-
-    @Nullable @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    private void finishWithError(String errorMsg) {
-
-        removeProgressNotification();
-        displayResultNotification(errorMsg, BACKUP_STATUS_ERROR);
-
-        sendBackupResultBroadcast(errorMsg, BACKUP_STATUS_ERROR);
-
-        stopSelf();
-        sendServiceBroadcast(SERVICE_STATUS_FINISH);
-    }
-
-    private void finishWithSuccess(String message) {
-
-        removeProgressNotification();
-        displayResultNotification(message, BACKUP_STATUS_SUCCESS);
-
-        sendBackupResultBroadcast(message, BACKUP_STATUS_SUCCESS);
-
-        stopSelf();
-        sendServiceBroadcast(SERVICE_STATUS_FINISH);
-    }
-
 
 
     // ======================== СЛУЖЕБНЫЕ МЕТОДЫ ========================

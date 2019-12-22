@@ -533,5 +533,10 @@
     <string name="error_deleting_card">Ошибка удаления карточки</string>
     <string name="cannot_edit_card">Редактирование запрещено</string>
     <string name="CARD_SHOW_edit_cancelled">Редактирование отменено</string>
+    <string name="PREFERENCE_dropbox_access_token_title">Ключ доступа Dropbox</string>
+    <string name="PREFERENCE_dropbox_access_token_description">Необходим для резервного копирования</string>
+    <string name="BACKUP_SERVICE_backup_impossible">Резервное копирование невозможно</string>
+    <string name="BACKUP_SERVICE_dropbox_access_token_missing">Отсутствует Dropbox AccessToken</string>
+    <string name="PREFERENCE_dropbox_access_token_stub">Замените на Dropbox Access Token</string>
 
 </resources><!-- «%1$s» -->

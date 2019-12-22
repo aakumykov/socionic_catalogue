@@ -525,5 +525,10 @@
     <string name="error_deleting_card">Error deleting card</string>
     <string name="cannot_edit_card">Edition refused</string>
     <string name="CARD_SHOW_edit_cancelled">Card edition cancelled</string>
+    <string name="PREFERENCE_dropbox_access_token_title">Dropbox access token</string>
+    <string name="PREFERENCE_dropbox_access_token_description">Required for database backup</string>
+    <string name="BACKUP_SERVICE_backup_impossible">Backup impossible</string>
+    <string name="BACKUP_SERVICE_dropbox_access_token_missing">Dropbox AccessToken is missing</string>
+    <string name="PREFERENCE_dropbox_access_token_stub">Replace with dropbox access token</string>
 </resources>
 <!-- «%1$s» -->
