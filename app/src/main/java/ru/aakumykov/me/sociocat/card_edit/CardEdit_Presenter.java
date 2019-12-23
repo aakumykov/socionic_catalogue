@@ -42,13 +42,10 @@ public class CardEdit_Presenter implements
 
     private static final String TAG = "CardEdit_Presenter";
     private iCardEdit.View view;
-    private SharedPreferences sharedPreferences;
+//    private SharedPreferences sharedPreferences;
 
-    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-//    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
-//    private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
     private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
@@ -63,12 +60,22 @@ public class CardEdit_Presenter implements
     @Override
     public void linkView(iCardEdit.View view) {
         this.view = view;
-        sharedPreferences = view.getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT);
+//        sharedPreferences = view.getSharedPrefs(Constants.SHARED_PREFERENCES_CARD_EDIT);
     }
 
     @Override
     public void unlinkView() {
-        this.view = null;
+        this.view = new CardEdit_ViewStub();
+    }
+
+    @Override
+    public void onViewPaused() {
+        view.pauseMedia();
+    }
+
+    @Override
+    public void onViewResumed() {
+        view.resumeMedia();
     }
 
 

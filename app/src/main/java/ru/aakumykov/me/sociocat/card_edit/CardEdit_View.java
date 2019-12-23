@@ -167,7 +167,7 @@ public class CardEdit_View extends BaseView implements
     @Override
     protected void onPause() {
         super.onPause();
-        if (!exitIsExpected && !selectImageMode) {
+/*        if (!exitIsExpected && !selectImageMode) {
             if (isFormFilled()) {
                 try {
                     if (null != insertableYoutubePlayer)
@@ -179,24 +179,26 @@ public class CardEdit_View extends BaseView implements
                     e.printStackTrace();
                 }
             }
-        }
+        }*/
+        presenter.onViewPaused();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+//        if (null != insertableYoutubePlayer)
+//            insertableYoutubePlayer.pause();
+//
+//        if (!selectImageMode) {
+//            try {
+//                presenter.restoreEditState();
+//            } catch (Exception e) {
+//                showErrorMsg(R.string.CARD_EDIT_error_restoring_edit_state, e.getMessage());
+//                e.printStackTrace();
+//            }
+//        }
 
-        if (null != insertableYoutubePlayer)
-            insertableYoutubePlayer.pause();
-
-        if (!selectImageMode) {
-            try {
-                presenter.restoreEditState();
-            } catch (Exception e) {
-                showErrorMsg(R.string.CARD_EDIT_error_restoring_edit_state, e.getMessage());
-                e.printStackTrace();
-            }
-        }
+        presenter.onViewResumed();
     }
 
     @Override
@@ -471,11 +473,13 @@ public class CardEdit_View extends BaseView implements
         showToast(msgId);
     }
 
-    @Override public void showMediaError() {
+    @Override
+    public void showMediaError() {
         addMediaButtonContainer.setBackgroundResource(R.drawable.shape_red_border);
     }
 
-    @Override public void hideMediaError() {
+    @Override
+    public void hideMediaError() {
         addMediaButtonContainer.setBackground(null);
     }
 
@@ -574,6 +578,18 @@ public class CardEdit_View extends BaseView implements
                 presenter.clearEditState();
             }
         });
+    }
+
+    @Override
+    public void pauseMedia() {
+        if (null != insertableYoutubePlayer)
+            insertableYoutubePlayer.pause();
+    }
+
+    @Override
+    public void resumeMedia() {
+        if (null != insertableYoutubePlayer)
+            insertableYoutubePlayer.play();
     }
 
 

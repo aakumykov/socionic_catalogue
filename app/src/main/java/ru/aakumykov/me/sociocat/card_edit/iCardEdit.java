@@ -62,11 +62,17 @@ public interface iCardEdit {
         void addTag(String tag);
 
         void showDraftRestoreDialog(Card cardDraft);
+
+        void pauseMedia();
+        void resumeMedia();
     }
 
     interface Presenter {
         void linkView(View view);
         void unlinkView();
+
+        void onViewPaused();
+        void onViewResumed();
 
         void processInputIntent(@Nullable Intent intent) throws Exception;
         void loadTagsList(TagsListLoadCallbacks callbacks);
