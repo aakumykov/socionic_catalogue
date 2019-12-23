@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.card_show.view_holders;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -169,15 +170,12 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         titleView.setText(currentCard.getTitle());
         descriptionView.setText(currentCard.getDescription());
 
-        String quoteSource = currentCard.getQuoteSource();
-        if (null != quoteSource) {
-            quoteSourceView.setText(MyUtils.getString(quoteSourceView.getContext(), R.string.CARD_SHOW_quote_source, quoteSource));
-            MyUtils.show(quoteSourceView);
-        }
+        displayQuoteSource();
 
         switch (currentCard.getType()) {
             case Card.TEXT_CARD:
                 quoteView.setText(currentCard.getQuote());
+                MyUtils.show(quoteView);
                 break;
 
             case Card.IMAGE_CARD:
@@ -207,6 +205,14 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         cardRatingView.setText(String.valueOf(currentCard.getRating()));
 
         presenter.onCardAlmostDisplayed(this);
+    }
+
+    private void displayQuoteSource() {
+        String quoteSource = currentCard.getQuoteSource();
+        if (!TextUtils.isEmpty(quoteSource)) {
+            quoteSourceView.setText(MyUtils.getString(quoteSourceView.getContext(), R.string.CARD_SHOW_quote_source, quoteSource));
+            MyUtils.show(quoteSourceView);
+        }
     }
 
     private void displayMedia(MediaType mediaType) {
