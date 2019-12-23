@@ -583,15 +583,20 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void pauseMedia() {
-        if (null != insertableYoutubePlayer)
+    public float pauseMedia() {
+        if (null != insertableYoutubePlayer) {
+            float position = insertableYoutubePlayer.getPosition();
             insertableYoutubePlayer.pause();
+            return position;
+        }
+        return 0.0f;
     }
 
     @Override
-    public void resumeMedia() {
-        if (null != insertableYoutubePlayer)
-            insertableYoutubePlayer.play();
+    public void resumeMedia(float position) {
+        if (null != insertableYoutubePlayer) {
+            insertableYoutubePlayer.play(position);
+        }
     }
 
 
@@ -1044,6 +1049,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     private void setTimecodeToVideo() {
-        insertableYoutubePlayer.seekTo(getTimecode());
+        float timecode = getTimecode();
+        insertableYoutubePlayer.seekTo(timecode);
     }
 }

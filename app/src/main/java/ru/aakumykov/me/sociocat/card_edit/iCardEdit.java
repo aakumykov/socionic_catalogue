@@ -63,8 +63,8 @@ public interface iCardEdit {
 
         void showDraftRestoreDialog(Card cardDraft);
 
-        void pauseMedia();
-        void resumeMedia();
+        float pauseMedia();
+        void resumeMedia(float position);
     }
 
     interface Presenter {

@@ -35,6 +35,8 @@ public class CardEdit_Presenter implements
         iCardEdit.Presenter,
         iCardsSingleton.SaveCardCallbacks
 {
+    private float mediaPosition = 0.0f;
+
     public enum CardEditMode {
         CREATE,
         EDIT
@@ -70,12 +72,12 @@ public class CardEdit_Presenter implements
 
     @Override
     public void onViewPaused() {
-        view.pauseMedia();
+        mediaPosition = view.pauseMedia();
     }
 
     @Override
     public void onViewResumed() {
-        view.resumeMedia();
+        view.resumeMedia(mediaPosition);
     }
 
 

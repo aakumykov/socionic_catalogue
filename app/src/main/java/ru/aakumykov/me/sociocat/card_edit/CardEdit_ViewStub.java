@@ -181,12 +181,12 @@ public class CardEdit_ViewStub implements iCardEdit.View {
     }
 
     @Override
-    public void pauseMedia() {
-
+    public float pauseMedia() {
+        return 0;
     }
 
     @Override
-    public void resumeMedia() {
+    public void resumeMedia(float position) {
 
     }
 
