@@ -90,7 +90,7 @@ dependencies {
     implementation "com.leinardi.android:speed-dial:2.0.1"
 
     // Insertable Youtube Player
-    implementation 'com.github.aakumykov:insertable-youtube-player:0.14'
+    implementation 'com.github.aakumykov:insertable-youtube-player:9fe4f287'
 
     // RxJava v1
     implementation 'io.reactivex:rxjava:1.2.3'
