@@ -81,7 +81,7 @@ public class CardEdit_Presenter implements
 
     // Интерфейсные методы
     @Override
-    public void processInputIntent(@Nullable Intent intent) throws Exception {
+    public void onIntentReceived(@Nullable Intent intent) {
 
         if (!AuthSingleton.isLoggedIn()) {
             // TODO: requestLogin + CODE_LOGIN_REQUEST ...
@@ -89,7 +89,16 @@ public class CardEdit_Presenter implements
             return;
         }
 
+        if (null == intent) {
+            view.showErrorMsg(R.string.data_error, "Intent is null");
+            return;
+        }
+
         Card card = intent.getParcelableExtra(Constants.CARD);
+        if (null == card) {
+            view.showErrorMsg(R.string.data_error, "Failed to get Card from Intent");
+            return;
+        }
 
         // TODO: проверять права доступа к карточке
 
@@ -97,6 +106,11 @@ public class CardEdit_Presenter implements
             startCreateCard(card);
         else
             startEditCard(card);
+    }
+
+    @Override
+    public void onConfigurationChanged() {
+        view.displayCard(currentCard);
     }
 
     @Override
@@ -229,6 +243,11 @@ public class CardEdit_Presenter implements
     public void clearEditState() {
         //view.clearSharedPrefs(sharedPreferences, Constants.CARD);
         MVPUtils.clearCardDraft(view.getAppContext());
+    }
+
+    @Override
+    public boolean hasCard() {
+        return null != currentCard;
     }
 
     @Override

@@ -26,14 +26,11 @@ import android.widget.ScrollView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -125,7 +122,12 @@ public class CardEdit_View extends BaseView implements
         activateUpButton();
 
         CardEdit_ViewModel cardEditViewModel = new ViewModelProvider(this, new CardEdit_ViewModel_Factory()).get(CardEdit_ViewModel.class);
-        presenter = cardEditViewModel.hasPresenter() ? cardEditViewModel.getPresenter() : new CardEdit_Presenter();
+        if (cardEditViewModel.hasPresenter())
+            presenter = cardEditViewModel.getPresenter();
+        else {
+            presenter = new CardEdit_Presenter();
+            cardEditViewModel.storePresenter(presenter);
+        }
 
         tagsContainer.setOnTagClickListener(this);
 
@@ -158,10 +160,10 @@ public class CardEdit_View extends BaseView implements
         super.onStart();
         presenter.linkView(this);
 
-        if (firstRun) {
-            firstRun = false;
-            startEditWork(getIntent());
-        }
+        if (presenter.hasCard())
+            presenter.onConfigurationChanged();
+        else
+            presenter.onIntentReceived(getIntent());
     }
 
     @Override
@@ -820,7 +822,7 @@ public class CardEdit_View extends BaseView implements
 
     private void startEditWork(Intent intent) {
         try {
-            presenter.processInputIntent(intent);
+            presenter.onIntentReceived(intent);
             presenter.loadTagsList(new iCardEdit.TagsListLoadCallbacks() {
                 @Override
                 public void onTagsListLoadSuccess(List<String> list) {

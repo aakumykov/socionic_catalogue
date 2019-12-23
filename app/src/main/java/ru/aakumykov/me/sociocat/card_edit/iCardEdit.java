@@ -74,7 +74,9 @@ public interface iCardEdit {
         void onViewPaused();
         void onViewResumed();
 
-        void processInputIntent(@Nullable Intent intent) throws Exception;
+        void onIntentReceived(@Nullable Intent intent);
+        void onConfigurationChanged();
+
         void loadTagsList(TagsListLoadCallbacks callbacks);
         void processTag(String tag);
 
@@ -91,5 +93,7 @@ public interface iCardEdit {
         void saveEditState();
         void restoreEditState() throws Exception;
         void clearEditState();
+
+        boolean hasCard();
     }
 }
