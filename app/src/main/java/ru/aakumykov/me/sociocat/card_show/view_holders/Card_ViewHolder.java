@@ -249,6 +249,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     }
 
     private void displayTags() {
+        tagsContainer.removeAllTags();
+
         List<String> tagsList = currentCard.getTags();
         if (tagsList.size() > 0) {
             for (String tag : tagsList)
