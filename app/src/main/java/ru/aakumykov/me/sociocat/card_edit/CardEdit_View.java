@@ -26,6 +26,8 @@ import android.widget.ScrollView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -52,6 +54,8 @@ import ru.aakumykov.me.insertable_yotube_player.InsertableYoutubePlayer;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.card_edit.view_model.CardEdit_ViewModel;
+import ru.aakumykov.me.sociocat.card_edit.view_model.CardEdit_ViewModel_Factory;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -109,6 +113,7 @@ public class CardEdit_View extends BaseView implements
     private boolean exitIsExpected = false;
     private boolean selectImageMode = false;
 
+
     // Системные методы
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,7 +124,8 @@ public class CardEdit_View extends BaseView implements
         setPageTitle(R.string.CARD_EDIT_page_title);
         activateUpButton();
 
-        presenter = new CardEdit_Presenter();
+        CardEdit_ViewModel cardEditViewModel = new ViewModelProvider(this, new CardEdit_ViewModel_Factory()).get(CardEdit_ViewModel.class);
+        presenter = cardEditViewModel.hasPresenter() ? cardEditViewModel.getPresenter() : new CardEdit_Presenter();
 
         tagsContainer.setOnTagClickListener(this);
 
