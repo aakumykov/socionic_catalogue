@@ -396,7 +396,7 @@
     <string name="SHORTCUT_create_image_card_long_label">Создать карточку с картинкой</string>
     <string name="SHORTCUT_create_video_card_short_label">Видео</string>
     <string name="SHORTCUT_create_video_card_long_label">Создать карточку с видео</string>
-    <string name="SHORTCUT_create_audio_card_short_label">Аудио</string>
+    <string name="SHORTCUT_create_audio_card_short_label">Музыка</string>
     <string name="SHORTCUT_create_audio_card_long_label">Создать карточку с аудио</string>
     <string name="CARD_EDIT_draft_saved">Черновик сохранён</string>
     <string name="DRAFT_RESTORE_DIALOG_discard">Забыть изменения</string>
