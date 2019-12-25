@@ -538,5 +538,6 @@
     <string name="BACKUP_SERVICE_backup_impossible">Резервное копирование невозможно</string>
     <string name="BACKUP_SERVICE_dropbox_access_token_missing">Отсутствует Dropbox AccessToken</string>
     <string name="PREFERENCE_dropbox_access_token_stub">Замените на Dropbox Access Token</string>
+    <string name="error_processing_image">Ошибка обработки изображения</string>
 
 </resources><!-- «%1$s» -->

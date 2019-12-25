@@ -530,5 +530,6 @@
     <string name="BACKUP_SERVICE_backup_impossible">Backup impossible</string>
     <string name="BACKUP_SERVICE_dropbox_access_token_missing">Dropbox AccessToken is missing</string>
     <string name="PREFERENCE_dropbox_access_token_stub">Replace with dropbox access token</string>
+    <string name="error_processing_image">Error processing image</string>
 </resources>
 <!-- «%1$s» -->

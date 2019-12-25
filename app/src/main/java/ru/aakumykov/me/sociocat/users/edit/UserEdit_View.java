@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,13 +18,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 import ru.aakumykov.me.sociocat.BaseView;
-import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
@@ -33,8 +33,8 @@ import ru.aakumykov.me.sociocat.users.Users_Presenter;
 import ru.aakumykov.me.sociocat.users.iUsers;
 import ru.aakumykov.me.sociocat.users.view_model.Users_ViewModel;
 import ru.aakumykov.me.sociocat.users.view_model.Users_ViewModelFactory;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.FileInfo;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.sociocat.utils.ImageInfo;
+import ru.aakumykov.me.sociocat.utils.ImageSelector;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 // TODO: выбрасывание со страницы при разлогинивании
@@ -58,6 +58,7 @@ public class UserEdit_View extends BaseView implements
 
     private final static String TAG = "UserEdit_View";
     private iUsers.Presenter presenter;
+    private boolean isImageSelectionMode = false;
 
 
     // Системные методы
@@ -86,6 +87,11 @@ public class UserEdit_View extends BaseView implements
         super.onStart();
         presenter.linkView(this);
 
+        if (isImageSelectionMode) {
+            isImageSelectionMode = false;
+            return;
+        }
+
         if (presenter.hasUser())
             presenter.onConfigurationChanged();
         else
@@ -100,14 +106,14 @@ public class UserEdit_View extends BaseView implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         presenter.linkView(this);
 
-        if (RESULT_OK == resultCode)
-        {
-            if (Constants.CODE_SELECT_IMAGE == requestCode) {
-                presenter.processSelectedImage(data);
-            }
+        switch (requestCode) {
+            case ImageSelector.CODE_SELECT_IMAGE:
+                processImageSelection(resultCode, data);
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -121,7 +127,7 @@ public class UserEdit_View extends BaseView implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionSave:
-                saveUser();
+                onSaveButtonClicked();
                 break;
             default:
                 super.onOptionsItemSelected(item);
@@ -159,7 +165,7 @@ public class UserEdit_View extends BaseView implements
 
     @Override
     public void displayAvatar(String imageURI, boolean justSelected) {
-        try {
+        /*try {
             Uri uri = Uri.parse(imageURI);
             showAvatarThrobber();
 
@@ -188,7 +194,13 @@ public class UserEdit_View extends BaseView implements
             hideAvatarThrobber();
             showImageIsBroken(avatarView);
             e.printStackTrace();
-        }
+        }*/
+
+        Glide.with(this)
+                .load(imageURI)
+                .placeholder(R.drawable.ic_avatar_placeholder)
+                .error(R.drawable.ic_image_error)
+                .into(avatarView);
     }
 
     @Override
@@ -228,30 +240,20 @@ public class UserEdit_View extends BaseView implements
 
     // Нажатия
     @OnClick(R.id.avatarView)
-    void selectAvatar() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-//        intent.setType("*/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-
-        if (null != intent.resolveActivity(getPackageManager())) {
-            startActivityForResult(
-                    Intent.createChooser(intent, getResources().getString(R.string.select_image)),
-                    Constants.CODE_SELECT_IMAGE
-            );
-        }
-        else {
-            showErrorMsg(R.string.USER_EDIT_error_selecting_image, "Error resolving activity for Intent.ACTION_GET_CONTENT");
+    void onAvatarClicked() {
+        isImageSelectionMode = true;
+        if (! ImageSelector.selectImage(this) ) {
+            showErrorMsg(R.string.error_selecting_image, "Cannot launch file selector");
         }
     }
 
     @OnClick(R.id.saveButton)
-    void saveUser() {
+    void onSaveButtonClicked() {
         presenter.onSaveUserClicked();
     }
 
     @OnClick(R.id.cancelButton)
-    void cancelEdit() {
+    void onCancelButtonClicked() {
         // TODO: останавливать отправку картинки... Но как?
         presenter.cancelButtonClicked();
     }
@@ -291,8 +293,30 @@ public class UserEdit_View extends BaseView implements
 
 
     // Внутренние методы
-    private void showImageIsBroken(ImageView imageView) {
-        Drawable brokenImage = imageView.getContext().getResources().getDrawable(R.drawable.ic_image_broken);
-        imageView.setImageDrawable(brokenImage);
+    private void processImageSelection(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                processSelectedImage(data);
+                break;
+            case RESULT_CANCELED:
+                break;
+            default:
+                showErrorMsg(R.string.error_selecting_image, "Unknown result code");
+        }
+    }
+
+    private void processSelectedImage(@Nullable Intent data) {
+        if (null == data) {
+            showErrorMsg(R.string.error_selecting_image, "Intent data is null");
+            return;
+        }
+
+        ImageInfo imageInfo = ImageSelector.getImageInfo(this, data);
+        if (null == imageInfo) {
+            showErrorMsg(R.string.error_processing_image, "Intent data is null");
+            return;
+        }
+
+        displayAvatar(imageInfo.getLocalURI().toString(), true);
     }
 }
