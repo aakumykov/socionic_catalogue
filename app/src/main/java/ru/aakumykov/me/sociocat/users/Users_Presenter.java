@@ -49,6 +49,7 @@ public class Users_Presenter implements
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
+    private String currentUserId;
     private User currentUser;
     private String editedUserId;
     private boolean imageSelected = false;
@@ -93,55 +94,15 @@ public class Users_Presenter implements
 
     // TODO: кидать исключения
     @Override
-    public void onFirstOpen(@Nullable Intent intent) {
-        if (null == intent) {
-            view.showErrorMsg(R.string.data_error, "Intent is null");
-            return;
-        }
-
-        String userId = intent.getStringExtra(Constants.USER_ID);
-        if (null == userId) {
-            view.showErrorMsg(R.string.USER_SHOW_error_displaying_user, "There is no user id in Intent");
-            return;
-        }
-
-        loadUser(userId);
+    public void onFirstOpen() {
+        if (checkAuthorization())
+            loadUser();
     }
 
     @Override
     public void onConfigurationChanged() {
-        switch (viewMode) {
-            case SHOW:
-                showView.displayUser(currentUser);
-                break;
-
-            case EDIT:
-                break;
-
-            case LIST:
-                break;
-
-            default:
-                throw new RuntimeException("Unknown videMode: "+viewMode);
-        }
-    }
-
-    @Override
-    public void processInputIntent(Intent intent) throws Exception {
-       String userId = intent.getStringExtra(Constants.USER_ID);
-
-       if (null != userId) {
-           loadUser(userId);
-       }
-       else {
-           if (AuthSingleton.isLoggedIn()) {
-               userId = AuthSingleton.currentUserId();
-               loadUser(userId);
-           }
-           else {
-               showView.requestLogin(Constants.CODE_USER_SHOW, null);
-           }
-       }
+        if (checkAuthorization())
+            displayUser();
     }
 
 
@@ -201,7 +162,7 @@ public class Users_Presenter implements
 
     @Override
     public void loadCardsOfUser(String userId) {
-//        cardsSingleton.loadListForUser(userId, this);
+//        cardsSingleton.loadListForUser(currentUserId, this);
     }
 
     @Override
@@ -285,7 +246,7 @@ public class Users_Presenter implements
         editedUserId = user.getKey();
 
         editView.hideProgressMessage();
-        editView.fillUserForm(user);
+        editView.displayUser(user);
     }
 
     @Override
@@ -376,30 +337,42 @@ public class Users_Presenter implements
 
 
     // Внутренние методы
-    private void loadUser(String userId) {
+    private boolean checkAuthorization() {
+        this.currentUserId = AuthSingleton.currentUserId();
+        if (null == currentUserId) {
+            view.showToast(R.string.not_authorized);
+            view.closePage();
+            return false;
+        }
+        return true;
+    }
+
+    private void displayUser() {
+        switch (viewMode) {
+            case SHOW:
+                showView.displayUser(currentUser);
+                break;
+
+            case EDIT:
+                editView.displayUser(currentUser);
+                break;
+
+            case LIST:
+                break;
+
+            default:
+                throw new RuntimeException("Unknown videMode: "+viewMode);
+        }
+    }
+
+    private void loadUser() {
         view.showProgressMessage(R.string.USER_SHOW_loading_user_info);
 
-        usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
+        usersSingleton.getUserById(currentUserId, new iUsersSingleton.ReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
-                if (null != user) {
-                    currentUser = user;
-                    view.hideProgressMessage();
-
-                    switch (viewMode) {
-                        case SHOW:
-                            showView.displayUser(user);
-                            showView.setPageTitle(user.getName());
-                            break;
-                        case EDIT:
-                            break;
-                        default:
-                            break;
-                    }
-
-                }
-                else
-                    view.showErrorMsg(R.string.USER_SHOW_error_displaying_user, "User is NULL");
+                currentUser = user;
+                displayUser();
             }
 
             @Override

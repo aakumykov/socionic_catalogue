@@ -141,8 +141,8 @@ public class UserEdit_View extends BaseView implements
 
     // Интерфейсные методы
     @Override
-    public void fillUserForm(User user) {
-        Log.d(TAG, "fillUserForm()");
+    public void displayUser(User user) {
+        Log.d(TAG, "displayUser()");
         hideProgressMessage();
 
         nameInput.setText(user.getName());

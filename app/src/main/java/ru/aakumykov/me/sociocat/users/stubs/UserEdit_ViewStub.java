@@ -10,7 +10,7 @@ import ru.aakumykov.me.sociocat.users.iUsers;
 @SuppressLint("Registered")
 public class UserEdit_ViewStub extends Users_ViewStub implements iUsers.EditView {
     @Override
-    public void fillUserForm(User user) {
+    public void displayUser(User user) {
 
     }
 

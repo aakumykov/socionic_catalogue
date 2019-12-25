@@ -36,7 +36,8 @@ public interface iUsers {
     }
 
     interface EditView  extends View {
-        void fillUserForm(User user);
+
+        void displayUser(User user);
         void displayAvatar(String imageURL, boolean justSelected);
 
         String getName();
@@ -61,12 +62,10 @@ public interface iUsers {
 
         boolean hasUser();
 
-        void onFirstOpen(@Nullable Intent intent);
+        void onFirstOpen();
 
         void onConfigurationChanged();
 
-
-        void processInputIntent(Intent intent) throws Exception;
 
         void prepareUserEdit(String userId) throws Exception;
 

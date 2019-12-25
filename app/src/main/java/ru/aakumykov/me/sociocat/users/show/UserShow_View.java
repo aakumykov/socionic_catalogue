@@ -96,7 +96,7 @@ public class UserShow_View extends BaseView implements
         if (presenter.hasUser()) {
             presenter.onConfigurationChanged();
         } else {
-            presenter.onFirstOpen(getIntent());
+            presenter.onFirstOpen();
         }
     }
 
