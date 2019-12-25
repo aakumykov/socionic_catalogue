@@ -197,6 +197,11 @@ public class UserEdit_View extends BaseView implements
     }
 
     @Override
+    public String getEmail() {
+        return emailInput.getText().toString();
+    }
+
+    @Override
     public String getAbout() {
         return aboutInput.getText().toString();
     }
@@ -209,6 +214,8 @@ public class UserEdit_View extends BaseView implements
 
     @Override
     public void finishEdit(User user, boolean isSuccessfull) {
+        showToast(R.string.USER_EDIT_profile_saved);
+
         Intent intent = new Intent();
         intent.putExtra(Constants.USER, user);
 
@@ -240,13 +247,7 @@ public class UserEdit_View extends BaseView implements
 
     @OnClick(R.id.saveButton)
     void saveUser() {
-        try {
-            hideMsg();
-            presenter.saveProfile();
-        } catch (Exception e) {
-            showErrorMsg(R.string.USER_EDIT_error_saving_user, e.getMessage());
-            e.printStackTrace();
-        }
+        presenter.onSaveUserClicked();
     }
 
     @OnClick(R.id.cancelButton)

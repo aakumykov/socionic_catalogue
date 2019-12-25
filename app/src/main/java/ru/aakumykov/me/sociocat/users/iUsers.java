@@ -40,6 +40,7 @@ public interface iUsers {
         void displayAvatar(String imageURL, boolean justSelected);
 
         String getName();
+        String getEmail();
         String getAbout();
         Bitmap getImageBitmap();
 
@@ -62,28 +63,16 @@ public interface iUsers {
         boolean hasUser();
 
         void onFirstOpen();
-
         void onConfigurationChanged();
 
-
-        void prepareUserEdit(String userId) throws Exception;
+        void onSaveUserClicked();
+        void cancelButtonClicked();
 
         void setImageSelected(boolean isSelected);
-
         void processSelectedImage(@Nullable Intent intent);
 
         void loadList(iUsersSingleton.ListCallbacks callbacks);
-
-        void loadCardsOfUser(String userId);
-
         void listItemClicked(String key);
-
-        void saveProfile() throws Exception;
-
-        void cancelButtonClicked();
-
-        void onTransferUserClicked();
-
 
         void onUserLoggedOut();
     }

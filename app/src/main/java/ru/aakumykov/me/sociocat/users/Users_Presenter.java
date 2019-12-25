@@ -28,6 +28,7 @@ import ru.aakumykov.me.sociocat.users.stubs.UserShow_ViewStub;
 import ru.aakumykov.me.sociocat.users.stubs.UsersList_ViewStub;
 import ru.aakumykov.me.sociocat.users.stubs.Users_ViewStub;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Users_Presenter implements
         iUsers.Presenter,
@@ -106,23 +107,6 @@ public class Users_Presenter implements
 
     // Пользовательские методы
     @Override
-    public void prepareUserEdit(String userId) throws Exception {
-        if (AuthSingleton.isLoggedIn())
-        {
-            if (AuthSingleton.currentUserId().equals(userId))
-            {
-                usersSingleton.getUserById(userId, this);
-            }
-            else {
-                throw new IllegalAccessException("Cannot edit profile of another user.");
-            }
-        }
-        else {
-            throw new IllegalAccessException("You must be logged in.");
-        }
-    }
-
-    @Override
     public void setImageSelected(boolean isSelected) {
         imageSelected = isSelected;
     }
@@ -134,28 +118,21 @@ public class Users_Presenter implements
     }
 
     @Override
-    public void onTransferUserClicked() {
-        showView.showToast("Метод Users_Presenter.onTransferUserClicked() отключен.");
-
-        /*showView.showProgressMessage(R.string.USER_SHOW_transferring_user);
-
-        usersSingleton_CF.saveUser(currentUser, new iUsersSingleton.SaveCallbacks() {
-            @Override
-            public void onUserSaveSuccess(User user) {
-                showView.showDebugMsg(R.string.USER_SHOW_user_transfer_success);
-            }
-
-            @Override
-            public void onUserSaveFail(String errorMsg) {
-                showView.showErrorMsg(R.string.USER_SHOW_user_transfer_error, errorMsg);
-            }
-        });*/
-    }
-
-    @Override
     public void onUserLoggedOut() {
         view.showToast(R.string.you_are_logged_out);
         view.closePage();
+    }
+
+    @Override
+    public void onSaveUserClicked() {
+        try {
+            saveProfile();
+        }
+        catch (Exception e) {
+            editView.enableEditForm();
+            editView.showErrorMsg(R.string.USER_EDIT_error_saving_profile, e.getMessage());
+            MyUtils.printError(TAG, e);
+        }
     }
 
     @Override
@@ -165,55 +142,9 @@ public class Users_Presenter implements
     }
 
     @Override
-    public void loadCardsOfUser(String userId) {
-//        cardsSingleton.loadListForUser(currentUserId, this);
-    }
-
-    @Override
     public void listItemClicked(String key) {
         Log.d(TAG, "listItemClicked("+key+")");
         listView.goUserPage(key);
-    }
-
-    @Override
-    public void saveProfile() throws Exception {
-
-        if (!AuthSingleton.isLoggedIn()) {
-            throw new IllegalAccessException("You is not logged in.");
-        }
-
-        if (!AuthSingleton.currentUserId().equals(editedUserId)) {
-            throw new IllegalAccessException("Cannot save profile of another user.");
-        }
-
-        String name = editView.getName();
-        if (TextUtils.isEmpty(name)) {
-            editView.showErrorMsg(R.string.USER_EDIT_name_cannot_be_empty, "");
-            return;
-        }
-
-        currentUser.setName(name);
-        currentUser.setAbout(editView.getAbout());
-
-        if (!currentUser.hasAvatar() && imageSelected) {
-            try {
-                Bitmap imageBitmap = editView.getImageBitmap();
-                String fileName = AuthSingleton.currentUserId();
-
-                editView.showAvatarThrobber();
-                editView.disableEditForm();
-                editView.showToast(R.string.USER_EDIT_saving_avatar);
-
-                storageSingleton.uploadAvatar(imageBitmap, imageType, fileName, this);
-
-            } catch (Exception e) {
-                onFileUploadFail(e.getMessage());
-                e.printStackTrace();
-            }
-        }
-        else {
-            saveUser();
-        }
     }
 
     @Override
@@ -383,6 +314,46 @@ public class Users_Presenter implements
 
             default:
                 throw new RuntimeException("Unknown videMode: "+viewMode);
+        }
+    }
+
+    private void saveProfile() throws Exception {
+
+        if (!AuthSingleton.isLoggedIn()) {
+            throw new IllegalAccessException("You is not logged in.");
+        }
+
+        if (!AuthSingleton.currentUserId().equals(editedUserId)) {
+            throw new IllegalAccessException("Cannot save profile of another user.");
+        }
+
+        String name = editView.getName();
+        if (TextUtils.isEmpty(name)) {
+            editView.showErrorMsg(R.string.USER_EDIT_name_cannot_be_empty, "");
+            return;
+        }
+
+        currentUser.setName(name);
+        currentUser.setAbout(editView.getAbout());
+
+        if (!currentUser.hasAvatar() && imageSelected) {
+            try {
+                Bitmap imageBitmap = editView.getImageBitmap();
+                String fileName = AuthSingleton.currentUserId();
+
+                editView.showAvatarThrobber();
+                editView.disableEditForm();
+                editView.showToast(R.string.USER_EDIT_saving_avatar);
+
+                storageSingleton.uploadAvatar(imageBitmap, imageType, fileName, this);
+
+            } catch (Exception e) {
+                onFileUploadFail(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        else {
+            saveUser();
         }
     }
 

@@ -25,6 +25,11 @@ public class UserEdit_ViewStub extends Users_ViewStub implements iUsers.EditView
     }
 
     @Override
+    public String getEmail() {
+        return null;
+    }
+
+    @Override
     public String getAbout() {
         return null;
     }
