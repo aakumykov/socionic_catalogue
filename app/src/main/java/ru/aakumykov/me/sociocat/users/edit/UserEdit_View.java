@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.Menu;
@@ -30,6 +31,8 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.users.Users_Presenter;
 import ru.aakumykov.me.sociocat.users.iUsers;
+import ru.aakumykov.me.sociocat.users.view_model.Users_ViewModel;
+import ru.aakumykov.me.sociocat.users.view_model.Users_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.FileInfo;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -69,16 +72,12 @@ public class UserEdit_View extends BaseView implements
 
         UserEdit_ViewPermissionsDispatcher.checkPermissionsWithPermissionCheck(this);
 
-        presenter = new Users_Presenter();
-
-        Intent intent = getIntent();
-        String userId = intent.getStringExtra(Constants.USER_ID);
-
-        try {
-            presenter.prepareUserEdit(userId);
-        } catch (Exception e) {
-            hideProgressMessage();
-            showErrorMsg(R.string.USER_EDIT_error_loading_data, e.getMessage());
+        Users_ViewModel usersViewModel = new ViewModelProvider(this, new Users_ViewModelFactory()).get(Users_ViewModel.class);
+        if (usersViewModel.hasPresenter()) {
+            presenter = usersViewModel.getPresenter();
+        } else {
+            presenter = new Users_Presenter();
+            usersViewModel.storePresenter(presenter);
         }
     }
 
@@ -86,6 +85,11 @@ public class UserEdit_View extends BaseView implements
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
+
+        if (presenter.hasUser())
+            presenter.onConfigurationChanged();
+        else
+            presenter.onFirstOpen();
     }
 
     @Override

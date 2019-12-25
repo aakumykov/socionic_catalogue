@@ -63,7 +63,6 @@ public class UserShow_View extends BaseView implements
         ButterKnife.bind(this);
 
         setPageTitle(R.string.USER_SHOW_simple_page_title);
-
         activateUpButton();
 
         Users_ViewModel usersViewModel = new ViewModelProvider(this, new Users_ViewModelFactory()).get(Users_ViewModel.class);

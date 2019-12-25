@@ -345,6 +345,23 @@ public class Users_Presenter implements
         return true;
     }
 
+    private void loadUser() {
+        view.showProgressMessage(R.string.USER_SHOW_loading_user_info);
+
+        usersSingleton.getUserById(currentUserId, new iUsersSingleton.ReadCallbacks() {
+            @Override
+            public void onUserReadSuccess(User user) {
+                currentUser = user;
+                displayUser();
+            }
+
+            @Override
+            public void onUserReadFail(String errorMsg) {
+                view.showErrorMsg(R.string.USER_SHOW_error_displaying_user, errorMsg);
+            }
+        });
+    }
+
     private void displayUser() {
         switch (viewMode) {
             case SHOW:
@@ -361,23 +378,6 @@ public class Users_Presenter implements
             default:
                 throw new RuntimeException("Unknown videMode: "+viewMode);
         }
-    }
-
-    private void loadUser() {
-        view.showProgressMessage(R.string.USER_SHOW_loading_user_info);
-
-        usersSingleton.getUserById(currentUserId, new iUsersSingleton.ReadCallbacks() {
-            @Override
-            public void onUserReadSuccess(User user) {
-                currentUser = user;
-                displayUser();
-            }
-
-            @Override
-            public void onUserReadFail(String errorMsg) {
-                view.showErrorMsg(R.string.USER_SHOW_error_displaying_user, errorMsg);
-            }
-        });
     }
 
     private void saveUser() {
