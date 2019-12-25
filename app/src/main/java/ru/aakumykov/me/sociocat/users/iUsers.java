@@ -30,7 +30,6 @@ public interface iUsers {
 
     interface ShowView  extends View {
         void displayUser(User user);
-        void displayCardsList(List<Card> list);
         void goUserEdit();
         void setPageTitle(String userName);
     }

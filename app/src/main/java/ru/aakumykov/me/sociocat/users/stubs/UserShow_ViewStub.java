@@ -17,11 +17,6 @@ public class UserShow_ViewStub extends Users_ViewStub implements iUsers.ShowView
     }
 
     @Override
-    public void displayCardsList(List<Card> list) {
-
-    }
-
-    @Override
     public void goUserEdit() {
 
     }

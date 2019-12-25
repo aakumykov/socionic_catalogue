@@ -327,7 +327,7 @@ public class Users_Presenter implements
 
     @Override
     public void onListLoadSuccess(List<Card> list) {
-        showView.displayCardsList(list);
+
     }
 
     @Override

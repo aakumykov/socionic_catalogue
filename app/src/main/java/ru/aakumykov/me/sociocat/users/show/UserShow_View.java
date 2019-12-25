@@ -42,9 +42,7 @@ import ru.aakumykov.me.sociocat.users.view_model.Users_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class UserShow_View extends BaseView implements
-        iUsers.ShowView,
-        iUsersSingleton.ReadCallbacks,
-        AdapterView.OnItemClickListener
+        iUsers.ShowView
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.nameView) TextView nameView;
@@ -54,14 +52,7 @@ public class UserShow_View extends BaseView implements
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
 
     private final static String TAG = "UserShow_View";
-    boolean dryRun = true;
     private iUsers.Presenter presenter;
-
-    // Где должен базироваться currentUser: во вьюхе или презентере?
-    private User currentUser;
-
-    private List<Card> cardsList;
-    @BindView(R.id.cardsListView) ListView cardsListView;
 
 
     // Системные методы
@@ -82,10 +73,6 @@ public class UserShow_View extends BaseView implements
             presenter = new Users_Presenter();
             usersViewModel.storePresenter(presenter);
         }
-
-        cardsList = new ArrayList<>();
-
-        cardsListView.setOnItemClickListener(this);
     }
 
     @Override
@@ -194,8 +181,6 @@ public class UserShow_View extends BaseView implements
     public void displayUser(final User user) {
         Log.d(TAG, "displayUser(), "+user);
 
-        currentUser = user;
-
         hideProgressMessage();
 
         nameView.setText(user.getName());
@@ -211,49 +196,16 @@ public class UserShow_View extends BaseView implements
             displayAvatar(user.getAvatarURL());
     }
 
-    @Override
-    public void displayCardsList(List<Card> list) {
-        if (null != list) {
-            cardsList.addAll(list);
-        }
-    }
 
     @Override
     public void goUserEdit() {
-        if (null != currentUser) {
-            Intent intent = new Intent(this, UserEdit_View.class);
-            intent.putExtra(Constants.USER_ID, currentUser.getKey());
-            startActivityForResult(intent, Constants.CODE_USER_EDIT);
-        }
+        Intent intent = new Intent(this, UserEdit_View.class);
+        startActivityForResult(intent, Constants.CODE_USER_EDIT);
     }
 
     @Override
     public void setPageTitle(String userName) {
         setPageTitle(R.string.USER_SHOW_complex_page_title, userName);
-    }
-
-
-    // Коллбеки
-    @Override
-    public void onUserReadSuccess(User user) {
-        currentUser = user;
-        displayUser(user);
-        presenter.loadCardsOfUser(user.getKey());
-    }
-
-    @Override
-    public void onUserReadFail(String errorMsg) {
-        currentUser = null;
-        hideProgressMessage();
-        showErrorMsg(R.string.USER_SHOW_error_displaying_user, errorMsg);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Card card = cardsList.get(position);
-        Intent intent = new Intent(this, CardShow_View.class);
-        intent.putExtra(Constants.CARD_KEY, card.getKey());
-        startActivity(intent);
     }
 
 
