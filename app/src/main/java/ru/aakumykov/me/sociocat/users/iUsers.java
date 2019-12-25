@@ -55,6 +55,13 @@ public interface iUsers {
         void linkView(View view) throws IllegalArgumentException;
         void unlinkView();
 
+        boolean hasUser();
+
+        void onFirstOpen(@Nullable Intent intent);
+
+        void onConfigurationChanged();
+
+
         void processInputIntent(Intent intent) throws Exception;
 
         void prepareUserEdit(String userId) throws Exception;
@@ -76,6 +83,8 @@ public interface iUsers {
         void cancelButtonClicked();
 
         void onTransferUserClicked();
+
+
     }
 
 }

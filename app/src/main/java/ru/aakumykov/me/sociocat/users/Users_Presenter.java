@@ -77,6 +77,24 @@ public class Users_Presenter implements
     }
 
     @Override
+    public boolean hasUser() {
+        return null != currentUser;
+    }
+
+    @Override
+    public void onFirstOpen(@Nullable Intent intent) {
+        if (null == intent) {
+            showView.showErrorMsg(R.string.data_error, "Intent is null");
+            return;
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged() {
+
+    }
+
+    @Override
     public void processInputIntent(Intent intent) throws Exception {
        String userId = intent.getStringExtra(Constants.USER_ID);
 

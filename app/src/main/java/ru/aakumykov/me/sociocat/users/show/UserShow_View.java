@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -36,6 +37,8 @@ import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.users.Users_Presenter;
 import ru.aakumykov.me.sociocat.users.edit.UserEdit_View;
 import ru.aakumykov.me.sociocat.users.iUsers;
+import ru.aakumykov.me.sociocat.users.view_model.Users_ViewModel;
+import ru.aakumykov.me.sociocat.users.view_model.Users_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class UserShow_View extends BaseView implements
@@ -72,7 +75,13 @@ public class UserShow_View extends BaseView implements
 
         activateUpButton();
 
-        presenter = new Users_Presenter();
+        Users_ViewModel usersViewModel = new ViewModelProvider(this, new Users_ViewModelFactory()).get(Users_ViewModel.class);
+        if (usersViewModel.hasPresenter()) {
+            presenter = usersViewModel.getPresenter();
+        } else {
+            presenter = new Users_Presenter();
+            usersViewModel.storePresenter(presenter);
+        }
 
         cardsList = new ArrayList<>();
 
@@ -84,17 +93,10 @@ public class UserShow_View extends BaseView implements
         super.onStart();
         presenter.linkView(this);
 
-        if (dryRun) {
-            dryRun = false;
-
-            try {
-                presenter.processInputIntent(getIntent());
-            } catch (Exception e) {
-                // TODO: всунуть сокрытие крутилки внутрь show*Message()
-                hideProgressMessage();
-                showErrorMsg(R.string.USER_SHOW_error_displaying_user, e.getMessage());
-                e.printStackTrace();
-            }
+        if (presenter.hasUser()) {
+            presenter.onConfigurationChanged();
+        } else {
+            presenter.onFirstOpen(getIntent());
         }
     }
 
