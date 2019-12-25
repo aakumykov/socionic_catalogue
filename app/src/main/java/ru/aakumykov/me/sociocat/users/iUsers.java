@@ -15,23 +15,27 @@ import ru.aakumykov.me.sociocat.models.User;
 
 public interface iUsers {
 
-    interface View {
+    enum ViewMode {
+        SHOW, EDIT, LIST
+    }
+
+    interface View extends iBaseView {
 
     } // Это объединение нужно для работы linkViews / unlinkViews
 
-    interface ListView  extends iBaseView, View {
+    interface ListView extends View {
         void displayList(List<User> list);
         void goUserPage(String userId);
     }
 
-    interface ShowView  extends iBaseView, View {
+    interface ShowView  extends View {
         void displayUser(User user);
         void displayCardsList(List<Card> list);
         void goUserEdit();
         void setPageTitle(String userName);
     }
 
-    interface EditView  extends iBaseView, View {
+    interface EditView  extends View {
         void fillUserForm(User user);
         void displayAvatar(String imageURL, boolean justSelected);
 
@@ -67,8 +71,6 @@ public interface iUsers {
         void prepareUserEdit(String userId) throws Exception;
 
         void setImageSelected(boolean isSelected);
-
-        void loadUser(String userId);
 
         void processSelectedImage(@Nullable Intent intent);
 

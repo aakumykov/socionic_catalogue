@@ -23,6 +23,10 @@ import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.users.stubs.UserEdit_ViewStub;
+import ru.aakumykov.me.sociocat.users.stubs.UserShow_ViewStub;
+import ru.aakumykov.me.sociocat.users.stubs.UsersList_ViewStub;
+import ru.aakumykov.me.sociocat.users.stubs.Users_ViewStub;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
 public class Users_Presenter implements
@@ -32,8 +36,11 @@ public class Users_Presenter implements
         iStorageSingleton.FileUploadCallbacks,
         iCardsSingleton.ListCallbacks
 {
-
     private final static String TAG = "Users_Presenter";
+
+    private iUsers.ViewMode viewMode;
+
+    private iUsers.View view;
     private iUsers.ShowView showView;
     private iUsers.ListView listView;
     private iUsers.EditView editView;
@@ -47,21 +54,24 @@ public class Users_Presenter implements
     private boolean imageSelected = false;
     private String imageType;
 
+
     // Системные методы
     @Override
     public void linkView(iUsers.View view) throws IllegalArgumentException {
 
+        this.view = view;
+
         if (view instanceof iUsers.ListView) {
-            Log.d(TAG, "linkViews(ListAdapter)");
             this.listView = (iUsers.ListView) view;
+            viewMode = iUsers.ViewMode.LIST;
         }
         else if (view instanceof iUsers.ShowView) {
-            Log.d(TAG, "linkViews(ShowView)");
             this.showView = (iUsers.ShowView) view;
+            viewMode = iUsers.ViewMode.SHOW;
         }
         else if (view instanceof iUsers.EditView) {
-            Log.d(TAG, "linkViews(EditView)");
             this.editView = (iUsers.EditView) view;
+            viewMode = iUsers.ViewMode.EDIT;
         }
         else {
             throw new IllegalArgumentException("Unknown type of View '"+view.getClass()+"'");
@@ -70,10 +80,10 @@ public class Users_Presenter implements
 
     @Override
     public void unlinkView() {
-        Log.d(TAG, "unlinkViews()");
-        this.listView = null;
-        this.showView = null;
-        this.editView = null;
+        this.view =     new Users_ViewStub();
+        this.showView = new UserShow_ViewStub();
+        this.editView = new UserEdit_ViewStub();
+        this.listView = new UsersList_ViewStub();
     }
 
     @Override
@@ -81,17 +91,39 @@ public class Users_Presenter implements
         return null != currentUser;
     }
 
+    // TODO: кидать исключения
     @Override
     public void onFirstOpen(@Nullable Intent intent) {
         if (null == intent) {
-            showView.showErrorMsg(R.string.data_error, "Intent is null");
+            view.showErrorMsg(R.string.data_error, "Intent is null");
             return;
         }
+
+        String userId = intent.getStringExtra(Constants.USER_ID);
+        if (null == userId) {
+            view.showErrorMsg(R.string.USER_SHOW_error_displaying_user, "There is no user id in Intent");
+            return;
+        }
+
+        loadUser(userId);
     }
 
     @Override
     public void onConfigurationChanged() {
+        switch (viewMode) {
+            case SHOW:
+                showView.displayUser(currentUser);
+                break;
 
+            case EDIT:
+                break;
+
+            case LIST:
+                break;
+
+            default:
+                throw new RuntimeException("Unknown videMode: "+viewMode);
+        }
     }
 
     @Override
@@ -134,31 +166,6 @@ public class Users_Presenter implements
     @Override
     public void setImageSelected(boolean isSelected) {
         imageSelected = isSelected;
-    }
-
-    @Override
-    public void loadUser(String userId) {
-
-        showView.showProgressMessage(R.string.USER_SHOW_loading_user_info);
-
-        usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
-            @Override
-            public void onUserReadSuccess(User user) {
-                if (null != user) {
-                    currentUser = user;
-                    showView.hideProgressMessage();
-                    showView.setPageTitle(user.getName());
-                    showView.displayUser(user);
-                }
-                else
-                    showView.showErrorMsg(R.string.USER_SHOW_error_displaying_user, "User is NULL");
-            }
-
-            @Override
-            public void onUserReadFail(String errorMsg) {
-                showView.showErrorMsg(R.string.USER_SHOW_error_displaying_user, errorMsg);
-            }
-        });
     }
 
     @Override
@@ -369,6 +376,39 @@ public class Users_Presenter implements
 
 
     // Внутренние методы
+    private void loadUser(String userId) {
+        view.showProgressMessage(R.string.USER_SHOW_loading_user_info);
+
+        usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
+            @Override
+            public void onUserReadSuccess(User user) {
+                if (null != user) {
+                    currentUser = user;
+                    view.hideProgressMessage();
+
+                    switch (viewMode) {
+                        case SHOW:
+                            showView.displayUser(user);
+                            showView.setPageTitle(user.getName());
+                            break;
+                        case EDIT:
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
+                else
+                    view.showErrorMsg(R.string.USER_SHOW_error_displaying_user, "User is NULL");
+            }
+
+            @Override
+            public void onUserReadFail(String errorMsg) {
+                view.showErrorMsg(R.string.USER_SHOW_error_displaying_user, errorMsg);
+            }
+        });
+    }
+
     private void saveUser() {
         editView.disableEditForm();
         editView.showProgressMessage(R.string.USER_EDIT_saving_profile);
