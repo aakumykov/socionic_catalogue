@@ -153,6 +153,12 @@ public class Users_Presenter implements
     }
 
     @Override
+    public void onUserLoggedOut() {
+        view.showToast(R.string.you_are_logged_out);
+        view.closePage();
+    }
+
+    @Override
     public void loadList(iUsersSingleton.ListCallbacks callbacks) {
         Log.d(TAG, "loadList()");
         usersSingleton.listUsers(callbacks);

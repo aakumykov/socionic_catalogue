@@ -85,6 +85,7 @@ public interface iUsers {
         void onTransferUserClicked();
 
 
+        void onUserLoggedOut();
     }
 
 }

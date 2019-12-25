@@ -139,7 +139,7 @@ public class UserEdit_View extends BaseView implements
     // TODO: подключено ли это (я менял)?
     @Override
     public void onUserLogout() {
-        closePage();
+        presenter.onUserLoggedOut();
     }
 
 
