@@ -45,8 +45,6 @@ public class Users_Presenter implements
     private iUsers.ListView listView;
     private iUsers.EditView editView;
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
-    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
     private String currentUserId;

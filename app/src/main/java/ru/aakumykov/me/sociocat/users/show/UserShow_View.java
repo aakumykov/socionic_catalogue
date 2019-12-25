@@ -137,28 +137,24 @@ public class UserShow_View extends BaseView implements
         if (null != menuItemEdit)
             menuItemEdit.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-//        menuInflater.inflate(R.menu.transfer_user, menu);
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "onOptionsItemSelected()");
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 closePage();
                 break;
+
             case R.id.actionEdit:
                 goUserEdit();
                 break;
+
             case R.id.actionDelete:
 //                presenter.userDeleteClicked(currentUser.getKey());
                 break;
-//            case R.id.actionTransferUser:
-//                presenter.onTransferUserClicked();
-//                break;
+
             default:
                 super.onOptionsItemSelected(item);
         }
