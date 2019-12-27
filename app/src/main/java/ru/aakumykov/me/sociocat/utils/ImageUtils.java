@@ -41,6 +41,10 @@ public class ImageUtils {
 
 
     // Уменьшение размера картинки
+    public static Bitmap scaleDownBitmap(Bitmap bitmap, int threshold) {
+        return scaleDownBitmap(bitmap, threshold, false);
+    }
+
     /**
      * @param bitmap the Bitmap to be scaled
      * @param threshold the maximum dimension (either width or height) of the scaled bitmap

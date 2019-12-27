@@ -20,6 +20,7 @@ public final class Config {
 
     public static final int AVATAR_MAX_WIDTH = 256;
     public static final int AVATAR_MAX_HEIGHT = 455;
+    public static final int AVATAR_MAX_SIZE = 256;
 
     public static final int DEFAULT_JPEG_QUALITY = 90;
 

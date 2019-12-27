@@ -4,7 +4,10 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -18,6 +21,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -159,47 +164,22 @@ public class UserEdit_View extends BaseView implements
         aboutInput.setText(user.getAbout());
 
         if (user.hasAvatar())
-            displayAvatar(user.getAvatarURL(), false);
+            displayAvatar(user.getAvatarURL());
     }
 
     @Override
-    public void displayAvatar(String imageURI, boolean justSelected) {
-        /*try {
-            Uri uri = Uri.parse(imageURI);
-            showAvatarThrobber();
-
-            MVPUtils.loadImageWithResizeInto(
-                    uri,
-                    avatarView,
-                    justSelected,
-                    Config.AVATAR_MAX_WIDTH,
-                    Config.AVATAR_MAX_HEIGHT,
-                    new MVPUtils.ImageLoadWithResizeCallbacks() {
-                        @Override
-                        public void onImageLoadWithResizeSuccess(FileInfo fileInfo) {
-                            hideAvatarThrobber();
-                        }
-
-                        @Override
-                        public void onImageLoadWithResizeFail(String errorMsg) {
-                            hideAvatarThrobber();
-                            showImageIsBroken(avatarView);
-                            Log.e(TAG, errorMsg);
-                        }
-                    }
-            );
-
-        } catch (Exception e) {
-            hideAvatarThrobber();
-            showImageIsBroken(avatarView);
-            e.printStackTrace();
-        }*/
-
-        Glide.with(this)
-                .load(imageURI)
-                .placeholder(R.drawable.ic_avatar_placeholder)
-                .error(R.drawable.ic_image_error)
-                .into(avatarView);
+    public <T> void displayAvatar(T avatar) {
+        try {
+            Glide.with(this)
+                    .load(avatar)
+                    .placeholder(R.drawable.ic_avatar_placeholder)
+                    .error(R.drawable.ic_image_error)
+                    .into(avatarView);
+        }
+        catch (Exception e) {
+            avatarView.setImageResource(R.drawable.ic_image_error);
+            MyUtils.printError(TAG, e);
+        }
     }
 
     @Override
@@ -215,12 +195,6 @@ public class UserEdit_View extends BaseView implements
     @Override
     public String getAbout() {
         return aboutInput.getText().toString();
-    }
-
-    @Override
-    public Bitmap getImageBitmap() {
-        return ((BitmapDrawable) avatarView.getDrawable()).getBitmap();
-
     }
 
     @Override
@@ -312,10 +286,25 @@ public class UserEdit_View extends BaseView implements
 
         ImageInfo imageInfo = ImageSelector.extractImageInfo(this, data);
         if (null == imageInfo) {
-            showErrorMsg(R.string.error_processing_image, "Intent data is null");
+            showErrorMsg(R.string.error_processing_image, "ImageInfo is null");
             return;
         }
 
-        displayAvatar(imageInfo.getLocalURI().toString(), true);
+        Glide.with(this)
+                .load(imageInfo.getLocalURI())
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        BitmapDrawable bitmapDrawable = (BitmapDrawable) resource;
+                        Bitmap bitmap = bitmapDrawable.getBitmap();
+
+                        presenter.onImageSelected(bitmap);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                        Log.d(TAG, "onLoadCleared()");
+                    }
+                });
     }
 }

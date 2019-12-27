@@ -12,6 +12,7 @@ import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.utils.ImageInfo;
 
 public interface iUsers {
 
@@ -35,14 +36,8 @@ public interface iUsers {
     }
 
     interface EditView  extends View {
-
         void displayUser(User user);
-        void displayAvatar(String imageURL, boolean justSelected);
-
-        String getName();
-        String getEmail();
-        String getAbout();
-        Bitmap getImageBitmap();
+        <T> void displayAvatar(T avatar);
 
         void showAvatarThrobber();
         void hideAvatarThrobber();
@@ -52,8 +47,9 @@ public interface iUsers {
 
         void finishEdit(User user, boolean isSuccessfull);
 
-        ContentResolver getContentResolver();
-        Context getApplicationContext();
+        String getName();
+        String getEmail();
+        String getAbout();
     }
 
     interface Presenter {
@@ -69,12 +65,13 @@ public interface iUsers {
         void cancelButtonClicked();
 
         void setImageSelected(boolean isSelected);
-        void processSelectedImage(@Nullable Intent intent);
 
         void loadList(iUsersSingleton.ListCallbacks callbacks);
         void listItemClicked(String key);
 
         void onUserLoggedOut();
+
+        void onImageSelected(Bitmap bitmap);
     }
 
 }

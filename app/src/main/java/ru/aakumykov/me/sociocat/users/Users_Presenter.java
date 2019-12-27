@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -27,6 +28,8 @@ import ru.aakumykov.me.sociocat.users.stubs.UserEdit_ViewStub;
 import ru.aakumykov.me.sociocat.users.stubs.UserShow_ViewStub;
 import ru.aakumykov.me.sociocat.users.stubs.UsersList_ViewStub;
 import ru.aakumykov.me.sociocat.users.stubs.Users_ViewStub;
+import ru.aakumykov.me.sociocat.utils.ImageInfo;
+import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -53,6 +56,7 @@ public class Users_Presenter implements
     private String editedUserId;
     private boolean imageSelected = false;
     private String imageType;
+    private Bitmap resizedAvatarBitmap;
 
 
     // Системные методы
@@ -124,6 +128,12 @@ public class Users_Presenter implements
     }
 
     @Override
+    public void onImageSelected(Bitmap bitmap) {
+        this.resizedAvatarBitmap = ImageUtils.scaleDownBitmap(bitmap, Config.AVATAR_MAX_SIZE);
+        editView.displayAvatar(resizedAvatarBitmap);
+    }
+
+    @Override
     public void onSaveUserClicked() {
         try {
             saveProfile();
@@ -145,32 +155,6 @@ public class Users_Presenter implements
     public void listItemClicked(String key) {
         Log.d(TAG, "listItemClicked("+key+")");
         listView.goUserPage(key);
-    }
-
-    @Override
-    public void processSelectedImage(@Nullable Intent data) {
-
-        if (null == data) {
-            editView.showErrorMsg(R.string.USER_EDIT_error_selecting_image, "");
-            return;
-        }
-
-        // Первый способ получить содержимое
-        Uri imageURI = data.getParcelableExtra(Intent.EXTRA_STREAM);
-
-        // Второй способ получить содержимое
-        if (null == imageURI) {
-            imageURI = data.getData();
-            if (null == imageURI) {
-                editView.showErrorMsg(R.string.USER_EDIT_no_image_data, "imageURI == NULL");
-                return;
-            }
-        }
-
-        setImageSelected(true);
-        currentUser.setAvatarURL("");
-        imageType = MVPUtils.detectImageType(editView.getApplicationContext(), imageURI);
-        editView.displayAvatar(imageURI.toString(), true);
     }
 
 
@@ -327,7 +311,7 @@ public class Users_Presenter implements
             throw new IllegalAccessException("Cannot save profile of another user.");
         }
 
-        String name = editView.getName();
+        /*String name = editView.getName();
         if (TextUtils.isEmpty(name)) {
             editView.showErrorMsg(R.string.USER_EDIT_name_cannot_be_empty, "");
             return;
@@ -354,7 +338,7 @@ public class Users_Presenter implements
         }
         else {
             saveUser();
-        }
+        }*/
     }
 
     private void saveUser() {
