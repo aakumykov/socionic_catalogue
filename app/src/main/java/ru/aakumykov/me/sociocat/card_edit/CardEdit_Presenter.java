@@ -27,7 +27,6 @@ import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.ImageInfo;
-import ru.aakumykov.me.sociocat.utils.ImageSelector;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
@@ -180,7 +179,7 @@ public class CardEdit_Presenter implements
 
     @Override
     public void processSelectedImage(@Nullable Intent data) throws Exception {
-        ImageInfo imageInfo = ImageSelector.extractImageInfo(view.getAppContext(), data);
+        ImageInfo imageInfo = ImageUtils.extractImageInfo(view.getAppContext(), data);
         if (null != imageInfo) {
             currentCard.setLocalImageURI(imageInfo.getLocalURI());
             imageType = imageInfo.getTypeString();

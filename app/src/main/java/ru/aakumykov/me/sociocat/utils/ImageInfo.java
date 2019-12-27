@@ -14,11 +14,6 @@ public class ImageInfo {
     public ImageInfo() {
     }
 
-    public ImageInfo(Uri localURI, ImageType imageType) {
-        this.localURI = localURI;
-        this.imageType = imageType;
-    }
-
     public Uri getLocalURI() {
         return localURI;
     }

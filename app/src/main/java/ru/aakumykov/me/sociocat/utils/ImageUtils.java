@@ -1,16 +1,52 @@
 package ru.aakumykov.me.sociocat.utils;
 
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.net.Uri;
+import android.util.Log;
+import android.webkit.MimeTypeMap;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.io.ByteArrayOutputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import ru.aakumykov.me.sociocat.R;
 
 public class ImageUtils {
 
     public final static int DEFAULT_JPEG_QUALITY = 90;
+    public final static int CODE_SELECT_IMAGE = 10;
+    private final static String TAG = "ImageUtils";
 
+    
+    public static boolean pickImage(Activity activity) {
+        return pickImage(activity, "image/*");
+    }
+
+    public static boolean pickImage(Activity activity, String mimeType) {
+        Intent intent = new Intent();
+        intent.setType(mimeType);
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        if (null != intent.resolveActivity(activity.getPackageManager())) {
+            activity.startActivityForResult(
+                    Intent.createChooser(intent, activity.getResources().getString(R.string.select_image)),
+                    CODE_SELECT_IMAGE
+            );
+            return true;
+        }
+        else {
+            Log.e(TAG, "Error resolving activity for Intent.ACTION_GET_CONTENT");
+            return false;
+        }
+    }
 
     public static ImageType detectImageType(@Nullable String imageTypeString) {
         switch ((""+imageTypeString).toLowerCase().trim()) {
@@ -26,6 +62,26 @@ public class ImageUtils {
             default:
                 return ImageType.UNSUPPORTED_IMAGE_TYPE;
         }
+    }
+
+    public static ImageInfo extractImageInfo(Context context, @Nullable Intent intent) {
+
+        if (null == intent)
+            return null;
+
+        Uri imageLocalURI = extractImageUriFromIntent(context, intent);
+
+        String imageTypeString = extractImageTypeString(context, imageLocalURI);
+        ImageType imageType = detectImageType(imageTypeString);
+
+        if (null != imageLocalURI && null != imageType) {
+            ImageInfo imageInfo = new ImageInfo();
+            imageInfo.setLocalURI(imageLocalURI);
+            imageInfo.setImageType(imageType);
+            return imageInfo;
+        }
+        else
+            return null;
     }
 
     public byte[] image2bytes(Bitmap imageBitmap, ImageType imageType) {
@@ -51,7 +107,6 @@ public class ImageUtils {
         imageBitmap.compress(compressFormat, quality, baos);
         return baos.toByteArray();
     }
-
 
     public static Bitmap scaleDownBitmap(Bitmap bitmap, int threshold) {
         return scaleDownBitmap(bitmap, threshold, false);
@@ -102,6 +157,8 @@ public class ImageUtils {
         return getResizedBitmap(bitmap, newWidth, newHeight, isNecessaryToKeepOrig);
     }
 
+
+    // Внутренние методы
     private static Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight, boolean isNecessaryToKeepOrig) {
         int width = bm.getWidth();
         int height = bm.getHeight();
@@ -120,7 +177,62 @@ public class ImageUtils {
         return resizedBitmap;
     }
 
+    private static Uri extractImageUriFromIntent(Context context, @NonNull Intent intent) {
 
-    // Запрещённый конструктор
+        Object imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM); // Первый способ получить содержимое
+
+        if (null == imageUri)
+            imageUri = intent.getData(); // Второй способ получить содержимое
+
+        if (null == imageUri)
+            imageUri = intent.getStringExtra(Intent.EXTRA_TEXT); // Третий способ
+
+        if (null == imageUri)
+            return null;
+
+
+        String imageType = "";
+        Uri resultImageUri = null;
+
+        if (imageUri instanceof Uri) {
+            imageType = extractImageTypeString(context, (Uri) imageUri);
+            resultImageUri = (Uri) imageUri;
+        }
+        else if (imageUri instanceof String) {
+            imageType = extractImageTypeString(context, (String) imageUri);
+            resultImageUri = Uri.parse((String) imageUri);
+        }
+        else
+            return null;
+
+        if (null != imageType)
+            return resultImageUri;
+        else
+            return null;
+    }
+
+    private static <T> String extractImageTypeString(Context context, T imageUri) {
+        if (imageUri instanceof Uri) {
+            ContentResolver contentResolver = context.getContentResolver();
+            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+            String mimeType = contentResolver.getType((Uri) imageUri);
+            return (null == mimeType) ? null : mimeTypeMap.getExtensionFromMimeType(mimeType);
+        }
+        else if (imageUri instanceof String) {
+            String imageString = (String) imageUri;
+            imageString = imageString.trim();
+            imageString = imageString.toLowerCase();
+            Pattern pattern = Pattern.compile("^.+\\.([a-z]+)$");
+            // запомни, регулярное выражение должно соответствовать строке целиком!
+            Matcher matcher = pattern.matcher(imageString);
+            return (matcher.matches()) ? matcher.group(1) : null;
+        }
+        else {
+            return null;
+        }
+    }
+
+
+    // Конструктор (запрещён)
     private ImageUtils(){}
 }

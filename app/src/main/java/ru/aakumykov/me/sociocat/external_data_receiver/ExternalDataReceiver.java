@@ -14,7 +14,7 @@ import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.ImageInfo;
-import ru.aakumykov.me.sociocat.utils.ImageSelector;
+import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -90,7 +90,7 @@ public class ExternalDataReceiver extends BaseView {
         Card card = new Card();
 
         // Картинка?
-        ImageInfo imageInfo = ImageSelector.extractImageInfo(this, inputIntent);
+        ImageInfo imageInfo = ImageUtils.extractImageInfo(this, inputIntent);
         if (null != imageInfo) {
             card.setType(Constants.IMAGE_CARD);
             card.setLocalImageURI(imageInfo.getLocalURI());

@@ -38,7 +38,7 @@ import ru.aakumykov.me.sociocat.users.iUsers;
 import ru.aakumykov.me.sociocat.users.view_model.Users_ViewModel;
 import ru.aakumykov.me.sociocat.users.view_model.Users_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.ImageInfo;
-import ru.aakumykov.me.sociocat.utils.ImageSelector;
+import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 // TODO: выбрасывание со страницы при разлогинивании
@@ -113,7 +113,7 @@ public class UserEdit_View extends BaseView implements
         presenter.linkView(this);
 
         switch (requestCode) {
-            case ImageSelector.CODE_SELECT_IMAGE:
+            case ImageUtils.CODE_SELECT_IMAGE:
                 processImageSelection(resultCode, data);
                 break;
             default:
@@ -219,7 +219,7 @@ public class UserEdit_View extends BaseView implements
     @OnClick(R.id.avatarView)
     void onAvatarClicked() {
         isImageSelectionMode = true;
-        if (! ImageSelector.selectImage(this) ) {
+        if (! ImageUtils.pickImage(this) ) {
             showErrorMsg(R.string.error_selecting_image, "Cannot launch file selector");
         }
     }
@@ -288,7 +288,7 @@ public class UserEdit_View extends BaseView implements
             return;
         }
 
-        ImageInfo imageInfo = ImageSelector.extractImageInfo(this, data);
+        ImageInfo imageInfo = ImageUtils.extractImageInfo(this, data);
         if (null == imageInfo) {
             showErrorMsg(R.string.error_processing_image, "ImageInfo is null");
             return;
