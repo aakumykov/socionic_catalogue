@@ -406,7 +406,7 @@ public class Card implements
 
     @Exclude public boolean isTextCard() {
         // TODO: метод вызывает исключение, если данные повреждены
-//        return getType().equals(Constants.TEXT_CARD);
+//        return getImageType().equals(Constants.TEXT_CARD);
         return Constants.TEXT_CARD.equals(getType()); // Устойчивый к отсутствию данных вариант.
     }
     @Exclude public boolean isImageCard() {

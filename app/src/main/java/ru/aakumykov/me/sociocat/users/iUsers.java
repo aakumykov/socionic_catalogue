@@ -1,8 +1,5 @@
 package ru.aakumykov.me.sociocat.users;
 
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import androidx.annotation.Nullable;
 
@@ -10,9 +7,9 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
-import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.utils.ImageInfo;
+import ru.aakumykov.me.sociocat.utils.ImageType;
+import ru.aakumykov.me.sociocat.utils.ImageUtils;
 
 public interface iUsers {
 
@@ -72,7 +69,7 @@ public interface iUsers {
 
         void onUserLoggedOut();
 
-        void onImageSelected(Bitmap bitmap);
+        void onImageSelected(Bitmap bitmap, ImageType imageType);
     }
 
 }

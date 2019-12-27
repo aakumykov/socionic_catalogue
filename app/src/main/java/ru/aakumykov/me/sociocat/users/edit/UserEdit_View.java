@@ -302,7 +302,7 @@ public class UserEdit_View extends BaseView implements
                         BitmapDrawable bitmapDrawable = (BitmapDrawable) resource;
                         Bitmap bitmap = bitmapDrawable.getBitmap();
 
-                        presenter.onImageSelected(bitmap);
+                        presenter.onImageSelected(bitmap, imageInfo.getImageType());
                     }
 
                     @Override

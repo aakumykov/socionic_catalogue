@@ -21,6 +21,7 @@ import ru.aakumykov.me.sociocat.users.stubs.UserEdit_ViewStub;
 import ru.aakumykov.me.sociocat.users.stubs.UserShow_ViewStub;
 import ru.aakumykov.me.sociocat.users.stubs.UsersList_ViewStub;
 import ru.aakumykov.me.sociocat.users.stubs.Users_ViewStub;
+import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -119,7 +120,7 @@ public class Users_Presenter implements
     }
 
     @Override
-    public void onImageSelected(Bitmap bitmap) {
+    public void onImageSelected(Bitmap bitmap, ImageType imageType) {
         Bitmap bitmapCopy = bitmap.copy(bitmap.getConfig(), true);
         resizedBitmap = ImageUtils.scaleDownBitmap(bitmapCopy, Config.AVATAR_MAX_SIZE);
         editView.displayAvatar(resizedBitmap);

@@ -3,23 +3,36 @@ package ru.aakumykov.me.sociocat.utils;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 
+import androidx.annotation.Nullable;
+
 import java.io.ByteArrayOutputStream;
 
 public class ImageUtils {
 
     public final static int DEFAULT_JPEG_QUALITY = 90;
 
-    public enum ImageType {
-        JPEG, PNG
 
+    public static ImageType detectImageType(@Nullable String imageTypeString) {
+        switch ((""+imageTypeString).toLowerCase().trim()) {
+            case "jpg":
+            case "jpeg":
+                return ImageType.JPEG;
+            case "png":
+                return ImageType.PNG;
+            case "webp":
+                return ImageType.WEBP;
+            case "bmp":
+                return ImageType.BMP;
+            default:
+                return ImageType.UNSUPPORTED_IMAGE_TYPE;
+        }
     }
 
-    // Картинка --> байты
-    public byte[] image2bytes(Bitmap imageBitmap, ImageUtils.ImageType imageType) {
+    public byte[] image2bytes(Bitmap imageBitmap, ImageType imageType) {
         return image2bytes(imageBitmap, imageType, ImageUtils.DEFAULT_JPEG_QUALITY);
     }
 
-    public byte[] image2bytes(Bitmap imageBitmap, ImageUtils.ImageType imageType, int quality) {
+    public byte[] image2bytes(Bitmap imageBitmap, ImageType imageType, int quality) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Bitmap.CompressFormat compressFormat;
@@ -40,7 +53,6 @@ public class ImageUtils {
     }
 
 
-    // Уменьшение размера картинки
     public static Bitmap scaleDownBitmap(Bitmap bitmap, int threshold) {
         return scaleDownBitmap(bitmap, threshold, false);
     }
@@ -109,6 +121,6 @@ public class ImageUtils {
     }
 
 
-    // (Запрещённый) конструктор
+    // Запрещённый конструктор
     private ImageUtils(){}
 }

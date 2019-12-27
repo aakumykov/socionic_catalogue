@@ -4,14 +4,13 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import java.io.ByteArrayOutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,16 +47,20 @@ public class ImageSelector {
     }
 
 
-    public static ImageInfo extractImageInfo(Context context, @NonNull Intent intent) {
+    public static ImageInfo extractImageInfo(Context context, @Nullable Intent intent) {
+
+        if (null == intent)
+            return null;
 
         Uri imageLocalURI = extractImageUriFromIntent(context, intent);
 
-        String imageType = detectImageType(context, imageLocalURI);
+        String imageTypeString = extractImageTypeString(context, imageLocalURI);
+        ImageType imageType = ImageUtils.detectImageType(imageTypeString);
 
         if (null != imageLocalURI && null != imageType) {
             ImageInfo imageInfo = new ImageInfo();
             imageInfo.setLocalURI(imageLocalURI);
-            imageInfo.setType(imageType);
+            imageInfo.setImageType(imageType);
             return imageInfo;
         }
         else
@@ -83,11 +86,11 @@ public class ImageSelector {
         Uri resultImageUri = null;
 
         if (imageUri instanceof Uri) {
-            imageType = detectImageType(context, (Uri) imageUri);
+            imageType = extractImageTypeString(context, (Uri) imageUri);
             resultImageUri = (Uri) imageUri;
         }
         else if (imageUri instanceof String) {
-            imageType = detectImageType(context, (String) imageUri);
+            imageType = extractImageTypeString(context, (String) imageUri);
             resultImageUri = Uri.parse((String) imageUri);
         }
         else
@@ -99,7 +102,7 @@ public class ImageSelector {
             return null;
     }
 
-    private static <T> String detectImageType(Context context, T imageUri) {
+    private static <T> String extractImageTypeString(Context context, T imageUri) {
         if (imageUri instanceof Uri) {
             ContentResolver contentResolver = context.getContentResolver();
             MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
@@ -119,5 +122,6 @@ public class ImageSelector {
             return null;
         }
     }
+
 
 }

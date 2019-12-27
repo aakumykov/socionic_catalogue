@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.card_edit;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 
@@ -23,12 +22,13 @@ import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.TagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.ImageInfo;
+import ru.aakumykov.me.sociocat.utils.ImageSelector;
+import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
 public class CardEdit_Presenter implements
@@ -180,10 +180,15 @@ public class CardEdit_Presenter implements
 
     @Override
     public void processSelectedImage(@Nullable Intent data) throws Exception {
-        ImageInfo imageInfo = ImageInfo.getImageInfo(view.getAppContext(), data);
-        currentCard.setLocalImageURI(imageInfo.getLocalURI());
-        imageType = imageInfo.getType();
-        view.displayImage(imageInfo.getLocalURI().toString());
+        ImageInfo imageInfo = ImageSelector.extractImageInfo(view.getAppContext(), data);
+        if (null != imageInfo) {
+            currentCard.setLocalImageURI(imageInfo.getLocalURI());
+            imageType = imageInfo.getTypeString();
+            view.displayImage(imageInfo.getLocalURI().toString());
+        }
+        else {
+            throw new Exception("Cannot extract ImageInfo from Intent");
+        }
     }
 
     @Override

@@ -18,7 +18,7 @@
     <string name="opening_card">Opening card</string>
     <string name="loading_cards_list">Loading cards list</string>
     <string name="image_placeholder">Image stub</string>
-    <string name="wrong_card_type">Unknown card type</string>
+    <string name="wrong_card_type">Unknown card imageType</string>
     <string name="error_loading_image">Error loading image</string>
     <string name="image_is_loaded">Image is loaded</string>
     <string name="card_image">Image of card</string>
@@ -37,7 +37,7 @@
     <string name="select_image">Select image</string>
     <string name="error_selecting_image">Error selecting image</string>
     <string name="image_data_error">Image data error</string>
-    <string name="wrong_mime_type">Wrong image type</string>
+    <string name="wrong_mime_type">Wrong image imageType</string>
     <string name="image_upload_cancelled">Image upload cancelled</string>
     <string name="image_upload_error">Image upload error</string>
     <string name="CARD_SHOW_error_saving_card">Error saving card</string>
@@ -120,7 +120,7 @@
     <string name="CARD_EDIT_error_displaying_card">Error displaying card</string>
     <string name="CARD_EDIT_error_receiving_image">Error selecting image</string>
     <string name="CARD_EDIT_error_recieving_data">Error receiving data</string>
-    <string name="CARD_EDIT_unsupported_data_type">Unsupported data type</string>
+    <string name="CARD_EDIT_unsupported_data_type">Unsupported data imageType</string>
     <string name="CARD_EDIT_error_displaying_image">Error displaying image</string>
     <string name="CARD_EDIT_error_processing_data">Error processing data</string>
     <string name="CARD_EDIT_unknown_error">Unknown error</string>
@@ -169,14 +169,14 @@
     <string name="USER_EDIT_you_are_not_logged_in">You are not logged in</string>
     <string name="USER_EDIT_you_cannot_edit_other_user">You cannot edit other user</string>
     <string name="CARD_EDIT_video_code">Video id or URL</string>
-    <string name="CARD_EDIT_unknown_data_mode">Unsupported data type</string>
+    <string name="CARD_EDIT_unknown_data_mode">Unsupported data imageType</string>
     <string name="CARD_EDIT_remove_this_video">Remove this video</string>
     <string name="CARD_SHOW_rating_update_error">Error rating update</string>
     <string name="CARD_EDIT_add_video">Add video</string>
     <string name="CARD_EDIT_page_title">Card edition</string>
     <string name="CARD_tags">Tags</string>
     <string name="not_implemented_yet">Not yet implementer</string>
-    <string name="CARD_EDIT_unsupported_card_type">Unsupported card type</string>
+    <string name="CARD_EDIT_unsupported_card_type">Unsupported card imageType</string>
     <string name="CARD_EDIT_card_saved">Card saved</string>
     <string name="CARD_EDIT_error_saving_tags">Error saving tags</string>
     <string name="CARD_EDIT_tags_are_saved">Tags are saved</string>
@@ -194,7 +194,7 @@
     <string name="CARD_EDIT_image_upload_cancelled">Image upload cancelled</string>
     <string name="CARD_EDIT_uploading_image">Uploading image</string>
     <string name="CARD_EDIT_saving_card">Saving card</string>
-    <string name="CARD_EDIT_select_card_type">Select card type</string>
+    <string name="CARD_EDIT_select_card_type">Select card imageType</string>
     <string name="DIALOG_login_first">Log in first</string>
     <string name="USER_EDIT_saving_avatar">Saving avatar</string>
     <string name="USER_EDIT_saving_profile">Saving profile</string>
@@ -326,7 +326,7 @@
     <string name="CARD_EDIT_resume_dialog_message">Unsaved card detected. Return to editing?</string>
     <string name="EXTERNAL_DATA_RECIEVER_error_creating_card">Error creating card</string>
     <string name="CARD_TYPE_CHOOSER_page_tip">What card to create?</string>
-    <string name="CARD_TYPE_CHOOSER_page_title">Card type choose</string>
+    <string name="CARD_TYPE_CHOOSER_page_title">Card imageType choose</string>
     <string name="CARD_TYPE_CHOOSER_card_creation_cancelled">Card creation canceled</string>
     <string name="CARD_TYPE_CHOOSER_error_creating_card">Card creation error</string>
     <string name="unknown_rsult_code">Unknown result code</string>
@@ -436,7 +436,7 @@
     <string name="CARDS_GRID_card_edit_cancelled">The edit is canceled</string>
     <string name="CARDS_GRID_data_error">Data error</string>
     <string name="ERROR_deleting_card">Error deleting card</string>
-    <string name="EXTERNAL_DATA_RECIEVER_unsupported_input_data">Unsupported data type</string>
+    <string name="EXTERNAL_DATA_RECIEVER_unsupported_input_data">Unsupported data imageType</string>
     <string name="CARD_SHOW_you_cannot_edit_this_card">You cannot edit this card</string>
     <string name="CARD_SHOW_there_is_no_card">There is no card</string>
     <string name="CARDS_GRID_card_creation_cancelled">Card creation is cancelled</string>
