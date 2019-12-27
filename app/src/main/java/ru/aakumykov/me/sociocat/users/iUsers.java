@@ -62,8 +62,6 @@ public interface iUsers {
         void onSaveUserClicked();
         void cancelButtonClicked();
 
-        void setImageSelected(boolean isSelected);
-
         void loadList(iUsersSingleton.ListCallbacks callbacks);
         void listItemClicked(String key);
 

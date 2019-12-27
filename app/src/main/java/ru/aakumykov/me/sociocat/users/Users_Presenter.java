@@ -46,8 +46,7 @@ public class Users_Presenter implements
     private String currentUserId;
     private User currentUser;
     private String editedUserId;
-    private boolean imageSelected = false;
-    private String imageType;
+    private ImageType imageType;
     private Bitmap resizedBitmap;
 
 
@@ -103,11 +102,6 @@ public class Users_Presenter implements
 
     // Пользовательские методы
     @Override
-    public void setImageSelected(boolean isSelected) {
-        imageSelected = isSelected;
-    }
-
-    @Override
     public void cancelButtonClicked() {
         Log.d(TAG, "cancelButtonClicked()");
         editView.closePage();
@@ -121,8 +115,11 @@ public class Users_Presenter implements
 
     @Override
     public void onImageSelected(Bitmap bitmap, ImageType imageType) {
+        this.imageType = imageType;
+
         Bitmap bitmapCopy = bitmap.copy(bitmap.getConfig(), true);
         resizedBitmap = ImageUtils.scaleDownBitmap(bitmapCopy, Config.AVATAR_MAX_SIZE);
+
         editView.displayAvatar(resizedBitmap);
     }
 
