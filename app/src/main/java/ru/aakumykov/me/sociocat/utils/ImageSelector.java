@@ -4,13 +4,14 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
+import java.io.ByteArrayOutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +20,6 @@ import ru.aakumykov.me.sociocat.R;
 public class ImageSelector {
 
     public final static int CODE_SELECT_IMAGE = 10;
-
     private static final String TAG = "ImageSelector";
 
     private ImageSelector() {}
@@ -48,7 +48,7 @@ public class ImageSelector {
     }
 
 
-    public static ImageInfo getImageInfo(Context context, @NonNull Intent intent) {
+    public static ImageInfo extractImageInfo(Context context, @NonNull Intent intent) {
 
         Uri imageLocalURI = extractImageUriFromIntent(context, intent);
 
@@ -64,7 +64,8 @@ public class ImageSelector {
             return null;
     }
 
-    public static Uri extractImageUriFromIntent(Context context, @NonNull Intent intent) {
+
+    private static Uri extractImageUriFromIntent(Context context, @NonNull Intent intent) {
 
         Object imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM); // Первый способ получить содержимое
 
@@ -98,7 +99,7 @@ public class ImageSelector {
             return null;
     }
 
-    public static <T> String detectImageType(Context context, T imageUri) {
+    private static <T> String detectImageType(Context context, T imageUri) {
         if (imageUri instanceof Uri) {
             ContentResolver contentResolver = context.getContentResolver();
             MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();

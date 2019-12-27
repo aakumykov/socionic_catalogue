@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
@@ -311,7 +310,7 @@ public class UserEdit_View extends BaseView implements
             return;
         }
 
-        ImageInfo imageInfo = ImageSelector.getImageInfo(this, data);
+        ImageInfo imageInfo = ImageSelector.extractImageInfo(this, data);
         if (null == imageInfo) {
             showErrorMsg(R.string.error_processing_image, "Intent data is null");
             return;
