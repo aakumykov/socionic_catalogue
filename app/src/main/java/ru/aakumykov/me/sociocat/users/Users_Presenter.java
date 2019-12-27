@@ -47,7 +47,7 @@ public class Users_Presenter implements
     private String editedUserId;
     private boolean imageSelected = false;
     private String imageType;
-    private Bitmap avatarBitmap;
+    private Bitmap resizedBitmap;
 
 
     // Системные методы
@@ -120,8 +120,9 @@ public class Users_Presenter implements
 
     @Override
     public void onImageSelected(Bitmap bitmap) {
-        this.avatarBitmap = ImageUtils.scaleDownBitmap(bitmap, Config.AVATAR_MAX_SIZE);
-        editView.displayAvatar(avatarBitmap);
+        Bitmap bitmapCopy = bitmap.copy(bitmap.getConfig(), true);
+        resizedBitmap = ImageUtils.scaleDownBitmap(bitmapCopy, Config.AVATAR_MAX_SIZE);
+        editView.displayAvatar(resizedBitmap);
     }
 
     @Override
@@ -282,7 +283,7 @@ public class Users_Presenter implements
                 break;
 
             case EDIT:
-                editView.displayUser(currentUser, avatarBitmap);
+                editView.displayUser(currentUser, resizedBitmap);
                 break;
 
             case LIST:
