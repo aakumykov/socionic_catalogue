@@ -1,26 +1,19 @@
 package ru.aakumykov.me.sociocat.users;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.text.TextUtils;
 import android.util.Log;
-
-import androidx.annotation.Nullable;
 
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.Config;
-import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
@@ -28,9 +21,7 @@ import ru.aakumykov.me.sociocat.users.stubs.UserEdit_ViewStub;
 import ru.aakumykov.me.sociocat.users.stubs.UserShow_ViewStub;
 import ru.aakumykov.me.sociocat.users.stubs.UsersList_ViewStub;
 import ru.aakumykov.me.sociocat.users.stubs.Users_ViewStub;
-import ru.aakumykov.me.sociocat.utils.ImageInfo;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Users_Presenter implements
@@ -56,7 +47,7 @@ public class Users_Presenter implements
     private String editedUserId;
     private boolean imageSelected = false;
     private String imageType;
-    private Bitmap resizedAvatarBitmap;
+    private Bitmap avatarBitmap;
 
 
     // Системные методы
@@ -129,8 +120,8 @@ public class Users_Presenter implements
 
     @Override
     public void onImageSelected(Bitmap bitmap) {
-        this.resizedAvatarBitmap = ImageUtils.scaleDownBitmap(bitmap, Config.AVATAR_MAX_SIZE);
-        editView.displayAvatar(resizedAvatarBitmap);
+        this.avatarBitmap = ImageUtils.scaleDownBitmap(bitmap, Config.AVATAR_MAX_SIZE);
+        editView.displayAvatar(avatarBitmap);
     }
 
     @Override
@@ -272,6 +263,7 @@ public class Users_Presenter implements
         usersSingleton.getUserById(currentUserId, new iUsersSingleton.ReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
+                view.hideProgressMessage();
                 currentUser = user;
                 displayUser();
             }
@@ -290,7 +282,7 @@ public class Users_Presenter implements
                 break;
 
             case EDIT:
-                editView.displayUser(currentUser);
+                editView.displayUser(currentUser, avatarBitmap);
                 break;
 
             case LIST:

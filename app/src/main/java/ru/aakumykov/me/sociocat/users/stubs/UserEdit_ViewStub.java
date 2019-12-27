@@ -2,13 +2,20 @@ package ru.aakumykov.me.sociocat.users.stubs;
 
 import android.annotation.SuppressLint;
 
+import androidx.annotation.Nullable;
+
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.users.iUsers;
 
 @SuppressLint("Registered")
 public class UserEdit_ViewStub extends Users_ViewStub implements iUsers.EditView {
     @Override
-    public void displayUser(User user) {
+    public <T> void displayUser(User user) {
+
+    }
+
+    @Override
+    public <T> void displayUser(User user, @Nullable T avatar) {
 
     }
 

@@ -174,7 +174,7 @@ public class UserShow_View extends BaseView implements
     // Интерфейсные методы
     @Override
     public void displayUser(final User user) {
-        Log.d(TAG, "displayUser(), "+user);
+//        Log.d(TAG, "displayUser(), "+user);
 
         hideProgressMessage();
 

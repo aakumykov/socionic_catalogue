@@ -153,18 +153,20 @@ public class UserEdit_View extends BaseView implements
     }
 
 
+    @Override
+    public <T> void displayUser(User user) {
+        displayUser(user, user.getAvatarURL());
+    }
+
     // Интерфейсные методы
     @Override
-    public void displayUser(User user) {
-        Log.d(TAG, "displayUser()");
-        hideProgressMessage();
-
+    public <T> void displayUser(User user, @Nullable T avatar) {
         nameInput.setText(user.getName());
         emailInput.setText(user.getEmail());
         aboutInput.setText(user.getAbout());
 
-        if (user.hasAvatar())
-            displayAvatar(user.getAvatarURL());
+        Object userAvatar = (null != avatar) ? avatar : user.getAvatarURL();
+        displayAvatar(userAvatar);
     }
 
     @Override
@@ -175,6 +177,8 @@ public class UserEdit_View extends BaseView implements
                     .placeholder(R.drawable.ic_avatar_placeholder)
                     .error(R.drawable.ic_image_error)
                     .into(avatarView);
+
+            avatar = null;
         }
         catch (Exception e) {
             avatarView.setImageResource(R.drawable.ic_image_error);
@@ -299,6 +303,9 @@ public class UserEdit_View extends BaseView implements
                         Bitmap bitmap = bitmapDrawable.getBitmap();
 
                         presenter.onImageSelected(bitmap);
+
+                        bitmapDrawable = null;
+                        bitmap = null;
                     }
 
                     @Override

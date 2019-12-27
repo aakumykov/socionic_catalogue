@@ -36,7 +36,8 @@ public interface iUsers {
     }
 
     interface EditView  extends View {
-        void displayUser(User user);
+        <T> void displayUser(User user);
+        <T> void displayUser(User user, @Nullable T avatar);
         <T> void displayAvatar(T avatar);
 
         void showAvatarThrobber();
