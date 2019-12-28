@@ -5,17 +5,12 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
-import com.dropbox.core.android.Auth;
-
-import java.util.Date;
-
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
-import ru.aakumykov.me.sociocat.user_show.models.Item;
 import ru.aakumykov.me.sociocat.user_show.stubs.UserShow_ViewStub;
 
 
@@ -23,7 +18,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     private final static String TAG = "UserShow_Presenter";
     private iUserShow.iView view;
-    private User currentUser;
+    private User displayedUser;
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
 
@@ -39,7 +34,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     @Override
     public boolean hasUser() {
-        return null != currentUser;
+        return null != displayedUser;
     }
 
     @Override
@@ -60,12 +55,25 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     @Override
     public void onConfigChanged() {
-        view.displayUser(currentUser);
+        view.displayUser(displayedUser);
     }
 
     @Override
     public void onRefreshRequested() {
-        loadAndShowUser(currentUser.getKey());
+        loadAndShowUser(displayedUser.getKey());
+    }
+
+    @Override
+    public boolean canEditUser() {
+        String currentUserId = AuthSingleton.currentUserId();
+
+        if (null == currentUserId)
+            return false;
+
+        if (null == displayedUser)
+            return false;
+
+        return usersSingleton.currentUserIsAdmin() || currentUserId.equals(displayedUser.getKey());
     }
 
     // Внутренние методы
@@ -75,10 +83,11 @@ class UserShow_Presenter implements iUserShow.iPresenter {
         usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
-                currentUser = user;
+                displayedUser = user;
                 view.hideProgressBar();
                 view.hideRefreshThrobber();
-                view.displayUser(currentUser);
+                view.displayUser(displayedUser);
+                view.refreshMenu();
             }
 
             @Override

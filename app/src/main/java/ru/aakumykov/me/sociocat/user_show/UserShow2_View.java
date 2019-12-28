@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.user_show;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -76,6 +77,15 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
         super.onStop();
         presenter.unlinkView();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (presenter.canEditUser())
+            getMenuInflater().inflate(R.menu.edit, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
 
     // BaseView
     @Override
