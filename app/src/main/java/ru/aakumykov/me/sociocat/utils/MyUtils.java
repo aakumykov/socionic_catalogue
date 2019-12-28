@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,8 +63,8 @@ public final class MyUtils {
         view.setVisibility(View.GONE);
     }
 
-    public static void hide(View view, boolean viaInvisibility) {
-        if (viaInvisibility)
+    public static void hide(View view, boolean invisibleInsteadOfGone) {
+        if (invisibleInsteadOfGone)
             view.setVisibility(View.INVISIBLE);
         else
             MyUtils.hide(view);

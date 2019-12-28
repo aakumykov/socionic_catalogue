@@ -53,7 +53,7 @@ public class UserShow_View extends BaseView implements
     @BindView(R.id.avatarView) ImageView avatarView;
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
 
-    private final static String TAG = "UserShow_View";
+    private final static String TAG = "UserShow2_View";
     private iUsers.Presenter presenter;
 
 
