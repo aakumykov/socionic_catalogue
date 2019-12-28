@@ -129,6 +129,7 @@
             android:name=".backup_job.BackupStatus_Activity"
             android:launchMode="singleTop" />
         <activity android:name=".card_show.CardShow_View" />
+        <activity android:name=".page_template.Page_View" />
         <!-- android:windowSoftInputMode="stateHidden" -->
 
         <service
