@@ -450,6 +450,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     private void onUserProfileClicked() {
         Intent intent = new Intent(this, UserShow2_View.class);
+        intent.putExtra(Constants.USER_ID, AuthSingleton.currentUserId());
         startActivity(intent);
     }
 
