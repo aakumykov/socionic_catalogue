@@ -9,6 +9,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.page_template.models.Item;
@@ -85,6 +86,12 @@ public class Page_View extends BaseView implements iPage.iView {
     @Override
     public void hideRefreshThrobber() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    // Нажатия
+    @OnClick(R.id.button)
+    void onButtonClicked() {
+        presenter.onButtonClicked();
     }
 
     // Внутренние методы
