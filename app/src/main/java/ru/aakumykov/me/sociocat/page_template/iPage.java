@@ -11,17 +11,22 @@ public interface iPage {
 
     interface iView extends iBaseView {
         void displayItem(Item item);
+        void hideRefreshThrobber();
     }
 
     interface iPresenter {
+        void linkView(iView view);
+        void unlinkView();
+
         boolean hasItem();
 
         void onFirstOpen(@Nullable Intent intent);
+
         void onConfigChanged();
 
         void onRefreshRequested();
 
-        void onEditClicked();
+        void onButtonClicked();
     }
 
 }

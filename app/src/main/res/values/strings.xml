@@ -540,5 +540,7 @@
     <string name="PREFERENCE_dropbox_access_token_stub">Замените на Dropbox Access Token</string>
     <string name="error_processing_image">Ошибка обработки изображения</string>
     <string name="USER_EDIT_avatar_uploading_cancelled">Сохранение аватара прервано</string>
+    <string name="PAGE_TEMPLATE_button_clicked">Нажата кнопка</string>
+    <string name="PAGE_TEMPLATE_page_title">Шаблон страницы</string>
 
 </resources><!-- «%1$s» -->

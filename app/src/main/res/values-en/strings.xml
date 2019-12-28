@@ -532,5 +532,7 @@
     <string name="PREFERENCE_dropbox_access_token_stub">Replace with dropbox access token</string>
     <string name="error_processing_image">Error processing image</string>
     <string name="USER_EDIT_avatar_uploading_cancelled">Avatar uploading cancelled</string>
+    <string name="PAGE_TEMPLATE_button_clicked">Button clicked</string>
+    <string name="PAGE_TEMPLATE_page_title">Page templte</string>
 </resources>
 <!-- «%1$s» -->

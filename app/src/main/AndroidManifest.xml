@@ -18,15 +18,22 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".shortcuts_processor.ShortcutsProcessor">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
 
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
+        </activity>
+
+        <activity android:name=".page_template.Page_View">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".backup_job.BackupActivity">
@@ -129,7 +136,7 @@
             android:name=".backup_job.BackupStatus_Activity"
             android:launchMode="singleTop" />
         <activity android:name=".card_show.CardShow_View" />
-        <activity android:name=".page_template.Page_View" />
+
         <!-- android:windowSoftInputMode="stateHidden" -->
 
         <service
