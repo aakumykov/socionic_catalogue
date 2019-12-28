@@ -8,7 +8,7 @@
     tools:context=".users.edit.UserEdit_View">
 
     <include
-        android:id="@+id/include3"
+        android:id="@+id/include"
         layout="@layout/progress_and_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
         android:layout_height="100dp"
         android:scaleType="centerInside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include3"
+        app:layout_constraintTop_toBottomOf="@+id/include"
         app:srcCompat="@drawable/ic_add_photo" />
 
     <ProgressBar
@@ -47,7 +47,7 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/avatarView"
-        app:layout_constraintTop_toBottomOf="@+id/include3" />
+        app:layout_constraintTop_toBottomOf="@+id/include" />
 
     <EditText
         android:id="@+id/emailInput"

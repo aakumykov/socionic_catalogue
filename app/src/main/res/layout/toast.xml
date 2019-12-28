@@ -14,7 +14,7 @@
         android:src="@drawable/toast_image" />
 
     <TextView
-        android:id="@+id/commentTextView"
+        android:id="@+id/messageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"

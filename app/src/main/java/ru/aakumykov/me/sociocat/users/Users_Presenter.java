@@ -23,7 +23,7 @@ import ru.aakumykov.me.sociocat.users.stubs.UsersList_ViewStub;
 import ru.aakumykov.me.sociocat.users.stubs.Users_ViewStub;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
 public class Users_Presenter implements
         iUsers.Presenter,
@@ -46,8 +46,8 @@ public class Users_Presenter implements
     private String currentUserId;
     private User currentUser;
     private String editedUserId;
-    private ImageType imageType;
-    private Bitmap resizedBitmap;
+    private ImageType avatarImageType;
+    private Bitmap avatarBitmap;
 
 
     // Системные методы
@@ -115,16 +115,17 @@ public class Users_Presenter implements
 
     @Override
     public void onImageSelected(Bitmap bitmap, ImageType imageType) {
-        this.imageType = imageType;
+        this.avatarImageType = imageType;
 
         Bitmap bitmapCopy = bitmap.copy(bitmap.getConfig(), true);
-        resizedBitmap = ImageUtils.scaleDownBitmap(bitmapCopy, Config.AVATAR_MAX_SIZE);
+        avatarBitmap = ImageUtils.scaleDownBitmap(bitmapCopy, Config.AVATAR_MAX_SIZE);
 
-        editView.displayAvatar(resizedBitmap);
+        editView.displayAvatar(avatarBitmap);
     }
 
     @Override
     public void onSaveUserClicked() {
+/*
         try {
             saveProfile();
         }
@@ -132,6 +133,19 @@ public class Users_Presenter implements
             editView.enableEditForm();
             editView.showErrorMsg(R.string.USER_EDIT_error_saving_profile, e.getMessage());
             MyUtils.printError(TAG, e);
+        }
+*/
+
+        if (null != avatarBitmap || null != avatarImageType) {
+            uploadAvatar(new iAvatarUploadCallbacks() {
+                @Override
+                public void onAvatarUploaded() {
+
+                }
+            });
+        }
+        else {
+
         }
     }
 
@@ -281,7 +295,7 @@ public class Users_Presenter implements
                 break;
 
             case EDIT:
-                editView.displayUser(currentUser, resizedBitmap);
+                editView.displayUser(currentUser, avatarBitmap);
                 break;
 
             case LIST:
@@ -290,6 +304,36 @@ public class Users_Presenter implements
             default:
                 throw new RuntimeException("Unknown videMode: "+viewMode);
         }
+    }
+
+    private void uploadAvatar(iAvatarUploadCallbacks callbacks) {
+        byte[] imageBytes = ImageUtils.compressImage(avatarBitmap, avatarImageType);
+        String fileName = ImageUtils.makeFileName(editedUserId, avatarImageType);
+
+        editView.disableEditForm();
+        editView.showProgressMessage(R.string.USER_EDIT_saving_avatar);
+
+        storageSingleton.uploadAvatar(imageBytes, fileName, new iStorageSingleton.FileUploadCallbacks() {
+            @Override
+            public void onFileUploadProgress(int progress) {
+
+            }
+
+            @Override
+            public void onFileUploadSuccess(String fileName, String downloadURL) {
+                callbacks.onAvatarUploaded();
+            }
+
+            @Override
+            public void onFileUploadFail(String errorMsg) {
+
+            }
+
+            @Override
+            public void onFileUploadCancel() {
+
+            }
+        });
     }
 
     private void saveProfile() throws Exception {
@@ -320,7 +364,7 @@ public class Users_Presenter implements
                 editView.disableEditForm();
                 editView.showToast(R.string.USER_EDIT_saving_avatar);
 
-                storageSingleton.uploadAvatar(imageBitmap, imageType, fileName, this);
+                storageSingleton.uploadAvatar(imageBitmap, avatarImageType, fileName, this);
 
             } catch (Exception e) {
                 onFileUploadFail(e.getMessage());
@@ -336,8 +380,7 @@ public class Users_Presenter implements
         editView.disableEditForm();
         editView.showProgressMessage(R.string.USER_EDIT_saving_profile);
 
-        try {
-            usersSingleton.saveUser(currentUser, new iUsersSingleton.SaveCallbacks() {
+        usersSingleton.saveUser(currentUser, new iUsersSingleton.SaveCallbacks() {
                 @Override
                 public void onUserSaveSuccess(User user) {
                     editView.showToast(R.string.USER_EDIT_profile_saved);
@@ -352,10 +395,6 @@ public class Users_Presenter implements
                     editView.enableEditForm();
                 }
             });
-        } catch (Exception e) {
-            onUserSaveFail(e.getMessage());
-            e.printStackTrace();
-        }
     }
 
     private void detectImageWidthAndHeight(Uri imageURI) {
@@ -366,4 +405,7 @@ public class Users_Presenter implements
     }
 
 
+    private interface iAvatarUploadCallbacks {
+        void onAvatarUploaded();
+    }
 }

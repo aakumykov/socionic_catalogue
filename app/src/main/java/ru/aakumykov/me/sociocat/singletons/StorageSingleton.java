@@ -56,7 +56,7 @@ public class StorageSingleton implements iStorageSingleton {
         uploadFile(imageBytesArray, Constants.IMAGES_PATH, fileName, callbacks);
     }
 
-    @Override
+    @Override @Deprecated
     public void uploadAvatar(Bitmap imageBitmap, String imageType, @Nullable String fileNameWithoutExtension, final FileUploadCallbacks callbacks) {
 
         if (TextUtils.isEmpty(fileNameWithoutExtension)) {
@@ -69,6 +69,11 @@ public class StorageSingleton implements iStorageSingleton {
         String fileName = fileNameWithoutExtension + "." + imageType;
 
         uploadFile(imageBytesArray, Constants.AVATARS_PATH, fileName, callbacks);
+    }
+
+    @Override
+    public void uploadAvatar(byte[] imageBytes, String fileName, final FileUploadCallbacks callbacks) {
+        uploadFile(imageBytes, Constants.AVATARS_PATH, fileName, callbacks);
     }
 
     @Override

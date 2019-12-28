@@ -48,7 +48,7 @@ public class UserEdit_View extends BaseView implements
         iUsers.EditView
 {
     @BindView(R.id.progressBar) ProgressBar progressBar;
-    @BindView(R.id.commentTextView) TextView messageView;
+    @BindView(R.id.messageView) TextView messageView;
 
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
     @BindView(R.id.avatarView) ImageView avatarView;
@@ -84,6 +84,8 @@ public class UserEdit_View extends BaseView implements
             presenter = new Users_Presenter();
             usersViewModel.storePresenter(presenter);
         }
+
+        showToast("onBackPressed!");
     }
 
     @Override
@@ -137,6 +139,12 @@ public class UserEdit_View extends BaseView implements
                 super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
     }
 
 
@@ -242,6 +250,7 @@ public class UserEdit_View extends BaseView implements
         nameInput.setEnabled(true);
         aboutInput.setEnabled(true);
         saveButton.setEnabled(true);
+        avatarView.setEnabled(true);
     }
 
     @Override
@@ -249,6 +258,7 @@ public class UserEdit_View extends BaseView implements
         nameInput.setEnabled(false);
         aboutInput.setEnabled(false);
         saveButton.setEnabled(false);
+        avatarView.setEnabled(false);
     }
 
     @Override

@@ -249,7 +249,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public void hideMsg() {
-        TextView messageView = findViewById(R.id.commentTextView);
+        TextView messageView = findViewById(R.id.messageView);
         TextView stackTraceView = findViewById(R.id.stackTraceView);
 
         if (null != messageView) {
@@ -406,7 +406,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void showMsg(String text, int textColorId, @Nullable Integer backgroundColorId) {
-        TextView messageView = findViewById(R.id.commentTextView);
+        TextView messageView = findViewById(R.id.messageView);
 
         int fgColor = getResources().getColor(textColorId);
         int bgColor = getResources().getColor(null != backgroundColorId ? backgroundColorId : R.color.background_default);

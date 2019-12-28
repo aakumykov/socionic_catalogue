@@ -84,11 +84,11 @@ public class ImageUtils {
             return null;
     }
 
-    public byte[] image2bytes(Bitmap imageBitmap, ImageType imageType) {
-        return image2bytes(imageBitmap, imageType, ImageUtils.DEFAULT_JPEG_QUALITY);
+    public static byte[] compressImage(Bitmap imageBitmap, ImageType imageType) {
+        return compressImage(imageBitmap, imageType, ImageUtils.DEFAULT_JPEG_QUALITY);
     }
 
-    public byte[] image2bytes(Bitmap imageBitmap, ImageType imageType, int quality) {
+    public static byte[] compressImage(Bitmap imageBitmap, ImageType imageType, int quality) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Bitmap.CompressFormat compressFormat;
@@ -235,4 +235,8 @@ public class ImageUtils {
 
     // Конструктор (запрещён)
     private ImageUtils(){}
+
+    public static String makeFileName(String nameBase, ImageType imageType) {
+        return nameBase + "." + imageType.name().toLowerCase();
+    }
 }

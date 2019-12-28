@@ -34,7 +34,7 @@ import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 public class CardShow_View extends BaseView implements
         iCardShow.iPageView
 {
-    @BindView(R.id.commentTextView) TextView messageView;
+    @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;

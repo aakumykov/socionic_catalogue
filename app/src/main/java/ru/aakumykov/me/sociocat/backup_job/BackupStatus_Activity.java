@@ -20,7 +20,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class BackupStatus_Activity extends BaseView {
 
-    @BindView(R.id.commentTextView) TextView messageView;
+    @BindView(R.id.messageView) TextView messageView;
     @BindView(R.id.progressBar) ProgressBar progressBar;
 
     private final static String TAG = "BackupStatus_Activity";

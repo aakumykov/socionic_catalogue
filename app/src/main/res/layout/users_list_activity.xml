@@ -20,7 +20,7 @@
             android:indeterminate="true" />
 
         <TextView
-            android:id="@+id/commentTextView"
+            android:id="@+id/messageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
