@@ -20,6 +20,7 @@
         android:id="@+id/avatarView"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:background="@drawable/shape_avatar_border"
         android:scaleType="centerInside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include"
@@ -27,14 +28,14 @@
 
     <ProgressBar
         android:id="@+id/avatarThrobber"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/avatarView"
+        android:indeterminate="true"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/avatarView"
         app:layout_constraintStart_toStartOf="@+id/avatarView"
-        app:layout_constraintTop_toTopOf="@+id/avatarView"
+        app:layout_constraintTop_toBottomOf="@+id/avatarView"
         tools:visibility="visible" />
 
     <EditText
@@ -70,8 +71,9 @@
         android:inputType="textMultiLine|textCapSentences"
         android:singleLine="false"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/avatarView" />
+        app:layout_constraintTop_toBottomOf="@+id/avatarThrobber" />
 
     <Button
         android:id="@+id/saveButton"

@@ -5,16 +5,12 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 
-import java.util.List;
-
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
-import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.users.stubs.UserEdit_ViewStub;
@@ -23,14 +19,9 @@ import ru.aakumykov.me.sociocat.users.stubs.UsersList_ViewStub;
 import ru.aakumykov.me.sociocat.users.stubs.Users_ViewStub;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
 public class Users_Presenter implements
-        iUsers.Presenter,
-        iUsersSingleton.ReadCallbacks,
-        iUsersSingleton.SaveCallbacks,
-        iStorageSingleton.FileUploadCallbacks,
-        iCardsSingleton.ListCallbacks
+        iUsers.Presenter
 {
     private final static String TAG = "Users_Presenter";
 
@@ -45,7 +36,10 @@ public class Users_Presenter implements
 
     private String currentUserId;
     private User currentUser;
+
     private String editedUserId;
+    private User editedUser;
+
     private ImageType avatarImageType;
     private Bitmap avatarBitmap;
 
@@ -83,14 +77,14 @@ public class Users_Presenter implements
 
     @Override
     public boolean hasUser() {
-        return null != currentUser;
+        return null != editedUser;
     }
 
     // TODO: кидать исключения
     @Override
     public void onFirstOpen() {
         if (checkAuthorization())
-            loadUser();
+            loadUser(currentUserId);
     }
 
     @Override
@@ -140,12 +134,12 @@ public class Users_Presenter implements
             uploadAvatar(new iAvatarUploadCallbacks() {
                 @Override
                 public void onAvatarUploaded() {
-
+                    //saveUser();
                 }
             });
         }
         else {
-
+            //saveUser();
         }
     }
 
@@ -163,6 +157,7 @@ public class Users_Presenter implements
 
 
     // Методы обратного вызова
+/*
     @Override
     public void onUserReadSuccess(final User user) {
         currentUser = user;
@@ -178,7 +173,8 @@ public class Users_Presenter implements
         editView.hideProgressMessage();
         editView.showErrorMsg(R.string.USER_EDIT_error_loading_data, errorMsg);
     }
-
+*/
+/*
     @Override
     public void onFileUploadProgress(int progress) {
 
@@ -194,7 +190,8 @@ public class Users_Presenter implements
         currentUser.setAvatarFileName(fileName);
         currentUser.setAvatarURL(downloadURL);
 
-        /*try {
+        */
+/*try {
             usersSingleton.refreshUserFromServer(currentUser.getKey(), new iUsersSingleton.RefreshCallbacks() {
                 @Override
                 public void onUserRefreshSuccess(User user) {
@@ -211,6 +208,8 @@ public class Users_Presenter implements
             e.printError();
             editView.showErrorMsg(R.string.USER_EDIT_error_updating_user, e.getMessage());
         }*/
+/*
+
 
         saveUser();
     }
@@ -257,6 +256,7 @@ public class Users_Presenter implements
     public void onListLoadFail(String errorMessage) {
         showView.showErrorMsg(R.string.USER_SHOW_error_loading_cards_lsit, errorMessage);
     }
+*/
 
 
     // Внутренние методы
@@ -270,14 +270,16 @@ public class Users_Presenter implements
         return true;
     }
 
-    private void loadUser() {
+    private void loadUser(String userId) {
         view.showProgressMessage(R.string.USER_SHOW_loading_user_info);
 
-        usersSingleton.getUserById(currentUserId, new iUsersSingleton.ReadCallbacks() {
+        usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
                 view.hideProgressMessage();
-                currentUser = user;
+
+                editedUser = user;
+
                 displayUser();
             }
 
@@ -291,11 +293,11 @@ public class Users_Presenter implements
     private void displayUser() {
         switch (viewMode) {
             case SHOW:
-                showView.displayUser(currentUser);
+                showView.displayUser(editedUser);
                 break;
 
             case EDIT:
-                editView.displayUser(currentUser, avatarBitmap);
+                editView.displayUser(editedUser, avatarBitmap);
                 break;
 
             case LIST:
@@ -307,11 +309,12 @@ public class Users_Presenter implements
     }
 
     private void uploadAvatar(iAvatarUploadCallbacks callbacks) {
+
         byte[] imageBytes = ImageUtils.compressImage(avatarBitmap, avatarImageType);
-        String fileName = ImageUtils.makeFileName(editedUserId, avatarImageType);
+        String fileName = ImageUtils.makeFileName(editedUser.getKey(), avatarImageType);
 
         editView.disableEditForm();
-        editView.showProgressMessage(R.string.USER_EDIT_saving_avatar);
+        editView.showAvatarThrobber();
 
         storageSingleton.uploadAvatar(imageBytes, fileName, new iStorageSingleton.FileUploadCallbacks() {
             @Override
@@ -321,72 +324,39 @@ public class Users_Presenter implements
 
             @Override
             public void onFileUploadSuccess(String fileName, String downloadURL) {
+                editedUser.setAvatarFileName(fileName);
+                editedUser.setAvatarURL(downloadURL);
+                editView.hideAvatarThrobber();
                 callbacks.onAvatarUploaded();
             }
 
             @Override
             public void onFileUploadFail(String errorMsg) {
-
+                editView.showErrorMsg(R.string.USER_EDIT_error_saving_avatar, errorMsg);
+                editView.hideAvatarThrobber();
+                editView.enableEditForm();
             }
 
             @Override
             public void onFileUploadCancel() {
-
+                editView.hideAvatarThrobber();
+                editView.enableEditForm();
+                view.showToast(R.string.USER_EDIT_avatar_uploading_cancelled);
             }
         });
-    }
-
-    private void saveProfile() throws Exception {
-
-        if (!AuthSingleton.isLoggedIn()) {
-            throw new IllegalAccessException("You is not logged in.");
-        }
-
-        if (!AuthSingleton.currentUserId().equals(editedUserId)) {
-            throw new IllegalAccessException("Cannot save profile of another user.");
-        }
-
-        /*String name = editView.getName();
-        if (TextUtils.isEmpty(name)) {
-            editView.showErrorMsg(R.string.USER_EDIT_name_cannot_be_empty, "");
-            return;
-        }
-
-        currentUser.setName(name);
-        currentUser.setAbout(editView.getAbout());
-
-        if (!currentUser.hasAvatar() && imageSelected) {
-            try {
-                Bitmap imageBitmap = editView.getImageBitmap();
-                String fileName = AuthSingleton.currentUserId();
-
-                editView.showAvatarThrobber();
-                editView.disableEditForm();
-                editView.showToast(R.string.USER_EDIT_saving_avatar);
-
-                storageSingleton.uploadAvatar(imageBitmap, avatarImageType, fileName, this);
-
-            } catch (Exception e) {
-                onFileUploadFail(e.getMessage());
-                e.printStackTrace();
-            }
-        }
-        else {
-            saveUser();
-        }*/
     }
 
     private void saveUser() {
         editView.disableEditForm();
         editView.showProgressMessage(R.string.USER_EDIT_saving_profile);
 
-        usersSingleton.saveUser(currentUser, new iUsersSingleton.SaveCallbacks() {
+        usersSingleton.saveUser(editedUser, new iUsersSingleton.SaveCallbacks() {
                 @Override
                 public void onUserSaveSuccess(User user) {
                     editView.showToast(R.string.USER_EDIT_profile_saved);
                     editView.finishEdit(user, true);
 
-                    usersSingleton.storeCurrentUser(currentUser);
+                    //usersSingleton.storeCurrentUser(currentUser);
                 }
 
                 @Override
@@ -395,13 +365,6 @@ public class Users_Presenter implements
                     editView.enableEditForm();
                 }
             });
-    }
-
-    private void detectImageWidthAndHeight(Uri imageURI) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-
-//        BitmapFactory.decodeFile(imageURI)
     }
 
 

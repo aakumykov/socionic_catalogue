@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
@@ -98,8 +99,8 @@ public class ImageUtils {
                 compressFormat = Bitmap.CompressFormat.JPEG;
                 break;
             case PNG:
-                // TODO: проверить
-                compressFormat = Bitmap.CompressFormat.WEBP;
+                compressFormat = Bitmap.CompressFormat.PNG;
+                break;
             default:
                 compressFormat = Bitmap.CompressFormat.JPEG;
         }
@@ -237,6 +238,12 @@ public class ImageUtils {
     private ImageUtils(){}
 
     public static String makeFileName(String nameBase, ImageType imageType) {
+        if (TextUtils.isEmpty(nameBase))
+            throw new IllegalArgumentException("nameBase cannot be empty");
+
+        if (null == imageType)
+            throw new IllegalArgumentException("imageType cannot be null");
+
         return nameBase + "." + imageType.name().toLowerCase();
     }
 }
