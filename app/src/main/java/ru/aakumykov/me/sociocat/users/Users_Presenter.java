@@ -1,8 +1,6 @@
 package ru.aakumykov.me.sociocat.users;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.util.Log;
 
 import ru.aakumykov.me.sociocat.Config;
@@ -35,10 +33,10 @@ public class Users_Presenter implements
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
 
     private String currentUserId;
-    private User currentUser;
+    private User userInShow;
 
     private String editedUserId;
-    private User editedUser;
+    private User userInEdit;
 
     private ImageType avatarImageType;
     private Bitmap avatarBitmap;
@@ -76,8 +74,13 @@ public class Users_Presenter implements
     }
 
     @Override
-    public boolean hasUser() {
-        return null != editedUser;
+    public boolean hasShownUser() {
+        return null != userInShow;
+    }
+
+    @Override
+    public boolean hasEditedUSer() {
+        return null != userInEdit;
     }
 
     // TODO: кидать исключения
@@ -115,6 +118,12 @@ public class Users_Presenter implements
         avatarBitmap = ImageUtils.scaleDownBitmap(bitmapCopy, Config.AVATAR_MAX_SIZE);
 
         editView.displayAvatar(avatarBitmap);
+    }
+
+    @Override
+    public void onRefreshRequested() {
+        if (null != userInShow)
+            loadUser(userInShow.getKey());
     }
 
     @Override
@@ -160,7 +169,7 @@ public class Users_Presenter implements
 /*
     @Override
     public void onUserReadSuccess(final User user) {
-        currentUser = user;
+        userInShow = user;
         editedUserId = user.getKey();
 
         editView.hideProgressMessage();
@@ -187,15 +196,15 @@ public class Users_Presenter implements
         // Не очень красивое решение обновлять пользователя здесь, а потом
         // отдельным методом сохранять. А следующий блок с refreshUserFromServer()
         // вообще не нужен.
-        currentUser.setAvatarFileName(fileName);
-        currentUser.setAvatarURL(downloadURL);
+        userInShow.setAvatarFileName(fileName);
+        userInShow.setAvatarURL(downloadURL);
 
         */
 /*try {
-            usersSingleton.refreshUserFromServer(currentUser.getKey(), new iUsersSingleton.RefreshCallbacks() {
+            usersSingleton.refreshUserFromServer(userInShow.getKey(), new iUsersSingleton.RefreshCallbacks() {
                 @Override
                 public void onUserRefreshSuccess(User user) {
-                    currentUser = user;
+                    userInShow = user;
                 }
 
                 @Override
@@ -278,7 +287,8 @@ public class Users_Presenter implements
             public void onUserReadSuccess(User user) {
                 view.hideProgressMessage();
 
-                editedUser = user;
+                userInShow = user;
+                userInEdit = user;
 
                 displayUser();
             }
@@ -293,11 +303,12 @@ public class Users_Presenter implements
     private void displayUser() {
         switch (viewMode) {
             case SHOW:
-                showView.displayUser(editedUser);
+                showView.hideSwipeRefresh();
+                showView.displayUser(userInShow);
                 break;
 
             case EDIT:
-                editView.displayUser(editedUser, avatarBitmap);
+                editView.displayUser(userInEdit, avatarBitmap);
                 break;
 
             case LIST:
@@ -311,7 +322,7 @@ public class Users_Presenter implements
     private void uploadAvatar(iAvatarUploadCallbacks callbacks) {
 
         byte[] imageBytes = ImageUtils.compressImage(avatarBitmap, avatarImageType);
-        String fileName = ImageUtils.makeFileName(editedUser.getKey(), avatarImageType);
+        String fileName = ImageUtils.makeFileName(userInEdit.getKey(), avatarImageType);
 
         editView.disableEditForm();
         editView.showAvatarThrobber();
@@ -324,8 +335,8 @@ public class Users_Presenter implements
 
             @Override
             public void onFileUploadSuccess(String fileName, String downloadURL) {
-                editedUser.setAvatarFileName(fileName);
-                editedUser.setAvatarURL(downloadURL);
+                userInEdit.setAvatarFileName(fileName);
+                userInEdit.setAvatarURL(downloadURL);
                 editView.hideAvatarThrobber();
                 callbacks.onAvatarUploaded();
             }
@@ -350,13 +361,13 @@ public class Users_Presenter implements
         editView.disableEditForm();
         editView.showProgressMessage(R.string.USER_EDIT_saving_profile);
 
-        usersSingleton.saveUser(editedUser, new iUsersSingleton.SaveCallbacks() {
+        usersSingleton.saveUser(userInEdit, new iUsersSingleton.SaveCallbacks() {
                 @Override
                 public void onUserSaveSuccess(User user) {
                     editView.showToast(R.string.USER_EDIT_profile_saved);
                     editView.finishEdit(user, true);
 
-                    //usersSingleton.storeCurrentUser(currentUser);
+                    //usersSingleton.storeCurrentUser(userInShow);
                 }
 
                 @Override

@@ -30,6 +30,7 @@ public interface iUsers {
         void displayUser(User user);
         void goUserEdit();
         void setPageTitle(String userName);
+        void hideSwipeRefresh();
     }
 
     interface EditView  extends View {
@@ -54,7 +55,8 @@ public interface iUsers {
         void linkView(View view) throws IllegalArgumentException;
         void unlinkView();
 
-        boolean hasUser();
+        boolean hasShownUser();
+        boolean hasEditedUSer();
 
         void onFirstOpen();
         void onConfigurationChanged();
@@ -68,6 +70,8 @@ public interface iUsers {
         void onUserLoggedOut();
 
         void onImageSelected(Bitmap bitmap, ImageType imageType);
+
+        void onRefreshRequested();
     }
 
 }

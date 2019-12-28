@@ -99,7 +99,7 @@ public class UserEdit_View extends BaseView implements
             return;
         }
 
-        if (presenter.hasUser())
+        if (presenter.hasEditedUSer())
             presenter.onConfigurationChanged();
         else
             presenter.onFirstOpen();

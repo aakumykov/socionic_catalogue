@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -44,6 +45,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class UserShow_View extends BaseView implements
         iUsers.ShowView
 {
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.nameView) TextView nameView;
     @BindView(R.id.emailView) TextView emailView;
@@ -72,6 +74,8 @@ public class UserShow_View extends BaseView implements
             presenter = new Users_Presenter();
             usersViewModel.storePresenter(presenter);
         }
+
+        configureSwipeRefresh();
     }
 
     @Override
@@ -79,7 +83,7 @@ public class UserShow_View extends BaseView implements
         super.onStart();
         presenter.linkView(this);
 
-        if (presenter.hasUser()) {
+        if (presenter.hasShownUser()) {
             presenter.onConfigurationChanged();
         } else {
             presenter.onFirstOpen();
@@ -203,8 +207,23 @@ public class UserShow_View extends BaseView implements
         setPageTitle(R.string.USER_SHOW_complex_page_title, userName);
     }
 
+    @Override
+    public void hideSwipeRefresh() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
 
     // Внутренние методы
+    private void configureSwipeRefresh() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override public void onRefresh() {
+                presenter.onRefreshRequested();
+            }
+        });
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
+    }
+
     private void showAvatarThrobber() {
         MyUtils.show(avatarThrobber);
     }

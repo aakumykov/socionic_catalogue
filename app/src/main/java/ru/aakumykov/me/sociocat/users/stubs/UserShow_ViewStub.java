@@ -25,4 +25,9 @@ public class UserShow_ViewStub extends Users_ViewStub implements iUsers.ShowView
     public void setPageTitle(String userName) {
 
     }
+
+    @Override
+    public void hideSwipeRefresh() {
+
+    }
 }
