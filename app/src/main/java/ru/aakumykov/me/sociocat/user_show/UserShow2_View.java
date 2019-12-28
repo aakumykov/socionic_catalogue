@@ -1,13 +1,19 @@
 package ru.aakumykov.me.sociocat.user_show;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,6 +92,8 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
     // iUserShow.iView
     @Override
     public void displayUser(User user) {
+        loadAndShowAvatar(user);
+
         nameView.setText(user.getName());
         emailView.setText(user.getEmail());
         aboutView.setText(user.getAbout());
@@ -116,5 +124,22 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
         });
 
         swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
+    }
+
+    private void loadAndShowAvatar(User user) {
+        MyUtils.show(avatarThrobber);
+
+        Glide.with(this).load(user.getAvatarURL()).into(new CustomTarget<Drawable>() {
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                MyUtils.hide(avatarThrobber);
+                avatarView.setImageDrawable(resource);
+            }
+
+            @Override
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+                avatarView.setImageResource(R.drawable.ic_avatar_placeholder);
+            }
+        });
     }
 }

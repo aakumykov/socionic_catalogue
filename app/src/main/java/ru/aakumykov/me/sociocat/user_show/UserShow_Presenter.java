@@ -1,8 +1,11 @@
 package ru.aakumykov.me.sociocat.user_show;
 
 import android.content.Intent;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
+
+import com.dropbox.core.android.Auth;
 
 import java.util.Date;
 
@@ -46,22 +49,13 @@ class UserShow_Presenter implements iUserShow.iPresenter {
             return;
         }
 
-        String userId = AuthSingleton.currentUserId();
+        String userId = intent.getStringExtra(Constants.USER_ID);
+        if (TextUtils.isEmpty(userId)) {
+            view.showErrorMsg(R.string.USER_SHOW_error_displaying_user, "There is no userId in Intent");
+            return;
+        }
 
-        view.showProgressBar();
-
-        usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
-            @Override
-            public void onUserReadSuccess(User user) {
-                view.hideProgressBar();
-                view.displayUser(user);
-            }
-
-            @Override
-            public void onUserReadFail(String errorMsg) {
-                view.showErrorMsg(R.string.USER_SHOW_error_displaying_user, errorMsg);
-            }
-        });
+        loadAndShowUser(userId);
     }
 
     @Override
@@ -71,12 +65,26 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     @Override
     public void onRefreshRequested() {
-
+        loadAndShowUser(currentUser.getKey());
     }
 
     // Внутренние методы
-    private Item getItem() {
-        String timeString = new Date().toString();
-        return new Item("Объект-"+timeString, "Привет, я Объект-"+timeString);
+    private void loadAndShowUser(String userId) {
+        view.showProgressBar();
+
+        usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
+            @Override
+            public void onUserReadSuccess(User user) {
+                currentUser = user;
+                view.hideProgressBar();
+                view.hideRefreshThrobber();
+                view.displayUser(currentUser);
+            }
+
+            @Override
+            public void onUserReadFail(String errorMsg) {
+                view.showErrorMsg(R.string.USER_SHOW_error_displaying_user, errorMsg);
+            }
+        });
     }
 }
