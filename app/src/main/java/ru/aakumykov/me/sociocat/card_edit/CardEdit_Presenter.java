@@ -86,7 +86,7 @@ public class CardEdit_Presenter implements
 
         if (!AuthSingleton.isLoggedIn()) {
             // TODO: requestLogin + CODE_LOGIN_REQUEST ...
-            view.requestLogin(Constants.CODE_LOGIN_REQUEST, intent);
+            view.requestLogin(intent);
             return;
         }
 

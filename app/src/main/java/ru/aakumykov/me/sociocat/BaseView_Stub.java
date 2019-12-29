@@ -103,12 +103,7 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
-    public void requestLogin() {
-
-    }
-
-    @Override
-    public <T> void requestLogin(int requestCode, @Nullable T transitArguments) {
+    public <T> void requestLogin(@Nullable T transitArguments) {
 
     }
 

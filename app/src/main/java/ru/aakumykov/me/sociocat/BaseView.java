@@ -273,37 +273,46 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
 
-    // Разное
     @Override
-    public void requestLogin() {
-        requestLogin(Constants.CODE_LOGIN_REQUEST, null);
-    }
-
-    @Override
-    public <T> void requestLogin(int requestCode, @Nullable T transitData) {
+    public <T> void requestLogin(@Nullable T transitData) {
 
         Intent intent = new Intent(this, Login_View.class);
 
-        if (null != transitData) {
+        if (null != transitData)
+        {
             if (transitData instanceof Intent) {
                 intent.putExtra(Intent.EXTRA_INTENT, (Intent) transitData);
-            } else if (transitData instanceof Bundle) {
+            }
+            else if (transitData instanceof Bundle) {
                 intent.putExtra(Constants.TRANSIT_ARGUMENTS, (Bundle) transitData);
-            } else {
+            }
+            else {
                 throw new RuntimeException("transitData argument must be Intent or Bundle type.");
             }
         }
 
-        startActivityForResult(intent, requestCode);
+        startActivityForResult(intent, Constants.CODE_LOGIN_REQUEST);
     }
 
     @Override
     public void proceedLoginRequest(int resultCode, @Nullable Intent intent) {
         if (null == intent) {
-
+            showErrorMsg(R.string.error_processing_login_request, "Intent is null");
+            return;
         }
-        Intent originalIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
-        startActivity(originalIntent);
+
+        switch (resultCode) {
+            case RESULT_OK:
+                Intent originalIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
+                startActivity(originalIntent);
+                break;
+            case RESULT_CANCELED:
+                showToast(R.string.login_canceled);
+                break;
+            default:
+                showErrorMsg(R.string.login_error, "Unknown result code: "+resultCode);
+                break;
+        }
     }
 
     @Override

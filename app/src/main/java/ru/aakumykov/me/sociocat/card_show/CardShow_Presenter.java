@@ -146,7 +146,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
                 throw new RuntimeException("Payload is instance of Card or Comment");
             }
 
-            pageView.requestLogin(Constants.CODE_LOGIN_REQUEST, transitArguments);
+            pageView.requestLogin(transitArguments);
         }
     }
 

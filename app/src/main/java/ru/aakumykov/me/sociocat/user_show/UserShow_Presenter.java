@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.user_show;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
@@ -58,18 +59,20 @@ class UserShow_Presenter implements iUserShow.iPresenter {
     @Override
     public void onConfigChanged() {
         checkAuthorization();
+
         view.displayUser(displayedUser);
     }
 
     @Override
     public void onRefreshRequested() {
         checkAuthorization();
+
         loadAndShowUser(displayedUser.getKey());
     }
 
     @Override
     public void onUserLoggedOut() {
-        checkAuthorization();
+        view.closePage();
     }
 
     @Override
@@ -88,9 +91,9 @@ class UserShow_Presenter implements iUserShow.iPresenter {
     // Внутренние методы
     private void checkAuthorization() {
         if (!AuthSingleton.isLoggedIn()) {
-//            view.showToast(R.string.not_authorized);
-//            view.closePage();
-            view.requestLogin();
+            view.requestLogin(
+                    new Intent(view.getAppContext(), UserShow2_View.class)
+            );
         }
     }
 
