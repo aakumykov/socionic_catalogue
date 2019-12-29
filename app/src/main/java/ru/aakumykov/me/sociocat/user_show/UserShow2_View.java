@@ -47,7 +47,7 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
         setContentView(R.layout.user_show_activity);
         ButterKnife.bind(this);
 
-        setPageTitle(R.string.PAGE_TEMPLATE_page_title);
+        setPageTitle(R.string.USER_SHOW_simple_page_title);
         activateUpButton();
 
         UserShow_ViewModel viewModel = new ViewModelProvider(this, new UserShow_ViewModelFactory())
@@ -115,6 +115,8 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
     // iUserShow.iView
     @Override
     public void displayUser(User user) {
+        setPageTitle(R.string.USER_SHOW_complex_page_title, user.getName());
+
         loadAndShowAvatar(user);
 
         nameView.setText(user.getName());
