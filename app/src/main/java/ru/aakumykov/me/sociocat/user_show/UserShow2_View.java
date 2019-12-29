@@ -65,7 +65,7 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
             case Constants.CODE_LOGIN_REQUEST:
-                proceedLoginRequest(resultCode, getIntent());
+                presenter.onFirstOpen(data);
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);

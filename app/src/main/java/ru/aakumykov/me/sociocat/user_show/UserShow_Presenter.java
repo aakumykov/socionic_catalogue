@@ -40,15 +40,21 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     @Override
     public void onFirstOpen(@Nullable Intent intent) {
-        checkAuthorization();
+        if (isGuest()) {
+            view.requestLogin(intent);
+            return;
+        }
 
         if (null == intent) {
             view.showErrorMsg(R.string.USER_SHOW_error_displaying_user, "Intent is null");
             return;
         }
 
-        String userId = intent.getStringExtra(Constants.USER_ID);
-        if (TextUtils.isEmpty(userId)) {
+        String userId = intent.hasCategory(Constants.USER_ID) ?
+                intent.getStringExtra(Constants.USER_ID) :
+                AuthSingleton.currentUserId();
+
+        if (null == userId) {
             view.showErrorMsg(R.string.USER_SHOW_error_displaying_user, "There is no userId in Intent");
             return;
         }
@@ -58,14 +64,26 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     @Override
     public void onConfigChanged() {
-        checkAuthorization();
+        Intent intent = new Intent();
+        intent.putExtra(Constants.USER_ID, displayedUser.getKey());
+
+        if (isGuest()) {
+            view.requestLogin(intent);
+            return;
+        }
 
         view.displayUser(displayedUser);
     }
 
     @Override
     public void onRefreshRequested() {
-        checkAuthorization();
+        Intent intent = new Intent();
+        intent.putExtra(Constants.USER_ID, displayedUser.getKey());
+
+        if (isGuest()) {
+            view.requestLogin(intent);
+            return;
+        }
 
         loadAndShowUser(displayedUser.getKey());
     }
@@ -88,13 +106,10 @@ class UserShow_Presenter implements iUserShow.iPresenter {
         return usersSingleton.currentUserIsAdmin() || currentUserId.equals(displayedUser.getKey());
     }
 
+
     // Внутренние методы
-    private void checkAuthorization() {
-        if (!AuthSingleton.isLoggedIn()) {
-            view.requestLogin(
-                    new Intent(view.getAppContext(), UserShow2_View.class)
-            );
-        }
+    private boolean isGuest() {
+        return !AuthSingleton.isLoggedIn();
     }
 
     private void loadAndShowUser(String userId) {

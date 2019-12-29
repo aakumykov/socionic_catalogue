@@ -45,7 +45,7 @@ public interface iBaseView {
     SharedPreferences getSharedPrefs(String prefsName);
     void clearSharedPrefs(SharedPreferences sharedPreferences, String dataName);
 
-    void requestLogin(@NonNull Intent transitIntent);
+    void requestLogin(@Nullable Intent transitIntent);
 
     // Разное (УБРАТЬ!)
     void proceedLoginRequest(int resultCode, Intent intent);

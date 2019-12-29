@@ -275,13 +275,13 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
 
     @Override
-    public void requestLogin(@NonNull Intent transitIntent) {
+    public void requestLogin(@Nullable Intent transitIntent) {
         Intent loginIntent = new Intent(this, Login_View.class);
         loginIntent.putExtra(Constants.TRANSIT_INTENT, transitIntent);
         startActivityForResult(loginIntent, Constants.CODE_LOGIN_REQUEST);
     }
 
-    @Override
+    @Override @Deprecated
     public void proceedLoginRequest(int resultCode, @Nullable Intent intent) {
         if (null == intent) {
             showErrorMsg(R.string.error_processing_login_request, "Intent is null");
