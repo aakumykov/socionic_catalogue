@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.view.Menu;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
@@ -105,11 +104,6 @@ public class BaseView_Stub implements iBaseView {
 
     @Override
     public void requestLogin(@NonNull Intent transitIntent) {
-
-    }
-
-    @Override
-    public void proceedLoginRequest(int resultCode, Intent intent) {
 
     }
 

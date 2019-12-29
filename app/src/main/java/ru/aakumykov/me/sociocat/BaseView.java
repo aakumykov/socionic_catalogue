@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -279,27 +278,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         Intent loginIntent = new Intent(this, Login_View.class);
         loginIntent.putExtra(Constants.TRANSIT_INTENT, transitIntent);
         startActivityForResult(loginIntent, Constants.CODE_LOGIN_REQUEST);
-    }
-
-    @Override @Deprecated
-    public void proceedLoginRequest(int resultCode, @Nullable Intent intent) {
-        if (null == intent) {
-            showErrorMsg(R.string.error_processing_login_request, "Intent is null");
-            return;
-        }
-
-        switch (resultCode) {
-            case RESULT_OK:
-                Intent originalIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
-                startActivity(originalIntent);
-                break;
-            case RESULT_CANCELED:
-                showToast(R.string.login_canceled);
-                break;
-            default:
-                showErrorMsg(R.string.login_error, "Unknown result code: "+resultCode);
-                break;
-        }
     }
 
     @Override

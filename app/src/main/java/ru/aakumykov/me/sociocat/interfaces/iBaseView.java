@@ -47,8 +47,6 @@ public interface iBaseView {
 
     void requestLogin(@Nullable Intent transitIntent);
 
-    // Разное (УБРАТЬ!)
-    void proceedLoginRequest(int resultCode, Intent intent);
     void goCreateCard();
 
     void closePage();
