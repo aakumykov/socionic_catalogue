@@ -23,7 +23,6 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.Date;
 
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
-import ru.aakumykov.me.sociocat.card_type_chooser.CardTypeChooser;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
@@ -147,10 +146,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
             case R.id.actionLogout:
                 logout();
-                break;
-
-            case R.id.actionCreate:
-                goCreateCard();
                 break;
 
             case R.id.actionCards:
@@ -295,12 +290,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(dataName);
         editor.apply();
-    }
-
-    @Override
-    public void goCreateCard() {
-        Intent intent = new Intent(this, CardTypeChooser.class);
-        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
     }
 
     @Override

@@ -108,11 +108,6 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
-    public void goCreateCard() {
-
-    }
-
-    @Override
     public void closePage() {
 
     }
