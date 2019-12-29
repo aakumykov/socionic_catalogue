@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -274,24 +275,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
 
     @Override
-    public <T> void requestLogin(@Nullable T transitData) {
-
-        Intent intent = new Intent(this, Login_View.class);
-
-        if (null != transitData)
-        {
-            if (transitData instanceof Intent) {
-                intent.putExtra(Intent.EXTRA_INTENT, (Intent) transitData);
-            }
-            else if (transitData instanceof Bundle) {
-                intent.putExtra(Constants.TRANSIT_ARGUMENTS, (Bundle) transitData);
-            }
-            else {
-                throw new RuntimeException("transitData argument must be Intent or Bundle type.");
-            }
-        }
-
-        startActivityForResult(intent, Constants.CODE_LOGIN_REQUEST);
+    public void requestLogin(@NonNull Intent transitIntent) {
+        Intent loginIntent = new Intent(this, Login_View.class);
+        loginIntent.putExtra(Constants.TRANSIT_INTENT, transitIntent);
+        startActivityForResult(loginIntent, Constants.CODE_LOGIN_REQUEST);
     }
 
     @Override

@@ -297,14 +297,14 @@ public class CardShow_View extends BaseView implements
             return;
         }
 
-        Bundle transitArguments = data.getBundleExtra(Constants.TRANSIT_ARGUMENTS);
-        if (null == transitArguments) {
+        Intent transitIntent = data.getParcelableExtra(Constants.TRANSIT_INTENT);
+        if (null == transitIntent) {
             showToast(R.string.CARD_SHOW_data_error);
             return;
         }
 
         try {
-            presenter.processLoginRequest(transitArguments);
+            presenter.processLoginRequest(transitIntent);
         }
         catch (IllegalArgumentException e) {
 

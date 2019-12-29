@@ -31,7 +31,6 @@ public class Login_Presenter implements
 
     private String mIntentAction;
     private Intent mTransitIntent;
-    private Bundle mTransitArguments;
 
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -64,11 +63,8 @@ public class Login_Presenter implements
 
         mIntentAction = intent.getAction() + "";
 
-        if (intent.hasExtra(Intent.EXTRA_INTENT))
-            mTransitIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
-
-        if (intent.hasExtra(Constants.TRANSIT_ARGUMENTS))
-            mTransitArguments = intent.getBundleExtra(Constants.TRANSIT_ARGUMENTS);
+        if (intent.hasExtra(Constants.TRANSIT_INTENT))
+            mTransitIntent = intent.getParcelableExtra(Constants.TRANSIT_INTENT);
 
         if (mIntentAction.equals(Constants.ACTION_TRY_NEW_PASSWORD)) {
             view.showToast(R.string.LOGIN_try_new_password);
@@ -123,7 +119,7 @@ public class Login_Presenter implements
     @Override
     public void cancelLogin() {
         firebaseAuth.signOut();
-        view.finishLogin(true, mTransitIntent, mTransitArguments);
+        view.finishLogin(true, mTransitIntent);
     }
 
     @Override
@@ -169,7 +165,7 @@ public class Login_Presenter implements
             return;
         }
 
-        view.finishLogin(false, mTransitIntent, mTransitArguments);
+        view.finishLogin(false, mTransitIntent);
     }
 
     private void showLoginError(String msg) {
@@ -244,7 +240,7 @@ public class Login_Presenter implements
                             e.printStackTrace();
                         }
 
-                        view.finishLogin(false, mTransitIntent, mTransitArguments);
+                        view.finishLogin(false, mTransitIntent);
                     }
 
                     @Override

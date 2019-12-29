@@ -14,7 +14,7 @@ public interface iLogin {
         Activity getActivity();
         void disableForm();
         void enableForm();
-        void finishLogin(boolean isCancelled, Intent transitIntent, @Nullable Bundle transitArguments);
+        void finishLogin(boolean isCancelled, Intent transitIntent);
         void notifyToConfirmEmail(String userId);
     }
 

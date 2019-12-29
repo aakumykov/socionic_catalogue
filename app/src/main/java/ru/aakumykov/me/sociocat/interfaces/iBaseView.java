@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public interface iBaseView {
@@ -44,7 +45,7 @@ public interface iBaseView {
     SharedPreferences getSharedPrefs(String prefsName);
     void clearSharedPrefs(SharedPreferences sharedPreferences, String dataName);
 
-    <T> void requestLogin(@Nullable T transitArguments);
+    void requestLogin(@NonNull Intent transitIntent);
 
     // Разное (УБРАТЬ!)
     void proceedLoginRequest(int resultCode, Intent intent);

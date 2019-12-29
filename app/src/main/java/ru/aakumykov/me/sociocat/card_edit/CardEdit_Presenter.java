@@ -84,6 +84,11 @@ public class CardEdit_Presenter implements
     @Override
     public void onIntentReceived(@Nullable Intent intent) {
 
+        if (null == intent) {
+            view.showErrorMsg(R.string.data_error, "Intent is null");
+            return;
+        }
+
         if (!AuthSingleton.isLoggedIn()) {
             // TODO: requestLogin + CODE_LOGIN_REQUEST ...
             view.requestLogin(intent);

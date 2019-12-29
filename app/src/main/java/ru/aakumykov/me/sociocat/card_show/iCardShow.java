@@ -86,7 +86,7 @@ public interface iCardShow
 
         void onCardAlmostDisplayed(Card_ViewHolder cardViewHolder);
 
-        void processLoginRequest(Bundle transitArguments) throws IllegalArgumentException;
+        void processLoginRequest(Intent transitIntent) throws IllegalArgumentException;
 
         void onAuthorClicked();
         void onTagClicked(String tagName);

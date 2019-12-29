@@ -132,21 +132,21 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         else {
             this.repliedItem = (iCommentable) listItem.getPayload();
 
-            Bundle transitArguments = new Bundle();
+            Intent intent = new Intent();
 
             if (iList_Item.isCardItem(listItem)) {
-                transitArguments.putParcelable(iCardShow.REPLIED_OBJECT, (Card) this.repliedItem);
-                transitArguments.putString(iCardShow.REPLY_ACTION, iCardShow.ACTION_REPLY_TO_CARD);
+                intent.putExtra(iCardShow.REPLIED_OBJECT, (Card) this.repliedItem);
+                intent.putExtra(iCardShow.REPLY_ACTION, iCardShow.ACTION_REPLY_TO_CARD);
             }
             else if (iList_Item.isCommentItem(listItem)) {
-                transitArguments.putParcelable(iCardShow.REPLIED_OBJECT, (Comment) this.repliedItem);
-                transitArguments.putString(iCardShow.REPLY_ACTION, iCardShow.ACTION_REPLY_TO_COMMENT);
+                intent.putExtra(iCardShow.REPLIED_OBJECT, (Comment) this.repliedItem);
+                intent.putExtra(iCardShow.REPLY_ACTION, iCardShow.ACTION_REPLY_TO_COMMENT);
             }
             else {
                 throw new RuntimeException("Payload is instance of Card or Comment");
             }
 
-            pageView.requestLogin(transitArguments);
+            pageView.requestLogin(intent);
         }
     }
 
@@ -259,10 +259,10 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     }
 
     @Override
-    public void processLoginRequest(Bundle transitArguments) throws IllegalArgumentException
+    public void processLoginRequest(Intent transitIntent) throws IllegalArgumentException
     {
-        String replyAction = transitArguments.getString(iCardShow.REPLY_ACTION, "");
-        iCommentable repliedObject = transitArguments.getParcelable(iCardShow.REPLIED_OBJECT);
+        String replyAction = transitIntent.getStringExtra(iCardShow.REPLY_ACTION);
+        iCommentable repliedObject = transitIntent.getParcelableExtra(iCardShow.REPLIED_OBJECT);
 
         switch (replyAction)
         {
