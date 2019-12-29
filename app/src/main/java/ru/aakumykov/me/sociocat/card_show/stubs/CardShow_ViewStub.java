@@ -3,23 +3,14 @@ package ru.aakumykov.me.sociocat.card_show.stubs;
 import android.annotation.SuppressLint;
 
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.BaseView_Stub;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.iCommentable;
 
 @SuppressLint("Registered")
-public class CardShow_ViewStub extends BaseView implements iCardShow.iPageView {
-
-    @Override
-    public void onUserLogin() {
-
-    }
-
-    @Override
-    public void onUserLogout() {
-
-    }
+public class CardShow_ViewStub extends BaseView_Stub implements iCardShow.iPageView {
 
     @Override
     public void hideSwipeThrobber() {
