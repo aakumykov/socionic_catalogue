@@ -95,7 +95,7 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
 
     @Override
     public void onUserLogout() {
-
+        presenter.onUserLoggedOut();
     }
 
 

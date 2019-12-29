@@ -39,6 +39,8 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     @Override
     public void onFirstOpen(@Nullable Intent intent) {
+        checkAuthorization();
+
         if (null == intent) {
             view.showErrorMsg(R.string.USER_SHOW_error_displaying_user, "Intent is null");
             return;
@@ -55,12 +57,19 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     @Override
     public void onConfigChanged() {
+        checkAuthorization();
         view.displayUser(displayedUser);
     }
 
     @Override
     public void onRefreshRequested() {
+        checkAuthorization();
         loadAndShowUser(displayedUser.getKey());
+    }
+
+    @Override
+    public void onUserLoggedOut() {
+        checkAuthorization();
     }
 
     @Override
@@ -77,6 +86,13 @@ class UserShow_Presenter implements iUserShow.iPresenter {
     }
 
     // Внутренние методы
+    private void checkAuthorization() {
+        if (!AuthSingleton.isLoggedIn()) {
+            view.showToast(R.string.not_authorized);
+            view.closePage();
+        }
+    }
+
     private void loadAndShowUser(String userId) {
         view.showProgressBar();
 

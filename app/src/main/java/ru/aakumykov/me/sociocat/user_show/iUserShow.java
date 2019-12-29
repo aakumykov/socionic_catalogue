@@ -31,6 +31,8 @@ public interface iUserShow {
 
         void onRefreshRequested();
 
+        void onUserLoggedOut();
+
         boolean canEditUser();
     }
 
