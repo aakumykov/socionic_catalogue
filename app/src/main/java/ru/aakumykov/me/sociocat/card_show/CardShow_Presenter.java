@@ -122,10 +122,8 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     }
 
     @Override
-    public void onReplyClicked(iList_Item listItem)
-    {
-        if (AuthSingleton.isLoggedIn())
-        {
+    public void onReplyClicked(iList_Item listItem) {
+        if (AuthSingleton.isLoggedIn()) {
             this.repliedItem = (iCommentable) listItem.getPayload();
             pageView.showCommentForm(repliedItem);
         }
@@ -136,11 +134,11 @@ public class CardShow_Presenter implements iCardShow.iPresenter
 
             if (iList_Item.isCardItem(listItem)) {
                 intent.putExtra(iCardShow.REPLIED_OBJECT, (Card) this.repliedItem);
-                intent.putExtra(iCardShow.REPLY_ACTION, iCardShow.ACTION_REPLY_TO_CARD);
+                intent.setAction(iCardShow.ACTION_REPLY_TO_CARD);
             }
             else if (iList_Item.isCommentItem(listItem)) {
                 intent.putExtra(iCardShow.REPLIED_OBJECT, (Comment) this.repliedItem);
-                intent.putExtra(iCardShow.REPLY_ACTION, iCardShow.ACTION_REPLY_TO_COMMENT);
+                intent.setAction(iCardShow.ACTION_REPLY_TO_COMMENT);
             }
             else {
                 throw new RuntimeException("Payload is instance of Card or Comment");
