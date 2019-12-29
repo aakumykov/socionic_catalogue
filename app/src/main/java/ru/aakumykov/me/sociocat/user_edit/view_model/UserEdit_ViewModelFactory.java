@@ -4,10 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-public class Page_ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
+public class UserEdit_ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     @NonNull @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new Page_ViewModel();
+        return (T) new UserEdit_ViewModel();
     }
 }

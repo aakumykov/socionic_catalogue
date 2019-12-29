@@ -493,5 +493,4 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         editor.putLong(Constants.KEY_LAST_LOGIN, new Date().getTime());
         editor.apply();
     }
-
 }
