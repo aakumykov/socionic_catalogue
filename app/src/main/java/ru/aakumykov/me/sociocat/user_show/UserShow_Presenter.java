@@ -88,8 +88,9 @@ class UserShow_Presenter implements iUserShow.iPresenter {
     // Внутренние методы
     private void checkAuthorization() {
         if (!AuthSingleton.isLoggedIn()) {
-            view.showToast(R.string.not_authorized);
-            view.closePage();
+//            view.showToast(R.string.not_authorized);
+//            view.closePage();
+            view.requestLogin();
         }
     }
 

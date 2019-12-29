@@ -45,10 +45,11 @@ public interface iBaseView {
     void clearSharedPrefs(SharedPreferences sharedPreferences, String dataName);
 
     // Разное
+    void requestLogin();
     <T> void requestLogin(int requestCode, @Nullable T transitArguments);
 
     // Разное (УБРАТЬ!)
-    void proceedLoginRequest(Intent intent);
+    void proceedLoginRequest(int resultCode, Intent intent);
     void goCreateCard();
 
     void closePage();

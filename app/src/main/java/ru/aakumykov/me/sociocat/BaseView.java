@@ -275,6 +275,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     // Разное
     @Override
+    public void requestLogin() {
+        requestLogin(Constants.CODE_LOGIN_REQUEST, null);
+    }
+
+    @Override
     public <T> void requestLogin(int requestCode, @Nullable T transitData) {
 
         Intent intent = new Intent(this, Login_View.class);
@@ -293,8 +298,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public void proceedLoginRequest(Intent intent) {
-        Intent originalIntent = (Intent) intent.getParcelableExtra(Intent.EXTRA_INTENT);
+    public void proceedLoginRequest(int resultCode, @Nullable Intent intent) {
+        if (null == intent) {
+
+        }
+        Intent originalIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
         startActivity(originalIntent);
     }
 

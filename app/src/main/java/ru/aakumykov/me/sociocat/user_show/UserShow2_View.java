@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.user_show;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_show.models.Item;
@@ -59,6 +61,17 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
         }
 
         configureSwipeRefresh();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        switch (requestCode) {
+            case Constants.CODE_LOGIN_REQUEST:
+                proceedLoginRequest(resultCode, getIntent());
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
