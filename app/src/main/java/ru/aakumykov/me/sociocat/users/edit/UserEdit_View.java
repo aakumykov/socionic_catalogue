@@ -299,27 +299,30 @@ public class UserEdit_View extends BaseView implements
             return;
         }
 
-        ImageInfo imageInfo = ImageUtils.extractImageInfo(this, data);
-        if (null == imageInfo) {
-            showErrorMsg(R.string.error_processing_image, "ImageInfo is null");
-            return;
+        try {
+            ImageInfo imageInfo = ImageUtils.extractImageInfo(this, data);
+
+            Glide.with(this)
+                    .load(imageInfo.getLocalURI())
+                    .into(new CustomTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            BitmapDrawable bitmapDrawable = (BitmapDrawable) resource;
+                            Bitmap bitmap = bitmapDrawable.getBitmap();
+
+                            presenter.onImageSelected(bitmap, imageInfo.getImageType());
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                            Log.d(TAG, "onLoadCleared()");
+                        }
+                    });
+        }
+        catch (ImageUtils.ImageUtilsException e) {
+            showErrorMsg(R.string.USER_EDIT_error_selecting_image, e.getMessage());
+            MyUtils.printError(TAG, e);
         }
 
-        Glide.with(this)
-                .load(imageInfo.getLocalURI())
-                .into(new CustomTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        BitmapDrawable bitmapDrawable = (BitmapDrawable) resource;
-                        Bitmap bitmap = bitmapDrawable.getBitmap();
-
-                        presenter.onImageSelected(bitmap, imageInfo.getImageType());
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                        Log.d(TAG, "onLoadCleared()");
-                    }
-                });
     }
 }

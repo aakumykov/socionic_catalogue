@@ -90,7 +90,17 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     @Override
     public void onSaveUserClicked() {
-
+        if (null != avatarBitmap || null != avatarImageType) {
+            uploadAvatar(new iAvatarUploadCallbacks() {
+                @Override
+                public void onAvatarUploaded() {
+                    //saveUser();
+                }
+            });
+        }
+        else {
+            //saveUser();
+        }
     }
 
     @Override

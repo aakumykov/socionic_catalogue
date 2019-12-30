@@ -244,39 +244,42 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
             return;
         }
 
-        ImageInfo imageInfo = ImageUtils.extractImageInfo(this, data);
-        if (null == imageInfo) {
-            showErrorMsg(R.string.error_processing_image, "ImageInfo is null");
-            return;
+        try {
+            ImageInfo imageInfo = ImageUtils.extractImageInfo(this, data);
+
+            Glide.with(this)
+                    .load(imageInfo.getLocalURI())
+                    .into(new CustomTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            Bitmap bitmap;
+
+                            if (resource instanceof GifDrawable) {
+                                GifDrawable gifDrawable = (GifDrawable) resource;
+                                bitmap = gifDrawable.getFirstFrame();
+                            }
+                            else if (resource instanceof BitmapDrawable) {
+                                BitmapDrawable bitmapDrawable = (BitmapDrawable) resource;
+                                bitmap = bitmapDrawable.getBitmap();
+                            }
+                            else {
+                                showToast(R.string.ERROR_unsupported_image_type);
+                                return;
+                            }
+
+                            presenter.onImageSelected(bitmap, imageInfo.getImageType());
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                            Log.d(TAG, "onLoadCleared()");
+                        }
+                    });
         }
-
-        Glide.with(this)
-                .load(imageInfo.getLocalURI())
-                .into(new CustomTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        Bitmap bitmap;
-
-                        if (resource instanceof GifDrawable) {
-                            GifDrawable gifDrawable = (GifDrawable) resource;
-                            bitmap = gifDrawable.getFirstFrame();
-                        }
-                        else if (resource instanceof BitmapDrawable) {
-                            BitmapDrawable bitmapDrawable = (BitmapDrawable) resource;
-                            bitmap = bitmapDrawable.getBitmap();
-                        }
-                        else {
-                            showToast(R.string.ERROR_unsupported_image_type);
-                            return;
-                        }
-
-                        presenter.onImageSelected(bitmap, imageInfo.getImageType());
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                        Log.d(TAG, "onLoadCleared()");
-                    }
-                });
+        catch (ImageUtils.ImageUtilsException e) {
+            showAvatarError();
+            showErrorMsg(R.string.USER_EDIT_error_selecting_image, e.getMessage());
+            MyUtils.printError(TAG, e);
+        }
     }
 }

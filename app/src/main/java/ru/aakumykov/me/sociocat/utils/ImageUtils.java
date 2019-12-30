@@ -49,26 +49,14 @@ public class ImageUtils {
         }
     }
 
-    public static ImageType detectImageType(@Nullable String imageTypeString) {
-        switch ((""+imageTypeString).toLowerCase().trim()) {
-            case "jpg":
-            case "jpeg":
-                return ImageType.JPEG;
-            case "png":
-                return ImageType.PNG;
-            case "webp":
-                return ImageType.WEBP;
-            case "bmp":
-                return ImageType.BMP;
-            default:
-                return ImageType.UNSUPPORTED_IMAGE_TYPE;
-        }
-    }
 
-    public static ImageInfo extractImageInfo(Context context, @Nullable Intent intent) {
+    public static ImageInfo extractImageInfo(Context context, @Nullable Intent intent) throws ImageUtilsException {
+
+        if (null == context)
+            throw new WrongArgumentException("Context argument cannot be null");
 
         if (null == intent)
-            return null;
+            throw new WrongArgumentException("Intent argument cannot be null");
 
         Uri imageLocalURI = extractImageUriFromIntent(context, intent);
 
@@ -82,8 +70,9 @@ public class ImageUtils {
             return imageInfo;
         }
         else
-            return null;
+            throw new NoImageInfoException("");
     }
+
 
     public static byte[] compressImage(Bitmap imageBitmap, ImageType imageType) {
         return compressImage(imageBitmap, imageType, ImageUtils.DEFAULT_JPEG_QUALITY);
@@ -108,6 +97,7 @@ public class ImageUtils {
         imageBitmap.compress(compressFormat, quality, baos);
         return baos.toByteArray();
     }
+
 
     public static Bitmap scaleDownBitmap(Bitmap bitmap, int threshold) {
         return scaleDownBitmap(bitmap, threshold, false);
@@ -160,6 +150,24 @@ public class ImageUtils {
 
 
     // Внутренние методы
+    private static ImageType detectImageType(@Nullable String imageTypeString) throws UnsupportedFormatException {
+        String imgType = (""+imageTypeString).toLowerCase().trim();
+
+        switch (imgType) {
+            case "jpg":
+            case "jpeg":
+                return ImageType.JPEG;
+            case "png":
+                return ImageType.PNG;
+            case "webp":
+                return ImageType.WEBP;
+            case "bmp":
+                return ImageType.BMP;
+            default:
+                throw new UnsupportedFormatException("Unsupported image type: "+imgType);
+        }
+    }
+
     private static Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight, boolean isNecessaryToKeepOrig) {
         int width = bm.getWidth();
         int height = bm.getHeight();
@@ -178,7 +186,7 @@ public class ImageUtils {
         return resizedBitmap;
     }
 
-    private static Uri extractImageUriFromIntent(Context context, @NonNull Intent intent) {
+    private static Uri extractImageUriFromIntent(Context context, @NonNull Intent intent) throws ImageUtilsException {
 
         Object imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM); // Первый способ получить содержимое
 
@@ -245,5 +253,30 @@ public class ImageUtils {
             throw new IllegalArgumentException("imageType cannot be null");
 
         return nameBase + "." + imageType.name().toLowerCase();
+    }
+
+
+    // Классы исключений
+    public static class WrongArgumentException extends ImageUtilsException {
+        public WrongArgumentException(String message) {
+            super(message);
+        }
+    }
+    public static class UnsupportedFormatException extends ImageUtilsException {
+        public UnsupportedFormatException(String message) {
+            super(message);
+        }
+    }
+
+    public static class NoImageInfoException extends ImageUtilsException {
+        public NoImageInfoException(String message) {
+            super(message);
+        }
+    }
+
+    public static class ImageUtilsException extends Exception {
+        public ImageUtilsException(String message) {
+            super(message);
+        }
     }
 }
