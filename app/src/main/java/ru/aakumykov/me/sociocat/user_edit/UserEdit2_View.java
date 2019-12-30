@@ -10,12 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
@@ -138,6 +136,7 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
 
     @Override
     public <T> void displayAvatar(T avatar) {
+
         try {
             Glide.with(this)
                     .load(avatar)
@@ -177,6 +176,16 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
     @Override
     public void hideAvatarThrobber() {
         MyUtils.hide(avatarThrobber, true);
+    }
+
+    @Override
+    public void showAvatarError() {
+        avatarView.setBackgroundResource(R.drawable.shape_avatar_error_border);
+    }
+
+    @Override
+    public void hideAvatarError() {
+        avatarView.setBackgroundResource(R.drawable.shape_avatar_normal_border);
     }
 
     @Override

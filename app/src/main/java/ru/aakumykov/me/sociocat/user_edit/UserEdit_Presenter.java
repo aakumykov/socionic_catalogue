@@ -10,7 +10,9 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.user_edit.stubs.UserEdit_ViewStub;
 import ru.aakumykov.me.sociocat.utils.ImageType;
@@ -20,8 +22,11 @@ import ru.aakumykov.me.sociocat.utils.ImageUtils;
 class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     private iUserEdit.iView view;
-    private User editedUser;
+
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
+
+    private User editedUser;
     private ImageType avatarImageType;
     private Bitmap avatarBitmap;
 
@@ -63,7 +68,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
             return;
         }
 
-        view.fillEditForm(editedUser, editedUser.getAvatarURL());
+        view.fillEditForm(editedUser, avatarBitmap);
     }
 
     @Override
@@ -73,12 +78,14 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
         Bitmap bitmapCopy = bitmap.copy(bitmap.getConfig(), true);
         avatarBitmap = ImageUtils.scaleDownBitmap(bitmapCopy, Config.AVATAR_MAX_SIZE);
 
+        view.hideAvatarError();
         view.displayAvatar(avatarBitmap);
     }
 
     @Override
     public void onUserLoggedOut() {
-
+        view.showToast(R.string.you_are_logged_out);
+        view.closePage();
     }
 
     @Override
@@ -88,12 +95,12 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     @Override
     public void onCancelButtonClicked() {
-
+        view.closePage();
     }
 
     @Override
     public void onBackPressed() {
-
+        view.closePage();
     }
 
 
@@ -122,4 +129,48 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
             }
         });
     }
+
+    private void uploadAvatar(iAvatarUploadCallbacks callbacks) {
+
+        byte[] imageBytes = ImageUtils.compressImage(avatarBitmap, avatarImageType);
+        String fileName = ImageUtils.makeFileName(editedUser.getKey(), avatarImageType);
+
+        view.disableEditForm();
+        view.showAvatarThrobber();
+
+        storageSingleton.uploadAvatar(imageBytes, fileName, new iStorageSingleton.FileUploadCallbacks() {
+            @Override
+            public void onFileUploadProgress(int progress) {
+
+            }
+
+            @Override
+            public void onFileUploadSuccess(String fileName, String downloadURL) {
+                editedUser.setAvatarFileName(fileName);
+                editedUser.setAvatarURL(downloadURL);
+                view.hideAvatarThrobber();
+                callbacks.onAvatarUploaded();
+            }
+
+            @Override
+            public void onFileUploadFail(String errorMsg) {
+                view.showErrorMsg(R.string.USER_EDIT_error_saving_avatar, errorMsg);
+                view.hideAvatarThrobber();
+                view.showAvatarError();
+                view.enableEditForm();
+            }
+
+            @Override
+            public void onFileUploadCancel() {
+                view.hideAvatarThrobber();
+                view.enableEditForm();
+                view.showToast(R.string.USER_EDIT_avatar_uploading_cancelled);
+            }
+        });
+    }
+
+    private interface iAvatarUploadCallbacks {
+        void onAvatarUploaded();
+    }
+
 }

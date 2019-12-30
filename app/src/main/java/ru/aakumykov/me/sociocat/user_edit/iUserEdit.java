@@ -22,6 +22,9 @@ public interface iUserEdit {
         void showAvatarThrobber();
         void hideAvatarThrobber();
 
+        void showAvatarError();
+        void hideAvatarError();
+
         String getName();
         String getEmail();
         String getAbout();

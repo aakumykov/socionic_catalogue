@@ -39,6 +39,16 @@ public class UserEdit_ViewStub extends BaseView_Stub implements iUserEdit.iView 
     }
 
     @Override
+    public void showAvatarError() {
+
+    }
+
+    @Override
+    public void hideAvatarError() {
+
+    }
+
+    @Override
     public <T> void fillEditForm(User user, T avatar) {
 
     }
