@@ -1,6 +1,10 @@
 package ru.aakumykov.me.sociocat.page_template;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -65,6 +69,21 @@ public class Page_View extends BaseView implements iPage.iView {
         presenter.unlinkView();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     // BaseView
     @Override
     public void onUserLogin() {
@@ -75,6 +94,7 @@ public class Page_View extends BaseView implements iPage.iView {
     public void onUserLogout() {
 
     }
+
 
     // iPage.iView
     @Override
