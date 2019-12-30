@@ -50,14 +50,10 @@ public class ImageUtils {
     }
 
 
-    public static ImageInfo extractImageInfo(Context context, @Nullable Intent intent) throws ImageUtilsException {
-
-        if (null == context)
-            throw new WrongArgumentException("Context argument cannot be null");
-
-        if (null == intent)
-            throw new WrongArgumentException("Intent argument cannot be null");
-
+    public static ImageInfo extractImageInfo(Context context, @Nullable Intent intent) throws
+            UnsupportedFormat_Exception,
+            NoImageInfo_Exception
+    {
         Uri imageLocalURI = extractImageUriFromIntent(context, intent);
 
         String imageTypeString = extractImageTypeString(context, imageLocalURI);
@@ -70,7 +66,7 @@ public class ImageUtils {
             return imageInfo;
         }
         else
-            throw new NoImageInfoException("");
+            throw new NoImageInfo_Exception("");
     }
 
 
@@ -150,7 +146,7 @@ public class ImageUtils {
 
 
     // Внутренние методы
-    private static ImageType detectImageType(@Nullable String imageTypeString) throws UnsupportedFormatException {
+    private static ImageType detectImageType(@Nullable String imageTypeString) throws UnsupportedFormat_Exception {
         String imgType = (""+imageTypeString).toLowerCase().trim();
 
         switch (imgType) {
@@ -164,7 +160,7 @@ public class ImageUtils {
             case "bmp":
                 return ImageType.BMP;
             default:
-                throw new UnsupportedFormatException("Unsupported image type: "+imgType);
+                throw new UnsupportedFormat_Exception("Unsupported image type: "+imgType);
         }
     }
 
@@ -186,7 +182,7 @@ public class ImageUtils {
         return resizedBitmap;
     }
 
-    private static Uri extractImageUriFromIntent(Context context, @NonNull Intent intent) throws ImageUtilsException {
+    private static Uri extractImageUriFromIntent(Context context, @NonNull Intent intent) {
 
         Object imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM); // Первый способ получить содержимое
 
@@ -257,25 +253,23 @@ public class ImageUtils {
 
 
     // Классы исключений
-    public static class WrongArgumentException extends ImageUtilsException {
-        public WrongArgumentException(String message) {
+    public static class WrongArgument_Exception extends ImageUtils_Exception {
+        public WrongArgument_Exception(String message) {
             super(message);
         }
     }
-    public static class UnsupportedFormatException extends ImageUtilsException {
-        public UnsupportedFormatException(String message) {
+    public static class UnsupportedFormat_Exception extends ImageUtils_Exception {
+        public UnsupportedFormat_Exception(String message) {
             super(message);
         }
     }
-
-    public static class NoImageInfoException extends ImageUtilsException {
-        public NoImageInfoException(String message) {
+    public static class NoImageInfo_Exception extends ImageUtils_Exception {
+        public NoImageInfo_Exception(String message) {
             super(message);
         }
     }
-
-    public static class ImageUtilsException extends Exception {
-        public ImageUtilsException(String message) {
+    public static class ImageUtils_Exception extends Exception {
+        public ImageUtils_Exception(String message) {
             super(message);
         }
     }

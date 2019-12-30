@@ -207,10 +207,13 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
     // Нажатия
     @OnClick(R.id.avatarView)
     void onAvatarClicked() {
+        hideMessage();
+        hideAvatarError();
+
         isImageSelectionMode = true;
-        if (! ImageUtils.pickImage(this) ) {
+
+        if (! ImageUtils.pickImage(this) )
             showErrorMsg(R.string.error_selecting_image, "Cannot launch file selector");
-        }
     }
 
     @OnClick(R.id.saveButton)
@@ -229,57 +232,12 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
     private void processImageSelection(int resultCode, @Nullable Intent data) {
         switch (resultCode) {
             case RESULT_OK:
-                processSelectedImage(data);
+                presenter.onImageSelected(data);
                 break;
             case RESULT_CANCELED:
                 break;
             default:
                 showErrorMsg(R.string.error_selecting_image, "Unknown result code");
-        }
-    }
-
-    private void processSelectedImage(@Nullable Intent data) {
-        if (null == data) {
-            showErrorMsg(R.string.error_selecting_image, "Intent data is null");
-            return;
-        }
-
-        try {
-            ImageInfo imageInfo = ImageUtils.extractImageInfo(this, data);
-
-            Glide.with(this)
-                    .load(imageInfo.getLocalURI())
-                    .into(new CustomTarget<Drawable>() {
-                        @Override
-                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                            Bitmap bitmap;
-
-                            if (resource instanceof GifDrawable) {
-                                GifDrawable gifDrawable = (GifDrawable) resource;
-                                bitmap = gifDrawable.getFirstFrame();
-                            }
-                            else if (resource instanceof BitmapDrawable) {
-                                BitmapDrawable bitmapDrawable = (BitmapDrawable) resource;
-                                bitmap = bitmapDrawable.getBitmap();
-                            }
-                            else {
-                                showToast(R.string.ERROR_unsupported_image_type);
-                                return;
-                            }
-
-                            presenter.onImageSelected(bitmap, imageInfo.getImageType());
-                        }
-
-                        @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) {
-                            Log.d(TAG, "onLoadCleared()");
-                        }
-                    });
-        }
-        catch (ImageUtils.ImageUtilsException e) {
-            showAvatarError();
-            showErrorMsg(R.string.USER_EDIT_error_selecting_image, e.getMessage());
-            MyUtils.printError(TAG, e);
         }
     }
 }

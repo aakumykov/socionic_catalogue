@@ -173,7 +173,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     public void hideProgressMessage() {
         hideProgressBar();
-        hideMsg();
+        hideMessage();
     }
 
     @Override
@@ -225,7 +225,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public void hideMsg() {
+    public void hideMessage() {
         TextView messageView = findViewById(R.id.messageView);
         TextView stackTraceView = findViewById(R.id.stackTraceView);
 

@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -319,7 +318,7 @@ public class UserEdit_View extends BaseView implements
                         }
                     });
         }
-        catch (ImageUtils.ImageUtilsException e) {
+        catch (ImageUtils.ImageUtils_Exception e) {
             showErrorMsg(R.string.USER_EDIT_error_selecting_image, e.getMessage());
             MyUtils.printError(TAG, e);
         }

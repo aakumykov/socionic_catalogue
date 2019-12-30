@@ -29,7 +29,7 @@ public interface iBaseView {
 
     void showErrorMsg(int userMessageId, String consoleMessage);
 
-    void hideMsg();
+    void hideMessage();
 
     void showToast(int msgId);
     void showToast(String message);

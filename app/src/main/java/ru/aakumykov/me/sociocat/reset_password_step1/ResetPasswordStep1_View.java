@@ -86,7 +86,7 @@ public class ResetPasswordStep1_View extends BaseView implements
             @Override
             public void onEmailSendSucces() {
                 hideProgressMessage();
-                hideMsg();
+                hideMessage();
                 finishWork();
             }
 
@@ -166,7 +166,7 @@ public class ResetPasswordStep1_View extends BaseView implements
 //            @Override
 //            public void onEmailSendSucces() {
 //                hideProgressMessage();
-//                hideMsg();
+//                hideMessage();
 //                finishWork();
 //            }
 //
