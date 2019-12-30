@@ -94,15 +94,16 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (presenter.canEditUser())
-            getMenuInflater().inflate(R.menu.edit, menu);
+            getMenuInflater().inflate(R.menu.edit_user, menu);
 
-        return super.onCreateOptionsMenu(menu);
+//        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.actionEdit:
+            case R.id.actionEditUser:
                 presenter.onEditClicked();
                 return true;
             default:
