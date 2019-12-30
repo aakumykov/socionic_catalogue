@@ -66,25 +66,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        //Log.d(TAG, "onActivityResult()");
-
-        switch (requestCode) {
-
-            case Constants.CODE_LOGIN:
-                //invalidateOptionsMenu();
-                break;
-
-            case Constants.CODE_EDIT_CARD:
-                onCardEdited(resultCode, data);
-                break;
-
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
