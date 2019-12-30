@@ -535,5 +535,6 @@
     <string name="PAGE_TEMPLATE_button_clicked">Button clicked</string>
     <string name="PAGE_TEMPLATE_page_title">Page templte</string>
     <string name="error_processing_login_request">Login failed</string>
+    <string name="ERROR_unsupported_image_type">Unsupported image type</string>
 </resources>
 <!-- «%1$s» -->

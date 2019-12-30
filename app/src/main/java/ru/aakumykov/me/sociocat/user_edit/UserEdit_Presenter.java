@@ -1,9 +1,11 @@
 package ru.aakumykov.me.sociocat.user_edit;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 
 import androidx.annotation.Nullable;
 
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
@@ -11,13 +13,17 @@ import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.user_edit.stubs.UserEdit_ViewStub;
+import ru.aakumykov.me.sociocat.utils.ImageType;
+import ru.aakumykov.me.sociocat.utils.ImageUtils;
 
 
 class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     private iUserEdit.iView view;
-    private User currentUser;
+    private User editedUser;
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private ImageType avatarImageType;
+    private Bitmap avatarBitmap;
 
 
     @Override
@@ -32,7 +38,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     @Override
     public boolean hasUser() {
-        return null != currentUser;
+        return null != editedUser;
     }
 
     @Override
@@ -52,12 +58,22 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
     public void onConfigChanged() {
         if (isGuest()) {
             Intent intent = new Intent();
-            intent.putExtra(Constants.USER_ID, currentUser.getKey());
+            intent.putExtra(Constants.USER_ID, editedUser.getKey());
             view.requestLogin(intent);
             return;
         }
 
-        view.fillEditForm(currentUser, currentUser.getAvatarURL());
+        view.fillEditForm(editedUser, editedUser.getAvatarURL());
+    }
+
+    @Override
+    public void onImageSelected(Bitmap bitmap, ImageType imageType) {
+        this.avatarImageType = imageType;
+
+        Bitmap bitmapCopy = bitmap.copy(bitmap.getConfig(), true);
+        avatarBitmap = ImageUtils.scaleDownBitmap(bitmapCopy, Config.AVATAR_MAX_SIZE);
+
+        view.displayAvatar(avatarBitmap);
     }
 
     @Override
@@ -75,6 +91,11 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
 
     // Внутренние методы
     private boolean isGuest() {
@@ -88,7 +109,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
         usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
-                currentUser = user;
+                editedUser = user;
                 view.hideProgressBar();
                 view.fillEditForm(user, user.getAvatarURL());
                 view.enableEditForm();

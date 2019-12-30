@@ -1,18 +1,26 @@
 package ru.aakumykov.me.sociocat.user_edit;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +30,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_edit.view_model.UserEdit_ViewModel;
 import ru.aakumykov.me.sociocat.user_edit.view_model.UserEdit_ViewModelFactory;
+import ru.aakumykov.me.sociocat.utils.ImageInfo;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -65,7 +74,15 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        presenter.linkView(this);
+
+        switch (requestCode) {
+            case ImageUtils.CODE_SELECT_IMAGE:
+                processImageSelection(resultCode, data);
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -89,6 +106,12 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
         super.onStop();
         presenter.unlinkView();
     }
+
+    @Override
+    public void onBackPressed() {
+        presenter.onBackPressed();
+    }
+
 
     // BaseView
     @Override
@@ -192,4 +215,59 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
         presenter.onCancelButtonClicked();
     }
 
+
+    // Внутренние методы
+    private void processImageSelection(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                processSelectedImage(data);
+                break;
+            case RESULT_CANCELED:
+                break;
+            default:
+                showErrorMsg(R.string.error_selecting_image, "Unknown result code");
+        }
+    }
+
+    private void processSelectedImage(@Nullable Intent data) {
+        if (null == data) {
+            showErrorMsg(R.string.error_selecting_image, "Intent data is null");
+            return;
+        }
+
+        ImageInfo imageInfo = ImageUtils.extractImageInfo(this, data);
+        if (null == imageInfo) {
+            showErrorMsg(R.string.error_processing_image, "ImageInfo is null");
+            return;
+        }
+
+        Glide.with(this)
+                .load(imageInfo.getLocalURI())
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        Bitmap bitmap;
+
+                        if (resource instanceof GifDrawable) {
+                            GifDrawable gifDrawable = (GifDrawable) resource;
+                            bitmap = gifDrawable.getFirstFrame();
+                        }
+                        else if (resource instanceof BitmapDrawable) {
+                            BitmapDrawable bitmapDrawable = (BitmapDrawable) resource;
+                            bitmap = bitmapDrawable.getBitmap();
+                        }
+                        else {
+                            showToast(R.string.ERROR_unsupported_image_type);
+                            return;
+                        }
+
+                        presenter.onImageSelected(bitmap, imageInfo.getImageType());
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                        Log.d(TAG, "onLoadCleared()");
+                    }
+                });
+    }
 }

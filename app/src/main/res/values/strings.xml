@@ -543,5 +543,6 @@
     <string name="PAGE_TEMPLATE_button_clicked">Нажата кнопка</string>
     <string name="PAGE_TEMPLATE_page_title">Шаблон страницы</string>
     <string name="error_processing_login_request">Ошибка авторизации</string>
+    <string name="ERROR_unsupported_image_type">Тип картинки не поддерживается</string>
 
 </resources><!-- «%1$s» -->
