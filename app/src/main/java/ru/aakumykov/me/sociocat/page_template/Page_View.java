@@ -53,6 +53,12 @@ public class Page_View extends BaseView implements iPage.iView {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        presenter.linkView(this);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
