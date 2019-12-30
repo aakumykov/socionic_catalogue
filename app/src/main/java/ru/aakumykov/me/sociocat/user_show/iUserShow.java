@@ -11,6 +11,8 @@ import ru.aakumykov.me.sociocat.user_show.models.Item;
 public interface iUserShow {
 
     interface iView extends iBaseView {
+        void goUserEdit(String userId);
+
         void displayUser(User user);
 
         void hideRefreshThrobber();
@@ -34,6 +36,8 @@ public interface iUserShow {
         void onUserLoggedOut();
 
         boolean canEditUser();
+
+        void onEditClicked();
     }
 
 }

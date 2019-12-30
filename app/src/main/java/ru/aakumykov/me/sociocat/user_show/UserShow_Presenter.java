@@ -106,6 +106,15 @@ class UserShow_Presenter implements iUserShow.iPresenter {
         return usersSingleton.currentUserIsAdmin() || currentUserId.equals(displayedUser.getKey());
     }
 
+    @Override
+    public void onEditClicked() {
+        if (!isGuest()) {
+            view.goUserEdit(displayedUser.getKey());
+        } else {
+            view.showToast(R.string.action_denied);
+        }
+    }
+
 
     // Внутренние методы
     private boolean isGuest() {

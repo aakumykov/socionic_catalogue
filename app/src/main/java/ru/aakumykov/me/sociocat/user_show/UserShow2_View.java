@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.user_edit.UserEdit2_View;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModel;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -97,6 +99,23 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.actionEdit:
+                presenter.onEditClicked();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void goUserEdit(String userId) {
+        Intent intent = new Intent(this, UserEdit2_View.class);
+        intent.putExtra(Constants.USER_ID, userId);
+        startActivityForResult(intent, Constants.CODE_USER_EDIT);
+    }
 
     // BaseView
     @Override
