@@ -89,6 +89,11 @@ public class Page_View extends BaseView implements iPage.iView {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        presenter.onBackPressed();
+    }
+
 
     // BaseView
     @Override

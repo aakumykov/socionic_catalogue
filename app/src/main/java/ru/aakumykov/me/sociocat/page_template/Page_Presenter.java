@@ -55,6 +55,12 @@ class Page_Presenter implements iPage.iPresenter {
         view.showToast(R.string.PAGE_TEMPLATE_button_clicked);
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
+
     // Внутренние методы
     private Item getItem() {
         String timeString = new Date().toString();
