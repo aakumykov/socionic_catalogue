@@ -30,6 +30,9 @@ public interface iUserEdit {
         String getAbout();
 
         void pickImage();
+
+        void finishEdition(@Nullable User user);
+        void cancelEdition();
     }
 
     interface iPresenter {

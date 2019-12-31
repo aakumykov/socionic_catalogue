@@ -104,23 +104,23 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
             uploadAvatar(new iAvatarUploadCallbacks() {
                 @Override
                 public void onAvatarUploaded() {
-                    //saveUser();
+                    saveUser();
                 }
             });
         }
         else {
-            //saveUser();
+            saveUser();
         }
     }
 
     @Override
     public void onCancelButtonClicked() {
-        view.closePage();
+        view.cancelEdition();
     }
 
     @Override
     public void onBackPressed() {
-        view.closePage();
+        view.cancelEdition();
     }
 
 
@@ -193,4 +193,22 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
         void onAvatarUploaded();
     }
 
+    private void saveUser() {
+
+        view.disableEditForm();
+
+        usersSingleton.saveUser(editedUser, new iUsersSingleton.SaveCallbacks() {
+            @Override
+            public void onUserSaveSuccess(User user) {
+                view.finishEdition(user);
+            }
+
+            @Override
+            public void onUserSaveFail(String errorMsg) {
+                view.enableEditForm();
+                view.showErrorMsg(R.string.USER_EDIT_error_saving_user, errorMsg);
+            }
+        });
+
+    }
 }

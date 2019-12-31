@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Config;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_edit.view_model.UserEdit_ViewModel;
@@ -151,18 +152,20 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
 
     @Override
     public void enableEditForm() {
-        nameInput.setEnabled(true);
-        aboutInput.setEnabled(true);
-        saveButton.setEnabled(true);
-        avatarView.setEnabled(true);
+        MyUtils.enable(nameInput);
+        MyUtils.enable(emailInput);
+        MyUtils.enable(aboutInput);
+        MyUtils.enable(saveButton);
+        MyUtils.enable(avatarView);
     }
 
     @Override
     public void disableEditForm() {
-        nameInput.setEnabled(false);
-        aboutInput.setEnabled(false);
-        saveButton.setEnabled(false);
-        avatarView.setEnabled(false);
+        MyUtils.disable(nameInput);
+        MyUtils.disable(emailInput);
+        MyUtils.disable(aboutInput);
+        MyUtils.disable(saveButton);
+        MyUtils.disable(avatarView);
     }
 
     @Override
@@ -217,6 +220,20 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
             showErrorMsg(R.string.error_selecting_image, "Cannot launch file selector");
         else
             isImageSelectionMode = true;
+    }
+
+    @Override
+    public void finishEdition(User user) {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.USER, user);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    public void cancelEdition() {
+        setResult(RESULT_CANCELED);
+        finish();
     }
 
 

@@ -2,6 +2,8 @@ package ru.aakumykov.me.sociocat.user_edit.stubs;
 
 import android.annotation.SuppressLint;
 
+import androidx.annotation.Nullable;
+
 import ru.aakumykov.me.sociocat.BaseView_Stub;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_edit.iUserEdit;
@@ -25,6 +27,16 @@ public class UserEdit_ViewStub extends BaseView_Stub implements iUserEdit.iView 
 
     @Override
     public void pickImage() {
+
+    }
+
+    @Override
+    public void finishEdition(@Nullable User user) {
+
+    }
+
+    @Override
+    public void cancelEdition() {
 
     }
 
