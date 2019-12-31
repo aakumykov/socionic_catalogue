@@ -16,6 +16,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/avatarErrorMessageView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/error_background"
+        android:paddingTop="2dp"
+        android:paddingBottom="4dp"
+        android:textAlignment="center"
+        android:textColor="@color/error"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        tools:text="Ошибка аватара"
+        tools:visibility="visible" />
+
     <ImageView
         android:id="@+id/avatarView"
         android:layout_width="100dp"
@@ -25,7 +41,7 @@
         android:background="@drawable/shape_avatar_normal_border"
         android:scaleType="centerInside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:layout_constraintTop_toBottomOf="@+id/avatarErrorMessageView"
         app:srcCompat="@drawable/ic_add_photo" />
 
     <ProgressBar
@@ -45,7 +61,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="@string/name"
@@ -53,7 +68,7 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/avatarView"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
+        app:layout_constraintTop_toBottomOf="@+id/avatarErrorMessageView" />
 
     <EditText
         android:id="@+id/emailInput"

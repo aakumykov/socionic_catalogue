@@ -3,10 +3,12 @@ package ru.aakumykov.me.sociocat.user_edit;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,6 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_edit.view_model.UserEdit_ViewModel;
@@ -27,6 +30,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class UserEdit2_View extends BaseView implements iUserEdit.iView {
 
+    @BindView(R.id.avatarErrorMessageView) TextView avatarErrorMessageView;
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
     @BindView(R.id.avatarView) ImageView avatarView;
 
@@ -172,12 +176,23 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
     }
 
     @Override
-    public void showAvatarError() {
+    public void showAvatarError(int messageId, String consoleMessage) {
+        String message = MyUtils.getString(this, messageId);
+        if (Config.DEBUG_MODE) {
+            message += ": " + consoleMessage;
+            Log.e(TAG, consoleMessage);
+        }
+        avatarErrorMessageView.setText(message);
+        MyUtils.show(avatarErrorMessageView);
+
+        avatarView.setImageResource(R.drawable.ic_image_error);
+
         avatarView.setBackgroundResource(R.drawable.shape_avatar_error_border);
     }
 
     @Override
     public void hideAvatarError() {
+        MyUtils.hide(avatarErrorMessageView);
         avatarView.setBackgroundResource(R.drawable.shape_avatar_normal_border);
     }
 
@@ -196,17 +211,19 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
         return aboutInput.getText().toString();
     }
 
-    
+    @Override
+    public void pickImage() {
+        if (! ImageUtils.pickImage(this) )
+            showErrorMsg(R.string.error_selecting_image, "Cannot launch file selector");
+        else
+            isImageSelectionMode = true;
+    }
+
+
     // Нажатия
     @OnClick(R.id.avatarView)
     void onAvatarClicked() {
-
-        hideAvatarError();
-
-        isImageSelectionMode = true;
-
-        if (! ImageUtils.pickImage(this) )
-            showErrorMsg(R.string.error_selecting_image, "Cannot launch file selector");
+        presenter.onAvatarClicked();
     }
 
     @OnClick(R.id.saveButton)

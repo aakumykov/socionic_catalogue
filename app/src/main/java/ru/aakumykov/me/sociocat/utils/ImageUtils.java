@@ -49,10 +49,6 @@ public class ImageUtils {
         if (null == data)
             throw new ImageUtils_NoData_Exception("Intent is null");
 
-//        Uri imageURI = extractImageUriFromIntent(context, data);
-//        if (null == imageURI)
-//            throw new ImageUtils_NoData_Exception("Cannot find image URI in Intent");
-
         ImageInfo imageInfo = extractImageInfo(context, data);
         if (null == imageInfo)
             throw new ImageUtils_NoData_Exception("Cannot extract ImageInfo from Intent");
@@ -77,7 +73,7 @@ public class ImageUtils {
 
             @Override
             public void onLoadCleared(@Nullable Drawable placeholder) {
-                callbacks.onImageExtractionError("Image loading cleared");
+                // Не знаю пока, что с этим делать
             }
         });
     }

@@ -72,7 +72,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     @Override
     public void onImageSelectionSuccess(Bitmap bitmap, ImageType imageType) {
-        avatarBitmap = bitmap;
+        avatarBitmap = bitmap.copy(bitmap.getConfig(), true);
         avatarImageType = imageType;
 
         view.displayAvatar(bitmap);
@@ -83,13 +83,19 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
         avatarBitmap = null;
         avatarImageType = null;
 
-        view.showAvatarError();
+        view.showAvatarError(R.string.USER_EDIT_error_selecting_image, errorMsg);
     }
 
     @Override
     public void onUserLoggedOut() {
         view.showToast(R.string.you_are_logged_out);
         view.closePage();
+    }
+
+    @Override
+    public void onAvatarClicked() {
+        view.hideAvatarError();
+        view.pickImage();
     }
 
     @Override
@@ -170,7 +176,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
             public void onFileUploadFail(String errorMsg) {
                 view.showErrorMsg(R.string.USER_EDIT_error_saving_avatar, errorMsg);
                 view.hideAvatarThrobber();
-                view.showAvatarError();
+                view.showAvatarError(R.string.USER_EDIT_error_selecting_image, errorMsg);
                 view.enableEditForm();
             }
 

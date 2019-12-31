@@ -22,12 +22,14 @@ public interface iUserEdit {
         void showAvatarThrobber();
         void hideAvatarThrobber();
 
-        void showAvatarError();
+        void showAvatarError(int messageId, String consoleMessage);
         void hideAvatarError();
 
         String getName();
         String getEmail();
         String getAbout();
+
+        void pickImage();
     }
 
     interface iPresenter {
@@ -45,8 +47,8 @@ public interface iUserEdit {
 
         void onUserLoggedOut();
 
+        void onAvatarClicked();
         void onSaveUserClicked();
-
         void onCancelButtonClicked();
 
         void onBackPressed();

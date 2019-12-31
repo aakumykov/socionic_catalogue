@@ -24,6 +24,11 @@ public class UserEdit_ViewStub extends BaseView_Stub implements iUserEdit.iView 
     }
 
     @Override
+    public void pickImage() {
+
+    }
+
+    @Override
     public <T> void displayAvatar(T avatar) {
 
     }
@@ -39,7 +44,7 @@ public class UserEdit_ViewStub extends BaseView_Stub implements iUserEdit.iView 
     }
 
     @Override
-    public void showAvatarError() {
+    public void showAvatarError(int messageId, String consoleMessage) {
 
     }
 
