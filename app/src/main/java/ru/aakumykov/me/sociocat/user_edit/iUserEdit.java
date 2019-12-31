@@ -1,11 +1,13 @@
 package ru.aakumykov.me.sociocat.user_edit;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.utils.ImageType;
 
 
 public interface iUserEdit {
@@ -38,7 +40,8 @@ public interface iUserEdit {
 
         void onConfigChanged();
 
-        void onImageSelected(Intent data);
+        void onImageSelectionSuccess(Bitmap bitmap, ImageType imageType);
+        void onImageSelectionError(String errorMsg);
 
         void onUserLoggedOut();
 

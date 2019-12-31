@@ -2,19 +2,9 @@ package ru.aakumykov.me.sociocat.user_edit;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.gif.GifDrawable;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
-
-import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
@@ -24,15 +14,12 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.user_edit.stubs.UserEdit_ViewStub;
-import ru.aakumykov.me.sociocat.utils.ImageInfo;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
 class UserEdit_Presenter implements iUserEdit.iPresenter {
 
-    private final static String TAG = "UserEdit_Presenter";
     private iUserEdit.iView view;
 
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
@@ -84,57 +71,19 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
     }
 
     @Override
-    public void onImageSelected(@Nullable Intent data) {
-        if (null == data) {
-            view.showErrorMsg(R.string.error_selecting_image, "Intent data is null");
-            return;
-        }
+    public void onImageSelectionSuccess(Bitmap bitmap, ImageType imageType) {
+        avatarBitmap = bitmap;
+        avatarImageType = imageType;
 
-        try {
-            ImageInfo imageInfo = ImageUtils.extractImageInfo(this, data);
+        view.displayAvatar(bitmap);
+    }
 
-            Glide.with(view.getActivity())
-                    .load(imageInfo.getLocalURI())
-                    .into(new CustomTarget<Drawable>() {
-                        @Override
-                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                            Bitmap bitmap;
+    @Override
+    public void onImageSelectionError(String errorMsg) {
+        avatarBitmap = null;
+        avatarImageType = null;
 
-                            if (resource instanceof GifDrawable) {
-                                GifDrawable gifDrawable = (GifDrawable) resource;
-                                bitmap = gifDrawable.getFirstFrame();
-                            }
-                            else if (resource instanceof BitmapDrawable) {
-                                BitmapDrawable bitmapDrawable = (BitmapDrawable) resource;
-                                bitmap = bitmapDrawable.getBitmap();
-                            }
-                            else {
-                                view.showToast(R.string.ERROR_unsupported_image_type);
-                                return;
-                            }
-
-                            presenter.onImageSelected(bitmap, imageInfo.getImageType());
-                        }
-
-                        @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) {
-                            Log.d(TAG, "onLoadCleared()");
-                        }
-                    });
-        }
-        catch (ImageUtils.ImageUtils_Exception e) {
-//            showAvatarError();
-            showErrorMsg(R.string.USER_EDIT_error_selecting_image, e.getMessage());
-            MyUtils.printError(TAG, e);
-        }
-
-        this.avatarImageType = imageType;
-
-        Bitmap bitmapCopy = bitmap.copy(bitmap.getConfig(), true);
-        avatarBitmap = ImageUtils.scaleDownBitmap(bitmapCopy, Config.AVATAR_MAX_SIZE);
-
-        view.hideAvatarError();
-        view.displayAvatar(avatarBitmap);
+        view.showAvatarError();
     }
 
     @Override

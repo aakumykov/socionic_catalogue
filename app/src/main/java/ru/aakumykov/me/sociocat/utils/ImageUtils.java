@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,6 +15,11 @@ import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.io.ByteArrayOutputStream;
 import java.util.regex.Matcher;
@@ -26,33 +33,59 @@ public class ImageUtils {
     public final static int CODE_SELECT_IMAGE = 10;
     private final static String TAG = "ImageUtils";
 
-    
+
     public static boolean pickImage(Activity activity) {
         return pickImage(activity, "image/*");
     }
 
-    public static boolean pickImage(Activity activity, String mimeType) {
-        Intent intent = new Intent();
-        intent.setType(mimeType);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
 
-        if (null != intent.resolveActivity(activity.getPackageManager())) {
-            activity.startActivityForResult(
-                    Intent.createChooser(intent, activity.getResources().getString(R.string.select_image)),
-                    CODE_SELECT_IMAGE
-            );
-            return true;
-        }
-        else {
-            Log.e(TAG, "Error resolving activity for Intent.ACTION_GET_CONTENT");
-            return false;
-        }
+    public static void extractImageFromIntent(
+            Context context,
+            @Nullable Intent data,
+            ImageExtractionCallbacks callbacks
+    )
+        throws ImageUtils_Exception
+    {
+        if (null == data)
+            throw new ImageUtils_NoData_Exception("Intent is null");
+
+//        Uri imageURI = extractImageUriFromIntent(context, data);
+//        if (null == imageURI)
+//            throw new ImageUtils_NoData_Exception("Cannot find image URI in Intent");
+
+        ImageInfo imageInfo = extractImageInfo(context, data);
+        if (null == imageInfo)
+            throw new ImageUtils_NoData_Exception("Cannot extract ImageInfo from Intent");
+
+        Glide.with(context).load(imageInfo.getLocalURI()).into(new CustomTarget<Drawable>() {
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                Bitmap bitmap = null;
+
+                if (resource instanceof BitmapDrawable) {
+                    bitmap = ((BitmapDrawable) resource).getBitmap();
+                }
+//                else if (resource instanceof GifDrawable) {
+//                    bitmap = ((GifDrawable) resource).getFirstFrame();
+//                }
+
+                if (null != bitmap)
+                    callbacks.onImageExtractionSuccess(bitmap, imageInfo.getImageType());
+                else
+                    callbacks.onImageExtractionError("Glide cannot load such type of image");
+            }
+
+            @Override
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+                callbacks.onImageExtractionError("Image loading cleared");
+            }
+        });
     }
 
 
     public static ImageInfo extractImageInfo(Context context, @Nullable Intent intent) throws
-            UnsupportedFormat_Exception,
-            NoImageInfo_Exception
+            ImageUtils_UnsupportedFormat_Exception,
+            ImageUtils_NoImageInfo_Exception
     {
         Uri imageLocalURI = extractImageUriFromIntent(context, intent);
 
@@ -66,7 +99,7 @@ public class ImageUtils {
             return imageInfo;
         }
         else
-            throw new NoImageInfo_Exception("");
+            throw new ImageUtils_NoImageInfo_Exception("");
     }
 
 
@@ -146,7 +179,25 @@ public class ImageUtils {
 
 
     // Внутренние методы
-    private static ImageType detectImageType(@Nullable String imageTypeString) throws UnsupportedFormat_Exception {
+    private static boolean pickImage(Activity activity, String mimeType) {
+        Intent intent = new Intent();
+        intent.setType(mimeType);
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        if (null != intent.resolveActivity(activity.getPackageManager())) {
+            activity.startActivityForResult(
+                    Intent.createChooser(intent, activity.getResources().getString(R.string.select_image)),
+                    CODE_SELECT_IMAGE
+            );
+            return true;
+        }
+        else {
+            Log.e(TAG, "Error resolving activity for Intent.ACTION_GET_CONTENT");
+            return false;
+        }
+    }
+
+    private static ImageType detectImageType(@Nullable String imageTypeString) throws ImageUtils_UnsupportedFormat_Exception {
         String imgType = (""+imageTypeString).toLowerCase().trim();
 
         switch (imgType) {
@@ -160,7 +211,7 @@ public class ImageUtils {
             case "bmp":
                 return ImageType.BMP;
             default:
-                throw new UnsupportedFormat_Exception("Unsupported image type: "+imgType);
+                throw new ImageUtils_UnsupportedFormat_Exception("Unsupported image type: "+imgType);
         }
     }
 
@@ -252,24 +303,40 @@ public class ImageUtils {
     }
 
 
+    // Коллбеки
+    public interface ImageExtractionCallbacks {
+        void onImageExtractionSuccess(Bitmap bitmap, ImageType imageType);
+        void onImageExtractionError(String errorMsg);
+    }
+
+
     // Классы исключений
-    public static class WrongArgument_Exception extends ImageUtils_Exception {
-        public WrongArgument_Exception(String message) {
-            super(message);
-        }
-    }
-    public static class UnsupportedFormat_Exception extends ImageUtils_Exception {
-        public UnsupportedFormat_Exception(String message) {
-            super(message);
-        }
-    }
-    public static class NoImageInfo_Exception extends ImageUtils_Exception {
-        public NoImageInfo_Exception(String message) {
-            super(message);
-        }
-    }
     public static class ImageUtils_Exception extends Exception {
         public ImageUtils_Exception(String message) {
+            super(message);
+        }
+    }
+
+    public static class ImageUtils_WrongArgument_Exception extends ImageUtils_Exception {
+        public ImageUtils_WrongArgument_Exception(String message) {
+            super(message);
+        }
+    }
+
+    public static class ImageUtils_UnsupportedFormat_Exception extends ImageUtils_Exception {
+        public ImageUtils_UnsupportedFormat_Exception(String message) {
+            super(message);
+        }
+    }
+
+    public static class ImageUtils_NoImageInfo_Exception extends ImageUtils_Exception {
+        public ImageUtils_NoImageInfo_Exception(String message) {
+            super(message);
+        }
+    }
+
+    private static class ImageUtils_NoData_Exception extends ImageUtils_Exception {
+        public ImageUtils_NoData_Exception(String message) {
             super(message);
         }
     }

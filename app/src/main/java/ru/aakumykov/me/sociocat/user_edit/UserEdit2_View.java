@@ -2,23 +2,16 @@ package ru.aakumykov.me.sociocat.user_edit;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.gif.GifDrawable;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +21,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_edit.view_model.UserEdit_ViewModel;
 import ru.aakumykov.me.sociocat.user_edit.view_model.UserEdit_ViewModelFactory;
-import ru.aakumykov.me.sociocat.utils.ImageInfo;
+import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -207,7 +200,7 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
     // Нажатия
     @OnClick(R.id.avatarView)
     void onAvatarClicked() {
-        hideMessage();
+
         hideAvatarError();
 
         isImageSelectionMode = true;
@@ -232,12 +225,32 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
     private void processImageSelection(int resultCode, @Nullable Intent data) {
         switch (resultCode) {
             case RESULT_OK:
-                presenter.onImageSelected(data);
+                processSelectedImage(data);
                 break;
             case RESULT_CANCELED:
                 break;
             default:
                 showErrorMsg(R.string.error_selecting_image, "Unknown result code");
+        }
+    }
+
+    private void processSelectedImage(@Nullable Intent data) {
+        try {
+            ImageUtils.extractImageFromIntent(this, data, new ImageUtils.ImageExtractionCallbacks() {
+                @Override
+                public void onImageExtractionSuccess(Bitmap bitmap, ImageType imageType) {
+                    presenter.onImageSelectionSuccess(bitmap, imageType);
+                }
+
+                @Override
+                public void onImageExtractionError(String errorMsg) {
+                    presenter.onImageSelectionError(errorMsg);
+                }
+            });
+        }
+        catch (ImageUtils.ImageUtils_Exception e) {
+            presenter.onImageSelectionError(e.getMessage());
+            MyUtils.printError(TAG, e);
         }
     }
 }
