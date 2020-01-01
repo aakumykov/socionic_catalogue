@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.user_edit;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -10,10 +11,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -135,28 +139,35 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
     @Override
     public <T> void displayAvatar(T avatar) {
 
-        try {
-            Glide.with(this)
-                    .load(avatar)
-                    .placeholder(R.drawable.ic_avatar_placeholder)
-                    .error(R.drawable.ic_image_error)
-                    .into(avatarView);
-
+        if (avatar instanceof Bitmap) {
+            avatarView.setImageBitmap((Bitmap) avatar);
+            hideAvatarThrobber();
             avatar = null;
         }
-        catch (Exception e) {
-            avatarView.setImageResource(R.drawable.ic_image_error);
-            MyUtils.printError(TAG, e);
-        }
-    }
+        else {
+            try {
+                Glide.with(this)
+                        .load(avatar)
+                        .placeholder(R.drawable.ic_avatar_placeholder)
+                        .error(R.drawable.ic_image_error)
+                        .into(new CustomTarget<Drawable>() {
+                            @Override
+                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                avatarView.setImageDrawable(resource);
+                                hideAvatarThrobber();
+                            }
 
-    @Override
-    public void enableEditForm() {
-        MyUtils.enable(nameInput);
-        MyUtils.enable(emailInput);
-        MyUtils.enable(aboutInput);
-        MyUtils.enable(saveButton);
-        MyUtils.enable(avatarView);
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
+                                hideAvatarThrobber();
+                            }
+                        });
+            }
+            catch (Exception e) {
+                avatarView.setImageResource(R.drawable.ic_image_error);
+                MyUtils.printError(TAG, e);
+            }
+        }
     }
 
     @Override
@@ -166,6 +177,17 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
         MyUtils.disable(aboutInput);
         MyUtils.disable(saveButton);
         MyUtils.disable(avatarView);
+        avatarView.setAlpha(0.5f);
+    }
+
+    @Override
+    public void enableEditForm() {
+        MyUtils.enable(nameInput);
+        MyUtils.enable(emailInput);
+        MyUtils.enable(aboutInput);
+        MyUtils.enable(saveButton);
+        MyUtils.enable(avatarView);
+        avatarView.setAlpha(1.0f);
     }
 
     @Override

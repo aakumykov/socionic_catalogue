@@ -40,6 +40,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/shape_avatar_normal_border"
         android:scaleType="centerInside"
+        android:enabled="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/avatarErrorMessageView"
         app:srcCompat="@drawable/ic_add_photo" />
@@ -50,11 +51,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/avatarView"
         app:layout_constraintStart_toStartOf="@+id/avatarView"
-        app:layout_constraintTop_toBottomOf="@+id/avatarView"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@+id/avatarView" />
 
     <EditText
         android:id="@+id/nameInput"
