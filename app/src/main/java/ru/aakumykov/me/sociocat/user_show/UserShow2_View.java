@@ -67,7 +67,7 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
             case Constants.CODE_LOGIN_REQUEST:
-                presenter.onFirstOpen(data);
+                processLoginRequest(resultCode, data);
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
@@ -167,6 +167,16 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
         });
 
         swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
+    }
+
+    private void processLoginRequest(int resultCode, Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                presenter.onFirstOpen(data);
+                break;
+            default:
+                finish();
+        }
     }
 
     private void loadAndShowAvatar(User user) {
