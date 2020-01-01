@@ -5,6 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,7 +51,8 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
 
     private static final String TAG = "UserEdit2_View";
     private iUserEdit.iPresenter presenter;
-    private boolean isImageSelectionMode;
+    private boolean isImageSelectionMode = false;
+    private boolean isFormDisabled = false;
 
 
     // Activity
@@ -112,6 +116,28 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
         presenter.onBackPressed();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.save, menu);
+
+        MenuItem menuItem =menu.findItem(R.id.actionSave);
+        menuItem.setEnabled(!isFormDisabled);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionSave:
+                presenter.onSaveUserClicked();
+                break;
+            default:
+                super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
 
     // BaseView
     @Override
@@ -172,20 +198,28 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
 
     @Override
     public void disableEditForm() {
+        isFormDisabled = true;
+        refreshMenu();
+
         MyUtils.disable(nameInput);
         MyUtils.disable(emailInput);
         MyUtils.disable(aboutInput);
         MyUtils.disable(saveButton);
+
         MyUtils.disable(avatarView);
         avatarView.setAlpha(0.5f);
     }
 
     @Override
     public void enableEditForm() {
+        isFormDisabled = false;
+        refreshMenu();
+
         MyUtils.enable(nameInput);
         MyUtils.enable(emailInput);
         MyUtils.enable(aboutInput);
         MyUtils.enable(saveButton);
+
         MyUtils.enable(avatarView);
         avatarView.setAlpha(1.0f);
     }

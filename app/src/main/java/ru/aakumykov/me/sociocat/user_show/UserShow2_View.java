@@ -150,11 +150,13 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
     @Override
     public void showAvatarTrobber() {
         MyUtils.show(avatarThrobber);
+        avatarView.setAlpha(0.5f);
     }
 
     @Override
     public void hideAvatarThrobber() {
         MyUtils.hide(avatarThrobber, true);
+        avatarView.setAlpha(1.0f);
     }
 
 
@@ -180,18 +182,19 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
     }
 
     private void loadAndShowAvatar(User user) {
-        MyUtils.show(avatarThrobber);
+        showAvatarTrobber();
 
         Glide.with(this).load(user.getAvatarURL()).into(new CustomTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                MyUtils.hide(avatarThrobber);
                 avatarView.setImageDrawable(resource);
+                hideAvatarThrobber();
             }
 
             @Override
             public void onLoadCleared(@Nullable Drawable placeholder) {
                 avatarView.setImageResource(R.drawable.ic_avatar_placeholder);
+                hideAvatarThrobber();
             }
         });
     }

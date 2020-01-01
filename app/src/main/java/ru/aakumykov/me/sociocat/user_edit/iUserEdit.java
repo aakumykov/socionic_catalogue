@@ -13,6 +13,7 @@ import ru.aakumykov.me.sociocat.utils.ImageType;
 public interface iUserEdit {
 
     interface iView extends iBaseView {
+
         <T> void fillEditForm(User user, T avatar);
         <T> void displayAvatar(T avatar);
 
@@ -42,7 +43,6 @@ public interface iUserEdit {
         boolean hasUser();
 
         void onFirstOpen(@Nullable Intent intent);
-
         void onConfigChanged();
 
         void onImageSelectionSuccess(Bitmap bitmap, ImageType imageType);

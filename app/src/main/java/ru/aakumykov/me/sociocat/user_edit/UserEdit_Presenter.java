@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 
 import androidx.annotation.Nullable;
 
+import com.dropbox.core.android.Auth;
+
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
