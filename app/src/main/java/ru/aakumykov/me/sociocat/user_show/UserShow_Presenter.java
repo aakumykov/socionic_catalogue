@@ -85,6 +85,8 @@ class UserShow_Presenter implements iUserShow.iPresenter {
             return;
         }
 
+        view.hideRefreshThrobber();
+
         loadAndShowUser(displayedUser.getKey());
     }
 
