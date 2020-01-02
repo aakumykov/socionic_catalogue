@@ -138,7 +138,7 @@
 
         <activity android:name=".card_show.CardShow_View" />
 
-        <activity android:name=".user_edit.UserEdit2_View" />
+        <activity android:name=".user_edit.UserEdit2_View" android:windowSoftInputMode="stateHidden" />
 
         <!-- android:windowSoftInputMode="stateHidden" -->
 
