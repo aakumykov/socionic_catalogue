@@ -39,6 +39,8 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
 
     private iUserShow.iPresenter presenter;
+    private boolean userEditMode = false;
+
 
     // Activity
     @Override
@@ -82,10 +84,13 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
         super.onStart();
         presenter.linkView(this);
 
-        if (presenter.hasUser())
-            presenter.onConfigChanged();
-        else
-            presenter.onFirstOpen(getIntent());
+        if (!userEditMode)
+        {
+            if (presenter.hasUser())
+                presenter.onConfigChanged();
+            else
+                presenter.onFirstOpen(getIntent());
+        }
     }
 
     @Override
@@ -116,6 +121,8 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
 
     @Override
     public void goUserEdit(String userId) {
+        userEditMode = true;
+
         Intent intent = new Intent(this, UserEdit2_View.class);
         intent.putExtra(Constants.USER_ID, userId);
         startActivityForResult(intent, Constants.CODE_USER_EDIT);
