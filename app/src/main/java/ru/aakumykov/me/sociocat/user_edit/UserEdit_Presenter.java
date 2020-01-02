@@ -34,8 +34,11 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
     private ImageType avatarImageType;
     private Bitmap avatarBitmap;
     private String oldAvatarFileName;
+
     private int errorMessageId = -1;
     private String consoleErrorMessage;
+
+    private boolean saveInProgress = false;
 
 
     @Override
@@ -169,7 +172,8 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     @Override
     public void onCancelButtonClicked() {
-        cancelEdition();
+        onCancelEditionConfirmed();
+//        cancelEdition();
     }
 
     @Override
@@ -278,6 +282,9 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
     }
 
     private void cancelEdition() {
+        if (saveInProgress)
+            return;
+
         view.showCancelEditionDialog();
     }
 
