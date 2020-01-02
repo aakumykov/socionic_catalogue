@@ -146,12 +146,17 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     @Override
     public void onCancelButtonClicked() {
-        view.cancelEdition();
+        cancelEdition();
+    }
+
+    @Override
+    public void onCancelEditionConfirmed() {
+        view.closePage();
     }
 
     @Override
     public void onBackPressed() {
-        view.cancelEdition();
+        cancelEdition();
     }
 
 
@@ -247,6 +252,10 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
             }
         });
 
+    }
+
+    private void cancelEdition() {
+        view.showCancelEditionDialog();
     }
 
     private void showError(int errorMessageId, String consoleMessage) {

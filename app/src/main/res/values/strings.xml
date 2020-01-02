@@ -545,5 +545,7 @@
     <string name="error_processing_login_request">Ошибка авторизации</string>
     <string name="ERROR_unsupported_image_type">Тип картинки не поддерживается</string>
     <string name="USER_EDIT_remove_avatar_question">Удалить аватар?</string>
+    <string name="USER_EDIT_cancel_edition_question">Прервать редактирование?</string>
+    <string name="USER_EDIT_cancel_edition_dialog_description">Сделанные изменения будут потеряны</string>
 
 </resources><!-- «%1$s» -->

@@ -281,20 +281,40 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
 
     @Override
     public void showAvatarRemoveDialog() {
-
-        new YesNoDialog(this, R.string.USER_EDIT_remove_avatar_question, null, new iDialogCallbacks.Delete() {
+        new YesNoDialog(this, R.string.USER_EDIT_remove_avatar_question, null, new iDialogCallbacks.YesNoCallbacks() {
             @Override
-            public boolean deleteDialogCheck() {
+            public boolean onCheck() {
                 return true;
             }
 
             @Override
-            public void deleteDialogYes() {
+            public void onYesAnswer() {
                 presenter.onAvatarRemoveConfirmed();
             }
 
             @Override
-            public void onDeleteDialogNo() {
+            public void onNoAnswer() {
+
+            }
+        }).show();
+    }
+
+    @Override
+    public void showCancelEditionDialog() {
+        new YesNoDialog(this, R.string.USER_EDIT_cancel_edition_question,
+                R.string.USER_EDIT_cancel_edition_dialog_description, new iDialogCallbacks.YesNoCallbacks() {
+            @Override
+            public boolean onCheck() {
+                return true;
+            }
+
+            @Override
+            public void onYesAnswer() {
+                presenter.onCancelEditionConfirmed();
+            }
+
+            @Override
+            public void onNoAnswer() {
 
             }
         }).show();
@@ -305,12 +325,6 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
         Intent intent = new Intent();
         intent.putExtra(Constants.USER, user);
         setResult(RESULT_OK, intent);
-        finish();
-    }
-
-    @Override
-    public void cancelEdition() {
-        setResult(RESULT_CANCELED);
         finish();
     }
 

@@ -18,14 +18,14 @@ public class YesNoDialog {
     private Context context;
     private String title;
     private String message;
-    private iDialogCallbacks.Delete callbacks;
+    private iDialogCallbacks.YesNoCallbacks callbacks;
 
 
     public <T> YesNoDialog(
             final Context context,
             T title,
             @Nullable T msg,
-            final iDialogCallbacks.Delete callbacks
+            final iDialogCallbacks.YesNoCallbacks callbacks
             )
     {
         this.context = context;
@@ -56,15 +56,15 @@ public class YesNoDialog {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (callbacks.deleteDialogCheck()) {
-                            callbacks.deleteDialogYes();
+                        if (callbacks.onCheck()) {
+                            callbacks.onYesAnswer();
                         }
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        callbacks.onDeleteDialogNo();
+                        callbacks.onNoAnswer();
                     }
                 });
 

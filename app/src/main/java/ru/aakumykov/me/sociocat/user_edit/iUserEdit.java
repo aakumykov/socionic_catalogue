@@ -34,9 +34,9 @@ public interface iUserEdit {
         void pickImage();
 
         void showAvatarRemoveDialog();
+        void showCancelEditionDialog();
 
         void finishEdition(User user);
-        void cancelEdition();
     }
 
     interface iPresenter {
@@ -56,8 +56,11 @@ public interface iUserEdit {
         void onAvatarClicked();
         void onAvatarRemoveClicked();
         void onAvatarRemoveConfirmed();
+
         void onSaveUserClicked();
+
         void onCancelButtonClicked();
+        void onCancelEditionConfirmed();
 
         void onBackPressed();
     }

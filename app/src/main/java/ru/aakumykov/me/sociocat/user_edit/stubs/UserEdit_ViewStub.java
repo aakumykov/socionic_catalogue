@@ -36,12 +36,12 @@ public class UserEdit_ViewStub extends BaseView_Stub implements iUserEdit.iView 
     }
 
     @Override
-    public void finishEdition(@Nullable User user) {
+    public void showCancelEditionDialog() {
 
     }
 
     @Override
-    public void cancelEdition() {
+    public void finishEdition(@Nullable User user) {
 
     }
 

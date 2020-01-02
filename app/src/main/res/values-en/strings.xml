@@ -537,5 +537,7 @@
     <string name="error_processing_login_request">Login failed</string>
     <string name="ERROR_unsupported_image_type">Unsupported image type</string>
     <string name="USER_EDIT_remove_avatar_question">Really delete avatar?</string>
+    <string name="USER_EDIT_cancel_edition_question">Abandon changes?</string>
+    <string name="USER_EDIT_cancel_edition_dialog_description">Changes made will be lost</string>
 </resources>
 <!-- «%1$s» -->
