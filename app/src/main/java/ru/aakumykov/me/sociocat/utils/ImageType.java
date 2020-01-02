@@ -5,5 +5,6 @@ public enum ImageType {
     PNG,
     WEBP,
     BMP,
+    GIF,
     UNSUPPORTED_IMAGE_TYPE
 }
