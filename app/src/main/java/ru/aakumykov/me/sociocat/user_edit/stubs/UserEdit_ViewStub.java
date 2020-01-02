@@ -31,6 +31,11 @@ public class UserEdit_ViewStub extends BaseView_Stub implements iUserEdit.iView 
     }
 
     @Override
+    public void showAvatarRemoveDialog() {
+
+    }
+
+    @Override
     public void finishEdition(@Nullable User user) {
 
     }
@@ -46,6 +51,11 @@ public class UserEdit_ViewStub extends BaseView_Stub implements iUserEdit.iView 
     }
 
     @Override
+    public void removeAvatar() {
+
+    }
+
+    @Override
     public void showAvatarThrobber() {
 
     }
@@ -56,7 +66,7 @@ public class UserEdit_ViewStub extends BaseView_Stub implements iUserEdit.iView 
     }
 
     @Override
-    public void showAvatarError(int messageId, String consoleMessage) {
+    public void showAvatarError() {
 
     }
 

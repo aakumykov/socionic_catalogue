@@ -197,7 +197,7 @@
     <string name="CARD_EDIT_select_card_type">Select card imageType</string>
     <string name="DIALOG_login_first">Log in first</string>
     <string name="USER_EDIT_saving_avatar">Saving avatar</string>
-    <string name="USER_EDIT_saving_profile">Saving profile</string>
+    <string name="USER_EDIT_saving_user_profile">Saving user profile</string>
     <string name="USER_EDIT_error_saving_avatar">Error saving avatar</string>
     <string name="USER_EDIT_error_saving_profile">Error saving profile</string>
     <string name="USER_SHOW_email">Email</string>
@@ -536,5 +536,6 @@
     <string name="PAGE_TEMPLATE_page_title">Page templte</string>
     <string name="error_processing_login_request">Login failed</string>
     <string name="ERROR_unsupported_image_type">Unsupported image type</string>
+    <string name="USER_EDIT_remove_avatar_question">Really delete avatar?</string>
 </resources>
 <!-- «%1$s» -->

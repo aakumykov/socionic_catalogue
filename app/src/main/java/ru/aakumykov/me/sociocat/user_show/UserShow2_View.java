@@ -207,6 +207,12 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
     }
 
     private void loadAndShowAvatar(User user) {
+
+        if (null == user.getAvatarURL()) {
+            avatarView.setImageResource(R.drawable.ic_avatar_placeholder);
+            return;
+        }
+
         showAvatarTrobber();
 
         Glide.with(this).load(user.getAvatarURL()).into(new CustomTarget<Drawable>() {

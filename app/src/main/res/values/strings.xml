@@ -200,7 +200,7 @@
     <string name="CARD_EDIT_select_card_type">Выберите тип карточки</string>
     <string name="DIALOG_login_first">Сначала войдите в приложение</string>
     <string name="USER_EDIT_saving_avatar">Сохраняем аватар</string>
-    <string name="USER_EDIT_saving_profile">Сохраняем профиль</string>
+    <string name="USER_EDIT_saving_user_profile">Сохраняем профиль пользователя</string>
     <string name="USER_EDIT_error_saving_avatar">Ошибка сохранения аватара</string>
     <string name="USER_EDIT_error_saving_profile">Ошибка сохранения профиля</string>
     <string name="USER_SHOW_email">Электронная почта</string>
@@ -544,5 +544,6 @@
     <string name="PAGE_TEMPLATE_page_title">Шаблон страницы</string>
     <string name="error_processing_login_request">Ошибка авторизации</string>
     <string name="ERROR_unsupported_image_type">Тип картинки не поддерживается</string>
+    <string name="USER_EDIT_remove_avatar_question">Удалить аватар?</string>
 
 </resources><!-- «%1$s» -->

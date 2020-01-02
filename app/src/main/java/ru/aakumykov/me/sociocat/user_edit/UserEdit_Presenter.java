@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 
 import androidx.annotation.Nullable;
 
-import com.dropbox.core.android.Auth;
-
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
@@ -85,7 +83,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
         avatarBitmap = null;
         avatarImageType = null;
 
-        view.showAvatarError(R.string.USER_EDIT_error_selecting_image, errorMsg);
+        view.showErrorMsg(R.string.USER_EDIT_error_selecting_image, errorMsg);
     }
 
     @Override
@@ -96,8 +94,29 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     @Override
     public void onAvatarClicked() {
-        view.hideAvatarError();
-        view.pickImage();
+        if (null != editedUser) {
+            view.hideAvatarError();
+            view.pickImage();
+        }
+    }
+
+    @Override
+    public void onAvatarRemoveClicked() {
+        if (null != editedUser)
+            view.showAvatarRemoveDialog();
+    }
+
+    @Override
+    public void onAvatarRemoveConfirmed() {
+        if (null != avatarBitmap) {
+            avatarBitmap = null;
+            avatarImageType = null;
+        }
+        else {
+            editedUser.setAvatarURL(null);
+            editedUser.setAvatarFileName(null);
+        }
+        view.removeAvatar();
     }
 
     @Override
@@ -159,6 +178,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
         view.disableEditForm();
         view.showAvatarThrobber();
+        view.showProgressMessage(R.string.USER_EDIT_saving_avatar);
 
         storageSingleton.uploadAvatar(imageBytes, fileName, new iStorageSingleton.FileUploadCallbacks() {
             @Override
@@ -178,7 +198,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
             public void onFileUploadFail(String errorMsg) {
                 view.showErrorMsg(R.string.USER_EDIT_error_saving_avatar, errorMsg);
                 view.hideAvatarThrobber();
-                view.showAvatarError(R.string.USER_EDIT_error_selecting_image, errorMsg);
+                view.showAvatarError();
                 view.enableEditForm();
             }
 
@@ -197,7 +217,13 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     private void saveUser() {
 
+        // TODO: проверка!
+        editedUser.setName(view.getName());
+        editedUser.setEmail(view.getEmail());
+        editedUser.setAbout(view.getAbout());
+
         view.disableEditForm();
+        view.showProgressMessage(R.string.USER_EDIT_saving_user_profile);
 
         usersSingleton.saveUser(editedUser, new iUsersSingleton.SaveCallbacks() {
             @Override

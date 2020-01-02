@@ -4,15 +4,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,21 +23,22 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
-import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_edit.view_model.UserEdit_ViewModel;
 import ru.aakumykov.me.sociocat.user_edit.view_model.UserEdit_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.YesNoDialog;
 
 public class UserEdit2_View extends BaseView implements iUserEdit.iView {
 
-    @BindView(R.id.avatarErrorMessageView) TextView avatarErrorMessageView;
-    @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
     @BindView(R.id.avatarView) ImageView avatarView;
+    @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
+    @BindView(R.id.avatarRemoveWidget) ImageView avatarRemoveWidget;
 
     @BindView(R.id.nameInput) EditText nameInput;
     @BindView(R.id.emailInput) EditText emailInput;
@@ -132,6 +130,9 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
             case R.id.actionSave:
                 presenter.onSaveUserClicked();
                 break;
+            case android.R.id.home:
+                presenter.onCancelButtonClicked();
+                break;
             default:
                 super.onOptionsItemSelected(item);
         }
@@ -164,6 +165,10 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
 
     @Override
     public <T> void displayAvatar(T avatar) {
+        if (null == avatar) {
+            hideAvatarThrobber();
+            return;
+        }
 
         if (avatar instanceof Bitmap) {
             avatarView.setImageBitmap((Bitmap) avatar);
@@ -194,6 +199,11 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
                 MyUtils.printError(TAG, e);
             }
         }
+    }
+
+    @Override
+    public void removeAvatar() {
+        avatarView.setImageResource(R.drawable.ic_add_avatar);
     }
 
     @Override
@@ -235,23 +245,12 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
     }
 
     @Override
-    public void showAvatarError(int messageId, String consoleMessage) {
-        String message = MyUtils.getString(this, messageId);
-        if (Config.DEBUG_MODE) {
-            message += ": " + consoleMessage;
-            Log.e(TAG, consoleMessage);
-        }
-        avatarErrorMessageView.setText(message);
-        MyUtils.show(avatarErrorMessageView);
-
-        avatarView.setImageResource(R.drawable.ic_image_error);
-
+    public void showAvatarError() {
         avatarView.setBackgroundResource(R.drawable.shape_avatar_error_border);
     }
 
     @Override
     public void hideAvatarError() {
-        MyUtils.hide(avatarErrorMessageView);
         avatarView.setBackgroundResource(R.drawable.shape_avatar_normal_border);
     }
 
@@ -279,6 +278,27 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
     }
 
     @Override
+    public void showAvatarRemoveDialog() {
+
+        new YesNoDialog(this, R.string.USER_EDIT_remove_avatar_question, null, new iDialogCallbacks.Delete() {
+            @Override
+            public boolean deleteDialogCheck() {
+                return true;
+            }
+
+            @Override
+            public void deleteDialogYes() {
+                presenter.onAvatarRemoveConfirmed();
+            }
+
+            @Override
+            public void onDeleteDialogNo() {
+
+            }
+        }).show();
+    }
+
+    @Override
     public void finishEdition(User user) {
         Intent intent = new Intent();
         intent.putExtra(Constants.USER, user);
@@ -297,6 +317,11 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
     @OnClick(R.id.avatarView)
     void onAvatarClicked() {
         presenter.onAvatarClicked();
+    }
+
+    @OnClick(R.id.avatarRemoveWidget)
+    void onAvatarRemoveClicked() {
+        presenter.onAvatarRemoveClicked();
     }
 
     @OnClick(R.id.saveButton)

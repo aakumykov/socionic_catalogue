@@ -16,6 +16,7 @@ public interface iUserEdit {
 
         <T> void fillEditForm(User user, T avatar);
         <T> void displayAvatar(T avatar);
+        void removeAvatar();
 
         void disableEditForm();
         void enableEditForm();
@@ -23,7 +24,7 @@ public interface iUserEdit {
         void showAvatarThrobber();
         void hideAvatarThrobber();
 
-        void showAvatarError(int messageId, String consoleMessage);
+        void showAvatarError();
         void hideAvatarError();
 
         String getName();
@@ -32,7 +33,9 @@ public interface iUserEdit {
 
         void pickImage();
 
-        void finishEdition(@Nullable User user);
+        void showAvatarRemoveDialog();
+
+        void finishEdition(User user);
         void cancelEdition();
     }
 
@@ -51,6 +54,8 @@ public interface iUserEdit {
         void onUserLoggedOut();
 
         void onAvatarClicked();
+        void onAvatarRemoveClicked();
+        void onAvatarRemoveConfirmed();
         void onSaveUserClicked();
         void onCancelButtonClicked();
 

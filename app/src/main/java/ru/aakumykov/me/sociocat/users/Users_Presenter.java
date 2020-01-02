@@ -359,7 +359,7 @@ public class Users_Presenter implements
 
     private void saveUser() {
         editView.disableEditForm();
-        editView.showProgressMessage(R.string.USER_EDIT_saving_profile);
+        editView.showProgressMessage(R.string.USER_EDIT_saving_user_profile);
 
         usersSingleton.saveUser(userInEdit, new iUsersSingleton.SaveCallbacks() {
                 @Override
