@@ -69,6 +69,9 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
             case Constants.CODE_LOGIN_REQUEST:
                 processLoginRequest(resultCode, data);
                 break;
+            case Constants.CODE_USER_EDIT:
+                processUserEditResult(resultCode, data);
+                break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
         }
@@ -132,7 +135,12 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
 
     // iUserShow.iView
     @Override
-    public void displayUser(User user) {
+    public void displayUser(@Nullable User user) {
+        if (null == user) {
+            showErrorMsg(R.string.USER_SHOW_error_displaying_user, "User is null");
+            return;
+        }
+
         setPageTitle(R.string.USER_SHOW_complex_page_title, user.getName());
 
         loadAndShowAvatar(user);
@@ -179,6 +187,23 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
             default:
                 finish();
         }
+    }
+
+    private void processUserEditResult(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+            case RESULT_FIRST_USER:
+                showErrorMsg(R.string.USER_SHOW_error_displaying_user, "Unknown result code "+resultCode);
+                return;
+            case RESULT_CANCELED:
+                return;
+        }
+
+        if (null == data) {
+            showErrorMsg(R.string.USER_SHOW_error_displaying_user, "Intent data is null");
+            return;
+        }
+
+        displayUser(data.getParcelableExtra(Constants.USER));
     }
 
     private void loadAndShowAvatar(User user) {
