@@ -115,6 +115,9 @@ public class ImageUtils {
             case PNG:
                 compressFormat = Bitmap.CompressFormat.PNG;
                 break;
+            case WEBP:
+                compressFormat = Bitmap.CompressFormat.WEBP;
+                break;
             default:
                 compressFormat = Bitmap.CompressFormat.JPEG;
         }
