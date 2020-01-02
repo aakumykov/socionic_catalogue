@@ -15,6 +15,7 @@ public interface iUserShow {
 
         void displayUser(User user);
 
+        void showRefreshThrobber();
         void hideRefreshThrobber();
 
         void showAvatarTrobber();

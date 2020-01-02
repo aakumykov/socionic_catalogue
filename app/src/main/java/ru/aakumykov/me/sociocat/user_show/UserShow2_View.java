@@ -158,6 +158,11 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
     }
 
     @Override
+    public void showRefreshThrobber() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
     public void hideRefreshThrobber() {
         swipeRefreshLayout.setRefreshing(false);
     }

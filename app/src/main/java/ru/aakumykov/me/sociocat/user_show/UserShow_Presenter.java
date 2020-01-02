@@ -85,8 +85,6 @@ class UserShow_Presenter implements iUserShow.iPresenter {
             return;
         }
 
-        view.hideRefreshThrobber();
-
         loadAndShowUser(displayedUser.getKey());
     }
 
@@ -124,7 +122,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
     }
 
     private void loadAndShowUser(String userId) {
-        view.showProgressBar();
+        view.showRefreshThrobber();
 
         usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
             @Override
