@@ -29,7 +29,7 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
-        <activity android:name=".page_template.Page_View">
+        <activity android:name=".user_show.UserShow2_View">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -135,8 +135,9 @@
         <activity
             android:name=".backup_job.BackupStatus_Activity"
             android:launchMode="singleTop" />
+
         <activity android:name=".card_show.CardShow_View" />
-        <activity android:name=".user_show.UserShow2_View" />
+
         <activity android:name=".user_edit.UserEdit2_View" />
 
         <!-- android:windowSoftInputMode="stateHidden" -->

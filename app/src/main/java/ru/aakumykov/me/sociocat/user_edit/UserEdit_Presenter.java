@@ -16,6 +16,8 @@ import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.user_edit.stubs.UserEdit_ViewStub;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
 class UserEdit_Presenter implements iUserEdit.iPresenter {
@@ -28,6 +30,8 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
     private User editedUser;
     private ImageType avatarImageType;
     private Bitmap avatarBitmap;
+    private int errorMessageId;
+    private String consoleErrorMessage;
 
 
     @Override
@@ -68,6 +72,9 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
         }
 
         view.fillEditForm(editedUser, avatarBitmap);
+        if (null != consoleErrorMessage && errorMessageId > -1) {
+            view.showErrorMsg(errorMessageId, consoleErrorMessage);
+        }
     }
 
     @Override
@@ -83,7 +90,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
         avatarBitmap = null;
         avatarImageType = null;
 
-        view.showErrorMsg(R.string.USER_EDIT_error_selecting_image, errorMsg);
+        showError(R.string.USER_EDIT_error_selecting_image, errorMsg);
     }
 
     @Override
@@ -95,6 +102,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
     @Override
     public void onAvatarClicked() {
         if (null != editedUser) {
+            hideError();
             view.hideAvatarError();
             view.pickImage();
         }
@@ -116,6 +124,8 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
             editedUser.setAvatarURL(null);
             editedUser.setAvatarFileName(null);
         }
+
+        hideError();
         view.removeAvatar();
     }
 
@@ -165,7 +175,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
             @Override
             public void onUserReadFail(String errorMsg) {
-                view.showErrorMsg(R.string.USER_EDIT_error_loading_data, errorMsg);
+                showError(R.string.USER_EDIT_error_loading_data, errorMsg);
                 // TODO: показать кнопку "Попробовать ещё" или закрыть страницу, показав Toast?
             }
         });
@@ -196,10 +206,9 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
             @Override
             public void onFileUploadFail(String errorMsg) {
-                view.showErrorMsg(R.string.USER_EDIT_error_saving_avatar, errorMsg);
+                showError(R.string.USER_EDIT_error_saving_avatar, errorMsg);
                 view.hideAvatarThrobber();
                 view.showAvatarError();
-                view.enableEditForm();
             }
 
             @Override
@@ -234,9 +243,23 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
             @Override
             public void onUserSaveFail(String errorMsg) {
                 view.enableEditForm();
-                view.showErrorMsg(R.string.USER_EDIT_error_saving_user, errorMsg);
+                showError(R.string.USER_EDIT_error_saving_user, errorMsg);
             }
         });
 
+    }
+
+    private void showError(int errorMessageId, String consoleMessage) {
+        this.errorMessageId = errorMessageId;
+        this.consoleErrorMessage = consoleMessage;
+
+        view.showErrorMsg(errorMessageId, consoleMessage);
+        view.enableEditForm();
+    }
+
+    private void hideError() {
+        this.errorMessageId = -1;
+        this.consoleErrorMessage = null;
+        view.hideMessage();
     }
 }

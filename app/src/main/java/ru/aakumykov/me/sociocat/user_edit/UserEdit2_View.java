@@ -217,6 +217,7 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
         MyUtils.disable(saveButton);
 
         MyUtils.disable(avatarView);
+        MyUtils.disable(avatarRemoveWidget);
         avatarView.setAlpha(0.5f);
     }
 
@@ -231,6 +232,7 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
         MyUtils.enable(saveButton);
 
         MyUtils.enable(avatarView);
+        MyUtils.enable(avatarRemoveWidget);
         avatarView.setAlpha(1.0f);
     }
 
