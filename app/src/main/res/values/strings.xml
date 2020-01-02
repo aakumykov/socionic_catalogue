@@ -547,5 +547,6 @@
     <string name="USER_EDIT_remove_avatar_question">Удалить аватар?</string>
     <string name="USER_EDIT_cancel_edition_question">Прервать редактирование?</string>
     <string name="USER_EDIT_cancel_edition_dialog_description">Сделанные изменения будут потеряны</string>
+    <string name="USER_EDIT_deleting_avatar_file">Удаляем аватар</string>
 
 </resources><!-- «%1$s» -->

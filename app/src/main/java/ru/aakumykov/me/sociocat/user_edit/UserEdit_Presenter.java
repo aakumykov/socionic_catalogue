@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.user_edit;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -22,6 +23,8 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 class UserEdit_Presenter implements iUserEdit.iPresenter {
 
+    private final static String TAG = "UserEdit_Presenter";
+
     private iUserEdit.iView view;
 
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
@@ -30,6 +33,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
     private User editedUser;
     private ImageType avatarImageType;
     private Bitmap avatarBitmap;
+    private String oldAvatarFileName;
     private int errorMessageId = -1;
     private String consoleErrorMessage;
 
@@ -122,6 +126,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
         }
         else {
             editedUser.setAvatarURL(null);
+            this.oldAvatarFileName = editedUser.getAvatarFileName();
             editedUser.setAvatarFileName(null);
         }
 
@@ -136,6 +141,22 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
                 @Override
                 public void onAvatarUploaded() {
                     saveUser();
+                }
+            });
+        }
+        else if (null == editedUser.getAvatarURL()) {
+            view.disableEditForm();
+            view.showProgressMessage(R.string.USER_EDIT_deleting_avatar_file);
+
+            storageSingleton.deleteAvatar(oldAvatarFileName, new iStorageSingleton.FileDeletionCallbacks() {
+                @Override
+                public void onDeleteSuccess() {
+                    saveUser();
+                }
+
+                @Override
+                public void onDeleteFail(String errorMSg) {
+                    Log.d(TAG, "Error deleting avatar file ("+oldAvatarFileName+"): "+errorMSg);
                 }
             });
         }
