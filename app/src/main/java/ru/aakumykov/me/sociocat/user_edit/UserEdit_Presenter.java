@@ -157,6 +157,8 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
                 @Override
                 public void onDeleteFail(String errorMSg) {
                     Log.d(TAG, "Error deleting avatar file ("+oldAvatarFileName+"): "+errorMSg);
+                    view.showToast(R.string.USER_EDIT_error_deleting_avatar_file);
+                    saveUser();
                 }
             });
         }
