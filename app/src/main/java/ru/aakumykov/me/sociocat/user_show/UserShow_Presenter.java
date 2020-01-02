@@ -113,7 +113,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
         if (!isGuest()) {
             view.goUserEdit(displayedUser.getKey());
         } else {
-            view.showToast(R.string.action_denied);
+            view.showToast(R.string.not_authorized);
         }
     }
 
