@@ -30,7 +30,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
     private User editedUser;
     private ImageType avatarImageType;
     private Bitmap avatarBitmap;
-    private int errorMessageId;
+    private int errorMessageId = -1;
     private String consoleErrorMessage;
 
 
