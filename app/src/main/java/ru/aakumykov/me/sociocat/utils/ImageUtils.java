@@ -61,9 +61,9 @@ public class ImageUtils {
                 if (resource instanceof BitmapDrawable) {
                     bitmap = ((BitmapDrawable) resource).getBitmap();
                 }
-//                else if (resource instanceof GifDrawable) {
-//                    bitmap = ((GifDrawable) resource).getFirstFrame();
-//                }
+                else if (resource instanceof GifDrawable) {
+                    bitmap = ((GifDrawable) resource).getFirstFrame();
+                }
 
                 if (null != bitmap)
                     callbacks.onImageExtractionSuccess(bitmap, imageInfo.getImageType());
@@ -206,6 +206,8 @@ public class ImageUtils {
                 return ImageType.WEBP;
             case "bmp":
                 return ImageType.BMP;
+            case "gif":
+                return ImageType.GIF;
             default:
                 throw new ImageUtils_UnsupportedFormat_Exception("Unsupported image type: "+imgType);
         }
