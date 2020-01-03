@@ -5,9 +5,12 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -163,13 +166,14 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void saveUser(User user, SaveCallbacks callbacks) {
-        String userId = user.getKey();
+    public void saveUser(User user, @Nullable SaveCallbacks callbacks) throws UsersSingletonException {
 
-        if (TextUtils.isEmpty(userId)) {
-            callbacks.onUserSaveFail("There is no userId.");
-            return;
-        }
+        if (null == user)
+            throw new UsersSingleton_WrongArgumentException("User cannot be null");
+
+        String userId = user.getKey();
+        if (null == userId)
+            throw new UsersSingleton_IllegalDataException("There is no userId getted from User");
 
         WriteBatch writeBatch = firebaseFirestore.batch();
 
@@ -206,6 +210,12 @@ public class UsersSingleton implements iUsersSingleton {
                     public void onFailure(@NonNull Exception e) {
                         callbacks.onUserSaveFail(e.getMessage());
                         Log.e(TAG, Arrays.toString(e.getStackTrace()));
+                    }
+                })
+                .addOnCanceledListener(new OnCanceledListener() {
+                    @Override
+                    public void onCanceled() {
+                        Log.d(TAG, "Пакетная запись отменена");
                     }
                 });
     }
@@ -356,17 +366,23 @@ public class UsersSingleton implements iUsersSingleton {
             @Override
             public void onUserReadSuccess(User user) {
                 user.setName(userName);
-                saveUser(user, new SaveCallbacks() {
-                    @Override
-                    public void onUserSaveSuccess(User user) {
-                        callbacks.onCreateOrUpdateExternalUser_Success(user);
-                    }
+                try {
+                    saveUser(user, new SaveCallbacks() {
+                        @Override
+                        public void onUserSaveSuccess(User user) {
+                            callbacks.onCreateOrUpdateExternalUser_Success(user);
+                        }
 
-                    @Override
-                    public void onUserSaveFail(String errorMsg) {
-                        callbacks.onCreateOrUpdateExternalUser_Error(errorMsg);
-                    }
-                });
+                        @Override
+                        public void onUserSaveFail(String errorMsg) {
+                            callbacks.onCreateOrUpdateExternalUser_Error(errorMsg);
+                        }
+                    });
+                }
+                catch (UsersSingletonException e) {
+                    callbacks.onCreateOrUpdateExternalUser_Error(e.getMessage());
+                    MyUtils.printError(TAG, e);
+                }
             }
 
             @Override
@@ -536,5 +552,22 @@ public class UsersSingleton implements iUsersSingleton {
                         callbacks.onReadAdminsListFail(e.getMessage());
                     }
                 });
+    }
+
+
+    public static class UsersSingletonException extends Exception {
+        public UsersSingletonException(String message) {
+            super(message);
+        }
+    }
+    public static class UsersSingleton_WrongArgumentException extends UsersSingletonException {
+        public UsersSingleton_WrongArgumentException(String message) {
+            super(message);
+        }
+    }
+    public static class UsersSingleton_IllegalDataException extends UsersSingletonException {
+        public UsersSingleton_IllegalDataException(String message) {
+            super(message);
+        }
     }
 }

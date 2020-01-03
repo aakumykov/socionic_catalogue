@@ -17,6 +17,7 @@ import ru.aakumykov.me.sociocat.users.stubs.UsersList_ViewStub;
 import ru.aakumykov.me.sociocat.users.stubs.Users_ViewStub;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Users_Presenter implements
         iUsers.Presenter
@@ -361,7 +362,8 @@ public class Users_Presenter implements
         editView.disableEditForm();
         editView.showProgressMessage(R.string.USER_EDIT_saving_user_profile);
 
-        usersSingleton.saveUser(userInEdit, new iUsersSingleton.SaveCallbacks() {
+        try {
+            usersSingleton.saveUser(userInEdit, new iUsersSingleton.SaveCallbacks() {
                 @Override
                 public void onUserSaveSuccess(User user) {
                     editView.showToast(R.string.USER_EDIT_profile_saved);
@@ -376,6 +378,12 @@ public class Users_Presenter implements
                     editView.enableEditForm();
                 }
             });
+        }
+        catch (UsersSingleton.UsersSingletonException e) {
+            editView.enableEditForm();
+            editView.showErrorMsg(R.string.USER_EDIT_error_saving_user, e.getMessage());
+            MyUtils.printError(TAG, e);
+        }
     }
 
 

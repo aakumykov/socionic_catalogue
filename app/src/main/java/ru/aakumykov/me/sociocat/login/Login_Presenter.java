@@ -22,6 +22,7 @@ import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Login_Presenter implements
         iLogin.Presenter
@@ -223,32 +224,39 @@ public class Login_Presenter implements
     private void createOrUpdateUser(String internalUserId, String externalUserId, String userName) {
         view.showProgressMessage(R.string.LOGIN_updating_user);
 
-        usersSingleton.createOrUpdateExternalUser(
-                internalUserId,
-                externalUserId,
-                userName,
-                new iUsersSingleton.CreateOrUpdateExternalUser_Callbacks() {
-                    @Override
-                    public void onCreateOrUpdateExternalUser_Success(User user) {
-                        view.hideProgressMessage();
-                        view.showToast(R.string.LOGIN_login_success);
+        try {
+            usersSingleton.createOrUpdateExternalUser(
+                    internalUserId,
+                    externalUserId,
+                    userName,
+                    new iUsersSingleton.CreateOrUpdateExternalUser_Callbacks() {
+                        @Override
+                        public void onCreateOrUpdateExternalUser_Success(User user) {
+                            view.hideProgressMessage();
+                            view.showToast(R.string.LOGIN_login_success);
 
-                        try {
-                            usersSingleton.storeCurrentUser(user);
-                        } catch (Exception e) {
-                            Log.e(TAG, e.getMessage());
-                            e.printStackTrace();
+                            try {
+                                usersSingleton.storeCurrentUser(user);
+                            } catch (Exception e) {
+                                Log.e(TAG, e.getMessage());
+                                e.printStackTrace();
+                            }
+
+                            view.finishLogin(false, mTransitIntent);
                         }
 
-                        view.finishLogin(false, mTransitIntent);
+                        @Override
+                        public void onCreateOrUpdateExternalUser_Error(String errorMsg) {
+                            view.hideProgressMessage();
+                            view.showErrorMsg(R.string.LOGIN_error_updating_user, errorMsg);
+                        }
                     }
-
-                    @Override
-                    public void onCreateOrUpdateExternalUser_Error(String errorMsg) {
-                        view.hideProgressMessage();
-                        view.showErrorMsg(R.string.LOGIN_error_updating_user, errorMsg);
-                    }
-                }
-        );
+            );
+        }
+        catch (UsersSingleton.UsersSingletonException e) {
+            view.hideProgressMessage();
+            view.showErrorMsg(R.string.LOGIN_error_updating_user, e.getMessage());
+            MyUtils.printError(TAG, e);
+        }
     }
 }

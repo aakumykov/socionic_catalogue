@@ -266,19 +266,24 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
         view.disableEditForm();
         view.showProgressMessage(R.string.USER_EDIT_saving_user_profile);
 
-        usersSingleton.saveUser(editedUser, new iUsersSingleton.SaveCallbacks() {
-            @Override
-            public void onUserSaveSuccess(User user) {
-                view.finishEdition(user);
-            }
+        try {
+            usersSingleton.saveUser(editedUser, new iUsersSingleton.SaveCallbacks() {
+                @Override
+                public void onUserSaveSuccess(User user) {
+                    view.finishEdition(user);
+                }
 
-            @Override
-            public void onUserSaveFail(String errorMsg) {
-                view.enableEditForm();
-                showError(R.string.USER_EDIT_error_saving_user, errorMsg);
-            }
-        });
-
+                @Override
+                public void onUserSaveFail(String errorMsg) {
+                    view.enableEditForm();
+                    showError(R.string.USER_EDIT_error_saving_user, errorMsg);
+                }
+            });
+        }
+        catch (UsersSingleton.UsersSingletonException e) {
+            view.showErrorMsg(R.string.USER_EDIT_error_saving_profile, e.getMessage());
+            view.showToast(R.string.USER_EDIT_error_saving_profile);
+        }
     }
 
     private void cancelEdition() {

@@ -2,6 +2,8 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import android.content.Context;
 
+import androidx.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,7 +17,7 @@ public interface iUsersSingleton {
     void createUser(String userId, String userName, String email, CreateCallbacks callbacks);
     void getUserById(String userId, ReadCallbacks callbacks);
     void getUserByEmail(String email, ReadCallbacks callbacks);
-    void saveUser(User user, SaveCallbacks callbacks);
+    void saveUser(User user, @Nullable SaveCallbacks callbacks) throws UsersSingleton.UsersSingletonException;
     void deleteUser(User user, boolean recursive, DeleteCallbacks callbacks);
     void listUsers(ListCallbacks callbacks);
     void checkNameExists(String name, CheckExistanceCallbacks callbacks);
@@ -27,7 +29,7 @@ public interface iUsersSingleton {
                                  CardCommentsSubscriptionCallbacks callbacks);
 
     void createOrUpdateExternalUser(String internalUserId, String externalUserId, String userName,
-                                    CreateOrUpdateExternalUser_Callbacks callbacks);
+                                    CreateOrUpdateExternalUser_Callbacks callbacks) throws UsersSingleton.UsersSingletonException;
 
     void refreshUserFromServer(String userId, RefreshCallbacks callbacks) throws Exception;
     void storeCurrentUser(User user);
