@@ -191,7 +191,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public <T> void showDebugMsg(T msg) {
-        if (Config.DEBUG_MODE) {
+        if (BuildConfig.DEBUG) {
             hideProgressMessage();
             String text = "";
             if (msg instanceof Integer) {
@@ -216,7 +216,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     public void showErrorMsg(int messageId, @Nullable String consoleMessage) {
         String msg = getResources().getString(messageId);
-        if (Config.DEBUG_MODE)
+        if (BuildConfig.DEBUG)
             msg = msg + ": " + consoleMessage;
         hideProgressMessage();
         showMsg(msg, R.color.error, R.color.error_background);

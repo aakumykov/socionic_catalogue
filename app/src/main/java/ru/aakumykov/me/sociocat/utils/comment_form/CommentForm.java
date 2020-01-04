@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import ru.aakumykov.me.sociocat.BuildConfig;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -161,7 +162,7 @@ public class CommentForm implements
     public void showError(int messageId, @Nullable String consoleMessage) {
 //        hideKeyboard();
 
-        String msg = (Config.DEBUG_MODE && null != consoleMessage) ?
+        String msg = (BuildConfig.DEBUG && null != consoleMessage) ?
                 consoleMessage : context.getResources().getString(messageId);
 
         errorView.setText(msg);

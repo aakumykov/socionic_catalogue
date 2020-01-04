@@ -4,8 +4,6 @@ public final class Config {
 
     private Config() {}
 
-    public final static boolean DEBUG_MODE = true;
-
     // Длины
     public final static int TAG_MIN_LENGTH = 2;
     public final static int TAG_MAX_LENGTH = 40;
