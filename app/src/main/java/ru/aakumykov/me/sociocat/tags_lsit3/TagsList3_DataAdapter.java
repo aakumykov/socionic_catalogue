@@ -12,7 +12,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.tags_lsit3.model.Item;
-import ru.aakumykov.me.sociocat.tags_lsit3.view_holders.Row_ViewHolder;
+import ru.aakumykov.me.sociocat.tags_lsit3.view_holders.Tag_ViewHolder;
 
 public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements iTagsList3.iDataAdapter {
 
@@ -36,14 +36,14 @@ public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @NonNull @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.template_of_list_item, parent, false);
-        return new Row_ViewHolder(itemView, presenter);
+        View itemView = layoutInflater.inflate(R.layout.tags_list3_item, parent, false);
+        return new Tag_ViewHolder(itemView, presenter);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Item item = itemsList.get(position);
-        Row_ViewHolder tagRowViewHolder = (Row_ViewHolder) holder;
+        Tag_ViewHolder tagRowViewHolder = (Tag_ViewHolder) holder;
         tagRowViewHolder.initialize(item);
     }
 

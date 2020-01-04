@@ -12,7 +12,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.tags_lsit3.iTagsList3;
 import ru.aakumykov.me.sociocat.tags_lsit3.model.Item;
 
-public class Row_ViewHolder extends RecyclerView.ViewHolder implements iViewHolder {
+public class Tag_ViewHolder extends RecyclerView.ViewHolder implements iTag_ViewHolder {
 
     @BindView(R.id.tagItem) View tagItem;
     @BindView(R.id.nameView) TextView nameView;
@@ -20,7 +20,7 @@ public class Row_ViewHolder extends RecyclerView.ViewHolder implements iViewHold
     private iTagsList3.iPresenter presenter;
     private Item item;
 
-    public Row_ViewHolder(View itemView, iTagsList3.iPresenter presenter) {
+    public Tag_ViewHolder(View itemView, iTagsList3.iPresenter presenter) {
         super(itemView);
         this.presenter = presenter;
         ButterKnife.bind(this, itemView);
@@ -37,6 +37,6 @@ public class Row_ViewHolder extends RecyclerView.ViewHolder implements iViewHold
     }
 
 
-    // iViewHolder
+    // iTag_ViewHolder
     // ...
 }

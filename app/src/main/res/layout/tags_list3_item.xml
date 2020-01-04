@@ -17,6 +17,7 @@
         android:contentDescription="@string/tag_name"
         android:padding="10dp"
         android:paddingStart="14dp"
+        android:paddingEnd="14dp"
         android:textColor="?attr/colorPrimaryDark"
         android:textSize="18sp"
         tools:text="Метка 1" />
