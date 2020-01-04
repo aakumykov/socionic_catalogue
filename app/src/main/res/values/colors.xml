@@ -8,6 +8,7 @@
     <color name="semi_transparent">#cfffffff</color>
     <color name="grey">#949494</color>
     <color name="light_grey">#dadada</color>
+    <color name="lightest_grey">#F3F3F3</color>
     <color name="white">#ffffff</color>
 
     <color name="undefined">#a4a4a4</color>
