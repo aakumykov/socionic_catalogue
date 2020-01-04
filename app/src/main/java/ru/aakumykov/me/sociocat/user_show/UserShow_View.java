@@ -24,7 +24,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.user_edit.UserEdit2_View;
+import ru.aakumykov.me.sociocat.user_edit.UserEdit_View;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModel;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -123,7 +123,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
     public void goUserEdit(String userId) {
         userEditMode = true;
 
-        Intent intent = new Intent(this, UserEdit2_View.class);
+        Intent intent = new Intent(this, UserEdit_View.class);
         intent.putExtra(Constants.USER_ID, userId);
         startActivityForResult(intent, Constants.CODE_USER_EDIT);
     }

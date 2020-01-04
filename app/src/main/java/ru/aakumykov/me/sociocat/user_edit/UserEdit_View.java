@@ -42,7 +42,7 @@ import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.YesNoDialog;
 
-public class UserEdit2_View extends BaseView implements iUserEdit.iView, Validator.ValidationListener {
+public class UserEdit_View extends BaseView implements iUserEdit.iView, Validator.ValidationListener {
 
     @BindView(R.id.avatarView) ImageView avatarView;
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
@@ -60,7 +60,7 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView, Validat
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
-    private static final String TAG = "UserEdit2_View";
+    private static final String TAG = "UserEdit_View";
     private iUserEdit.iPresenter presenter;
     private boolean isImageSelectionMode = false;
     private boolean isFormDisabled = false;
