@@ -545,5 +545,6 @@
     <string name="LIST_TEMPLATE_title">List template</string>
     <string name="LIST_TEMPLATE_title_extended">List template, elements: %1$s</string>
     <string name="LIST_TEMPLATE_item_name">Item %1$s</string>
+    <string name="TAGS_LIST_filter">Фильтр</string>
 </resources>
 <!-- «%1$s» -->

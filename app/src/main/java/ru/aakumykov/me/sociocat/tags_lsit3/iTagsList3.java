@@ -14,6 +14,8 @@ public interface iTagsList3 {
     interface iPageView extends iBaseView {
         void showRefreshThrobber();
         void hideRefreshThrobber();
+
+        void showCardsWithTag(Tag tag);
     }
 
     interface iDataAdapter {
@@ -36,6 +38,7 @@ public interface iTagsList3 {
         void onFirstOpen(@Nullable Intent intent);
         void onConfigurationChanged();
         void onPageRefreshRequested();
+
         void onTagClicked(Tag tag);
 
     }

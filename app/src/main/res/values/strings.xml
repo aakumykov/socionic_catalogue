@@ -553,5 +553,6 @@
     <string name="LIST_TEMPLATE_title">Шаблон списка</string>
     <string name="LIST_TEMPLATE_title_extended">Шаблон списка, элементов: %1$s</string>
     <string name="LIST_TEMPLATE_item_name">Элемент %1$s</string>
+    <string name="TAGS_LIST_filter">Фильтр</string>
 
 </resources><!-- «%1$s» -->

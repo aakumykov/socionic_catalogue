@@ -55,7 +55,7 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
 
     @Override
     public void onTagClicked(Tag tag) {
-        dataAdapter.removeTag(tag);
+        pageView.showCardsWithTag(tag);
     }
 
 

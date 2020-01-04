@@ -1,6 +1,9 @@
 package ru.aakumykov.me.sociocat.tags_lsit3;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
@@ -12,7 +15,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
+import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags_lsit3.view_model.TagsList3_ViewModel;
 import ru.aakumykov.me.sociocat.tags_lsit3.view_model.TagsList3_ViewModelFactory;
 
@@ -94,6 +100,22 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.filter, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionFilter:
+                return onFilterMenuClicked();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void showRefreshThrobber() {
         swipeRefreshLayout.setRefreshing(true);
     }
@@ -101,6 +123,13 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
     @Override
     public void hideRefreshThrobber() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showCardsWithTag(Tag tag) {
+        Intent intent = new Intent(this, CardsGrid_View.class);
+        intent.putExtra(Constants.TAG_FILTER, tag.getName());
+        startActivity(intent);
     }
 
 
@@ -114,5 +143,9 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
                 presenter.onPageRefreshRequested();
             }
         });
+    }
+
+    private boolean onFilterMenuClicked() {
+        return false;
     }
 }
