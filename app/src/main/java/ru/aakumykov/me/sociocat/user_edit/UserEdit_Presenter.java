@@ -172,8 +172,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     @Override
     public void onCancelButtonClicked() {
-        onCancelEditionConfirmed();
-//        cancelEdition();
+        cancelEdition();
     }
 
     @Override
