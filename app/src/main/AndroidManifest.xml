@@ -128,10 +128,8 @@
             android:name=".card_edit.CardEdit_View"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".preferences.PreferencesActivity" />
-        <activity android:name=".users.show.UserShow_View" />
         <activity android:name=".tags_list2.TagsList2_View" />
         <activity android:name=".tags.show.TagShow_View" />
-        <activity android:name=".users.edit.UserEdit_View" />
         <activity
             android:name=".backup_job.BackupStatus_Activity"
             android:launchMode="singleTop" />
