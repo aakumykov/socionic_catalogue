@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
@@ -21,11 +23,13 @@ import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags_lsit3.view_model.TagsList3_ViewModel;
 import ru.aakumykov.me.sociocat.tags_lsit3.view_model.TagsList3_ViewModelFactory;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.filterDrawer) ViewGroup filterDrawer;
 
     private iTagsList3.iDataAdapter dataAdapter;
     private iTagsList3.iPresenter presenter;
@@ -109,7 +113,8 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionFilter:
-                return onFilterMenuClicked();
+                onFilterMenuClicked();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -145,7 +150,7 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
         });
     }
 
-    private boolean onFilterMenuClicked() {
-        return false;
+    private void onFilterMenuClicked() {
+        MyUtils.toggleVisibility(filterDrawer);
     }
 }

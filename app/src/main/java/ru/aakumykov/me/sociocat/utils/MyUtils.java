@@ -70,6 +70,15 @@ public final class MyUtils {
             MyUtils.hide(view);
     }
 
+    public static void toggleVisibility(View view) {
+        if (View.VISIBLE == view.getVisibility()) {
+            MyUtils.show(view);
+        }
+        else {
+            MyUtils.hide(view);
+        }
+    }
+
     public static void enable(View view) {
         view.setEnabled(true);
     }
@@ -496,6 +505,5 @@ public final class MyUtils {
             Log.e(tag, String.valueOf(e));
         }
     }
-
 
 }
