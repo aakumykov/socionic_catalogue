@@ -12,6 +12,7 @@ import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 public interface iItemsList {
 
     interface iPageView extends iBaseView {
+        void showRefreshThrobber();
         void hideRefreshThrobber();
     }
 

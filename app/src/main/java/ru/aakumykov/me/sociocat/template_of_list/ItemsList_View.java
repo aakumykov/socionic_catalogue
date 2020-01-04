@@ -95,6 +95,11 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     }
 
     @Override
+    public void showRefreshThrobber() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
     public void hideRefreshThrobber() {
         swipeRefreshLayout.setRefreshing(false);
     }

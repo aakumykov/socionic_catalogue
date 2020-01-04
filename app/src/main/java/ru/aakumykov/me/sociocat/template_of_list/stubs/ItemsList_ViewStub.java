@@ -6,7 +6,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 
 @SuppressLint("Registered")
-public class ItemsList_Page_ViewStub extends BaseView implements iItemsList.iPageView {
+public class ItemsList_ViewStub extends BaseView implements iItemsList.iPageView {
 
     @Override
     public void onUserLogin() {
@@ -15,6 +15,11 @@ public class ItemsList_Page_ViewStub extends BaseView implements iItemsList.iPag
 
     @Override
     public void onUserLogout() {
+
+    }
+
+    @Override
+    public void showRefreshThrobber() {
 
     }
 
