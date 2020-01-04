@@ -13,36 +13,36 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.tags_lsit3.view_model.ItemsList_ViewModel;
-import ru.aakumykov.me.sociocat.tags_lsit3.view_model.ItemsList_ViewModelFactory;
+import ru.aakumykov.me.sociocat.tags_lsit3.view_model.TagsList3_ViewModel;
+import ru.aakumykov.me.sociocat.tags_lsit3.view_model.TagsList3_ViewModelFactory;
 
-public class ItemsList_View extends BaseView implements iItemsList.iPageView {
+public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
-    private iItemsList.iDataAdapter dataAdapter;
-    private iItemsList.iPresenter presenter;
+    private iTagsList3.iDataAdapter dataAdapter;
+    private iTagsList3.iPresenter presenter;
 
 
     // Activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.template_of_list_activity);
+        setContentView(R.layout.tags_list3_activity);
         ButterKnife.bind(this);
 
         activateUpButton();
         setPageTitle(R.string.LIST_TEMPLATE_title);
 
-        ItemsList_ViewModel viewModel = new ViewModelProvider(this, new ItemsList_ViewModelFactory())
-                .get(ItemsList_ViewModel.class);
+        TagsList3_ViewModel viewModel = new ViewModelProvider(this, new TagsList3_ViewModelFactory())
+                .get(TagsList3_ViewModel.class);
 
         // Презентер (должен создаваться перед Адаптером)
         if (viewModel.hasPresenter()) {
             this.presenter = viewModel.getPresenter();
         } else {
-            this.presenter = new ItemsList_Presenter();
+            this.presenter = new TagsList3_Presenter();
             viewModel.storePresenter(this.presenter);
         }
 
@@ -51,7 +51,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
         if (viewModel.hasDataAdapter()) {
             this.dataAdapter = viewModel.getDataAdapter();
         } else {
-            this.dataAdapter = new ItemsList_DataAdapter(presenter);
+            this.dataAdapter = new TagsList3_DataAdapter(presenter);
             viewModel.storeDataAdapter(this.dataAdapter);
         }
 

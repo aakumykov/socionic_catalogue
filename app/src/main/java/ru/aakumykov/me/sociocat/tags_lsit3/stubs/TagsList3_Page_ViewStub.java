@@ -3,10 +3,10 @@ package ru.aakumykov.me.sociocat.tags_lsit3.stubs;
 import android.annotation.SuppressLint;
 
 import ru.aakumykov.me.sociocat.BaseView;
-import ru.aakumykov.me.sociocat.tags_lsit3.iItemsList;
+import ru.aakumykov.me.sociocat.tags_lsit3.iTagsList3;
 
 @SuppressLint("Registered")
-public class ItemsList_Page_ViewStub extends BaseView implements iItemsList.iPageView {
+public class TagsList3_Page_ViewStub extends BaseView implements iTagsList3.iPageView {
 
     @Override
     public void onUserLogin() {

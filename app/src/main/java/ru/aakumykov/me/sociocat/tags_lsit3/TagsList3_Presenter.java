@@ -10,26 +10,26 @@ import java.util.Random;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.tags_lsit3.model.Item;
-import ru.aakumykov.me.sociocat.tags_lsit3.stubs.ItemsList_DataAdapter_Stub;
-import ru.aakumykov.me.sociocat.tags_lsit3.stubs.ItemsList_Page_ViewStub;
+import ru.aakumykov.me.sociocat.tags_lsit3.stubs.TagsList3_DataAdapter_Stub;
+import ru.aakumykov.me.sociocat.tags_lsit3.stubs.TagsList3_Page_ViewStub;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class ItemsList_Presenter implements iItemsList.iPresenter {
+public class TagsList3_Presenter implements iTagsList3.iPresenter {
 
-    private iItemsList.iPageView pageView;
-    private iItemsList.iDataAdapter dataAdapter;
+    private iTagsList3.iPageView pageView;
+    private iTagsList3.iDataAdapter dataAdapter;
 
-    // iItemsList.iPresenter
+    // iTagsList3.iPresenter
     @Override
-    public void linkViewAndAdapter(iItemsList.iPageView pageView, iItemsList.iDataAdapter dataAdapter) {
+    public void linkViewAndAdapter(iTagsList3.iPageView pageView, iTagsList3.iDataAdapter dataAdapter) {
         this.pageView = pageView;
         this.dataAdapter = dataAdapter;
     }
 
     @Override
     public void unlinkView() {
-        this.pageView = new ItemsList_Page_ViewStub();
-        this.dataAdapter = new ItemsList_DataAdapter_Stub();
+        this.pageView = new TagsList3_Page_ViewStub();
+        this.dataAdapter = new TagsList3_DataAdapter_Stub();
     }
 
     @Override

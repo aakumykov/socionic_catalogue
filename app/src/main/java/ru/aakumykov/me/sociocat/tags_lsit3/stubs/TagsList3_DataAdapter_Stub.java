@@ -2,10 +2,10 @@ package ru.aakumykov.me.sociocat.tags_lsit3.stubs;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.tags_lsit3.iItemsList;
+import ru.aakumykov.me.sociocat.tags_lsit3.iTagsList3;
 import ru.aakumykov.me.sociocat.tags_lsit3.model.Item;
 
-public class ItemsList_DataAdapter_Stub implements iItemsList.iDataAdapter {
+public class TagsList3_DataAdapter_Stub implements iTagsList3.iDataAdapter {
 
     @Override
     public boolean isVirgin() {

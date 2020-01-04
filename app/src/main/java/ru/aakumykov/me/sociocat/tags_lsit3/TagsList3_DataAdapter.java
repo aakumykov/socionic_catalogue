@@ -14,16 +14,16 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.tags_lsit3.model.Item;
 import ru.aakumykov.me.sociocat.tags_lsit3.view_holders.Row_ViewHolder;
 
-public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements iItemsList.iDataAdapter {
+public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements iTagsList3.iDataAdapter {
 
-    private iItemsList.iPresenter presenter;
+    private iTagsList3.iPresenter presenter;
 
     private List<Item> itemsList = new ArrayList<>();
     private boolean isVirgin = true;
 
 
     // Конструктор
-    public ItemsList_DataAdapter(iItemsList.iPresenter presenter) {
+    public TagsList3_DataAdapter(iTagsList3.iPresenter presenter) {
 
         if (null == presenter)
             throw new IllegalArgumentException("Presenter passed as argument cannot be null");
@@ -53,7 +53,7 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
 
-    // iItemsList.iDataAdapter
+    // iTagsList3.iDataAdapter
     @Override
     public boolean isVirgin() {
         return this.isVirgin;

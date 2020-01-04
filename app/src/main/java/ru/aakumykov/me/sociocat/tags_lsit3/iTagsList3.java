@@ -9,7 +9,7 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.tags_lsit3.model.Item;
 
-public interface iItemsList {
+public interface iTagsList3 {
 
     interface iPageView extends iBaseView {
         void hideRefreshThrobber();
