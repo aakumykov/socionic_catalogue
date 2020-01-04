@@ -32,8 +32,7 @@ import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.tags_list2.TagsList2_View;
-import ru.aakumykov.me.sociocat.user_show.UserShow2_View;
-import ru.aakumykov.me.sociocat.users.show.UserShow_View;
+import ru.aakumykov.me.sociocat.user_show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -401,7 +400,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void onUserProfileClicked() {
-        Intent intent = new Intent(this, UserShow2_View.class);
+        Intent intent = new Intent(this, UserShow_View.class);
         intent.putExtra(Constants.USER_ID, AuthSingleton.currentUserId());
         startActivity(intent);
     }

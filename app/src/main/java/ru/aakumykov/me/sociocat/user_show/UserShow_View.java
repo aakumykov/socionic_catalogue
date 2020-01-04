@@ -29,7 +29,7 @@ import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModel;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class UserShow2_View extends BaseView implements iUserShow.iView {
+public class UserShow_View extends BaseView implements iUserShow.iView {
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.nameView) TextView nameView;
