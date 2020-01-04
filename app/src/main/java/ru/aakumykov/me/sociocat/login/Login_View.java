@@ -241,7 +241,7 @@ public class Login_View extends BaseView implements iLogin.View
                 showToast(R.string.LOGIN_password_recovery_email_sent);
                 break;
             case RESULT_CANCELED:
-                hideMsg();
+                hideMessage();
                 break;
             default:
                 Log.e(TAG,"Unknown result code: "+resultCode);

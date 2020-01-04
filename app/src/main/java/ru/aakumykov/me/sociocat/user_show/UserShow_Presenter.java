@@ -106,6 +106,15 @@ class UserShow_Presenter implements iUserShow.iPresenter {
         return usersSingleton.currentUserIsAdmin() || currentUserId.equals(displayedUser.getKey());
     }
 
+    @Override
+    public void onEditClicked() {
+        if (!isGuest()) {
+            view.goUserEdit(displayedUser.getKey());
+        } else {
+            view.showToast(R.string.not_authorized);
+        }
+    }
+
 
     // Внутренние методы
     private boolean isGuest() {
@@ -113,7 +122,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
     }
 
     private void loadAndShowUser(String userId) {
-        view.showProgressBar();
+        view.showRefreshThrobber();
 
         usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
             @Override

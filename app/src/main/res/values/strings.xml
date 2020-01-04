@@ -185,7 +185,7 @@
     <string name="CARD_EDIT_tags_are_saved">Метки сохранены</string>
     <string name="USER_EDIT_error_selecting_image">Ошибка выбора изображения</string>
     <string name="USER_EDIT_no_image_data">Ошибка данных</string>
-    <string name="USER_EDIT_name_cannot_be_empty">Имя не может быть пустым</string>
+    <string name="VALIDATION_cannot_be_empty">Не может быть пустым</string>
     <string name="USER_SHOW_name">Имя</string>
     <string name="USER_SHOW_about">О себе</string>
     <string name="DESCRIPTION_user_avatar">Аватар пользователя</string>
@@ -200,7 +200,7 @@
     <string name="CARD_EDIT_select_card_type">Выберите тип карточки</string>
     <string name="DIALOG_login_first">Сначала войдите в приложение</string>
     <string name="USER_EDIT_saving_avatar">Сохраняем аватар</string>
-    <string name="USER_EDIT_saving_profile">Сохраняем профиль</string>
+    <string name="USER_EDIT_saving_user_profile">Сохраняем профиль пользователя</string>
     <string name="USER_EDIT_error_saving_avatar">Ошибка сохранения аватара</string>
     <string name="USER_EDIT_error_saving_profile">Ошибка сохранения профиля</string>
     <string name="USER_SHOW_email">Электронная почта</string>
@@ -543,5 +543,12 @@
     <string name="PAGE_TEMPLATE_button_clicked">Нажата кнопка</string>
     <string name="PAGE_TEMPLATE_page_title">Шаблон страницы</string>
     <string name="error_processing_login_request">Ошибка авторизации</string>
+    <string name="ERROR_unsupported_image_type">Тип картинки не поддерживается</string>
+    <string name="USER_EDIT_remove_avatar_question">Удалить аватар?</string>
+    <string name="USER_EDIT_cancel_edition_question">Прервать редактирование?</string>
+    <string name="USER_EDIT_cancel_edition_dialog_description">Сделанные изменения будут потеряны</string>
+    <string name="USER_EDIT_deleting_avatar_file">Удаляем аватар</string>
+    <string name="USER_EDIT_error_deleting_avatar_file">Ошибка удаления аватара</string>
+    <string name="VALIDATION_mailformed_email">Некорректный Email</string>
 
 </resources><!-- «%1$s» -->

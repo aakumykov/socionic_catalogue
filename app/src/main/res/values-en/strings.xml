@@ -182,7 +182,7 @@
     <string name="CARD_EDIT_tags_are_saved">Tags are saved</string>
     <string name="USER_EDIT_error_selecting_image">Error selecting image</string>
     <string name="USER_EDIT_no_image_data">Image data error</string>
-    <string name="USER_EDIT_name_cannot_be_empty">Name cannot be empty</string>
+    <string name="VALIDATION_cannot_be_empty">Cannot be empty</string>
     <string name="USER_SHOW_name">Name</string>
     <string name="USER_SHOW_about">About</string>
     <string name="DESCRIPTION_user_avatar">User avatar</string>
@@ -197,7 +197,7 @@
     <string name="CARD_EDIT_select_card_type">Select card imageType</string>
     <string name="DIALOG_login_first">Log in first</string>
     <string name="USER_EDIT_saving_avatar">Saving avatar</string>
-    <string name="USER_EDIT_saving_profile">Saving profile</string>
+    <string name="USER_EDIT_saving_user_profile">Saving user profile</string>
     <string name="USER_EDIT_error_saving_avatar">Error saving avatar</string>
     <string name="USER_EDIT_error_saving_profile">Error saving profile</string>
     <string name="USER_SHOW_email">Email</string>
@@ -535,5 +535,12 @@
     <string name="PAGE_TEMPLATE_button_clicked">Button clicked</string>
     <string name="PAGE_TEMPLATE_page_title">Page templte</string>
     <string name="error_processing_login_request">Login failed</string>
+    <string name="ERROR_unsupported_image_type">Unsupported image type</string>
+    <string name="USER_EDIT_remove_avatar_question">Really delete avatar?</string>
+    <string name="USER_EDIT_cancel_edition_question">Abandon changes?</string>
+    <string name="USER_EDIT_cancel_edition_dialog_description">Changes made will be lost</string>
+    <string name="USER_EDIT_deleting_avatar_file">Deleting avatar</string>
+    <string name="USER_EDIT_error_deleting_avatar_file">Error deleting avatar</string>
+    <string name="VALIDATION_mailformed_email">Mailformed Email</string>
 </resources>
 <!-- «%1$s» -->

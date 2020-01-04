@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,11 +24,12 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.user_edit.UserEdit2_View;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModel;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class UserShow2_View extends BaseView implements iUserShow.iView {
+public class UserShow_View extends BaseView implements iUserShow.iView {
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.nameView) TextView nameView;
@@ -37,6 +39,8 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
 
     private iUserShow.iPresenter presenter;
+    private boolean userEditMode = false;
+
 
     // Activity
     @Override
@@ -65,7 +69,10 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
             case Constants.CODE_LOGIN_REQUEST:
-                presenter.onFirstOpen(data);
+                processLoginRequest(resultCode, data);
+                break;
+            case Constants.CODE_USER_EDIT:
+                processUserEditResult(resultCode, data);
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
@@ -77,10 +84,13 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
         super.onStart();
         presenter.linkView(this);
 
-        if (presenter.hasUser())
-            presenter.onConfigChanged();
-        else
-            presenter.onFirstOpen(getIntent());
+        if (!userEditMode)
+        {
+            if (presenter.hasUser())
+                presenter.onConfigChanged();
+            else
+                presenter.onFirstOpen(getIntent());
+        }
     }
 
     @Override
@@ -92,11 +102,31 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (presenter.canEditUser())
-            getMenuInflater().inflate(R.menu.edit, menu);
+            getMenuInflater().inflate(R.menu.edit_user, menu);
 
-        return super.onCreateOptionsMenu(menu);
+//        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.actionEditUser:
+                presenter.onEditClicked();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void goUserEdit(String userId) {
+        userEditMode = true;
+
+        Intent intent = new Intent(this, UserEdit2_View.class);
+        intent.putExtra(Constants.USER_ID, userId);
+        startActivityForResult(intent, Constants.CODE_USER_EDIT);
+    }
 
     // BaseView
     @Override
@@ -112,7 +142,12 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
 
     // iUserShow.iView
     @Override
-    public void displayUser(User user) {
+    public void displayUser(@Nullable User user) {
+        if (null == user) {
+            showErrorMsg(R.string.USER_SHOW_error_displaying_user, "User is null");
+            return;
+        }
+
         setPageTitle(R.string.USER_SHOW_complex_page_title, user.getName());
 
         loadAndShowAvatar(user);
@@ -123,6 +158,11 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
     }
 
     @Override
+    public void showRefreshThrobber() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
     public void hideRefreshThrobber() {
         swipeRefreshLayout.setRefreshing(false);
     }
@@ -130,11 +170,13 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
     @Override
     public void showAvatarTrobber() {
         MyUtils.show(avatarThrobber);
+        avatarView.setAlpha(0.5f);
     }
 
     @Override
     public void hideAvatarThrobber() {
         MyUtils.hide(avatarThrobber, true);
+        avatarView.setAlpha(1.0f);
     }
 
 
@@ -149,19 +191,53 @@ public class UserShow2_View extends BaseView implements iUserShow.iView {
         swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
     }
 
+    private void processLoginRequest(int resultCode, Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                presenter.onFirstOpen(data);
+                break;
+            default:
+                finish();
+        }
+    }
+
+    private void processUserEditResult(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+            case RESULT_FIRST_USER:
+                showErrorMsg(R.string.USER_SHOW_error_displaying_user, "Unknown result code "+resultCode);
+                return;
+            case RESULT_CANCELED:
+                return;
+        }
+
+        if (null == data) {
+            showErrorMsg(R.string.USER_SHOW_error_displaying_user, "Intent data is null");
+            return;
+        }
+
+        displayUser(data.getParcelableExtra(Constants.USER));
+    }
+
     private void loadAndShowAvatar(User user) {
-        MyUtils.show(avatarThrobber);
+
+        if (null == user.getAvatarURL()) {
+            avatarView.setImageResource(R.drawable.ic_avatar_placeholder);
+            return;
+        }
+
+        showAvatarTrobber();
 
         Glide.with(this).load(user.getAvatarURL()).into(new CustomTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                MyUtils.hide(avatarThrobber);
                 avatarView.setImageDrawable(resource);
+                hideAvatarThrobber();
             }
 
             @Override
             public void onLoadCleared(@Nullable Drawable placeholder) {
                 avatarView.setImageResource(R.drawable.ic_avatar_placeholder);
+                hideAvatarThrobber();
             }
         });
     }

@@ -12,7 +12,17 @@ import ru.aakumykov.me.sociocat.user_show.models.Item;
 public class UserShow_ViewStub extends BaseView_Stub implements iUserShow.iView {
 
     @Override
+    public void goUserEdit(String userId) {
+
+    }
+
+    @Override
     public void displayUser(User user) {
+
+    }
+
+    @Override
+    public void showRefreshThrobber() {
 
     }
 

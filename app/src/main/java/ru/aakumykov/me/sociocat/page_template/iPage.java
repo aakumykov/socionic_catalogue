@@ -27,6 +27,8 @@ public interface iPage {
         void onRefreshRequested();
 
         void onButtonClicked();
+
+        void onBackPressed();
     }
 
 }

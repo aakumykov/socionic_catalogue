@@ -63,7 +63,7 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
-    public void hideMsg() {
+    public void hideMessage() {
 
     }
 

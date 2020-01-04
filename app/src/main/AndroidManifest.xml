@@ -3,7 +3,7 @@
     package="ru.aakumykov.me.sociocat">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<!--    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -29,7 +29,7 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
-        <activity android:name=".page_template.Page_View">
+        <activity android:name=".user_show.UserShow_View">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -128,15 +128,15 @@
             android:name=".card_edit.CardEdit_View"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".preferences.PreferencesActivity" />
-        <activity android:name=".users.show.UserShow_View" />
         <activity android:name=".tags_list2.TagsList2_View" />
         <activity android:name=".tags.show.TagShow_View" />
-        <activity android:name=".users.edit.UserEdit_View" />
         <activity
             android:name=".backup_job.BackupStatus_Activity"
             android:launchMode="singleTop" />
+
         <activity android:name=".card_show.CardShow_View" />
-        <activity android:name=".user_show.UserShow2_View" />
+
+        <activity android:name=".user_edit.UserEdit2_View" android:windowSoftInputMode="stateHidden" />
 
         <!-- android:windowSoftInputMode="stateHidden" -->
 
