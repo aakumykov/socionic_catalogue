@@ -45,7 +45,7 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
 
     @Override
     public void onConfigurationChanged() {
-        updatePageTitle();
+
     }
 
     @Override
@@ -79,11 +79,5 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
             }
         });
     }
-
-    private void updatePageTitle() {
-        int count = dataAdapter.getListSize();
-        pageView.setPageTitle(R.string.LIST_TEMPLATE_title_extended, String.valueOf(count));
-    }
-
 
 }

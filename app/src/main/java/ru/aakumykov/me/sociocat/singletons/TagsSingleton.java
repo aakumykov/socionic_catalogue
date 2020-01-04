@@ -154,6 +154,7 @@ public class TagsSingleton implements iTagsSingleton {
                                         tagsList.add(tag);
                                     }
                                     else {
+                                        error = true;
                                         Log.e(TAG, "Error extracting Tag object from DocumentSnapshot: "+documentSnapshot);
                                     }
                                 }

@@ -42,4 +42,14 @@ public class TagsList3_DataAdapter_Stub implements iTagsList3.iDataAdapter {
     public int getListSize() {
         return 0;
     }
+
+    @Override
+    public void sortListByName() {
+
+    }
+
+    @Override
+    public void sortListByCardsCount() {
+
+    }
 }

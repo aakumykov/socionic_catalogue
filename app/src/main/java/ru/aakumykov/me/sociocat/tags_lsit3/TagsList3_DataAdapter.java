@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
@@ -20,6 +21,7 @@ public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private List<Tag> itemsList = new ArrayList<>();
     private boolean isVirgin = true;
+    private iTagsList3.SortOrder currentSortOrder = iTagsList3.SortOrder.ORDER_NAME_DIRECT;
 
 
     // Конструктор
@@ -101,10 +103,34 @@ public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return itemsList.size();
     }
 
+    @Override
+    public void sortListByName() {
+        sortList(currentSortOrder);
+    }
+
+    @Override
+    public void sortListByCardsCount() {
+        currentSortOrder = iTagsList3.SortOrder.ORDER_COUNT_REVERSED;
+        sortList(currentSortOrder);
+    }
+
 
     // Внутренние методы
     private int maxIndex() {
         return itemsList.size() - 1;
     }
 
+    private void sortList(iTagsList3.SortOrder sortOrder) {
+        switch (sortOrder) {
+            case ORDER_NAME_REVERSED:
+                Collections.sort(itemsList, new TagsComparator(iTagsList3.SortOrder.ORDER_NAME_DIRECT));
+                this.currentSortOrder = iTagsList3.SortOrder.ORDER_NAME_DIRECT;
+                break;
+            default:
+                Collections.sort(itemsList, new TagsComparator(iTagsList3.SortOrder.ORDER_NAME_REVERSED));
+                this.currentSortOrder = iTagsList3.SortOrder.ORDER_NAME_REVERSED;
+        }
+
+        notifyDataSetChanged();
+    }
 }

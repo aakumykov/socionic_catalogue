@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/filterDrawer"
@@ -21,17 +22,18 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:visibility="visible"
-        app:layout_constraintTop_toBottomOf="@+id/include"
+        android:background="@color/lightest_grey"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:background="@color/colorPrimaryDark"
+        app:layout_constraintTop_toBottomOf="@+id/include"
         tools:visibility="visible">
 
         <SearchView
             android:id="@+id/searchView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:background="@drawable/shape_search_view_background"
             android:layout_weight="8" />
 
         <ImageView

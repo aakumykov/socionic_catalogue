@@ -4,18 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -29,7 +31,11 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+
     @BindView(R.id.filterDrawer) ViewGroup filterDrawer;
+    @BindView(R.id.searchView) SearchView searchView;
+    @BindView(R.id.sortByNameWidget) ImageView sortByNameWidget;
+    @BindView(R.id.sortByCountWidget) ImageView sortByCountWidget;
 
     private iTagsList3.iDataAdapter dataAdapter;
     private iTagsList3.iPresenter presenter;
@@ -138,6 +144,23 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
     }
 
 
+    // Нажатия
+    @OnClick(R.id.searchView)
+    void onSearchViewClicked() {
+
+    }
+
+    @OnClick(R.id.sortByNameWidget)
+    void onSortByNameClicked() {
+        dataAdapter.sortListByName();
+    }
+
+    @OnClick(R.id.sortByCountWidget)
+    void onSortByCountClicked() {
+        dataAdapter.sortListByCardsCount();
+    }
+
+
     // Внутренние методы
     private void configureSwipeRefresh() {
         swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
@@ -151,6 +174,10 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
     }
 
     private void onFilterMenuClicked() {
-        MyUtils.toggleVisibility(filterDrawer);
+//        MyUtils.toggleVisibility(filterDrawer);
+        if (filterDrawer.getVisibility() == View.GONE)
+            MyUtils.show(filterDrawer);
+        else
+            MyUtils.hide(filterDrawer);
     }
 }

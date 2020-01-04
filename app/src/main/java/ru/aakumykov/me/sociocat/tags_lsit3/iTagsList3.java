@@ -29,6 +29,9 @@ public interface iTagsList3 {
         void removeTag(Tag tag);
 
         int getListSize();
+
+        void sortListByName();
+        void sortListByCardsCount();
     }
 
     interface iPresenter {
@@ -41,5 +44,12 @@ public interface iTagsList3 {
 
         void onTagClicked(Tag tag);
 
+    }
+
+    enum SortOrder {
+        ORDER_NAME_DIRECT,
+        ORDER_NAME_REVERSED,
+        ORDER_COUNT_DIRECT,
+        ORDER_COUNT_REVERSED
     }
 }
