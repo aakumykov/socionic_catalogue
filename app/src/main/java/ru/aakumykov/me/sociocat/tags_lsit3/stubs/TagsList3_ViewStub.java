@@ -19,6 +19,11 @@ public class TagsList3_ViewStub extends BaseView implements iTagsList3.iPageView
     }
 
     @Override
+    public void showRefreshThrobber() {
+
+    }
+
+    @Override
     public void hideRefreshThrobber() {
 
     }

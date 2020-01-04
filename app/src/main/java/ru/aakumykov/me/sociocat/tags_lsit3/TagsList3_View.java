@@ -33,8 +33,7 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
         ButterKnife.bind(this);
 
         activateUpButton();
-
-        setPageTitle(R.string.LIST_TEMPLATE_title);
+        setPageTitle(R.string.TAGS_LIST_page_title);
 
 
         TagsList3_ViewModel viewModel = new ViewModelProvider(this, new TagsList3_ViewModelFactory())
@@ -92,6 +91,11 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
     @Override
     public void onUserLogout() {
 
+    }
+
+    @Override
+    public void showRefreshThrobber() {
+        swipeRefreshLayout.setRefreshing(true);
     }
 
     @Override

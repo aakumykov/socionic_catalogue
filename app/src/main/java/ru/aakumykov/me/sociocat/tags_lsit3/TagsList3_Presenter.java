@@ -50,7 +50,7 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
 
     @Override
     public void onPageRefreshRequested() {
-
+        loadList();
     }
 
     @Override
@@ -62,15 +62,19 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
     // Внутренние методы
     private void loadList() {
 
+        pageView.showRefreshThrobber();
+
         tagsSingleton.listTags(new iTagsSingleton.ListCallbacks() {
             @Override
             public void onTagsListSuccess(List<Tag> tagsList) {
+                pageView.hideRefreshThrobber();
                 dataAdapter.setList(tagsList);
                 dataAdapter.deflorate();
             }
 
             @Override
             public void onTagsListFail(String errorMsg) {
+                pageView.hideRefreshThrobber();
                 pageView.showErrorMsg(R.string.TAGS_LIST_error_loading_list, errorMsg);
             }
         });

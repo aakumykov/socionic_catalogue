@@ -208,7 +208,7 @@
     <string name="you_are_logged_in">Вы вошли в программу</string>
     <string name="START_PAGE_tab_cards">Карточки</string>
     <string name="START_PAGE_tab_tags">Метки</string>
-    <string name="TAGS_LIST_page_title">Метки</string>
+    <string name="TAGS_LIST_page_title">Список меток</string>
     <string name="TAGS_LIST_cards_with_tag">Карточек: %1$d</string>
     <string name="REGISTER_enter_password">Введите пароль</string>
     <string name="REGISTER_enter_password_confirmation">Повторите пароль</string>

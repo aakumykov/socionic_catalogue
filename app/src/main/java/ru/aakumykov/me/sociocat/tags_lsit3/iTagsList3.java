@@ -12,6 +12,7 @@ import ru.aakumykov.me.sociocat.models.Tag;
 public interface iTagsList3 {
 
     interface iPageView extends iBaseView {
+        void showRefreshThrobber();
         void hideRefreshThrobber();
     }
 
