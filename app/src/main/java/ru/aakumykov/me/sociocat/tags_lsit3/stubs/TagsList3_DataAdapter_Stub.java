@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.tags_lsit3.stubs;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags_lsit3.iTagsList3;
 import ru.aakumykov.me.sociocat.tags_lsit3.model.Item;
 
@@ -18,22 +19,22 @@ public class TagsList3_DataAdapter_Stub implements iTagsList3.iDataAdapter {
     }
 
     @Override
-    public void setList(List<Item> inputList) {
+    public void setList(List<Tag> inputList) {
 
     }
 
     @Override
-    public void appendList(List<Item> tagsList) {
+    public void appendList(List<Tag> inputList) {
 
     }
 
     @Override
-    public Item getTag(int position) {
+    public Tag getTag(int position) {
         return null;
     }
 
     @Override
-    public void removeItem(Item item) {
+    public void removeTag(Tag tag) {
 
     }
 
