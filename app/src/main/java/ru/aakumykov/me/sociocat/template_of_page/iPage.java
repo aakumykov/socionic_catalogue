@@ -1,11 +1,11 @@
-package ru.aakumykov.me.sociocat.page_template;
+package ru.aakumykov.me.sociocat.template_of_page;
 
 import android.content.Intent;
 
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
-import ru.aakumykov.me.sociocat.page_template.models.Item;
+import ru.aakumykov.me.sociocat.template_of_page.models.Item;
 
 public interface iPage {
 

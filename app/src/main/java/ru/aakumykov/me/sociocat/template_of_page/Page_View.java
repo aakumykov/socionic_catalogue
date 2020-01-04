@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.page_template;
+package ru.aakumykov.me.sociocat.template_of_page;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,10 +16,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.page_template.models.Item;
-import ru.aakumykov.me.sociocat.page_template.view_model.Page_ViewModel;
-import ru.aakumykov.me.sociocat.page_template.view_model.Page_ViewModelFactory;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.template_of_page.models.Item;
+import ru.aakumykov.me.sociocat.template_of_page.view_model.Page_ViewModel;
+import ru.aakumykov.me.sociocat.template_of_page.view_model.Page_ViewModelFactory;
 
 public class Page_View extends BaseView implements iPage.iView {
 

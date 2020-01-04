@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.page_template.view_model;
+package ru.aakumykov.me.sociocat.template_of_page.view_model;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;

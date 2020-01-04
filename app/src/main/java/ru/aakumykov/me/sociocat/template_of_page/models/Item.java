@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.page_template.models;
+package ru.aakumykov.me.sociocat.template_of_page.models;
 
 public class Item {
 

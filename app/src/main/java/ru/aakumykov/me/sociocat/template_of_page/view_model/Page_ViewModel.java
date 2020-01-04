@@ -1,12 +1,12 @@
-package ru.aakumykov.me.sociocat.page_template.view_model;
+package ru.aakumykov.me.sociocat.template_of_page.view_model;
 
 import androidx.lifecycle.ViewModel;
 
-import ru.aakumykov.me.sociocat.page_template.iPage;
+import ru.aakumykov.me.sociocat.template_of_page.iPage;
 
 public class Page_ViewModel extends ViewModel {
 
-    private ru.aakumykov.me.sociocat.page_template.iPage.iPresenter presenter;
+    private ru.aakumykov.me.sociocat.template_of_page.iPage.iPresenter presenter;
 
     public Page_ViewModel() {
     }
@@ -15,7 +15,7 @@ public class Page_ViewModel extends ViewModel {
         return null != presenter;
     }
 
-    public ru.aakumykov.me.sociocat.page_template.iPage.iPresenter getPresenter() {
+    public ru.aakumykov.me.sociocat.template_of_page.iPage.iPresenter getPresenter() {
         return presenter;
     }
 

@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.page_template;
+package ru.aakumykov.me.sociocat.template_of_page;
 
 import android.content.Intent;
 
@@ -7,8 +7,8 @@ import androidx.annotation.Nullable;
 import java.util.Date;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.page_template.models.Item;
-import ru.aakumykov.me.sociocat.page_template.stubs.Page_ViewStub;
+import ru.aakumykov.me.sociocat.template_of_page.models.Item;
+import ru.aakumykov.me.sociocat.template_of_page.stubs.Page_ViewStub;
 
 
 class Page_Presenter implements iPage.iPresenter {
