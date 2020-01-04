@@ -139,6 +139,11 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     @Override
     public void onSaveUserClicked() {
+        view.validateForm();
+    }
+
+    @Override
+    public void onFormValidationSuccess() {
         if (null != avatarBitmap || null != avatarImageType) {
             uploadAvatar(new iAvatarUploadCallbacks() {
                 @Override

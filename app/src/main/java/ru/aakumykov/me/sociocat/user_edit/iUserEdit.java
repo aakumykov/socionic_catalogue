@@ -36,6 +36,7 @@ public interface iUserEdit {
         void showAvatarRemoveDialog();
         void showCancelEditionDialog();
 
+        void validateForm();
         void finishEdition(User user);
     }
 
@@ -58,6 +59,8 @@ public interface iUserEdit {
         void onAvatarRemoveConfirmed();
 
         void onSaveUserClicked();
+
+        void onFormValidationSuccess();
 
         void onCancelButtonClicked();
         void onCancelEditionConfirmed();

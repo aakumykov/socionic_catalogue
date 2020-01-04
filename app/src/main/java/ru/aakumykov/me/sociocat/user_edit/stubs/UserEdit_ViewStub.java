@@ -41,6 +41,11 @@ public class UserEdit_ViewStub extends BaseView_Stub implements iUserEdit.iView 
     }
 
     @Override
+    public void validateForm() {
+
+    }
+
+    @Override
     public void finishEdition(@Nullable User user) {
 
     }

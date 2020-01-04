@@ -6,10 +6,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +20,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,14 +42,19 @@ import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.YesNoDialog;
 
-public class UserEdit2_View extends BaseView implements iUserEdit.iView {
+public class UserEdit2_View extends BaseView implements iUserEdit.iView, Validator.ValidationListener {
 
     @BindView(R.id.avatarView) ImageView avatarView;
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
     @BindView(R.id.avatarRemoveWidget) ImageView avatarRemoveWidget;
 
+    @NotEmpty(messageResId = R.string.VALIDATION_cannot_be_empty)
     @BindView(R.id.nameInput) EditText nameInput;
-    @BindView(R.id.emailInput) EditText emailInput;
+
+    @Email(messageResId = R.string.VALIDATION_mailformed_email)
+    @BindView(R.id.emailInput)
+    EditText emailInput;
+
     @BindView(R.id.aboutInput) EditText aboutInput;
 
     @BindView(R.id.saveButton) Button saveButton;
@@ -51,7 +64,7 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
     private iUserEdit.iPresenter presenter;
     private boolean isImageSelectionMode = false;
     private boolean isFormDisabled = false;
-
+    private Validator validator;
 
     // Activity
     @Override
@@ -72,6 +85,9 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
             this.presenter = new UserEdit_Presenter();
             viewModel.storePresenter(this.presenter);
         }
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
     }
 
     @Override
@@ -321,11 +337,39 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
     }
 
     @Override
+    public void validateForm() {
+        validator.validate();
+    }
+
+    @Override
     public void finishEdition(User user) {
         Intent intent = new Intent();
         intent.putExtra(Constants.USER, user);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+
+    // Validator.ValidationListener
+    @Override
+    public void onValidationSucceeded() {
+        presenter.onFormValidationSuccess();
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+
+        for (ValidationError error : errors)
+        {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(this);
+
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
 
@@ -384,4 +428,5 @@ public class UserEdit2_View extends BaseView implements iUserEdit.iView {
             MyUtils.printError(TAG, e);
         }
     }
+
 }

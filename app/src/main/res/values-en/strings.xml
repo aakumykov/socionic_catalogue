@@ -182,7 +182,7 @@
     <string name="CARD_EDIT_tags_are_saved">Tags are saved</string>
     <string name="USER_EDIT_error_selecting_image">Error selecting image</string>
     <string name="USER_EDIT_no_image_data">Image data error</string>
-    <string name="USER_EDIT_name_cannot_be_empty">Name cannot be empty</string>
+    <string name="VALIDATION_cannot_be_empty">Cannot be empty</string>
     <string name="USER_SHOW_name">Name</string>
     <string name="USER_SHOW_about">About</string>
     <string name="DESCRIPTION_user_avatar">User avatar</string>
@@ -541,5 +541,6 @@
     <string name="USER_EDIT_cancel_edition_dialog_description">Changes made will be lost</string>
     <string name="USER_EDIT_deleting_avatar_file">Deleting avatar</string>
     <string name="USER_EDIT_error_deleting_avatar_file">Error deleting avatar</string>
+    <string name="VALIDATION_mailformed_email">Mailformed Email</string>
 </resources>
 <!-- «%1$s» -->
