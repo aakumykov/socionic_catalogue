@@ -33,7 +33,7 @@ public class Tag_ViewHolder extends RecyclerView.ViewHolder implements iTag_View
 
     @OnClick(R.id.tagItem)
     void onItemClicked() {
-        presenter.onItemClicked(this.item);
+        presenter.onTagClicked(this.item);
     }
 
 

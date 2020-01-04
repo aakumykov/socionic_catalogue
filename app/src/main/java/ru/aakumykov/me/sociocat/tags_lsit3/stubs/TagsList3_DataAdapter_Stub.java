@@ -28,7 +28,7 @@ public class TagsList3_DataAdapter_Stub implements iTagsList3.iDataAdapter {
     }
 
     @Override
-    public Item getItem(int position) {
+    public Item getTag(int position) {
         return null;
     }
 

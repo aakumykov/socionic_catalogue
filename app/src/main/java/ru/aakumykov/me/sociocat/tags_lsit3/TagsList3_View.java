@@ -33,10 +33,13 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
         ButterKnife.bind(this);
 
         activateUpButton();
+
         setPageTitle(R.string.LIST_TEMPLATE_title);
+
 
         TagsList3_ViewModel viewModel = new ViewModelProvider(this, new TagsList3_ViewModelFactory())
                 .get(TagsList3_ViewModel.class);
+
 
         // Презентер (должен создаваться перед Адаптером)
         if (viewModel.hasPresenter()) {
@@ -46,8 +49,6 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
             viewModel.storePresenter(this.presenter);
         }
 
-
-        // Адаптер данных
         if (viewModel.hasDataAdapter()) {
             this.dataAdapter = viewModel.getDataAdapter();
         } else {
@@ -55,9 +56,8 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
             viewModel.storeDataAdapter(this.dataAdapter);
         }
 
-        // Настройка recyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+//        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
 
         // Настройка обновления протягиванием

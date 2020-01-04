@@ -6,7 +6,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.tags_lsit3.iTagsList3;
 
 @SuppressLint("Registered")
-public class TagsList3_Page_ViewStub extends BaseView implements iTagsList3.iPageView {
+public class TagsList3_ViewStub extends BaseView implements iTagsList3.iPageView {
 
     @Override
     public void onUserLogin() {

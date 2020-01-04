@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
-import ru.aakumykov.me.sociocat.tags_lsit3.model.Item;
+import ru.aakumykov.me.sociocat.models.Tag;
 
 public interface iTagsList3 {
 
@@ -19,11 +19,11 @@ public interface iTagsList3 {
         boolean isVirgin();
         void deflorate();
 
-        void setList(List<Item> inputList);
-        void appendList(List<Item> inputList);
+        void setList(List<Tag> inputList);
+        void appendList(List<Tag> inputList);
 
-        Item getItem(int position);
-        void removeItem(Item item);
+        Tag getTag(int position);
+        void removeTag(Tag tag);
 
         int getListSize();
     }
@@ -35,7 +35,7 @@ public interface iTagsList3 {
         void onFirstOpen(@Nullable Intent intent);
         void onConfigurationChanged();
         void onPageRefreshRequested();
-        void onItemClicked(Item item);
+        void onTagClicked(Tag tag);
 
     }
 }

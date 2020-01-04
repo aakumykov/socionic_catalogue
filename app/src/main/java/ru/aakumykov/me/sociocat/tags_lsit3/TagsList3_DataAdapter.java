@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.tags_lsit3.model.Item;
+import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags_lsit3.view_holders.Tag_ViewHolder;
 
 public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements iTagsList3.iDataAdapter {
 
     private iTagsList3.iPresenter presenter;
 
-    private List<Item> itemsList = new ArrayList<>();
+    private List<Tag> itemsList = new ArrayList<>();
     private boolean isVirgin = true;
 
 
@@ -42,9 +42,9 @@ public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Item item = itemsList.get(position);
+        Tag tag = itemsList.get(position);
         Tag_ViewHolder tagRowViewHolder = (Tag_ViewHolder) holder;
-        tagRowViewHolder.initialize(item);
+        tagRowViewHolder.initialize(tag);
     }
 
     @Override
@@ -64,21 +64,21 @@ public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void setList(List<Item> inputList) {
+    public void setList(List<Tag> inputList) {
         itemsList.clear();
         itemsList.addAll(inputList);
         notifyDataSetChanged();
     }
 
     @Override
-    public void appendList(List<Item> inputList) {
+    public void appendList(List<Tag> inputList) {
         int startIndex = maxIndex();
         itemsList.addAll(inputList);
         notifyItemRangeChanged(startIndex, inputList.size());
     }
 
     @Override
-    public Item getItem(int position) {
+    public Tag getTag(int position) {
         if (position >= 0 && position <= maxIndex()) {
             return itemsList.get(position);
         }
@@ -88,7 +88,7 @@ public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void removeItem(Item item) {
+    public void removeTag(Tag item) {
         int index = itemsList.indexOf(item);
         if (index >= 0) {
             itemsList.remove(index);
