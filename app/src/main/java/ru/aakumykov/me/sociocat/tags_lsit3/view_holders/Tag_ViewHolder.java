@@ -17,6 +17,7 @@ public class Tag_ViewHolder extends RecyclerView.ViewHolder implements iTag_View
 
     @BindView(R.id.tagItem) View tagItem;
     @BindView(R.id.nameView) TextView nameView;
+    @BindView(R.id.countView) TextView countView;
 
     private iTagsList3.iPresenter presenter;
     private Tag tag;
@@ -30,6 +31,7 @@ public class Tag_ViewHolder extends RecyclerView.ViewHolder implements iTag_View
     public void initialize(Object payload) {
         this.tag = (Tag) payload;
         nameView.setText(tag.getName());
+        countView.setText(String.valueOf(tag.getCards().size()));
     }
 
     @OnClick(R.id.tagItem)

@@ -34,7 +34,7 @@ public class TagsListAdapter extends ArrayAdapter<Tag> {
 
         View view = inflater.inflate(this.layout, parent, false);
         TextView nameView = view.findViewById(R.id.nameView);
-        TextView counterView = view.findViewById(R.id.counterView);
+        TextView counterView = view.findViewById(R.id.countView);
 
         Tag oneTag = tagsList.get(position);
 

@@ -16,7 +16,7 @@
         tools:text="Метка 1" />
 
     <TextView
-        android:id="@+id/counterView"
+        android:id="@+id/countView"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

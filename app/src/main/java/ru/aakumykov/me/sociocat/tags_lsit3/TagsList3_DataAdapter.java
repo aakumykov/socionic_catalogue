@@ -110,8 +110,7 @@ public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void sortListByCardsCount() {
-        currentSortOrder = iTagsList3.SortOrder.ORDER_COUNT_REVERSED;
-        sortList(currentSortOrder);
+
     }
 
 
