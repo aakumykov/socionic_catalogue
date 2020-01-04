@@ -29,7 +29,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.items_list_activity);
+        setContentView(R.layout.template_of_list_activity);
         ButterKnife.bind(this);
 
         activateUpButton();

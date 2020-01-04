@@ -36,7 +36,7 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @NonNull @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.items_list_row_item, parent, false);
+        View itemView = layoutInflater.inflate(R.layout.template_of_list_item, parent, false);
         return new Row_ViewHolder(itemView, presenter);
     }
 

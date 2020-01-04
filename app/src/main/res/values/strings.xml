@@ -550,5 +550,8 @@
     <string name="USER_EDIT_deleting_avatar_file">Удаляем аватар</string>
     <string name="USER_EDIT_error_deleting_avatar_file">Ошибка удаления аватара</string>
     <string name="VALIDATION_mailformed_email">Некорректный Email</string>
+    <string name="LIST_TEMPLATE_title">Шаблон списка</string>
+    <string name="LIST_TEMPLATE_title_extended">Шаблон списка, элементов: %1$s</string>
+    <string name="LIST_TEMPLATE_item_name">Элемент %1$s</string>
 
 </resources><!-- «%1$s» -->

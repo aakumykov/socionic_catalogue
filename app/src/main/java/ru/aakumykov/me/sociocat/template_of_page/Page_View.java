@@ -32,7 +32,7 @@ public class Page_View extends BaseView implements iPage.iView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.page_template_activity);
+        setContentView(R.layout.template_of_page_activity);
         ButterKnife.bind(this);
 
         setPageTitle(R.string.PAGE_TEMPLATE_page_title);
