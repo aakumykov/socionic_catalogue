@@ -15,6 +15,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
@@ -85,7 +86,7 @@ public class CardsSingleton implements iCardsSingleton {
     }
 
     @Override
-    public void loadCardsWithTag(String tagName, ListCallbacks callbacks) {
+    public void loadCardsWithTag(String tagName, ListCallbacks callbacks) throws LoadCardsWithTagException {
 
         Query query = cardsCollection.whereEqualTo(Card.GHOST_TAG_PREFIX+tagName, true);
 
@@ -531,6 +532,18 @@ public class CardsSingleton implements iCardsSingleton {
     public static class UnknownCardRatingActionException extends IllegalArgumentException {
         public UnknownCardRatingActionException(String message) {
             super(message);
+        }
+    }
+
+    public static class LoadCardsWithTagException extends CardsSingletonException {
+        public LoadCardsWithTagException(@NonNull String detailMessage) {
+            super(detailMessage);
+        }
+    }
+
+    public static class CardsSingletonException extends Exception {
+        public CardsSingletonException(@NonNull String detailMessage) {
+            super(detailMessage);
         }
     }
 }
