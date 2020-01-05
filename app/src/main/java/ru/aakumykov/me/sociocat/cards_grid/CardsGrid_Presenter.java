@@ -64,11 +64,9 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             return;
         }
 
-        String action = intent.getAction() + "";
-
-        if (Constants.ACTION_SHOW_CARDS_WITH_TAG.equals(action)) {
-                this.tagFilter = intent.getStringExtra(Constants.TAG_NAME);
-                loadCardsWithTag(this.tagFilter);
+        if (intent.hasExtra(Constants.TAG_FILTER)) {
+            this.tagFilter = intent.getStringExtra(Constants.TAG_FILTER);
+            loadCardsWithTag(this.tagFilter);
         }
         else {
             loadCards();
