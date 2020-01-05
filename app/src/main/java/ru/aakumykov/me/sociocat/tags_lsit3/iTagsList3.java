@@ -51,6 +51,8 @@ public interface iTagsList3 {
         void onSortByCountClicked();
 
         void onListFiltered(CharSequence filterText, List<Tag> filteredList);
+
+        CharSequence getFilterQueryText();
     }
 
     enum SortOrder {

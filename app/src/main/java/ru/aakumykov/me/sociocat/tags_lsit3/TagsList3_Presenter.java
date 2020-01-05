@@ -87,6 +87,11 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
         this.dataAdapter.setList(filteredList);
     }
 
+    @Override
+    public CharSequence getFilterQueryText() {
+        return filterText;
+    }
+
 
     // Внутренние методы
     private void loadList() {

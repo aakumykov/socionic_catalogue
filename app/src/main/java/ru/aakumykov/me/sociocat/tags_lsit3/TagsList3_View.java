@@ -2,9 +2,11 @@ package ru.aakumykov.me.sociocat.tags_lsit3;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
@@ -22,6 +24,7 @@ import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags_lsit3.view_model.TagsList3_ViewModel;
 import ru.aakumykov.me.sociocat.tags_lsit3.view_model.TagsList3_ViewModelFactory;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
 
@@ -30,7 +33,7 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
     private SearchView searchView;
     private iTagsList3.iDataAdapter dataAdapter;
     private iTagsList3.iPresenter presenter;
-
+    private final static String TAG = "TagsList3_View";
 
 
     // Activity
@@ -194,7 +197,29 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
 
         searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
 
-        searchView.setQueryHint("Поиск меток");
+        searchView.setQueryHint(MyUtils.getString(this, R.string.TAGS_LIST_search_view_hint));
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "OnSearchClickListener");
+            }
+        });
+
+        searchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Log.d(TAG, "OnFocusChangeListener");
+            }
+        });
+
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Log.d(TAG, "OnQueryTextFocusChangeListener");
+                searchView.setQuery(presenter.getFilterQueryText(), false);
+            }
+        });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
