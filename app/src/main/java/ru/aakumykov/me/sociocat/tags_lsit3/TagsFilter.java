@@ -9,12 +9,12 @@ import ru.aakumykov.me.sociocat.models.Tag;
 
 public class TagsFilter extends Filter {
 
-    private iTagsList3.iDataAdapter dataAdapter;
+    private iTagsList3.iPresenter presenter;
     private List<Tag> originalTagsList = new ArrayList<>();
 
 
-    public TagsFilter(List<Tag> tagsList, iTagsList3.iDataAdapter dataAdapter) {
-        this.dataAdapter = dataAdapter;
+    public TagsFilter(List<Tag> tagsList, iTagsList3.iPresenter presenter) {
+        this.presenter = presenter;
         this.originalTagsList.addAll(tagsList);
     }
 
@@ -48,6 +48,6 @@ public class TagsFilter extends Filter {
 
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-        dataAdapter.setList((ArrayList<Tag>) results.values);
+        presenter.onListFiltered(constraint, (ArrayList<Tag>) results.values);
     }
 }

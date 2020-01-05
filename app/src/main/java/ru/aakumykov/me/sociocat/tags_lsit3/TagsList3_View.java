@@ -27,7 +27,7 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
-
+    private SearchView searchView;
     private iTagsList3.iDataAdapter dataAdapter;
     private iTagsList3.iPresenter presenter;
 
@@ -165,6 +165,15 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
         startActivity(intent);
     }
 
+    @Override
+    public void restoreSearchViewState(CharSequence text) {
+
+        if (null != searchView) {
+            searchView.setQuery(text, false);
+            searchView.setIconified(false);
+        }
+    }
+
 
     // Нажатия
 
@@ -183,7 +192,9 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
 
     private void configureSearchView(Menu menu) {
 
-        SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
+
+        searchView.setQueryHint("Поиск меток");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

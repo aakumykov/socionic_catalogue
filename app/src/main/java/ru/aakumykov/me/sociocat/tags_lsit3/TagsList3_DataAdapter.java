@@ -148,7 +148,7 @@ public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public Filter getFilter() {
         if (null == tagsFilter)
-            tagsFilter = new TagsFilter(itemsList, this);
+            tagsFilter = new TagsFilter(itemsList, presenter);
         return tagsFilter;
     }
 

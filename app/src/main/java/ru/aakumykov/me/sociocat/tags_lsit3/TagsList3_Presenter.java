@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.tags_lsit3;
 
 import android.content.Intent;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
@@ -18,6 +19,7 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
     private iTagsList3.iPageView pageView;
     private iTagsList3.iDataAdapter dataAdapter;
     private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
+    private CharSequence filterText;
 
 
     // iTagsList3.iPresenter
@@ -45,7 +47,8 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
 
     @Override
     public void onConfigurationChanged() {
-
+        if (!TextUtils.isEmpty(filterText))
+            pageView.restoreSearchViewState(filterText);
     }
 
     @Override
@@ -76,6 +79,12 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
                 pageView.refreshMenu();
             }
         });
+    }
+
+    @Override
+    public void onListFiltered(CharSequence filterText, List<Tag> filteredList) {
+        this.filterText = filterText;
+        this.dataAdapter.setList(filteredList);
     }
 
 
