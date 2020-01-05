@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.tags_lsit3.stubs;
 
+import android.widget.Filter;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Tag;
@@ -57,4 +59,8 @@ public class TagsList3_DataAdapter_Stub implements iTagsList3.iDataAdapter {
         return null;
     }
 
+    @Override
+    public Filter getFilter() {
+        return null;
+    }
 }

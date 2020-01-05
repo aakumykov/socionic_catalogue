@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
@@ -18,7 +15,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -26,7 +22,6 @@ import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags_lsit3.view_model.TagsList3_ViewModel;
 import ru.aakumykov.me.sociocat.tags_lsit3.view_model.TagsList3_ViewModelFactory;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
 
@@ -35,6 +30,7 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
 
     private iTagsList3.iDataAdapter dataAdapter;
     private iTagsList3.iPresenter presenter;
+
 
 
     // Activity
@@ -110,6 +106,7 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
         MenuInflater menuInflater = getMenuInflater();
 
         menuInflater.inflate(R.menu.search2, menu);
+        configureSearchView(menu);
 
         switch (dataAdapter.getSortingMode()) {
             case ORDER_NAME_DIRECT:
@@ -184,4 +181,22 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
         });
     }
 
+    private void configureSearchView(Menu menu) {
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                dataAdapter.getFilter().filter(newText);
+                return false;
+                // TODO: попробовать true
+            }
+        });
+    }
 }

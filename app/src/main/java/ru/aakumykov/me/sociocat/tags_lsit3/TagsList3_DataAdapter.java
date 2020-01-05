@@ -3,6 +3,8 @@ package ru.aakumykov.me.sociocat.tags_lsit3;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,14 +17,15 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags_lsit3.view_holders.Tag_ViewHolder;
 
-public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements iTagsList3.iDataAdapter {
-
+public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements iTagsList3.iDataAdapter, Filterable
+{
     private iTagsList3.iPresenter presenter;
 
     private List<Tag> itemsList = new ArrayList<>();
     private boolean isVirgin = true;
     private iTagsList3.SortOrder currentSortOrder = iTagsList3.SortOrder.ORDER_NAME_DIRECT;
-
+    private TagsFilter tagsFilter;
 
     // Конструктор
     public TagsList3_DataAdapter(iTagsList3.iPresenter presenter) {
@@ -141,10 +144,18 @@ public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
 
+    // Filterable
+    @Override
+    public Filter getFilter() {
+        if (null == tagsFilter)
+            tagsFilter = new TagsFilter(itemsList, this);
+        return tagsFilter;
+    }
+
+
     // Внутренние методы
     private int maxIndex() {
         return itemsList.size() - 1;
     }
-
 
 }

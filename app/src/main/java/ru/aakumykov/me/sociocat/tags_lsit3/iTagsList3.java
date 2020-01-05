@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.tags_lsit3;
 
 import android.content.Intent;
+import android.widget.Filterable;
 
 import androidx.annotation.Nullable;
 
@@ -18,7 +19,7 @@ public interface iTagsList3 {
         void showCardsWithTag(Tag tag);
     }
 
-    interface iDataAdapter {
+    interface iDataAdapter extends Filterable {
         boolean isVirgin();
         void deflorate();
 
