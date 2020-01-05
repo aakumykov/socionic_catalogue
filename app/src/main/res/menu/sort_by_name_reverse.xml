@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/actionSortByNameReverse"
-        android:icon="@drawable/ic_sort_by_name_reverse"
+        android:icon="@drawable/ic_sort_by_name_up"
         android:title="@string/MENU_sort_by_name_reverse"
         app:showAsAction="always" />
 </menu>

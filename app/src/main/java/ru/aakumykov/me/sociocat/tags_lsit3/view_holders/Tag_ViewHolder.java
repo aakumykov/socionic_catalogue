@@ -15,7 +15,6 @@ import ru.aakumykov.me.sociocat.tags_lsit3.model.Item;
 
 public class Tag_ViewHolder extends RecyclerView.ViewHolder implements iTag_ViewHolder {
 
-    @BindView(R.id.tagItem) View tagItem;
     @BindView(R.id.nameView) TextView nameView;
     @BindView(R.id.countView) TextView countView;
 
