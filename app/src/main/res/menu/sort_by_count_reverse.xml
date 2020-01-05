@@ -6,5 +6,5 @@
         android:id="@+id/actionSortByCountReverse"
         android:icon="@drawable/ic_sort_by_count_reverse"
         android:title="@string/MENU_sort_by_count_reverse"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>

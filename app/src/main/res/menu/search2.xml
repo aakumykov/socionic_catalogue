@@ -3,8 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/actionSortByNameReverse"
-        android:icon="@drawable/ic_sort_by_name_reverse"
-        android:title="@string/MENU_sort_by_name_reverse"
+        android:id="@+id/app_bar_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/MENU_search"
+        app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
 </menu>

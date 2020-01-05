@@ -109,6 +109,8 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
 
+        menuInflater.inflate(R.menu.search2, menu);
+
         switch (dataAdapter.getSortingMode()) {
             case ORDER_NAME_DIRECT:
                 menuInflater.inflate(R.menu.sort_by_name_reverse, menu);
@@ -128,6 +130,7 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
             default:
                 break;
         }
+
         return true;
     }
 

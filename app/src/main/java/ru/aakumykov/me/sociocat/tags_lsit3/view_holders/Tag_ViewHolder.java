@@ -30,8 +30,12 @@ public class Tag_ViewHolder extends RecyclerView.ViewHolder implements iTag_View
 
     public void initialize(Object payload) {
         this.tag = (Tag) payload;
-        nameView.setText(tag.getName());
-        countView.setText(String.valueOf(tag.getCards().size()));
+
+        if (null != nameView)
+            nameView.setText(tag.getName());
+
+        if (null != countView)
+            countView.setText(String.valueOf(tag.getCards().size()));
     }
 
     @OnClick(R.id.tagItem)
