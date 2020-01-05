@@ -15,16 +15,23 @@ import ru.aakumykov.me.sociocat.tags_lsit3.model.Item;
 
 public class Tag_ViewHolder extends RecyclerView.ViewHolder implements iTag_ViewHolder {
 
-    @BindView(R.id.nameView) TextView nameView;
-    @BindView(R.id.countView) TextView countView;
+//    @BindView(R.id.nameView) TextView nameView;
+//    @BindView(R.id.countView) TextView countView;
+
+    private TextView nameView;
+    private TextView countView;
 
     private iTagsList3.iPresenter presenter;
     private Tag tag;
 
     public Tag_ViewHolder(View itemView, iTagsList3.iPresenter presenter) {
         super(itemView);
+
+        nameView = itemView.findViewById(R.id.nameView);
+        countView = itemView.findViewById(R.id.countView);
+
         this.presenter = presenter;
-        ButterKnife.bind(this, itemView);
+//        ButterKnife.bind(this, itemView);
     }
 
     public void initialize(Object payload) {
