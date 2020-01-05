@@ -121,6 +121,7 @@ public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         Collections.sort(itemsList, new TagsComparator(currentSortOrder));
         notifyDataSetChanged();
+        sortingListener.onSortingComplete();
     }
 
     @Override
@@ -136,6 +137,7 @@ public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         Collections.sort(itemsList, new TagsComparator(currentSortOrder));
         notifyDataSetChanged();
+        sortingListener.onSortingComplete();
     }
 
 
