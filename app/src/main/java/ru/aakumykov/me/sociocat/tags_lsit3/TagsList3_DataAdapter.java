@@ -127,11 +127,11 @@ public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void sortByCount(iTagsList3.SortingListener sortingListener) {
         switch (currentSortOrder) {
-            case ORDER_COUNT_DIRECT:
-                currentSortOrder = iTagsList3.SortOrder.ORDER_COUNT_REVERSED;
+            case ORDER_COUNT_REVERSED:
+                currentSortOrder = iTagsList3.SortOrder.ORDER_COUNT_DIRECT;
                 break;
             default:
-                currentSortOrder = iTagsList3.SortOrder.ORDER_COUNT_DIRECT;
+                currentSortOrder = iTagsList3.SortOrder.ORDER_COUNT_REVERSED;
                 break;
         }
 
