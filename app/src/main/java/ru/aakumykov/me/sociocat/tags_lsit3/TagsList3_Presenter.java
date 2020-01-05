@@ -47,8 +47,7 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
 
     @Override
     public void onConfigurationChanged() {
-        if (!TextUtils.isEmpty(filterText))
-            pageView.restoreSearchViewState(filterText);
+
     }
 
     @Override
@@ -88,7 +87,7 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
     }
 
     @Override
-    public CharSequence getFilterQueryText() {
+    public CharSequence getFilterText() {
         return filterText;
     }
 

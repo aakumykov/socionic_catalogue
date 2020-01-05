@@ -17,8 +17,6 @@ public interface iTagsList3 {
         void hideRefreshThrobber();
 
         void showCardsWithTag(Tag tag);
-
-        void restoreSearchViewState(CharSequence text);
     }
 
     interface iDataAdapter extends Filterable {
@@ -52,7 +50,7 @@ public interface iTagsList3 {
 
         void onListFiltered(CharSequence filterText, List<Tag> filteredList);
 
-        CharSequence getFilterQueryText();
+        CharSequence getFilterText();
     }
 
     enum SortOrder {

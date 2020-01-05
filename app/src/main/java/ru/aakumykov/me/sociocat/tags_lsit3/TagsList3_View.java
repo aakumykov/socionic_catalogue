@@ -2,11 +2,9 @@ package ru.aakumykov.me.sociocat.tags_lsit3;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
@@ -168,15 +166,6 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
         startActivity(intent);
     }
 
-    @Override
-    public void restoreSearchViewState(CharSequence text) {
-
-        if (null != searchView) {
-            searchView.setQuery(text, false);
-            searchView.setIconified(false);
-        }
-    }
-
 
     // Нажатия
 
@@ -197,29 +186,14 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
 
         searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
 
-        searchView.setQueryHint(MyUtils.getString(this, R.string.TAGS_LIST_search_view_hint));
+        String hint = MyUtils.getString(this, R.string.TAGS_LIST_search_view_hint);
+        searchView.setQueryHint(hint);
 
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "OnSearchClickListener");
-            }
-        });
-
-        searchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Log.d(TAG, "OnFocusChangeListener");
-            }
-        });
-
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Log.d(TAG, "OnQueryTextFocusChangeListener");
-                searchView.setQuery(presenter.getFilterQueryText(), false);
-            }
-        });
+        CharSequence filterText = presenter.getFilterText();
+        if (null != filterText) {
+            searchView.setQuery(filterText, false);
+            searchView.setIconified(false);
+        }
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
