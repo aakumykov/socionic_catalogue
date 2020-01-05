@@ -18,11 +18,11 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".shortcuts_processor.ShortcutsProcessor">
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
 
             <meta-data
                 android:name="android.app.shortcuts"
@@ -30,11 +30,11 @@
         </activity>
 
         <activity android:name=".tags_lsit3.TagsList3_View">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <activity android:name=".user_show.UserShow_View" />

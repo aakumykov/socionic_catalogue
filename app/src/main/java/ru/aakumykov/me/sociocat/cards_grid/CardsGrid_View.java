@@ -168,20 +168,21 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         this.menu = menu;
 
         MenuInflater menuInflater = getMenuInflater();
 
         menuInflater.inflate(R.menu.search_widget, menu);
         menuInflater.inflate(R.menu.search, menu);
+        configureSearchWidget(menu);
+
+        menuInflater.inflate(R.menu.tags, menu);
+        MenuItem tagsMenu = menu.findItem(R.menu.tags);
 
         if (AuthSingleton.isLoggedIn())
             menuInflater.inflate(R.menu.preferences, menu);
 
         super.onCreateOptionsMenu(menu);
-
-        configureSearchWidget(menu);
 
         return true;
     }
