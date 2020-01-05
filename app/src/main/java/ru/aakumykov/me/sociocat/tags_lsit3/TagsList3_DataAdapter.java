@@ -104,13 +104,38 @@ public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void sortListByName() {
-        sortList(currentSortOrder);
+    public iTagsList3.SortOrder getSortingMode() {
+        return currentSortOrder;
     }
 
     @Override
-    public void sortListByCardsCount() {
+    public void sortByName(iTagsList3.SortingListener sortingListener) {
+        switch (currentSortOrder) {
+            case ORDER_NAME_DIRECT:
+                currentSortOrder = iTagsList3.SortOrder.ORDER_NAME_REVERSED;
+                break;
+            default:
+                currentSortOrder = iTagsList3.SortOrder.ORDER_NAME_DIRECT;
+                break;
+        }
 
+        Collections.sort(itemsList, new TagsComparator(currentSortOrder));
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void sortByCount(iTagsList3.SortingListener sortingListener) {
+        switch (currentSortOrder) {
+            case ORDER_COUNT_DIRECT:
+                currentSortOrder = iTagsList3.SortOrder.ORDER_COUNT_REVERSED;
+                break;
+            default:
+                currentSortOrder = iTagsList3.SortOrder.ORDER_COUNT_DIRECT;
+                break;
+        }
+
+        Collections.sort(itemsList, new TagsComparator(currentSortOrder));
+        notifyDataSetChanged();
     }
 
 
@@ -119,17 +144,5 @@ public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return itemsList.size() - 1;
     }
 
-    private void sortList(iTagsList3.SortOrder sortOrder) {
-        switch (sortOrder) {
-            case ORDER_NAME_REVERSED:
-                Collections.sort(itemsList, new TagsComparator(iTagsList3.SortOrder.ORDER_NAME_DIRECT));
-                this.currentSortOrder = iTagsList3.SortOrder.ORDER_NAME_DIRECT;
-                break;
-            default:
-                Collections.sort(itemsList, new TagsComparator(iTagsList3.SortOrder.ORDER_NAME_REVERSED));
-                this.currentSortOrder = iTagsList3.SortOrder.ORDER_NAME_REVERSED;
-        }
 
-        notifyDataSetChanged();
-    }
 }

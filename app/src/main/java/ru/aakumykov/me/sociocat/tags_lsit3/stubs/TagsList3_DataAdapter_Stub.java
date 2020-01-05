@@ -4,7 +4,6 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags_lsit3.iTagsList3;
-import ru.aakumykov.me.sociocat.tags_lsit3.model.Item;
 
 public class TagsList3_DataAdapter_Stub implements iTagsList3.iDataAdapter {
 
@@ -39,17 +38,23 @@ public class TagsList3_DataAdapter_Stub implements iTagsList3.iDataAdapter {
     }
 
     @Override
+    public void sortByName(iTagsList3.SortingListener sortingListener) {
+
+    }
+
+    @Override
+    public void sortByCount(iTagsList3.SortingListener sortingListener) {
+
+    }
+
+    @Override
     public int getListSize() {
         return 0;
     }
 
     @Override
-    public void sortListByName() {
-
+    public iTagsList3.SortOrder getSortingMode() {
+        return null;
     }
 
-    @Override
-    public void sortListByCardsCount() {
-
-    }
 }

@@ -24,14 +24,14 @@ public interface iTagsList3 {
 
         void setList(List<Tag> inputList);
         void appendList(List<Tag> inputList);
+        int getListSize();
 
         Tag getTag(int position);
         void removeTag(Tag tag);
 
-        int getListSize();
-
-        void sortListByName();
-        void sortListByCardsCount();
+        void sortByName(SortingListener sortingListener);
+        void sortByCount(SortingListener sortingListener);
+        SortOrder getSortingMode();
     }
 
     interface iPresenter {
@@ -44,6 +44,8 @@ public interface iTagsList3 {
 
         void onTagClicked(Tag tag);
 
+        void onSortByNameClicked();
+        void onSortByCountClicked();
     }
 
     enum SortOrder {
@@ -51,5 +53,9 @@ public interface iTagsList3 {
         ORDER_NAME_REVERSED,
         ORDER_COUNT_DIRECT,
         ORDER_COUNT_REVERSED
+    }
+
+    interface SortingListener {
+        void onSortingComplete();
     }
 }

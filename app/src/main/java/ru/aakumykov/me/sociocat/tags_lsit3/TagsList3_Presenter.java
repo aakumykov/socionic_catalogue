@@ -58,6 +58,26 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
         pageView.showCardsWithTag(tag);
     }
 
+    @Override
+    public void onSortByNameClicked() {
+        dataAdapter.sortByName(new iTagsList3.SortingListener() {
+            @Override
+            public void onSortingComplete() {
+                pageView.refreshMenu();
+            }
+        });
+    }
+
+    @Override
+    public void onSortByCountClicked() {
+        dataAdapter.sortByCount(new iTagsList3.SortingListener() {
+            @Override
+            public void onSortingComplete() {
+                pageView.refreshMenu();
+            }
+        });
+    }
+
 
     // Внутренние методы
     private void loadList() {

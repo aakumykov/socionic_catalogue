@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.tags_lsit3;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,11 +32,6 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
-
-    @BindView(R.id.filterDrawer) ViewGroup filterDrawer;
-    @BindView(R.id.searchView) SearchView searchView;
-    @BindView(R.id.sortByNameWidget) ImageView sortByNameWidget;
-    @BindView(R.id.sortByCountWidget) ImageView sortByCountWidget;
 
     private iTagsList3.iDataAdapter dataAdapter;
     private iTagsList3.iPresenter presenter;
@@ -111,19 +107,45 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.filter, menu);
+        MenuInflater menuInflater = getMenuInflater();
+
+        switch (dataAdapter.getSortingMode()) {
+            case ORDER_NAME_DIRECT:
+                menuInflater.inflate(R.menu.sort_by_name_reverse, menu);
+                menuInflater.inflate(R.menu.sort_by_count, menu);
+                break;
+            case ORDER_NAME_REVERSED:
+                menuInflater.inflate(R.menu.sort_by_name, menu);
+                menuInflater.inflate(R.menu.sort_by_count, menu);
+                break;
+            case ORDER_COUNT_DIRECT:
+                menuInflater.inflate(R.menu.sort_by_name, menu);
+                menuInflater.inflate(R.menu.sort_by_count_reverse, menu);
+                break;
+            case ORDER_COUNT_REVERSED:
+                menuInflater.inflate(R.menu.sort_by_name, menu);
+                menuInflater.inflate(R.menu.sort_by_count, menu);
+            default:
+                break;
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.actionFilter:
-                onFilterMenuClicked();
-                return true;
+            case R.id.actionSortByName:
+            case R.id.actionSortByNameReverse:
+                presenter.onSortByNameClicked();
+                break;
+            case R.id.actionSortByCount:
+            case R.id.actionSortByCountReverse:
+                presenter.onSortByCountClicked();
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
     @Override
@@ -145,20 +167,6 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
 
 
     // Нажатия
-    @OnClick(R.id.searchView)
-    void onSearchViewClicked() {
-
-    }
-
-    @OnClick(R.id.sortByNameWidget)
-    void onSortByNameClicked() {
-        dataAdapter.sortListByName();
-    }
-
-    @OnClick(R.id.sortByCountWidget)
-    void onSortByCountClicked() {
-        dataAdapter.sortListByCardsCount();
-    }
 
 
     // Внутренние методы
@@ -173,11 +181,4 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
         });
     }
 
-    private void onFilterMenuClicked() {
-//        MyUtils.toggleVisibility(filterDrawer);
-        if (filterDrawer.getVisibility() == View.GONE)
-            MyUtils.show(filterDrawer);
-        else
-            MyUtils.hide(filterDrawer);
-    }
 }
