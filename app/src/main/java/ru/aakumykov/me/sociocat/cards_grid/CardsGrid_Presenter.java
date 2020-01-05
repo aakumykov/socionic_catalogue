@@ -2,9 +2,12 @@ package ru.aakumykov.me.sociocat.cards_grid;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,7 @@ import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.DeleteCard_Helper;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 {
@@ -64,9 +68,14 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             return;
         }
 
-        if (intent.hasExtra(Constants.TAG_FILTER)) {
+        if (intent.hasExtra(Constants.TAG_FILTER))
+        {
             this.tagFilter = intent.getStringExtra(Constants.TAG_FILTER);
-            loadCardsWithTag(this.tagFilter);
+
+            if (null != tagFilter)
+                loadCardsWithTag(this.tagFilter);
+            else
+                pageView.showErrorMsg(R.string.CARDS_GRID_error_no_tag_filter, "tagFilter == null");
         }
         else {
             loadCards();
@@ -279,14 +288,13 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         });
     }
 
-    private void loadCardsWithTag(@Nullable String filterTag) {
+    private void loadCardsWithTag(String filterTag) {
 
-        if (null != filterTag)
-        {
-            pageView.setPageTitle(R.string.CARDS_GRID_page_title_tag, filterTag);
+        pageView.setPageTitle(R.string.CARDS_GRID_page_title_tag, filterTag);
 
-            pageView.showProgressMessage(R.string.CARDS_GRID_loading_cards_with_tag, filterTag);
+        pageView.showProgressMessage(R.string.CARDS_GRID_loading_cards_with_tag, filterTag);
 
+        try {
             cardsSingleton.loadCardsWithTag(filterTag, new iCardsSingleton.ListCallbacks() {
                 @Override
                 public void onListLoadSuccess(List<Card> list) {
@@ -301,8 +309,9 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
                 }
             });
         }
-        else {
-            pageView.showErrorMsg(R.string.CARDS_GRID_error_there_is_no_tag, "tagFilter == null");
+        catch (Exception e) {
+            pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, e.getMessage());
+            MyUtils.printError(TAG, e);
         }
     }
 
