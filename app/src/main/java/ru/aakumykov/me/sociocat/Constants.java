@@ -69,6 +69,8 @@ public final class Constants {
 
     public final static String SOCIOCAT_NOTIFICATIONS_CHANNEL = "SOCIOCAT_NOTIFICATIONS_CHANNEL";
 
+    public static final String BACK_BUTTON_ENABLED = "BACK_BUTON_ENABLED";
+
     // Разные коды
     public final static int CODE_LOGIN = 5;
     public final static int CODE_LOGIN_REQUEST = 6;

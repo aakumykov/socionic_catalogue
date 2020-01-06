@@ -68,8 +68,14 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             return;
         }
 
+        boolean backButtonEnabled = intent.getBooleanExtra(Constants.BACK_BUTTON_ENABLED, false);
+        if (backButtonEnabled)
+            pageView.activateUpButton();
+
         if (intent.hasExtra(Constants.TAG_FILTER))
         {
+            pageView.activateUpButton();
+
             this.tagFilter = intent.getStringExtra(Constants.TAG_FILTER);
 
             if (null != tagFilter)
