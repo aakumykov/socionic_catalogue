@@ -87,34 +87,28 @@ public class CardsSingleton implements iCardsSingleton {
 
     @Override
     public void loadCardsWithTag(String tagName, ListCallbacks callbacks) throws LoadCardsWithTagException {
-
-        Query query = cardsCollection.whereEqualTo(Card.GHOST_TAG_PREFIX+tagName, true);
-
-        query.get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        loadListEnhanced(
+                null,
+                null,
+                tagName,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                new ListCallbacks() {
                     @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    public void onListLoadSuccess(List<Card> list) {
+                        callbacks.onListLoadSuccess(list);
+                    }
 
-                        extractCardsFromQuerySnapshot(queryDocumentSnapshots, new iExtractQuerySnapshotCallbacks() {
-                            @Override
-                            public void OnExtractSuccess(List<Card> cardsList) {
-                                callbacks.onListLoadSuccess(cardsList);
-                            }
-                            @Override
-                            public void OnExtractFail(List<String> errorsList) {
-                                callbacks.onListLoadFail("Error exception(s) on cards loading.");
-                                Log.e(TAG, TextUtils.join("\n", errorsList));
-                            }
-                        });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onListLoadFail(e.getMessage());
-                        Log.e(TAG, Arrays.toString(e.getStackTrace()));
+                    public void onListLoadFail(String errorMessage) {
+                        callbacks.onListLoadFail(errorMessage);
                     }
-                });
+                }
+        );
     }
 
     @Override
