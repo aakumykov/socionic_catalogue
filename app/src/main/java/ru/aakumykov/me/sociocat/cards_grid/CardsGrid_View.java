@@ -79,12 +79,12 @@ public class CardsGrid_View extends BaseView implements
     private iCardsGrid.iPresenter presenter;
 
     private StaggeredGridLayoutManager layoutManager;
-    private boolean dryRun = true;
     private int positionInWork = -1;
     private Bundle listStateStorage;
     private final static String KEY_LIST_STATE = "LIST_STATE";
     private int backPressedCount = 0;
     private Menu menu;
+
 
     // Системные методы
     @Override
