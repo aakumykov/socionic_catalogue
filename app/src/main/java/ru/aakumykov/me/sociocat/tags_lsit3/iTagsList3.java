@@ -16,7 +16,7 @@ public interface iTagsList3 {
         void showRefreshThrobber();
         void hideRefreshThrobber();
 
-        void goShowingCardsWithTag(Tag tag);
+        void showCardsWithTag(Tag tag);
     }
 
     interface iDataAdapter extends Filterable {

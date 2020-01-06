@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.tags_lsit3;
 
 import android.content.Intent;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
@@ -56,7 +57,7 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
 
     @Override
     public void onTagClicked(Tag tag) {
-        pageView.goShowingCardsWithTag(tag);
+        pageView.showCardsWithTag(tag);
     }
 
     @Override
