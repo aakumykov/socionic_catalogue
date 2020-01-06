@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.tags_lsit3;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -91,17 +92,23 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
         presenter.unlinkView();
     }
 
-    // BaseView
     @Override
-    public void onUserLogin() {
+    public void onBackPressed() {
+        if (null != searchView) {
+            boolean hasText = !TextUtils.isEmpty(searchView.getQuery());
 
+            if (hasText)
+                searchView.setQuery("", false);
+
+            searchView.setIconified(true);
+            return;
+        }
+
+        super.onBackPressed();
     }
 
-    @Override
-    public void onUserLogout() {
 
-    }
-
+    // iPageView
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -167,7 +174,16 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
     }
 
 
-    // Нажатия
+    // BaseView
+    @Override
+    public void onUserLogin() {
+
+    }
+
+    @Override
+    public void onUserLogout() {
+
+    }
 
 
     // Внутренние методы
