@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.template_of_list;
 
 import android.content.Intent;
+import android.widget.Filterable;
 
 import androidx.annotation.Nullable;
 
@@ -16,7 +17,7 @@ public interface iItemsList {
         void hideRefreshThrobber();
     }
 
-    interface iDataAdapter {
+    interface iDataAdapter extends Filterable {
         boolean isVirgin();
         void deflorate();
 
@@ -39,7 +40,7 @@ public interface iItemsList {
 
         void onItemClicked(Item item);
 
-//        void onSortByNameClicked();
-//        void onSortByCountClicked();
+        void onListFiltered(CharSequence filterText, List<Item> filteredList);
+        CharSequence getFilterText();;
     }
 }

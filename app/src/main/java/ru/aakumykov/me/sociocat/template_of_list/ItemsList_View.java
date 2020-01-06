@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,12 +19,14 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.template_of_list.view_model.ItemsList_ViewModel;
 import ru.aakumykov.me.sociocat.template_of_list.view_model.ItemsList_ViewModelFactory;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class ItemsList_View extends BaseView implements iItemsList.iPageView {
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
+    private SearchView searchView;
     private iItemsList.iDataAdapter dataAdapter;
     private iItemsList.iPresenter presenter;
 
@@ -89,6 +92,10 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
+
+        menuInflater.inflate(R.menu.search_widget, menu);
+        configureSearchView(menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -131,6 +138,34 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
             @Override
             public void onRefresh() {
                 presenter.onPageRefreshRequested();
+            }
+        });
+    }
+
+    private void configureSearchView(Menu menu) {
+
+        searchView = (SearchView) menu.findItem(R.id.searchWidget).getActionView();
+
+        String hint = MyUtils.getString(this, R.string.TAGS_LIST_search_view_hint);
+        searchView.setQueryHint(hint);
+
+        CharSequence filterText = presenter.getFilterText();
+        if (null != filterText) {
+            searchView.setQuery(filterText, false);
+            searchView.setIconified(false);
+        }
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                dataAdapter.getFilter().filter(newText);
+                return false;
+                // TODO: попробовать true
             }
         });
     }

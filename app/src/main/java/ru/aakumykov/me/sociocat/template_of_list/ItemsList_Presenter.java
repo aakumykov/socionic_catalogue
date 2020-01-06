@@ -18,6 +18,8 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     private iItemsList.iPageView pageView;
     private iItemsList.iDataAdapter dataAdapter;
+    private CharSequence filterText;
+
 
     // iItemsList.iPresenter
     @Override
@@ -56,6 +58,17 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onItemClicked(Item item) {
         dataAdapter.removeItem(item);
+    }
+
+    @Override
+    public void onListFiltered(CharSequence filterText, List<Item> filteredList) {
+        dataAdapter.setList(filteredList);
+        this.filterText = filterText;
+    }
+
+    @Override
+    public CharSequence getFilterText() {
+        return filterText;
     }
 
 

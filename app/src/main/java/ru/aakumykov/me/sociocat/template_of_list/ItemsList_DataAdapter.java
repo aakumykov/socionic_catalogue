@@ -3,6 +3,8 @@ package ru.aakumykov.me.sociocat.template_of_list;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,12 +16,14 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.Row_ViewHolder;
 
-public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements iItemsList.iDataAdapter {
-
+public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements iItemsList.iDataAdapter, Filterable
+{
     private iItemsList.iPresenter presenter;
 
     private List<Item> itemsList = new ArrayList<>();
     private boolean isVirgin = true;
+    private ItemsFilter itemsFilter;
 
 
     // Конструктор
@@ -99,6 +103,15 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public int getListSize() {
         return itemsList.size();
+    }
+
+
+    // Filterable
+    @Override
+    public Filter getFilter() {
+        if (null == itemsFilter)
+            itemsFilter = new ItemsFilter(itemsList, presenter);
+        return itemsFilter;
     }
 
 

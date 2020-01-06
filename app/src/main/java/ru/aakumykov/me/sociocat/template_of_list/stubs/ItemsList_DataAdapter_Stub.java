@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.template_of_list.stubs;
 
+import android.widget.Filter;
+
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
@@ -40,5 +42,10 @@ public class ItemsList_DataAdapter_Stub implements iItemsList.iDataAdapter {
     @Override
     public int getListSize() {
         return 0;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return null;
     }
 }
