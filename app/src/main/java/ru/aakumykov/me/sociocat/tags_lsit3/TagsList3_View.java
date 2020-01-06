@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.tags_lsit3;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -91,17 +92,6 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
         presenter.unlinkView();
     }
 
-    // BaseView
-    @Override
-    public void onUserLogin() {
-
-    }
-
-    @Override
-    public void onUserLogout() {
-
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -150,6 +140,17 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
     }
 
     @Override
+    public void onBackPressed() {
+        CharSequence filterText = searchView.getQuery();
+        if (TextUtils.isEmpty(filterText))
+            super.onBackPressed();
+        else
+            searchView.setQuery("", false);
+    }
+
+
+    // iPageView
+    @Override
     public void showRefreshThrobber() {
         swipeRefreshLayout.setRefreshing(true);
     }
@@ -160,14 +161,24 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
     }
 
     @Override
-    public void showCardsWithTag(Tag tag) {
+    public void goShowingCardsWithTag(Tag tag) {
         Intent intent = new Intent(this, CardsGrid_View.class);
         intent.putExtra(Constants.TAG_FILTER, tag.getName());
         startActivity(intent);
     }
 
 
-    // Нажатия
+    // BaseView
+    @Override
+    public void onUserLogin() {
+
+    }
+
+    @Override
+    public void onUserLogout() {
+
+    }
+
 
 
     // Внутренние методы
