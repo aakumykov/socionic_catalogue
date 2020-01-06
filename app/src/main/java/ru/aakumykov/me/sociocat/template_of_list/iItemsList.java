@@ -36,7 +36,10 @@ public interface iItemsList {
         void onFirstOpen(@Nullable Intent intent);
         void onConfigurationChanged();
         void onPageRefreshRequested();
+
         void onItemClicked(Item item);
 
+//        void onSortByNameClicked();
+//        void onSortByCountClicked();
     }
 }

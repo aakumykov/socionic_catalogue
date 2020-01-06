@@ -113,7 +113,7 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
 
-        menuInflater.inflate(R.menu.search2, menu);
+        menuInflater.inflate(R.menu.search_widget, menu);
         configureSearchView(menu);
 
         switch (dataAdapter.getSortingMode()) {
@@ -200,7 +200,7 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
 
     private void configureSearchView(Menu menu) {
 
-        searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.searchWidget).getActionView();
 
         String hint = MyUtils.getString(this, R.string.TAGS_LIST_search_view_hint);
         searchView.setQueryHint(hint);
