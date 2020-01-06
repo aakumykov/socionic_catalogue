@@ -23,20 +23,6 @@ public interface iCardsGrid {
     int MODE_GUEST = 0;
 
 
-    interface iGridItemClickListener {
-        void onGridItemClicked(View view);
-        void onGridItemLongClicked(View view);
-    }
-
-    interface iLoadMoreClickListener {
-        void onLoadMoreClicked(View view);
-    }
-
-    interface CheckNewCardsCallbacks {
-        void onNewCardsChecked();
-    }
-
-
     interface iPageView extends iBaseView {
         <T> void setTitle(T title);
 
@@ -123,4 +109,15 @@ public interface iCardsGrid {
 
         void processCardCreationResult(@Nullable Intent data);
     }
+
+
+    interface iGridItemClickListener {
+        void onGridItemClicked(View view);
+        void onGridItemLongClicked(View view);
+    }
+
+    interface iLoadMoreClickListener {
+        void onLoadMoreClicked(View view);
+    }
+
 }
