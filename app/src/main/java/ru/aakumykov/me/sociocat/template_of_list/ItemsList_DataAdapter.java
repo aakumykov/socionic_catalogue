@@ -64,15 +64,26 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public boolean isVirgin() {
         return this.isVirgin;
     }
-    @Override
-    public void deflorate() {
-        this.isVirgin = false;
-    }
 
     @Override
     public void setList(List<Item> inputList) {
         itemsList.clear();
         itemsList.addAll(inputList);
+
+        this.isVirgin = false;
+
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void setList(List<Item> inputList, CharSequence filterQuery) {
+        itemsList.clear();
+        itemsList.addAll(inputList);
+
+        this.isVirgin = false;
+
+        getFilter().filter(filterQuery);
+
         notifyDataSetChanged();
     }
 

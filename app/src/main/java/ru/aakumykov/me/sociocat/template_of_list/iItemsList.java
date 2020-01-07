@@ -19,9 +19,9 @@ public interface iItemsList {
 
     interface iDataAdapter extends Filterable {
         boolean isVirgin();
-        void deflorate();
 
         void setList(List<Item> inputList);
+        void setList(List<Item> inputList, CharSequence filterQuery);
         void appendList(List<Item> inputList);
 
         Item getItem(int position);

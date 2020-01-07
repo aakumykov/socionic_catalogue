@@ -15,12 +15,12 @@ public class ItemsList_DataAdapter_Stub implements iItemsList.iDataAdapter {
     }
 
     @Override
-    public void deflorate() {
+    public void setList(List<Item> inputList) {
 
     }
 
     @Override
-    public void setList(List<Item> inputList) {
+    public void setList(List<Item> inputList, CharSequence filterQuery) {
 
     }
 

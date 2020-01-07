@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.template_of_list;
 
 import android.content.Intent;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
@@ -101,8 +102,10 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     private void setRandomList() {
         List<Item> list = createRandomList();
 
-        dataAdapter.setList(list);
-        dataAdapter.deflorate();
+        if (!TextUtils.isEmpty(filterText))
+            dataAdapter.setList(list, filterText);
+        else
+            dataAdapter.setList(list);
 
         updatePageTitle();
 
