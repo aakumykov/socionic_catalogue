@@ -28,6 +28,10 @@ public interface iItemsList {
         void removeItem(Item item);
 
         int getListSize();
+
+        void sortByName(SortingListener sortingListener);
+        void sortByCount(SortingListener sortingListener);
+        SortingMode getSortingMode();
     }
 
     interface iPresenter {
@@ -41,6 +45,21 @@ public interface iItemsList {
         void onItemClicked(Item item);
 
         void onListFiltered(CharSequence filterText, List<Item> filteredList);
-        CharSequence getFilterText();;
+        CharSequence getFilterText();
+
+        void onSortByNameClicked();
+        void onSortByCountClicked();
+    }
+
+
+    enum SortingMode {
+        ORDER_NAME_DIRECT,
+        ORDER_NAME_REVERSED,
+        ORDER_COUNT_DIRECT,
+        ORDER_COUNT_REVERSED
+    }
+
+    interface SortingListener {
+        void onSortingComplete();
     }
 }

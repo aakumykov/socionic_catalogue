@@ -45,6 +45,21 @@ public class ItemsList_DataAdapter_Stub implements iItemsList.iDataAdapter {
     }
 
     @Override
+    public void sortByName(iItemsList.SortingListener sortingListener) {
+
+    }
+
+    @Override
+    public void sortByCount(iItemsList.SortingListener sortingListener) {
+
+    }
+
+    @Override
+    public iItemsList.SortingMode getSortingMode() {
+        return null;
+    }
+
+    @Override
     public Filter getFilter() {
         return null;
     }

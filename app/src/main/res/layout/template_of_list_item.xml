@@ -28,10 +28,11 @@
         android:id="@+id/countView"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:contentDescription="@string/cards_count_with_tag"
         android:gravity="end"
         android:padding="10dp"
+        android:textAlignment="textEnd"
         android:textColor="?attr/colorPrimaryDark"
         android:textSize="14sp"
         tools:text="10" />

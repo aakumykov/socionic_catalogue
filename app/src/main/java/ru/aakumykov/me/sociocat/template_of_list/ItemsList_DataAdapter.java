@@ -10,11 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
-import ru.aakumykov.me.sociocat.template_of_list.view_holders.Row_ViewHolder;
+import ru.aakumykov.me.sociocat.template_of_list.view_holders.Item_ViewHolder;
 
 public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements iItemsList.iDataAdapter, Filterable
@@ -24,6 +25,7 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private List<Item> itemsList = new ArrayList<>();
     private boolean isVirgin = true;
     private ItemsFilter itemsFilter;
+    private iItemsList.SortingMode currentSortingMode = iItemsList.SortingMode.ORDER_NAME_DIRECT;
 
 
     // Конструктор
@@ -41,13 +43,13 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View itemView = layoutInflater.inflate(R.layout.template_of_list_item, parent, false);
-        return new Row_ViewHolder(itemView, presenter);
+        return new Item_ViewHolder(itemView, presenter);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Item item = itemsList.get(position);
-        Row_ViewHolder tagRowViewHolder = (Row_ViewHolder) holder;
+        Item_ViewHolder tagRowViewHolder = (Item_ViewHolder) holder;
         tagRowViewHolder.initialize(item);
     }
 
@@ -103,6 +105,43 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public int getListSize() {
         return itemsList.size();
+    }
+
+    @Override
+    public void sortByName(iItemsList.SortingListener sortingListener) {
+        switch (currentSortingMode) {
+            case ORDER_NAME_DIRECT:
+                currentSortingMode = iItemsList.SortingMode.ORDER_NAME_REVERSED;
+                break;
+            default:
+                currentSortingMode = iItemsList.SortingMode.ORDER_NAME_DIRECT;
+                break;
+        }
+
+        Collections.sort(itemsList, new ItemsComparator(currentSortingMode));
+        notifyDataSetChanged();
+        sortingListener.onSortingComplete();
+    }
+
+    @Override
+    public void sortByCount(iItemsList.SortingListener sortingListener) {
+        switch (currentSortingMode) {
+            case ORDER_COUNT_REVERSED:
+                currentSortingMode = iItemsList.SortingMode.ORDER_COUNT_DIRECT;
+                break;
+            default:
+                currentSortingMode = iItemsList.SortingMode.ORDER_COUNT_REVERSED;
+                break;
+        }
+
+        Collections.sort(itemsList, new ItemsComparator(currentSortingMode));
+        notifyDataSetChanged();
+        sortingListener.onSortingComplete();
+    }
+
+    @Override
+    public iItemsList.SortingMode getSortingMode() {
+        return currentSortingMode;
     }
 
 

@@ -5,16 +5,12 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.tags_lsit3.iTagsList3;
-import ru.aakumykov.me.sociocat.tags_lsit3.model.Item;
 
 public class Tag_ViewHolder extends RecyclerView.ViewHolder
-        implements iTag_ViewHolder, View.OnClickListener
+        implements View.OnClickListener
 {
     private View tagItem;
     private TextView nameView;

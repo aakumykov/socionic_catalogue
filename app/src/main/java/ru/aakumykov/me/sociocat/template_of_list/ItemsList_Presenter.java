@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.tags_lsit3.iTagsList3;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_ViewStub;
@@ -71,6 +72,26 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         return filterText;
     }
 
+    @Override
+    public void onSortByNameClicked() {
+        dataAdapter.sortByName(new iItemsList.SortingListener() {
+            @Override
+            public void onSortingComplete() {
+                pageView.refreshMenu();
+            }
+        });
+    }
+
+    @Override
+    public void onSortByCountClicked() {
+        dataAdapter.sortByCount(new iItemsList.SortingListener() {
+            @Override
+            public void onSortingComplete() {
+                pageView.refreshMenu();
+            }
+        });
+    }
+
 
     // Внутренние методы
     private void loadList() {
@@ -97,13 +118,13 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     private List<Item> createRandomList() {
         int min = 2;
         int max = 20;
-        int randomSize = new Random().nextInt((max - min) + 1) + min;
+        int randomSize = MyUtils.random(min, max);
 
         List<Item> list = new ArrayList<>();
 
         for (int i=1; i<=randomSize; i++) {
             String text = MyUtils.getString(pageView.getAppContext(), R.string.LIST_TEMPLATE_item_name, String.valueOf(i));
-            list.add(new Item(text));
+            list.add(new Item(text, MyUtils.random(min, max)));
         }
 
         return list;

@@ -460,9 +460,9 @@
     <string name="TAGS_LIST_error_loading_list">Error loading tags list</string>
     <string name="TAGS_LIST_loading_list">Loading tags list</string>
     <string name="MENU_sort_by_name">Sort alphabetically</string>
-    <string name="MENU_sort_by_name_reverse">Sort alphabetically in reverse sortOrder</string>
+    <string name="MENU_sort_by_name_reverse">Sort alphabetically in reverse sort order</string>
     <string name="MENU_sort_by_count">Sort by count</string>
-    <string name="MENU_sort_by_count_reverse">Sort by count in reverse sortOrder</string>
+    <string name="MENU_sort_by_count_reverse">Sort by count in reverse sort order</string>
     <string name="LOGIN_login_via">Or login via</string>
     <string name="LOGIN_error_login_via_vkontakte">Error login via Vkontakte</string>
     <string name="LOGIN_creating_custom_token">Creating custom token</string>

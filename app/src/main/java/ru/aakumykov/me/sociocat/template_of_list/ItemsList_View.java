@@ -63,7 +63,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
 
         // Настройка recyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
 
         // Настройка обновления протягиванием
@@ -96,15 +96,44 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
         menuInflater.inflate(R.menu.search_widget, menu);
         configureSearchView(menu);
 
+        switch (dataAdapter.getSortingMode()) {
+            case ORDER_NAME_DIRECT:
+                menuInflater.inflate(R.menu.sort_by_name_reverse, menu);
+                menuInflater.inflate(R.menu.sort_by_count, menu);
+                break;
+            case ORDER_NAME_REVERSED:
+                menuInflater.inflate(R.menu.sort_by_name, menu);
+                menuInflater.inflate(R.menu.sort_by_count, menu);
+                break;
+            case ORDER_COUNT_DIRECT:
+                menuInflater.inflate(R.menu.sort_by_name, menu);
+                menuInflater.inflate(R.menu.sort_by_count_reverse, menu);
+                break;
+            case ORDER_COUNT_REVERSED:
+                menuInflater.inflate(R.menu.sort_by_name, menu);
+                menuInflater.inflate(R.menu.sort_by_count, menu);
+            default:
+                break;
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.actionSortByName:
+            case R.id.actionSortByNameReverse:
+                presenter.onSortByNameClicked();
+                break;
+            case R.id.actionSortByCount:
+            case R.id.actionSortByCountReverse:
+                presenter.onSortByCountClicked();
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
 
