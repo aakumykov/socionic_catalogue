@@ -63,15 +63,26 @@ public class TagsList3_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public boolean isVirgin() {
         return this.isVirgin;
     }
-    @Override
-    public void deflorate() {
-        this.isVirgin = false;
-    }
 
     @Override
     public void setList(List<Tag> inputList) {
         itemsList.clear();
         itemsList.addAll(inputList);
+
+        isVirgin = false;
+
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void setList(List<Tag> inputList, CharSequence filterQuery) {
+        itemsList.clear();
+        itemsList.addAll(inputList);
+
+        isVirgin = false;
+
+        getFilter().filter(filterQuery);
+
         notifyDataSetChanged();
     }
 

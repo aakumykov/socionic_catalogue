@@ -19,7 +19,7 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
     private iTagsList3.iPageView pageView;
     private iTagsList3.iDataAdapter dataAdapter;
     private iTagsSingleton tagsSingleton = TagsSingleton.getInstance();
-    private CharSequence filterText;
+    private CharSequence filterQuery;
 
 
     // iTagsList3.iPresenter
@@ -82,13 +82,18 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
 
     @Override
     public void onListFiltered(CharSequence filterText, List<Tag> filteredList) {
-        this.filterText = filterText;
+        this.filterQuery = filterText;
         this.dataAdapter.setList(filteredList);
     }
 
     @Override
-    public CharSequence getFilterText() {
-        return filterText;
+    public boolean hasFilterQuery() {
+        return !TextUtils.isEmpty(filterQuery);
+    }
+
+    @Override
+    public CharSequence getFilterQuery() {
+        return filterQuery;
     }
 
 
@@ -100,9 +105,13 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
         tagsSingleton.listTags(new iTagsSingleton.ListCallbacks() {
             @Override
             public void onTagsListSuccess(List<Tag> tagsList) {
+
+                if (hasFilterQuery())
+                    dataAdapter.setList(tagsList, getFilterQuery());
+                else
+                    dataAdapter.setList(tagsList);
+
                 pageView.hideRefreshThrobber();
-                dataAdapter.setList(tagsList);
-                dataAdapter.deflorate();
             }
 
             @Override

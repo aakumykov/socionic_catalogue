@@ -21,9 +21,9 @@ public interface iTagsList3 {
 
     interface iDataAdapter extends Filterable {
         boolean isVirgin();
-        void deflorate();
 
         void setList(List<Tag> inputList);
+        void setList(List<Tag> inputList, CharSequence filterQuery);
         void appendList(List<Tag> inputList);
         int getListSize();
 
@@ -50,7 +50,8 @@ public interface iTagsList3 {
 
         void onListFiltered(CharSequence filterText, List<Tag> filteredList);
 
-        CharSequence getFilterText();
+        boolean hasFilterQuery();
+        CharSequence getFilterQuery();
     }
 
     enum SortOrder {

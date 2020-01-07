@@ -45,6 +45,8 @@ public interface iItemsList {
         void onItemClicked(Item item);
 
         void onListFiltered(CharSequence filterText, List<Item> filteredList);
+
+        boolean hasFilterText();
         CharSequence getFilterText();
 
         void onSortByNameClicked();

@@ -179,9 +179,8 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
         String hint = MyUtils.getString(this, R.string.LIST_TEMPLATE_search_items);
         searchView.setQueryHint(hint);
 
-        CharSequence filterText = presenter.getFilterText();
-        if (!TextUtils.isEmpty(filterText)) {
-            searchView.setQuery(filterText, false);
+        if (presenter.hasFilterText()) {
+            searchView.setQuery(presenter.getFilterText(), false);
             searchView.setIconified(false);
         }
 

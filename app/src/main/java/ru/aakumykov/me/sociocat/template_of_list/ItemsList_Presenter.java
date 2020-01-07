@@ -69,6 +69,11 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     @Override
+    public boolean hasFilterText() {
+        return !TextUtils.isEmpty(filterText);
+    }
+
+    @Override
     public CharSequence getFilterText() {
         return filterText;
     }
@@ -102,8 +107,8 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     private void setRandomList() {
         List<Item> list = createRandomList();
 
-        if (!TextUtils.isEmpty(filterText))
-            dataAdapter.setList(list, filterText);
+        if (hasFilterText())
+            dataAdapter.setList(list, getFilterText());
         else
             dataAdapter.setList(list);
 

@@ -15,12 +15,12 @@ public class TagsList3_DataAdapter_Stub implements iTagsList3.iDataAdapter {
     }
 
     @Override
-    public void deflorate() {
+    public void setList(List<Tag> inputList) {
 
     }
 
     @Override
-    public void setList(List<Tag> inputList) {
+    public void setList(List<Tag> inputList, CharSequence filterQuery) {
 
     }
 
