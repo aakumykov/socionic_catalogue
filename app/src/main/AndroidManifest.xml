@@ -138,7 +138,10 @@
             android:name=".backup_job.BackupStatus_Activity"
             android:launchMode="singleTop" />
 
-        <activity android:name=".card_show.CardShow_View" />
+        <activity
+            android:name=".card_show.CardShow_View"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
+            />
 
         <activity android:name=".user_edit.UserEdit_View" android:windowSoftInputMode="stateHidden" />
 
