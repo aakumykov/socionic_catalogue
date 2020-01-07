@@ -133,7 +133,7 @@
             android:name=".card_edit.CardEdit_View"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".preferences.PreferencesActivity" />
-        <activity android:name=".tags.show.TagShow_View" />
+
         <activity
             android:name=".backup_job.BackupStatus_Activity"
             android:launchMode="singleTop" />
