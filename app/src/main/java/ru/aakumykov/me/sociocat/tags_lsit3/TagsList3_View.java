@@ -206,7 +206,7 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
         searchView.setQueryHint(hint);
 
         CharSequence filterText = presenter.getFilterText();
-        if (null != filterText) {
+        if (!TextUtils.isEmpty(filterText)) {
             searchView.setQuery(filterText, false);
             searchView.setIconified(false);
         }

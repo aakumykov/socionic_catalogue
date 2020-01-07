@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.template_of_list;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -179,7 +180,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
         searchView.setQueryHint(hint);
 
         CharSequence filterText = presenter.getFilterText();
-        if (null != filterText) {
+        if (!TextUtils.isEmpty(filterText)) {
             searchView.setQuery(filterText, false);
             searchView.setIconified(false);
         }
