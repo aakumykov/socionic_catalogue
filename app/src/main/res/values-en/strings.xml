@@ -547,5 +547,6 @@
     <string name="LIST_TEMPLATE_item_name">Item %1$s</string>
     <string name="TAGS_LIST_filter">Фильтр</string>
     <string name="TAGS_LIST_search_view_hint">Search tags</string>
+    <string name="LIST_TEMPLATE_search_items">Search elements</string>
 </resources>
 <!-- «%1$s» -->

@@ -146,7 +146,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
 
         searchView = (SearchView) menu.findItem(R.id.searchWidget).getActionView();
 
-        String hint = MyUtils.getString(this, R.string.TAGS_LIST_search_view_hint);
+        String hint = MyUtils.getString(this, R.string.LIST_TEMPLATE_search_items);
         searchView.setQueryHint(hint);
 
         CharSequence filterText = presenter.getFilterText();
@@ -165,7 +165,6 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
             public boolean onQueryTextChange(String newText) {
                 dataAdapter.getFilter().filter(newText);
                 return false;
-                // TODO: попробовать true
             }
         });
     }

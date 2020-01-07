@@ -555,5 +555,6 @@
     <string name="LIST_TEMPLATE_item_name">Элемент %1$s</string>
     <string name="TAGS_LIST_filter">Фильтр</string>
     <string name="TAGS_LIST_search_view_hint">Поиск меток</string>
+    <string name="LIST_TEMPLATE_search_items">Поиск элементов</string>
 
 </resources><!-- «%1$s» -->
