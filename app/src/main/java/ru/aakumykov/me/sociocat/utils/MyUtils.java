@@ -39,6 +39,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -506,4 +507,7 @@ public final class MyUtils {
         }
     }
 
+    public static int random(int min, int max) {
+        return new Random().nextInt((max - min) + 1) + min;
+    }
 }
