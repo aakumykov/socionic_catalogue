@@ -27,6 +27,11 @@ public class CardEdit_ViewStub extends BaseView_Stub implements iCardEdit.View {
     }
 
     @Override
+    public void displayImage(Bitmap bitmap) {
+
+    }
+
+    @Override
     public void displayVideo(String videoCode, @Nullable Float timecode) {
 
     }
@@ -188,6 +193,11 @@ public class CardEdit_ViewStub extends BaseView_Stub implements iCardEdit.View {
 
     @Override
     public void resumeMedia(float position) {
+
+    }
+
+    @Override
+    public void pickImage() {
 
     }
 }

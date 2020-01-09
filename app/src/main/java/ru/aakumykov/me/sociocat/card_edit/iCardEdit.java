@@ -9,6 +9,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.ImageType;
 
 public interface iCardEdit {
 
@@ -20,6 +21,7 @@ public interface iCardEdit {
     interface View extends iBaseView {
         void displayCard(Card card);
         void displayImage(String imageURI);
+        void displayImage(Bitmap bitmap);
         void displayVideo(String videoCode, @Nullable Float timecode);
         void displayAudio(String audioCode, @Nullable Float timecode);
 
@@ -65,6 +67,8 @@ public interface iCardEdit {
 
         float pauseMedia();
         void resumeMedia(float position);
+
+        void pickImage();
     }
 
     interface Presenter {
@@ -95,5 +99,10 @@ public interface iCardEdit {
         void clearEditState();
 
         boolean hasCard();
+
+        void onImageSelectionSuccess(Bitmap bitmap, ImageType imageType);
+        void onImageSelectionError(String errorMsg);
+
+        void onImageViewClicked();
     }
 }

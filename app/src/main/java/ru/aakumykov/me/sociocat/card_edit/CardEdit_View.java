@@ -56,6 +56,8 @@ import ru.aakumykov.me.sociocat.card_edit.view_model.CardEdit_ViewModel_Factory;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.ImageType;
+import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -109,6 +111,7 @@ public class CardEdit_View extends BaseView implements
     private boolean firstRun = true;
     private boolean exitIsExpected = false;
     private boolean selectImageMode = false;
+    private boolean isImageSelectionMode = false;
 
 
     // Системные методы
@@ -159,6 +162,11 @@ public class CardEdit_View extends BaseView implements
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
+
+        if (isImageSelectionMode) {
+            isImageSelectionMode = false;
+            return;
+        }
 
         if (presenter.hasCard())
             presenter.onConfigurationChanged();
@@ -330,6 +338,11 @@ public class CardEdit_View extends BaseView implements
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void displayImage(Bitmap bitmap) {
+        imageView.setImageBitmap(bitmap);
     }
 
     @Override
@@ -599,26 +612,19 @@ public class CardEdit_View extends BaseView implements
         }
     }
 
+    @Override
+    public void pickImage() {
+        if (! ImageUtils.pickImage(this) )
+            showErrorMsg(R.string.error_selecting_image, "Cannot launch file selector");
+        else
+            isImageSelectionMode = true;
+    }
+
 
     // Методы событий интерсейса
     @OnClick(R.id.imagePlaceholder)
     public void onSelectImageClicked() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-
-        selectImageMode = true;
-
-        if (null != intent.resolveActivity(getPackageManager())) {
-            startActivityForResult(
-                    Intent.createChooser(intent, getResources().getString(R.string.select_image)),
-                    Constants.CODE_SELECT_IMAGE
-            );
-        }
-        else {
-            showErrorMsg(R.string.CARD_EDIT_error_receiving_image,
-                    "Error resolving activity for Intent.ACTION_GET_CONTENT");
-        }
+        presenter.onImageViewClicked();
     }
 
     @OnClick(R.id.discardImageButton)
@@ -817,11 +823,31 @@ public class CardEdit_View extends BaseView implements
 
         try {
             if (RESULT_OK == resultCode)
-                presenter.processSelectedImage(data);
+                processSelectedImage(data);
         }
         catch (Exception e) {
             showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    private void processSelectedImage(@Nullable Intent data) {
+        try {
+            ImageUtils.extractImageFromIntent(this, data, new ImageUtils.ImageExtractionCallbacks() {
+                @Override
+                public void onImageExtractionSuccess(Bitmap bitmap, ImageType imageType) {
+                    presenter.onImageSelectionSuccess(bitmap, imageType);
+                }
+
+                @Override
+                public void onImageExtractionError(String errorMsg) {
+                    presenter.onImageSelectionError(errorMsg);
+                }
+            });
+        }
+        catch (ImageUtils.ImageUtils_Exception e) {
+            presenter.onImageSelectionError(e.getMessage());
+            MyUtils.printError(TAG, e);
         }
     }
 

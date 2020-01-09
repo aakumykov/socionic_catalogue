@@ -27,6 +27,7 @@ import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.ImageInfo;
+import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
@@ -55,6 +56,9 @@ public class CardEdit_Presenter implements
 
     private String imageType;
     private CardEditMode editMode;
+
+    private Bitmap imageBitmap;
+    private ImageType imageType2;
 
 
     // Системные методы (условно)
@@ -259,6 +263,23 @@ public class CardEdit_Presenter implements
     @Override
     public boolean hasCard() {
         return null != currentCard;
+    }
+
+    @Override
+    public void onImageSelectionSuccess(Bitmap bitmap, ImageType imageType) {
+        this.imageBitmap = bitmap;
+        this.imageType2 = imageType;
+        view.displayImage(bitmap);
+    }
+
+    @Override
+    public void onImageSelectionError(String errorMsg) {
+        view.showErrorMsg(R.string.error_selecting_image, errorMsg);
+    }
+
+    @Override
+    public void onImageViewClicked() {
+        view.pickImage();
     }
 
     @Override
