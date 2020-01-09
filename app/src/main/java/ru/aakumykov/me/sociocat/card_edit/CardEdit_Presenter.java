@@ -304,12 +304,12 @@ public class CardEdit_Presenter implements
         if (currentCard.isImageCard() && !currentCard.hasImageURL()) {
 
             String fileNameWithoutExtension = currentCard.getKey();
-            Bitmap imageBitmap = view.getImageBitmap();
+            String theTypeOfImage = this.imageType2.toString();
 
             if (null != view)
                 view.showImageProgressBar();
 
-            storageSingleton.uploadImage(imageBitmap, imageType, fileNameWithoutExtension, new iStorageSingleton.FileUploadCallbacks() {
+            storageSingleton.uploadImage(imageBitmap, theTypeOfImage, fileNameWithoutExtension, new iStorageSingleton.FileUploadCallbacks() {
 
                 @Override public void onFileUploadProgress(int progress) {
 
