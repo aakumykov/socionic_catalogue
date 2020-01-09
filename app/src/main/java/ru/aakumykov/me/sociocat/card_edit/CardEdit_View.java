@@ -149,7 +149,7 @@ public class CardEdit_View extends BaseView implements
                 processLoginRequest(resultCode, data);
                 break;
 
-            case Constants.CODE_SELECT_IMAGE:
+            case ImageUtils.CODE_SELECT_IMAGE:
                 processImageSelection(resultCode, data);
                 break;
 
@@ -298,9 +298,11 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void displayImage(String imageURI) {
+    public <T> void displayImage(T imageURI) {
 
-        if (TextUtils.isEmpty(imageURI)) {
+        //String s = String.valueOf(null);
+
+        if (null == imageURI || TextUtils.isEmpty(String.valueOf(imageURI))) {
             removeImage();
         }
         else {
@@ -338,11 +340,6 @@ public class CardEdit_View extends BaseView implements
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public void displayImage(Bitmap bitmap) {
-        imageView.setImageBitmap(bitmap);
     }
 
     @Override

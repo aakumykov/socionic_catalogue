@@ -1,11 +1,6 @@
 package ru.aakumykov.me.sociocat.card_edit;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.view.Menu;
 
 import androidx.annotation.Nullable;
 
@@ -22,12 +17,7 @@ public class CardEdit_ViewStub extends BaseView_Stub implements iCardEdit.View {
     }
 
     @Override
-    public void displayImage(String imageURI) {
-
-    }
-
-    @Override
-    public void displayImage(Bitmap bitmap) {
+    public <T> void displayImage(T imageURI) {
 
     }
 
