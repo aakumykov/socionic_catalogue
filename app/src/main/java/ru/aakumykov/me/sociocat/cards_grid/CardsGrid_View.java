@@ -175,10 +175,11 @@ public class CardsGrid_View extends BaseView implements
         configureSearchWidget(menu);
 
         menuInflater.inflate(R.menu.tags, menu);
-        MenuItem tagsMenu = menu.findItem(R.menu.tags);
 
-        if (AuthSingleton.isLoggedIn())
+        if (AuthSingleton.isLoggedIn()) {
+            menuInflater.inflate(R.menu.profile_in, menu);
             menuInflater.inflate(R.menu.preferences, menu);
+        }
 
         super.onCreateOptionsMenu(menu);
 
