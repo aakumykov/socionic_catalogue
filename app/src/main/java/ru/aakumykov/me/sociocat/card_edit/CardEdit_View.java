@@ -2,7 +2,6 @@ package ru.aakumykov.me.sociocat.card_edit;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -53,7 +52,6 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.view_model.CardEdit_ViewModel;
 import ru.aakumykov.me.sociocat.card_edit.view_model.CardEdit_ViewModel_Factory;
-import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.ImageType;
@@ -79,7 +77,6 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
     @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
     @BindView(R.id.imageView) ImageView imageView;
-    @BindView(R.id.imagePlaceholder) ImageView imagePlaceholder;
     @BindView(R.id.discardImageButton) ImageView discardImageButton;
 
     @BindView(R.id.mediaPlayerHolder) LinearLayout mediaPlayerHolder;
@@ -419,15 +416,6 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public Bitmap getImageBitmap() {
-//        return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        Drawable drawable = imageView.getDrawable();
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-        Bitmap bitmap = bitmapDrawable.getBitmap();
-        return bitmap;
-    }
-
-    @Override
     public String getDescription() {
         return descriptionInput.getText().toString();
     }
@@ -536,11 +524,13 @@ public class CardEdit_View extends BaseView implements
     @Override
     public void showImageProgressBar() {
         MyUtils.show(imageProgressBar);
+        imageView.setAlpha(0.5f);
     }
 
     @Override
     public void hideImageProgressBar() {
         MyUtils.hide(imageProgressBar);
+        imageView.setAlpha(1.0f);
     }
 
     @Override
@@ -569,35 +559,9 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void showCard(Card card) {
-        exitIsExpected = true;
-        Intent intent = new Intent(this, CardShow_View.class);
-        intent.putExtra(Constants.CARD_KEY, card.getKey());
-        startActivity(intent);
-    }
-
-    @Override
     public void addTag(String tag) {
         tagsContainer.addTag(tag);
         newTagInput.setText("");
-    }
-
-    @Override
-    public void showDraftRestoreDialog(Card cardDraft) {
-
-        MVPUtils.showDraftRestoreDialog(getSupportFragmentManager(), cardDraft, new DraftRestoreFragment.Callbacks() {
-            @Override public void onDraftRestoreConfirmed() {
-                displayCard(cardDraft);
-            }
-
-            @Override public void onDraftRestoreDeferred() {
-
-            }
-
-            @Override public void onDraftRestoreCanceled() {
-                presenter.clearEditState();
-            }
-        });
     }
 
     @Override

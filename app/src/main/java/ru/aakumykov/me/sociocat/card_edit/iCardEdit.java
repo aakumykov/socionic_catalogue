@@ -19,27 +19,45 @@ public interface iCardEdit {
     }
 
     interface View extends iBaseView {
+
+        // "Большие" методы
         void displayCard(Card card);
+        void disableForm();
+        void enableForm();
 
+        // Картинка
         void pickImage();
-        <T> void displayImage(T imageURI);
 
+        <T> void displayImage(T imageURI);
+        void removeImage();
+
+        void showImageError(int msgId);
+        void hideImageError();
+
+        void showImageProgressBar();
+        void hideImageProgressBar();
+
+        // Мультимедиа
         void displayVideo(String videoCode, @Nullable Float timecode);
         void displayAudio(String audioCode, @Nullable Float timecode);
 
-        void removeImage();
+        float pauseMedia();
+        void resumeMedia(float position);
         void removeMedia();
 
+        void convert2audio();
+        void convert2video();
+
+        // Получение денных формы
         String getCardTitle();
         String getQuote();
         String getQuoteSource();
-        Bitmap getImageBitmap();
         String getDescription();
         Float getTimecode();
         HashMap<String,Boolean> getTags();
 
-        void convert2audio();
-        void convert2video();
+        // Проверка формы
+        boolean isFormFilled();
 
         void showTitleError(int msgId);
         void showQuoteError(int msgId);
@@ -49,27 +67,9 @@ public interface iCardEdit {
         void hideMediaError();
         void showDescriptionError(int msgId);
 
-        void showImageError(int msgId);
-        void hideImageError();
-
-        void disableForm();
-        void enableForm();
-
-        void showImageProgressBar();
-        void hideImageProgressBar();
-
-        boolean isFormFilled();
-
+        // Разное
         void finishEdit(Card card);
-        void showCard(Card card);
-
         void addTag(String tag);
-
-        void showDraftRestoreDialog(Card cardDraft);
-
-        float pauseMedia();
-        void resumeMedia(float position);
-
     }
 
     interface Presenter {

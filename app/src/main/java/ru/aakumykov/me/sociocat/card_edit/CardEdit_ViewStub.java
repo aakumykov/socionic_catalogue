@@ -1,7 +1,5 @@
 package ru.aakumykov.me.sociocat.card_edit;
 
-import android.graphics.Bitmap;
-
 import androidx.annotation.Nullable;
 
 import java.util.HashMap;
@@ -53,11 +51,6 @@ public class CardEdit_ViewStub extends BaseView_Stub implements iCardEdit.View {
 
     @Override
     public String getQuoteSource() {
-        return null;
-    }
-
-    @Override
-    public Bitmap getImageBitmap() {
         return null;
     }
 
@@ -162,17 +155,7 @@ public class CardEdit_ViewStub extends BaseView_Stub implements iCardEdit.View {
     }
 
     @Override
-    public void showCard(Card card) {
-
-    }
-
-    @Override
     public void addTag(String tag) {
-
-    }
-
-    @Override
-    public void showDraftRestoreDialog(Card cardDraft) {
 
     }
 
