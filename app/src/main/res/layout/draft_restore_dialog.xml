@@ -44,7 +44,7 @@
                 android:layout_marginBottom="10dp"
                 android:adjustViewBounds="false"
                 android:visibility="gone"
-                app:srcCompat="@drawable/ic_image" />
+                app:srcCompat="@drawable/ic_image_placeholder_color" />
 
             <TextView
                 android:id="@+id/quoteView"

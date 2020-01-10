@@ -233,14 +233,6 @@ public class CardEdit_Presenter implements
     }
 
     @Override
-    public void restoreEditState() throws Exception {
-
-        Card cardDraft = MVPUtils.retriveCardDraft(view.getAppContext());
-        if (null != cardDraft)
-            view.showDraftRestoreDialog(cardDraft);
-    }
-
-    @Override
     public void clearEditState() {
         //view.clearSharedPrefs(sharedPreferences, Constants.CARD);
         MVPUtils.clearCardDraft(view.getAppContext());
@@ -294,7 +286,7 @@ public class CardEdit_Presenter implements
             String theTypeOfImage = this.imageType.toString();
 
             if (null != view)
-                view.showImageProgressBar();
+                view.showImageThrobber();
 
             storageSingleton.uploadImage(imageBitmap, theTypeOfImage, fileNameWithoutExtension, new iStorageSingleton.FileUploadCallbacks() {
 
@@ -304,7 +296,7 @@ public class CardEdit_Presenter implements
 
                 @Override public void onFileUploadSuccess(String fileName, String downloadURL) {
                     if (null != view) {
-                        view.hideImageProgressBar();
+                        view.hideImageThrobber();
                         view.displayImage(downloadURL);
                     }
 
@@ -323,13 +315,13 @@ public class CardEdit_Presenter implements
                 }
 
                 @Override public void onFileUploadFail(String errorMsg) {
-                    view.hideImageProgressBar();
+                    view.hideImageThrobber();
                     if (null != view)
                         view.showErrorMsg(R.string.CARD_EDIT_error_saving_image, errorMsg);
                 }
 
                 @Override public void onFileUploadCancel() {
-                    view.hideImageProgressBar();
+                    view.hideImageThrobber();
                     if (null != view)
                         view.showErrorMsg(R.string.CARD_EDIT_image_upload_cancelled, "File upload cancelled...");
                 }
@@ -618,7 +610,7 @@ public class CardEdit_Presenter implements
         String fileName = ImageUtils.makeFileName(currentCard.getKey(), imageType);
 
         view.disableForm();
-        view.showImageProgressBar();
+        view.showImageThrobber();
         view.showProgressMessage(R.string.CARD_EDIT_uploading_image);
 
         storageSingleton.uploadCardImage(imageBytes, fileName, new iStorageSingleton.FileUploadCallbacks() {
@@ -629,21 +621,21 @@ public class CardEdit_Presenter implements
 
             @Override
             public void onFileUploadSuccess(String fileName, String downloadURL) {
-                view.hideImageProgressBar();
+                view.hideImageThrobber();
                 currentCard.setImageURL(downloadURL);
                 callbacks.onImageUploaded();
             }
 
             @Override
             public void onFileUploadFail(String errorMsg) {
-                view.hideImageProgressBar();
+                view.hideImageThrobber();
                 view.showImageError(R.string.CARD_EDIT_error_saving_image);
                 Log.e(TAG, errorMsg);
             }
 
             @Override
             public void onFileUploadCancel() {
-                view.hideImageProgressBar();
+                view.hideImageThrobber();
                 view.enableForm();
                 view.showToast(R.string.CARD_EDIT_image_upload_cancelled);
             }

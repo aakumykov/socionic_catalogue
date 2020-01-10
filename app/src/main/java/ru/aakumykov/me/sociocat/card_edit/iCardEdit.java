@@ -22,6 +22,7 @@ public interface iCardEdit {
 
         // "Большие" методы
         void displayCard(Card card);
+
         void disableForm();
         void enableForm();
 
@@ -34,8 +35,8 @@ public interface iCardEdit {
         void showImageError(int msgId);
         void hideImageError();
 
-        void showImageProgressBar();
-        void hideImageProgressBar();
+        void showImageThrobber();
+        void hideImageThrobber();
 
         // Мультимедиа
         void displayVideo(String videoCode, @Nullable Float timecode);
@@ -95,7 +96,7 @@ public interface iCardEdit {
         void saveCard(boolean alreadyValidated) throws Exception;
 
         void saveEditState();
-        void restoreEditState() throws Exception;
+
         void clearEditState();
 
         boolean hasCard();

@@ -50,7 +50,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/card_type_chooser_icon_height"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_image" />
+                    app:srcCompat="@drawable/ic_image_placeholder_color" />
             </TableRow>
 
             <TableRow

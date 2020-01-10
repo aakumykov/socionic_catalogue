@@ -181,7 +181,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
             case Card.IMAGE_CARD:
                 Glide.with(imageView)
                         .load(currentCard.getImageURL())
-                        .placeholder(R.drawable.ic_image_placeholder)
+                        .placeholder(R.drawable.ic_image_placeholder_simple)
                         .error(R.drawable.ic_image_error)
                         .into(imageView);
                 break;

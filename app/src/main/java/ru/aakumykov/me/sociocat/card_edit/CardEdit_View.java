@@ -75,7 +75,7 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.mediaThrobber) ProgressBar mediaThrobber;
 
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
-    @BindView(R.id.imageProgressBar) ProgressBar imageProgressBar;
+    @BindView(R.id.imageProgressBar) ProgressBar imageThrobber;
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.discardImageButton) ImageView discardImageButton;
 
@@ -261,7 +261,7 @@ public class CardEdit_View extends BaseView implements
         super.showErrorMsg(messageId, consoleMessage);
         enableForm();
         MyUtils.hide(mediaThrobber);
-        MyUtils.hide(imageProgressBar);
+        MyUtils.hide(imageThrobber);
         scrollView.scrollTo(0,0);
     }
 
@@ -303,48 +303,30 @@ public class CardEdit_View extends BaseView implements
     }
     
     @Override
-    public <T> void displayImage(T imageURI) {
+    public <T> void displayImage(T imageData) {
 
-        //String s = String.valueOf(null);
+        MyUtils.show(imageHolder);
+        showImageThrobber();
 
-        if (null == imageURI || TextUtils.isEmpty(String.valueOf(imageURI))) {
-            removeImage();
-        }
-        else {
-            MyUtils.hide(imagePlaceholder);
-            MyUtils.hide(imageHolder);
-            MyUtils.show(mediaThrobber);
+        Glide.with(getAppContext())
+                .load(imageData)
+                .placeholder(R.drawable.ic_image_placeholder_color)
+                .error(R.drawable.ic_image_error)
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        imageView.setImageDrawable(resource);
+                        hideImageThrobber();
+                        MyUtils.show(discardImageButton);
+                    }
 
-            hideImageError();
-
-            try {
-                Glide.with(getAppContext())
-                        .load(imageURI)
-                        .into(new CustomTarget<Drawable>() {
-                            @Override
-                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                                imageView.setImageDrawable(resource);
-
-                                MyUtils.hide(mediaThrobber);
-                                MyUtils.hide(imagePlaceholder);
-                                MyUtils.show(imageHolder);
-                                MyUtils.show(imageView);
-                                MyUtils.show(discardImageButton);
-                            }
-
-                            @Override
-                            public void onLoadCleared(@Nullable Drawable placeholder) {
-                                showBrokenImage();
-                                showErrorMsg(R.string.CARD_EDIT_error_displaying_image, "Glide.onLoadCleared()");
-                            }
-                        });
-
-            } catch (Exception e) {
-                showBrokenImage();
-                showErrorMsg(R.string.CARD_EDIT_error_displaying_image, e.getMessage());
-                MyUtils.printError(TAG, e);
-            }
-        }
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                        imageView.setImageResource(R.drawable.ic_image_error);
+                        hideImageThrobber();
+                        showErrorMsg(R.string.CARD_EDIT_error_displaying_image, "Glide.onLoadCleared()");
+                    }
+                });
     }
 
     @Override
@@ -379,14 +361,7 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void removeImage() {
-        imageView.setImageDrawable(null);
-
-        MyUtils.hide(mediaThrobber);
-        MyUtils.hide(imageView);
-        MyUtils.hide(discardImageButton);
-
-        MyUtils.show(imageHolder);
-        MyUtils.show(imagePlaceholder);
+        imageView.setImageResource(R.drawable.ic_image_placeholder_color);
     }
 
     @Override
@@ -522,14 +497,14 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void showImageProgressBar() {
-        MyUtils.show(imageProgressBar);
+    public void showImageThrobber() {
+        MyUtils.show(imageThrobber);
         imageView.setAlpha(0.5f);
     }
 
     @Override
-    public void hideImageProgressBar() {
-        MyUtils.hide(imageProgressBar);
+    public void hideImageThrobber() {
+        MyUtils.hide(imageThrobber);
         imageView.setAlpha(1.0f);
     }
 
@@ -585,7 +560,7 @@ public class CardEdit_View extends BaseView implements
 
 
     // Методы событий интерсейса
-    @OnClick(R.id.imagePlaceholder)
+    @OnClick(R.id.imageView)
     public void onSelectImageClicked() {
         presenter.onImageViewClicked();
     }
@@ -894,6 +869,7 @@ public class CardEdit_View extends BaseView implements
         quoteInput.setEnabled(isEnabled);
         quoteSourceInput.setEnabled(isEnabled);
 
+        imageView.setEnabled(isEnabled);
         discardImageButton.setEnabled(isEnabled);
 
         addMediaButton.setEnabled(isEnabled);
@@ -907,14 +883,6 @@ public class CardEdit_View extends BaseView implements
         descriptionInput.setEnabled(isEnabled);
 
         saveButton.setEnabled(isEnabled);
-    }
-
-    private void showBrokenImage() {
-        MyUtils.hide(mediaThrobber);
-        Drawable drawable = getResources().getDrawable(R.drawable.ic_image_broken);
-        imageView.setImageDrawable(drawable);
-        MyUtils.show(imageHolder);
-        MyUtils.show(imageView);
     }
 
     private void gracefulExit() {

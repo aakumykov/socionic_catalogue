@@ -135,12 +135,12 @@ public class CardEdit_ViewStub extends BaseView_Stub implements iCardEdit.View {
     }
 
     @Override
-    public void showImageProgressBar() {
+    public void showImageThrobber() {
 
     }
 
     @Override
-    public void hideImageProgressBar() {
+    public void hideImageThrobber() {
 
     }
 
