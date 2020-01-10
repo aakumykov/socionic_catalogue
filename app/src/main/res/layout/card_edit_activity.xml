@@ -72,13 +72,11 @@
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:adjustViewBounds="true"
                 android:scaleType="centerInside"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/ic_image_placeholder_color"
-                tools:visibility="visible" />
+                tools:srcCompat="@drawable/ic_image_placeholder_color" />
 
             <ProgressBar
                 android:id="@+id/imageProgressBar"

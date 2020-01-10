@@ -502,6 +502,7 @@ public class CardEdit_Presenter implements
             case Constants.VIDEO_CARD:
             case Constants.AUDIO_CARD:
                 view.displayCard(currentCard);
+                break;
             default:
                 throw new Exception("Unknown card type: "+cardType);
         }

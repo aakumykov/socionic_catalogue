@@ -3,7 +3,6 @@ package ru.aakumykov.me.sociocat.card_edit;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -278,7 +277,7 @@ public class CardEdit_View extends BaseView implements
                 displayQuote(card.getQuote(), card.getQuoteSource());
                 break;
             case Constants.IMAGE_CARD:
-                displayImageFromCard(card);
+                displayImage(card.getImageURL());
                 break;
             case Constants.VIDEO_CARD:
                 displayVideo(card.getVideoCode(), card.getTimecode());
@@ -305,6 +304,7 @@ public class CardEdit_View extends BaseView implements
     @Override
     public <T> void displayImage(T imageData) {
 
+        MyUtils.show(imageHolder);
         MyUtils.show(imageHolder);
         showImageThrobber();
 
@@ -361,7 +361,7 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void removeImage() {
-        imageView.setImageResource(R.drawable.ic_image_placeholder_color);
+        showImagePlaceholder();
     }
 
     @Override
@@ -848,19 +848,30 @@ public class CardEdit_View extends BaseView implements
         tagsContainer.setTags(card.getTags());
     }
 
-    private void displayImageFromCard(Card card) {
-        Uri localImageURI = card.getLocalImageURI();
-        String remoteImageURL = card.getImageURL();
+    private void displayRemoteImage(String imageURL) {
 
-        if (null != localImageURI) {
-            displayImage(localImageURI.toString());
-        }
-        else if (!TextUtils.isEmpty(remoteImageURL)) {
-            displayImage(remoteImageURL);
-        }
-        else {
-            removeImage();
-        }
+        showImageThrobber();
+
+        Glide.with(this)
+                .load(imageURL)
+                .error(R.drawable.ic_image_error)
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        hideImageThrobber();
+                        imageView.setImageDrawable(resource);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                        hideImageThrobber();
+                        showImagePlaceholder();
+                    }
+                });
+    }
+
+    private void showImagePlaceholder() {
+        imageView.setImageResource(R.drawable.ic_image_placeholder_color);
     }
 
     private void changeFormSate(boolean isEnabled) {
