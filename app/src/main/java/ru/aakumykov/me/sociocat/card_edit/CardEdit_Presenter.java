@@ -56,8 +56,8 @@ public class CardEdit_Presenter implements
 
     private CardEditMode editMode;
 
-    private ImageType imageType;
-    private Bitmap imageBitmap;
+    private Bitmap mIageBitmap;
+    private ImageType mImageType;
 
 
     // Системные методы (условно)
@@ -93,28 +93,27 @@ public class CardEdit_Presenter implements
         }
 
         if (!AuthSingleton.isLoggedIn()) {
-            // TODO: requestLogin + CODE_LOGIN_REQUEST ...
             view.requestLogin(intent);
             return;
         }
 
-        if (null == intent) {
-            view.showErrorMsg(R.string.data_error, "Intent is null");
-            return;
+        String action = String.valueOf(intent.getAction());
+
+        try {
+            switch (action) {
+                case Constants.ACTION_CREATE:
+                    proceed2createCard(intent);
+                    break;
+                case Constants.ACTION_EDIT:
+                    proceed2editCard(intent);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown action: "+action);
+            }
         }
-
-        Card card = intent.getParcelableExtra(Constants.CARD);
-        if (null == card) {
-            view.showErrorMsg(R.string.data_error, "Failed to get Card from Intent");
-            return;
+        catch (Exception e) {
+            view.showErrorMsg(R.string.CARD_EDIT_error_processing_data, "Unknown action: " + String.valueOf(action));
         }
-
-        // TODO: проверять права доступа к карточке
-
-        if (null == card.getKey())
-            startCreateCard(card);
-        else
-            startEditCard(card);
     }
 
     @Override
@@ -219,7 +218,7 @@ public class CardEdit_Presenter implements
 //        editor.putString(Constants.CARD, cardJson);
 //        editor.putString("editMode", editMode.name());
 //        editor.putBoolean("isExternalDataMode", isExternalDataMode);
-//        editor.putString("imageType", imageType);
+//        editor.putString("mImageType", mImageType);
 //
 //        /* У объекта oldCardTags запускается метод, поэтому
 //        нужно проверять его существование. */
@@ -245,8 +244,8 @@ public class CardEdit_Presenter implements
 
     @Override
     public void onImageSelectionSuccess(Bitmap bitmap, ImageType imageType) {
-        this.imageType = imageType;
-        this.imageBitmap = bitmap;
+        this.mImageType = imageType;
+        this.mIageBitmap = bitmap;
         view.displayImage(bitmap);
     }
 
@@ -283,12 +282,12 @@ public class CardEdit_Presenter implements
 
 /*
             String fileNameWithoutExtension = currentCard.getKey();
-            String theTypeOfImage = this.imageType.toString();
+            String theTypeOfImage = this.mImageType.toString();
 
             if (null != view)
                 view.showImageThrobber();
 
-            storageSingleton.uploadImage(imageBitmap, theTypeOfImage, fileNameWithoutExtension, new iStorageSingleton.FileUploadCallbacks() {
+            storageSingleton.uploadImage(mIageBitmap, theTypeOfImage, fileNameWithoutExtension, new iStorageSingleton.FileUploadCallbacks() {
 
                 @Override public void onFileUploadProgress(int progress) {
 
@@ -406,6 +405,109 @@ public class CardEdit_Presenter implements
 
 
     // Внутренние методы
+    private void proceed2createCard(Intent intent) throws Exception {
+
+        currentCard = new Card();
+
+        String cardType = String.valueOf(intent.getStringExtra(Constants.CARD_TYPE));
+
+        switch (cardType) {
+            case Constants.TEXT_CARD:
+                fillTextCard(intent);
+                break;
+            case Constants.IMAGE_CARD:
+                fillImageCard(intent);
+                break;
+            case Constants.AUDIO_CARD:
+                fillAudioCard(intent);
+                break;
+            case Constants.VIDEO_CARD:
+                fillVideoCard(intent);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown cardType: "+cardType);
+        }
+    }
+
+    private void fillTextCard(Intent intent) {
+        String text = intent.getStringExtra(Constants.EXTERNAL_DATA);
+
+        currentCard.setType(Constants.TEXT_CARD);
+        currentCard.setQuote(text);
+        currentCard.setTitle(MyUtils.cutToLength(text, Config.TITLE_MAX_LENGTH));
+    }
+
+    private void fillImageCard(Intent intent) throws Exception {
+
+        currentCard.setType(Constants.IMAGE_CARD);
+
+        // TODO: это уже делалось в Получателе внешних данных!
+        ImageUtils.extractImageFromIntent(view.getAppContext(), intent, new ImageUtils.ImageExtractionCallbacks() {
+            @Override
+            public void onImageExtractionSuccess(Bitmap bitmap, ImageType imageType) {
+                mIageBitmap = bitmap;
+                mImageType = imageType;
+                view.displayImage(mIageBitmap);
+            }
+
+            @Override
+            public void onImageExtractionError(String errorMsg) {
+                view.showErrorMsg(R.string.CARD_EDIT_image_error, errorMsg);
+            }
+        });
+    }
+
+    private void fillVideoCard(Intent intent) {
+        // TODO: это уже делалось в Получателе внешних данных!
+
+        String videoCode = MVPUtils.extractYoutubeVideoCode(intent.getStringExtra(Constants.EXTERNAL_DATA));
+
+        if (null == videoCode) {
+            view.showErrorMsg(R.string.CARD_EDIT_data_error, "There is no video code");
+            return;
+        }
+
+        currentCard.setType(Constants.VIDEO_CARD);
+        currentCard.setVideoCode(videoCode);
+        view.displayVideo(videoCode, null);
+    }
+
+    private void fillAudioCard(Intent intent) {
+        String audioCode = MVPUtils.extractYoutubeVideoCode(intent.getStringExtra(Constants.EXTERNAL_DATA));
+
+        if (null == audioCode) {
+            view.showErrorMsg(R.string.CARD_EDIT_data_error, "There is no audio code");
+            return;
+        }
+
+        currentCard.setType(Constants.AUDIO_CARD);
+        currentCard.setAudioCode(audioCode);
+        view.displayAudio(audioCode, null);
+    }
+
+    private void proceed2editCard(Intent intent) throws Exception {
+
+        currentCard = intent.getParcelableExtra(Constants.CARD);
+
+        if (null == currentCard) {
+            view.showErrorMsg(R.string.data_error, "Failed to get Card from Intent");
+            return;
+        }
+
+        String cardType = String.valueOf(currentCard.getType());
+
+        switch (cardType) {
+            case Constants.TEXT_CARD:
+            case Constants.IMAGE_CARD:
+            case Constants.VIDEO_CARD:
+            case Constants.AUDIO_CARD:
+                view.displayCard(currentCard);
+            default:
+                throw new Exception("Unknown card type: "+cardType);
+        }
+    }
+
+
     private void startCreateCard(Card card) {
         card.setKey(cardsSingleton.createKey());
 
@@ -606,8 +708,8 @@ public class CardEdit_Presenter implements
 
     private void uploadImage(iStorageSingleton.ImageUploadCallbacks callbacks) {
 
-        byte[] imageBytes = ImageUtils.compressImage(imageBitmap, imageType);
-        String fileName = ImageUtils.makeFileName(currentCard.getKey(), imageType);
+        byte[] imageBytes = ImageUtils.compressImage(mIageBitmap, mImageType);
+        String fileName = ImageUtils.makeFileName(currentCard.getKey(), mImageType);
 
         view.disableForm();
         view.showImageThrobber();
