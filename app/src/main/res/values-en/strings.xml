@@ -417,7 +417,7 @@
     <string name="CARD_EDIT_error_restoring_edit_state">Error restoring edit state</string>
     <string name="DLP_processing_dynamic_link">Processing dynamic link</string>
     <string name="USER_SHOW_loading_user_info">Loading user info</string>
-    <string name="EXTERNAL_DATA_RECIEVER_error_starting_work">Error starting work</string>
+    <string name="EXTERNAL_DATA_RECIEVER_input_data_error">Input data error</string>
     <string name="CARDS_GRID_error_loading_cards">Error loading cards</string>
     <string name="CARD_EDIT_loading_card">Loading card</string>
     <string name="LOGIN_data_error">Data error</string>

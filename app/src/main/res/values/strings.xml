@@ -424,7 +424,7 @@
     <string name="CARD_EDIT_error_restoring_edit_state">Ошибка возобновления редактирования</string>
     <string name="DLP_processing_dynamic_link">Обрабатываем динамическую ссылку</string>
     <string name="USER_SHOW_loading_user_info">Получаем информацию о пользователе</string>
-    <string name="EXTERNAL_DATA_RECIEVER_error_starting_work">Ошибка начала работы</string>
+    <string name="EXTERNAL_DATA_RECIEVER_input_data_error">Нет входящих данных</string>
     <string name="CARDS_GRID_error_loading_cards">Ошибка загрузки карточек</string>
     <string name="CARD_EDIT_loading_card">Получение данных карточки</string>
     <string name="LOGIN_data_error">Ошибка данных</string>

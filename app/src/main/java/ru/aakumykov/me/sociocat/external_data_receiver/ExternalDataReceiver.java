@@ -1,14 +1,12 @@
 package ru.aakumykov.me.sociocat.external_data_receiver;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.BaseView;
-import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
@@ -35,13 +33,14 @@ public class ExternalDataReceiver extends BaseView {
         setContentView(R.layout.data_reciever_activity);
         setPageTitle(R.string.EXTERNAL_DATA_RECIEVER_page_title);
 
-        try {
-            processInputIntent(getIntent());
+
+        Intent inputIntent = getIntent();
+
+        if (null == inputIntent) {
+            showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_input_data_error, "Intent is null");
+            return;
         }
-        catch (Exception e) {
-            showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_error_starting_work, e.getMessage());
-            e.printStackTrace();
-        }
+        detectDataType(inputIntent);
     }
 
     @Override
@@ -84,15 +83,20 @@ public class ExternalDataReceiver extends BaseView {
 
 
     // Внутренние методы
-    private void processInputIntent(@Nullable Intent inputIntent) throws Exception {
+    private void finishIfDone() {
+        if (mWorkDone)
+            finish();
+    }
 
-        if (null == inputIntent)
-            throw new IllegalArgumentException("Input intent is NULL");
+    private void detectDataType(Intent inputIntent) {
+        Constants.CardType cardType;
+        Object data;
 
-        // Картинка?
+        // Картинка
         try {
             ImageInfo imageInfo = ImageUtils.extractImageInfo(this, inputIntent);
-            go2createCard(Constants.CardType.IMAGE_CARD, imageInfo.getLocalURI());
+            cardType = Constants.CardType.IMAGE_CARD;
+            data = imageInfo.getLocalURI();
             return;
         }
         catch (ImageUtils.ImageUtils_Exception e) {
@@ -100,7 +104,7 @@ public class ExternalDataReceiver extends BaseView {
             MyUtils.printError(TAG, e);
         }
 
-        // Видео, Текст?
+        // Видео/текст
         String text = MVPUtils.getTextFromIntent(inputIntent);
 
         if (null == text) {
@@ -111,16 +115,15 @@ public class ExternalDataReceiver extends BaseView {
         String videoCode = MVPUtils.extractYoutubeVideoCode(text);
 
         if (null != videoCode) {
-            card.setType(Constants.VIDEO_CARD);
-            card.setVideoCode(videoCode);
+            cardType = Constants.CardType.VIDEO_CARD;
+            data = videoCode;
         }
         else {
-            card.setType(Constants.TEXT_CARD);
-            card.setQuote(text);
-            card.setTitle(MyUtils.cutToLength(text, Config.TITLE_MAX_LENGTH));
+            cardType = Constants.CardType.TEXT_CARD;
+            data = text;
         }
 
-        goToEditCard(card);
+        go2createCard(cardType, data);
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
@@ -138,17 +141,6 @@ public class ExternalDataReceiver extends BaseView {
         else {
             finish();
         }
-    }
-
-    private void finishIfDone() {
-        if (mWorkDone)
-            finish();
-    }
-
-    private void goToEditCard(Card card) {
-        Intent intent = new Intent(this, CardEdit_View.class);
-        intent.putExtra(Constants.CARD, card);
-        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
     }
 
     private void go2createCard(Constants.CardType cardType, Object data) {
