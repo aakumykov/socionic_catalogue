@@ -550,5 +550,6 @@
     <string name="LIST_TEMPLATE_search_items">Search elements</string>
     <string name="EXTERNAL_DATA_RECIEVER_error_processing_image">Error processing image</string>
     <string name="EXTERNAL_DATA_RECIEVER_unknown_card_type">Unknown card type</string>
+    <string name="EXTERNAL_DATA_RECIEVER_data_error">Data error</string>
 </resources>
 <!-- «%1$s» -->

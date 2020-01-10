@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.external_data_receiver;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 
@@ -18,12 +17,12 @@ import ru.aakumykov.me.sociocat.utils.ImageInfo;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.data_detector.IntentDataDetector;
 
 public class ExternalDataReceiver extends BaseView {
 
     private static final String TAG = "ExternalDataReceiver";
-    private boolean mWorkDone = false;
-
+    private boolean isWorkDone = false;
 
     // Системные методы
     @Override
@@ -35,13 +34,7 @@ public class ExternalDataReceiver extends BaseView {
         setContentView(R.layout.data_reciever_activity);
         setPageTitle(R.string.EXTERNAL_DATA_RECIEVER_page_title);
 
-        try {
-            processInputIntent(getIntent());
-        }
-        catch (Exception e) {
-            showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_error_starting_work, e.getMessage());
-            e.printStackTrace();
-        }
+        processInputIntent(getIntent());
     }
 
     @Override
@@ -84,10 +77,16 @@ public class ExternalDataReceiver extends BaseView {
 
 
     // Внутренние методы
-    private void processInputIntent(@Nullable Intent inputIntent) throws Exception {
+    private void processInputIntent(@Nullable Intent inputIntent) {
 
-        if (null == inputIntent)
-            throw new IllegalArgumentException("Input intent is NULL");
+        /*if (null == inputIntent) {
+            showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_data_error, "Intent is null");
+            return;
+        }*/
+
+        IntentDataDetector.IntentDataType intentDataType = IntentDataDetector.detectType(inputIntent);
+
+
 
         // Картинка?
         try {
@@ -124,7 +123,7 @@ public class ExternalDataReceiver extends BaseView {
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
-        mWorkDone = true;
+        isWorkDone = true;
 
         if (null == data)
             throw  new IllegalArgumentException("Intent is null");
@@ -141,7 +140,7 @@ public class ExternalDataReceiver extends BaseView {
     }
 
     private void finishIfDone() {
-        if (mWorkDone)
+        if (isWorkDone)
             finish();
     }
 

@@ -558,5 +558,6 @@
     <string name="LIST_TEMPLATE_search_items">Поиск элементов</string>
     <string name="EXTERNAL_DATA_RECIEVER_error_processing_image">Ошибка обработки изображения</string>
     <string name="EXTERNAL_DATA_RECIEVER_unknown_card_type">Неизвестный тип карточки</string>
+    <string name="EXTERNAL_DATA_RECIEVER_data_error">Ошибка данных</string>
 
 </resources><!-- «%1$s» -->
