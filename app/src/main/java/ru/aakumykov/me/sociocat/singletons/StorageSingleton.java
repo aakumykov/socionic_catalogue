@@ -40,7 +40,7 @@ public class StorageSingleton implements iStorageSingleton {
 
 
     // Интерфейсные методы
-    @Override
+    @Override @Deprecated
     public void uploadImage(Bitmap imageBitmap, String imageType, @Nullable String fileNameWithoutExtension, final FileUploadCallbacks callbacks) {
 
         if (TextUtils.isEmpty(fileNameWithoutExtension)) {
@@ -74,6 +74,11 @@ public class StorageSingleton implements iStorageSingleton {
     @Override
     public void uploadAvatar(byte[] imageBytes, String fileName, final FileUploadCallbacks callbacks) {
         uploadFile(imageBytes, Constants.AVATARS_PATH, fileName, callbacks);
+    }
+
+    @Override
+    public void uploadCardImage(byte[] imageBytes, String fileName, final FileUploadCallbacks callbacks) {
+        uploadFile(imageBytes, Constants.IMAGES_PATH, fileName, callbacks);
     }
 
     @Override

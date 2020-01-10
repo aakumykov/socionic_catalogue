@@ -23,6 +23,10 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 class UserEdit_Presenter implements iUserEdit.iPresenter {
 
+    private interface iAvatarUploadCallbacks {
+        void onAvatarUploaded();
+    }
+
     private final static String TAG = "UserEdit_Presenter";
 
     private iUserEdit.iView view;
@@ -254,10 +258,6 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
                 view.showToast(R.string.USER_EDIT_avatar_uploading_cancelled);
             }
         });
-    }
-
-    private interface iAvatarUploadCallbacks {
-        void onAvatarUploaded();
     }
 
     private void saveUser() {

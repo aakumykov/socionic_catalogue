@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.card_edit;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -26,25 +27,24 @@ import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
-import ru.aakumykov.me.sociocat.utils.ImageInfo;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardEdit_Presenter implements
         iCardEdit.Presenter,
         iCardsSingleton.SaveCardCallbacks
 {
-    private float mediaPosition = 0.0f;
-
     public enum CardEditMode {
         CREATE,
         EDIT
     }
 
+    private float mediaPosition = 0.0f;
+
     private static final String TAG = "CardEdit_Presenter";
     private iCardEdit.View view;
-//    private SharedPreferences sharedPreferences;
 
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
@@ -54,11 +54,10 @@ public class CardEdit_Presenter implements
     private Card currentCard;
     private Card oldCard;
 
-    private String imageType;
     private CardEditMode editMode;
 
+    private ImageType imageType;
     private Bitmap imageBitmap;
-    private ImageType imageType2;
 
 
     // Системные методы (условно)
@@ -187,19 +186,6 @@ public class CardEdit_Presenter implements
     }
 
     @Override
-    public void processSelectedImage(@Nullable Intent data) throws Exception {
-        ImageInfo imageInfo = ImageUtils.extractImageInfo(view.getAppContext(), data);
-        if (null != imageInfo) {
-            currentCard.setLocalImageURI(imageInfo.getLocalURI());
-            imageType = imageInfo.getTypeString();
-            view.displayImage(imageInfo.getLocalURI().toString());
-        }
-        else {
-            throw new Exception("Cannot extract ImageInfo from Intent");
-        }
-    }
-
-    @Override
     public void processYoutubeLink(String youtubeLink) throws Exception {
         String youtubeCode = MVPUtils.extractYoutubeVideoCode(youtubeLink);
 
@@ -267,8 +253,8 @@ public class CardEdit_Presenter implements
 
     @Override
     public void onImageSelectionSuccess(Bitmap bitmap, ImageType imageType) {
+        this.imageType = imageType;
         this.imageBitmap = bitmap;
-        this.imageType2 = imageType;
         view.displayImage(bitmap);
     }
 
@@ -303,8 +289,9 @@ public class CardEdit_Presenter implements
         // Сохраняю картинку, если этого ещё не сделано
         if (currentCard.isImageCard() && !currentCard.hasImageURL()) {
 
+/*
             String fileNameWithoutExtension = currentCard.getKey();
-            String theTypeOfImage = this.imageType2.toString();
+            String theTypeOfImage = this.imageType.toString();
 
             if (null != view)
                 view.showImageProgressBar();
@@ -345,6 +332,20 @@ public class CardEdit_Presenter implements
                     view.hideImageProgressBar();
                     if (null != view)
                         view.showErrorMsg(R.string.CARD_EDIT_image_upload_cancelled, "File upload cancelled...");
+                }
+            });
+*/
+
+            uploadImage(new iStorageSingleton.ImageUploadCallbacks() {
+                @Override
+                public void onImageUploaded() {
+                    try {
+                        saveCard(true);
+                    }
+                    catch (Exception e) {
+                        view.showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
                 }
             });
         }
@@ -418,7 +419,6 @@ public class CardEdit_Presenter implements
 
         currentCard = card;
         editMode = CardEditMode.CREATE;
-        imageType = card.getImageType();
 
         if (null != view) {
             view.setPageTitle(R.string.CARD_EDIT_create_card_title);
@@ -612,5 +612,41 @@ public class CardEdit_Presenter implements
         }
     }
 
+    private void uploadImage(iStorageSingleton.ImageUploadCallbacks callbacks) {
 
+        byte[] imageBytes = ImageUtils.compressImage(imageBitmap, imageType);
+        String fileName = ImageUtils.makeFileName(currentCard.getKey(), imageType);
+
+        view.disableForm();
+        view.showImageProgressBar();
+        view.showProgressMessage(R.string.CARD_EDIT_uploading_image);
+
+        storageSingleton.uploadCardImage(imageBytes, fileName, new iStorageSingleton.FileUploadCallbacks() {
+            @Override
+            public void onFileUploadProgress(int progress) {
+
+            }
+
+            @Override
+            public void onFileUploadSuccess(String fileName, String downloadURL) {
+                view.hideImageProgressBar();
+                currentCard.setImageURL(downloadURL);
+                callbacks.onImageUploaded();
+            }
+
+            @Override
+            public void onFileUploadFail(String errorMsg) {
+                view.hideImageProgressBar();
+                view.showImageError(R.string.CARD_EDIT_error_saving_image);
+                Log.e(TAG, errorMsg);
+            }
+
+            @Override
+            public void onFileUploadCancel() {
+                view.hideImageProgressBar();
+                view.enableForm();
+                view.showToast(R.string.CARD_EDIT_image_upload_cancelled);
+            }
+        });
+    }
 }

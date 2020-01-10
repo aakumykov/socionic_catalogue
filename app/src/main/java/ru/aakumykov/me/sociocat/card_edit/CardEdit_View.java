@@ -186,7 +186,7 @@ public class CardEdit_View extends BaseView implements
                 } catch (Exception e) {
                     //showLongToast(R.string.CARD_EDIT_error_saving_edit_state);
                     showErrorMsg(R.string.CARD_EDIT_error_saving_edit_state, e.getMessage());
-                    e.printStackTrace();
+                    MyUtils.printError(TAG, e);
                 }
             }
         }*/
@@ -204,7 +204,7 @@ public class CardEdit_View extends BaseView implements
 //                presenter.restoreEditState();
 //            } catch (Exception e) {
 //                showErrorMsg(R.string.CARD_EDIT_error_restoring_edit_state, e.getMessage());
-//                e.printStackTrace();
+//                MyUtils.printError(TAG, e);
 //            }
 //        }
 
@@ -296,7 +296,15 @@ public class CardEdit_View extends BaseView implements
         displayCommonCardParts(card);
         enableForm();
     }
-
+    
+    @Override
+    public void pickImage() {
+        if (! ImageUtils.pickImage(this) )
+            showErrorMsg(R.string.error_selecting_image, "Cannot launch file selector");
+        else
+            isImageSelectionMode = true;
+    }
+    
     @Override
     public <T> void displayImage(T imageURI) {
 
@@ -337,7 +345,7 @@ public class CardEdit_View extends BaseView implements
             } catch (Exception e) {
                 showBrokenImage();
                 showErrorMsg(R.string.CARD_EDIT_error_displaying_image, e.getMessage());
-                e.printStackTrace();
+                MyUtils.printError(TAG, e);
             }
         }
     }
@@ -439,7 +447,7 @@ public class CardEdit_View extends BaseView implements
         catch (ParseException e) {
             Log.e(TAG, e.getMessage());
             showToast(R.string.CARD_EDIT_error_parsing_timecode);
-            e.printStackTrace();
+            MyUtils.printError(TAG, e);
             return 0.0f;
         }
     }
@@ -609,13 +617,7 @@ public class CardEdit_View extends BaseView implements
         }
     }
 
-    @Override
-    public void pickImage() {
-        if (! ImageUtils.pickImage(this) )
-            showErrorMsg(R.string.error_selecting_image, "Cannot launch file selector");
-        else
-            isImageSelectionMode = true;
-    }
+   
 
 
     // Методы событий интерсейса
@@ -665,7 +667,7 @@ public class CardEdit_View extends BaseView implements
                             presenter.processYoutubeLink(inputtedString);
                         } catch (Exception e) {
                             showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
-                            e.printStackTrace();
+                            MyUtils.printError(TAG, e);
                         }
                     }
                 });
@@ -818,13 +820,14 @@ public class CardEdit_View extends BaseView implements
     private void processImageSelection(int resultCode, @Nullable Intent data) {
         selectImageMode = false;
 
-        try {
-            if (RESULT_OK == resultCode)
+        switch (resultCode) {
+            case RESULT_OK:
                 processSelectedImage(data);
-        }
-        catch (Exception e) {
-            showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
-            e.printStackTrace();
+                break;
+            case RESULT_CANCELED:
+                    break;
+            default:
+                showErrorMsg(R.string.error_selecting_image, "Unknown result code");
         }
     }
 
@@ -867,7 +870,7 @@ public class CardEdit_View extends BaseView implements
         }
         catch (Exception e) {
             showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
-            e.printStackTrace();
+            MyUtils.printError(TAG, e);
         }
     }
 
@@ -991,7 +994,7 @@ public class CardEdit_View extends BaseView implements
             presenter.saveCard(false);
         } catch (Exception e) {
             showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
-            e.printStackTrace();
+            MyUtils.printError(TAG, e);
         }
     }
 

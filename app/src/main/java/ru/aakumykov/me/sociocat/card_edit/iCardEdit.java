@@ -20,6 +20,8 @@ public interface iCardEdit {
 
     interface View extends iBaseView {
         void displayCard(Card card);
+
+        void pickImage();
         <T> void displayImage(T imageURI);
 
         void displayVideo(String videoCode, @Nullable Float timecode);
@@ -68,7 +70,6 @@ public interface iCardEdit {
         float pauseMedia();
         void resumeMedia(float position);
 
-        void pickImage();
     }
 
     interface Presenter {
@@ -90,7 +91,6 @@ public interface iCardEdit {
         void convert2audio();
         void convert2video();
 
-        void processSelectedImage(@Nullable Intent data) throws Exception;
         void processYoutubeLink(String youtubeLink) throws Exception;
         void saveCard(boolean alreadyValidated) throws Exception;
 

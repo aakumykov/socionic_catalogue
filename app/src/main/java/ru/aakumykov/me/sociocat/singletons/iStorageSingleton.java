@@ -6,6 +6,8 @@ import androidx.annotation.Nullable;
 
 public interface iStorageSingleton {
 
+
+
     @Deprecated
     void uploadAvatar(Bitmap bitmap, String imageType, @Nullable String fileNameWithoutExtension, FileUploadCallbacks callbacks);
 
@@ -13,8 +15,15 @@ public interface iStorageSingleton {
 
     void uploadAvatar(byte[] imageBytes, String fileName, FileUploadCallbacks callbacks);
 
+    void uploadCardImage(byte[] imageBytes, String fileName, FileUploadCallbacks callbacks);
+
     void deleteImage(@Nullable String imageFileName, FileDeletionCallbacks callbacks);
     void deleteAvatar(@Nullable String avatarFileName, FileDeletionCallbacks callbacks);
+
+
+    interface ImageUploadCallbacks {
+        void onImageUploaded();
+    }
 
     interface FileUploadCallbacks {
         void onFileUploadProgress(int progress);
