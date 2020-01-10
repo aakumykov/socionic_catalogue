@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.external_data_receiver;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 
@@ -20,6 +21,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class ExternalDataReceiver extends BaseView {
 
+    private static final String TAG = "ExternalDataReceiver";
     private boolean mWorkDone = false;
 
 
@@ -87,16 +89,15 @@ public class ExternalDataReceiver extends BaseView {
         if (null == inputIntent)
             throw new IllegalArgumentException("Input intent is NULL");
 
-        Card card = new Card();
-
         // Картинка?
-        ImageInfo imageInfo = ImageUtils.extractImageInfo(this, inputIntent);
-        if (null != imageInfo) {
-            card.setType(Constants.IMAGE_CARD);
-            card.setLocalImageURI(imageInfo.getLocalURI());
-            card.setImageType(imageInfo.getTypeString());
-            goToEditCard(card);
+        try {
+            ImageInfo imageInfo = ImageUtils.extractImageInfo(this, inputIntent);
+            go2createCard(Constants.CardType.IMAGE_CARD, imageInfo.getLocalURI());
             return;
+        }
+        catch (ImageUtils.ImageUtils_Exception e) {
+            showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_error_processing_image, e.getMessage());
+            MyUtils.printError(TAG, e);
         }
 
         // Видео, Текст?
@@ -147,6 +148,38 @@ public class ExternalDataReceiver extends BaseView {
     private void goToEditCard(Card card) {
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.putExtra(Constants.CARD, card);
+        startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+    }
+
+    private void go2createCard(Constants.CardType cardType, Object data) {
+        Intent intent = new Intent(this, CardEdit_View.class);
+
+        switch (cardType) {
+            case TEXT_CARD:
+                intent.putExtra(Constants.CARD_TYPE, Constants.TEXT_CARD);
+                intent.putExtra(Constants.EXTERNAL_TEXT, (String) data);
+                break;
+
+            case IMAGE_CARD:
+                intent.putExtra(Constants.CARD_TYPE, Constants.IMAGE_CARD);
+                intent.putExtra(Constants.EXTERNAL_IMAGE_URI, (String) data);
+                break;
+
+            case AUDIO_CARD:
+                intent.putExtra(Constants.CARD_TYPE, Constants.AUDIO_CARD);
+                intent.putExtra(Constants.EXTERNAL_AUDIO_URI, (String) data);
+                break;
+
+            case VIDEO_CARD:
+                intent.putExtra(Constants.CARD_TYPE, Constants.VIDEO_CARD);
+                intent.putExtra(Constants.EXTERNAL_VIDEO_URI, (String) data);
+                break;
+
+            default:
+                showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_unknown_card_type, String.valueOf(cardType));
+                return;
+        }
+
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
     }
 }

@@ -53,10 +53,17 @@ public final class Constants {
 
     public final static String FILTER_KEY = "FILTER_KEY";
 
+    public static final String CARD_TYPE = "CARD_TYPE";
+
     public final static String TEXT_CARD = "TEXT_CARD";
     public final static String IMAGE_CARD = "IMAGE_CARD";
     public final static String AUDIO_CARD = "AUDIO_CARD";
     public final static String VIDEO_CARD = "VIDEO_CARD";
+
+    public static final String EXTERNAL_TEXT = "EXTERNAL_TEXT";
+    public static final String EXTERNAL_IMAGE_URI = "EXTERNAL_IMAGE_URI";
+    public static final String EXTERNAL_AUDIO_URI = "EXTERNAL_AUDIO_URI";
+    public static final String EXTERNAL_VIDEO_URI = "EXTERNAL_VIDEO_URI";
 
     public final static String MIME_TYPE_TEXT = "MIME_TYPE_TEXT";
     public final static String MIME_TYPE_IMAGE_DATA = "MIME_TYPE_IMAGE_DATA";
