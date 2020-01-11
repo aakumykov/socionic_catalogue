@@ -268,6 +268,7 @@ public class CardEdit_View extends BaseView implements
     // Интерфейсные методы
     @Override
     public void displayCard(Card card) {
+
         hideProgressMessage();
 
         String cardType = card.getType();
@@ -290,6 +291,7 @@ public class CardEdit_View extends BaseView implements
         }
 
         displayCommonCardParts(card);
+
         enableForm();
     }
     
@@ -304,7 +306,6 @@ public class CardEdit_View extends BaseView implements
     @Override
     public <T> void displayImage(T imageData) {
 
-        MyUtils.show(imageHolder);
         MyUtils.show(imageHolder);
         showImageThrobber();
 
@@ -362,6 +363,7 @@ public class CardEdit_View extends BaseView implements
     @Override
     public void removeImage() {
         showImagePlaceholder();
+        MyUtils.hide(discardImageButton);
     }
 
     @Override
