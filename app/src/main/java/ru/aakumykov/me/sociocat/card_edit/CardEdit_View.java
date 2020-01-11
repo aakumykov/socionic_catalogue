@@ -892,6 +892,7 @@ public class CardEdit_View extends BaseView implements
 
         imageView.setEnabled(isEnabled);
         discardImageButton.setEnabled(isEnabled);
+        restoreImageButton.setEnabled(isEnabled);
 
         addMediaButton.setEnabled(isEnabled);
         removeMediaButton.setEnabled(isEnabled);
