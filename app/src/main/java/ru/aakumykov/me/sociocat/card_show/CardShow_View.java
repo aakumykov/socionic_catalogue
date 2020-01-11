@@ -27,7 +27,6 @@ import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.iCommentable;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 
@@ -40,7 +39,6 @@ public class CardShow_View extends BaseView implements
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.commentFormContainer) FrameLayout commentFormContainer;
 
-    private final static String TAG = "CardShow_View";
     private boolean firstRun = true;
     private iCardShow.iDataAdapter dataAdapter;
     private iCardShow.iPresenter presenter;
@@ -264,20 +262,6 @@ public class CardShow_View extends BaseView implements
         });
 
         swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
-    }
-
-    private void processInputIntent() {
-        Intent intent = getIntent();
-
-        try {
-            Card card = intent.getParcelableExtra(Constants.CARD);
-            // TODO: перенести в Card_ViewHolder
-            presenter.onPageOpened(card.getKey());
-        }
-        catch (Exception e) {
-            showErrorMsg(R.string.CARD_SHOW_error_displaying_card, e.getMessage());
-            MyUtils.printError(TAG, e);
-        }
     }
 
     private void processLoginRequest(int resultCode, @Nullable Intent data) {

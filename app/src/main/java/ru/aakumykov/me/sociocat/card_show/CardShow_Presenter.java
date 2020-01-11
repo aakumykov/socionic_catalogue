@@ -63,37 +63,12 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     }
 
     @Override
-    public void onPageOpened(String cardKey) {
-        dataAdapter.showCardThrobber();
-
-        loadCard(cardKey, new iLoadCardCallbacks() {
-            @Override
-            public void onCardLoaded(Card card) {
-                storeCurrentCard(card);
-
-                pageView.setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
-                dataAdapter.showCard(card);
-
-                loadComments(cardKey, null,null);
-            }
-        });
-    }
-
-    @Override
     public void onRefreshRequested() {
 
         loadCard(currentCard.getKey(), new iLoadCardCallbacks() {
             @Override
             public void onCardLoaded(Card card) {
-                pageView.hideSwipeThrobber();
-
-                storeCurrentCard(card);
-
-                pageView.setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
-                dataAdapter.showCard(card);
-
-                dataAdapter.clearCommentsList();
-                loadComments(currentCard.getKey(), null, null);
+                onCardReceived(card);
             }
         });
     }
@@ -362,14 +337,13 @@ public class CardShow_Presenter implements iCardShow.iPresenter
             return;
         }
 
-        currentCard = data.getParcelableExtra(Constants.CARD);
-        if (null == currentCard) {
+        Card card = data.getParcelableExtra(Constants.CARD);
+        if (null == card) {
             pageView.showErrorMsg(R.string.data_error, "Card from Intent is null");
             return;
         }
 
-        dataAdapter.showCard(currentCard);
-        loadComments(currentCard.getKey());
+        onCardReceived(card);
     }
 
 
@@ -386,6 +360,21 @@ public class CardShow_Presenter implements iCardShow.iPresenter
                 pageView.showErrorMsg(R.string.CARD_SHOW_error_displaying_card, msg);
             }
         });
+    }
+
+    private void onCardReceived(Card card) {
+
+        storeCurrentCard(card);
+
+        pageView.hideSwipeThrobber();
+
+        pageView.setPageTitle(R.string.CARD_SHOW_page_title_long, card.getTitle());
+
+        dataAdapter.showCard(card);
+
+        dataAdapter.clearCommentsList();
+
+        loadComments(currentCard.getKey(), null, null);
     }
 
     private void loadComments(String cardKey) {

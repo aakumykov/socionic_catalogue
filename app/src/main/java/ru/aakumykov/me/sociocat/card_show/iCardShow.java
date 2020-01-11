@@ -81,7 +81,6 @@ public interface iCardShow
         boolean canEditCard();
         boolean canDeleteCard();
 
-        void onPageOpened(String cardKey);
         void onRefreshRequested();
 
         void onCardAlmostDisplayed(Card_ViewHolder cardViewHolder);
