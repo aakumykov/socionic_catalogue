@@ -87,7 +87,9 @@ public interface iCardEdit {
         void processTag(String tag);
 
         void removeImageClicked();
-        void removeMedia();
+        void restoreImageClicked();
+
+        void removeMediaClicked();
 
         void convert2audio();
         void convert2video();

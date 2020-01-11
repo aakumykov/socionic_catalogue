@@ -56,7 +56,7 @@ public class CardEdit_Presenter implements
 
     private CardEditMode editMode;
 
-    private Bitmap mIageBitmap;
+    private Bitmap mImageBitmap;
     private ImageType mImageType;
 
 
@@ -152,13 +152,19 @@ public class CardEdit_Presenter implements
 
     @Override
     public void removeImageClicked() {
+        //view.displayImage(currentCard.getImageURL());
         view.removeImage();
-        currentCard.clearLocalImageURI();
-        currentCard.clearImageURL();
+        mImageBitmap = null;
+        mImageType = null;
     }
 
     @Override
-    public void removeMedia() {
+    public void restoreImageClicked() {
+        view.displayImage(currentCard.getImageURL());
+    }
+
+    @Override
+    public void removeMediaClicked() {
         if (currentCard.isAudioCard())
             currentCard.removeAudioCode();
 
@@ -245,7 +251,7 @@ public class CardEdit_Presenter implements
     @Override
     public void onImageSelectionSuccess(Bitmap bitmap, ImageType imageType) {
         this.mImageType = imageType;
-        this.mIageBitmap = bitmap;
+        this.mImageBitmap = bitmap;
         view.displayImage(bitmap);
     }
 
@@ -265,67 +271,15 @@ public class CardEdit_Presenter implements
         updateCurrentCardFromView();
 
         if (!alreadyValidated) {
-
             processBeforeSave();
-
-            if (!formIsValid()) {
-//                view.showToast(R.string.CARD_EDIT_form_filling_error);
+            if (!formIsValid()) 
                 return;
-            }
         }
 
-        if (null != view)
-            view.disableForm();
+        view.disableForm();
 
         // Сохраняю картинку, если этого ещё не сделано
-        if (currentCard.isImageCard() && !currentCard.hasImageURL()) {
-
-/*
-            String fileNameWithoutExtension = currentCard.getKey();
-            String theTypeOfImage = this.mImageType.toString();
-
-            if (null != view)
-                view.showImageThrobber();
-
-            storageSingleton.uploadImage(mIageBitmap, theTypeOfImage, fileNameWithoutExtension, new iStorageSingleton.FileUploadCallbacks() {
-
-                @Override public void onFileUploadProgress(int progress) {
-
-                }
-
-                @Override public void onFileUploadSuccess(String fileName, String downloadURL) {
-                    if (null != view) {
-                        view.hideImageThrobber();
-                        view.displayImage(downloadURL);
-                    }
-
-                    currentCard.setFileName(fileName);
-                    currentCard.setImageURL(downloadURL);
-                    currentCard.clearLocalImageURI();
-
-                    try {
-                        saveCard(true);
-                    } catch (Exception e) {
-                        if (null != view) {
-                            view.showErrorMsg(R.string.CARD_EDIT_error_saving_card, e.getMessage());
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-                @Override public void onFileUploadFail(String errorMsg) {
-                    view.hideImageThrobber();
-                    if (null != view)
-                        view.showErrorMsg(R.string.CARD_EDIT_error_saving_image, errorMsg);
-                }
-
-                @Override public void onFileUploadCancel() {
-                    view.hideImageThrobber();
-                    if (null != view)
-                        view.showErrorMsg(R.string.CARD_EDIT_image_upload_cancelled, "File upload cancelled...");
-                }
-            });
-*/
+        if (null != mImageBitmap && null != mImageType) {
 
             uploadImage(new iStorageSingleton.ImageUploadCallbacks() {
                 @Override
@@ -361,7 +315,6 @@ public class CardEdit_Presenter implements
 
             view.showProgressMessage(R.string.CARD_EDIT_saving_card);
 
-//            cardsSingleton.saveCard(currentCard, oldCard, this);
             cardsSingleton.saveCard(currentCard, oldCard, this);
         }
     }
@@ -397,7 +350,7 @@ public class CardEdit_Presenter implements
     }
 
     @Override public void onCardSaveError(String message) {
-        if (null != view) {
+         {
             view.showErrorMsg(R.string.CARD_EDIT_error_saving_card, message);
             view.enableForm();
         }
@@ -445,9 +398,9 @@ public class CardEdit_Presenter implements
         ImageUtils.extractImageFromIntent(view.getAppContext(), intent, new ImageUtils.ImageExtractionCallbacks() {
             @Override
             public void onImageExtractionSuccess(Bitmap bitmap, ImageType imageType) {
-                mIageBitmap = bitmap;
+                mImageBitmap = bitmap;
                 mImageType = imageType;
-                view.displayImage(mIageBitmap);
+                view.displayImage(mImageBitmap);
             }
 
             @Override
@@ -515,7 +468,7 @@ public class CardEdit_Presenter implements
         currentCard = card;
         editMode = CardEditMode.CREATE;
 
-        if (null != view) {
+         {
             view.setPageTitle(R.string.CARD_EDIT_create_card_title);
             view.displayCard(currentCard);
         }
@@ -528,7 +481,7 @@ public class CardEdit_Presenter implements
 
         editMode = CardEditMode.EDIT;
 
-        if (null != view) {
+         {
             view.setPageTitle(R.string.CARD_EDIT_edit_card_title, card.getTitle());
             view.disableForm();
             view.showProgressMessage(R.string.CARD_EDIT_loading_card);
@@ -543,18 +496,18 @@ public class CardEdit_Presenter implements
                     Gson gson = new Gson();
                     oldCard = gson.fromJson(gson.toJson(card), Card.class);
 
-                    if (null != view)
+                    
                         view.displayCard(card);
                 }
                 else {
-                    if (null != view)
+                    
                         view.showErrorMsg(R.string.CARD_EDIT_error_loading_card, "Card is null");
                 }
             }
 
             @Override
             public void onCardLoadFailed(String msg) {
-                if (null != view) {
+                 {
                     view.showErrorMsg(R.string.CARD_EDIT_error_loading_card, msg);
                     view.enableForm();
                 }
@@ -567,7 +520,7 @@ public class CardEdit_Presenter implements
     }
 
     private void updateCurrentCardFromView(){
-        if (null != view) {
+         {
             currentCard.setTitle(view.getCardTitle());
             currentCard.setQuote(view.getQuote());
             currentCard.setQuoteSource(view.getQuoteSource());
@@ -589,8 +542,6 @@ public class CardEdit_Presenter implements
 
         String description = currentCard.getDescription().trim();
         currentCard.setDescription(description);
-
-        view.displayCard(currentCard);
 
         if (quote.length() > Config.LONG_TAG_THRESHOLD) {
             String longTag = view.getString(R.string.TAG_long_text);
@@ -656,17 +607,9 @@ public class CardEdit_Presenter implements
 
         // Картинка
         if (currentCard.isImageCard()) {
-            boolean hasLocalImageURI = (null != currentCard.getLocalImageURI());
-            boolean hasRemoteImageURL = currentCard.hasImageURL();
-
-            if (!hasLocalImageURI && !hasRemoteImageURL) {
+            if ((null == mImageBitmap) && (null == currentCard.getImageURL())) {
+                valid = false;
                 view.showImageError(R.string.CARD_EDIT_you_must_select_image);
-                valid = false;
-            }
-
-            if (hasLocalImageURI && hasRemoteImageURL) {
-                view.showImageError(R.string.CARD_EDIT_image_error);
-                valid = false;
             }
         }
 
@@ -701,7 +644,7 @@ public class CardEdit_Presenter implements
     }
 
     private void finishWork(Card card) {
-        if (null != view) {
+         {
             clearEditState();
             view.finishEdit(card);
         }
@@ -709,7 +652,7 @@ public class CardEdit_Presenter implements
 
     private void uploadImage(iStorageSingleton.ImageUploadCallbacks callbacks) {
 
-        byte[] imageBytes = ImageUtils.compressImage(mIageBitmap, mImageType);
+        byte[] imageBytes = ImageUtils.compressImage(mImageBitmap, mImageType);
         String fileName = ImageUtils.makeFileName(currentCard.getKey(), mImageType);
 
         view.disableForm();

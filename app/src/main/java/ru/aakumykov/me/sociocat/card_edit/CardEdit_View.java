@@ -76,6 +76,7 @@ public class CardEdit_View extends BaseView implements
     @BindView(R.id.imageHolder) ConstraintLayout imageHolder;
     @BindView(R.id.imageProgressBar) ProgressBar imageThrobber;
     @BindView(R.id.imageView) ImageView imageView;
+    @BindView(R.id.restoreImageButton) ImageView restoreImageButton;
     @BindView(R.id.discardImageButton) ImageView discardImageButton;
 
     @BindView(R.id.mediaPlayerHolder) LinearLayout mediaPlayerHolder;
@@ -319,6 +320,7 @@ public class CardEdit_View extends BaseView implements
                         imageView.setImageDrawable(resource);
                         hideImageThrobber();
                         MyUtils.show(discardImageButton);
+                        MyUtils.hide(restoreImageButton);
                     }
 
                     @Override
@@ -364,6 +366,7 @@ public class CardEdit_View extends BaseView implements
     public void removeImage() {
         showImagePlaceholder();
         MyUtils.hide(discardImageButton);
+        MyUtils.show(restoreImageButton);
     }
 
     @Override
@@ -561,7 +564,7 @@ public class CardEdit_View extends BaseView implements
    
 
 
-    // Методы событий интерсейса
+    // Нажатия
     @OnClick(R.id.imageView)
     public void onSelectImageClicked() {
         presenter.onImageViewClicked();
@@ -570,6 +573,11 @@ public class CardEdit_View extends BaseView implements
     @OnClick(R.id.discardImageButton)
     void onResetImageClicked() {
         presenter.removeImageClicked();
+    }
+
+    @OnClick(R.id.restoreImageButton)
+    void onRestoreImageButtonClicked() {
+        presenter.restoreImageClicked();
     }
 
     @OnClick(R.id.addMediaButton)
@@ -616,7 +624,7 @@ public class CardEdit_View extends BaseView implements
 
     @OnClick(R.id.removeMediaButton)
     void onRemoveMediaClicked() {
-        presenter.removeMedia();
+        presenter.removeMediaClicked();
     }
 
     @OnClick(R.id.getTimecodeButton)
