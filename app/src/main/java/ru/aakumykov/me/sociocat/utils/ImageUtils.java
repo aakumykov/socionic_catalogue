@@ -41,15 +41,15 @@ public class ImageUtils {
 
     public static void extractImageFromIntent(
             Context context,
-            @Nullable Intent data,
+            @Nullable Intent intent,
             ImageExtractionCallbacks callbacks
     )
         throws ImageUtils_Exception
     {
-        if (null == data)
+        if (null == intent)
             throw new ImageUtils_NoData_Exception("Intent is null");
 
-        ImageInfo imageInfo = extractImageInfo(context, data);
+        ImageInfo imageInfo = extractImageInfo(context, intent);
         if (null == imageInfo)
             throw new ImageUtils_NoData_Exception("Cannot extract ImageInfo from Intent");
 

@@ -304,27 +304,9 @@ public class CardsGrid_View extends BaseView implements
 
     @Override
     public void goCreateCard(Constants.CardType cardType) {
-
-        Card card = new Card();
-
-        switch (cardType) {
-            case TEXT_CARD:
-                card.setType(Constants.TEXT_CARD);
-                break;
-            case IMAGE_CARD:
-                card.setType(Constants.IMAGE_CARD);
-                break;
-            case AUDIO_CARD:
-                card.setType(Constants.AUDIO_CARD);
-                break;
-            case VIDEO_CARD:
-                card.setType(Constants.VIDEO_CARD);
-                break;
-        }
-
         Intent intent = new Intent(this, CardEdit_View.class);
-        intent.putExtra(Constants.CARD, card);
-
+        intent.setAction(Constants.ACTION_CREATE);
+        intent.putExtra(Constants.CARD_TYPE, cardType.name());
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
     }
 

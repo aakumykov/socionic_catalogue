@@ -112,7 +112,7 @@ public class CardEdit_Presenter implements
             }
         }
         catch (Exception e) {
-            view.showErrorMsg(R.string.CARD_EDIT_error_processing_data, "Unknown action: " + String.valueOf(action));
+            view.showErrorMsg(R.string.CARD_EDIT_error_processing_data, e.getMessage());
         }
     }
 
@@ -368,19 +368,27 @@ public class CardEdit_Presenter implements
         currentCard.setType(Constants.IMAGE_CARD);
 
         // TODO: это уже делалось в Получателе внешних данных!
-        ImageUtils.extractImageFromIntent(view.getAppContext(), intent, new ImageUtils.ImageExtractionCallbacks() {
-            @Override
-            public void onImageExtractionSuccess(Bitmap bitmap, ImageType imageType) {
-                mImageBitmap = bitmap;
-                mImageType = imageType;
-                view.displayImage(mImageBitmap);
-            }
+        try {
+            ImageUtils.extractImageFromIntent(view.getAppContext(), intent, new ImageUtils.ImageExtractionCallbacks() {
+                @Override
+                public void onImageExtractionSuccess(Bitmap bitmap, ImageType imageType) {
+                    mImageBitmap = bitmap;
+                    mImageType = imageType;
+                    view.displayImage(mImageBitmap);
+                }
 
-            @Override
-            public void onImageExtractionError(String errorMsg) {
-                view.showErrorMsg(R.string.CARD_EDIT_image_error, errorMsg);
+                @Override
+                public void onImageExtractionError(String errorMsg) {
+                    view.showErrorMsg(R.string.CARD_EDIT_image_error, errorMsg);
+                }
+            });
+        }
+        catch (ImageUtils.ImageUtils_Exception e) {
+            // Если это редактирование, должна присутствовать картинка
+            if (CardEditMode.EDIT.equals(editMode)) {
+                view.showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
             }
-        });
+        }
     }
 
     private void fillVideoCard(Intent intent) {
