@@ -210,34 +210,6 @@ public class CardEdit_Presenter implements
     }
 
     @Override
-    public void saveEditState() {
-        updateCurrentCardFromView();
-
-        MVPUtils.saveCardDraft(view.getAppContext(), currentCard);
-
-        view.showToast(R.string.CARD_EDIT_draft_saved);
-
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//
-//        String cardJson = new Gson().toJson(currentCard);
-//
-//        editor.putString(Constants.CARD, cardJson);
-//        editor.putString("editMode", editMode.name());
-//        editor.putBoolean("isExternalDataMode", isExternalDataMode);
-//        editor.putString("mImageType", mImageType);
-//
-//        /* У объекта oldCardTags запускается метод, поэтому
-//        нужно проверять его существование. */
-//        if (null != oldCardTags)
-//            editor.putStringSet("oldCardTags", oldCardTags.keySet());
-//
-//        editor.putString("videoCode", currentCard.getVideoCode());
-//        editor.putString("audioCode", currentCard.getAudioCode());
-//
-//        editor.apply();
-    }
-
-    @Override
     public void clearEditState() {
         //view.clearSharedPrefs(sharedPreferences, Constants.CARD);
         MVPUtils.clearCardDraft(view.getAppContext());

@@ -97,8 +97,6 @@ public interface iCardEdit {
         void processYoutubeLink(String youtubeLink) throws Exception;
         void saveCard(boolean alreadyValidated) throws Exception;
 
-        void saveEditState();
-
         void clearEditState();
 
         boolean hasCard();
