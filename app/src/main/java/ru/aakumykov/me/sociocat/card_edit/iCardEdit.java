@@ -32,6 +32,8 @@ public interface iCardEdit {
         <T> void displayImage(T imageURI);
         void removeImage();
 
+        boolean hasImage();
+
         void showImageError(int msgId);
         void hideImageError();
 

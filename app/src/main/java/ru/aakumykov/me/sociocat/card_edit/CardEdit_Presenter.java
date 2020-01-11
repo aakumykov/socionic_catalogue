@@ -244,7 +244,7 @@ public class CardEdit_Presenter implements
 
         if (!alreadyValidated) {
             processBeforeSave();
-            if (!formIsValid()) 
+            if (!formIsValid())
                 return;
         }
 
@@ -332,6 +332,7 @@ public class CardEdit_Presenter implements
     // Внутренние методы
     private void proceed2createCard(Intent intent) throws Exception {
 
+        editMode = CardEditMode.CREATE;
         currentCard = new Card();
 
         String cardType = String.valueOf(intent.getStringExtra(Constants.CARD_TYPE));
@@ -412,6 +413,7 @@ public class CardEdit_Presenter implements
 
     private void proceed2editCard(Intent intent) throws Exception {
 
+        editMode = CardEditMode.EDIT;
         currentCard = intent.getParcelableExtra(Constants.CARD);
 
         if (null == currentCard) {
@@ -433,63 +435,6 @@ public class CardEdit_Presenter implements
         }
     }
 
-
-    private void startCreateCard(Card card) {
-        card.setKey(cardsSingleton.createKey());
-
-        currentCard = card;
-        editMode = CardEditMode.CREATE;
-
-         {
-            view.setPageTitle(R.string.CARD_EDIT_create_card_title);
-            view.displayCard(currentCard);
-        }
-    }
-
-    private void startEditCard(Card card) {
-        String cardKey = card.getKey();
-        if (null == cardKey)
-            throw new IllegalArgumentException("cardKey is null");
-
-        editMode = CardEditMode.EDIT;
-
-         {
-            view.setPageTitle(R.string.CARD_EDIT_edit_card_title, card.getTitle());
-            view.disableForm();
-            view.showProgressMessage(R.string.CARD_EDIT_loading_card);
-        }
-
-        iCardsSingleton.LoadCallbacks loadCallbacks= new iCardsSingleton.LoadCallbacks() {
-            @Override
-            public void onCardLoadSuccess(Card card) {
-                if (null != card) {
-                    currentCard = card;
-
-                    Gson gson = new Gson();
-                    oldCard = gson.fromJson(gson.toJson(card), Card.class);
-
-                    
-                        view.displayCard(card);
-                }
-                else {
-                    
-                        view.showErrorMsg(R.string.CARD_EDIT_error_loading_card, "Card is null");
-                }
-            }
-
-            @Override
-            public void onCardLoadFailed(String msg) {
-                 {
-                    view.showErrorMsg(R.string.CARD_EDIT_error_loading_card, msg);
-                    view.enableForm();
-                }
-            }
-        };
-
-//        cardsSingleton.loadCard(cardKey, loadCallbacks);
-
-        CardsSingleton.getInstance().loadCard(cardKey, loadCallbacks);
-    }
 
     private void updateCurrentCardFromView(){
          {
@@ -579,7 +524,7 @@ public class CardEdit_Presenter implements
 
         // Картинка
         if (currentCard.isImageCard()) {
-            if ((null == mImageBitmap) && (null == currentCard.getImageURL())) {
+            if (!view.hasImage()) {
                 valid = false;
                 view.showImageError(R.string.CARD_EDIT_you_must_select_image);
             }
@@ -639,8 +584,11 @@ public class CardEdit_Presenter implements
 
             @Override
             public void onFileUploadSuccess(String fileName, String downloadURL) {
-                view.hideImageThrobber();
                 currentCard.setImageURL(downloadURL);
+                mImageBitmap = null;
+                mImageType = null;
+
+                view.hideImageThrobber();
                 callbacks.onImageUploaded();
             }
 

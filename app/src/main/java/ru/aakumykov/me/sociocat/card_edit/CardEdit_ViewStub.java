@@ -35,6 +35,11 @@ public class CardEdit_ViewStub extends BaseView_Stub implements iCardEdit.View {
     }
 
     @Override
+    public boolean hasImage() {
+        return false;
+    }
+
+    @Override
     public void removeMedia() {
 
     }

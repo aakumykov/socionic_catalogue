@@ -105,10 +105,10 @@ public class CardEdit_View extends BaseView implements
 
     private iCardEdit.Presenter presenter;
     private List<String> tagsList = new ArrayList<>();
-    private boolean firstRun = true;
+    private boolean isImageSelectionMode = false;
+    private boolean imageIsSetted = false;
     private boolean exitIsExpected = false;
     private boolean selectImageMode = false;
-    private boolean isImageSelectionMode = false;
 
 
     // Системные методы
@@ -318,7 +318,11 @@ public class CardEdit_View extends BaseView implements
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         imageView.setImageDrawable(resource);
+                        imageIsSetted = true;
+
                         hideImageThrobber();
+                        hideImageError();
+
                         MyUtils.show(discardImageButton);
                         MyUtils.hide(restoreImageButton);
                     }
@@ -326,7 +330,10 @@ public class CardEdit_View extends BaseView implements
                     @Override
                     public void onLoadCleared(@Nullable Drawable placeholder) {
                         imageView.setImageResource(R.drawable.ic_image_error);
+                        imageIsSetted = false;
+
                         hideImageThrobber();
+
                         showErrorMsg(R.string.CARD_EDIT_error_displaying_image, "Glide.onLoadCleared()");
                     }
                 });
@@ -364,9 +371,15 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void removeImage() {
+        imageIsSetted = false;
         showImagePlaceholder();
         MyUtils.hide(discardImageButton);
         MyUtils.show(restoreImageButton);
+    }
+
+    @Override
+    public boolean hasImage() {
+        return imageIsSetted;
     }
 
     @Override
@@ -856,28 +869,6 @@ public class CardEdit_View extends BaseView implements
         titleInput.setText(card.getTitle());
         descriptionInput.setText(card.getDescription());
         tagsContainer.setTags(card.getTags());
-    }
-
-    private void displayRemoteImage(String imageURL) {
-
-        showImageThrobber();
-
-        Glide.with(this)
-                .load(imageURL)
-                .error(R.drawable.ic_image_error)
-                .into(new CustomTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        hideImageThrobber();
-                        imageView.setImageDrawable(resource);
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                        hideImageThrobber();
-                        showImagePlaceholder();
-                    }
-                });
     }
 
     private void showImagePlaceholder() {
