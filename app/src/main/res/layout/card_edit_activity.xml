@@ -97,9 +97,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@+id/discardImageButton"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_image_revert" />
+                app:srcCompat="@drawable/ic_image_revert"
+                tools:visibility="visible" />
 
             <ImageView
                 android:id="@+id/discardImageButton"
