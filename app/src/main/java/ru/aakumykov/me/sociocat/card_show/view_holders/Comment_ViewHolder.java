@@ -26,7 +26,7 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
 {
     @BindView(R.id.commentRow) ConstraintLayout commentRow;
 
-    @BindView(R.id.imageView) ImageView userAvatarView;
+    @BindView(R.id.avatarView) ImageView avatarView;
     @BindView(R.id.userNameView) TextView userNameView;
 
     @BindView(R.id.cTimeView) TextView cTimeView;
@@ -64,6 +64,11 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
 
 
     // Нажатия
+    @OnClick({R.id.avatarView, R.id.userNameView})
+    void onUserNameClicked() {
+        presenter.onCommentAuthorClicked(currentListItem);
+    }
+
     @OnClick(R.id.editWidget)
     void onEditCommentClicked() {
         presenter.onEditCommentClicked(currentListItem);
@@ -157,6 +162,7 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
         }
     }
 
+
     // Внутренние методы
     private void displayComment(Comment comment) {
 
@@ -200,10 +206,10 @@ public class Comment_ViewHolder extends Base_ViewHolder implements
         userNameView.setText(comment.getUserName());
 
         // Изображение автора
-        Glide.with(userAvatarView)
+        Glide.with(avatarView)
                 .load(comment.getUserAvatarURL())
                 .placeholder(R.drawable.ic_user)
-                .into(userAvatarView);
+                .into(avatarView);
 
         // Рейтинг
         setRating(comment.getRating());

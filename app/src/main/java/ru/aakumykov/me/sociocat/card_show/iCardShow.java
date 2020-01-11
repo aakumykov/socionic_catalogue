@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.card_show;
 
 import android.content.Intent;
-import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
@@ -39,6 +38,7 @@ public interface iCardShow
         void showCardsWithTag(String tagName);
 
         void goEditCard(Card card);
+        void goUserProfile(String userId);
 
         void setSuccessEditionResult(Card card);
     }
@@ -101,6 +101,7 @@ public interface iCardShow
         void onCardRateUpClicked(iCard_ViewHolder cardViewHolder);
         void onCardRateDownClicked(iCard_ViewHolder cardViewHolder);
 
+        void onCommentAuthorClicked(iList_Item commentItem);
         void onCommentRateUpClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem);
         void onCommentRateDownClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem);
 

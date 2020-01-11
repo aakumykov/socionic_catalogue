@@ -27,6 +27,7 @@ import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.iCommentable;
+import ru.aakumykov.me.sociocat.user_show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.comment_form.CommentForm;
 import ru.aakumykov.me.sociocat.utils.comment_form.iCommentForm;
 
@@ -231,6 +232,13 @@ public class CardShow_View extends BaseView implements
         intent.setAction(Constants.ACTION_EDIT);
         intent.putExtra(Constants.CARD, card);
         startActivityForResult(intent, Constants.CODE_EDIT_CARD);
+    }
+
+    @Override
+    public void goUserProfile(String userId) {
+        Intent intent = new Intent(this, UserShow_View.class);
+        intent.putExtra(Constants.USER_ID, userId);
+        startActivity(intent);
     }
 
     // Установка результата для Плиточного вида, чтобы там обновилась отредактированная карточка

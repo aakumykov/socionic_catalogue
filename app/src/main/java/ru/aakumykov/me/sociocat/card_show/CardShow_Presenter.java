@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.card_show;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -258,6 +257,12 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     @Override
     public void onCardRateDownClicked(iCard_ViewHolder cardViewHolder) {
         changeCardRating(false, cardViewHolder);
+    }
+
+    @Override
+    public void onCommentAuthorClicked(iList_Item commentItem) {
+        Comment comment = (Comment) commentItem.getPayload();
+        pageView.goUserProfile(comment.getUserId());
     }
 
     @Override

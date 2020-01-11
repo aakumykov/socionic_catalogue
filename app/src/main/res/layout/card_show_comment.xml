@@ -11,7 +11,7 @@
     android:paddingBottom="12dp">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/avatarView"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="8dp"
@@ -30,7 +30,7 @@
         android:paddingBottom="4dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/avatarView"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Пользователь" />
 
@@ -43,7 +43,7 @@
         android:textSize="12sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/avatarView"
         app:layout_constraintTop_toBottomOf="@+id/userNameView"
         tools:text="Создано 2 минуты назад"
         tools:visibility="visible" />
@@ -57,7 +57,7 @@
         android:textSize="12sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/avatarView"
         app:layout_constraintTop_toBottomOf="@+id/cTimeView"
         tools:text="Изменено 1 минуту назад"
         tools:visibility="visible" />

@@ -63,6 +63,11 @@ public class CardShow_ViewStub extends BaseView_Stub implements iCardShow.iPageV
     }
 
     @Override
+    public void goUserProfile(String userId) {
+
+    }
+
+    @Override
     public void setSuccessEditionResult(Card card) {
 
     }
