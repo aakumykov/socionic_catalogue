@@ -93,7 +93,7 @@ public class Card_ViewHolder extends BaseViewHolder
             Glide.with(mImageView.getContext())
                     .load(card.getImageURL())
 //                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .placeholder(R.drawable.ic_image_placeholder_simple)
+                    .placeholder(R.drawable.ic_image_placeholder_monochrome)
                     .error(R.drawable.ic_image_error)
                     .into(mImageView);
         }

@@ -2,12 +2,11 @@ package ru.aakumykov.me.sociocat.card_edit;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +26,7 @@ import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.utils.ImageExtractor;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
@@ -339,36 +339,37 @@ public class CardEdit_Presenter implements
 
         switch (cardType) {
             case Constants.TEXT_CARD:
-                fillTextCard(intent);
+                prepareForTextCard(intent);
                 break;
             case Constants.IMAGE_CARD:
-                fillImageCard(intent);
+                prepareForImageCard(intent);
                 break;
             case Constants.AUDIO_CARD:
-                fillAudioCard(intent);
+                prepareForAudioCard(intent);
                 break;
             case Constants.VIDEO_CARD:
-                fillVideoCard(intent);
+                prepareForVideoCard(intent);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown cardType: "+cardType);
         }
     }
 
-    private void fillTextCard(Intent intent) {
-        String text = intent.getStringExtra(Constants.EXTERNAL_DATA);
-
+    private void prepareForTextCard(Intent intent) {
         currentCard.setType(Constants.TEXT_CARD);
-        currentCard.setQuote(text);
-        currentCard.setTitle(MyUtils.cutToLength(text, Config.TITLE_MAX_LENGTH));
+
+        String quote = intent.getStringExtra(Constants.EXTERNAL_DATA);
+        String title = MyUtils.cutToLength(quote, Config.TITLE_MAX_LENGTH);
+
+        view.prepareForQuote(title, quote);
     }
 
-    private void fillImageCard(Intent intent) throws Exception {
+    private void prepareForImageCard(Intent intent) throws Exception {
 
         currentCard.setType(Constants.IMAGE_CARD);
 
         // TODO: это уже делалось в Получателе внешних данных!
-        try {
+        /*try {
             ImageUtils.extractImageFromIntent(view.getAppContext(), intent, new ImageUtils.ImageExtractionCallbacks() {
                 @Override
                 public void onImageExtractionSuccess(Bitmap bitmap, ImageType imageType) {
@@ -388,35 +389,51 @@ public class CardEdit_Presenter implements
             if (CardEditMode.EDIT.equals(editMode)) {
                 view.showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
             }
-        }
+        }*/
+
+        ImageExtractor.extractImageFromIntent(view.getAppContext(), intent, new ImageExtractor.ImageExtractionCallbacks() {
+            @Override
+            public void onImageExtractionSuccess(Bitmap bitmap, ImageType imageType, Uri imageURI) {
+                // TODO: вынести в отдельный метод
+                mImageBitmap = bitmap.copy(bitmap.getConfig(), true);
+                mImageType = imageType;
+
+                view.displayImage(mImageBitmap);
+            }
+
+            @Override
+            public void onImageExtractionError(String errorMsg) {
+                view.prepareForImage();
+            }
+        });
     }
 
-    private void fillVideoCard(Intent intent) {
+    private void prepareForVideoCard(Intent intent) {
         // TODO: это уже делалось в Получателе внешних данных!
 
-        String videoCode = MVPUtils.extractYoutubeVideoCode(intent.getStringExtra(Constants.EXTERNAL_DATA));
-
-        if (null == videoCode) {
-            view.showErrorMsg(R.string.CARD_EDIT_data_error, "There is no video code");
-            return;
-        }
-
         currentCard.setType(Constants.VIDEO_CARD);
-        currentCard.setVideoCode(videoCode);
-        view.displayVideo(videoCode, null);
+
+        String videoCode = MVPUtils.extractYoutubeVideoCode(intent.getStringExtra(Constants.EXTERNAL_DATA));
+        if (null != videoCode) {
+            currentCard.setVideoCode(videoCode);
+            view.displayVideo(videoCode, null);
+        }
+        else {
+            view.prepareForVideo();
+        }
     }
 
-    private void fillAudioCard(Intent intent) {
-        String audioCode = MVPUtils.extractYoutubeVideoCode(intent.getStringExtra(Constants.EXTERNAL_DATA));
-
-        if (null == audioCode) {
-            view.showErrorMsg(R.string.CARD_EDIT_data_error, "There is no audio code");
-            return;
-        }
+    private void prepareForAudioCard(Intent intent) {
 
         currentCard.setType(Constants.AUDIO_CARD);
-        currentCard.setAudioCode(audioCode);
-        view.displayAudio(audioCode, null);
+
+        String audioCode = MVPUtils.extractYoutubeVideoCode(intent.getStringExtra(Constants.EXTERNAL_DATA));
+        if (null == audioCode) {
+            currentCard.setAudioCode(audioCode);
+            view.displayAudio(audioCode, null);
+        }
+        else
+            view.prepareForAudio();
     }
 
     private void proceed2editCard(Intent intent) throws Exception {

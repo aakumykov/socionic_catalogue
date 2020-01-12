@@ -558,6 +558,31 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
+    public void prepareForQuote(String title, String quote) {
+        titleInput.setText(title);
+        quoteInput.setText(quote);
+
+        MyUtils.show(quoteInput);
+        MyUtils.show(quoteSourceInput);
+    }
+
+    @Override
+    public void prepareForImage() {
+        MyUtils.show(imageHolder);
+        imageView.setImageResource(R.drawable.ic_image_placeholder_color);
+    }
+
+    @Override
+    public void prepareForVideo() {
+        MyUtils.show(addMediaButton);
+    }
+
+    @Override
+    public void prepareForAudio() {
+        MyUtils.show(addMediaButton);
+    }
+
+    @Override
     public float pauseMedia() {
         if (null != insertableYoutubePlayer) {
             float position = insertableYoutubePlayer.getPosition();

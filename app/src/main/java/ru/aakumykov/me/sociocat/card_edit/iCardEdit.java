@@ -70,6 +70,12 @@ public interface iCardEdit {
         void hideMediaError();
         void showDescriptionError(int msgId);
 
+        // Подготовка для разного содержимого
+        void prepareForQuote(String title, String quote);
+        void prepareForImage();
+        void prepareForVideo();
+        void prepareForAudio();
+
         // Разное
         void finishEdit(Card card);
         void addTag(String tag);
