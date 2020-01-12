@@ -333,7 +333,7 @@ public class CardEdit_Presenter implements
     private void proceed2createCard(Intent intent) throws Exception {
 
         editMode = CardEditMode.CREATE;
-        currentCard = new Card();
+        currentCard = new Card(cardsSingleton.createKey());
 
         String cardType = String.valueOf(intent.getStringExtra(Constants.CARD_TYPE));
 
