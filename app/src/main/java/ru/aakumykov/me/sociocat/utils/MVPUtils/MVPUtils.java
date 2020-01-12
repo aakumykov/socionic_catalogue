@@ -158,8 +158,12 @@ public class MVPUtils {
         return false;
     }
 
-    public static String extractYoutubeVideoCode(String link) {
-        link = ""+link.trim();
+    public static String extractYoutubeVideoCode(@Nullable String link) {
+
+        if (null == link)
+            return null;
+
+        link = String.valueOf(link).trim();
 
         for (Map.Entry<String,String> entry : youtubePatterns.entrySet()) {
             Pattern p = Pattern.compile(entry.getValue());
