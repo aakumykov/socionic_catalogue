@@ -1,6 +1,8 @@
 package ru.aakumykov.me.sociocat.external_data_receiver;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 
@@ -12,7 +14,9 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.ImageExtractor;
 import ru.aakumykov.me.sociocat.utils.ImageInfo;
+import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -92,17 +96,20 @@ public class ExternalDataReceiver extends BaseView {
         Constants.CardType cardType;
         Object data;
 
-        // Картинка
-        try {
-            ImageInfo imageInfo = ImageUtils.extractImageInfo(this, inputIntent);
-            cardType = Constants.CardType.IMAGE_CARD;
-            data = imageInfo.getLocalURI();
-            return;
-        }
-        catch (ImageUtils.ImageUtils_Exception e) {
-            showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_error_processing_image, e.getMessage());
-            MyUtils.printError(TAG, e);
-        }
+        ImageExtractor.extractImageFromIntent(this, inputIntent, new ImageExtractor.ImageExtractionCallbacks() {
+            @Override
+            public void onImageExtractionSuccess(Bitmap bitmap, ImageType imageType, Uri imageURI) {
+                go2createCard(Constants.CardType.IMAGE_CARD, imageURI);
+                return;
+            }
+
+            @Override
+            public void onImageExtractionError(String errorMsg) {
+                showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_error_processing_image, errorMsg);
+                return;
+            }
+        });
+
 
         // Видео/текст
         String text = MVPUtils.getTextFromIntent(inputIntent);
@@ -123,7 +130,7 @@ public class ExternalDataReceiver extends BaseView {
             data = text;
         }
 
-        go2createCard(cardType, data);
+
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {

@@ -20,7 +20,7 @@ public class Intent_ImageData {
         try {
             imageURI = Intent_URIExtractor.extractUriFromIntent(intent);
         }
-        catch (Intent_URIExtractor.IntentURIExtractor_Exception e) {
+        catch (Intent_URIExtractor.Intent_URIExtractor_Exception e) {
             this.error = e.getMessage();
             return;
         }

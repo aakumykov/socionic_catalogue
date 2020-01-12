@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 public class Intent_URIExtractor {
 
 
-    public static Uri extractUriFromIntent(@Nullable Intent intent) throws IntentURIExtractor_Exception {
+    public static Uri extractUriFromIntent(@Nullable Intent intent) throws Intent_URIExtractor_Exception {
         if (null == intent)
             throw new NoIntent_Exception("Intent is null");
 
@@ -37,7 +37,7 @@ public class Intent_URIExtractor {
         else if (imageUriObject instanceof String) {
             try {
                 resultURI = Uri.parse((String) imageUriObject);
-            } catch (Exception e) {
+            } catch (java.lang.Exception e) {
                 throw new ParseError_Exception(e);
             }
         }
@@ -50,35 +50,35 @@ public class Intent_URIExtractor {
 
 
     // Классы исключений
-    public static class IntentURIExtractor_Exception extends Exception {
-        public IntentURIExtractor_Exception(String message) {
+    public static class Intent_URIExtractor_Exception extends java.lang.Exception {
+        public Intent_URIExtractor_Exception(String message) {
             super(message);
         }
 
-        public IntentURIExtractor_Exception(Throwable cause) {
+        public Intent_URIExtractor_Exception(Throwable cause) {
             super(cause);
         }
     }
 
-    public static class NoIntent_Exception extends IntentURIExtractor_Exception {
+    public static class NoIntent_Exception extends Intent_URIExtractor_Exception {
         public NoIntent_Exception(String message) {
             super(message);
         }
     }
 
-    public static class NoUri_Exception extends IntentURIExtractor_Exception {
+    public static class NoUri_Exception extends Intent_URIExtractor_Exception {
         public NoUri_Exception(String message) {
             super(message);
         }
     }
 
-    public static class IllegalData_Exception extends IntentURIExtractor_Exception {
+    public static class IllegalData_Exception extends Intent_URIExtractor_Exception {
         public IllegalData_Exception(String message) {
             super(message);
         }
     }
 
-    public static class ParseError_Exception extends IntentURIExtractor_Exception {
+    public static class ParseError_Exception extends Intent_URIExtractor_Exception {
         public ParseError_Exception(Throwable cause) {
             super(cause);
         }
