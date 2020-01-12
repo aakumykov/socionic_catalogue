@@ -66,6 +66,10 @@ public class Card implements
 
     }
 
+    public Card(String cardKey) {
+        this.key = cardKey;
+    }
+
     @Override @Exclude
     public String toString() {
         return "Card {"+
