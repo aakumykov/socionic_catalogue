@@ -428,7 +428,7 @@ public class CardEdit_Presenter implements
         currentCard.setType(Constants.AUDIO_CARD);
 
         String audioCode = MVPUtils.extractYoutubeVideoCode(intent.getStringExtra(Constants.EXTERNAL_DATA));
-        if (null == audioCode) {
+        if (null != audioCode) {
             currentCard.setAudioCode(audioCode);
             view.displayAudio(audioCode, null);
         }
