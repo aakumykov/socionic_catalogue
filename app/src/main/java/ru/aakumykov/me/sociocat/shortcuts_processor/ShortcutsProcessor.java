@@ -58,30 +58,31 @@ public class ShortcutsProcessor extends BaseView {
         }
     }
 
+    
     // Внутренние методы
     private void processInputIntent(@Nullable Intent data) throws Exception {
         if (null == data)
             return;
 
-        Card card = new Card();
+        String cardType;
 
         String action = data.getAction() + "";
 
         switch (action) {
             case Constants.SHORTCUT_CREATE_TEXT_CARD:
-                card.setType(Constants.TEXT_CARD);
+                cardType = Constants.TEXT_CARD;
                 break;
 
             case Constants.SHORTCUT_CREATE_IMAGE_CARD:
-                card.setType(Constants.IMAGE_CARD);
+                cardType = Constants.IMAGE_CARD;
                 break;
 
             case Constants.SHORTCUT_CREATE_AUDIO_CARD:
-                card.setType(Constants.AUDIO_CARD);
+                cardType = Constants.AUDIO_CARD;
                 break;
 
             case Constants.SHORTCUT_CREATE_VIDEO_CARD:
-                card.setType(Constants.VIDEO_CARD);
+                cardType = Constants.VIDEO_CARD;
                 break;
 
             default:
@@ -93,7 +94,7 @@ public class ShortcutsProcessor extends BaseView {
 
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.setAction(Constants.ACTION_CREATE);
-        intent.putExtra(Constants.CARD, card);
+        intent.putExtra(Constants.CARD_TYPE, cardType);
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
     }
 
