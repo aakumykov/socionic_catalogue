@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.card_show.view_holders;
 
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -8,8 +9,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -23,6 +22,8 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.card_show.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.CardUtils;
+import ru.aakumykov.me.sociocat.utils.ImageBitmapLoader;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Card_ViewHolder extends Base_ViewHolder implements
@@ -179,11 +180,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
                 break;
 
             case Card.IMAGE_CARD:
-                Glide.with(imageView)
-                        .load(currentCard.getImageURL())
-                        .placeholder(R.drawable.ic_image_placeholder_monochrome)
-                        .error(R.drawable.ic_image_error)
-                        .into(imageView);
+                displayImage();
                 break;
 
             case Card.VIDEO_CARD:
@@ -262,6 +259,36 @@ public class Card_ViewHolder extends Base_ViewHolder implements
             for (String tag : tagsList)
                 tagsContainer.addTag(tag);
             MyUtils.show(tagsContainer);
+        }
+    }
+
+    private void displayImage() {
+
+        imageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
+
+        ImageBitmapLoader.loadImage2Bitmap(imageView.getContext(), currentCard.getImageURL(), new ImageBitmapLoader.LoadImageCallbacks() {
+            @Override
+            public void onImageLoadSuccess(Bitmap imageBitmap) {
+                smartDisplayImage(imageBitmap);
+            }
+
+            @Override
+            public void onImageLoadError(String errorMsg) {
+                imageView.setImageResource(R.drawable.ic_image_error);
+            }
+        });
+    }
+
+    private void smartDisplayImage(Bitmap bitmap) {
+
+        imageView.setImageBitmap(bitmap);
+
+        if (CardUtils.need2adjustViewBounds(imageView.getContext(), bitmap)) {
+            imageView.setAdjustViewBounds(false);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        } else {
+            imageView.setAdjustViewBounds(true);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
     }
 }
