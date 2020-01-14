@@ -272,7 +272,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
             ImageBitmapLoader.loadImageAsBitmap(imageView.getContext(), currentCard.getImageURL(), new ImageBitmapLoader.LoadImageCallbacks() {
                 @Override
                 public void onImageLoadSuccess(Bitmap imageBitmap) {
-                    smartDisplayImage(imageBitmap);
+                    CardUtils.smartDisplayImage(imageView, imageBitmap);
                 }
 
                 @Override
@@ -284,19 +284,6 @@ public class Card_ViewHolder extends Base_ViewHolder implements
         catch (ImageBitmapLoader.ImageBitmapLoaderException e) {
             showImageError(e.getMessage());
             MyUtils.printError(TAG, e);
-        }
-    }
-
-    private void smartDisplayImage(Bitmap bitmap) {
-
-        imageView.setImageBitmap(bitmap);
-
-        if (CardUtils.need2adjustViewBounds(imageView.getContext(), bitmap)) {
-            imageView.setAdjustViewBounds(false);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        } else {
-            imageView.setAdjustViewBounds(true);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
     }
 

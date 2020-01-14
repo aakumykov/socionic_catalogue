@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid.view_holders;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +18,9 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.CardUtils;
+import ru.aakumykov.me.sociocat.utils.ImageBitmapLoader;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Card_ViewHolder extends BaseViewHolder
 {
@@ -90,12 +94,26 @@ public class Card_ViewHolder extends BaseViewHolder
 
     private void initImageCard(Card card) {
         if (null != mImageView) {
-            Glide.with(mImageView.getContext())
-                    .load(card.getImageURL())
-//                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .placeholder(R.drawable.ic_image_placeholder_monochrome)
-                    .error(R.drawable.ic_image_error)
-                    .into(mImageView);
+
+            mImageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
+
+            try {
+                ImageBitmapLoader.loadImageAsBitmap(mImageView.getContext(), card.getImageURL(), new ImageBitmapLoader.LoadImageCallbacks() {
+                    @Override
+                    public void onImageLoadSuccess(Bitmap imageBitmap) {
+                        CardUtils.smartDisplayImage(mImageView, imageBitmap);
+                    }
+
+                    @Override
+                    public void onImageLoadError(String errorMsg) {
+                        showImageError(errorMsg);
+                    }
+                });
+            }
+            catch (Exception e) {
+                showImageError(e.getMessage());
+                MyUtils.printError(TAG, e);
+            }
         }
     }
 
@@ -109,5 +127,10 @@ public class Card_ViewHolder extends BaseViewHolder
 
     private void initUnknownCard(Card card) {
 
+    }
+
+    private void showImageError(String errorMsg) {
+        mImageView.setBackgroundResource(R.drawable.shape_red_border);
+        MyUtils.showCustomToast(mImageView.getContext(), errorMsg);
     }
 }

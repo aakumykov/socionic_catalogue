@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 public final class CardUtils {
 
@@ -31,5 +32,18 @@ public final class CardUtils {
         }
         else
             return false;
+    }
+
+    public static void smartDisplayImage(ImageView imageView, Bitmap bitmap) {
+
+        imageView.setImageBitmap(bitmap);
+
+        if (CardUtils.need2adjustViewBounds(imageView.getContext(), bitmap)) {
+            imageView.setAdjustViewBounds(false);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        } else {
+            imageView.setAdjustViewBounds(true);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        }
     }
 }
