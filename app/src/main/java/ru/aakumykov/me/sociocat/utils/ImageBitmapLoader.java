@@ -17,11 +17,15 @@ import com.bumptech.glide.request.transition.Transition;
 public final class ImageBitmapLoader {
 
     // Публичные методы
-    public static void loadImage2Bitmap(Context context, String imageURL, LoadImageCallbacks callbacks) throws ImageBitmapLoaderException {
+    public static void loadImageAsBitmap(Context context, String imageURL, LoadImageCallbacks callbacks)
+            throws ImageBitmapLoaderException, IllegalArgumentException
+    {
         loadImageWithGlide(context, imageURL, callbacks);
     }
 
-    public static void loadImage2Bitmap(Context context, Uri imageURI, LoadImageCallbacks callbacks) throws ImageBitmapLoaderException {
+    public static void loadImageAsBitmap(Context context, Uri imageURI, LoadImageCallbacks callbacks)
+            throws ImageBitmapLoaderException, IllegalArgumentException
+    {
         loadImageWithGlide(context, imageURI, callbacks);
     }
 
@@ -35,7 +39,7 @@ public final class ImageBitmapLoader {
 
     // Внутренние методы
     private static <T> void loadImageWithGlide(Context context, T imageLink, LoadImageCallbacks callbacks)
-            throws ImageBitmapLoaderException
+            throws ImageBitmapLoaderException, IllegalArgumentException
     {
         if (null == context)
             throw new IllegalArgumentException("Context cannot be null");
@@ -57,9 +61,11 @@ public final class ImageBitmapLoader {
 
                         if (resource instanceof BitmapDrawable) {
                             bitmap = ((BitmapDrawable) resource).getBitmap();
-                        } else if (resource instanceof GifDrawable) {
+                        }
+                        else if (resource instanceof GifDrawable) {
                             bitmap = ((GifDrawable) resource).getFirstFrame();
-                        } else {
+                        }
+                        else {
                             callbacks.onImageLoadError("Such type of image can not be loaded: "+resource);
                         }
 
@@ -75,12 +81,6 @@ public final class ImageBitmapLoader {
 
 
     // Классы исключений
-    public static class UnsupportedImageType_Exception extends ImageBitmapLoaderException {
-        public UnsupportedImageType_Exception(String message) {
-            super(message);
-        }
-    }
-
     public static class ImageBitmapLoaderException extends Exception {
         public ImageBitmapLoaderException(String message) {
             super(message);
