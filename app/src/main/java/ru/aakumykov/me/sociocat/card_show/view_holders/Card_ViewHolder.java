@@ -24,7 +24,6 @@ import ru.aakumykov.me.sociocat.card_show.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.CardUtils;
 import ru.aakumykov.me.sociocat.utils.ImageBitmapLoader;
-import ru.aakumykov.me.sociocat.utils.ImageBitmapLoaderException;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Card_ViewHolder extends Base_ViewHolder implements
