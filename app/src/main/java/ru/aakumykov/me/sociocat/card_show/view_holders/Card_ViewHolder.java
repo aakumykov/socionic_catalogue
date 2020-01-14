@@ -24,6 +24,7 @@ import ru.aakumykov.me.sociocat.card_show.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.CardUtils;
 import ru.aakumykov.me.sociocat.utils.ImageBitmapLoader;
+import ru.aakumykov.me.sociocat.utils.ImageBitmapLoaderException;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Card_ViewHolder extends Base_ViewHolder implements
@@ -54,6 +55,8 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     @BindView(R.id.replyWidget) TextView replyWidget;
 
     private enum MediaType { AUDIO, VIDEO }
+
+    private static final String TAG = "Card_ViewHolder";
     private iList_Item currentListItem = null;
     private Card currentCard = null;
     private iCardShow.iPresenter presenter = null;
@@ -266,17 +269,23 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
         imageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
 
-        ImageBitmapLoader.loadImage2Bitmap(imageView.getContext(), currentCard.getImageURL(), new ImageBitmapLoader.LoadImageCallbacks() {
-            @Override
-            public void onImageLoadSuccess(Bitmap imageBitmap) {
-                smartDisplayImage(imageBitmap);
-            }
+        try {
+            ImageBitmapLoader.loadImage2Bitmap(imageView.getContext(), currentCard.getImageURL(), new ImageBitmapLoader.LoadImageCallbacks() {
+                @Override
+                public void onImageLoadSuccess(Bitmap imageBitmap) {
+                    smartDisplayImage(imageBitmap);
+                }
 
-            @Override
-            public void onImageLoadError(String errorMsg) {
-                imageView.setImageResource(R.drawable.ic_image_error);
-            }
-        });
+                @Override
+                public void onImageLoadError(String errorMsg) {
+                    imageView.setImageResource(R.drawable.ic_image_error);
+                }
+            });
+        }
+        catch (ImageBitmapLoader.ImageBitmapLoaderException e) {
+            showImageError(e.getMessage());
+            MyUtils.printError(TAG, e);
+        }
     }
 
     private void smartDisplayImage(Bitmap bitmap) {
@@ -290,5 +299,10 @@ public class Card_ViewHolder extends Base_ViewHolder implements
             imageView.setAdjustViewBounds(true);
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
+    }
+
+    private void showImageError(String errorMsg) {
+        imageView.setImageResource(R.drawable.ic_image_error);
+        MyUtils.showCustomToast(imageView.getContext(), errorMsg);
     }
 }
