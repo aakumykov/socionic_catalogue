@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
-import com.bumptech.glide.Glide;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.R;
@@ -130,7 +128,8 @@ public class Card_ViewHolder extends BaseViewHolder
     }
 
     private void showImageError(String errorMsg) {
-        mImageView.setBackgroundResource(R.drawable.shape_red_border);
-        MyUtils.showCustomToast(mImageView.getContext(), errorMsg);
+        if (null != mImageView)
+            mImageView.setBackgroundResource(R.drawable.ic_image_error);
+        //MyUtils.showCustomToast(mImageView.getContext(), errorMsg);
     }
 }
