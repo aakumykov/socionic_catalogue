@@ -41,6 +41,8 @@ public interface iCardShow
         void goUserProfile(String userId);
 
         void setSuccessEditionResult(Card card);
+
+        void openImageInBrowser(String imageURL);
     }
 
     interface iDataAdapter {
@@ -115,6 +117,8 @@ public interface iCardShow
         void onPageRecreated();
 
         void processInputIntent(@Nullable Intent data);
+
+        void onOpenInBrowserClicked();
     }
 
     interface iRatingChangeCallbacks {

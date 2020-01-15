@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.card_show;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -128,6 +129,8 @@ public class CardShow_View extends BaseView implements
 
         MenuInflater menuInflater = getMenuInflater();
 
+        menuInflater.inflate(R.menu.open_in_browser, menu);
+
         if (presenter.canEditCard())
             menuInflater.inflate(R.menu.edit, menu);
 
@@ -145,6 +148,9 @@ public class CardShow_View extends BaseView implements
                 break;
             case R.id.actionDelete:
                 presenter.onDeleteCardClicked();
+                break;
+            case R.id.actionOpenInBrowser:
+                presenter.onOpenInBrowserClicked();
                 break;
             default:
                 break;
@@ -248,6 +254,13 @@ public class CardShow_View extends BaseView implements
         intent.setAction(Constants.ACTION_EDIT);
         intent.putExtra(Constants.CARD, card);
         setResult(RESULT_OK, intent);
+    }
+
+    @Override
+    public void openImageInBrowser(String imageURL) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(imageURL));
+        startActivity(intent);
     }
 
     @Override
