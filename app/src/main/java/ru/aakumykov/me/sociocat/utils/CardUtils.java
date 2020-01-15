@@ -7,6 +7,8 @@ import android.view.Display;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import ru.aakumykov.me.sociocat.R;
+
 public final class CardUtils {
 
     private CardUtils() {}
@@ -39,11 +41,15 @@ public final class CardUtils {
         imageView.setImageBitmap(bitmap);
 
         if (CardUtils.need2adjustViewBounds(imageView.getContext(), bitmap)) {
+            // Подгонка отключена
             imageView.setAdjustViewBounds(false);
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setBackgroundResource(R.drawable.shape_red_border);
         } else {
+            // Подгонка включена
             imageView.setAdjustViewBounds(true);
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setBackgroundResource(R.drawable.shape_green_border);
         }
     }
 }
