@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
@@ -494,16 +495,24 @@ public final class MyUtils {
                 : relatedTimeString;
     }
 
-    public static <T> void printError(String tag, T e) {
-        if (e instanceof Exception) {
-            Exception exception = ((Exception) e);
-            Log.e(tag, exception.getMessage());
-            for (StackTraceElement stackTraceElement : exception.getStackTrace()) {
-                Log.e(tag, stackTraceElement.toString());
+    public static <T> void printError(@NonNull String tag, @Nullable T e) {
+
+        if (null != e)
+        {
+            if (e instanceof Exception) {
+                Exception exception = ((Exception) e);
+
+                String msg = exception.getMessage();
+
+                if (null != msg)
+                    Log.e(tag, msg);
+
+                for (StackTraceElement stackTraceElement : exception.getStackTrace()) {
+                    Log.e(tag, stackTraceElement.toString());
+                }
+            } else {
+                Log.e(tag, String.valueOf(e));
             }
-        }
-        else {
-            Log.e(tag, String.valueOf(e));
         }
     }
 
