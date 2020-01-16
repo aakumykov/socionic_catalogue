@@ -37,48 +37,52 @@ public final class ImageBitmapLoader {
             throw new IllegalArgumentException("Callbacks cannot be null");
 
 
-        Glide.with(context)
-                .load(imageLink)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        MyUtils.printError(TAG, e);
+        try {
+            Glide.with(context)
+                    .load(imageLink)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            MyUtils.printError(TAG, e);
 
-                        String errorMsg = (null != e) ? e.getMessage() : "Error loading image from: "+imageLink;
-                        callbacks.onImageLoadError(errorMsg);
+                            String errorMsg = (null != e) ? e.getMessage() : "Error loading image from: " + imageLink;
+                            callbacks.onImageLoadError(errorMsg);
 
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        return false;
-                    }
-                })
-                .into(new CustomTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-
-                        Bitmap bitmap = null;
-
-                        if (resource instanceof BitmapDrawable) {
-                            bitmap = ((BitmapDrawable) resource).getBitmap();
-                        }
-                        else if (resource instanceof GifDrawable) {
-                            bitmap = ((GifDrawable) resource).getFirstFrame();
-                        }
-                        else {
-                            callbacks.onImageLoadError("Such type of image can not be loaded: "+resource);
+                            return false;
                         }
 
-                        callbacks.onImageLoadSuccess(bitmap);
-                    }
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
+                    .into(new CustomTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
 
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                        callbacks.onImageLoadError("Loading of image is cleared");
-                    }
-                });
+                            Bitmap bitmap = null;
+
+                            if (resource instanceof BitmapDrawable) {
+                                bitmap = ((BitmapDrawable) resource).getBitmap();
+                            } else if (resource instanceof GifDrawable) {
+                                bitmap = ((GifDrawable) resource).getFirstFrame();
+                            } else {
+                                callbacks.onImageLoadError("Such type of image can not be loaded: " + resource);
+                            }
+
+                            callbacks.onImageLoadSuccess(bitmap);
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                            callbacks.onImageLoadError("Loading of image is cleared");
+                        }
+                    });
+        }
+        catch (Exception e) {
+            callbacks.onImageLoadError(e.getMessage());
+            MyUtils.printError(TAG, e);
+        }
     }
 
     // Интерфейсы
