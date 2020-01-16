@@ -53,6 +53,7 @@ import ru.aakumykov.me.sociocat.card_edit.view_model.CardEdit_ViewModel;
 import ru.aakumykov.me.sociocat.card_edit.view_model.CardEdit_ViewModel_Factory;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.utils.ImageLoader;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
@@ -310,33 +311,29 @@ public class CardEdit_View extends BaseView implements
         MyUtils.show(imageHolder);
         showImageThrobber();
 
-        Glide.with(getAppContext())
-                .load(imageData)
-                .placeholder(R.drawable.ic_image_placeholder_color)
-                .error(R.drawable.ic_image_error)
-                .into(new CustomTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        imageView.setImageDrawable(resource);
-                        imageIsSetted = true;
+        ImageLoader.loadImage(this, imageData, new ImageLoader.LoadImageCallbacks() {
+            @Override
+            public void onImageLoadSuccess(Bitmap imageBitmap) {
+                imageView.setImageBitmap(imageBitmap);
+                imageIsSetted = true;
 
-                        hideImageThrobber();
-                        hideImageError();
+                hideImageThrobber();
+                hideImageError();
 
-                        MyUtils.show(discardImageButton);
-                        MyUtils.hide(restoreImageButton);
-                    }
+                MyUtils.show(discardImageButton);
+                MyUtils.hide(restoreImageButton);
+            }
 
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                        imageView.setImageResource(R.drawable.ic_image_error);
-                        imageIsSetted = false;
+            @Override
+            public void onImageLoadError(String errorMsg) {
+                imageView.setImageResource(R.drawable.ic_image_error);
+                imageIsSetted = false;
 
-                        hideImageThrobber();
+                hideImageThrobber();
 
-                        showErrorMsg(R.string.CARD_EDIT_error_displaying_image, "Glide.onLoadCleared()");
-                    }
-                });
+                showErrorMsg(R.string.CARD_EDIT_error_displaying_image, "Glide.onLoadCleared()");
+            }
+        });
     }
 
     @Override
