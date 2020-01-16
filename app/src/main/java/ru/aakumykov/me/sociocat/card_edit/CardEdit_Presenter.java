@@ -36,11 +36,6 @@ public class CardEdit_Presenter implements
         iCardEdit.Presenter,
         iCardsSingleton.SaveCardCallbacks
 {
-    public enum CardEditMode {
-        CREATE,
-        EDIT
-    }
-
     private float mediaPosition = 0.0f;
 
     private static final String TAG = "CardEdit_Presenter";
@@ -54,7 +49,7 @@ public class CardEdit_Presenter implements
     private Card currentCard;
     private Card oldCard;
 
-    private CardEditMode editMode;
+    private boolean isNewCard = false;
 
     private Bitmap mImageBitmap;
     private ImageType mImageType;
@@ -273,17 +268,10 @@ public class CardEdit_Presenter implements
 
             // Время создания/правки
             Long currentTime = new Date().getTime();
-            switch (editMode) {
-                case CREATE:
-                    currentCard.setCTime(currentTime);
-                    currentCard.setMTime(currentTime);
-                    break;
-                case EDIT:
-                    currentCard.setMTime(currentTime);
-                    break;
-                default:
-                    throw new Exception("Unknown editMode '"+editMode+"'");
+            if (isNewCard) {
+                currentCard.setCTime(currentTime);
             }
+            currentCard.setMTime(currentTime);
 
             view.showProgressMessage(R.string.CARD_EDIT_saving_card);
 
@@ -332,7 +320,7 @@ public class CardEdit_Presenter implements
     // Внутренние методы
     private void proceed2createCard(Intent intent) throws Exception {
 
-        editMode = CardEditMode.CREATE;
+        isNewCard = true;
         currentCard = new Card(cardsSingleton.createKey());
 
         String cardType = String.valueOf(intent.getStringExtra(Constants.CARD_TYPE));
@@ -365,31 +353,7 @@ public class CardEdit_Presenter implements
     }
 
     private void prepareForImageCard(Intent intent) throws Exception {
-
         currentCard.setType(Constants.IMAGE_CARD);
-
-        // TODO: это уже делалось в Получателе внешних данных!
-        /*try {
-            ImageUtils.extractImageFromIntent(view.getAppContext(), intent, new ImageUtils.ImageExtractionCallbacks() {
-                @Override
-                public void onImageExtractionSuccess(Bitmap bitmap, ImageType imageType) {
-                    mImageBitmap = bitmap;
-                    mImageType = imageType;
-                    view.displayImage(mImageBitmap);
-                }
-
-                @Override
-                public void onImageExtractionError(String errorMsg) {
-                    view.showErrorMsg(R.string.CARD_EDIT_image_error, errorMsg);
-                }
-            });
-        }
-        catch (ImageUtils.ImageUtils_Exception e) {
-            // Если это редактирование, должна присутствовать картинка
-            if (CardEditMode.EDIT.equals(editMode)) {
-                view.showErrorMsg(R.string.CARD_EDIT_error_processing_image, e.getMessage());
-            }
-        }*/
 
         ImageExtractor.extractImageFromIntent(view.getAppContext(), intent, new ImageExtractor.ImageExtractionCallbacks() {
             @Override
@@ -409,8 +373,6 @@ public class CardEdit_Presenter implements
     }
 
     private void prepareForVideoCard(Intent intent) {
-        // TODO: это уже делалось в Получателе внешних данных!
-
         currentCard.setType(Constants.VIDEO_CARD);
 
         String videoCode = MVPUtils.extractYoutubeVideoCode(intent.getStringExtra(Constants.EXTERNAL_DATA));
@@ -424,7 +386,6 @@ public class CardEdit_Presenter implements
     }
 
     private void prepareForAudioCard(Intent intent) {
-
         currentCard.setType(Constants.AUDIO_CARD);
 
         String audioCode = MVPUtils.extractYoutubeVideoCode(intent.getStringExtra(Constants.EXTERNAL_DATA));
@@ -438,7 +399,7 @@ public class CardEdit_Presenter implements
 
     private void proceed2editCard(Intent intent) throws Exception {
 
-        editMode = CardEditMode.EDIT;
+        isNewCard = false;
         currentCard = intent.getParcelableExtra(Constants.CARD);
 
         if (null == currentCard) {
