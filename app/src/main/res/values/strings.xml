@@ -559,5 +559,6 @@
     <string name="EXTERNAL_DATA_RECIEVER_error_processing_image">Ошибка обработки изображения</string>
     <string name="EXTERNAL_DATA_RECIEVER_unknown_card_type">Неизвестный тип карточки</string>
     <string name="CARD_EDIT_data_error">Ошибка данных</string>
+    <string name="MENU_open_in_browser">Открыть в веб-браузере</string>
 
 </resources><!-- «%1$s» -->

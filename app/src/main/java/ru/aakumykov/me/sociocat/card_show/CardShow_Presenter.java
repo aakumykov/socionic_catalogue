@@ -351,6 +351,12 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         onCardReceived(card);
     }
 
+    @Override
+    public void onOpenInBrowserClicked() {
+        if (null != currentCard)
+            pageView.openImageInBrowser(currentCard.getImageURL());
+    }
+
 
     // Внутренние методы
     private void loadCard(String cardKey, iLoadCardCallbacks callbacks) {

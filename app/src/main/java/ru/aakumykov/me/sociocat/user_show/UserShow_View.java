@@ -1,7 +1,7 @@
 package ru.aakumykov.me.sociocat.user_show;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,14 +9,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +22,7 @@ import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_edit.UserEdit_View;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModel;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModelFactory;
+import ru.aakumykov.me.sociocat.utils.ImageLoader;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class UserShow_View extends BaseView implements iUserShow.iView {
@@ -227,17 +223,17 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
 
         showAvatarTrobber();
 
-        Glide.with(this).load(user.getAvatarURL()).into(new CustomTarget<Drawable>() {
+        ImageLoader.loadImage(this, user.getAvatarURL(), new ImageLoader.LoadImageCallbacks() {
             @Override
-            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                avatarView.setImageDrawable(resource);
+            public void onImageLoadSuccess(Bitmap imageBitmap) {
                 hideAvatarThrobber();
+                avatarView.setImageBitmap(imageBitmap);
             }
 
             @Override
-            public void onLoadCleared(@Nullable Drawable placeholder) {
-                avatarView.setImageResource(R.drawable.ic_avatar_placeholder);
+            public void onImageLoadError(String errorMsg) {
                 hideAvatarThrobber();
+                avatarView.setImageResource(R.drawable.ic_avatar_placeholder);
             }
         });
     }

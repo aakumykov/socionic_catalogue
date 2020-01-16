@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
-import com.bumptech.glide.Glide;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.R;
@@ -19,7 +17,7 @@ import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.CardUtils;
-import ru.aakumykov.me.sociocat.utils.ImageBitmapLoader;
+import ru.aakumykov.me.sociocat.utils.ImageLoader;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Card_ViewHolder extends BaseViewHolder
@@ -98,7 +96,7 @@ public class Card_ViewHolder extends BaseViewHolder
             mImageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
 
             try {
-                ImageBitmapLoader.loadImageAsBitmap(mImageView.getContext(), card.getImageURL(), new ImageBitmapLoader.LoadImageCallbacks() {
+                ImageLoader.loadImage(mImageView.getContext(), card.getImageURL(), new ImageLoader.LoadImageCallbacks() {
                     @Override
                     public void onImageLoadSuccess(Bitmap imageBitmap) {
                         CardUtils.smartDisplayImage(mImageView, imageBitmap);
@@ -130,7 +128,8 @@ public class Card_ViewHolder extends BaseViewHolder
     }
 
     private void showImageError(String errorMsg) {
-        mImageView.setBackgroundResource(R.drawable.shape_red_border);
-        MyUtils.showCustomToast(mImageView.getContext(), errorMsg);
+        if (null != mImageView)
+            mImageView.setBackgroundResource(R.drawable.ic_image_error);
+        //MyUtils.showCustomToast(mImageView.getContext(), errorMsg);
     }
 }
