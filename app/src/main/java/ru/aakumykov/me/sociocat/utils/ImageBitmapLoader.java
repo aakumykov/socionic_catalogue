@@ -25,27 +25,8 @@ public final class ImageBitmapLoader {
     private static final String TAG = "ImageBitmapLoader";
 
     // Публичные методы
-    public static void loadImage(Context context, String imageURL, LoadImageCallbacks callbacks)
-    {
-        loadImageWithGlide(context, imageURL, callbacks);
-    }
-
-    public static void loadImage(Context context, Uri imageURI, LoadImageCallbacks callbacks)
-    {
-        loadImageWithGlide(context, imageURI, callbacks);
-    }
-
-
-    // Интерфейсы
-    public interface LoadImageCallbacks {
-        void onImageLoadSuccess(Bitmap imageBitmap);
-        void onImageLoadError(String errorMsg);
-    }
-
-
-    // Внутренние методы
     @SuppressLint("CheckResult")
-    private static <T> void loadImageWithGlide(Context context, T imageLink, LoadImageCallbacks callbacks) {
+    public static <T> void loadImage(Context context, T imageLink, LoadImageCallbacks callbacks) {
         if (null == context)
             throw new IllegalArgumentException("Context cannot be null");
 
@@ -98,33 +79,12 @@ public final class ImageBitmapLoader {
                         callbacks.onImageLoadError("Loading of image is cleared");
                     }
                 });
+    }
 
-        /*Glide.with(context)
-                .load(imageLink)
-                .into(new CustomTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-
-                        Bitmap bitmap = null;
-
-                        if (resource instanceof BitmapDrawable) {
-                            bitmap = ((BitmapDrawable) resource).getBitmap();
-                        }
-                        else if (resource instanceof GifDrawable) {
-                            bitmap = ((GifDrawable) resource).getFirstFrame();
-                        }
-                        else {
-                            callbacks.onImageLoadError("Such type of image can not be loaded: "+resource);
-                        }
-
-                        callbacks.onImageLoadSuccess(bitmap);
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                        callbacks.onImageLoadError("Loading of image is cleared");
-                    }
-                });*/
+    // Интерфейсы
+    public interface LoadImageCallbacks {
+        void onImageLoadSuccess(Bitmap imageBitmap);
+        void onImageLoadError(String errorMsg);
     }
 
     // Конструктор (отключен)
