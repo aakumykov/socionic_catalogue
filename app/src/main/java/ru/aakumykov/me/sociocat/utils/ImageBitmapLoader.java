@@ -25,12 +25,12 @@ public final class ImageBitmapLoader {
     private static final String TAG = "ImageBitmapLoader";
 
     // Публичные методы
-    public static void loadImageAsBitmap(Context context, String imageURL, LoadImageCallbacks callbacks)
+    public static void loadImage(Context context, String imageURL, LoadImageCallbacks callbacks)
     {
         loadImageWithGlide(context, imageURL, callbacks);
     }
 
-    public static void loadImageAsBitmap(Context context, Uri imageURI, LoadImageCallbacks callbacks)
+    public static void loadImage(Context context, Uri imageURI, LoadImageCallbacks callbacks)
     {
         loadImageWithGlide(context, imageURI, callbacks);
     }

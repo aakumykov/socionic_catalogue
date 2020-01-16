@@ -268,7 +268,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
         imageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
 
-        ImageBitmapLoader.loadImageAsBitmap(imageView.getContext(), currentCard.getImageURL(), new ImageBitmapLoader.LoadImageCallbacks() {
+        ImageBitmapLoader.loadImage(imageView.getContext(), currentCard.getImageURL(), new ImageBitmapLoader.LoadImageCallbacks() {
             @Override
             public void onImageLoadSuccess(Bitmap imageBitmap) {
                 CardUtils.smartDisplayImage(imageView, imageBitmap);

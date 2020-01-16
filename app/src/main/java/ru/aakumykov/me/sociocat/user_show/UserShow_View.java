@@ -2,7 +2,6 @@ package ru.aakumykov.me.sociocat.user_show;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,14 +9,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -229,7 +223,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
 
         showAvatarTrobber();
 
-        ImageBitmapLoader.loadImageAsBitmap(this, user.getAvatarURL(), new ImageBitmapLoader.LoadImageCallbacks() {
+        ImageBitmapLoader.loadImage(this, user.getAvatarURL(), new ImageBitmapLoader.LoadImageCallbacks() {
             @Override
             public void onImageLoadSuccess(Bitmap imageBitmap) {
                 hideAvatarThrobber();
