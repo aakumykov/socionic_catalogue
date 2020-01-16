@@ -268,23 +268,17 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
         imageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
 
-        try {
-            ImageBitmapLoader.loadImageAsBitmap(imageView.getContext(), currentCard.getImageURL(), new ImageBitmapLoader.LoadImageCallbacks() {
-                @Override
-                public void onImageLoadSuccess(Bitmap imageBitmap) {
-                    CardUtils.smartDisplayImage(imageView, imageBitmap);
-                }
+        ImageBitmapLoader.loadImageAsBitmap(imageView.getContext(), currentCard.getImageURL(), new ImageBitmapLoader.LoadImageCallbacks() {
+            @Override
+            public void onImageLoadSuccess(Bitmap imageBitmap) {
+                CardUtils.smartDisplayImage(imageView, imageBitmap);
+            }
 
-                @Override
-                public void onImageLoadError(String errorMsg) {
-                    imageView.setImageResource(R.drawable.ic_image_error);
-                }
-            });
-        }
-        catch (ImageBitmapLoader.ImageBitmapLoaderException e) {
-            showImageError(e.getMessage());
-            MyUtils.printError(TAG, e);
-        }
+            @Override
+            public void onImageLoadError(String errorMsg) {
+                imageView.setImageResource(R.drawable.ic_image_error);
+            }
+        });
     }
 
     private void showImageError(String errorMsg) {
