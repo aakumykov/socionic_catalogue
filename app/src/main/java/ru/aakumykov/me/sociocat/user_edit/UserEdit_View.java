@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.user_edit;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,6 +38,7 @@ import ru.aakumykov.me.sociocat.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_edit.view_model.UserEdit_ViewModel;
 import ru.aakumykov.me.sociocat.user_edit.view_model.UserEdit_ViewModelFactory;
+import ru.aakumykov.me.sociocat.utils.ImageBitmapLoader;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -192,28 +194,19 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
             avatar = null;
         }
         else {
-            try {
-                Glide.with(this)
-                        .load(avatar)
-                        .placeholder(R.drawable.ic_avatar_placeholder)
-                        .error(R.drawable.ic_image_error)
-                        .into(new CustomTarget<Drawable>() {
-                            @Override
-                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                                avatarView.setImageDrawable(resource);
-                                hideAvatarThrobber();
-                            }
+            ImageBitmapLoader.loadImage(this, avatar, new ImageBitmapLoader.LoadImageCallbacks() {
+                @Override
+                public void onImageLoadSuccess(Bitmap imageBitmap) {
+                    avatarView.setImageBitmap(imageBitmap);
+                    hideAvatarThrobber();
+                }
 
-                            @Override
-                            public void onLoadCleared(@Nullable Drawable placeholder) {
-                                hideAvatarThrobber();
-                            }
-                        });
-            }
-            catch (Exception e) {
-                avatarView.setImageResource(R.drawable.ic_image_error);
-                MyUtils.printError(TAG, e);
-            }
+                @Override
+                public void onImageLoadError(String errorMsg) {
+                    avatarView.setImageResource(R.drawable.ic_image_error);
+                    hideAvatarThrobber();
+                }
+            });
         }
     }
 
