@@ -23,7 +23,7 @@ import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.card_show.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.CardUtils;
-import ru.aakumykov.me.sociocat.utils.ImageBitmapLoader;
+import ru.aakumykov.me.sociocat.utils.ImageLoader;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Card_ViewHolder extends Base_ViewHolder implements
@@ -268,7 +268,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
         imageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
 
-        ImageBitmapLoader.loadImage(imageView.getContext(), currentCard.getImageURL(), new ImageBitmapLoader.LoadImageCallbacks() {
+        ImageLoader.loadImage(imageView.getContext(), currentCard.getImageURL(), new ImageLoader.LoadImageCallbacks() {
             @Override
             public void onImageLoadSuccess(Bitmap imageBitmap) {
                 CardUtils.smartDisplayImage(imageView, imageBitmap);

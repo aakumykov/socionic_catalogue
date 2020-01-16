@@ -2,8 +2,6 @@ package ru.aakumykov.me.sociocat.user_edit;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,13 +12,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
@@ -38,7 +32,7 @@ import ru.aakumykov.me.sociocat.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_edit.view_model.UserEdit_ViewModel;
 import ru.aakumykov.me.sociocat.user_edit.view_model.UserEdit_ViewModelFactory;
-import ru.aakumykov.me.sociocat.utils.ImageBitmapLoader;
+import ru.aakumykov.me.sociocat.utils.ImageLoader;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -194,7 +188,7 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
             avatar = null;
         }
         else {
-            ImageBitmapLoader.loadImage(this, avatar, new ImageBitmapLoader.LoadImageCallbacks() {
+            ImageLoader.loadImage(this, avatar, new ImageLoader.LoadImageCallbacks() {
                 @Override
                 public void onImageLoadSuccess(Bitmap imageBitmap) {
                     avatarView.setImageBitmap(imageBitmap);

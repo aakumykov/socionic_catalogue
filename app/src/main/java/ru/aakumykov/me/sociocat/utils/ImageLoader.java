@@ -20,9 +20,9 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 
-public final class ImageBitmapLoader {
+public final class ImageLoader {
 
-    private static final String TAG = "ImageBitmapLoader";
+    private static final String TAG = "ImageLoader";
 
     // Публичные методы
     @SuppressLint("CheckResult")
@@ -92,7 +92,7 @@ public final class ImageBitmapLoader {
     }
 
     // Конструктор (отключен)
-    private ImageBitmapLoader() {
-        throw new RuntimeException("Construstor of class ImageBitmapLoader is denied");
+    private ImageLoader() {
+        throw new RuntimeException("Construstor of class ImageLoader is denied");
     }
 }

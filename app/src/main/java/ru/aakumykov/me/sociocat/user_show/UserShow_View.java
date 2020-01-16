@@ -22,7 +22,7 @@ import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_edit.UserEdit_View;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModel;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModelFactory;
-import ru.aakumykov.me.sociocat.utils.ImageBitmapLoader;
+import ru.aakumykov.me.sociocat.utils.ImageLoader;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class UserShow_View extends BaseView implements iUserShow.iView {
@@ -223,7 +223,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
 
         showAvatarTrobber();
 
-        ImageBitmapLoader.loadImage(this, user.getAvatarURL(), new ImageBitmapLoader.LoadImageCallbacks() {
+        ImageLoader.loadImage(this, user.getAvatarURL(), new ImageLoader.LoadImageCallbacks() {
             @Override
             public void onImageLoadSuccess(Bitmap imageBitmap) {
                 hideAvatarThrobber();
