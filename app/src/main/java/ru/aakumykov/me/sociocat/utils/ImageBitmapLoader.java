@@ -26,13 +26,11 @@ public final class ImageBitmapLoader {
 
     // Публичные методы
     public static void loadImageAsBitmap(Context context, String imageURL, LoadImageCallbacks callbacks)
-            throws ImageBitmapLoaderException, IllegalArgumentException
     {
         loadImageWithGlide(context, imageURL, callbacks);
     }
 
     public static void loadImageAsBitmap(Context context, Uri imageURI, LoadImageCallbacks callbacks)
-            throws ImageBitmapLoaderException, IllegalArgumentException
     {
         loadImageWithGlide(context, imageURI, callbacks);
     }
@@ -47,9 +45,7 @@ public final class ImageBitmapLoader {
 
     // Внутренние методы
     @SuppressLint("CheckResult")
-    private static <T> void loadImageWithGlide(Context context, T imageLink, LoadImageCallbacks callbacks)
-            throws ImageBitmapLoaderException, IllegalArgumentException
-    {
+    private static <T> void loadImageWithGlide(Context context, T imageLink, LoadImageCallbacks callbacks) {
         if (null == context)
             throw new IllegalArgumentException("Context cannot be null");
 
@@ -130,15 +126,6 @@ public final class ImageBitmapLoader {
                     }
                 });*/
     }
-
-
-    // Классы исключений
-    public static class ImageBitmapLoaderException extends Exception {
-        public ImageBitmapLoaderException(String message) {
-            super(message);
-        }
-    }
-
 
     // Конструктор (отключен)
     private ImageBitmapLoader() {
