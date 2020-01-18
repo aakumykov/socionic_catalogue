@@ -26,9 +26,9 @@ import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iTagsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
-import ru.aakumykov.me.sociocat.utils.ImageExtractor;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
+import ru.aakumykov.me.sociocat.utils.IntentUtils;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -346,7 +346,7 @@ public class CardEdit_Presenter implements
     private void prepareForTextCard(Intent intent) {
         currentCard.setType(Constants.TEXT_CARD);
 
-        String quote = intent.getStringExtra(Constants.EXTERNAL_DATA);
+        String quote = IntentUtils.extractText(intent);
         String title = MyUtils.cutToLength(quote, Config.TITLE_MAX_LENGTH);
 
         view.prepareForQuote(title, quote);
@@ -355,13 +355,12 @@ public class CardEdit_Presenter implements
     private void prepareForImageCard(Intent intent) throws Exception {
         currentCard.setType(Constants.IMAGE_CARD);
 
-        ImageExtractor.extractImageFromIntent(view.getAppContext(), intent, new ImageExtractor.ImageExtractionCallbacks() {
+        IntentUtils.extractImage(view.getAppContext(), intent, new IntentUtils.ImageExtractionCallbacks() {
             @Override
             public void onImageExtractionSuccess(Bitmap bitmap, ImageType imageType, Uri imageURI) {
                 // TODO: вынести в отдельный метод
                 mImageBitmap = bitmap.copy(bitmap.getConfig(), true);
                 mImageType = imageType;
-
                 view.displayImage(mImageBitmap);
             }
 
