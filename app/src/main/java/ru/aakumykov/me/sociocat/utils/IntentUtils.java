@@ -29,7 +29,11 @@ public class IntentUtils {
             return ContentType.IMAGE;
         }
         else if ("text/plain".equals(type)) {
-            return detectTextType(type);
+            String text = IntentUtils.extractText(intent);
+            if (YoutubeUtils.isYoutubeLink(text))
+                return ContentType.YOUTUBE_VIDEO;
+            else
+                return ContentType.TEXT;
         }
         else {
             return ContentType.OTHER;
@@ -98,15 +102,7 @@ public class IntentUtils {
     }
 
 
-    // Внутренние свойства
+    // Внутренние свойства и методы
     private static final String TAG = "IntentUtils";
 
-    // Внутренние методы
-    private static ContentType detectTextType(@NonNull String type) {
-
-        if (YoutubeUtils.isYoutubeLink(type))
-            return ContentType.YOUTUBE_VIDEO;
-        else
-            return ContentType.TEXT;
-    }
 }
