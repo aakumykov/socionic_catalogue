@@ -16,7 +16,6 @@ public class IntentUtils {
             return null;
 
         String type = intent.getType();
-
         if (null == type)
             return ContentType.NO_CONTENT_TYPE;
 
@@ -25,19 +24,13 @@ public class IntentUtils {
         if (TextUtils.isEmpty(type))
             return ContentType.NO_CONTENT_TYPE;
 
-        if (type.startsWith("image/")) {
+        if (type.startsWith("image/"))
             return ContentType.IMAGE;
-        }
-        else if ("text/plain".equals(type)) {
-            String text = IntentUtils.extractText(intent);
-            if (YoutubeUtils.isYoutubeLink(text))
-                return ContentType.YOUTUBE_VIDEO;
-            else
-                return ContentType.TEXT;
-        }
-        else {
-            return ContentType.OTHER;
-        }
+
+        if ("text/plain".equals(type))
+            return detectExactTextType(intent);
+
+        return ContentType.OTHER;
     }
 
     public static String extractText(@Nullable Intent intent) {
@@ -105,4 +98,12 @@ public class IntentUtils {
     // Внутренние свойства и методы
     private static final String TAG = "IntentUtils";
 
+    private static ContentType detectExactTextType(@NonNull Intent intent) {
+        String text = IntentUtils.extractText(intent);
+
+        if (YoutubeUtils.isYoutubeLink(text))
+            return ContentType.YOUTUBE_VIDEO;
+        else
+            return ContentType.TEXT;
+    }
 }
