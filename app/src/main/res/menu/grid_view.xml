@@ -6,5 +6,5 @@
         android:id="@+id/actionGridView"
         android:icon="@drawable/ic_grid"
         android:title="@string/MENU_grid_view"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
 </menu>

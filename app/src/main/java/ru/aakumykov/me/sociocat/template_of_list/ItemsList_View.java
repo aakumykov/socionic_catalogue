@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.template_of_list;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import butterknife.BindView;
@@ -31,6 +33,9 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     private iItemsList.iPresenter presenter;
     private boolean isFilterActive = false;
 
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
+    private LinearLayoutManager linearLayoutManager;
+    private RecyclerView.LayoutManager currentLayoutManager;
 
     // Activity
     @Override
@@ -73,9 +78,16 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
 
+        // Поиск
         menuInflater.inflate(R.menu.search_widget, menu);
         configureSearchView(menu);
 
+        // Изменение вида список/плитки
+        if (currentLayoutManager instanceof StaggeredGridLayoutManager)
+            menuInflater.inflate(R.menu.list_view, menu);
+        else menuInflater.inflate(R.menu.grid_view, menu);
+
+        // Сортировка
         switch (dataAdapter.getSortingMode()) {
             case ORDER_NAME_DIRECT:
                 menuInflater.inflate(R.menu.sort_by_name_reverse, menu);
@@ -123,10 +135,32 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
                 });
                 break;
 
+            case R.id.actionListView:
+                onShowAsListClicked();
+                break;
+
+            case R.id.actionGridView:
+                onShowAsGridClicked();
+                break;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    private void onShowAsGridClicked() {
+        currentLayoutManager = staggeredGridLayoutManager;
+        recyclerView.setLayoutManager(currentLayoutManager);
+
+        refreshMenu();
+    }
+
+    private void onShowAsListClicked() {
+        currentLayoutManager = linearLayoutManager;
+        recyclerView.setLayoutManager(currentLayoutManager);
+
+        refreshMenu();
     }
 
     @Override
