@@ -12,7 +12,7 @@ import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.ContentType;
-import ru.aakumykov.me.sociocat.utils.ContentTypeDetector;
+import ru.aakumykov.me.sociocat.utils.IntentUtils;
 
 public class ExternalDataReceiver extends BaseView {
 
@@ -39,7 +39,7 @@ public class ExternalDataReceiver extends BaseView {
             return;
         }
 
-        ContentType intentDataType = ContentTypeDetector.detectContentType(intent);
+        ContentType intentDataType = IntentUtils.detectContentType(intent);
 
         Constants.CardType cardType;
 

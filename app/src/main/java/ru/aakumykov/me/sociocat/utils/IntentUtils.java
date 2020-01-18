@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class ContentTypeDetector {
+public class IntentUtils {
 
     public static ContentType detectContentType(@Nullable Intent intent) {
         if (null == intent)
@@ -32,6 +32,8 @@ public class ContentTypeDetector {
             return ContentType.OTHER;
         }
     }
+
+
 
     private static ContentType detectTextType(@NonNull String type) {
 
