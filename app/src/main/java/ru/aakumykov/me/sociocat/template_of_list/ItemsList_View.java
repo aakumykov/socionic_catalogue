@@ -31,9 +31,6 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     private iItemsList.iDataAdapter dataAdapter;
     private iItemsList.iPresenter presenter;
 
-    private StaggeredGridLayoutManager staggeredGridLayoutManager;
-    private LinearLayoutManager linearLayoutManager;
-    private RecyclerView.LayoutManager currentLayoutManager;
 
     // Activity
     @Override
@@ -56,6 +53,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
             viewModel.storePresenter(this.presenter);
         }
 
+
         // Адаптер данных
         if (viewModel.hasDataAdapter()) {
             this.dataAdapter = viewModel.getDataAdapter();
@@ -64,14 +62,9 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
             viewModel.storeDataAdapter(this.dataAdapter);
         }
 
-        // Управляющие разметкой
-        linearLayoutManager = new LinearLayoutManager(this);
-        staggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-
         // Настройка recyclerView
-        currentLayoutManager = linearLayoutManager;
-
-        recyclerView.setLayoutManager(currentLayoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
 
         // Настройка обновления протягиванием
@@ -101,16 +94,9 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
 
-        // Поиск
         menuInflater.inflate(R.menu.search_widget, menu);
         configureSearchView(menu);
 
-        // Изменение вида список/плитки
-        if (currentLayoutManager instanceof StaggeredGridLayoutManager)
-            menuInflater.inflate(R.menu.list_view, menu);
-        else menuInflater.inflate(R.menu.grid_view, menu);
-
-        // Сортировка
         switch (dataAdapter.getSortingMode()) {
             case ORDER_NAME_DIRECT:
                 menuInflater.inflate(R.menu.sort_by_name_reverse, menu);
@@ -137,43 +123,18 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
             case R.id.actionSortByName:
             case R.id.actionSortByNameReverse:
                 presenter.onSortByNameClicked();
                 break;
-
             case R.id.actionSortByCount:
             case R.id.actionSortByCountReverse:
                 presenter.onSortByCountClicked();
                 break;
-
-            case R.id.actionListView:
-                onShowAsListClicked();
-                break;
-
-            case R.id.actionGridView:
-                onShowAsGridClicked();
-                break;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
-    }
-
-    private void onShowAsGridClicked() {
-        currentLayoutManager = staggeredGridLayoutManager;
-        recyclerView.setLayoutManager(currentLayoutManager);
-
-        refreshMenu();
-    }
-
-    private void onShowAsListClicked() {
-        currentLayoutManager = linearLayoutManager;
-        recyclerView.setLayoutManager(currentLayoutManager);
-
-        refreshMenu();
     }
 
 

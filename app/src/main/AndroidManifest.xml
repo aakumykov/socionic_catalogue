@@ -29,7 +29,7 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
-        <activity android:name=".template_of_list.ItemsList_View" android:exported="true">
+        <activity android:name=".template_of_list.ItemsList_View">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
