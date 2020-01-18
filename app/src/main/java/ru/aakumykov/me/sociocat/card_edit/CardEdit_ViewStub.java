@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.card_edit;
 
+import android.graphics.Bitmap;
+
 import androidx.annotation.Nullable;
 
 import java.util.HashMap;
@@ -145,17 +147,17 @@ public class CardEdit_ViewStub extends BaseView_Stub implements iCardEdit.View {
     }
 
     @Override
-    public void prepareForImage() {
+    public void prepareForImage(Bitmap imageBitmap) {
 
     }
 
     @Override
-    public void prepareForVideo() {
+    public void prepareForVideo(String videoCode, String timeCode) {
 
     }
 
     @Override
-    public void prepareForAudio() {
+    public void prepareForAudio(@Nullable String audioCode, Float timeCode) {
 
     }
 

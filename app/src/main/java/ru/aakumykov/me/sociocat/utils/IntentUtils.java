@@ -82,6 +82,15 @@ public class IntentUtils {
         });
     }
 
+    public static String extractYoutubeVideoCode(@Nullable Intent intent) {
+        if (null == intent)
+            return null;
+
+        String text = extractText(intent);
+
+        return YoutubeUtils.extractYoutubeVideoCode(text);
+    }
+
 
     public interface ImageExtractionCallbacks {
         void onImageExtractionSuccess(Bitmap bitmap, ImageType imageType, Uri imageURI);

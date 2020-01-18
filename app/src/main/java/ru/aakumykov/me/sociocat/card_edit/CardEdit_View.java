@@ -21,14 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -331,7 +326,7 @@ public class CardEdit_View extends BaseView implements
 
                 hideImageThrobber();
 
-                showErrorMsg(R.string.CARD_EDIT_error_displaying_image, "Glide.onLoadCleared()");
+                showErrorMsg(R.string.CARD_EDIT_error_displaying_image, errorMsg);
             }
         });
     }
@@ -564,19 +559,32 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void prepareForImage() {
+    public void prepareForImage(@Nullable Bitmap imageBitmap) {
+        if (null != imageBitmap) {
+            imageIsSetted = true;
+            imageView.setImageBitmap(imageBitmap);
+        }
+        else {
+            imageView.setImageResource(R.drawable.ic_image_placeholder_color);
+        }
+
         MyUtils.show(imageHolder);
-        imageView.setImageResource(R.drawable.ic_image_placeholder_color);
     }
 
     @Override
-    public void prepareForVideo() {
-        MyUtils.show(addMediaButton);
+    public void prepareForVideo(@Nullable String videoCode, @Nullable String timeCode) {
+        if (null != videoCode)
+            displayVideo(videoCode, null);
+        else
+            MyUtils.show(addMediaButton);
     }
 
     @Override
-    public void prepareForAudio() {
-        MyUtils.show(addMediaButton);
+    public void prepareForAudio(@Nullable String audioCode, @Nullable Float timeCode) {
+        if (null != audioCode)
+            displayAudio(audioCode, null);
+        else
+            MyUtils.show(addMediaButton);
     }
 
     @Override

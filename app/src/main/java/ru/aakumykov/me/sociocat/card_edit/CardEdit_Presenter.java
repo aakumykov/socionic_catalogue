@@ -324,76 +324,71 @@ public class CardEdit_Presenter implements
         currentCard = new Card(cardsSingleton.createKey());
 
         String cardType = String.valueOf(intent.getStringExtra(Constants.CARD_TYPE));
+        Intent externalDataIntent = intent.getParcelableExtra(Intent.EXTRA_INTENT);
 
         switch (cardType) {
             case Constants.TEXT_CARD:
-                prepareForTextCard(intent);
+                prepareForTextCard(externalDataIntent);
                 break;
             case Constants.IMAGE_CARD:
-                prepareForImageCard(intent);
+                prepareForImageCard(externalDataIntent);
                 break;
             case Constants.AUDIO_CARD:
-                prepareForAudioCard(intent);
+                prepareForAudioCard(externalDataIntent);
                 break;
             case Constants.VIDEO_CARD:
-                prepareForVideoCard(intent);
+                prepareForVideoCard(externalDataIntent);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown cardType: "+cardType);
         }
     }
 
-    private void prepareForTextCard(Intent intent) {
+    private void prepareForTextCard(@Nullable Intent dataIntent) {
         currentCard.setType(Constants.TEXT_CARD);
 
-        String quote = IntentUtils.extractText(intent);
+        String quote = IntentUtils.extractText(dataIntent);
         String title = MyUtils.cutToLength(quote, Config.TITLE_MAX_LENGTH);
 
         view.prepareForQuote(title, quote);
     }
 
-    private void prepareForImageCard(Intent intent) throws Exception {
+    private void prepareForImageCard(@Nullable Intent dataIntent) {
         currentCard.setType(Constants.IMAGE_CARD);
 
-        IntentUtils.extractImage(view.getAppContext(), intent, new IntentUtils.ImageExtractionCallbacks() {
+        IntentUtils.extractImage(view.getAppContext(), dataIntent, new IntentUtils.ImageExtractionCallbacks() {
             @Override
             public void onImageExtractionSuccess(Bitmap bitmap, ImageType imageType, Uri imageURI) {
                 // TODO: вынести в отдельный метод
                 mImageBitmap = bitmap.copy(bitmap.getConfig(), true);
                 mImageType = imageType;
-                view.displayImage(mImageBitmap);
+
+                view.prepareForImage(mImageBitmap);
             }
 
             @Override
             public void onImageExtractionError(String errorMsg) {
-                view.prepareForImage();
+                view.showLongToast(R.string.CARD_EDIT_error_processing_image);
+                view.prepareForImage(null);
+                Log.e(TAG, errorMsg);
             }
         });
     }
 
-    private void prepareForVideoCard(Intent intent) {
+    private void prepareForVideoCard(@Nullable Intent dataIntent) {
         currentCard.setType(Constants.VIDEO_CARD);
 
-        String videoCode = MVPUtils.extractYoutubeVideoCode(intent.getStringExtra(Constants.EXTERNAL_DATA));
-        if (null != videoCode) {
-            currentCard.setVideoCode(videoCode);
-            view.displayVideo(videoCode, null);
-        }
-        else {
-            view.prepareForVideo();
-        }
+        String videoCode = IntentUtils.extractYoutubeVideoCode(dataIntent);
+        currentCard.setVideoCode(videoCode);
+        view.prepareForVideo(videoCode, null);
     }
 
-    private void prepareForAudioCard(Intent intent) {
+    private void prepareForAudioCard(@Nullable Intent dataIntent) {
         currentCard.setType(Constants.AUDIO_CARD);
 
-        String audioCode = MVPUtils.extractYoutubeVideoCode(intent.getStringExtra(Constants.EXTERNAL_DATA));
-        if (null != audioCode) {
-            currentCard.setAudioCode(audioCode);
-            view.displayAudio(audioCode, null);
-        }
-        else
-            view.prepareForAudio();
+        String audioCode = IntentUtils.extractYoutubeVideoCode(dataIntent);
+        currentCard.setVideoCode(audioCode);
+        view.prepareForAudio(audioCode, null);
     }
 
     private void proceed2editCard(Intent intent) throws Exception {

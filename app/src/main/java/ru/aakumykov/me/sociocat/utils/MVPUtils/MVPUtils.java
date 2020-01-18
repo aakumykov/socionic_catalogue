@@ -108,6 +108,7 @@ public class MVPUtils {
     private MVPUtils(){}
 
 
+    @Deprecated
     public static String detectInputDataMode(Intent intent) {
 
         if (null == intent)
@@ -158,6 +159,7 @@ public class MVPUtils {
         return false;
     }
 
+    @Deprecated
     public static String extractYoutubeVideoCode(@Nullable String link) {
 
         if (null == link)
@@ -544,6 +546,7 @@ public class MVPUtils {
         }
     }
 
+    @Deprecated
     public static String getYoutubeVideoCodeFromIntent(Intent intent) throws Exception {
 
         String link = intent.getStringExtra(Intent.EXTRA_TEXT);

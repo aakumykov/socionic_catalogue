@@ -169,13 +169,11 @@ public final class MyUtils {
         return mimeType;
     }
 
-    public static String cutToLength(String text, Integer maxLength) {
+    public static String cutToLength(@Nullable String text, Integer maxLength) {
         if (null == text) {
-            Log.e(TAG, "You must supply input text.");
             return null;
         }
         if (null == maxLength) {
-            Log.e(TAG, "You must supply maxLength.");
             maxLength = text.length();
         }
         return text.substring(0, Math.min(text.length(), maxLength));

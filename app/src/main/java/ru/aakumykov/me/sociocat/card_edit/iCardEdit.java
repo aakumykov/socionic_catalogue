@@ -71,10 +71,10 @@ public interface iCardEdit {
         void showDescriptionError(int msgId);
 
         // Подготовка для разного содержимого
-        void prepareForQuote(String title, String quote);
-        void prepareForImage();
-        void prepareForVideo();
-        void prepareForAudio();
+        void prepareForQuote(@Nullable String title, @Nullable String quote);
+        void prepareForImage(@Nullable Bitmap imageBitmap);
+        void prepareForVideo(@Nullable String videoCode, @Nullable String timeCode);
+        void prepareForAudio(@Nullable String audioCode, @Nullable Float timeCode);
 
         // Разное
         void finishEdit(Card card);
