@@ -34,6 +34,9 @@ public interface iBaseView {
     void showToast(int msgId);
     void showToast(String message);
 
+    void showLongToast(int msgId);
+    void showLongToast(String message);
+
     // Заголовок страницы
     void setPageTitle(int titleId);
     void setPageTitle(int titleId, String insertedText);

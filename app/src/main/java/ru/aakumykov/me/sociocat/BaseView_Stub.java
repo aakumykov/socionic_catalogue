@@ -78,6 +78,16 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
+    public void showLongToast(int msgId) {
+
+    }
+
+    @Override
+    public void showLongToast(String message) {
+
+    }
+
+    @Override
     public void setPageTitle(int titleId) {
 
     }

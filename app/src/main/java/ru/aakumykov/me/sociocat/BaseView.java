@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -245,6 +246,16 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Override
     public void showToast(String message) {
         MyUtils.showCustomToast(getAppContext(), message);
+    }
+
+    @Override
+    public void showLongToast(int msgId) {
+        MyUtils.showLongCustomToast(getAppContext(), msgId);
+    }
+
+    @Override
+    public void showLongToast(String message) {
+        MyUtils.showLongCustomToast(getAppContext(), message);
     }
 
 

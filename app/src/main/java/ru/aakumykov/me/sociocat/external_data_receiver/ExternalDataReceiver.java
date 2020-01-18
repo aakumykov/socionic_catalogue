@@ -1,10 +1,7 @@
 package ru.aakumykov.me.sociocat.external_data_receiver;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
 
 import androidx.annotation.Nullable;
 
@@ -14,12 +11,8 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.utils.ImageExtractor;
-import ru.aakumykov.me.sociocat.utils.ImageInfo;
-import ru.aakumykov.me.sociocat.utils.ImageType;
-import ru.aakumykov.me.sociocat.utils.ImageUtils;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.ContentType;
+import ru.aakumykov.me.sociocat.utils.ContentTypeDetector;
 
 public class ExternalDataReceiver extends BaseView {
 
@@ -37,14 +30,44 @@ public class ExternalDataReceiver extends BaseView {
         setContentView(R.layout.data_reciever_activity);
         setPageTitle(R.string.EXTERNAL_DATA_RECIEVER_page_title);
 
+        processInputIntent(getIntent());
+    }
 
-        Intent inputIntent = getIntent();
-
-        if (null == inputIntent) {
-            showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_input_data_error, "Intent is null");
+    private void processInputIntent(@Nullable Intent intent) {
+        if (null == intent) {
+            showLongToast(R.string.EXTERNAL_DATA_RECIEVER_no_input_data);
             return;
         }
-        detectDataType(inputIntent);
+
+        ContentType intentDataType = ContentTypeDetector.detectContentType(intent);
+
+        Constants.CardType cardType;
+
+        switch (intentDataType) {
+            case TEXT:
+                cardType = Constants.CardType.TEXT_CARD;
+                break;
+
+            case IMAGE:
+                cardType = Constants.CardType.IMAGE_CARD;
+                break;
+
+            case YOUTUBE_VIDEO:
+                cardType = Constants.CardType.VIDEO_CARD;
+                break;
+
+            case OTHER:
+                showLongToast(R.string.EXTERNAL_DATA_RECIEVER_unsupported_data_type);
+                finish();
+                return;
+
+            default:
+                showLongToast(R.string.EXTERNAL_DATA_RECIEVER_unknown_data_type);
+                finish();
+                return;
+        }
+
+        go2createCard(cardType, intent);
     }
 
     @Override
@@ -80,57 +103,12 @@ public class ExternalDataReceiver extends BaseView {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
-    }
 
 
     // Внутренние методы
     private void finishIfDone() {
         if (mWorkDone)
             finish();
-    }
-
-    private void detectDataType(Intent inputIntent) {
-        Constants.CardType cardType;
-        Object data;
-
-        ImageExtractor.extractImageFromIntent(this, inputIntent, new ImageExtractor.ImageExtractionCallbacks() {
-            @Override
-            public void onImageExtractionSuccess(Bitmap bitmap, ImageType imageType, Uri imageURI) {
-                go2createCard(Constants.CardType.IMAGE_CARD, imageURI);
-                return;
-            }
-
-            @Override
-            public void onImageExtractionError(String errorMsg) {
-                showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_error_processing_image, errorMsg);
-                return;
-            }
-        });
-
-
-        // Видео/текст
-        String text = MVPUtils.getTextFromIntent(inputIntent);
-
-        if (null == text) {
-            showErrorMsg(R.string.EXTERNAL_DATA_RECIEVER_unsupported_input_data, "There is no text content in Intent");
-            return;
-        }
-
-        String videoCode = MVPUtils.extractYoutubeVideoCode(text);
-
-        if (null != videoCode) {
-            cardType = Constants.CardType.VIDEO_CARD;
-            data = videoCode;
-        }
-        else {
-            cardType = Constants.CardType.TEXT_CARD;
-            data = text;
-        }
-
-
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {

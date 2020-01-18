@@ -443,7 +443,7 @@
     <string name="CARDS_GRID_card_edit_cancelled">Редактирование отменено</string>
     <string name="CARDS_GRID_data_error">Ошибка данных</string>
     <string name="ERROR_deleting_card">Ошибка удаления карточки</string>
-    <string name="EXTERNAL_DATA_RECIEVER_unsupported_input_data">Неподдерживаемый тип данных</string>
+    <string name="EXTERNAL_DATA_RECIEVER_unsupported_data_type">Тип данных не поддерживается</string>
     <string name="CARD_SHOW_you_cannot_edit_this_card">Вы не можете редактировать эту карточку</string>
     <string name="CARD_SHOW_there_is_no_card">Карточка отсутствует</string>
     <string name="CARDS_GRID_card_creation_cancelled">Создание карточки отменено</string>
@@ -560,5 +560,7 @@
     <string name="EXTERNAL_DATA_RECIEVER_unknown_card_type">Неизвестный тип карточки</string>
     <string name="CARD_EDIT_data_error">Ошибка данных</string>
     <string name="MENU_open_in_browser">Открыть в веб-браузере</string>
+    <string name="EXTERNAL_DATA_RECIEVER_no_input_data">Нет входящих данных</string>
+    <string name="EXTERNAL_DATA_RECIEVER_unknown_data_type">Неизвестный тип данных</string>
 
 </resources><!-- «%1$s» -->
