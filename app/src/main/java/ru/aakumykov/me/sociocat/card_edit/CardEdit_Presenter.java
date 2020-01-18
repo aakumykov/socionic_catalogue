@@ -368,9 +368,11 @@ public class CardEdit_Presenter implements
 
             @Override
             public void onImageExtractionError(String errorMsg) {
-                view.showLongToast(R.string.CARD_EDIT_error_processing_image);
+                if (!isNewCard) {
+                    view.showLongToast(R.string.CARD_EDIT_error_processing_image);
+                    Log.e(TAG, errorMsg);
+                }
                 view.prepareForImage(null);
-                Log.e(TAG, errorMsg);
             }
         });
     }
