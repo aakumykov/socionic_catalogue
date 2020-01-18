@@ -15,6 +15,7 @@ import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 
+@Deprecated
 public class ImageExtractor {
 
     public static void extractImageFromIntent(Context context, @Nullable Intent intent, ImageExtractionCallbacks callbacks) {
