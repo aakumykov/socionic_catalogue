@@ -268,13 +268,27 @@ public final class MyUtils {
         return Configuration.ORIENTATION_PORTRAIT == getOrientation(context);
     }
 
+
+    // Всплывающие сообщения
     public static void showCustomToast(Context context, int messageId) {
         String message = context.getResources().getString(messageId);
         showCustomToast(context, message);
     }
 
     public static void showCustomToast(Context context, String message) {
+        showCustomToast(context, message, Toast.LENGTH_SHORT);
+    }
 
+    public static void showLongCustomToast(Context context, int messageId) {
+        String message = context.getResources().getString(messageId);
+        showCustomToast(context, message, Toast.LENGTH_LONG);
+    }
+
+    public static void showLongCustomToast(Context context, String message) {
+        showCustomToast(context, message, Toast.LENGTH_LONG);
+    }
+
+    private static void showCustomToast(Context context, String message, int toastShowLength) {
         LayoutInflater myInflater = LayoutInflater.from(context);
         View view = myInflater.inflate(R.layout.toast, null);
 
@@ -283,9 +297,10 @@ public final class MyUtils {
 
         Toast mytoast = new Toast(context);
         mytoast.setView(view);
-        mytoast.setDuration(Toast.LENGTH_SHORT);
+        mytoast.setDuration(toastShowLength);
         mytoast.show();
     }
+
 
     public static String stackTrace2String(StackTraceElement[] stackTraceElements) {
         String stackTrace = "";
