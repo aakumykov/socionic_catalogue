@@ -128,30 +128,27 @@ public class ExternalDataReceiver extends BaseView {
         }
     }
 
-    private void go2createCard(Constants.CardType cardType, Object data) {
+    private void go2createCard(Constants.CardType cardType, Intent inputIntent) {
 
         Intent intent = new Intent(this, CardEdit_View.class);
         intent.setAction(Constants.ACTION_CREATE);
+        intent.putExtra(Intent.EXTRA_INTENT, inputIntent);
 
         switch (cardType) {
             case TEXT_CARD:
                 intent.putExtra(Constants.CARD_TYPE, Constants.TEXT_CARD);
-                intent.putExtra(Constants.EXTERNAL_DATA, (String) data);
                 break;
 
             case IMAGE_CARD:
                 intent.putExtra(Constants.CARD_TYPE, Constants.IMAGE_CARD);
-                intent.putExtra(Constants.EXTERNAL_DATA, (String) data);
                 break;
 
             case AUDIO_CARD:
                 intent.putExtra(Constants.CARD_TYPE, Constants.AUDIO_CARD);
-                intent.putExtra(Constants.EXTERNAL_DATA, (String) data);
                 break;
 
             case VIDEO_CARD:
                 intent.putExtra(Constants.CARD_TYPE, Constants.VIDEO_CARD);
-                intent.putExtra(Constants.EXTERNAL_DATA, (String) data);
                 break;
 
             default:
