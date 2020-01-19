@@ -12,6 +12,8 @@ public interface iPage {
     interface iView extends iBaseView {
         void displayItem(Item item);
         void hideRefreshThrobber();
+
+        void goCardsGrid();
     }
 
     interface iPresenter {
@@ -29,6 +31,8 @@ public interface iPage {
         void onButtonClicked();
 
         void onBackPressed();
+
+        boolean onHomePressed();
     }
 
 }

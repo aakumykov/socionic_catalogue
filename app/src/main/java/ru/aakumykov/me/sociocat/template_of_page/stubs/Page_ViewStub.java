@@ -18,4 +18,9 @@ public class Page_ViewStub extends BaseView_Stub implements iPage.iView {
     public void hideRefreshThrobber() {
 
     }
+
+    @Override
+    public void goCardsGrid() {
+
+    }
 }

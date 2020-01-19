@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.template_of_page.models.Item;
 import ru.aakumykov.me.sociocat.template_of_page.view_model.Page_ViewModel;
 import ru.aakumykov.me.sociocat.template_of_page.view_model.Page_ViewModelFactory;
@@ -83,6 +84,10 @@ public class Page_View extends BaseView implements iPage.iView {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+            case android.R.id.home:
+                return presenter.onHomePressed();
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -117,6 +122,12 @@ public class Page_View extends BaseView implements iPage.iView {
     public void hideRefreshThrobber() {
         swipeRefreshLayout.setRefreshing(false);
     }
+
+    @Override
+    public void goCardsGrid() {
+        startActivity(new Intent(this, CardsGrid_View.class));
+    }
+
 
     // Нажатия
     @OnClick(R.id.button)

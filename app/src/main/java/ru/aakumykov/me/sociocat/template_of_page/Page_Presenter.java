@@ -57,7 +57,13 @@ class Page_Presenter implements iPage.iPresenter {
 
     @Override
     public void onBackPressed() {
+        view.goCardsGrid();
+    }
 
+    @Override
+    public boolean onHomePressed() {
+        view.goCardsGrid();
+        return true;
     }
 
 
