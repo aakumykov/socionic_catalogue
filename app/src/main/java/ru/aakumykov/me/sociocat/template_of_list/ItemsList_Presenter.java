@@ -124,7 +124,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
 
     private List<Item> createRandomList() {
-        int min = 2;
+        int min = 10;
         int max = 20;
         int randomSize = MyUtils.random(min, max);
 

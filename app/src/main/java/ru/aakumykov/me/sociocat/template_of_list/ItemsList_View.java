@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
@@ -28,6 +29,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     private SearchView searchView;
     private iItemsList.iDataAdapter dataAdapter;
     private iItemsList.iPresenter presenter;
+    private boolean isFilterActive = false;
 
 
     // Activity
@@ -127,6 +129,15 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (null != searchView && !searchView.isIconified()) {
+            searchView.clearFocus();
+            searchView.setIconified(true);
+        }
+        else
+            super.onBackPressed();
+    }
 
     // BaseView
     @Override
@@ -202,6 +213,23 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
             searchView.setIconified(false);
         }
 
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                isFilterActive = false;
+                return false;
+            }
+        });
+
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    isFilterActive = true;
+                }
+            }
+        });
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -210,7 +238,9 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //dataAdapter.getFilter().filter(newText);
+                if (isFilterActive) {
+                    dataAdapter.getFilter().filter(newText);
+                }
                 return false;
             }
         });
