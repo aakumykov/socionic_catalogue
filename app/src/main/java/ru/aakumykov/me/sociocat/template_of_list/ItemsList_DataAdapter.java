@@ -7,6 +7,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -82,7 +83,7 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         this.isVirgin = false;
 
-        notifyDataSetChanged();
+        performSorting(null);
     }
 
     @Override
@@ -139,9 +140,7 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 break;
         }
 
-        Collections.sort(itemsList, new ItemsComparator(currentSortingMode));
-        notifyDataSetChanged();
-        sortingListener.onSortingComplete();
+        performSorting(sortingListener);
     }
 
     @Override
@@ -155,9 +154,7 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 break;
         }
 
-        Collections.sort(itemsList, new ItemsComparator(currentSortingMode));
-        notifyDataSetChanged();
-        sortingListener.onSortingComplete();
+        performSorting(sortingListener);
     }
 
     @Override
@@ -180,4 +177,12 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return itemsList.size() - 1;
     }
 
+    private void performSorting(@Nullable iItemsList.SortingListener sortingListener) {
+        Collections.sort(itemsList, new ItemsComparator(currentSortingMode));
+
+        notifyDataSetChanged();
+
+        if (null != sortingListener)
+            sortingListener.onSortingComplete();
+    }
 }

@@ -109,8 +109,9 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
         if (hasFilterText())
             dataAdapter.setList(list, getFilterText());
-        else
+        else {
             dataAdapter.setList(list);
+        }
 
         updatePageTitle();
 
