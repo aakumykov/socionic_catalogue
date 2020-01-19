@@ -22,6 +22,8 @@ public final class Constants {
     public final static String AVATARS_PATH = "avatars";
     public final static String DEVICE_ID_PATH = "device_id";
 
+    // TODO: добавлять к ACTION_* и EXTRA_* константам имя пакета
+
     public final static String ACTION_CREATE = "ACTION_CREATE";
     public final static String ACTION_EDIT = "ACTION_EDIT";
     public final static String ACTION_EDIT_RESUME = "ACTION_EDIT_RESUME";
