@@ -72,11 +72,11 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         if (backButtonEnabled)
             pageView.activateUpButton();
 
-        if (intent.hasExtra(Constants.TAG_FILTER))
+        this.tagFilter = intent.getStringExtra(Constants.TAG_NAME);
+
+        if (null != this.tagFilter)
         {
             pageView.activateUpButton();
-
-            this.tagFilter = intent.getStringExtra(Constants.TAG_FILTER);
 
             if (null != tagFilter)
                 loadCardsWithTag(this.tagFilter);
