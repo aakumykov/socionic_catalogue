@@ -41,7 +41,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
 
         activateUpButton();
 
-        configirePresenterAndAdapter();
+        configurePresenterAndAdapter();
 
         configureRecyclerView();
 
@@ -100,14 +100,17 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.actionSortByName:
             case R.id.actionSortByNameReverse:
                 presenter.onSortByNameClicked();
                 break;
+
             case R.id.actionSortByCount:
             case R.id.actionSortByCountReverse:
                 presenter.onSortByCountClicked();
                 break;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -138,7 +141,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
 
 
     // Внутренние методы
-    private void configirePresenterAndAdapter() {
+    private void configurePresenterAndAdapter() {
 
         ItemsList_ViewModel viewModel = new ViewModelProvider(this, new ItemsList_ViewModelFactory())
                 .get(ItemsList_ViewModel.class);
@@ -197,7 +200,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                dataAdapter.getFilter().filter(newText);
+                //dataAdapter.getFilter().filter(newText);
                 return false;
             }
         });

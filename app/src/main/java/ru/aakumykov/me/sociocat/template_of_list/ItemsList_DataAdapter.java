@@ -22,9 +22,12 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 {
     private iItemsList.iPresenter presenter;
 
-    private List<Item> itemsList = new ArrayList<>();
     private boolean isVirgin = true;
+
+    private List<Item> itemsList = new ArrayList<>();
+
     private ItemsFilter itemsFilter;
+
     private iItemsList.SortingMode currentSortingMode = iItemsList.SortingMode.ORDER_NAME_DIRECT;
 
 
@@ -35,6 +38,13 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             throw new IllegalArgumentException("Presenter passed as argument cannot be null");
 
         this.presenter = presenter;
+    }
+
+
+    // RecyclerView
+    @Override
+    public void registerAdapterDataObserver(@NonNull RecyclerView.AdapterDataObserver observer) {
+        super.registerAdapterDataObserver(observer);
     }
 
 
