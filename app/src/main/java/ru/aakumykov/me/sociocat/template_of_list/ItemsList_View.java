@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.template_of_list;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import butterknife.BindView;
@@ -39,35 +37,14 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
         setContentView(R.layout.template_of_list_activity);
         ButterKnife.bind(this);
 
-        activateUpButton();
         setPageTitle(R.string.LIST_TEMPLATE_title);
 
-        ItemsList_ViewModel viewModel = new ViewModelProvider(this, new ItemsList_ViewModelFactory())
-                .get(ItemsList_ViewModel.class);
+        activateUpButton();
 
-        // Презентер (должен создаваться перед Адаптером)
-        if (viewModel.hasPresenter()) {
-            this.presenter = viewModel.getPresenter();
-        } else {
-            this.presenter = new ItemsList_Presenter();
-            viewModel.storePresenter(this.presenter);
-        }
+        configirePresenterAndAdapter();
 
+        configureRecyclerView();
 
-        // Адаптер данных
-        if (viewModel.hasDataAdapter()) {
-            this.dataAdapter = viewModel.getDataAdapter();
-        } else {
-            this.dataAdapter = new ItemsList_DataAdapter(presenter);
-            viewModel.storeDataAdapter(this.dataAdapter);
-        }
-
-        // Настройка recyclerView
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-        recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
-
-        // Настройка обновления протягиванием
         configureSwipeRefresh();
     }
 
@@ -161,6 +138,34 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
 
 
     // Внутренние методы
+    private void configirePresenterAndAdapter() {
+
+        ItemsList_ViewModel viewModel = new ViewModelProvider(this, new ItemsList_ViewModelFactory())
+                .get(ItemsList_ViewModel.class);
+
+        // Презентер (должен создаваться перед Адаптером)
+        if (viewModel.hasPresenter()) {
+            this.presenter = viewModel.getPresenter();
+        } else {
+            this.presenter = new ItemsList_Presenter();
+            viewModel.storePresenter(this.presenter);
+        }
+
+        // Адаптер данных
+        if (viewModel.hasDataAdapter()) {
+            this.dataAdapter = viewModel.getDataAdapter();
+        } else {
+            this.dataAdapter = new ItemsList_DataAdapter(presenter);
+            viewModel.storeDataAdapter(this.dataAdapter);
+        }
+    }
+
+    private void configureRecyclerView() {
+//        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
+    }
+
     private void configureSwipeRefresh() {
         swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
 
