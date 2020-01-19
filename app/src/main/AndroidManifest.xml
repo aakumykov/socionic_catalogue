@@ -29,13 +29,9 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
-        <activity android:name=".template_of_list.ItemsList_View" android:exported="true">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".template_of_list.ItemsList_View" android:exported="true"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
+        <activity android:name=".template_of_page.Page_View" android:exported="true"/>
 
         <activity android:name=".tags_lsit3.TagsList3_View" />
 
