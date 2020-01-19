@@ -103,12 +103,22 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
 
             case R.id.actionSortByName:
             case R.id.actionSortByNameReverse:
-                presenter.onSortByNameClicked();
+                dataAdapter.sortByName(new iItemsList.SortingListener() {
+                    @Override
+                    public void onSortingComplete() {
+                        refreshMenu();
+                    }
+                });
                 break;
 
             case R.id.actionSortByCount:
             case R.id.actionSortByCountReverse:
-                presenter.onSortByCountClicked();
+                dataAdapter.sortByCount(new iItemsList.SortingListener() {
+                    @Override
+                    public void onSortingComplete() {
+                        refreshMenu();
+                    }
+                });
                 break;
 
             default:
