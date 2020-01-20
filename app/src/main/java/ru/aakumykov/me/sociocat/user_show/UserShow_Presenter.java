@@ -50,7 +50,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
             return;
         }
 
-        String userId = intent.hasCategory(Constants.USER_ID) ?
+        String userId = intent.hasExtra(Constants.USER_ID) ?
                 intent.getStringExtra(Constants.USER_ID) :
                 AuthSingleton.currentUserId();
 
