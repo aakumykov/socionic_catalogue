@@ -19,6 +19,7 @@ import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Password;
 
 import java.util.List;
 
@@ -50,6 +51,10 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
     @Email(messageResId = R.string.VALIDATION_mailformed_email)
     @BindView(R.id.emailInput)
     EditText emailInput;
+
+    @Password(messageResId = R.string.VALIDATION_wrong_password)
+    @BindView(R.id.passwordInput)
+    EditText passwordInput;
 
     @BindView(R.id.aboutInput) EditText aboutInput;
 
@@ -345,7 +350,6 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
 
     @Override
     public void onValidationFailed(List<ValidationError> errors) {
-
         for (ValidationError error : errors)
         {
             View view = error.getView();
