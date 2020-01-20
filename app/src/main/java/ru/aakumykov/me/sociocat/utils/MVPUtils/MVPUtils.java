@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.text.Spannable;
@@ -15,14 +14,16 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.webkit.MimeTypeMap;
-import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -32,10 +33,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.FragmentManager;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -44,11 +41,6 @@ import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class MVPUtils {
-
-    public interface ImageLoadWithResizeCallbacks {
-        void onImageLoadWithResizeSuccess(FileInfo fileInfo);
-        void onImageLoadWithResizeFail(String errorMsg);
-    }
 
     private final static String TAG = "MVPUtils";
     private static Map<String,String> youtubePatterns = new HashMap<>();
@@ -224,75 +216,6 @@ public class MVPUtils {
 
     public static boolean isCorrectCardType(String cardType) {
         return correctCardTypes.contains(cardType);
-    }
-
-    public static void loadImageWithResizeInto(
-            final Uri imageURI,
-            final ImageView targetImageView,
-            final boolean unprocessedYet,
-            final Integer targetWidth,
-            final Integer targetHeight,
-            final ImageLoadWithResizeCallbacks callbacks
-
-    ) throws Exception
-    {
-        Picasso.get().load(imageURI)
-                .into(targetImageView, new Callback() {
-
-            @Override
-            public void onSuccess() {
-
-                // Изменение размера картинки, если это первая загрузка "с диска"
-                if (unprocessedYet) {
-                    Drawable drawable = targetImageView.getDrawable();
-                    int initialWidth = drawable.getIntrinsicWidth();
-                    int initialHeight = drawable.getIntrinsicHeight();
-
-                    int destWidth = 0;
-                    int destHeight = 0;
-
-                    if (initialWidth >= initialHeight) {
-                        destWidth = (initialWidth > targetWidth) ? targetWidth : initialWidth;
-                        destHeight = 0;
-                    } else {
-                        destWidth = 0;
-                        destHeight = (initialHeight > targetHeight) ? targetHeight : initialHeight;
-                    }
-
-                    Picasso.get().load(imageURI)
-                            .resize(destWidth, destHeight)
-                            .into(targetImageView, new Callback() {
-                                @Override
-                                public void onSuccess() {
-                                    Drawable drawable = targetImageView.getDrawable();
-                                    int width = drawable.getIntrinsicWidth();
-                                    int height = drawable.getIntrinsicHeight();
-
-                                    FileInfo fileInfo = new FileInfo(width, height);
-
-                                    callbacks.onImageLoadWithResizeSuccess(fileInfo);
-                                }
-
-                                @Override
-                                public void onError(Exception e) {
-
-                                }
-                            });
-                }
-                else {
-                    Drawable drawable = targetImageView.getDrawable();
-                    int width = drawable.getIntrinsicWidth();
-                    int height = drawable.getIntrinsicHeight();
-                    callbacks.onImageLoadWithResizeSuccess(new FileInfo(width, height));
-                }
-            }
-
-            @Override
-            public void onError(Exception e) {
-                callbacks.onImageLoadWithResizeFail(e.getMessage());
-                e.printStackTrace();
-            }
-        });
     }
 
     public static String uri2ext(Context context, Uri uri) {
