@@ -27,6 +27,7 @@ public class Card implements
     public final static String KEY_CTIME = "ctime";
     public static final String KEY_TAGS = "tags";
     public static final String KEY_USER_NAME = "userName";
+    public static final String KEY_USER_AVATAR_URL = "userAvatarURL";
     public static final String KEY_COMMENTS_KEYS = "commentsKeys";
     public static final String KEY_RATING = "rating";
 
@@ -40,6 +41,7 @@ public class Card implements
     private String key;
     private String userId;
     private String userName;
+    private String userAvatarURL;
     private String type;
     private String title;
     private String quote;
@@ -77,6 +79,7 @@ public class Card implements
                 ", title: "+getTitle()+
                 ", userId: "+getUserId()+
                 ", userName: "+getUserName()+
+                ", userAvatarURL: "+getUserAvatarURL()+
                 ", type: "+getType()+
                 ", quote: "+getQuote()+
                 ", quoteSource: "+getQuoteSource()+
@@ -104,6 +107,7 @@ public class Card implements
         cardMap.put("key", getKey());
         cardMap.put("userId", getUserId());
         cardMap.put("userName", getUserName());
+        cardMap.put("userAvatarURL", getUserAvatarURL());
         cardMap.put("type", getType());
         cardMap.put("title", getTitle());
         cardMap.put("quote", getQuote());
@@ -137,6 +141,7 @@ public class Card implements
         dest.writeString(this.key);
         dest.writeString(this.userId);
         dest.writeString(this.userName);
+        dest.writeString(this.userAvatarURL);
         dest.writeString(this.type);
         dest.writeString(this.title);
         dest.writeString(this.quote);
@@ -164,6 +169,7 @@ public class Card implements
         key = in.readString();
         userId = in.readString();
         userName = in.readString();
+        userAvatarURL = in.readString();
         type = in.readString();
         title = in.readString();
         quote = in.readString();
@@ -341,6 +347,15 @@ public class Card implements
         for (String tagName : this.tags)
             hashMap.put(tagName, true);
         return hashMap;
+    }
+
+    // Ссылка на аватар
+    public String getUserAvatarURL() {
+        return userAvatarURL;
+    }
+
+    public void setUserAvatarURL(String userAvatarURL) {
+        this.userAvatarURL = userAvatarURL;
     }
 
     // Отметка времени
