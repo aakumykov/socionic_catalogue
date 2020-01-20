@@ -15,39 +15,16 @@ android {
             useSupportLibrary = true
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug {
-            //applicationIdSuffix ".debug"
-            debuggable true
-        }
     }
-
-    flavorDimensions "version"
-    productFlavors {
-        cards_grid {
-            dimension "version"
-            versionNameSuffix "-cards_grid"
-        }
-        list_template {
-            dimension "version"
-            versionNameSuffix "-list_template"
-        }
-        page_template {
-            dimension "version"
-            versionNameSuffix "-page_template"
-        }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
-
-
 }
 
 dependencies {
