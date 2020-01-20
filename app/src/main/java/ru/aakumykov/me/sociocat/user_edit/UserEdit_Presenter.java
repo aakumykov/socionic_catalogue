@@ -274,6 +274,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
             usersSingleton.saveUser(editedUser, new iUsersSingleton.SaveCallbacks() {
                 @Override
                 public void onUserSaveSuccess(User user) {
+                    usersSingleton.storeCurrentUser(user);
                     view.finishEdition(user);
                 }
 
