@@ -265,6 +265,7 @@ public class CardEdit_Presenter implements
             // TODO: нужна проверка на авторизованность!
             currentCard.setUserId(AuthSingleton.currentUserId());
             currentCard.setUserName(usersSingleton.currentUserName());
+            currentCard.setUserAvatarURL(usersSingleton.getCurrentUser().getAvatarURL());
 
             // Время создания/правки
             Long currentTime = new Date().getTime();
@@ -318,7 +319,7 @@ public class CardEdit_Presenter implements
 
 
     // Внутренние методы
-    private void proceed2createCard(Intent intent) throws Exception {
+    private void proceed2createCard(Intent intent) {
 
         isNewCard = true;
         currentCard = new Card(cardsSingleton.createKey());
@@ -419,14 +420,12 @@ public class CardEdit_Presenter implements
 
 
     private void updateCurrentCardFromView(){
-         {
-            currentCard.setTitle(view.getCardTitle());
-            currentCard.setQuote(view.getQuote());
-            currentCard.setQuoteSource(view.getQuoteSource());
-            currentCard.setDescription(view.getDescription());
-            currentCard.setTags(new ArrayList<>(view.getTags().keySet()));
-            currentCard.setTimecode(view.getTimecode());
-        }
+        currentCard.setTitle(view.getCardTitle());
+        currentCard.setQuote(view.getQuote());
+        currentCard.setQuoteSource(view.getQuoteSource());
+        currentCard.setDescription(view.getDescription());
+        currentCard.setTags(new ArrayList<>(view.getTags().keySet()));
+        currentCard.setTimecode(view.getTimecode());
     }
 
     private void processBeforeSave() {
