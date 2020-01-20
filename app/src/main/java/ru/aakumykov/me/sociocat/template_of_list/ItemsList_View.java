@@ -219,8 +219,10 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     }
 
     private void configureRecyclerView() {
-//        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        this.staggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        this.linearLayoutManager = new LinearLayoutManager(this);
+
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
     }
 
