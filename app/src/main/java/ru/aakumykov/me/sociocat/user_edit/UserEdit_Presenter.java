@@ -4,7 +4,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -17,7 +25,6 @@ import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.user_edit.stubs.UserEdit_ViewStub;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
-import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
@@ -148,35 +155,24 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     @Override
     public void onFormValidationSuccess() {
-        if (null != avatarBitmap && null != avatarImageType) {
-            uploadAvatar(new iAvatarUploadCallbacks() {
-                @Override
-                public void onAvatarUploaded() {
-                    saveUser();
-                }
-            });
-        }
-        else if (null == editedUser.getAvatarURL()) {
-            view.disableEditForm();
-            view.showProgressMessage(R.string.USER_EDIT_deleting_avatar_file);
 
-            storageSingleton.deleteAvatar(oldAvatarFileName, new iStorageSingleton.FileDeletionCallbacks() {
-                @Override
-                public void onDeleteSuccess() {
-                    saveUser();
-                }
+        view.disableEditForm();
+        view.showProgressMessage(R.string.USER_EDIT_checking_password);
 
-                @Override
-                public void onDeleteFail(String errorMSg) {
-                    Log.d(TAG, "Error deleting avatar file ("+oldAvatarFileName+"): "+errorMSg);
-                    view.showToast(R.string.USER_EDIT_error_deleting_avatar_file);
-                    saveUser();
-                }
-            });
-        }
-        else {
-            saveUser();
-        }
+        checkUserPassword(view.getPassword(), new PasswordCheckCallbacks() {
+            @Override
+            public void onPasswordOk() {
+                //uploadAvatarAndSaveUser();
+                view.hideProgressMessage();
+                view.showToast("Пароль верен");
+            }
+
+            @Override
+            public void onPasswordNotOk(String errorMsg) {
+                view.enableEditForm();
+                view.showPasswordError(errorMsg);
+            }
+        });
     }
 
     @Override
@@ -219,6 +215,39 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
                 // TODO: показать кнопку "Попробовать ещё" или закрыть страницу, показав Toast?
             }
         });
+    }
+
+    private void uploadAvatarAndSaveUser() {
+
+        if (null != avatarBitmap && null != avatarImageType) {
+            uploadAvatar(new iAvatarUploadCallbacks() {
+                @Override
+                public void onAvatarUploaded() {
+                    saveUser();
+                }
+            });
+        }
+        else if (null == editedUser.getAvatarURL()) {
+            view.disableEditForm();
+            view.showProgressMessage(R.string.USER_EDIT_deleting_avatar_file);
+
+            storageSingleton.deleteAvatar(oldAvatarFileName, new iStorageSingleton.FileDeletionCallbacks() {
+                @Override
+                public void onDeleteSuccess() {
+                    saveUser();
+                }
+
+                @Override
+                public void onDeleteFail(String errorMSg) {
+                    Log.d(TAG, "Error deleting avatar file ("+oldAvatarFileName+"): "+errorMSg);
+                    view.showToast(R.string.USER_EDIT_error_deleting_avatar_file);
+                    saveUser();
+                }
+            });
+        }
+        else {
+            saveUser();
+        }
     }
 
     private void uploadAvatar(iAvatarUploadCallbacks callbacks) {
@@ -310,5 +339,37 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
         this.errorMessageId = -1;
         this.consoleErrorMessage = null;
         view.hideMessage();
+    }
+
+    private void checkUserPassword(String password, PasswordCheckCallbacks callbacks) {
+
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (null != firebaseUser) {
+            User currentUser = usersSingleton.getCurrentUser();
+            String email = currentUser.getEmail();
+            AuthCredential authCredential = EmailAuthProvider.getCredential(email, password);
+
+            firebaseUser.reauthenticate(authCredential)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            callbacks.onPasswordOk();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            callbacks.onPasswordNotOk(e.getMessage());
+                            MyUtils.printError(TAG, e);
+                        }
+                    });
+        }
+    }
+
+
+    private interface PasswordCheckCallbacks {
+        void onPasswordOk();
+        void onPasswordNotOk(String errorMsg);
     }
 }

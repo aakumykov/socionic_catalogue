@@ -51,6 +51,16 @@ public class UserEdit_ViewStub extends BaseView_Stub implements iUserEdit.iView 
     }
 
     @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Override
+    public void showPasswordError(String errorMsg) {
+
+    }
+
+    @Override
     public <T> void displayAvatar(T avatar) {
 
     }

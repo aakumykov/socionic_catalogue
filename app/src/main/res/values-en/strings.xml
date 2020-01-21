@@ -556,5 +556,7 @@
     <string name="EXTERNAL_DATA_RECIEVER_unknown_data_type">Unknown data type</string>
     <string name="USER_EDIT_current_password">Your current password</string>
     <string name="VALIDATION_wrong_password">Wrong password</string>
+    <string name="USER_EDIT_wrong_password">Wrong password</string>
+    <string name="USER_EDIT_checking_password">Checking password</string>
 </resources>
 <!-- «%1$s» -->

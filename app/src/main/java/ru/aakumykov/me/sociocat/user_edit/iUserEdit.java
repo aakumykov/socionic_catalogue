@@ -38,6 +38,10 @@ public interface iUserEdit {
 
         void validateForm();
         void finishEdition(User user);
+
+        String getPassword();
+
+        void showPasswordError(String errorMsg);
     }
 
     interface iPresenter {
@@ -59,7 +63,6 @@ public interface iUserEdit {
         void onAvatarRemoveConfirmed();
 
         void onSaveUserClicked();
-
         void onFormValidationSuccess();
 
         void onCancelButtonClicked();

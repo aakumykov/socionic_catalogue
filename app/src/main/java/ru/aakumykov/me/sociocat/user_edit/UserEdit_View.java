@@ -219,14 +219,16 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
         isFormDisabled = true;
         refreshMenu();
 
-        MyUtils.disable(nameInput);
-        MyUtils.disable(emailInput);
-        MyUtils.disable(aboutInput);
-        MyUtils.disable(saveButton);
-
         MyUtils.disable(avatarView);
         MyUtils.disable(avatarRemoveWidget);
         avatarView.setAlpha(0.5f);
+
+        MyUtils.disable(nameInput);
+        MyUtils.disable(emailInput);
+        MyUtils.disable(aboutInput);
+        MyUtils.disable(passwordInput);
+
+        MyUtils.disable(saveButton);
     }
 
     @Override
@@ -234,14 +236,16 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
         isFormDisabled = false;
         refreshMenu();
 
-        MyUtils.enable(nameInput);
-        MyUtils.enable(emailInput);
-        MyUtils.enable(aboutInput);
-        MyUtils.enable(saveButton);
-
         MyUtils.enable(avatarView);
         MyUtils.enable(avatarRemoveWidget);
         avatarView.setAlpha(1.0f);
+
+        MyUtils.enable(nameInput);
+        MyUtils.enable(emailInput);
+        MyUtils.enable(aboutInput);
+        MyUtils.enable(passwordInput);
+
+        MyUtils.enable(saveButton);
     }
 
     @Override
@@ -339,6 +343,18 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
         intent.putExtra(Constants.USER, user);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    @Override
+    public String getPassword() {
+        return passwordInput.getText().toString();
+    }
+
+    @Override
+    public void showPasswordError(String errorMsg) {
+        showLongToast(R.string.USER_EDIT_wrong_password);
+        hideProgressMessage();
+        passwordInput.setBackgroundResource(R.drawable.shape_red_border);
     }
 
 
