@@ -20,6 +20,7 @@ import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.user_edit.stubs.UserEdit_ViewStub;
@@ -40,6 +41,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private iStorageSingleton storageSingleton = StorageSingleton.getInstance();
+    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
 
     private User editedUser;
     private ImageType avatarImageType;
@@ -159,20 +161,28 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
         view.disableEditForm();
         view.showProgressMessage(R.string.USER_EDIT_checking_password);
 
-        checkUserPassword(view.getPassword(), new PasswordCheckCallbacks() {
-            @Override
-            public void onPasswordOk() {
-                //uploadAvatarAndSaveUser();
-                view.hideProgressMessage();
-                view.showToast("Пароль верен");
-            }
+        String email = usersSingleton.getCurrentUser().getEmail();
+        String password = view.getPassword();
 
-            @Override
-            public void onPasswordNotOk(String errorMsg) {
-                view.enableEditForm();
-                view.showPasswordError(errorMsg);
-            }
-        });
+        try {
+            authSingleton.checkUserCredentials(email, password, new iAuthSingleton.CheckUserCredentialsCallbacks() {
+                @Override
+                public void onUserCredentialsOk() {
+                    uploadAvatarAndSaveUser();
+                }
+
+                @Override
+                public void onUserCredentialsNotOk(String errorMsg) {
+                    view.enableEditForm();
+                    view.showPasswordError(errorMsg);
+                }
+            });
+        }
+        catch (iAuthSingleton.iAuthSingletonException e) {
+            view.enableEditForm();
+            view.showErrorMsg(R.string.USER_EDIT_error_ckecking_password, e.getMessage());
+            MyUtils.printError(TAG, e);
+        }
     }
 
     @Override
@@ -343,28 +353,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     private void checkUserPassword(String password, PasswordCheckCallbacks callbacks) {
 
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (null != firebaseUser) {
-            User currentUser = usersSingleton.getCurrentUser();
-            String email = currentUser.getEmail();
-            AuthCredential authCredential = EmailAuthProvider.getCredential(email, password);
-
-            firebaseUser.reauthenticate(authCredential)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            callbacks.onPasswordOk();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            callbacks.onPasswordNotOk(e.getMessage());
-                            MyUtils.printError(TAG, e);
-                        }
-                    });
-        }
     }
 
 

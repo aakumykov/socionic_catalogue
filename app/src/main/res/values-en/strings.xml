@@ -558,5 +558,6 @@
     <string name="VALIDATION_wrong_password">Wrong password</string>
     <string name="USER_EDIT_wrong_password">Wrong password</string>
     <string name="USER_EDIT_checking_password">Checking password</string>
+    <string name="USER_EDIT_error_ckecking_password">Error checking password</string>
 </resources>
 <!-- «%1$s» -->

@@ -566,5 +566,6 @@
     <string name="VALIDATION_wrong_password">Неверный пароль</string>
     <string name="USER_EDIT_wrong_password">Неверный пароль</string>
     <string name="USER_EDIT_checking_password">Проверяем пароль</string>
+    <string name="USER_EDIT_error_ckecking_password">Не удаётся проверить пароль</string>
 
 </resources><!-- «%1$s» -->
