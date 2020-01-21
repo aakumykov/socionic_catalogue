@@ -7,7 +7,10 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.ActionCodeSettings;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -15,6 +18,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 // TODO: разобраться с гостевым пользователем
 
@@ -121,6 +126,45 @@ public class AuthSingleton implements iAuthSingleton
                         e.printStackTrace();
                     }
                 });
+    }
+
+    @Override
+    public void checkUserCredentials(
+            String email,
+            String password,
+            @NonNull CheckUserCredentialsCallbacks callbacks
+    ) throws iAuthSingletonException
+    {
+        if (null == email)
+            throw new IllegalArgumentException("Email cannot be null");
+
+        if (null == password)
+            throw new IllegalArgumentException("Password cannot be null");
+
+
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (null == firebaseUser)
+            throw new iAuthSingletonException("Firebase user is null");
+
+
+        AuthCredential authCredential = EmailAuthProvider.getCredential(email, password);
+
+        firebaseUser.reauthenticate(authCredential)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onUserCredentialsOk();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onUserCredentialsNotOk(e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
+
     }
 
 }
