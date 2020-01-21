@@ -221,7 +221,7 @@ public final class MyUtils {
         return size.y;
     }
 
-    public static boolean isEmailCorrect(String email) {
+    public static boolean isCorrectEmail(String email) {
         Pattern pattern = Pattern.compile("^([a-z0-9+_]+[.-]?)*[a-z0-9]+@([a-z0-9]+[.-]?)*[a-z0-9]+\\.[a-z]+$");
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();

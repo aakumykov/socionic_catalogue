@@ -13,4 +13,14 @@ public class UserEmailEdit_ViewStub extends BaseView_Stub implements iUserEditEm
     public void displayCurrentEmail(User user) {
 
     }
+
+    @Override
+    public String getEmail() {
+        return null;
+    }
+
+    @Override
+    public void showEmailError(int errorMsgId) {
+
+    }
 }

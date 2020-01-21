@@ -11,6 +11,10 @@ public interface iUserEditEmail {
 
     interface iView extends iBaseView {
         void displayCurrentEmail(User user);
+
+        String getEmail();
+
+        void showEmailError(int errorMsgId);
     }
 
     interface iPresenter {

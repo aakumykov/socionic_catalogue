@@ -153,7 +153,7 @@ public class ResetPasswordStep1_View extends BaseView implements
 //            return;
 //        }
 //
-//        if (!MyUtils.isEmailCorrect(email)) {
+//        if (!MyUtils.isCorrectEmail(email)) {
 //            String text = getResources().getString(R.string.RESET_PASSWORD_incorrect_email);
 //            emailInput.setError(text);
 //            return;

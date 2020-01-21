@@ -59,7 +59,7 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
             return;
         }
 
-        if (!MyUtils.isEmailCorrect(email)) {
+        if (!MyUtils.isCorrectEmail(email)) {
             view.showEmailError(R.string.REGISTER1_incorrect_email);
             return;
         }

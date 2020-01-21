@@ -541,7 +541,7 @@
     <string name="USER_EDIT_cancel_edition_dialog_description">Changes made will be lost</string>
     <string name="USER_EDIT_deleting_avatar_file">Deleting avatar</string>
     <string name="USER_EDIT_error_deleting_avatar_file">Error deleting avatar</string>
-    <string name="VALIDATION_mailformed_email">Mailformed Email</string>
+    <string name="VALIDATION_mailformed_email">Malformed Email</string>
     <string name="LIST_TEMPLATE_title">List template</string>
     <string name="LIST_TEMPLATE_title_extended">List template, elements: %1$s</string>
     <string name="LIST_TEMPLATE_item_name">Item %1$s</string>

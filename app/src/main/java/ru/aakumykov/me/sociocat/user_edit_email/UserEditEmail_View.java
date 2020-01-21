@@ -3,10 +3,8 @@ package ru.aakumykov.me.sociocat.user_edit_email;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
@@ -72,8 +70,7 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        return super.onCreateOptionsMenu(menu);
+        return false;
     }
 
     @Override
@@ -102,7 +99,7 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
 
     @Override
     public void onUserLogout() {
-
+        finish();
     }
 
 
@@ -110,6 +107,18 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
     @Override
     public void displayCurrentEmail(User user) {
 
+    }
+
+    @Override
+    public String getEmail() {
+        return emailInput.getText().toString();
+    }
+
+    @Override
+    public void showEmailError(int errorMsgId) {
+        emailInput.setError(
+                getResources().getString(errorMsgId)
+        );
     }
 
 
