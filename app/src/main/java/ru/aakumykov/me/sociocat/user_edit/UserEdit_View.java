@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -48,9 +49,7 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
     @NotEmpty(messageResId = R.string.VALIDATION_cannot_be_empty)
     @BindView(R.id.nameInput) EditText nameInput;
 
-    @Email(messageResId = R.string.VALIDATION_mailformed_email)
-    @BindView(R.id.emailInput)
-    EditText emailInput;
+    @BindView(R.id.emailView) TextView emailView;
 
     @Password(messageResId = R.string.VALIDATION_wrong_password)
     @BindView(R.id.passwordInput)
@@ -173,7 +172,7 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
     @Override
     public <T> void fillEditForm(User user, T avatar) {
         nameInput.setText(user.getName());
-        emailInput.setText(user.getEmail());
+        emailView.setText(user.getEmail());
         aboutInput.setText(user.getAbout());
 
         Object userAvatar = (null != avatar) ? avatar : user.getAvatarURL();
@@ -224,7 +223,6 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
         avatarView.setAlpha(0.5f);
 
         MyUtils.disable(nameInput);
-        MyUtils.disable(emailInput);
         MyUtils.disable(aboutInput);
         MyUtils.disable(passwordInput);
 
@@ -241,7 +239,6 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
         avatarView.setAlpha(1.0f);
 
         MyUtils.enable(nameInput);
-        MyUtils.enable(emailInput);
         MyUtils.enable(aboutInput);
         MyUtils.enable(passwordInput);
 
@@ -275,7 +272,7 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
 
     @Override
     public String getEmail() {
-        return emailInput.getText().toString();
+        return emailView.getText().toString();
     }
 
     @Override
@@ -357,6 +354,11 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
         passwordInput.setBackgroundResource(R.drawable.shape_red_border);
     }
 
+    @Override
+    public void goToEmail() {
+//        Intent intent = new Intent()
+    }
+
 
     // Validator.ValidationListener
     @Override
@@ -389,6 +391,11 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
     @OnClick(R.id.avatarRemoveWidget)
     void onAvatarRemoveClicked() {
         presenter.onAvatarRemoveClicked();
+    }
+
+    @OnClick(R.id.emailView)
+    void onEmailClicked() {
+        presenter.onEmailClicked();
     }
 
     @OnClick(R.id.saveButton)

@@ -61,6 +61,11 @@ public class UserEdit_ViewStub extends BaseView_Stub implements iUserEdit.iView 
     }
 
     @Override
+    public void goToEmail() {
+
+    }
+
+    @Override
     public <T> void displayAvatar(T avatar) {
 
     }

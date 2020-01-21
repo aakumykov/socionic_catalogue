@@ -151,6 +151,11 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
     }
 
     @Override
+    public void onEmailClicked() {
+        view.goToEmail();
+    }
+
+    @Override
     public void onSaveUserClicked() {
         view.validateForm();
     }

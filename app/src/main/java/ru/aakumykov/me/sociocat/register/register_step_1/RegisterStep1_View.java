@@ -20,7 +20,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class RegisterStep1_View extends BaseView implements iRegisterStep1.View {
 
-    @BindView(R.id.emailInput) EditText emailInput;
+    @BindView(R.id.emailView) EditText emailInput;
     @BindView(R.id.emailThrobber) ProgressBar emailThrobber;
     @BindView(R.id.sendButton) Button sendButton;
 

@@ -25,7 +25,7 @@ public class ResetPasswordStep1_View extends BaseView implements
         Validator.ValidationListener
 {
     @Email(messageResId = R.string.RESET_PASSWORD_incorrect_email)
-    @BindView(R.id.emailInput) EditText emailInput;
+    @BindView(R.id.emailView) EditText emailInput;
 
     @BindView(R.id.sendButton) Button sendButton;
     @BindView(R.id.cancelButton) Button cancelButton;

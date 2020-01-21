@@ -42,6 +42,8 @@ public interface iUserEdit {
         String getPassword();
 
         void showPasswordError(String errorMsg);
+
+        void goToEmail();
     }
 
     interface iPresenter {
@@ -61,6 +63,8 @@ public interface iUserEdit {
         void onAvatarClicked();
         void onAvatarRemoveClicked();
         void onAvatarRemoveConfirmed();
+
+        void onEmailClicked();
 
         void onSaveUserClicked();
         void onFormValidationSuccess();

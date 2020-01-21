@@ -562,7 +562,7 @@
     <string name="MENU_open_in_browser">Открыть в веб-браузере</string>
     <string name="EXTERNAL_DATA_RECIEVER_no_input_data">Нет входящих данных</string>
     <string name="EXTERNAL_DATA_RECIEVER_unknown_data_type">Неизвестный тип данных</string>
-    <string name="USER_EDIT_current_password">Ваш текущий пароль</string>
+    <string name="USER_EDIT_current_password">Укажите ваш пароль</string>
     <string name="VALIDATION_wrong_password">Неверный пароль</string>
     <string name="USER_EDIT_wrong_password">Неверный пароль</string>
     <string name="USER_EDIT_checking_password">Проверяем пароль</string>
