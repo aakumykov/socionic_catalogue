@@ -18,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
-import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Password;
 
@@ -34,6 +33,7 @@ import ru.aakumykov.me.sociocat.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_edit.view_model.UserEdit_ViewModel;
 import ru.aakumykov.me.sociocat.user_edit.view_model.UserEdit_ViewModelFactory;
+import ru.aakumykov.me.sociocat.user_edit_email.UserEditEmail_View;
 import ru.aakumykov.me.sociocat.utils.ImageLoader;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 import ru.aakumykov.me.sociocat.utils.ImageUtils;
@@ -355,8 +355,11 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
     }
 
     @Override
-    public void goToEmail() {
-//        Intent intent = new Intent()
+    public void goToEditEmail(User user) {
+        Intent intent = new Intent(this, UserEditEmail_View.class);
+        intent.putExtra(Constants.USER, user);
+        intent.setAction(Intent.ACTION_EDIT);
+        startActivityForResult(intent, Constants.CODE_USER_EDIT_EMAIL);
     }
 
 

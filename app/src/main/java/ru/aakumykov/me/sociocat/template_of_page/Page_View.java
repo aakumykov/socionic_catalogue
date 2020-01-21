@@ -111,7 +111,7 @@ public class Page_View extends BaseView implements iPage.iView {
     }
 
 
-    // iPage.iView
+    // iUserEditEmail.iView
     @Override
     public void displayItem(Item item) {
         nameView.setText(item.getName());

@@ -43,7 +43,7 @@ public interface iUserEdit {
 
         void showPasswordError(String errorMsg);
 
-        void goToEmail();
+        void goToEditEmail(User user);
     }
 
     interface iPresenter {

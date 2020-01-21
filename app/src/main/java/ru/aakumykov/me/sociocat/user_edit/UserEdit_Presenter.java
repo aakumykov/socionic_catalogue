@@ -4,15 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -152,7 +144,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
 
     @Override
     public void onEmailClicked() {
-        view.goToEmail();
+        view.goToEditEmail(usersSingleton.getCurrentUser());
     }
 
     @Override

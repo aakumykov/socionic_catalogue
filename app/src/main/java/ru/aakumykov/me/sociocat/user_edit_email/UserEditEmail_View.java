@@ -1,55 +1,50 @@
-package ru.aakumykov.me.sociocat.user_email_change;
+package ru.aakumykov.me.sociocat.user_edit_email;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
-import ru.aakumykov.me.sociocat.user_email_change.models.Item;
-import ru.aakumykov.me.sociocat.user_email_change.view_model.Page_ViewModel;
-import ru.aakumykov.me.sociocat.user_email_change.view_model.Page_ViewModelFactory;
+import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.user_edit_email.view_model.UserEmailEdit_ViewModel;
+import ru.aakumykov.me.sociocat.user_edit_email.view_model.UserEmailEdit_ViewModelFactory;
 
-public class Page_View extends BaseView implements iPage.iView {
+public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView {
 
-    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.nameView) TextView nameView;
-    @BindView(R.id.descriptionView) TextView descriptionView;
+    @BindView(R.id.emailInput) EditText emailInput;
 
-    private iPage.iPresenter presenter;
+    private iUserEditEmail.iPresenter presenter;
 
     // Activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.template_of_page_activity);
+        setContentView(R.layout.user_edit_email_activity);
         ButterKnife.bind(this);
 
         setPageTitle(R.string.PAGE_TEMPLATE_page_title);
         activateUpButton();
 
-        Page_ViewModel viewModel = new ViewModelProvider(this, new Page_ViewModelFactory())
-                .get(Page_ViewModel.class);
+        UserEmailEdit_ViewModel viewModel = new ViewModelProvider(this, new UserEmailEdit_ViewModelFactory())
+                .get(UserEmailEdit_ViewModel.class);
 
         if (viewModel.hasPresenter()) {
             this.presenter = viewModel.getPresenter();
         } else {
-            this.presenter = new Page_Presenter();
+            this.presenter = new UserEditEmail_Presenter();
             viewModel.storePresenter(this.presenter);
         }
-
-        configureSwipeRefresh();
     }
 
     @Override
@@ -63,10 +58,10 @@ public class Page_View extends BaseView implements iPage.iView {
         super.onStart();
         presenter.linkView(this);
 
-        if (presenter.hasItem())
-            presenter.onConfigChanged();
-        else
-            presenter.onFirstOpen(getIntent());
+//        if (presenter.hasItem())
+//            presenter.onConfigChanged();
+//        else
+//            presenter.onFirstOpen(getIntent());
     }
 
     @Override
@@ -111,38 +106,21 @@ public class Page_View extends BaseView implements iPage.iView {
     }
 
 
-    // iPage.iView
+    // iUserEditEmail.iView
     @Override
-    public void displayItem(Item item) {
-        nameView.setText(item.getName());
-        descriptionView.setText(item.getDescription());
-    }
+    public void displayCurrentEmail(User user) {
 
-    @Override
-    public void hideRefreshThrobber() {
-        swipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public void goCardsGrid() {
-        startActivity(new Intent(this, CardsGrid_View.class));
     }
 
 
     // Нажатия
-    @OnClick(R.id.button)
-    void onButtonClicked() {
-        presenter.onButtonClicked();
+    @OnClick(R.id.saveButton)
+    void onSaveButtonClicked() {
+        presenter.onSaveButtonClicked();
     }
 
-    // Внутренние методы
-    private void configureSwipeRefresh() {
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override public void onRefresh() {
-                presenter.onRefreshRequested();
-            }
-        });
-
-        swipeRefreshLayout.setColorSchemeResources(R.color.blue_swipe, R.color.green_swipe, R.color.orange_swipe, R.color.red_swipe);
+    @OnClick(R.id.cancelButton)
+    void onCancelButtonClicked() {
+        presenter.onCancelButtonClicked();
     }
 }
