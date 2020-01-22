@@ -39,16 +39,36 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/passwordInput"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:hint="@string/USER_EDIT_current_password"
-            android:inputType="textPassword" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp">
+
+            <EditText
+                android:id="@+id/passwordInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/USER_EDIT_current_password"
+                android:inputType="textPassword"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/seePasswordWidget"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_weight="1"
+                app:layout_constraintBottom_toBottomOf="@+id/passwordInput"
+                app:layout_constraintEnd_toEndOf="@+id/passwordInput"
+                app:layout_constraintTop_toTopOf="@+id/passwordInput"
+                app:srcCompat="@drawable/ic_see_password" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/saveButton"
