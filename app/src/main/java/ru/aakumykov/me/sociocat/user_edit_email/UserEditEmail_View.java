@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.user_edit_email;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -35,7 +36,7 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
         setContentView(R.layout.user_edit_email_activity);
         ButterKnife.bind(this);
 
-        setPageTitle(R.string.PAGE_TEMPLATE_page_title);
+        setPageTitle(R.string.USER_EDIT_EMAIL_page_title);
         activateUpButton();
 
         UserEmailEdit_ViewModel viewModel = new ViewModelProvider(this, new UserEmailEdit_ViewModelFactory())
@@ -60,10 +61,10 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
         super.onStart();
         presenter.linkView(this);
 
-//        if (presenter.hasItem())
-//            presenter.onConfigChanged();
-//        else
-//            presenter.onFirstOpen(getIntent());
+        if (hasEmail())
+            presenter.onConfigChanged();
+        else
+            presenter.onFirstOpen();
     }
 
     @Override
@@ -110,7 +111,7 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
     // iUserEditEmail.iView
     @Override
     public void displayCurrentEmail(User user) {
-
+        emailInput.setText(user.getEmail());
     }
 
     @Override
@@ -147,5 +148,11 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
     @OnClick(R.id.cancelButton)
     void onCancelButtonClicked() {
         presenter.onCancelButtonClicked();
+    }
+
+
+    // Внутренние методы
+    private boolean hasEmail() {
+        return !TextUtils.isEmpty(emailInput.getText().toString());
     }
 }

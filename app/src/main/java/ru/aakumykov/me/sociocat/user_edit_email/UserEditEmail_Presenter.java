@@ -1,9 +1,6 @@
 package ru.aakumykov.me.sociocat.user_edit_email;
 
-import android.content.Intent;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -13,8 +10,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.PackageConstants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.user_edit_email.stubs.UserEmailEdit_ViewStub;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -25,6 +25,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
 
     private iUserEditEmail.iView view;
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
 
     @Override
@@ -38,8 +39,9 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
     }
 
     @Override
-    public void onFirstOpen(@Nullable Intent intent) {
-//        view.displayCurrentEmail(currentItem);
+    public void onFirstOpen() {
+        User user = usersSingleton.getCurrentUser();
+        view.displayCurrentEmail(user);
     }
 
     @Override
@@ -72,7 +74,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
         view.disableForm();
         view.showProgressMessage(R.string.USER_EDIT_EMAIL_sending_confirmation_email);
 
-        FirebaseAuth.getInstance().sendPasswordResetEmail(email, actionCodeSettings)
+        FirebaseAuth.getInstance().sendSignInLinkToEmail(email, actionCodeSettings)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -91,17 +93,17 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
 
     @Override
     public void onCancelButtonClicked() {
-
+        view.closePage();
     }
 
     @Override
     public void onBackPressed() {
-
+        view.closePage();
     }
 
     @Override
     public boolean onHomePressed() {
-
+        view.closePage();
         return true;
     }
 }

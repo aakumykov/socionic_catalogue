@@ -1,9 +1,5 @@
 package ru.aakumykov.me.sociocat.user_edit_email;
 
-import android.content.Intent;
-
-import androidx.annotation.Nullable;
-
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.User;
 
@@ -24,7 +20,7 @@ public interface iUserEditEmail {
         void linkView(iView view);
         void unlinkView();
 
-        void onFirstOpen(@Nullable Intent intent);
+        void onFirstOpen();
         void onConfigChanged();
 
         void onSaveButtonClicked();
