@@ -73,7 +73,7 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
         setContentView(R.layout.user_edit_activity);
         ButterKnife.bind(this);
 
-        setPageTitle(R.string.PAGE_TEMPLATE_page_title);
+        setPageTitle(R.string.USER_EDIT_page_title);
         activateUpButton();
 
         UserEdit_ViewModel viewModel = new ViewModelProvider(this, new UserEdit_ViewModelFactory())
