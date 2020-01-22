@@ -76,7 +76,7 @@ public class DLP_Presenter implements iDLP.Presenter {
 
     @Override
     public void unlinkView() {
-        this.view = null;
+        this.view = new DLP_ViewStub();
     }
 
 
