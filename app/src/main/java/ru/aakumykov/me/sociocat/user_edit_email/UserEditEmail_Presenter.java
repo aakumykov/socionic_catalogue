@@ -30,7 +30,6 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
     private final static String TAG = "UserEditEmail_Presenter";
 
     private iUserEditEmail.iView view;
-    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private String oldEmailAddress;
     private String newEmailAddress;
@@ -85,7 +84,28 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
             return;
         }
 
-        // Проверка пароля
+        checkPassword(password);
+    }
+
+    @Override
+    public void onCancelButtonClicked() {
+        view.closePage();
+    }
+
+    @Override
+    public void onBackPressed() {
+        view.closePage();
+    }
+
+    @Override
+    public boolean onHomePressed() {
+        view.closePage();
+        return true;
+    }
+
+
+    // Внутренние методы
+    private void checkPassword(@NonNull String password) {
         view.disableForm();
         view.showProgressMessage(R.string.checking_password);
 
@@ -110,8 +130,6 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
         }
     }
 
-
-    // Внутренние методы
     private void sendVerificationEmail(@NonNull String newEmailAddress) {
 
         String userId = AuthSingleton.currentUserId();
@@ -133,19 +151,4 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
         });
     }
 
-    @Override
-    public void onCancelButtonClicked() {
-        view.closePage();
-    }
-
-    @Override
-    public void onBackPressed() {
-        view.closePage();
-    }
-
-    @Override
-    public boolean onHomePressed() {
-        view.closePage();
-        return true;
-    }
 }
