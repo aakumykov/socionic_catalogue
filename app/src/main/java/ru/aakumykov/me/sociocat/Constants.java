@@ -11,9 +11,6 @@ public final class Constants {
         VIDEO_CARD
     }
 
-    public final static String PACKAGE_NAME = "ru.aakumykov.me.sociocat";
-    public static final String VERSION_NAME = "1.5";
-
     public final static String CARDS_PATH = "cards";
     public final static String TAGS_PATH = "tags";
     public final static String COMMENTS_PATH = "comments";

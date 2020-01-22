@@ -17,8 +17,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import ru.aakumykov.me.sociocat.Config;
-import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.PackageConstants;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 // TODO: разобраться с гостевым пользователем
@@ -107,7 +106,7 @@ public class AuthSingleton implements iAuthSingleton
                         .setUrl("https://sociocat.example.org/reset_password?uid="+firebaseAuth.getUid())
                         .setHandleCodeInApp(false)
                         .setAndroidPackageName(
-                                Constants.PACKAGE_NAME,
+                                PackageConstants.PACKAGE_NAME,
                                 true, /* installIfNotAvailable */
                                 null    /* minimumVersion */)
                         .build();

@@ -12,6 +12,7 @@ import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.PackageConstants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
@@ -98,7 +99,7 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
                         .setUrl("https://sociocat.example.org/registration_step_2")
                         .setHandleCodeInApp(true)
                         .setAndroidPackageName(
-                                Constants.PACKAGE_NAME,
+                                PackageConstants.PACKAGE_NAME,
                                 true, /* installIfNotAvailable */
                                 null    /* minimumVersion */)
                         .build();
