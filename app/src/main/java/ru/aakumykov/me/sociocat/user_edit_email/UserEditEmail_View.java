@@ -2,9 +2,12 @@ package ru.aakumykov.me.sociocat.user_edit_email;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -24,6 +27,7 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
 
     @BindView(R.id.emailInput) EditText emailInput;
     @BindView(R.id.passwordInput) EditText passwordInput;
+    @BindView(R.id.seePasswordWidget) View seePasswordWidget;
 
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
@@ -161,6 +165,17 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
     @OnClick(R.id.cancelButton)
     void onCancelButtonClicked() {
         presenter.onCancelButtonClicked();
+    }
+
+    @OnClick(R.id.seePasswordWidget)
+    void onSeePasswordClicked() {
+        int currentInputType = passwordInput.getInputType();
+
+        if (((currentInputType|EditorInfo.TYPE_TEXT_VARIATION_PASSWORD) == currentInputType))
+            passwordInput.setInputType(EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+        else
+            passwordInput.setInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
+
     }
 
 
