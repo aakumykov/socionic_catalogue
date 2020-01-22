@@ -12,7 +12,7 @@ import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.DynamicLink_Constants;
+import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.PackageConstants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
@@ -97,7 +97,7 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
 
         ActionCodeSettings actionCodeSettings =
                 ActionCodeSettings.newBuilder()
-                        .setUrl(DynamicLink_Constants.ACTION_URL_BASE + DynamicLink_Constants.REGISTRATION_STEP2_PATH)
+                        .setUrl(DeepLink_Constants.URL_BASE + DeepLink_Constants.REGISTRATION_STEP2_PATH)
                         .setHandleCodeInApp(true)
                         .setAndroidPackageName(
                                 PackageConstants.PACKAGE_NAME,

@@ -23,4 +23,14 @@ public class UserEmailEdit_ViewStub extends BaseView_Stub implements iUserEditEm
     public void showEmailError(int errorMsgId) {
 
     }
+
+    @Override
+    public void disableForm() {
+
+    }
+
+    @Override
+    public void enableForm() {
+
+    }
 }

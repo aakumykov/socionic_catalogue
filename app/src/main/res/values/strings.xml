@@ -567,5 +567,8 @@
     <string name="USER_EDIT_wrong_password">Неверный пароль</string>
     <string name="USER_EDIT_checking_password">Проверяем пароль</string>
     <string name="USER_EDIT_error_ckecking_password">Не удаётся проверить пароль</string>
+    <string name="USER_EDIT_EMAIL_sending_confirmation_email">Отправляем письмо с подтвержденим на указанный адрес</string>
+    <string name="USER_EDIT_EMAIL_confirmation_link_is_sent">Письмо с подтвержденим отправлено</string>
+    <string name="USER_EDIT_EMAIL_error_sending_confirmation">Не удаётся отправить письмо с подтвержденим</string>
 
 </resources><!-- «%1$s» -->

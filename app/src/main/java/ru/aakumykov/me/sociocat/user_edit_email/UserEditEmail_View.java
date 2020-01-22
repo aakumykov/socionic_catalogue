@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
@@ -17,10 +18,13 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_edit_email.view_model.UserEmailEdit_ViewModel;
 import ru.aakumykov.me.sociocat.user_edit_email.view_model.UserEmailEdit_ViewModelFactory;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView {
 
     @BindView(R.id.emailInput) EditText emailInput;
+    @BindView(R.id.saveButton) Button saveButton;
+    @BindView(R.id.cancelButton) Button cancelButton;
 
     private iUserEditEmail.iPresenter presenter;
 
@@ -119,6 +123,18 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
         emailInput.setError(
                 getResources().getString(errorMsgId)
         );
+    }
+
+    @Override
+    public void disableForm() {
+        MyUtils.disable(emailInput);
+        MyUtils.disable(saveButton);
+    }
+
+    @Override
+    public void enableForm() {
+        MyUtils.enable(emailInput);
+        MyUtils.enable(saveButton);
     }
 
 

@@ -559,5 +559,8 @@
     <string name="USER_EDIT_wrong_password">Wrong password</string>
     <string name="USER_EDIT_checking_password">Checking password</string>
     <string name="USER_EDIT_error_ckecking_password">Error checking password</string>
+    <string name="USER_EDIT_EMAIL_sending_confirmation_email">Sending confirmation email to specified address</string>
+    <string name="USER_EDIT_EMAIL_confirmation_link_is_sent">Confirmation email successfully sent</string>
+    <string name="USER_EDIT_EMAIL_error_sending_confirmation">Error sending confirmation email</string>
 </resources>
 <!-- «%1$s» -->

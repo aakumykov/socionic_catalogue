@@ -2,12 +2,16 @@ package ru.aakumykov.me.sociocat.user_edit_email;
 
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
+import ru.aakumykov.me.sociocat.DeepLink_Constants;
+import ru.aakumykov.me.sociocat.PackageConstants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
@@ -17,8 +21,9 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
 
-    private iUserEditEmail.iView view;
+    private final static String TAG = "UserEditEmail_Presenter";
 
+    private iUserEditEmail.iView view;
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
 
 
@@ -51,12 +56,37 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
             return;
         }
 
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (null == firebaseUser) {
-            return;
-        }
+        String userId = AuthSingleton.currentUserId();
 
-        firebaseUser.
+        ActionCodeSettings actionCodeSettings =
+                ActionCodeSettings.newBuilder()
+                        .setUrl(DeepLink_Constants.URL_BASE + DeepLink_Constants.CONFIRM_EMAIL_PATH + "?userId=" + userId)
+                        .setHandleCodeInApp(true)
+                        .setAndroidPackageName(
+                                PackageConstants.PACKAGE_NAME,
+                                true, /* Установить программу, если её нет */
+                                PackageConstants.VERSION_NAME /* Минимальная версия */
+                        )
+                        .build();
+
+        view.disableForm();
+        view.showProgressMessage(R.string.USER_EDIT_EMAIL_sending_confirmation_email);
+
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email, actionCodeSettings)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        view.showInfoMsg(R.string.USER_EDIT_EMAIL_confirmation_link_is_sent);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        view.enableForm();
+                        view.showErrorMsg(R.string.USER_EDIT_EMAIL_error_sending_confirmation, e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
     }
 
     @Override

@@ -17,7 +17,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import ru.aakumykov.me.sociocat.Config;
-import ru.aakumykov.me.sociocat.DynamicLink_Constants;
+import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.PackageConstants;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -104,7 +104,7 @@ public class AuthSingleton implements iAuthSingleton
 
         ActionCodeSettings actionCodeSettings =
                 ActionCodeSettings.newBuilder()
-                        .setUrl(DynamicLink_Constants.ACTION_URL_BASE + DynamicLink_Constants.PASSWORD_RESET_PATH + firebaseAuth.getUid())
+                        .setUrl(DeepLink_Constants.URL_BASE + DeepLink_Constants.PASSWORD_RESET_PATH + firebaseAuth.getUid())
                         .setHandleCodeInApp(false)
                         .setAndroidPackageName(
                                 PackageConstants.PACKAGE_NAME,

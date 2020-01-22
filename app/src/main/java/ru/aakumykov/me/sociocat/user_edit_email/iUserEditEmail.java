@@ -15,6 +15,9 @@ public interface iUserEditEmail {
         String getEmail();
 
         void showEmailError(int errorMsgId);
+
+        void disableForm();
+        void enableForm();
     }
 
     interface iPresenter {
