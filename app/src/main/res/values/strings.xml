@@ -577,5 +577,6 @@
     <string name="error_wrong_password">Неверный пароль</string>
     <string name="checking_password">Проверка пароля</string>
     <string name="USER_EDIT_EMAIL_cannot_check_password">Не удалось проверить пароль</string>
+    <string name="DLP_unknown_action">Неизвестное действие</string>
 
 </resources><!-- «%1$s» -->

@@ -569,5 +569,6 @@
     <string name="error_wrong_password">Wrong password</string>
     <string name="checking_password">Checking password</string>
     <string name="USER_EDIT_EMAIL_cannot_check_password">Cannot check password</string>
+    <string name="DLP_unknown_action">Unknown action</string>
 </resources>
 <!-- «%1$s» -->

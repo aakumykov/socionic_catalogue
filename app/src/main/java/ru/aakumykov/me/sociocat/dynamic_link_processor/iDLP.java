@@ -14,9 +14,9 @@ interface iDLP {
     }
 
     interface Presenter {
-        void processDynamicLink(Activity activity, @Nullable Intent intent);
-
         void linkView(View view);
         void unlinkView();
+
+        void processDynamicLink(Activity activity, @Nullable Intent intent);
     }
 }

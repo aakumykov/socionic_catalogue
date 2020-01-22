@@ -14,6 +14,7 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.register.register_step_2.RegisterStep2_View;
@@ -21,10 +22,12 @@ import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
 public class DLP_Presenter implements iDLP.Presenter {
 
+    private static final String TAG = "DLP_Presenter";
     private iDLP.View view;
     private FirebaseDynamicLinks firebaseDynamicLinks = FirebaseDynamicLinks.getInstance();
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
@@ -32,90 +35,93 @@ public class DLP_Presenter implements iDLP.Presenter {
 
 
     @Override
-    public void processDynamicLink(Activity activity, @Nullable final Intent intent) {
-
-        try {
-            view.showProgressMessage(R.string.DLP_processing_dynamic_link);
-
-            firebaseDynamicLinks
-                    .getDynamicLink(intent)
-                    .addOnSuccessListener(activity, new OnSuccessListener<PendingDynamicLinkData>() {
-                        @Override
-                        public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
-
-                            Uri deepLink = null;
-
-                            if (null != pendingDynamicLinkData) {
-                                deepLink = pendingDynamicLinkData.getLink();
-
-                                chooseActionFromDeepLink(deepLink, intent);
-                            } else {
-                                onErrorOccured("Deep link not found");
-                            }
-
-                        }
-                    })
-                    .addOnFailureListener(activity, new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            onErrorOccured(e.getMessage());
-                            e.printStackTrace();
-                        }
-                    });
-
-        } catch (Exception e) {
-            onErrorOccured(e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public void linkView(iDLP.View view) {
         this.view = view;
     }
-
     @Override
     public void unlinkView() {
         this.view = new DLP_ViewStub();
     }
 
 
+    @Override
+    public void processDynamicLink(Activity activity, @Nullable final Intent intent) {
+
+        if (null == intent) {
+            view.showLongToast(R.string.DLP_error_processing_link);
+            view.closePage();
+            return;
+        }
+
+        view.showProgressMessage(R.string.DLP_processing_dynamic_link);
+
+        firebaseDynamicLinks
+                .getDynamicLink(intent)
+                .addOnSuccessListener(activity, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        chooseActionFromDeepLink(
+                                pendingDynamicLinkData.getLink(),
+                                intent
+                        );
+                    }
+                })
+                .addOnFailureListener(activity, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        MyUtils.printError(TAG, e);
+                        view.showLongToast(R.string.DLP_error_processing_link);
+                        view.closePage();
+                    }
+                });
+    }
+
+
     // Внутренние методы
-    private void chooseActionFromDeepLink(Uri deepLink, @NonNull Intent intent) {
+    private void chooseActionFromDeepLink(Uri deepLink, @NonNull Intent intent){
 
-        try {
+        String emailLink = intent.getDataString();
 
-            String emailLink = intent.getDataString();
+        if (null != emailLink && FirebaseAuth.getInstance().isSignInWithEmailLink(emailLink)) {
+            processEmailSignInDeepLink(deepLink, intent);
+        }
+        else {
+            processNonSignInDeepLink(deepLink);
+        }
 
-            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    }
 
-            if (firebaseAuth.isSignInWithEmailLink(emailLink)) {
+    private void processEmailSignInDeepLink(Uri deepLink, @NonNull Intent intent) {
 
-                Uri continueUrl = Uri.parse(deepLink.getQueryParameter("continueUrl"));
-                String continueUrlPath = continueUrl.getPath();
-                switch (continueUrlPath) {
-                    case "/registration_step_2":
-                        registrationStep2(intent);
-                        break;
-                    default:
-                        throw new IllegalAccessException("Unknown continueUrl in dynamic link");
-                }
+        Uri continueUrl = Uri.parse(deepLink.getQueryParameter("continueUrl"));
 
-            } else {
-                String deepLinkPath = deepLink.getPath();
-                switch (deepLinkPath) {
-                    case "/reset_password":
-                        resetPasswordStep2(deepLink);
-                        break;
+        String continueUrlPath = continueUrl.getPath() + "";
 
-                    default:
-                        throw new IllegalArgumentException("Unknown deep link: " + deepLink);
-                }
-            }
+        switch (continueUrlPath) {
+            case DeepLink_Constants.REGISTRATION_STEP2_PATH:
+                registrationStep2(intent);
+                break;
 
-        } catch (Exception e) {
-            onErrorOccured(e.getMessage());
-            e.printStackTrace();
+            case DeepLink_Constants.CONFIRM_EMAIL_PATH:
+
+                break;
+
+            default:
+                view.showLongToast(R.string.DLP_unknown_action);
+        }
+    }
+
+    private void processNonSignInDeepLink(Uri deepLink) {
+
+        String deepLinkPath = deepLink.getPath();
+
+        switch (deepLinkPath) {
+            case DeepLink_Constants.PASSWORD_RESET_PATH:
+                resetPasswordStep2(deepLink);
+                break;
+
+            default:
+                view.showLongToast(R.string.DLP_unknown_action);
         }
     }
 
@@ -134,10 +140,24 @@ public class DLP_Presenter implements iDLP.Presenter {
         view.startSomeActivity(intent);
     }
 
-    private void onErrorOccured(String consoleMsg) {
-//        authSingleton.logout();
-        FirebaseAuth.getInstance().signOut();
-        view.showErrorMsg(R.string.DLP_error_processing_link, consoleMsg);
-        view.showHomeButton();
+
+/*
+    public static class DLP_Exception extends Exception {
+        public DLP_Exception(String message) {
+            super(message);
+        }
     }
+
+    public static class NoContinueURLException extends DLP_Exception {
+        public NoContinueURLException(String message) {
+            super(message);
+        }
+    }
+
+    public static class NoDeepLinkPathException extends DLP_Exception {
+        public NoDeepLinkPathException(String message) {
+            super(message);
+        }
+    }
+*/
 }
