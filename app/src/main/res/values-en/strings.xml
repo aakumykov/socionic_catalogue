@@ -565,5 +565,9 @@
     <string name="USER_EDIT_EMAIL_page_title">Changing email address</string>
     <string name="USER_EDIT_EMAIL_you_not_change_email_address">You do not change the Email</string>
     <string name="VALIDATION_field_required">Required field</string>
+    <string name="USER_EDIT_EMAIL_user_error">User error</string>
+    <string name="error_wrong_password">Wrong password</string>
+    <string name="checking_password">Checking password</string>
+    <string name="USER_EDIT_EMAIL_cannot_check_password">Cannot check password</string>
 </resources>
 <!-- «%1$s» -->

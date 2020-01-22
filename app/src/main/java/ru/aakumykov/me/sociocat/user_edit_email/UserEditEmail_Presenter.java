@@ -7,7 +7,10 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.ActionCodeSettings;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.PackageConstants;
@@ -29,6 +32,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private String oldEmailAddress;
+    private String newEmailAddress;
 
 
     @Override
@@ -56,9 +60,10 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
     @Override
     public void onSaveButtonClicked() {
 
+        // Проверка формы
         boolean formHasError = false;
 
-        String newEmailAddress = view.getEmail().trim();
+        newEmailAddress = view.getEmail().trim();
         if (!MyUtils.isCorrectEmail(newEmailAddress)) {
             view.showEmailError(R.string.VALIDATION_mailformed_email);
             formHasError = true;
@@ -73,11 +78,45 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
         if (formHasError)
             return;
 
+        // Изменился ли Email ?
         if (null != oldEmailAddress && oldEmailAddress.equals(newEmailAddress)) {
             view.showToast(R.string.USER_EDIT_EMAIL_you_not_change_email_address);
             return;
         }
 
+        // Проверка пароля
+        view.disableForm();
+        view.showProgressMessage(R.string.checking_password);
+
+        try {
+            AuthSingleton.checkPassword(oldEmailAddress, password, new iAuthSingleton.CheckPasswordCallbacks() {
+                @Override
+                public void onUserCredentialsOk() {
+                    //sendVerificationEmail(newEmailAddress);
+                    view.showToast("Пароль верен");
+                }
+
+                @Override
+                public void onUserCredentialsNotOk(String errorMsg) {
+                    view.enableForm();
+                    view.showErrorMsg(R.string.error_wrong_password, errorMsg);
+                }
+            });
+        }
+        catch (iAuthSingleton.iAuthSingletonException e) {
+            view.enableForm();
+            view.showErrorMsg(R.string.USER_EDIT_EMAIL_cannot_check_password, e.getMessage());
+            MyUtils.printError(TAG, e);
+        }
+    }
+
+
+    // Внутренние методы
+    private void sendVerificationEmail(@NonNull String newEmailAddress) {
+
+    }
+
+    private void qwerty() {
         String userId = AuthSingleton.currentUserId();
 
         ActionCodeSettings actionCodeSettings =
@@ -94,21 +133,21 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
         view.disableForm();
         view.showProgressMessage(R.string.USER_EDIT_EMAIL_sending_confirmation_email);
 
-        FirebaseAuth.getInstance().sendSignInLinkToEmail(newEmailAddress, actionCodeSettings)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        view.showInfoMsg(R.string.USER_EDIT_EMAIL_confirmation_link_is_sent);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        view.enableForm();
-                        view.showErrorMsg(R.string.USER_EDIT_EMAIL_error_sending_confirmation, e.getMessage());
-                        MyUtils.printError(TAG, e);
-                    }
-                });
+//        FirebaseAuth.getInstance().sendSignInLinkToEmail(newEmailAddress, actionCodeSettings)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        view.showInfoMsg(R.string.USER_EDIT_EMAIL_confirmation_link_is_sent);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        view.enableForm();
+//                        view.showErrorMsg(R.string.USER_EDIT_EMAIL_error_sending_confirmation, e.getMessage());
+//                        MyUtils.printError(TAG, e);
+//                    }
+//                });
     }
 
     @Override
