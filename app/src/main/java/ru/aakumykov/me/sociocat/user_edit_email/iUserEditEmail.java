@@ -1,12 +1,11 @@
 package ru.aakumykov.me.sociocat.user_edit_email;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
-import ru.aakumykov.me.sociocat.models.User;
 
 public interface iUserEditEmail {
 
     interface iView extends iBaseView {
-        void displayCurrentEmail(User user);
+        void displayCurrentEmail(String email);
 
         String getEmail();
 

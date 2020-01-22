@@ -26,6 +26,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
     private iUserEditEmail.iView view;
     private iAuthSingleton authSingleton = AuthSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private String oldEmailAddress;
 
 
     @Override
@@ -41,7 +42,8 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
     @Override
     public void onFirstOpen() {
         User user = usersSingleton.getCurrentUser();
-        view.displayCurrentEmail(user);
+        oldEmailAddress = user.getEmail();
+        view.displayCurrentEmail(oldEmailAddress);
     }
 
     @Override
@@ -52,9 +54,14 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
     @Override
     public void onSaveButtonClicked() {
 
-        String email = view.getEmail().trim();
-        if (!MyUtils.isCorrectEmail(email)) {
+        String newEmailAddress = view.getEmail().trim();
+        if (!MyUtils.isCorrectEmail(newEmailAddress)) {
             view.showEmailError(R.string.VALIDATION_mailformed_email);
+            return;
+        }
+
+        if (null != oldEmailAddress && oldEmailAddress.equals(newEmailAddress)) {
+            view.showToast(R.string.USER_EDIT_EMAIL_you_not_change_email_address);
             return;
         }
 
@@ -74,7 +81,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
         view.disableForm();
         view.showProgressMessage(R.string.USER_EDIT_EMAIL_sending_confirmation_email);
 
-        FirebaseAuth.getInstance().sendSignInLinkToEmail(email, actionCodeSettings)
+        FirebaseAuth.getInstance().sendSignInLinkToEmail(newEmailAddress, actionCodeSettings)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

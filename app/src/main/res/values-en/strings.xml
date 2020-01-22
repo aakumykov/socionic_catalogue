@@ -563,5 +563,6 @@
     <string name="USER_EDIT_EMAIL_confirmation_link_is_sent">Confirmation email successfully sent</string>
     <string name="USER_EDIT_EMAIL_error_sending_confirmation">Error sending confirmation email</string>
     <string name="USER_EDIT_EMAIL_page_title">Changing email address</string>
+    <string name="USER_EDIT_EMAIL_you_not_change_email_address">You do not change the Email</string>
 </resources>
 <!-- «%1$s» -->

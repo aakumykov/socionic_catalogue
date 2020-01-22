@@ -571,5 +571,6 @@
     <string name="USER_EDIT_EMAIL_confirmation_link_is_sent">Письмо с подтвержденим отправлено</string>
     <string name="USER_EDIT_EMAIL_error_sending_confirmation">Не удаётся отправить письмо с подтвержденим</string>
     <string name="USER_EDIT_EMAIL_page_title">Изменение адреса электронной почты</string>
+    <string name="USER_EDIT_EMAIL_you_not_change_email_address">Вы не меняли Email</string>
 
 </resources><!-- «%1$s» -->

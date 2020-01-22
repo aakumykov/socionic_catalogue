@@ -16,7 +16,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_edit_email.view_model.UserEmailEdit_ViewModel;
 import ru.aakumykov.me.sociocat.user_edit_email.view_model.UserEmailEdit_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -110,8 +109,8 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
 
     // iUserEditEmail.iView
     @Override
-    public void displayCurrentEmail(User user) {
-        emailInput.setText(user.getEmail());
+    public void displayCurrentEmail(String email) {
+        emailInput.setText(email);
     }
 
     @Override
