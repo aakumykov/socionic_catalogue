@@ -25,7 +25,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class AuthSingleton implements iAuthSingleton
 {
-    /* Одиночка */
+    // Одиночка
     private static volatile AuthSingleton ourInstance;
     public synchronized static AuthSingleton getInstance() {
         synchronized (AuthSingleton.class) {
@@ -37,7 +37,7 @@ public class AuthSingleton implements iAuthSingleton
         firebaseAuth = FirebaseAuth.getInstance();
         Log.d(TAG, "firebaseAuth: "+firebaseAuth);
     }
-    /* Одиночка */
+    // Одиночка
 
     private final static String TAG = "AuthSingleton";
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -99,40 +99,10 @@ public class AuthSingleton implements iAuthSingleton
 
 
 
-    @Override
-    public void resetPasswordEmail(String email, final ResetPasswordCallbacks callbacks) {
-
-        ActionCodeSettings actionCodeSettings =
-                ActionCodeSettings.newBuilder()
-                        .setUrl(DeepLink_Constants.URL_BASE + DeepLink_Constants.PASSWORD_RESET_PATH + firebaseAuth.getUid())
-                        .setHandleCodeInApp(false)
-                        .setAndroidPackageName(
-                                PackageConstants.PACKAGE_NAME,
-                                true, /* installIfNotAvailable */
-                                null    /* minimumVersion */)
-                        .build();
-
-        firebaseAuth.sendPasswordResetEmail(email, actionCodeSettings)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        callbacks.onEmailSendSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onEmailSendFail(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
-    }
-
-    @Override
-    public void checkUserCredentials(
+    public static void checkPassword(
             String email,
             String password,
-            @NonNull CheckUserCredentialsCallbacks callbacks
+            @NonNull CheckPasswordCallbacks callbacks
     ) throws iAuthSingletonException
     {
         if (null == email)
@@ -165,6 +135,37 @@ public class AuthSingleton implements iAuthSingleton
                     }
                 });
 
+    }
+
+
+
+    @Override
+    public void resetPasswordEmail(String email, final ResetPasswordCallbacks callbacks) {
+
+        ActionCodeSettings actionCodeSettings =
+                ActionCodeSettings.newBuilder()
+                        .setUrl(DeepLink_Constants.URL_BASE + DeepLink_Constants.PASSWORD_RESET_PATH + firebaseAuth.getUid())
+                        .setHandleCodeInApp(false)
+                        .setAndroidPackageName(
+                                PackageConstants.PACKAGE_NAME,
+                                true, /* installIfNotAvailable */
+                                null    /* minimumVersion */)
+                        .build();
+
+        firebaseAuth.sendPasswordResetEmail(email, actionCodeSettings)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onEmailSendSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onEmailSendFail(e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
     }
 
 }

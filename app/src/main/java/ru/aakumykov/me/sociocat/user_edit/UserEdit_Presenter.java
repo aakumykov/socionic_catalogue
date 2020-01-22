@@ -162,7 +162,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
         String password = view.getPassword();
 
         try {
-            authSingleton.checkUserCredentials(email, password, new iAuthSingleton.CheckUserCredentialsCallbacks() {
+            AuthSingleton.checkPassword(email, password, new iAuthSingleton.CheckPasswordCallbacks() {
                 @Override
                 public void onUserCredentialsOk() {
                     uploadAvatarAndSaveUser();
