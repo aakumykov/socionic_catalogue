@@ -10,9 +10,12 @@ public interface iUserEditEmail {
         String getEmail();
 
         void showEmailError(int errorMsgId);
+        void showPasswordError(int errorMsgId);
 
         void disableForm();
         void enableForm();
+
+        String getPassword();
     }
 
     interface iPresenter {

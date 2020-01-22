@@ -564,5 +564,6 @@
     <string name="USER_EDIT_EMAIL_error_sending_confirmation">Error sending confirmation email</string>
     <string name="USER_EDIT_EMAIL_page_title">Changing email address</string>
     <string name="USER_EDIT_EMAIL_you_not_change_email_address">You do not change the Email</string>
+    <string name="VALIDATION_field_required">Required field</string>
 </resources>
 <!-- «%1$s» -->

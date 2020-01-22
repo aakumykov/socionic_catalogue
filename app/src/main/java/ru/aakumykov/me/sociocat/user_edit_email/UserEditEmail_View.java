@@ -23,6 +23,8 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView {
 
     @BindView(R.id.emailInput) EditText emailInput;
+    @BindView(R.id.passwordInput) EditText passwordInput;
+
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
@@ -126,6 +128,13 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
     }
 
     @Override
+    public void showPasswordError(int errorMsgId) {
+        passwordInput.setError(
+                getResources().getString(errorMsgId)
+        );
+    }
+
+    @Override
     public void disableForm() {
         MyUtils.disable(emailInput);
         MyUtils.disable(saveButton);
@@ -135,6 +144,11 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
     public void enableForm() {
         MyUtils.enable(emailInput);
         MyUtils.enable(saveButton);
+    }
+
+    @Override
+    public String getPassword() {
+        return passwordInput.getText().toString();
     }
 
 

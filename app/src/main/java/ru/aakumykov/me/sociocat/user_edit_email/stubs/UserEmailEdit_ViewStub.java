@@ -24,6 +24,11 @@ public class UserEmailEdit_ViewStub extends BaseView_Stub implements iUserEditEm
     }
 
     @Override
+    public void showPasswordError(int errorMsgId) {
+
+    }
+
+    @Override
     public void disableForm() {
 
     }
@@ -31,5 +36,10 @@ public class UserEmailEdit_ViewStub extends BaseView_Stub implements iUserEditEm
     @Override
     public void enableForm() {
 
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
     }
 }

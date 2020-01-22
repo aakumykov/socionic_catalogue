@@ -572,5 +572,6 @@
     <string name="USER_EDIT_EMAIL_error_sending_confirmation">Не удаётся отправить письмо с подтвержденим</string>
     <string name="USER_EDIT_EMAIL_page_title">Изменение адреса электронной почты</string>
     <string name="USER_EDIT_EMAIL_you_not_change_email_address">Вы не меняли Email</string>
+    <string name="VALIDATION_field_required">Обязательное поле</string>
 
 </resources><!-- «%1$s» -->

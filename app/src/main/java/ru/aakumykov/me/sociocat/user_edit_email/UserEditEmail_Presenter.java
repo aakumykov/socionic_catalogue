@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.user_edit_email;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,11 +56,22 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
     @Override
     public void onSaveButtonClicked() {
 
+        boolean formHasError = false;
+
         String newEmailAddress = view.getEmail().trim();
         if (!MyUtils.isCorrectEmail(newEmailAddress)) {
             view.showEmailError(R.string.VALIDATION_mailformed_email);
-            return;
+            formHasError = true;
         }
+
+        String password = view.getPassword();
+        if (TextUtils.isEmpty(password)) {
+            view.showPasswordError(R.string.VALIDATION_field_required);
+            formHasError = true;
+        }
+
+        if (formHasError)
+            return;
 
         if (null != oldEmailAddress && oldEmailAddress.equals(newEmailAddress)) {
             view.showToast(R.string.USER_EDIT_EMAIL_you_not_change_email_address);
