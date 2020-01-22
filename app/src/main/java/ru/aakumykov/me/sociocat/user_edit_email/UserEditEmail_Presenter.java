@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.dropbox.core.android.Auth;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.ActionCodeSettings;
@@ -92,8 +93,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
             AuthSingleton.checkPassword(oldEmailAddress, password, new iAuthSingleton.CheckPasswordCallbacks() {
                 @Override
                 public void onUserCredentialsOk() {
-                    //sendVerificationEmail(newEmailAddress);
-                    view.showToast("Пароль верен");
+                    sendVerificationEmail(newEmailAddress);
                 }
 
                 @Override
@@ -114,40 +114,23 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
     // Внутренние методы
     private void sendVerificationEmail(@NonNull String newEmailAddress) {
 
-    }
-
-    private void qwerty() {
         String userId = AuthSingleton.currentUserId();
-
-        ActionCodeSettings actionCodeSettings =
-                ActionCodeSettings.newBuilder()
-                        .setUrl(DeepLink_Constants.URL_BASE + DeepLink_Constants.CONFIRM_EMAIL_PATH + "?userId=" + userId)
-                        .setHandleCodeInApp(true)
-                        .setAndroidPackageName(
-                                PackageConstants.PACKAGE_NAME,
-                                true, /* Установить программу, если её нет */
-                                PackageConstants.VERSION_NAME /* Минимальная версия */
-                        )
-                        .build();
 
         view.disableForm();
         view.showProgressMessage(R.string.USER_EDIT_EMAIL_sending_confirmation_email);
 
-//        FirebaseAuth.getInstance().sendSignInLinkToEmail(newEmailAddress, actionCodeSettings)
-//                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                        view.showInfoMsg(R.string.USER_EDIT_EMAIL_confirmation_link_is_sent);
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        view.enableForm();
-//                        view.showErrorMsg(R.string.USER_EDIT_EMAIL_error_sending_confirmation, e.getMessage());
-//                        MyUtils.printError(TAG, e);
-//                    }
-//                });
+        AuthSingleton.sendSignInLinkToEmail(userId, newEmailAddress, new iAuthSingleton.SendSignInLinkCallbacks() {
+            @Override
+            public void onSignInLinkSendSuccess() {
+                view.showInfoMsg(R.string.USER_EDIT_EMAIL_confirmation_link_is_sent);
+            }
+
+            @Override
+            public void onSignInLinkSendFail(String errorMsg) {
+                view.enableForm();
+                view.showErrorMsg(R.string.USER_EDIT_EMAIL_error_sending_confirmation, errorMsg);
+            }
+        });
     }
 
     @Override

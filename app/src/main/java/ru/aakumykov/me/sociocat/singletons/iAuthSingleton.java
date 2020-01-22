@@ -22,6 +22,11 @@ public interface iAuthSingleton {
         void onUserCredentialsNotOk(String errorMsg);
     }
 
+    interface SendSignInLinkCallbacks {
+        void onSignInLinkSendSuccess();
+        void onSignInLinkSendFail(String errorMsg);
+    }
+
 
     class iAuthSingletonException extends Exception {
         public iAuthSingletonException(String message) {

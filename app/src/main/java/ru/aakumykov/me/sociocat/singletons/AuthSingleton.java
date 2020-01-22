@@ -137,6 +137,36 @@ public class AuthSingleton implements iAuthSingleton
 
     }
 
+    public static void sendSignInLinkToEmail(String userId, String newEmailAddress, SendSignInLinkCallbacks callbacks) {
+
+        ActionCodeSettings actionCodeSettings =
+                ActionCodeSettings.newBuilder()
+                        .setUrl(DeepLink_Constants.URL_BASE + DeepLink_Constants.CONFIRM_EMAIL_PATH + "?" + DeepLink_Constants.USER_ID_KEY + "=" + userId)
+                        .setHandleCodeInApp(true)
+                        .setAndroidPackageName(
+                                PackageConstants.PACKAGE_NAME,
+                                true, // Установить программу в случае её отсутствия
+                                PackageConstants.VERSION_NAME // Минимальная версия устанавливаемой программы
+                        )
+                        .build();
+
+        FirebaseAuth.getInstance().sendSignInLinkToEmail(newEmailAddress, actionCodeSettings)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onSignInLinkSendSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onSignInLinkSendFail(e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
+
+    }
+
 
 
     @Override
