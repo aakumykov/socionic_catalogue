@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.User;
@@ -132,7 +133,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
         view.disableForm();
         view.showProgressMessage(R.string.USER_EDIT_EMAIL_sending_confirmation_email);
 
-        AuthSingleton.sendSignInLinkToEmail(userId, newEmailAddress, new iAuthSingleton.SendSignInLinkCallbacks() {
+        AuthSingleton.sendSignInLinkToEmail(userId, newEmailAddress, DeepLink_Constants.CHANGE_EMAIL_ACTION, new iAuthSingleton.SendSignInLinkCallbacks() {
             @Override
             public void onSignInLinkSendSuccess() {
 

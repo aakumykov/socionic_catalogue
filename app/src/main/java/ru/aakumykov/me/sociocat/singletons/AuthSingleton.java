@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.singletons;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -137,11 +138,21 @@ public class AuthSingleton implements iAuthSingleton
 
     }
 
-    public static void sendSignInLinkToEmail(String userId, String newEmailAddress, SendSignInLinkCallbacks callbacks) {
+    public static void sendEmailChangeConfirmationLink(String userId, String emailAddress, SendSignInLinkCallbacks callbacks) {
+
+        sendSignInLinkToEmail(userId, emailAddress, DeepLink_Constants.CHANGE_EMAIL_ACTION, callbacks);
+    }
+
+    public static void sendSignInLinkToEmail(String userId, String emailAddress, @Nullable String action, SendSignInLinkCallbacks callbacks) {
+
+        String continueURL = DeepLink_Constants.URL_BASE + DeepLink_Constants.CONFIRM_EMAIL_PATH + "?" + DeepLink_Constants.USER_ID_KEY + "=" + userId;
+
+        if (null != action)
+            continueURL += DeepLink_Constants.ACTION_KEY + "=" + action;
 
         ActionCodeSettings actionCodeSettings =
                 ActionCodeSettings.newBuilder()
-                        .setUrl(DeepLink_Constants.URL_BASE + DeepLink_Constants.CONFIRM_EMAIL_PATH + "?" + DeepLink_Constants.USER_ID_KEY + "=" + userId)
+                        .setUrl(continueURL)
                         .setHandleCodeInApp(true)
                         .setAndroidPackageName(
                                 PackageConstants.PACKAGE_NAME,
@@ -150,7 +161,7 @@ public class AuthSingleton implements iAuthSingleton
                         )
                         .build();
 
-        FirebaseAuth.getInstance().sendSignInLinkToEmail(newEmailAddress, actionCodeSettings)
+        FirebaseAuth.getInstance().sendSignInLinkToEmail(emailAddress, actionCodeSettings)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -166,7 +177,6 @@ public class AuthSingleton implements iAuthSingleton
                 });
 
     }
-
 
 
     @Override

@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.dynamic_link_processor;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -93,9 +94,9 @@ public class DLP_Presenter implements iDLP.Presenter {
 
     private void processEmailSignInDeepLink(Uri deepLink, @NonNull Intent intent) {
 
-        Uri continueUrl = Uri.parse(deepLink.getQueryParameter("continueUrl"));
+        Uri continueURI = Uri.parse(deepLink.getQueryParameter("continueUrl"));
 
-        String continueUrlPath = continueUrl.getPath() + "";
+        String continueUrlPath = continueURI.getPath() + "";
 
         switch (continueUrlPath) {
             case DeepLink_Constants.REGISTRATION_STEP2_PATH:
@@ -103,7 +104,7 @@ public class DLP_Presenter implements iDLP.Presenter {
                 break;
 
             case DeepLink_Constants.CONFIRM_EMAIL_PATH:
-
+                processEmailConfirmation(continueURI);
                 break;
 
             default:
@@ -138,6 +139,15 @@ public class DLP_Presenter implements iDLP.Presenter {
         Intent intent = new Intent(view.getAppContext(), Login_View.class);
         intent.setAction(Constants.ACTION_TRY_NEW_PASSWORD);
         view.startSomeActivity(intent);
+    }
+
+    private void processEmailConfirmation(@NonNull Uri continueURI) {
+
+        String action = continueURI.getQueryParameter(DeepLink_Constants.ACTION_KEY);
+
+        if (null != action) {
+            Log.d(TAG, action);
+        }
     }
 
 
