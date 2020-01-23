@@ -103,8 +103,10 @@ public final class Constants {
     public final static String SHARED_PREFERENCES_EMAIL = "SHARED_PREFERENCES_EMAIL";
     public final static String SHARED_PREFERENCES_LOGIN = "SHARED_PREFERENCES_LOGIN";
     public final static String SHARED_PREFERENCES_CARD_EDIT = "SHARED_PREFERENCES_CARD_EDIT";
+    public static final String SHARED_PREFERENCES_EMAIL_CHANGE = "SHARED_PREFERENCES_EMAIL_CHANGE";
 
-    public final static String KEY_LAST_LOGIN = "KEY_LAST_LOGIN";
+    public final static String KEY_LAST_LOGIN = "LAST_LOGIN";
+    public static final String KEY_STORED_EMAIL = "STORED_EMAIL";
 
     public final static String TOPIC_NEW_CARDS = "new_cards";
 

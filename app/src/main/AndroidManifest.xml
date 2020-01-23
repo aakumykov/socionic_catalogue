@@ -49,24 +49,6 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".cards_grid.CardsGrid_View" />
 
-        <activity
-            android:name=".dynamic_link_processor.DLP_View"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="sociocat.example.org"
-                    android:scheme="https" />
-                <data
-                    android:host="sociocat.page.link"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
-
         <activity android:name=".register.register_step_1.RegisterStep1_View" />
         <activity android:name=".register.register_step_2.RegisterStep2_View" />
         <activity android:name=".reset_password_step1.ResetPasswordStep1_View" />
@@ -142,6 +124,36 @@
         <activity android:name=".user_edit.UserEdit_View" android:windowSoftInputMode="stateHidden" />
         <activity android:name=".user_edit_email.UserEditEmail_View" />
 
+        <activity android:name=".deep_links_receiver.DeepLinksReceiver" android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="sociocat.page.link"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+
+        <!--<activity
+            android:name=".dynamic_link_processor.DLP_View"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="sociocat.example.org"
+                    android:scheme="https" />
+                <data
+                    android:host="sociocat.page.link"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>-->
 
         <!-- android:windowSoftInputMode="stateHidden" -->
 
