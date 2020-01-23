@@ -403,14 +403,26 @@ public class MyDialogs {
 
     // Простой информационный диалог
     public static void infoDialog(Activity activity, int titleId, int messageId, final iMyDialogs.StandardCallbacks callbacks) {
-        String title = activity.getResources().getString(titleId);
+
         String message = activity.getResources().getString(messageId);
+
+        infoDialog(
+                activity,
+                titleId,
+                message,
+                callbacks
+        );
+    }
+
+    public static void infoDialog(Activity activity, int titleId, String message, final iMyDialogs.StandardCallbacks callbacks) {
+
+        String title = activity.getResources().getString(titleId);
 
         AlertDialog alertDialog = basicDialog(
                 activity,
                 title,
                 message,
-                R.string.REGISTER1_ok,
+                R.string.understand,
                 null,
                 null,
                 null,
