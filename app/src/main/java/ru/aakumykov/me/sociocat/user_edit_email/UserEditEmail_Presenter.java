@@ -1,28 +1,23 @@
 package ru.aakumykov.me.sociocat.user_edit_email;
 
+import android.content.Intent;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.dropbox.core.android.Auth;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.ActionCodeSettings;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import ru.aakumykov.me.sociocat.DeepLink_Constants;
-import ru.aakumykov.me.sociocat.PackageConstants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.user_edit_email.stubs.UserEmailEdit_ViewStub;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 
 class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
@@ -89,17 +84,17 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
 
     @Override
     public void onCancelButtonClicked() {
-        view.closePage();
+        cancelEditing();
     }
 
     @Override
     public void onBackPressed() {
-        view.closePage();
+        cancelEditing();
     }
 
     @Override
     public boolean onHomePressed() {
-        view.closePage();
+        cancelEditing();
         return true;
     }
 
@@ -140,7 +135,35 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
         AuthSingleton.sendSignInLinkToEmail(userId, newEmailAddress, new iAuthSingleton.SendSignInLinkCallbacks() {
             @Override
             public void onSignInLinkSendSuccess() {
-                view.showInfoMsg(R.string.USER_EDIT_EMAIL_confirmation_link_is_sent);
+
+                String message = MyUtils.getString(view.getAppContext(), R.string.USER_EDIT_EMAIL_verification_sent_message, newEmailAddress);
+
+                MyDialogs.infoDialog(
+                        view.getActivity(),
+                        R.string.USER_EDIT_EMAIL_verification_sent_title,
+                        message,
+                        new iMyDialogs.StandardCallbacks() {
+                            @Override
+                            public void onCancelInDialog() {
+
+                            }
+
+                            @Override
+                            public void onNoInDialog() {
+
+                            }
+
+                            @Override
+                            public boolean onCheckInDialog() {
+                                return false;
+                            }
+
+                            @Override
+                            public void onYesInDialog() {
+                                view.closePage(RESULT_OK, Intent.ACTION_EDIT);
+                            }
+                        }
+                );
             }
 
             @Override
@@ -151,4 +174,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
         });
     }
 
+    private void cancelEditing() {
+        view.closePage(RESULT_CANCELED, Intent.ACTION_EDIT);
+    }
 }

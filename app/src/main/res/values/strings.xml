@@ -578,5 +578,8 @@
     <string name="checking_password">Проверка пароля</string>
     <string name="USER_EDIT_EMAIL_cannot_check_password">Не удалось проверить пароль</string>
     <string name="DLP_unknown_action">Неизвестное действие</string>
+    <string name="USER_EDIT_EMAIL_verification_sent_title">Письмо отправлено</string>
+    <string name="USER_EDIT_EMAIL_verification_sent_message">На адрес %1$s отправлено письмо. Пройдите по ссылке, указанной в нём, чтобы подтвердить изменение электронной почты</string>
+    <string name="understand">Понятно</string>
 
 </resources><!-- «%1$s» -->
