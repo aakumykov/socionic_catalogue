@@ -401,6 +401,33 @@ public class MyDialogs {
         alertDialog.show();
     }
 
+    // Простой информационный диалог
+    public static void infoDialog(Activity activity, int titleId, int messageId, final iMyDialogs.StandardCallbacks callbacks) {
+        String title = activity.getResources().getString(titleId);
+        String message = activity.getResources().getString(messageId);
+
+        AlertDialog alertDialog = basicDialog(
+                activity,
+                title,
+                message,
+                R.string.REGISTER1_ok,
+                null,
+                null,
+                null,
+                null,
+                callbacks
+        );
+
+        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                callbacks.onYesInDialog();
+            }
+        });
+
+        alertDialog.show();
+    }
+
 
 
     // Внутренние методы
