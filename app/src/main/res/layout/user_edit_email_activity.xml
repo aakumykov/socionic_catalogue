@@ -64,10 +64,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
                 android:layout_weight="1"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/passwordInput"
                 app:layout_constraintEnd_toEndOf="@+id/passwordInput"
                 app:layout_constraintTop_toTopOf="@+id/passwordInput"
-                app:srcCompat="@drawable/ic_see_password" />
+                app:srcCompat="@drawable/ic_see_password"
+                tools:visibility="visible" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
