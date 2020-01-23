@@ -137,12 +137,14 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
     @Override
     public void disableForm() {
         MyUtils.disable(emailInput);
+        MyUtils.disable(passwordInput);
         MyUtils.disable(saveButton);
     }
 
     @Override
     public void enableForm() {
         MyUtils.enable(emailInput);
+        MyUtils.enable(passwordInput);
         MyUtils.enable(saveButton);
     }
 
