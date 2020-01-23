@@ -133,9 +133,11 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
         view.disableForm();
         view.showProgressMessage(R.string.USER_EDIT_EMAIL_sending_confirmation_email);
 
-        AuthSingleton.sendSignInLinkToEmail(userId, newEmailAddress, DeepLink_Constants.CHANGE_EMAIL_ACTION, new iAuthSingleton.SendSignInLinkCallbacks() {
+        AuthSingleton.sendEmailChangeConfirmationLink(userId, newEmailAddress, new iAuthSingleton.SendSignInLinkCallbacks() {
             @Override
             public void onSignInLinkSendSuccess() {
+
+                view.hideProgressBar();
 
                 String message = MyUtils.getString(view.getAppContext(), R.string.USER_EDIT_EMAIL_verification_sent_message, newEmailAddress);
 
