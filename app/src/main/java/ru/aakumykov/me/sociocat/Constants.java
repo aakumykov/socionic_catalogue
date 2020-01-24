@@ -104,6 +104,7 @@ public final class Constants {
     public final static String SHARED_PREFERENCES_LOGIN = "SHARED_PREFERENCES_LOGIN";
     public final static String SHARED_PREFERENCES_CARD_EDIT = "SHARED_PREFERENCES_CARD_EDIT";
     public static final String SHARED_PREFERENCES_EMAIL_CHANGE = "SHARED_PREFERENCES_EMAIL_CHANGE";
+    public static final String SHARED_PREFERENCES_USER = "SHARED_PREFERENCES_USER";
 
     public final static String KEY_LAST_LOGIN = "LAST_LOGIN";
     public static final String KEY_STORED_EMAIL = "STORED_EMAIL";

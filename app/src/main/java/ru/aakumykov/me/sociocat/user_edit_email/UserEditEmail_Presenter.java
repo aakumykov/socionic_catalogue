@@ -1,10 +1,13 @@
 package ru.aakumykov.me.sociocat.user_edit_email;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
@@ -127,6 +130,11 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
     }
 
     private void sendVerificationEmail(@NonNull String newEmailAddress) {
+
+        SharedPreferences sharedPreferences = view.getAppContext().getSharedPreferences(Constants.SHARED_PREFERENCES_USER, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(Constants.KEY_STORED_EMAIL, newEmailAddress);
+        editor.commit();
 
         String userId = AuthSingleton.currentUserId();
 
