@@ -573,8 +573,10 @@
     <string name="USER_EDIT_EMAIL_verification_sent_title">Letter sent</string>
     <string name="USER_EDIT_EMAIL_verification_sent_message">We sent a letter to %1$s. Follow link in it to confirm email change</string>
     <string name="understand">Got it</string>
-    <string name="DEEP_LINKS_RECEIVER_page_title">Обработчик ссылок приложения</string>
-    <string name="DEEP_LINKS_RECEIVER_successfull_login">Successful login</string>
+    <string name="DEEP_LINKS_RECEIVER_page_title">App link processor</string>
+    <string name="DEEP_LINKS_RECEIVER_login_success">Successful login</string>
     <string name="DEEP_LINKS_RECEIVER_error_sign_in_throuth_link">Authorization through link error</string>
+    <string name="DEEP_LINKS_RECEIVER_error_processing_link">Error processing link</string>
+    <string name="DEEP_LINKS_RECEIVER_login_error">Login error</string>
 </resources>
 <!-- «%1$s» -->

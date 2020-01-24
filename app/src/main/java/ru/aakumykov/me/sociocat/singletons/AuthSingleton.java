@@ -103,15 +103,15 @@ public class AuthSingleton implements iAuthSingleton
 
     public static void sendEmailChangeConfirmationLink(String userId, String emailAddress, SendSignInLinkCallbacks callbacks) {
 
-        sendSignInLinkToEmail(userId, emailAddress, DeepLink_Constants.CHANGE_EMAIL_ACTION, callbacks);
+        sendSignInLinkToEmail(userId, emailAddress, DeepLink_Constants.ACTION_CHANGE_EMAIL, callbacks);
     }
 
     public static void sendSignInLinkToEmail(String userId, String emailAddress, @Nullable String action, SendSignInLinkCallbacks callbacks) {
 
-        String continueURL = DeepLink_Constants.URL_BASE + DeepLink_Constants.CONFIRM_EMAIL_PATH + "?" + DeepLink_Constants.USER_ID_KEY + "=" + userId;
+        String continueURL = DeepLink_Constants.URL_BASE + DeepLink_Constants.CONFIRM_EMAIL_PATH + "?" + DeepLink_Constants.KEY_USER_ID + "=" + userId;
 
         if (null != action)
-            continueURL += DeepLink_Constants.ACTION_KEY + "=" + action;
+            continueURL += DeepLink_Constants.KEY_ACTION + "=" + action;
 
         ActionCodeSettings actionCodeSettings =
                 ActionCodeSettings.newBuilder()

@@ -143,7 +143,7 @@ public class DLP_Presenter implements iDLP.Presenter {
 
     private void processEmailConfirmation(@NonNull Uri continueURI) {
 
-        String action = continueURI.getQueryParameter(DeepLink_Constants.ACTION_KEY);
+        String action = continueURI.getQueryParameter(DeepLink_Constants.KEY_ACTION);
 
         if (null != action) {
             Log.d(TAG, action);

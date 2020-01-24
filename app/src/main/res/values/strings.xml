@@ -582,7 +582,9 @@
     <string name="USER_EDIT_EMAIL_verification_sent_message">На адрес %1$s отправлено письмо. Пройдите по ссылке, указанной в нём, чтобы подтвердить изменение электронной почты</string>
     <string name="understand">Понятно</string>
     <string name="DEEP_LINKS_RECEIVER_page_title">Обработчик ссылок приложения</string>
-    <string name="DEEP_LINKS_RECEIVER_successfull_login">Успешная авторизация</string>
+    <string name="DEEP_LINKS_RECEIVER_login_success">Успешная авторизация</string>
     <string name="DEEP_LINKS_RECEIVER_error_sign_in_throuth_link">Ошибка авторизации по ссылке</string>
+    <string name="DEEP_LINKS_RECEIVER_error_processing_link">Ошибка обработки ссылки</string>
+    <string name="DEEP_LINKS_RECEIVER_login_error">Ошибка авторизации</string>
 
 </resources><!-- «%1$s» -->

@@ -1,16 +1,10 @@
 package ru.aakumykov.me.sociocat.deep_links_receiver;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class ContinueUrlProcessor {
 
-    public static void process(@NonNull String continueUrl) throws ContinueUrlProcessorException {
+    public static void process(@Nullable String continueUrl) {
 
-    }
-
-    public static class ContinueUrlProcessorException extends Exception {
-        public ContinueUrlProcessorException(String message) {
-            super(message);
-        }
     }
 }
