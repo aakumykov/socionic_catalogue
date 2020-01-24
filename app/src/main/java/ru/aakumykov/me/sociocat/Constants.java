@@ -120,6 +120,9 @@ public final class Constants {
     public final static String SHORTCUT_CREATE_AUDIO_CARD = "SHORTCUT_CREATE_AUDIO_CARD";
     public final static String SHORTCUT_CREATE_VIDEO_CARD = "SHORTCUT_CREATE_VIDEO_CARD";
 
+    public static final String INFO_MESSAGE = "INFO_MESSAGE";
+    public static final String ERROR_MESSAGE = "ERROR_MESSAGE";
+
     // TODO: перенести в модель User
     public final static String USER_NAME_KEY = "name";
     public final static String USER_EMAIL_KEY = "email";

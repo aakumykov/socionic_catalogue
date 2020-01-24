@@ -11,7 +11,9 @@ import androidx.annotation.Nullable;
 import com.google.firebase.auth.FirebaseAuth;
 
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 
 public class DeepLinksReceiver extends BaseView {
 
@@ -50,30 +52,28 @@ public class DeepLinksReceiver extends BaseView {
     private void processInputIntent(@Nullable Intent intent) {
 
         if (null == intent) {
-            Log.e(TAG, "Input intent is null");
+            goToStartPage(null,"Input intent is null");
             return;
         }
 
-        Uri intentData = intent.getData();
-        if (null == intentData) {
-            Log.e(TAG, "There is no data in Intent");
+        String deepLink = intent.getDataString();
+        if (null == deepLink) {
+            goToStartPage(null, "There is no deep link in Intent");
             return;
         }
 
-        String deepLink = intentData.toString();
         Log.d(TAG, "1, deepLink: "+deepLink);
 
         if (firebaseAuth.isSignInWithEmailLink(deepLink)) {
             SignInLinkProcessor.process(this, deepLink, new SignInLinkProcessor.SignInLinkProcessorCallbacks() {
                 @Override
                 public void onLinkSignInSuccess() {
-                    showToast(R.string.DEEP_LINKS_RECEIVER_successfull_login);
-
+                    goToStartPage(R.string.DEEP_LINKS_RECEIVER_successfull_login, null);
                 }
 
                 @Override
                 public void onLinkSignInFailed(String errorMsg) {
-                    showErrorMsg(R.string.DEEP_LINKS_RECEIVER_);
+                    goToStartPage(null, R.string.DEEP_LINKS_RECEIVER_error_sign_in_throuth_link);
                 }
             });
         }
@@ -82,4 +82,21 @@ public class DeepLinksReceiver extends BaseView {
         }
     }
 
+    private void goToStartPage(@Nullable Integer infoMsgId, @Nullable Integer errorMsgId) {
+        String infoMsg = (null != infoMsgId) ? getString(infoMsgId) : null;
+        String errorMsg = (null != errorMsgId) ? getString(errorMsgId) : null;
+        goToStartPage(infoMsg, errorMsg);
+    }
+
+    private void goToStartPage(@Nullable String infoMsg, @Nullable String errorMsg) {
+        Intent intent = new Intent(this, CardsGrid_View.class);
+
+        if (null != infoMsg)
+            intent.putExtra(Constants.INFO_MESSAGE, infoMsg);
+
+        if (null != errorMsg)
+            intent.putExtra(Constants.ERROR_MESSAGE, errorMsg);
+
+        startActivity(intent);
+    }
 }

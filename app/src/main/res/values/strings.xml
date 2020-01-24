@@ -583,5 +583,6 @@
     <string name="understand">Понятно</string>
     <string name="DEEP_LINKS_RECEIVER_page_title">Обработчик ссылок приложения</string>
     <string name="DEEP_LINKS_RECEIVER_successfull_login">Успешная авторизация</string>
+    <string name="DEEP_LINKS_RECEIVER_error_sign_in_throuth_link">Ошибка авторизации по ссылке</string>
 
 </resources><!-- «%1$s» -->
