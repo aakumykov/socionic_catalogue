@@ -4,9 +4,6 @@ import androidx.annotation.NonNull;
 
 public interface iAuthSingleton {
 
-    void resetPasswordEmail(String email, ResetPasswordCallbacks callbacks);
-
-
     interface ResetPasswordCallbacks {
         void onEmailSendSuccess();
         void onEmailSendFail(String errorMsg);

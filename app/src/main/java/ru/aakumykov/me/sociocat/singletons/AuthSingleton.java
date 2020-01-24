@@ -26,24 +26,6 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class AuthSingleton implements iAuthSingleton
 {
-    // Одиночка
-    private static volatile AuthSingleton ourInstance;
-    public synchronized static AuthSingleton getInstance() {
-        synchronized (AuthSingleton.class) {
-            if (null == ourInstance) ourInstance = new AuthSingleton();
-            return ourInstance;
-        }
-    }
-    private AuthSingleton() {
-        firebaseAuth = FirebaseAuth.getInstance();
-        Log.d(TAG, "firebaseAuth: "+firebaseAuth);
-    }
-    // Одиночка
-
-    private final static String TAG = "AuthSingleton";
-    private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
-
     // Статические методы
     public static boolean isLoggedIn() {
         return (null != firebaseAuth.getCurrentUser());
@@ -57,12 +39,7 @@ public class AuthSingleton implements iAuthSingleton
         return firebaseAuth.getUid();
     }
 
-
-
-    // Создание Firebase Custom Token
-    public static void createFirebaseCustomToken(String externalToken,
-                                                 iAuthSingleton.CreateFirebaseCustomToken_Callbacks callbacks)
-    {
+    public static void createFirebaseCustomToken(String externalToken, iAuthSingleton.CreateFirebaseCustomToken_Callbacks callbacks) {
         AuthSingleton.getCustomTokenAPI()
                 .getCustomToken(externalToken)
                 .enqueue(new retrofit2.Callback<String>() {
@@ -84,21 +61,6 @@ public class AuthSingleton implements iAuthSingleton
                     }
                 });
     }
-
-    private interface CustomTokenAPI {
-        @GET(Config.CREATE_CUSTOM_TOKEN_PATH)
-        retrofit2.Call<String> getCustomToken(@Query(Config.CREATE_CUSTOM_TOKEN_PARAMETER_NAME) String tokenBase);
-    }
-
-    private static CustomTokenAPI getCustomTokenAPI() {
-        return new Retrofit.Builder()
-                .baseUrl(Config.CREATE_CUSTOM_TOKEN_BASE_URL)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .build()
-                .create(CustomTokenAPI.class);
-    }
-
-
 
     public static void checkPassword(
             String email,
@@ -178,9 +140,7 @@ public class AuthSingleton implements iAuthSingleton
 
     }
 
-
-    @Override
-    public void resetPasswordEmail(String email, final ResetPasswordCallbacks callbacks) {
+    public static void resetPasswordEmail(String email, final ResetPasswordCallbacks callbacks) {
 
         ActionCodeSettings actionCodeSettings =
                 ActionCodeSettings.newBuilder()
@@ -206,6 +166,41 @@ public class AuthSingleton implements iAuthSingleton
                         e.printStackTrace();
                     }
                 });
+    }
+
+
+
+    // Свойства
+    private final static String TAG = "AuthSingleton";
+    private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+    // Одиночка
+    private static volatile AuthSingleton ourInstance;
+    public synchronized static AuthSingleton getInstance() {
+        synchronized (AuthSingleton.class) {
+            if (null == ourInstance) ourInstance = new AuthSingleton();
+            return ourInstance;
+        }
+    }
+    private AuthSingleton() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        Log.d(TAG, "firebaseAuth: "+firebaseAuth);
+    }
+    // Одиночка
+
+    // Внутренние интерфейсы
+    private interface CustomTokenAPI {
+        @GET(Config.CREATE_CUSTOM_TOKEN_PATH)
+        retrofit2.Call<String> getCustomToken(@Query(Config.CREATE_CUSTOM_TOKEN_PARAMETER_NAME) String tokenBase);
+    }
+
+    // Внутренние методы
+    private static CustomTokenAPI getCustomTokenAPI() {
+        return new Retrofit.Builder()
+                .baseUrl(Config.CREATE_CUSTOM_TOKEN_BASE_URL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build()
+                .create(CustomTokenAPI.class);
     }
 
 }

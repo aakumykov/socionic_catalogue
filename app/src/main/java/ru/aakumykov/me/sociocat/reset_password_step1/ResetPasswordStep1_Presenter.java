@@ -7,7 +7,6 @@ import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Presenter {
 
     private iResetPasswordStep1.View view;
-    private iAuthSingleton authSingleton = AuthSingleton.getInstance();
 
     @Override
     public void linkView(iResetPasswordStep1.View view) {
@@ -24,7 +23,7 @@ public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Present
 
         String email = view.getEmail();
 
-        authSingleton.resetPasswordEmail(email, new iAuthSingleton.ResetPasswordCallbacks() {
+        AuthSingleton.resetPasswordEmail(email, new iAuthSingleton.ResetPasswordCallbacks() {
             @Override
             public void onEmailSendSuccess() {
                 callbacks.onEmailSendSucces();
