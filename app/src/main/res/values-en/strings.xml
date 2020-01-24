@@ -574,5 +574,6 @@
     <string name="USER_EDIT_EMAIL_verification_sent_message">We sent a letter to %1$s. Follow link in it to confirm email change</string>
     <string name="understand">Got it</string>
     <string name="DEEP_LINKS_RECEIVER_page_title">Обработчик ссылок приложения</string>
+    <string name="DEEP_LINKS_RECEIVER_successfull_login">Successfull login</string>
 </resources>
 <!-- «%1$s» -->

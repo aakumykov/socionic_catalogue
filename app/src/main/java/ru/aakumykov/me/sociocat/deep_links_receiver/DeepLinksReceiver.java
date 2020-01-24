@@ -28,7 +28,7 @@ public class DeepLinksReceiver extends BaseView {
 
         setPageTitle(R.string.DEEP_LINKS_RECEIVER_page_title);
 
-        //processInputIntent(getIntent());
+        processInputIntent(getIntent());
     }
 
     @Override
@@ -54,17 +54,28 @@ public class DeepLinksReceiver extends BaseView {
             return;
         }
 
-        Uri uriData = intent.getData();
-        if (null == uriData) {
+        Uri intentData = intent.getData();
+        if (null == intentData) {
             Log.e(TAG, "There is no data in Intent");
             return;
         }
 
-        String deepLink = uriData.toString();
+        String deepLink = intentData.toString();
         Log.d(TAG, "1, deepLink: "+deepLink);
 
         if (firebaseAuth.isSignInWithEmailLink(deepLink)) {
-            EmailSignInLinkProcessor.process(this, deepLink);
+            SignInLinkProcessor.process(this, deepLink, new SignInLinkProcessor.SignInLinkProcessorCallbacks() {
+                @Override
+                public void onLinkSignInSuccess() {
+                    showToast(R.string.DEEP_LINKS_RECEIVER_successfull_login);
+
+                }
+
+                @Override
+                public void onLinkSignInFailed(String errorMsg) {
+                    showErrorMsg(R.string.DEEP_LINKS_RECEIVER_);
+                }
+            });
         }
         else {
             DynamicLinkProcessor.process(this, intent);
