@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -164,6 +165,24 @@ public class AuthSingleton implements iAuthSingleton
                     public void onFailure(@NonNull Exception e) {
                         callbacks.onEmailSendFail(e.getMessage());
                         e.printStackTrace();
+                    }
+                });
+    }
+
+    public static void signInWithEmailLink(String emailConfirmation, String signInEmailLink, EmailLinkSignInCallbacks callbacks) {
+
+        firebaseAuth.signInWithEmailLink(emailConfirmation, signInEmailLink)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        callbacks.onEmailLinkSignInSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onEmailLinkSignInError(e.getMessage());
+                        MyUtils.printError(TAG, e);
                     }
                 });
     }

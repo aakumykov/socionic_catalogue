@@ -11,29 +11,26 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 
 class EmailSignInLinkProcessor {
-
-    private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     public static void process(Context context, String deepLink) {
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_EMAIL_CHANGE, Context.MODE_PRIVATE);
         String storedEmail = sharedPreferences.getString(Constants.KEY_STORED_EMAIL, "");
 
-        firebaseAuth.signInWithEmailLink(storedEmail, deepLink)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
+        AuthSingleton.signInWithEmailLink(storedEmail, deepLink, new iAuthSingleton.EmailLinkSignInCallbacks() {
+            @Override
+            public void onEmailLinkSignInSuccess() {
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+            }
 
-                    }
-                });
+            @Override
+            public void onEmailLinkSignInError(String errorMsg) {
 
+            }
+        });
     }
 }

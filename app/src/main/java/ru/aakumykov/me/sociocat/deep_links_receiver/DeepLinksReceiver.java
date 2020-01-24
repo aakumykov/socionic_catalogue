@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 
 import androidx.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.R;
 
 public class DeepLinksReceiver extends BaseView {
 
@@ -22,8 +24,16 @@ public class DeepLinksReceiver extends BaseView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.deep_links_receiver);
 
-        processInputIntent(getIntent());
+        setPageTitle(R.string.DEEP_LINKS_RECEIVER_page_title);
+
+        //processInputIntent(getIntent());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
     }
 
 

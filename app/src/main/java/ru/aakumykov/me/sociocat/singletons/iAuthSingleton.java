@@ -24,6 +24,11 @@ public interface iAuthSingleton {
         void onSignInLinkSendFail(String errorMsg);
     }
 
+    interface EmailLinkSignInCallbacks {
+        void onEmailLinkSignInSuccess();
+        void onEmailLinkSignInError(String errorMsg);
+    }
+
 
     class iAuthSingletonException extends Exception {
         public iAuthSingletonException(String message) {
