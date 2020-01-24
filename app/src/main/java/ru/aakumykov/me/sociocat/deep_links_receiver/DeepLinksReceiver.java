@@ -57,13 +57,13 @@ public class DeepLinksReceiver extends BaseView {
     private void processInputIntent(@Nullable Intent intent) {
 
         if (null == intent) {
-            continueWithError("Input intent is null");
+            continueWithError(R.string.DEEP_LINKS_RECEIVER_error_processing_link, "Input intent is null");
             return;
         }
 
         String deepLink = intent.getDataString();
         if (null == deepLink) {
-            continueWithError("There is no deep link in Intent");
+            continueWithError(R.string.DEEP_LINKS_RECEIVER_error_processing_link,"There is no deep link in Intent");
             return;
         }
 
@@ -80,11 +80,11 @@ public class DeepLinksReceiver extends BaseView {
 
     private void processEmailSignIn_DeepLink(String deepLink) {
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_EMAIL_CHANGE, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_USER, Context.MODE_PRIVATE);
         String storedEmail = sharedPreferences.getString(Constants.KEY_STORED_EMAIL, "");
 
         if (TextUtils.isEmpty(storedEmail)) {
-            continueWithLoginError("There is no stored email to complete sign in process");
+            continueWithError(R.string.DEEP_LINKS_RECEIVER_login_error, "There is no stored email to complete sign in process");
             return;
         }
 
@@ -96,12 +96,12 @@ public class DeepLinksReceiver extends BaseView {
                 if (null != continueUrl)
                     ContinueUrlProcessor.process(continueUrl);
                 else
-                    continueWithLoginSuccess();
+                    continueWithSuccess(R.string.DEEP_LINKS_RECEIVER_login_success);
             }
 
             @Override
             public void onEmailLinkSignInError(String errorMsg) {
-                continueWithLoginError(errorMsg);
+                continueWithError(R.string.DEEP_LINKS_RECEIVER_login_error, errorMsg);
             }
         });
     }
@@ -110,22 +110,6 @@ public class DeepLinksReceiver extends BaseView {
 
     }
 
-
-
-
-    private void continueWithLoginSuccess() {
-        String message = getString(R.string.DEEP_LINKS_RECEIVER_login_success);
-        continueWithSuccess(message);
-    }
-
-    private void continueWithLoginError(String consoleMsg) {
-        String message = getString(R.string.DEEP_LINKS_RECEIVER_login_error);
-
-        if (BuildConfig.DEBUG)
-            message += ": " + consoleMsg;
-
-        continueWithError(message);
-    }
 
 /*
     private void continueWithError(String consoleMsg) {
@@ -142,16 +126,15 @@ public class DeepLinksReceiver extends BaseView {
 
     private void continueWithSuccess(int messageId) {
         String message = getResources().getString(messageId);
-        continueWithSuccess(message);
-    }
-
-    private void continueWithSuccess(String message) {
         Intent intent = new Intent(this, CardsGrid_View.class);
-        intent.putExtra(Constants.INFO_MESSAGE, message);
+        intent.putExtra(Constants.INFO_MESSAGE_ID, message);
         startActivity(intent);
     }
 
-    private void continueWithError(String message) {
-
+    private void continueWithError(int errorMessageId, String consoleError) {
+        Intent intent = new Intent(this, CardsGrid_View.class);
+        intent.putExtra(Constants.ERROR_MESSAGE_ID, errorMessageId);
+        intent.putExtra(Constants.CONSOLE_ERROR_MESSAGE, consoleError);
+        startActivity(intent);
     }
 }

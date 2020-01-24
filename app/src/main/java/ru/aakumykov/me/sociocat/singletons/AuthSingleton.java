@@ -12,6 +12,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 
 import retrofit2.Retrofit;
@@ -181,6 +182,8 @@ public class AuthSingleton implements iAuthSingleton
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        FirebaseAuthException firebaseAuthException = (FirebaseAuthException) e;
+                        String errorCode = firebaseAuthException.getErrorCode();
                         callbacks.onEmailLinkSignInError(e.getMessage());
                         MyUtils.printError(TAG, e);
                     }
