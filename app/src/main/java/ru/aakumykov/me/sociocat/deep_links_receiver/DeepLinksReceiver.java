@@ -34,8 +34,18 @@ public class DeepLinksReceiver extends BaseView {
         setContentView(R.layout.deep_links_receiver);
 
         setPageTitle(R.string.DEEP_LINKS_RECEIVER_page_title);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         processInputIntent(getIntent());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -55,6 +65,8 @@ public class DeepLinksReceiver extends BaseView {
 
     // Внутренние методы
     private void processInputIntent(@Nullable Intent intent) {
+
+        showProgressMessage(R.string.DEEP_LINKS_RECEIVER_processing_link);
 
         if (null == intent) {
             continueWithError(R.string.DEEP_LINKS_RECEIVER_error_processing_link, "Input intent is null");
@@ -109,20 +121,6 @@ public class DeepLinksReceiver extends BaseView {
     private void processOther_DeepLink(String deepLink) {
 
     }
-
-
-/*
-    private void continueWithError(String consoleMsg) {
-        String errorMsg = getResources().getString(R.string.DEEP_LINKS_RECEIVER_error_processing_link);
-
-        if (BuildConfig.DEBUG)
-            errorMsg += ": " + consoleMsg;
-
-        Intent intent = new Intent(this, CardsGrid_View.class);
-        intent.putExtra(Constants.ERROR_MESSAGE, errorMsg);
-        startActivity(intent);
-    }
-*/
 
     private void continueWithSuccess(int messageId) {
         String message = getResources().getString(messageId);
