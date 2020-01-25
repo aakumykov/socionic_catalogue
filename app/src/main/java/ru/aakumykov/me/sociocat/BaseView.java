@@ -63,29 +63,14 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         saveLastLoginTime();
-
-        processIntentMessage(getIntent());
-    }
-
-    private void processIntentMessage(@Nullable Intent intent) {
-        if (null != intent) {
-            int infoMsgId = intent.getIntExtra(Constants.INFO_MESSAGE_ID, -1);
-
-            int errorMsgId = intent.getIntExtra(Constants.ERROR_MESSAGE_ID, -1);
-            String consoleError = intent.getStringExtra(Constants.CONSOLE_ERROR_MESSAGE);
-
-            if (infoMsgId > -1)
-                showLongToast(infoMsgId);
-
-            if (errorMsgId > -1 && null != consoleError)
-                showErrorMsg(errorMsgId, consoleError);
-        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+
+        processIntentMessage(getIntent());
     }
 
     @Override
@@ -405,6 +390,21 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         ActionBar actionBar = getSupportActionBar();
         if (null != actionBar) {
             actionBar.setTitle(title);
+        }
+    }
+
+    private void processIntentMessage(@Nullable Intent intent) {
+        if (null != intent) {
+            int infoMsgId = intent.getIntExtra(Constants.INFO_MESSAGE_ID, -1);
+
+            int errorMsgId = intent.getIntExtra(Constants.ERROR_MESSAGE_ID, -1);
+            String consoleError = intent.getStringExtra(Constants.CONSOLE_ERROR_MESSAGE);
+
+            if (infoMsgId > -1)
+                showLongToast(infoMsgId);
+
+            if (errorMsgId > -1 && null != consoleError)
+                showErrorMsg(errorMsgId, consoleError);
         }
     }
 
