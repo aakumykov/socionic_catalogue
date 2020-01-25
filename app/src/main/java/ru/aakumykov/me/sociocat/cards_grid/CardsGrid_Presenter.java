@@ -2,12 +2,9 @@ package ru.aakumykov.me.sociocat.cards_grid;
 
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,12 +87,14 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     @Override
     public void onRefreshRequested() {
+
         pageView.showSwipeThrobber();
 
         iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 pageView.hideSwipeThrobber();
+                pageView.onPageRefreshed();
                 dataAdapter.setList(cardsList2gridItemsList(list));
             }
 
