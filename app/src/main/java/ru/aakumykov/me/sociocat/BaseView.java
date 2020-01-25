@@ -358,6 +358,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         startActivity(intent);
     }
 
+    @Override
+    public void onPageRefreshed() {
+        hideMessage();
+    }
+
 
     // Внутренние методы
     private void showProgressMessage(String msg) {

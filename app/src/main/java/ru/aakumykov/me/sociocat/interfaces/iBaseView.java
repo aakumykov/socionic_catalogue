@@ -66,4 +66,6 @@ public interface iBaseView {
     void hideMenuItem(Menu menu, int menuItemId);
 
     void showUserProfile(String userId);
+
+    void onPageRefreshed();
 }

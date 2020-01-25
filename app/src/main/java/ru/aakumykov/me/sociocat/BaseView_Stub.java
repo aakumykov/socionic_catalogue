@@ -166,4 +166,9 @@ public class BaseView_Stub implements iBaseView {
     public void showUserProfile(String userId) {
 
     }
+
+    @Override
+    public void onPageRefreshed() {
+
+    }
 }
