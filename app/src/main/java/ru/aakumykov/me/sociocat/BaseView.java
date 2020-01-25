@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,6 +41,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 public abstract class BaseView extends AppCompatActivity implements iBaseView
 {
     private final static String TAG = "BaseView";
+    private boolean intentMessageAlreadyShown = false;
 
     // Абстрактные методы
     public abstract void onUserLogin();
@@ -49,11 +51,17 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Subscribe
     public void onUserAuthorized(UserAuthorizedEvent event) {
         invalidateOptionsMenu();
+
+        hideMessage();
+
         onUserLogin();
     }
     @Subscribe
     public void onUserUnauthorized(UserUnauthorizedEvent event) {
         invalidateOptionsMenu();
+
+        hideMessage();
+
         onUserLogout();
     }
 
@@ -71,6 +79,18 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         EventBus.getDefault().register(this);
 
         processIntentMessage(getIntent());
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("intentMessageAlreadyShown", intentMessageAlreadyShown);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        this.intentMessageAlreadyShown = savedInstanceState.getBoolean("intentMessageAlreadyShown", false);
     }
 
     @Override
@@ -228,6 +248,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public void hideMessage() {
+        intentMessageAlreadyShown = true;
+
         TextView messageView = findViewById(R.id.messageView);
         TextView stackTraceView = findViewById(R.id.stackTraceView);
 
@@ -399,7 +421,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void processIntentMessage(@Nullable Intent intent) {
-        if (null != intent) {
+        if (null != intent && !intentMessageAlreadyShown) {
             int infoMsgId = intent.getIntExtra(Constants.INFO_MESSAGE_ID, -1);
 
             int errorMsgId = intent.getIntExtra(Constants.ERROR_MESSAGE_ID, -1);
