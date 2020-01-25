@@ -73,8 +73,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:textColor="@color/colorPrimary"
-            android:padding="8dp"
             android:id="@+id/emailView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -82,12 +80,26 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
+            android:padding="8dp"
             android:singleLine="true"
+            android:textColor="@color/colorPrimary"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/emailEditWidget"
             app:layout_constraintStart_toEndOf="@+id/avatarView"
             app:layout_constraintTop_toBottomOf="@+id/nameInput"
             tools:text="user@example.org" />
+
+        <ImageView
+            android:id="@+id/emailEditWidget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/emailView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/emailView"
+            app:srcCompat="@drawable/ic_email_edit"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

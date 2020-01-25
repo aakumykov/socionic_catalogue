@@ -64,7 +64,7 @@ public interface iUserEdit {
         void onAvatarRemoveClicked();
         void onAvatarRemoveConfirmed();
 
-        void onEmailClicked();
+        void onEmailEditClicked();
 
         void onSaveUserClicked();
         void onFormValidationSuccess();

@@ -143,7 +143,7 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
     }
 
     @Override
-    public void onEmailClicked() {
+    public void onEmailEditClicked() {
         view.goToEditEmail(usersSingleton.getCurrentUser());
     }
 

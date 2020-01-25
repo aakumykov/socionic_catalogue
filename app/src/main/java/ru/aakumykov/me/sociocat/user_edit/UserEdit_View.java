@@ -50,6 +50,7 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
     @BindView(R.id.nameInput) EditText nameInput;
 
     @BindView(R.id.emailView) TextView emailView;
+    @BindView(R.id.emailEditWidget) View emailEditWidget;
 
     @Password(messageResId = R.string.VALIDATION_wrong_password)
     @BindView(R.id.passwordInput)
@@ -175,6 +176,8 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
         emailView.setText(user.getEmail());
         aboutInput.setText(user.getAbout());
 
+        MyUtils.show(emailEditWidget);
+
         Object userAvatar = (null != avatar) ? avatar : user.getAvatarURL();
         displayAvatar(userAvatar);
     }
@@ -223,6 +226,9 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
         avatarView.setAlpha(0.5f);
 
         MyUtils.disable(nameInput);
+
+        MyUtils.disable(emailEditWidget);
+
         MyUtils.disable(aboutInput);
         MyUtils.disable(passwordInput);
 
@@ -239,7 +245,11 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
         avatarView.setAlpha(1.0f);
 
         MyUtils.enable(nameInput);
+
+        MyUtils.enable(emailEditWidget);
+
         MyUtils.enable(aboutInput);
+
         MyUtils.enable(passwordInput);
 
         MyUtils.enable(saveButton);
@@ -396,9 +406,9 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
         presenter.onAvatarRemoveClicked();
     }
 
-    @OnClick(R.id.emailView)
+    @OnClick(R.id.emailEditWidget)
     void onEmailClicked() {
-        presenter.onEmailClicked();
+        presenter.onEmailEditClicked();
     }
 
     @OnClick(R.id.saveButton)
