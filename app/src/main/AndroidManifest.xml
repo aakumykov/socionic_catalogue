@@ -124,7 +124,7 @@
         <activity android:name=".user_edit.UserEdit_View" android:windowSoftInputMode="stateHidden" />
         <activity android:name=".user_edit_email.UserEditEmail_View" />
 
-        <activity android:name=".deep_links_receiver.DeepLinksReceiver" android:noHistory="true">
+        <activity android:name=".deep_links_receiver.DeepLinksReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
