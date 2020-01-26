@@ -100,10 +100,17 @@ public class DeepLinksReceiver extends BaseView {
             public void onEmailLinkSignInSuccess() {
                 String continueUrl = Uri.parse(deepLink).getQueryParameter("continueUrl");
 
-                if (null != continueUrl)
-                    ContinueUrlProcessor.process(continueUrl);
-                else
+                if (null == continueUrl) {
                     continueWithSuccess(R.string.DEEP_LINKS_RECEIVER_login_success);
+                    return;
+                }
+
+                try {
+                    ContinueUrlProcessor.process(continueUrl);
+                }
+                catch (ContinueUrlProcessor.ContinueUrlProcessorException e) {
+
+                }
             }
 
             @Override
