@@ -52,6 +52,8 @@ public interface iTagsList3 {
 
         boolean hasFilterQuery();
         CharSequence getFilterQuery();
+
+        void onBackPressed();
     }
 
     enum SortOrder {

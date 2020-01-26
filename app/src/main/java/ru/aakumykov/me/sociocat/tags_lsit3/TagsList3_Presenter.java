@@ -96,6 +96,11 @@ public class TagsList3_Presenter implements iTagsList3.iPresenter {
         return filterQuery;
     }
 
+    @Override
+    public void onBackPressed() {
+        pageView.closePage();
+    }
+
 
     // Внутренние методы
     private void loadList() {
