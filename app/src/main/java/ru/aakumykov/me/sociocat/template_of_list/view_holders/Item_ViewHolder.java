@@ -31,8 +31,12 @@ public class Item_ViewHolder extends RecyclerView.ViewHolder {
     // Заполнение данными
     public void initialize(Object payload) {
         this.item = (Item) payload;
-        nameView.setText(item.getName());
-        countView.setText(String.valueOf(item.getCount()));
+
+        if (nameView != null)
+            nameView.setText(item.getName());
+
+        if (countView != null)
+            countView.setText(String.valueOf(item.getCount()));
     }
 
     // Нажатия
