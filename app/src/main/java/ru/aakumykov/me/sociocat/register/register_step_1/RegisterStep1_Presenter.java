@@ -82,6 +82,7 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
 
             @Override
             public void onNotExists() {
+                view.setStatus(iRegisterStep1.ViewStatus.SUCCESS, null);
                 step1_sendRegistrationEmail();
             }
 
