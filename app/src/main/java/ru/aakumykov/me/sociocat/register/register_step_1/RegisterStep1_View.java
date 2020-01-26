@@ -72,13 +72,13 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
     // Интерфейсные методы
 
     @Override
-    public void showEmailChecked() {
+    public void showEmailThrobber() {
         MyUtils.disable(emailInput);
         MyUtils.show(emailThrobber);
     }
 
     @Override
-    public void hideEmailChecked() {
+    public void hideEmailThrobber() {
         MyUtils.enable(emailInput);
         MyUtils.hide(emailThrobber);
     }
@@ -126,9 +126,13 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
     }
 
     @Override
-    public void showEmailError(int msgId) {
-        String message = getResources().getString(msgId);
+    public void showEmailError(String message) {
         emailInput.setError(message);
+    }
+
+    @Override
+    public void hideEmailError() {
+        emailInput.setError(null);
     }
 
     @Override
@@ -136,6 +140,44 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
         String message = getString(msgId);
         showToast(message);
         finish();
+    }
+
+    @Override
+    public void setStatus(iRegisterStep1.ViewStatus status, int errorMessageId) {
+        String emailErrorMsg = getString(errorMessageId);
+        setStatus(status, emailErrorMsg);
+    }
+
+    @Override
+    public void setStatus(iRegisterStep1.ViewStatus status, String errorMessage) {
+        switch (status) {
+            case CHECKING:
+                disableForm();
+                hideEmailError();
+                showEmailThrobber();
+                showInfoMsg(R.string.REGISTER1_checking_email);
+                break;
+
+            case EMAIL_ERROR:
+                enableForm();
+                hideEmailThrobber();
+                hideMessage();
+                if (null != errorMessage) showEmailError(errorMessage);
+                break;
+
+            case SUCCESS:
+                break;
+
+            case COMMON_ERROR:
+                enableForm();
+                hideEmailThrobber();
+                hideEmailError();
+                if (null != errorMessage) showErrorMsg(R.string.error, errorMessage, true);
+                break;
+
+            default:
+                throw new RuntimeException("Unknown status: "+status);
+        }
     }
 
 

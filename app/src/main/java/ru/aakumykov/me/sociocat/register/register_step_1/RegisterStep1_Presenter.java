@@ -34,7 +34,7 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
 
     @Override
     public void unlinkView() {
-        this.view = null;
+        this.view = new RegisterStep1_View();
     }
 
 
@@ -57,27 +57,27 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
         String email = view.getEmail();
 
         if (TextUtils.isEmpty(email)) {
-            view.showEmailError(R.string.cannot_be_empty);
+            view.setStatus(iRegisterStep1.ViewStatus.EMAIL_ERROR, R.string.cannot_be_empty);
             return;
         }
 
         if (!MyUtils.isCorrectEmail(email)) {
-            view.showEmailError(R.string.REGISTER1_incorrect_email);
+            view.setStatus(iRegisterStep1.ViewStatus.EMAIL_ERROR, R.string.REGISTER1_incorrect_email);
             return;
         }
 
 
-        view.showEmailChecked();
+        view.setStatus(iRegisterStep1.ViewStatus.CHECKING, null);
 
         usersSingleton.checkEmailExists(email, new iUsersSingleton.CheckExistanceCallbacks() {
             @Override
             public void onCheckComplete() {
-                view.hideEmailChecked();
+
             }
 
             @Override
             public void onExists() {
-                view.showEmailError(R.string.REGISTER1_email_already_used);
+                view.setStatus(iRegisterStep1.ViewStatus.EMAIL_ERROR, R.string.REGISTER1_email_already_used);
             }
 
             @Override
@@ -87,7 +87,7 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
 
             @Override
             public void onCheckFail(String errorMsg) {
-                view.showEmailError(R.string.REGISTER1_error_check_email);
+                view.setStatus(iRegisterStep1.ViewStatus.COMMON_ERROR, errorMsg);
             }
         });
     }
@@ -120,7 +120,8 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onErrorOccured(R.string.REGISTER1_error_sending_email, e.getMessage());
+                        view.enableForm();
+                        onErrorOccurred(R.string.REGISTER1_error_sending_email, e.getMessage());
                         e.printStackTrace();
                     }
                 });
@@ -128,13 +129,13 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
 
     private void storeEmailLocally(String email) {
         SharedPreferences sharedPreferences =
-                view.getAppContext().getSharedPreferences(Constants.SHARED_PREFERENCES_EMAIL, Context.MODE_PRIVATE);
+                view.getAppContext().getSharedPreferences(Constants.SHARED_PREFERENCES_USER, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("email", email);
+        editor.putString(Constants.KEY_STORED_EMAIL, email);
         editor.apply();
     }
 
-    private void onErrorOccured(int userMsgId, String adminErrorMsg) {
+    private void onErrorOccurred(int userMsgId, String adminErrorMsg) {
         view.showErrorMsg(userMsgId, adminErrorMsg);
         view.enableForm();
     }
