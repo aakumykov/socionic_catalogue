@@ -44,11 +44,6 @@ public class DeepLinksReceiver extends BaseView {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return false;
     }
