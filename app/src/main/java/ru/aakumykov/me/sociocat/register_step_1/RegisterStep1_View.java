@@ -54,8 +54,13 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
     @Override
     protected void onStart() {
         super.onStart();
+
         presenter.linkView(this);
-        presenter.doInitialCheck();
+
+        if (presenter.isVirgin())
+            presenter.doInitialCheck();
+        else
+            presenter.onConfigChanged();
     }
 
     @Override
@@ -161,7 +166,17 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
 
     @Override
     public void setStatus(iRegisterStep1.ViewStatus status, String errorMessage) {
+
+        presenter.storeViewStatus(status, errorMessage);
+
         switch (status) {
+            case INITIAL:
+                enableForm();
+                hideEmailError();
+                hideEmailThrobber();
+                hideProgressMessage();
+                break;
+
             case CHECKING:
                 disableForm();
                 hideEmailError();
@@ -188,7 +203,7 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
                 break;
 
             default:
-                throw new RuntimeException("Unknown status: "+status);
+                break;
         }
     }
 

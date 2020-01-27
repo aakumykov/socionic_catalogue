@@ -5,7 +5,8 @@ import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
 public interface iRegisterStep1 {
 
-    public enum ViewStatus {
+    enum ViewStatus {
+        INITIAL,
         CHECKING,
         EMAIL_ERROR,
         COMMON_ERROR, SUCCESS
@@ -37,5 +38,9 @@ public interface iRegisterStep1 {
 
         void linkView(View view);
         void unlinkView();
+
+        boolean isVirgin();
+        void storeViewStatus(ViewStatus viewStatus, String errorMessage);
+        void onConfigChanged();
     }
 }

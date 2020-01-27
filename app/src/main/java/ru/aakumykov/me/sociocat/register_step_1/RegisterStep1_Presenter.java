@@ -24,6 +24,8 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
     private iRegisterStep1.View view;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iRegisterStep1.ViewStatus viewStatus;
+    private String errorMessage = null;
 
 
     // Системные методы
@@ -35,6 +37,22 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
     @Override
     public void unlinkView() {
         this.view = new RegisterStep1_View();
+    }
+
+    @Override
+    public boolean isVirgin() {
+        return null == viewStatus;
+    }
+
+    @Override
+    public void storeViewStatus(iRegisterStep1.ViewStatus viewStatus, String errorMessage) {
+        this.viewStatus = viewStatus;
+        this.errorMessage = errorMessage;
+    }
+
+    @Override
+    public void onConfigChanged() {
+        view.setStatus(viewStatus, errorMessage);
     }
 
 
