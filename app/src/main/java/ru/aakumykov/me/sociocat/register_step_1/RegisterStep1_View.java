@@ -3,6 +3,9 @@ package ru.aakumykov.me.sociocat.register_step_1;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +18,8 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
+import ru.aakumykov.me.sociocat.register_step_1.view_model.RegisterStep1_ViewModel;
+import ru.aakumykov.me.sociocat.register_step_1.view_model.RegisterStep1_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -37,7 +42,13 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
         setPageTitle(R.string.REGISTER1_page_title);
         activateUpButton();
 
-        presenter = new RegisterStep1_Presenter();
+        RegisterStep1_ViewModel viewModel = new ViewModelProvider(this, new RegisterStep1_ViewModelFactory()).get(RegisterStep1_ViewModel.class);
+        if (viewModel.hasPresenter())
+            presenter = viewModel.getPresenter();
+        else {
+            presenter = new RegisterStep1_Presenter();
+            viewModel.storePresenter(presenter);
+        }
     }
 
     @Override
