@@ -7,12 +7,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.BuildConfig;
 import ru.aakumykov.me.sociocat.Constants;
@@ -23,19 +26,27 @@ import ru.aakumykov.me.sociocat.register_step_2.RegisterStep2_View;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.user_edit_email.UserEditEmail_View;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class DeepLinksReceiver extends BaseView {
 
     private static final String TAG = "DeepLinksReceiver";
 
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
+    private Button continueButton;
 
     // Activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.deep_links_receiver);
+
+        continueButton = findViewById(R.id.continueButton);
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onContinueButtonClicked();
+            }
+        });
 
         setPageTitle(R.string.DEEP_LINKS_RECEIVER_page_title);
     }
@@ -78,20 +89,11 @@ public class DeepLinksReceiver extends BaseView {
             return;
         }
 
-        /*if (firebaseAuth.isSignInWithEmailLink(deepLink))
-        {
-            processEmailSignIn_DeepLink(deepLink);
-        }
-        else
-        {
-            processOther_DeepLink(deepLink);
-        }*/
-
-        try {
-            processDeepLink(deepLink);
-        }
+        try { processDeepLink(deepLink); }
         catch (DeepLinksReceiverException e) {
-
+            showErrorMsg(R.string.DEEP_LINKS_RECEIVER_error_processing_link, e.getMessage());
+            MyUtils.printError(TAG, e);
+            MyUtils.show(continueButton);
         }
     }
 
@@ -198,6 +200,11 @@ public class DeepLinksReceiver extends BaseView {
         Intent intent = new Intent(this, CardsGrid_View.class);
         intent.putExtra(Constants.ERROR_MESSAGE_ID, errorMessageId);
         intent.putExtra(Constants.CONSOLE_ERROR_MESSAGE, consoleError);
+        startActivity(intent);
+    }
+
+    private void onContinueButtonClicked() {
+        Intent intent = new Intent(this, CardsGrid_View.class);
         startActivity(intent);
     }
 

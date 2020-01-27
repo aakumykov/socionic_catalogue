@@ -589,5 +589,6 @@
     <string name="DEEP_LINKS_RECEIVER_processing_link">Обработка ссылки</string>
     <string name="REGISTER1_email_input_hint">Адрес электронной почты</string>
     <string name="REGISTER1_checking_email">Проверяем адрес электронной почты</string>
+    <string name="DEEP_LINKS_RECEIVER_continue">Продолжить</string>
 
 </resources><!-- «%1$s» -->

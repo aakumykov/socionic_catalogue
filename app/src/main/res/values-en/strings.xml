@@ -581,5 +581,6 @@
     <string name="DEEP_LINKS_RECEIVER_processing_link">Processing link</string>
     <string name="REGISTER1_email_input_hint">Email</string>
     <string name="REGISTER1_checking_email">Checking email address</string>
+    <string name="DEEP_LINKS_RECEIVER_continue">Continue</string>
 </resources>
 <!-- «%1$s» -->
