@@ -27,7 +27,7 @@ public class RegisterStep2_View extends BaseView implements iRegisterStep2.View 
     @BindView(R.id.saveButton) Button saveButton;
 
     private iRegisterStep2.Presenter presenter;
-    private boolean firstRun = true;
+
 
     // Системные методы
     @Override

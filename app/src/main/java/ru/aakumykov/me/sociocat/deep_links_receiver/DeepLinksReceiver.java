@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -15,10 +16,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.BuildConfig;
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
+import ru.aakumykov.me.sociocat.register_step_2.RegisterStep2_View;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
+import ru.aakumykov.me.sociocat.user_edit_email.UserEditEmail_View;
 
 public class DeepLinksReceiver extends BaseView {
 
@@ -74,17 +78,72 @@ public class DeepLinksReceiver extends BaseView {
             return;
         }
 
-        if (firebaseAuth.isSignInWithEmailLink(deepLink))
+        /*if (firebaseAuth.isSignInWithEmailLink(deepLink))
         {
             processEmailSignIn_DeepLink(deepLink);
         }
         else
         {
             processOther_DeepLink(deepLink);
+        }*/
+
+        try {
+            processDeepLink(deepLink);
+        }
+        catch (DeepLinksReceiverException e) {
+
         }
     }
 
+    private void processDeepLink(@NonNull String deepLink) throws DeepLinksReceiverException {
 
+        String continueUrl = Uri.parse(deepLink).getQueryParameter("continueUrl");
+        if (TextUtils.isEmpty(continueUrl))
+            throw new DeepLinksReceiverException("continueUrl is empty");
+
+        Uri continueURI;
+        try {
+            continueURI = Uri.parse(continueUrl);
+        }
+        catch (Exception e) {
+            throw new DeepLinksReceiverException(e);
+        }
+
+        String action = continueURI.getQueryParameter(DeepLink_Constants.KEY_ACTION);
+        if (TextUtils.isEmpty(action)) {
+            throw new DeepLinksReceiverException("There is no action query parameter or it is empty");
+        }
+
+        switch (action) {
+            case DeepLink_Constants.ACTION_CONTINUE_REGISTRATION:
+                continueRegistration(deepLink);
+                break;
+
+            case DeepLink_Constants.ACTION_CHANGE_EMAIL:
+                continueChangeEmail(deepLink);
+                break;
+
+            default:
+                throw new DeepLinksReceiverException("Unknown action: "+action);
+        }
+    }
+
+    private void continueRegistration(@NonNull String deepLink) {
+        Intent intent = new Intent(this, RegisterStep2_View.class);
+        intent.setAction(Constants.ACTION_CONTINUE_REGISTRATION);
+        intent.putExtra(Intent.EXTRA_TEXT, deepLink);
+        startActivity(intent);
+    }
+
+    private void continueChangeEmail(@NonNull String deepLink) {
+        Intent intent = new Intent(this, UserEditEmail_View.class);
+        intent.setAction(Constants.ACTION_CONFIRM_EMAIL_CHANGE);
+        intent.putExtra(Intent.EXTRA_TEXT, deepLink);
+        startActivity(intent);
+    }
+
+
+/*
     private void processEmailSignIn_DeepLink(String deepLink) {
 
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_USER, Context.MODE_PRIVATE);
@@ -98,7 +157,7 @@ public class DeepLinksReceiver extends BaseView {
         AuthSingleton.signInWithEmailLink(storedEmail, deepLink, new iAuthSingleton.EmailLinkSignInCallbacks() {
             @Override
             public void onEmailLinkSignInSuccess() {
-                String continueUrl = Uri.parse(deepLink).getQueryParameter("continueUrl");
+
 
                 if (null == continueUrl) {
                     continueWithSuccess(R.string.DEEP_LINKS_RECEIVER_login_success);
@@ -119,10 +178,14 @@ public class DeepLinksReceiver extends BaseView {
             }
         });
     }
+*/
 
+/*
     private void processOther_DeepLink(String deepLink) {
 
     }
+*/
+
 
     private void continueWithSuccess(int messageId) {
         String message = getResources().getString(messageId);
@@ -136,5 +199,16 @@ public class DeepLinksReceiver extends BaseView {
         intent.putExtra(Constants.ERROR_MESSAGE_ID, errorMessageId);
         intent.putExtra(Constants.CONSOLE_ERROR_MESSAGE, consoleError);
         startActivity(intent);
+    }
+
+
+    // Классы исключений
+    public static class DeepLinksReceiverException extends Exception {
+        public DeepLinksReceiverException(String message) {
+            super(message);
+        }
+        public DeepLinksReceiverException(Throwable cause) {
+            super(cause);
+        }
     }
 }

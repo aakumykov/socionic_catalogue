@@ -285,7 +285,7 @@
     <string name="REGISTER2_page_title">Регистрация, шаг второй</string>
     <string name="REGISTER2_passwords_mismatch">Пароли не совпадают</string>
     <string name="REGISTER2_password_is_too_short">Минимум 6 символов</string>
-    <string name="REGISTER2_wrong_input_data">Неправильные входящие данные</string>
+    <string name="REGISTER2_input_data_error">Ошибка входящих данных</string>
     <string name="REGISTER2_registration_error">Ошибка регистрации</string>
     <string name="REGISTER2_registration_in_progress">Идёт регистрация</string>
     <string name="REGISTER2_creating_user">Создаём пользователя</string>

@@ -45,7 +45,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     public void processRegistration(Intent intent) {
 
         if (null == intent) {
-            onErrorOccured(R.string.REGISTER2_wrong_input_data, "Intent is NULL");
+            onErrorOccured(R.string.REGISTER2_input_data_error, "Intent is NULL");
             return;
         }
 
@@ -146,7 +146,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
             }
 
         } catch (Exception e) {
-            onErrorOccured(R.string.REGISTER2_wrong_input_data, e.getMessage());
+            onErrorOccured(R.string.REGISTER2_input_data_error, e.getMessage());
             e.printStackTrace();
         }
     }

@@ -99,7 +99,7 @@ public class DLP_Presenter implements iDLP.Presenter {
         String continueUrlPath = continueURI.getPath() + "";
 
         switch (continueUrlPath) {
-            case DeepLink_Constants.REGISTRATION_STEP2_PATH:
+            case DeepLink_Constants.PATH_REGISTRATION_STEP2:
                 registrationStep2(intent);
                 break;
 

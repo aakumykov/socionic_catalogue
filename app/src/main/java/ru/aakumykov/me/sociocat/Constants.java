@@ -1,7 +1,7 @@
 package ru.aakumykov.me.sociocat;
 
-public final class Constants {
-
+public final class Constants
+{
     private Constants() {}
 
     public enum CardType {
@@ -35,6 +35,8 @@ public final class Constants {
     public final static String ACTION_REPLY_TO_CARD = "ACTION_REPLY_TO_CARD";
     public final static String ACTION_REPLY_TO_COMMENT = "ACTION_REPLY_TO_COMMENT";
     public static final String ACTION_SHOW_CARDS_WITH_TAG = "ACTION_SHOW_CARDS_WITH_TAG";
+    public static final String ACTION_CONTINUE_REGISTRATION = "ACTION_CONTINUE_REGISTRATION";
+    public static final String ACTION_CONFIRM_EMAIL_CHANGE = "ACTION_CONFIRM_EMAIL_CHANGE";
 
     public final static String CARD = "CARD";
     public final static String CARD_DRAFT = "CARD_DRAFT";

@@ -6,7 +6,7 @@ public final class DeepLink_Constants {
 
     // Пути URL
     public static final String PASSWORD_RESET_PATH = "/reset_password";
-    public static final String REGISTRATION_STEP2_PATH = "/registration_step_2";
+    public static final String PATH_REGISTRATION_STEP2 = "/registration_step_2";
     public static final String CONFIRM_EMAIL_PATH = "/confirmEmail";
 
     // Ключи URL
@@ -15,6 +15,7 @@ public final class DeepLink_Constants {
     public static final String KEY_EMAIL = "email";
 
     // Действия
+    public static final String ACTION_CONTINUE_REGISTRATION = "continueRegistration";
     public static final String ACTION_CHANGE_EMAIL = "changeEmail";
 
 
