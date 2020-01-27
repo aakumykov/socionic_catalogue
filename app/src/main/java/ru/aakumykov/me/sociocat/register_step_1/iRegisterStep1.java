@@ -1,7 +1,5 @@
-package ru.aakumykov.me.sociocat.register.register_step_1;
+package ru.aakumykov.me.sociocat.register_step_1;
 
-
-import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 

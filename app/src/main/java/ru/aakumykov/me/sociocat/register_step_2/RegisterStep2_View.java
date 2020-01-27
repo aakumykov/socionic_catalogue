@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.register.register_step_2;
+package ru.aakumykov.me.sociocat.register_step_2;
 
 import android.content.Intent;
 import android.os.Bundle;

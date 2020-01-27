@@ -20,7 +20,7 @@ import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.other.VKInteractor;
-import ru.aakumykov.me.sociocat.register.register_step_1.RegisterStep1_View;
+import ru.aakumykov.me.sociocat.register_step_1.RegisterStep1_View;
 import ru.aakumykov.me.sociocat.reset_password_step1.ResetPasswordStep1_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 

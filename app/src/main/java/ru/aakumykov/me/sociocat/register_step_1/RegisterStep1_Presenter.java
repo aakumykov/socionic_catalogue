@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.register.register_step_1;
+package ru.aakumykov.me.sociocat.register_step_1;
 
 import android.content.Context;
 import android.content.SharedPreferences;
