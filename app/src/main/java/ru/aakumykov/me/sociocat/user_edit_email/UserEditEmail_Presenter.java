@@ -6,9 +6,9 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.User;
@@ -29,9 +29,15 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
     private final static String TAG = "UserEditEmail_Presenter";
 
     private iUserEditEmail.iView view;
+
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private String oldEmailAddress;
     private String newEmailAddress;
+
+    private iUserEditEmail.ViewState currentViewState;
+    private int currentMessageId;
+    private String currentErrorDetails;
+    private boolean isVirgin = true;
 
 
     @Override
@@ -45,7 +51,14 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
     }
 
     @Override
+    public boolean isVirgin() {
+        return isVirgin;
+    }
+
+    @Override
     public void onFirstOpen() {
+        isVirgin = false;
+
         User user = usersSingleton.getCurrentUser();
         oldEmailAddress = user.getEmail();
         view.displayCurrentEmail(oldEmailAddress);
@@ -53,7 +66,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
 
     @Override
     public void onConfigChanged() {
-//        view.displayCurrentEmail(currentItem);
+        view.setViewState(currentViewState, currentMessageId, currentErrorDetails);
     }
 
     @Override
@@ -79,11 +92,11 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
 
         // Изменился ли Email ?
         if (null != oldEmailAddress && oldEmailAddress.equals(newEmailAddress)) {
-            view.showToast(R.string.USER_EDIT_EMAIL_you_not_change_email_address);
+            view.setViewState(iUserEditEmail.ViewState.EMAIL_ERROR, R.string.USER_EDIT_EMAIL_you_not_change_email_address);
             return;
         }
 
-        checkPassword(password);
+        checkEmail();
     }
 
     @Override
@@ -102,8 +115,44 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
         return true;
     }
 
+    @Override
+    public void storeViewState(iUserEditEmail.ViewState state, int messageId, @Nullable String errorDetails) {
+        this.currentViewState = state;
+        this.currentMessageId = messageId;
+        this.currentErrorDetails = errorDetails;
+    }
+
 
     // Внутренние методы
+    private void checkEmail() {
+        String email = view.getEmail();
+
+        view.setViewState(iUserEditEmail.ViewState.CHECKING, R.string.USER_EDIT_EMAIL_checking_email);
+
+        usersSingleton.checkEmailExists(email, new iUsersSingleton.CheckExistanceCallbacks() {
+            @Override
+            public void onCheckComplete() {
+
+            }
+
+            @Override
+            public void onExists() {
+                view.setViewState(iUserEditEmail.ViewState.EMAIL_ERROR, R.string.USER_EDIT_error_email_already_used);
+            }
+
+            @Override
+            public void onNotExists() {
+                String password = view.getPassword();
+                checkPassword(password);
+            }
+
+            @Override
+            public void onCheckFail(String errorMsg) {
+                view.setViewState(iUserEditEmail.ViewState.PAGE_ERROR, R.string.USER_EDIT_EMAIL_error_checking_email, errorMsg);
+            }
+        });
+    }
+
     private void checkPassword(@NonNull String password) {
         view.disableForm();
         view.showProgressMessage(R.string.checking_password);
@@ -144,37 +193,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
         AuthSingleton.sendEmailChangeConfirmationLink(userId, newEmailAddress, new iAuthSingleton.SendSignInLinkCallbacks() {
             @Override
             public void onSignInLinkSendSuccess() {
-
-                view.hideProgressBar();
-
-                String message = MyUtils.getString(view.getAppContext(), R.string.USER_EDIT_EMAIL_verification_sent_message, newEmailAddress);
-
-                MyDialogs.infoDialog(
-                        view.getActivity(),
-                        R.string.USER_EDIT_EMAIL_verification_sent_title,
-                        message,
-                        new iMyDialogs.StandardCallbacks() {
-                            @Override
-                            public void onCancelInDialog() {
-
-                            }
-
-                            @Override
-                            public void onNoInDialog() {
-
-                            }
-
-                            @Override
-                            public boolean onCheckInDialog() {
-                                return false;
-                            }
-
-                            @Override
-                            public void onYesInDialog() {
-                                view.closePage(RESULT_OK, Intent.ACTION_EDIT);
-                            }
-                        }
-                );
+                view.setViewState(iUserEditEmail.ViewState.SUCCESS, -1, newEmailAddress);
             }
 
             @Override

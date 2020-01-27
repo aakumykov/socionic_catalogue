@@ -16,8 +16,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.user_edit_email.view_model.UserEmailEdit_ViewModel;
 import ru.aakumykov.me.sociocat.user_edit_email.view_model.UserEmailEdit_ViewModelFactory;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView {
@@ -62,10 +64,10 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
         super.onStart();
         presenter.linkView(this);
 
-        if (hasEmail())
-            presenter.onConfigChanged();
-        else
+        if (presenter.isVirgin())
             presenter.onFirstOpen();
+        else
+            presenter.onConfigChanged();
     }
 
     @Override
@@ -108,6 +110,42 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
         finish();
     }
 
+
+    @Override
+    public void setViewState(iUserEditEmail.ViewState state, int messageId) {
+        setViewState(state, messageId, null);
+    }
+
+    @Override
+    public void setViewState(iUserEditEmail.ViewState state, int messageId, @Nullable String messageDetails) {
+
+        presenter.storeViewState(state, messageId, messageDetails);
+
+        switch (state) {
+            case SUCCESS:
+                showSuccessDialog(messageDetails);
+                break;
+
+            case CHECKING:
+                disableForm();
+                showProgressMessage(messageId);
+                break;
+
+            case EMAIL_ERROR:
+                enableForm();
+                hideProgressMessage();
+                showEmailError(messageId);
+                break;
+
+            case PAGE_ERROR:
+                enableForm();
+                showErrorMsg(messageId, messageDetails);
+                break;
+
+            default:
+                break;
+        }
+    }
 
     // iUserEditEmail.iView
     @Override
@@ -166,8 +204,37 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
     }
 
 
-    // Внутренние методы
-    private boolean hasEmail() {
-        return !TextUtils.isEmpty(emailInput.getText().toString());
+    // Внутренние
+    private void showSuccessDialog(String newEmailAddress) {
+        hideProgressMessage();
+
+        String message = getString(R.string.USER_EDIT_EMAIL_verification_sent_message, newEmailAddress);
+
+        MyDialogs.infoDialog(
+                this,
+                R.string.USER_EDIT_EMAIL_verification_sent_title,
+                message,
+                new iMyDialogs.StandardCallbacks() {
+                    @Override
+                    public void onCancelInDialog() {
+
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return false;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        closePage(RESULT_OK, Intent.ACTION_EDIT);
+                    }
+                }
+        );
     }
 }
