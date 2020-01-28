@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -99,6 +100,8 @@ public class DeepLinksReceiver extends BaseView {
 
     private void processDeepLink(@NonNull String deepLink) throws DeepLinksReceiverException {
 
+        Log.d(TAG, "deepLink: "+deepLink);
+
         String continueUrl = Uri.parse(deepLink).getQueryParameter("continueUrl");
         if (TextUtils.isEmpty(continueUrl))
             throw new DeepLinksReceiverException("continueUrl is empty");
@@ -106,6 +109,7 @@ public class DeepLinksReceiver extends BaseView {
         Uri continueURI;
         try {
             continueURI = Uri.parse(continueUrl);
+            Log.d(TAG, "continueURI: "+continueURI);
         }
         catch (Exception e) {
             throw new DeepLinksReceiverException(e);
@@ -115,6 +119,7 @@ public class DeepLinksReceiver extends BaseView {
         if (TextUtils.isEmpty(action)) {
             throw new DeepLinksReceiverException("There is no action query parameter or it is empty");
         }
+        Log.d(TAG, "action: "+action);
 
         switch (action) {
             case DeepLink_Constants.ACTION_CONTINUE_REGISTRATION:
