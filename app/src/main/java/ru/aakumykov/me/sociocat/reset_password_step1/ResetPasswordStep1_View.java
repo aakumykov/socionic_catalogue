@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -19,7 +20,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.register_step_1.view_model.RegisterStep1_ViewModel;
 import ru.aakumykov.me.sociocat.reset_password_step1.view_model.ResetPasswordStep1_ViewModel;
 import ru.aakumykov.me.sociocat.reset_password_step1.view_model.ResetPasswordStep1_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -78,6 +78,12 @@ public class ResetPasswordStep1_View extends BaseView implements
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
+
+        if (presenter.isVirgin())
+            presenter.onFirstOpen();
+        else
+            presenter.onConfigChanged();
+
     }
 
     @Override
@@ -153,6 +159,56 @@ public class ResetPasswordStep1_View extends BaseView implements
         MyUtils.enable(emailInput);
         MyUtils.enable(sendButton);
         MyUtils.enable(cancelButton);
+    }
+
+    @Override
+    public void setState(iResetPasswordStep1.ViewState state, int messageId) {
+        setState(state, messageId, null);
+    }
+
+    @Override
+    public void setState(iResetPasswordStep1.ViewState state, int messageId, @Nullable String messageDetails) {
+
+        presenter.storeViewState(state, messageId, messageDetails);
+
+        switch (state) {
+            case INITIAL:
+                enableForm();
+                hideProgressMessage();
+                hideEmailError();
+                break;
+
+            case PROGRESS:
+                disableForm();
+                showProgressMessage(messageId);
+                break;
+
+            case SUCCESS:
+                hideProgressMessage();
+                hideEmailError();
+                break;
+
+            case COMMON_ERROR:
+                enableForm();
+                showErrorMsg(messageId, messageDetails);
+                break;
+
+            case EMAIL_ERROR:
+                enableForm();
+                showEmailError(messageId);
+                break;
+        }
+    }
+
+    @Override
+    public void showEmailError(int messageId) {
+        String msg = getString(messageId);
+        emailInput.setError(msg);
+    }
+
+    @Override
+    public void hideEmailError() {
+        emailInput.setError(null);
     }
 
 

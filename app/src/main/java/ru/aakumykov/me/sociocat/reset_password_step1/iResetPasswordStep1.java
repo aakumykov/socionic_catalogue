@@ -1,8 +1,18 @@
 package ru.aakumykov.me.sociocat.reset_password_step1;
 
+import androidx.annotation.Nullable;
+
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
 public interface iResetPasswordStep1 {
+
+    enum ViewState {
+        INITIAL,
+        PROGRESS,
+        SUCCESS,
+        COMMON_ERROR,
+        EMAIL_ERROR
+    }
 
     interface View extends iBaseView {
         String getEmail();
@@ -10,6 +20,12 @@ public interface iResetPasswordStep1 {
 
         void disableForm();
         void enableForm();
+
+        void setState(ViewState state, int messageId);
+        void setState(ViewState state, int messageId, @Nullable String messageDetails);
+
+        void showEmailError(int messageId);
+        void hideEmailError();
     }
 
     interface Presenter {
@@ -19,6 +35,10 @@ public interface iResetPasswordStep1 {
         void unlinkView();
 
         boolean isVirgin();
+        void onFirstOpen();
+        void onConfigChanged();
+
+        void storeViewState(ViewState state, int messageId, String messageDetails);
     }
 
 

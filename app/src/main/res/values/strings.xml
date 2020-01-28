@@ -70,7 +70,7 @@
     <string name="saving_user">Сохранение пользователя</string>
     <string name="error_saving_user">Ошибка сохранения пользователя</string>
     <string name="user_saved">Пользователь сохранён</string>
-    <string name="email" translatable="false">E-mail</string>
+    <string name="email">Адрес электронной почты</string>
     <string name="internal_error">Внутренняя ошибка</string>
     <string name="error_loading_tags">Ошибка получения меток</string>
     <string name="tags">Метки</string>

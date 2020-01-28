@@ -25,6 +25,21 @@ public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Present
     }
 
     @Override
+    public void onFirstOpen() {
+        view.setState(iResetPasswordStep1.ViewState.INITIAL, -1);
+    }
+
+    @Override
+    public void storeViewState(iResetPasswordStep1.ViewState state, int messageId, String messageDetails) {
+
+    }
+
+    @Override
+    public void onConfigChanged() {
+
+    }
+
+    @Override
     public void resetPassword(final iResetPasswordStep1.ResetPasswordCallbacks callbacks) {
 
         String email = view.getEmail();

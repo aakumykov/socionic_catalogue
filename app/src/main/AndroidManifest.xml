@@ -53,7 +53,10 @@
             android:windowSoftInputMode="stateHidden" />
 
         <activity android:name=".register_step_2.RegisterStep2_View" />
-        <activity android:name=".reset_password_step1.ResetPasswordStep1_View" />
+
+        <activity android:name=".reset_password_step1.ResetPasswordStep1_View"
+            android:windowSoftInputMode="stateHidden" />
+
         <activity android:name=".reset_password_step_2.ResetPasswordStep2_View" />
 
         <activity android:name=".external_data_receiver.ExternalDataReceiver">
