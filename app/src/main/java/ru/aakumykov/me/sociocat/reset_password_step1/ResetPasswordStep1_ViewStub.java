@@ -40,6 +40,16 @@ public class ResetPasswordStep1_ViewStub extends BaseView implements iResetPassw
     }
 
     @Override
+    public void showEmailThrobber() {
+
+    }
+
+    @Override
+    public void hideEmailThrobber() {
+
+    }
+
+    @Override
     public void setState(iResetPasswordStep1.ViewState state, int messageId) {
 
     }

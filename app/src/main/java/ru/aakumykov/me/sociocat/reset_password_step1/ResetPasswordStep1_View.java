@@ -5,6 +5,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
@@ -31,9 +32,8 @@ public class ResetPasswordStep1_View extends BaseView implements
 {
     @Email(messageResId = R.string.RESET_PASSWORD_incorrect_email)
     @BindView(R.id.emailView) EditText emailInput;
-
+    @BindView(R.id.emailThrobber) ProgressBar emailThrobber;
     @BindView(R.id.sendButton) Button sendButton;
-    @BindView(R.id.cancelButton) Button cancelButton;
 
     private iResetPasswordStep1.Presenter presenter;
     private Validator validator;
@@ -97,25 +97,10 @@ public class ResetPasswordStep1_View extends BaseView implements
         return true;
     }
 
+    // Validator.ValidationListener
     @Override
     public void onValidationSucceeded() {
-        showProgressMessage(R.string.RESET_PASSWORD_sending_email);
-        disableForm();
-
-        presenter.resetPassword(new iResetPasswordStep1.ResetPasswordCallbacks() {
-            @Override
-            public void onEmailSendSucces() {
-                hideProgressMessage();
-                hideMessage();
-                finishWork();
-            }
-
-            @Override
-            public void onEmailSendFail(String errorMsg) {
-                showErrorMsg(R.string.RESET_PASSWORD_error_sending_email, errorMsg);
-                enableForm();
-            }
-        });
+        presenter.onFormIsValid();
     }
 
     @Override
@@ -151,14 +136,22 @@ public class ResetPasswordStep1_View extends BaseView implements
     public void disableForm() {
         MyUtils.disable(emailInput);
         MyUtils.disable(sendButton);
-        MyUtils.disable(cancelButton);
     }
 
     @Override
     public void enableForm() {
         MyUtils.enable(emailInput);
         MyUtils.enable(sendButton);
-        MyUtils.enable(cancelButton);
+    }
+
+    @Override
+    public void showEmailThrobber() {
+        MyUtils.show(emailThrobber);
+    }
+
+    @Override
+    public void hideEmailThrobber() {
+        MyUtils.hide(emailThrobber);
     }
 
     @Override
@@ -176,25 +169,39 @@ public class ResetPasswordStep1_View extends BaseView implements
                 enableForm();
                 hideProgressMessage();
                 hideEmailError();
+                hideEmailThrobber();
                 break;
 
             case PROGRESS:
                 disableForm();
+                hideEmailThrobber();
                 showProgressMessage(messageId);
+                break;
+
+            case CHECKING_EMAIL:
+                disableForm();
+                hideProgressMessage();
+                showInfoMsg(messageId);
+                showEmailThrobber();
                 break;
 
             case SUCCESS:
                 hideProgressMessage();
                 hideEmailError();
+                hideEmailThrobber();
                 break;
 
             case COMMON_ERROR:
                 enableForm();
+                hideEmailError();
+                hideEmailThrobber();
                 showErrorMsg(messageId, messageDetails);
                 break;
 
             case EMAIL_ERROR:
                 enableForm();
+                hideProgressMessage();
+                hideEmailThrobber();
                 showEmailError(messageId);
                 break;
         }
@@ -215,44 +222,6 @@ public class ResetPasswordStep1_View extends BaseView implements
     // Нажатия
     @OnClick(R.id.sendButton)
     void sendEmailClicked() {
-//        String email = emailInput.getText().toString();
-//
-//        if (TextUtils.isEmpty(email)) {
-//            String text = getResources().getString(R.string.cannot_be_empty);
-//            emailInput.setError(text);
-//            return;
-//        }
-//
-//        if (!MyUtils.isCorrectEmail(email)) {
-//            String text = getResources().getString(R.string.RESET_PASSWORD_incorrect_email);
-//            emailInput.setError(text);
-//            return;
-//        }
-//
-//        showProgressMessage(R.string.RESET_PASSWORD_sending_email);
-//        disableForm();
-//
-//        presenter.resetPassword(new iResetPasswordStep1.ResetPasswordCallbacks() {
-//            @Override
-//            public void onEmailSendSucces() {
-//                hideProgressMessage();
-//                hideMessage();
-//                finishWork();
-//            }
-//
-//            @Override
-//            public void onEmailSendFail(String errorMsg) {
-//                showErrorMsg(R.string.RESET_PASSWORD_error_sending_email, errorMsg);
-//                enableForm();
-//            }
-//        });
-
         validator.validate();
-    }
-
-    @OnClick(R.id.cancelButton)
-    void cancelClicked() {
-        setResult(RESULT_CANCELED);
-        finish();
     }
 }

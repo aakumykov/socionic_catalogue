@@ -10,6 +10,7 @@ public interface iResetPasswordStep1 {
         INITIAL,
         PROGRESS,
         SUCCESS,
+        CHECKING_EMAIL,
         COMMON_ERROR,
         EMAIL_ERROR
     }
@@ -20,6 +21,9 @@ public interface iResetPasswordStep1 {
 
         void disableForm();
         void enableForm();
+
+        void showEmailThrobber();
+        void hideEmailThrobber();
 
         void setState(ViewState state, int messageId);
         void setState(ViewState state, int messageId, @Nullable String messageDetails);
@@ -39,6 +43,8 @@ public interface iResetPasswordStep1 {
         void onConfigChanged();
 
         void storeViewState(ViewState state, int messageId, String messageDetails);
+
+        void onFormIsValid();
     }
 
 

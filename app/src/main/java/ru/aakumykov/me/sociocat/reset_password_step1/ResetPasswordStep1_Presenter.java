@@ -1,13 +1,20 @@
 package ru.aakumykov.me.sociocat.reset_password_step1;
 
+import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 
 public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Presenter {
 
+    private static final String TAG = "ResetPasswordStep1_Presenter";
     private iResetPasswordStep1.View view;
     private boolean isVirgin = true;
+    private iResetPasswordStep1.ViewState currentViewSate;
+    private int currentMessageId;
+    private String currentMessageDetails;
 
     @Override
     public void linkView(iResetPasswordStep1.View view) {
@@ -31,12 +38,45 @@ public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Present
 
     @Override
     public void storeViewState(iResetPasswordStep1.ViewState state, int messageId, String messageDetails) {
+        currentViewSate = state;
+        currentMessageId = messageId;
+        currentMessageDetails = messageDetails;
+    }
+
+    @Override
+    public void onFormIsValid() {
+
+        String email = view.getEmail();
+
+        view.setState(iResetPasswordStep1.ViewState.CHECKING_EMAIL, R.string.RESET_PASSWORD_checking_emai);
+
+        UsersSingleton.getInstance().checkEmailExists(email, new iUsersSingleton.CheckExistanceCallbacks() {
+            @Override
+            public void onCheckComplete() {
+                view.setState(iResetPasswordStep1.ViewState.SUCCESS, -1);
+            }
+
+            @Override
+            public void onExists() {
+
+            }
+
+            @Override
+            public void onNotExists() {
+                view.setState(iResetPasswordStep1.ViewState.EMAIL_ERROR, R.string.RESET_EMAIL_error_email_not_found);
+            }
+
+            @Override
+            public void onCheckFail(String errorMsg) {
+                view.setState(iResetPasswordStep1.ViewState.COMMON_ERROR, R.string.RESET_PASSWORD_error_checking_email);
+            }
+        });
 
     }
 
     @Override
     public void onConfigChanged() {
-
+        view.setState(currentViewSate, currentMessageId, currentMessageDetails);
     }
 
     @Override

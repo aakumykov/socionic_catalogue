@@ -593,5 +593,8 @@
     <string name="USER_EDIT_EMAIL_checking_email">Проверка электронной почты</string>
     <string name="USER_EDIT_error_email_already_used">Адрес уже используется</string>
     <string name="USER_EDIT_EMAIL_error_checking_email">Ошибка проверки электронной почты</string>
+    <string name="RESET_PASSWORD_checking_emai">Проверяем электронную почту</string>
+    <string name="RESET_EMAIL_error_email_not_found">Адрес не найден</string>
+    <string name="RESET_PASSWORD_error_checking_email">Ошибка проверки электронной почты</string>
 
 </resources><!-- «%1$s» -->
