@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.reset_password_step1;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
-interface iResetPasswordStep1 {
+public interface iResetPasswordStep1 {
 
     interface View extends iBaseView {
         String getEmail();
@@ -17,6 +17,8 @@ interface iResetPasswordStep1 {
 
         void linkView(View view);
         void unlinkView();
+
+        boolean isVirgin();
     }
 
 

@@ -7,6 +7,7 @@ import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Presenter {
 
     private iResetPasswordStep1.View view;
+    private boolean isVirgin = true;
 
     @Override
     public void linkView(iResetPasswordStep1.View view) {
@@ -15,7 +16,12 @@ public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Present
 
     @Override
     public void unlinkView() {
-        this.view = null;
+        this.view = new ResetPasswordStep1_ViewStub();
+    }
+
+    @Override
+    public boolean isVirgin() {
+        return isVirgin;
     }
 
     @Override

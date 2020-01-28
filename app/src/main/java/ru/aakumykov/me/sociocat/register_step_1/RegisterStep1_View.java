@@ -42,7 +42,8 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
         setPageTitle(R.string.REGISTER1_page_title);
         activateUpButton();
 
-        RegisterStep1_ViewModel viewModel = new ViewModelProvider(this, new RegisterStep1_ViewModelFactory()).get(RegisterStep1_ViewModel.class);
+        RegisterStep1_ViewModel viewModel = new ViewModelProvider(this, new RegisterStep1_ViewModelFactory())
+                .get(RegisterStep1_ViewModel.class);
         if (viewModel.hasPresenter())
             presenter = viewModel.getPresenter();
         else {

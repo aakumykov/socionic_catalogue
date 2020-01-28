@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.lifecycle.ViewModelProvider;
+
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
@@ -17,6 +19,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.register_step_1.view_model.RegisterStep1_ViewModel;
+import ru.aakumykov.me.sociocat.reset_password_step1.view_model.ResetPasswordStep1_ViewModel;
+import ru.aakumykov.me.sociocat.reset_password_step1.view_model.ResetPasswordStep1_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
@@ -44,7 +49,16 @@ public class ResetPasswordStep1_View extends BaseView implements
         setPageTitle(R.string.RESET_PASSWORD_page_title);
         activateUpButton();
 
-        presenter = new ResetPasswordStep1_Presenter();
+        ResetPasswordStep1_ViewModel viewModel =
+                new ViewModelProvider(this, new ResetPasswordStep1_ViewModelFactory())
+                        .get(ResetPasswordStep1_ViewModel.class);
+
+        if (viewModel.hasPresenter())
+            presenter = viewModel.getPresenter();
+        else {
+            presenter = new ResetPasswordStep1_Presenter();
+            viewModel.storePresenter(presenter);
+        }
 
         validator = new Validator(this);
         validator.setValidationListener(this);
