@@ -33,7 +33,6 @@ public interface iResetPasswordStep1 {
     }
 
     interface Presenter {
-        void resetPassword(ResetPasswordCallbacks callbacks);
 
         void linkView(View view);
         void unlinkView();

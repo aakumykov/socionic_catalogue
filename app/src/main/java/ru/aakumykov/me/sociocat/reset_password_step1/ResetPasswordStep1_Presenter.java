@@ -16,6 +16,7 @@ public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Present
     private int currentMessageId;
     private String currentMessageDetails;
 
+
     @Override
     public void linkView(iResetPasswordStep1.View view) {
         this.view = view;
@@ -58,7 +59,7 @@ public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Present
 
             @Override
             public void onExists() {
-
+                sendResetPasswordEmail();
             }
 
             @Override
@@ -79,22 +80,24 @@ public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Present
         view.setState(currentViewSate, currentMessageId, currentMessageDetails);
     }
 
-    @Override
-    public void resetPassword(final iResetPasswordStep1.ResetPasswordCallbacks callbacks) {
+
+    // Внутренние методы
+    private void sendResetPasswordEmail() {
 
         String email = view.getEmail();
+
+        view.setState(iResetPasswordStep1.ViewState.PROGRESS, R.string.RESET_PASSWORD_sending_email);
 
         AuthSingleton.resetPasswordEmail(email, new iAuthSingleton.ResetPasswordCallbacks() {
             @Override
             public void onEmailSendSuccess() {
-                callbacks.onEmailSendSucces();
+                view.setState(iResetPasswordStep1.ViewState.SUCCESS, -1);
             }
 
             @Override
             public void onEmailSendFail(String errorMsg) {
-                callbacks.onEmailSendFail(errorMsg);
+                view.setState(iResetPasswordStep1.ViewState.COMMON_ERROR, R.string.RESET_PASSWORD_error_sending_email);
             }
         });
-
     }
 }

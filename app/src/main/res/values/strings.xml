@@ -262,7 +262,7 @@
     <string name="RESET_PASSWORD_send">Сбросить пароль</string>
     <string name="RESET_PASSWORD_enter_registration_email_address">Введите адрес электронной почты, с которым вы зарегистрированы</string>
     <string name="RESET_PASSWORD_page_title">Восстановление пароля</string>
-    <string name="RESET_PASSWORD_sending_email">Отправка сообщения</string>
+    <string name="RESET_PASSWORD_sending_email">Отправляем сообщение</string>
     <string name="RESET_PASSWORD_error_sending_email">Ошибка отправки сообщения</string>
     <string name="RESET_PASSWORD_cancel">Передумать</string>
     <string name="RESET_PASSWORD_incorrect_email">Некорректный email</string>
