@@ -21,8 +21,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.reset_password_step1.view_model.ResetPasswordStep1_ViewModel;
 import ru.aakumykov.me.sociocat.reset_password_step1.view_model.ResetPasswordStep1_ViewModelFactory;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 
@@ -64,13 +66,10 @@ public class ResetPasswordStep1_View extends BaseView implements
         validator.setValidationListener(this);
     }
 
-    @Override
-    public void onUserLogin() {
+    @Override public void onUserLogin() {
 
     }
-
-    @Override
-    public void onUserLogout() {
+    @Override public void onUserLogout() {
 
     }
 
@@ -126,8 +125,6 @@ public class ResetPasswordStep1_View extends BaseView implements
 
     @Override
     public void finishWork() {
-        String msg = getResources().getString(R.string.RESET_PASSWORD_email_sended, getEmail());
-        showToast(msg);
         setResult(RESULT_OK);
         finish();
     }
@@ -189,6 +186,7 @@ public class ResetPasswordStep1_View extends BaseView implements
                 hideProgressMessage();
                 hideEmailError();
                 hideEmailThrobber();
+                showFinishDialog();
                 break;
 
             case COMMON_ERROR:
@@ -205,6 +203,35 @@ public class ResetPasswordStep1_View extends BaseView implements
                 showEmailError(messageId);
                 break;
         }
+    }
+
+    private void showFinishDialog() {
+        MyDialogs.infoDialog(
+                this,
+                R.string.RESET_PASSWORD_finish_dialog_title,
+                R.string.RESET_PASSWORD_finish_dialog_message,
+                new iMyDialogs.StandardCallbacks() {
+                    @Override
+                    public void onCancelInDialog() {
+
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return false;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        finishWork();
+                    }
+                }
+        );
     }
 
     @Override

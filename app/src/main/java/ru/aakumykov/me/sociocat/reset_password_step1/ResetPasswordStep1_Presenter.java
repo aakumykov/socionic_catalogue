@@ -1,10 +1,12 @@
 package ru.aakumykov.me.sociocat.reset_password_step1;
 
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.utils.MyDialogs;
 
 
 public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Presenter {
@@ -34,6 +36,7 @@ public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Present
 
     @Override
     public void onFirstOpen() {
+        isVirgin = false;
         view.setState(iResetPasswordStep1.ViewState.INITIAL, -1);
     }
 

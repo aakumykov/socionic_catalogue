@@ -589,5 +589,7 @@
     <string name="RESET_PASSWORD_checking_emai">Checking email</string>
     <string name="RESET_EMAIL_error_email_not_found">Email not found</string>
     <string name="RESET_PASSWORD_error_checking_email">Error checking email</string>
+    <string name="RESET_PASSWORD_finish_dialog_title">Done</string>
+    <string name="RESET_PASSWORD_finish_dialog_message">Letter for reset password is sent</string>
 </resources>
 <!-- «%1$s» -->
