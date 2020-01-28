@@ -86,9 +86,6 @@ public class Login_View extends BaseView implements iLogin.View
         }
         else {
             switch (requestCode) {
-                case Constants.CODE_RESET_PASSWORD:
-                    afterResetPasswordRequest(resultCode, data);
-                    break;
                 default:
                     super.onActivityResult(requestCode, resultCode, data);
                     break;
