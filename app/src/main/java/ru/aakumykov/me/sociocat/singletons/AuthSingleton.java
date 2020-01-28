@@ -146,7 +146,7 @@ public class AuthSingleton implements iAuthSingleton
 
         ActionCodeSettings actionCodeSettings =
                 ActionCodeSettings.newBuilder()
-                        .setUrl(DeepLink_Constants.URL_BASE + DeepLink_Constants.PASSWORD_RESET_PATH + firebaseAuth.getUid())
+                        .setUrl(DeepLink_Constants.URL_BASE + DeepLink_Constants.PASSWORD_RESET_PATH)
                         .setHandleCodeInApp(false)
                         .setAndroidPackageName(
                                 PackageConstants.PACKAGE_NAME,
