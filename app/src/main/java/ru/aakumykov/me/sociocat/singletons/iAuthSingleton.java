@@ -1,7 +1,5 @@
 package ru.aakumykov.me.sociocat.singletons;
 
-import androidx.annotation.NonNull;
-
 public interface iAuthSingleton {
 
     interface ResetPasswordCallbacks {

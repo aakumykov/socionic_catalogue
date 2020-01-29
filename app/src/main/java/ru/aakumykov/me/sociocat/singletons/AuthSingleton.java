@@ -190,6 +190,12 @@ public class AuthSingleton implements iAuthSingleton
                 });
     }
 
+    public static boolean isEmailSignInLink(@Nullable String deepLink) {
+        if (null == deepLink)
+            return false;
+
+        return firebaseAuth.isSignInWithEmailLink(deepLink);
+    }
 
 
     // Свойства
