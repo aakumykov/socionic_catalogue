@@ -72,7 +72,11 @@ public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Present
 
             @Override
             public void onCheckFail(String errorMsg) {
-                view.setState(iResetPasswordStep1.ViewState.COMMON_ERROR, R.string.RESET_PASSWORD_error_checking_email);
+                view.setState(
+                        iResetPasswordStep1.ViewState.COMMON_ERROR,
+                        R.string.RESET_PASSWORD_error_checking_email,
+                        errorMsg
+                );
             }
         });
 
@@ -99,7 +103,11 @@ public class ResetPasswordStep1_Presenter implements iResetPasswordStep1.Present
 
             @Override
             public void onEmailSendFail(String errorMsg) {
-                view.setState(iResetPasswordStep1.ViewState.COMMON_ERROR, R.string.RESET_PASSWORD_error_sending_email);
+                view.setState(
+                        iResetPasswordStep1.ViewState.COMMON_ERROR,
+                        R.string.RESET_PASSWORD_error_sending_email,
+                        errorMsg
+                );
             }
         });
     }
