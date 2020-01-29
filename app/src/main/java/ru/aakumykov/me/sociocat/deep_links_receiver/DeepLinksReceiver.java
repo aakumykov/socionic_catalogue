@@ -102,6 +102,11 @@ public class DeepLinksReceiver extends BaseView {
 
         Log.d(TAG, "deepLink: "+deepLink);
 
+        if (AuthSingleton.isEmailSignInLink(deepLink)) {
+            continueSignInWithLink(deepLink);
+            return;
+        }
+
         String continueUrl = Uri.parse(deepLink).getQueryParameter("continueUrl");
         if (TextUtils.isEmpty(continueUrl))
             throw new DeepLinksReceiverException("continueUrl is empty");
@@ -133,6 +138,10 @@ public class DeepLinksReceiver extends BaseView {
             default:
                 throw new DeepLinksReceiverException("Unknown action: "+action);
         }
+    }
+
+    private void continueSignInWithLink(@NonNull String deepLink) {
+
     }
 
     private void continueRegistration(@NonNull String deepLink) {
