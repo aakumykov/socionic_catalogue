@@ -41,7 +41,13 @@ public class Login_Presenter implements
     private String userName;
     private String customToken;
     private String internalUserId;
+
     private boolean isVirgin = true;
+
+    private iLogin.ViewState currentViewState = iLogin.ViewState.INITIAL;
+    private int currentMessageId = -1;
+    private String currentMessageDetails = null;
+
 
     // Обязательные методы
     @Override
@@ -60,7 +66,14 @@ public class Login_Presenter implements
 
     @Override
     public void onConfigChanged() {
+        view.setViewState(currentViewState, currentMessageId, currentMessageDetails);
+    }
 
+    @Override
+    public void storeViewState(iLogin.ViewState state, int messageId, String messageDetails) {
+        currentViewState = state;
+        currentMessageId = messageId;
+        currentMessageDetails = messageDetails;
     }
 
 

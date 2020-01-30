@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.login;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -134,7 +133,7 @@ public class Login_View extends BaseView implements iLogin.View
     // Обязательные методы
     @Override
     public void onUserLogin() {
-        //closePage(); // Если пользователь каким-то образом залогинился
+        // Это должен обрабатывать presenter
     }
 
     @Override
@@ -145,12 +144,32 @@ public class Login_View extends BaseView implements iLogin.View
 
     @Override
     public void setViewState(iLogin.ViewState state, int messageId) {
-
+        setViewState(state, messageId, null);
     }
 
     @Override
     public void setViewState(iLogin.ViewState state, int messageId, @Nullable String messageDetails) {
 
+        presenter.storeViewState(state, messageId, messageDetails);
+
+        switch (state) {
+            case INITIAL:
+                hideProgressMessage();
+                enableForm();
+                break;
+
+            case PROGRESS:
+                break;
+
+            case SUCCESS:
+                break;
+
+            case ERROR:
+                break;
+
+            default:
+                Log.e(TAG, "Unknown viewState: "+state);
+        }
     }
 
     // Интерфейсные методы

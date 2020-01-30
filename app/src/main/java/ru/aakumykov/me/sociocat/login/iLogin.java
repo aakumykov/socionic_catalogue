@@ -44,5 +44,7 @@ public interface iLogin {
 
         boolean isVirgin();
         void onConfigChanged();
+
+        void storeViewState(ViewState state, int messageId, String messageDetails);
     }
 }
