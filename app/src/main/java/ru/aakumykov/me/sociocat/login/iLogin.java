@@ -19,8 +19,8 @@ public interface iLogin {
 
     interface View extends iBaseView {
 
-        void setViewState(ViewState state, int messageId);
-        void setViewState(ViewState state, int messageId, @Nullable String messageDetails);
+        void setState(ViewState state, int messageId);
+        void setState(ViewState state, int messageId, @Nullable String messageDetails);
 
         void disableForm();
         void enableForm();
@@ -28,6 +28,9 @@ public interface iLogin {
         void finishLogin(boolean isCancelled, Intent transitIntent);
 
         void notifyToConfirmEmail(String userId);
+
+        String getEmail();
+        String getPassword();
     }
 
     interface Presenter {
@@ -46,5 +49,7 @@ public interface iLogin {
         void onConfigChanged();
 
         void storeViewState(ViewState state, int messageId, String messageDetails);
+
+        void onLoginClicked();
     }
 }

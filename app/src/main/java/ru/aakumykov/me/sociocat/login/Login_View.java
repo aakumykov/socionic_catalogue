@@ -143,12 +143,12 @@ public class Login_View extends BaseView implements iLogin.View
 
 
     @Override
-    public void setViewState(iLogin.ViewState state, int messageId) {
-        setViewState(state, messageId, null);
+    public void setState(iLogin.ViewState state, int messageId) {
+        setState(state, messageId, null);
     }
 
     @Override
-    public void setViewState(iLogin.ViewState state, int messageId, @Nullable String messageDetails) {
+    public void setState(iLogin.ViewState state, int messageId, @Nullable String messageDetails) {
 
         presenter.storeViewState(state, messageId, messageDetails);
 
@@ -159,12 +159,17 @@ public class Login_View extends BaseView implements iLogin.View
                 break;
 
             case PROGRESS:
+                disableForm();
+                showProgressMessage(messageId);
                 break;
 
             case SUCCESS:
+                showInfoMsg(messageId);
                 break;
 
             case ERROR:
+                enableForm();
+                showErrorMsg(messageId, messageDetails);
                 break;
 
             default:
@@ -218,17 +223,21 @@ public class Login_View extends BaseView implements iLogin.View
         showErrorMsg(R.string.LOGIN_email_confirmation_required, "(●'◡'●)");
     }
 
+    @Override
+    public String getEmail() {
+        return emailInput.getText().toString();
+    }
+
+    @Override
+    public String getPassword() {
+        return passwordInput.getText().toString();
+    }
+
 
     // Нажатия
     @OnClick(R.id.loginButton)
     void onLoginButtonClicked() {
-        String email = emailInput.getText().toString();
-        String password = passwordInput.getText().toString();
-
-        disableForm();
-        showProgressMessage(R.string.LOGIN_logging_in);
-
-        presenter.doLogin(email, password);
+        presenter.onLoginClicked();
     }
 
     @OnClick(R.id.resetPasswordButton)

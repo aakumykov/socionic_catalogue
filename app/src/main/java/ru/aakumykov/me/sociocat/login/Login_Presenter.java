@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.login;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -34,7 +33,6 @@ public class Login_Presenter implements
     private Intent mTransitIntent;
 
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     private String externalAccessToken;
     private String externalUserId;
@@ -66,7 +64,7 @@ public class Login_Presenter implements
 
     @Override
     public void onConfigChanged() {
-        view.setViewState(currentViewState, currentMessageId, currentMessageDetails);
+        view.setState(currentViewState, currentMessageId, currentMessageDetails);
     }
 
     @Override
@@ -74,6 +72,27 @@ public class Login_Presenter implements
         currentViewState = state;
         currentMessageId = messageId;
         currentMessageDetails = messageDetails;
+    }
+
+    @Override
+    public void onLoginClicked() {
+        String email = view.getEmail();
+        String password = view.getPassword();
+
+        view.setState(iLogin.ViewState.PROGRESS, R.string.LOGIN_logging_in);
+
+        AuthSingleton.loginWithEmailAndPassword(email, password, new iAuthSingleton.LoginCallbacks() {
+            @Override
+            public void onLoginSuccess(String userId) {
+                view.setState(iLogin.ViewState.SUCCESS, R.string.LOGIN_login_success);
+                refreshUserFromServer(userId);
+            }
+
+            @Override
+            public void onLoginError(String errorMsg) {
+                view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_login_error, errorMsg);
+            }
+        });
     }
 
 
@@ -101,51 +120,12 @@ public class Login_Presenter implements
     @Override
     public void doLogin(String email, String password) {
 
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        String userId = authResult.getUser().getUid();
 
-                        try {
-                            usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
-                                @Override
-                                public void onUserRefreshSuccess(User user) {
-                                    try {
-                                        processSuccessfullLogin(user);
-                                    }
-                                    catch (Exception e) {
-                                        view.showToast(R.string.LOGIN_login_error);
-                                        cancelLogin();
-                                        Log.e(TAG, e.getMessage());
-                                        e.printStackTrace();
-                                    }
-                                }
-
-                                @Override
-                                public void onUserRefreshFail(String errorMsg) {
-                                    showLoginError(errorMsg);
-                                }
-                            });
-                        }
-                        catch (Exception e) {
-                            Log.e(TAG, e.getMessage());
-                            e.printStackTrace();
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
     }
 
     @Override
     public void cancelLogin() {
-        firebaseAuth.signOut();
+        AuthSingleton.signOut();
         view.finishLogin(true, mTransitIntent);
     }
 
@@ -284,5 +264,31 @@ public class Login_Presenter implements
             view.showErrorMsg(R.string.LOGIN_error_updating_user, e.getMessage());
             MyUtils.printError(TAG, e);
         }
+    }
+
+    private void refreshUserFromServer(@NonNull String userId) {
+
+        try {
+            usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
+                @Override
+                public void onUserRefreshSuccess(User user) {
+                    usersSingleton.storeCurrentUser(user);
+                }
+
+                @Override
+                public void onUserRefreshFail(String errorMsg) {
+                    onUserRefreshError(errorMsg);
+                }
+            });
+        }
+        catch (Exception e) {
+            onUserRefreshError(e.getMessage());
+            MyUtils.printError(TAG, e);
+        }
+    }
+
+    private void onUserRefreshError(String errorMsg) {
+        view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_error_getting_user_info, errorMsg);
+        AuthSingleton.logout();
     }
 }

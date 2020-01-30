@@ -9,12 +9,12 @@ import ru.aakumykov.me.sociocat.BaseView_Stub;
 
 public class Login_View_Stub extends BaseView_Stub implements iLogin.View {
     @Override
-    public void setViewState(iLogin.ViewState state, int messageId) {
+    public void setState(iLogin.ViewState state, int messageId) {
 
     }
 
     @Override
-    public void setViewState(iLogin.ViewState state, int messageId, @Nullable String messageDetails) {
+    public void setState(iLogin.ViewState state, int messageId, @Nullable String messageDetails) {
 
     }
 
@@ -36,5 +36,15 @@ public class Login_View_Stub extends BaseView_Stub implements iLogin.View {
     @Override
     public void notifyToConfirmEmail(String userId) {
 
+    }
+
+    @Override
+    public String getEmail() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
     }
 }
