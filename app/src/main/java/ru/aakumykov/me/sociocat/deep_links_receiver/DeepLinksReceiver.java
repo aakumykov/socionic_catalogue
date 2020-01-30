@@ -141,7 +141,7 @@ public class DeepLinksReceiver extends BaseView {
     }
 
     private void continueSignInWithLink(@NonNull String deepLink) {
-
+        Log.d(TAG, "continueSignInWithLink: "+deepLink);
     }
 
     private void continueRegistration(@NonNull String deepLink) {
