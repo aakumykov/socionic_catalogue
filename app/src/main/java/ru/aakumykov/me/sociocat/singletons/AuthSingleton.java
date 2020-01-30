@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -22,12 +23,29 @@ import retrofit2.http.Query;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.PackageConstants;
+import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 // TODO: разобраться с гостевым пользователем
 
 public class AuthSingleton implements iAuthSingleton
 {
+    // Шаблон одиночка (начало)
+    private static volatile AuthSingleton ourInstance;
+    public synchronized static AuthSingleton getInstance() {
+        synchronized (AuthSingleton.class) {
+            if (null == ourInstance) ourInstance = new AuthSingleton();
+            return ourInstance;
+        }
+    }
+    private AuthSingleton() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        Log.d(TAG, "firebaseAuth: "+firebaseAuth);
+    }
+    // Шаблон одиночка (конец)
+
+
     // Статические методы
     public static boolean isLoggedIn() {
         return (null != firebaseAuth.getCurrentUser());
@@ -197,24 +215,39 @@ public class AuthSingleton implements iAuthSingleton
         return firebaseAuth.isSignInWithEmailLink(deepLink);
     }
 
+    public static void loginWithEmailAndPassword(String email, String password, iAuthSingleton.LoginCallbacks callbacks) {
+
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                @Override
+                public void onSuccess(AuthResult authResult) {
+
+                    FirebaseUser firebaseUser = authResult.getUser();
+
+                    if (null != firebaseUser)
+                        callbacks.onLoginSuccess(firebaseUser.getUid());
+                    else
+                        callbacks.onLoginError("FirebaseUser is null");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    callbacks.onLoginError(e.getMessage());
+                    MyUtils.printError(TAG, e);
+                }
+            });
+    }
+
+    public static void signOut() {
+        firebaseAuth.signOut();
+    }
+
+
 
     // Свойства
     private final static String TAG = "AuthSingleton";
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
-    // Одиночка
-    private static volatile AuthSingleton ourInstance;
-    public synchronized static AuthSingleton getInstance() {
-        synchronized (AuthSingleton.class) {
-            if (null == ourInstance) ourInstance = new AuthSingleton();
-            return ourInstance;
-        }
-    }
-    private AuthSingleton() {
-        firebaseAuth = FirebaseAuth.getInstance();
-        Log.d(TAG, "firebaseAuth: "+firebaseAuth);
-    }
-    // Одиночка
 
     // Внутренние интерфейсы
     private interface CustomTokenAPI {
