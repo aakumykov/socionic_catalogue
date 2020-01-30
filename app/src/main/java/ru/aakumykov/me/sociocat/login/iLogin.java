@@ -34,7 +34,6 @@ public interface iLogin {
     }
 
     interface Presenter {
-        void doLogin(String email, String password);
         void cancelLogin();
         void processInputIntent(@Nullable Intent intent);
 

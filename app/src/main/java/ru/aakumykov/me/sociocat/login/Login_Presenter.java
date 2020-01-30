@@ -64,6 +64,36 @@ public class Login_Presenter implements
     }
 
     @Override
+    public void processInputIntent(@Nullable Intent intent) {
+
+        isVirgin = false;
+
+        if (null == intent) {
+            view.showErrorMsg(R.string.LOGIN_data_error, "Intent is NULL");
+            return;
+        }
+
+        if (intent.hasExtra(Constants.TRANSIT_INTENT))
+            mTransitIntent = intent.getParcelableExtra(Constants.TRANSIT_INTENT);
+
+
+        mIntentAction = intent.getAction() + "";
+
+        switch (mIntentAction) {
+            case Constants.ACTION_LOGIN_VIA_EMAIL:
+                loginViaEmail(intent);
+                break;
+
+            case Constants.ACTION_TRY_NEW_PASSWORD:
+                view.showToast(R.string.LOGIN_try_new_password);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    @Override
     public void onConfigChanged() {
         view.setState(currentViewState, currentMessageId, currentMessageDetails);
     }
@@ -94,44 +124,6 @@ public class Login_Presenter implements
                 view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_login_error, errorMsg);
             }
         });
-    }
-
-
-    // Интерфейсные методы
-    @Override
-    public void processInputIntent(@Nullable Intent intent) {
-
-        isVirgin = false;
-
-        if (null == intent) {
-            view.showErrorMsg(R.string.LOGIN_data_error, "Intent is NULL");
-            return;
-        }
-
-        if (intent.hasExtra(Constants.TRANSIT_INTENT))
-            mTransitIntent = intent.getParcelableExtra(Constants.TRANSIT_INTENT);
-
-
-        mIntentAction = intent.getAction() + "";
-
-        switch (mIntentAction) {
-            case Constants.ACTION_LOGIN_VIA_EMAIL:
-                loginViaEmail(intent);
-                break;
-
-            case Constants.ACTION_TRY_NEW_PASSWORD:
-                view.showToast(R.string.LOGIN_try_new_password);
-                break;
-
-            default:
-                view.setState(iLogin.ViewState.ERROR, R.string.error_unknown_intent_action, mIntentAction);
-        }
-    }
-
-    @Override
-    public void doLogin(String email, String password) {
-
-
     }
 
     @Override
@@ -306,6 +298,7 @@ public class Login_Presenter implements
                 @Override
                 public void onUserRefreshSuccess(User user) {
                     usersSingleton.storeCurrentUser(user);
+                    view.finishLogin(false, mTransitIntent);
                 }
 
                 @Override
