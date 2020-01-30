@@ -143,12 +143,17 @@ public class Login_View extends BaseView implements iLogin.View
     }
 
 
-    // Интерфейсные методы
     @Override
-    public Activity getActivity() {
-        return this;
+    public void setViewState(iLogin.ViewState state, int messageId) {
+
     }
 
+    @Override
+    public void setViewState(iLogin.ViewState state, int messageId, @Nullable String messageDetails) {
+
+    }
+
+    // Интерфейсные методы
     @Override
     public void disableForm() {
         MyUtils.disable(emailInput);

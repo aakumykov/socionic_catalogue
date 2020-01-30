@@ -10,11 +10,23 @@ import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
 public interface iLogin {
 
+    enum ViewState {
+        INITIAL,
+        PROGRESS,
+        SUCCESS,
+        ERROR
+    }
+
     interface View extends iBaseView {
-        Activity getActivity();
+
+        void setViewState(ViewState state, int messageId);
+        void setViewState(ViewState state, int messageId, @Nullable String messageDetails);
+
         void disableForm();
         void enableForm();
+
         void finishLogin(boolean isCancelled, Intent transitIntent);
+
         void notifyToConfirmEmail(String userId);
     }
 

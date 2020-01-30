@@ -9,6 +9,16 @@ import ru.aakumykov.me.sociocat.BaseView_Stub;
 
 public class Login_View_Stub extends BaseView_Stub implements iLogin.View {
     @Override
+    public void setViewState(iLogin.ViewState state, int messageId) {
+
+    }
+
+    @Override
+    public void setViewState(iLogin.ViewState state, int messageId, @Nullable String messageDetails) {
+
+    }
+
+    @Override
     public void disableForm() {
 
     }
