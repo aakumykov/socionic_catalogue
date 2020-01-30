@@ -243,6 +243,28 @@ public class AuthSingleton implements iAuthSingleton
         firebaseAuth.signOut();
     }
 
+    public static void loginWithEmailLink(String referenceEmail, String emailSignInLink, iAuthSingleton.LoginCallbacks callbacks) {
+
+        firebaseAuth.signInWithEmailLink(referenceEmail, emailSignInLink)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        FirebaseUser firebaseUser = authResult.getUser();
+                        if (null != firebaseUser)
+                            callbacks.onLoginSuccess(firebaseUser.getUid());
+                        else
+                            callbacks.onLoginError("FirebaseUser is null");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onLoginError(e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
+
+    }
 
 
     // Свойства
