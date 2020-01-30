@@ -245,7 +245,7 @@
     <string name="REGISTER_CONFIRMATION_check_your_email">A message has been sent to the address «%1$s». Check it to complete the registration.</string>
     <string name="REGISTER_CONFIRMATION_registration_confirm_success">Sign up complete</string>
     <string name="REGISTER_CONFIRMATION_registration_confirm_error">Registration confirm error</string>
-    <string name="unknown_intent_action">Unknown action</string>
+    <string name="error_unknown_intent_action">Unknown action</string>
     <string name="LOGIN_login_error">Login error</string>
     <string name="REGISTER_CONFIRMATION_you_need_to_confirm_email">Confirm your email address to sign in</string>
     <string name="REGISTER_CONFIRMATION_got_it">Got it</string>

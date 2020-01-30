@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -107,13 +108,23 @@ public class Login_Presenter implements
             return;
         }
 
-        mIntentAction = intent.getAction() + "";
-
         if (intent.hasExtra(Constants.TRANSIT_INTENT))
             mTransitIntent = intent.getParcelableExtra(Constants.TRANSIT_INTENT);
 
-        if (mIntentAction.equals(Constants.ACTION_TRY_NEW_PASSWORD)) {
-            view.showToast(R.string.LOGIN_try_new_password);
+
+        mIntentAction = intent.getAction() + "";
+
+        switch (mIntentAction) {
+            case Constants.ACTION_LOGIN_VIA_EMAIL:
+                loginViaEmail(intent);
+                break;
+
+            case Constants.ACTION_TRY_NEW_PASSWORD:
+                view.showToast(R.string.LOGIN_try_new_password);
+                break;
+
+            default:
+                view.setState(iLogin.ViewState.ERROR, R.string.error_unknown_intent_action, mIntentAction);
         }
     }
 
@@ -166,6 +177,28 @@ public class Login_Presenter implements
 
 
     // Внутренние методы
+    private void loginViaEmail(@NonNull Intent intent) {
+
+        String emailLoginLink = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+        SharedPreferences sharedPreferences = view.getSharedPrefs(Constants.SHARED_PREFERENCES_USER);
+        String storedEmail = sharedPreferences.getString(Constants.KEY_STORED_EMAIL, "");
+
+        // TODO: emailLoginLink = null
+
+        AuthSingleton.loginWithEmailLink(storedEmail, emailLoginLink, new iAuthSingleton.LoginCallbacks() {
+            @Override
+            public void onLoginSuccess(String userId) {
+
+            }
+
+            @Override
+            public void onLoginError(String errorMsg) {
+
+            }
+        });
+    }
+
     private void processSuccessfullLogin(User user) {
         if (!user.isEmailVerified()) {
             view.notifyToConfirmEmail(user.getKey());

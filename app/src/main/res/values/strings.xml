@@ -247,7 +247,7 @@
     <string name="REGISTER_CONFIRMATION_check_your_email">На адрес «%1$s» отправлено сообщение. Проверьте его для завершения регистрации.</string>
     <string name="REGISTER_CONFIRMATION_registration_confirm_success">Регистрация успешно завершена</string>
     <string name="REGISTER_CONFIRMATION_registration_confirm_error">Ошибка завершения регистрации</string>
-    <string name="unknown_intent_action">Неизвестное действие</string>
+    <string name="error_unknown_intent_action">Неизвестное действие</string>
     <string name="LOGIN_login_error">Ошибка входа</string>
     <string name="REGISTER_CONFIRMATION_you_need_to_confirm_email">Чтобы войти, подтвердите адрес электронной почты.</string>
     <string name="REGISTER_CONFIRMATION_got_it">Понятно</string>
