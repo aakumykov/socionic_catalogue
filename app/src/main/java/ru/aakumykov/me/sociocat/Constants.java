@@ -37,6 +37,7 @@ public final class Constants
     public static final String ACTION_SHOW_CARDS_WITH_TAG = "ACTION_SHOW_CARDS_WITH_TAG";
     public static final String ACTION_CONTINUE_REGISTRATION = "ACTION_CONTINUE_REGISTRATION";
     public static final String ACTION_CONFIRM_EMAIL_CHANGE = "ACTION_CONFIRM_EMAIL_CHANGE";
+    public static final String ACTION_LOGIN_VIA_EMAIL = "ACTION_LOGIN_VIA_EMAIL";
 
     public final static String CARD = "CARD";
     public final static String CARD_DRAFT = "CARD_DRAFT";

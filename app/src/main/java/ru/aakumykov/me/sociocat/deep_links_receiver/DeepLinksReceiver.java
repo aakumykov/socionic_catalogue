@@ -23,6 +23,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
+import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.register_step_2.RegisterStep2_View;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
@@ -31,9 +32,10 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class DeepLinksReceiver extends BaseView {
 
-    private static final String TAG = "DeepLinksReceiver";
-
     private Button continueButton;
+    private static final String TAG = "DeepLinksReceiver";
+    private boolean workIsDone = false;
+
 
     // Activity
     @Override
@@ -56,7 +58,10 @@ public class DeepLinksReceiver extends BaseView {
     protected void onStart() {
         super.onStart();
 
-        processInputIntent(getIntent());
+        if (workIsDone)
+            goToStartPage();
+        else
+            processInputIntent(getIntent());
     }
 
     @Override
@@ -103,6 +108,7 @@ public class DeepLinksReceiver extends BaseView {
         Log.d(TAG, "deepLink: "+deepLink);
 
         if (AuthSingleton.isEmailSignInLink(deepLink)) {
+            Log.d(TAG, "emailSignInLink: "+deepLink);
             continueSignInWithLink(deepLink);
             return;
         }
@@ -141,7 +147,10 @@ public class DeepLinksReceiver extends BaseView {
     }
 
     private void continueSignInWithLink(@NonNull String deepLink) {
-        Log.d(TAG, "continueSignInWithLink: "+deepLink);
+        Intent intent = new Intent(this, Login_View.class);
+        intent.setAction(Constants.ACTION_LOGIN_VIA_EMAIL);
+        intent.putExtra(Intent.EXTRA_TEXT, deepLink);
+        startActivity(intent);
     }
 
     private void continueRegistration(@NonNull String deepLink) {
@@ -218,6 +227,11 @@ public class DeepLinksReceiver extends BaseView {
     }
 
     private void onContinueButtonClicked() {
+        Intent intent = new Intent(this, CardsGrid_View.class);
+        startActivity(intent);
+    }
+
+    private void goToStartPage() {
         Intent intent = new Intent(this, CardsGrid_View.class);
         startActivity(intent);
     }
