@@ -29,5 +29,8 @@ public interface iLogin {
         // TODO: вынести в общий интерфейс
         void linkView(iLogin.View view);
         void unlinkView();
+
+        boolean isVirgin();
+        void onConfigChanged();
     }
 }

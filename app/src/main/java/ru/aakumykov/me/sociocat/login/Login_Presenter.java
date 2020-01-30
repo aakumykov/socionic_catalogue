@@ -41,6 +41,7 @@ public class Login_Presenter implements
     private String userName;
     private String customToken;
     private String internalUserId;
+    private boolean isVirgin = true;
 
     // Обязательные методы
     @Override
@@ -52,10 +53,22 @@ public class Login_Presenter implements
         this.view = new Login_View_Stub();
     }
 
+    @Override
+    public boolean isVirgin() {
+        return isVirgin;
+    }
+
+    @Override
+    public void onConfigChanged() {
+
+    }
+
 
     // Интерфейсные методы
     @Override
     public void processInputIntent(@Nullable Intent intent) {
+
+        isVirgin = false;
 
         if (null == intent) {
             view.showErrorMsg(R.string.LOGIN_data_error, "Intent is NULL");

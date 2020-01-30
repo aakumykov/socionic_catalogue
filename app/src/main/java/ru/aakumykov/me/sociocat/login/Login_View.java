@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,6 +20,8 @@ import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.login.view_model.Login_ViewModel;
+import ru.aakumykov.me.sociocat.login.view_model.Login_ViewModelFactory;
 import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.register_step_1.RegisterStep1_View;
 import ru.aakumykov.me.sociocat.reset_password_step1.ResetPasswordStep1_View;
@@ -48,14 +51,26 @@ public class Login_View extends BaseView implements iLogin.View
         setPageTitle(R.string.LOGIN_page_title);
         activateUpButton();
 
-        presenter = new Login_Presenter();
+        Login_ViewModel viewModel = new ViewModelProvider(this, new Login_ViewModelFactory())
+                .get(Login_ViewModel.class);
+
+        if (viewModel.hasPresenter()) {
+            this.presenter = viewModel.getPresenter();
+        } else {
+            this.presenter = new Login_Presenter();
+            viewModel.storePresenter(this.presenter);
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
-        presenter.processInputIntent(getIntent());
+
+        if (presenter.isVirgin())
+            presenter.processInputIntent(getIntent());
+        else
+            presenter.onConfigChanged();
     }
 
     @Override
