@@ -3,19 +3,12 @@ package ru.aakumykov.me.sociocat.register_step_1;
 import android.annotation.SuppressLint;
 
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.BaseView_Stub;
 
 @SuppressLint("Registered")
-public class RegisterStep1_ViewStub extends BaseView implements iRegisterStep1.View {
+public class RegisterStep1_ViewStub extends BaseView_Stub implements iRegisterStep1.View {
 
-    @Override
-    public void onUserLogin() {
 
-    }
-
-    @Override
-    public void onUserLogout() {
-
-    }
 
     @Override
     public String getEmail() {

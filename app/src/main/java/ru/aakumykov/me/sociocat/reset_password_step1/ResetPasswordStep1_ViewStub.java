@@ -5,19 +5,12 @@ import android.annotation.SuppressLint;
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.BaseView_Stub;
 
 @SuppressLint("Registered")
-public class ResetPasswordStep1_ViewStub extends BaseView implements iResetPasswordStep1.View {
+public class ResetPasswordStep1_ViewStub extends BaseView_Stub implements iResetPasswordStep1.View {
 
-    @Override
-    public void onUserLogin() {
 
-    }
-
-    @Override
-    public void onUserLogout() {
-
-    }
 
     @Override
     public String getEmail() {
