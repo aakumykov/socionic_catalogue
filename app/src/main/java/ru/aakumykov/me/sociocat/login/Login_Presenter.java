@@ -69,13 +69,12 @@ public class Login_Presenter implements
         isVirgin = false;
 
         if (null == intent) {
-            view.showErrorMsg(R.string.LOGIN_data_error, "Intent is NULL");
+            view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_data_error, "Intent is NULL");
             return;
         }
 
         if (intent.hasExtra(Constants.TRANSIT_INTENT))
             mTransitIntent = intent.getParcelableExtra(Constants.TRANSIT_INTENT);
-
 
         mIntentAction = intent.getAction() + "";
 
