@@ -1,8 +1,6 @@
 package ru.aakumykov.me.sociocat.deep_links_receiver;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,11 +12,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.BaseView;
-import ru.aakumykov.me.sociocat.BuildConfig;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -26,7 +20,6 @@ import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.register_step_2.RegisterStep2_View;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.user_edit_email.UserEditEmail_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -34,7 +27,7 @@ public class DeepLinksReceiver extends BaseView {
 
     private Button continueButton;
     private static final String TAG = "DeepLinksReceiver";
-    private boolean workIsDone = false;
+    private boolean dryRun = true;
 
 
     // Activity
@@ -58,10 +51,18 @@ public class DeepLinksReceiver extends BaseView {
     protected void onStart() {
         super.onStart();
 
-        if (workIsDone)
-            goToStartPage();
-        else
+        if (dryRun) {
+            dryRun = false;
             processInputIntent(getIntent());
+        }
+        else {
+            goToStartPage();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -95,7 +96,9 @@ public class DeepLinksReceiver extends BaseView {
             return;
         }
 
-        try { processDeepLink(deepLink); }
+        try {
+            processDeepLink(deepLink);
+        }
         catch (DeepLinksReceiverException e) {
             showErrorMsg(R.string.DEEP_LINKS_RECEIVER_error_processing_link, e.getMessage());
             MyUtils.printError(TAG, e);
