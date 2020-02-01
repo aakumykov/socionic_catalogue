@@ -591,5 +591,7 @@
     <string name="RESET_PASSWORD_error_checking_email">Error checking email</string>
     <string name="RESET_PASSWORD_finish_dialog_title">Done</string>
     <string name="RESET_PASSWORD_finish_dialog_message">Letter for reset password is sent</string>
+    <string name="LOGIN_error_login_link_has_expired">Link is expired</string>
+    <string name="LOGIN_login_link_is_broken">Broken login link</string>
 </resources>
 <!-- «%1$s» -->

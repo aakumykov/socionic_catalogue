@@ -173,20 +173,31 @@ public class Login_Presenter implements
 
         String emailLoginLink = intent.getStringExtra(Intent.EXTRA_TEXT);
 
+        if (null == emailLoginLink) {
+            view.showErrorMsg(R.string.LOGIN_login_link_is_broken, "Eamil login link is null");
+            return;
+        }
+
         SharedPreferences sharedPreferences = view.getSharedPrefs(Constants.SHARED_PREFERENCES_USER);
         String storedEmail = sharedPreferences.getString(Constants.KEY_STORED_EMAIL, "");
 
-        // TODO: emailLoginLink = null
+        view.setState(iLogin.ViewState.PROGRESS, R.string.LOGIN_logging_in);
 
-        AuthSingleton.loginWithEmailLink(storedEmail, emailLoginLink, new iAuthSingleton.LoginCallbacks() {
+        AuthSingleton.loginWithEmailLink(storedEmail, emailLoginLink, new iAuthSingleton.EmailLinkSignInCallbacks() {
+
             @Override
             public void onLoginSuccess(String userId) {
-
+                view.setState(iLogin.ViewState.SUCCESS, R.string.login_success);
             }
 
             @Override
             public void onLoginError(String errorMsg) {
+                view.setState(iLogin.ViewState.ERROR, R.string.login_error, errorMsg);
+            }
 
+            @Override
+            public void onLoginLinkHasExpired() {
+                view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_error_login_link_has_expired);
             }
         });
     }

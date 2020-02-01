@@ -22,14 +22,13 @@ public interface iAuthSingleton {
         void onSignInLinkSendFail(String errorMsg);
     }
 
-    interface EmailLinkSignInCallbacks {
-        void onEmailLinkSignInSuccess();
-        void onEmailLinkSignInError(String errorMsg);
-    }
-
     interface LoginCallbacks {
         void onLoginSuccess(String userId);
         void onLoginError(String errorMsg);
+    }
+
+    interface EmailLinkSignInCallbacks extends LoginCallbacks {
+        void onLoginLinkHasExpired();
     }
 
 

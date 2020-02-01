@@ -16,6 +16,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 
+import javax.security.auth.login.LoginException;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.GET;
@@ -188,26 +190,6 @@ public class AuthSingleton implements iAuthSingleton
                 });
     }
 
-    public static void signInWithEmailLink(String emailConfirmation, String signInEmailLink, EmailLinkSignInCallbacks callbacks) {
-
-        firebaseAuth.signInWithEmailLink(emailConfirmation, signInEmailLink)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        callbacks.onEmailLinkSignInSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        FirebaseAuthException firebaseAuthException = (FirebaseAuthException) e;
-                        String errorCode = firebaseAuthException.getErrorCode();
-                        callbacks.onEmailLinkSignInError(e.getMessage());
-                        MyUtils.printError(TAG, e);
-                    }
-                });
-    }
-
     public static boolean isEmailSignInLink(@Nullable String deepLink) {
         if (null == deepLink)
             return false;
@@ -243,7 +225,7 @@ public class AuthSingleton implements iAuthSingleton
         firebaseAuth.signOut();
     }
 
-    public static void loginWithEmailLink(String referenceEmail, String emailSignInLink, iAuthSingleton.LoginCallbacks callbacks) {
+    public static void loginWithEmailLink(String referenceEmail, String emailSignInLink, iAuthSingleton.EmailLinkSignInCallbacks callbacks) {
 
         firebaseAuth.signInWithEmailLink(referenceEmail, emailSignInLink)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -259,7 +241,14 @@ public class AuthSingleton implements iAuthSingleton
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        callbacks.onLoginError(e.getMessage());
+                        FirebaseAuthException firebaseAuthException = (FirebaseAuthException) e;
+                        String errorCode = firebaseAuthException.getErrorCode();
+
+                        if ("ERROR_INVALID_ACTION_CODE".equals(errorCode))
+                            callbacks.onLoginLinkHasExpired();
+                        else
+                            callbacks.onLoginError(e.getMessage());
+
                         MyUtils.printError(TAG, e);
                     }
                 });
@@ -286,5 +275,17 @@ public class AuthSingleton implements iAuthSingleton
                 .create(CustomTokenAPI.class);
     }
 
+    // Классы исключений
+    public static class LinkExpiredException extends AuthSingletonException {
+        public LinkExpiredException(String message) {
+            super(message);
+        }
+    }
+
+    public static class AuthSingletonException extends Exception {
+        public AuthSingletonException(String message) {
+            super(message);
+        }
+    }
 }
 
