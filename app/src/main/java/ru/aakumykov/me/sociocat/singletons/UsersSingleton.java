@@ -419,12 +419,13 @@ public class UsersSingleton implements iUsersSingleton {
         getUserById(userId, new ReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
-                currentUser = user;
+
+                storeCurrentUser(user);
 
                 readAdminsListFromServer(new ReadAdminsListCallbacks() {
                     @Override
                     public void onReadAdminsListSuccess() {
-                        callbacks.onUserRefreshSuccess(user);
+                        callbacks.onUserRefreshSuccess(currentUser);
                     }
 
                     @Override

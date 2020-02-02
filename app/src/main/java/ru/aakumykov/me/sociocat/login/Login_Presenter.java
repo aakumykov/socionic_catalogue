@@ -9,11 +9,14 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.dropbox.core.android.Auth;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.w3c.dom.Text;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
@@ -116,8 +119,20 @@ public class Login_Presenter implements
         AuthSingleton.loginWithEmailAndPassword(email, password, new iAuthSingleton.LoginCallbacks() {
             @Override
             public void onLoginSuccess(String userId) {
-                view.setState(iLogin.ViewState.SUCCESS, R.string.LOGIN_login_success);
-                refreshUserFromServer(userId);
+
+                usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
+                    @Override
+                    public void onUserRefreshSuccess(User user) {
+                        usersSingleton.storeCurrentUser(user);
+                        view.setState(iLogin.ViewState.SUCCESS, R.string.LOGIN_login_success);
+                        view.finishLogin(false, mTransitIntent);
+                    }
+
+                    @Override
+                    public void onUserRefreshFail(String errorMsg) {
+                        onUserRefreshError(errorMsg);
+                    }
+                });
             }
 
             @Override
@@ -223,24 +238,37 @@ public class Login_Presenter implements
             return;
         }
 
+        Log.d(TAG, "deepLink: "+deepLink);
+
         Uri deepLinkURI = Uri.parse(deepLink);
-        String continueURL = deepLinkURI.getQueryParameter(Constants.KEY_CONTINUE_URL);
+
+        String link = deepLinkURI.getQueryParameter(DeepLink_Constants.KEY_LINK);
+        if (TextUtils.isEmpty(link)) {
+            showError(R.string.LOGIN_link_processing_error, "There is no link parameter in deepLink");
+            return;
+        }
+
+        Uri linkURI = Uri.parse(link);
+
+        String continueURL = linkURI.getQueryParameter(DeepLink_Constants.KEY_CONTINUE_URL);
         if (TextUtils.isEmpty(continueURL)) {
             showError(R.string.LOGIN_link_processing_error, "There is no continueUrl in link");
             return;
         }
 
         Uri continueURI = Uri.parse(continueURL);
-        String action = continueURI.getPath();
+
+        String action = continueURI.getQueryParameter(DeepLink_Constants.KEY_ACTION);
         if (TextUtils.isEmpty(action)) {
             showError(R.string.LOGIN_link_processing_error, "There is no action in continueUrl");
             return;
         }
 
         switch (action) {
-            case DeepLink_Constants.PATH_ACTION_CHANGE_EMAIL:
+            case DeepLink_Constants.ACTION_CHANGE_EMAIL:
                 changeEmail(continueURI);
                 break;
+
             default:
                 showError(R.string.LOGIN_link_processing_error, "Unknown action: "+action);
         }
@@ -248,6 +276,12 @@ public class Login_Presenter implements
 
     private void changeEmail(Uri continueURI) {
 
+        String email = continueURI.getQueryParameter(DeepLink_Constants.KEY_EMAIL);
+        String userIdFromURI = continueURI.getQueryParameter(DeepLink_Constants.KEY_USER_ID);
+
+        String currentUserId = usersSingleton.getCurrentUser().getKey();
+
+        Log.d(TAG, "email: "+email+", userIdFromURI: "+userIdFromURI+", currentUserId: "+currentUserId);
     }
 
     private void processSuccessfulLogin(User user) {
@@ -259,9 +293,10 @@ public class Login_Presenter implements
         view.finishLogin(false, mTransitIntent);
     }
 
-    private void showError(int messageId, String messageDetails) {
+    private void showError(int messageId, @Nullable String messageDetails) {
         view.setState(iLogin.ViewState.ERROR, messageId, messageDetails);
-        Log.e(TAG, messageDetails);
+        if (null != messageDetails)
+            Log.e(TAG, messageDetails);
     }
 
     private void createCustomToken() {
@@ -345,28 +380,6 @@ public class Login_Presenter implements
         catch (UsersSingleton.UsersSingletonException e) {
             view.hideProgressMessage();
             view.showErrorMsg(R.string.LOGIN_error_updating_user, e.getMessage());
-            MyUtils.printError(TAG, e);
-        }
-    }
-
-    private void refreshUserFromServer(@NonNull String userId) {
-
-        try {
-            usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
-                @Override
-                public void onUserRefreshSuccess(User user) {
-                    usersSingleton.storeCurrentUser(user);
-                    view.finishLogin(false, mTransitIntent);
-                }
-
-                @Override
-                public void onUserRefreshFail(String errorMsg) {
-                    onUserRefreshError(errorMsg);
-                }
-            });
-        }
-        catch (Exception e) {
-            onUserRefreshError(e.getMessage());
             MyUtils.printError(TAG, e);
         }
     }

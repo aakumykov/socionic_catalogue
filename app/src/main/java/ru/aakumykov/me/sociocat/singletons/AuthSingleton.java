@@ -119,14 +119,17 @@ public class AuthSingleton implements iAuthSingleton
 
     public static void sendEmailChangeConfirmationLink(String userId, String emailAddress, SendSignInLinkCallbacks callbacks) {
 
-        sendSignInLinkToEmail(userId, emailAddress, DeepLink_Constants.PATH_ACTION_CHANGE_EMAIL, callbacks);
+        sendSignInLinkToEmail(userId, emailAddress, DeepLink_Constants.ACTION_CHANGE_EMAIL, callbacks);
     }
 
     public static void sendSignInLinkToEmail(String userId, String emailAddress, @Nullable String action, SendSignInLinkCallbacks callbacks) {
 
         String continueURL = DeepLink_Constants.URL_BASE +
-                DeepLink_Constants.CONFIRM_EMAIL_PATH + "?" +
-                DeepLink_Constants.KEY_USER_ID + "=" + userId;
+                DeepLink_Constants.CONFIRM_EMAIL_PATH +
+                "?" +
+                DeepLink_Constants.KEY_USER_ID + "=" + userId +
+                "&" +
+                DeepLink_Constants.KEY_EMAIL + "=" + emailAddress;
 
         if (null != action)
             continueURL += "&" + DeepLink_Constants.KEY_ACTION + "=" + action;
@@ -229,8 +232,10 @@ public class AuthSingleton implements iAuthSingleton
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         FirebaseUser firebaseUser = authResult.getUser();
-                        if (null != firebaseUser)
-                            callbacks.onLoginSuccess(firebaseUser.getUid());
+                        if (null != firebaseUser) {
+                            String userId = firebaseUser.getUid();
+                            callbacks.onLoginSuccess(userId);
+                        }
                         else
                             callbacks.onLoginError("FirebaseUser is null");
                     }

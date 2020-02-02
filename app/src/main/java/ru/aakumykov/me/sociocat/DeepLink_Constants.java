@@ -17,8 +17,8 @@ public final class DeepLink_Constants {
     public static final String KEY_EMAIL = "email";
 
     // Действия
-    public static final String PATH_ACTION_CONTINUE_REGISTRATION = "continueRegistration";
-    public static final String PATH_ACTION_CHANGE_EMAIL = "changeEmail";
+    public static final String ACTION_CONTINUE_REGISTRATION = "continueRegistration";
+    public static final String ACTION_CHANGE_EMAIL = "changeEmail";
 
 
     private DeepLink_Constants() {
