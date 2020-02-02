@@ -10,6 +10,8 @@ public final class DeepLink_Constants {
     public static final String CONFIRM_EMAIL_PATH = "/confirmEmail";
 
     // Ключи URL
+    public static final String KEY_LINK = "link";
+    public static final String KEY_CONTINUE_URL = "continueUrl";
     public static final String KEY_USER_ID = "userId";
     public static final String KEY_ACTION = "action";
     public static final String KEY_EMAIL = "email";

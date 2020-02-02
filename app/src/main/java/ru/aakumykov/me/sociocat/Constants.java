@@ -113,7 +113,6 @@ public final class Constants
 
     public final static String KEY_LAST_LOGIN = "LAST_LOGIN";
     public static final String KEY_STORED_EMAIL = "STORED_EMAIL";
-    public static final String KEY_CONTINUE_URL = "continueUrl";
 
     public final static String TOPIC_NEW_CARDS = "new_cards";
 
