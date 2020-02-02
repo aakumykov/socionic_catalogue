@@ -118,7 +118,7 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
                 DeepLink_Constants.URL_BASE
                         + DeepLink_Constants.PATH_REGISTRATION_STEP2
                         + "?"
-                        + DeepLink_Constants.KEY_ACTION + "=" + DeepLink_Constants.ACTION_CONTINUE_REGISTRATION;
+                        + DeepLink_Constants.KEY_ACTION + "=" + DeepLink_Constants.PATH_ACTION_CONTINUE_REGISTRATION;
 
         ActionCodeSettings actionCodeSettings =
                 ActionCodeSettings.newBuilder()

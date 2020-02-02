@@ -404,12 +404,17 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void refreshUserFromServer(String userId, RefreshCallbacks callbacks) throws Exception {
-        if (TextUtils.isEmpty(userId))
-            throw new Exception("User id cannot be empty");
+    public void refreshUserFromServer(String userId, RefreshCallbacks callbacks) {
 
-        if (null != currentUser && !currentUser.getKey().equals(userId))
-            throw new Exception("Attempt to refresh user (" + currentUser.getKey() + ") with different userId (" + userId + ")");
+        if (TextUtils.isEmpty(userId)) {
+            callbacks.onUserRefreshFail("User id cannot be empty");
+            return;
+        }
+
+        if (null != currentUser && !currentUser.getKey().equals(userId)) {
+            callbacks.onUserRefreshFail("Attempt to refresh user (" + currentUser.getKey() + ") with different userId (" + userId + ")");
+            return;
+        }
 
         getUserById(userId, new ReadCallbacks() {
             @Override

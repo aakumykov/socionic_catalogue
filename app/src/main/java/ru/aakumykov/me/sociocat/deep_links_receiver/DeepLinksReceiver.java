@@ -138,11 +138,11 @@ public class DeepLinksReceiver extends BaseView {
         Log.d(TAG, "action: "+action);
 
         switch (action) {
-            case DeepLink_Constants.ACTION_CONTINUE_REGISTRATION:
+            case DeepLink_Constants.PATH_ACTION_CONTINUE_REGISTRATION:
                 continueRegistration(deepLink);
                 break;
 
-            case DeepLink_Constants.ACTION_CHANGE_EMAIL:
+            case DeepLink_Constants.PATH_ACTION_CHANGE_EMAIL:
                 continueChangeEmail(deepLink);
                 break;
 

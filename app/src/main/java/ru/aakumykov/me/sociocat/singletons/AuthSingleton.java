@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -16,8 +15,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 
-import javax.security.auth.login.LoginException;
-
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.GET;
@@ -25,8 +22,6 @@ import retrofit2.http.Query;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.PackageConstants;
-import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 // TODO: разобраться с гостевым пользователем
@@ -124,7 +119,7 @@ public class AuthSingleton implements iAuthSingleton
 
     public static void sendEmailChangeConfirmationLink(String userId, String emailAddress, SendSignInLinkCallbacks callbacks) {
 
-        sendSignInLinkToEmail(userId, emailAddress, DeepLink_Constants.ACTION_CHANGE_EMAIL, callbacks);
+        sendSignInLinkToEmail(userId, emailAddress, DeepLink_Constants.PATH_ACTION_CHANGE_EMAIL, callbacks);
     }
 
     public static void sendSignInLinkToEmail(String userId, String emailAddress, @Nullable String action, SendSignInLinkCallbacks callbacks) {

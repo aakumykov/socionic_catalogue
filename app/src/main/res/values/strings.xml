@@ -600,5 +600,6 @@
     <string name="RESET_PASSWORD_finish_dialog_message">Письмо для сброса пароля отправлено</string>
     <string name="LOGIN_error_login_link_has_expired">Ссылка для входа устарела</string>
     <string name="LOGIN_login_link_is_broken">Некорректная ссылка для входа</string>
+    <string name="LOGIN_link_processing_error">Ошибка обработки ссылки</string>
 
 </resources><!-- «%1$s» -->

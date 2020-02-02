@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.login;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -15,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.other.VKInteractor;
@@ -187,21 +189,68 @@ public class Login_Presenter implements
             @Override
             public void onLoginSuccess(String userId) {
                 view.setState(iLogin.ViewState.SUCCESS, R.string.login_success);
+
+                usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
+                    @Override
+                    public void onUserRefreshSuccess(User user) {
+                        processEmailLoginAction(intent);
+                    }
+
+                    @Override
+                    public void onUserRefreshFail(String errorMsg) {
+                        onUserRefreshError(errorMsg);
+                    }
+                });
             }
 
             @Override
             public void onLoginError(String errorMsg) {
-                view.setState(iLogin.ViewState.ERROR, R.string.login_error, errorMsg);
+                showError(R.string.login_error, errorMsg);
             }
 
             @Override
             public void onLoginLinkHasExpired() {
-                view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_error_login_link_has_expired);
+                showError(R.string.LOGIN_error_login_link_has_expired, null);
             }
         });
     }
 
-    private void processSuccessfullLogin(User user) {
+    private void processEmailLoginAction(@NonNull Intent intent) {
+
+        String deepLink = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (null == deepLink) {
+            showError(R.string.LOGIN_link_processing_error, "There is no deep link");
+            return;
+        }
+
+        Uri deepLinkURI = Uri.parse(deepLink);
+        String continueURL = deepLinkURI.getQueryParameter(Constants.KEY_CONTINUE_URL);
+        if (TextUtils.isEmpty(continueURL)) {
+            showError(R.string.LOGIN_link_processing_error, "There is no continueUrl in link");
+            return;
+        }
+
+        Uri continueURI = Uri.parse(continueURL);
+        String action = continueURI.getPath();
+        if (TextUtils.isEmpty(action)) {
+            showError(R.string.LOGIN_link_processing_error, "There is no action in continueUrl");
+            return;
+        }
+
+        switch (action) {
+            case DeepLink_Constants.PATH_ACTION_CHANGE_EMAIL:
+                changeEmail(continueURI);
+                break;
+            default:
+                showError(R.string.LOGIN_link_processing_error, "Unknown action: "+action);
+        }
+    }
+
+    private void changeEmail(Uri continueURI) {
+
+    }
+
+    private void processSuccessfulLogin(User user) {
         if (!user.isEmailVerified()) {
             view.notifyToConfirmEmail(user.getKey());
             return;
@@ -210,10 +259,9 @@ public class Login_Presenter implements
         view.finishLogin(false, mTransitIntent);
     }
 
-    private void showLoginError(String msg) {
-        view.hideProgressMessage();
-        view.enableForm();
-        view.showErrorMsg(R.string.LOGIN_login_error, msg);
+    private void showError(int messageId, String messageDetails) {
+        view.setState(iLogin.ViewState.ERROR, messageId, messageDetails);
+        Log.e(TAG, messageDetails);
     }
 
     private void createCustomToken() {

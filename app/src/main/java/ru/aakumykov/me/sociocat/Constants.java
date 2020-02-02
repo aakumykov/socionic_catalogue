@@ -36,7 +36,7 @@ public final class Constants
     public final static String ACTION_REPLY_TO_CARD = "ACTION_REPLY_TO_CARD";
     public final static String ACTION_REPLY_TO_COMMENT = "ACTION_REPLY_TO_COMMENT";
     public static final String ACTION_SHOW_CARDS_WITH_TAG = "ACTION_SHOW_CARDS_WITH_TAG";
-    public static final String ACTION_CONTINUE_REGISTRATION = "ACTION_CONTINUE_REGISTRATION";
+    public static final String ACTION_CONTINUE_REGISTRATION = "PATH_ACTION_CONTINUE_REGISTRATION";
     public static final String ACTION_CONFIRM_EMAIL_CHANGE = "ACTION_CONFIRM_EMAIL_CHANGE";
     public static final String ACTION_LOGIN_VIA_EMAIL = "ACTION_LOGIN_VIA_EMAIL";
 
@@ -113,6 +113,7 @@ public final class Constants
 
     public final static String KEY_LAST_LOGIN = "LAST_LOGIN";
     public static final String KEY_STORED_EMAIL = "STORED_EMAIL";
+    public static final String KEY_CONTINUE_URL = "continueUrl";
 
     public final static String TOPIC_NEW_CARDS = "new_cards";
 
