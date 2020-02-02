@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat;
 
 public final class Constants
 {
+
     private Constants() {}
 
     public enum CardType {
@@ -91,6 +92,7 @@ public final class Constants
     public final static int CODE_POST_REPLY = 49;
     public final static int CODE_RESET_PASSWORD = 60;
     public final static int CODE_SHOW_CARD = 70;
+    public static final int CODE_DEEP_LINK_PROCESSING = 80;
 
     public final static String TAG_NUMBER_BRACE = "*";
 

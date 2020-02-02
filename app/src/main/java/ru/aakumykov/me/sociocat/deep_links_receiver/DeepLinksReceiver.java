@@ -27,7 +27,7 @@ public class DeepLinksReceiver extends BaseView {
 
     private Button continueButton;
     private static final String TAG = "DeepLinksReceiver";
-    private boolean dryRun = true;
+    private boolean isReturnFromActivity = false;
 
 
     // Activity
@@ -51,18 +51,20 @@ public class DeepLinksReceiver extends BaseView {
     protected void onStart() {
         super.onStart();
 
-        if (dryRun) {
-            dryRun = false;
-            processInputIntent(getIntent());
+        if (isReturnFromActivity) {
+            goToStartPage();
         }
         else {
-            goToStartPage();
+            processInputIntent(getIntent());
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (Constants.CODE_DEEP_LINK_PROCESSING == requestCode)
+            isReturnFromActivity = true;
     }
 
     @Override
@@ -153,21 +155,21 @@ public class DeepLinksReceiver extends BaseView {
         Intent intent = new Intent(this, Login_View.class);
         intent.setAction(Constants.ACTION_LOGIN_VIA_EMAIL);
         intent.putExtra(Intent.EXTRA_TEXT, deepLink);
-        startActivity(intent);
+        startActivityForResult(intent, Constants.CODE_DEEP_LINK_PROCESSING);
     }
 
     private void continueRegistration(@NonNull String deepLink) {
         Intent intent = new Intent(this, RegisterStep2_View.class);
         intent.setAction(Constants.ACTION_CONTINUE_REGISTRATION);
         intent.putExtra(Intent.EXTRA_TEXT, deepLink);
-        startActivity(intent);
+        startActivityForResult(intent, Constants.CODE_DEEP_LINK_PROCESSING);
     }
 
     private void continueChangeEmail(@NonNull String deepLink) {
         Intent intent = new Intent(this, UserEditEmail_View.class);
         intent.setAction(Constants.ACTION_CONFIRM_EMAIL_CHANGE);
         intent.putExtra(Intent.EXTRA_TEXT, deepLink);
-        startActivity(intent);
+        startActivityForResult(intent, Constants.CODE_DEEP_LINK_PROCESSING);
     }
 
 
