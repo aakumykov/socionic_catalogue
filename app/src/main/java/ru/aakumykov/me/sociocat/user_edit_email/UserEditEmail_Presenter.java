@@ -63,6 +63,14 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
 
     @Override
     public void onFormIsValid() {
+        String newEmail = view.getEmail();
+        String currentEmail = usersSingleton.getCurrentUser().getEmail();
+
+        if (newEmail.equals(currentEmail)) {
+            view.showEmailError(R.string.USER_EDIT_EMAIL_you_not_change_email_address);
+            return;
+        }
+
         checkEmail();
     }
 
@@ -98,6 +106,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
     // Внутренние методы
     private void checkEmail() {
         String email = view.getEmail();
+        String password = view.getPassword();
 
         view.setViewState(iUserEditEmail.ViewState.PROGRESS, R.string.checking_email);
 
@@ -109,8 +118,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
 
             @Override
             public void onEmailNotExists() {
-                view.hideProgressMessage();
-//                view.setViewState(iUserEditEmail.ViewState.SUCCESS, R.string.USER_EDIT_EMAIL_email_successfully_updated);
+                checkPassword(password);
             }
 
             @Override
