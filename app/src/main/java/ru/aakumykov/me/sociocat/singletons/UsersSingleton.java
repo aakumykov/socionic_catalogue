@@ -421,6 +421,11 @@ public class UsersSingleton implements iUsersSingleton {
             @Override
             public void onUserReadSuccess(User user) {
 
+                if (null == user) {
+                    callbacks.onUserRefreshFail("User is null");
+                    return;
+                }
+
                 storeCurrentUser(user);
 
                 readAdminsListFromServer(new ReadAdminsListCallbacks() {
