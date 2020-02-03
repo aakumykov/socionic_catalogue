@@ -161,25 +161,18 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
         String email = usersSingleton.getCurrentUser().getEmail();
         String password = view.getPassword();
 
-        try {
-            AuthSingleton.checkPassword(email, password, new iAuthSingleton.CheckPasswordCallbacks() {
-                @Override
-                public void onUserCredentialsOk() {
-                    uploadAvatarAndSaveUser();
-                }
+        AuthSingleton.checkPassword(email, password, new iAuthSingleton.CheckPasswordCallbacks() {
+            @Override
+            public void onUserCredentialsOk() {
+                uploadAvatarAndSaveUser();
+            }
 
-                @Override
-                public void onUserCredentialsNotOk(String errorMsg) {
-                    view.enableEditForm();
-                    view.showPasswordError(errorMsg);
-                }
-            });
-        }
-        catch (iAuthSingleton.iAuthSingletonException e) {
-            view.enableEditForm();
-            view.showErrorMsg(R.string.USER_EDIT_error_ckecking_password, e.getMessage());
-            MyUtils.printError(TAG, e);
-        }
+            @Override
+            public void onUserCredentialsNotOk(String errorMsg) {
+                view.enableEditForm();
+                view.showPasswordError(errorMsg);
+            }
+        });
     }
 
     @Override

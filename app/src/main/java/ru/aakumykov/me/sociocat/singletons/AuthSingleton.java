@@ -80,23 +80,17 @@ public class AuthSingleton implements iAuthSingleton
     }
 
     public static void checkPassword(
-            String email,
-            String password,
+            @NonNull String email,
+            @NonNull String password,
             @NonNull CheckPasswordCallbacks callbacks
-    ) throws iAuthSingletonException
+    )
     {
-        if (null == email)
-            throw new IllegalArgumentException("Email cannot be null");
-
-        if (null == password)
-            throw new IllegalArgumentException("Password cannot be null");
-
-
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (null == firebaseUser)
-            throw new iAuthSingletonException("Firebase user is null");
-
+        if (null == firebaseUser) {
+            callbacks.onUserCredentialsNotOk("Firebase user is null");
+            return;
+        }
 
         AuthCredential authCredential = EmailAuthProvider.getCredential(email, password);
 
