@@ -270,6 +270,18 @@ public class AuthSingleton implements iAuthSingleton
                 .addOnSuccessListener(new OnSuccessListener<SignInMethodQueryResult>() {
                     @Override
                     public void onSuccess(SignInMethodQueryResult signInMethodQueryResult) {
+                        List<String> signInMethodsList = signInMethodQueryResult.getSignInMethods();
+
+                        if (null == signInMethodsList) {
+                            callbacks.onEmailNotExists();
+                            return;
+                        }
+
+                        if (0 == signInMethodsList.size()) {
+                            callbacks.onEmailNotExists();
+                            return;
+                        }
+
                         callbacks.onEmailExists();
                     }
                 })
