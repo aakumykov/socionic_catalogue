@@ -385,7 +385,7 @@ public class Login_Presenter implements
     }
 
     private void onUserRefreshError(String errorMsg) {
-        view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_error_getting_user_info, errorMsg);
         AuthSingleton.logout();
+        view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_error_getting_user_info, errorMsg);
     }
 }
