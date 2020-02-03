@@ -8,10 +8,9 @@ public interface iUserEditEmail {
 
     enum ViewState {
         SUCCESS,
-        CHECKING,
-        EMAIL_ERROR,
         PROGRESS,
-        PAGE_ERROR
+        EMAIL_ERROR,
+        ERROR
     }
 
     interface iView extends iBaseView {
@@ -21,6 +20,8 @@ public interface iUserEditEmail {
         void displayCurrentEmail(String email);
 
         String getEmail();
+
+        void validateForm();
 
         void showEmailError(int errorMsgId);
         void showPasswordError(int errorMsgId);

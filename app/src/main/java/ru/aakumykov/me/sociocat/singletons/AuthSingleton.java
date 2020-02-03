@@ -14,6 +14,9 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.SignInMethodQueryResult;
+
+import java.util.List;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -255,6 +258,28 @@ public class AuthSingleton implements iAuthSingleton
     // Свойства
     private final static String TAG = "AuthSingleton";
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+    public static void checkEmailExists(@Nullable String email, iAuthSingleton.CheckEmailExistsCallbacks callbacks) {
+
+        if (null == email) {
+            callbacks.onEmailCheckError("Email cannot be null");
+            return;
+        }
+
+        firebaseAuth.fetchSignInMethodsForEmail(email)
+                .addOnSuccessListener(new OnSuccessListener<SignInMethodQueryResult>() {
+                    @Override
+                    public void onSuccess(SignInMethodQueryResult signInMethodQueryResult) {
+                        callbacks.onEmailExists();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onEmailNotExists();
+                    }
+                });
+    }
 
     // Внутренние интерфейсы
     private interface CustomTokenAPI {

@@ -2,7 +2,6 @@ package ru.aakumykov.me.sociocat.user_edit_email;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -147,7 +146,7 @@ public class UserEditEmail_View extends BaseView implements
                 showSuccessDialog(messageDetails);
                 break;
 
-            case CHECKING:
+            case PROGRESS:
                 disableForm();
                 showProgressMessage(messageId);
                 break;
@@ -158,7 +157,7 @@ public class UserEditEmail_View extends BaseView implements
                 showEmailError(messageId);
                 break;
 
-            case PAGE_ERROR:
+            case ERROR:
                 enableForm();
                 showErrorMsg(messageId, messageDetails);
                 break;
@@ -181,10 +180,15 @@ public class UserEditEmail_View extends BaseView implements
     }
 
     @Override
+    public void validateForm() {
+        validator.validate();
+    }
+
+    @Override
     public void showEmailError(int errorMsgId) {
-        emailInput.setError(
-                getResources().getString(errorMsgId)
-        );
+        String message = getResources().getString(errorMsgId);
+        emailInput.setError(message);
+        emailConfirmationInput.setError(message);
     }
 
     @Override
@@ -197,6 +201,7 @@ public class UserEditEmail_View extends BaseView implements
     @Override
     public void disableForm() {
         MyUtils.disable(emailInput);
+        MyUtils.disable(emailConfirmationInput);
         MyUtils.disable(passwordInput);
         MyUtils.disable(saveButton);
     }
@@ -204,6 +209,7 @@ public class UserEditEmail_View extends BaseView implements
     @Override
     public void enableForm() {
         MyUtils.enable(emailInput);
+        MyUtils.enable(emailConfirmationInput);
         MyUtils.enable(passwordInput);
         MyUtils.enable(saveButton);
     }
@@ -238,7 +244,7 @@ public class UserEditEmail_View extends BaseView implements
     // Нажатия
     @OnClick(R.id.saveButton)
     void onSaveButtonClicked() {
-        validator.validate();
+        presenter.onSaveButtonClicked();
     }
 
     @OnClick(R.id.cancelButton)

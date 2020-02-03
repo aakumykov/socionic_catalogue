@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.singletons;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.HashMap;
@@ -44,6 +45,8 @@ public interface iUsersSingleton {
 
     void updateUserFromServer(String userId);
 
+    void changeEmail(@NonNull String newEmail, ChangeEmailCallbacks callbacks);
+
 
     interface CreateCallbacks {
         void onUserCreateSuccess(User user);
@@ -58,6 +61,11 @@ public interface iUsersSingleton {
     interface SaveCallbacks {
         void onUserSaveSuccess(User user);
         void onUserSaveFail(String errorMsg);
+    }
+
+    interface ChangeEmailCallbacks {
+        void onEmailChangeSuccess();
+        void onEmailChangeError(String errorMsg);
     }
 
     interface DeleteCallbacks {

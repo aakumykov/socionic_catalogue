@@ -590,7 +590,7 @@
     <string name="REGISTER1_email_input_hint">Адрес электронной почты</string>
     <string name="REGISTER1_checking_email">Проверяем адрес электронной почты</string>
     <string name="DEEP_LINKS_RECEIVER_continue">Продолжить</string>
-    <string name="USER_EDIT_EMAIL_checking_email">Проверка электронной почты</string>
+    <string name="checking_email">Проверка электронной почты</string>
     <string name="USER_EDIT_error_email_already_used">Адрес уже используется</string>
     <string name="USER_EDIT_EMAIL_error_checking_email">Ошибка проверки электронной почты</string>
     <string name="RESET_PASSWORD_checking_emai">Проверяем электронную почту</string>
@@ -605,5 +605,9 @@
     <string name="error_incorrect_email">Некорректный адрес</string>
     <string name="error_email_not_match">Адрес не совпадает</string>
     <string name="error_password_is_empty">Не указан пароль</string>
+    <string name="USER_EDIT_EMAIL_updating_email">Обновляем адрес электронной почты</string>
+    <string name="USER_EDIT_EMAIL_email_successfully_updated">Электронная почта обновлена</string>
+    <string name="USER_EDIT_EMAIL_error_updating_email">Ошибка обновления электронной почты</string>
+    <string name="USER_EDIT_EMAIL_error_email_elready_used">Электронная почта занята</string>
 
 </resources><!-- «%1$s» -->

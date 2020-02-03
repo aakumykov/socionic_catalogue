@@ -10,7 +10,8 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -169,7 +170,7 @@ public class UsersSingleton implements iUsersSingleton {
     public void saveUser(User user, @Nullable SaveCallbacks callbacks) throws UsersSingletonException {
 
         if (null == user)
-            throw new UsersSingleton_WrongArgumentException("User cannot be null");
+            throw new IllegalArgumentException("User cannot be null");
 
         String userId = user.getKey();
         if (null == userId)
@@ -492,6 +493,56 @@ public class UsersSingleton implements iUsersSingleton {
                 Log.e(TAG, errorMsg);
             }
         });
+    }
+
+    @Override
+    public void changeEmail(@NonNull String newEmail, ChangeEmailCallbacks callbacks)
+    {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (null == firebaseUser) {
+            callbacks.onEmailChangeError("FirebaseUser is null");
+            return;
+        }
+
+        if (null == currentUser) {
+            callbacks.onEmailChangeError("Current user id null");
+            return;
+        }
+
+        firebaseUser.updateEmail(newEmail)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        currentUser.setEmail(newEmail);
+
+                        try {
+                            saveUser(currentUser, new SaveCallbacks() {
+                                @Override
+                                public void onUserSaveSuccess(User user) {
+                                    callbacks.onEmailChangeSuccess();
+                                }
+
+                                @Override
+                                public void onUserSaveFail(String errorMsg) {
+                                    callbacks.onEmailChangeError(errorMsg);
+                                }
+                            });
+                        }
+                        catch (UsersSingletonException e) {
+                            callbacks.onEmailChangeError(e.getMessage());
+                            MyUtils.printError(TAG, e);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onEmailChangeError(e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
     }
 
 

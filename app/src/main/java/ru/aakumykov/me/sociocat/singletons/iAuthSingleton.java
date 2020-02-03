@@ -31,6 +31,12 @@ public interface iAuthSingleton {
         void onLoginLinkHasExpired();
     }
 
+    public interface CheckEmailExistsCallbacks {
+        void onEmailExists();
+        void onEmailNotExists();
+        void onEmailCheckError(String errorMsg);
+    }
+
 
     class iAuthSingletonException extends Exception {
         public iAuthSingletonException(String message) {

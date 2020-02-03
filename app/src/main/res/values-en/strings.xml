@@ -583,7 +583,7 @@
     <string name="REGISTER1_email_input_hint">Email</string>
     <string name="REGISTER1_checking_email">Checking email address</string>
     <string name="DEEP_LINKS_RECEIVER_continue">Continue</string>
-    <string name="USER_EDIT_EMAIL_checking_email">Checking email</string>
+    <string name="checking_email">Checking email</string>
     <string name="USER_EDIT_error_email_already_used">Email already used</string>
     <string name="USER_EDIT_EMAIL_error_checking_email">Error checking email</string>
     <string name="RESET_PASSWORD_checking_emai">Checking email</string>
@@ -598,5 +598,9 @@
     <string name="error_incorrect_email">Incorrect email</string>
     <string name="error_email_not_match">Email does not match</string>
     <string name="error_password_is_empty">Password is empty</string>
+    <string name="USER_EDIT_EMAIL_updating_email">Updating email</string>
+    <string name="USER_EDIT_EMAIL_email_successfully_updated">Email successfully updated</string>
+    <string name="USER_EDIT_EMAIL_error_updating_email">Error updating email</string>
+    <string name="USER_EDIT_EMAIL_error_email_elready_used">Email already used</string>
 </resources>
 <!-- «%1$s» -->
