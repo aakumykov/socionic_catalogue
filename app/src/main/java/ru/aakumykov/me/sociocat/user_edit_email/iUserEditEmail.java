@@ -10,6 +10,7 @@ public interface iUserEditEmail {
         SUCCESS,
         CHECKING,
         EMAIL_ERROR,
+        PROGRESS,
         PAGE_ERROR
     }
 
