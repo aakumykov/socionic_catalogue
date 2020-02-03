@@ -110,10 +110,11 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
 
         view.setViewState(iUserEditEmail.ViewState.PROGRESS, R.string.checking_email);
 
+        // Предполагается, что если нет Firebase-пользователя с таким Email, нет и внутрипрограммного.
         AuthSingleton.checkEmailExists(email, new iAuthSingleton.CheckEmailExistsCallbacks() {
             @Override
             public void onEmailExists() {
-                view.setViewState(iUserEditEmail.ViewState.ERROR, R.string.USER_EDIT_EMAIL_error_email_elready_used);
+                view.setViewState(iUserEditEmail.ViewState.EMAIL_ERROR, R.string.USER_EDIT_EMAIL_error_email_elready_used);
             }
 
             @Override
@@ -175,7 +176,8 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
         usersSingleton.changeEmail(newEmail, new iUsersSingleton.ChangeEmailCallbacks() {
             @Override
             public void onEmailChangeSuccess() {
-                view.setViewState(iUserEditEmail.ViewState.SUCCESS, R.string.USER_EDIT_EMAIL_email_successfully_updated);
+//                view.setViewState(iUserEditEmail.ViewState.SUCCESS, R.string.USER_EDIT_EMAIL_email_successfully_updated);
+                view.closePage();
             }
 
             @Override
