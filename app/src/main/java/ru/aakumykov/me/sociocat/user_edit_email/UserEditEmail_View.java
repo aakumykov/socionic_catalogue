@@ -5,15 +5,20 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.ConfirmEmail;
 import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.Password;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,24 +31,25 @@ import ru.aakumykov.me.sociocat.user_edit_email.view_model.UserEmailEdit_ViewMod
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView {
-
-    @Email
-    @BindView(R.id.emailInput)
+public class UserEditEmail_View extends BaseView implements
+        iUserEditEmail.iView,
+        Validator.ValidationListener
+{
+    @BindView(R.id.emailInput) @Email(messageResId = R.string.error_incorrect_email)
     EditText emailInput;
 
-    @ConfirmEmail
-    @BindView(R.id.emailConfirmationInput)
+    @BindView(R.id.emailConfirmationInput) @ConfirmEmail(messageResId = R.string.error_email_not_match)
     EditText emailConfirmationInput;
 
-    @Password
-    @BindView(R.id.passwordInput)
+    @BindView(R.id.passwordInput) @Password(messageResId = R.string.error_password_is_empty)
     EditText passwordInput;
 
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
     private iUserEditEmail.iPresenter presenter;
+    private Validator validator;
+
 
     // Activity
     @Override
@@ -64,6 +70,9 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
             this.presenter = new UserEditEmail_Presenter();
             viewModel.storePresenter(this.presenter);
         }
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
     }
 
     @Override
@@ -123,7 +132,6 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
         finish();
     }
 
-
     @Override
     public void setViewState(iUserEditEmail.ViewState state, int messageId) {
         setViewState(state, messageId, null);
@@ -159,6 +167,7 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
                 break;
         }
     }
+
 
     // iUserEditEmail.iView
     @Override
@@ -205,10 +214,31 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
     }
 
 
+    // Saripaar Validator
+    @Override
+    public void onValidationSucceeded() {
+        presenter.onFormIsValid();
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(this);
+
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                showToast(message);
+            }
+        }
+    }
+
+
     // Нажатия
     @OnClick(R.id.saveButton)
     void onSaveButtonClicked() {
-        presenter.onSaveButtonClicked();
+        validator.validate();
     }
 
     @OnClick(R.id.cancelButton)
@@ -250,4 +280,6 @@ public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView
                 }
         );
     }
+
+
 }

@@ -70,6 +70,11 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
     }
 
     @Override
+    public void onFormIsValid() {
+
+    }
+
+    @Override
     public void onSaveButtonClicked() {
 
         // Проверка формы

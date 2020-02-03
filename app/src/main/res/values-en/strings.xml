@@ -595,5 +595,8 @@
     <string name="LOGIN_login_link_is_broken">Broken login link</string>
     <string name="LOGIN_link_processing_error">Link processing error</string>
     <string name="email_confirmation">Email confirmation</string>
+    <string name="error_incorrect_email">Incorrect email</string>
+    <string name="error_email_not_match">Email does not match</string>
+    <string name="error_password_is_empty">Password is empty</string>
 </resources>
 <!-- «%1$s» -->

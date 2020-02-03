@@ -38,6 +38,8 @@ public interface iUserEditEmail {
         void onFirstOpen();
         void onConfigChanged();
 
+        void onFormIsValid();
+
         void onSaveButtonClicked();
         void onCancelButtonClicked();
 
