@@ -594,5 +594,6 @@
     <string name="LOGIN_error_login_link_has_expired">Link is expired</string>
     <string name="LOGIN_login_link_is_broken">Broken login link</string>
     <string name="LOGIN_link_processing_error">Link processing error</string>
+    <string name="email_confirmation">Email confirmation</string>
 </resources>
 <!-- «%1$s» -->

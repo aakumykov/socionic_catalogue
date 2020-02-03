@@ -11,6 +11,10 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.mobsandgeeks.saripaar.annotation.ConfirmEmail;
+import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.Password;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -24,8 +28,17 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class UserEditEmail_View extends BaseView implements iUserEditEmail.iView {
 
-    @BindView(R.id.emailInput) EditText emailInput;
-    @BindView(R.id.passwordInput) EditText passwordInput;
+    @Email
+    @BindView(R.id.emailInput)
+    EditText emailInput;
+
+    @ConfirmEmail
+    @BindView(R.id.emailConfirmationInput)
+    EditText emailConfirmationInput;
+
+    @Password
+    @BindView(R.id.passwordInput)
+    EditText passwordInput;
 
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
