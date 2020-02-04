@@ -29,6 +29,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.nameView) TextView nameView;
+    @BindView(R.id.emailLabel) TextView emailLabel;
     @BindView(R.id.emailView) TextView emailView;
     @BindView(R.id.aboutView) TextView aboutView;
     @BindView(R.id.avatarView) ImageView avatarView;
@@ -149,9 +150,20 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
         loadAndShowAvatar(user);
 
         nameView.setText(user.getName());
-        if (isPrivateMode)
+
+        if (isPrivateMode) {
             emailView.setText(user.getEmail());
+            MyUtils.show(emailLabel);
+            MyUtils.show(emailView);
+        }
+        else {
+            MyUtils.hide(emailLabel);
+            MyUtils.hide(emailView);
+        }
+
         aboutView.setText(user.getAbout());
+
+        refreshMenu();
     }
 
     @Override
@@ -172,13 +184,13 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
             case SHOW_PUBLIC:
                 hideRefreshThrobber();
                 hideProgressMessage();
-                displayUser((User) messagePayload, true);
+                displayUser((User) messagePayload, false);
                 break;
 
             case SHOW_PRIVATE:
                 hideRefreshThrobber();
                 hideProgressMessage();
-                displayUser((User) messagePayload, false);
+                displayUser((User) messagePayload, true);
                 break;
 
             case ERROR:

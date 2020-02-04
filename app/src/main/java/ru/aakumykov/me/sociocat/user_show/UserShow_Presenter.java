@@ -48,10 +48,6 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     @Override
     public void onFirstOpen(@Nullable Intent intent) {
-//        if (isGuest()) {
-//            view.requestLogin(intent);
-//            return;
-//        }
 
         if (null == intent) {
             view.setState(iUserShow.ViewState.ERROR, R.string.USER_SHOW_error_displaying_user, "Intent is null");
@@ -72,15 +68,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     @Override
     public void onConfigChanged() {
-        Intent intent = new Intent();
-        intent.putExtra(Constants.USER_ID, displayedUser.getKey());
-
-        if (isGuest()) {
-            view.requestLogin(intent);
-            return;
-        }
-
-
+        view.setState(currentViewState, currentMessageId, currentMessagePayload);
     }
 
     @Override
