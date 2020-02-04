@@ -35,8 +35,8 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@string/DESCRIPTION_user_avatar"
-                app:layout_constraintBottom_toTopOf="@+id/guidelineHoriz"
-                app:layout_constraintEnd_toStartOf="@+id/guidelineVert"
+                app:layout_constraintBottom_toTopOf="@+id/guideline"
+                app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_avatar_placeholder" />
@@ -59,10 +59,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/USER_SHOW_name"
                 android:textColor="@color/colorPrimary"
-                app:layout_constraintEnd_toStartOf="@+id/editNameWidget"
-                app:layout_constraintStart_toStartOf="@+id/guidelineVert"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -70,34 +71,27 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:singleLine="false"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toStartOf="@+id/editNameWidget"
-                app:layout_constraintStart_toStartOf="@+id/guidelineVert"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/nameLabel"
                 tools:text="Имя, длинной имя пользователя программы Соционический каталог" />
-
-            <ImageView
-                android:id="@+id/editNameWidget"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/nameLabel"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/nameLabel"
-                app:srcCompat="@drawable/ic_email_edit" />
 
             <TextView
                 android:id="@+id/emailLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/USER_SHOW_email"
                 android:textColor="@color/colorPrimary"
-                app:layout_constraintEnd_toStartOf="@+id/editEmailWidget"
-                app:layout_constraintStart_toStartOf="@+id/guidelineVert"
+                app:layout_constraintBottom_toTopOf="@+id/emailView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/nameView" />
 
             <TextView
@@ -105,34 +99,27 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:ems="10"
                 android:singleLine="false"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toStartOf="@+id/editEmailWidget"
-                app:layout_constraintStart_toStartOf="@+id/guidelineVert"
-                app:layout_constraintTop_toBottomOf="@+id/emailLabel"
-                tools:text="user@mail.ru" />
-
-            <ImageView
-                android:id="@+id/editEmailWidget"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/emailLabel"
+                app:layout_constraintBottom_toTopOf="@+id/guideline"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/emailLabel"
-                app:srcCompat="@drawable/ic_email_edit" />
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
+                tools:text="user@mail.ru" />
 
             <TextView
                 android:id="@+id/aboutLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/USER_SHOW_about"
                 android:textColor="@color/colorPrimary"
-                app:layout_constraintEnd_toStartOf="@+id/editAboutWidget"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/emailView" />
+                app:layout_constraintTop_toTopOf="@+id/guideline" />
 
             <TextView
                 android:id="@+id/aboutView"
@@ -140,39 +127,50 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:singleLine="false"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toStartOf="@+id/editAboutWidget"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/aboutLabel"
                 tools:text="Описание пользователя, написанное самим пользователем." />
 
-            <ImageView
-                android:id="@+id/editAboutWidget"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/aboutLabel"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/aboutLabel"
-                app:srcCompat="@drawable/ic_email_edit" />
-
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guidelineHoriz"
+                android:id="@+id/guideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_begin="114dp" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guidelineVert"
+                android:id="@+id/guideline2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_begin="117dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/cardsListLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/USER_SHOW_cards_of_user"
+            android:textColor="@color/colorPrimary"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+        <ListView
+            android:id="@+id/cardsListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

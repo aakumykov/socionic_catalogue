@@ -15,7 +15,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -98,13 +97,11 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return false;
-
-        /*if (presenter.canEditUser())
+        if (presenter.canEditUser())
             getMenuInflater().inflate(R.menu.edit_user, menu);
 
 //        return super.onCreateOptionsMenu(menu);
-        return true;*/
+        return true;
     }
 
     @Override
@@ -176,23 +173,6 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
     public void hideAvatarThrobber() {
         MyUtils.hide(avatarThrobber, true);
         avatarView.setAlpha(1.0f);
-    }
-
-
-    // Нажатия
-    @OnClick(R.id.editNameWidget)
-    void onEditNameClicked(){
-        presenter.onEditNameClicked();
-    }
-
-    @OnClick(R.id.editEmailWidget)
-    void onEditEmailClicked(){
-        presenter.onEditEmailClicked();
-    }
-
-    @OnClick(R.id.editAboutWidget)
-    void onEditAboutClicked(){
-        presenter.onEditAboutClicked();
     }
 
 

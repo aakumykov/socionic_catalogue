@@ -39,10 +39,6 @@ public interface iUserShow {
         boolean canEditUser();
 
         void onEditClicked();
-
-        void onEditNameClicked();
-        void onEditEmailClicked();
-        void onEditAboutClicked();
     }
 
 }

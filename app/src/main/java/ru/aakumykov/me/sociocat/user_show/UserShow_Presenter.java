@@ -115,21 +115,6 @@ class UserShow_Presenter implements iUserShow.iPresenter {
         }
     }
 
-    @Override
-    public void onEditNameClicked() {
-
-    }
-
-    @Override
-    public void onEditEmailClicked() {
-
-    }
-
-    @Override
-    public void onEditAboutClicked() {
-
-    }
-
 
     // Внутренние методы
     private boolean isGuest() {
