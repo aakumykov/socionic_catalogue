@@ -6,14 +6,23 @@ import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.user_show.models.Item;
 
 public interface iUserShow {
+
+    enum ViewState {
+        PROGRESS,
+        SHOW_PRIVATE,
+        SHOW_PUBLIC,
+        ERROR
+    }
 
     interface iView extends iBaseView {
         void goUserEdit(String userId);
 
-        void displayUser(User user);
+        void displayUser(User user, boolean isPrivateMode);
+
+        void setState(ViewState viewState, int messageId);
+        void setState(ViewState viewState, int messageId, @Nullable Object payload);
 
         void showRefreshThrobber();
         void hideRefreshThrobber();
@@ -25,6 +34,8 @@ public interface iUserShow {
     interface iPresenter {
         void linkView(iView view);
         void unlinkView();
+
+        void storeViewState(ViewState viewState, int messageId, Object payload);
 
         boolean hasUser();
 

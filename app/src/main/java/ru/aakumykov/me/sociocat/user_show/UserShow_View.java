@@ -138,7 +138,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
 
     // iUserShow.iView
     @Override
-    public void displayUser(@Nullable User user) {
+    public void displayUser(@Nullable User user, boolean isPrivateMode) {
         if (null == user) {
             showErrorMsg(R.string.USER_SHOW_error_displaying_user, "User is null");
             return;
@@ -149,8 +149,43 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
         loadAndShowAvatar(user);
 
         nameView.setText(user.getName());
-        emailView.setText(user.getEmail());
+        if (isPrivateMode)
+            emailView.setText(user.getEmail());
         aboutView.setText(user.getAbout());
+    }
+
+    @Override
+    public void setState(iUserShow.ViewState viewState, int messageId) {
+        setState(viewState, messageId, null);
+    }
+
+    @Override
+    public void setState(iUserShow.ViewState viewState, int messageId, @Nullable Object messagePayload) {
+        presenter.storeViewState(viewState, messageId, messagePayload);
+
+        switch (viewState) {
+            case PROGRESS:
+                hideProgressMessage();
+                showRefreshThrobber();
+                break;
+
+            case SHOW_PUBLIC:
+                hideRefreshThrobber();
+                hideProgressMessage();
+                displayUser((User) messagePayload, true);
+                break;
+
+            case SHOW_PRIVATE:
+                hideRefreshThrobber();
+                hideProgressMessage();
+                displayUser((User) messagePayload, false);
+                break;
+
+            case ERROR:
+                hideRefreshThrobber();
+                showErrorMsg(messageId, (String) messagePayload);
+                break;
+        }
     }
 
     @Override
@@ -211,7 +246,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
             return;
         }
 
-        displayUser(data.getParcelableExtra(Constants.USER));
+        displayUser(data.getParcelableExtra(Constants.USER), false);
     }
 
     private void loadAndShowAvatar(User user) {

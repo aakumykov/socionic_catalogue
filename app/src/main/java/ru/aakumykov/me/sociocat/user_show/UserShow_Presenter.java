@@ -1,8 +1,6 @@
 package ru.aakumykov.me.sociocat.user_show;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
@@ -21,6 +19,9 @@ class UserShow_Presenter implements iUserShow.iPresenter {
     private iUserShow.iView view;
     private User displayedUser;
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private iUserShow.ViewState currentViewState;
+    private int currentMessageId;
+    private Object currentMessagePayload;
 
 
     @Override
@@ -34,19 +35,26 @@ class UserShow_Presenter implements iUserShow.iPresenter {
     }
 
     @Override
+    public void storeViewState(iUserShow.ViewState viewState, int messageId, Object messagePayload) {
+        currentViewState = viewState;
+        currentMessageId = messageId;
+        currentMessagePayload = messagePayload;
+    }
+
+    @Override
     public boolean hasUser() {
         return null != displayedUser;
     }
 
     @Override
     public void onFirstOpen(@Nullable Intent intent) {
-        if (isGuest()) {
-            view.requestLogin(intent);
-            return;
-        }
+//        if (isGuest()) {
+//            view.requestLogin(intent);
+//            return;
+//        }
 
         if (null == intent) {
-            view.showErrorMsg(R.string.USER_SHOW_error_displaying_user, "Intent is null");
+            view.setState(iUserShow.ViewState.ERROR, R.string.USER_SHOW_error_displaying_user, "Intent is null");
             return;
         }
 
@@ -55,7 +63,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
                 AuthSingleton.currentUserId();
 
         if (null == userId) {
-            view.showErrorMsg(R.string.USER_SHOW_error_displaying_user, "There is no userId in Intent");
+            view.setState(iUserShow.ViewState.ERROR, R.string.USER_SHOW_error_displaying_user, "There is no userId in Intent");
             return;
         }
 
@@ -72,7 +80,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
             return;
         }
 
-        view.displayUser(displayedUser);
+
     }
 
     @Override
@@ -122,21 +130,27 @@ class UserShow_Presenter implements iUserShow.iPresenter {
     }
 
     private void loadAndShowUser(String userId) {
-        view.showRefreshThrobber();
+
+        boolean isPrivateMode =
+            userId.equals(AuthSingleton.currentUserId()) ||
+            UsersSingleton.getInstance().currentUserIsAdmin();
+
+        view.setState(iUserShow.ViewState.PROGRESS, -1, null);
 
         usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
                 displayedUser = user;
-                view.hideProgressBar();
-                view.hideRefreshThrobber();
-                view.displayUser(displayedUser);
-                view.refreshMenu();
+
+                if (isPrivateMode)
+                    view.setState(iUserShow.ViewState.SHOW_PRIVATE, -1, displayedUser);
+                else
+                    view.setState(iUserShow.ViewState.SHOW_PUBLIC, -1, displayedUser);
             }
 
             @Override
             public void onUserReadFail(String errorMsg) {
-                view.showErrorMsg(R.string.USER_SHOW_error_displaying_user, errorMsg);
+                view.setState(iUserShow.ViewState.ERROR, R.string.USER_SHOW_error_displaying_user, errorMsg);
             }
         });
     }

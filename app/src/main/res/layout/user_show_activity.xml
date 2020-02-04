@@ -89,10 +89,12 @@
                 android:layout_marginEnd="8dp"
                 android:text="@string/USER_SHOW_email"
                 android:textColor="@color/colorPrimary"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/emailView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/nameView" />
+                app:layout_constraintTop_toBottomOf="@+id/nameView"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/emailView"
@@ -103,10 +105,12 @@
                 android:ems="10"
                 android:singleLine="false"
                 android:textSize="16sp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/guideline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
-                tools:text="user@mail.ru" />
+                tools:text="user@mail.ru"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/aboutLabel"
