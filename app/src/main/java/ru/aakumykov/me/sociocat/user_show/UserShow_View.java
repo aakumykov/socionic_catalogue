@@ -36,7 +36,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
 
     private iUserShow.iPresenter presenter;
-    private boolean userEditMode = false;
+    private boolean isNotConfigChange = false;
 
 
     // Activity
@@ -65,12 +65,16 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
-            case Constants.CODE_LOGIN_REQUEST:
-                processLoginRequest(resultCode, data);
+            case Constants.CODE_LOGIN:
+                isNotConfigChange = true;
+                processLogin(resultCode, data);
                 break;
+
             case Constants.CODE_USER_EDIT:
+                isNotConfigChange = true;
                 processUserEditResult(resultCode, data);
                 break;
+
             default:
                 super.onActivityResult(requestCode, resultCode, data);
         }
@@ -81,7 +85,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
         super.onStart();
         presenter.linkView(this);
 
-        if (!userEditMode)
+        if (!isNotConfigChange)
         {
             if (presenter.hasUser())
                 presenter.onConfigChanged();
@@ -101,8 +105,8 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
         if (presenter.canEditUser())
             getMenuInflater().inflate(R.menu.edit_user, menu);
 
-//        return super.onCreateOptionsMenu(menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
+//        return true;
     }
 
     @Override
@@ -111,6 +115,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
             case R.id.actionEditUser:
                 presenter.onEditClicked();
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -118,8 +123,6 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
 
     @Override
     public void goUserEdit(String userId) {
-        userEditMode = true;
-
         Intent intent = new Intent(this, UserEdit_View.class);
         intent.putExtra(Constants.USER_ID, userId);
         startActivityForResult(intent, Constants.CODE_USER_EDIT);
@@ -259,6 +262,12 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
         }
 
         displayUser(data.getParcelableExtra(Constants.USER), false);
+    }
+
+    private void processLogin(int resultCode, @Nullable Intent data) {
+        if (RESULT_OK == resultCode) {
+            presenter.onUserLoggedIn();
+        }
     }
 
     private void loadAndShowAvatar(User user) {

@@ -73,20 +73,17 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     @Override
     public void onRefreshRequested() {
-        Intent intent = new Intent();
-        intent.putExtra(Constants.USER_ID, displayedUser.getKey());
-
-        if (isGuest()) {
-            view.requestLogin(intent);
-            return;
-        }
-
         loadAndShowUser(displayedUser.getKey());
     }
 
     @Override
     public void onUserLoggedOut() {
-        view.closePage();
+        displayUser(displayedUser.getKey());
+    }
+
+    @Override
+    public void onUserLoggedIn() {
+        displayUser(displayedUser.getKey());
     }
 
     @Override
@@ -119,21 +116,13 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     private void loadAndShowUser(String userId) {
 
-        boolean isPrivateMode =
-            userId.equals(AuthSingleton.currentUserId()) ||
-            UsersSingleton.getInstance().currentUserIsAdmin();
-
         view.setState(iUserShow.ViewState.PROGRESS, -1, null);
 
         usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
             @Override
             public void onUserReadSuccess(User user) {
                 displayedUser = user;
-
-                if (isPrivateMode)
-                    view.setState(iUserShow.ViewState.SHOW_PRIVATE, -1, displayedUser);
-                else
-                    view.setState(iUserShow.ViewState.SHOW_PUBLIC, -1, displayedUser);
+                displayUser(userId);
             }
 
             @Override
@@ -141,5 +130,17 @@ class UserShow_Presenter implements iUserShow.iPresenter {
                 view.setState(iUserShow.ViewState.ERROR, R.string.USER_SHOW_error_displaying_user, errorMsg);
             }
         });
+    }
+
+    private void displayUser(String userId) {
+
+        boolean isPrivateMode =
+                userId.equals(AuthSingleton.currentUserId()) ||
+                        UsersSingleton.getInstance().currentUserIsAdmin();
+
+        if (isPrivateMode)
+            view.setState(iUserShow.ViewState.SHOW_PRIVATE, -1, displayedUser);
+        else
+            view.setState(iUserShow.ViewState.SHOW_PUBLIC, -1, displayedUser);
     }
 }
