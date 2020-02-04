@@ -36,7 +36,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
 
     private iUserShow.iPresenter presenter;
-    private boolean isNotConfigChange = false;
+    private boolean isReturnFromActivity = false;
 
 
     // Activity
@@ -64,14 +64,15 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        isReturnFromActivity = true;
+
         switch (requestCode) {
             case Constants.CODE_LOGIN:
-                isNotConfigChange = true;
                 processLogin(resultCode, data);
                 break;
 
             case Constants.CODE_USER_EDIT:
-                isNotConfigChange = true;
                 processUserEditResult(resultCode, data);
                 break;
 
@@ -85,13 +86,10 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
         super.onStart();
         presenter.linkView(this);
 
-        if (!isNotConfigChange)
-        {
-            if (presenter.hasUser())
-                presenter.onConfigChanged();
-            else
-                presenter.onFirstOpen(getIntent());
-        }
+        if (presenter.hasUser())
+            presenter.onConfigChanged();
+        else
+            presenter.onFirstOpen(getIntent());
     }
 
     @Override
@@ -131,7 +129,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
     // BaseView
     @Override
     public void onUserLogin() {
-
+        presenter.onUserLoggedIn();
     }
 
     @Override
@@ -160,6 +158,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
             MyUtils.show(emailView);
         }
         else {
+            emailView.setText("");
             MyUtils.hide(emailLabel);
             MyUtils.hide(emailView);
         }
