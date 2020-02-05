@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
@@ -19,12 +20,6 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class ChangePasswordDialogFragment extends DialogFragment implements iChangePasswordDialog {
 
-    private View layout;
-    private EditText currentPasswordInput;
-    private EditText newPasswordInput;
-    private EditText newPasswordConfirmationInput;
-    private ProgressBar progressBar;
-
     public interface ChangePasswordDialogListener {
         void onChangePasswordSaveClicked();
         void onChangePasswordCancelClicked();
@@ -32,10 +27,16 @@ public class ChangePasswordDialogFragment extends DialogFragment implements iCha
         void onFragmentDetached();
     }
 
+    private View layout;
+    private EditText currentPasswordInput;
+    private EditText newPasswordInput;
+    private EditText newPasswordConfirmationInput;
+    private ProgressBar progressBar;
 
     private ChangePasswordDialogListener listener;
 
 
+    // DialogFragment
     @NonNull @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
@@ -47,10 +48,7 @@ public class ChangePasswordDialogFragment extends DialogFragment implements iCha
         layout = layoutInflater.inflate(R.layout.user_change_password_layout, null);
         builder.setView(layout);
 
-        progressBar = layout.findViewById(R.id.progressBar);
-        currentPasswordInput = layout.findViewById(R.id.currentPasswordInput);
-        newPasswordInput = layout.findViewById(R.id.newPasswordInput);
-        newPasswordConfirmationInput= layout.findViewById(R.id.newPasswordConfirmationInput);
+        configureLayout();
 
         builder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
             @Override
@@ -66,7 +64,34 @@ public class ChangePasswordDialogFragment extends DialogFragment implements iCha
             }
         });
 
-        return builder.create();
+        Dialog dialog = builder.create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+
+                AlertDialog alertDialog = (AlertDialog) dialog;
+
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                        .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                listener.onChangePasswordSaveClicked();
+                            }
+                        });
+
+                alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                        .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                listener.onChangePasswordCancelClicked();
+                            }
+                        });
+
+            }
+        });
+
+        return dialog;
     }
 
     @Override
@@ -105,5 +130,14 @@ public class ChangePasswordDialogFragment extends DialogFragment implements iCha
         MyUtils.enable(currentPasswordInput);
         MyUtils.enable(newPasswordInput);
         MyUtils.enable(newPasswordConfirmationInput);
+    }
+
+
+    // Внутренние
+    private void configureLayout() {
+        progressBar = layout.findViewById(R.id.progressBar);
+        currentPasswordInput = layout.findViewById(R.id.currentPasswordInput);
+        newPasswordInput = layout.findViewById(R.id.newPasswordInput);
+        newPasswordConfirmationInput= layout.findViewById(R.id.newPasswordConfirmationInput);
     }
 }
