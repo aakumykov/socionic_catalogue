@@ -602,5 +602,6 @@
     <string name="USER_EDIT_EMAIL_email_successfully_updated">Email successfully updated</string>
     <string name="USER_EDIT_EMAIL_error_updating_email">Error updating email</string>
     <string name="USER_EDIT_EMAIL_error_email_elready_used">Email already used</string>
+    <string name="USER_EDIT_change_password">Change password</string>
 </resources>
 <!-- «%1$s» -->

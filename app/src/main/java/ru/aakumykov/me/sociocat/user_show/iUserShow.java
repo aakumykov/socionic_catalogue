@@ -53,6 +53,8 @@ public interface iUserShow {
         boolean canEditUser();
 
         void onEditClicked();
+
+        void onChangePasswordClicked();
     }
 
 }

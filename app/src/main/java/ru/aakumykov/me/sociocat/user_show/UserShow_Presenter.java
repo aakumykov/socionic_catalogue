@@ -121,6 +121,11 @@ class UserShow_Presenter implements iUserShow.iPresenter {
         }
     }
 
+    @Override
+    public void onChangePasswordClicked() {
+
+    }
+
 
     // Внутренние методы
     private boolean isGuest() {

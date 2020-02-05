@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -15,9 +16,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.user_edit.UserEdit_View;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModel;
@@ -31,9 +34,10 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
     @BindView(R.id.nameView) TextView nameView;
     @BindView(R.id.emailLabel) TextView emailLabel;
     @BindView(R.id.emailView) TextView emailView;
-    @BindView(R.id.aboutView) TextView aboutView;
     @BindView(R.id.avatarView) ImageView avatarView;
     @BindView(R.id.avatarThrobber) ProgressBar avatarThrobber;
+    @BindView(R.id.aboutView) TextView aboutView;
+    @BindView(R.id.changePasswordWidget) View changePasswordWidget;
 
     private iUserShow.iPresenter presenter;
     private boolean isReturnFromActivity = false;
@@ -165,6 +169,11 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
 
         aboutView.setText(user.getAbout());
 
+        if (presenter.canEditUser())
+            MyUtils.show(changePasswordWidget);
+        else
+            MyUtils.hide(changePasswordWidget);
+
         refreshMenu();
     }
 
@@ -222,6 +231,13 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
     public void hideAvatarThrobber() {
         MyUtils.hide(avatarThrobber, true);
         avatarView.setAlpha(1.0f);
+    }
+
+
+    // Нажатия
+    @OnClick(R.id.changePasswordWidget)
+    void onChangePasswordClicked() {
+        presenter.onChangePasswordClicked();
     }
 
 
@@ -292,4 +308,6 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
             }
         });
     }
+
+
 }

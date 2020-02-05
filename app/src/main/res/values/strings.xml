@@ -609,5 +609,6 @@
     <string name="USER_EDIT_EMAIL_email_successfully_updated">Электронная почта обновлена</string>
     <string name="USER_EDIT_EMAIL_error_updating_email">Ошибка обновления электронной почты</string>
     <string name="USER_EDIT_EMAIL_error_email_elready_used">Электронная почта занята</string>
+    <string name="USER_EDIT_change_password">Изменить пароль</string>
 
 </resources><!-- «%1$s» -->

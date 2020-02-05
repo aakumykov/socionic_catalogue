@@ -158,23 +158,18 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/cardsListLabel"
+            android:id="@+id/changePasswordWidget"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:text="@string/USER_SHOW_cards_of_user"
+            android:text="@string/USER_EDIT_change_password"
+            android:textAlignment="center"
             android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline" />
-
-        <ListView
-            android:id="@+id/cardsListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            tools:visibility="visible" />
 
     </LinearLayout>
 
