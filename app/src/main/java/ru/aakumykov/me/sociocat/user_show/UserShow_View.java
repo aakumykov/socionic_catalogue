@@ -1,11 +1,8 @@
 package ru.aakumykov.me.sociocat.user_show;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -25,15 +23,16 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.user_change_password.UserChangePassword_View;
 import ru.aakumykov.me.sociocat.user_edit.UserEdit_View;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModel;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.ImageLoader;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class UserShow_View extends BaseView implements iUserShow.iView {
-
+public class UserShow_View extends BaseView implements
+        iUserShow.iView,
+        ChangePasswordDialogFragment.ChangePasswordDialogListener
+{
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.nameView) TextView nameView;
     @BindView(R.id.emailLabel) TextView emailLabel;
@@ -45,6 +44,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
 
     private iUserShow.iPresenter presenter;
     private boolean isReturnFromActivity = false;
+    private iChangePasswordDialog changePasswordDialog;
 
 
     // Activity
@@ -239,29 +239,31 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
 
     @Override
     public void showChangePasswordDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle(R.string.USER_CHANGE_PASSWORD_page_title);
+        DialogFragment dialogFragment = new ChangePasswordDialogFragment();
+        dialogFragment.show(getSupportFragmentManager(), "change_password_dialog");
+    }
 
-        LayoutInflater layoutInflater = getLayoutInflater();
-        builder.setView(layoutInflater.inflate(R.layout.user_change_password_layout, null));
 
-        builder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-//                presenter.onPasswordChangeSaveClicked();
-            }
-        });
+    // ChangePasswordDialogFragment.ChangePasswordDialogListener
+    @Override
+    public void onChangePasswordSaveClicked() {
+        changePasswordDialog.disableForm();
+    }
 
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-//                presenter.onPasswordChangeCancelClicked();
-            }
-        });
+    @Override
+    public void onChangePasswordCancelClicked() {
 
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+    }
+
+    @Override
+    public void onFragmentAttached(iChangePasswordDialog changePasswordDialog) {
+        this.changePasswordDialog = changePasswordDialog;
+    }
+
+    @Override
+    public void onFragmentDetached() {
+        this.changePasswordDialog = null;
     }
 
 
@@ -340,6 +342,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
             }
         });
     }
+
 
 
 }
