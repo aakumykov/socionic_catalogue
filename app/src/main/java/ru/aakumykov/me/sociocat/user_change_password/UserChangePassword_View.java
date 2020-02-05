@@ -188,7 +188,7 @@ public class UserChangePassword_View extends BaseView implements
 
     @OnClick(R.id.cancelButton)
     void onCancelButtonClicked() {
-
+        presenter.onCancelButtonClicked();
     }
 
 
