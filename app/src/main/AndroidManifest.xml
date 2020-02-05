@@ -141,7 +141,7 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".user_change_password.UserChangePassword_View" />
+        <activity android:name=".user_change_password.UserChangePassword_View" android:windowSoftInputMode="stateHidden" />
 
         <!--<activity
             android:name=".dynamic_link_processor.DLP_View"
