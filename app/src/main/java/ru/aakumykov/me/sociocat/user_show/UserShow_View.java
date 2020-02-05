@@ -23,15 +23,14 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.user_change_password.UserChangePassword_View;
 import ru.aakumykov.me.sociocat.user_edit.UserEdit_View;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModel;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.ImageLoader;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class UserShow_View extends BaseView implements
-        iUserShow.iView,
-        ChangePasswordDialogFragment.ChangePasswordDialogListener
+public class UserShow_View extends BaseView implements iUserShow.iView
 {
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.nameView) TextView nameView;
@@ -44,7 +43,6 @@ public class UserShow_View extends BaseView implements
 
     private iUserShow.iPresenter presenter;
     private boolean isReturnFromActivity = false;
-    private iChangePasswordDialog changePasswordDialog;
 
 
     // Activity
@@ -237,41 +235,11 @@ public class UserShow_View extends BaseView implements
         avatarView.setAlpha(1.0f);
     }
 
-    @Override
-    public void showChangePasswordDialog() {
-
-        DialogFragment dialogFragment = new ChangePasswordDialogFragment();
-        dialogFragment.show(getSupportFragmentManager(), "change_password_dialog");
-    }
-
-
-    // ChangePasswordDialogFragment.ChangePasswordDialogListener
-    @Override
-    public void onChangePasswordSaveClicked() {
-        changePasswordDialog.disableForm();
-    }
-
-    @Override
-    public void onChangePasswordCancelClicked() {
-
-    }
-
-    @Override
-    public void onFragmentAttached(iChangePasswordDialog changePasswordDialog) {
-        this.changePasswordDialog = changePasswordDialog;
-    }
-
-    @Override
-    public void onFragmentDetached() {
-        this.changePasswordDialog = null;
-    }
-
 
     // Нажатия
     @OnClick(R.id.changePasswordWidget)
     void onChangePasswordClicked() {
-        presenter.onChangePasswordClicked();
-//        startActivityForResult(new Intent(this, UserChangePassword_View.class), Constants.CODE_CHANGE_PASSWORD);
+        startActivityForResult(new Intent(this, UserChangePassword_View.class), Constants.CODE_CHANGE_PASSWORD);
     }
 
 

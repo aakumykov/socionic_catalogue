@@ -30,7 +30,6 @@ public interface iUserShow {
         void showAvatarTrobber();
         void hideAvatarThrobber();
 
-        void showChangePasswordDialog();
     }
 
     interface iPresenter {
@@ -56,7 +55,6 @@ public interface iUserShow {
 
         void onEditClicked();
 
-        void onChangePasswordClicked();
     }
 
 }

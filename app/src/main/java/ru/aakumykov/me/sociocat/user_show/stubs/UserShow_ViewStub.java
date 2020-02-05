@@ -51,8 +51,4 @@ public class UserShow_ViewStub extends BaseView_Stub implements iUserShow.iView 
 
     }
 
-    @Override
-    public void showChangePasswordDialog() {
-
-    }
 }
