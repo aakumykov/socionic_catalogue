@@ -4,17 +4,23 @@ import android.content.Intent;
 
 import androidx.annotation.Nullable;
 
-import java.util.Date;
-
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.user_change_password.models.Item;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.user_change_password.stubs.UserChangePassword_ViewStub;
 
 
 class UserChangePassword_Presenter implements iUserChangePassword.iPresenter {
 
     private iUserChangePassword.iView view;
-    private Item currentItem;
+
+    private iUserChangePassword.ViewState currentViewState;
+    private int currentMessageId;
+    private String currentMessageDetails;
+
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
 
     @Override
@@ -28,13 +34,17 @@ class UserChangePassword_Presenter implements iUserChangePassword.iPresenter {
     }
 
     @Override
-    public boolean hasItem() {
-        return null != currentItem;
+    public void onUserLoggedOut() {
+        view.closePage();
     }
 
     @Override
     public void onFirstOpen(@Nullable Intent intent) {
-
+        if (!AuthSingleton.isLoggedIn()) {
+            view.showToast(R.string.not_authorized);
+            view.closePage();
+            return;
+        }
     }
 
     @Override
@@ -43,23 +53,50 @@ class UserChangePassword_Presenter implements iUserChangePassword.iPresenter {
     }
 
     @Override
-    public void onRefreshRequested() {
+    public void onFormIsValid() {
+        checkCurrentPassword();
+    }
 
+    private void checkCurrentPassword() {
+
+        view.setState(iUserChangePassword.ViewState.PROGRESS, R.string.checking_password);
+
+        String email = usersSingleton.getCurrentUser().getEmail();
+
+        AuthSingleton.checkPassword(email, view.getCurrentPassword(), new iAuthSingleton.CheckPasswordCallbacks() {
+            @Override
+            public void onUserCredentialsOk() {
+                view.setState(iUserChangePassword.ViewState.SUCCESS, -1);
+            }
+
+            @Override
+            public void onUserCredentialsNotOk(String errorMsg) {
+                view.setState(iUserChangePassword.ViewState.ERROR, R.string.error_wrong_password, errorMsg);
+            }
+        });
     }
 
     @Override
-    public void onButtonClicked() {
-        view.showToast(R.string.PAGE_TEMPLATE_button_clicked);
+    public void onCancelButtonClicked() {
+
     }
 
     @Override
     public void onBackPressed() {
-
+        onCancelButtonClicked();
     }
 
     @Override
     public boolean onHomePressed() {
+        onCancelButtonClicked();
         return true;
+    }
+
+    @Override
+    public void storeViewState(iUserChangePassword.ViewState state, int messageId, @Nullable String messageDetails) {
+        currentViewState = state;
+        currentMessageId = messageId;
+        currentMessageDetails = messageDetails;
     }
 
 

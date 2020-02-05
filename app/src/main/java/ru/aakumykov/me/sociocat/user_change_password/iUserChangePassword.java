@@ -9,27 +9,35 @@ import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
 public interface iUserChangePassword {
 
-    interface iView extends iBaseView {
+    enum ViewState {
+        PROGRESS,
+        SUCCESS,
+        ERROR
+    }
 
+    interface iView extends iBaseView {
+        void setState(ViewState state, int messageId);
+        void setState(ViewState state, int messageId, @Nullable String messageDetails);
+
+        String getCurrentPassword();
     }
 
     interface iPresenter {
         void linkView(iView view);
         void unlinkView();
 
-        boolean hasItem();
+        void onUserLoggedOut();
 
         void onFirstOpen(@Nullable Intent intent);
-
         void onConfigChanged();
 
-        void onRefreshRequested();
+        void onFormIsValid();
 
-        void onButtonClicked();
-
+        void onCancelButtonClicked();
         void onBackPressed();
-
         boolean onHomePressed();
+
+        void storeViewState(ViewState state, int messageId, @Nullable String messageDetails);
     }
 
 }
