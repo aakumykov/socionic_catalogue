@@ -260,7 +260,7 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
             return;
         }
 
-        displayUser(data.getParcelableExtra(Constants.USER), false);
+        presenter.onUserEdited(data);
     }
 
     private void processLogin(int resultCode, @Nullable Intent data) {

@@ -48,6 +48,8 @@ public interface iUserShow {
         void onUserLoggedOut();
         void onUserLoggedIn();
 
+        void onUserEdited(@Nullable Intent data);
+
         boolean canEditUser();
 
         void onEditClicked();

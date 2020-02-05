@@ -87,6 +87,19 @@ class UserShow_Presenter implements iUserShow.iPresenter {
     }
 
     @Override
+    public void onUserEdited(@Nullable Intent data) {
+        if (null == data) {
+            view.setState(iUserShow.ViewState.ERROR, R.string.data_error, "There is no User in intent");
+            profileUser = null;
+            return;
+        }
+
+        profileUser = data.getParcelableExtra(Constants.USER);
+
+        showUserProfile();
+    }
+
+    @Override
     public boolean canEditUser() {
         String currentUserId = AuthSingleton.currentUserId();
 
