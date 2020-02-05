@@ -603,5 +603,9 @@
     <string name="USER_EDIT_EMAIL_error_updating_email">Error updating email</string>
     <string name="USER_EDIT_EMAIL_error_email_elready_used">Email already used</string>
     <string name="USER_EDIT_change_password">Change password</string>
+    <string name="USER_CHANGE_PASSWORD_current_password">Current password</string>
+    <string name="USER_CHANGE_PASSWORD_new_password">New password</string>
+    <string name="USER_CHANGE_PASSWORD_new_password_confirmation">Confirm new password</string>
+    <string name="USER_CHANGE_PASSWORD_page_title">Change password</string>
 </resources>
 <!-- «%1$s» -->

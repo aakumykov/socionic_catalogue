@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.change_password.models;
+package ru.aakumykov.me.sociocat.user_change_password.models;
 
 public class Item {
 

@@ -610,5 +610,9 @@
     <string name="USER_EDIT_EMAIL_error_updating_email">Ошибка обновления электронной почты</string>
     <string name="USER_EDIT_EMAIL_error_email_elready_used">Электронная почта занята</string>
     <string name="USER_EDIT_change_password">Изменить пароль</string>
+    <string name="USER_CHANGE_PASSWORD_current_password">Текущий пароль</string>
+    <string name="USER_CHANGE_PASSWORD_new_password">Новый пароль</string>
+    <string name="USER_CHANGE_PASSWORD_new_password_confirmation">Подтверждение нового пароля</string>
+    <string name="USER_CHANGE_PASSWORD_page_title">Изменение пароля</string>
 
 </resources><!-- «%1$s» -->

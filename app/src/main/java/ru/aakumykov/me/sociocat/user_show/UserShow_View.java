@@ -22,6 +22,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.user_change_password.UserChangePassword_View;
 import ru.aakumykov.me.sociocat.user_edit.UserEdit_View;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModel;
 import ru.aakumykov.me.sociocat.user_show.view_model.UserShow_ViewModelFactory;
@@ -237,7 +238,8 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
     // Нажатия
     @OnClick(R.id.changePasswordWidget)
     void onChangePasswordClicked() {
-        presenter.onChangePasswordClicked();
+//        presenter.onChangePasswordClicked();
+        startActivityForResult(new Intent(this, UserChangePassword_View.class), Constants.CODE_CHANGE_PASSWORD);
     }
 
 

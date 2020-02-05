@@ -1,19 +1,16 @@
-package ru.aakumykov.me.sociocat.change_password;
+package ru.aakumykov.me.sociocat.user_change_password;
 
 import android.content.Intent;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.change_password.models.Item;
+import ru.aakumykov.me.sociocat.user_change_password.models.Item;
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
-public interface iChangePassword {
+public interface iUserChangePassword {
 
     interface iView extends iBaseView {
-        void displayItem(Item item);
-        void hideRefreshThrobber();
 
-        void goCardsGrid();
     }
 
     interface iPresenter {
