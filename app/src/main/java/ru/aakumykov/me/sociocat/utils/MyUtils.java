@@ -65,8 +65,8 @@ public final class MyUtils {
         view.setVisibility(View.GONE);
     }
 
-    public static void hide(View view, boolean invisibleInsteadOfGone) {
-        if (invisibleInsteadOfGone)
+    public static void hide(View view, boolean makeInvisibleInsteadOfGone) {
+        if (makeInvisibleInsteadOfGone)
             view.setVisibility(View.INVISIBLE);
         else
             MyUtils.hide(view);
