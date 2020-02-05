@@ -2,14 +2,20 @@ package ru.aakumykov.me.sociocat.user_change_password;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Password;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,17 +26,20 @@ import ru.aakumykov.me.sociocat.user_change_password.view_model.UserChangePasswo
 import ru.aakumykov.me.sociocat.user_change_password.view_model.UserChangePassword_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class UserChangePassword_View extends BaseView implements iUserChangePassword.iView {
-
-    @Password
+public class UserChangePassword_View extends BaseView implements
+        iUserChangePassword.iView,
+        Validator.ValidationListener
+{
+    @NotEmpty(messageResId = R.string.cannot_be_empty)
     @BindView(R.id.currentPasswordInput)
     EditText currentPasswordInput;
 
-    @Password
+    @NotEmpty(messageResId = R.string.cannot_be_empty)
+    @Password(messageResId = R.string.USER_CHANGE_PASSWORD_passwords_mismatch)
     @BindView(R.id.newPasswordInput)
     EditText newPasswordInput;
 
-    @ConfirmPassword
+    @ConfirmPassword(messageResId = R.string.USER_CHANGE_PASSWORD_passwords_mismatch)
     @BindView(R.id.newPasswordConfirmationInput)
     EditText newPasswordConfirmationInput;
 
@@ -41,6 +50,7 @@ public class UserChangePassword_View extends BaseView implements iUserChangePass
     Button cancelButton;
 
     private iUserChangePassword.iPresenter presenter;
+    private Validator validator;
 
 
     // Activity
@@ -62,6 +72,9 @@ public class UserChangePassword_View extends BaseView implements iUserChangePass
             this.presenter = new UserChangePassword_Presenter();
             viewModel.storePresenter(this.presenter);
         }
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
     }
 
     @Override
@@ -101,17 +114,7 @@ public class UserChangePassword_View extends BaseView implements iUserChangePass
     }
 
 
-    // Нажатия
-    @OnClick(R.id.saveButton)
-    void onSaveButtonClicked() {
-
-    }
-
-    @OnClick(R.id.cancelButton)
-    void onCancelButtonClicked() {
-        
-    }
-
+    // iUserChangePassword.iView
     @Override
     public void setState(iUserChangePassword.ViewState state, int messageId) {
         setState(state, messageId, null);
@@ -129,13 +132,19 @@ public class UserChangePassword_View extends BaseView implements iUserChangePass
                 break;
 
             case SUCCESS:
-                showInfoMsg(messageId);
+                hideProgressMessage();
                 break;
 
             case ERROR:
                 enableForm();
                 showErrorMsg(messageId, messageDetails);
                 break;
+
+/*            case CURRENT_PASSWORD_ERROR:
+                break;
+
+            case NEW_PASSWORD_ERROR:
+                break;*/
         }
     }
 
@@ -144,6 +153,46 @@ public class UserChangePassword_View extends BaseView implements iUserChangePass
         return currentPasswordInput.getText().toString();
     }
 
+    @Override
+    public String getNewPassword() {
+        return newPasswordInput.getText().toString();
+    }
+
+
+    // Validator.ValidationListener
+    @Override
+    public void onValidationSucceeded() {
+        presenter.onFormIsValid();
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(this);
+
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                showToast(message);
+            }
+        }
+    }
+
+
+    // Нажатия
+    @OnClick(R.id.saveButton)
+    void onSaveButtonClicked() {
+        validator.validate();
+    }
+
+    @OnClick(R.id.cancelButton)
+    void onCancelButtonClicked() {
+
+    }
+
+
+    // Внутренние методы
     private void enableForm() {
         MyUtils.enable(currentPasswordInput);
         MyUtils.enable(newPasswordInput);

@@ -57,25 +57,6 @@ class UserChangePassword_Presenter implements iUserChangePassword.iPresenter {
         checkCurrentPassword();
     }
 
-    private void checkCurrentPassword() {
-
-        view.setState(iUserChangePassword.ViewState.PROGRESS, R.string.checking_password);
-
-        String email = usersSingleton.getCurrentUser().getEmail();
-
-        AuthSingleton.checkPassword(email, view.getCurrentPassword(), new iAuthSingleton.CheckPasswordCallbacks() {
-            @Override
-            public void onUserCredentialsOk() {
-                view.setState(iUserChangePassword.ViewState.SUCCESS, -1);
-            }
-
-            @Override
-            public void onUserCredentialsNotOk(String errorMsg) {
-                view.setState(iUserChangePassword.ViewState.ERROR, R.string.error_wrong_password, errorMsg);
-            }
-        });
-    }
-
     @Override
     public void onCancelButtonClicked() {
 
@@ -101,4 +82,24 @@ class UserChangePassword_Presenter implements iUserChangePassword.iPresenter {
 
 
     // Внутренние методы
+    private void checkCurrentPassword() {
+
+        view.setState(iUserChangePassword.ViewState.PROGRESS, R.string.checking_password);
+
+        String email = usersSingleton.getCurrentUser().getEmail();
+
+        AuthSingleton.checkPassword(email, view.getCurrentPassword(), new iAuthSingleton.CheckPasswordCallbacks() {
+            @Override
+            public void onUserCredentialsOk() {
+                view.setState(iUserChangePassword.ViewState.SUCCESS, -1);
+            }
+
+            @Override
+            public void onUserCredentialsNotOk(String errorMsg) {
+                view.setState(iUserChangePassword.ViewState.ERROR, R.string.error_wrong_password, errorMsg);
+            }
+        });
+    }
+
+
 }

@@ -615,5 +615,6 @@
     <string name="USER_CHANGE_PASSWORD_new_password_confirmation">Подтверждение нового пароля</string>
     <string name="USER_CHANGE_PASSWORD_page_title">Изменение пароля</string>
     <string name="PAGE_TEMPLATE_text_input_hint">Напишите что-нибудь</string>
+    <string name="USER_CHANGE_PASSWORD_passwords_mismatch">Пароли не совпадают</string>
 
 </resources><!-- «%1$s» -->

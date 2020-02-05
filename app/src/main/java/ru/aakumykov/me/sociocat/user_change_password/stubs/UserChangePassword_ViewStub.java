@@ -24,4 +24,9 @@ public class UserChangePassword_ViewStub extends BaseView_Stub implements iUserC
     public String getCurrentPassword() {
         return null;
     }
+
+    @Override
+    public String getNewPassword() {
+        return null;
+    }
 }

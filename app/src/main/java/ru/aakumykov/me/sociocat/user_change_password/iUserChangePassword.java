@@ -12,7 +12,9 @@ public interface iUserChangePassword {
     enum ViewState {
         PROGRESS,
         SUCCESS,
-        ERROR
+        ERROR/*,
+        CURRENT_PASSWORD_ERROR,
+        NEW_PASSWORD_ERROR*/
     }
 
     interface iView extends iBaseView {
@@ -20,6 +22,7 @@ public interface iUserChangePassword {
         void setState(ViewState state, int messageId, @Nullable String messageDetails);
 
         String getCurrentPassword();
+        String getNewPassword();
     }
 
     interface iPresenter {
