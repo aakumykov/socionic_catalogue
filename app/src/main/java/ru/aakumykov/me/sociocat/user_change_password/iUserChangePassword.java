@@ -31,7 +31,8 @@ public interface iUserChangePassword {
 
         void onUserLoggedOut();
 
-        void onFirstOpen(@Nullable Intent intent);
+        boolean isVirgin();
+        void onFirstOpen();
         void onConfigChanged();
 
         void onFormIsValid();
@@ -41,6 +42,7 @@ public interface iUserChangePassword {
         boolean onHomePressed();
 
         void storeViewState(ViewState state, int messageId, @Nullable String messageDetails);
+
     }
 
 }

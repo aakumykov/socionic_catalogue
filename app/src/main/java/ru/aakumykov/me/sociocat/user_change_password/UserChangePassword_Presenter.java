@@ -1,8 +1,5 @@
 package ru.aakumykov.me.sociocat.user_change_password;
 
-import android.content.Intent;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.R;
@@ -22,6 +19,7 @@ class UserChangePassword_Presenter implements iUserChangePassword.iPresenter {
     private String currentMessageDetails;
 
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+    private boolean isVirgin = true;
 
 
     @Override
@@ -40,17 +38,19 @@ class UserChangePassword_Presenter implements iUserChangePassword.iPresenter {
     }
 
     @Override
-    public void onFirstOpen(@Nullable Intent intent) {
-        if (!AuthSingleton.isLoggedIn()) {
-            view.showToast(R.string.not_authorized);
-            view.closePage();
-            return;
-        }
+    public boolean isVirgin() {
+        return isVirgin;
+    }
+
+    @Override
+    public void onFirstOpen() {
+        isVirgin = false;
+        closeIfGuest();
     }
 
     @Override
     public void onConfigChanged() {
-
+        closeIfGuest();
     }
 
     @Override
@@ -83,6 +83,13 @@ class UserChangePassword_Presenter implements iUserChangePassword.iPresenter {
 
 
     // Внутренние методы
+    private void closeIfGuest() {
+        if (!AuthSingleton.isLoggedIn()) {
+            view.showToast(R.string.not_authorized);
+            view.closePage();
+        }
+    }
+
     private void checkCurrentPassword() {
 
         view.setState(iUserChangePassword.ViewState.PROGRESS, R.string.checking_password);
@@ -121,6 +128,5 @@ class UserChangePassword_Presenter implements iUserChangePassword.iPresenter {
         });
 
     }
-
 
 }

@@ -87,12 +87,10 @@ public class UserChangePassword_View extends BaseView implements
         super.onStart();
         presenter.linkView(this);
 
-/*
-        if (presenter.hasItem())
-            presenter.onConfigChanged();
+        if (presenter.isVirgin())
+            presenter.onFirstOpen();
         else
-            presenter.onFirstOpen(getIntent());
-*/
+            presenter.onConfigChanged();
     }
 
     @Override
