@@ -31,7 +31,7 @@
 
         <activity android:name=".template_of_list.ItemsList_View" android:exported="true"/>
 
-        <activity android:name=".template_of_page.Page_View" android:exported="true"/>
+        <activity android:name=".template_of_page.Page_View" android:exported="true" android:windowSoftInputMode="stateHidden" />
 
         <activity android:name=".tags_lsit3.TagsList3_View" />
 

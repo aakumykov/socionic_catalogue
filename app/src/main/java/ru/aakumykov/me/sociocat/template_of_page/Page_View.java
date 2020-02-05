@@ -5,11 +5,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,13 +29,20 @@ import ru.aakumykov.me.sociocat.template_of_page.models.Item;
 import ru.aakumykov.me.sociocat.template_of_page.view_model.Page_ViewModel;
 import ru.aakumykov.me.sociocat.template_of_page.view_model.Page_ViewModelFactory;
 
-public class Page_View extends BaseView implements iPage.iView {
-
+public class Page_View extends BaseView implements
+        iPage.iView,
+        Validator.ValidationListener
+{
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.nameView) TextView nameView;
     @BindView(R.id.descriptionView) TextView descriptionView;
 
+    @NotEmpty(messageResId = R.string.cannot_be_empty)
+    @BindView(R.id.textInput) EditText textInput;
     private iPage.iPresenter presenter;
+
+    private Validator validator;
+
 
     // Activity
     @Override
@@ -50,6 +65,9 @@ public class Page_View extends BaseView implements iPage.iView {
         }
 
         configureSwipeRefresh();
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
     }
 
     @Override
@@ -102,16 +120,32 @@ public class Page_View extends BaseView implements iPage.iView {
     // BaseView
     @Override
     public void onUserLogin() {
-
+        presenter.onUserLoggedIn();
     }
 
     @Override
     public void onUserLogout() {
-
+        presenter.onUserLoggedOut();
     }
 
 
-    // iUserEditEmail.iView
+    @Override
+    public void setState(iPage.ViewState state, int messageId) {
+        setState(state, messageId, null);
+    }
+
+    @Override
+    public void setState(iPage.ViewState state, int messageId, @Nullable String messageDetails) {
+        presenter.storeViewState(state, messageId, messageDetails);
+    }
+
+    @Override
+    public String getText() {
+        return textInput.getText().toString();
+    }
+
+
+    // iPage.iView
     @Override
     public void displayItem(Item item) {
         nameView.setText(item.getName());
@@ -129,11 +163,33 @@ public class Page_View extends BaseView implements iPage.iView {
     }
 
 
+    // Validator.ValidationListener
+    @Override
+    public void onValidationSucceeded() {
+        presenter.onFormIsValid();
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(this);
+
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                showToast(message);
+            }
+        }
+    }
+
+
     // Нажатия
     @OnClick(R.id.button)
     void onButtonClicked() {
-        presenter.onButtonClicked();
+        validator.validate();
     }
+
 
     // Внутренние методы
     private void configureSwipeRefresh() {

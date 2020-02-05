@@ -607,5 +607,6 @@
     <string name="USER_CHANGE_PASSWORD_new_password">New password</string>
     <string name="USER_CHANGE_PASSWORD_new_password_confirmation">Confirm new password</string>
     <string name="USER_CHANGE_PASSWORD_page_title">Change password</string>
+    <string name="PAGE_TEMPLATE_text_input_hint">Enter some text</string>
 </resources>
 <!-- «%1$s» -->

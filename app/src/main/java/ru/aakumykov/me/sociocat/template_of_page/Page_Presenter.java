@@ -15,6 +15,9 @@ class Page_Presenter implements iPage.iPresenter {
 
     private iPage.iView view;
     private Item currentItem;
+    private iPage.ViewState currentViewState;
+    private int currentMessageId;
+    private String currentMessageDetails;
 
 
     @Override
@@ -25,6 +28,23 @@ class Page_Presenter implements iPage.iPresenter {
     @Override
     public void unlinkView() {
         this.view = new Page_ViewStub();
+    }
+
+    @Override
+    public void onUserLoggedIn() {
+
+    }
+
+    @Override
+    public void onUserLoggedOut() {
+
+    }
+
+    @Override
+    public void storeViewState(iPage.ViewState viewState, int messageId, String messageDetails) {
+        currentViewState = viewState;
+        currentMessageId = messageId;
+        currentMessageDetails = messageDetails;
     }
 
     @Override
@@ -53,6 +73,11 @@ class Page_Presenter implements iPage.iPresenter {
     @Override
     public void onButtonClicked() {
         view.showToast(R.string.PAGE_TEMPLATE_button_clicked);
+    }
+
+    @Override
+    public void onFormIsValid() {
+
     }
 
     @Override
