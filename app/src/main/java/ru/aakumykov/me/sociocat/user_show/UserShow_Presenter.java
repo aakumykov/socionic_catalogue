@@ -123,7 +123,7 @@ class UserShow_Presenter implements iUserShow.iPresenter {
 
     @Override
     public void onChangePasswordClicked() {
-
+        view.showChangePasswordDialog();
     }
 
 

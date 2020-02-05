@@ -50,4 +50,9 @@ public class UserShow_ViewStub extends BaseView_Stub implements iUserShow.iView 
     public void hideAvatarThrobber() {
 
     }
+
+    @Override
+    public void showChangePasswordDialog() {
+
+    }
 }

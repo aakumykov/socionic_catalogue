@@ -29,6 +29,8 @@ public interface iUserShow {
 
         void showAvatarTrobber();
         void hideAvatarThrobber();
+
+        void showChangePasswordDialog();
     }
 
     interface iPresenter {

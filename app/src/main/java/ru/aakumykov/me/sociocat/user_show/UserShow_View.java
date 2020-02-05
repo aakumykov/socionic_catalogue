@@ -1,8 +1,11 @@
 package ru.aakumykov.me.sociocat.user_show;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -234,12 +237,39 @@ public class UserShow_View extends BaseView implements iUserShow.iView {
         avatarView.setAlpha(1.0f);
     }
 
+    @Override
+    public void showChangePasswordDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(R.string.USER_CHANGE_PASSWORD_page_title);
+
+        LayoutInflater layoutInflater = getLayoutInflater();
+        builder.setView(layoutInflater.inflate(R.layout.user_change_password_layout, null));
+
+        builder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
 
     // Нажатия
     @OnClick(R.id.changePasswordWidget)
     void onChangePasswordClicked() {
-//        presenter.onChangePasswordClicked();
-        startActivityForResult(new Intent(this, UserChangePassword_View.class), Constants.CODE_CHANGE_PASSWORD);
+        presenter.onChangePasswordClicked();
+//        startActivityForResult(new Intent(this, UserChangePassword_View.class), Constants.CODE_CHANGE_PASSWORD);
     }
 
 
