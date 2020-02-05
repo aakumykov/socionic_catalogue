@@ -616,5 +616,9 @@
     <string name="USER_CHANGE_PASSWORD_page_title">Изменение пароля</string>
     <string name="PAGE_TEMPLATE_text_input_hint">Напишите что-нибудь</string>
     <string name="USER_CHANGE_PASSWORD_passwords_mismatch">Пароли не совпадают</string>
+    <string name="USER_CHANGE_PASSWORD_error_wrong_current_password">Неверный текущий пароль</string>
+    <string name="USER_CHANGE_PASSWORD_saving_new_password">Сохраняем новый пароль</string>
+    <string name="USER_CHANGE_PASSWORD_error_changing_password">Ошибка изменения пароля</string>
+    <string name="USER_CHANGE_PASSWORD_password_successfully_changed">Пароль изменён</string>
 
 </resources><!-- «%1$s» -->

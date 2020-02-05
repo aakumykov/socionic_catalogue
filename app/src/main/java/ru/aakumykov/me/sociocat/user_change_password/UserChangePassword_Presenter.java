@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.user_change_password;
 
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.R;
@@ -59,7 +60,7 @@ class UserChangePassword_Presenter implements iUserChangePassword.iPresenter {
 
     @Override
     public void onCancelButtonClicked() {
-
+        view.closePage();
     }
 
     @Override
@@ -91,14 +92,34 @@ class UserChangePassword_Presenter implements iUserChangePassword.iPresenter {
         AuthSingleton.checkPassword(email, view.getCurrentPassword(), new iAuthSingleton.CheckPasswordCallbacks() {
             @Override
             public void onUserCredentialsOk() {
-                view.setState(iUserChangePassword.ViewState.SUCCESS, -1);
+                setNewPassword();
             }
 
             @Override
             public void onUserCredentialsNotOk(String errorMsg) {
-                view.setState(iUserChangePassword.ViewState.ERROR, R.string.error_wrong_password, errorMsg);
+                view.setState(iUserChangePassword.ViewState.ERROR, R.string.USER_CHANGE_PASSWORD_error_wrong_current_password, errorMsg);
             }
         });
+    }
+
+    private void setNewPassword() {
+
+        view.setState(iUserChangePassword.ViewState.PROGRESS, R.string.USER_CHANGE_PASSWORD_saving_new_password);
+
+        String newPassword = view.getNewPassword();
+
+        AuthSingleton.changePassword(newPassword, new iAuthSingleton.ChangePasswordCallbacks() {
+            @Override
+            public void onChangePasswordSuccess() {
+                view.setState(iUserChangePassword.ViewState.SUCCESS, R.string.USER_CHANGE_PASSWORD_password_successfully_changed);
+            }
+
+            @Override
+            public void onChangePasswordError(String errorMsg) {
+                view.setState(iUserChangePassword.ViewState.ERROR, R.string.USER_CHANGE_PASSWORD_error_changing_password);
+            }
+        });
+
     }
 
 

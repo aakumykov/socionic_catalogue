@@ -31,10 +31,15 @@ public interface iAuthSingleton {
         void onLoginLinkHasExpired();
     }
 
-    public interface CheckEmailExistsCallbacks {
+    interface CheckEmailExistsCallbacks {
         void onEmailExists();
         void onEmailNotExists();
         void onEmailCheckError(String errorMsg);
+    }
+
+    interface ChangePasswordCallbacks {
+        void onChangePasswordSuccess();
+        void onChangePasswordError(String errorMsg);
     }
 
 

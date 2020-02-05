@@ -133,6 +133,8 @@ public class UserChangePassword_View extends BaseView implements
 
             case SUCCESS:
                 hideProgressMessage();
+                showToast(messageId);
+                closePage();
                 break;
 
             case ERROR:

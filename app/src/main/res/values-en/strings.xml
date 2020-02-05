@@ -609,5 +609,9 @@
     <string name="USER_CHANGE_PASSWORD_page_title">Change password</string>
     <string name="PAGE_TEMPLATE_text_input_hint">Enter some text</string>
     <string name="USER_CHANGE_PASSWORD_passwords_mismatch">Passwords mismatch</string>
+    <string name="USER_CHANGE_PASSWORD_error_wrong_current_password">Wrong current password</string>
+    <string name="USER_CHANGE_PASSWORD_saving_new_password">Saving new password</string>
+    <string name="USER_CHANGE_PASSWORD_error_changing_password">Error changing password</string>
+    <string name="USER_CHANGE_PASSWORD_password_successfully_changed">Password is changed</string>
 </resources>
 <!-- «%1$s» -->

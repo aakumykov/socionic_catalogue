@@ -293,6 +293,31 @@ public class AuthSingleton implements iAuthSingleton
                 });
     }
 
+    public static void changePassword(@NonNull String password, iAuthSingleton.ChangePasswordCallbacks callbacks) {
+
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+        if (null == firebaseUser) {
+            callbacks.onChangePasswordError("FirebaseUser is null");
+            return;
+        }
+
+        firebaseUser.updatePassword(password)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callbacks.onChangePasswordSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onChangePasswordError(e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
+    }
+
     // Внутренние интерфейсы
     private interface CustomTokenAPI {
         @GET(Config.CREATE_CUSTOM_TOKEN_PATH)
