@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -28,6 +29,10 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     private boolean userNameIsValid = false;
     private boolean passwordIsValid = false;
     private boolean isVirgin = true;
+    private iRegisterStep2.ViewState currentViewState;
+    private int currentMessageId;
+    private String currentMessageDetails;
+
 
     // Системные методы
     @Override
@@ -41,14 +46,24 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     }
 
     @Override
+    public void storeViewState(iRegisterStep2.ViewState viewState, int messageId, String messageDetails) {
+        currentViewState = viewState;
+        currentMessageId = messageId;
+        currentMessageDetails = messageDetails;
+    }
+
+    @Override
     public boolean isVirgin() {
         return isVirgin;
     }
 
     @Override
-    public void processInputIntent() {
+    public void processInputIntent(@Nullable Intent intent) {
         isVirgin = false;
 
+        if (null == intent) {
+
+        }
     }
 
     @Override

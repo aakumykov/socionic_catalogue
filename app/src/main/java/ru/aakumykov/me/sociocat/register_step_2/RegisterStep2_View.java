@@ -62,7 +62,7 @@ public class RegisterStep2_View extends BaseView implements iRegisterStep2.View 
         presenter.linkView(this);
 
         if (presenter.isVirgin())
-            presenter.processInputIntent();
+            presenter.processInputIntent(getIntent());
         else
             presenter.onConfigChanged();
     }
@@ -93,6 +93,32 @@ public class RegisterStep2_View extends BaseView implements iRegisterStep2.View 
     @Override
     public void hideUserMessage() {
         MyUtils.hide(userMessage);
+    }
+
+    @Override
+    public void setState(iRegisterStep2.ViewState state, int messageId) {
+        setState(state, messageId, null);
+    }
+
+    @Override
+    public void setState(iRegisterStep2.ViewState state, int messageId, @Nullable String messageDetails) {
+
+        presenter.storeViewState(state, messageId, messageDetails);
+
+        switch (state) {
+            case PROGRESS:
+                showProgressMessage(messageId);
+                break;
+
+            case SUCCESS:
+                hideProgressMessage();
+                showToast(messageId);
+                break;
+
+            case ERROR:
+                showErrorMsg(messageId, messageDetails);
+                break;
+        }
     }
 
     @Override
