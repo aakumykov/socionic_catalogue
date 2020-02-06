@@ -621,5 +621,6 @@
     <string name="USER_CHANGE_PASSWORD_error_changing_password">Ошибка изменения пароля</string>
     <string name="USER_CHANGE_PASSWORD_password_successfully_changed">Пароль изменён</string>
     <string name="USER_CHANGE_PASSWORD_wrong_password_length">Недопустимая длина пароля</string>
+    <string name="REGISTER2_continuing_registration">Завершаем регистрацию</string>
 
 </resources><!-- «%1$s» -->

@@ -312,5 +312,8 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
     private void continueRegistration(@NonNull Intent intent) {
 
+        view.setState(iRegisterStep2.ViewState.PROGRESS, R.string.REGISTER2_continuing_registration);
+
+
     }
 }
