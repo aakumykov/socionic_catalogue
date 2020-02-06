@@ -6,5 +6,5 @@
         android:id="@+id/actionEditUser"
         android:icon="@drawable/ic_edit"
         android:title="@string/edit"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 </menu>
