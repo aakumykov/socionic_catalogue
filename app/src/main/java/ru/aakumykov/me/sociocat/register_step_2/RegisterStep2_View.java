@@ -3,6 +3,8 @@ package ru.aakumykov.me.sociocat.register_step_2;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +17,11 @@ import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
+import ru.aakumykov.me.sociocat.register_step_1.RegisterStep1_Presenter;
+import ru.aakumykov.me.sociocat.register_step_1.view_model.RegisterStep1_ViewModel;
+import ru.aakumykov.me.sociocat.register_step_1.view_model.RegisterStep1_ViewModelFactory;
+import ru.aakumykov.me.sociocat.register_step_2.view_model.RegisterStep2_ViewModel;
+import ru.aakumykov.me.sociocat.register_step_2.view_model.RegisterStep2_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class RegisterStep2_View extends BaseView implements iRegisterStep2.View {
@@ -39,13 +46,25 @@ public class RegisterStep2_View extends BaseView implements iRegisterStep2.View 
         setPageTitle(R.string.REGISTER2_page_title);
         activateUpButton();
 
-        presenter = new RegisterStep2_Presenter();
+        RegisterStep2_ViewModel viewModel = new ViewModelProvider(this, new RegisterStep2_ViewModelFactory()).get(RegisterStep2_ViewModel.class);
+
+        if (viewModel.hasPresenter())
+            presenter = viewModel.getPresenter();
+        else {
+            presenter = new RegisterStep2_Presenter();
+            viewModel.storePresenter(presenter);
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         presenter.linkView(this);
+
+        if (presenter.isVirgin())
+            presenter.processInputIntent();
+        else
+            presenter.onConfigChanged();
     }
 
     @Override

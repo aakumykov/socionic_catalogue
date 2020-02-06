@@ -133,6 +133,8 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
         view.disableForm();
         view.showProgressMessage(R.string.REGISTER1_sending_email);
 
+        // TODO: перенести в AuthSingleton
+
         firebaseAuth.sendSignInLinkToEmail(email, actionCodeSettings)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

@@ -27,6 +27,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private boolean userNameIsValid = false;
     private boolean passwordIsValid = false;
+    private boolean isVirgin = true;
 
     // Системные методы
     @Override
@@ -37,6 +38,22 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     @Override
     public void unlinkView() {
         this.view = null;
+    }
+
+    @Override
+    public boolean isVirgin() {
+        return isVirgin;
+    }
+
+    @Override
+    public void processInputIntent() {
+        isVirgin = false;
+
+    }
+
+    @Override
+    public void onConfigChanged() {
+
     }
 
 

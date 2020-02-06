@@ -31,5 +31,9 @@ public interface iRegisterStep2 {
         void processRegistration(Intent intent);
         void linkView(View view);
         void unlinkView();
+
+        boolean isVirgin();
+        void processInputIntent();
+        void onConfigChanged();
     }
 }
