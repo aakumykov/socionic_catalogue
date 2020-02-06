@@ -24,10 +24,13 @@ import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
     private iRegisterStep2.View view;
+
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
     private boolean userNameIsValid = false;
     private boolean passwordIsValid = false;
+
     private boolean isVirgin = true;
     private iRegisterStep2.ViewState currentViewState;
     private int currentMessageId;
@@ -42,7 +45,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
     @Override
     public void unlinkView() {
-        this.view = null;
+        this.view = new RegisterStep2_ViewStub();
     }
 
     @Override
@@ -62,7 +65,24 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
         isVirgin = false;
 
         if (null == intent) {
+            view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_input_data_error, "There is no Intent data");
+            return;
+        }
 
+        String action = intent.getAction() + "";
+        if (TextUtils.isEmpty(action)) {
+            view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_input_data_error, "There is no action in Intent");
+            return;
+        }
+
+        switch (action) {
+            case Constants.ACTION_CONTINUE_REGISTRATION:
+                continueRegistration(intent);
+                break;
+
+            default:
+                view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_input_data_error, "Unknown intent's action: "+action);
+                break;
         }
     }
 
@@ -288,5 +308,9 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     private void onErrorOccured(int userMsgId, String adminErrorMsg) {
         view.showErrorMsg(userMsgId, adminErrorMsg);
         view.enableForm();
+    }
+
+    private void continueRegistration(@NonNull Intent intent) {
+
     }
 }
