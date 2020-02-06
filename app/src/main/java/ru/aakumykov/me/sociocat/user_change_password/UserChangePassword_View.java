@@ -12,7 +12,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
+import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Order;
 import com.mobsandgeeks.saripaar.annotation.Password;
 
 import java.util.List;
@@ -30,15 +32,18 @@ public class UserChangePassword_View extends BaseView implements
         iUserChangePassword.iView,
         Validator.ValidationListener
 {
+    @Order(1)
     @NotEmpty(messageResId = R.string.cannot_be_empty)
     @BindView(R.id.currentPasswordInput)
     EditText currentPasswordInput;
 
-    @NotEmpty(messageResId = R.string.cannot_be_empty)
+    @Order(2)
+    @Length(min = 6, messageResId = R.string.USER_CHANGE_PASSWORD_wrong_password_length)
     @Password(messageResId = R.string.USER_CHANGE_PASSWORD_passwords_mismatch)
     @BindView(R.id.newPasswordInput)
     EditText newPasswordInput;
 
+    @Order(2)
     @ConfirmPassword(messageResId = R.string.USER_CHANGE_PASSWORD_passwords_mismatch)
     @BindView(R.id.newPasswordConfirmationInput)
     EditText newPasswordConfirmationInput;
@@ -183,6 +188,7 @@ public class UserChangePassword_View extends BaseView implements
     // Нажатия
     @OnClick(R.id.saveButton)
     void onSaveButtonClicked() {
+        validator.setValidationMode(Validator.Mode.IMMEDIATE);
         validator.validate();
     }
 
