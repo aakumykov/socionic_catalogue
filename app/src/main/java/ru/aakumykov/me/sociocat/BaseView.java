@@ -172,7 +172,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     @Override
     public Activity getActivity() {
-        return (Activity) this;
+        return this;
     }
 
 
@@ -447,6 +447,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         if (!AuthSingleton.isLoggedIn()) {
             //Log.d(TAG, "doLogin()");
             Intent intent = new Intent(this, Login_View.class);
+            intent.setAction(Constants.ACTION_LOGIN);
             startActivityForResult(intent, Constants.CODE_LOGIN);
         }
     }

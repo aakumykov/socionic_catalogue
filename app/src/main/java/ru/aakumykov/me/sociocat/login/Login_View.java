@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,6 +13,13 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.Password;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,10 +34,16 @@ import ru.aakumykov.me.sociocat.register_step_1.RegisterStep1_View;
 import ru.aakumykov.me.sociocat.reset_password_step1.ResetPasswordStep1_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class Login_View extends BaseView implements iLogin.View
+public class Login_View extends BaseView implements
+        iLogin.View,
+        Validator.ValidationListener
 {
+    @Email(messageResId = R.string.error_incorrect_email)
     @BindView(R.id.emailView) EditText emailInput;
+
+    @Password(messageResId = R.string.cannot_be_empty)
     @BindView(R.id.passwordInput) EditText passwordInput;
+
     @BindView(R.id.loginButton) Button loginButton;
     @BindView(R.id.resetPasswordButton) TextView resetPasswordButton;
     @BindView(R.id.registerButton) Button registerButton;
@@ -38,6 +52,7 @@ public class Login_View extends BaseView implements iLogin.View
 
     public static final String TAG = "Login_View";
     private iLogin.Presenter presenter;
+    private Validator validator;
 
 
     @Override
@@ -58,6 +73,9 @@ public class Login_View extends BaseView implements iLogin.View
             this.presenter = new Login_Presenter();
             viewModel.storePresenter(this.presenter);
         }
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
     }
 
     @Override
@@ -229,10 +247,31 @@ public class Login_View extends BaseView implements iLogin.View
     }
 
 
+    // Validator.ValidationListener
+    @Override
+    public void onValidationSucceeded() {
+        presenter.onFormIsValid();
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(this);
+
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                showToast(message);
+            }
+        }
+    }
+
+
     // Нажатия
     @OnClick(R.id.loginButton)
     void onLoginButtonClicked() {
-        presenter.onLoginClicked();
+        validator.validate();
     }
 
     @OnClick(R.id.resetPasswordButton)

@@ -89,6 +89,9 @@ public class Login_Presenter implements
         }
 
         switch (action) {
+            case Constants.ACTION_LOGIN:
+                break;
+
             case Constants.ACTION_LOGIN_VIA_EMAIL:
                 loginViaEmail(intent);
                 break;
@@ -120,36 +123,8 @@ public class Login_Presenter implements
     }
 
     @Override
-    public void onLoginClicked() {
-        String email = view.getEmail();
-        String password = view.getPassword();
-
-        view.setState(iLogin.ViewState.PROGRESS, R.string.LOGIN_logging_in);
-
-        AuthSingleton.loginWithEmailAndPassword(email, password, new iAuthSingleton.LoginCallbacks() {
-            @Override
-            public void onLoginSuccess(String userId) {
-
-                usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
-                    @Override
-                    public void onUserRefreshSuccess(User user) {
-                        usersSingleton.storeCurrentUser(user);
-                        view.setState(iLogin.ViewState.SUCCESS, R.string.LOGIN_login_success);
-                        view.finishLogin(false, mTransitIntent);
-                    }
-
-                    @Override
-                    public void onUserRefreshFail(String errorMsg) {
-                        onUserRefreshError(errorMsg);
-                    }
-                });
-            }
-
-            @Override
-            public void onLoginError(String errorMsg) {
-                view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_login_error, errorMsg);
-            }
-        });
+    public void onFormIsValid() {
+        loginWithEmailAndPassword();
     }
 
     @Override
@@ -195,6 +170,43 @@ public class Login_Presenter implements
 
 
     // Внутренние методы
+    private void loginWithEmailAndPassword() {
+
+        String email = view.getEmail();
+        String password = view.getPassword();
+
+        view.setState(iLogin.ViewState.PROGRESS, R.string.LOGIN_logging_in);
+
+        AuthSingleton.loginWithEmailAndPassword(email, password, new iAuthSingleton.LoginCallbacks() {
+            @Override
+            public void onLoginSuccess(String userId) {
+                usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
+                    @Override
+                    public void onUserRefreshSuccess(User user) {
+                        usersSingleton.storeCurrentUser(user);
+                        view.setState(iLogin.ViewState.SUCCESS, R.string.LOGIN_login_success);
+                        view.finishLogin(false, mTransitIntent);
+                    }
+
+                    @Override
+                    public void onUserRefreshFail(String errorMsg) {
+                        onUserRefreshError(errorMsg);
+                    }
+                });
+            }
+
+            @Override
+            public void onWrongCredentialsError() {
+                view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_bad_credentials);
+            }
+
+            @Override
+            public void onLoginError(String errorMsg) {
+                view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_login_error, errorMsg);
+            }
+        });
+    }
+
     private void continueRegistration(@NonNull Intent intent) {
 
 //        view.setState(iLogin.ViewState.PROGRESS, R.string._continuing_registration);
@@ -233,6 +245,11 @@ public class Login_Presenter implements
                         onUserRefreshError(errorMsg);
                     }
                 });
+            }
+
+            @Override
+            public void onWrongCredentialsError() {
+
             }
 
             @Override

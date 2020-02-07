@@ -49,6 +49,6 @@ public interface iLogin {
 
         void storeViewState(ViewState state, int messageId, String messageDetails);
 
-        void onLoginClicked();
+        void onFormIsValid();
     }
 }

@@ -24,6 +24,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
+import ru.aakumykov.me.sociocat.FirebaseConstants;
 import ru.aakumykov.me.sociocat.PackageConstants;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -212,8 +213,22 @@ public class AuthSingleton implements iAuthSingleton
             .addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    callbacks.onLoginError(e.getMessage());
-                    MyUtils.printError(TAG, e);
+
+                    FirebaseAuthException firebaseAuthException = (FirebaseAuthException) e;
+
+                    String errorCode = firebaseAuthException.getErrorCode() + "";
+
+                    switch (errorCode) {
+                        case FirebaseConstants.ERROR_WRONG_PASSWORD:
+                        case FirebaseConstants.ERROR_USER_NOT_FOUND:
+                            callbacks.onWrongCredentialsError();
+                            break;
+
+                        default:
+                            callbacks.onLoginError(e.getMessage());
+                            MyUtils.printError(TAG, e);
+                            break;
+                    }
                 }
             });
     }

@@ -24,6 +24,7 @@ public interface iAuthSingleton {
 
     interface LoginCallbacks {
         void onLoginSuccess(String userId);
+        void onWrongCredentialsError();
         void onLoginError(String errorMsg);
     }
 
