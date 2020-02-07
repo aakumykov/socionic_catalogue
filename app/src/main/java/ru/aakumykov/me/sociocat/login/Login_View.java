@@ -40,7 +40,6 @@ public class Login_View extends BaseView implements iLogin.View
     private iLogin.Presenter presenter;
 
 
-    // Системные методы
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,8 +128,6 @@ public class Login_View extends BaseView implements iLogin.View
         presenter.cancelLogin();
     }
 
-
-    // Обязательные методы
     @Override
     public void onUserLogin() {
         // Это должен обрабатывать presenter
@@ -140,7 +137,6 @@ public class Login_View extends BaseView implements iLogin.View
     public void onUserLogout() {
 
     }
-
 
     @Override
     public void setState(iLogin.ViewState state, int messageId) {
@@ -177,7 +173,6 @@ public class Login_View extends BaseView implements iLogin.View
         }
     }
 
-    // Интерфейсные методы
     @Override
     public void disableForm() {
         MyUtils.disable(emailInput);

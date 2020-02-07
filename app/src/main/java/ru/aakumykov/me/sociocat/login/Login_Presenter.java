@@ -23,6 +23,7 @@ import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.other.VKInteractor;
+import ru.aakumykov.me.sociocat.register_step_2.iRegisterStep2;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
@@ -81,9 +82,13 @@ public class Login_Presenter implements
         if (intent.hasExtra(Constants.TRANSIT_INTENT))
             mTransitIntent = intent.getParcelableExtra(Constants.TRANSIT_INTENT);
 
-        mIntentAction = intent.getAction() + "";
+        String action = intent.getAction() + "";
+        if (TextUtils.isEmpty(action)) {
+            view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_data_error, "There is no action in Intent");
+            return;
+        }
 
-        switch (mIntentAction) {
+        switch (action) {
             case Constants.ACTION_LOGIN_VIA_EMAIL:
                 loginViaEmail(intent);
                 break;
@@ -92,7 +97,12 @@ public class Login_Presenter implements
                 view.showToast(R.string.LOGIN_try_new_password);
                 break;
 
+            case Constants.ACTION_CONTINUE_REGISTRATION:
+                continueRegistration(intent);
+                break;
+
             default:
+                view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_data_error, "Unknown intent's action: "+action);
                 break;
         }
     }
@@ -185,12 +195,19 @@ public class Login_Presenter implements
 
 
     // Внутренние методы
+    private void continueRegistration(@NonNull Intent intent) {
+
+//        view.setState(iLogin.ViewState.PROGRESS, R.string._continuing_registration);
+
+
+    }
+
     private void loginViaEmail(@NonNull Intent intent) {
 
         String emailLoginLink = intent.getStringExtra(Intent.EXTRA_TEXT);
 
         if (null == emailLoginLink) {
-            view.showErrorMsg(R.string.LOGIN_login_link_is_broken, "Eamil login link is null");
+            view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_login_link_is_broken, "Eamil login link is null");
             return;
         }
 
