@@ -180,19 +180,7 @@ public class Login_Presenter implements
         AuthSingleton.loginWithEmailAndPassword(email, password, new iAuthSingleton.LoginCallbacks() {
             @Override
             public void onLoginSuccess(String userId) {
-                usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
-                    @Override
-                    public void onUserRefreshSuccess(User user) {
-                        usersSingleton.storeCurrentUser(user);
-                        view.setState(iLogin.ViewState.SUCCESS, R.string.LOGIN_login_success);
-                        view.finishLogin(false, mTransitIntent);
-                    }
-
-                    @Override
-                    public void onUserRefreshFail(String errorMsg) {
-                        onUserRefreshError(errorMsg);
-                    }
-                });
+                loadUserFromServer(userId);
             }
 
             @Override
@@ -203,6 +191,22 @@ public class Login_Presenter implements
             @Override
             public void onLoginError(String errorMsg) {
                 view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_login_error, errorMsg);
+            }
+        });
+    }
+
+    private void loadUserFromServer(@NonNull String userId) {
+        usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
+            @Override
+            public void onUserRefreshSuccess(User user) {
+                usersSingleton.storeCurrentUser(user);
+                view.setState(iLogin.ViewState.SUCCESS, R.string.LOGIN_login_success);
+                view.finishLogin(false, mTransitIntent);
+            }
+
+            @Override
+            public void onUserRefreshFail(String errorMsg) {
+                onUserRefreshError(errorMsg);
             }
         });
     }
