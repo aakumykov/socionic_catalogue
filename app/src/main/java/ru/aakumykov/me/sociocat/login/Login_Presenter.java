@@ -9,21 +9,17 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.dropbox.core.android.Auth;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import org.w3c.dom.Text;
-
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.other.VKInteractor;
-import ru.aakumykov.me.sociocat.register_step_2.iRegisterStep2;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
@@ -163,7 +159,7 @@ public class Login_Presenter implements
             @Override
             public void onGetVKUserInfoError(String errorMsg) {
                 view.enableForm();
-                view.showErrorMsg(R.string.LOGIN_error_getting_user_info, errorMsg);
+                view.showErrorMsg(R.string.LOGIN_error_loading_user_info, errorMsg);
             }
         });
     }
@@ -180,7 +176,19 @@ public class Login_Presenter implements
         AuthSingleton.loginWithEmailAndPassword(email, password, new iAuthSingleton.LoginCallbacks() {
             @Override
             public void onLoginSuccess(String userId) {
-                loadUserFromServer(userId);
+
+                loadUserFromServer(userId, new iLoadUserCallbacks() {
+                    @Override
+                    public void onUserLoadSuccess(User user) {
+                        usersSingleton.storeCurrentUser(user);
+                    }
+
+                    @Override
+                    public void onUserLoadError(String errorMsg) {
+                        view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_error_loading_user_info);
+                        AuthSingleton.logout();
+                    }
+                });
             }
 
             @Override
@@ -193,29 +201,6 @@ public class Login_Presenter implements
                 view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_login_error, errorMsg);
             }
         });
-    }
-
-    private void loadUserFromServer(@NonNull String userId) {
-        usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
-            @Override
-            public void onUserRefreshSuccess(User user) {
-                usersSingleton.storeCurrentUser(user);
-                view.setState(iLogin.ViewState.SUCCESS, R.string.LOGIN_login_success);
-                view.finishLogin(false, mTransitIntent);
-            }
-
-            @Override
-            public void onUserRefreshFail(String errorMsg) {
-                onUserRefreshError(errorMsg);
-            }
-        });
-    }
-
-    private void continueRegistration(@NonNull Intent intent) {
-
-//        view.setState(iLogin.ViewState.PROGRESS, R.string._continuing_registration);
-
-
     }
 
     private void loginViaEmail(@NonNull Intent intent) {
@@ -236,17 +221,16 @@ public class Login_Presenter implements
 
             @Override
             public void onLoginSuccess(String userId) {
-                view.setState(iLogin.ViewState.SUCCESS, R.string.login_success);
 
-                usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
+                loadUserFromServer(userId, new iLoadUserCallbacks() {
                     @Override
-                    public void onUserRefreshSuccess(User user) {
-                        processEmailLoginAction(intent);
+                    public void onUserLoadSuccess(User user) {
+
                     }
 
                     @Override
-                    public void onUserRefreshFail(String errorMsg) {
-                        onUserRefreshError(errorMsg);
+                    public void onUserLoadError(String errorMsg) {
+
                     }
                 });
             }
@@ -266,6 +250,37 @@ public class Login_Presenter implements
                 showError(R.string.LOGIN_error_login_link_has_expired, null);
             }
         });
+    }
+
+    private void loadUserFromServer(@NonNull String userId, iLoadUserCallbacks callbacks) {
+
+        usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
+            @Override
+            public void onUserRefreshSuccess(User user) {
+                callbacks.onUserLoadSuccess(user);
+            }
+
+            @Override
+            public void onUserNotExists() {
+
+            }
+
+            @Override
+            public void onUserRefreshFail(String errorMsg) {
+                callbacks.onUserLoadError(errorMsg);
+//                view.setState(iLogin.ViewState.SUCCESS, R.string.LOGIN_login_success);
+//                view.finishLogin(false, mTransitIntent);
+//                onLoadUserError(errorMsg);
+            }
+        });
+    }
+
+
+    private void continueRegistration(@NonNull Intent intent) {
+
+//        view.setState(iLogin.ViewState.PROGRESS, R.string._continuing_registration);
+
+
     }
 
     private void processEmailLoginAction(@NonNull Intent intent) {
@@ -422,8 +437,14 @@ public class Login_Presenter implements
         }
     }
 
-    private void onUserRefreshError(String errorMsg) {
+    private void onLoadUserFromServerError(String errorMsg) {
         AuthSingleton.logout();
-        view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_error_getting_user_info, errorMsg);
+        view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_error_loading_user_info, errorMsg);
+    }
+
+
+    private interface iLoadUserCallbacks {
+        void onUserLoadSuccess(User user);
+        void onUserLoadError(String errorMsg);
     }
 }

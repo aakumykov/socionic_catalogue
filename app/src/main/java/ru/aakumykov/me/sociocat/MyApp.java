@@ -50,6 +50,11 @@ public class MyApp extends Application {
                         }
 
                         @Override
+                        public void onUserNotExists() {
+
+                        }
+
+                        @Override
                         public void onUserRefreshFail(String errorMsg) {
                             deauthorizeUser();
                         }

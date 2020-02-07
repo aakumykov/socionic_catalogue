@@ -474,7 +474,7 @@
     <string name="LOGIN_error_login_via_vkontakte">Ошибка входа через ВКонтакте</string>
     <string name="LOGIN_creating_custom_token">Создаём ключ доступа</string>
     <string name="LOGIN_getting_user_info">Получаем данные пользователя</string>
-    <string name="LOGIN_error_getting_user_info">Ошибка получения данных пользователя</string>
+    <string name="LOGIN_error_loading_user_info">Ошибка получения данных пользователя</string>
     <string name="LOGIN_updating_user">Обновляем пользователя</string>
     <string name="LOGIN_error_updating_user">Ошибка обновления пользователя</string>
     <string name="LOGIN_error_creating_custom_token">Ошибка создания ключа доступа</string>

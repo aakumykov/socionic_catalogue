@@ -61,6 +61,7 @@ public class AuthSingleton implements iAuthSingleton
     }
 
     public static void createFirebaseCustomToken(String externalToken, iAuthSingleton.CreateFirebaseCustomToken_Callbacks callbacks) {
+
         AuthSingleton.getCustomTokenAPI()
                 .getCustomToken(externalToken)
                 .enqueue(new retrofit2.Callback<String>() {
@@ -258,7 +259,7 @@ public class AuthSingleton implements iAuthSingleton
                         FirebaseAuthException firebaseAuthException = (FirebaseAuthException) e;
                         String errorCode = firebaseAuthException.getErrorCode();
 
-                        if ("ERROR_INVALID_ACTION_CODE".equals(errorCode))
+                        if (FirebaseConstants.ERROR_INVALID_ACTION_CODE.equals(errorCode))
                             callbacks.onLoginLinkHasExpired();
                         else
                             callbacks.onLoginError(e.getMessage());

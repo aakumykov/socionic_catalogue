@@ -16,6 +16,7 @@ import ru.aakumykov.me.sociocat.models.User;
 public interface iUsersSingleton {
 
     void createUser(String userId, String userName, String email, CreateCallbacks callbacks);
+
     void getUserById(String userId, ReadCallbacks callbacks);
     void getUserByEmail(String email, ReadCallbacks callbacks);
     void saveUser(User user, @Nullable SaveCallbacks callbacks) throws UsersSingleton.UsersSingletonException;
@@ -58,6 +59,11 @@ public interface iUsersSingleton {
         void onUserReadFail(String errorMsg);
     }
 
+    interface UserExistenceCallbacks {
+        void inUserExists(User user);
+        void onUserNotExists();
+    }
+
     interface SaveCallbacks {
         void onUserSaveSuccess(User user);
         void onUserSaveFail(String errorMsg);
@@ -75,6 +81,7 @@ public interface iUsersSingleton {
 
     interface RefreshCallbacks {
         void onUserRefreshSuccess(User user);
+        void onUserNotExists();
         void onUserRefreshFail(String errorMsg);
     }
 
