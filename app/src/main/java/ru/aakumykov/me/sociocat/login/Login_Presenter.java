@@ -55,6 +55,7 @@ public class Login_Presenter implements
     public void linkView(iLogin.View view) {
         this.view = view;
     }
+
     @Override
     public void unlinkView() {
         this.view = new Login_View_Stub();
@@ -184,9 +185,13 @@ public class Login_Presenter implements
                     }
 
                     @Override
+                    public void onUserNotExists() {
+
+                    }
+
+                    @Override
                     public void onUserLoadError(String errorMsg) {
-                        view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_error_loading_user_info);
-                        AuthSingleton.logout();
+                        onLoadUserFromServerError(errorMsg);
                     }
                 });
             }
@@ -221,16 +226,20 @@ public class Login_Presenter implements
 
             @Override
             public void onLoginSuccess(String userId) {
-
                 loadUserFromServer(userId, new iLoadUserCallbacks() {
                     @Override
                     public void onUserLoadSuccess(User user) {
+                        continueWhenUserAlreadyExists(emailLoginLink);
+                    }
 
+                    @Override
+                    public void onUserNotExists() {
+                        continueWhenUserNotExists(emailLoginLink);
                     }
 
                     @Override
                     public void onUserLoadError(String errorMsg) {
-
+                        onLoadUserFromServerError(errorMsg);
                     }
                 });
             }
@@ -253,7 +262,6 @@ public class Login_Presenter implements
     }
 
     private void loadUserFromServer(@NonNull String userId, iLoadUserCallbacks callbacks) {
-
         usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
             @Override
             public void onUserRefreshSuccess(User user) {
@@ -262,19 +270,25 @@ public class Login_Presenter implements
 
             @Override
             public void onUserNotExists() {
-
+                callbacks.onUserNotExists();
             }
 
             @Override
             public void onUserRefreshFail(String errorMsg) {
                 callbacks.onUserLoadError(errorMsg);
-//                view.setState(iLogin.ViewState.SUCCESS, R.string.LOGIN_login_success);
-//                view.finishLogin(false, mTransitIntent);
-//                onLoadUserError(errorMsg);
             }
         });
     }
 
+    private void continueWhenUserAlreadyExists(@NonNull String emailLoginLink) {
+        Log.i(TAG, "continueWhenUserAlreadyExists: "+emailLoginLink);
+        view.setState(iLogin.ViewState.SUCCESS, R.string.LOGIN_login_success);
+        view.finishLogin(false, mTransitIntent);
+    }
+
+    private void continueWhenUserNotExists(@NonNull String emailLoginLink) {
+        Log.i(TAG, "continueWhenUserNotExists: "+emailLoginLink);
+    }
 
     private void continueRegistration(@NonNull Intent intent) {
 
@@ -445,6 +459,7 @@ public class Login_Presenter implements
 
     private interface iLoadUserCallbacks {
         void onUserLoadSuccess(User user);
+        void onUserNotExists();
         void onUserLoadError(String errorMsg);
     }
 }

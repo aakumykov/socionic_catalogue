@@ -422,21 +422,22 @@ public class UsersSingleton implements iUsersSingleton {
             public void onUserReadSuccess(User user) {
 
                 if (null == user) {
-                    callbacks.onUserRefreshFail("User is null");
+                    callbacks.onUserNotExists();
                     return;
                 }
 
                 storeCurrentUser(user);
+                callbacks.onUserRefreshSuccess(user);
 
                 readAdminsListFromServer(new ReadAdminsListCallbacks() {
                     @Override
                     public void onReadAdminsListSuccess() {
-                        callbacks.onUserRefreshSuccess(currentUser);
+
                     }
 
                     @Override
                     public void onReadAdminsListFail(String errorMsg) {
-                        callbacks.onUserRefreshFail(errorMsg);
+                        Log.e(TAG, "Error loading admins list from server: "+errorMsg);
                     }
                 });
             }
