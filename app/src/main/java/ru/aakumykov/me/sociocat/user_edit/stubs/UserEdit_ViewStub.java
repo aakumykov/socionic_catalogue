@@ -66,6 +66,11 @@ public class UserEdit_ViewStub extends BaseView_Stub implements iUserEdit.iView 
     }
 
     @Override
+    public void refuseLeavingPage() {
+
+    }
+
+    @Override
     public <T> void displayAvatar(T avatar) {
 
     }

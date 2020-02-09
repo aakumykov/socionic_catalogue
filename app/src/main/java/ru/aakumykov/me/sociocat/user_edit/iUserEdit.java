@@ -54,6 +54,8 @@ public interface iUserEdit {
         void showPasswordError(String errorMsg);
 
         void goToEditEmail(User user);
+
+        void refuseLeavingPage();
     }
 
     interface iPresenter {
