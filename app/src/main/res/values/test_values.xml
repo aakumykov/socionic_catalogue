@@ -5,4 +5,6 @@
 
     <string name="test_password" tools:ignore="MissingTranslation">123456</string>
 
+    <string name="test_new_user_email" tools:ignore="MissingTranslation">aakumykov@mail.ru</string>
+
 </resources>

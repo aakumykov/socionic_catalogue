@@ -23,7 +23,7 @@
             android:inputType="textEmailAddress"
             android:singleLine="true"
             android:hint="@string/REGISTER1_email_input_hint"
-            android:text=""
+            android:text="@string/test_new_user_email"
             android:textAlignment="center"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
