@@ -43,9 +43,11 @@
             android:layout_height="wrap_content"
             android:alpha="0.7"
             android:background="@color/white"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="@+id/avatarView"
             app:layout_constraintTop_toTopOf="@+id/avatarView"
-            app:srcCompat="@drawable/ic_comment_close" />
+            app:srcCompat="@drawable/ic_comment_close"
+            tools:visibility="visible" />
 
         <ProgressBar
             android:id="@+id/avatarThrobber"
