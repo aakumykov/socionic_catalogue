@@ -143,16 +143,13 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.actionSave:
                 presenter.onSaveUserClicked();
                 break;
-
             case android.R.id.home:
                 presenter.onCancelButtonClicked();
                 break;
-
             default:
                 super.onOptionsItemSelected(item);
         }
@@ -406,11 +403,6 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
         intent.putExtra(Constants.USER, user);
         intent.setAction(Intent.ACTION_EDIT);
         startActivityForResult(intent, Constants.CODE_USER_EDIT_EMAIL);
-    }
-
-    @Override
-    public void refuseLeavingPage() {
-        showToast(R.string.USER_EDIT_you_must_create_user_name);
     }
 
 

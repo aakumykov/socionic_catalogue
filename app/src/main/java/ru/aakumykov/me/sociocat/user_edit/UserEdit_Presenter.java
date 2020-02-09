@@ -345,13 +345,6 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
     }
 
     private void cancelEdition() {
-        User user = usersSingleton.getCurrentUser();
-
-        if (null == user) {
-            view.refuseLeavingPage();
-            return;
-        }
-
         if (saveInProgress)
             return;
 

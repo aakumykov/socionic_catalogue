@@ -624,6 +624,5 @@
     <string name="REGISTER2_continuing_registration">Завершаем регистрацию</string>
     <string name="LOGIN_bad_credentials">Неверные имя пользователя и/или пароль</string>
     <string name="USER_EDIT_loading_user_profile">Загружаем профиль пользователя</string>
-    <string name="USER_EDIT_you_must_create_user_name">Придумайте имя пользователя</string>
 
 </resources><!-- «%1$s» -->

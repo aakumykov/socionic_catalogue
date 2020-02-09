@@ -617,6 +617,5 @@
     <string name="REGISTER2_continuing_registration">Continuing registration</string>
     <string name="LOGIN_bad_credentials">Wrong user name and/or password</string>
     <string name="USER_EDIT_loading_user_profile">Loading user profile</string>
-    <string name="USER_EDIT_you_must_create_user_name">You must create user name</string>
 </resources>
 <!-- «%1$s» -->
