@@ -169,6 +169,39 @@ public class UserEdit_View extends BaseView implements iUserEdit.iView, Validato
     }
 
 
+    @Override
+    public void setState(iUserEdit.ViewState state, int messageId) {
+        setState(state, messageId, null);
+    }
+
+    @Override
+    public void setState(iUserEdit.ViewState state, int messageId, @Nullable String messageDetails) {
+        presenter.storeViewState(state, messageId, messageDetails);
+
+        switch (state) {
+            case INITIAL:
+                hideProgressMessage();
+                hideAvatarThrobber();
+                enableEditForm();
+                break;
+
+            case PROGRESS:
+                disableEditForm();
+                showProgressMessage(messageId);
+                break;
+
+            case SUCCESS:
+                hideAvatarThrobber();
+                showInfoMsg(messageId);
+                break;
+
+            case ERROR:
+                hideAvatarThrobber();
+                showErrorMsg(messageId, messageDetails);
+                break;
+        }
+    }
+
     // iUserEdit.iView
     @Override
     public <T> void fillEditForm(User user, T avatar) {

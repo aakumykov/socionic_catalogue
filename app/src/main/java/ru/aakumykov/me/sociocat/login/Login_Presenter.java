@@ -229,12 +229,12 @@ public class Login_Presenter implements
                 loadUserFromServer(userId, new iLoadUserCallbacks() {
                     @Override
                     public void onUserLoadSuccess(User user) {
-                        continueWhenUserAlreadyExists(emailLoginLink);
+                        continueAsExistingUser(emailLoginLink);
                     }
 
                     @Override
                     public void onUserNotExists() {
-                        continueWhenUserNotExists(emailLoginLink);
+                        continueAsNewUser(emailLoginLink);
                     }
 
                     @Override
@@ -280,14 +280,15 @@ public class Login_Presenter implements
         });
     }
 
-    private void continueWhenUserAlreadyExists(@NonNull String emailLoginLink) {
-        Log.i(TAG, "continueWhenUserAlreadyExists: "+emailLoginLink);
+    private void continueAsExistingUser(@NonNull String emailLoginLink) {
+        Log.i(TAG, "continueAsExistingUser: "+emailLoginLink);
         view.setState(iLogin.ViewState.SUCCESS, R.string.LOGIN_login_success);
         view.finishLogin(false, mTransitIntent);
     }
 
-    private void continueWhenUserNotExists(@NonNull String emailLoginLink) {
-        Log.i(TAG, "continueWhenUserNotExists: "+emailLoginLink);
+    private void continueAsNewUser(@NonNull String emailLoginLink) {
+        String userId = AuthSingleton.currentUserId();
+        view.goToFillUserProfile(userId);
     }
 
     private void continueRegistration(@NonNull Intent intent) {

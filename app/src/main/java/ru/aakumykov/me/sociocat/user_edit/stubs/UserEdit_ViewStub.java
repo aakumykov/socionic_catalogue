@@ -96,6 +96,16 @@ public class UserEdit_ViewStub extends BaseView_Stub implements iUserEdit.iView 
     }
 
     @Override
+    public void setState(iUserEdit.ViewState state, int messageId) {
+
+    }
+
+    @Override
+    public void setState(iUserEdit.ViewState state, int messageId, @Nullable String messageDetails) {
+
+    }
+
+    @Override
     public <T> void fillEditForm(User user, T avatar) {
 
     }

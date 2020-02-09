@@ -623,5 +623,6 @@
     <string name="USER_CHANGE_PASSWORD_wrong_password_length">Недопустимая длина пароля</string>
     <string name="REGISTER2_continuing_registration">Завершаем регистрацию</string>
     <string name="LOGIN_bad_credentials">Неверные имя пользователя и/или пароль</string>
+    <string name="USER_EDIT_loading_user_profile">Загружаем профиль пользователя</string>
 
 </resources><!-- «%1$s» -->

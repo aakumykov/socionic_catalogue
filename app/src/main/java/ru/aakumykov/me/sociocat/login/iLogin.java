@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
@@ -31,6 +32,8 @@ public interface iLogin {
 
         String getEmail();
         String getPassword();
+
+        void goToFillUserProfile(@NonNull String userId);
     }
 
     interface Presenter {

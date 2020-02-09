@@ -616,5 +616,6 @@
     <string name="USER_CHANGE_PASSWORD_wrong_password_length">Wrong password length</string>
     <string name="REGISTER2_continuing_registration">Continuing registration</string>
     <string name="LOGIN_bad_credentials">Wrong user name and/or password</string>
+    <string name="USER_EDIT_loading_user_profile">Loading user profile</string>
 </resources>
 <!-- «%1$s» -->

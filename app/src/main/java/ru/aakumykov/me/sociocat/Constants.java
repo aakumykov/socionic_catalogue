@@ -4,7 +4,6 @@ public final class Constants
 {
 
 
-
     private Constants() {}
 
     public enum CardType {
@@ -41,6 +40,7 @@ public final class Constants
     public static final String ACTION_CONTINUE_REGISTRATION = "PATH_ACTION_CONTINUE_REGISTRATION";
     public static final String ACTION_CONFIRM_EMAIL_CHANGE = "ACTION_CONFIRM_EMAIL_CHANGE";
     public static final String ACTION_LOGIN_VIA_EMAIL = "ACTION_LOGIN_VIA_EMAIL";
+    public static final String ACTION_FILL_NEW_USER_PROFILE = "ACTION_FILL_NEW_USER_PROFILE";
 
     public final static String CARD = "CARD";
     public final static String CARD_DRAFT = "CARD_DRAFT";
@@ -90,12 +90,12 @@ public final class Constants
     public final static int CODE_USER_SHOW = 26;
     public final static int CODE_USER_EDIT = 30;
     public static final int CODE_USER_EDIT_EMAIL = 31;
-    public final static int CODE_FORCE_SETUP_USER_NAME = 40;
     public final static int CODE_POST_REPLY = 49;
     public final static int CODE_RESET_PASSWORD = 60;
     public final static int CODE_SHOW_CARD = 70;
     public static final int CODE_DEEP_LINK_PROCESSING = 80;
     public static final int CODE_CHANGE_PASSWORD = 100;
+    public static final int CODE_FILL_NEW_USER_PROFILE = 110;
 
     public final static String TAG_NUMBER_BRACE = "*";
 

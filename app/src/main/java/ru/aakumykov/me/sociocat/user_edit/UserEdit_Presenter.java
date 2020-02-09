@@ -23,6 +23,11 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 class UserEdit_Presenter implements iUserEdit.iPresenter {
 
+    private iUserEdit.ViewState currentViewState;
+    private int currentMessageId;
+    private String currentMessageDetails;
+
+
     private interface iAvatarUploadCallbacks {
         void onAvatarUploaded();
     }
@@ -57,6 +62,13 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
     }
 
     @Override
+    public void storeViewState(iUserEdit.ViewState state, int messageId, String messageDetails) {
+        currentViewState = state;
+        currentMessageId = messageId;
+        currentMessageDetails = messageDetails;
+    }
+
+    @Override
     public boolean hasUser() {
         return null != editedUser;
     }
@@ -68,10 +80,17 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
             return;
         }
 
-        // Не буду проверять Intent на null, так как страница используется внутри приложения.
+        if (null == intent) {
+            showError(R.string.USER_EDIT_data_error, "There is no Intent");
+            return;
+        }
+
+        String action = intent.getAction() + "";
+        boolean isNewUser = Constants.ACTION_FILL_NEW_USER_PROFILE.equals(action);
 
         String userId = intent.getStringExtra(Constants.USER_ID);
-        loadAndShowUser(userId);
+
+        loadAndShowUser(userId, isNewUser);
     }
 
     @Override
@@ -196,9 +215,14 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
         return !AuthSingleton.isLoggedIn();
     }
 
-    private void loadAndShowUser(String userId) {
-        view.disableEditForm();
-        view.showProgressBar();
+    private void loadAndShowUser(String userId, boolean isNewUser) {
+
+        if (isNewUser) {
+            view.setState(iUserEdit.ViewState.INITIAL, -1);
+            return;
+        }
+
+        view.setState(iUserEdit.ViewState.PROGRESS, R.string.USER_EDIT_loading_user_profile);
 
         usersSingleton.getUserById(userId, new iUsersSingleton.ReadCallbacks() {
             @Override
@@ -327,12 +351,8 @@ class UserEdit_Presenter implements iUserEdit.iPresenter {
         view.showCancelEditionDialog();
     }
 
-    private void showError(int errorMessageId, String consoleMessage) {
-        this.errorMessageId = errorMessageId;
-        this.consoleErrorMessage = consoleMessage;
-
-        view.showErrorMsg(errorMessageId, consoleMessage);
-        view.enableEditForm();
+    private void showError(int errorMessageId, String errorMessageDetails) {
+        view.setState(iUserEdit.ViewState.ERROR, errorMessageId, errorMessageDetails);
     }
 
     private void hideError() {

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -32,6 +33,7 @@ import ru.aakumykov.me.sociocat.login.view_model.Login_ViewModelFactory;
 import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.register_step_1.RegisterStep1_View;
 import ru.aakumykov.me.sociocat.reset_password_step1.ResetPasswordStep1_View;
+import ru.aakumykov.me.sociocat.user_edit.UserEdit_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Login_View extends BaseView implements
@@ -116,10 +118,10 @@ public class Login_View extends BaseView implements
             // Обработка происходит в loginVKCallbacks
         }
         else {
-            switch (requestCode) {
-                default:
-                    super.onActivityResult(requestCode, resultCode, data);
-                    break;
+            if (requestCode == Constants.CODE_USER_EDIT) {
+                goToMainPage();
+            } else {
+                super.onActivityResult(requestCode, resultCode, data);
             }
         }
     }
@@ -244,6 +246,14 @@ public class Login_View extends BaseView implements
     @Override
     public String getPassword() {
         return passwordInput.getText().toString();
+    }
+
+    @Override
+    public void goToFillUserProfile(@NonNull String userId) {
+        Intent intent = new Intent(this, UserEdit_View.class);
+        intent.putExtra(Constants.USER_ID, userId);
+        intent.setAction(Constants.ACTION_FILL_NEW_USER_PROFILE);
+        startActivityForResult(intent, Constants.CODE_FILL_NEW_USER_PROFILE);
     }
 
 

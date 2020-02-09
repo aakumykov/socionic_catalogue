@@ -12,7 +12,17 @@ import ru.aakumykov.me.sociocat.utils.ImageType;
 
 public interface iUserEdit {
 
+    enum ViewState {
+        INITIAL,
+        PROGRESS,
+        SUCCESS,
+        ERROR
+    }
+
     interface iView extends iBaseView {
+
+        void setState(ViewState state, int messageId);
+        void setState(ViewState state, int messageId, @Nullable String messageDetails);
 
         <T> void fillEditForm(User user, T avatar);
         <T> void displayAvatar(T avatar);
@@ -49,6 +59,8 @@ public interface iUserEdit {
     interface iPresenter {
         void linkView(iView view);
         void unlinkView();
+
+        void storeViewState(ViewState state, int messageId, String messageDetails);
 
         boolean hasUser();
 
