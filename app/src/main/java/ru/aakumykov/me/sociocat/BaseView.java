@@ -391,6 +391,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         hideMessage();
     }
 
+    @Override
+    public void goToMainPage() {
+        startActivity(new Intent(this, CardsGrid_View.class));
+    }
+
 
     // Внутренние методы
     private void showProgressMessage(String msg) {

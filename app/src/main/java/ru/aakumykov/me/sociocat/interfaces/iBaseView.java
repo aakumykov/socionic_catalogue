@@ -69,4 +69,6 @@ public interface iBaseView {
     void showUserProfile(String userId);
 
     void onPageRefreshed();
+
+    void goToMainPage();
 }

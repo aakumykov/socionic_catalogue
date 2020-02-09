@@ -176,4 +176,9 @@ public class BaseView_Stub implements iBaseView {
     public void onPageRefreshed() {
 
     }
+
+    @Override
+    public void goToMainPage() {
+
+    }
 }
