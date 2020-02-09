@@ -32,6 +32,7 @@ import ru.aakumykov.me.sociocat.login.view_model.Login_ViewModel;
 import ru.aakumykov.me.sociocat.login.view_model.Login_ViewModelFactory;
 import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.register_step_1.RegisterStep1_View;
+import ru.aakumykov.me.sociocat.register_step_2.RegisterStep2_View;
 import ru.aakumykov.me.sociocat.reset_password_step1.ResetPasswordStep1_View;
 import ru.aakumykov.me.sociocat.user_edit.UserEdit_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -249,11 +250,10 @@ public class Login_View extends BaseView implements
     }
 
     @Override
-    public void goToFillUserProfile(@NonNull String userId) {
-        Intent intent = new Intent(this, UserEdit_View.class);
+    public void go2finishRegistration(@NonNull String userId) {
+        Intent intent = new Intent(this, RegisterStep2_View.class);
         intent.putExtra(Constants.USER_ID, userId);
-        intent.setAction(Constants.ACTION_FILL_NEW_USER_PROFILE);
-        startActivityForResult(intent, Constants.CODE_FILL_NEW_USER_PROFILE);
+        startActivity(intent);
     }
 
 

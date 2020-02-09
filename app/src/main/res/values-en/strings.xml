@@ -303,7 +303,7 @@
     <string name="REGISTER2_user_name_too_short">User name too short</string>
     <string name="REGISTER2_user_name_too_long">User name too long</string>
     <string name="REGISTER2_user_name_already_used">User name already used</string>
-    <string name="REGISTER2_user_name_check_error">User name check error</string>
+    <string name="REGISTER2_error_checking_user_name">Error checking user name</string>
     <string name="REGISTER1_you_are_already_authorized">You are already authorized</string>
     <string name="REGISTER1_email_already_used">Email address already used</string>
     <string name="REGISTER1_error_check_email">Error checking email address</string>
@@ -617,5 +617,7 @@
     <string name="REGISTER2_continuing_registration">Continuing registration</string>
     <string name="LOGIN_bad_credentials">Wrong user name and/or password</string>
     <string name="USER_EDIT_loading_user_profile">Loading user profile</string>
+    <string name="REGISTER2_error_setting_password">Error setting password</string>
+    <string name="REGISTER2_error_creating_user">Error creating user</string>
 </resources>
 <!-- «%1$s» -->

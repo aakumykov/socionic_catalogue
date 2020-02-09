@@ -52,7 +52,7 @@
         <activity android:name=".register_step_1.RegisterStep1_View"
             android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name=".register_step_2.RegisterStep2_View" />
+        <activity android:name=".register_step_2.RegisterStep2_View" android:noHistory="true" />
 
         <activity android:name=".reset_password_step1.ResetPasswordStep1_View"
             android:windowSoftInputMode="stateHidden" />

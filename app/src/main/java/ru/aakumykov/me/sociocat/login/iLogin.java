@@ -33,7 +33,7 @@ public interface iLogin {
         String getEmail();
         String getPassword();
 
-        void goToFillUserProfile(@NonNull String userId);
+        void go2finishRegistration(@NonNull String userId);
     }
 
     interface Presenter {

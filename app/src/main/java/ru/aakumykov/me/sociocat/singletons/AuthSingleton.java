@@ -334,6 +334,11 @@ public class AuthSingleton implements iAuthSingleton
                 });
     }
 
+    public static String emailOfCurrentUser() {
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        return (null != firebaseUser) ? firebaseUser.getEmail() : null;
+    }
+
     // Внутренние интерфейсы
     private interface CustomTokenAPI {
         @GET(Config.CREATE_CUSTOM_TOKEN_PATH)

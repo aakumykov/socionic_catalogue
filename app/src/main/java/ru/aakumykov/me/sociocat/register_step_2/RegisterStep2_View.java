@@ -6,10 +6,20 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
+import com.mobsandgeeks.saripaar.annotation.Length;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Password;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,16 +34,27 @@ import ru.aakumykov.me.sociocat.register_step_2.view_model.RegisterStep2_ViewMod
 import ru.aakumykov.me.sociocat.register_step_2.view_model.RegisterStep2_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class RegisterStep2_View extends BaseView implements iRegisterStep2.View {
-
+public class RegisterStep2_View extends BaseView implements
+        iRegisterStep2.View,
+        Validator.ValidationListener
+{
     @BindView(R.id.userMessage) TextView userMessage;
-    @BindView(R.id.userNameInput) EditText userNameInput;
     @BindView(R.id.nameThrobber) ProgressBar nameThrobber;
-    @BindView(R.id.password1Input) EditText password1Input;
-    @BindView(R.id.password2Input) EditText password2Input;
     @BindView(R.id.saveButton) Button saveButton;
 
+    @NotEmpty(messageResId = R.string.cannot_be_empty)
+    @BindView(R.id.userNameInput) EditText userNameInput;
+
+    @Password
+    @Length(min = R.integer.minimum_user_password_length,
+            messageResId = R.string.REGISTER2_password_is_too_short)
+    @BindView(R.id.password1Input) EditText password1Input;
+
+    @ConfirmPassword(messageResId = R.string.REGISTER2_passwords_mismatch)
+    @BindView(R.id.password2Input) EditText password2Input;
+
     private iRegisterStep2.Presenter presenter;
+    private Validator validator;
 
 
     // Системные методы
@@ -54,6 +75,9 @@ public class RegisterStep2_View extends BaseView implements iRegisterStep2.View 
             presenter = new RegisterStep2_Presenter();
             viewModel.storePresenter(presenter);
         }
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
     }
 
     @Override
@@ -88,8 +112,28 @@ public class RegisterStep2_View extends BaseView implements iRegisterStep2.View 
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
 
-    // Интерфейсные методы
+            case android.R.id.home:
+                presenter.onHomePressed();
+                break;
+
+            default:
+                super.onOptionsItemSelected(item);
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+
+    // iRegisterStep2.View
     @Override
     public void hideUserMessage() {
         MyUtils.hide(userMessage);
@@ -106,16 +150,35 @@ public class RegisterStep2_View extends BaseView implements iRegisterStep2.View 
         presenter.storeViewState(state, messageId, messageDetails);
 
         switch (state) {
+            case CHECKING_USER_NAME:
+                disableForm();
+                hideProgressMessage();
+                showNameThrobber();
+                break;
+
             case PROGRESS:
+                disableForm();
+                hideNameThrobber();
                 showProgressMessage(messageId);
                 break;
 
             case SUCCESS:
                 hideProgressMessage();
+                hideNameThrobber();
                 showToast(messageId);
+                goMainPage();
+                break;
+
+            case NAME_ERROR:
+                hideNameThrobber();
+                hideProgressMessage();
+                enableForm();
+                userNameInput.setError(getString(messageId));
                 break;
 
             case ERROR:
+                enableForm();
+                hideNameThrobber();
                 showErrorMsg(messageId, messageDetails);
                 break;
         }
@@ -187,10 +250,21 @@ public class RegisterStep2_View extends BaseView implements iRegisterStep2.View 
     }
 
 
+    // Validator.ValidationListener
+    @Override
+    public void onValidationSucceeded() {
+        presenter.onFormIsValid();
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+
+    }
+
     // Нажатия
     @OnClick(R.id.saveButton)
     void onSendButtonClicked() {
-        presenter.processRegistration(getIntent());
+        validator.validate();
     }
 
 }

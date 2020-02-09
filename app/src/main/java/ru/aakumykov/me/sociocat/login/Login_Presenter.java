@@ -288,7 +288,7 @@ public class Login_Presenter implements
 
     private void continueAsNewUser(@NonNull String emailLoginLink) {
         String userId = AuthSingleton.currentUserId();
-        view.goToFillUserProfile(userId);
+        view.go2finishRegistration(userId);
     }
 
     private void continueRegistration(@NonNull Intent intent) {

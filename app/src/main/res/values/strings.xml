@@ -305,7 +305,7 @@
     <string name="REGISTER2_user_name_too_short">Имя слишком короткое</string>
     <string name="REGISTER2_user_name_too_long">Имя слишком длинное</string>
     <string name="REGISTER2_user_name_already_used">Имя уже используется</string>
-    <string name="REGISTER2_user_name_check_error">Ошибка проверки имени</string>
+    <string name="REGISTER2_error_checking_user_name">Ошибка проверки имени</string>
     <string name="REGISTER1_you_are_already_authorized">Вы уже авторизованы</string>
     <string name="REGISTER1_email_already_used">Электронная почта уже используется</string>
     <string name="REGISTER1_error_check_email">Ошибка проверки электронной почты</string>
@@ -624,5 +624,7 @@
     <string name="REGISTER2_continuing_registration">Завершаем регистрацию</string>
     <string name="LOGIN_bad_credentials">Неверные имя пользователя и/или пароль</string>
     <string name="USER_EDIT_loading_user_profile">Загружаем профиль пользователя</string>
+    <string name="REGISTER2_error_setting_password">Ошибка установки пароля</string>
+    <string name="REGISTER2_error_creating_user">Ошибка создания пользователя</string>
 
 </resources><!-- «%1$s» -->

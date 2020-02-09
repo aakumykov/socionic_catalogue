@@ -62,7 +62,7 @@
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:text="123456"
+        android:text=""
         android:textAlignment="center"
         android:textSize="18sp" />
 
@@ -75,7 +75,7 @@
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:text="123456"
+        android:text=""
         android:textAlignment="center"
         android:textSize="18sp" />
 

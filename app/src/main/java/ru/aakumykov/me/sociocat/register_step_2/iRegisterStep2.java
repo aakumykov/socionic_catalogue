@@ -10,8 +10,11 @@ import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 public interface iRegisterStep2 {
 
     enum ViewState {
+        INITIAL,
         PROGRESS,
         SUCCESS,
+        CHECKING_USER_NAME,
+        NAME_ERROR,
         ERROR
     }
 
@@ -48,5 +51,10 @@ public interface iRegisterStep2 {
         boolean isVirgin();
         void processInputIntent(@Nullable Intent intent);
         void onConfigChanged();
+
+        void onFormIsValid();
+
+        void onBackPressed();
+        void onHomePressed();
     }
 }

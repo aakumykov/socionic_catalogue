@@ -18,7 +18,9 @@ import com.google.firebase.auth.FirebaseUser;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
@@ -64,31 +66,27 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     public void processInputIntent(@Nullable Intent intent) {
         isVirgin = false;
 
-        if (null == intent) {
-            view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_input_data_error, "There is no Intent data");
-            return;
-        }
-
-        String action = intent.getAction() + "";
-        if (TextUtils.isEmpty(action)) {
-            view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_input_data_error, "There is no action in Intent");
-            return;
-        }
-
-        switch (action) {
-            case Constants.ACTION_CONTINUE_REGISTRATION:
-                continueRegistration(intent);
-                break;
-
-            default:
-                view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_input_data_error, "Unknown intent's action: "+action);
-                break;
-        }
+        continueRegistration(intent);
     }
 
     @Override
     public void onConfigChanged() {
 
+    }
+
+    @Override
+    public void onFormIsValid() {
+        checkUserName();
+    }
+
+    @Override
+    public void onBackPressed() {
+        pageLeaveRequested();
+    }
+
+    @Override
+    public void onHomePressed() {
+        pageLeaveRequested();
     }
 
 
@@ -109,6 +107,70 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
 
     // Внутренние методы
+    private void checkUserName() {
+
+        view.setState(iRegisterStep2.ViewState.CHECKING_USER_NAME, -1);
+
+        usersSingleton.checkNameExists(view.getUserName(), new iUsersSingleton.CheckExistanceCallbacks() {
+            @Override
+            public void onCheckComplete() {
+
+            }
+
+            @Override
+            public void onExists() {
+                view.setState(iRegisterStep2.ViewState.NAME_ERROR, R.string.REGISTER2_user_name_already_used);
+            }
+
+            @Override
+            public void onNotExists() {
+                setPasswordAndCreateUser();
+            }
+
+            @Override
+            public void onCheckFail(String errorMsg) {
+                view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_error_checking_user_name);
+            }
+        });
+    }
+
+    private void setPasswordAndCreateUser() {
+
+        view.setState(iRegisterStep2.ViewState.PROGRESS, R.string.REGISTER2_creating_user);
+
+        AuthSingleton.changePassword(view.getPassword1(), new iAuthSingleton.ChangePasswordCallbacks() {
+            @Override
+            public void onChangePasswordSuccess() {
+                createUser();
+            }
+
+            @Override
+            public void onChangePasswordError(String errorMsg) {
+                view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_error_setting_password);
+            }
+        });
+    }
+
+    private void createUser() {
+
+        view.setState(iRegisterStep2.ViewState.PROGRESS, R.string.REGISTER2_creating_user);
+
+        String userId = AuthSingleton.currentUserId();
+        String email = AuthSingleton.emailOfCurrentUser();
+
+        usersSingleton.createUser(userId, view.getUserName(), email, new iUsersSingleton.CreateCallbacks() {
+            @Override
+            public void onUserCreateSuccess(User user) {
+                view.setState(iRegisterStep2.ViewState.SUCCESS, R.string.REGISTER2_registration_success);
+            }
+
+            @Override
+            public void onUserCreateFail(String errorMsg) {
+                view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_error_creating_user);
+            }
+        });
+    }
+
     private boolean formValidLocally() {
         return checkPassword() && checkUserNameLocal();
     }
@@ -236,7 +298,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
                 @Override
                 public void onCheckFail(String errorMsg) {
                     view.hideNameThrobber();
-                    onErrorOccured(R.string.REGISTER2_user_name_check_error, errorMsg);
+                    onErrorOccured(R.string.REGISTER2_error_checking_user_name, errorMsg);
                 }
             });
 
@@ -310,9 +372,19 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
         view.enableForm();
     }
 
-    private void continueRegistration(@NonNull Intent intent) {
+    private void continueRegistration(@Nullable Intent intent) {
 
-        view.setState(iRegisterStep2.ViewState.PROGRESS, R.string.REGISTER2_continuing_registration);
+        if (null == intent) {
+            view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_input_data_error, "There is no Intent data");
+            return;
+        }
+
+        view.setState(iRegisterStep2.ViewState.INITIAL, -1);
+
+    }
+
+    private void pageLeaveRequested() {
+
 
 
     }
