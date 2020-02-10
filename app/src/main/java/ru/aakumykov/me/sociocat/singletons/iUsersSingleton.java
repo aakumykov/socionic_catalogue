@@ -19,7 +19,7 @@ public interface iUsersSingleton {
 
     void getUserById(String userId, ReadCallbacks callbacks);
     void getUserByEmail(String email, ReadCallbacks callbacks);
-    void saveUser(User user, @Nullable SaveCallbacks callbacks) throws UsersSingleton.UsersSingletonException;
+    void saveUser(User user, @Nullable SaveCallbacks callbacks);
     void deleteUser(User user, boolean recursive, DeleteCallbacks callbacks);
     void listUsers(ListCallbacks callbacks);
     void checkNameExists(String name, CheckExistanceCallbacks callbacks);

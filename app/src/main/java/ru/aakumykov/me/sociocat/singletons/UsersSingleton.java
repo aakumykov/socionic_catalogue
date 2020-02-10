@@ -167,14 +167,15 @@ public class UsersSingleton implements iUsersSingleton {
     }
 
     @Override
-    public void saveUser(User user, @Nullable SaveCallbacks callbacks) throws UsersSingletonException {
+    public void saveUser(User user, @Nullable SaveCallbacks callbacks) {
 
         if (null == user)
             throw new IllegalArgumentException("User cannot be null");
 
         String userId = user.getKey();
+
         if (null == userId)
-            throw new UsersSingleton_IllegalDataException("There is no userId getted from User");
+            throw new IllegalArgumentException("User argument does not contain key property");
 
         WriteBatch writeBatch = firebaseFirestore.batch();
 
@@ -367,8 +368,7 @@ public class UsersSingleton implements iUsersSingleton {
             @Override
             public void onUserReadSuccess(User user) {
                 user.setName(userName);
-                try {
-                    saveUser(user, new SaveCallbacks() {
+                saveUser(user, new SaveCallbacks() {
                         @Override
                         public void onUserSaveSuccess(User user) {
                             callbacks.onCreateOrUpdateExternalUser_Success(user);
@@ -379,11 +379,6 @@ public class UsersSingleton implements iUsersSingleton {
                             callbacks.onCreateOrUpdateExternalUser_Error(errorMsg);
                         }
                     });
-                }
-                catch (UsersSingletonException e) {
-                    callbacks.onCreateOrUpdateExternalUser_Error(e.getMessage());
-                    MyUtils.printError(TAG, e);
-                }
             }
 
             @Override
@@ -523,8 +518,8 @@ public class UsersSingleton implements iUsersSingleton {
 
                         currentUser.setEmail(newEmail);
 
-                        try {
-                            saveUser(currentUser, new SaveCallbacks() {
+
+                        saveUser(currentUser, new SaveCallbacks() {
                                 @Override
                                 public void onUserSaveSuccess(User user) {
                                     callbacks.onEmailChangeSuccess();
@@ -534,12 +529,8 @@ public class UsersSingleton implements iUsersSingleton {
                                 public void onUserSaveFail(String errorMsg) {
                                     callbacks.onEmailChangeError(errorMsg);
                                 }
-                            });
-                        }
-                        catch (UsersSingletonException e) {
-                            callbacks.onEmailChangeError(e.getMessage());
-                            MyUtils.printError(TAG, e);
-                        }
+                            }
+                        );
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
