@@ -290,7 +290,7 @@
     <string name="REGISTER2_registration_success">Sugn up complete</string>
     <string name="REGISTER2_password">Password</string>
     <string name="REGISTER2_password_confirmation">Password configmation</string>
-    <string name="REGISTER2_user_message">Create user name and password for your account</string>
+    <string name="REGISTER2_instructions">Set password for your account %1$s</string>
     <string name="RESET_PASSWORD2_user_tip">Create your new password</string>
     <string name="RESET_PASSWORD2_set_password">Set password</string>
     <string name="RESET_PASSWORD2_saving_new_password">Setting new password</string>

@@ -252,11 +252,13 @@ public class Login_Presenter implements
             @Override
             public void onLoginError(String errorMsg) {
                 showError(R.string.login_error, errorMsg);
+                AuthSingleton.logout();
             }
 
             @Override
             public void onLoginLinkHasExpired() {
                 showError(R.string.LOGIN_error_login_link_has_expired, null);
+                AuthSingleton.logout();
             }
         });
     }

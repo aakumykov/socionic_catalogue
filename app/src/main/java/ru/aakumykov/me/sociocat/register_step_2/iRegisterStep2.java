@@ -19,33 +19,21 @@ public interface iRegisterStep2 {
     }
 
     interface View extends iBaseView {
-        void hideUserMessage();
-
         void setState(ViewState state, int messageId);
         void setState(ViewState state, int messageId, @Nullable String messageDetails);
 
-        String getUserName();
-        String getPassword1();
-        String getPassword2();
+        void displayInstructions(String email);
 
-        void showUserNameError(int msgId);
-        void showPassword1Error(int msgId);
-        void showPassword2Error(int msgId);
+        String getPassword();
 
         void showForm();
         void disableForm();
         void enableForm();
 
-        void showNameThrobber();
-        void hideNameThrobber();
-
         void confirmPageLeave();
-
-        void setUserName(String name);
     }
 
     interface Presenter {
-        void processRegistration(Intent intent);
         void linkView(View view);
         void unlinkView();
 

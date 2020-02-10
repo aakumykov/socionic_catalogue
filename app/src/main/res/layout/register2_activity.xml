@@ -20,53 +20,17 @@
             android:id="@+id/userMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/REGISTER2_user_message"
             android:textAlignment="center"
             android:textColor="#1E88E5"
             android:textSize="18sp"
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="12dp"
+            android:padding="6dp"
             android:background="@drawable/shape_register_step2_instructions_background"
             android:visibility="invisible"
             tools:visibility="visible" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/userNameContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            tools:visibility="visible">
-
-            <EditText
-                android:id="@+id/userNameInput"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:ems="10"
-                android:hint="@string/REGISTER2_user_name"
-                android:inputType="textPersonName"
-                android:singleLine="true"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/nameThrobber"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ProgressBar
-                android:id="@+id/nameThrobber"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:indeterminate="true"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <EditText
             android:id="@+id/password1Input"

@@ -1,29 +1,15 @@
 package ru.aakumykov.me.sociocat.register_step_2;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.text.TextUtils;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
 public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
@@ -31,17 +17,12 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
     private iRegisterStep2.View view;
 
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
-    private boolean userNameIsValid = false;
-    private boolean passwordIsValid = false;
 
     private boolean isVirgin = true;
     private iRegisterStep2.ViewState currentViewState;
     private int currentMessageId;
     private String currentMessageDetails;
-    private String tempUserName;
 
 
     // Системные методы
@@ -76,12 +57,12 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
     @Override
     public void onConfigChanged() {
-
+        view.setState(currentViewState, currentMessageId, currentMessageDetails);
     }
 
     @Override
     public void onFormIsValid() {
-        checkUserName();
+        setPassword();
     }
 
     @Override
@@ -90,24 +71,14 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     }
 
 
-    // Интерфейсные методы
-    @Override
-    public void processRegistration(Intent intent) {
-
-        if (null == intent) {
-            showError(R.string.REGISTER2_input_data_error, "Intent is NULL");
-            return;
-        }
-
-        if (formValidLocally()) {
-            signInWithEmailedLink(intent);
-            checkNameByNetwork();
-        }
+    // Внутренние методы
+    private void continueRegistration() {
+        String email = AuthSingleton.emailOfCurrentUser();
+        view.displayInstructions(email);
+        view.setState(iRegisterStep2.ViewState.INITIAL, -1);
     }
 
-
-    // Внутренние методы
-    private void createTempUserName() {
+    /*private void createTempUserName() {
 
         showProgress(R.string.REGISTER2_preparing_user_account);
 
@@ -136,9 +107,9 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
                 AuthSingleton.logout();
             }
         });
-    }
+    }*/
 
-    private void createTempUser(@NonNull String tempUserName) {
+    /*private void createTempUser(@NonNull String tempUserName) {
 
         showProgress(R.string.REGISTER2_preparing_user_account);
 
@@ -151,7 +122,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
                 usersSingleton.storeCurrentUser(user);
 
                 view.setState(iRegisterStep2.ViewState.INITIAL, -1);
-                view.setUserName(user.getName());
+                view.displayEmail(user.getName());
             }
 
             @Override
@@ -160,9 +131,9 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
                 AuthSingleton.logout();
             }
         });
-    }
+    }*/
 
-    private void checkUserName() {
+    /*private void checkUserName() {
 
         view.setState(iRegisterStep2.ViewState.CHECKING_USER_NAME, -1);
 
@@ -194,16 +165,16 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
                 }
             });
         }
-    }
+    }*/
 
     private void setPassword() {
 
         showProgress(R.string.REGISTER2_creating_user);
 
-        AuthSingleton.changePassword(view.getPassword1(), new iAuthSingleton.ChangePasswordCallbacks() {
+        AuthSingleton.changePassword(view.getPassword(), new iAuthSingleton.ChangePasswordCallbacks() {
             @Override
             public void onChangePasswordSuccess() {
-                updateUser();
+                view.setState(iRegisterStep2.ViewState.SUCCESS, R.string.REGISTER2_registration_success);
             }
 
             @Override
@@ -213,7 +184,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
         });
     }
 
-    private void updateUser() {
+    /*private void updateUser() {
 
         showProgress(R.string.REGISTER2_creating_user);
 
@@ -231,203 +202,8 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
                 showError(R.string.REGISTER2_error_creating_user, errorMsg);
             }
         });
-    }
+    }*/
 
-    private boolean formValidLocally() {
-        return checkPassword() && checkUserNameLocal();
-    }
-
-    private boolean checkUserNameLocal() {
-        String userName = view.getUserName();
-
-        if (TextUtils.isEmpty(userName)) {
-            view.showUserNameError(R.string.cannot_be_empty);
-            return false;
-        }
-
-        if (userName.length() < Constants.USER_NAME_MIN_LENGTH) {
-            view.showUserNameError(R.string.REGISTER2_user_name_too_short);
-            return false;
-        }
-
-        if (userName.length() > Constants.USER_NAME_MAX_LENGTH) {
-            view.showUserNameError(R.string.REGISTER2_user_name_too_long);
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean checkPassword() {
-        String password1 = view.getPassword1();
-        String password2 = view.getPassword2();
-
-        if (TextUtils.isEmpty(password1)) {
-            view.showPassword1Error(R.string.cannot_be_empty);
-            return false;
-        }
-
-        if (TextUtils.isEmpty(password2)) {
-            view.showPassword2Error(R.string.cannot_be_empty);
-            return false;
-        }
-
-        if (!password1.equals(password2)) {
-            view.showPassword1Error(R.string.REGISTER2_passwords_mismatch);
-            view.showPassword2Error(R.string.REGISTER2_passwords_mismatch);
-            return false;
-        }
-
-        if (password1.length() < Constants.PASSWORD_MIN_LENGTH) {
-            view.showPassword1Error(R.string.REGISTER2_password_is_too_short);
-            view.showPassword2Error(R.string.REGISTER2_password_is_too_short);
-            return false;
-        }
-
-        return true;
-    }
-
-    private void signInWithEmailedLink(Intent intent) {
-        try {
-            String emailSignInURI = intent.getStringExtra("emailSignInURL");
-
-            if (firebaseAuth.isSignInWithEmailLink(emailSignInURI)) {
-
-                SharedPreferences sharedPreferences = view.getSharedPrefs(Constants.SHARED_PREFERENCES_EMAIL);
-
-                if (sharedPreferences.contains("email")) {
-                    final String storedEmail = sharedPreferences.getString("email", null);
-
-                    firebaseAuth.signInWithEmailLink(storedEmail, emailSignInURI)
-                            .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                                @Override
-                                public void onSuccess(AuthResult authResult) {
-                                    checkNameByNetwork();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    showError(R.string.REGISTER2_registration_error, e.getMessage());
-                                    e.printStackTrace();
-                                }
-                            });
-
-                } else {
-                    showError(R.string.REGISTER2_registration_error, "Locally stored email not found");
-                }
-
-            } else {
-                showError(R.string.REGISTER2_registration_error, "Cannot sign in with email link");
-            }
-
-        } catch (Exception e) {
-            showError(R.string.REGISTER2_input_data_error, e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    private void checkNameByNetwork() {
-        String userName = view.getUserName();
-
-        view.showNameThrobber();
-
-        try {
-            usersSingleton.checkNameExists(userName, new iUsersSingleton.CheckExistanceCallbacks() {
-                @Override
-                public void onCheckComplete() {
-                }
-
-                @Override
-                public void onExists() {
-                    view.hideNameThrobber();
-                    view.showUserNameError(R.string.REGISTER2_user_name_already_used);
-                }
-
-                @Override
-                public void onNotExists() {
-                    try {
-                        String userId = firebaseAuth.getUid();
-                        String email = firebaseAuth.getCurrentUser().getEmail();
-                        createAppUser(userId, email);
-
-                    } catch (Exception e) {
-                        showError(R.string.REGISTER2_registration_error, e.getMessage());
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onCheckFail(String errorMsg) {
-                    view.hideNameThrobber();
-                    showError(R.string.REGISTER2_error_checking_user_name, errorMsg);
-                }
-            });
-
-        } catch (Exception e) {
-            view.enableForm();
-            showError(R.string.REGISTER2_registration_error, e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    private void createAppUser(String userId, String email) {
-        try {
-            view.disableForm();
-            view.showProgressMessage(R.string.REGISTER2_registration_in_progress);
-
-            String userName = view.getUserName();
-
-            usersSingleton.createUser(userId, userName, email, new iUsersSingleton.CreateCallbacks() {
-                @Override
-                public void onUserCreateSuccess(User user) {
-                    setUserPassword();
-                }
-
-                @Override
-                public void onUserCreateFail(String errorMsg) {
-                    showError(R.string.REGISTER2_registration_error, errorMsg);
-                }
-            });
-
-        } catch (Exception e) {
-            showError(R.string.REGISTER2_registration_error, e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    private void setUserPassword() {
-        try {
-
-            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-
-            String password = view.getPassword1();
-
-            firebaseUser.updatePassword(password)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            view.hideProgressMessage();
-                            view.showToast(R.string.REGISTER2_registration_success);
-                            view.goToMainPage();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            showError(R.string.REGISTER2_registration_error, e.getMessage());
-                            e.printStackTrace();
-                        }
-                    });
-
-        } catch (Exception e) {
-            showError(R.string.REGISTER2_registration_error, e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-
-    // TODO: удалять FirebaseUser ...
     private void showProgress(int messageId) {
         view.setState(iRegisterStep2.ViewState.PROGRESS, messageId);
     }
@@ -435,10 +211,6 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     private void showError(int messageId, String messageDetails) {
         view.setState(iRegisterStep2.ViewState.ERROR, messageId, messageDetails);
         Log.e(TAG, messageDetails);
-    }
-
-    private void continueRegistration() {
-        createTempUserName();
     }
 
     private void pageLeaveRequested() {

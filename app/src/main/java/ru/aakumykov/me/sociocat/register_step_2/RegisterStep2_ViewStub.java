@@ -5,10 +5,6 @@ import androidx.annotation.Nullable;
 import ru.aakumykov.me.sociocat.BaseView_Stub;
 
 public class RegisterStep2_ViewStub extends BaseView_Stub implements iRegisterStep2.View {
-    @Override
-    public void hideUserMessage() {
-
-    }
 
     @Override
     public void setState(iRegisterStep2.ViewState state, int messageId) {
@@ -21,33 +17,8 @@ public class RegisterStep2_ViewStub extends BaseView_Stub implements iRegisterSt
     }
 
     @Override
-    public String getUserName() {
+    public String getPassword() {
         return null;
-    }
-
-    @Override
-    public String getPassword1() {
-        return null;
-    }
-
-    @Override
-    public String getPassword2() {
-        return null;
-    }
-
-    @Override
-    public void showUserNameError(int msgId) {
-
-    }
-
-    @Override
-    public void showPassword1Error(int msgId) {
-
-    }
-
-    @Override
-    public void showPassword2Error(int msgId) {
-
     }
 
     @Override
@@ -66,22 +37,13 @@ public class RegisterStep2_ViewStub extends BaseView_Stub implements iRegisterSt
     }
 
     @Override
-    public void showNameThrobber() {
-
-    }
-
-    @Override
-    public void hideNameThrobber() {
-
-    }
-
-    @Override
     public void confirmPageLeave() {
 
     }
 
     @Override
-    public void setUserName(String name) {
+    public void displayInstructions(String email) {
 
     }
+
 }

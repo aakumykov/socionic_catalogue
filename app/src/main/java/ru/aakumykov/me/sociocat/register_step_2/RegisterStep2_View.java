@@ -7,17 +7,14 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
 import com.mobsandgeeks.saripaar.annotation.Length;
-import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Password;
 
 import java.util.List;
@@ -38,14 +35,10 @@ public class RegisterStep2_View extends BaseView implements
         iRegisterStep2.View,
         Validator.ValidationListener
 {
-    @BindView(R.id.userMessage) TextView userMessage;
-    @BindView(R.id.userNameContainer) ViewGroup userNameContainer;
-    @BindView(R.id.nameThrobber) ProgressBar nameThrobber;
+    @BindView(R.id.userMessage) TextView instructionsView;
+    @BindView(R.id.emailView) TextView emailView;
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
-
-    @NotEmpty(messageResId = R.string.cannot_be_empty)
-    @BindView(R.id.userNameInput) EditText userNameInput;
 
     @Password(messageResId = R.string.incorrect_password)
     @Length(min = Config.PASSWORD_MIN_LENGTH, messageResId = R.string.REGISTER2_password_is_too_short)
@@ -136,11 +129,6 @@ public class RegisterStep2_View extends BaseView implements
 
     // iRegisterStep2.View
     @Override
-    public void hideUserMessage() {
-        MyUtils.hide(userMessage);
-    }
-
-    @Override
     public void setState(iRegisterStep2.ViewState state, int messageId) {
         setState(state, messageId, null);
     }
@@ -161,33 +149,27 @@ public class RegisterStep2_View extends BaseView implements
                 disableForm();
                 hideInstructions();
                 hideProgressMessage();
-                showNameThrobber();
                 break;
 
             case PROGRESS:
                 disableForm();
                 hideInstructions();
-                hideNameThrobber();
                 showProgressMessage(messageId);
                 break;
 
             case SUCCESS:
                 hideProgressMessage();
-                hideNameThrobber();
                 showToast(messageId);
                 goToMainPage();
                 break;
 
             case NAME_ERROR:
-                hideNameThrobber();
                 hideProgressMessage();
                 enableForm();
                 showInstructions();
-                userNameInput.setError(getString(messageId));
                 break;
 
             case ERROR:
-                hideNameThrobber();
                 enableForm();
                 showInstructions();
                 showErrorMsg(messageId, messageDetails);
@@ -196,42 +178,13 @@ public class RegisterStep2_View extends BaseView implements
     }
 
     @Override
-    public String getUserName() {
-        return userNameInput.getText().toString();
-    }
-
-    @Override
-    public String getPassword1() {
+    public String getPassword() {
         return password1Input.getText().toString();
     }
 
     @Override
-    public String getPassword2() {
-        return password2Input.getText().toString();
-    }
-
-    @Override
-    public void showUserNameError(int msgId) {
-        String message = getResources().getString(msgId);
-        userNameInput.setError(message);
-    }
-
-    @Override
-    public void showPassword1Error(int msgId) {
-        String message = getResources().getString(msgId);
-        password1Input.setError(message);
-    }
-
-    @Override
-    public void showPassword2Error(int msgId) {
-        String message = getResources().getString(msgId);
-        password2Input.setError(message);
-    }
-
-    @Override
     public void showForm() {
-        MyUtils.show(userMessage);
-        MyUtils.show(userNameContainer);
+        MyUtils.show(instructionsView);
         MyUtils.show(password1Input);
         MyUtils.show(password2Input);
         MyUtils.show(saveButton);
@@ -251,18 +204,6 @@ public class RegisterStep2_View extends BaseView implements
         MyUtils.enable(password1Input);
         MyUtils.enable(password2Input);
         MyUtils.enable(saveButton);
-    }
-
-    @Override
-    public void showNameThrobber() {
-        MyUtils.disable(userNameInput);
-        MyUtils.show(nameThrobber);
-    }
-
-    @Override
-    public void hideNameThrobber() {
-        MyUtils.enable(userNameInput);
-        MyUtils.hide(nameThrobber);
     }
 
     @Override
@@ -293,8 +234,9 @@ public class RegisterStep2_View extends BaseView implements
     }
 
     @Override
-    public void setUserName(String name) {
-        userNameInput.setText(name);
+    public void displayInstructions(String email) {
+        String text = MyUtils.getString(this, R.string.REGISTER2_instructions, email);
+        instructionsView.setText(text);
     }
 
 
@@ -333,10 +275,10 @@ public class RegisterStep2_View extends BaseView implements
 
     // Закрытые методы
     private void hideInstructions() {
-        MyUtils.hide(userMessage, true);
+        MyUtils.hide(instructionsView, true);
     }
 
     private void showInstructions() {
-        MyUtils.show(userMessage);
+        MyUtils.show(instructionsView);
     }
 }
