@@ -47,8 +47,8 @@ public class RegisterStep2_View extends BaseView implements
     @BindView(R.id.userNameInput) EditText userNameInput;
 
     @Password(messageResId = R.string.incorrect_password)
-    @Length(min = R.integer.minimum_user_password_length,
-            messageResId = R.string.REGISTER2_password_is_too_short)
+//    @Length(min = R.integer.minimum_user_password_length, messageResId = R.string.REGISTER2_password_is_too_short)
+    @Length(min = 6, messageResId = R.string.REGISTER2_password_is_too_short)
     @BindView(R.id.password1Input) EditText password1Input;
 
     @ConfirmPassword(messageResId = R.string.REGISTER2_passwords_mismatch)
