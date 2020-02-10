@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -39,13 +41,14 @@ public class RegisterStep2_View extends BaseView implements
         Validator.ValidationListener
 {
     @BindView(R.id.userMessage) TextView userMessage;
+    @BindView(R.id.userNameContainer) ViewGroup userNameContainer;
     @BindView(R.id.nameThrobber) ProgressBar nameThrobber;
     @BindView(R.id.saveButton) Button saveButton;
 
     @NotEmpty(messageResId = R.string.cannot_be_empty)
     @BindView(R.id.userNameInput) EditText userNameInput;
 
-    @Password
+    @Password(messageResId = R.string.incorrect_password)
     @Length(min = R.integer.minimum_user_password_length,
             messageResId = R.string.REGISTER2_password_is_too_short)
     @BindView(R.id.password1Input) EditText password1Input;
@@ -150,6 +153,12 @@ public class RegisterStep2_View extends BaseView implements
         presenter.storeViewState(state, messageId, messageDetails);
 
         switch (state) {
+            case INITIAL:
+                hideProgressMessage();
+                showForm();
+                enableForm();
+                break;
+
             case CHECKING_USER_NAME:
                 disableForm();
                 hideProgressMessage();
@@ -218,6 +227,15 @@ public class RegisterStep2_View extends BaseView implements
     }
 
     @Override
+    public void showForm() {
+        MyUtils.show(userMessage);
+        MyUtils.show(userNameContainer);
+        MyUtils.show(password1Input);
+        MyUtils.show(password2Input);
+        MyUtils.show(saveButton);
+    }
+
+    @Override
     public void disableForm() {
         MyUtils.disable(password1Input);
         MyUtils.disable(password2Input);
@@ -258,7 +276,16 @@ public class RegisterStep2_View extends BaseView implements
 
     @Override
     public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(this);
 
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                showToast(message);
+            }
+        }
     }
 
     // Нажатия

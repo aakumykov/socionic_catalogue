@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.register_step_2;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,8 +23,11 @@ import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
 public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
+
+    private static final String TAG = "RegisterStep2_Presenter";
 
     private iRegisterStep2.View view;
 
@@ -66,7 +70,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     public void processInputIntent(@Nullable Intent intent) {
         isVirgin = false;
 
-        continueRegistration(intent);
+        continueRegistration();
     }
 
     @Override
@@ -107,6 +111,60 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
 
     // Внутренние методы
+    private void createTempUserName() {
+
+        view.setState(iRegisterStep2.ViewState.PROGRESS, R.string.REGISTER2_preparing_application);
+
+        String tempUserName = MVPUtils.tempUserName(view.getAppContext());
+
+        usersSingleton.checkNameExists(tempUserName, new iUsersSingleton.CheckExistanceCallbacks() {
+            @Override
+            public void onCheckComplete() {
+
+            }
+
+            @Override
+            public void onExists() {
+                createTempUserName();
+            }
+
+            @Override
+            public void onNotExists() {
+                createTempUser(tempUserName);
+            }
+
+            @Override
+            public void onCheckFail(String errorMsg) {
+                view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_error_preparing_application,
+                        errorMsg);
+
+                Log.e(TAG, "Error checking user name existence: '"+tempUserName+"'");
+                AuthSingleton.logout();
+            }
+        });
+    }
+
+    private void createTempUser(@NonNull String tempUserName) {
+
+        view.setState(iRegisterStep2.ViewState.PROGRESS, R.string.REGISTER2_preparing_application);
+
+        String userId = AuthSingleton.currentUserId();
+        String email = AuthSingleton.emailOfCurrentUser();
+
+        usersSingleton.createUser(userId, tempUserName, email, new iUsersSingleton.CreateCallbacks() {
+            @Override
+            public void onUserCreateSuccess(User user) {
+                view.setState(iRegisterStep2.ViewState.INITIAL, -1);
+            }
+
+            @Override
+            public void onUserCreateFail(String errorMsg) {
+                view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_error_preparing_application, errorMsg);
+                AuthSingleton.logout();
+            }
+        });
+    }
+
     private void checkUserName() {
 
         view.setState(iRegisterStep2.ViewState.CHECKING_USER_NAME, -1);
@@ -124,7 +182,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
             @Override
             public void onNotExists() {
-                setPasswordAndCreateUser();
+                setPassword();
             }
 
             @Override
@@ -134,7 +192,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
         });
     }
 
-    private void setPasswordAndCreateUser() {
+    private void setPassword() {
 
         view.setState(iRegisterStep2.ViewState.PROGRESS, R.string.REGISTER2_creating_user);
 
@@ -372,15 +430,8 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
         view.enableForm();
     }
 
-    private void continueRegistration(@Nullable Intent intent) {
-
-        if (null == intent) {
-            view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_input_data_error, "There is no Intent data");
-            return;
-        }
-
-        view.setState(iRegisterStep2.ViewState.INITIAL, -1);
-
+    private void continueRegistration() {
+        createTempUserName();
     }
 
     private void pageLeaveRequested() {

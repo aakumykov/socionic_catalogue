@@ -591,7 +591,7 @@
     <string name="RESET_PASSWORD_error_checking_email">Error checking email</string>
     <string name="RESET_PASSWORD_finish_dialog_title">Done</string>
     <string name="RESET_PASSWORD_finish_dialog_message">Letter for reset password is sent</string>
-    <string name="LOGIN_error_login_link_has_expired">Link has expired</string>
+    <string name="LOGIN_error_login_link_has_expired">Login link has expired</string>
     <string name="LOGIN_login_link_is_broken">Broken login link</string>
     <string name="LOGIN_link_processing_error">Link processing error</string>
     <string name="email_confirmation">Email confirmation</string>
@@ -619,5 +619,9 @@
     <string name="USER_EDIT_loading_user_profile">Loading user profile</string>
     <string name="REGISTER2_error_setting_password">Error setting password</string>
     <string name="REGISTER2_error_creating_user">Error creating user</string>
+    <string name="incorrect_password">Incorrect password</string>
+    <string name="REGISTER2_preparing_application">Preparing application</string>
+    <string name="CONFIG_temp_user_name_prefix">User</string>
+    <string name="REGISTER2_error_preparing_application">Ошибка подготовки приложения</string>
 </resources>
 <!-- «%1$s» -->

@@ -23,11 +23,17 @@
             android:text="@string/REGISTER2_user_message"
             android:textAlignment="center"
             android:textColor="@color/info"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"
+            android:visibility="invisible"
+            tools:visibility="visible" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/userNameContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            tools:visibility="visible">
 
             <EditText
                 android:id="@+id/userNameInput"
@@ -69,7 +75,9 @@
             android:singleLine="true"
             android:text=""
             android:textAlignment="center"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:visibility="invisible"
+            tools:visibility="visible" />
 
         <EditText
             android:id="@+id/password2Input"
@@ -82,7 +90,9 @@
             android:singleLine="true"
             android:text=""
             android:textAlignment="center"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:visibility="invisible"
+            tools:visibility="visible" />
 
         <Button
             android:id="@+id/saveButton"
@@ -90,6 +100,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/major_button_margin_top"
             android:text="@string/REGISTER2_save"
-            android:textSize="@dimen/major_button_font_size" />
+            android:textSize="@dimen/major_button_font_size"
+            android:visibility="invisible"
+            tools:visibility="visible" />
     </LinearLayout>
 </ScrollView>

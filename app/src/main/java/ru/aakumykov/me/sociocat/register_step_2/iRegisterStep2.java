@@ -32,6 +32,7 @@ public interface iRegisterStep2 {
         void showPassword1Error(int msgId);
         void showPassword2Error(int msgId);
 
+        void showForm();
         void disableForm();
         void enableForm();
 

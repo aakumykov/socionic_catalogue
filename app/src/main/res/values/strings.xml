@@ -626,5 +626,9 @@
     <string name="USER_EDIT_loading_user_profile">Загружаем профиль пользователя</string>
     <string name="REGISTER2_error_setting_password">Ошибка установки пароля</string>
     <string name="REGISTER2_error_creating_user">Ошибка создания пользователя</string>
+    <string name="incorrect_password">Некорректный пароль</string>
+    <string name="REGISTER2_preparing_application">Подготавливаем программу</string>
+    <string name="CONFIG_temp_user_name_prefix">Пользователь</string>
+    <string name="REGISTER2_error_preparing_application">Ошибка подготовки приложения</string>
 
 </resources><!-- «%1$s» -->
