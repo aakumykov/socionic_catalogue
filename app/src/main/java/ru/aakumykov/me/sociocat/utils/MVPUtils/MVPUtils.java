@@ -24,12 +24,15 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
+import com.vk.api.sdk.utils.VKUtils;
 
 import java.io.ByteArrayOutputStream;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -157,7 +160,7 @@ public class MVPUtils {
         if (null == link)
             return null;
 
-        link = String.valueOf(link).trim();
+        link = link.trim();
 
         for (Map.Entry<String,String> entry : youtubePatterns.entrySet()) {
             Pattern p = Pattern.compile(entry.getValue());
@@ -265,6 +268,12 @@ public class MVPUtils {
         }
 
         return spannableString;
+    }
+
+    public static String tempUserName(@NonNull Context context) {
+        String nameSuffix = UUID.randomUUID().toString().substring(9, 12);
+        String namePrefix = context.getResources().getString(R.string.CONFIG_temp_user_name_prefix);
+        return namePrefix+"-"+nameSuffix;
     }
 
 
@@ -432,11 +441,11 @@ public class MVPUtils {
         Uri resultImageUri = null;
 
         if (imageUri instanceof Uri) {
-            imageType = detectImageType(context, (Uri) imageUri);
+            imageType = detectImageType(context, imageUri);
             resultImageUri = (Uri) imageUri;
         }
         else if (imageUri instanceof String) {
-            imageType = detectImageType(context, (String) imageUri);
+            imageType = detectImageType(context, imageUri);
             resultImageUri = Uri.parse((String) imageUri);
         }
         else
