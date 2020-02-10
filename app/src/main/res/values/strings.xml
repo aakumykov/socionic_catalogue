@@ -630,5 +630,7 @@
     <string name="REGISTER2_preparing_application">Подготавливаем программу</string>
     <string name="CONFIG_temp_user_name_prefix">Пользователь</string>
     <string name="REGISTER2_error_preparing_application">Ошибка подготовки приложения</string>
+    <string name="REGISTER2_leave_page_title">Уйти со страницы?</string>
+    <string name="REGISTER2_leave_page_message">Без пароля вы не сможете войти в программу в следующий раз</string>
 
 </resources><!-- «%1$s» -->

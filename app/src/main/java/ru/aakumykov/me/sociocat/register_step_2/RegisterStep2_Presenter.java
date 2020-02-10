@@ -84,12 +84,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     }
 
     @Override
-    public void onBackPressed() {
-        pageLeaveRequested();
-    }
-
-    @Override
-    public void onHomePressed() {
+    public void onCancelRequested() {
         pageLeaveRequested();
     }
 
@@ -155,6 +150,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
             @Override
             public void onUserCreateSuccess(User user) {
                 view.setState(iRegisterStep2.ViewState.INITIAL, -1);
+                view.setUserName(user.getName());
             }
 
             @Override
@@ -405,7 +401,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
                         public void onComplete(@NonNull Task<Void> task) {
                             view.hideProgressMessage();
                             view.showToast(R.string.REGISTER2_registration_success);
-                            view.goMainPage();
+                            view.goToMainPage();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -435,8 +431,6 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     }
 
     private void pageLeaveRequested() {
-
-
-
+        view.confirmPageLeave();
     }
 }

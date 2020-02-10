@@ -76,7 +76,12 @@ public class RegisterStep2_ViewStub extends BaseView_Stub implements iRegisterSt
     }
 
     @Override
-    public void goMainPage() {
+    public void confirmPageLeave() {
+
+    }
+
+    @Override
+    public void setUserName(String name) {
 
     }
 }

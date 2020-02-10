@@ -248,7 +248,7 @@ public class CardEdit_View extends BaseView implements
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed(); // Если не закомментировать, выходит, игнорируя диалог
+//        super.onCancelRequested(); // Если не закомментировать, выходит, игнорируя диалог
         onCancelClicked();
     }
 
@@ -947,11 +947,11 @@ public class CardEdit_View extends BaseView implements
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String text = s.toString();
-                int commaIndex = text.toString().indexOf(",");
+                int commaIndex = text.indexOf(",");
                 if (commaIndex > -1) {
                     String tag = text.substring(0, commaIndex);
                     presenter.processTag(tag);
-                    String restText = text.substring(commaIndex+1, text.length());
+                    String restText = text.substring(commaIndex+1);
                     newTagInput.setText(restText);
                 }
             }

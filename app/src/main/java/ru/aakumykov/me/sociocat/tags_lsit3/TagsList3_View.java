@@ -94,7 +94,7 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
+        //super.onCancelRequested();
 
         if (null != searchView) {
             boolean hasText = !TextUtils.isEmpty(searchView.getQuery());

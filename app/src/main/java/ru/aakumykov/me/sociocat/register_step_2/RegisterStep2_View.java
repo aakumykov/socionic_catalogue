@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.register_step_2;
 
-import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,13 +27,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
-import ru.aakumykov.me.sociocat.register_step_1.RegisterStep1_Presenter;
-import ru.aakumykov.me.sociocat.register_step_1.view_model.RegisterStep1_ViewModel;
-import ru.aakumykov.me.sociocat.register_step_1.view_model.RegisterStep1_ViewModelFactory;
+import ru.aakumykov.me.sociocat.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.sociocat.register_step_2.view_model.RegisterStep2_ViewModel;
 import ru.aakumykov.me.sociocat.register_step_2.view_model.RegisterStep2_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.YesNoDialog;
 
 public class RegisterStep2_View extends BaseView implements
         iRegisterStep2.View,
@@ -44,6 +41,7 @@ public class RegisterStep2_View extends BaseView implements
     @BindView(R.id.userNameContainer) ViewGroup userNameContainer;
     @BindView(R.id.nameThrobber) ProgressBar nameThrobber;
     @BindView(R.id.saveButton) Button saveButton;
+    @BindView(R.id.cancelButton) Button cancelButton;
 
     @NotEmpty(messageResId = R.string.cannot_be_empty)
     @BindView(R.id.userNameInput) EditText userNameInput;
@@ -120,7 +118,7 @@ public class RegisterStep2_View extends BaseView implements
         switch (item.getItemId()) {
 
             case android.R.id.home:
-                presenter.onHomePressed();
+                presenter.onCancelRequested();
                 break;
 
             default:
@@ -132,7 +130,7 @@ public class RegisterStep2_View extends BaseView implements
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        presenter.onCancelRequested();
     }
 
 
@@ -174,7 +172,7 @@ public class RegisterStep2_View extends BaseView implements
                 hideProgressMessage();
                 hideNameThrobber();
                 showToast(messageId);
-                goMainPage();
+                goToMainPage();
                 break;
 
             case NAME_ERROR:
@@ -232,6 +230,7 @@ public class RegisterStep2_View extends BaseView implements
         MyUtils.show(password1Input);
         MyUtils.show(password2Input);
         MyUtils.show(saveButton);
+        MyUtils.show(cancelButton);
         enableForm();
     }
 
@@ -262,9 +261,35 @@ public class RegisterStep2_View extends BaseView implements
     }
 
     @Override
-    public void goMainPage() {
-        Intent intent = new Intent(this, CardsGrid_View.class);
-        startActivity(intent);
+    public void confirmPageLeave() {
+        YesNoDialog yesNoDialog = new YesNoDialog(
+                this,
+                R.string.REGISTER2_leave_page_title,
+                R.string.REGISTER2_leave_page_message,
+                new iDialogCallbacks.YesNoCallbacks() {
+                    @Override
+                    public boolean onCheck() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesAnswer() {
+                        goToMainPage();
+                    }
+
+                    @Override
+                    public void onNoAnswer() {
+
+                    }
+                }
+        );
+
+        yesNoDialog.show();
+    }
+
+    @Override
+    public void setUserName(String name) {
+        userNameInput.setText(name);
     }
 
 
@@ -294,4 +319,8 @@ public class RegisterStep2_View extends BaseView implements
         validator.validate();
     }
 
+    @OnClick(R.id.cancelButton)
+    void onCancelButtonClicked() {
+        presenter.onCancelRequested();
+    }
 }

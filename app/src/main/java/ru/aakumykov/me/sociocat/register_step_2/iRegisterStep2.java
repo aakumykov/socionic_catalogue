@@ -39,7 +39,9 @@ public interface iRegisterStep2 {
         void showNameThrobber();
         void hideNameThrobber();
 
-        void goMainPage();
+        void confirmPageLeave();
+
+        void setUserName(String name);
     }
 
     interface Presenter {
@@ -55,7 +57,6 @@ public interface iRegisterStep2 {
 
         void onFormIsValid();
 
-        void onBackPressed();
-        void onHomePressed();
+        void onCancelRequested();
     }
 }
