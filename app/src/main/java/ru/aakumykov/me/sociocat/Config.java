@@ -15,6 +15,7 @@ public final class Config {
     public final static int DESCRIPTION_MAX_LENGTH = 2000;
     public final static int DIALOG_MESSAGE_LENGTH = 40;
     public final static int LONG_TAG_THRESHOLD = 500;
+    public final static int PASSWORD_MIN_LENGTH = 6;
 
     public static final int AVATAR_MAX_WIDTH = 256;
     public static final int AVATAR_MAX_HEIGHT = 455;

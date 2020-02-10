@@ -26,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.sociocat.register_step_2.view_model.RegisterStep2_ViewModel;
@@ -47,8 +48,7 @@ public class RegisterStep2_View extends BaseView implements
     @BindView(R.id.userNameInput) EditText userNameInput;
 
     @Password(messageResId = R.string.incorrect_password)
-//    @Length(min = R.integer.minimum_user_password_length, messageResId = R.string.REGISTER2_password_is_too_short)
-    @Length(min = 6, messageResId = R.string.REGISTER2_password_is_too_short)
+    @Length(min = Config.PASSWORD_MIN_LENGTH, messageResId = R.string.REGISTER2_password_is_too_short)
     @BindView(R.id.password1Input) EditText password1Input;
 
     @ConfirmPassword(messageResId = R.string.REGISTER2_passwords_mismatch)
