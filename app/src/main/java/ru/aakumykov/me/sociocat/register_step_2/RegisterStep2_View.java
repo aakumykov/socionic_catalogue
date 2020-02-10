@@ -154,16 +154,19 @@ public class RegisterStep2_View extends BaseView implements
             case INITIAL:
                 hideProgressMessage();
                 showForm();
+                showInstructions();
                 break;
 
             case CHECKING_USER_NAME:
                 disableForm();
+                hideInstructions();
                 hideProgressMessage();
                 showNameThrobber();
                 break;
 
             case PROGRESS:
                 disableForm();
+                hideInstructions();
                 hideNameThrobber();
                 showProgressMessage(messageId);
                 break;
@@ -179,12 +182,14 @@ public class RegisterStep2_View extends BaseView implements
                 hideNameThrobber();
                 hideProgressMessage();
                 enableForm();
+                showInstructions();
                 userNameInput.setError(getString(messageId));
                 break;
 
             case ERROR:
-                enableForm();
                 hideNameThrobber();
+                enableForm();
+                showInstructions();
                 showErrorMsg(messageId, messageDetails);
                 break;
         }
@@ -313,6 +318,7 @@ public class RegisterStep2_View extends BaseView implements
         }
     }
 
+
     // Нажатия
     @OnClick(R.id.saveButton)
     void onSendButtonClicked() {
@@ -322,5 +328,15 @@ public class RegisterStep2_View extends BaseView implements
     @OnClick(R.id.cancelButton)
     void onCancelButtonClicked() {
         presenter.onCancelRequested();
+    }
+
+
+    // Закрытые методы
+    private void hideInstructions() {
+        MyUtils.hide(userMessage, true);
+    }
+
+    private void showInstructions() {
+        MyUtils.show(userMessage);
     }
 }

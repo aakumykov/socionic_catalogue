@@ -590,7 +590,7 @@
     <string name="REGISTER1_email_input_hint">Адрес электронной почты</string>
     <string name="REGISTER1_checking_email">Проверяем адрес электронной почты</string>
     <string name="DEEP_LINKS_RECEIVER_continue">Продолжить</string>
-    <string name="checking_email">Проверка электронной почты</string>
+    <string name="checking_email">Проверяем электронную почту</string>
     <string name="USER_EDIT_error_email_already_used">Адрес уже используется</string>
     <string name="USER_EDIT_EMAIL_error_checking_email">Ошибка проверки электронной почты</string>
     <string name="RESET_PASSWORD_checking_emai">Проверяем электронную почту</string>
@@ -627,9 +627,9 @@
     <string name="REGISTER2_error_setting_password">Ошибка установки пароля</string>
     <string name="REGISTER2_error_creating_user">Ошибка создания пользователя</string>
     <string name="incorrect_password">Некорректный пароль</string>
-    <string name="REGISTER2_preparing_application">Подготавливаем программу</string>
+    <string name="REGISTER2_preparing_user_account">Готовим учётную запись</string>
     <string name="CONFIG_temp_user_name_prefix">Пользователь</string>
-    <string name="REGISTER2_error_preparing_application">Ошибка подготовки приложения</string>
+    <string name="REGISTER2_error_preparing_user_account">Ошибка подготовки учётной записи</string>
     <string name="REGISTER2_leave_page_title">Уйти со страницы?</string>
     <string name="REGISTER2_leave_page_message">Без пароля вы не сможете войти в программу в следующий раз</string>
 

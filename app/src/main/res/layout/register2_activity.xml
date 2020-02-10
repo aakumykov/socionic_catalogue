@@ -22,9 +22,13 @@
             android:layout_height="wrap_content"
             android:text="@string/REGISTER2_user_message"
             android:textAlignment="center"
-            android:textColor="@color/info"
+            android:textColor="#1E88E5"
             android:textSize="18sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:background="@drawable/shape_register_step2_instructions_background"
             android:visibility="invisible"
             tools:visibility="visible" />
 

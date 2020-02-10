@@ -41,6 +41,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     private iRegisterStep2.ViewState currentViewState;
     private int currentMessageId;
     private String currentMessageDetails;
+    private String tempUserName;
 
 
     // Системные методы
@@ -94,7 +95,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     public void processRegistration(Intent intent) {
 
         if (null == intent) {
-            onErrorOccured(R.string.REGISTER2_input_data_error, "Intent is NULL");
+            showError(R.string.REGISTER2_input_data_error, "Intent is NULL");
             return;
         }
 
@@ -108,9 +109,9 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     // Внутренние методы
     private void createTempUserName() {
 
-        view.setState(iRegisterStep2.ViewState.PROGRESS, R.string.REGISTER2_preparing_application);
+        showProgress(R.string.REGISTER2_preparing_user_account);
 
-        String tempUserName = MVPUtils.tempUserName(view.getAppContext());
+        this.tempUserName = MVPUtils.tempUserName(view.getAppContext());
 
         usersSingleton.checkNameExists(tempUserName, new iUsersSingleton.CheckExistanceCallbacks() {
             @Override
@@ -130,9 +131,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
             @Override
             public void onCheckFail(String errorMsg) {
-                view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_error_preparing_application,
-                        errorMsg);
-
+                showError(R.string.REGISTER2_error_preparing_user_account, errorMsg);
                 Log.e(TAG, "Error checking user name existence: '"+tempUserName+"'");
                 AuthSingleton.logout();
             }
@@ -141,7 +140,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
     private void createTempUser(@NonNull String tempUserName) {
 
-        view.setState(iRegisterStep2.ViewState.PROGRESS, R.string.REGISTER2_preparing_application);
+        showProgress(R.string.REGISTER2_preparing_user_account);
 
         String userId = AuthSingleton.currentUserId();
         String email = AuthSingleton.emailOfCurrentUser();
@@ -149,13 +148,15 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
         usersSingleton.createUser(userId, tempUserName, email, new iUsersSingleton.CreateCallbacks() {
             @Override
             public void onUserCreateSuccess(User user) {
+                usersSingleton.storeCurrentUser(user);
+
                 view.setState(iRegisterStep2.ViewState.INITIAL, -1);
                 view.setUserName(user.getName());
             }
 
             @Override
             public void onUserCreateFail(String errorMsg) {
-                view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_error_preparing_application, errorMsg);
+                showError(R.string.REGISTER2_error_preparing_user_account, errorMsg);
                 AuthSingleton.logout();
             }
         });
@@ -165,62 +166,69 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
         view.setState(iRegisterStep2.ViewState.CHECKING_USER_NAME, -1);
 
-        usersSingleton.checkNameExists(view.getUserName(), new iUsersSingleton.CheckExistanceCallbacks() {
-            @Override
-            public void onCheckComplete() {
+        String userName = view.getUserName();
 
-            }
+        if (userName.equals(tempUserName)) {
+            setPassword();
+        }
+        else {
+            usersSingleton.checkNameExists(view.getUserName(), new iUsersSingleton.CheckExistanceCallbacks() {
+                @Override
+                public void onCheckComplete() {
 
-            @Override
-            public void onExists() {
-                view.setState(iRegisterStep2.ViewState.NAME_ERROR, R.string.REGISTER2_user_name_already_used);
-            }
+                }
 
-            @Override
-            public void onNotExists() {
-                setPassword();
-            }
+                @Override
+                public void onExists() {
+                    view.setState(iRegisterStep2.ViewState.NAME_ERROR, R.string.REGISTER2_user_name_already_used);
+                }
 
-            @Override
-            public void onCheckFail(String errorMsg) {
-                view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_error_checking_user_name);
-            }
-        });
+                @Override
+                public void onNotExists() {
+                    setPassword();
+                }
+
+                @Override
+                public void onCheckFail(String errorMsg) {
+                    showError(R.string.REGISTER2_error_checking_user_name, errorMsg);
+                }
+            });
+        }
     }
 
     private void setPassword() {
 
-        view.setState(iRegisterStep2.ViewState.PROGRESS, R.string.REGISTER2_creating_user);
+        showProgress(R.string.REGISTER2_creating_user);
 
         AuthSingleton.changePassword(view.getPassword1(), new iAuthSingleton.ChangePasswordCallbacks() {
             @Override
             public void onChangePasswordSuccess() {
-                createUser();
+                updateUser();
             }
 
             @Override
             public void onChangePasswordError(String errorMsg) {
-                view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_error_setting_password);
+                showError(R.string.REGISTER2_error_setting_password, errorMsg);
             }
         });
     }
 
-    private void createUser() {
+    private void updateUser() {
 
-        view.setState(iRegisterStep2.ViewState.PROGRESS, R.string.REGISTER2_creating_user);
+        showProgress(R.string.REGISTER2_creating_user);
 
-        String userId = AuthSingleton.currentUserId();
-        String email = AuthSingleton.emailOfCurrentUser();
+        User user = usersSingleton.getCurrentUser();
+        user.setName(view.getUserName());
 
-        usersSingleton.createUser(userId, view.getUserName(), email, new iUsersSingleton.CreateCallbacks() {
+        usersSingleton.saveUser(user, new iUsersSingleton.SaveCallbacks() {
             @Override
-            public void onUserCreateSuccess(User user) {
+            public void onUserSaveSuccess(User user) {
                 view.setState(iRegisterStep2.ViewState.SUCCESS, R.string.REGISTER2_registration_success);
             }
 
             @Override
-            public void onUserCreateFail(String errorMsg) {
-                view.setState(iRegisterStep2.ViewState.ERROR, R.string.REGISTER2_error_creating_user);
+            public void onUserSaveFail(String errorMsg) {
+                showError(R.string.REGISTER2_error_creating_user, errorMsg);
             }
         });
     }
@@ -300,21 +308,21 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
+                                    showError(R.string.REGISTER2_registration_error, e.getMessage());
                                     e.printStackTrace();
                                 }
                             });
 
                 } else {
-                    onErrorOccured(R.string.REGISTER2_registration_error, "Locally stored email not found");
+                    showError(R.string.REGISTER2_registration_error, "Locally stored email not found");
                 }
 
             } else {
-                onErrorOccured(R.string.REGISTER2_registration_error, "Cannot sign in with email link");
+                showError(R.string.REGISTER2_registration_error, "Cannot sign in with email link");
             }
 
         } catch (Exception e) {
-            onErrorOccured(R.string.REGISTER2_input_data_error, e.getMessage());
+            showError(R.string.REGISTER2_input_data_error, e.getMessage());
             e.printStackTrace();
         }
     }
@@ -344,7 +352,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
                         createAppUser(userId, email);
 
                     } catch (Exception e) {
-                        onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
+                        showError(R.string.REGISTER2_registration_error, e.getMessage());
                         e.printStackTrace();
                     }
                 }
@@ -352,13 +360,13 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
                 @Override
                 public void onCheckFail(String errorMsg) {
                     view.hideNameThrobber();
-                    onErrorOccured(R.string.REGISTER2_error_checking_user_name, errorMsg);
+                    showError(R.string.REGISTER2_error_checking_user_name, errorMsg);
                 }
             });
 
         } catch (Exception e) {
             view.enableForm();
-            onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
+            showError(R.string.REGISTER2_registration_error, e.getMessage());
             e.printStackTrace();
         }
     }
@@ -378,12 +386,12 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
                 @Override
                 public void onUserCreateFail(String errorMsg) {
-                    onErrorOccured(R.string.REGISTER2_registration_error, errorMsg);
+                    showError(R.string.REGISTER2_registration_error, errorMsg);
                 }
             });
 
         } catch (Exception e) {
-            onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
+            showError(R.string.REGISTER2_registration_error, e.getMessage());
             e.printStackTrace();
         }
     }
@@ -407,23 +415,26 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
+                            showError(R.string.REGISTER2_registration_error, e.getMessage());
                             e.printStackTrace();
                         }
                     });
 
         } catch (Exception e) {
-            onErrorOccured(R.string.REGISTER2_registration_error, e.getMessage());
+            showError(R.string.REGISTER2_registration_error, e.getMessage());
             e.printStackTrace();
         }
     }
 
 
     // TODO: удалять FirebaseUser ...
+    private void showProgress(int messageId) {
+        view.setState(iRegisterStep2.ViewState.PROGRESS, messageId);
+    }
 
-    private void onErrorOccured(int userMsgId, String adminErrorMsg) {
-        view.showErrorMsg(userMsgId, adminErrorMsg);
-        view.enableForm();
+    private void showError(int messageId, String messageDetails) {
+        view.setState(iRegisterStep2.ViewState.ERROR, messageId, messageDetails);
+        Log.e(TAG, messageDetails);
     }
 
     private void continueRegistration() {

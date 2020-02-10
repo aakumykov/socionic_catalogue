@@ -620,9 +620,9 @@
     <string name="REGISTER2_error_setting_password">Error setting password</string>
     <string name="REGISTER2_error_creating_user">Error creating user</string>
     <string name="incorrect_password">Incorrect password</string>
-    <string name="REGISTER2_preparing_application">Preparing application</string>
+    <string name="REGISTER2_preparing_user_account">Preparing user account</string>
     <string name="CONFIG_temp_user_name_prefix">User</string>
-    <string name="REGISTER2_error_preparing_application">Ошибка подготовки приложения</string>
+    <string name="REGISTER2_error_preparing_user_account">Error preparing user account</string>
     <string name="REGISTER2_leave_page_title">Leave page?</string>
     <string name="REGISTER2_leave_page_message">Without password you cannot login application next time</string>
 </resources>
