@@ -156,7 +156,6 @@ public class RegisterStep2_View extends BaseView implements
             case INITIAL:
                 hideProgressMessage();
                 showForm();
-                enableForm();
                 break;
 
             case CHECKING_USER_NAME:
@@ -233,6 +232,7 @@ public class RegisterStep2_View extends BaseView implements
         MyUtils.show(password1Input);
         MyUtils.show(password2Input);
         MyUtils.show(saveButton);
+        enableForm();
     }
 
     @Override
