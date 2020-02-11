@@ -289,7 +289,7 @@
     <string name="REGISTER2_registration_error">Ошибка регистрации</string>
     <string name="REGISTER2_registration_in_progress">Идёт регистрация</string>
     <string name="REGISTER2_setting_password">Устанавливаем пароль</string>
-    <string name="REGISTER2_registration_success">Регистрация завершена</string>
+    <string name="REGISTER2_registration_success">Добро пожаловать в программу!</string>
     <string name="REGISTER2_password">Пароль</string>
     <string name="REGISTER2_password_confirmation">Подтверждение пароля</string>
     <string name="REGISTER2_instructions">Задайте пароль для вашей учётной записи %1$s</string>
