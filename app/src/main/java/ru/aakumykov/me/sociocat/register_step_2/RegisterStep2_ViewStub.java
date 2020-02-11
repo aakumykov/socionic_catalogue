@@ -41,9 +41,4 @@ public class RegisterStep2_ViewStub extends BaseView_Stub implements iRegisterSt
 
     }
 
-    @Override
-    public void displayInstructions(String email) {
-
-    }
-
 }

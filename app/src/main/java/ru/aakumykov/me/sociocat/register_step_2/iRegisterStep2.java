@@ -13,16 +13,12 @@ public interface iRegisterStep2 {
         INITIAL,
         PROGRESS,
         SUCCESS,
-        CHECKING_USER_NAME,
-        NAME_ERROR,
         ERROR
     }
 
     interface View extends iBaseView {
         void setState(ViewState state, int messageId);
         void setState(ViewState state, int messageId, @Nullable String messageDetails);
-
-        void displayInstructions(String email);
 
         String getPassword();
 

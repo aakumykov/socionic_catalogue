@@ -74,8 +74,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     // Внутренние методы
     private void continueRegistration() {
         String email = AuthSingleton.emailOfCurrentUser();
-        view.displayInstructions(email);
-        view.setState(iRegisterStep2.ViewState.INITIAL, -1);
+        view.setState(iRegisterStep2.ViewState.INITIAL, -1, email);
     }
 
     /*private void createTempUserName() {
@@ -169,7 +168,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
     private void setPassword() {
 
-        showProgress(R.string.REGISTER2_creating_user);
+        showProgress(R.string.REGISTER2_setting_password);
 
         AuthSingleton.changePassword(view.getPassword(), new iAuthSingleton.ChangePasswordCallbacks() {
             @Override

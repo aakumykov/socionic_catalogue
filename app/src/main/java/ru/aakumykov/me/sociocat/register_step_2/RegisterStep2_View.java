@@ -4,6 +4,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.text.Spanned;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Config;
+import ru.aakumykov.me.sociocat.MyTextUtils;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.interfaces.iDialogCallbacks;
 import ru.aakumykov.me.sociocat.register_step_2.view_model.RegisterStep2_ViewModel;
@@ -36,7 +38,6 @@ public class RegisterStep2_View extends BaseView implements
         Validator.ValidationListener
 {
     @BindView(R.id.userMessage) TextView instructionsView;
-    @BindView(R.id.emailView) TextView emailView;
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
 
@@ -141,14 +142,8 @@ public class RegisterStep2_View extends BaseView implements
         switch (state) {
             case INITIAL:
                 hideProgressMessage();
+                showInstructions(messageDetails);
                 showForm();
-                showInstructions();
-                break;
-
-            case CHECKING_USER_NAME:
-                disableForm();
-                hideInstructions();
-                hideProgressMessage();
                 break;
 
             case PROGRESS:
@@ -158,20 +153,13 @@ public class RegisterStep2_View extends BaseView implements
                 break;
 
             case SUCCESS:
-                hideProgressMessage();
                 showToast(messageId);
                 goToMainPage();
                 break;
 
-            case NAME_ERROR:
-                hideProgressMessage();
-                enableForm();
-                showInstructions();
-                break;
-
             case ERROR:
                 enableForm();
-                showInstructions();
+                showInstructions(messageDetails);
                 showErrorMsg(messageId, messageDetails);
                 break;
         }
@@ -233,12 +221,6 @@ public class RegisterStep2_View extends BaseView implements
         yesNoDialog.show();
     }
 
-    @Override
-    public void displayInstructions(String email) {
-        String text = MyUtils.getString(this, R.string.REGISTER2_instructions, email);
-        instructionsView.setText(text);
-    }
-
 
     // Validator.ValidationListener
     @Override
@@ -274,11 +256,13 @@ public class RegisterStep2_View extends BaseView implements
 
 
     // Закрытые методы
-    private void hideInstructions() {
-        MyUtils.hide(instructionsView, true);
+    private void showInstructions(String email) {
+        Spanned message = MyTextUtils.boldPartOfString(this, R.string.REGISTER2_instructions, email);
+        instructionsView.setText(message);
+        MyUtils.show(instructionsView);
     }
 
-    private void showInstructions() {
-        MyUtils.show(instructionsView);
+    private void hideInstructions() {
+        MyUtils.hide(instructionsView);
     }
 }

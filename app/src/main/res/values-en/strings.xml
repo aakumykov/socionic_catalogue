@@ -286,7 +286,7 @@
     <string name="REGISTER2_input_data_error">Input data error</string>
     <string name="REGISTER2_registration_error">Sign up error</string>
     <string name="REGISTER2_registration_in_progress">Signing up</string>
-    <string name="REGISTER2_creating_user">Creating new user</string>
+    <string name="REGISTER2_setting_password">Setting password</string>
     <string name="REGISTER2_registration_success">Sugn up complete</string>
     <string name="REGISTER2_password">Password</string>
     <string name="REGISTER2_password_confirmation">Password configmation</string>
