@@ -182,6 +182,7 @@ public class Login_Presenter implements
                     @Override
                     public void onUserLoadSuccess(User user) {
                         view.setState(iLogin.ViewState.SUCCESS, R.string.LOGIN_login_success);
+                        view.finishLogin(false, mTransitIntent);
                     }
 
                     @Override
@@ -355,15 +356,6 @@ public class Login_Presenter implements
         String currentUserId = usersSingleton.getCurrentUser().getKey();
 
         Log.d(TAG, "email: "+email+", userIdFromURI: "+userIdFromURI+", currentUserId: "+currentUserId);
-    }
-
-    private void processSuccessfulLogin(User user) {
-        if (!user.isEmailVerified()) {
-            view.notifyToConfirmEmail(user.getKey());
-            return;
-        }
-
-        view.finishLogin(false, mTransitIntent);
     }
 
     private void showError(int messageId, @Nullable String messageDetails) {

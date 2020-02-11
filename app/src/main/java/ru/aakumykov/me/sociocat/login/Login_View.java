@@ -181,7 +181,7 @@ public class Login_View extends BaseView implements
                 break;
 
             case SUCCESS:
-                showInfoMsg(messageId);
+                showToast(messageId);
                 break;
 
             case ERROR:
