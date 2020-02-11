@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat;
 
 public final class Config {
-
     private Config() {}
 
     // Длины
@@ -47,4 +46,6 @@ public final class Config {
     public static final String CARDS_LIST = "CARDS_LIST";
 
     public static final int CARDS_RATING_COUNTERS_NUMBER = 10;
+
+    public static final int CREATE_TEMP_USER_NAME_TRIES_COUNT = 10;
 }

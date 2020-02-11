@@ -3,26 +3,32 @@ package ru.aakumykov.me.sociocat.register_step_2;
 import android.content.Intent;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 
 public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
     private static final String TAG = "RegisterStep2_Presenter";
 
     private iRegisterStep2.View view;
-
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
-    private boolean isVirgin = true;
     private iRegisterStep2.ViewState currentViewState;
     private int currentMessageId;
     private String currentMessageDetails;
+    private boolean isVirgin = true;
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
+
+    private int createTempUserNameAttemptNumber = 0;
 
 
     // Системные методы
@@ -34,13 +40,6 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     @Override
     public void unlinkView() {
         this.view = new RegisterStep2_ViewStub();
-    }
-
-    @Override
-    public void storeViewState(iRegisterStep2.ViewState viewState, int messageId, String messageDetails) {
-        currentViewState = viewState;
-        currentMessageId = messageId;
-        currentMessageDetails = messageDetails;
     }
 
     @Override
@@ -61,6 +60,13 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     }
 
     @Override
+    public void storeViewState(iRegisterStep2.ViewState viewState, int messageId, String messageDetails) {
+        currentViewState = viewState;
+        currentMessageId = messageId;
+        currentMessageDetails = messageDetails;
+    }
+
+    @Override
     public void onFormIsValid() {
         setPassword();
     }
@@ -73,15 +79,19 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
     // Внутренние методы
     private void continueRegistration() {
-        String email = AuthSingleton.emailOfCurrentUser();
-        view.setState(iRegisterStep2.ViewState.INITIAL, -1, email);
+        createTempUserName();
     }
 
-    /*private void createTempUserName() {
+    private void createTempUserName() {
 
         showProgress(R.string.REGISTER2_preparing_user_account);
 
-        this.tempUserName = MVPUtils.tempUserName(view.getAppContext());
+        String tempUserName = MVPUtils.tempUserName(view.getAppContext());
+
+        if (++createTempUserNameAttemptNumber > Config.CREATE_TEMP_USER_NAME_TRIES_COUNT) {
+            showErrorAndLogout(R.string.REGISTER2_error_preparing_user_account, "Cannot create temporary user name");
+            return;
+        }
 
         usersSingleton.checkNameExists(tempUserName, new iUsersSingleton.CheckExistanceCallbacks() {
             @Override
@@ -101,14 +111,13 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
             @Override
             public void onCheckFail(String errorMsg) {
-                showError(R.string.REGISTER2_error_preparing_user_account, errorMsg);
+                showErrorAndLogout(R.string.REGISTER2_error_preparing_user_account, errorMsg);
                 Log.e(TAG, "Error checking user name existence: '"+tempUserName+"'");
-                AuthSingleton.logout();
             }
         });
-    }*/
+    }
 
-    /*private void createTempUser(@NonNull String tempUserName) {
+    private void createTempUser(@NonNull String tempUserName) {
 
         showProgress(R.string.REGISTER2_preparing_user_account);
 
@@ -119,18 +128,15 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
             @Override
             public void onUserCreateSuccess(User user) {
                 usersSingleton.storeCurrentUser(user);
-
-                view.setState(iRegisterStep2.ViewState.INITIAL, -1);
-                view.displayEmail(user.getName());
+                view.setState(iRegisterStep2.ViewState.INITIAL, -1, user.getEmail());
             }
 
             @Override
             public void onUserCreateFail(String errorMsg) {
-                showError(R.string.REGISTER2_error_preparing_user_account, errorMsg);
-                AuthSingleton.logout();
+                showErrorAndLogout(R.string.REGISTER2_error_preparing_user_account, errorMsg);
             }
         });
-    }*/
+    }
 
     /*private void checkUserName() {
 
@@ -210,6 +216,11 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
     private void showError(int messageId, String messageDetails) {
         view.setState(iRegisterStep2.ViewState.ERROR, messageId, messageDetails);
         Log.e(TAG, messageDetails);
+    }
+
+    private void showErrorAndLogout(int messageId, String messageDetails) {
+        showError(messageId, messageDetails);
+        AuthSingleton.logout();
     }
 
     private void pageLeaveRequested() {
