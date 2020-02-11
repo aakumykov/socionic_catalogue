@@ -89,7 +89,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
         String tempUserName = MVPUtils.tempUserName(view.getAppContext());
 
         if (++createTempUserNameAttemptNumber > Config.CREATE_TEMP_USER_NAME_TRIES_COUNT) {
-            showErrorAndLogout(R.string.REGISTER2_error_preparing_user_account, "Cannot create temporary user name");
+            showFatalError(R.string.REGISTER2_error_preparing_user_account, "Cannot create temporary user name");
             return;
         }
 
@@ -111,8 +111,8 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
             @Override
             public void onCheckFail(String errorMsg) {
-                showErrorAndLogout(R.string.REGISTER2_error_preparing_user_account, errorMsg);
-                Log.e(TAG, "Error checking user name existence: '"+tempUserName+"'");
+                showFatalError(R.string.REGISTER2_error_preparing_user_account, errorMsg);
+                Log.e(TAG, "Error checking user name existence ("+tempUserName+"): "+errorMsg);
             }
         });
     }
@@ -220,6 +220,13 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
     private void showErrorAndLogout(int messageId, String messageDetails) {
         showError(messageId, messageDetails);
+        Log.e(TAG, messageDetails);
+        AuthSingleton.logout();
+    }
+
+    private void showFatalError(int messageId, String messageDetails) {
+        view.setState(iRegisterStep2.ViewState.FATAL_ERROR, R.string.REGISTER2_error_preparing_user_account, messageDetails);
+        Log.e(TAG, messageDetails);
         AuthSingleton.logout();
     }
 

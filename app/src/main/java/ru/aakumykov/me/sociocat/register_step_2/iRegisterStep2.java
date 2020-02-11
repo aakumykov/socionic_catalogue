@@ -13,7 +13,8 @@ public interface iRegisterStep2 {
         INITIAL,
         PROGRESS,
         SUCCESS,
-        ERROR
+        ERROR,
+        FATAL_ERROR
     }
 
     interface View extends iBaseView {
@@ -22,7 +23,6 @@ public interface iRegisterStep2 {
 
         String getPassword();
 
-        void showForm();
         void disableForm();
         void enableForm();
 

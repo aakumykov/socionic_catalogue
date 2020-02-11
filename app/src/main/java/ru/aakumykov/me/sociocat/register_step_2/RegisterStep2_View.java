@@ -40,6 +40,7 @@ public class RegisterStep2_View extends BaseView implements
     @BindView(R.id.userMessage) TextView instructionsView;
     @BindView(R.id.saveButton) Button saveButton;
     @BindView(R.id.cancelButton) Button cancelButton;
+    @BindView(R.id.returnButton) Button returnButton;
 
     @Password(messageResId = R.string.incorrect_password)
     @Length(min = Config.PASSWORD_MIN_LENGTH, messageResId = R.string.REGISTER2_password_is_too_short)
@@ -144,6 +145,7 @@ public class RegisterStep2_View extends BaseView implements
                 hideProgressMessage();
                 showInstructions(messageDetails);
                 showForm();
+                enableForm();
                 break;
 
             case PROGRESS:
@@ -158,9 +160,16 @@ public class RegisterStep2_View extends BaseView implements
                 break;
 
             case ERROR:
+                showForm();
                 enableForm();
                 showInstructions(messageDetails);
                 showErrorMsg(messageId, messageDetails);
+                break;
+
+            case FATAL_ERROR:
+                hideForm();
+                showErrorMsg(messageId, messageDetails);
+                MyUtils.show(returnButton);
                 break;
         }
     }
@@ -168,16 +177,6 @@ public class RegisterStep2_View extends BaseView implements
     @Override
     public String getPassword() {
         return password1Input.getText().toString();
-    }
-
-    @Override
-    public void showForm() {
-        MyUtils.show(instructionsView);
-        MyUtils.show(password1Input);
-        MyUtils.show(password2Input);
-        MyUtils.show(saveButton);
-        MyUtils.show(cancelButton);
-        enableForm();
     }
 
     @Override
@@ -254,8 +253,29 @@ public class RegisterStep2_View extends BaseView implements
         presenter.onCancelRequested();
     }
 
+    @OnClick(R.id.returnButton)
+    void onReturnButtonClicked() {
+        goToMainPage();
+    }
+
 
     // Закрытые методы
+    private void showForm() {
+        MyUtils.show(instructionsView);
+        MyUtils.show(password1Input);
+        MyUtils.show(password2Input);
+        MyUtils.show(saveButton);
+        MyUtils.show(cancelButton);
+    }
+
+    private void hideForm() {
+        MyUtils.hide(instructionsView);
+        MyUtils.hide(password1Input);
+        MyUtils.hide(password2Input);
+        MyUtils.hide(saveButton);
+        MyUtils.hide(cancelButton);
+    }
+
     private void showInstructions(String email) {
         Spanned message = MyTextUtils.boldPartOfString(this, R.string.REGISTER2_instructions, email);
         instructionsView.setText(message);

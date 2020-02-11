@@ -22,11 +22,6 @@ public class RegisterStep2_ViewStub extends BaseView_Stub implements iRegisterSt
     }
 
     @Override
-    public void showForm() {
-
-    }
-
-    @Override
     public void disableForm() {
 
     }

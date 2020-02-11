@@ -302,7 +302,8 @@ public class UsersSingleton implements iUsersSingleton {
 
     @Override
     public void checkNameExists(String name, CheckExistanceCallbacks callbacks) {
-        checkUserWithAttributeExists(Constants.USER_NAME_KEY, name, callbacks);
+//        checkUserWithAttributeExists(Constants.USER_NAME_KEY, name, callbacks);
+        checkUserWithAttributeExists(Constants.USER_NAME_KEY, "An23", callbacks);
     }
 
     @Override

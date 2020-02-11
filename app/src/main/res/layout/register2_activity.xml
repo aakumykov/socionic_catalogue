@@ -79,5 +79,13 @@
             android:text="@string/cancel"
             android:visibility="invisible"
             tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/returnButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:text="@string/REGISTER2_return" />
     </LinearLayout>
 </ScrollView>
