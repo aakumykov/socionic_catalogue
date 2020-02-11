@@ -626,5 +626,6 @@
     <string name="REGISTER2_leave_page_title">Leave page?</string>
     <string name="REGISTER2_leave_page_message">Without password you cannot login application next time</string>
     <string name="REGISTER2_return">Go back</string>
+    <string name="LOGIN_error_user_not_found">User not found</string>
 </resources>
 <!-- «%1$s» -->

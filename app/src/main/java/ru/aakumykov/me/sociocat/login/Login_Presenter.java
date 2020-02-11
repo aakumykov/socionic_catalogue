@@ -90,7 +90,7 @@ public class Login_Presenter implements
                 break;
 
             case Constants.ACTION_LOGIN_VIA_EMAIL:
-                loginViaEmail(intent);
+                loginViaEmailLink(intent);
                 break;
 
             case Constants.ACTION_TRY_NEW_PASSWORD:
@@ -181,12 +181,12 @@ public class Login_Presenter implements
                 loadUserFromServer(userId, new iLoadUserCallbacks() {
                     @Override
                     public void onUserLoadSuccess(User user) {
-                        usersSingleton.storeCurrentUser(user);
+                        view.setState(iLogin.ViewState.SUCCESS, R.string.LOGIN_login_success);
                     }
 
                     @Override
                     public void onUserNotExists() {
-
+                        showError(R.string.LOGIN_error_user_not_found, "User with email '"+email+"' not exists");
                     }
 
                     @Override
@@ -208,7 +208,7 @@ public class Login_Presenter implements
         });
     }
 
-    private void loginViaEmail(@NonNull Intent intent) {
+    private void loginViaEmailLink(@NonNull Intent intent) {
 
         String emailLoginLink = intent.getStringExtra(Intent.EXTRA_TEXT);
 
@@ -226,6 +226,7 @@ public class Login_Presenter implements
 
             @Override
             public void onLoginSuccess(String userId) {
+
                 loadUserFromServer(userId, new iLoadUserCallbacks() {
                     @Override
                     public void onUserLoadSuccess(User user) {
@@ -264,9 +265,11 @@ public class Login_Presenter implements
     }
 
     private void loadUserFromServer(@NonNull String userId, iLoadUserCallbacks callbacks) {
+
         usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
             @Override
             public void onUserRefreshSuccess(User user) {
+                usersSingleton.storeCurrentUser(user);
                 callbacks.onUserLoadSuccess(user);
             }
 
@@ -456,7 +459,7 @@ public class Login_Presenter implements
 
     private void onLoadUserFromServerError(String errorMsg) {
         AuthSingleton.logout();
-        view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_error_loading_user_info, errorMsg);
+        showError(R.string.LOGIN_error_loading_user_info, errorMsg);
     }
 
 

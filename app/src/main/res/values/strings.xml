@@ -633,5 +633,6 @@
     <string name="REGISTER2_leave_page_title">Уйти со страницы?</string>
     <string name="REGISTER2_leave_page_message">Без пароля вы не сможете войти в программу в следующий раз</string>
     <string name="REGISTER2_return">Вернуться</string>
+    <string name="LOGIN_error_user_not_found">Пользователь не найден</string>
 
 </resources><!-- «%1$s» -->
