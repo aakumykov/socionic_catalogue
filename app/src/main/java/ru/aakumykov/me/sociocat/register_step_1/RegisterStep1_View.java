@@ -215,6 +215,11 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
         presenter.produceRegistrationStep1();
     }
 
+    @OnClick(R.id.cancelButton)
+    void onCancelButtonClicked() {
+        closePage();
+    }
+
 
     // Внутренние методы
     void goMainPage() {

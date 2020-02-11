@@ -8,8 +8,9 @@ public interface iRegisterStep1 {
     enum ViewStatus {
         INITIAL,
         CHECKING,
+        SUCCESS,
         EMAIL_ERROR,
-        COMMON_ERROR, SUCCESS
+        COMMON_ERROR
     }
 
     interface View extends iBaseView {
