@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,7 +42,6 @@ public class CardShow_View extends BaseView implements
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.commentFormContainer) FrameLayout commentFormContainer;
 
-    private boolean firstRun = true;
     private iCardShow.iDataAdapter dataAdapter;
     private iCardShow.iPresenter presenter;
     private iCommentForm commentForm;
@@ -140,18 +140,27 @@ public class CardShow_View extends BaseView implements
         return super.onCreateOptionsMenu(menu);
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                presenter.onGoBackRequested();
+                break;
+
             case R.id.actionEdit:
                 presenter.onEditCardClicked();
                 break;
+
             case R.id.actionDelete:
                 presenter.onDeleteCardClicked();
                 break;
+
             case R.id.actionOpenInBrowser:
                 presenter.onOpenInBrowserClicked();
                 break;
+
             default:
                 break;
         }
@@ -162,8 +171,9 @@ public class CardShow_View extends BaseView implements
     public void onBackPressed() {
         if (commentForm.isVisible())
             commentForm.hide();
-        else
-            super.onBackPressed();
+        else {
+            presenter.onGoBackRequested();
+        }
     }
 
     @Override
@@ -260,6 +270,14 @@ public class CardShow_View extends BaseView implements
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(imageURL));
         startActivity(intent);
+    }
+
+    @Override
+    public void goBack(@NonNull Card card) {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.CARD, card);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override

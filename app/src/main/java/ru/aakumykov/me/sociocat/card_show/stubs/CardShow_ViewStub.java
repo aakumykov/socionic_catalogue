@@ -2,6 +2,8 @@ package ru.aakumykov.me.sociocat.card_show.stubs;
 
 import android.annotation.SuppressLint;
 
+import androidx.annotation.NonNull;
+
 import ru.aakumykov.me.sociocat.BaseView_Stub;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -73,6 +75,11 @@ public class CardShow_ViewStub extends BaseView_Stub implements iCardShow.iPageV
 
     @Override
     public void openImageInBrowser(String imageURL) {
+
+    }
+
+    @Override
+    public void goBack(@NonNull Card card) {
 
     }
 

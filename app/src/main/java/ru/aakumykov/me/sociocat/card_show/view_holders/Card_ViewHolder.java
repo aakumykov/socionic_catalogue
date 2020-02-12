@@ -101,6 +101,9 @@ public class Card_ViewHolder extends Base_ViewHolder implements
     public void enableRatingControls() {
         MyUtils.enable(cardRatingUpWidget);
         MyUtils.enable(cardRatingDownWidget);
+
+        MyUtils.show(cardRatingView);
+        MyUtils.hide(cardRatingThrobber);
     }
 
 

@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.card_show;
 
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
@@ -43,6 +44,8 @@ public interface iCardShow
         void setSuccessEditionResult(Card card);
 
         void openImageInBrowser(String imageURL);
+
+        void goBack(@NonNull Card card);
     }
 
     interface iDataAdapter {
@@ -119,6 +122,8 @@ public interface iCardShow
         void processInputIntent(@Nullable Intent data);
 
         void onOpenInBrowserClicked();
+
+        void onGoBackRequested();
     }
 
     interface iRatingChangeCallbacks {

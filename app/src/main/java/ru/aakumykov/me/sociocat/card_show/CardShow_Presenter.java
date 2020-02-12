@@ -357,6 +357,11 @@ public class CardShow_Presenter implements iCardShow.iPresenter
             pageView.openImageInBrowser(currentCard.getImageURL());
     }
 
+    @Override
+    public void onGoBackRequested() {
+        pageView.goBack(currentCard);
+    }
+
 
     // Внутренние методы
     private void loadCard(String cardKey, iLoadCardCallbacks callbacks) {
@@ -573,34 +578,38 @@ public class CardShow_Presenter implements iCardShow.iPresenter
                     @Override
                     public void onRatingChangeComplete(int value, @Nullable String errorMsg) {
 
-                        switch (cardRatingAction) {
-                            case RATE_UP:
-                                user.addRatedUpCard(cardKey);
-                                break;
-                            case UNRATE_UP:
-                                user.removeRatedUpCard(cardKey);
-                                break;
-                            case RATE_DOWN:
-                                user.addRatedDownCard(cardKey);
-                                break;
-                            case UNRATE_DOWN:
-                                user.removeRatedDownCard(cardKey);
-                                break;
-                            default:
-                                Log.e(TAG, "Unknown CardRatingAction value: "+ cardRatingAction);
-                                break;
+                        if (null == errorMsg)
+                        {
+                            switch (cardRatingAction) {
+                                case RATE_UP:
+                                    user.addRatedUpCard(cardKey);
+                                    break;
+                                case UNRATE_UP:
+                                    user.removeRatedUpCard(cardKey);
+                                    break;
+                                case RATE_DOWN:
+                                    user.addRatedDownCard(cardKey);
+                                    break;
+                                case UNRATE_DOWN:
+                                    user.removeRatedDownCard(cardKey);
+                                    break;
+                                default:
+                                    Log.e(TAG, "Unknown CardRatingAction value: "+ cardRatingAction);
+                                    break;
+                            }
+
+                            // TODO: или проще обновлять пользователя с сервера?
+
+                            currentCard.setRating(value);
+
+                            cardViewHolder.setRating(value);
+                            cardViewHolder.enableRatingControls();
+                            colorizeCardRatingWidgets(cardViewHolder);
                         }
-
-                        // TODO: или проще обновлять пользователя с сервера?
-
-                        currentCard.setRating(value);
-
-                        cardViewHolder.setRating(value);
-                        cardViewHolder.enableRatingControls();
-                        colorizeCardRatingWidgets(cardViewHolder);
-
-                        if (null != errorMsg)
+                        else {
                             pageView.showToast(R.string.CARD_SHOW_error_changing_card_rating);
+                            cardViewHolder.enableRatingControls();
+                        }
                     }
                 }
         );

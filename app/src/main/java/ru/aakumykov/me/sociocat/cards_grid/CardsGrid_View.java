@@ -565,30 +565,30 @@ public class CardsGrid_View extends BaseView implements
     }
 
     private void processCardShowResult(int resultCode, @Nullable Intent data) {
-        if (RESULT_OK == resultCode) {
-            if (null != data) {
+        if (null != data) {
 
-                String action = data.getAction();
-                if (null == action) action = "";
+            String action = data.getAction();
+            if (null == action) action = "";
 
-                Card card = data.getParcelableExtra(Constants.CARD);
+            Card card = data.getParcelableExtra(Constants.CARD);
 
-                switch (action) {
-                    case Constants.ACTION_DELETE:
-                        dataAdapter.removeItem(positionInWork);
-                        positionInWork = -1;
-                        break;
+            switch (action) {
+                case Constants.ACTION_DELETE:
+                    dataAdapter.removeItem(positionInWork);
+                    positionInWork = -1;
+                    break;
 
-                    case Constants.ACTION_EDIT:
-                        dataAdapter.updateItem(positionInWork, card);
-                        positionInWork = -1;
-                        break;
+                /*case Constants.ACTION_EDIT:
+                    dataAdapter.updateItem(positionInWork, card);
+                    positionInWork = -1;
+                    break;*/
 
-                    default:
-                        break;
-                }
-
+                default:
+                    dataAdapter.updateItem(positionInWork, card);
+                    positionInWork = -1;
+                    break;
             }
+
         }
     }
 
