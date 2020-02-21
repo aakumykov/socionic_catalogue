@@ -179,7 +179,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
         AuthSingleton.changePassword(view.getPassword(), new iAuthSingleton.ChangePasswordCallbacks() {
             @Override
             public void onChangePasswordSuccess() {
-                view.setState(iRegisterStep2.ViewState.SUCCESS, R.string.REGISTER2_registration_success);
+                view.setState(iRegisterStep2.ViewState.SUCCESS, -1);
             }
 
             @Override

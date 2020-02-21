@@ -311,6 +311,11 @@ public final class MyUtils {
         return context.getResources().getString(msgId);
     }
 
+    public static String getString(Context context, int baseStringResourceId, int insertedStringResourceId) {
+        String innerString = getString(context, insertedStringResourceId);
+        return getString(context, baseStringResourceId, innerString);
+    }
+
     public static String getString(Context context, int stringResourceId, String insertedText) {
         return context.getResources().getString(stringResourceId, insertedText);
     }
