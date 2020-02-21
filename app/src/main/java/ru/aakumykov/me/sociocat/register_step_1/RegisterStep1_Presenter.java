@@ -142,6 +142,7 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
                     @Override
                     public void onSuccess(Void aVoid) {
                         view.setState(iRegisterStep1.ViewStates.SUCCESS, R.string.REGISTER1_email_successfully_sent);
+                        view.showSuccessDialog();
                         storeEmailLocally(email);
                     }
                 })

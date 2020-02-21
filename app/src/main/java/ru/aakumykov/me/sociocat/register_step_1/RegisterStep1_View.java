@@ -164,7 +164,6 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
 
             case SUCCESS:
                 hideEmailThrobber();
-                showSuccessDialog();
                 break;
 
             case COMMON_ERROR:
