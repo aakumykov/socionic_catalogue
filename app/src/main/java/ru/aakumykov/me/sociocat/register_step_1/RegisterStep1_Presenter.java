@@ -21,11 +21,13 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
 
+    private static final String TAG = "RegisterStep1_Presenter";
     private iRegisterStep1.View view;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-    private iRegisterStep1.ViewStatus viewStatus;
-    private String errorMessage = null;
+    private iRegisterStep1.ViewStates currentViewStates;
+    private int currentMessageId;
+    private String currentErrorMessage = null;
 
 
     // Системные методы
@@ -41,18 +43,19 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
 
     @Override
     public boolean isVirgin() {
-        return null == viewStatus;
+        return null == currentViewStates;
     }
 
     @Override
-    public void storeViewStatus(iRegisterStep1.ViewStatus viewStatus, String errorMessage) {
-        this.viewStatus = viewStatus;
-        this.errorMessage = errorMessage;
+    public void storeViewStatus(iRegisterStep1.ViewStates viewStatus, int messageId, String errorMessage) {
+        this.currentViewStates = viewStatus;
+        this.currentMessageId = messageId;
+        this.currentErrorMessage = errorMessage;
     }
 
     @Override
     public void onConfigChanged() {
-        view.setStatus(viewStatus, errorMessage);
+        view.setState(currentViewStates, currentMessageId, currentErrorMessage);
     }
 
 
@@ -65,7 +68,7 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
     }
 
     @Override
-    public void produceRegistrationStep1() {
+    public void onRegisterButtonClicked() {
         checkEmail();
     }
 
@@ -75,17 +78,17 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
         String email = view.getEmail();
 
         if (TextUtils.isEmpty(email)) {
-            view.setStatus(iRegisterStep1.ViewStatus.EMAIL_ERROR, R.string.cannot_be_empty);
+            view.setState(iRegisterStep1.ViewStates.EMAIL_ERROR, R.string.cannot_be_empty);
             return;
         }
 
         if (!MyUtils.isCorrectEmail(email)) {
-            view.setStatus(iRegisterStep1.ViewStatus.EMAIL_ERROR, R.string.REGISTER1_incorrect_email);
+            view.setState(iRegisterStep1.ViewStates.EMAIL_ERROR, R.string.REGISTER1_incorrect_email);
             return;
         }
 
 
-        view.setStatus(iRegisterStep1.ViewStatus.CHECKING, null);
+        view.setState(iRegisterStep1.ViewStates.CHECKING, -1, null);
 
         usersSingleton.checkEmailExists(email, new iUsersSingleton.CheckExistanceCallbacks() {
             @Override
@@ -95,23 +98,23 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
 
             @Override
             public void onExists() {
-                view.setStatus(iRegisterStep1.ViewStatus.EMAIL_ERROR, R.string.REGISTER1_email_already_used);
+                view.setState(iRegisterStep1.ViewStates.EMAIL_ERROR, R.string.REGISTER1_email_already_used);
             }
 
             @Override
             public void onNotExists() {
-                view.setStatus(iRegisterStep1.ViewStatus.SUCCESS, null);
-                step1_sendRegistrationEmail();
+                view.setState(iRegisterStep1.ViewStates.SUCCESS, -1, null);
+                sendRegistrationEmail();
             }
 
             @Override
             public void onCheckFail(String errorMsg) {
-                view.setStatus(iRegisterStep1.ViewStatus.COMMON_ERROR, errorMsg);
+                view.setState(iRegisterStep1.ViewStates.COMMON_ERROR, R.string.REGISTER1_error_checking_email, errorMsg);
             }
         });
     }
 
-    private void step1_sendRegistrationEmail() {
+    private void sendRegistrationEmail() {
         final String email = view.getEmail();
 
         String continueUrl =
@@ -130,8 +133,7 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
                                 null    /* minimumVersion */)
                         .build();
 
-        view.disableForm();
-        view.showProgressMessage(R.string.REGISTER1_sending_email);
+        view.setState(iRegisterStep1.ViewStates.PROGRESS, R.string.REGISTER1_sending_email);
 
         // TODO: перенести в AuthSingleton
 
@@ -139,17 +141,15 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        view.hideProgressMessage();
-                        view.showSuccessDialog();
+                        view.setState(iRegisterStep1.ViewStates.SUCCESS, R.string.REGISTER1_email_successfully_sent);
                         storeEmailLocally(email);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        view.enableForm();
-                        onErrorOccurred(R.string.REGISTER1_error_sending_email, e.getMessage());
-                        e.printStackTrace();
+                        view.setState(iRegisterStep1.ViewStates.COMMON_ERROR,R.string.REGISTER1_error_sending_email, e.getMessage());
+                        MyUtils.printError(TAG, e);
                     }
                 });
     }
@@ -160,10 +160,5 @@ public class RegisterStep1_Presenter implements iRegisterStep1.Presenter {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(Constants.KEY_STORED_EMAIL, email);
         editor.apply();
-    }
-
-    private void onErrorOccurred(int userMsgId, String adminErrorMsg) {
-        view.showErrorMsg(userMsgId, adminErrorMsg);
-        view.enableForm();
     }
 }

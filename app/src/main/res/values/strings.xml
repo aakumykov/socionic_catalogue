@@ -308,7 +308,7 @@
     <string name="REGISTER2_error_checking_user_name">Ошибка проверки имени</string>
     <string name="REGISTER1_you_are_already_authorized">Вы уже авторизованы</string>
     <string name="REGISTER1_email_already_used">Электронная почта уже используется</string>
-    <string name="REGISTER1_error_check_email">Ошибка проверки электронной почты</string>
+    <string name="REGISTER1_error_checking_email">Ошибка проверки электронной почты</string>
     <string name="LOGIN_password_recovery_email_sent">Вам отправлено письмо для восстановления пароля</string>
     <string name="CARD_SHOW_created_at">%1$s</string>
     <string name="CARD_SHOW_edited_at">Изменено %1$s</string>
@@ -634,5 +634,6 @@
     <string name="REGISTER2_leave_page_message">Без пароля вы не сможете войти в программу в следующий раз</string>
     <string name="REGISTER2_return">Вернуться</string>
     <string name="LOGIN_error_user_not_found">Пользователь не найден</string>
+    <string name="REGISTER1_email_successfully_sent">Письмо отправлено</string>
 
 </resources><!-- «%1$s» -->

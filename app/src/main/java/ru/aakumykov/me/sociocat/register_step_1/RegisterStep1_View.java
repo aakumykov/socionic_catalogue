@@ -2,14 +2,13 @@ package ru.aakumykov.me.sociocat.register_step_1;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +26,7 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
 
     @BindView(R.id.emailView) EditText emailInput;
     @BindView(R.id.emailThrobber) ProgressBar emailThrobber;
-    @BindView(R.id.sendButton) Button sendButton;
+    @BindView(R.id.registerButton) Button sendButton;
 
     private iRegisterStep1.Presenter presenter;
 
@@ -87,34 +86,9 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
 
 
     // Интерфейсные методы
-
-    @Override
-    public void showEmailThrobber() {
-        MyUtils.disable(emailInput);
-        MyUtils.show(emailThrobber);
-    }
-
-    @Override
-    public void hideEmailThrobber() {
-        MyUtils.enable(emailInput);
-        MyUtils.hide(emailThrobber);
-    }
-
     @Override
     public String getEmail() {
         return emailInput.getText().toString();
-    }
-
-    @Override
-    public void disableForm() {
-        MyUtils.disable(emailInput);
-        MyUtils.disable(sendButton);
-    }
-
-    @Override
-    public void enableForm() {
-        MyUtils.enable(emailInput);
-        MyUtils.enable(sendButton);
     }
 
     @Override
@@ -143,16 +117,6 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
     }
 
     @Override
-    public void showEmailError(String message) {
-        emailInput.setError(message);
-    }
-
-    @Override
-    public void hideEmailError() {
-        emailInput.setError(null);
-    }
-
-    @Override
     public void accessDenied(int msgId) {
         String message = getString(msgId);
         showToast(message);
@@ -160,15 +124,15 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
     }
 
     @Override
-    public void setStatus(iRegisterStep1.ViewStatus status, int errorMessageId) {
-        String emailErrorMsg = getString(errorMessageId);
-        setStatus(status, emailErrorMsg);
+    public void setState(iRegisterStep1.ViewStates status, int messageId) {
+        String emailErrorMsg = getString(messageId);
+        setState(status, messageId, null);
     }
 
     @Override
-    public void setStatus(iRegisterStep1.ViewStatus status, String errorMessage) {
+    public void setState(iRegisterStep1.ViewStates status, int messageId, String messageDetails) {
 
-        presenter.storeViewStatus(status, errorMessage);
+        presenter.storeViewStatus(status, messageId, messageDetails);
 
         switch (status) {
             case INITIAL:
@@ -178,29 +142,36 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
                 hideProgressMessage();
                 break;
 
+            case PROGRESS:
+                disableForm();
+                hideEmailThrobber();
+                showProgressMessage(messageId);
+                break;
+
             case CHECKING:
                 disableForm();
                 hideEmailError();
                 showEmailThrobber();
-                showInfoMsg(R.string.REGISTER1_checking_email);
+                //showInfoMsg(R.string.REGISTER1_checking_email);
                 break;
 
             case EMAIL_ERROR:
                 enableForm();
                 hideEmailThrobber();
                 hideMessage();
-                if (null != errorMessage) showEmailError(errorMessage);
+                showEmailError(messageId);
                 break;
 
             case SUCCESS:
                 hideEmailThrobber();
+                showSuccessDialog();
                 break;
 
             case COMMON_ERROR:
                 enableForm();
                 hideEmailThrobber();
                 hideEmailError();
-                if (null != errorMessage) showErrorMsg(R.string.error, errorMessage, true);
+                if (null != messageDetails) showErrorMsg(R.string.error, messageDetails, true);
                 break;
 
             default:
@@ -210,9 +181,9 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
 
 
     // Нажатия
-    @OnClick(R.id.sendButton)
-    void onSendButtonClicked() {
-        presenter.produceRegistrationStep1();
+    @OnClick(R.id.registerButton)
+    void onRegisterButtonClicked() {
+        presenter.onRegisterButtonClicked();
     }
 
     @OnClick(R.id.cancelButton)
@@ -222,6 +193,34 @@ public class RegisterStep1_View extends BaseView implements iRegisterStep1.View 
 
 
     // Внутренние методы
+    private void disableForm() {
+        MyUtils.disable(emailInput);
+        MyUtils.disable(sendButton);
+    }
+
+    private void enableForm() {
+        MyUtils.enable(emailInput);
+        MyUtils.enable(sendButton);
+    }
+
+    private void showEmailThrobber() {
+        MyUtils.disable(emailInput);
+        MyUtils.show(emailThrobber);
+    }
+
+    private void hideEmailThrobber() {
+        MyUtils.enable(emailInput);
+        MyUtils.hide(emailThrobber);
+    }
+
+    private void showEmailError(int messageId) {
+        emailInput.setError(getString(messageId));
+    }
+
+    private void hideEmailError() {
+        emailInput.setError(null);
+    }
+
     void goMainPage() {
         Intent intent = new Intent(this, CardsGrid_View.class);
         startActivity(intent);

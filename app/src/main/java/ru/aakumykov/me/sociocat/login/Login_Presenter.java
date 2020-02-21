@@ -299,7 +299,7 @@ public class Login_Presenter implements
 
     private void continueRegistration(@NonNull Intent intent) {
 
-//        view.setState(iLogin.ViewState.PROGRESS, R.string._continuing_registration);
+//        view.setState(iLogin.ViewStates.PROGRESS, R.string._continuing_registration);
 
 
     }

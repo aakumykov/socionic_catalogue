@@ -35,7 +35,7 @@ public class ResetPasswordStep1_View extends BaseView implements
     @Email(messageResId = R.string.RESET_PASSWORD_incorrect_email)
     @BindView(R.id.emailView) EditText emailInput;
     @BindView(R.id.emailThrobber) ProgressBar emailThrobber;
-    @BindView(R.id.sendButton) Button sendButton;
+    @BindView(R.id.registerButton) Button sendButton;
 
     private iResetPasswordStep1.Presenter presenter;
     private Validator validator;
@@ -247,7 +247,7 @@ public class ResetPasswordStep1_View extends BaseView implements
 
 
     // Нажатия
-    @OnClick(R.id.sendButton)
+    @OnClick(R.id.registerButton)
     void sendEmailClicked() {
         validator.validate();
     }

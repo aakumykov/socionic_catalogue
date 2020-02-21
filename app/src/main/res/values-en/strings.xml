@@ -306,7 +306,7 @@
     <string name="REGISTER2_error_checking_user_name">Error checking user name</string>
     <string name="REGISTER1_you_are_already_authorized">You are already authorized</string>
     <string name="REGISTER1_email_already_used">Email address already used</string>
-    <string name="REGISTER1_error_check_email">Error checking email address</string>
+    <string name="REGISTER1_error_checking_email">Error checking email address</string>
     <string name="LOGIN_password_recovery_email_sent">Password recovery email is sent to you</string>
     <string name="CARD_SHOW_created_at">%1$s</string>
     <string name="CARD_SHOW_edited_at">Edited at %1$s</string>
@@ -627,5 +627,6 @@
     <string name="REGISTER2_leave_page_message">Without password you cannot login application next time</string>
     <string name="REGISTER2_return">Go back</string>
     <string name="LOGIN_error_user_not_found">User not found</string>
+    <string name="REGISTER1_email_successfully_sent">Email is sent</string>
 </resources>
 <!-- «%1$s» -->
