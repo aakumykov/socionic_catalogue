@@ -566,6 +566,8 @@ public class CardEdit_Presenter implements
             @Override
             public void onFileUploadSuccess(String fileName, String downloadURL) {
                 currentCard.setImageURL(downloadURL);
+                currentCard.setFileName(fileName);
+
                 mImageBitmap = null;
                 mImageType = null;
 
