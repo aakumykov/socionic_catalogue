@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -13,10 +14,33 @@ public final class CardUtils {
 
     private CardUtils() {}
 
-    public static boolean need2adjustViewBounds(Context context, Bitmap bitmap) {
+    public static void smartDisplayImage(ImageView targetImageView, Bitmap bitmap) {
 
         int imgWidth = bitmap.getWidth();
         int imgHeight = bitmap.getHeight();
+
+        targetImageView.setImageBitmap(bitmap);
+
+        if (need2adjustViewBounds(targetImageView.getContext(), imgWidth, imgHeight))
+            setAdjustViewBounds(targetImageView);
+        else
+            setDejustViewBounds(targetImageView);
+    }
+
+    public static void smartDisplayImage(ImageView targetImageView, Drawable imageDrawable) {
+
+        int imgWidth = imageDrawable.getIntrinsicWidth();
+        int imgHeight = imageDrawable.getIntrinsicHeight();
+
+        targetImageView.setImageDrawable(imageDrawable);
+
+        if (need2adjustViewBounds(targetImageView.getContext(), imgWidth, imgHeight))
+            setAdjustViewBounds(targetImageView);
+        else
+            setDejustViewBounds(targetImageView);
+    }
+
+    private static boolean need2adjustViewBounds(Context context, int imgWidth, int imgHeight) {
 
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 
@@ -36,20 +60,16 @@ public final class CardUtils {
             return false;
     }
 
-    public static void smartDisplayImage(ImageView imageView, Bitmap bitmap) {
 
-        imageView.setImageBitmap(bitmap);
+    private static void setAdjustViewBounds(ImageView imageView) {
+        imageView.setAdjustViewBounds(false);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        imageView.setBackgroundResource(R.drawable.shape_green_border);
+    }
 
-        if (CardUtils.need2adjustViewBounds(imageView.getContext(), bitmap)) {
-            // Подгонка отключена
-            imageView.setAdjustViewBounds(false);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            imageView.setBackgroundResource(R.drawable.shape_red_border);
-        } else {
-            // Подгонка включена
-            imageView.setAdjustViewBounds(true);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            imageView.setBackgroundResource(R.drawable.shape_green_border);
-        }
+    private static void setDejustViewBounds(ImageView imageView) {
+        imageView.setAdjustViewBounds(true);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        imageView.setBackgroundResource(R.drawable.shape_transparent_border);
     }
 }

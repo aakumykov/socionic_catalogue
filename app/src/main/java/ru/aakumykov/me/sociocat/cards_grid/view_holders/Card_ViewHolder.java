@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat.cards_grid.view_holders;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,6 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.R;
@@ -18,6 +23,7 @@ import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.CardUtils;
 import ru.aakumykov.me.sociocat.utils.ImageLoader;
+import ru.aakumykov.me.sociocat.utils.ImageUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Card_ViewHolder extends BaseViewHolder
@@ -93,25 +99,21 @@ public class Card_ViewHolder extends BaseViewHolder
     private void initImageCard(Card card) {
         if (null != mImageView) {
 
-            mImageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
+            Glide.with(mImageView)
+                    .load(card.getImageURL())
+                    .placeholder(R.drawable.ic_image_placeholder_monochrome)
+                    .error(R.drawable.ic_image_error)
+                    .into(new CustomTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            CardUtils.smartDisplayImage(mImageView, resource);
+                        }
 
-            try {
-                ImageLoader.loadImage(mImageView.getContext(), card.getImageURL(), new ImageLoader.LoadImageCallbacks() {
-                    @Override
-                    public void onImageLoadSuccess(Bitmap imageBitmap) {
-                        CardUtils.smartDisplayImage(mImageView, imageBitmap);
-                    }
-
-                    @Override
-                    public void onImageLoadError(String errorMsg) {
-                        showImageError(errorMsg);
-                    }
-                });
-            }
-            catch (Exception e) {
-                showImageError(e.getMessage());
-                MyUtils.printError(TAG, e);
-            }
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                            mImageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
+                        }
+                    });
         }
     }
 
