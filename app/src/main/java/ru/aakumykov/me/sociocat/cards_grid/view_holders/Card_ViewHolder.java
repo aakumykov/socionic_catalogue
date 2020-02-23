@@ -103,17 +103,30 @@ public class Card_ViewHolder extends BaseViewHolder
                     .load(card.getImageURL())
                     .placeholder(R.drawable.ic_image_placeholder_monochrome)
                     .error(R.drawable.ic_image_error)
-                    .into(new CustomTarget<Drawable>() {
-                        @Override
-                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                            CardUtils.smartDisplayImage(mImageView, resource);
-                        }
+                    .into(mImageView);
+//                    .into(new CustomTarget<Drawable>() {
+//                        @Override
+//                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+//                            CardUtils.smartDisplayImage(mImageView, resource);
+//                        }
+//
+//                        @Override
+//                        public void onLoadCleared(@Nullable Drawable placeholder) {
+//                            mImageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
+//                        }
+//                    });
 
-                        @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) {
-                            mImageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
-                        }
-                    });
+            ImageLoader.loadImage(mImageView.getContext(), card.getImageURL(), new ImageLoader.LoadImageCallbacks() {
+                @Override
+                public void onImageLoadSuccess(Bitmap imageBitmap) {
+                    mImageView.setImageBitmap(imageBitmap);
+                }
+
+                @Override
+                public void onImageLoadError(String errorMsg) {
+                    showImageError(errorMsg);
+                }
+            });
         }
     }
 
