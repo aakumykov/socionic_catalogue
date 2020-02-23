@@ -46,7 +46,7 @@ public final class CardUtils {
 
         if (null != windowManager) {
             Display display = windowManager.getDefaultDisplay();
-            //windowManager = null;
+            windowManager = null;
 
             Point size = new Point();
             display.getSize(size);
@@ -63,14 +63,14 @@ public final class CardUtils {
 
 
     private static void setAdjustViewBounds(ImageView imageView) {
-        imageView.setAdjustViewBounds(false);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        imageView.setBackgroundResource(R.drawable.shape_green_border);
+        //imageView.setAdjustViewBounds(false);
+//        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+//        imageView.setBackgroundResource(R.drawable.shape_green_border);
     }
 
     private static void setDejustViewBounds(ImageView imageView) {
-        imageView.setAdjustViewBounds(true);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        imageView.setBackgroundResource(R.drawable.shape_transparent_border);
+        //imageView.setAdjustViewBounds(true);
+//        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+//        imageView.setBackgroundResource(R.drawable.shape_transparent_border);
     }
 }
