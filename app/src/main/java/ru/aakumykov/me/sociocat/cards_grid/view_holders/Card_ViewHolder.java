@@ -99,7 +99,7 @@ public class Card_ViewHolder extends BaseViewHolder
     private void initImageCard(Card card) {
         if (null != mImageView) {
 
-            Glide.with(mImageView)
+/*            Glide.with(mImageView)
                     .load(card.getImageURL())
                     .placeholder(R.drawable.ic_image_placeholder_monochrome)
                     .error(R.drawable.ic_image_error)
@@ -114,9 +114,9 @@ public class Card_ViewHolder extends BaseViewHolder
                         public void onLoadCleared(@Nullable Drawable placeholder) {
                             mImageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
                         }
-                    });
+                    });*/
 
-            /*ImageLoader.loadImage(mImageView.getContext(), card.getImageURL(), new ImageLoader.LoadImageCallbacks() {
+            ImageLoader.loadImage(mImageView.getContext(), card.getImageURL(), new ImageLoader.LoadImageCallbacks() {
                 @Override
                 public void onImageLoadSuccess(Bitmap imageBitmap) {
                     mImageView.setImageBitmap(imageBitmap);
@@ -139,7 +139,7 @@ public class Card_ViewHolder extends BaseViewHolder
                 public void onImageLoadError(String errorMsg) {
                     showImageError(errorMsg);
                 }
-            });*/
+            });
         }
     }
 
