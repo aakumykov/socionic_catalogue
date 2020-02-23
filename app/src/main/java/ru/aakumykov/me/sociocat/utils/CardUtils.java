@@ -46,6 +46,7 @@ public final class CardUtils {
 
         if (null != windowManager) {
             Display display = windowManager.getDefaultDisplay();
+            //windowManager = null;
 
             Point size = new Point();
             display.getSize(size);

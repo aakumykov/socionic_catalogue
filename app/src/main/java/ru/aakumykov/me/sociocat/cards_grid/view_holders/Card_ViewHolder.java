@@ -103,30 +103,43 @@ public class Card_ViewHolder extends BaseViewHolder
                     .load(card.getImageURL())
                     .placeholder(R.drawable.ic_image_placeholder_monochrome)
                     .error(R.drawable.ic_image_error)
-                    .into(mImageView);
-//                    .into(new CustomTarget<Drawable>() {
-//                        @Override
-//                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-//                            CardUtils.smartDisplayImage(mImageView, resource);
-//                        }
-//
-//                        @Override
-//                        public void onLoadCleared(@Nullable Drawable placeholder) {
-//                            mImageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
-//                        }
-//                    });
+//                    .into(mImageView);
+                    .into(new CustomTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            CardUtils.smartDisplayImage(mImageView, resource);
+                        }
 
-            ImageLoader.loadImage(mImageView.getContext(), card.getImageURL(), new ImageLoader.LoadImageCallbacks() {
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                            mImageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
+                        }
+                    });
+
+            /*ImageLoader.loadImage(mImageView.getContext(), card.getImageURL(), new ImageLoader.LoadImageCallbacks() {
                 @Override
                 public void onImageLoadSuccess(Bitmap imageBitmap) {
                     mImageView.setImageBitmap(imageBitmap);
+
+                    CardUtils.smartDisplayImage(mImageView, imageBitmap);
+
+//                    if (1 == MyUtils.random(1,2)) {
+//                        mImageView.setAdjustViewBounds(true);
+//                        mImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+//                        mImageView.setBackgroundResource(R.drawable.shape_green_border);
+//                    }
+//                    else {
+//                        mImageView.setAdjustViewBounds(false);
+//                        mImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+//                        mImageView.setBackgroundResource(R.drawable.shape_transparent_border);
+//                    }
                 }
 
                 @Override
                 public void onImageLoadError(String errorMsg) {
                     showImageError(errorMsg);
                 }
-            });
+            });*/
         }
     }
 
