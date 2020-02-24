@@ -106,19 +106,19 @@ public class Card_ViewHolder extends BaseViewHolder
                     .skipMemoryCache(true)
                     .placeholder(R.drawable.ic_image_placeholder_monochrome)
                     .error(R.drawable.ic_image_error)
-                    .into(mImageView);
-//                    .into(new CustomTarget<Drawable>() {
-//                        @Override
-//                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-//                            //CardUtils.smartDisplayImage(mImageView, resource);
-//                            mImageView.setImageDrawable(resource);
-//                        }
-//
-//                        @Override
-//                        public void onLoadCleared(@Nullable Drawable placeholder) {
-//                            mImageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
-//                        }
-//                    });
+//                    .into(mImageView);
+                    .into(new CustomTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            //CardUtils.smartDisplayImage(mImageView, resource);
+                            mImageView.setImageDrawable(resource);
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                            mImageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
+                        }
+                    });
 
             /*ImageLoader.loadImage(mImageView.getContext(), card.getImageURL(), new ImageLoader.LoadImageCallbacks() {
                 @Override
