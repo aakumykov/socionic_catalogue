@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +39,12 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public abstract class BaseView extends AppCompatActivity implements iBaseView
 {
+    private enum MsgType {
+        DEBUG,
+        INFO,
+        ERROR
+    }
+
     private final static String TAG = "BaseView";
     private boolean intentMessageAlreadyShown = false;
 
@@ -216,11 +221,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             String text = "";
             if (msg instanceof Integer) {
                 text = getResources().getString((Integer) msg);
-                showMsg(text, R.color.debug, R.color.white);
+                showMsg(MsgType.DEBUG, text, R.color.debug, R.color.white);
             }
             else {
                 text = String.valueOf(msg);
-                showMsg(text, R.color.debug, R.color.white);
+                showMsg(MsgType.DEBUG, text, R.color.debug, R.color.white);
             }
             Log.d("showDebugMsg(): ", text);
         }
@@ -230,7 +235,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public void showInfoMsg(int messageId, String... formatArguments) {
         String text = getResources().getString(messageId, formatArguments);
         hideProgressMessage();
-        showMsg(text, R.color.info, R.color.info_background);
+        showMsg(MsgType.INFO, text, R.color.info, R.color.info_background);
     }
 
     @Override
@@ -249,7 +254,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         }
 
         hideProgressMessage();
-        showMsg(msg, R.color.error, R.color.error_background);
+        showMsg(MsgType.ERROR, msg, R.color.error, R.color.error_background);
     }
 
     @Override
@@ -402,6 +407,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void showProgressMessage(String msg) {
         Resources resources = getResources();
         showMsg(
+                MsgType.INFO,
                 msg,
                 R.color.info,
                 R.color.info_background
@@ -409,18 +415,32 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         showProgressBar();
     }
 
-    private void showMsg(String text, int textColorId, @Nullable Integer backgroundColorId) {
+    private void showMsg(MsgType msgType, String text, int textColorId, @Nullable Integer backgroundColorId) {
         TextView messageView = findViewById(R.id.messageView);
 
         int fgColor = getResources().getColor(textColorId);
-        int bgColor = getResources().getColor(null != backgroundColorId ? backgroundColorId : R.color.background_default);
+        //int bgColor = getResources().getColor(null != backgroundColorId ? backgroundColorId : R.color.background_default);
 
         if (null != messageView) {
             messageView.setText(text);
             messageView.setTextColor(fgColor);
-            messageView.setBackgroundColor(bgColor);
+            //messageView.setBackgroundColor(bgColor);
+
+            switch (msgType) {
+                case DEBUG:
+                    messageView.setBackgroundResource(R.drawable.shape_background_debug_msg);
+                    break;
+                case INFO:
+                    messageView.setBackgroundResource(R.drawable.shape_background_info_msg);
+                    break;
+                case ERROR:
+                    messageView.setBackgroundResource(R.drawable.shape_background_error_msg);
+                    break;
+            }
+
             MyUtils.show(messageView);
-        } else {
+        }
+        else {
             Log.w(TAG, "messageView not found");
         }
     }
@@ -541,4 +561,5 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         editor.putLong(Constants.KEY_LAST_LOGIN, new Date().getTime());
         editor.apply();
     }
+
 }
