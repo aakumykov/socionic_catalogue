@@ -13,7 +13,10 @@ import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 
 import butterknife.BindView;
@@ -102,12 +105,10 @@ public class Card_ViewHolder extends BaseViewHolder
 
             Glide.with(mImageView)
                     .load(card.getImageURL())
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
                     .placeholder(R.drawable.ic_image_placeholder_monochrome)
                     .error(R.drawable.ic_image_error)
-//                    .into(mImageView);
-                    .into(new CustomTarget<Drawable>() {
+                    .into(mImageView);
+                    /*.into(new CustomTarget<Drawable>() {
                         @Override
                         public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                             //CardUtils.smartDisplayImage(mImageView, resource);
@@ -118,7 +119,7 @@ public class Card_ViewHolder extends BaseViewHolder
                         public void onLoadCleared(@Nullable Drawable placeholder) {
                             mImageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
                         }
-                    });
+                    });*/
 
             /*ImageLoader.loadImage(mImageView.getContext(), card.getImageURL(), new ImageLoader.LoadImageCallbacks() {
                 @Override
