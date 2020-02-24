@@ -41,6 +41,8 @@ public class Login_View extends BaseView implements
         iLogin.View,
         Validator.ValidationListener
 {
+    @BindView(R.id.tryNewPasswordMessageView) TextView tryNewPasswordMessageView;
+
     @Email(messageResId = R.string.error_incorrect_email)
     @BindView(R.id.emailView) EditText emailInput;
 
@@ -177,7 +179,7 @@ public class Login_View extends BaseView implements
 
             case INFO:
                 enableForm();
-                showInfoMsg(messageId);
+                MyUtils.show(tryNewPasswordMessageView);
                 break;
 
             case PROGRESS:
