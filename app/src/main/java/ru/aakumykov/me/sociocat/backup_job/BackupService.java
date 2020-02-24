@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
+import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,8 +28,10 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -536,9 +539,21 @@ public class BackupService extends Service {
 
 
     // ======================== СЛУЖЕБНЫЕ МЕТОДЫ ========================
-    /*public static boolean isTimeToDoBackup() {
-        return false;
-    }*/
+    public static boolean isTimeToDoBackup(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_ADMIN, MODE_PRIVATE);
+
+        long lastBackupTime = sharedPreferences.getLong(Constants.PREFERENCE_KEY_LAST_BACKUP_TIME, -1);
+        long currentTimeInSeconds = new Date().getTime() / 1000;
+
+        return ((currentTimeInSeconds - lastBackupTime) > Config.BACKUP_INTERVAL_SECONDS);
+    }
+
+    public static void saveLastBackupTime(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_ADMIN, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong(Constants.PREFERENCE_KEY_LAST_BACKUP_TIME, new Date().getTime());
+        editor.apply();
+    }
 
     private void notifyAboutBackupProgress(String message) {
         displayProgressNotification(message, BACKUP_STATUS_RUNNING);

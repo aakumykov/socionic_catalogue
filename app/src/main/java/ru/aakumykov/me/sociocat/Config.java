@@ -49,5 +49,5 @@ public final class Config {
 
     public static final int CREATE_TEMP_USER_NAME_TRIES_COUNT = 10;
 
-    public static final long BACKUP_INTERVAL_SECONDS = 3600 * 24;
+    public static final long BACKUP_INTERVAL_SECONDS = 600; // каждые 10 минут
 }

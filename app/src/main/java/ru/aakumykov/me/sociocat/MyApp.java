@@ -204,14 +204,10 @@ public class MyApp extends Application {
 //    }
 
     private void produceBackup() {
-
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_ADMIN, MODE_PRIVATE);
-
-        long lastBackupTime = sharedPreferences.getLong(Constants.PREFERENCE_KEY_LAST_BACKUP_TIME, -1);
-        long currentTimeInSeconds = new Date().getTime() / 1000;
-        if ((currentTimeInSeconds - lastBackupTime) > Config.BACKUP_INTERVAL_SECONDS) {
-//        if (BackupService.isTimeToDoBackup()) {
+        if (BackupService.isTimeToDoBackup(this)) {
             startService(new Intent(this, BackupService.class));
+            // TODO: кривоватая архитекрута!
+            BackupService.saveLastBackupTime(this);
         }
     }
 }
