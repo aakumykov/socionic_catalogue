@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 
@@ -99,24 +100,25 @@ public class Card_ViewHolder extends BaseViewHolder
     private void initImageCard(Card card) {
         if (null != mImageView) {
 
-/*            Glide.with(mImageView)
+            Glide.with(mImageView)
                     .load(card.getImageURL())
                     .placeholder(R.drawable.ic_image_placeholder_monochrome)
                     .error(R.drawable.ic_image_error)
-//                    .into(mImageView);
-                    .into(new CustomTarget<Drawable>() {
-                        @Override
-                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                            CardUtils.smartDisplayImage(mImageView, resource);
-                        }
+                    .into(mImageView);
+//                    .into(new CustomTarget<Drawable>() {
+//                        @Override
+//                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+//                            //CardUtils.smartDisplayImage(mImageView, resource);
+//                            mImageView.setImageDrawable(resource);
+//                        }
+//
+//                        @Override
+//                        public void onLoadCleared(@Nullable Drawable placeholder) {
+//                            mImageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
+//                        }
+//                    });
 
-                        @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) {
-                            mImageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
-                        }
-                    });*/
-
-            ImageLoader.loadImage(mImageView.getContext(), card.getImageURL(), new ImageLoader.LoadImageCallbacks() {
+            /*ImageLoader.loadImage(mImageView.getContext(), card.getImageURL(), new ImageLoader.LoadImageCallbacks() {
                 @Override
                 public void onImageLoadSuccess(Bitmap imageBitmap) {
                     mImageView.setImageBitmap(imageBitmap);
@@ -139,7 +141,7 @@ public class Card_ViewHolder extends BaseViewHolder
                 public void onImageLoadError(String errorMsg) {
                     showImageError(errorMsg);
                 }
-            });
+            });*/
         }
     }
 
