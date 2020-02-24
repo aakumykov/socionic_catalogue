@@ -628,5 +628,6 @@
     <string name="REGISTER2_return">Go back</string>
     <string name="LOGIN_error_user_not_found">User not found</string>
     <string name="REGISTER1_email_successfully_sent">Email is sent</string>
+    <string name="LOGIN_too_many_login_attempts">Too many login attempts. Try again later</string>
 </resources>
 <!-- «%1$s» -->

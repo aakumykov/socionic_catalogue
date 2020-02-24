@@ -207,6 +207,11 @@ public class Login_Presenter implements
             }
 
             @Override
+            public void onTooManyLoginAttempts() {
+                showTooManyLoginAttempts();
+            }
+
+            @Override
             public void onLoginError(String errorMsg) {
                 view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_login_error, errorMsg);
             }
@@ -253,6 +258,11 @@ public class Login_Presenter implements
             @Override
             public void onWrongCredentialsError() {
 
+            }
+
+            @Override
+            public void onTooManyLoginAttempts() {
+                showTooManyLoginAttempts();
             }
 
             @Override
@@ -462,7 +472,12 @@ public class Login_Presenter implements
         showError(R.string.LOGIN_error_loading_user_info, errorMsg);
     }
 
+    private void showTooManyLoginAttempts() {
+        showError(R.string.LOGIN_too_many_login_attempts, null);
+    }
 
+
+    // Внутренние интерфейсы
     private interface iLoadUserCallbacks {
         void onUserLoadSuccess(User user);
         void onUserNotExists();

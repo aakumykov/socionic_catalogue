@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -227,14 +228,24 @@ public class AuthSingleton implements iAuthSingleton
                 @Override
                 public void onFailure(@NonNull Exception e) {
 
-                    FirebaseAuthException firebaseAuthException = (FirebaseAuthException) e;
+                    String errorCode = "EMPTY_ERROR_CODE";
 
-                    String errorCode = firebaseAuthException.getErrorCode() + "";
+                    if (e instanceof FirebaseAuthException) {
+                        FirebaseAuthException firebaseAuthException = (FirebaseAuthException) e;
+                        errorCode = firebaseAuthException.getErrorCode() + "";
+                    }
+                    else if (e instanceof FirebaseTooManyRequestsException) {
+                        errorCode = FirebaseConstants.TOO_MANY_LOGIN_ATTEMPTS;
+                    }
 
                     switch (errorCode) {
                         case FirebaseConstants.ERROR_WRONG_PASSWORD:
                         case FirebaseConstants.ERROR_USER_NOT_FOUND:
                             callbacks.onWrongCredentialsError();
+                            break;
+
+                        case FirebaseConstants.TOO_MANY_LOGIN_ATTEMPTS:
+                            callbacks.onTooManyLoginAttempts();
                             break;
 
                         default:
