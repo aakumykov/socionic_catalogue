@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.backup_job.BackupService;
 import ru.aakumykov.me.sociocat.backup_job.Backup_JobService;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class PreferencesFragment extends PreferenceFragment implements
         SharedPreferences.OnSharedPreferenceChangeListener
@@ -45,12 +46,10 @@ public class PreferencesFragment extends PreferenceFragment implements
 
         switch (key) {
             case "perform_database_backup":
-                boolean enabled = sharedPreferences.getBoolean(key, false);
-                if (enabled) {
-                    Backup_JobService.scheduleJob(getActivity());
-                }
-                else
-                    Backup_JobService.unscheduleJob(getActivity());
+                MyUtils.showCustomToast(this.getActivity().getApplicationContext(), R.string.not_implemented_yet);
+//                boolean enabled = sharedPreferences.getBoolean(key, false);
+//                if (enabled) Backup_JobService.scheduleJob(getActivity());
+//                else Backup_JobService.unscheduleJob(getActivity());
                 break;
         }
     }
