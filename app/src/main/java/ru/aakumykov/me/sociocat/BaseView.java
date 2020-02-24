@@ -40,12 +40,6 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public abstract class BaseView extends AppCompatActivity implements iBaseView
 {
-    private enum MsgType {
-        DEBUG,
-        INFO,
-        ERROR
-    }
-
     private final static String TAG = "BaseView";
     private boolean intentMessageAlreadyShown = false;
 
@@ -222,11 +216,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             String text = "";
             if (msg instanceof Integer) {
                 text = getResources().getString((Integer) msg);
-                showMsg(MsgType.DEBUG, text, R.color.debug, R.color.white);
+                showMsg(text, R.color.debug, R.color.white);
             }
             else {
                 text = String.valueOf(msg);
-                showMsg(MsgType.DEBUG, text, R.color.debug, R.color.white);
+                showMsg(text, R.color.debug, R.color.white);
             }
             Log.d("showDebugMsg(): ", text);
         }
@@ -236,7 +230,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public void showInfoMsg(int messageId, String... formatArguments) {
         String text = getResources().getString(messageId, formatArguments);
         hideProgressMessage();
-        showMsg(MsgType.INFO, text, R.color.info, R.color.info_background);
+        showMsg(text, R.color.info, R.color.info_background);
     }
 
     @Override
@@ -255,23 +249,18 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         }
 
         hideProgressMessage();
-        showMsg(MsgType.ERROR, msg, R.color.error, R.color.error_background);
+        showMsg(msg, R.color.error, R.color.error_background);
     }
 
     @Override
     public void hideMessage() {
         intentMessageAlreadyShown = true;
 
-        ViewGroup progressAndMessageContainer = findViewById(R.id.progressAndMessageContainer);
-//        TextView messageView = findViewById(R.id.messageView);
+        TextView messageView = findViewById(R.id.messageView);
         TextView stackTraceView = findViewById(R.id.stackTraceView);
 
-//        if (null != messageView) {
-//            MyUtils.hide(messageView);
-//        }
-
-        if (null != progressAndMessageContainer) {
-            MyUtils.hide(progressAndMessageContainer);
+        if (null != messageView) {
+            MyUtils.hide(messageView);
         }
 
         if (null != stackTraceView) {
@@ -413,7 +402,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void showProgressMessage(String msg) {
         Resources resources = getResources();
         showMsg(
-                MsgType.INFO,
                 msg,
                 R.color.info,
                 R.color.info_background
@@ -421,31 +409,17 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         showProgressBar();
     }
 
-    private void showMsg(MsgType msgType, String text, int textColorId, @Nullable Integer backgroundColorId) {
-        ViewGroup progressAndMessageContainer = findViewById(R.id.progressAndMessageContainer);
+    private void showMsg(String text, int textColorId, @Nullable Integer backgroundColorId) {
         TextView messageView = findViewById(R.id.messageView);
 
         int fgColor = getResources().getColor(textColorId);
-        //int bgColor = getResources().getColor(null != backgroundColorId ? backgroundColorId : R.color.background_default);
+        int bgColor = getResources().getColor(null != backgroundColorId ? backgroundColorId : R.color.background_default);
 
-        if (null != progressAndMessageContainer && null != messageView) {
+        if (null != messageView) {
             messageView.setText(text);
             messageView.setTextColor(fgColor);
-            //messageView.setBackgroundColor(bgColor);
-
-            switch (msgType) {
-                case DEBUG:
-                    progressAndMessageContainer.setBackgroundResource(R.drawable.shape_background_debug_msg);
-                    break;
-                case INFO:
-                    progressAndMessageContainer.setBackgroundResource(R.drawable.shape_background_info_msg);
-                    break;
-                case ERROR:
-                    progressAndMessageContainer.setBackgroundResource(R.drawable.shape_background_error_msg);
-                    break;
-            }
-
-            MyUtils.show(progressAndMessageContainer);
+            messageView.setBackgroundColor(bgColor);
+            MyUtils.show(messageView);
         }
         else {
             Log.w(TAG, "messageView or progressAndMessageContainer not found");
