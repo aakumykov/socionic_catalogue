@@ -16,7 +16,7 @@
             android:defaultValue="@string/PREFERENCE_dropbox_access_token_stub"
             android:key="dropbox_access_token"
             android:selectAllOnFocus="true"
-            android:singleLine="true"
+            android:singleLine="false"
             android:summary="@string/PREFERENCE_dropbox_access_token_description"
             android:title="@string/PREFERENCE_dropbox_access_token_title"
             app:defaultValue="true" />
