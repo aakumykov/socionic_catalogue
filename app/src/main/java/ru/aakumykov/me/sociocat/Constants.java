@@ -34,12 +34,13 @@ public final class Constants
     public final static String ACTION_REGISTRATION_CONFIRM_REQUEST = "ACTION_REGISTRATION_CONFIRM_REQUEST";
     public final static String ACTION_REGISTRATION_CONFIRM_RESPONSE = "ACTION_REGISTRATION_CONFIRM_RESPONSE";
     public final static String ACTION_TRY_NEW_PASSWORD = "ACTION_TRY_NEW_PASSWORD";
+    public static final String ACTION_LOGIN_WITH_NEW_PASSWORD = "ACTION_LOGIN_WITH_NEW_PASSWORD";
+    public static final String ACTION_LOGIN_VIA_EMAIL = "ACTION_LOGIN_VIA_EMAIL";
     public final static String ACTION_REPLY_TO_CARD = "ACTION_REPLY_TO_CARD";
     public final static String ACTION_REPLY_TO_COMMENT = "ACTION_REPLY_TO_COMMENT";
     public static final String ACTION_SHOW_CARDS_WITH_TAG = "ACTION_SHOW_CARDS_WITH_TAG";
     public static final String ACTION_CONTINUE_REGISTRATION = "PATH_ACTION_CONTINUE_REGISTRATION";
     public static final String ACTION_CONFIRM_EMAIL_CHANGE = "ACTION_CONFIRM_EMAIL_CHANGE";
-    public static final String ACTION_LOGIN_VIA_EMAIL = "ACTION_LOGIN_VIA_EMAIL";
     public static final String ACTION_FILL_NEW_USER_PROFILE = "ACTION_FILL_NEW_USER_PROFILE";
 
     public final static String CARD = "CARD";

@@ -89,6 +89,10 @@ public class Login_Presenter implements
             case Constants.ACTION_LOGIN:
                 break;
 
+            case Constants.ACTION_LOGIN_WITH_NEW_PASSWORD:
+                loginWithNewPassword();
+                break;
+
             case Constants.ACTION_LOGIN_VIA_EMAIL:
                 loginViaEmailLink(intent);
                 break;
@@ -263,6 +267,10 @@ public class Login_Presenter implements
                 AuthSingleton.logout();
             }
         });
+    }
+
+    private void loginWithNewPassword() {
+        view.setState(iLogin.ViewState.INFO, R.string.LOGIN_try_new_password);
     }
 
     private void loadUserFromServer(@NonNull String userId, iLoadUserCallbacks callbacks) {

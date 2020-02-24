@@ -300,7 +300,7 @@
     <string name="RESET_PASSWORD2_new_password_saved">Новый пароль установлен</string>
     <string name="RESET_PASSWORD2_password">Новый пароль</string>
     <string name="RESET_PASSWORD2_password_confirmation">Повтор пароля</string>
-    <string name="LOGIN_try_new_password">Можете войти, используя новый пароль</string>
+    <string name="LOGIN_try_new_password">Можете войти с новым паролем</string>
     <string name="REGISTER2_user_name">Имя пользователя</string>
     <string name="REGISTER2_user_name_too_short">Имя слишком короткое</string>
     <string name="REGISTER2_user_name_too_long">Имя слишком длинное</string>

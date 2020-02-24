@@ -175,6 +175,11 @@ public class Login_View extends BaseView implements
                 enableForm();
                 break;
 
+            case INFO:
+                enableForm();
+                showInfoMsg(messageId);
+                break;
+
             case PROGRESS:
                 disableForm();
                 showProgressMessage(messageId);

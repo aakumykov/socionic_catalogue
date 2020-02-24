@@ -13,6 +13,7 @@ public interface iLogin {
 
     enum ViewState {
         INITIAL,
+        INFO,
         PROGRESS,
         SUCCESS,
         ERROR

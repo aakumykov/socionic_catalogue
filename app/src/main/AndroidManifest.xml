@@ -130,7 +130,9 @@
         <activity android:name=".user_edit.UserEdit_View" android:windowSoftInputMode="stateHidden" />
         <activity android:name=".user_edit_email.UserEditEmail_View" android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name=".deep_links_receiver.DeepLinksReceiver">
+        <activity android:name=".deep_links_receiver.DeepLinksReceiver"
+            android:launchMode="singleTask">
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -140,8 +142,14 @@
                 <data
                     android:host="sociocat.page.link"
                     android:scheme="https" />
+
+                <data
+                    android:host="sociocat.example.org"
+                    android:scheme="https" />
+
             </intent-filter>
         </activity>
+
         <activity android:name=".user_change_password.UserChangePassword_View" android:windowSoftInputMode="stateHidden" />
 
         <!--<activity

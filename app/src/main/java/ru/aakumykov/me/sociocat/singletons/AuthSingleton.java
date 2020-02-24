@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.singletons;
 
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -194,6 +195,17 @@ public class AuthSingleton implements iAuthSingleton
             return false;
 
         return firebaseAuth.isSignInWithEmailLink(deepLink);
+    }
+
+    public static boolean isPasswordResetLink(@Nullable String deepLink) {
+        if (null == deepLink)
+            return false;
+
+        Uri uri = Uri.parse(deepLink);
+
+        //String path = uri.getPath();
+
+        return DeepLink_Constants.PASSWORD_RESET_PATH.equals(uri.getPath());
     }
 
     public static void loginWithEmailAndPassword(String email, String password, iAuthSingleton.LoginCallbacks callbacks) {

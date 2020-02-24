@@ -110,11 +110,16 @@ public class DeepLinksReceiver extends BaseView {
 
     private void processDeepLink(@NonNull String deepLink) throws DeepLinksReceiverException {
 
-        Log.d(TAG, "deepLink: "+deepLink);
+        //Log.d(TAG, "deepLink: "+deepLink);
 
         if (AuthSingleton.isEmailSignInLink(deepLink)) {
-            Log.d(TAG, "emailSignInLink: "+deepLink);
-            continueSignInWithLink(deepLink);
+            continueLoginInWithEmailLink(deepLink);
+            return;
+        }
+
+        boolean iprl = AuthSingleton.isPasswordResetLink(deepLink);
+        if (iprl) {
+            continueToLogin();
             return;
         }
 
@@ -151,10 +156,16 @@ public class DeepLinksReceiver extends BaseView {
         }
     }
 
-    private void continueSignInWithLink(@NonNull String deepLink) {
+    private void continueLoginInWithEmailLink(@NonNull String deepLink) {
         Intent intent = new Intent(this, Login_View.class);
         intent.setAction(Constants.ACTION_LOGIN_VIA_EMAIL);
         intent.putExtra(Intent.EXTRA_TEXT, deepLink);
+        startActivityForResult(intent, Constants.CODE_DEEP_LINK_PROCESSING);
+    }
+
+    private void continueToLogin() {
+        Intent intent = new Intent(this, Login_View.class);
+        intent.setAction(Constants.ACTION_LOGIN_WITH_NEW_PASSWORD);
         startActivityForResult(intent, Constants.CODE_DEEP_LINK_PROCESSING);
     }
 
