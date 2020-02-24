@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -261,11 +262,16 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public void hideMessage() {
         intentMessageAlreadyShown = true;
 
-        TextView messageView = findViewById(R.id.messageView);
+        ViewGroup progressAndMessageContainer = findViewById(R.id.progressAndMessageContainer);
+//        TextView messageView = findViewById(R.id.messageView);
         TextView stackTraceView = findViewById(R.id.stackTraceView);
 
-        if (null != messageView) {
-            MyUtils.hide(messageView);
+//        if (null != messageView) {
+//            MyUtils.hide(messageView);
+//        }
+
+        if (null != progressAndMessageContainer) {
+            MyUtils.hide(progressAndMessageContainer);
         }
 
         if (null != stackTraceView) {
@@ -416,32 +422,33 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void showMsg(MsgType msgType, String text, int textColorId, @Nullable Integer backgroundColorId) {
+        ViewGroup progressAndMessageContainer = findViewById(R.id.progressAndMessageContainer);
         TextView messageView = findViewById(R.id.messageView);
 
         int fgColor = getResources().getColor(textColorId);
         //int bgColor = getResources().getColor(null != backgroundColorId ? backgroundColorId : R.color.background_default);
 
-        if (null != messageView) {
+        if (null != progressAndMessageContainer && null != messageView) {
             messageView.setText(text);
             messageView.setTextColor(fgColor);
             //messageView.setBackgroundColor(bgColor);
 
             switch (msgType) {
                 case DEBUG:
-                    messageView.setBackgroundResource(R.drawable.shape_background_debug_msg);
+                    progressAndMessageContainer.setBackgroundResource(R.drawable.shape_background_debug_msg);
                     break;
                 case INFO:
-                    messageView.setBackgroundResource(R.drawable.shape_background_info_msg);
+                    progressAndMessageContainer.setBackgroundResource(R.drawable.shape_background_info_msg);
                     break;
                 case ERROR:
-                    messageView.setBackgroundResource(R.drawable.shape_background_error_msg);
+                    progressAndMessageContainer.setBackgroundResource(R.drawable.shape_background_error_msg);
                     break;
             }
 
-            MyUtils.show(messageView);
+            MyUtils.show(progressAndMessageContainer);
         }
         else {
-            Log.w(TAG, "messageView not found");
+            Log.w(TAG, "messageView or progressAndMessageContainer not found");
         }
     }
 
