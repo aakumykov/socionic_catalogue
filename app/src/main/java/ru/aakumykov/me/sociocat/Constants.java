@@ -2,8 +2,6 @@ package ru.aakumykov.me.sociocat;
 
 public final class Constants
 {
-
-
     private Constants() {}
 
     public enum CardType {
@@ -114,6 +112,7 @@ public final class Constants
     public final static String SHARED_PREFERENCES_CARD_EDIT = "SHARED_PREFERENCES_CARD_EDIT";
     public static final String SHARED_PREFERENCES_EMAIL_CHANGE = "SHARED_PREFERENCES_EMAIL_CHANGE";
     public static final String SHARED_PREFERENCES_USER = "SHARED_PREFERENCES_USER";
+    public static final String SHARED_PREFERENCES_ADMIN = "SHARED_PREFERENCES_ADMIN";
 
     public final static String KEY_LAST_LOGIN = "LAST_LOGIN";
     public static final String KEY_STORED_EMAIL = "STORED_EMAIL";
@@ -121,6 +120,7 @@ public final class Constants
     public final static String TOPIC_NEW_CARDS = "new_cards";
 
     public final static String PREFERENCE_KEY_IS_FIRST_RUN = "PREFERENCE_KEY_IS_FIRST_RUN";
+    public static final String PREFERENCE_KEY_LAST_BACKUP_TIME = "PREFERENCE_KEY_LAST_BACKUP_TIME";
 
     public static String DRAFT_DEFERRED = "DRAFT_DEFERRED";
 

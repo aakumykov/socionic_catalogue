@@ -1,6 +1,7 @@
 package ru.aakumykov.me.sociocat;
 
 import android.app.Application;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -12,6 +13,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Date;
+
+import ru.aakumykov.me.sociocat.backup_job.BackupService;
 import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.models.User;
@@ -26,6 +30,8 @@ public class MyApp extends Application {
     private final static String TAG = "=MyApp=";
     private iUsersSingleton usersSingleton;
 
+
+    // Методы Application
     @Override
     public void onCreate() {
         super.onCreate();
@@ -83,9 +89,12 @@ public class MyApp extends Application {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         prepareDefaultPreferences();
+
+        produceBackup();
     }
 
 
+    // Внутренние методы
     private void authorizeUser(User user) {
         Log.d(TAG, "authorizeUser(), "+user.getName());
         EventBus.getDefault().post(new UserAuthorizedEvent(user));
@@ -193,4 +202,16 @@ public class MyApp extends Application {
 //
 //        }
 //    }
+
+    private void produceBackup() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_ADMIN, MODE_PRIVATE);
+
+        long lastBackupTime = sharedPreferences.getLong(Constants.PREFERENCE_KEY_LAST_BACKUP_TIME, -1);
+        long currentTimeInSeconds = new Date().getTime() / 1000;
+        if ((currentTimeInSeconds - lastBackupTime) > Config.BACKUP_INTERVAL_SECONDS) {
+//        if (BackupService.isTimeToDoBackup()) {
+            startService(new Intent(this, BackupService.class));
+        }
+    }
 }

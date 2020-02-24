@@ -536,6 +536,10 @@ public class BackupService extends Service {
 
 
     // ======================== СЛУЖЕБНЫЕ МЕТОДЫ ========================
+    /*public static boolean isTimeToDoBackup() {
+        return false;
+    }*/
+
     private void notifyAboutBackupProgress(String message) {
         displayProgressNotification(message, BACKUP_STATUS_RUNNING);
         sendBackupProgressBroadcast(message, BACKUP_STATUS_RUNNING);
