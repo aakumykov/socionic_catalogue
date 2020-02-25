@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -537,4 +538,25 @@ public final class MyUtils {
     public static int random(int min, int max) {
         return new Random().nextInt((max - min) + 1) + min;
     }
+
+    public static long getCurrentTimeInSeconds() {
+        return new Date().getTime() / 1000;
+    }
+
+    /*public static long getCurrentTime(TimeUnit timeUnit) {
+        long time = new Date().getTime();
+
+        switch (timeUnit) {
+            case SECONDS:
+                return TimeUnit.MILLISECONDS.toSeconds(time);
+            case MINUTES:
+                return TimeUnit.MILLISECONDS.toMinutes(time);
+            case HOURS:
+                return TimeUnit.MILLISECONDS.toHours(time);
+            case DAYS:
+                return TimeUnit.MILLISECONDS.toDays(time);
+            default:
+                throw new RuntimeException(timeUnit+" is not supported");
+        }
+    }*/
 }
