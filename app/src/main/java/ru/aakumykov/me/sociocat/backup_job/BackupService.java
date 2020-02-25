@@ -543,15 +543,17 @@ public class BackupService extends Service {
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_ADMIN, MODE_PRIVATE);
 
         long lastBackupTime = sharedPreferences.getLong(Constants.PREFERENCE_KEY_LAST_BACKUP_TIME, -1);
-        long currentTimeInSeconds = new Date().getTime() / 1000;
+        long currentTimeInSeconds = MyUtils.getCurrentTimeInSeconds();
+        long elapsedTime = lastBackupTime - currentTimeInSeconds;
 
-        return ((currentTimeInSeconds - lastBackupTime) > Config.BACKUP_INTERVAL_SECONDS);
+        return elapsedTime > Config.BACKUP_INTERVAL_SECONDS;
     }
 
     public static void saveLastBackupTime(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_ADMIN, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putLong(Constants.PREFERENCE_KEY_LAST_BACKUP_TIME, new Date().getTime());
+        long currentTimeInSeconds = MyUtils.getCurrentTimeInSeconds();
+        editor.putLong(Constants.PREFERENCE_KEY_LAST_BACKUP_TIME, currentTimeInSeconds);
         editor.apply();
     }
 
