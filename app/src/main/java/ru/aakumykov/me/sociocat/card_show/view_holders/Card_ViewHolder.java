@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -269,6 +271,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 
     private void displayImage() {
 
+        /* С ImageLoader-ом опять пошли артефакты
         imageView.setImageResource(R.drawable.ic_image_placeholder_monochrome);
 
         ImageLoader.loadImage(imageView.getContext(), currentCard.getImageURL(), new ImageLoader.LoadImageCallbacks() {
@@ -281,7 +284,13 @@ public class Card_ViewHolder extends Base_ViewHolder implements
             public void onImageLoadError(String errorMsg) {
                 imageView.setImageResource(R.drawable.ic_image_error);
             }
-        });
+        });*/
+
+        Glide.with(imageView.getContext())
+                .load(currentCard.getImageURL())
+                .placeholder(R.drawable.ic_image_placeholder_monochrome)
+                .error(R.drawable.ic_image_error)
+                .into(imageView);
     }
 
     private void showImageError(String errorMsg) {
