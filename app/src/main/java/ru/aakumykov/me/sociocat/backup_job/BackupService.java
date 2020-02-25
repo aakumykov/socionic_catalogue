@@ -544,7 +544,7 @@ public class BackupService extends Service {
 
         long lastBackupTime = sharedPreferences.getLong(Constants.PREFERENCE_KEY_LAST_BACKUP_TIME, -1);
         long currentTimeInSeconds = MyUtils.getCurrentTimeInSeconds();
-        long elapsedTime = lastBackupTime - currentTimeInSeconds;
+        long elapsedTime = currentTimeInSeconds - lastBackupTime;
 
         return elapsedTime > Config.BACKUP_INTERVAL_SECONDS;
     }
