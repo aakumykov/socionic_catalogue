@@ -13,10 +13,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StreamDownloadTask;
 import com.google.firebase.storage.UploadTask;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class StorageSingleton implements iStorageSingleton {
 
@@ -34,7 +36,7 @@ public class StorageSingleton implements iStorageSingleton {
     private final static String TAG = "StorageSingleton";
     private FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     private StorageReference rootRef = firebaseStorage.getReference().child("/");
-//    private StorageReference imagesRef = firebaseStorage.getReference().child(Constants.IMAGES_PATH);
+    private StorageReference imagesRef = firebaseStorage.getReference().child(Constants.IMAGES_PATH);
 //    private StorageReference avatarsRef = firebaseStorage.getReference().child(Constants.AVATARS_PATH);
     private String fileName;
 
@@ -103,6 +105,32 @@ public class StorageSingleton implements iStorageSingleton {
 
         String filePath = "/" + Constants.AVATARS_PATH +"/"+ avatarFileName;
         deleteFile(filePath, callbacks);
+    }
+
+    @Override
+    public void getImage(@Nullable String imageFileName, GetFileCallbacks callbacks) {
+        if (TextUtils.isEmpty(imageFileName)) {
+            callbacks.onFileDownloadError("Image file name cannot be empty");
+            return;
+        }
+
+        Runtime rt = Runtime.getRuntime();
+        long maxMemory = rt.maxMemory();
+
+        imagesRef.child(imageFileName).getBytes(maxMemory)
+                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        callbacks.onFileDownloadSuccess(bytes);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onFileDownloadError(e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
     }
 
 
