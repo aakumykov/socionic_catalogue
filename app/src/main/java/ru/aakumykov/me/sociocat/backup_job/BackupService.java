@@ -26,20 +26,19 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
+import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.utils.DropboxBackuper;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -102,8 +101,34 @@ public class BackupService extends Service {
         }
     }
 
-    private Map<Object, String> backupPool = new HashMap<>();
-    private Map<String, String> imagesPool = new HashMap<>();
+//    private Map<Object, String> backupPool = new HashMap<>();
+//    private Map<String, String> imagesPool = new HashMap<>();
+
+    private List<BackupElement> backupPool = new ArrayList<>();
+
+    private static class BackupElement {
+        private String collectionName;
+
+        BackupElement() {
+        }
+
+        public String getCollectionName() {
+            return collectionName;
+        }
+    }
+
+    private static class StringBackupElement extends BackupElement {
+        private String jsonString;
+
+        public StringBackupElement(String jsonString) {
+            super();
+            this.jsonString = jsonString;
+        }
+    }
+
+    private static class ImageBackupElement extends BackupElement {
+
+    }
 
     private final static String TAG = "BackupService";
     private static boolean backupImpossible = true;
@@ -489,7 +514,7 @@ public class BackupService extends Service {
         CollectionPair collectionPair = collectionsPool.pop();
 
         if (null == collectionPair) {
-            backupBackupPoolItems();
+            processBackupPoolItems();
             return;
         }
 
@@ -497,20 +522,11 @@ public class BackupService extends Service {
 
         switch (collectionName) {
             case Constants.CARDS_PATH:
-                loadCollection(collectionName);
-                loadCollection(collectionName);
-                loadCollection(collectionName);
-                loadCollection(collectionName);
-                loadCollection(collectionName);
+                loadCards();
                 return;
             default:
-                String errorMsg = MyUtils.getString(this, R.string.BACKUP_SERVICE_error_unknown_collection_name, collectionName);
-                showCustomNotification(R.string.error, errorMsg);
+                loadCollection(collectionName);
         }
-    }
-
-    private void backupBackupPoolItems() {
-
     }
 
     private void loadCollection(String collectionName) {
@@ -521,6 +537,7 @@ public class BackupService extends Service {
         );
 
         List<String> errorsList = new ArrayList<>();
+        List<Object> objectsList = new ArrayList<>();
 
         FirebaseFirestore.getInstance().collection(collectionName).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -529,12 +546,17 @@ public class BackupService extends Service {
                         for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             try {
                                 Object object = documentSnapshot.toObject(Object.class);
-                                backupPool.put(object, collectionName);
+
                             }
                             catch (Exception e) {
                                 errorsList.add(e.getMessage());
                                 MyUtils.printError(TAG, e);
                             }
+                        }
+
+                        if (objectsList.size() > 0) {
+                            String json = listOfObjects2JSON_2(objectsList);
+                            backupPool.add(new BackupElement(ElementType.STRING, json, collectionName));
                         }
 
                         if (errorsList.size() > 0) {
@@ -551,6 +573,95 @@ public class BackupService extends Service {
                         fillBackupPool();
                     }
                 });
+    }
+
+    private void loadCards() {
+        String collectionName = Constants.CARDS_PATH;
+
+        notifyAboutBackupProgress(MyUtils.getString(
+                this,
+                R.string.BACKUP_SERVICE_loading_collection,
+                collectionName)
+        );
+
+        CardsSingleton.getInstance().loadAllCards(new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                for (Card card : list) {
+                    String fileName = card.getFileName();
+                    String imageURL = card.getImageURL();
+
+                    if (card.isImageCard() && cardHasNewImage(card)) {
+                        backupPool.add(new BackupElement(ElementType.IMAGE, ))
+                    }
+                }
+
+                String json = listOfObjects2JSON_2(list);
+                backupPool.add(new BackupElement(ElementType.STRING, json, collectionName));
+                fillBackupPool();
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                showCustomNotification(R.string.BACKUP_SERVICE_error_loading_collection, collectionName);
+                fillBackupPool();
+            }
+        });
+    }
+
+    private void processBackupPoolItems() {
+
+        if (backupPool.size() == 0) {
+            finishBackup();
+            return;
+        }
+
+        BackupElement backupElement = backupPool.get(0);
+        backupPool.remove(0);
+
+        String collectionName = backupElement.collectionName;
+//        String collectionName = backupPoolElement.getCollectionName();
+        String jsonData = (String) backupElement.getObject();
+
+        notifyAboutBackupProgress(MyUtils.getString(
+                BackupService.this,
+                R.string.BACKUP_SERVICE_saving_collection,
+                collectionName
+        ));
+
+        dropboxBackuper.backupString(
+                targetDirName,
+                collectionName,
+                "json",
+                jsonData,
+                true,
+                new DropboxBackuper.iBackupStringCallbacks() {
+                    @Override
+                    public void onBackupStringSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
+                        String msg = MyUtils.getString(
+                                BackupService.this,
+                                R.string.BACKUP_SERVICE_collection_is_saved,
+                                collectionName
+                        );
+                        backupSuccessList.add(msg);
+                        Log.d(TAG, msg);
+                        produceBackup();
+                    }
+
+                    @Override
+                    public void onBackupStringFail(String errorMsg) {
+                        String msg = MyUtils.getString(
+                                BackupService.this,
+                                R.string.BACKUP_SERVICE_error_saving_collection,
+                                collectionName,
+                                errorMsg
+                        );
+                        backupErrorsList.add(msg);
+                        Log.e(TAG, msg);
+                        produceBackup();
+                    }
+                }
+        );
     }
 
 /*
