@@ -20,6 +20,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -28,20 +29,17 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.models.Comment;
-import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
-import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.utils.DropboxBackuper;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -49,12 +47,12 @@ public class BackupService extends Service {
 
 
     // ======== НАСТРОЙКА ОБЪЕКТОВ РЕЗЕРВНОГО КОПИРОВАНИЯ ========
-    private CollectionPool collectionPool = new CollectionPool(
-            new CollectionPair(Constants.USERS_PATH, User.class),
-            new CollectionPair(Constants.ADMINS_PATH, User.class),
-            new CollectionPair(Constants.CARDS_PATH, Card.class),
-            new CollectionPair(Constants.TAGS_PATH, Tag.class),
-            new CollectionPair(Constants.COMMENTS_PATH, Comment.class)
+    private CollectionPool collectionsPool = new CollectionPool(
+            new CollectionPair(Constants.CARDS_PATH, Card.class)
+//            new CollectionPair(Constants.TAGS_PATH, Tag.class),
+//            new CollectionPair(Constants.COMMENTS_PATH, Comment.class),
+//            new CollectionPair(Constants.USERS_PATH, User.class),
+//            new CollectionPair(Constants.ADMINS_PATH, User.class)
     );
 
     private static class CollectionPair {
@@ -104,12 +102,13 @@ public class BackupService extends Service {
         }
     }
 
+    private Map<Object, String> backupPool = new HashMap<>();
+    private Map<String, String> imagesPool = new HashMap<>();
+
     private final static String TAG = "BackupService";
     private static boolean backupImpossible = true;
     private String targetDirName;
     private Map<String, String> previousCollection = new HashMap<>();
-    private Map<String, String> images2backup = new HashMap<>();
-
 
 
     // ======================== УПРАВЛЕНИЕ СЛУЖБОЙ ========================
@@ -139,12 +138,11 @@ public class BackupService extends Service {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("perform_database_backup", false);
             editor.commit();
-
-            return;
         }
-
-        backupImpossible = false;
-        dropboxBackuper = new DropboxBackuper(dropboxAccessToken);
+        else {
+            backupImpossible = false;
+            dropboxBackuper = new DropboxBackuper(dropboxAccessToken);
+        }
     }
 
     @Override
@@ -173,7 +171,7 @@ public class BackupService extends Service {
         return null;
     }
 
-    private void finishWithError(String errorMsg) {
+    private void finishBackupWithError(String errorMsg) {
 
         removeProgressNotification();
         displayResultNotification(errorMsg, BACKUP_STATUS_ERROR);
@@ -184,7 +182,7 @@ public class BackupService extends Service {
         sendServiceBroadcast(SERVICE_STATUS_FINISH);
     }
 
-    private void finishWithSuccess() {
+    private void finishBackup() {
 
         String message = MyUtils.getString(
                 this,
@@ -229,19 +227,45 @@ public class BackupService extends Service {
             @Override
             public void onCreateDirFail(String errorMsg) {
                 backupErrorsList.add(errorMsg);
-                finishWithError(errorMsg);
+                finishBackupWithError(errorMsg);
             }
         });
+
+        /*dropboxBackuper.createDir("qwerty", true, new DropboxBackuper.iCreateDirCallbacks() {
+            @Override
+            public void onCreateDirSuccess(String createdDirName) {
+                showCustomNotification("Создан каталог", createdDirName);
+
+                String secondDirName = createdDirName + "/abcdef";
+
+                dropboxBackuper.createDir(secondDirName, true, new DropboxBackuper.iCreateDirCallbacks() {
+                    @Override
+                    public void onCreateDirSuccess(String createdDirName) {
+                        showCustomNotification("Создан каталог", createdDirName);
+                    }
+
+                    @Override
+                    public void onCreateDirFail(String errorMsg) {
+                        showCustomNotification("Ошибка создания каталога", errorMsg);
+                    }
+                });
+            }
+
+            @Override
+            public void onCreateDirFail(String errorMsg) {
+                showCustomNotification("Ошибка создания каталога", errorMsg);
+            }
+        });*/
     }
 
     private void performCollectionsBackup() {
 
-        if (0 == collectionPool.size()) {
-            finishWithError("Список резервного копирования пуст");
+        if (0 == collectionsPool.size()) {
+            finishBackupWithError("Список резервного копирования пуст");
             return;
         }
 
-        CollectionPair collectionPair = collectionPool.pop();
+        CollectionPair collectionPair = collectionsPool.pop();
 
         if (null != collectionPair) {
             String collectionName = collectionPair.getName();
@@ -316,7 +340,7 @@ public class BackupService extends Service {
             });
         }
         else {
-            finishWithSuccess();
+            finishBackup();
         }
     }
 
@@ -427,8 +451,7 @@ public class BackupService extends Service {
 
     // Новый механизм
     private void produceBackup() {
-
-        CollectionPair collectionPair = collectionPool.pop();
+        /*CollectionPair collectionPair = collectionPool.pop();
 
         if (null != collectionPair) {
             String collectionName = collectionPair.getName();
@@ -458,9 +481,79 @@ public class BackupService extends Service {
         if (images2backup.size() > 0)
             backupImages();
         else
-            finishWithSuccess();
+            finishWithSuccess();*/
     }
 
+    private void fillBackupPool() {
+
+        CollectionPair collectionPair = collectionsPool.pop();
+
+        if (null == collectionPair) {
+            backupBackupPoolItems();
+            return;
+        }
+
+        String collectionName = collectionPair.getName();
+
+        switch (collectionName) {
+            case Constants.CARDS_PATH:
+                loadCollection(collectionName);
+                loadCollection(collectionName);
+                loadCollection(collectionName);
+                loadCollection(collectionName);
+                loadCollection(collectionName);
+                return;
+            default:
+                String errorMsg = MyUtils.getString(this, R.string.BACKUP_SERVICE_error_unknown_collection_name, collectionName);
+                showCustomNotification(R.string.error, errorMsg);
+        }
+    }
+
+    private void backupBackupPoolItems() {
+
+    }
+
+    private void loadCollection(String collectionName) {
+        notifyAboutBackupProgress(MyUtils.getString(
+                this,
+                R.string.BACKUP_SERVICE_loading_collection,
+                collectionName)
+        );
+
+        List<String> errorsList = new ArrayList<>();
+
+        FirebaseFirestore.getInstance().collection(collectionName).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            try {
+                                Object object = documentSnapshot.toObject(Object.class);
+                                backupPool.put(object, collectionName);
+                            }
+                            catch (Exception e) {
+                                errorsList.add(e.getMessage());
+                                MyUtils.printError(TAG, e);
+                            }
+                        }
+
+                        if (errorsList.size() > 0) {
+                            // TODO: уведомлять?
+                            Log.e(TAG, "Errors during loading collection '"+collectionName+"': "+errorsList);
+                        }
+
+                        fillBackupPool();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        fillBackupPool();
+                    }
+                });
+    }
+
+/*
     private void backupCards() {
         String collectionName = "cards";
 
@@ -530,6 +623,7 @@ public class BackupService extends Service {
             }
         });
     }
+*/
 
     private boolean cardHasNewImage(Card newCard) {
         // Нет сведений о предыдущем резервном копировании - считаем, что есть новая картинка.
@@ -567,23 +661,9 @@ public class BackupService extends Service {
         }
     }
 
-    private void backupComments() {
-        produceBackup();
-    }
-
-    private void backupTags() {
-        produceBackup();
-    }
-
-    private void backupUsers() {
-        produceBackup();
-    }
-
-    private void backupAdmins() {
-        produceBackup();
-    }
 
     // Метод должен запускаться ПОСЛЕ обработки карточек, т.к. получает информацию оттуда.
+/*
     private void backupImages() {
         String imagesDir = targetDirName + "/images";
 
@@ -600,7 +680,9 @@ public class BackupService extends Service {
             }
         });
     }
+*/
 
+/*
     private void uploadImages2Server(String remoteTargetDir) {
         List<String> errorsList = new ArrayList<>();
         List<String> successList = new ArrayList<>();
@@ -637,6 +719,7 @@ public class BackupService extends Service {
                     });
         }
     }
+*/
 
 
     // ======================== ШИРОКОВЕЩАТЕЛЬНЫЕ СООБЩЕНИЯ ========================
@@ -777,10 +860,13 @@ public class BackupService extends Service {
         notificationManager.notify(resultNotificationId, notification);
     }
 
-    private void showCustomNotification(int titleID, int messageId) {
-
-        String title = getResources().getString(titleID);
+    private void showCustomNotification(int titleId, int messageId) {
         String message = getResources().getString(messageId);
+        showCustomNotification(titleId, message);
+    }
+
+    private void showCustomNotification(int titleID, String message) {
+        String title = getResources().getString(titleID);
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, BACKUP_JOB_NOTIFICATION_CHANNEL)
