@@ -392,7 +392,10 @@ public final class MyUtils {
 
             NotificationManager notificationManager =
                     (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(channel);
+            if (null != notificationManager)
+                notificationManager.createNotificationChannel(channel);
+            else
+                Log.e(TAG, "Cannot obtain NotificationManager to create notification channel: "+channel);
         }
     }
 
