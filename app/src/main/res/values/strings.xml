@@ -636,5 +636,6 @@
     <string name="LOGIN_error_user_not_found">Пользователь не найден</string>
     <string name="REGISTER1_email_successfully_sent">Письмо отправлено</string>
     <string name="LOGIN_too_many_login_attempts">Слишком много попыток входа. Попробуйте позже.</string>
+    <string name="BACKUP_SERVICE_error_unknown_collection_name">Неизвестная коллекция «%1$s»</string>
 
 </resources><!-- «%1$s» -->

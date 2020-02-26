@@ -629,5 +629,6 @@
     <string name="LOGIN_error_user_not_found">User not found</string>
     <string name="REGISTER1_email_successfully_sent">Email is sent</string>
     <string name="LOGIN_too_many_login_attempts">Too many login attempts. Try again later</string>
+    <string name="BACKUP_SERVICE_error_unknown_collection_name">Unknown collection «%1$s»</string>
 </resources>
 <!-- «%1$s» -->

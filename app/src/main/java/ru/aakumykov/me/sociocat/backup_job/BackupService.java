@@ -27,7 +27,9 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
@@ -94,11 +96,18 @@ public class BackupService extends Service {
         public void push(CollectionPair collectionPair) {
             list.add(collectionPair);
         }
+
+        public int size() {
+            return  list.size();
+        }
     }
 
     private final static String TAG = "BackupService";
     private static boolean backupImpossible = true;
     private String targetDirName;
+    private Map<String, String> previousCollection = new HashMap<>();
+    private Map<String, String> images2backup = new HashMap<>();
+
 
 
     // ======================== УПРАВЛЕНИЕ СЛУЖБОЙ ========================
@@ -168,7 +177,13 @@ public class BackupService extends Service {
         sendServiceBroadcast(SERVICE_STATUS_FINISH);
     }
 
-    private void finishWithSuccess(String message) {
+    private void finishWithSuccess() {
+
+        String message = MyUtils.getString(
+                this,
+                R.string.BACKUP_SERVICE_all_collections_are_processed,
+                MyUtils.date2string()
+        );
 
         removeProgressNotification();
         displayResultNotification(message, BACKUP_STATUS_SUCCESS);
@@ -188,7 +203,6 @@ public class BackupService extends Service {
 
     private void startBackup() {
         String dirName = MyUtils.date2string();
-        String initialDirName = MyUtils.quoteString(this, dirName);
 
         notifyAboutBackupProgress(MyUtils.getString(this, R.string.BACKUP_SERVICE_backup_started));
 
@@ -201,7 +215,8 @@ public class BackupService extends Service {
                 backupSuccessList.add(successMsg);
                 Log.d(TAG, successMsg);
 
-                performCollectionsBackup();
+                //performCollectionsBackup();
+                produceBackup();
             }
 
             @Override
@@ -213,6 +228,11 @@ public class BackupService extends Service {
     }
 
     private void performCollectionsBackup() {
+
+        if (0 == collectionPool.size()) {
+            finishWithError("Список резервного копирования пуст");
+            return;
+        }
 
         CollectionPair collectionPair = collectionPool.pop();
 
@@ -253,21 +273,19 @@ public class BackupService extends Service {
                             true,
                             new DropboxBackuper.iBackupStringCallbacks() {
                                 @Override
-                                public void onBackupSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
+                                public void onBackupStringSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
                                     String msg = MyUtils.getString(
                                             BackupService.this,
                                             R.string.BACKUP_SERVICE_collection_is_saved,
                                             collectionName
                                     );
-
                                     backupSuccessList.add(msg);
                                     Log.d(TAG, msg);
-
                                     performCollectionsBackup();
                                 }
 
                                 @Override
-                                public void onBackupFail(String errorMsg) {
+                                public void onBackupStringFail(String errorMsg) {
                                     String msg = MyUtils.getString(
                                             BackupService.this,
                                             R.string.BACKUP_SERVICE_error_saving_collection,
@@ -276,7 +294,6 @@ public class BackupService extends Service {
                                     );
                                     backupErrorsList.add(msg);
                                     Log.e(TAG, msg);
-
                                     performCollectionsBackup();
                                 }
                             }
@@ -287,18 +304,12 @@ public class BackupService extends Service {
                 public void onLoadCollectionError(String errorMsg) {
                     String msg = MyUtils.getString(BackupService.this, R.string.BACKUP_SERVICE_error_loading_collection, collectionName);
                     Log.e(TAG, msg);
-
                     performCollectionsBackup();
                 }
             });
         }
         else {
-            String msg = MyUtils.getString(
-                    this,
-                    R.string.BACKUP_SERVICE_all_collections_are_processed,
-                    MyUtils.date2string()
-            );
-            finishWithSuccess(msg);
+            finishWithSuccess();
         }
     }
 
@@ -378,26 +389,197 @@ public class BackupService extends Service {
         return "[\n" + TextUtils.join(",\n", jsonList) + "\n]";
     }
 
+    private <T> String listOfObjects2JSON_2(List<T> objectsList) {
+        List<String> jsonList = new ArrayList<>();
+        List<String> errorsList = new ArrayList<>();
+
+        Gson gson = new Gson();
+
+        for (Object item : objectsList) {
+            try {
+                jsonList.add(gson.toJson(item));
+            }
+            catch (Exception e) {
+                errorsList.add(Arrays.toString(e.getStackTrace()));
+            }
+        }
+
+        if (errorsList.size() > 0) {
+            Log.e(TAG, errorsList.toString());
+        }
+
+        return "[\n" + TextUtils.join(",\n", jsonList) + "\n]";
+
+    }
+
     private interface iLoadCollectionCallbacks {
         void onLoadCollectionSuccess(List<Object> itemsList, List<String> errorsList);
         void onLoadCollectionError(String errorMsg);
     }
 
 
+    // Новый механизм
+    private void produceBackup() {
+
+        CollectionPair collectionPair = collectionPool.pop();
+
+        if (null != collectionPair) {
+            String collectionName = collectionPair.getName();
+
+            switch (collectionName) {
+                case Constants.CARDS_PATH:
+                    backupCards();
+                    return;
+                case Constants.COMMENTS_PATH:
+                    backupComments();
+                    return;
+                case Constants.TAGS_PATH:
+                    backupTags();
+                    return;
+                case Constants.USERS_PATH:
+                    backupUsers();
+                    return;
+                case Constants.ADMINS_PATH:
+                    backupAdmins();
+                    return;
+                default:
+                    String errorMsg = MyUtils.getString(this, R.string.BACKUP_SERVICE_error_unknown_collection_name, collectionName);
+                    finishWithError(errorMsg);
+            }
+        }
+
+        if (images2backup.size() > 0)
+            backupImages();
+        else
+            finishWithSuccess();
+    }
+
     private void backupCards() {
+        String collectionName = "cards";
+
+        notifyAboutBackupProgress(MyUtils.getString(
+                this,
+                R.string.BACKUP_SERVICE_loading_collection,
+                collectionName)
+        );
+
         CardsSingleton.getInstance().loadAllCards(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
 
+                for (Card card : list) {
+                    if (card.isImageCard() && cardHasNewImage(card))
+                        images2backup.put(card.getFileName(), card.getImageURL());
+                }
+
+                String jsonData = listOfObjects2JSON_2(list);
+
+                notifyAboutBackupProgress(MyUtils.getString(
+                        BackupService.this,
+                        R.string.BACKUP_SERVICE_saving_collection,
+                        collectionName
+                ));
+
+                dropboxBackuper.backupString(
+                        targetDirName,
+                        collectionName,
+                        "json",
+                        jsonData,
+                        true,
+                        new DropboxBackuper.iBackupStringCallbacks() {
+                            @Override
+                            public void onBackupStringSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
+                                String msg = MyUtils.getString(
+                                        BackupService.this,
+                                        R.string.BACKUP_SERVICE_collection_is_saved,
+                                        collectionName
+                                );
+                                backupSuccessList.add(msg);
+                                Log.d(TAG, msg);
+                                produceBackup();
+                            }
+
+                            @Override
+                            public void onBackupStringFail(String errorMsg) {
+                                String msg = MyUtils.getString(
+                                        BackupService.this,
+                                        R.string.BACKUP_SERVICE_error_saving_collection,
+                                        collectionName,
+                                        errorMsg
+                                );
+                                backupErrorsList.add(msg);
+                                Log.e(TAG, msg);
+                                produceBackup();
+                            }
+                        }
+                );
             }
 
             @Override
             public void onListLoadFail(String errorMessage) {
-
+                // TODO: сообщать об этом явно
+                Log.d(TAG, errorMessage);
+                produceBackup();
             }
         });
     }
 
+    private boolean cardHasNewImage(Card newCard) {
+        // Нет сведений о предыдущем резервном копировании - считаем, что есть новая картинка.
+        if (0 == previousCollection.size())
+            return true;
+
+        String newCardKey = newCard.getKey();
+
+        // Карточка не найдена, значит, есть новая картинка.
+        if (!previousCollection.containsKey(newCardKey)) {
+            return true;
+        }
+        else {
+            try {
+                String cardJSON = previousCollection.get(newCardKey);
+                Card oldCard = new Gson().fromJson(cardJSON, Card.class);
+                if (null == oldCard)
+                    return true;
+
+                String oldImageURL = oldCard.getImageURL();
+
+                // Если нет сведений о старом imageURL
+                if (null == oldImageURL)
+                    return true;
+
+                String newImageURL = newCard.getImageURL();
+
+                return ! oldImageURL.equals(newImageURL);
+            }
+            catch (Exception e) {
+                // При ошибке восстановления из JSON выполняем рез. копирование
+                MyUtils.printError(TAG, e);
+                return true;
+            }
+        }
+    }
+
+    private void backupComments() {
+        produceBackup();
+    }
+
+    private void backupTags() {
+        produceBackup();
+    }
+
+    private void backupUsers() {
+        produceBackup();
+    }
+
+    private void backupAdmins() {
+        produceBackup();
+    }
+
+    // Метод должен запускаться ПОСЛЕ обработки карточек, т.к. получает информацию оттуда.
+    private void backupImages() {
+        produceBackup();
+    }
 
 
     // ======================== ШИРОКОВЕЩАТЕЛЬНЫЕ СООБЩЕНИЯ ========================
