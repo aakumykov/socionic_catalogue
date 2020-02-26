@@ -39,7 +39,9 @@ import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.utils.DropboxBackuper;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -120,8 +122,13 @@ public class BackupService extends Service {
 
         String dropboxAccessToken = (sharedPreferences.contains(KEY_NAME)) ?
                 sharedPreferences.getString(KEY_NAME, null) : null;
+
+        if (null != dropboxAccessToken)
+            dropboxAccessToken = dropboxAccessToken.trim();
+
         String dropboxAccessTokenStub = getString(R.string.PREFERENCE_dropbox_access_token_stub);
 
+        // Если dropboxAccessToken содержит заглушку
         if (dropboxAccessTokenStub.equals(dropboxAccessToken)) {
 
             showCustomNotification(
@@ -469,7 +476,7 @@ public class BackupService extends Service {
 
                 for (Card card : list) {
                     if (card.isImageCard() && cardHasNewImage(card))
-                        images2backup.put(card.getFileName(), card.getImageURL());
+                        images2backup.put(card.getKey(), card.getFileName());
                 }
 
                 String jsonData = listOfObjects2JSON_2(list);
@@ -578,7 +585,57 @@ public class BackupService extends Service {
 
     // Метод должен запускаться ПОСЛЕ обработки карточек, т.к. получает информацию оттуда.
     private void backupImages() {
-        produceBackup();
+        String imagesDir = targetDirName + "/images";
+
+        dropboxBackuper.createDir(imagesDir, true, new DropboxBackuper.iCreateDirCallbacks() {
+            @Override
+            public void onCreateDirSuccess(String createdDirName) {
+                uploadImages2Server(createdDirName);
+            }
+
+            @Override
+            public void onCreateDirFail(String errorMsg) {
+                // TODO: уведомить об ошибке
+                Log.e(TAG, errorMsg);
+            }
+        });
+    }
+
+    private void uploadImages2Server(String remoteTargetDir) {
+        List<String> errorsList = new ArrayList<>();
+        List<String> successList = new ArrayList<>();
+
+        for (String cardKey : images2backup.keySet()) {
+            String imageFileName = images2backup.get(cardKey);
+
+            StorageSingleton.getInstance()
+                    .getImage(imageFileName, new iStorageSingleton.GetFileCallbacks() {
+                        @Override
+                        public void onFileDownloadSuccess(byte[] imageBytes) {
+
+                            dropboxBackuper.backupFile(remoteTargetDir, imageFileName, imageBytes, new DropboxBackuper.iBackupFileCallbacks() {
+                                @Override
+                                public void onBackupFileSuccess(String uploadedFileName) {
+                                    // TODO: уведомить
+                                    successList.add(imageFileName);
+                                }
+
+                                @Override
+                                public void onBackupFileError(String errorMsg) {
+                                    // TODO: уведомить
+                                    Log.e(TAG, errorMsg);
+                                    errorsList.add(errorMsg);
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onFileDownloadError(String errorMsg) {
+                            Log.e(TAG, errorMsg);
+                            errorsList.add(errorMsg);
+                        }
+                    });
+        }
     }
 
 

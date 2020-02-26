@@ -29,6 +29,10 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
         void onDownloadStringSuccess(String text);
         void onDownloadStringError(String errorMsg);
     }
+    public interface iBackupFileCallbacks {
+        void onBackupFileSuccess(String uploadedFileName);
+        void onBackupFileError(String errorMsg);
+    }
 
     public final static int MESSAGE_WORK_SUCCESS = 20;
     public final static int MESSAGE_WORK_FAIL = 30;
@@ -170,8 +174,38 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
         new Thread(runnable).start();
     }
 
-    public void backupFile(String fileName, byte[] data) {
+    public void backupFile(
+            String dirName,
+            String fileName,
+            byte[] dataBytes,
+            iBackupFileCallbacks callbacks
+    ) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                String remoteFileName = "/" + dirName + "/" + fileName;
 
+                try (InputStream byteArrayInputStream = new ByteArrayInputStream(dataBytes)) {
+
+                    FileMetadata uploadMetadata = client.files()
+                            .uploadBuilder(remoteFileName)
+                            .withAutorename(false)
+                            .uploadAndFinish(byteArrayInputStream);
+
+                    String uploadedFileName = uploadMetadata.getName();
+
+                    callbacks.onBackupFileSuccess(uploadedFileName);
+                }
+                catch (Exception e) {
+                    /*MyUtils.getExceptionMessage используется потому, что исключение может быть
+                    кривым, не содержать сообщения в нужно месте.*/
+                    callbacks.onBackupFileError(MyUtils.getExceptionMessage(e));
+                    MyUtils.processException(TAG, e);
+                }
+            }
+        };
+
+        new Thread(runnable).start();
     }
 
 
