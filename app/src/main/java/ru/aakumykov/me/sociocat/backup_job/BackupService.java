@@ -36,6 +36,8 @@ import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.utils.DropboxBackuper;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -94,11 +96,12 @@ public class BackupService extends Service {
         }
     }
 
-
-    // ======================== УПРАВЛЕНИЕ СЛУЖБОЙ ========================
     private final static String TAG = "BackupService";
     private static boolean backupImpossible = true;
+    private String targetDirName;
 
+
+    // ======================== УПРАВЛЕНИЕ СЛУЖБОЙ ========================
     @Override
     public void onCreate() {
         super.onCreate();
@@ -192,11 +195,13 @@ public class BackupService extends Service {
         dropboxBackuper.createDir(dirName, true, new DropboxBackuper.iCreateDirCallbacks() {
             @Override
             public void onCreateDirSuccess(String dirName) {
+                targetDirName = dirName;
+
                 String successMsg = MyUtils.getString(BackupService.this, R.string.BACKUP_SERVICE_directory_created, dirName);
                 backupSuccessList.add(successMsg);
                 Log.d(TAG, successMsg);
 
-                performCollectionsBackup(dirName);
+                performCollectionsBackup();
             }
 
             @Override
@@ -207,7 +212,7 @@ public class BackupService extends Service {
         });
     }
 
-    private void performCollectionsBackup(String targetDirName) {
+    private void performCollectionsBackup() {
 
         CollectionPair collectionPair = collectionPool.pop();
 
@@ -258,7 +263,7 @@ public class BackupService extends Service {
                                     backupSuccessList.add(msg);
                                     Log.d(TAG, msg);
 
-                                    performCollectionsBackup(targetDirName);
+                                    performCollectionsBackup();
                                 }
 
                                 @Override
@@ -272,7 +277,7 @@ public class BackupService extends Service {
                                     backupErrorsList.add(msg);
                                     Log.e(TAG, msg);
 
-                                    performCollectionsBackup(targetDirName);
+                                    performCollectionsBackup();
                                 }
                             }
                     );
@@ -283,7 +288,7 @@ public class BackupService extends Service {
                     String msg = MyUtils.getString(BackupService.this, R.string.BACKUP_SERVICE_error_loading_collection, collectionName);
                     Log.e(TAG, msg);
 
-                    performCollectionsBackup(targetDirName);
+                    performCollectionsBackup();
                 }
             });
         }
@@ -376,6 +381,21 @@ public class BackupService extends Service {
     private interface iLoadCollectionCallbacks {
         void onLoadCollectionSuccess(List<Object> itemsList, List<String> errorsList);
         void onLoadCollectionError(String errorMsg);
+    }
+
+
+    private void backupCards() {
+        CardsSingleton.getInstance().loadAllCards(new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+
+            }
+        });
     }
 
 
