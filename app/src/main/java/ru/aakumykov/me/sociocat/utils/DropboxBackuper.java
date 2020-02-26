@@ -15,8 +15,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
-import ru.aakumykov.me.sociocat.utils.MyUtils;
-
 public class DropboxBackuper /*implements iCloudBackuper*/ {
 
     public interface iCreateDirCallbacks {
@@ -24,12 +22,12 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
         void onCreateDirFail(String errorMsg);
     }
     public interface iBackupStringCallbacks {
-        void onBackupSuccess(BackupItemInfo backupItemInfo);
-        void onBackupFail(String errorMsg);
+        void onBackupStringSuccess(BackupItemInfo backupItemInfo);
+        void onBackupStringFail(String errorMsg);
     }
     public interface iDownloadStringCallbacks {
-        void onStringDownloadSuccess(String text);
-        void onStringDownloadError(String errorMsg);
+        void onDownloadStringSuccess(String text);
+        void onDownloadStringError(String errorMsg);
     }
 
     public final static int MESSAGE_WORK_SUCCESS = 20;
@@ -109,11 +107,11 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
                 switch (msg.what) {
                     case MESSAGE_WORK_SUCCESS:
                         BackupItemInfo backupItemInfo = (BackupItemInfo) msg.obj;
-                        callbacks.onBackupSuccess(backupItemInfo);
+                        callbacks.onBackupStringSuccess(backupItemInfo);
                         break;
                     case MESSAGE_WORK_FAIL:
                         String errorMsg = (String) msg.obj;
-                        callbacks.onBackupFail(errorMsg);
+                        callbacks.onBackupStringFail(errorMsg);
                         break;
                     default:
                         super.handleMessage(msg);
@@ -139,7 +137,7 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
 
                     downloadString(remoteFileName, new iDownloadStringCallbacks() {
                         @Override
-                        public void onStringDownloadSuccess(String text) {
+                        public void onDownloadStringSuccess(String text) {
 
                             String firstHash = MyUtils.md5sum(inputString) + "";
                             String secondHash = MyUtils.md5sum(text);
@@ -150,20 +148,20 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
                             backupItemInfo.setMd5hash(secondHash);
 
                             if (firstHash.equals(secondHash))
-                                callbacks.onBackupSuccess(backupItemInfo);
+                                callbacks.onBackupStringSuccess(backupItemInfo);
                             else
-                                callbacks.onBackupFail("Hashes of string '"+inputString+"' are mismatch: "+firstHash+" - "+secondHash);
+                                callbacks.onBackupStringFail("Hashes of string '"+inputString+"' are mismatch: "+firstHash+" - "+secondHash);
                         }
 
                         @Override
-                        public void onStringDownloadError(String errorMsg) {
-                            callbacks.onBackupFail(errorMsg);
+                        public void onDownloadStringError(String errorMsg) {
+                            callbacks.onBackupStringFail(errorMsg);
                         }
                     });
 
                 }
                 catch (Exception e) {
-                    callbacks.onBackupFail(MyUtils.getExceptionMessage(e));
+                    callbacks.onBackupStringFail(MyUtils.getExceptionMessage(e));
                     MyUtils.processException(TAG, e);
                 }
             }
@@ -188,7 +186,7 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
             String text = byteArrayOutputStream.toString();
             byteArrayOutputStream.close();
 
-            callbacks.onStringDownloadSuccess(text);
+            callbacks.onDownloadStringSuccess(text);
         }
         catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
