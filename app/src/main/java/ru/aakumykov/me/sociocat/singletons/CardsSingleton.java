@@ -15,7 +15,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
@@ -30,6 +29,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Tag;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.utils.FirebaseUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsSingleton implements iCardsSingleton {
@@ -157,6 +157,39 @@ public class CardsSingleton implements iCardsSingleton {
                 null,
                 callbacks
         );
+    }
+
+    @Override
+    public void loadAllCards(ListCallbacks callbacks) {
+        cardsCollection.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        FirebaseUtils.extractObjectsList(queryDocumentSnapshots, Card.class, new FirebaseUtils.ExtractObjectsListCallbacks() {
+                            @Override
+                            public void onObjectsListExtractSuccess(List<Object> objectList) {
+                                List<Card> cardList = new ArrayList<>();
+                                for (Object object : objectList)
+                                    cardList.add((Card) object);
+                                callbacks.onListLoadSuccess(cardList);
+                            }
+
+                            @Override
+                            public void onObjectsListExtractFailed(String errorMsg, List<String> errorsList) {
+                                callbacks.onListLoadFail(errorMsg);
+                                for (String oneError : errorsList)
+                                    Log.e(TAG, oneError);
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onListLoadFail(e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
     }
 
     @Override

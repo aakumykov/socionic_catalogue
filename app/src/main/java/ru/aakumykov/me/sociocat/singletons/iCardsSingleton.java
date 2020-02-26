@@ -34,6 +34,7 @@ public interface iCardsSingleton {
     void loadCardsWithTagAfter(String tagName, Card cardToLoadAfter, ListCallbacks callbacks);
     void loadCardsFromNewestTo(Card endAtCard, ListCallbacks callbacks);
     void loadCardsWithTagFromNewestTo(String tag, Card endAtCard, ListCallbacks callbacks);
+    void loadAllCards(ListCallbacks callbacks);
 
     void loadCard(String cardKey, LoadCallbacks callbacks);
     void updateCommentsCounter(String cardId, int diffValue);
