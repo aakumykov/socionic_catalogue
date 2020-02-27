@@ -466,20 +466,18 @@ public class BackupService extends Service {
 
     private void backupImage(BackupElement backupElement) {
         String imageFileName = backupElement.getImageFileName();
+        String cardKey = backupElement.getCardKey();
 
         notifyAboutBackupProgress(MyUtils.getString(
                 BackupService.this,
                 R.string.BACKUP_SERVICE_saving_image,
-                imageFileName
+                imageFileName,
+                cardKey
         ));
-
-        String[] args = { imageFileName, ":-(" };
-        String s = MyUtils.getString(this, R.string.BACKUP_SERVICE_error_saving_image, args);
 
         StorageSingleton.getInstance().getImage(imageFileName, new iStorageSingleton.GetFileCallbacks() {
             @Override
             public void onFileDownloadSuccess(byte[] imageBytes) {
-
                 dropboxBackuper.backupFile(imagesDirName, imageFileName, imageBytes, new DropboxBackuper.iBackupFileCallbacks() {
                     @Override
                     public void onBackupFileSuccess(String uploadedFileName) {
@@ -489,7 +487,7 @@ public class BackupService extends Service {
 
                     @Override
                     public void onBackupFileError(String errorMsg) {
-                        storeErrorMessage(R.string.BACKUP_SERVICE_error_saving_image, imageFileName, errorMsg);
+                        storeErrorMessage(R.string.BACKUP_SERVICE_error_saving_image, imageFileName, cardKey, errorMsg);
                         step2ProcessBackupPool();
                     }
                 });
@@ -497,12 +495,10 @@ public class BackupService extends Service {
 
             @Override
             public void onFileDownloadError(String errorMsg) {
-                storeErrorMessage(R.string.BACKUP_SERVICE_error_loading_image, errorMsg);
+                storeErrorMessage(R.string.BACKUP_SERVICE_error_loading_image, imageFileName, cardKey, errorMsg);
                 step2ProcessBackupPool();
             }
         });
-
-        //dropboxBackuper.backupFile(imagesDirName, backupElement.getImageFileName(), );
     }
 
     private void storeSuccessMessage(int messageId, @Nullable String insertedText) {
