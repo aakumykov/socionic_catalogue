@@ -230,9 +230,13 @@ public class BackupService extends Service {
     private List<String> backupErrorsList = new ArrayList<>();
 
     private void startBackup() {
-        String dirName = date2string("yyyy-MM-dd_HH.mm.ss");
-
         notifyAboutBackupProgress(MyUtils.getString(this, R.string.BACKUP_SERVICE_backup_started));
+
+        createBackupDirs();
+    }
+
+    private void createBackupDirs() {
+        String dirName = date2string("yyyy-MM-dd_HH.mm.ss");
 
         dropboxBackuper.createDir(dirName, true, new DropboxBackuper.iCreateDirCallbacks() {
             @Override
@@ -245,7 +249,7 @@ public class BackupService extends Service {
                 dropboxBackuper.createDir(imagesDirName, false, new DropboxBackuper.iCreateDirCallbacks() {
                     @Override
                     public void onCreateDirSuccess(String createdDirName) {
-                        imagesDirName = createdDirName;
+                        imagesDirName = targetDirName+"/"+createdDirName;
                         storeSuccessMessage(R.string.BACKUP_SERVICE_directory_created, createdDirName);
                         step1FillBackupPool();
                     }
@@ -309,44 +313,6 @@ public class BackupService extends Service {
                 storeErrorMessage(R.string.BACKUP_SERVICE_error_unknown_element_type, elementType.name());
                 break;
         }
-
-        /*String collectionName = backupElement.collectionName;
-//        String collectionName = backupPoolElement.getCollectionName();
-        String jsonData = backupElement.getJson();
-
-        notifyAboutBackupProgress(MyUtils.getString(
-                BackupService.this,
-                R.string.BACKUP_SERVICE_saving_collection,
-                collectionName
-        ));
-
-        dropboxBackuper.backupString(
-                targetDirName,
-                collectionName,
-                "json",
-                jsonData,
-                true,
-                new DropboxBackuper.iBackupStringCallbacks() {
-                    @Override
-                    public void onBackupStringSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
-                        storeSuccessMessage(R.string.BACKUP_SERVICE_collection_is_saved, collectionName);
-                        produceBackup();
-                    }
-
-                    @Override
-                    public void onBackupStringFail(String errorMsg) {
-                        String msg = MyUtils.getString(
-                                BackupService.this,
-                                R.string.BACKUP_SERVICE_error_saving_collection,
-                                collectionName,
-                                errorMsg
-                        );
-                        backupErrorsList.add(msg);
-                        Log.e(TAG, msg);
-                        produceBackup();
-                    }
-                }
-        );*/
     }
 
     private void loadCollection(String collectionName) {
