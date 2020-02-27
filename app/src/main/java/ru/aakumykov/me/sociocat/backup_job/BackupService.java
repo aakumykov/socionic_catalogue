@@ -168,6 +168,8 @@ public class BackupService extends Service {
     public void onCreate() {
         super.onCreate();
 
+        createNotificationChannel(this);
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         final String KEY_NAME = "dropbox_access_token";
 
@@ -437,8 +439,7 @@ public class BackupService extends Service {
         notifyAboutBackupProgress(MyUtils.getString(
                 BackupService.this,
                 R.string.BACKUP_SERVICE_saving_image,
-                imageFileName,
-                cardKey
+                imageFileName
         ));
 
         StorageSingleton.getInstance().getImage(imageFileName, new iStorageSingleton.GetFileCallbacks() {
