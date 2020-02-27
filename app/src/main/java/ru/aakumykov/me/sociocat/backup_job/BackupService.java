@@ -36,6 +36,9 @@ import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
@@ -47,116 +50,19 @@ public class BackupService extends Service {
 
 
     // ======== НАСТРОЙКА ОБЪЕКТОВ РЕЗЕРВНОГО КОПИРОВАНИЯ ========
+    private final static String TAG = "BackupService";
+
     private CollectionPool collectionsPool = new CollectionPool(
-            new CollectionPair(Constants.CARDS_PATH, Card.class)
-//            new CollectionPair(Constants.TAGS_PATH, Tag.class),
-//            new CollectionPair(Constants.COMMENTS_PATH, Comment.class),
-//            new CollectionPair(Constants.USERS_PATH, User.class),
-//            new CollectionPair(Constants.ADMINS_PATH, User.class)
+            new CollectionPair(Constants.CARDS_PATH, Card.class),
+            new CollectionPair(Constants.TAGS_PATH, Tag.class),
+            new CollectionPair(Constants.COMMENTS_PATH, Comment.class),
+            new CollectionPair(Constants.USERS_PATH, User.class),
+            new CollectionPair(Constants.ADMINS_PATH, User.class)
     );
-    private static class CollectionPair {
-        private String name;
-        private Class itemClass;
-
-        public CollectionPair(String name, Class itemClass) {
-            this.name = name;
-            this.itemClass = itemClass;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public Class getItemClass() {
-            return itemClass;
-        }
-    }
-    private static class CollectionPool {
-
-        public CollectionPool(CollectionPair... pairs) {
-            for (CollectionPair pair : pairs)
-                this.push(pair);
-        }
-
-        private List<CollectionPair> list = new ArrayList<>();
-
-        public CollectionPair pop() {
-            int index = list.size()-1;
-            if (index >= 0) {
-                CollectionPair collectionPair = list.get(index);
-                list.remove(index);
-                return collectionPair;
-            }
-            else {
-                return null;
-            }
-        }
-
-        public void push(CollectionPair collectionPair) {
-            list.add(collectionPair);
-        }
-
-        public int size() {
-            return  list.size();
-        }
-    }
-
-//    private Map<Object, String> backupPool = new HashMap<>();
-//    private Map<String, String> imagesPool = new HashMap<>();
 
     private List<BackupElement> backupPool = new ArrayList<>();
 
-    private enum ElementType {
-        JSON,
-        IMAGE
-    }
-
-    private static class BackupElement {
-        private BackupService.ElementType elementType;
-        private String collectionName;
-        private String json;
-        private String imageFileName;
-        private String cardKey;
-
-        public BackupElement(BackupService.ElementType elementType, String collectionName) {
-            this.elementType = elementType;
-            this.collectionName = collectionName;
-        }
-
-        public void addJson(String json) {
-            this.json = json;
-        }
-
-        public void setImageFileName(String imageFileName) {
-            this.imageFileName = imageFileName;
-        }
-
-        public void setCardKey(String cardKey) {
-            this.cardKey = cardKey;
-        }
-
-        public BackupService.ElementType getElementType() {
-            return elementType;
-        }
-
-        public String getCollectionName() {
-            return collectionName;
-        }
-
-        public String getJSON() {
-            return json;
-        }
-
-        public String getImageFileName() {
-            return imageFileName;
-        }
-
-        public String getCardKey() {
-            return cardKey;
-        }
-    }
-
-    private final static String TAG = "BackupService";
+    private static boolean isRunning = false;
     private static boolean backupImpossible = true;
     private String targetDirName;
     private String imagesDirName;
@@ -211,6 +117,8 @@ public class BackupService extends Service {
 
         startBackup();
 
+        isRunning = true;
+
         return START_NOT_STICKY;
     }
 
@@ -223,6 +131,10 @@ public class BackupService extends Service {
     @Nullable @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    public static boolean isRunning() {
+        return isRunning;
     }
 
 
@@ -316,6 +228,7 @@ public class BackupService extends Service {
                 break;
         }
     }
+
 
     private void loadCollection(String collectionName) {
         notifyAboutBackupProgress(MyUtils.getString(
@@ -468,30 +381,6 @@ public class BackupService extends Service {
         });
     }
 
-    private void storeSuccessMessage(int messageId, @Nullable String insertedText) {
-        String message = (null == insertedText) ?
-                MyUtils.getString(this, messageId) :
-                MyUtils.getString(this, messageId, insertedText);
-        backupSuccessList.add(message);
-        Log.d(TAG, message);
-    }
-
-    private void storeErrorMessage(int messageId, String... insertedTextPieces) {
-        String message;
-        switch (insertedTextPieces.length) {
-            case 0:
-                message = MyUtils.getString(this, messageId);
-                break;
-            case 1:
-                message = MyUtils.getString(this, messageId, insertedTextPieces[0]);
-                break;
-            default:
-                message = MyUtils.getString(this, messageId, insertedTextPieces);
-        }
-        backupErrorsList.add(message);
-        Log.e(TAG, message);
-    }
-
     private <T> String listOfObjects2JSON(List<T> objectsList) {
         List<String> jsonList = new ArrayList<>();
         List<String> errorsList = new ArrayList<>();
@@ -578,7 +467,6 @@ public class BackupService extends Service {
         stopSelf();
         sendServiceBroadcast(SERVICE_STATUS_FINISH);
     }
-
 
 
     // ======================== ШИРОКОВЕЩАТЕЛЬНЫЕ СООБЩЕНИЯ ========================
@@ -777,6 +665,130 @@ public class BackupService extends Service {
         }
         catch (Exception e) {
             return null;
+        }
+    }
+
+    private void storeSuccessMessage(int messageId, @Nullable String insertedText) {
+        String message = (null == insertedText) ?
+                MyUtils.getString(this, messageId) :
+                MyUtils.getString(this, messageId, insertedText);
+        backupSuccessList.add(message);
+        Log.d(TAG, message);
+    }
+
+    private void storeErrorMessage(int messageId, String... insertedTextPieces) {
+        String message;
+        switch (insertedTextPieces.length) {
+            case 0:
+                message = MyUtils.getString(this, messageId);
+                break;
+            case 1:
+                message = MyUtils.getString(this, messageId, insertedTextPieces[0]);
+                break;
+            default:
+                message = MyUtils.getString(this, messageId, insertedTextPieces);
+        }
+        backupErrorsList.add(message);
+        Log.e(TAG, message);
+    }
+
+
+    // Внутренние классы
+    private enum ElementType {
+        JSON,
+        IMAGE
+    }
+
+    private static class CollectionPair {
+        private String name;
+        private Class itemClass;
+
+        public CollectionPair(String name, Class itemClass) {
+            this.name = name;
+            this.itemClass = itemClass;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Class getItemClass() {
+            return itemClass;
+        }
+    }
+
+    private static class CollectionPool {
+
+        public CollectionPool(CollectionPair... pairs) {
+            for (CollectionPair pair : pairs)
+                this.push(pair);
+        }
+
+        private List<CollectionPair> list = new ArrayList<>();
+
+        public CollectionPair pop() {
+            int index = list.size()-1;
+            if (index >= 0) {
+                CollectionPair collectionPair = list.get(index);
+                list.remove(index);
+                return collectionPair;
+            }
+            else {
+                return null;
+            }
+        }
+
+        public void push(CollectionPair collectionPair) {
+            list.add(collectionPair);
+        }
+
+        public int size() {
+            return  list.size();
+        }
+    }
+
+    private static class BackupElement {
+        private BackupService.ElementType elementType;
+        private String collectionName;
+        private String json;
+        private String imageFileName;
+        private String cardKey;
+
+        public BackupElement(BackupService.ElementType elementType, String collectionName) {
+            this.elementType = elementType;
+            this.collectionName = collectionName;
+        }
+
+        public void addJson(String json) {
+            this.json = json;
+        }
+
+        public void setImageFileName(String imageFileName) {
+            this.imageFileName = imageFileName;
+        }
+
+        public void setCardKey(String cardKey) {
+            this.cardKey = cardKey;
+        }
+
+        public BackupService.ElementType getElementType() {
+            return elementType;
+        }
+
+        public String getCollectionName() {
+            return collectionName;
+        }
+
+        public String getJSON() {
+            return json;
+        }
+
+        public String getImageFileName() {
+            return imageFileName;
+        }
+
+        public String getCardKey() {
+            return cardKey;
         }
     }
 }
