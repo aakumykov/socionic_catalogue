@@ -10,7 +10,6 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,10 +18,8 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
@@ -226,35 +223,6 @@ public class BackupService extends Service {
         return null;
     }
 
-    private void finishBackupWithError(String errorMsg) {
-
-        removeProgressNotification();
-        displayResultNotification(errorMsg, BACKUP_STATUS_ERROR);
-
-        sendBackupResultBroadcast(errorMsg, BACKUP_STATUS_ERROR);
-
-        stopSelf();
-        sendServiceBroadcast(SERVICE_STATUS_FINISH);
-    }
-
-    private void finishBackup() {
-
-        String message = MyUtils.getString(
-                this,
-                R.string.BACKUP_SERVICE_all_collections_are_processed,
-                date2string()
-        );
-
-        removeProgressNotification();
-        displayResultNotification(message, BACKUP_STATUS_SUCCESS);
-
-        sendBackupResultBroadcast(message, BACKUP_STATUS_SUCCESS);
-
-        stopSelf();
-        sendServiceBroadcast(SERVICE_STATUS_FINISH);
-    }
-
-
 
     // ======================== РЕЗЕРВНОЕ КОПИРОВАНИЕ ========================
     private DropboxBackuper dropboxBackuper;
@@ -298,216 +266,6 @@ public class BackupService extends Service {
         });
     }
 
-    private void storeSuccessMessage(int messageId, @Nullable String insertedText) {
-        String message = (null == insertedText) ?
-                MyUtils.getString(this, messageId) :
-                MyUtils.getString(this, messageId, insertedText);
-        backupSuccessList.add(message);
-        Log.d(TAG, message);
-    }
-
-    private void storeErrorMessage(int messageId, String... insertedTextPieces) {
-        String message;
-        switch (insertedTextPieces.length) {
-            case 0:
-                message = MyUtils.getString(this, messageId);
-                break;
-            case 1:
-                message = MyUtils.getString(this, messageId, insertedTextPieces[0]);
-                break;
-            default:
-                message = MyUtils.getString(this, messageId, insertedTextPieces);
-        }
-        backupErrorsList.add(message);
-        Log.e(TAG, message);
-    }
-
-    private void performCollectionsBackup() {
-
-        if (0 == collectionsPool.size()) {
-            finishBackupWithError("Список резервного копирования пуст");
-            return;
-        }
-
-        CollectionPair collectionPair = collectionsPool.pop();
-
-        if (null != collectionPair) {
-            String collectionName = collectionPair.getName();
-            Class itemClass = collectionPair.getItemClass();
-
-            notifyAboutBackupProgress(MyUtils.getString(
-                    this,
-                    R.string.BACKUP_SERVICE_loading_collection,
-                    collectionPair.getName())
-            );
-
-            loadCollection(collectionName, itemClass, new iLoadCollectionCallbacks() {
-                @Override
-                public void onLoadCollectionSuccess(List<Object> itemsList, List<String> errorsList) {
-                    String jsonData = listOfObjects2JSON(itemsList);
-
-                    if (errorsList.size() > 0) {
-                        Log.e(TAG, "== КОЛЛЕКЦИЯ ЗАГРУЖЕНА С ОШИБКАМИ ==");
-                        Log.e(TAG, "(успех: "+itemsList.size()+", провал: "+errorsList.size()+")");
-                        for (String errorMsg : errorsList) {
-                            Log.e(TAG, errorMsg);
-                        }
-                    }
-
-                    notifyAboutBackupProgress(MyUtils.getString(
-                            BackupService.this,
-                            R.string.BACKUP_SERVICE_saving_collection,
-                            collectionName
-                    ));
-
-                    dropboxBackuper.backupString(
-                            targetDirName,
-                            collectionName,
-                            "json",
-                            jsonData,
-                            true,
-                            new DropboxBackuper.iBackupStringCallbacks() {
-                                @Override
-                                public void onBackupStringSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
-                                    storeSuccessMessage(R.string.BACKUP_SERVICE_collection_is_saved, collectionName);
-                                    performCollectionsBackup();
-                                }
-
-                                @Override
-                                public void onBackupStringFail(String errorMsg) {
-                                    String msg = MyUtils.getString(
-                                            BackupService.this,
-                                            R.string.BACKUP_SERVICE_error_saving_collection,
-                                            collectionName,
-                                            errorMsg
-                                    );
-                                    backupErrorsList.add(msg);
-                                    Log.e(TAG, msg);
-                                    performCollectionsBackup();
-                                }
-                            }
-                    );
-                }
-
-                @Override
-                public void onLoadCollectionError(String errorMsg) {
-                    String msg = MyUtils.getString(BackupService.this, R.string.BACKUP_SERVICE_error_loading_collection, collectionName);
-                    Log.e(TAG, msg);
-                    performCollectionsBackup();
-                }
-            });
-        }
-        else {
-            finishBackup();
-        }
-    }
-
-    private void loadCollection(String collectionName, Class itemClass, iLoadCollectionCallbacks callbacks) {
-        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-        CollectionReference collectionReference = firebaseFirestore.collection(collectionName);
-
-        collectionReference.get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        Pair<List<Object>, List<String>> resultPair = extractCollectionObjects(queryDocumentSnapshots, itemClass);
-
-                        List<Object> itemsList = resultPair.first;
-                        List<String> errorsList = resultPair.second;
-
-                        // TODO: выводить предупреждение, если коллекция пуста
-
-                        callbacks.onLoadCollectionSuccess(itemsList, errorsList);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        String errorMsg = e.getMessage();
-                        Log.e(TAG, errorMsg);
-                        e.printStackTrace();
-
-                        callbacks.onLoadCollectionError(errorMsg);
-                    }
-                });
-    }
-
-    private Pair<List<Object>, List<String>> extractCollectionObjects(QuerySnapshot queryDocumentSnapshots, Class itemClass) {
-
-        List<String> errorsList = new ArrayList<>();
-        List<Object> itemsList = new ArrayList<>();
-
-        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots)
-        {
-            try {
-                Object item = documentSnapshot.toObject(itemClass);
-                itemsList.add(item);
-            }
-            catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-                e.printStackTrace();
-                //MyUtils.printError(TAG, e);
-
-                errorsList.add(Arrays.toString(e.getStackTrace()));
-            }
-        }
-
-        return new Pair<>(itemsList, errorsList);
-    }
-
-    private String listOfObjects2JSON(List<Object> itemsList) {
-
-        List<String> jsonList = new ArrayList<>();
-        List<String> errorsList = new ArrayList<>();
-
-        Gson gson = new Gson();
-
-        for (Object item : itemsList) {
-            try {
-                jsonList.add(gson.toJson(item));
-            }
-            catch (Exception e) {
-                errorsList.add(Arrays.toString(e.getStackTrace()));
-            }
-        }
-
-        if (errorsList.size() > 0) {
-            Log.e(TAG, errorsList.toString());
-        }
-
-        return "[\n" + TextUtils.join(",\n", jsonList) + "\n]";
-    }
-
-    private <T> String listOfObjects2JSON_2(List<T> objectsList) {
-        List<String> jsonList = new ArrayList<>();
-        List<String> errorsList = new ArrayList<>();
-
-        Gson gson = new Gson();
-
-        for (Object item : objectsList) {
-            try {
-                jsonList.add(gson.toJson(item));
-            }
-            catch (Exception e) {
-                errorsList.add(Arrays.toString(e.getStackTrace()));
-            }
-        }
-
-        if (errorsList.size() > 0) {
-            Log.e(TAG, errorsList.toString());
-        }
-
-        return "[\n" + TextUtils.join(",\n", jsonList) + "\n]";
-
-    }
-
-    private interface iLoadCollectionCallbacks {
-        void onLoadCollectionSuccess(List<Object> itemsList, List<String> errorsList);
-        void onLoadCollectionError(String errorMsg);
-    }
-
-
-    // Новый механизм
     private void step1FillBackupPool() {
 
         CollectionPair collectionPair = collectionsPool.pop();
@@ -601,6 +359,7 @@ public class BackupService extends Service {
         List<String> errorsList = new ArrayList<>();
         List<Object> objectsList = new ArrayList<>();
 
+        // TODO: запаковать в Singleton
         FirebaseFirestore.getInstance().collection(collectionName).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -618,7 +377,7 @@ public class BackupService extends Service {
 
                         if (objectsList.size() > 0) {
                             BackupElement backupElement = new BackupElement(BackupService.ElementType.JSON, collectionName);
-                            backupElement.addJson(listOfObjects2JSON_2(objectsList));
+                            backupElement.addJson(listOfObjects2JSON(objectsList));
                             backupPool.add(backupElement);
                         }
 
@@ -660,7 +419,7 @@ public class BackupService extends Service {
                 }
 
                 BackupElement backupElement = new BackupElement(BackupService.ElementType.JSON, collectionName);
-                backupElement.addJson(listOfObjects2JSON_2(list));
+                backupElement.addJson(listOfObjects2JSON(list));
                 backupPool.add(backupElement);
 
                 step1FillBackupPool();
@@ -675,8 +434,7 @@ public class BackupService extends Service {
     }
 
     private void backupJSON(BackupElement backupElement) {
-//        String collectionName = backupElement.getCollectionName();
-        String collectionName = backupElement.collectionName;
+        String collectionName = backupElement.getCollectionName();
 
         notifyAboutBackupProgress(MyUtils.getString(
                 BackupService.this,
@@ -747,77 +505,52 @@ public class BackupService extends Service {
         //dropboxBackuper.backupFile(imagesDirName, backupElement.getImageFileName(), );
     }
 
-/*
-    private void backupCards() {
-        String collectionName = "cards";
-
-        notifyAboutBackupProgress(MyUtils.getString(
-                this,
-                R.string.BACKUP_SERVICE_loading_collection,
-                collectionName)
-        );
-
-        CardsSingleton.getInstance().loadAllCards(new iCardsSingleton.ListCallbacks() {
-            @Override
-            public void onListLoadSuccess(List<Card> list) {
-
-                for (Card card : list) {
-                    if (card.isImageCard() && cardHasNewImage(card))
-                        images2backup.put(card.getKey(), card.getFileName());
-                }
-
-                String jsonData = listOfObjects2JSON_2(list);
-
-                notifyAboutBackupProgress(MyUtils.getString(
-                        BackupService.this,
-                        R.string.BACKUP_SERVICE_saving_collection,
-                        collectionName
-                ));
-
-                dropboxBackuper.backupString(
-                        targetDirName,
-                        collectionName,
-                        "json",
-                        jsonData,
-                        true,
-                        new DropboxBackuper.iBackupStringCallbacks() {
-                            @Override
-                            public void onBackupStringSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
-                                String msg = MyUtils.getString(
-                                        BackupService.this,
-                                        R.string.BACKUP_SERVICE_collection_is_saved,
-                                        collectionName
-                                );
-                                backupSuccessList.add(msg);
-                                Log.d(TAG, msg);
-                                produceBackup();
-                            }
-
-                            @Override
-                            public void onBackupStringFail(String errorMsg) {
-                                String msg = MyUtils.getString(
-                                        BackupService.this,
-                                        R.string.BACKUP_SERVICE_error_saving_collection,
-                                        collectionName,
-                                        errorMsg
-                                );
-                                backupErrorsList.add(msg);
-                                Log.e(TAG, msg);
-                                produceBackup();
-                            }
-                        }
-                );
-            }
-
-            @Override
-            public void onListLoadFail(String errorMessage) {
-                // TODO: сообщать об этом явно
-                Log.d(TAG, errorMessage);
-                produceBackup();
-            }
-        });
+    private void storeSuccessMessage(int messageId, @Nullable String insertedText) {
+        String message = (null == insertedText) ?
+                MyUtils.getString(this, messageId) :
+                MyUtils.getString(this, messageId, insertedText);
+        backupSuccessList.add(message);
+        Log.d(TAG, message);
     }
-*/
+
+    private void storeErrorMessage(int messageId, String... insertedTextPieces) {
+        String message;
+        switch (insertedTextPieces.length) {
+            case 0:
+                message = MyUtils.getString(this, messageId);
+                break;
+            case 1:
+                message = MyUtils.getString(this, messageId, insertedTextPieces[0]);
+                break;
+            default:
+                message = MyUtils.getString(this, messageId, insertedTextPieces);
+        }
+        backupErrorsList.add(message);
+        Log.e(TAG, message);
+    }
+
+    private <T> String listOfObjects2JSON(List<T> objectsList) {
+        List<String> jsonList = new ArrayList<>();
+        List<String> errorsList = new ArrayList<>();
+
+        Gson gson = new Gson();
+
+        for (Object item : objectsList) {
+            try {
+                jsonList.add(gson.toJson(item));
+            }
+            catch (Exception e) {
+                errorsList.add(Arrays.toString(e.getStackTrace()));
+            }
+        }
+
+        if (errorsList.size() > 0) {
+            Log.e(TAG, errorsList.toString());
+        }
+
+        return "[\n" + TextUtils.join(",\n", jsonList) + "\n]";
+
+    }
 
     private boolean cardHasNewImage(Card newCard) {
         // Нет сведений о предыдущем резервном копировании - считаем, что есть новая картинка.
@@ -855,65 +588,34 @@ public class BackupService extends Service {
         }
     }
 
+    private void finishBackupWithError(String errorMsg) {
 
-    // Метод должен запускаться ПОСЛЕ обработки карточек, т.к. получает информацию оттуда.
-/*
-    private void backupImages() {
-        String imagesDir = targetDirName + "/images";
+        removeProgressNotification();
+        displayResultNotification(errorMsg, BACKUP_STATUS_ERROR);
 
-        dropboxBackuper.createDir(imagesDir, true, new DropboxBackuper.iCreateDirCallbacks() {
-            @Override
-            public void onCreateDirSuccess(String createdDirName) {
-                uploadImages2Server(createdDirName);
-            }
+        sendBackupResultBroadcast(errorMsg, BACKUP_STATUS_ERROR);
 
-            @Override
-            public void onCreateDirFail(String errorMsg) {
-                // TODO: уведомить об ошибке
-                Log.e(TAG, errorMsg);
-            }
-        });
+        stopSelf();
+        sendServiceBroadcast(SERVICE_STATUS_FINISH);
     }
-*/
 
-/*
-    private void uploadImages2Server(String remoteTargetDir) {
-        List<String> errorsList = new ArrayList<>();
-        List<String> successList = new ArrayList<>();
+    private void finishBackup() {
 
-        for (String cardKey : images2backup.keySet()) {
-            String imageFileName = images2backup.get(cardKey);
+        String message = MyUtils.getString(
+                this,
+                R.string.BACKUP_SERVICE_all_collections_are_processed,
+                date2string()
+        );
 
-            StorageSingleton.getInstance()
-                    .getImage(imageFileName, new iStorageSingleton.GetFileCallbacks() {
-                        @Override
-                        public void onFileDownloadSuccess(byte[] imageBytes) {
+        removeProgressNotification();
+        displayResultNotification(message, BACKUP_STATUS_SUCCESS);
 
-                            dropboxBackuper.backupFile(remoteTargetDir, imageFileName, imageBytes, new DropboxBackuper.iBackupFileCallbacks() {
-                                @Override
-                                public void onBackupFileSuccess(String uploadedFileName) {
-                                    // TODO: уведомить
-                                    successList.add(imageFileName);
-                                }
+        sendBackupResultBroadcast(message, BACKUP_STATUS_SUCCESS);
 
-                                @Override
-                                public void onBackupFileError(String errorMsg) {
-                                    // TODO: уведомить
-                                    Log.e(TAG, errorMsg);
-                                    errorsList.add(errorMsg);
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onFileDownloadError(String errorMsg) {
-                            Log.e(TAG, errorMsg);
-                            errorsList.add(errorMsg);
-                        }
-                    });
-        }
+        stopSelf();
+        sendServiceBroadcast(SERVICE_STATUS_FINISH);
     }
-*/
+
 
 
     // ======================== ШИРОКОВЕЩАТЕЛЬНЫЕ СООБЩЕНИЯ ========================
