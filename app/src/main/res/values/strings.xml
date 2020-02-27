@@ -636,5 +636,12 @@
     <string name="LOGIN_error_user_not_found">Пользователь не найден</string>
     <string name="REGISTER1_email_successfully_sent">Письмо отправлено</string>
     <string name="LOGIN_too_many_login_attempts">Слишком много попыток входа. Попробуйте позже.</string>
+    <string name="BACKUP_SERVICE_error_unknown_collection_name">Неизвестная коллекция «%1$s»</string>
+    <string name="BACKUP_SERVICE_error_unknown_element_type">Неизвестный тип элемента «%1$s»</string>
+    <string name="BACKUP_SERVICE_saving_image">Сохраняем картинку "%1$s</string>
+    <string name="BACKUP_SERVICE_image_has_been_saved">Картинка сохранена, %1$s</string>
+    <string name="BACKUP_SERVICE_error_loading_image">Ошибка получения картинки "%1$s" карточки "%2$s": %3$s</string>
+    <string name="BACKUP_SERVICE_error_saving_image">Ошибка сохранения картинки "%1$s" карточки "%2$s": %3$s</string>
+    <string name="probe">Проба</string>
 
 </resources><!-- «%1$s» -->
