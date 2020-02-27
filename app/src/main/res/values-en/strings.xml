@@ -635,5 +635,6 @@
     <string name="BACKUP_SERVICE_image_has_been_saved">Image saved, %1$s</string>
     <string name="BACKUP_SERVICE_error_loading_image">Error loading image "%1$s" of card "%2$s": %3$s</string>
     <string name="BACKUP_SERVICE_error_saving_image">Error saving image "%1$s" of card "%2$s": %3$s</string>
+    <string name="probe">Probe</string>
 </resources>
 <!-- «%1$s» -->

@@ -24,6 +24,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Date;
 
+import ru.aakumykov.me.sociocat.backup_job.BackupService;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
@@ -108,6 +109,9 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         MenuInflater menuInflater = getMenuInflater();
 
+        if (BuildConfig.DEBUG)
+            menuInflater.inflate(R.menu.probe, menu);
+
 //        menuInflater.inflate(R.menu.tags, menu);
 
         if (AuthSingleton.isLoggedIn()) {
@@ -154,6 +158,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
             case R.id.actionTags:
                 goTagsList();
+                break;
+
+            case R.id.actionProbe:
+                doProbe();
                 break;
 
             default:
@@ -541,6 +549,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(Constants.KEY_LAST_LOGIN, new Date().getTime());
         editor.apply();
+    }
+
+    private void doProbe() {
+        if (!BackupService.isRunning())
+            startService(new Intent(this, BackupService.class));
     }
 
 }
