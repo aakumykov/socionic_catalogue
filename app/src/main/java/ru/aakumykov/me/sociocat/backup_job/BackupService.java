@@ -26,7 +26,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
-import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -106,28 +105,54 @@ public class BackupService extends Service {
 
     private List<BackupElement> backupPool = new ArrayList<>();
 
-    private static class BackupElement {
-        private String collectionName;
+    private enum ElementType {
+        JSON,
+        IMAGE
+    }
 
-        BackupElement() {
+    private static class BackupElement {
+        private BackupService.ElementType elementType;
+        private String collectionName;
+        private String json;
+        private String imageFileName;
+        private String cardKey;
+
+        public BackupElement(BackupService.ElementType elementType, String collectionName) {
+            this.elementType = elementType;
+            this.collectionName = collectionName;
+        }
+
+        public void addJson(String json) {
+            this.json = json;
+        }
+
+        public void setImageFileName(String imageFileName) {
+            this.imageFileName = imageFileName;
+        }
+
+        public void setCardKey(String cardKey) {
+            this.cardKey = cardKey;
+        }
+
+        public BackupService.ElementType getElementType() {
+            return elementType;
         }
 
         public String getCollectionName() {
             return collectionName;
         }
-    }
 
-    private static class StringBackupElement extends BackupElement {
-        private String jsonString;
-
-        public StringBackupElement(String jsonString) {
-            super();
-            this.jsonString = jsonString;
+        public String getJson() {
+            return json;
         }
-    }
 
-    private static class ImageBackupElement extends BackupElement {
+        public String getImageFileName() {
+            return imageFileName;
+        }
 
+        public String getCardKey() {
+            return cardKey;
+        }
     }
 
     private final static String TAG = "BackupService";
@@ -246,7 +271,8 @@ public class BackupService extends Service {
                 Log.d(TAG, successMsg);
 
                 //performCollectionsBackup();
-                produceBackup();
+                //produceBackup();
+                fillBackupPool();
             }
 
             @Override
@@ -514,7 +540,8 @@ public class BackupService extends Service {
         CollectionPair collectionPair = collectionsPool.pop();
 
         if (null == collectionPair) {
-            processBackupPoolItems();
+            //processBackupPoolItems();
+            finishBackup();
             return;
         }
 
@@ -555,8 +582,9 @@ public class BackupService extends Service {
                         }
 
                         if (objectsList.size() > 0) {
-                            String json = listOfObjects2JSON_2(objectsList);
-                            backupPool.add(new BackupElement(ElementType.STRING, json, collectionName));
+                            BackupElement backupElement = new BackupElement(BackupService.ElementType.JSON, collectionName);
+                            backupElement.addJson(listOfObjects2JSON_2(objectsList));
+                            backupPool.add(backupElement);
                         }
 
                         if (errorsList.size() > 0) {
@@ -588,16 +616,18 @@ public class BackupService extends Service {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 for (Card card : list) {
-                    String fileName = card.getFileName();
-                    String imageURL = card.getImageURL();
-
                     if (card.isImageCard() && cardHasNewImage(card)) {
-                        backupPool.add(new BackupElement(ElementType.IMAGE, ))
+                        BackupElement backupElement = new BackupElement(BackupService.ElementType.IMAGE, Constants.IMAGES_PATH);
+                        backupElement.setImageFileName(card.getFileName());
+                        backupElement.setCardKey(card.getKey());
+                        backupPool.add(backupElement);
                     }
                 }
 
-                String json = listOfObjects2JSON_2(list);
-                backupPool.add(new BackupElement(ElementType.STRING, json, collectionName));
+                BackupElement backupElement = new BackupElement(BackupService.ElementType.JSON, collectionName);
+                backupElement.addJson(listOfObjects2JSON_2(list));
+                backupPool.add(backupElement);
+
                 fillBackupPool();
             }
 
@@ -619,9 +649,10 @@ public class BackupService extends Service {
         BackupElement backupElement = backupPool.get(0);
         backupPool.remove(0);
 
+        // TODO: неужели есть прямой доступ к свойству класса?
         String collectionName = backupElement.collectionName;
 //        String collectionName = backupPoolElement.getCollectionName();
-        String jsonData = (String) backupElement.getObject();
+        String jsonData = backupElement.getJson();
 
         notifyAboutBackupProgress(MyUtils.getString(
                 BackupService.this,
