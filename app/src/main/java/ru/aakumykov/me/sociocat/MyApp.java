@@ -208,7 +208,7 @@ public class MyApp extends Application {
 //    }
 
     private void produceBackup() {
-        startService(new Intent(this, BackupService.class));
+        //startService(new Intent(this, BackupService.class));
 
         /*if (BackupService.isTimeToDoBackup(this)) {
             startService(new Intent(this, BackupService.class));
