@@ -449,13 +449,6 @@ public final class MyUtils {
         return builder.build();
     }
 
-
-    // Date to string
-    public static String date2string() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.CANADA);
-        return format.format(new Date());
-    }
-
     // MD5Sum
     public static String md5sum(String string) {
         MessageDigest messageDigest = null;
