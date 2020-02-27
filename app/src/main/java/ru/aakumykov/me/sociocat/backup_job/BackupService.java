@@ -26,10 +26,13 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Config;
@@ -37,7 +40,9 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.utils.DropboxBackuper;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -52,7 +57,6 @@ public class BackupService extends Service {
 //            new CollectionPair(Constants.USERS_PATH, User.class),
 //            new CollectionPair(Constants.ADMINS_PATH, User.class)
     );
-
     private static class CollectionPair {
         private String name;
         private Class itemClass;
@@ -142,7 +146,7 @@ public class BackupService extends Service {
             return collectionName;
         }
 
-        public String getJson() {
+        public String getJSON() {
             return json;
         }
 
@@ -158,6 +162,7 @@ public class BackupService extends Service {
     private final static String TAG = "BackupService";
     private static boolean backupImpossible = true;
     private String targetDirName;
+    private String imagesDirName;
     private Map<String, String> previousCollection = new HashMap<>();
 
 
@@ -237,7 +242,7 @@ public class BackupService extends Service {
         String message = MyUtils.getString(
                 this,
                 R.string.BACKUP_SERVICE_all_collections_are_processed,
-                MyUtils.date2string()
+                date2string()
         );
 
         removeProgressNotification();
@@ -257,22 +262,32 @@ public class BackupService extends Service {
     private List<String> backupErrorsList = new ArrayList<>();
 
     private void startBackup() {
-        String dirName = MyUtils.date2string();
+        String dirName = date2string("yyyy-MM-dd_HH.mm.ss");
 
         notifyAboutBackupProgress(MyUtils.getString(this, R.string.BACKUP_SERVICE_backup_started));
 
         dropboxBackuper.createDir(dirName, true, new DropboxBackuper.iCreateDirCallbacks() {
             @Override
-            public void onCreateDirSuccess(String dirName) {
-                targetDirName = dirName;
+            public void onCreateDirSuccess(String createdDirName) {
 
-                String successMsg = MyUtils.getString(BackupService.this, R.string.BACKUP_SERVICE_directory_created, dirName);
-                backupSuccessList.add(successMsg);
-                Log.d(TAG, successMsg);
+                targetDirName = createdDirName;
+                storeSuccessMessage(R.string.BACKUP_SERVICE_directory_created, createdDirName);
+                imagesDirName = createdDirName +"/images";
 
-                //performCollectionsBackup();
-                //produceBackup();
-                fillBackupPool();
+                dropboxBackuper.createDir(imagesDirName, false, new DropboxBackuper.iCreateDirCallbacks() {
+                    @Override
+                    public void onCreateDirSuccess(String createdDirName) {
+                        imagesDirName = createdDirName;
+                        storeSuccessMessage(R.string.BACKUP_SERVICE_directory_created, createdDirName);
+                        step1FillBackupPool();
+                    }
+
+                    @Override
+                    public void onCreateDirFail(String errorMsg) {
+                        backupErrorsList.add(errorMsg);
+                        finishBackupWithError(errorMsg);
+                    }
+                });
             }
 
             @Override
@@ -281,32 +296,30 @@ public class BackupService extends Service {
                 finishBackupWithError(errorMsg);
             }
         });
+    }
 
-        /*dropboxBackuper.createDir("qwerty", true, new DropboxBackuper.iCreateDirCallbacks() {
-            @Override
-            public void onCreateDirSuccess(String createdDirName) {
-                showCustomNotification("Создан каталог", createdDirName);
+    private void storeSuccessMessage(int messageId, @Nullable String insertedText) {
+        String message = (null == insertedText) ?
+                MyUtils.getString(this, messageId) :
+                MyUtils.getString(this, messageId, insertedText);
+        backupSuccessList.add(message);
+        Log.d(TAG, message);
+    }
 
-                String secondDirName = createdDirName + "/abcdef";
-
-                dropboxBackuper.createDir(secondDirName, true, new DropboxBackuper.iCreateDirCallbacks() {
-                    @Override
-                    public void onCreateDirSuccess(String createdDirName) {
-                        showCustomNotification("Создан каталог", createdDirName);
-                    }
-
-                    @Override
-                    public void onCreateDirFail(String errorMsg) {
-                        showCustomNotification("Ошибка создания каталога", errorMsg);
-                    }
-                });
-            }
-
-            @Override
-            public void onCreateDirFail(String errorMsg) {
-                showCustomNotification("Ошибка создания каталога", errorMsg);
-            }
-        });*/
+    private void storeErrorMessage(int messageId, String... insertedTextPieces) {
+        String message;
+        switch (insertedTextPieces.length) {
+            case 0:
+                message = MyUtils.getString(this, messageId);
+                break;
+            case 1:
+                message = MyUtils.getString(this, messageId, insertedTextPieces[0]);
+                break;
+            default:
+                message = MyUtils.getString(this, messageId, insertedTextPieces);
+        }
+        backupErrorsList.add(message);
+        Log.e(TAG, message);
     }
 
     private void performCollectionsBackup() {
@@ -356,13 +369,7 @@ public class BackupService extends Service {
                             new DropboxBackuper.iBackupStringCallbacks() {
                                 @Override
                                 public void onBackupStringSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
-                                    String msg = MyUtils.getString(
-                                            BackupService.this,
-                                            R.string.BACKUP_SERVICE_collection_is_saved,
-                                            collectionName
-                                    );
-                                    backupSuccessList.add(msg);
-                                    Log.d(TAG, msg);
+                                    storeSuccessMessage(R.string.BACKUP_SERVICE_collection_is_saved, collectionName);
                                     performCollectionsBackup();
                                 }
 
@@ -501,47 +508,12 @@ public class BackupService extends Service {
 
 
     // Новый механизм
-    private void produceBackup() {
-        /*CollectionPair collectionPair = collectionPool.pop();
-
-        if (null != collectionPair) {
-            String collectionName = collectionPair.getName();
-
-            switch (collectionName) {
-                case Constants.CARDS_PATH:
-                    backupCards();
-                    return;
-                case Constants.COMMENTS_PATH:
-                    backupComments();
-                    return;
-                case Constants.TAGS_PATH:
-                    backupTags();
-                    return;
-                case Constants.USERS_PATH:
-                    backupUsers();
-                    return;
-                case Constants.ADMINS_PATH:
-                    backupAdmins();
-                    return;
-                default:
-                    String errorMsg = MyUtils.getString(this, R.string.BACKUP_SERVICE_error_unknown_collection_name, collectionName);
-                    finishWithError(errorMsg);
-            }
-        }
-
-        if (images2backup.size() > 0)
-            backupImages();
-        else
-            finishWithSuccess();*/
-    }
-
-    private void fillBackupPool() {
+    private void step1FillBackupPool() {
 
         CollectionPair collectionPair = collectionsPool.pop();
 
         if (null == collectionPair) {
-            //processBackupPoolItems();
-            finishBackup();
+            step2ProcessBackupPool();
             return;
         }
 
@@ -554,6 +526,69 @@ public class BackupService extends Service {
             default:
                 loadCollection(collectionName);
         }
+    }
+
+    private void step2ProcessBackupPool() {
+
+        if (backupPool.size() == 0) {
+            finishBackup();
+            return;
+        }
+
+        BackupElement backupElement = backupPool.get(0);
+        backupPool.remove(0);
+
+        // TODO: неужели есть прямой доступ к свойству класса?
+        ElementType elementType = backupElement.getElementType();
+        switch (elementType) {
+            case JSON:
+                backupJSON(backupElement);
+                break;
+            case IMAGE:
+                backupImage(backupElement);
+                break;
+            default:
+                storeErrorMessage(R.string.BACKUP_SERVICE_error_unknown_element_type, elementType.name());
+                break;
+        }
+
+        /*String collectionName = backupElement.collectionName;
+//        String collectionName = backupPoolElement.getCollectionName();
+        String jsonData = backupElement.getJson();
+
+        notifyAboutBackupProgress(MyUtils.getString(
+                BackupService.this,
+                R.string.BACKUP_SERVICE_saving_collection,
+                collectionName
+        ));
+
+        dropboxBackuper.backupString(
+                targetDirName,
+                collectionName,
+                "json",
+                jsonData,
+                true,
+                new DropboxBackuper.iBackupStringCallbacks() {
+                    @Override
+                    public void onBackupStringSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
+                        storeSuccessMessage(R.string.BACKUP_SERVICE_collection_is_saved, collectionName);
+                        produceBackup();
+                    }
+
+                    @Override
+                    public void onBackupStringFail(String errorMsg) {
+                        String msg = MyUtils.getString(
+                                BackupService.this,
+                                R.string.BACKUP_SERVICE_error_saving_collection,
+                                collectionName,
+                                errorMsg
+                        );
+                        backupErrorsList.add(msg);
+                        Log.e(TAG, msg);
+                        produceBackup();
+                    }
+                }
+        );*/
     }
 
     private void loadCollection(String collectionName) {
@@ -592,13 +627,13 @@ public class BackupService extends Service {
                             Log.e(TAG, "Errors during loading collection '"+collectionName+"': "+errorsList);
                         }
 
-                        fillBackupPool();
+                        step1FillBackupPool();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        fillBackupPool();
+                        step1FillBackupPool();
                     }
                 });
     }
@@ -628,31 +663,20 @@ public class BackupService extends Service {
                 backupElement.addJson(listOfObjects2JSON_2(list));
                 backupPool.add(backupElement);
 
-                fillBackupPool();
+                step1FillBackupPool();
             }
 
             @Override
             public void onListLoadFail(String errorMessage) {
                 showCustomNotification(R.string.BACKUP_SERVICE_error_loading_collection, collectionName);
-                fillBackupPool();
+                step1FillBackupPool();
             }
         });
     }
 
-    private void processBackupPoolItems() {
-
-        if (backupPool.size() == 0) {
-            finishBackup();
-            return;
-        }
-
-        BackupElement backupElement = backupPool.get(0);
-        backupPool.remove(0);
-
-        // TODO: неужели есть прямой доступ к свойству класса?
+    private void backupJSON(BackupElement backupElement) {
+//        String collectionName = backupElement.getCollectionName();
         String collectionName = backupElement.collectionName;
-//        String collectionName = backupPoolElement.getCollectionName();
-        String jsonData = backupElement.getJson();
 
         notifyAboutBackupProgress(MyUtils.getString(
                 BackupService.this,
@@ -664,35 +688,63 @@ public class BackupService extends Service {
                 targetDirName,
                 collectionName,
                 "json",
-                jsonData,
+                backupElement.getJSON(),
                 true,
                 new DropboxBackuper.iBackupStringCallbacks() {
                     @Override
                     public void onBackupStringSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
-                        String msg = MyUtils.getString(
-                                BackupService.this,
-                                R.string.BACKUP_SERVICE_collection_is_saved,
-                                collectionName
-                        );
-                        backupSuccessList.add(msg);
-                        Log.d(TAG, msg);
-                        produceBackup();
+                        storeSuccessMessage(R.string.BACKUP_SERVICE_collection_is_saved, collectionName);
+                        step2ProcessBackupPool();
                     }
 
                     @Override
                     public void onBackupStringFail(String errorMsg) {
-                        String msg = MyUtils.getString(
-                                BackupService.this,
-                                R.string.BACKUP_SERVICE_error_saving_collection,
-                                collectionName,
-                                errorMsg
-                        );
-                        backupErrorsList.add(msg);
-                        Log.e(TAG, msg);
-                        produceBackup();
+                        storeErrorMessage(R.string.BACKUP_SERVICE_error_saving_collection, collectionName, errorMsg);
+                        step2ProcessBackupPool();
                     }
                 }
         );
+    }
+
+    private void backupImage(BackupElement backupElement) {
+        String imageFileName = backupElement.getImageFileName();
+
+        notifyAboutBackupProgress(MyUtils.getString(
+                BackupService.this,
+                R.string.BACKUP_SERVICE_saving_image,
+                imageFileName
+        ));
+
+        String[] args = { imageFileName, ":-(" };
+        String s = MyUtils.getString(this, R.string.BACKUP_SERVICE_error_saving_image, args);
+
+        StorageSingleton.getInstance().getImage(imageFileName, new iStorageSingleton.GetFileCallbacks() {
+            @Override
+            public void onFileDownloadSuccess(byte[] imageBytes) {
+
+                dropboxBackuper.backupFile(imagesDirName, imageFileName, imageBytes, new DropboxBackuper.iBackupFileCallbacks() {
+                    @Override
+                    public void onBackupFileSuccess(String uploadedFileName) {
+                        storeSuccessMessage(R.string.BACKUP_SERVICE_image_has_been_saved, imageFileName);
+                        step2ProcessBackupPool();
+                    }
+
+                    @Override
+                    public void onBackupFileError(String errorMsg) {
+                        storeErrorMessage(R.string.BACKUP_SERVICE_error_saving_image, imageFileName, errorMsg);
+                        step2ProcessBackupPool();
+                    }
+                });
+            }
+
+            @Override
+            public void onFileDownloadError(String errorMsg) {
+                storeErrorMessage(R.string.BACKUP_SERVICE_error_loading_image, errorMsg);
+                step2ProcessBackupPool();
+            }
+        });
+
+        //dropboxBackuper.backupFile(imagesDirName, backupElement.getImageFileName(), );
     }
 
 /*
@@ -1046,5 +1098,20 @@ public class BackupService extends Service {
     private void notifyAboutBackupProgress(String message) {
         displayProgressNotification(message, BACKUP_STATUS_RUNNING);
         sendBackupProgressBroadcast(message, BACKUP_STATUS_RUNNING);
+    }
+
+    public static String date2string() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.CANADA);
+        return format.format(new Date());
+    }
+
+    public static String date2string(String format) {
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.CANADA);
+            return simpleDateFormat.format(new Date());
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 }

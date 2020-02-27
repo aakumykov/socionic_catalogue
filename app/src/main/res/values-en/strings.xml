@@ -630,5 +630,10 @@
     <string name="REGISTER1_email_successfully_sent">Email is sent</string>
     <string name="LOGIN_too_many_login_attempts">Too many login attempts. Try again later</string>
     <string name="BACKUP_SERVICE_error_unknown_collection_name">Unknown collection «%1$s»</string>
+    <string name="BACKUP_SERVICE_error_unknown_element_type">Unknown element type «%1$s»</string>
+    <string name="BACKUP_SERVICE_saving_image">Saving image %1$s</string>
+    <string name="BACKUP_SERVICE_image_has_been_saved">Image saved %1$s</string>
+    <string name="BACKUP_SERVICE_error_saving_image">Error saving image "%1$s": %2$s</string>
+    <string name="BACKUP_SERVICE_error_loading_image">Error loading image %1$s</string>
 </resources>
 <!-- «%1$s» -->
