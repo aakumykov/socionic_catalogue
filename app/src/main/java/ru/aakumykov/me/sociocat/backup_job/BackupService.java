@@ -152,6 +152,12 @@ public class BackupService extends Service {
     private void createBackupDirs() {
         String dirName = date2string("yyyy-MM-dd_HH.mm.ss");
 
+        notifyAboutBackupProgress(MyUtils.getString(
+                BackupService.this,
+                R.string.BACKUP_SERVICE_creating_dir,
+                dirName
+        ));
+
         dropboxBackuper.createDir(dirName, true, new DropboxBackuper.iCreateDirCallbacks() {
             @Override
             public void onCreateDirSuccess(String createdDirName) {
@@ -248,7 +254,7 @@ public class BackupService extends Service {
                         for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             try {
                                 Object object = documentSnapshot.toObject(Object.class);
-
+                                objectsList.add(object);
                             }
                             catch (Exception e) {
                                 errorsList.add(e.getMessage());
@@ -258,7 +264,8 @@ public class BackupService extends Service {
 
                         if (objectsList.size() > 0) {
                             BackupElement backupElement = new BackupElement(BackupService.ElementType.JSON, collectionName);
-                            backupElement.addJson(listOfObjects2JSON(objectsList));
+                            String json = listOfObjects2JSON(objectsList);
+                            backupElement.addJson(json);
                             backupPool.add(backupElement);
                         }
 
@@ -290,14 +297,14 @@ public class BackupService extends Service {
         CardsSingleton.getInstance().loadAllCards(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                for (Card card : list) {
+                /*for (Card card : list) {
                     if (card.isImageCard() && cardHasNewImage(card)) {
                         BackupElement backupElement = new BackupElement(BackupService.ElementType.IMAGE, Constants.IMAGES_PATH);
                         backupElement.setImageFileName(card.getFileName());
                         backupElement.setCardKey(card.getKey());
                         backupPool.add(backupElement);
                     }
-                }
+                }*/
 
                 BackupElement backupElement = new BackupElement(BackupService.ElementType.JSON, collectionName);
                 backupElement.addJson(listOfObjects2JSON(list));
@@ -464,6 +471,7 @@ public class BackupService extends Service {
 
         sendBackupResultBroadcast(message, BACKUP_STATUS_SUCCESS);
 
+        isRunning = false;
         stopSelf();
         sendServiceBroadcast(SERVICE_STATUS_FINISH);
     }
