@@ -37,6 +37,8 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
+import ru.aakumykov.me.sociocat.models.Tag;
+import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
@@ -51,11 +53,11 @@ public class BackupService extends Service {
     private final static String TAG = "BackupService";
 
     private CollectionPool collectionsPool = new CollectionPool(
-            //new CollectionPair(Constants.CARDS_PATH, Card.class),
-            //new CollectionPair(Constants.TAGS_PATH, Tag.class),
-            new CollectionPair(Constants.COMMENTS_PATH, Comment.class)//,
-            //new CollectionPair(Constants.USERS_PATH, User.class)//,
-            //new CollectionPair(Constants.ADMINS_PATH, User.class)
+            new CollectionPair(Constants.CARDS_PATH, Card.class),
+            new CollectionPair(Constants.TAGS_PATH, Tag.class),
+            new CollectionPair(Constants.COMMENTS_PATH, Comment.class),
+            new CollectionPair(Constants.USERS_PATH, User.class),
+            new CollectionPair(Constants.ADMINS_PATH, User.class)
     );
 
     private List<BackupElement> backupPool = new ArrayList<>();
