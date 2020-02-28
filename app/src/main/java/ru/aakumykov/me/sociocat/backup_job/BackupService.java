@@ -128,6 +128,8 @@ public class BackupService extends Service {
             return;
         }
 
+        createNotificationChannel(this);
+
         backupImpossible = false;
         dropboxBackuper = new DropboxBackuper(dropboxAccessToken);
     }
