@@ -151,10 +151,15 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
                             backupItemInfo.setFileName(fileNameWithExtention);
                             backupItemInfo.setMd5hash(secondHash);
 
-                            if (firstHash.equals(secondHash))
-                                callbacks.onBackupStringSuccess(backupItemInfo);
-                            else
-                                callbacks.onBackupStringFail("Hashes of string '"+inputString+"' are mismatch: "+firstHash+" - "+secondHash);
+                            if (firstHash.equals(secondHash)) {
+                                Message message = handler.obtainMessage(MESSAGE_WORK_SUCCESS, backupItemInfo);
+                                handler.sendMessage(message);
+                            }
+                            else {
+                                String errorMsg = "Hashes of string '" + inputString + "' are mismatch: " + firstHash + " - " + secondHash;
+                                Message message = handler.obtainMessage(MESSAGE_WORK_FAIL, errorMsg);
+                                handler.sendMessage(message);
+                            }
                         }
 
                         @Override
@@ -162,7 +167,6 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
                             callbacks.onBackupStringFail(errorMsg);
                         }
                     });
-
                 }
                 catch (Exception e) {
                     callbacks.onBackupStringFail(MyUtils.getExceptionMessage(e));
@@ -222,9 +226,8 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
 
             callbacks.onDownloadStringSuccess(text);
         }
-        catch (Exception ex) {
-            Log.e(TAG, ex.getMessage());
-            ex.printStackTrace();
+        catch (Exception e) {
+            MyUtils.printError(TAG, e);
         }
     }
 
