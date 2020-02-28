@@ -37,8 +37,6 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
-import ru.aakumykov.me.sociocat.models.Tag;
-import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.StorageSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
@@ -53,11 +51,11 @@ public class BackupService extends Service {
     private final static String TAG = "BackupService";
 
     private CollectionPool collectionsPool = new CollectionPool(
-            new CollectionPair(Constants.CARDS_PATH, Card.class),
-            new CollectionPair(Constants.TAGS_PATH, Tag.class),
-            new CollectionPair(Constants.COMMENTS_PATH, Comment.class),
-            new CollectionPair(Constants.USERS_PATH, User.class),
-            new CollectionPair(Constants.ADMINS_PATH, User.class)
+            //new CollectionPair(Constants.CARDS_PATH, Card.class),
+            //new CollectionPair(Constants.TAGS_PATH, Tag.class),
+            new CollectionPair(Constants.COMMENTS_PATH, Comment.class)//,
+            //new CollectionPair(Constants.USERS_PATH, User.class)//,
+            //new CollectionPair(Constants.ADMINS_PATH, User.class)
     );
 
     private List<BackupElement> backupPool = new ArrayList<>();
@@ -120,12 +118,6 @@ public class BackupService extends Service {
         isRunning = true;
 
         return START_NOT_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy()");
     }
 
     @Nullable @Override
@@ -213,7 +205,7 @@ public class BackupService extends Service {
     private void step2ProcessBackupPool() {
 
         if (backupPool.size() == 0) {
-            finishBackup();
+            finishBackupWithSuccess();
             return;
         }
 
@@ -448,31 +440,31 @@ public class BackupService extends Service {
     }
 
     private void finishBackupWithError(String errorMsg) {
-
-        removeProgressNotification();
-        displayResultNotification(errorMsg, BACKUP_STATUS_ERROR);
-
-        sendBackupResultBroadcast(errorMsg, BACKUP_STATUS_ERROR);
-
-        stopSelf();
-        sendServiceBroadcast(SERVICE_STATUS_FINISH);
+        finishBackup(BACKUP_STATUS_ERROR, errorMsg);
+        Log.e(TAG, errorMsg);
     }
 
-    private void finishBackup() {
-
+    private void finishBackupWithSuccess() {
         String message = MyUtils.getString(
                 this,
                 R.string.BACKUP_SERVICE_all_collections_are_processed,
                 date2string()
         );
+        finishBackup(BACKUP_STATUS_SUCCESS, message);
+        Log.d(TAG, message);
+    }
 
+    private void finishBackup(String backupStatus, String userMessage) {
         removeProgressNotification();
-        displayResultNotification(message, BACKUP_STATUS_SUCCESS);
 
-        sendBackupResultBroadcast(message, BACKUP_STATUS_SUCCESS);
+        displayResultNotification(userMessage, backupStatus);
+
+        sendBackupResultBroadcast(userMessage, backupStatus);
 
         isRunning = false;
+
         stopSelf();
+
         sendServiceBroadcast(SERVICE_STATUS_FINISH);
     }
 
