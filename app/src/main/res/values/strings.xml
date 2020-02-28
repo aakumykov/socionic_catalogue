@@ -643,5 +643,7 @@
     <string name="BACKUP_SERVICE_error_loading_image">Ошибка получения картинки "%1$s" карточки "%2$s": %3$s</string>
     <string name="BACKUP_SERVICE_error_saving_image">Ошибка сохранения картинки "%1$s" карточки "%2$s": %3$s</string>
     <string name="probe">Проба</string>
+    <string name="DEBUG_backup_service_already_running">Служба резервного копирования уже запущена</string>
+    <string name="BACKUP_SERVICE_creating_dir">Создаём каталог «%1$s»</string>
 
 </resources><!-- «%1$s» -->

@@ -636,5 +636,7 @@
     <string name="BACKUP_SERVICE_error_loading_image">Error loading image "%1$s" of card "%2$s": %3$s</string>
     <string name="BACKUP_SERVICE_error_saving_image">Error saving image "%1$s" of card "%2$s": %3$s</string>
     <string name="probe">Probe</string>
+    <string name="DEBUG_backup_service_already_running">Backup service already running</string>
+    <string name="BACKUP_SERVICE_creating_dir">Creating directory «%1$s»</string>
 </resources>
 <!-- «%1$s» -->

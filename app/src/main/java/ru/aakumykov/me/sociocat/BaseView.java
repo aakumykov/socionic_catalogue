@@ -554,6 +554,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     private void doProbe() {
         if (!BackupService.isRunning())
             startService(new Intent(this, BackupService.class));
+        else
+            showLongToast(R.string.DEBUG_backup_service_already_running);
     }
 
 }
