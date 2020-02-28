@@ -204,10 +204,10 @@ public class MyApp extends Application {
 //    }
 
     private void produceBackup() {
-        if (BackupService.isTimeToDoBackup(this)) {
+        /*if (BackupService.isTimeToDoBackup(this)) {
             startService(new Intent(this, BackupService.class));
             // TODO: кривоватая архитекрута!
             BackupService.saveLastBackupTime(this);
-        }
+        }*/
     }
 }

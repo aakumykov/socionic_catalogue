@@ -51,6 +51,10 @@ public class BackupService extends Service {
             new CollectionPair(Constants.COMMENTS_PATH, Comment.class)
     );
 
+    public static boolean isRunning() {
+        return false;
+    }
+
     private static class CollectionPair {
         private String name;
         private Class itemClass;
