@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
+import java.lang.annotation.ElementType;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -296,14 +297,19 @@ public class BackupService extends Service {
         CardsSingleton.getInstance().loadAllCards(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                /*for (Card card : list) {
+                for (Card card : list) {
                     if (card.isImageCard() && cardHasNewImage(card)) {
                         BackupElement backupElement = new BackupElement(BackupService.ElementType.IMAGE, Constants.IMAGES_PATH);
-                        backupElement.setImageFileName(card.getFileName());
+                        String imageFileName = card.getFileName();
+
+                        if ("null.png".equals(imageFileName))
+                            Log.w(TAG, "null-image detected! "+card);
+
+                        backupElement.setImageFileName(imageFileName);
                         backupElement.setCardKey(card.getKey());
                         backupPool.add(backupElement);
                     }
-                }*/
+                }
 
                 backuppingCardsList.addAll(list);
 
@@ -358,6 +364,7 @@ public class BackupService extends Service {
     }
 
     private void backupImage(BackupElement backupElement) {
+/*
         String imageFileName = backupElement.getImageFileName();
         String cardKey = backupElement.getCardKey();
 
@@ -391,6 +398,7 @@ public class BackupService extends Service {
                 step2ProcessBackupPool();
             }
         });
+*/
     }
 
     private <T> String listOfObjects2JSON(List<T> objectsList) {
