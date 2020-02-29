@@ -107,12 +107,12 @@ public final class Constants
     public final static int USER_NAME_MAX_LENGTH = 30;
     public final static int PASSWORD_MIN_LENGTH = 6;
 
-    public final static String SHARED_PREFERENCES_EMAIL = "SHARED_PREFERENCES_EMAIL";
-    public final static String SHARED_PREFERENCES_LOGIN = "SHARED_PREFERENCES_LOGIN";
-    public final static String SHARED_PREFERENCES_CARD_EDIT = "SHARED_PREFERENCES_CARD_EDIT";
-    public static final String SHARED_PREFERENCES_EMAIL_CHANGE = "SHARED_PREFERENCES_EMAIL_CHANGE";
-    public static final String SHARED_PREFERENCES_USER = "SHARED_PREFERENCES_USER";
-    public static final String SHARED_PREFERENCES_ADMIN = "SHARED_PREFERENCES_ADMIN";
+    public final static String SHARED_PREFERENCES_EMAIL = "EMAIL";
+    public final static String SHARED_PREFERENCES_LOGIN = "LOGIN";
+    public final static String SHARED_PREFERENCES_CARD_EDIT = "CARD_EDIT";
+    public static final String SHARED_PREFERENCES_EMAIL_CHANGE = "EMAIL_CHANGE";
+    public static final String SHARED_PREFERENCES_USER = "USER";
+    public static final String SHARED_PREFERENCES_ADMIN = "ADMIN";
 
     public final static String KEY_LAST_LOGIN = "LAST_LOGIN";
     public static final String KEY_STORED_EMAIL = "STORED_EMAIL";
