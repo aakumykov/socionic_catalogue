@@ -87,7 +87,6 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
                 }
                 catch (Exception e) {
                     MyUtils.processException(TAG, e);
-
                     Message message = handler.obtainMessage(MESSAGE_WORK_FAIL, MyUtils.getExceptionMessage(e));
                     handler.sendMessage(message);
                 }
@@ -164,13 +163,15 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
 
                         @Override
                         public void onDownloadStringError(String errorMsg) {
-                            callbacks.onBackupStringFail(errorMsg);
+                            Message message = handler.obtainMessage(MESSAGE_WORK_FAIL, errorMsg);
+                            handler.sendMessage(message);
                         }
                     });
                 }
                 catch (Exception e) {
-                    callbacks.onBackupStringFail(MyUtils.getExceptionMessage(e));
                     MyUtils.processException(TAG, e);
+                    Message message = handler.obtainMessage(MESSAGE_WORK_FAIL, e.getMessage());
+                    handler.sendMessage(message);
                 }
             }
         };
@@ -184,6 +185,24 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
             byte[] dataBytes,
             iBackupFileCallbacks callbacks
     ) {
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case MESSAGE_WORK_SUCCESS:
+                        String uploadedFileName = (String) msg.obj;
+                        callbacks.onBackupFileSuccess(uploadedFileName);
+                        break;
+                    case MESSAGE_WORK_FAIL:
+                        String errorMsg = (String) msg.obj;
+                        callbacks.onBackupFileError(errorMsg);
+                        break;
+                    default:
+                        super.handleMessage(msg);
+                }
+            }
+        };
+
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -198,13 +217,13 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
 
                     String uploadedFileName = uploadMetadata.getName();
 
-                    callbacks.onBackupFileSuccess(uploadedFileName);
+                    Message message = handler.obtainMessage(MESSAGE_WORK_SUCCESS, uploadedFileName);
+                    handler.sendMessage(message);
                 }
                 catch (Exception e) {
-                    /*MyUtils.getExceptionMessage используется потому, что исключение может быть
-                    кривым, не содержать сообщения в нужно месте.*/
-                    callbacks.onBackupFileError(MyUtils.getExceptionMessage(e));
                     MyUtils.processException(TAG, e);
+                    Message message = handler.obtainMessage(MESSAGE_WORK_FAIL, MyUtils.getExceptionMessage(e));
+                    handler.sendMessage(message);
                 }
             }
         };
@@ -228,6 +247,7 @@ public class DropboxBackuper /*implements iCloudBackuper*/ {
         }
         catch (Exception e) {
             MyUtils.printError(TAG, e);
+            callbacks.onDownloadStringError(e.getMessage());
         }
     }
 
