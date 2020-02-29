@@ -51,6 +51,8 @@ public class BackupService extends Service {
 
     // ======== НАСТРОЙКА ОБЪЕКТОВ РЕЗЕРВНОГО КОПИРОВАНИЯ ========
     private final static String TAG = "BackupService";
+    private static final String SHARED_PREFERENCES_BACKUP_SERVICE = "BACKUP_SERVICE";
+    private static final String KEY_CARDS_LIST = "CARDS_LIST";
 
     private CollectionPool collectionsPool = new CollectionPool(
             new CollectionPair(Constants.CARDS_PATH, Card.class),
@@ -60,13 +62,14 @@ public class BackupService extends Service {
             new CollectionPair(Constants.ADMINS_PATH, User.class)
     );
 
-    private List<BackupElement> backupPool = new ArrayList<>();
-
     private static boolean isRunning = false;
     private static boolean backupImpossible = true;
     private String targetDirName;
     private String imagesDirName;
-    private Map<String, String> previousCollection = new HashMap<>();
+
+    private List<BackupElement> backupPool = new ArrayList<>();
+    private List<Card> backuppingCardsList = new ArrayList<>();
+    private Map<String, Card> previousCollection = new HashMap<>();
 
 
     // ======================== УПРАВЛЕНИЕ СЛУЖБОЙ ========================
@@ -139,6 +142,8 @@ public class BackupService extends Service {
 
     private void startBackup() {
         notifyAboutBackupProgress(MyUtils.getString(this, R.string.BACKUP_SERVICE_backup_started));
+
+        restoreBackupedCards();
 
         createBackupDirs();
     }
@@ -300,6 +305,8 @@ public class BackupService extends Service {
                     }
                 }*/
 
+                backuppingCardsList.addAll(list);
+
                 BackupElement backupElement = new BackupElement(BackupService.ElementType.JSON, collectionName);
                 backupElement.addJson(listOfObjects2JSON(list));
                 backupPool.add(backupElement);
@@ -334,6 +341,10 @@ public class BackupService extends Service {
                     @Override
                     public void onBackupStringSuccess(DropboxBackuper.BackupItemInfo backupItemInfo) {
                         storeSuccessMessage(R.string.BACKUP_SERVICE_collection_is_saved, collectionName);
+
+                        if (Constants.CARDS_PATH.equals(collectionName))
+                            storeBackupedCards();
+
                         step2ProcessBackupPool();
                     }
 
@@ -383,6 +394,11 @@ public class BackupService extends Service {
     }
 
     private <T> String listOfObjects2JSON(List<T> objectsList) {
+        List<String> jsonList = listOfObjects2ListOfJSON(objectsList);
+        return "[\n" + TextUtils.join(",\n", jsonList) + "\n]";
+    }
+
+    private <T> List<String> listOfObjects2ListOfJSON(List<T> objectsList) {
         List<String> jsonList = new ArrayList<>();
         List<String> errorsList = new ArrayList<>();
 
@@ -401,44 +417,7 @@ public class BackupService extends Service {
             Log.e(TAG, errorsList.toString());
         }
 
-        return "[\n" + TextUtils.join(",\n", jsonList) + "\n]";
-
-    }
-
-    private boolean cardHasNewImage(Card newCard) {
-        // Нет сведений о предыдущем резервном копировании - считаем, что есть новая картинка.
-        if (0 == previousCollection.size())
-            return true;
-
-        String newCardKey = newCard.getKey();
-
-        // Карточка не найдена, значит, есть новая картинка.
-        if (!previousCollection.containsKey(newCardKey)) {
-            return true;
-        }
-        else {
-            try {
-                String cardJSON = previousCollection.get(newCardKey);
-                Card oldCard = new Gson().fromJson(cardJSON, Card.class);
-                if (null == oldCard)
-                    return true;
-
-                String oldImageURL = oldCard.getImageURL();
-
-                // Если нет сведений о старом imageURL
-                if (null == oldImageURL)
-                    return true;
-
-                String newImageURL = newCard.getImageURL();
-
-                return ! oldImageURL.equals(newImageURL);
-            }
-            catch (Exception e) {
-                // При ошибке восстановления из JSON выполняем рез. копирование
-                MyUtils.printError(TAG, e);
-                return true;
-            }
-        }
+        return jsonList;
     }
 
     private void finishBackupWithError(String errorMsg) {
@@ -469,6 +448,79 @@ public class BackupService extends Service {
 
         sendServiceBroadcast(SERVICE_STATUS_FINISH);
     }
+
+    // Локальное сохранение, восстановление, проверка-по списка карточек.
+    private void storeBackupedCards() {
+        List<String> jsonList = listOfObjects2ListOfJSON(backuppingCardsList);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_BACKUP_SERVICE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        String listAsString = new Gson().toJson(jsonList);
+
+        editor.putString(KEY_CARDS_LIST, listAsString);
+        editor.apply();
+    }
+
+    private void restoreBackupedCards() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_BACKUP_SERVICE, Context.MODE_PRIVATE);
+
+        if (sharedPreferences.contains(KEY_CARDS_LIST)) {
+            String listAsString = sharedPreferences.getString(KEY_CARDS_LIST, "[]");
+
+            Gson gson = new Gson();
+            String[] jsonList = gson.fromJson(listAsString, String[].class);
+
+            String cardJson = "";
+
+            for (String s : jsonList) {
+                try {
+                    cardJson = s;
+                    Card card = gson.fromJson(cardJson, Card.class);
+                    previousCollection.put(card.getKey(), card);
+                }
+                catch (Exception e) {
+                    MyUtils.printError(TAG, e);
+                }
+            }
+        }
+    }
+
+    private boolean cardHasNewImage(Card newCard) {
+        // Нет сведений о предыдущем резервном копировании - считаем, что есть новая картинка.
+        if (0 == previousCollection.size())
+            return true;
+
+        String newCardKey = newCard.getKey();
+
+        // Карточка не найдена, значит, есть новая картинка.
+        if (!previousCollection.containsKey(newCardKey)) {
+            return true;
+        }
+        else {
+            try {
+                Card oldCard = previousCollection.get(newCardKey);
+                if (null == oldCard)
+                    return true;
+
+                String oldImageURL = oldCard.getImageURL();
+
+                // Если нет сведений о старом imageURL
+                if (null == oldImageURL)
+                    return true;
+
+                String newImageURL = newCard.getImageURL();
+
+                return ! oldImageURL.equals(newImageURL);
+            }
+            catch (Exception e) {
+                // При ошибке восстановления из JSON выполняем рез. копирование
+                MyUtils.printError(TAG, e);
+                return true;
+            }
+        }
+    }
+
 
 
     // ======================== ШИРОКОВЕЩАТЕЛЬНЫЕ СООБЩЕНИЯ ========================
