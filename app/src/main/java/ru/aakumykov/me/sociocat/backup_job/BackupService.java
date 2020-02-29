@@ -302,7 +302,7 @@ public class BackupService extends Service {
                         BackupElement backupElement = new BackupElement(BackupService.ElementType.IMAGE, Constants.IMAGES_PATH);
                         String imageFileName = card.getFileName();
 
-                        if ("null.png".equals(imageFileName))
+                        if (null != imageFileName && imageFileName.startsWith("null."))
                             Log.w(TAG, "null-image detected! "+card);
 
                         backupElement.setImageFileName(imageFileName);
@@ -364,7 +364,7 @@ public class BackupService extends Service {
     }
 
     private void backupImage(BackupElement backupElement) {
-/*
+
         String imageFileName = backupElement.getImageFileName();
         String cardKey = backupElement.getCardKey();
 
@@ -398,7 +398,6 @@ public class BackupService extends Service {
                 step2ProcessBackupPool();
             }
         });
-*/
     }
 
     private <T> String listOfObjects2JSON(List<T> objectsList) {
