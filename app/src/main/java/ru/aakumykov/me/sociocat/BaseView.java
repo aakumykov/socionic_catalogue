@@ -109,8 +109,8 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
         MenuInflater menuInflater = getMenuInflater();
 
-        if (BuildConfig.DEBUG)
-            menuInflater.inflate(R.menu.probe, menu);
+//        if (BuildConfig.DEBUG)
+//            menuInflater.inflate(R.menu.probe, menu);
 
 //        menuInflater.inflate(R.menu.tags, menu);
 
@@ -161,7 +161,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
                 break;
 
             case R.id.actionProbe:
-                doProbe();
+                //doProbe();
                 break;
 
             default:
