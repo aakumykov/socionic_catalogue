@@ -454,6 +454,8 @@ public class BackupService extends Service {
         stopSelf();
 
         sendServiceBroadcast(SERVICE_STATUS_FINISH);
+
+        BackupService.saveLastBackupTime(this);
     }
 
     // Локальное сохранение, восстановление, проверка-по списка карточек.
