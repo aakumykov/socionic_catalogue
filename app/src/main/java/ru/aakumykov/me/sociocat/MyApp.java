@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.util.SparseArray;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -15,9 +14,6 @@ import com.google.firebase.auth.FirebaseUser;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import ru.aakumykov.me.sociocat.backup_job.BackupService;
 import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
@@ -208,8 +204,6 @@ public class MyApp extends Application {
 //    }
 
     private void produceBackup() {
-        //startService(new Intent(this, BackupService.class));
-
         if (BackupService.isTimeToDoBackup(this)) {
             startService(new Intent(this, BackupService.class));
         }
