@@ -44,10 +44,4 @@ public interface iAuthSingleton {
         void onChangePasswordError(String errorMsg);
     }
 
-
-    class iAuthSingletonException extends Exception {
-        public iAuthSingletonException(String message) {
-            super(message);
-        }
-    }
 }
