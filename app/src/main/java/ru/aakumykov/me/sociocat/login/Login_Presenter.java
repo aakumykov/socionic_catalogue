@@ -129,6 +129,32 @@ public class Login_Presenter implements
     }
 
     @Override
+    public void onGoogleLoginResult(@Nullable Intent data) {
+
+        AuthSingleton.processGoogleLoginResult(data, new iAuthSingleton.LoginCallbacks() {
+            @Override
+            public void onLoginSuccess(String userId) {
+
+            }
+
+            @Override
+            public void onLoginError(String errorMsg) {
+
+            }
+
+            @Override
+            public void onWrongCredentialsError() {
+
+            }
+
+            @Override
+            public void onTooManyLoginAttempts() {
+
+            }
+        });
+    }
+
+    @Override
     public void cancelLogin() {
         AuthSingleton.signOut();
         view.finishLogin(true, mTransitIntent);

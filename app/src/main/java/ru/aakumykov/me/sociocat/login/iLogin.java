@@ -54,5 +54,7 @@ public interface iLogin {
         void storeViewState(ViewState state, int messageId, String messageDetails);
 
         void onFormIsValid();
+
+        void onGoogleLoginResult(@Nullable Intent data);
     }
 }

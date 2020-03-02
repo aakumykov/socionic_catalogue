@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.common.SignInButton;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
@@ -34,6 +35,8 @@ import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.register_step_1.RegisterStep1_View;
 import ru.aakumykov.me.sociocat.register_step_2.RegisterStep2_View;
 import ru.aakumykov.me.sociocat.reset_password_step1.ResetPasswordStep1_View;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.user_edit.UserEdit_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -53,12 +56,12 @@ public class Login_View extends BaseView implements
     @BindView(R.id.resetPasswordButton) TextView resetPasswordButton;
     @BindView(R.id.registerButton) Button registerButton;
     @BindView(R.id.cancelButton) Button cancelButton;
+    @BindView(R.id.googleLoginButton) SignInButton googleLoginButton;
     @BindView(R.id.vkLoginButton) ImageView vkLoginButton;
 
     public static final String TAG = "Login_View";
     private iLogin.Presenter presenter;
     private Validator validator;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,12 +124,22 @@ public class Login_View extends BaseView implements
             // Обработка происходит в loginVKCallbacks
         }
         else {
-            if (requestCode == Constants.CODE_USER_EDIT) {
-                goToMainPage();
-            } else {
-                super.onActivityResult(requestCode, resultCode, data);
+            switch (requestCode) {
+                case Constants.CODE_USER_EDIT:
+                    goToMainPage();
+                    break;
+                case AuthSingleton.CODE_GOOGLE_SIGN_IN:
+                    processGoogleLoginResult(resultCode, data);
+                    break;
+                default:
+                    super.onActivityResult(requestCode, resultCode, data);
             }
         }
+    }
+
+    private void processGoogleLoginResult(int resultCode, @Nullable Intent data) {
+        if (RESULT_OK == resultCode)
+            presenter.onGoogleLoginResult(data);
     }
 
     @Override
@@ -306,6 +319,11 @@ public class Login_View extends BaseView implements
     @OnClick(R.id.cancelButton)
     void onCancelLoginButtonClicked() {
         presenter.cancelLogin();
+    }
+
+    @OnClick(R.id.googleLoginButton)
+    void onGoogleLoginButtonClicked() {
+        AuthSingleton.startLoginWithGoogle(this);
     }
 
     @OnClick(R.id.vkLoginButton)
