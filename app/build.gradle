@@ -49,8 +49,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
     implementation 'com.google.firebase:firebase-firestore:21.4.0'
 
-    // AAC
-//    implementation "android.arch.lifecycle:extensions:1.1.1"
+    // Google Authorization
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
 
     // ButterKnife
     implementation 'com.jakewharton:butterknife:10.2.0'
@@ -73,6 +73,9 @@ dependencies {
     // Android Youtube Player
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
 
+    // Insertable Youtube Playr
+    implementation 'com.github.aakumykov:insertable-youtube-player:0.15'
+
     // Circle image view
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.google.android.material:material:1.2.0-alpha05'
@@ -89,9 +92,6 @@ dependencies {
 
     // FloatingActionButtonSpeedDial
     implementation "com.leinardi.android:speed-dial:2.0.1"
-
-    // Insertable Youtube Playr
-    implementation 'com.github.aakumykov:insertable-youtube-player:0.15'
 
     // RxJava v1
     implementation 'io.reactivex:rxjava:1.2.3'
