@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.utils.auth_providers;
+package ru.aakumykov.me.sociocat.utils.auth;
 
 import android.content.Context;
 import android.content.Intent;
