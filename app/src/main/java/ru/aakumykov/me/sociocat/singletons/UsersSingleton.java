@@ -45,7 +45,7 @@ public class UsersSingleton implements iUsersSingleton {
     private List<String> adminsList = new ArrayList<>();
 
 
-    /* Одиночка */
+    // Шаблон Единоличник
     private static volatile UsersSingleton ourInstance;
     public synchronized static UsersSingleton getInstance() {
         synchronized (UsersSingleton.class) {
@@ -54,7 +54,7 @@ public class UsersSingleton implements iUsersSingleton {
         }
     }
     private UsersSingleton() { }
-    /* Одиночка */
+    // Шаблон Единоличник
 
 
 

@@ -16,8 +16,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.Task;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -30,12 +28,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ru.aakumykov.me.sociocat.AuthConfig;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.login.view_model.Login_ViewModel;
 import ru.aakumykov.me.sociocat.login.view_model.Login_ViewModelFactory;
+import ru.aakumykov.me.sociocat.singletons.GoogleAuthClient;
 import ru.aakumykov.me.sociocat.utils.auth_providers.VKInteractor;
 import ru.aakumykov.me.sociocat.register_step_1.RegisterStep1_View;
 import ru.aakumykov.me.sociocat.register_step_2.RegisterStep2_View;
@@ -65,7 +63,6 @@ public class Login_View extends BaseView implements
     public static final String TAG = "Login_View";
     private iLogin.Presenter presenter;
     private Validator validator;
-    private GoogleSignInClient googleSignInClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,14 +74,6 @@ public class Login_View extends BaseView implements
         activateUpButton();
 
         googleLoginButton.setSize(SignInButton.SIZE_WIDE);
-
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(AuthConfig.GOOGLE_WEB_CLIENT_ID)
-                .requestProfile()
-                .requestEmail()
-                .build();
-
-        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
 
         Login_ViewModel viewModel = new ViewModelProvider(this, new Login_ViewModelFactory())
                 .get(Login_ViewModel.class);
@@ -249,14 +238,13 @@ public class Login_View extends BaseView implements
 
     @Override
     public void startLoginWithGoogle() {
-        Intent signInIntent = googleSignInClient.getSignInIntent();
+        Intent signInIntent = GoogleAuthClient.getSignInIntent(this);
         startActivityForResult(signInIntent, Constants.CODE_GOOGLE_LOGIN);
     }
 
     @Override
     public void logoutFromGoogle() {
-        googleSignInClient.signOut();
-        updateGoogleLoginButtons();
+        GoogleAuthClient.logout(this);
     }
 
     @Override
@@ -397,19 +385,17 @@ public class Login_View extends BaseView implements
         if (RESULT_OK != resultCode)
             return;
 
-        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-        if (!task.isSuccessful()) {
-            setState(iLogin.ViewState.ERROR, R.string.LOGIN_login_error, "Google auth task is not successful");
-            return;
-        }
+        GoogleAuthClient.processGoogleLoginResult(data, new GoogleAuthClient.iGoogleLoginCallbacks() {
+            @Override
+            public void onGoogleLoginSuccess(GoogleSignInAccount googleSignInAccount) {
+                presenter.onGoogleLoginResult(googleSignInAccount);
+            }
 
-        GoogleSignInAccount googleSignInAccount = task.getResult();
-        if (null == googleSignInAccount) {
-            setState(iLogin.ViewState.ERROR, R.string.LOGIN_login_error, "Google sign in account is null");
-            return;
-        }
-
-        presenter.onGoogleLoginResult(googleSignInAccount);
+            @Override
+            public void onGoogleLoginError(String errorMsg) {
+                setState(iLogin.ViewState.ERROR, R.string.LOGIN_login_error, errorMsg);
+            }
+        });
     }
 
     private void updateGoogleLoginButtons() {
