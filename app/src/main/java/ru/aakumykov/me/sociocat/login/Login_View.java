@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,13 +36,10 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.login.view_model.Login_ViewModel;
 import ru.aakumykov.me.sociocat.login.view_model.Login_ViewModelFactory;
-import ru.aakumykov.me.sociocat.other.VKInteractor;
+import ru.aakumykov.me.sociocat.utils.auth_providers.VKInteractor;
 import ru.aakumykov.me.sociocat.register_step_1.RegisterStep1_View;
 import ru.aakumykov.me.sociocat.register_step_2.RegisterStep2_View;
 import ru.aakumykov.me.sociocat.reset_password_step1.ResetPasswordStep1_View;
-import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
-import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
-import ru.aakumykov.me.sociocat.user_edit.UserEdit_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Login_View extends BaseView implements
