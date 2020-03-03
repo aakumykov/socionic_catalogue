@@ -215,11 +215,6 @@ public class Login_View extends BaseView implements
     }
 
     @Override
-    public void notifyToConfirmEmail(String userId) {
-        showErrorMsg(R.string.LOGIN_email_confirmation_required, "(●'◡'●)");
-    }
-
-    @Override
     public String getEmail() {
         return emailInput.getText().toString();
     }

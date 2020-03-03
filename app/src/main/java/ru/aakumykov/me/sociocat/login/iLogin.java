@@ -18,15 +18,11 @@ public interface iLogin {
     }
 
     interface View extends iBaseView {
-
         void setState(ViewState state, int messageId);
         void setState(ViewState state, int messageId, @Nullable String messageDetails);
 
         void startLoginWithGoogle();
-
         void finishLogin(boolean isCancelled, Intent transitIntent);
-
-        void notifyToConfirmEmail(String userId);
 
         String getEmail();
         String getPassword();

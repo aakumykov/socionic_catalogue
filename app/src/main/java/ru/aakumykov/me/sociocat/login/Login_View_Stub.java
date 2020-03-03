@@ -29,11 +29,6 @@ public class Login_View_Stub extends BaseView_Stub implements iLogin.View {
     }
 
     @Override
-    public void notifyToConfirmEmail(String userId) {
-
-    }
-
-    @Override
     public String getEmail() {
         return null;
     }
