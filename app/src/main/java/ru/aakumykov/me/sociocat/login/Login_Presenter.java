@@ -178,6 +178,11 @@ public class Login_Presenter implements
     }
 
     @Override
+    public void onLogoutFromGoogleClicked() {
+        view.logoutFromGoogle();
+    }
+
+    @Override
     public void cancelLogin() {
         AuthSingleton.signOut();
         view.finishLogin(true, mTransitIntent);

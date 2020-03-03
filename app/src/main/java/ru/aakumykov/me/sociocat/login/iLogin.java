@@ -30,6 +30,7 @@ public interface iLogin {
         void enableForm();
 
         void startLoginWithGoogle();
+        void logoutFromGoogle();
 
         void finishLogin(boolean isCancelled, Intent transitIntent);
 
@@ -61,5 +62,6 @@ public interface iLogin {
 
         void onLoginWithGoogleClicked();
         void onGoogleLoginResult(@NonNull GoogleSignInAccount googleSignInAccount);
+        void onLogoutFromGoogleClicked();
     }
 }

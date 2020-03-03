@@ -63,11 +63,13 @@ public class Login_View extends BaseView implements
     @BindView(R.id.registerButton) Button registerButton;
     @BindView(R.id.cancelButton) Button cancelButton;
     @BindView(R.id.googleLoginButton) SignInButton googleLoginButton;
-    @BindView(R.id.vkLoginButton) ImageView vkLoginButton;
+    @BindView(R.id.googleLogoutButton) Button googleLogoutButton;
+//    @BindView(R.id.vkLoginButton) ImageView vkLoginButton;
 
     public static final String TAG = "Login_View";
     private iLogin.Presenter presenter;
     private Validator validator;
+    private GoogleSignInClient googleSignInClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +79,16 @@ public class Login_View extends BaseView implements
 
         setPageTitle(R.string.LOGIN_page_title);
         activateUpButton();
+
+        googleLoginButton.setSize(SignInButton.SIZE_WIDE);
+
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(AuthConfig.GOOGLE_WEB_CLIENT_ID)
+                .requestProfile()
+                .requestEmail()
+                .build();
+
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
 
         Login_ViewModel viewModel = new ViewModelProvider(this, new Login_ViewModelFactory())
                 .get(Login_ViewModel.class);
@@ -223,7 +235,7 @@ public class Login_View extends BaseView implements
         MyUtils.disable(resetPasswordButton);
         MyUtils.disable(registerButton);
 //        MyUtils.disable(cancelButton);
-        MyUtils.disable(vkLoginButton);
+//        MyUtils.disable(vkLoginButton);
     }
 
     @Override
@@ -234,21 +246,19 @@ public class Login_View extends BaseView implements
         MyUtils.enable(resetPasswordButton);
         MyUtils.enable(registerButton);
 //        MyUtils.enable(cancelButton);
-        MyUtils.enable(vkLoginButton);
+//        MyUtils.enable(vkLoginButton);
     }
 
     @Override
     public void startLoginWithGoogle() {
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(AuthConfig.GOOGLE_WEB_CLIENT_ID)
-                .requestProfile()
-                .requestEmail()
-                .build();
-
-        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
-
         Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, Constants.CODE_GOOGLE_LOGIN);
+    }
+
+    @Override
+    public void logoutFromGoogle() {
+        googleSignInClient.signOut();
+        updateGoogleLoginButtons();
     }
 
     @Override
@@ -341,6 +351,12 @@ public class Login_View extends BaseView implements
         presenter.onLoginWithGoogleClicked();
     }
 
+    @OnClick(R.id.googleLogoutButton)
+    void onGoogleLogoutButtonClicked() {
+        presenter.onLogoutFromGoogleClicked();
+    }
+
+/*
     @OnClick(R.id.vkLoginButton)
     void onVKLoginButtonClicked() {
         presenter.onVKLoginButtonClicked();
@@ -361,6 +377,7 @@ public class Login_View extends BaseView implements
             }
         });
     }
+*/
 
 
     // Внтуренния методы
@@ -395,5 +412,17 @@ public class Login_View extends BaseView implements
         }
 
         presenter.onGoogleLoginResult(googleSignInAccount);
+    }
+
+    private void updateGoogleLoginButtons() {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (null == account) {
+            MyUtils.hide(googleLogoutButton);
+            MyUtils.show(googleLoginButton);
+        }
+        else {
+            MyUtils.show(googleLogoutButton);
+            MyUtils.hide(googleLoginButton);
+        }
     }
 }
