@@ -140,11 +140,6 @@ public class Login_Presenter implements
     }
 
     @Override
-    public void onLogoutFromGoogleClicked() {
-        view.logoutFromGoogle();
-    }
-
-    @Override
     public void cancelLogin() {
         AuthSingleton.signOut();
         view.finishLogin(true, mTransitIntent);
@@ -361,7 +356,6 @@ public class Login_Presenter implements
             @Override
             public void onUserCreateFail(String errorMsg) {
                 showError(R.string.LOGIN_login_error, errorMsg);
-                view.logoutFromGoogle();
                 AuthSingleton.logout();
             }
         });

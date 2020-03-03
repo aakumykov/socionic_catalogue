@@ -23,7 +23,6 @@ public interface iLogin {
         void setState(ViewState state, int messageId, @Nullable String messageDetails);
 
         void startLoginWithGoogle();
-        void logoutFromGoogle();
 
         void finishLogin(boolean isCancelled, Intent transitIntent);
 
@@ -52,6 +51,5 @@ public interface iLogin {
 
         void onGoogleLoginResult(@Nullable Intent data);
         void onLoginWithGoogleClicked();
-        void onLogoutFromGoogleClicked();
     }
 }

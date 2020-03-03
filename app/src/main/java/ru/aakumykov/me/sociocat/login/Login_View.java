@@ -197,11 +197,6 @@ public class Login_View extends BaseView implements
     }
 
     @Override
-    public void logoutFromGoogle() {
-        GoogleAuthHelper.logout(this);
-    }
-
-    @Override
     public void finishLogin(boolean isCancelled, Intent transitIntent) {
         int resultCode = (isCancelled) ? RESULT_CANCELED : RESULT_OK;
 
