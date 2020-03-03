@@ -9,6 +9,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -129,27 +130,49 @@ public class Login_Presenter implements
     }
 
     @Override
-    public void onGoogleLoginResult(@Nullable Intent data) {
+    public void onLoginWithGoogleClicked() {
+        view.startLoginWithGoogle();
+    }
 
-        AuthSingleton.processGoogleLoginResult(data, new iAuthSingleton.LoginCallbacks() {
+    @Override
+    public void onGoogleLoginResult(@NonNull GoogleSignInAccount googleSignInAccount) {
+
+        view.setState(iLogin.ViewState.PROGRESS, R.string.LOGIN_logging_in);
+
+        AuthSingleton.loginWithGoogle(googleSignInAccount, new iAuthSingleton.LoginCallbacks() {
             @Override
             public void onLoginSuccess(String userId) {
+                /*loadUserFromServer(userId, new iLoadUserCallbacks() {
+                    @Override
+                    public void onUserLoadSuccess(User user) {
+                        continueAsExistingUser(emailLoginLink);
+                    }
 
+                    @Override
+                    public void onUserNotExists() {
+                        continueAsNewUser(emailLoginLink);
+                    }
+
+                    @Override
+                    public void onUserLoadError(String errorMsg) {
+                        onLoadUserFromServerError(errorMsg);
+                    }
+                });*/
             }
 
             @Override
             public void onLoginError(String errorMsg) {
-
+                showError(R.string.LOGIN_login_error, errorMsg);
             }
 
             @Override
             public void onWrongCredentialsError() {
-
+                showBadCredentialsError();
             }
 
             @Override
             public void onTooManyLoginAttempts() {
-
+                showTooManyLoginAttemptsError();
             }
         });
     }
@@ -234,7 +257,7 @@ public class Login_Presenter implements
 
             @Override
             public void onTooManyLoginAttempts() {
-                showTooManyLoginAttempts();
+                showTooManyLoginAttemptsError();
             }
 
             @Override
@@ -262,7 +285,6 @@ public class Login_Presenter implements
 
             @Override
             public void onLoginSuccess(String userId) {
-
                 loadUserFromServer(userId, new iLoadUserCallbacks() {
                     @Override
                     public void onUserLoadSuccess(User user) {
@@ -283,12 +305,12 @@ public class Login_Presenter implements
 
             @Override
             public void onWrongCredentialsError() {
-
+                showBadCredentialsError();
             }
 
             @Override
             public void onTooManyLoginAttempts() {
-                showTooManyLoginAttempts();
+                showTooManyLoginAttemptsError();
             }
 
             @Override
@@ -402,12 +424,6 @@ public class Login_Presenter implements
         Log.d(TAG, "email: "+email+", userIdFromURI: "+userIdFromURI+", currentUserId: "+currentUserId);
     }
 
-    private void showError(int messageId, @Nullable String messageDetails) {
-        view.setState(iLogin.ViewState.ERROR, messageId, messageDetails);
-        if (null != messageDetails)
-            Log.e(TAG, messageDetails);
-    }
-
     private void createCustomToken() {
 
         view.showProgressMessage(R.string.LOGIN_creating_custom_token);
@@ -498,7 +514,18 @@ public class Login_Presenter implements
         showError(R.string.LOGIN_error_loading_user_info, errorMsg);
     }
 
-    private void showTooManyLoginAttempts() {
+    private void showError(int messageId, @Nullable String messageDetails) {
+        view.setState(iLogin.ViewState.ERROR, messageId, messageDetails);
+        if (null != messageDetails)
+            Log.e(TAG, messageDetails);
+    }
+
+
+    private void showBadCredentialsError() {
+        showError(R.string.LOGIN_bad_credentials, null);
+    }
+
+    private void showTooManyLoginAttemptsError() {
         showError(R.string.LOGIN_too_many_login_attempts, null);
     }
 

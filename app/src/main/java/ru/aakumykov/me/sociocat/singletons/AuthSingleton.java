@@ -1,22 +1,14 @@
 package ru.aakumykov.me.sociocat.singletons;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthCredential;
@@ -34,22 +26,16 @@ import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import ru.aakumykov.me.sociocat.AuthConfig;
 import ru.aakumykov.me.sociocat.Config;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.FirebaseConstants;
 import ru.aakumykov.me.sociocat.PackageConstants;
-import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
-
-import static android.app.Activity.RESULT_OK;
 
 // TODO: разобраться с гостевым пользователем
 
 public class AuthSingleton implements iAuthSingleton
 {
-    public static final int CODE_GOOGLE_SIGN_IN = 10;
-
     // Шаблон одиночка (начало)
     private static volatile AuthSingleton ourInstance;
     public synchronized static AuthSingleton getInstance() {
@@ -438,48 +424,6 @@ public class AuthSingleton implements iAuthSingleton
         public AuthSingletonException(String message) {
             super(message);
         }
-    }
-
-
-    // Методы авторизации через Google
-    public static void startLoginWithGoogle(Activity activity) {
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(AuthConfig.GOOGLE_WEB_CLIENT_ID)
-                .requestProfile()
-                .requestEmail()
-                .build();
-
-        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(activity, googleSignInOptions);
-
-        Intent signInIntent = googleSignInClient.getSignInIntent();
-        activity.startActivityForResult(signInIntent, CODE_GOOGLE_SIGN_IN);
-    }
-
-    public static void processGoogleLoginResult(@Nullable Intent data, iAuthSingleton.LoginCallbacks callbacks) {
-
-        if (null == data) {
-            callbacks.onLoginError("Intent is null");
-            return;
-        }
-
-        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-        if (!task.isSuccessful()) {
-            callbacks.onLoginError("Auth task is not successful");
-            return;
-        }
-
-        GoogleSignInAccount googleSignInAccount = task.getResult();
-
-        if (null == googleSignInAccount) {
-            callbacks.onLoginError("Google sign in account is null");
-            return;
-        }
-
-        firebaseAuthWithGoogle(googleSignInAccount, callbacks);
-    }
-
-    private static void firebaseAuthWithGoogle(@NonNull GoogleSignInAccount googleSignInAccount, iAuthSingleton.LoginCallbacks callbacks) {
-
     }
 
 }

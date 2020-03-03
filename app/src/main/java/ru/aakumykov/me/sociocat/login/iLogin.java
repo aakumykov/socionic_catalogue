@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
 public interface iLogin {
@@ -26,6 +28,8 @@ public interface iLogin {
 
         void disableForm();
         void enableForm();
+
+        void startLoginWithGoogle();
 
         void finishLogin(boolean isCancelled, Intent transitIntent);
 
@@ -55,6 +59,7 @@ public interface iLogin {
 
         void onFormIsValid();
 
-        void onGoogleLoginResult(@Nullable Intent data);
+        void onLoginWithGoogleClicked();
+        void onGoogleLoginResult(@NonNull GoogleSignInAccount googleSignInAccount);
     }
 }

@@ -15,7 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.tasks.Task;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
@@ -26,6 +31,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ru.aakumykov.me.sociocat.AuthConfig;
 import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -128,18 +134,13 @@ public class Login_View extends BaseView implements
                 case Constants.CODE_USER_EDIT:
                     goToMainPage();
                     break;
-                case AuthSingleton.CODE_GOOGLE_SIGN_IN:
+                case Constants.CODE_GOOGLE_LOGIN:
                     processGoogleLoginResult(resultCode, data);
                     break;
                 default:
                     super.onActivityResult(requestCode, resultCode, data);
             }
         }
-    }
-
-    private void processGoogleLoginResult(int resultCode, @Nullable Intent data) {
-        if (RESULT_OK == resultCode)
-            presenter.onGoogleLoginResult(data);
     }
 
     @Override
@@ -237,6 +238,20 @@ public class Login_View extends BaseView implements
     }
 
     @Override
+    public void startLoginWithGoogle() {
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(AuthConfig.GOOGLE_WEB_CLIENT_ID)
+                .requestProfile()
+                .requestEmail()
+                .build();
+
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, Constants.CODE_GOOGLE_LOGIN);
+    }
+
+    @Override
     public void finishLogin(boolean isCancelled, Intent transitIntent) {
         int resultCode = (isCancelled) ? RESULT_CANCELED : RESULT_OK;
 
@@ -323,7 +338,7 @@ public class Login_View extends BaseView implements
 
     @OnClick(R.id.googleLoginButton)
     void onGoogleLoginButtonClicked() {
-        AuthSingleton.startLoginWithGoogle(this);
+        presenter.onLoginWithGoogleClicked();
     }
 
     @OnClick(R.id.vkLoginButton)
@@ -363,4 +378,22 @@ public class Login_View extends BaseView implements
         }
     }
 
+    private void processGoogleLoginResult(int resultCode, @Nullable Intent data) {
+        if (RESULT_OK != resultCode)
+            return;
+
+        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+        if (!task.isSuccessful()) {
+            setState(iLogin.ViewState.ERROR, R.string.LOGIN_login_error, "Google auth task is not successful");
+            return;
+        }
+
+        GoogleSignInAccount googleSignInAccount = task.getResult();
+        if (null == googleSignInAccount) {
+            setState(iLogin.ViewState.ERROR, R.string.LOGIN_login_error, "Google sign in account is null");
+            return;
+        }
+
+        presenter.onGoogleLoginResult(googleSignInAccount);
+    }
 }
