@@ -113,6 +113,8 @@ public class Login_View extends BaseView implements
             presenter.processInputIntent(getIntent());
         else
             presenter.onConfigChanged();
+
+        updateGoogleLoginButtons();
     }
 
     @Override
@@ -179,12 +181,12 @@ public class Login_View extends BaseView implements
 
     @Override
     public void onUserLogin() {
-        // Это должен обрабатывать presenter
+        updateGoogleLoginButtons();
     }
 
     @Override
     public void onUserLogout() {
-
+        updateGoogleLoginButtons();
     }
 
     @Override

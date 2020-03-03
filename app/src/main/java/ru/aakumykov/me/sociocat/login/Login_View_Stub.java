@@ -35,6 +35,11 @@ public class Login_View_Stub extends BaseView_Stub implements iLogin.View {
     }
 
     @Override
+    public void logoutFromGoogle() {
+
+    }
+
+    @Override
     public void finishLogin(boolean isCancelled, Intent transitIntent) {
 
     }

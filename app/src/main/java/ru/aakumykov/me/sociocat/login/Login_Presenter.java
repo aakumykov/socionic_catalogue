@@ -142,22 +142,23 @@ public class Login_Presenter implements
         AuthSingleton.loginWithGoogle(googleSignInAccount, new iAuthSingleton.LoginCallbacks() {
             @Override
             public void onLoginSuccess(String userId) {
-                /*loadUserFromServer(userId, new iLoadUserCallbacks() {
+                loadUserFromServer(userId, new iLoadUserCallbacks() {
                     @Override
                     public void onUserLoadSuccess(User user) {
-                        continueAsExistingUser(emailLoginLink);
+                        Log.d(TAG, "User exists: "+user);
+                        view.finishLogin(false, mTransitIntent);
                     }
 
                     @Override
                     public void onUserNotExists() {
-                        continueAsNewUser(emailLoginLink);
+                        createUserFromGoogleAccount(userId, googleSignInAccount);
                     }
 
                     @Override
                     public void onUserLoadError(String errorMsg) {
                         onLoadUserFromServerError(errorMsg);
                     }
-                });*/
+                });
             }
 
             @Override
@@ -293,12 +294,12 @@ public class Login_Presenter implements
                 loadUserFromServer(userId, new iLoadUserCallbacks() {
                     @Override
                     public void onUserLoadSuccess(User user) {
-                        continueAsExistingUser(emailLoginLink);
+                        continueLoginViaEmailAsExistingUser(emailLoginLink);
                     }
 
                     @Override
                     public void onUserNotExists() {
-                        continueAsNewUser(emailLoginLink);
+                        continueLoginViaEmailAsNewUser(emailLoginLink);
                     }
 
                     @Override
@@ -357,13 +358,13 @@ public class Login_Presenter implements
         });
     }
 
-    private void continueAsExistingUser(@NonNull String emailLoginLink) {
+    private void continueLoginViaEmailAsExistingUser(@NonNull String emailLoginLink) {
         Log.i(TAG, "continueAsExistingUser: "+emailLoginLink);
         view.setState(iLogin.ViewState.SUCCESS, R.string.LOGIN_login_success);
         view.finishLogin(false, mTransitIntent);
     }
 
-    private void continueAsNewUser(@NonNull String emailLoginLink) {
+    private void continueLoginViaEmailAsNewUser(@NonNull String emailLoginLink) {
         String userId = AuthSingleton.currentUserId();
         view.go2finishRegistration(userId);
     }
@@ -373,6 +374,28 @@ public class Login_Presenter implements
 //        view.setState(iLogin.ViewStates.PROGRESS, R.string._continuing_registration);
 
 
+    }
+
+    private void createUserFromGoogleAccount(@NonNull String userId, @NonNull GoogleSignInAccount googleSignInAccount) {
+        Log.d(TAG, "googleSignInAccount: "+googleSignInAccount);
+
+        String userName = googleSignInAccount.getDisplayName();
+        String email = googleSignInAccount.getEmail();
+
+        usersSingleton.createUser(userId, userName, email, new iUsersSingleton.CreateCallbacks() {
+            @Override
+            public void onUserCreateSuccess(User user) {
+                usersSingleton.storeCurrentUser(user);
+                view.finishLogin(false, mTransitIntent);
+            }
+
+            @Override
+            public void onUserCreateFail(String errorMsg) {
+                showError(R.string.LOGIN_login_error, errorMsg);
+                view.logoutFromGoogle();
+                AuthSingleton.logout();
+            }
+        });
     }
 
     private void processEmailLoginAction(@NonNull Intent intent) {
