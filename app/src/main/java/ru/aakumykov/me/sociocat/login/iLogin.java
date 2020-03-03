@@ -1,8 +1,6 @@
 package ru.aakumykov.me.sociocat.login;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,16 +18,11 @@ public interface iLogin {
     }
 
     interface View extends iBaseView {
-
         void setState(ViewState state, int messageId);
         void setState(ViewState state, int messageId, @Nullable String messageDetails);
 
-        void disableForm();
-        void enableForm();
-
+        void startLoginWithGoogle();
         void finishLogin(boolean isCancelled, Intent transitIntent);
-
-        void notifyToConfirmEmail(String userId);
 
         String getEmail();
         String getPassword();
@@ -41,9 +34,6 @@ public interface iLogin {
         void cancelLogin();
         void processInputIntent(@Nullable Intent intent);
 
-        void onVKLoginButtonClicked();
-        void processVKLogin(int vk_user_id, String vk_access_token);
-
         // TODO: вынести в общий интерфейс
         void linkView(iLogin.View view);
         void unlinkView();
@@ -54,5 +44,8 @@ public interface iLogin {
         void storeViewState(ViewState state, int messageId, String messageDetails);
 
         void onFormIsValid();
+
+        void onGoogleLoginResult(@Nullable Intent data);
+        void onLoginWithGoogleClicked();
     }
 }

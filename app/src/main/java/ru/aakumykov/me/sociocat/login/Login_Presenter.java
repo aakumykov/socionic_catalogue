@@ -9,45 +9,35 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iAuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.auth.GoogleAuthHelper;
 
 public class Login_Presenter implements
         iLogin.Presenter
 {
     private final static String TAG = "Login_Presenter";
+
     private iLogin.View view;
 
-    private String mIntentAction;
-    private Intent mTransitIntent;
-
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-
-    private String externalAccessToken;
-    private String externalUserId;
-    private String userName;
-    private String customToken;
-    private String internalUserId;
-
     private boolean isVirgin = true;
+
+    private Intent mTransitIntent;
 
     private iLogin.ViewState currentViewState = iLogin.ViewState.INITIAL;
     private int currentMessageId = -1;
     private String currentMessageDetails = null;
+
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
 
     // Обязательные методы
@@ -129,44 +119,30 @@ public class Login_Presenter implements
     }
 
     @Override
+    public void onGoogleLoginResult(@Nullable Intent data) {
+
+        GoogleAuthHelper.processGoogleLoginResult(data, new GoogleAuthHelper.iGoogleLoginCallbacks() {
+            @Override
+            public void onGoogleLoginSuccess(@NonNull GoogleSignInAccount googleSignInAccount) {
+                loginWithGoogleAccount(googleSignInAccount);
+            }
+
+            @Override
+            public void onGoogleLoginError(String errorMsg) {
+                view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_login_error, errorMsg);
+            }
+        });
+    }
+
+    @Override
+    public void onLoginWithGoogleClicked() {
+        view.startLoginWithGoogle();
+    }
+
+    @Override
     public void cancelLogin() {
         AuthSingleton.signOut();
         view.finishLogin(true, mTransitIntent);
-    }
-
-    @Override
-    public void onVKLoginButtonClicked() {
-        VKInteractor.login(view.getActivity());
-    }
-
-    @Override
-    public void processVKLogin(int vk_user_id, String vk_access_token) {
-
-        this.externalUserId = String.valueOf(vk_user_id);
-        this.externalAccessToken = vk_access_token;
-
-        view.disableForm();
-        view.showProgressMessage(R.string.LOGIN_getting_user_info);
-
-        VKInteractor.getUserInfo(vk_user_id, new VKInteractor.GetVKUserInfo_Callbacks() {
-            @Override
-            public void onGetVKUserInfoSuccess(VKInteractor.VKUser vkUser) {
-                String firstName = vkUser.getFirstName();
-                String lastName = vkUser.getLastName();
-
-                Login_Presenter.this.userName =  firstName;
-                if (!TextUtils.isEmpty(lastName))
-                    Login_Presenter.this.userName += " " + lastName;
-
-                createCustomToken();
-            }
-
-            @Override
-            public void onGetVKUserInfoError(String errorMsg) {
-                view.enableForm();
-                view.showErrorMsg(R.string.LOGIN_error_loading_user_info, errorMsg);
-            }
-        });
     }
 
 
@@ -208,7 +184,7 @@ public class Login_Presenter implements
 
             @Override
             public void onTooManyLoginAttempts() {
-                showTooManyLoginAttempts();
+                showTooManyLoginAttemptsError();
             }
 
             @Override
@@ -236,16 +212,15 @@ public class Login_Presenter implements
 
             @Override
             public void onLoginSuccess(String userId) {
-
                 loadUserFromServer(userId, new iLoadUserCallbacks() {
                     @Override
                     public void onUserLoadSuccess(User user) {
-                        continueAsExistingUser(emailLoginLink);
+                        continueLoginViaEmailAsExistingUser(emailLoginLink);
                     }
 
                     @Override
                     public void onUserNotExists() {
-                        continueAsNewUser(emailLoginLink);
+                        continueLoginViaEmailAsNewUser(emailLoginLink);
                     }
 
                     @Override
@@ -257,12 +232,12 @@ public class Login_Presenter implements
 
             @Override
             public void onWrongCredentialsError() {
-
+                showBadCredentialsError();
             }
 
             @Override
             public void onTooManyLoginAttempts() {
-                showTooManyLoginAttempts();
+                showTooManyLoginAttemptsError();
             }
 
             @Override
@@ -279,12 +254,55 @@ public class Login_Presenter implements
         });
     }
 
+    private void loginWithGoogleAccount(GoogleSignInAccount googleSignInAccount) {
+
+        view.setState(iLogin.ViewState.PROGRESS, R.string.LOGIN_logging_in);
+
+        AuthSingleton.loginWithGoogle(googleSignInAccount, new iAuthSingleton.LoginCallbacks() {
+            @Override
+            public void onLoginSuccess(String userId) {
+
+                loadUserFromServer(userId, new iLoadUserCallbacks() {
+                    @Override
+                    public void onUserLoadSuccess(User user) {
+                        view.finishLogin(false, mTransitIntent);
+                    }
+
+                    @Override
+                    public void onUserNotExists() {
+                        createUserFromGoogleAccount(userId, googleSignInAccount);
+                    }
+
+                    @Override
+                    public void onUserLoadError(String errorMsg) {
+                        onLoadUserFromServerError(errorMsg);
+                    }
+                });
+
+            }
+
+            @Override
+            public void onLoginError(String errorMsg) {
+                showError(R.string.LOGIN_login_error, errorMsg);
+            }
+
+            @Override
+            public void onWrongCredentialsError() {
+                showBadCredentialsError();
+            }
+
+            @Override
+            public void onTooManyLoginAttempts() {
+                showTooManyLoginAttemptsError();
+            }
+        });
+    }
+
     private void loginWithNewPassword() {
         view.setState(iLogin.ViewState.INFO, R.string.LOGIN_try_new_password);
     }
 
     private void loadUserFromServer(@NonNull String userId, iLoadUserCallbacks callbacks) {
-
         usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
             @Override
             public void onUserRefreshSuccess(User user) {
@@ -304,13 +322,13 @@ public class Login_Presenter implements
         });
     }
 
-    private void continueAsExistingUser(@NonNull String emailLoginLink) {
+    private void continueLoginViaEmailAsExistingUser(@NonNull String emailLoginLink) {
         Log.i(TAG, "continueAsExistingUser: "+emailLoginLink);
         view.setState(iLogin.ViewState.SUCCESS, R.string.LOGIN_login_success);
         view.finishLogin(false, mTransitIntent);
     }
 
-    private void continueAsNewUser(@NonNull String emailLoginLink) {
+    private void continueLoginViaEmailAsNewUser(@NonNull String emailLoginLink) {
         String userId = AuthSingleton.currentUserId();
         view.go2finishRegistration(userId);
     }
@@ -320,6 +338,27 @@ public class Login_Presenter implements
 //        view.setState(iLogin.ViewStates.PROGRESS, R.string._continuing_registration);
 
 
+    }
+
+    private void createUserFromGoogleAccount(@NonNull String userId, @NonNull GoogleSignInAccount googleSignInAccount) {
+        Log.d(TAG, "googleSignInAccount: "+googleSignInAccount);
+
+        String userName = googleSignInAccount.getDisplayName();
+        String email = googleSignInAccount.getEmail();
+
+        usersSingleton.createUser(userId, userName, email, new iUsersSingleton.CreateCallbacks() {
+            @Override
+            public void onUserCreateSuccess(User user) {
+                usersSingleton.storeCurrentUser(user);
+                view.finishLogin(false, mTransitIntent);
+            }
+
+            @Override
+            public void onUserCreateFail(String errorMsg) {
+                showError(R.string.LOGIN_login_error, errorMsg);
+                AuthSingleton.logout();
+            }
+        });
     }
 
     private void processEmailLoginAction(@NonNull Intent intent) {
@@ -376,58 +415,6 @@ public class Login_Presenter implements
         Log.d(TAG, "email: "+email+", userIdFromURI: "+userIdFromURI+", currentUserId: "+currentUserId);
     }
 
-    private void showError(int messageId, @Nullable String messageDetails) {
-        view.setState(iLogin.ViewState.ERROR, messageId, messageDetails);
-        if (null != messageDetails)
-            Log.e(TAG, messageDetails);
-    }
-
-    private void createCustomToken() {
-
-        view.showProgressMessage(R.string.LOGIN_creating_custom_token);
-
-        AuthSingleton.createFirebaseCustomToken(externalUserId, new iAuthSingleton.CreateFirebaseCustomToken_Callbacks() {
-            @Override
-            public void onCreateFirebaseCustomToken_Success(String customToken) {
-                Login_Presenter.this.customToken = customToken;
-                loginExternalUserToFirebase();
-            }
-
-            @Override
-            public void onCreateFirebaseCustomToken_Error(String errorMsg) {
-                view.showErrorMsg(R.string.LOGIN_error_creating_custom_token, errorMsg);
-            }
-        });
-    }
-
-    private void loginExternalUserToFirebase() {
-
-        view.showProgressMessage(R.string.LOGIN_logging_in);
-
-        FirebaseAuth
-                .getInstance()
-                .signInWithCustomToken(customToken)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-
-                        FirebaseUser firebaseUser = authResult.getUser();
-                        String firebaseUserId = firebaseUser.getUid();
-
-                        createOrUpdateUser(firebaseUserId, externalUserId, userName);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        AuthSingleton.logout();
-                        view.showErrorMsg(R.string.LOGIN_login_error, e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
-
-    }
-
     private void createOrUpdateUser(String internalUserId, String externalUserId, String userName) {
         view.showProgressMessage(R.string.LOGIN_updating_user);
 
@@ -472,7 +459,18 @@ public class Login_Presenter implements
         showError(R.string.LOGIN_error_loading_user_info, errorMsg);
     }
 
-    private void showTooManyLoginAttempts() {
+    private void showError(int messageId, @Nullable String messageDetails) {
+        view.setState(iLogin.ViewState.ERROR, messageId, messageDetails);
+        if (null != messageDetails)
+            Log.e(TAG, messageDetails);
+    }
+
+
+    private void showBadCredentialsError() {
+        showError(R.string.LOGIN_bad_credentials, null);
+    }
+
+    private void showTooManyLoginAttemptsError() {
         showError(R.string.LOGIN_too_many_login_attempts, null);
     }
 

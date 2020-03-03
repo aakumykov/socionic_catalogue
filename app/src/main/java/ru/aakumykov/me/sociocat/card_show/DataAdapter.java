@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.Config;
+import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.list_items.CardThrobber_Item;
 import ru.aakumykov.me.sociocat.card_show.list_items.Card_Item;
@@ -221,7 +221,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         itemsList.addAll(position, commentItemsList);
 
-        if (list.size() >= Config.DEFAULT_COMMENTS_LOAD_COUNT)
+        if (list.size() >= AppConfig.DEFAULT_COMMENTS_LOAD_COUNT)
             itemsList.add(position + list.size(), new LoadMore_Item(R.string.COMMENTS_load_more_comments));
 
         notifyItemRangeInserted(position, list.size());

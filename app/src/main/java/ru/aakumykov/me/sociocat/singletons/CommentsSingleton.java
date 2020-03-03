@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ru.aakumykov.me.sociocat.Config;
+import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -157,7 +157,7 @@ public class CommentsSingleton implements iCommentsSingleton {
         Query query = commentsCollection
                 .whereEqualTo(Constants.COMMENT_KEY_CARD_ID, cardId)
                 .orderBy(Comment.KEY_CREATED_AT)
-                .limit(Config.DEFAULT_COMMENTS_LOAD_COUNT);
+                .limit(AppConfig.DEFAULT_COMMENTS_LOAD_COUNT);
 
         if (null != startAfterComment)
             query = query.startAfter(startAfterComment.getCreatedAt());

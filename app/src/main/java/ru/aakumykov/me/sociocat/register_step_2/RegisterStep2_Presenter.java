@@ -6,9 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-import ru.aakumykov.me.sociocat.Config;
+import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
@@ -88,7 +86,7 @@ public class RegisterStep2_Presenter implements iRegisterStep2.Presenter {
 
         String tempUserName = MVPUtils.tempUserName(view.getAppContext());
 
-        if (++createTempUserNameAttemptNumber > Config.CREATE_TEMP_USER_NAME_TRIES_COUNT) {
+        if (++createTempUserNameAttemptNumber > AppConfig.CREATE_TEMP_USER_NAME_TRIES_COUNT) {
             showFatalError(R.string.REGISTER2_error_preparing_user_account, "Cannot create temporary user name");
             return;
         }

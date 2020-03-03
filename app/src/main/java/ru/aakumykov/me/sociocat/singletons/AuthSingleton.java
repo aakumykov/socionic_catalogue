@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseTooManyRequestsException;
@@ -16,6 +17,7 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
 
 import java.util.List;
@@ -24,7 +26,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import ru.aakumykov.me.sociocat.Config;
+import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.FirebaseConstants;
 import ru.aakumykov.me.sociocat.PackageConstants;
@@ -257,6 +259,37 @@ public class AuthSingleton implements iAuthSingleton
             });
     }
 
+    public static void loginWithGoogle(@Nullable GoogleSignInAccount googleSignInAccount, iAuthSingleton.LoginCallbacks callbacks) {
+        if (null == googleSignInAccount) {
+            callbacks.onLoginError("GoogleSignInAccount is null");
+            return;
+        }
+
+        AuthCredential authCredential = GoogleAuthProvider.getCredential(googleSignInAccount.getIdToken(), null);
+
+        firebaseAuth.signInWithCredential(authCredential)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        FirebaseUser firebaseUser = authResult.getUser();
+                        if(null != firebaseUser) {
+                            String userId = firebaseUser.getUid();
+                            callbacks.onLoginSuccess(userId);
+                        }
+                        else {
+                            callbacks.onLoginError("FirebaseUser is null");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onLoginError(e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
+    }
+
     public static void signOut() {
         firebaseAuth.signOut();
     }
@@ -362,20 +395,23 @@ public class AuthSingleton implements iAuthSingleton
         return (null != firebaseUser) ? firebaseUser.getEmail() : null;
     }
 
+
     // Внутренние интерфейсы
     private interface CustomTokenAPI {
-        @GET(Config.CREATE_CUSTOM_TOKEN_PATH)
-        retrofit2.Call<String> getCustomToken(@Query(Config.CREATE_CUSTOM_TOKEN_PARAMETER_NAME) String tokenBase);
+        @GET(AppConfig.CREATE_CUSTOM_TOKEN_PATH)
+        retrofit2.Call<String> getCustomToken(@Query(AppConfig.CREATE_CUSTOM_TOKEN_PARAMETER_NAME) String tokenBase);
     }
+
 
     // Внутренние методы
     private static CustomTokenAPI getCustomTokenAPI() {
         return new Retrofit.Builder()
-                .baseUrl(Config.CREATE_CUSTOM_TOKEN_BASE_URL)
+                .baseUrl(AppConfig.CREATE_CUSTOM_TOKEN_BASE_URL)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .build()
                 .create(CustomTokenAPI.class);
     }
+
 
     // Классы исключений
     public static class LinkExpiredException extends AuthSingletonException {
@@ -389,5 +425,6 @@ public class AuthSingleton implements iAuthSingleton
             super(message);
         }
     }
+
 }
 

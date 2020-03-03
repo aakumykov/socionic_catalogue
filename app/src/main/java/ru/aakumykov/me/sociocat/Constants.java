@@ -81,8 +81,9 @@ public final class Constants
     public static final String BACK_BUTTON_ENABLED = "BACK_BUTON_ENABLED";
 
     // Разные коды
-    public final static int CODE_LOGIN = 5;
-    public final static int CODE_LOGIN_REQUEST = 6;
+    public final static int CODE_LOGIN = 1;
+    public final static int CODE_GOOGLE_LOGIN = 3;
+    public final static int CODE_LOGIN_REQUEST = 7;
     public final static int CODE_CREATE_CARD = 15;
     public final static int CODE_EDIT_CARD = 20;
     public final static int CODE_SELECT_IMAGE = 25;

@@ -35,7 +35,7 @@ import butterknife.ButterKnife;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.BaseView;
-import ru.aakumykov.me.sociocat.Config;
+import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
@@ -108,7 +108,7 @@ public class CardsGrid_View extends BaseView implements
         }
 
         int colsNum = MyUtils.isPortraitOrientation(this) ?
-                Config.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : Config.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
+                AppConfig.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : AppConfig.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
         layoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
 
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
@@ -651,11 +651,11 @@ public class CardsGrid_View extends BaseView implements
         try {
             List<iGridItem> gridItemsList = new ArrayList<>();
 
-            SharedPreferences sharedPreferences = getSharedPrefs(Config.SAVED_CARDS_LIST);
+            SharedPreferences sharedPreferences = getSharedPrefs(AppConfig.SAVED_CARDS_LIST);
 
-            if (sharedPreferences.contains(Config.CARDS_LIST)) {
+            if (sharedPreferences.contains(AppConfig.CARDS_LIST)) {
 
-                Set<String> cardsSet = sharedPreferences.getStringSet(Config.CARDS_LIST, null);
+                Set<String> cardsSet = sharedPreferences.getStringSet(AppConfig.CARDS_LIST, null);
 
                 for (String cardString : cardsSet) {
                     Card card = new Gson().fromJson(cardString, Card.class);
@@ -677,7 +677,7 @@ public class CardsGrid_View extends BaseView implements
 
     private void saveCardsList(List<iGridItem> gridItemsList) {
         try {
-            SharedPreferences sharedPreferences = getSharedPrefs(Config.SAVED_CARDS_LIST);
+            SharedPreferences sharedPreferences = getSharedPrefs(AppConfig.SAVED_CARDS_LIST);
             SharedPreferences.Editor editor = sharedPreferences.edit();
 
             Set<String> cardsSet = new HashSet<>();
@@ -690,7 +690,7 @@ public class CardsGrid_View extends BaseView implements
                 }
             }
 
-            editor.putStringSet(Config.CARDS_LIST, cardsSet);
+            editor.putStringSet(AppConfig.CARDS_LIST, cardsSet);
 
             editor.apply();
         }

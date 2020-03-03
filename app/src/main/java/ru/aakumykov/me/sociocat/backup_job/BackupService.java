@@ -23,7 +23,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
-import java.lang.annotation.ElementType;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +32,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import ru.aakumykov.me.sociocat.Config;
+import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -700,7 +699,7 @@ public class BackupService extends Service {
         long currentTimeInSeconds = MyUtils.getCurrentTimeInSeconds();
         long elapsedTime = currentTimeInSeconds - lastBackupTime;
 
-        return elapsedTime > Config.BACKUP_INTERVAL_SECONDS;
+        return elapsedTime > AppConfig.BACKUP_INTERVAL_SECONDS;
     }
 
     public static void saveLastBackupTime(Context context) {

@@ -8,13 +8,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.SignInButton;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
@@ -30,12 +32,11 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.login.view_model.Login_ViewModel;
 import ru.aakumykov.me.sociocat.login.view_model.Login_ViewModelFactory;
-import ru.aakumykov.me.sociocat.other.VKInteractor;
 import ru.aakumykov.me.sociocat.register_step_1.RegisterStep1_View;
 import ru.aakumykov.me.sociocat.register_step_2.RegisterStep2_View;
 import ru.aakumykov.me.sociocat.reset_password_step1.ResetPasswordStep1_View;
-import ru.aakumykov.me.sociocat.user_edit.UserEdit_View;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.auth.GoogleAuthHelper;
 
 public class Login_View extends BaseView implements
         iLogin.View,
@@ -53,12 +54,11 @@ public class Login_View extends BaseView implements
     @BindView(R.id.resetPasswordButton) TextView resetPasswordButton;
     @BindView(R.id.registerButton) Button registerButton;
     @BindView(R.id.cancelButton) Button cancelButton;
-    @BindView(R.id.vkLoginButton) ImageView vkLoginButton;
+    @BindView(R.id.googleLoginButton) SignInButton googleLoginButton;
 
     public static final String TAG = "Login_View";
     private iLogin.Presenter presenter;
     private Validator validator;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +68,8 @@ public class Login_View extends BaseView implements
 
         setPageTitle(R.string.LOGIN_page_title);
         activateUpButton();
+
+        googleLoginButton.setSize(SignInButton.SIZE_WIDE);
 
         Login_ViewModel viewModel = new ViewModelProvider(this, new Login_ViewModelFactory())
                 .get(Login_ViewModel.class);
@@ -92,6 +94,8 @@ public class Login_View extends BaseView implements
             presenter.processInputIntent(getIntent());
         else
             presenter.onConfigChanged();
+
+        updateGoogleLoginButtons();
     }
 
     @Override
@@ -102,31 +106,16 @@ public class Login_View extends BaseView implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        VKInteractor.LoginVK_Callbacks loginVKCallbacks = new VKInteractor.LoginVK_Callbacks() {
-            @Override
-            public void onVKLoginSuccess(VKInteractor.VKAuthResult vkAuthResult) {
-                String vk_access_token = vkAuthResult.getAccessToken();
-                int vk_user_id = vkAuthResult.getUserId();
-                presenter.processVKLogin(vk_user_id, vk_access_token);
+        switch (requestCode) {
+                case Constants.CODE_USER_EDIT:
+                    goToMainPage();
+                    break;
+                case Constants.CODE_GOOGLE_LOGIN:
+                    processGoogleLoginResult(resultCode, data);
+                    break;
+                default:
+                    super.onActivityResult(requestCode, resultCode, data);
             }
-
-            @Override
-            public void onVKLoginError(int errorCode, @Nullable String errorMsg) {
-                showErrorMsg(R.string.LOGIN_error_login_via_vkontakte, errorMsg);
-            }
-        };
-
-        if (VKInteractor.isVKActivityResult(requestCode, resultCode, data, loginVKCallbacks)) {
-            // Обработка происходит в loginVKCallbacks
-        }
-        else {
-            if (requestCode == Constants.CODE_USER_EDIT) {
-                goToMainPage();
-            } else {
-                super.onActivityResult(requestCode, resultCode, data);
-            }
-        }
     }
 
     @Override
@@ -153,12 +142,12 @@ public class Login_View extends BaseView implements
 
     @Override
     public void onUserLogin() {
-        // Это должен обрабатывать presenter
+        updateGoogleLoginButtons();
     }
 
     @Override
     public void onUserLogout() {
-
+        updateGoogleLoginButtons();
     }
 
     @Override
@@ -202,25 +191,9 @@ public class Login_View extends BaseView implements
     }
 
     @Override
-    public void disableForm() {
-        MyUtils.disable(emailInput);
-        MyUtils.disable(passwordInput);
-        MyUtils.disable(loginButton);
-        MyUtils.disable(resetPasswordButton);
-        MyUtils.disable(registerButton);
-//        MyUtils.disable(cancelButton);
-        MyUtils.disable(vkLoginButton);
-    }
-
-    @Override
-    public void enableForm() {
-        MyUtils.enable(emailInput);
-        MyUtils.enable(passwordInput);
-        MyUtils.enable(loginButton);
-        MyUtils.enable(resetPasswordButton);
-        MyUtils.enable(registerButton);
-//        MyUtils.enable(cancelButton);
-        MyUtils.enable(vkLoginButton);
+    public void startLoginWithGoogle() {
+        Intent signInIntent = GoogleAuthHelper.getSignInIntent(this);
+        startActivityForResult(signInIntent, Constants.CODE_GOOGLE_LOGIN);
     }
 
     @Override
@@ -239,11 +212,6 @@ public class Login_View extends BaseView implements
             setResult(resultCode);
 
         finish();
-    }
-
-    @Override
-    public void notifyToConfirmEmail(String userId) {
-        showErrorMsg(R.string.LOGIN_email_confirmation_required, "(●'◡'●)");
     }
 
     @Override
@@ -308,29 +276,31 @@ public class Login_View extends BaseView implements
         presenter.cancelLogin();
     }
 
-    @OnClick(R.id.vkLoginButton)
-    void onVKLoginButtonClicked() {
-        presenter.onVKLoginButtonClicked();
-    }
-
-    // Убрать...
-    @OnClick(R.id.vkLogoutButton)
-    void onVKLogoutButtonClicked() {
-        VKInteractor.logout(new VKInteractor.LogoutVK_Callbacks() {
-            @Override
-            public void onVKLogoutSuccess() {
-                showToast("Вы вышли из ВК");
-            }
-
-            @Override
-            public void onVKLogoutError() {
-                showDebugMsg("ОШИБКА выхода из ВК");
-            }
-        });
+    @OnClick(R.id.googleLoginButton)
+    void onGoogleLoginButtonClicked() {
+        presenter.onLoginWithGoogleClicked();
     }
 
 
     // Внтуренния методы
+    private void disableForm() {
+        MyUtils.disable(emailInput);
+        MyUtils.disable(passwordInput);
+        MyUtils.disable(loginButton);
+        MyUtils.disable(resetPasswordButton);
+        MyUtils.disable(registerButton);
+        MyUtils.disable(googleLoginButton);
+    }
+
+    private void enableForm() {
+        MyUtils.enable(emailInput);
+        MyUtils.enable(passwordInput);
+        MyUtils.enable(loginButton);
+        MyUtils.enable(resetPasswordButton);
+        MyUtils.enable(registerButton);
+        MyUtils.enable(googleLoginButton);
+    }
+
     private void afterResetPasswordRequest(int resultCode, Intent data) {
         switch (resultCode) {
             case RESULT_OK:
@@ -345,4 +315,25 @@ public class Login_View extends BaseView implements
         }
     }
 
+    private void processGoogleLoginResult(int resultCode, @Nullable Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                presenter.onGoogleLoginResult(data);
+                break;
+            case RESULT_CANCELED:
+                break;
+            default:
+                Log.e(TAG, "Unknown result code: "+resultCode);
+        }
+    }
+
+    private void updateGoogleLoginButtons() {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (null == account) {
+            MyUtils.show(googleLoginButton);
+        }
+        else {
+            MyUtils.hide(googleLoginButton);
+        }
+    }
 }

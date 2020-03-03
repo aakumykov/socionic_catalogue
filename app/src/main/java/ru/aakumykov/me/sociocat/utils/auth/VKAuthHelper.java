@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.other;
+package ru.aakumykov.me.sociocat.utils.auth;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,7 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class VKInteractor {
+public class VKAuthHelper {
 
     // Интерфейсы
     public interface LoginVK_Callbacks {

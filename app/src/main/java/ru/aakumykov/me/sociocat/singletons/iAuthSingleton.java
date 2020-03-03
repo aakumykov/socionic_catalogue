@@ -24,9 +24,9 @@ public interface iAuthSingleton {
 
     interface LoginCallbacks {
         void onLoginSuccess(String userId);
+        void onLoginError(String errorMsg);
         void onWrongCredentialsError();
         void onTooManyLoginAttempts();
-        void onLoginError(String errorMsg);
     }
 
     interface EmailLinkSignInCallbacks extends LoginCallbacks {
@@ -42,12 +42,5 @@ public interface iAuthSingleton {
     interface ChangePasswordCallbacks {
         void onChangePasswordSuccess();
         void onChangePasswordError(String errorMsg);
-    }
-
-
-    class iAuthSingletonException extends Exception {
-        public iAuthSingletonException(String message) {
-            super(message);
-        }
     }
 }
