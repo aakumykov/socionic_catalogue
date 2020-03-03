@@ -273,6 +273,37 @@ public class AuthSingleton implements iAuthSingleton
             });
     }
 
+    public static void loginWithGoogle(@Nullable GoogleSignInAccount googleSignInAccount, iAuthSingleton.LoginCallbacks callbacks) {
+        if (null == googleSignInAccount) {
+            callbacks.onLoginError("GoogleSignInAccount is null");
+            return;
+        }
+
+        AuthCredential authCredential = GoogleAuthProvider.getCredential(googleSignInAccount.getIdToken(), null);
+
+        firebaseAuth.signInWithCredential(authCredential)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        FirebaseUser firebaseUser = authResult.getUser();
+                        if(null != firebaseUser) {
+                            String userId = firebaseUser.getUid();
+                            callbacks.onLoginSuccess(userId);
+                        }
+                        else {
+                            callbacks.onLoginError("FirebaseUser is null");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callbacks.onLoginError(e.getMessage());
+                        MyUtils.printError(TAG, e);
+                    }
+                });
+    }
+
     public static void signOut() {
         firebaseAuth.signOut();
     }
@@ -449,29 +480,6 @@ public class AuthSingleton implements iAuthSingleton
 
     private static void firebaseAuthWithGoogle(@NonNull GoogleSignInAccount googleSignInAccount, iAuthSingleton.LoginCallbacks callbacks) {
 
-        AuthCredential authCredential = GoogleAuthProvider.getCredential(googleSignInAccount.getIdToken(), null);
-
-        firebaseAuth.signInWithCredential(authCredential)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        FirebaseUser firebaseUser = authResult.getUser();
-                        if(null != firebaseUser) {
-                            String userId = firebaseUser.getUid();
-                            callbacks.onLoginSuccess(userId);
-                        }
-                        else {
-                            callbacks.onLoginError("FirebaseUser is null");
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onLoginError(e.getMessage());
-                        MyUtils.printError(TAG, e);
-                    }
-                });
     }
 
 }
