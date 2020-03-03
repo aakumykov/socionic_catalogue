@@ -24,10 +24,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
-import com.vk.api.sdk.utils.VKUtils;
 
 import java.io.ByteArrayOutputStream;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +34,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ru.aakumykov.me.sociocat.Config;
+import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.DraftRestoreFragment;
@@ -63,10 +61,10 @@ public class MVPUtils {
     static {
         /* Все регулярные выражения для применения к URL/видео-кодам YouTube
          * обязаны выделять код видео в _первой_ группе. */
-        youtubePatterns.put("youtube1", Config.YOUTUBE_LONG_LINK_REGEX_2);
-        youtubePatterns.put("youtube2", Config.YOUTUBE_LONG_LINK_REGEX_1);
-        youtubePatterns.put("youtube3", Config.YOUTUBE_SHORT_LINK_REGEX);
-        youtubePatterns.put("youtube4", Config.YOUTUBE_CODE_REGEX);
+        youtubePatterns.put("youtube1", AppConfig.YOUTUBE_LONG_LINK_REGEX_2);
+        youtubePatterns.put("youtube2", AppConfig.YOUTUBE_LONG_LINK_REGEX_1);
+        youtubePatterns.put("youtube3", AppConfig.YOUTUBE_SHORT_LINK_REGEX);
+        youtubePatterns.put("youtube4", AppConfig.YOUTUBE_CODE_REGEX);
     }
 
     static {
@@ -179,12 +177,12 @@ public class MVPUtils {
             return null;
 
         // отклоняю слишком короткие
-        if (tag.length() < Config.TAG_MIN_LENGTH) {
+        if (tag.length() < AppConfig.TAG_MIN_LENGTH) {
             return null;
         }
 
         // укорачиваю черезмерно длинные
-        tag = MyUtils.cutToLength(tag, Config.TAG_MAX_LENGTH);
+        tag = MyUtils.cutToLength(tag, AppConfig.TAG_MAX_LENGTH);
 
         // перевожу в нижний регистр
         if (!upperCaseTags.contains(tag)) {
@@ -241,7 +239,7 @@ public class MVPUtils {
                 compressFormat = Bitmap.CompressFormat.WEBP;
         }
 
-        bitmap.compress(compressFormat, Config.DEFAULT_JPEG_QUALITY, baos);
+        bitmap.compress(compressFormat, AppConfig.DEFAULT_JPEG_QUALITY, baos);
         return baos.toByteArray();
     }
 

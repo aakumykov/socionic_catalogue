@@ -20,6 +20,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.User;
+import ru.aakumykov.me.sociocat.utils.auth.GoogleAuthHelper;
 import ru.aakumykov.me.sociocat.utils.auth.VKInteractor;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
@@ -130,52 +131,24 @@ public class Login_Presenter implements
     }
 
     @Override
-    public void onLoginWithGoogleClicked() {
-        view.startLoginWithGoogle();
+    public void onGoogleLoginResult(@Nullable Intent data) {
+
+        GoogleAuthHelper.processGoogleLoginResult(data, new GoogleAuthHelper.iGoogleLoginCallbacks() {
+            @Override
+            public void onGoogleLoginSuccess(@NonNull GoogleSignInAccount googleSignInAccount) {
+                loginWithGoogleAccount(googleSignInAccount);
+            }
+
+            @Override
+            public void onGoogleLoginError(String errorMsg) {
+                view.setState(iLogin.ViewState.ERROR, R.string.LOGIN_login_error, errorMsg);
+            }
+        });
     }
 
     @Override
-    public void onGoogleLoginResult(@NonNull GoogleSignInAccount googleSignInAccount) {
-
-        view.setState(iLogin.ViewState.PROGRESS, R.string.LOGIN_logging_in);
-
-        AuthSingleton.loginWithGoogle(googleSignInAccount, new iAuthSingleton.LoginCallbacks() {
-            @Override
-            public void onLoginSuccess(String userId) {
-                loadUserFromServer(userId, new iLoadUserCallbacks() {
-                    @Override
-                    public void onUserLoadSuccess(User user) {
-                        Log.d(TAG, "User exists: "+user);
-                        view.finishLogin(false, mTransitIntent);
-                    }
-
-                    @Override
-                    public void onUserNotExists() {
-                        createUserFromGoogleAccount(userId, googleSignInAccount);
-                    }
-
-                    @Override
-                    public void onUserLoadError(String errorMsg) {
-                        onLoadUserFromServerError(errorMsg);
-                    }
-                });
-            }
-
-            @Override
-            public void onLoginError(String errorMsg) {
-                showError(R.string.LOGIN_login_error, errorMsg);
-            }
-
-            @Override
-            public void onWrongCredentialsError() {
-                showBadCredentialsError();
-            }
-
-            @Override
-            public void onTooManyLoginAttempts() {
-                showTooManyLoginAttemptsError();
-            }
-        });
+    public void onLoginWithGoogleClicked() {
+        view.startLoginWithGoogle();
     }
 
     @Override
@@ -333,12 +306,55 @@ public class Login_Presenter implements
         });
     }
 
+    private void loginWithGoogleAccount(GoogleSignInAccount googleSignInAccount) {
+
+        view.setState(iLogin.ViewState.PROGRESS, R.string.LOGIN_logging_in);
+
+        AuthSingleton.loginWithGoogle(googleSignInAccount, new iAuthSingleton.LoginCallbacks() {
+            @Override
+            public void onLoginSuccess(String userId) {
+
+                loadUserFromServer(userId, new iLoadUserCallbacks() {
+                    @Override
+                    public void onUserLoadSuccess(User user) {
+                        view.finishLogin(false, mTransitIntent);
+                    }
+
+                    @Override
+                    public void onUserNotExists() {
+                        createUserFromGoogleAccount(userId, googleSignInAccount);
+                    }
+
+                    @Override
+                    public void onUserLoadError(String errorMsg) {
+                        onLoadUserFromServerError(errorMsg);
+                    }
+                });
+
+            }
+
+            @Override
+            public void onLoginError(String errorMsg) {
+                showError(R.string.LOGIN_login_error, errorMsg);
+            }
+
+            @Override
+            public void onWrongCredentialsError() {
+                showBadCredentialsError();
+            }
+
+            @Override
+            public void onTooManyLoginAttempts() {
+                showTooManyLoginAttemptsError();
+            }
+        });
+    }
+
     private void loginWithNewPassword() {
         view.setState(iLogin.ViewState.INFO, R.string.LOGIN_try_new_password);
     }
 
     private void loadUserFromServer(@NonNull String userId, iLoadUserCallbacks callbacks) {
-
         usersSingleton.refreshUserFromServer(userId, new iUsersSingleton.RefreshCallbacks() {
             @Override
             public void onUserRefreshSuccess(User user) {

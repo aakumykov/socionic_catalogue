@@ -32,7 +32,7 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.login.view_model.Login_ViewModel;
 import ru.aakumykov.me.sociocat.login.view_model.Login_ViewModelFactory;
-import ru.aakumykov.me.sociocat.utils.auth.GoogleAuthClient;
+import ru.aakumykov.me.sociocat.utils.auth.GoogleAuthHelper;
 import ru.aakumykov.me.sociocat.utils.auth.VKInteractor;
 import ru.aakumykov.me.sociocat.register_step_1.RegisterStep1_View;
 import ru.aakumykov.me.sociocat.register_step_2.RegisterStep2_View;
@@ -237,13 +237,13 @@ public class Login_View extends BaseView implements
 
     @Override
     public void startLoginWithGoogle() {
-        Intent signInIntent = GoogleAuthClient.getSignInIntent(this);
+        Intent signInIntent = GoogleAuthHelper.getSignInIntent(this);
         startActivityForResult(signInIntent, Constants.CODE_GOOGLE_LOGIN);
     }
 
     @Override
     public void logoutFromGoogle() {
-        GoogleAuthClient.logout(this);
+        GoogleAuthHelper.logout(this);
     }
 
     @Override
@@ -381,20 +381,15 @@ public class Login_View extends BaseView implements
     }
 
     private void processGoogleLoginResult(int resultCode, @Nullable Intent data) {
-        if (RESULT_OK != resultCode)
-            return;
-
-        GoogleAuthClient.processGoogleLoginResult(data, new GoogleAuthClient.iGoogleLoginCallbacks() {
-            @Override
-            public void onGoogleLoginSuccess(GoogleSignInAccount googleSignInAccount) {
-                presenter.onGoogleLoginResult(googleSignInAccount);
-            }
-
-            @Override
-            public void onGoogleLoginError(String errorMsg) {
-                setState(iLogin.ViewState.ERROR, R.string.LOGIN_login_error, errorMsg);
-            }
-        });
+        switch (resultCode) {
+            case RESULT_OK:
+                presenter.onGoogleLoginResult(data);
+                break;
+            case RESULT_CANCELED:
+                break;
+            default:
+                Log.e(TAG, "Unknown result code: "+resultCode);
+        }
     }
 
     private void updateGoogleLoginButtons() {

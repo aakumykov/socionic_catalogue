@@ -60,8 +60,8 @@ public interface iLogin {
 
         void onFormIsValid();
 
+        void onGoogleLoginResult(@Nullable Intent data);
         void onLoginWithGoogleClicked();
-        void onGoogleLoginResult(@NonNull GoogleSignInAccount googleSignInAccount);
         void onLogoutFromGoogleClicked();
     }
 }

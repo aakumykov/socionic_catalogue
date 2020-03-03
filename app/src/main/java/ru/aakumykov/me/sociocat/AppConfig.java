@@ -1,7 +1,7 @@
 package ru.aakumykov.me.sociocat;
 
-public final class Config {
-    private Config() {}
+public final class AppConfig {
+    private AppConfig() {}
 
     // Длины
     public final static int TAG_MIN_LENGTH = 2;

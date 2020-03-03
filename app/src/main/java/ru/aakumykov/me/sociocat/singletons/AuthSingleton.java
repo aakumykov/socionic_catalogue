@@ -26,7 +26,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import ru.aakumykov.me.sociocat.Config;
+import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.DeepLink_Constants;
 import ru.aakumykov.me.sociocat.FirebaseConstants;
 import ru.aakumykov.me.sociocat.PackageConstants;
@@ -398,15 +398,15 @@ public class AuthSingleton implements iAuthSingleton
 
     // Внутренние интерфейсы
     private interface CustomTokenAPI {
-        @GET(Config.CREATE_CUSTOM_TOKEN_PATH)
-        retrofit2.Call<String> getCustomToken(@Query(Config.CREATE_CUSTOM_TOKEN_PARAMETER_NAME) String tokenBase);
+        @GET(AppConfig.CREATE_CUSTOM_TOKEN_PATH)
+        retrofit2.Call<String> getCustomToken(@Query(AppConfig.CREATE_CUSTOM_TOKEN_PARAMETER_NAME) String tokenBase);
     }
 
 
     // Внутренние методы
     private static CustomTokenAPI getCustomTokenAPI() {
         return new Retrofit.Builder()
-                .baseUrl(Config.CREATE_CUSTOM_TOKEN_BASE_URL)
+                .baseUrl(AppConfig.CREATE_CUSTOM_TOKEN_BASE_URL)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .build()
                 .create(CustomTokenAPI.class);

@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,6 +37,7 @@ import ru.aakumykov.me.sociocat.tags_lsit3.TagsList3_View;
 import ru.aakumykov.me.sociocat.user_show.UserShow_View;
 import ru.aakumykov.me.sociocat.utils.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.auth.GoogleAuthHelper;
 
 public abstract class BaseView extends AppCompatActivity implements iBaseView
 {
@@ -60,7 +60,10 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     @Subscribe
     public void onUserUnauthorized(UserUnauthorizedEvent event) {
         invalidateOptionsMenu();
+
         onUserLogout();
+
+        GoogleAuthHelper.logout(this);
     }
 
 

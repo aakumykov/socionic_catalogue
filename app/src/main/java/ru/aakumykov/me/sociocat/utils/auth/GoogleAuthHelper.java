@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.utils.auth;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -13,22 +14,7 @@ import com.google.android.gms.tasks.Task;
 
 import ru.aakumykov.me.sociocat.AuthConfig;
 
-public final class GoogleAuthClient {
-
-    // Интерфейсы
-    public interface iGoogleLoginCallbacks {
-        void onGoogleLoginSuccess(GoogleSignInAccount googleSignInAccount);
-        void onGoogleLoginError(String errorMsg);
-    }
-
-    // Свойства
-    private static GoogleSignInOptions googleSignInOptions =
-            new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(AuthConfig.GOOGLE_WEB_CLIENT_ID)
-            .requestProfile()
-            .requestEmail()
-            .build();
-
+public final class GoogleAuthHelper {
 
     // Внешние методы
     public static Intent getSignInIntent(Context context) {
@@ -60,25 +46,23 @@ public final class GoogleAuthClient {
         callbacks.onGoogleLoginSuccess(googleSignInAccount);
     }
 
-
     // Внутренние методы
     private static GoogleSignInClient signInClient(Context context) {
         return GoogleSignIn.getClient(context, googleSignInOptions);
     }
 
-
-    // Шаблон Единоличник
-    private static volatile GoogleAuthClient ourInstance;
-    public synchronized static GoogleAuthClient getInstance() {
-        synchronized (GoogleAuthClient.class) {
-            if (null == ourInstance) ourInstance = new GoogleAuthClient();
-            return ourInstance;
-        }
+    // Интерфейсы
+    public interface iGoogleLoginCallbacks {
+        void onGoogleLoginSuccess(@NonNull GoogleSignInAccount googleSignInAccount);
+        void onGoogleLoginError(String errorMsg);
     }
-    private GoogleAuthClient() {
 
-    }
-    // Шаблон Единоличник
-
+    // Свойства
+    private static GoogleSignInOptions googleSignInOptions =
+            new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(AuthConfig.GOOGLE_WEB_CLIENT_ID)
+                    .requestProfile()
+                    .requestEmail()
+                    .build();
 
 }

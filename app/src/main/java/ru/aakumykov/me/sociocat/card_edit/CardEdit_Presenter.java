@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.Config;
+import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -349,7 +349,7 @@ public class CardEdit_Presenter implements
         currentCard.setType(Constants.TEXT_CARD);
 
         String quote = IntentUtils.extractText(dataIntent);
-        String title = MyUtils.cutToLength(quote, Config.TITLE_MAX_LENGTH);
+        String title = MyUtils.cutToLength(quote, AppConfig.TITLE_MAX_LENGTH);
 
         view.prepareForQuote(title, quote);
     }
@@ -441,7 +441,7 @@ public class CardEdit_Presenter implements
         String description = currentCard.getDescription().trim();
         currentCard.setDescription(description);
 
-        if (quote.length() > Config.LONG_TAG_THRESHOLD) {
+        if (quote.length() > AppConfig.LONG_TAG_THRESHOLD) {
             String longTag = view.getString(R.string.TAG_long_text);
             currentCard.addTag(longTag);
         }
@@ -456,11 +456,11 @@ public class CardEdit_Presenter implements
             view.showTitleError(R.string.cannot_be_empty);
             valid = false;
         } else {
-            if (title.length() < Config.TITLE_MIN_LENGTH) {
+            if (title.length() < AppConfig.TITLE_MIN_LENGTH) {
                 view.showTitleError(R.string.CARD_EDIT_title_too_short);
                 valid = false;
             }
-            if (title.length() > Config.TITLE_MAX_LENGTH) {
+            if (title.length() > AppConfig.TITLE_MAX_LENGTH) {
                 //int lengthOvershoot = title.length() - Constants.TITLE_MAX_LENGTH;
                 view.showTitleError(R.string.CARD_EDIT_title_too_long);
                 valid = false;
@@ -474,11 +474,11 @@ public class CardEdit_Presenter implements
                 view.showQuoteError(R.string.cannot_be_empty);
                 valid = false;
             } else {
-                if (quote.length() < Config.QUOTE_MIN_LENGTH) {
+                if (quote.length() < AppConfig.QUOTE_MIN_LENGTH) {
                     view.showQuoteError(R.string.CARD_EDIT_quote_too_short);
                     valid = false;
                 }
-                if (quote.length() > Config.QUOTE_MAX_LENGTH) {
+                if (quote.length() > AppConfig.QUOTE_MAX_LENGTH) {
                     //int lengthOvershoot = title.length() - Constants.TITLE_MAX_LENGTH;
                     view.showQuoteError(R.string.CARD_EDIT_quote_too_long);
                     valid = false;
@@ -492,11 +492,11 @@ public class CardEdit_Presenter implements
             view.showDescriptionError(R.string.cannot_be_empty);
             valid = false;
         } else {
-            if (description.length() < Config.DESCRIPTION_MIN_LENGTH) {
+            if (description.length() < AppConfig.DESCRIPTION_MIN_LENGTH) {
                 view.showDescriptionError(R.string.CARD_EDIT_description_too_short);
                 valid = false;
             }
-            if (description.length() > Config.DESCRIPTION_MAX_LENGTH) {
+            if (description.length() > AppConfig.DESCRIPTION_MAX_LENGTH) {
                 //int lengthOvershoot = title.length() - Constants.TITLE_MAX_LENGTH;
                 view.showDescriptionError(R.string.CARD_EDIT_description_too_long);
                 valid = false;
