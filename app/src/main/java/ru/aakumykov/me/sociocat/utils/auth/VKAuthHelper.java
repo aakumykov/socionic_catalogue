@@ -19,7 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class VKInteractor {
+public class VKAuthHelper {
 
     // Интерфейсы
     public interface LoginVK_Callbacks {

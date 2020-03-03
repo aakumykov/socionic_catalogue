@@ -17,9 +17,7 @@ import ru.aakumykov.me.sociocat.backup_job.BackupService;
 import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.utils.auth.VKInteractor;
 import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
-import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
