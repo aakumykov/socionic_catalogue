@@ -191,26 +191,6 @@ public class Login_View extends BaseView implements
     }
 
     @Override
-    public void disableForm() {
-        MyUtils.disable(emailInput);
-        MyUtils.disable(passwordInput);
-        MyUtils.disable(loginButton);
-        MyUtils.disable(resetPasswordButton);
-        MyUtils.disable(registerButton);
-        MyUtils.disable(googleLoginButton);
-    }
-
-    @Override
-    public void enableForm() {
-        MyUtils.enable(emailInput);
-        MyUtils.enable(passwordInput);
-        MyUtils.enable(loginButton);
-        MyUtils.enable(resetPasswordButton);
-        MyUtils.enable(registerButton);
-        MyUtils.enable(googleLoginButton);
-    }
-
-    @Override
     public void startLoginWithGoogle() {
         Intent signInIntent = GoogleAuthHelper.getSignInIntent(this);
         startActivityForResult(signInIntent, Constants.CODE_GOOGLE_LOGIN);
@@ -313,6 +293,24 @@ public class Login_View extends BaseView implements
 
 
     // Внтуренния методы
+    private void disableForm() {
+        MyUtils.disable(emailInput);
+        MyUtils.disable(passwordInput);
+        MyUtils.disable(loginButton);
+        MyUtils.disable(resetPasswordButton);
+        MyUtils.disable(registerButton);
+        MyUtils.disable(googleLoginButton);
+    }
+
+    private void enableForm() {
+        MyUtils.enable(emailInput);
+        MyUtils.enable(passwordInput);
+        MyUtils.enable(loginButton);
+        MyUtils.enable(resetPasswordButton);
+        MyUtils.enable(registerButton);
+        MyUtils.enable(googleLoginButton);
+    }
+
     private void afterResetPasswordRequest(int resultCode, Intent data) {
         switch (resultCode) {
             case RESULT_OK:

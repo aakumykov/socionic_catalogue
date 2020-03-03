@@ -22,9 +22,6 @@ public interface iLogin {
         void setState(ViewState state, int messageId);
         void setState(ViewState state, int messageId, @Nullable String messageDetails);
 
-        void disableForm();
-        void enableForm();
-
         void startLoginWithGoogle();
         void logoutFromGoogle();
 

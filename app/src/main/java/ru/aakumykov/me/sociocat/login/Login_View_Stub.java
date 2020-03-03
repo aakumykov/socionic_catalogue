@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.login;
 
 import android.content.Intent;
-import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,22 +19,7 @@ public class Login_View_Stub extends BaseView_Stub implements iLogin.View {
     }
 
     @Override
-    public void disableForm() {
-
-    }
-
-    @Override
-    public void enableForm() {
-
-    }
-
-    @Override
     public void startLoginWithGoogle() {
-
-    }
-
-    @Override
-    public void logoutFromGoogle() {
 
     }
 
