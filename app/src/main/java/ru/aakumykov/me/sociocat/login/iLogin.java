@@ -46,9 +46,6 @@ public interface iLogin {
         void cancelLogin();
         void processInputIntent(@Nullable Intent intent);
 
-        void onVKLoginButtonClicked();
-        void processVKLogin(int vk_user_id, String vk_access_token);
-
         // TODO: вынести в общий интерфейс
         void linkView(iLogin.View view);
         void unlinkView();

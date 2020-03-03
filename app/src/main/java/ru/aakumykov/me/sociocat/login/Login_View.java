@@ -56,8 +56,6 @@ public class Login_View extends BaseView implements
     @BindView(R.id.registerButton) Button registerButton;
     @BindView(R.id.cancelButton) Button cancelButton;
     @BindView(R.id.googleLoginButton) SignInButton googleLoginButton;
-    @BindView(R.id.googleLogoutButton) Button googleLogoutButton;
-//    @BindView(R.id.vkLoginButton) ImageView vkLoginButton;
 
     public static final String TAG = "Login_View";
     private iLogin.Presenter presenter;
@@ -109,26 +107,7 @@ public class Login_View extends BaseView implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        VKInteractor.LoginVK_Callbacks loginVKCallbacks = new VKInteractor.LoginVK_Callbacks() {
-            @Override
-            public void onVKLoginSuccess(VKInteractor.VKAuthResult vkAuthResult) {
-                String vk_access_token = vkAuthResult.getAccessToken();
-                int vk_user_id = vkAuthResult.getUserId();
-                presenter.processVKLogin(vk_user_id, vk_access_token);
-            }
-
-            @Override
-            public void onVKLoginError(int errorCode, @Nullable String errorMsg) {
-                showErrorMsg(R.string.LOGIN_error_login_via_vkontakte, errorMsg);
-            }
-        };
-
-        if (VKInteractor.isVKActivityResult(requestCode, resultCode, data, loginVKCallbacks)) {
-            // Обработка происходит в loginVKCallbacks
-        }
-        else {
-            switch (requestCode) {
+        switch (requestCode) {
                 case Constants.CODE_USER_EDIT:
                     goToMainPage();
                     break;
@@ -138,7 +117,6 @@ public class Login_View extends BaseView implements
                 default:
                     super.onActivityResult(requestCode, resultCode, data);
             }
-        }
     }
 
     @Override
@@ -220,8 +198,7 @@ public class Login_View extends BaseView implements
         MyUtils.disable(loginButton);
         MyUtils.disable(resetPasswordButton);
         MyUtils.disable(registerButton);
-//        MyUtils.disable(cancelButton);
-//        MyUtils.disable(vkLoginButton);
+        MyUtils.disable(googleLoginButton);
     }
 
     @Override
@@ -231,8 +208,7 @@ public class Login_View extends BaseView implements
         MyUtils.enable(loginButton);
         MyUtils.enable(resetPasswordButton);
         MyUtils.enable(registerButton);
-//        MyUtils.enable(cancelButton);
-//        MyUtils.enable(vkLoginButton);
+        MyUtils.enable(googleLoginButton);
     }
 
     @Override
@@ -336,34 +312,6 @@ public class Login_View extends BaseView implements
         presenter.onLoginWithGoogleClicked();
     }
 
-    @OnClick(R.id.googleLogoutButton)
-    void onGoogleLogoutButtonClicked() {
-        presenter.onLogoutFromGoogleClicked();
-    }
-
-/*
-    @OnClick(R.id.vkLoginButton)
-    void onVKLoginButtonClicked() {
-        presenter.onVKLoginButtonClicked();
-    }
-
-    // Убрать...
-    @OnClick(R.id.vkLogoutButton)
-    void onVKLogoutButtonClicked() {
-        VKInteractor.logout(new VKInteractor.LogoutVK_Callbacks() {
-            @Override
-            public void onVKLogoutSuccess() {
-                showToast("Вы вышли из ВК");
-            }
-
-            @Override
-            public void onVKLogoutError() {
-                showDebugMsg("ОШИБКА выхода из ВК");
-            }
-        });
-    }
-*/
-
 
     // Внтуренния методы
     private void afterResetPasswordRequest(int resultCode, Intent data) {
@@ -395,11 +343,9 @@ public class Login_View extends BaseView implements
     private void updateGoogleLoginButtons() {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (null == account) {
-            MyUtils.hide(googleLogoutButton);
             MyUtils.show(googleLoginButton);
         }
         else {
-            MyUtils.show(googleLogoutButton);
             MyUtils.hide(googleLoginButton);
         }
     }

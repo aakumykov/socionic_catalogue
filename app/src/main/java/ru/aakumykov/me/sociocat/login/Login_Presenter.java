@@ -32,24 +32,18 @@ public class Login_Presenter implements
         iLogin.Presenter
 {
     private final static String TAG = "Login_Presenter";
+
     private iLogin.View view;
 
-    private String mIntentAction;
-    private Intent mTransitIntent;
-
-    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
-
-    private String externalAccessToken;
-    private String externalUserId;
-    private String userName;
-    private String customToken;
-    private String internalUserId;
-
     private boolean isVirgin = true;
+
+    private Intent mTransitIntent;
 
     private iLogin.ViewState currentViewState = iLogin.ViewState.INITIAL;
     private int currentMessageId = -1;
     private String currentMessageDetails = null;
+
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
 
     // Обязательные методы
@@ -160,41 +154,6 @@ public class Login_Presenter implements
     public void cancelLogin() {
         AuthSingleton.signOut();
         view.finishLogin(true, mTransitIntent);
-    }
-
-    @Override
-    public void onVKLoginButtonClicked() {
-        VKInteractor.login(view.getActivity());
-    }
-
-    @Override
-    public void processVKLogin(int vk_user_id, String vk_access_token) {
-
-        this.externalUserId = String.valueOf(vk_user_id);
-        this.externalAccessToken = vk_access_token;
-
-        view.disableForm();
-        view.showProgressMessage(R.string.LOGIN_getting_user_info);
-
-        VKInteractor.getUserInfo(vk_user_id, new VKInteractor.GetVKUserInfo_Callbacks() {
-            @Override
-            public void onGetVKUserInfoSuccess(VKInteractor.VKUser vkUser) {
-                String firstName = vkUser.getFirstName();
-                String lastName = vkUser.getLastName();
-
-                Login_Presenter.this.userName =  firstName;
-                if (!TextUtils.isEmpty(lastName))
-                    Login_Presenter.this.userName += " " + lastName;
-
-                createCustomToken();
-            }
-
-            @Override
-            public void onGetVKUserInfoError(String errorMsg) {
-                view.enableForm();
-                view.showErrorMsg(R.string.LOGIN_error_loading_user_info, errorMsg);
-            }
-        });
     }
 
 
@@ -466,52 +425,6 @@ public class Login_Presenter implements
         String currentUserId = usersSingleton.getCurrentUser().getKey();
 
         Log.d(TAG, "email: "+email+", userIdFromURI: "+userIdFromURI+", currentUserId: "+currentUserId);
-    }
-
-    private void createCustomToken() {
-
-        view.showProgressMessage(R.string.LOGIN_creating_custom_token);
-
-        AuthSingleton.createFirebaseCustomToken(externalUserId, new iAuthSingleton.CreateFirebaseCustomToken_Callbacks() {
-            @Override
-            public void onCreateFirebaseCustomToken_Success(String customToken) {
-                Login_Presenter.this.customToken = customToken;
-                loginExternalUserToFirebase();
-            }
-
-            @Override
-            public void onCreateFirebaseCustomToken_Error(String errorMsg) {
-                view.showErrorMsg(R.string.LOGIN_error_creating_custom_token, errorMsg);
-            }
-        });
-    }
-
-    private void loginExternalUserToFirebase() {
-
-        view.showProgressMessage(R.string.LOGIN_logging_in);
-
-        FirebaseAuth
-                .getInstance()
-                .signInWithCustomToken(customToken)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-
-                        FirebaseUser firebaseUser = authResult.getUser();
-                        String firebaseUserId = firebaseUser.getUid();
-
-                        createOrUpdateUser(firebaseUserId, externalUserId, userName);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        AuthSingleton.logout();
-                        view.showErrorMsg(R.string.LOGIN_login_error, e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
-
     }
 
     private void createOrUpdateUser(String internalUserId, String externalUserId, String userName) {

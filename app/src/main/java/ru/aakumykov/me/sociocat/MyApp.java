@@ -76,14 +76,6 @@ public class MyApp extends Application {
             }
         });
 
-        // Подписываюсь на события изменения авторизации Вконтакте
-        VKInteractor.trackVKAuthExpired(new VKInteractor.VKAuthExpiredCallback() {
-            @Override
-            public void onVKAuthExpired() {
-                AuthSingleton.logout();
-            }
-        });
-
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         prepareDefaultPreferences();
