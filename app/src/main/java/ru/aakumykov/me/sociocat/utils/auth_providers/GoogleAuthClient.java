@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.singletons;
+package ru.aakumykov.me.sociocat.utils.auth_providers;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +12,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Task;
 
 import ru.aakumykov.me.sociocat.AuthConfig;
-import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.login.iLogin;
 
 public final class GoogleAuthClient {
 
