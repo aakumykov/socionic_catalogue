@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.push_notifications_service;
+package ru.aakumykov.me.sociocat.firebase_cloud_messaging;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,6 +8,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
@@ -21,19 +22,13 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
-public class PushNotificationsService extends FirebaseMessagingService {
+public class FCMServiceOLD extends FirebaseMessagingService {
 
-    private final static String TAG = "PushNotifService";
+    private final static String TAG = "FCMService";
 
 
-    @Override
-    public void onNewToken(String s) {
-        super.onNewToken(s);
-        //Log.d(TAG, "token: "+s);
-    }
-
-    @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+    /*@Override
+    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         try {
             //showNotification(remoteMessage.getData());
@@ -42,6 +37,41 @@ public class PushNotificationsService extends FirebaseMessagingService {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
         }
+    }*/
+
+    @Override
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+        // TODO(developer): Handle FCM messages here.
+        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
+        Log.d(TAG, "From: " + remoteMessage.getFrom());
+
+        // Check if message contains a data payload.
+        if (remoteMessage.getData().size() > 0) {
+            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+
+            if (/* Check if data needs to be processed by long running job */ true) {
+                // For long-running tasks (10 seconds or more) use WorkManager.
+//                scheduleJob();
+            } else {
+                // Handle message within 10 seconds
+//                handleNow();
+            }
+
+        }
+
+        // Check if message contains a notification payload.
+        if (remoteMessage.getNotification() != null) {
+            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+        }
+
+        // Also if you intend on generating your own notifications as a result of a received FCM
+        // message, here is where that should be initiated. See sendNotification method below.
+    }
+
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+        //Log.d(TAG, "token: "+s);
     }
 
 
@@ -66,7 +96,6 @@ public class PushNotificationsService extends FirebaseMessagingService {
                 Log.e(TAG, "Unknown notification type: '"+notificationType+"'");
         }
     }
-
 
     private void showNewCardNotification(Map<String,String> data) {
 
@@ -97,7 +126,6 @@ public class PushNotificationsService extends FirebaseMessagingService {
         showNotification(notificationTitle, notificationMessage, intent);
     }
 
-
     private void showNewCommentNotification(Map<String,String> data) {
 
         String text = data.get("text");
@@ -124,7 +152,6 @@ public class PushNotificationsService extends FirebaseMessagingService {
 
         showNotification(notificationTitle, notificationMessage, intent);
     }
-
 
     private void showNotification(String title, String message, Intent intent) {
 
