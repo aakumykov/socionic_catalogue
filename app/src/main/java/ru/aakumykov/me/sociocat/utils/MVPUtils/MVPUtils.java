@@ -347,11 +347,11 @@ public class MVPUtils {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static void setupNewCardsNotificationChannel(Context context, boolean doEnable){
 
-        CharSequence sociocatChannelName = context.getString(R.string.NOTIFICATIONS_sociocat_channel_name);
-        String sociocatChannelDescription = context.getString(R.string.NOTIFICATIONS_sociocat_channel_description);
+        CharSequence sociocatChannelName = context.getString(R.string.NOTIFICATIONS_new_cards_channel_name);
+        String sociocatChannelDescription = context.getString(R.string.NOTIFICATIONS_new_cards_channel_description);
 
         NotificationChannel adminChannel;
-        adminChannel = new NotificationChannel(Constants.SOCIOCAT_NOTIFICATIONS_CHANNEL, sociocatChannelName, NotificationManager.IMPORTANCE_LOW);
+        adminChannel = new NotificationChannel(Constants.SOCIOCAT_DEFAULT_NOTIFICATIONS_CHANNEL_NAME, sociocatChannelName, NotificationManager.IMPORTANCE_LOW);
         adminChannel.setDescription(sociocatChannelDescription);
 //        adminChannel.enableLights(true);
 //        adminChannel.setLightColor(Color.RED);
@@ -362,7 +362,7 @@ public class MVPUtils {
 
         if (notificationManager != null) {
             if (doEnable) notificationManager.createNotificationChannel(adminChannel);
-            else notificationManager.deleteNotificationChannel(Constants.SOCIOCAT_NOTIFICATIONS_CHANNEL);
+            else notificationManager.deleteNotificationChannel(Constants.SOCIOCAT_DEFAULT_NOTIFICATIONS_CHANNEL_NAME);
         }
     }
 

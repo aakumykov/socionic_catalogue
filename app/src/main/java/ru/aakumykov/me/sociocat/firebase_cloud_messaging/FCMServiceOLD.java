@@ -8,7 +8,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
@@ -165,7 +164,7 @@ public class FCMServiceOLD extends FirebaseMessagingService {
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, Constants.SOCIOCAT_NOTIFICATIONS_CHANNEL)
+                new NotificationCompat.Builder(this, Constants.SOCIOCAT_DEFAULT_NOTIFICATIONS_CHANNEL_NAME)
                         .setSmallIcon(R.drawable.ic_notification_default)
                         .setContentTitle(title)
                         .setContentText(message)

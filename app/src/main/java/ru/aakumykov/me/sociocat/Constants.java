@@ -76,7 +76,7 @@ public final class Constants
 
     public final static String PARENT_COMMENT = "PARENT_COMMENT";
 
-    public final static String SOCIOCAT_NOTIFICATIONS_CHANNEL = "SOCIOCAT_NOTIFICATIONS_CHANNEL";
+    public final static String SOCIOCAT_DEFAULT_NOTIFICATIONS_CHANNEL_NAME = "SOCIOCAT_NOTIFICATIONS";
 
     public static final String BACK_BUTTON_ENABLED = "BACK_BUTON_ENABLED";
 

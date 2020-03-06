@@ -5,15 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -92,20 +89,10 @@ public class MyApp extends Application {
 
         logFCMRegistrationToken();
 
-        FirebaseMessaging.getInstance().subscribeToTopic("new_cards")
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Вы подписаны на уведомления new_cards");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        MyUtils.printError(TAG, e);
-                    }
-                });
+        subscribe2topic("new_cards");
+        unsubscribeFromTopic("new_cards2");
     }
+
 
 
     // Внутренние методы
@@ -238,6 +225,39 @@ public class MyApp extends Application {
                     public void onFailure(@NonNull Exception e) {
                         Log.e(TAG, e.getMessage());
                         Log.w(TAG, e);
+                    }
+                });
+    }
+
+    private void subscribe2topic(String topicName) {
+
+        FirebaseMessaging.getInstance().subscribeToTopic(topicName)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Вы подписаны на уведомления '"+topicName+"'");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        MyUtils.printError(TAG, e);
+                    }
+                });
+    }
+
+    private void unsubscribeFromTopic(String topicName) {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topicName)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Вы отписаны от уведомлений '"+topicName+"'");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        MyUtils.printError(TAG, e);
                     }
                 });
     }
