@@ -387,8 +387,11 @@
     <string name="PREFERENCES_error_subscribing_to_new_cards">Ошибка подписки на уведомления о новых карточках</string>
     <string name="PREFERENCES_you_are_unsubscribed_from_new_cards">Вы отписаны от уведомлений о новых карточках</string>
     <string name="PREFERENCES_error_unsubscribing_from_new_cards_notifications">Ошибка отписки от уведомлений о новых карточках</string>
-    <string name="NOTIFICATIONS_sociocat_channel_name">Канал Соционического Каталога</string>
-    <string name="NOTIFICATIONS_sociocat_channel_description">Оповещения о новых карточках Соционического каталога</string>
+
+    <string name="NOTIFICATIONS_new_cards_channel_id" translatable="false">Соционический каталог</string>
+    <string name="NOTIFICATIONS_new_cards_channel_name">Карточки</string>
+    <string name="NOTIFICATIONS_new_cards_channel_description">Уведомления о новых карточках</string>
+
     <string name="SHORTCUT_create_text_card_short_label">Текст</string>
     <string name="SHORTCUT_create_text_card_long_label">Создать карточку с текстом</string>
     <string name="SHORTCUT_creation_unavailable">Создание карточки недоступно</string>
