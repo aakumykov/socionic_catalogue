@@ -89,7 +89,8 @@ public class MyApp extends Application {
         logFCMRegistrationToken();
 
         subscribe2topic("new_cards");
-        unsubscribeFromTopic("new_cards2");
+        subscribe2topic("updated_cards");
+
     }
 
 

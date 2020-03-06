@@ -54,17 +54,17 @@ public class FCMService extends FirebaseMessagingService {
 
             String channelId = getString(R.string.NOTIFICATIONS_new_cards_channel_id);
 
-            NotificationCompat.Builder notificationBuilder =
-                    new NotificationCompat.Builder(this, channelId)
+            int notificationId = notification.hashCode();
+
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
                     .setSmallIcon(R.drawable.ic_notification_default)
                     .setContentTitle(title)
                     .setContentText(body)
-                    .setStyle(new NotificationCompat.BigTextStyle()
-                            .bigText(body))
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-            notificationManager.notify(1, notificationBuilder.build());
+            notificationManager.notify(notificationId, notificationBuilder.build());
         }
     }
 

@@ -388,9 +388,13 @@
     <string name="PREFERENCES_you_are_unsubscribed_from_new_cards">Вы отписаны от уведомлений о новых карточках</string>
     <string name="PREFERENCES_error_unsubscribing_from_new_cards_notifications">Ошибка отписки от уведомлений о новых карточках</string>
 
-    <string name="NOTIFICATIONS_new_cards_channel_id" translatable="false">Соционический каталог</string>
-    <string name="NOTIFICATIONS_new_cards_channel_name">Карточки</string>
+    <string name="NOTIFICATIONS_new_cards_channel_id" translatable="false">new_cards</string>
+    <string name="NOTIFICATIONS_new_cards_channel_name">Новые карточки</string>
     <string name="NOTIFICATIONS_new_cards_channel_description">Уведомления о новых карточках</string>
+
+    <string name="NOTIFICATIONS_updated_cards_channel_id" translatable="false">updated_cards</string>
+    <string name="NOTIFICATIONS_updated_cards_channel_name">Изменённые карточки</string>
+    <string name="NOTIFICATIONS_updated_cards_channel_description">Уведомления об отредактированных карточках</string>
 
     <string name="SHORTCUT_create_text_card_short_label">Текст</string>
     <string name="SHORTCUT_create_text_card_long_label">Создать карточку с текстом</string>
