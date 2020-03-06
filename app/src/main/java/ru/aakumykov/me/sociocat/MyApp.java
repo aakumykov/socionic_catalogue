@@ -33,7 +33,6 @@ public class MyApp extends Application {
     private final static String TAG = "=MyApp=";
     private iUsersSingleton usersSingleton;
 
-
     // Методы Application
     @Override
     public void onCreate() {
@@ -92,7 +91,6 @@ public class MyApp extends Application {
         subscribe2topic("new_cards");
         unsubscribeFromTopic("new_cards2");
     }
-
 
 
     // Внутренние методы
@@ -206,7 +204,11 @@ public class MyApp extends Application {
 
     private void produceBackup() {
         if (BackupService.isTimeToDoBackup(this)) {
-            startService(new Intent(this, BackupService.class));
+            try {
+                startService(new Intent(this, BackupService.class));
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
         }
     }
 
