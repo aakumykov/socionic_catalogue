@@ -2,6 +2,8 @@ package ru.aakumykov.me.sociocat.card_edit;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.HashMap;
@@ -19,6 +21,7 @@ public interface iCardEdit {
     }
 
     interface View extends iBaseView {
+        void requestLogin(Intent transitIntent);
 
         // "Большие" методы
         void displayCard(Card card);
@@ -88,7 +91,7 @@ public interface iCardEdit {
         void onViewPaused();
         void onViewResumed();
 
-        void onIntentReceived(@Nullable Intent intent);
+        void onFirstOpen(@Nullable Intent intent);
         void onConfigurationChanged();
 
         void loadTagsList(TagsListLoadCallbacks callbacks);
