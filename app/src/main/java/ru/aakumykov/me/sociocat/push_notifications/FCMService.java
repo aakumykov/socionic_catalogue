@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.firebase_cloud_messaging;
+package ru.aakumykov.me.sociocat.push_notifications;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
