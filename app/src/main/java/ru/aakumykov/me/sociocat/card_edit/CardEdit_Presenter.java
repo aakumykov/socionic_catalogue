@@ -80,8 +80,7 @@ public class CardEdit_Presenter implements
 
     // Интерфейсные методы
     @Override
-    public void onIntentReceived(@Nullable Intent intent) {
-
+    public void onFirstOpen(@Nullable Intent intent) {
         if (null == intent) {
             view.showErrorMsg(R.string.data_error, "Intent is null");
             return;

@@ -105,6 +105,7 @@ public class CardEdit_View extends BaseView implements
     private boolean imageIsSetted = false;
     private boolean exitIsExpected = false;
     private boolean selectImageMode = false;
+    private boolean loginRequestMode = false;
 
 
     // Системные методы
@@ -161,10 +162,12 @@ public class CardEdit_View extends BaseView implements
             return;
         }
 
-        if (presenter.hasCard())
-            presenter.onConfigurationChanged();
+        if (loginRequestMode || !presenter.hasCard()) {
+            loginRequestMode = false;
+            presenter.onFirstOpen(getIntent());
+        }
         else
-            presenter.onIntentReceived(getIntent());
+            presenter.onConfigurationChanged();
     }
 
     @Override
@@ -261,6 +264,12 @@ public class CardEdit_View extends BaseView implements
         scrollView.scrollTo(0,0);
     }
 
+
+    @Override
+    public void requestLogin(Intent transitIntent) {
+        loginRequestMode = true;
+        super.requestLogin(transitIntent);
+    }
 
     // Интерфейсные методы
     @Override
@@ -843,27 +852,32 @@ public class CardEdit_View extends BaseView implements
         }
     }
 
-    private void startEditWork(Intent intent) {
-        try {
-            presenter.onIntentReceived(intent);
-            presenter.loadTagsList(new iCardEdit.TagsListLoadCallbacks() {
-                @Override
-                public void onTagsListLoadSuccess(List<String> list) {
-                    tagsList.addAll(list);
-                    setTagAutocomplete();
-                }
+    private void loadTagsAutocompleteList() {
+        presenter.loadTagsList(new iCardEdit.TagsListLoadCallbacks() {
+            @Override
+            public void onTagsListLoadSuccess(List<String> list) {
+                tagsList.addAll(list);
+                setTagAutocomplete();
+            }
 
-                @Override
-                public void onTagsListLoadFail(String errorMsg) {
-                    showErrorMsg(R.string.CARD_EDIT_error_loading_tags_list, errorMsg);
-                }
-            });
+            @Override
+            public void onTagsListLoadFail(String errorMsg) {
+                showErrorMsg(R.string.CARD_EDIT_error_loading_tags_list, errorMsg);
+            }
+        });
+    }
+
+    private void startEditWork(Intent intent) {
+        loadTagsAutocompleteList();
+        /*try {
+            presenter.onFirstOpen(intent);
+
 
         }
         catch (Exception e) {
             showErrorMsg(R.string.CARD_EDIT_error_editing_card, e.getMessage());
             MyUtils.printError(TAG, e);
-        }
+        }*/
     }
 
     private void setTagAutocomplete() {
