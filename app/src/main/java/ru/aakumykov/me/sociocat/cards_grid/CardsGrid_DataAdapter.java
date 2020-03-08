@@ -292,7 +292,9 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (0 == itemsList.size())
             return null;
 
-        iGridItem gridItem = itemsList.get(itemsList.size() - 2);
+        int subtractedNumber = (itemsList.size() < 2) ? 1 : 2;
+
+        iGridItem gridItem = itemsList.get(itemsList.size() - subtractedNumber);
 
         return (gridItem instanceof GridItem_Card) ? (GridItem_Card) gridItem : null;
     }
