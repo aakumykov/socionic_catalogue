@@ -101,6 +101,7 @@ public class CardEdit_View extends BaseView implements
 
     private iCardEdit.Presenter presenter;
     private List<String> tagsList = new ArrayList<>();
+    // TODO: место этих флагов - в презентере!
     private boolean isImageSelectionMode = false;
     private boolean imageIsSetted = false;
     private boolean exitIsExpected = false;
