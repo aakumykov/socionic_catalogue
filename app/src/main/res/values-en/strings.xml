@@ -643,5 +643,6 @@
     <string name="probe">Probe</string>
     <string name="DEBUG_backup_service_already_running">Backup service already running</string>
     <string name="BACKUP_SERVICE_creating_dir">Creating directory «%1$s»</string>
+    <string name="NOTIFICATIONS_new_card_notification_title">New card is created</string>
 </resources>
 <!-- «%1$s» -->

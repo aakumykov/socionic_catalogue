@@ -47,7 +47,7 @@ public class FCMService extends FirebaseMessagingService {
 
         if (notification != null) {
             String title = notification.getTitle();
-            String body = notification.getBody();
+            String cardKey = notification.getBody();
             String icon = notification.getIcon();
             Uri imageURL = notification.getImageUrl();
             Integer count = notification.getNotificationCount();
@@ -56,11 +56,13 @@ public class FCMService extends FirebaseMessagingService {
 
             int notificationId = notification.hashCode();
 
+            String clickAction = notification.getClickAction();
+
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
                     .setSmallIcon(R.drawable.ic_notification_default)
-                    .setContentTitle(title)
-                    .setContentText(body)
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
+                    .setContentTitle(getString(R.string.NOTIFICATIONS_new_card_notification_title))
+                    .setContentText(title)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(title))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);

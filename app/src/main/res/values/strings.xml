@@ -652,5 +652,6 @@
     <string name="probe">Проба</string>
     <string name="DEBUG_backup_service_already_running">Служба резервного копирования уже запущена</string>
     <string name="BACKUP_SERVICE_creating_dir">Создаём каталог «%1$s»</string>
+    <string name="NOTIFICATIONS_new_card_notification_title">Появилась новая карточка</string>
 
 </resources><!-- «%1$s» -->
