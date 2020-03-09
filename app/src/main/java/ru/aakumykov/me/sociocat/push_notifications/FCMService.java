@@ -2,14 +2,10 @@ package ru.aakumykov.me.sociocat.push_notifications;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Build;
-import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -47,16 +43,14 @@ public class FCMService extends FirebaseMessagingService {
 
         if (notification != null) {
             String title = notification.getTitle();
-            String cardKey = notification.getBody();
-            String icon = notification.getIcon();
-            Uri imageURL = notification.getImageUrl();
-            Integer count = notification.getNotificationCount();
+//            String cardKey = notification.getBody();
+//            String icon = notification.getIcon();
+//            Uri imageURL = notification.getImageUrl();
+//            Integer count = notification.getNotificationCount();
 
             String channelId = getString(R.string.NOTIFICATIONS_new_cards_channel_id);
 
             int notificationId = notification.hashCode();
-
-            String clickAction = notification.getClickAction();
 
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
                     .setSmallIcon(R.drawable.ic_notification_default)
@@ -98,7 +92,7 @@ public class FCMService extends FirebaseMessagingService {
     /*private void sendRegistrationToServer(String token) {
     }*/
 
-    private boolean isNotificationChannelEnabled(Context context, @Nullable String channelId){
+    /*private boolean isNotificationChannelEnabled(Context context, @Nullable String channelId){
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
             return NotificationManagerCompat.from(context).areNotificationsEnabled();
 
@@ -111,7 +105,7 @@ public class FCMService extends FirebaseMessagingService {
             return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
         else
             return false;
-    }
+    }*/
 
     private void createNotificationChannel() {
         /*if (TextUtils.isEmpty(channelName)) {
