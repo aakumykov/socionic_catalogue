@@ -34,6 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
+import ru.aakumykov.me.sociocat.MyApp;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.Constants;
@@ -90,7 +91,7 @@ public class CardsGrid_View extends BaseView implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cards_grid_activity);
         ButterKnife.bind(this);
-
+        //MyApp myApp = (MyApp) getApplication();
         setPageTitle(R.string.CARDS_GRID_page_title);
 
         viewModel = new ViewModelProvider(this, new CardsGrid_ViewModel_Factory()).get(CardsGrid_ViewModel.class);

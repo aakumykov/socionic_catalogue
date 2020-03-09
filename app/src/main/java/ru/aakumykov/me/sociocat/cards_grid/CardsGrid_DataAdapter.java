@@ -206,8 +206,7 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void insertList(int position, List<iGridItem> list) {
         itemsList.addAll(position, list);
-        itemsList.add(new GridItem_NewCards());
-        notifyItemRangeChanged(position, list.size()+1);
+        notifyItemRangeChanged(position, list.size());
     }
 
     @Override
@@ -215,13 +214,6 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         itemsList.add(position, gridItem);
         notifyItemInserted(position);
     }
-
-    private void append_LoadMore_Item() {
-        GridItem_LoadMore itemLoadMore = new GridItem_LoadMore(R.string.CARDS_GRID_load_old, true);
-        insertItem(itemsList.size(), itemLoadMore);
-    }
-
-
 
     @Override
     public void addList(List<iGridItem> inputList,
@@ -336,6 +328,12 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         GridItem_LoadMore itemLoadMore = new GridItem_LoadMore(R.string.CARDS_GRID_load_old, true);
         itemsList.add(itemLoadMore);
         notifyItemInserted(itemsList.size());
+    }
+
+    @Override
+    public void showNewCardsAvailableItem() {
+        itemsList.add(getItemCount(), new GridItem_NewCards());
+        notifyItemInserted(getItemCount());
     }
 
     @Override
@@ -577,5 +575,10 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 notifyItemInserted(i);
             }
         }
+    }
+
+    private void append_LoadMore_Item() {
+        GridItem_LoadMore itemLoadMore = new GridItem_LoadMore(R.string.CARDS_GRID_load_old, true);
+        insertItem(itemsList.size(), itemLoadMore);
     }
 }

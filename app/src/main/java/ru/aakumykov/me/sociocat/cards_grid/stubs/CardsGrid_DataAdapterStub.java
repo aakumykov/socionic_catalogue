@@ -86,6 +86,11 @@ public class CardsGrid_DataAdapterStub implements iCardsGrid.iDataAdapter {
     }
 
     @Override
+    public void showNewCardsAvailableItem() {
+
+    }
+
+    @Override
     public void removeItem(iGridItem gridItem) {
 
     }
