@@ -20,8 +20,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import org.greenrobot.eventbus.EventBus;
 
 import ru.aakumykov.me.sociocat.backup_job.BackupService;
-import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
-import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
+import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
+import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;

@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.event_objects;
+package ru.aakumykov.me.sociocat.event_bus_objects;
 
 import ru.aakumykov.me.sociocat.models.User;
 
