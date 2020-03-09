@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat;
+package ru.aakumykov.me.sociocat.base_view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,12 +23,14 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Date;
 
+import ru.aakumykov.me.sociocat.BuildConfig;
+import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.backup_job.BackupService;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
-import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;

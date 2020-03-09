@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat;
+package ru.aakumykov.me.sociocat.base_view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,8 +7,6 @@ import android.content.SharedPreferences;
 import android.view.Menu;
 
 import androidx.annotation.NonNull;
-
-import ru.aakumykov.me.sociocat.interfaces.iBaseView;
 
 public class BaseView_Stub implements iBaseView {
 

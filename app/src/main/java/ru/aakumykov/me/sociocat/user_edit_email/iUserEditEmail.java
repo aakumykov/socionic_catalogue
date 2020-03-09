@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.user_edit_email;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.interfaces.iBaseView;
+import ru.aakumykov.me.sociocat.base_view.iBaseView;
 
 public interface iUserEditEmail {
 

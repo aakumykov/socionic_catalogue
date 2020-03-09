@@ -22,7 +22,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.user_change_password.view_model.UserChangePassword_ViewModel;
 import ru.aakumykov.me.sociocat.user_change_password.view_model.UserChangePassword_ViewModelFactory;

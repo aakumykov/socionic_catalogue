@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid.stubs;
 
-import ru.aakumykov.me.sociocat.BaseView_Stub;
+import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
 import ru.aakumykov.me.sociocat.models.Card;

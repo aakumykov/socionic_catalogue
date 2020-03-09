@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
