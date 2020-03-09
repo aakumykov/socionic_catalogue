@@ -17,7 +17,7 @@ import ru.aakumykov.me.sociocat.card_show.stubs.DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iComment_ViewHolder;
-import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
@@ -29,7 +29,7 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.utils.DeleteCard_Helper;
-import ru.aakumykov.me.sociocat.utils.MyDialogs;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
 
 import static android.app.Activity.RESULT_OK;
 

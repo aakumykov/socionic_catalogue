@@ -27,11 +27,11 @@ import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.MyTextUtils;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.interfaces.iDialogCallbacks;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.iDialogCallbacks;
 import ru.aakumykov.me.sociocat.register_step_2.view_model.RegisterStep2_ViewModel;
 import ru.aakumykov.me.sociocat.register_step_2.view_model.RegisterStep2_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
-import ru.aakumykov.me.sociocat.utils.YesNoDialog;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.YesNoDialog;
 
 public class RegisterStep2_View extends BaseView implements
         iRegisterStep2.View,
