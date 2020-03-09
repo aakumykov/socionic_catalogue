@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.shortcuts_processor;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -15,6 +16,7 @@ import ru.aakumykov.me.sociocat.models.Card;
 
 public class ShortcutsProcessor extends BaseView {
 
+    private static final String TAG = "ShortcutsProcessor";
     private boolean dryRun = true;
 
     @Override public void onUserLogin() {}
@@ -44,25 +46,22 @@ public class ShortcutsProcessor extends BaseView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == Constants.CODE_CREATE_CARD) {
-
-            try {
+        switch (requestCode) {
+            case Constants.CODE_CREATE_CARD:
                 processCardCreationResult(resultCode, data);
-            } catch (Exception e) {
-                showErrorMsg(R.string.SHORTCUT_PROCESSOR_error_creating_card, e.getMessage());
-                e.printStackTrace();
-            }
-
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
     
     // Внутренние методы
     private void processInputIntent(@Nullable Intent data) throws Exception {
-        if (null == data)
+        if (null == data) {
+            go2cardsGrid();
             return;
+        }
 
         String cardType;
 
@@ -86,8 +85,7 @@ public class ShortcutsProcessor extends BaseView {
                 break;
 
             default:
-                Intent intent = new Intent(this, CardsGrid_View.class);
-                startActivity(intent);
+                go2cardsGrid();
                 return;
 
         }
@@ -98,28 +96,39 @@ public class ShortcutsProcessor extends BaseView {
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
     }
 
-    private void processCardCreationResult(int resultCode, @Nullable Intent data) throws Exception {
+    private void processCardCreationResult(int resultCode, @Nullable Intent data) {
         switch (resultCode) {
             case RESULT_OK:
-                Card card = data.getParcelableExtra(Constants.CARD);
-                Intent cardShowIntent = new Intent(this, CardShow_View.class);
-                cardShowIntent.putExtra(Constants.CARD, card);
-                startActivity(cardShowIntent);
+                go2showCard(data);
                 break;
 
             case RESULT_CANCELED:
                 showToast(R.string.SHORTCUT_PROCESSOR_card_creation_cencelled);
-                goToCardsGrid();
+                go2cardsGrid();
                 break;
 
             default:
                 showToast(R.string.SHORTCUT_PROCESSOR_unknown_result_code);
-                goToCardsGrid();
+                go2cardsGrid();
                 break;
         }
     }
 
-    private void goToCardsGrid() {
+    private void go2showCard(@Nullable Intent data) {
+        if (null == data) {
+            showToast(R.string.SHORTCUT_PROCESSOR_data_error);
+            Log.e(TAG, "Intent is null");
+            go2cardsGrid();
+            return;
+        }
+
+        Card card = data.getParcelableExtra(Constants.CARD);
+        Intent cardShowIntent = new Intent(this, CardShow_View.class);
+        cardShowIntent.putExtra(Constants.CARD, card);
+        startActivity(cardShowIntent);
+    }
+
+    private void go2cardsGrid() {
         Intent cardsGridIntent = new Intent(this, CardsGrid_View.class);
         startActivity(cardsGridIntent);
     }
