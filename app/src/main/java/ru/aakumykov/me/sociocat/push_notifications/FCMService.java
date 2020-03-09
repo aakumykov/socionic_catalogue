@@ -12,7 +12,14 @@ import androidx.core.app.NotificationManagerCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.Map;
+
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
+import ru.aakumykov.me.sociocat.models.Card;
 
 public class FCMService extends FirebaseMessagingService {
 
@@ -39,7 +46,7 @@ public class FCMService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        RemoteMessage.Notification notification = remoteMessage.getNotification();
+        /*RemoteMessage.Notification notification = remoteMessage.getNotification();
 
         if (notification != null) {
             String title = notification.getTitle();
@@ -61,7 +68,12 @@ public class FCMService extends FirebaseMessagingService {
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
             notificationManager.notify(notificationId, notificationBuilder.build());
-        }
+        }*/
+
+        Map<String, String> data = remoteMessage.getData();
+
+        if (data.containsKey("isCardNotification"))
+            EventBus.getDefault().post(new NewCardEvent());
     }
 
     @Override
