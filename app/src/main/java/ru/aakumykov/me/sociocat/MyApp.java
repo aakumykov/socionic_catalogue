@@ -19,19 +19,24 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.aakumykov.me.sociocat.backup_job.BackupService;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class MyApp extends Application {
+public class MyApp extends Application implements iMyApp {
 
     private final static String TAG = "=MyApp=";
     private iUsersSingleton usersSingleton;
+    private List<Card> mListOfNewCards = new ArrayList<>();
 
     // Методы Application
     @Override
@@ -93,6 +98,18 @@ public class MyApp extends Application {
 
     }
 
+    // iMyApp
+    @Override
+    public boolean isNewCardsAvailable() {
+        return mListOfNewCards.size() > 0;
+    }
+
+    @Override
+    public List<Card> getNewCards() {
+        List<Card> list = new ArrayList<>(mListOfNewCards);
+        mListOfNewCards.clear();
+        return list;
+    }
 
     // Внутренние методы
     private void authorizeUser(User user) {

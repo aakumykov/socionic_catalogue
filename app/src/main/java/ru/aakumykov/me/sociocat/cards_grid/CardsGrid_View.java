@@ -91,7 +91,7 @@ public class CardsGrid_View extends BaseView implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cards_grid_activity);
         ButterKnife.bind(this);
-        //MyApp myApp = (MyApp) getApplication();
+
         setPageTitle(R.string.CARDS_GRID_page_title);
 
         viewModel = new ViewModelProvider(this, new CardsGrid_ViewModel_Factory()).get(CardsGrid_ViewModel.class);
