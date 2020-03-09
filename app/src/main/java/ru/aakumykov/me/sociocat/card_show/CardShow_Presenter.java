@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
@@ -64,10 +65,12 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     @Override
     public void onRefreshRequested() {
 
+        pageView.showProgressMessage(R.string.CARD_SHOW_loading_card);
+
         loadCard(currentCard.getKey(), new iLoadCardCallbacks() {
             @Override
             public void onCardLoaded(Card card) {
-                onCardReceived(card);
+                showCard(card);
             }
         });
     }
@@ -332,13 +335,20 @@ public class CardShow_Presenter implements iCardShow.iPresenter
             return;
         }
 
-        Card card = data.getParcelableExtra(Constants.CARD);
-        if (null == card) {
-            pageView.showErrorMsg(R.string.data_error, "Card from Intent is null");
+        String cardKey = data.getStringExtra(Constants.CARD_KEY);
+        if (null != cardKey) {
+            loadAndShowCard(cardKey);
             return;
         }
 
-        onCardReceived(card);
+        Card card = data.getParcelableExtra(Constants.CARD);
+        if (null != card) {
+            showCard(card);
+            return;
+        }
+
+        pageView.showErrorMsg(R.string.data_error, "There is no Card or card key in Intent");
+        // TODO: pageView.setState()
     }
 
     @Override
@@ -368,7 +378,17 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         });
     }
 
-    private void onCardReceived(Card card) {
+    private void loadAndShowCard(@NonNull String cardKey) {
+
+        loadCard(cardKey, new iLoadCardCallbacks() {
+            @Override
+            public void onCardLoaded(Card card) {
+                showCard(card);
+            }
+        });
+    }
+
+    private void showCard(Card card) {
 
         storeCurrentCard(card);
 
