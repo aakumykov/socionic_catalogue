@@ -109,6 +109,9 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case iGridItem.NEW_CARDS_VIEW_TYPE:
                 itemView = layoutInflater.inflate(R.layout.cards_grid_new_cards_item, parent, false);
                 viewHolder = new NewCards_ViewHolder(itemView, presenter);
+
+                layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+                layoutParams.setFullSpan(true);
                 break;
 
             default:
@@ -116,11 +119,6 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
 
         return viewHolder;
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
     }
 
     @Override
@@ -144,9 +142,18 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         else if (gridItem instanceof GridItem_Throbber) {
             Throbber_ViewHolder throbberViewHolder = (Throbber_ViewHolder) viewHolder;
         }
+        else if (gridItem instanceof GridItem_NewCards) {
+            NewCards_ViewHolder newCardsViewHolder = (NewCards_ViewHolder) viewHolder;
+            newCardsViewHolder.initialize();
+        }
         else {
             throw new RuntimeException("Unknown item type: "+gridItem);
         }
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
     }
 
     @Override
@@ -199,7 +206,8 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void insertList(int position, List<iGridItem> list) {
         itemsList.addAll(position, list);
-        notifyItemRangeChanged(position, list.size());
+        itemsList.add(new GridItem_NewCards());
+        notifyItemRangeChanged(position, list.size()+1);
     }
 
     @Override

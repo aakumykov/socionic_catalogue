@@ -15,6 +15,7 @@ public class NewCards_ViewHolder extends BaseViewHolder {
 
     private final static String TAG = "NewCards_ViewHolder";
     @BindView(R.id.mainView) CardView mainView;
+    @BindView(R.id.labelView) TextView labelView;
     private final iCardsGrid.iPresenter presenter;
 
     public NewCards_ViewHolder(@NonNull View itemView, iCardsGrid.iPresenter presenter) {
@@ -23,5 +24,8 @@ public class NewCards_ViewHolder extends BaseViewHolder {
         this.presenter = presenter;
     }
 
-
+    public void initialize() {
+        String title = labelView.getResources().getString(R.string.CARDS_GRID_new_cards_available);
+        labelView.setText(title);
+    }
 }

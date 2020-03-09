@@ -5,6 +5,7 @@
     android:id="@+id/mainView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/new_cards_available_item_background"
 
     app:cardCornerRadius="4dp"
     app:cardElevation="3dp"
@@ -13,7 +14,7 @@
     app:contentPadding="7dp">
 
     <TextView
-        android:id="@+id/titleView"
+        android:id="@+id/labelView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
