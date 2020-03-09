@@ -13,7 +13,7 @@ import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class CardsGrid_DataAdapter_Stub implements iCardsGrid.iDataAdapter {
+public class CardsGrid_DataAdapterStub implements iCardsGrid.iDataAdapter {
 
     @Override
     public void linkPresenter(iCardsGrid.iPresenter presenter) {

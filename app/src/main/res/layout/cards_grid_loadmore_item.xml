@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cardView"
+    android:id="@+id/mainView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
@@ -18,6 +18,6 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="18sp"
-        tools:text="Загрузить ещё" />
+        tools:text="@string/CARDS_GRID_load_more" />
 
 </androidx.cardview.widget.CardView>

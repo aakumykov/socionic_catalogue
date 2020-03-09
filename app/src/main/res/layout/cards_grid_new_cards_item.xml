@@ -6,16 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
-    app:cardBackgroundColor="@color/transparent"
     app:cardCornerRadius="4dp"
-    app:cardElevation="0dp"
+    app:cardElevation="3dp"
     app:cardPreventCornerOverlap="false"
     app:cardUseCompatPadding="true"
     app:contentPadding="7dp">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
+    <TextView
+        android:id="@+id/titleView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        tools:text="@string/CARDS_GRID_new_cards_available" />
+
 </androidx.cardview.widget.CardView>

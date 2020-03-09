@@ -19,10 +19,12 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_LoadMore;
+import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_NewCards;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Throbber;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.LoadMore_ViewHolder;
+import ru.aakumykov.me.sociocat.cards_grid.view_holders.NewCards_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -104,6 +106,11 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 viewHolder = new Card_ViewHolder(itemView, presenter);
                 break;
 
+            case iGridItem.NEW_CARDS_VIEW_TYPE:
+                itemView = layoutInflater.inflate(R.layout.cards_grid_new_cards_item, parent, false);
+                viewHolder = new NewCards_ViewHolder(itemView, presenter);
+                break;
+
             default:
                 throw new RuntimeException("Unknown item view type: "+viewType);
         }
@@ -158,6 +165,8 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             return iGridItem.LOAD_MORE_VIEW_TYPE;
         else if (item instanceof GridItem_Throbber)
             return iGridItem.THROBBER_VIEW_TYPE;
+        else if (item instanceof GridItem_NewCards)
+            return iGridItem.NEW_CARDS_VIEW_TYPE;
         else
             return -1;
     }

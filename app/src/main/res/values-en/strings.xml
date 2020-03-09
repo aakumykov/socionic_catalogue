@@ -645,5 +645,7 @@
     <string name="BACKUP_SERVICE_creating_dir">Creating directory «%1$s»</string>
     <string name="NOTIFICATIONS_new_card_notification_title">New card is created</string>
     <string name="SHORTCUT_PROCESSOR_data_error">Data error</string>
+    <string name="CARDS_GRID_load_more">Load more</string>
+    <string name="CARDS_GRID_new_cards_available">New cards available</string>
 </resources>
 <!-- «%1$s» -->

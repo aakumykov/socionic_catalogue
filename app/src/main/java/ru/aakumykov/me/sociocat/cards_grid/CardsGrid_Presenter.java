@@ -14,8 +14,8 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
-import ru.aakumykov.me.sociocat.cards_grid.stubs.CardsGrid_DataAdapter_Stub;
-import ru.aakumykov.me.sociocat.cards_grid.stubs.CardsGrid_View_Stub;
+import ru.aakumykov.me.sociocat.cards_grid.stubs.CardsGrid_DataAdapterStub;
+import ru.aakumykov.me.sociocat.cards_grid.stubs.CardsGrid_ViewStub;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
@@ -53,8 +53,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     @Override
     public void unlinkViews() {
-        this.pageView = new CardsGrid_View_Stub();
-        this.dataAdapter = new CardsGrid_DataAdapter_Stub();
+        this.pageView = new CardsGrid_ViewStub();
+        this.dataAdapter = new CardsGrid_DataAdapterStub();
     }
 
 
