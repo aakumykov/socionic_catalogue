@@ -68,7 +68,7 @@ public class CardShow_View extends BaseView implements
 
         this.dataAdapter = cardShowViewModel.getDataAdapter();
         if (null == this.dataAdapter) {
-            this.dataAdapter = new DataAdapter(presenter);
+            this.dataAdapter = new CardShow_DataAdapter(presenter);
             cardShowViewModel.storeDataAdapter(this.dataAdapter);
         }
 
@@ -114,8 +114,8 @@ public class CardShow_View extends BaseView implements
 
         presenter.bindViewAndAdapter(this, dataAdapter);
 
-        if (!dataAdapter.isFilled())
-            presenter.processInputIntent(getIntent());
+        if (dataAdapter.notYetFilled())
+            presenter.onFirstOpen(getIntent());
     }
 
     @Override

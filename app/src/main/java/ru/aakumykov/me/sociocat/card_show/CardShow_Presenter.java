@@ -326,7 +326,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     }
 
     @Override
-    public void processInputIntent(@Nullable Intent data) {
+    public void onFirstOpen(@Nullable Intent data) {
         if (null == data) {
             pageView.showErrorMsg(R.string.data_error, "Intent is NULL");
             return;

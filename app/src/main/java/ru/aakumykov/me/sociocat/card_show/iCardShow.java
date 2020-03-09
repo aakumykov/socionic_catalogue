@@ -49,7 +49,7 @@ public interface iCardShow
     }
 
     interface iDataAdapter {
-        boolean isFilled();
+        boolean notYetFilled();
 
         void showCardThrobber();
 
@@ -83,7 +83,7 @@ public interface iCardShow
         void bindViewAndAdapter(iPageView pageView, iDataAdapter dataAdapter);
         void unbindViewAndAdapter();
 
-        void processInputIntent(@Nullable Intent data);
+        void onFirstOpen(@Nullable Intent data);
 
         boolean canEditCard();
         boolean canDeleteCard();
