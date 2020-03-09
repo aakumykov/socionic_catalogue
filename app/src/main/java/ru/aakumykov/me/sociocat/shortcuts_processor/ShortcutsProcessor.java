@@ -2,8 +2,10 @@ package ru.aakumykov.me.sociocat.shortcuts_processor;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.BaseView;
@@ -63,11 +65,16 @@ public class ShortcutsProcessor extends BaseView {
             return;
         }
 
+        Bundle bundle = data.getExtras();
+        if (null != bundle && bundle.containsKey("isPushNotification")) {
+            processPushNotification(bundle);
+            return;
+        }
+
+
         String cardType;
 
-        String action = data.getAction() + "";
-
-        switch (action) {
+        switch (data.getAction() + "") {
             case Constants.SHORTCUT_CREATE_TEXT_CARD:
                 cardType = Constants.TEXT_CARD;
                 break;
@@ -94,6 +101,26 @@ public class ShortcutsProcessor extends BaseView {
         intent.setAction(Constants.ACTION_CREATE);
         intent.putExtra(Constants.CARD_TYPE, cardType);
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
+    }
+
+    private void processPushNotification(@NonNull Bundle bundle) {
+        if (bundle.containsKey("isCardNotification")) {
+            processCardNotification(bundle);
+            return;
+        }
+    }
+
+    private void processCardNotification(@NonNull Bundle bundle) {
+        String cardKey = bundle.getString("key");
+        if (!TextUtils.isEmpty(cardKey)) {
+            Intent intent = new Intent(this, CardShow_View.class);
+            intent.putExtra(Constants.CARD_KEY, cardKey);
+            startActivity(intent);
+        }
+        else {
+            Log.e(TAG, "There is no card key in bundle");
+            go2cardsGrid();
+        }
     }
 
     private void processCardCreationResult(int resultCode, @Nullable Intent data) {
