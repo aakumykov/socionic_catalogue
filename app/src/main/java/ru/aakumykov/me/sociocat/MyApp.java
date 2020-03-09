@@ -18,11 +18,13 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.backup_job.BackupService;
+import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -110,6 +112,13 @@ public class MyApp extends Application implements iMyApp {
         mListOfNewCards.clear();
         return list;
     }
+
+    // Подписка на новые карточки
+    @Subscribe
+    void onNewCardArrived(NewCardEvent newCardEvent) {
+        mListOfNewCards.add(newCardEvent.getCard());
+    }
+
 
     // Внутренние методы
     private void authorizeUser(User user) {
