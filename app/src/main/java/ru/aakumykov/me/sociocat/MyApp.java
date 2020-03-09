@@ -118,8 +118,8 @@ public class MyApp extends Application implements iMyApp {
 
     // Подписка на новые карточки
     @Subscribe
-    void onNewCardArrived(NewCardEvent newCardEvent) {
-        setNewCardsCount(newCardsCount+1);
+    public void onNewCardAppears(NewCardEvent newCardEvent) {
+        Log.d(TAG, "Появилась новая карточка");
     }
 
 
