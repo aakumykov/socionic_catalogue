@@ -52,6 +52,9 @@ public class ShortcutsProcessor extends BaseView {
             case Constants.CODE_CREATE_CARD:
                 processCardCreationResult(resultCode, data);
                 break;
+            case Constants.CODE_SHOW_CARD:
+                go2cardsGrid();
+                break;
             default:
                 super.onActivityResult(requestCode, resultCode, data);
         }
@@ -115,7 +118,7 @@ public class ShortcutsProcessor extends BaseView {
         if (!TextUtils.isEmpty(cardKey)) {
             Intent intent = new Intent(this, CardShow_View.class);
             intent.putExtra(Constants.CARD_KEY, cardKey);
-            startActivity(intent);
+            startActivityForResult(intent, Constants.CODE_SHOW_CARD);
         }
         else {
             Log.e(TAG, "There is no card key in bundle");
