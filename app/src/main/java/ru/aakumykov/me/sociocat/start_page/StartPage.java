@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.shortcuts_processor;
+package ru.aakumykov.me.sociocat.start_page;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,9 +16,9 @@ import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class ShortcutsProcessor extends BaseView {
+public class StartPage extends BaseView {
 
-    private static final String TAG = "ShortcutsProcessor";
+    private static final String TAG = "StartPage";
     private boolean dryRun = true;
 
     @Override public void onUserLogin() {}
