@@ -326,16 +326,6 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     }
 
     @Override
-    public boolean hasHard() {
-        return null != currentCard;
-    }
-
-    @Override
-    public void onPageRecreated() {
-        dataAdapter.showCard(currentCard);
-    }
-
-    @Override
     public void processInputIntent(@Nullable Intent data) {
         if (null == data) {
             pageView.showErrorMsg(R.string.data_error, "Intent is NULL");

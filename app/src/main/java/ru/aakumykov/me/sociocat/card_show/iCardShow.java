@@ -83,6 +83,8 @@ public interface iCardShow
         void bindViewAndAdapter(iPageView pageView, iDataAdapter dataAdapter);
         void unbindViewAndAdapter();
 
+        void processInputIntent(@Nullable Intent data);
+
         boolean canEditCard();
         boolean canDeleteCard();
 
@@ -94,39 +96,27 @@ public interface iCardShow
 
         void onAuthorClicked();
         void onTagClicked(String tagName);
+        void onReplyClicked(iList_Item listItem);
+        void onCardRateUpClicked(iCard_ViewHolder cardViewHolder);
+        void onCardRateDownClicked(iCard_ViewHolder cardViewHolder);
+        void onEditCardClicked();
+        void onEditCardComplete(Card card);
+        void onDeleteCardClicked();
 
         void onLoadMoreClicked(iList_Item listItem);
-        void onReplyClicked(iList_Item listItem);
+
         void onDeleteCommentClicked(iList_Item listItem, iComment_ViewHolder commentViewHolder);
         void onDeleteCommentConfirmed(iList_Item listItem, iComment_ViewHolder commentViewHolder);
         void onEditCommentClicked(iList_Item listItem);
         void onRemoveCommentQuoteClicked();
         void onSendCommentClicked();
-
-        void onCardRateUpClicked(iCard_ViewHolder cardViewHolder);
-        void onCardRateDownClicked(iCard_ViewHolder cardViewHolder);
-
         void onCommentAuthorClicked(iList_Item commentItem);
         void onCommentRateUpClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem);
         void onCommentRateDownClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem);
-
-        void onDeleteCardClicked();
-
-        void onEditCardClicked();
-        void onEditCardComplete(Card card);
-
-        boolean hasHard();
-
-        void onPageRecreated();
-
-        void processInputIntent(@Nullable Intent data);
 
         void onOpenInBrowserClicked();
 
         void onGoBackRequested();
     }
 
-    interface iRatingChangeCallbacks {
-        void onRatingChangeComplete(int ratingValue);
-    }
 }
