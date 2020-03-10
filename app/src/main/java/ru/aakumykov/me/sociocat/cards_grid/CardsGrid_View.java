@@ -8,7 +8,9 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
@@ -68,6 +70,7 @@ public class CardsGrid_View extends BaseView implements
         SpeedDialView.OnActionSelectedListener
 {
     private static final String TAG = "CardsGrid_View";
+    private static final int NEW_CARDS_AVAILABLE = 10;
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
@@ -728,20 +731,34 @@ public class CardsGrid_View extends BaseView implements
         }
     }
 
-    private void checkForNewCards() {
+    private void checkForNewCards(Handler handler) {
         if (null != newCardsService) {
             int newCardsCount = newCardsService.getNewCardsCount();
             if (newCardsCount > 0) {
-                dataAdapter.showNewCardsAvailableItem();
+                Message message = handler.obtainMessage(NEW_CARDS_AVAILABLE, newCardsCount);
+                handler.sendMessage(message);
             }
         }
     }
 
     private void scheduleNewCardsChecking() {
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case NEW_CARDS_AVAILABLE:
+                        dataAdapter.showNewCardsAvailableItem();
+                        break;
+                    default:
+                        super.handleMessage(msg);
+                }
+            }
+        };
+
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                checkForNewCards();
+                checkForNewCards(handler);
             }
         };
 
