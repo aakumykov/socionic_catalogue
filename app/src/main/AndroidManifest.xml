@@ -189,7 +189,7 @@
         </service>-->
 
         <service
-            android:name=".push_notifications.FCMService"
+            android:name=".services.FCMService"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
