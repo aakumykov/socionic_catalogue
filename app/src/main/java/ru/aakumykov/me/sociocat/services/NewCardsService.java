@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.services;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -14,9 +15,7 @@ public class NewCardsService extends Service {
 
     private static final String TAG = "NewCardsService";
     private int newCardsCount = 0;
-
-    public NewCardsService() {
-    }
+    private MyBinder binder = new MyBinder();
 
 
     // Service
@@ -24,12 +23,12 @@ public class NewCardsService extends Service {
     public void onCreate() {
         Log.d(TAG, "onCreate()");
         super.onCreate();
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand()");
-        EventBus.getDefault().register(this);
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -43,8 +42,7 @@ public class NewCardsService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "onBind()");
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+        return binder;
     }
 
 
@@ -73,5 +71,12 @@ public class NewCardsService extends Service {
 
     private synchronized void setNewCardsCount(int count) {
         newCardsCount = count;
+    }
+
+
+    public class MyBinder extends Binder {
+        public NewCardsService getService() {
+            return NewCardsService.this;
+        }
     }
 }

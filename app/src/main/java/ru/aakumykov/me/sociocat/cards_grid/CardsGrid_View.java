@@ -1,11 +1,14 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
@@ -46,6 +49,7 @@ import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_model.CardsGrid_ViewModel;
 import ru.aakumykov.me.sociocat.cards_grid.view_model.CardsGrid_ViewModel_Factory;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.services.NewCardsService;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -82,6 +86,8 @@ public class CardsGrid_View extends BaseView implements
     private final static String KEY_LIST_STATE = "LIST_STATE";
     private int backPressedCount = 0;
     private Menu menu;
+    private ServiceConnection newCardsServiceConnection;
+    private NewCardsService newCardsService;
 
 
     // Системные методы
@@ -114,11 +120,36 @@ public class CardsGrid_View extends BaseView implements
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
         recyclerView.setLayoutManager(layoutManager);
 
+        newCardsServiceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                newCardsService = ((NewCardsService.MyBinder) iBinder).getService();
+
+                checkForNewCards();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+                newCardsService = null;
+            }
+        };
+
+
+
         configureSwipeRefresh();
 
         configureTagsContainer();
 
         configureFAB();
+    }
+
+    private void checkForNewCards() {
+        if (null != newCardsService) {
+            int newCardsCount = newCardsService.getNewCardsCount();
+            if (newCardsCount > 0) {
+                dataAdapter.showNewCardsAvailableItem();
+            }
+        }
     }
 
     @Override
@@ -148,15 +179,27 @@ public class CardsGrid_View extends BaseView implements
 
         bindComponents();
 
+        bindService(new Intent(this, NewCardsService.class), newCardsServiceConnection, BIND_IMPORTANT);
+
         if (!dataAdapter.hasData())
             presenter.processInputIntent(getIntent());
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        checkForNewCards();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
+
         dataAdapter.disableFiltering();
+
         unbindComponents();
+
+        unbindService(newCardsServiceConnection);
     }
 
     @Override
