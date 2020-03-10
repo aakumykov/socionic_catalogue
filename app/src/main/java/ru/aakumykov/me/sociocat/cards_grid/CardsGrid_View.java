@@ -735,6 +735,7 @@ public class CardsGrid_View extends BaseView implements
         if (null != newCardsService) {
             int newCardsCount = newCardsService.getNewCardsCount();
             if (newCardsCount > 0) {
+                newCardsService.resetNewCardsCount();
                 Message message = handler.obtainMessage(NEW_CARDS_AVAILABLE, newCardsCount);
                 handler.sendMessage(message);
             }
