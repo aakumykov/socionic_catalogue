@@ -15,7 +15,7 @@ public class NewCardsService extends Service {
 
     private static final String TAG = "NewCardsService";
     private int newCardsCount = 0;
-    private MyBinder binder = new MyBinder();
+    private ServiceBinder binder = new ServiceBinder();
 
 
     // Service
@@ -74,7 +74,7 @@ public class NewCardsService extends Service {
     }
 
 
-    public class MyBinder extends Binder {
+    public class ServiceBinder extends Binder {
         public NewCardsService getService() {
             return NewCardsService.this;
         }

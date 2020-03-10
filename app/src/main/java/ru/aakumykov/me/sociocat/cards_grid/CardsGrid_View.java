@@ -128,7 +128,7 @@ public class CardsGrid_View extends BaseView implements
         newCardsServiceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                newCardsService = ((NewCardsService.MyBinder) iBinder).getService();
+                newCardsService = ((NewCardsService.ServiceBinder) iBinder).getService();
                 scheduleNewCardsChecking();
             }
 
