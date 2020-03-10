@@ -71,8 +71,9 @@ public interface iCardsGrid {
         List<iGridItem> getList();
 
         void showLoadMoreItem();
-        void showNewCardsAvailableItem();
         void hideLoadMoreItem(int position);
+
+        void showNewCardsAvailableItem(int count);
 
         void showThrobber(int position);
         void hideThrobber(int position);

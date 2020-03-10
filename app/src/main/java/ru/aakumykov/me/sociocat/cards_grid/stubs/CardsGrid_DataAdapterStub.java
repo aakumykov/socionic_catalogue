@@ -86,11 +86,6 @@ public class CardsGrid_DataAdapterStub implements iCardsGrid.iDataAdapter {
     }
 
     @Override
-    public void showNewCardsAvailableItem() {
-
-    }
-
-    @Override
     public void removeItem(iGridItem gridItem) {
 
     }
@@ -117,6 +112,11 @@ public class CardsGrid_DataAdapterStub implements iCardsGrid.iDataAdapter {
 
     @Override
     public void hideLoadMoreItem(int position) {
+
+    }
+
+    @Override
+    public void showNewCardsAvailableItem(int count) {
 
     }
 

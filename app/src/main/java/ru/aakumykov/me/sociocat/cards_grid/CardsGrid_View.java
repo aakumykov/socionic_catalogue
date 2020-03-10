@@ -735,7 +735,6 @@ public class CardsGrid_View extends BaseView implements
         if (null != newCardsService) {
             int newCardsCount = newCardsService.getNewCardsCount();
             if (newCardsCount > 0) {
-                newCardsService.resetNewCardsCount();
                 Message message = handler.obtainMessage(NEW_CARDS_AVAILABLE, newCardsCount);
                 handler.sendMessage(message);
             }
@@ -748,7 +747,7 @@ public class CardsGrid_View extends BaseView implements
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case NEW_CARDS_AVAILABLE:
-                        dataAdapter.showNewCardsAvailableItem();
+                        dataAdapter.showNewCardsAvailableItem((Integer) msg.obj);
                         break;
                     default:
                         super.handleMessage(msg);

@@ -144,7 +144,7 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         else if (gridItem instanceof GridItem_NewCards) {
             NewCards_ViewHolder newCardsViewHolder = (NewCards_ViewHolder) viewHolder;
-            newCardsViewHolder.initialize();
+            newCardsViewHolder.initialize(((GridItem_NewCards) gridItem).getCount());
         }
         else {
             throw new RuntimeException("Unknown item type: "+gridItem);
@@ -331,18 +331,26 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void showNewCardsAvailableItem() {
-        itemsList.add(0, new GridItem_NewCards());
-        notifyItemInserted(0);
-    }
-
-    @Override
     public void hideLoadMoreItem(int position) {
         iGridItem gridItem = itemsList.get(position);
         if (gridItem instanceof GridItem_LoadMore) {
             itemsList.remove(position);
             notifyItemRemoved(position);
         }
+    }
+
+    @Override
+    public void showNewCardsAvailableItem(int count) {
+        iGridItem gridItem = getGridItem(0);
+
+        GridItem_NewCards newCardsGridItem = new GridItem_NewCards(count);
+
+        if (gridItem instanceof GridItem_NewCards)
+            itemsList.set(0, newCardsGridItem);
+        else
+            itemsList.add(0, newCardsGridItem);
+
+        notifyItemInserted(0);
     }
 
     @Override

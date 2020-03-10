@@ -24,8 +24,8 @@ public class NewCards_ViewHolder extends BaseViewHolder {
         this.presenter = presenter;
     }
 
-    public void initialize() {
-        String title = labelView.getResources().getString(R.string.CARDS_GRID_new_cards_available);
+    public void initialize(int count) {
+        String title = labelView.getResources().getString(R.string.CARDS_GRID_new_cards_available, count);
         labelView.setText(title);
     }
 }
