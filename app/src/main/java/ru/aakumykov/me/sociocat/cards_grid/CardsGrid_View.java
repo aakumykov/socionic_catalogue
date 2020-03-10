@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -124,8 +126,7 @@ public class CardsGrid_View extends BaseView implements
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                 newCardsService = ((NewCardsService.MyBinder) iBinder).getService();
-
-                checkForNewCards();
+                scheduleNewCardsChecking();
             }
 
             @Override
@@ -135,21 +136,11 @@ public class CardsGrid_View extends BaseView implements
         };
 
 
-
         configureSwipeRefresh();
 
         configureTagsContainer();
 
         configureFAB();
-    }
-
-    private void checkForNewCards() {
-        if (null != newCardsService) {
-            int newCardsCount = newCardsService.getNewCardsCount();
-            if (newCardsCount > 0) {
-                dataAdapter.showNewCardsAvailableItem();
-            }
-        }
     }
 
     @Override
@@ -183,12 +174,6 @@ public class CardsGrid_View extends BaseView implements
 
         if (!dataAdapter.hasData())
             presenter.processInputIntent(getIntent());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkForNewCards();
     }
 
     @Override
@@ -690,7 +675,7 @@ public class CardsGrid_View extends BaseView implements
         searchWidget.setVisible(false);
     }
 
-    List<iGridItem> getSavedCardsList() {
+    private List<iGridItem> getSavedCardsList() {
         try {
             List<iGridItem> gridItemsList = new ArrayList<>();
 
@@ -743,4 +728,24 @@ public class CardsGrid_View extends BaseView implements
         }
     }
 
+    private void checkForNewCards() {
+        if (null != newCardsService) {
+            int newCardsCount = newCardsService.getNewCardsCount();
+            if (newCardsCount > 0) {
+                dataAdapter.showNewCardsAvailableItem();
+            }
+        }
+    }
+
+    private void scheduleNewCardsChecking() {
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                checkForNewCards();
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.schedule(timerTask, 1000L, 10000L);
+    }
 }
