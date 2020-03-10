@@ -158,7 +158,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 dataAdapter.hideCheckingNewCardsThrobber();
-                dataAdapter.insertList(0, cardsList2gridItemsList(list));
+                dataAdapter.addNewCards(cardsList2gridItemsList(list));
+                //dataAdapter.insertList(0, cardsList2gridItemsList(list));
             }
 
             @Override

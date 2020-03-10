@@ -131,6 +131,11 @@ public class CardsGrid_DataAdapterStub implements iCardsGrid.iDataAdapter {
     }
 
     @Override
+    public void addNewCards(List<iGridItem> gridItemsList) {
+
+    }
+
+    @Override
     public void showThrobber(int position) {
 
     }

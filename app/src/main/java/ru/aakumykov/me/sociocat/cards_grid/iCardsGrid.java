@@ -76,6 +76,7 @@ public interface iCardsGrid {
         void showNewCardsAvailableItem(int count);
         void showCheckingNewCardsThrobber();
         void hideCheckingNewCardsThrobber();
+        void addNewCards(List<iGridItem> gridItemsList);
 
         void showThrobber(int position);
         void hideThrobber(int position);

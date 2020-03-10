@@ -45,6 +45,8 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private iCardsGrid.iLoadMoreClickListener loadMoreClickListener;
 
     private int fakeIndex = 0;
+    private boolean isLoadingNewCards;
+
 
     public CardsGrid_DataAdapter(iCardsGrid.iPageView pageView,
                                  iCardsGrid.iGridItemClickListener gridItemClickListener,
@@ -346,6 +348,9 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void showNewCardsAvailableItem(int count) {
+        if (isLoadingNewCards)
+            return;
+
         iGridItem gridItem = getGridItem(0);
 
         GridItem_NewCards newCardsGridItem = new GridItem_NewCards(count);
@@ -362,6 +367,9 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void showCheckingNewCardsThrobber() {
+
+        isLoadingNewCards = true;
+
         iGridItem gridItem = getGridItem(0);
 
         if (gridItem instanceof GridItem_NewCards) {
@@ -375,12 +383,23 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void hideCheckingNewCardsThrobber() {
+
         iGridItem gridItem = getGridItem(0);
 
         if (gridItem instanceof GridItem_Throbber) {
             itemsList.remove(0);
             notifyItemRemoved(0);
         }
+    }
+
+    @Override
+    public void addNewCards(List<iGridItem> gridItemsList) {
+
+        hideCheckingNewCardsThrobber();
+
+        insertList(0, gridItemsList);
+
+        isLoadingNewCards = false;
     }
 
     @Override
