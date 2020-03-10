@@ -34,7 +34,6 @@ public class MyApp extends Application {
 
     private final static String TAG = "=MyApp=";
     private iUsersSingleton usersSingleton;
-    private volatile int newCardsCount = 0;
 
     // Методы Application
     @Override
