@@ -27,5 +27,12 @@ public class NewCards_ViewHolder extends BaseViewHolder {
     public void initialize(int count) {
         String title = labelView.getResources().getString(R.string.CARDS_GRID_new_cards_available, count);
         labelView.setText(title);
+
+        mainView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.onNewCardsAvailableClicked();
+            }
+        });
     }
 }

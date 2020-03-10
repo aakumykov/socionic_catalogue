@@ -74,6 +74,8 @@ public interface iCardsGrid {
         void hideLoadMoreItem(int position);
 
         void showNewCardsAvailableItem(int count);
+        void showCheckingNewCardsThrobber();
+        void hideCheckingNewCardsThrobber();
 
         void showThrobber(int position);
         void hideThrobber(int position);
@@ -98,6 +100,7 @@ public interface iCardsGrid {
         void onRefreshRequested();
 
         void onLoadMoreClicked(int position);
+        void onNewCardsAvailableClicked();
 
         void onCardClicked(int position);
         void onCardLongClicked(int position, View view, iGridViewHolder gridViewHolder);

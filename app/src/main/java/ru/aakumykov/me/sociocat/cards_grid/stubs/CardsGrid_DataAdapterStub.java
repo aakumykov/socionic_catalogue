@@ -121,6 +121,16 @@ public class CardsGrid_DataAdapterStub implements iCardsGrid.iDataAdapter {
     }
 
     @Override
+    public void showCheckingNewCardsThrobber() {
+
+    }
+
+    @Override
+    public void hideCheckingNewCardsThrobber() {
+
+    }
+
+    @Override
     public void showThrobber(int position) {
 
     }

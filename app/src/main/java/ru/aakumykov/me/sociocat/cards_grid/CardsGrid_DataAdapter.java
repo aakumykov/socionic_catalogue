@@ -315,6 +315,11 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         iGridItem gridItem = itemsList.get(0);
 
+        if (gridItem instanceof GridItem_NewCards) {
+            iGridItem gridItem2 = itemsList.get(1);
+            return (gridItem2 instanceof GridItem_Card) ? (GridItem_Card) gridItem2 : null;
+        }
+
         return (gridItem instanceof GridItem_Card) ? (GridItem_Card) gridItem : null;
     }
 
@@ -352,6 +357,29 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         else {
             itemsList.add(0, newCardsGridItem);
             notifyItemInserted(0);
+        }
+    }
+
+    @Override
+    public void showCheckingNewCardsThrobber() {
+        iGridItem gridItem = getGridItem(0);
+
+        if (gridItem instanceof GridItem_NewCards) {
+            itemsList.set(0, new GridItem_Throbber());
+            notifyItemChanged(0);
+        }
+        else {
+            showThrobber(0);
+        }
+    }
+
+    @Override
+    public void hideCheckingNewCardsThrobber() {
+        iGridItem gridItem = getGridItem(0);
+
+        if (gridItem instanceof GridItem_Throbber) {
+            itemsList.remove(0);
+            notifyItemRemoved(0);
         }
     }
 
