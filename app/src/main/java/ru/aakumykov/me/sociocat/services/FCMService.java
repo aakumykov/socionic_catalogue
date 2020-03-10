@@ -25,6 +25,7 @@ public class FCMService extends FirebaseMessagingService {
         Log.d(TAG, "new FCMService()");
     }
 
+    // Service
     @Override
     public void onCreate() {
         super.onCreate();
@@ -38,6 +39,8 @@ public class FCMService extends FirebaseMessagingService {
         createNotificationChannel();
     }
 
+
+    // FirebaseMessagingService
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -97,24 +100,8 @@ public class FCMService extends FirebaseMessagingService {
         //sendRegistrationToServer(token);
     }
 
-    /*private void sendRegistrationToServer(String token) {
-    }*/
 
-    /*private boolean isNotificationChannelEnabled(Context context, @Nullable String channelId){
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
-            return NotificationManagerCompat.from(context).areNotificationsEnabled();
-
-        if(TextUtils.isEmpty(channelId))
-            return false;
-
-        NotificationManagerCompat notificationManagerCompat =  NotificationManagerCompat.from(context);
-        NotificationChannel channel = notificationManagerCompat.getNotificationChannel(channelId);
-        if (null != channel)
-            return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
-        else
-            return false;
-    }*/
-
+    // Внтуренние методы
     private void createNotificationChannel() {
         /*if (TextUtils.isEmpty(channelName)) {
             Log.e(TAG, "Channel name cannot be empty");
@@ -135,4 +122,22 @@ public class FCMService extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(channel);
         }
     }
+
+    /*private void sendRegistrationToServer(String token) {
+    }*/
+
+    /*private boolean isNotificationChannelEnabled(Context context, @Nullable String channelId){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+            return NotificationManagerCompat.from(context).areNotificationsEnabled();
+
+        if(TextUtils.isEmpty(channelId))
+            return false;
+
+        NotificationManagerCompat notificationManagerCompat =  NotificationManagerCompat.from(context);
+        NotificationChannel channel = notificationManagerCompat.getNotificationChannel(channelId);
+        if (null != channel)
+            return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
+        else
+            return false;
+    }*/
 }
