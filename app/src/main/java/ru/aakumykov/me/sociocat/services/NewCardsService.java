@@ -39,6 +39,7 @@ public class NewCardsService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+
     // Внешние методы
     public int getNewCardsCount() {
         return newCardsCount;

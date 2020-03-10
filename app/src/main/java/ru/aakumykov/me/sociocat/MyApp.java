@@ -26,6 +26,7 @@ import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
+import ru.aakumykov.me.sociocat.services.NewCardsService;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -93,6 +94,7 @@ public class MyApp extends Application {
         subscribe2topic("new_cards");
         subscribe2topic("updated_cards");
 
+        startNewCardsService();
     }
 
     // Внутренние методы
@@ -264,5 +266,9 @@ public class MyApp extends Application {
                         MyUtils.printError(TAG, e);
                     }
                 });
+    }
+
+    private void startNewCardsService() {
+        startService(new Intent(this, NewCardsService.class));
     }
 }
