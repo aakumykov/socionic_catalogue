@@ -2,8 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.aakumykov.me.sociocat">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-<!--    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -28,38 +27,39 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
-
-        <activity android:name=".template_of_list.ItemsList_View" android:exported="true"/>
-
-        <activity android:name=".template_of_page.Page_View" android:exported="true" android:windowSoftInputMode="stateHidden" />
-
+        <activity
+            android:name=".template_of_list.ItemsList_View"
+            android:exported="true" />
+        <activity
+            android:name=".template_of_page.Page_View"
+            android:exported="true"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".tags_lsit3.TagsList3_View" />
-
         <activity android:name=".user_show.UserShow_View" />
-
         <activity android:name=".backup_job.BackupActivity">
-            <!--<intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
-
         <activity
             android:name=".login.Login_View"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".cards_grid.CardsGrid_View" />
-
-        <activity android:name=".register_step_1.RegisterStep1_View"
+        <activity
+            android:name=".register_step_1.RegisterStep1_View"
             android:windowSoftInputMode="stateHidden" />
-
-        <activity android:name=".register_step_2.RegisterStep2_View"
-            android:windowSoftInputMode="stateHidden" android:noHistory="true" />
-
-        <activity android:name=".reset_password_step1.ResetPasswordStep1_View"
+        <activity
+            android:name=".register_step_2.RegisterStep2_View"
+            android:noHistory="true"
             android:windowSoftInputMode="stateHidden" />
-
+        <activity
+            android:name=".reset_password_step1.ResetPasswordStep1_View"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".reset_password_step_2.ResetPasswordStep2_View" />
-
         <activity android:name=".external_data_receiver.ExternalDataReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -117,22 +117,21 @@
             android:name=".card_edit.CardEdit_View"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".preferences.PreferencesActivity" />
-
         <activity
             android:name=".backup_job.BackupStatus_Activity"
             android:launchMode="singleTop" />
-
         <activity
             android:name=".card_show.CardShow_View"
-            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
-            />
-
-        <activity android:name=".user_edit.UserEdit_View" android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".user_edit_email.UserEditEmail_View" android:windowSoftInputMode="stateHidden" />
-
-        <activity android:name=".deep_links_receiver.DeepLinksReceiver"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout" />
+        <activity
+            android:name=".user_edit.UserEdit_View"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".user_edit_email.UserEditEmail_View"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".deep_links_receiver.DeepLinksReceiver"
             android:launchMode="singleTask">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -142,17 +141,16 @@
                 <data
                     android:host="sociocat.page.link"
                     android:scheme="https" />
-
                 <data
                     android:host="sociocat.example.org"
                     android:scheme="https" />
-
             </intent-filter>
         </activity>
-
-        <activity android:name=".user_change_password.UserChangePassword_View" android:windowSoftInputMode="stateHidden" />
-
-        <!--<activity
+        <activity
+            android:name=".user_change_password.UserChangePassword_View"
+            android:windowSoftInputMode="stateHidden" />
+        <!--
+<activity
             android:name=".dynamic_link_processor.DLP_View"
             android:noHistory="true">
             <intent-filter>
@@ -168,25 +166,24 @@
                     android:host="sociocat.page.link"
                     android:scheme="https" />
             </intent-filter>
-        </activity>-->
-
+        </activity>
+        -->
         <!-- android:windowSoftInputMode="stateHidden" -->
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_notification_default" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/white" />
-
-        <!--<service
+        <!--
+<service
             android:name=".firebase_cloud_messaging.FCMService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>-->
+        </service>
+        -->
 
         <service
             android:name=".services.FCMService"
@@ -202,7 +199,13 @@
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
         <service android:name=".backup_job.BackupService" />
+
+        <service
+            android:name=".services.NewCardsService"
+            android:enabled="true"
+            android:exported="false" />
 
     </application>
 
