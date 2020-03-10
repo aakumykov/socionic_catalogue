@@ -332,8 +332,8 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void showNewCardsAvailableItem() {
-        itemsList.add(getItemCount(), new GridItem_NewCards());
-        notifyItemInserted(getItemCount());
+        itemsList.add(0, new GridItem_NewCards());
+        notifyItemInserted(0);
     }
 
     @Override
