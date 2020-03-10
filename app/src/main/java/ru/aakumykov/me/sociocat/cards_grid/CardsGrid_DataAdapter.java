@@ -345,12 +345,14 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         GridItem_NewCards newCardsGridItem = new GridItem_NewCards(count);
 
-        if (gridItem instanceof GridItem_NewCards)
+        if (gridItem instanceof GridItem_NewCards) {
             itemsList.set(0, newCardsGridItem);
-        else
+            notifyItemChanged(0);
+        }
+        else {
             itemsList.add(0, newCardsGridItem);
-
-        notifyItemInserted(0);
+            notifyItemInserted(0);
+        }
     }
 
     @Override
