@@ -16,6 +16,7 @@ import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.stubs.CardsGrid_DataAdapterStub;
 import ru.aakumykov.me.sociocat.cards_grid.stubs.CardsGrid_ViewStub;
+import ru.aakumykov.me.sociocat.services.NewCardsService;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
@@ -37,6 +38,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private final static String TAG = "CG3_Presenter";
     private iCardsGrid.iPageView pageView;
     private iCardsGrid.iDataAdapter dataAdapter;
+    private NewCardsService newCardsService;
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private String tagFilter;
@@ -44,17 +46,27 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private boolean newCardsAreLoadedNow = false;
 
     @Override
-    public void linkViews(iCardsGrid.iPageView pageView, iCardsGrid.iDataAdapter dataAdapter) {
+    public void bindComponents(iCardsGrid.iPageView pageView, iCardsGrid.iDataAdapter dataAdapter) {
         this.pageView = pageView;
         this.dataAdapter = dataAdapter;
 
-        //dataAdapter.restoreList(mList, openedItemPosition);
     }
 
     @Override
-    public void unlinkViews() {
+    public void unbindComponents() {
         this.pageView = new CardsGrid_ViewStub();
         this.dataAdapter = new CardsGrid_DataAdapterStub();
+
+    }
+
+    @Override
+    public void bindNewCardsService(NewCardsService newCardsService) {
+        this.newCardsService = newCardsService;
+    }
+
+    @Override
+    public void unbindNewCardsService() {
+        this.newCardsService = null;
     }
 
 
@@ -302,6 +314,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
                     return;
                 }
             }
+
+            newCardsService.addLocallyCreatedCard(card.getKey());
 
             dataAdapter.insertItem(0, new GridItem_Card(card));
             pageView.scroll2position(0);

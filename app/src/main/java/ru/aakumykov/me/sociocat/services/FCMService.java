@@ -14,8 +14,10 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.Map;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
+import ru.aakumykov.me.sociocat.models.Card;
 
 public class FCMService extends FirebaseMessagingService {
 
@@ -72,7 +74,8 @@ public class FCMService extends FirebaseMessagingService {
         Map<String, String> data = remoteMessage.getData();
 
         if (data.containsKey("isCardNotification")) {
-            EventBus.getDefault().post(new NewCardEvent());
+            String cardKey = data.get(Card.KEY_KEY);
+            EventBus.getDefault().post(new NewCardEvent(cardKey));
         }
     }
 

@@ -14,6 +14,7 @@ import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.base_view.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.services.NewCardsService;
 
 public interface iCardsGrid {
 
@@ -98,8 +99,11 @@ public interface iCardsGrid {
     }
 
     interface iPresenter {
-        void linkViews(iPageView pageView, iDataAdapter dataAdapter);
-        void unlinkViews();
+        void bindComponents(iPageView pageView, iDataAdapter dataAdapter);
+        void unbindComponents();
+
+        void bindNewCardsService(NewCardsService newCardsService);
+        void unbindNewCardsService();
 
         void processInputIntent(@Nullable Intent intent);
 

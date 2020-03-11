@@ -134,10 +134,12 @@ public class CardsGrid_View extends BaseView implements
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                 newCardsService = ((NewCardsService.ServiceBinder) iBinder).getService();
                 scheduleNewCardsChecking();
+                presenter.bindNewCardsService(newCardsService);
             }
 
             @Override
             public void onServiceDisconnected(ComponentName componentName) {
+                presenter.unbindNewCardsService();
                 newCardsService = null;
             }
         };
@@ -505,14 +507,14 @@ public class CardsGrid_View extends BaseView implements
 
     // Внутренние методы
     private void bindComponents() {
-        presenter.linkViews(this, dataAdapter);
+        presenter.bindComponents(this, dataAdapter);
         dataAdapter.linkPresenter(presenter);
     }
 
     private void unbindComponents() {
         // В обратном порядке
         dataAdapter.unlinkPresenter();
-        presenter.unlinkViews();
+        presenter.unbindComponents();
     }
 
     private void configureSwipeRefresh() {
