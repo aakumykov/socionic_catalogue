@@ -46,6 +46,11 @@ public interface iCardsGrid {
 
         void showNewCardsNotification(int count);
         void hideNewCardsNotification();
+
+        void showLoadingNewCardsThrobber();
+        void hideLoadingNewCardsThrobber();
+
+        void resetNewCardsCounter();
     }
 
     interface iDataAdapter {
@@ -76,7 +81,7 @@ public interface iCardsGrid {
         void showLoadMoreItem();
         void hideLoadMoreItem(int position);
 
-        void addNewCards(List<iGridItem> gridItemsList);
+        void addNewCards(List<iGridItem> gridItemsList, @Nullable Card newCardsBoundaryKey);
 
         void showThrobber(int position);
         void hideThrobber(int position);
@@ -101,6 +106,8 @@ public interface iCardsGrid {
         void onRefreshRequested();
 
         void onLoadMoreClicked(int position);
+
+        void onNewCardsAvailable(int count);
         void onNewCardsAvailableClicked();
 
         void onCardClicked(int position);

@@ -15,7 +15,6 @@ public class NewCardsService extends Service {
 
     private static final String TAG = "NewCardsService";
     private int newCardsCount = 0;
-    private String newCardsKeyBoundary = null;
     private ServiceBinder binder = new ServiceBinder();
 
 
@@ -52,8 +51,6 @@ public class NewCardsService extends Service {
     public void onNewCardEvent(NewCardEvent newCardEvent) {
         Log.d(TAG, "onNewCardEvent()");
         incrementNewCardsCount();
-        if (null == newCardsKeyBoundary)
-            setNewCardsKeyBoundary(newCardEvent.getCardKey());
     }
 
 
@@ -62,9 +59,8 @@ public class NewCardsService extends Service {
         return newCardsCount;
     }
 
-    public void resetNewCardsMemory() {
+    public void resetNewCardsCount() {
         setNewCardsCount(0);
-        setNewCardsKeyBoundary(null);
     }
 
 
@@ -75,10 +71,6 @@ public class NewCardsService extends Service {
 
     private synchronized void setNewCardsCount(int count) {
         newCardsCount = count;
-    }
-
-    private synchronized void setNewCardsKeyBoundary(String cardKey) {
-        newCardsKeyBoundary = cardKey;
     }
 
 

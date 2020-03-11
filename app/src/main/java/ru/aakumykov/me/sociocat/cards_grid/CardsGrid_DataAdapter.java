@@ -42,9 +42,6 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private iCardsGrid.iGridItemClickListener gridItemClickListener;
     private iCardsGrid.iLoadMoreClickListener loadMoreClickListener;
 
-    private int fakeIndex = 0;
-    private boolean isLoadingNewCards;
-
 
     public CardsGrid_DataAdapter(iCardsGrid.iPageView pageView,
                                  iCardsGrid.iGridItemClickListener gridItemClickListener,
@@ -336,13 +333,19 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void addNewCards(List<iGridItem> gridItemsList) {
+    public void addNewCards(List<iGridItem> gridItemsList, @Nullable Card newCardsBoundaryCard) {
 
         hideCheckingNewCardsThrobber();
 
-        insertList(0, gridItemsList);
+        // Удаляю элементы, добавленные позже сообщения о новых карточках
+        if (null != newCardsBoundaryCard) {
+            iGridItem newCardsBoundaryElement = getGridItem(newCardsBoundaryCard);
+            int boundaryIndex = itemsList.indexOf(newCardsBoundaryElement);
+            List<iGridItem> list2delete = itemsList.subList(0, boundaryIndex);
+            itemsList.removeAll(list2delete);
+        }
 
-        isLoadingNewCards = false;
+        insertList(0, gridItemsList);
     }
 
     @Override

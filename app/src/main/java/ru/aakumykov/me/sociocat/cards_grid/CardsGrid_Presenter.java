@@ -41,7 +41,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private String tagFilter;
     private String filterWord;
-
+    private Card newCardsBoundaryCard;
+    private boolean newCardsAreLoadedNow = false;
 
     @Override
     public void linkViews(iCardsGrid.iPageView pageView, iCardsGrid.iDataAdapter dataAdapter) {
@@ -88,6 +89,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     @Override
     public void onRefreshRequested() {
 
+        pageView.hideMessage();
         pageView.showSwipeThrobber();
 
         iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
@@ -148,24 +150,40 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     }
 
     @Override
+    public void onNewCardsAvailable(int count) {
+        if (newCardsAreLoadedNow)
+            return;
+
+        pageView.showNewCardsNotification(count);
+
+        if (null == newCardsBoundaryCard)
+            newCardsBoundaryCard = (Card) dataAdapter.getFirstCardItem().getPayload();
+    }
+
+    @Override
     public void onNewCardsAvailableClicked() {
         GridItem_Card cardGridItem = dataAdapter.getFirstCardItem();
         Card latestCard = (Card) cardGridItem.getPayload();
 
-//        dataAdapter.showCheckingNewCardsThrobber();
+        newCardsAreLoadedNow = true;
+        pageView.hideNewCardsNotification();
+
+        pageView.showLoadingNewCardsThrobber();
 
         cardsSingleton.loadCardsFromNewestTo(latestCard, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-//                dataAdapter.hideCheckingNewCardsThrobber();
-                dataAdapter.addNewCards(cardsList2gridItemsList(list));
-                //dataAdapter.insertList(0, cardsList2gridItemsList(list));
+                pageView.hideLoadingNewCardsThrobber();
+                dataAdapter.addNewCards(cardsList2gridItemsList(list), newCardsBoundaryCard);
+                newCardsAreLoadedNow = false;
+                pageView.resetNewCardsCounter();
             }
 
             @Override
             public void onListLoadFail(String errorMessage) {
-//                dataAdapter.hideCheckingNewCardsThrobber();
+                pageView.hideLoadingNewCardsThrobber();
                 pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+                newCardsAreLoadedNow = false;
             }
         });
     }

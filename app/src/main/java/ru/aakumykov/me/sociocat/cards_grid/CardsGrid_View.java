@@ -77,6 +77,7 @@ public class CardsGrid_View extends BaseView implements
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.newCardsNotification) TextView newCardsNotification;
+    @BindView(R.id.newCardsThrobber) View newCardsThrobber;
     @BindView(R.id.tagsParentContainer) LinearLayout tagsParentContainer;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.speedDialView) SpeedDialView fabSpeedDialView;
@@ -429,6 +430,21 @@ public class CardsGrid_View extends BaseView implements
         MyUtils.hide(newCardsNotification);
     }
 
+    @Override
+    public void showLoadingNewCardsThrobber() {
+        MyUtils.show(newCardsThrobber);
+    }
+
+    @Override
+    public void hideLoadingNewCardsThrobber() {
+        MyUtils.hide(newCardsThrobber);
+    }
+
+    @Override
+    public void resetNewCardsCounter() {
+        newCardsService.resetNewCardsCount();
+    }
+
 
     // iGridItemClickListener
     @Override
@@ -752,23 +768,13 @@ public class CardsGrid_View extends BaseView implements
         }
     }
 
-    private void checkForNewCards(Handler handler) {
-        if (null != newCardsService) {
-            int newCardsCount = newCardsService.getNewCardsCount();
-            if (newCardsCount > 0) {
-                Message message = handler.obtainMessage(NEW_CARDS_AVAILABLE, newCardsCount);
-                handler.sendMessage(message);
-            }
-        }
-    }
-
     private void scheduleNewCardsChecking() {
         Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case NEW_CARDS_AVAILABLE:
-                        showNewCardsNotification((Integer) msg.obj);
+                        presenter.onNewCardsAvailable((Integer) msg.obj);
                         break;
                     default:
                         super.handleMessage(msg);
@@ -791,4 +797,16 @@ public class CardsGrid_View extends BaseView implements
                 AppConfig.NEW_CARDS_CHECK_INTERVAL
         );
     }
+
+    private void checkForNewCards(Handler handler) {
+        if (null != newCardsService) {
+            int newCardsCount = newCardsService.getNewCardsCount();
+            if (newCardsCount > 0) {
+                Message message = handler.obtainMessage(NEW_CARDS_AVAILABLE, newCardsCount);
+                handler.sendMessage(message);
+            }
+        }
+    }
+
+
 }

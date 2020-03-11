@@ -120,7 +120,7 @@ public class CardsGrid_DataAdapterStub implements iCardsGrid.iDataAdapter {
     }
 
     @Override
-    public void addNewCards(List<iGridItem> gridItemsList) {
+    public void addNewCards(List<iGridItem> gridItemsList, Card newCardsBoundaryKey) {
 
     }
 
