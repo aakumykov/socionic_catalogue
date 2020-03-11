@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
@@ -39,6 +40,7 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.AppConfig;
@@ -74,7 +76,7 @@ public class CardsGrid_View extends BaseView implements
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
-    @BindView(R.id.newCardsNotification) View newCardsNotification;
+    @BindView(R.id.newCardsNotification) TextView newCardsNotification;
     @BindView(R.id.tagsParentContainer) LinearLayout tagsParentContainer;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.speedDialView) SpeedDialView fabSpeedDialView;
@@ -417,7 +419,8 @@ public class CardsGrid_View extends BaseView implements
     }
 
     @Override
-    public void showNewCardsNotification() {
+    public void showNewCardsNotification(int count) {
+        newCardsNotification.setText(getString(R.string.CARDS_GRID_new_cards_available, count));
         MyUtils.show(newCardsNotification);
     }
 
@@ -474,6 +477,13 @@ public class CardsGrid_View extends BaseView implements
             default:
                 return false;
         }
+    }
+
+
+    // Нажатия
+    @OnClick(R.id.newCardsNotification)
+    void onNewCardsAvailableClicked() {
+        presenter.onNewCardsAvailableClicked();
     }
 
 
@@ -758,7 +768,7 @@ public class CardsGrid_View extends BaseView implements
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case NEW_CARDS_AVAILABLE:
-                        dataAdapter.showNewCardsAvailableItem((Integer) msg.obj);
+                        showNewCardsNotification((Integer) msg.obj);
                         break;
                     default:
                         super.handleMessage(msg);

@@ -2,7 +2,6 @@ package ru.aakumykov.me.sociocat.cards_grid.items;
 
 public interface iGridItem {
 
-    int NEW_CARDS_VIEW_TYPE = 5;
     int LOAD_MORE_VIEW_TYPE = 10;
     int THROBBER_VIEW_TYPE = 20;
 

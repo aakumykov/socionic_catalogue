@@ -19,12 +19,10 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_LoadMore;
-import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_NewCards;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Throbber;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.LoadMore_ViewHolder;
-import ru.aakumykov.me.sociocat.cards_grid.view_holders.NewCards_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.models.Card;
@@ -108,14 +106,6 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 viewHolder = new Card_ViewHolder(itemView, presenter);
                 break;
 
-            case iGridItem.NEW_CARDS_VIEW_TYPE:
-                itemView = layoutInflater.inflate(R.layout.cards_grid_new_cards_item, parent, false);
-                viewHolder = new NewCards_ViewHolder(itemView, presenter);
-
-                layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
-                layoutParams.setFullSpan(true);
-                break;
-
             default:
                 throw new RuntimeException("Unknown item view type: "+viewType);
         }
@@ -144,10 +134,6 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         else if (gridItem instanceof GridItem_Throbber) {
             Throbber_ViewHolder throbberViewHolder = (Throbber_ViewHolder) viewHolder;
         }
-        else if (gridItem instanceof GridItem_NewCards) {
-            NewCards_ViewHolder newCardsViewHolder = (NewCards_ViewHolder) viewHolder;
-            newCardsViewHolder.initialize(((GridItem_NewCards) gridItem).getCount());
-        }
         else {
             throw new RuntimeException("Unknown item type: "+gridItem);
         }
@@ -174,8 +160,6 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             return iGridItem.LOAD_MORE_VIEW_TYPE;
         else if (item instanceof GridItem_Throbber)
             return iGridItem.THROBBER_VIEW_TYPE;
-        else if (item instanceof GridItem_NewCards)
-            return iGridItem.NEW_CARDS_VIEW_TYPE;
         else
             return -1;
     }
@@ -317,11 +301,6 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         iGridItem gridItem = itemsList.get(0);
 
-        if (gridItem instanceof GridItem_NewCards) {
-            iGridItem gridItem2 = itemsList.get(1);
-            return (gridItem2 instanceof GridItem_Card) ? (GridItem_Card) gridItem2 : null;
-        }
-
         return (gridItem instanceof GridItem_Card) ? (GridItem_Card) gridItem : null;
     }
 
@@ -346,43 +325,7 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    @Override
-    public void showNewCardsAvailableItem(int count) {
-        if (isLoadingNewCards)
-            return;
-
-        iGridItem gridItem = getGridItem(0);
-
-        GridItem_NewCards newCardsGridItem = new GridItem_NewCards(count);
-
-        if (gridItem instanceof GridItem_NewCards) {
-            itemsList.set(0, newCardsGridItem);
-            notifyItemChanged(0);
-        }
-        else {
-            itemsList.add(0, newCardsGridItem);
-            notifyItemInserted(0);
-        }
-    }
-
-    @Override
-    public void showCheckingNewCardsThrobber() {
-
-        isLoadingNewCards = true;
-
-        iGridItem gridItem = getGridItem(0);
-
-        if (gridItem instanceof GridItem_NewCards) {
-            itemsList.set(0, new GridItem_Throbber());
-            notifyItemChanged(0);
-        }
-        else {
-            showThrobber(0);
-        }
-    }
-
-    @Override
-    public void hideCheckingNewCardsThrobber() {
+    private void hideCheckingNewCardsThrobber() {
 
         iGridItem gridItem = getGridItem(0);
 

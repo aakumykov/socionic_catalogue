@@ -44,7 +44,7 @@ public interface iCardsGrid {
 
         void scroll2position(int position);
 
-        void showNewCardsNotification();
+        void showNewCardsNotification(int count);
         void hideNewCardsNotification();
     }
 
@@ -76,9 +76,6 @@ public interface iCardsGrid {
         void showLoadMoreItem();
         void hideLoadMoreItem(int position);
 
-        void showNewCardsAvailableItem(int count);
-        void showCheckingNewCardsThrobber();
-        void hideCheckingNewCardsThrobber();
         void addNewCards(List<iGridItem> gridItemsList);
 
         void showThrobber(int position);

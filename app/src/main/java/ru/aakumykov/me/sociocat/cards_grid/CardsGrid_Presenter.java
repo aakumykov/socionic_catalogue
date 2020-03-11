@@ -152,19 +152,19 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         GridItem_Card cardGridItem = dataAdapter.getFirstCardItem();
         Card latestCard = (Card) cardGridItem.getPayload();
 
-        dataAdapter.showCheckingNewCardsThrobber();
+//        dataAdapter.showCheckingNewCardsThrobber();
 
         cardsSingleton.loadCardsFromNewestTo(latestCard, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                dataAdapter.hideCheckingNewCardsThrobber();
+//                dataAdapter.hideCheckingNewCardsThrobber();
                 dataAdapter.addNewCards(cardsList2gridItemsList(list));
                 //dataAdapter.insertList(0, cardsList2gridItemsList(list));
             }
 
             @Override
             public void onListLoadFail(String errorMessage) {
-                dataAdapter.hideCheckingNewCardsThrobber();
+//                dataAdapter.hideCheckingNewCardsThrobber();
                 pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
             }
         });
