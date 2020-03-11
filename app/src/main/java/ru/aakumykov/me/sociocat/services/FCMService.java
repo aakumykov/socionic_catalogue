@@ -71,8 +71,10 @@ public class FCMService extends FirebaseMessagingService {
 
         Map<String, String> data = remoteMessage.getData();
 
-        if (data.containsKey("isCardNotification"))
-            EventBus.getDefault().post(new NewCardEvent());
+        if (data.containsKey("isCardNotification")) {
+            String cardKey = data.get("key");
+            EventBus.getDefault().post(new NewCardEvent(cardKey));
+        }
     }
 
     @Override
