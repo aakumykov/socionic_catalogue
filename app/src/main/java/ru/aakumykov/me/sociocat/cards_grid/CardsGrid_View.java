@@ -74,6 +74,7 @@ public class CardsGrid_View extends BaseView implements
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.newCardsNotification) View newCardsNotification;
     @BindView(R.id.tagsParentContainer) LinearLayout tagsParentContainer;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.speedDialView) SpeedDialView fabSpeedDialView;
@@ -413,6 +414,16 @@ public class CardsGrid_View extends BaseView implements
     @Override
     public void scroll2position(int position) {
         recyclerView.scrollToPosition(position);
+    }
+
+    @Override
+    public void showNewCardsNotification() {
+        MyUtils.show(newCardsNotification);
+    }
+
+    @Override
+    public void hideNewCardsNotification() {
+        MyUtils.hide(newCardsNotification);
     }
 
 

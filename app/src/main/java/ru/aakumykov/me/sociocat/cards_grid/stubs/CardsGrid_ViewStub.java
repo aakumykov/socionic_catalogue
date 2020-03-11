@@ -62,6 +62,16 @@ public class CardsGrid_ViewStub extends BaseView_Stub implements iCardsGrid.iPag
 
     }
 
+    @Override
+    public void showNewCardsNotification() {
+
+    }
+
+    @Override
+    public void hideNewCardsNotification() {
+
+    }
+
     @Override public void showSwipeThrobber() {
 
     }

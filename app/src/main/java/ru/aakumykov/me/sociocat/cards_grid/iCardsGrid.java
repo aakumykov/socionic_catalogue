@@ -43,6 +43,9 @@ public interface iCardsGrid {
         void hideSwipeThrobber();
 
         void scroll2position(int position);
+
+        void showNewCardsNotification();
+        void hideNewCardsNotification();
     }
 
     interface iDataAdapter {
