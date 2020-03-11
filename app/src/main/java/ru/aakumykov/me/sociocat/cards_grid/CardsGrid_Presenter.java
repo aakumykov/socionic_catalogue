@@ -40,7 +40,6 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private String tagFilter;
-    private String filterWord;
     private Card newCardsBoundaryCard;
     private boolean newCardsAreLoadedNow = false;
 
