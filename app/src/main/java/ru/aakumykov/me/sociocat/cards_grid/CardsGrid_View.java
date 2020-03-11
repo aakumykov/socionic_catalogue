@@ -763,6 +763,11 @@ public class CardsGrid_View extends BaseView implements
         };
 
         Timer timer = new Timer();
-        timer.schedule(timerTask, 1000L, 10000L);
+
+        timer.schedule(
+                timerTask,
+                AppConfig.NEW_CARDS_CHECK_DELAY,
+                AppConfig.NEW_CARDS_CHECK_INTERVAL
+        );
     }
 }
