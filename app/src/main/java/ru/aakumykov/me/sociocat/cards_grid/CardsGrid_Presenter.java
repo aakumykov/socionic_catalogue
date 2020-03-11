@@ -44,6 +44,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private String tagFilter;
     private Card newCardsBoundaryCard;
     private boolean newCardsAreLoadedNow = false;
+    private boolean isRefreshing = false;
 
     @Override
     public void bindComponents(iCardsGrid.iPageView pageView, iCardsGrid.iDataAdapter dataAdapter) {
@@ -100,19 +101,27 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     @Override
     public void onRefreshRequested() {
 
+        isRefreshing = true;
+
         pageView.hideMessage();
         pageView.showSwipeThrobber();
+        pageView.hideNewCardsNotification();
 
         iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
+                isRefreshing = false;
+                newCardsService.reset();
+
                 pageView.hideSwipeThrobber();
                 pageView.onPageRefreshed();
+
                 dataAdapter.setList(cardsList2gridItemsList(list));
             }
 
             @Override
             public void onListLoadFail(String errorMessage) {
+                isRefreshing = false;
                 pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
             }
         };
@@ -162,7 +171,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
     @Override
     public void onNewCardsAvailable(int count) {
-        if (newCardsAreLoadedNow)
+        if (newCardsAreLoadedNow || isRefreshing)
             return;
 
         pageView.showNewCardsNotification(count);
