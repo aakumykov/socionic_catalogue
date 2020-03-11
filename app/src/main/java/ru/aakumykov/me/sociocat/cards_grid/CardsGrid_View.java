@@ -442,11 +442,6 @@ public class CardsGrid_View extends BaseView implements
         MyUtils.hide(newCardsThrobber);
     }
 
-    @Override
-    public void resetNewCardsCounter() {
-        newCardsService.resetNewCardsCount();
-    }
-
 
     // iGridItemClickListener
     @Override

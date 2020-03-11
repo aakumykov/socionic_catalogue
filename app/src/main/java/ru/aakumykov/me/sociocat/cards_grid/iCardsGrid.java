@@ -50,8 +50,6 @@ public interface iCardsGrid {
 
         void showLoadingNewCardsThrobber();
         void hideLoadingNewCardsThrobber();
-
-        void resetNewCardsCounter();
     }
 
     interface iDataAdapter {

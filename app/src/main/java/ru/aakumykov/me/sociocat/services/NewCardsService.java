@@ -65,12 +65,13 @@ public class NewCardsService extends Service {
         return newCardsCount;
     }
 
-    public void resetNewCardsCount() {
-        setNewCardsCount(0);
-    }
-
     public void addLocallyCreatedCard(String cardKey) {
         locallyCreatedCardsKeys.add(cardKey);
+    }
+
+    public void reset() {
+        setNewCardsCount(0);
+        clearLocallyCreatedCardsList();
     }
 
 
@@ -86,6 +87,10 @@ public class NewCardsService extends Service {
 
     private synchronized void setNewCardsCount(int count) {
         newCardsCount = count;
+    }
+
+    private synchronized void clearLocallyCreatedCardsList() {
+        locallyCreatedCardsKeys.clear();
     }
 
 
