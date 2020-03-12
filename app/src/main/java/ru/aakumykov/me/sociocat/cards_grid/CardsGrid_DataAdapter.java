@@ -335,8 +335,6 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void addNewCards(List<iGridItem> gridItemsList, @Nullable Card newCardsBoundaryCard) {
 
-        hideCheckingNewCardsThrobber();
-
         // Удаляю элементы, добавленные позже сообщения о новых карточках
         if (null != newCardsBoundaryCard) {
             iGridItem newCardsBoundaryElement = getGridItem(newCardsBoundaryCard);
