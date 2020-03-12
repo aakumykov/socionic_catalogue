@@ -72,23 +72,4 @@ public class FCMService extends FirebaseMessagingService {
         //sendRegistrationToServer(token);
     }
 
-
-    // Внтуренние методы
-    /*private void sendRegistrationToServer(String token) {
-    }*/
-
-    /*private boolean isNotificationChannelEnabled(Context context, @Nullable String channelId){
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
-            return NotificationManagerCompat.from(context).areNotificationsEnabled();
-
-        if(TextUtils.isEmpty(channelId))
-            return false;
-
-        NotificationManagerCompat notificationManagerCompat =  NotificationManagerCompat.from(context);
-        NotificationChannel channel = notificationManagerCompat.getNotificationChannel(channelId);
-        if (null != channel)
-            return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
-        else
-            return false;
-    }*/
 }
