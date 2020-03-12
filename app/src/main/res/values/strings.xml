@@ -396,6 +396,10 @@
     <string name="NOTIFICATIONS_updated_cards_channel_name">Изменённые карточки</string>
     <string name="NOTIFICATIONS_updated_cards_channel_description">Уведомления об отредактированных карточках</string>
 
+    <string name="NOTIFICATIONS_comments_channel_id" translatable="false">comments</string>
+    <string name="NOTIFICATIONS_comments_channel_name">Комментарии</string>
+    <string name="NOTIFICATIONS_comments_channel_description">Уведомления о комментариях</string>
+
     <string name="SHORTCUT_create_text_card_short_label">Текст</string>
     <string name="SHORTCUT_create_text_card_long_label">Создать карточку с текстом</string>
     <string name="SHORTCUT_creation_unavailable">Создание карточки недоступно</string>
