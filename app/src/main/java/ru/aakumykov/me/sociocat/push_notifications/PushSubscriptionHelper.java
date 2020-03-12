@@ -1,5 +1,8 @@
 package ru.aakumykov.me.sociocat.push_notifications;
 
+import android.app.NotificationManager;
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -8,7 +11,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class PushNotificationsSubscriptionHelper {
+public class PushSubscriptionHelper {
 
     public interface SubscriptionCallbacks {
         void onSubscribeSuccess();
@@ -21,7 +24,7 @@ public class PushNotificationsSubscriptionHelper {
     }
 
 
-    private static final String TAG = "FCM_SubscriptionsHelper";
+    private static final String TAG = "NotificationsHelper";
 
 
     public static void subscribe2topic(String topicName, SubscriptionCallbacks callbacks) {

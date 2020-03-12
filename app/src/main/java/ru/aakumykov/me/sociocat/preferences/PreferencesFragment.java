@@ -10,8 +10,8 @@ import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.push_notifications.PushNotificationsSubscriptionHelper;
-import ru.aakumykov.me.sociocat.utils.NotificationChannelHelper;
+import ru.aakumykov.me.sociocat.push_notifications.PushSubscriptionHelper;
+import ru.aakumykov.me.sociocat.utils.NotificationsHelper;
 
 public class PreferencesFragment extends PreferenceFragment implements
         SharedPreferences.OnSharedPreferenceChangeListener
@@ -74,12 +74,12 @@ public class PreferencesFragment extends PreferenceFragment implements
         boolean enabled = sharedPreferences.getBoolean(preferencesKey, false);
 
         if (enabled) {
-            NotificationChannelHelper.createNotificationChannel(
+            NotificationsHelper.createNotificationChannel(
                     getActivity(),
                     Constants.TOPIC_NAME_NEW_CARDS,
                     R.string.NOTIFICATIONS_new_cards_channel_title,
                     R.string.NOTIFICATIONS_new_cards_channel_description,
-                    new NotificationChannelHelper.NotificationChannelCreationCallbacks() {
+                    new NotificationsHelper.NotificationChannelCreationCallbacks() {
                         @Override
                         public void onNotificationChannelCreateSuccess() {
                             subscribe2topic(Constants.TOPIC_NAME_NEW_CARDS, preferencesKey);
@@ -101,12 +101,12 @@ public class PreferencesFragment extends PreferenceFragment implements
         boolean enabled = sharedPreferences.getBoolean(preferencesKey, false);
 
         if (enabled) {
-            NotificationChannelHelper.createNotificationChannel(
+            NotificationsHelper.createNotificationChannel(
                     getActivity(),
                     Constants.TOPIC_NAME_NEW_COMMENTS,
                     R.string.NOTIFICATIONS_new_comments_channel_title,
                     R.string.NOTIFICATIONS_new_comments_channel_description,
-                    new NotificationChannelHelper.NotificationChannelCreationCallbacks() {
+                    new NotificationsHelper.NotificationChannelCreationCallbacks() {
                         @Override
                         public void onNotificationChannelCreateSuccess() {
                             subscribe2topic(Constants.TOPIC_NAME_NEW_COMMENTS, preferencesKey);
@@ -126,7 +126,7 @@ public class PreferencesFragment extends PreferenceFragment implements
 
 
     private void subscribe2topic(String topicName, String preferencesKey) {
-        PushNotificationsSubscriptionHelper.subscribe2topic(topicName, new PushNotificationsSubscriptionHelper.SubscriptionCallbacks() {
+        PushSubscriptionHelper.subscribe2topic(topicName, new PushSubscriptionHelper.SubscriptionCallbacks() {
             @Override
             public void onSubscribeSuccess() {
                 showToast(R.string.PREFERENCE_you_are_subscribed);
@@ -140,7 +140,7 @@ public class PreferencesFragment extends PreferenceFragment implements
     }
 
     private void unsubscribe4romTopic(String topicName, String preferencesKey) {
-        PushNotificationsSubscriptionHelper.unsubscribeFromTopic(topicName, new PushNotificationsSubscriptionHelper.UnsubscriptionCallbacks() {
+        PushSubscriptionHelper.unsubscribeFromTopic(topicName, new PushSubscriptionHelper.UnsubscriptionCallbacks() {
             @Override
             public void onUnsubscribeSuccess() {
                 showToast(R.string.PREFERENCE_you_are_unsubscribed);

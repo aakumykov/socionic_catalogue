@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
 
-public class NotificationChannelHelper {
+public class NotificationsHelper {
 
     public interface NotificationChannelCreationCallbacks {
         void onNotificationChannelCreateSuccess();
@@ -69,5 +69,15 @@ public class NotificationChannelHelper {
             return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
         else
             return false;
+    }
+
+    public static void removeNotification(Context context, int notificationId) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+            return;
+
+        NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+
+        if (null != notificationManager)
+            notificationManager.cancel(notificationId);
     }
 }
