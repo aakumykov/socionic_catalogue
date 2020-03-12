@@ -388,13 +388,11 @@
     <string name="PREFERENCES_you_are_unsubscribed_from_new_cards">Вы отписаны от уведомлений о новых карточках</string>
     <string name="PREFERENCES_error_unsubscribing_from_new_cards_notifications">Ошибка отписки от уведомлений о новых карточках</string>
 
-    <string name="NOTIFICATIONS_new_cards_channel_id" translatable="false">new_cards</string>
-    <string name="NOTIFICATIONS_new_cards_channel_name">Новые карточки</string>
+    <string name="NOTIFICATIONS_new_cards_channel_title">Новые карточки</string>
     <string name="NOTIFICATIONS_new_cards_channel_description">Уведомления о новых карточках</string>
 
-    <string name="NOTIFICATIONS_comments_channel_id" translatable="false">comments</string>
-    <string name="NOTIFICATIONS_comments_channel_name">Комментарии</string>
-    <string name="NOTIFICATIONS_comments_channel_description">Уведомления о комментариях</string>
+    <string name="NOTIFICATIONS_new_comments_channel_title">Комментарии</string>
+    <string name="NOTIFICATIONS_new_comments_channel_description">Уведомления о комментариях</string>
 
     <string name="SHORTCUT_create_text_card_short_label">Текст</string>
     <string name="SHORTCUT_create_text_card_long_label">Создать карточку с текстом</string>
@@ -661,5 +659,8 @@
     <string name="PREFERENCE_notify_about_new_cards_description">Уведомлять о новых карточках</string>
     <string name="PREFERENCE_notify_on_comments_title">Комментарии</string>
     <string name="PREFERENCE_notify_on_comments_description">Уведомлять о комментариях</string>
+    <string name="PREFERENCES_error_changing_preference">Ошибка изменения настройки</string>
+    <string name="PREFERENCE_you_are_unsubscribed">Вы отписаны</string>
+    <string name="PREFERENCE_you_are_subscribed">Подписка оформлена</string>
 
 </resources><!-- «%1$s» -->

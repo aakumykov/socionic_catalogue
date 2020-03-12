@@ -8,14 +8,17 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.services.FCM_SubscriptionsHelper;
+import ru.aakumykov.me.sociocat.utils.NotificationChannelHelper;
 
 public class PreferencesFragment extends PreferenceFragment implements
         SharedPreferences.OnSharedPreferenceChangeListener
 {
     private static final String TAG = "PreferencesFragment";
     private SharedPreferences sharedPreferences;
+
 
     // PreferencesFragment
     @Override
@@ -37,6 +40,7 @@ public class PreferencesFragment extends PreferenceFragment implements
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 
+
     // SharedPreferences.OnSharedPreferenceChangeListener
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -51,11 +55,11 @@ public class PreferencesFragment extends PreferenceFragment implements
 //                else Backup_JobService.unscheduleJob(getActivity());
 //                break;
             case "notify_about_new_cards":
-                processNewCardsNotification();
+                processNewCardsNotification(key);
                 break;
 
             case "notify_on_comments":
-                processCommentsNotification();
+                processCommentsNotification(key);
                 break;
 
             default:
@@ -64,11 +68,99 @@ public class PreferencesFragment extends PreferenceFragment implements
         }
     }
 
-    private void processNewCardsNotification() {
 
+    // Внутренние методы
+    private void processNewCardsNotification(String preferencesKey) {
+        boolean enabled = sharedPreferences.getBoolean(preferencesKey, false);
+
+        if (enabled) {
+            NotificationChannelHelper.createNotificationChannel(
+                    getActivity(),
+                    Constants.TOPIC_NAME_NEW_CARDS,
+                    R.string.NOTIFICATIONS_new_cards_channel_title,
+                    R.string.NOTIFICATIONS_new_cards_channel_description,
+                    new NotificationChannelHelper.NotificationChannelCreationCallbacks() {
+                        @Override
+                        public void onNotificationChannelCreateSuccess() {
+                            subscribe2topic(Constants.TOPIC_NAME_NEW_CARDS, preferencesKey);
+                        }
+
+                        @Override
+                        public void onNotificationChannelCreateError(String errorMsg) {
+                            revertPreferencesKey(preferencesKey, false);
+                        }
+                    }
+            );
+        }
+        else {
+            unsubscribe4romTopic(Constants.TOPIC_NAME_NEW_CARDS, preferencesKey);
+        }
     }
 
-    private void processCommentsNotification() {
+    private void processCommentsNotification(String preferencesKey) {
+        boolean enabled = sharedPreferences.getBoolean(preferencesKey, false);
 
+        if (enabled) {
+            NotificationChannelHelper.createNotificationChannel(
+                    getActivity(),
+                    Constants.TOPIC_NAME_NEW_COMMENTS,
+                    R.string.NOTIFICATIONS_new_comments_channel_title,
+                    R.string.NOTIFICATIONS_new_comments_channel_description,
+                    new NotificationChannelHelper.NotificationChannelCreationCallbacks() {
+                        @Override
+                        public void onNotificationChannelCreateSuccess() {
+                            subscribe2topic(Constants.TOPIC_NAME_NEW_COMMENTS, preferencesKey);
+                        }
+
+                        @Override
+                        public void onNotificationChannelCreateError(String errorMsg) {
+                            revertPreferencesKey(preferencesKey, false);
+                        }
+                    }
+            );
+        }
+        else {
+            unsubscribe4romTopic(Constants.TOPIC_NAME_NEW_CARDS, preferencesKey);
+        }
     }
+
+
+    private void subscribe2topic(String topicName, String preferencesKey) {
+        FCM_SubscriptionsHelper.subscribe2topic(topicName, new FCM_SubscriptionsHelper.SubscriptionCallbacks() {
+            @Override
+            public void onSubscribeSuccess() {
+                showToast(R.string.PREFERENCE_you_are_subscribed);
+            }
+
+            @Override
+            public void onSubscribeError(String errorMsg) {
+                revertPreferencesKey(preferencesKey, false);
+            }
+        });
+    }
+
+    private void unsubscribe4romTopic(String topicName, String preferencesKey) {
+        FCM_SubscriptionsHelper.unsubscribeFromTopic(topicName, new FCM_SubscriptionsHelper.UnsubscriptionCallbacks() {
+            @Override
+            public void onUnsubscribeSuccess() {
+                showToast(R.string.PREFERENCE_you_are_unsubscribed);
+            }
+
+            @Override
+            public void onUnsubscribeError(String errorMsg) {
+                revertPreferencesKey(preferencesKey, true);
+            }
+        });
+    }
+
+
+    private void revertPreferencesKey(String key, boolean toValue) {
+        sharedPreferences.edit().putBoolean(key, toValue).apply();
+        showToast(R.string.PREFERENCES_error_changing_preference);
+    }
+
+    private void showToast(int messageId) {
+        Toast.makeText(getActivity(), messageId, Toast.LENGTH_SHORT).show();
+    }
+
 }

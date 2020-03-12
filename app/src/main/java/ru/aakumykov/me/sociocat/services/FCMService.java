@@ -31,14 +31,6 @@ public class FCMService extends FirebaseMessagingService {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        /*String channelId = getString(R.string.NOTIFICATIONS_new_cards_channel_name);
-        if (isNotificationChannelEnabled(this, channelId))
-            Log.d(TAG, "Канал уведомлений "+channelId+" включен");
-        else
-            Log.d(TAG, "Канал уведомлений "+channelId+" отключен");*/
-
-        createNotificationChannel();
     }
 
 
@@ -46,30 +38,6 @@ public class FCMService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-
-        /*RemoteMessage.Notification notification = remoteMessage.getNotification();
-
-        if (notification != null) {
-            String title = notification.getTitle();
-//            String cardKey = notification.getBody();
-//            String icon = notification.getIcon();
-//            Uri imageURL = notification.getImageUrl();
-//            Integer count = notification.getNotificationCount();
-
-            String channelId = getString(R.string.NOTIFICATIONS_new_cards_channel_id);
-
-            int notificationId = notification.hashCode();
-
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
-                    .setSmallIcon(R.drawable.ic_notification_default)
-                    .setContentTitle(getString(R.string.NOTIFICATIONS_new_card_notification_title))
-                    .setContentText(title)
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(title))
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-            notificationManager.notify(notificationId, notificationBuilder.build());
-        }*/
 
         Map<String, String> data = remoteMessage.getData();
 
@@ -106,27 +74,6 @@ public class FCMService extends FirebaseMessagingService {
 
 
     // Внтуренние методы
-    private void createNotificationChannel() {
-        /*if (TextUtils.isEmpty(channelName)) {
-            Log.e(TAG, "Channel name cannot be empty");
-            return;
-        }*/
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-            String channelId = getString(R.string.NOTIFICATIONS_new_cards_channel_id);
-            String channelName = getString(R.string.NOTIFICATIONS_new_cards_channel_name);
-            String channelDescription = getString(R.string.NOTIFICATIONS_new_cards_channel_description);
-            int importance = NotificationManager.IMPORTANCE_LOW;
-
-            NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
-            channel.setDescription(channelDescription);
-
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-
     /*private void sendRegistrationToServer(String token) {
     }*/
 

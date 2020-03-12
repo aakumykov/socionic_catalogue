@@ -91,9 +91,6 @@ public class MyApp extends Application {
 
         logFCMRegistrationToken();
 
-        subscribe2topic("new_cards");
-        subscribe2topic("updated_cards");
-
         startNewCardsService();
     }
 
@@ -231,39 +228,6 @@ public class MyApp extends Application {
                     public void onFailure(@NonNull Exception e) {
                         Log.e(TAG, e.getMessage());
                         Log.w(TAG, e);
-                    }
-                });
-    }
-
-    private void subscribe2topic(String topicName) {
-
-        FirebaseMessaging.getInstance().subscribeToTopic(topicName)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Вы подписаны на уведомления '"+topicName+"'");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        MyUtils.printError(TAG, e);
-                    }
-                });
-    }
-
-    private void unsubscribeFromTopic(String topicName) {
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(topicName)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Вы отписаны от уведомлений '"+topicName+"'");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        MyUtils.printError(TAG, e);
                     }
                 });
     }

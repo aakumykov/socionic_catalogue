@@ -347,7 +347,7 @@ public class MVPUtils {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static void setupNewCardsNotificationChannel(Context context, boolean doEnable){
 
-        CharSequence sociocatChannelName = context.getString(R.string.NOTIFICATIONS_new_cards_channel_name);
+        CharSequence sociocatChannelName = context.getString(R.string.NOTIFICATIONS_new_cards_channel_title);
         String sociocatChannelDescription = context.getString(R.string.NOTIFICATIONS_new_cards_channel_description);
 
         NotificationChannel adminChannel;
