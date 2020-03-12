@@ -10,6 +10,8 @@ import ru.aakumykov.me.sociocat.R;
 
 public class PreferencesActivity extends AppCompatActivity {
 
+    // TODO: что со статусом авторизации?
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
