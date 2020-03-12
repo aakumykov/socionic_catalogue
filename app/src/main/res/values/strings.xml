@@ -392,10 +392,6 @@
     <string name="NOTIFICATIONS_new_cards_channel_name">Новые карточки</string>
     <string name="NOTIFICATIONS_new_cards_channel_description">Уведомления о новых карточках</string>
 
-    <string name="NOTIFICATIONS_updated_cards_channel_id" translatable="false">updated_cards</string>
-    <string name="NOTIFICATIONS_updated_cards_channel_name">Изменённые карточки</string>
-    <string name="NOTIFICATIONS_updated_cards_channel_description">Уведомления об отредактированных карточках</string>
-
     <string name="NOTIFICATIONS_comments_channel_id" translatable="false">comments</string>
     <string name="NOTIFICATIONS_comments_channel_name">Комментарии</string>
     <string name="NOTIFICATIONS_comments_channel_description">Уведомления о комментариях</string>

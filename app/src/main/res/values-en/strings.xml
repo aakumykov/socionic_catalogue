@@ -385,9 +385,6 @@
     <string name="NOTIFICATIONS_new_cards_channel_name">New cards</string>
     <string name="NOTIFICATIONS_new_cards_channel_description">Notifications about new cards</string>
 
-    <string name="NOTIFICATIONS_updated_cards_channel_name">Updated cards</string>
-    <string name="NOTIFICATIONS_updated_cards_channel_description">Notifications about updated cards</string>
-
     <string name="NOTIFICATIONS_comments_channel_name">Comments</string>
     <string name="NOTIFICATIONS_comments_channel_description">Notifications about comments</string>
 
