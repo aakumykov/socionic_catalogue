@@ -2,8 +2,6 @@ package ru.aakumykov.me.sociocat.utils;
 
 import android.app.Activity;
 import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipDescription;
@@ -43,14 +41,12 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ru.aakumykov.me.sociocat.R;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 public final class MyUtils {
 
@@ -365,38 +361,6 @@ public final class MyUtils {
 
     public static float double2float(Double timecode) {
         return new BigDecimal(timecode).floatValue();
-    }
-
-    // Уведомления
-    public static void createNotificationChannel(
-            Context context,
-            String channelId,
-            String channelName,
-            String channelDescription,
-            int channelImportance
-    ) {
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
-        {
-            NotificationChannel channel = new NotificationChannel(
-                    channelId,
-                    channelName,
-                    channelImportance
-            );
-            channel.setDescription(channelDescription);
-
-//            channel.enableLights(true);
-//            channel.setLightColor(Color.GREEN);
-//            channel.setImportance(channelImportance); // TODO: нужно ли это дублировать здесь?
-//            channel.enableVibration(true);
-
-            NotificationManager notificationManager =
-                    (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-            if (null != notificationManager)
-                notificationManager.createNotificationChannel(channel);
-            else
-                Log.e(TAG, "Cannot obtain NotificationManager to create notification channel: "+channel);
-        }
     }
 
     public static Notification prepareNotification(

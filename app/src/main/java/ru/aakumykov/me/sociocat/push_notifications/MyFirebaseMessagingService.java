@@ -1,8 +1,5 @@
-package ru.aakumykov.me.sociocat.services;
+package ru.aakumykov.me.sociocat.push_notifications;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -14,16 +11,14 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.Map;
 
-import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class FCMService extends FirebaseMessagingService {
+public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String TAG = "FCMService";
+    private static final String TAG = "FCM_Service";
 
-    public FCMService() {
+    public MyFirebaseMessagingService() {
         Log.d(TAG, "new FCMService()");
     }
 

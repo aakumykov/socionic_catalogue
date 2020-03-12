@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.services.FCM_SubscriptionsHelper;
+import ru.aakumykov.me.sociocat.push_notifications.PushNotificationsSubscriptionHelper;
 import ru.aakumykov.me.sociocat.utils.NotificationChannelHelper;
 
 public class PreferencesFragment extends PreferenceFragment implements
@@ -126,7 +126,7 @@ public class PreferencesFragment extends PreferenceFragment implements
 
 
     private void subscribe2topic(String topicName, String preferencesKey) {
-        FCM_SubscriptionsHelper.subscribe2topic(topicName, new FCM_SubscriptionsHelper.SubscriptionCallbacks() {
+        PushNotificationsSubscriptionHelper.subscribe2topic(topicName, new PushNotificationsSubscriptionHelper.SubscriptionCallbacks() {
             @Override
             public void onSubscribeSuccess() {
                 showToast(R.string.PREFERENCE_you_are_subscribed);
@@ -140,7 +140,7 @@ public class PreferencesFragment extends PreferenceFragment implements
     }
 
     private void unsubscribe4romTopic(String topicName, String preferencesKey) {
-        FCM_SubscriptionsHelper.unsubscribeFromTopic(topicName, new FCM_SubscriptionsHelper.UnsubscriptionCallbacks() {
+        PushNotificationsSubscriptionHelper.unsubscribeFromTopic(topicName, new PushNotificationsSubscriptionHelper.UnsubscriptionCallbacks() {
             @Override
             public void onUnsubscribeSuccess() {
                 showToast(R.string.PREFERENCE_you_are_unsubscribed);

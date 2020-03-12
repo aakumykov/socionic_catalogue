@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.services;
+package ru.aakumykov.me.sociocat.push_notifications;
 
 import androidx.annotation.NonNull;
 
@@ -8,7 +8,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class FCM_SubscriptionsHelper {
+public class PushNotificationsSubscriptionHelper {
 
     public interface SubscriptionCallbacks {
         void onSubscribeSuccess();

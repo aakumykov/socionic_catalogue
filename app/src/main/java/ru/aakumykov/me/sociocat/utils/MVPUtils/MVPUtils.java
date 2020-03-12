@@ -1,14 +1,11 @@
 package ru.aakumykov.me.sociocat.utils.MVPUtils;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -17,12 +14,8 @@ import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentManager;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
@@ -273,100 +266,6 @@ public class MVPUtils {
         String namePrefix = context.getResources().getString(R.string.CONFIG_temp_user_name_prefix);
         return namePrefix+"-"+nameSuffix;
     }
-
-
-    // Подписка/отписка от уведомлений по темам
-    public interface TopicNotificationsCallbacks {
-        interface SubscribeCallbacks {
-            void onSubscribeSuccess();
-            void onSubscribeFail(String errorMsg);
-        }
-        interface UnsbscribeCallbacks {
-            void onUnsubscribeSuccess();
-            void onUnsubscribeFail(String errorMsg);
-        }
-    }
-
-    public static void subscribeToTopicNotifications(
-            Context context,
-            String topicName,
-            TopicNotificationsCallbacks.SubscribeCallbacks callbacks
-    ) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            setupNewCardsNotificationChannel(context, true);
-
-        FirebaseMessaging.getInstance().subscribeToTopic(topicName)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        if (null != callbacks)
-                            callbacks.onSubscribeSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        if (null != callbacks)
-                            callbacks.onSubscribeFail(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
-    }
-
-    public static void unsubscribeFromTopicNotifications(
-            Context context,
-            String topicName,
-            TopicNotificationsCallbacks.UnsbscribeCallbacks callbacks
-    ) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            setupNewCardsNotificationChannel(context, true);
-
-        FirebaseMessaging firebaseMessaging = FirebaseMessaging.getInstance();
-
-        firebaseMessaging.unsubscribeFromTopic(topicName)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        if (null != callbacks)
-                            callbacks.onUnsubscribeSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        if (null != callbacks)
-                            callbacks.onUnsubscribeFail(e.getMessage());
-                        e.printStackTrace();
-                    }
-                });
-    }
-
-    // Настройка каналов уведомлений
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private static void setupNewCardsNotificationChannel(Context context, boolean doEnable){
-
-        CharSequence sociocatChannelName = context.getString(R.string.NOTIFICATIONS_new_cards_channel_title);
-        String sociocatChannelDescription = context.getString(R.string.NOTIFICATIONS_new_cards_channel_description);
-
-        NotificationChannel adminChannel;
-        adminChannel = new NotificationChannel(Constants.SOCIOCAT_DEFAULT_NOTIFICATIONS_CHANNEL_NAME, sociocatChannelName, NotificationManager.IMPORTANCE_LOW);
-        adminChannel.setDescription(sociocatChannelDescription);
-//        adminChannel.enableLights(true);
-//        adminChannel.setLightColor(Color.RED);
-        adminChannel.enableVibration(true);
-
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        if (notificationManager != null) {
-            if (doEnable) notificationManager.createNotificationChannel(adminChannel);
-            else notificationManager.deleteNotificationChannel(Constants.SOCIOCAT_DEFAULT_NOTIFICATIONS_CHANNEL_NAME);
-        }
-    }
-
-
 
     public static boolean hasCardDraft(Context context) {
         SharedPreferences sharedPreferences =

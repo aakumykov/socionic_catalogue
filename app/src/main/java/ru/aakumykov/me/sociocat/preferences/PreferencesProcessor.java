@@ -33,18 +33,6 @@ public class PreferencesProcessor {
 
     // Внутренние методы
     private static void processNewCardsSubscription(Context context, boolean isEnabled) {
-        /*if (isEnabled)
-            MVPUtils.subscribeToTopicNotifications(
-                    context,
-                    Constants.TOPIC_NEW_CARDS,
-                    null
-            );
-        else
-            MVPUtils.unsubscribeFromTopicNotifications(
-                    context,
-                    Constants.TOPIC_NEW_CARDS,
-                    null);*/
-
         throw new RuntimeException(MyUtils.getString(context, R.string.not_implemented_yet));
     }
 }
