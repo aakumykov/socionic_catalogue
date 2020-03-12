@@ -121,7 +121,7 @@ public class MyApp extends Application {
         // Если это первый запуск, устанавдиваю в механизме настроек значения по умолчанию и обрабатываю их все
         if (isFirstRun) {
             PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
-            PreferencesProcessor.processAllPreferences(this, defaultSharedPreferences);
+            //PreferencesProcessor.processAllPreferences(this, defaultSharedPreferences);
 
             // Помечаю, что теперь это не первый запуск
             SharedPreferences.Editor editor = defaultSharedPreferences.edit();
