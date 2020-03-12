@@ -97,6 +97,7 @@ public class CardsGrid_View extends BaseView implements
     private Menu menu;
     private ServiceConnection newCardsServiceConnection;
     private NewCardsService newCardsService;
+    private TimerTask newCardsCheckingTimerTask;
 
 
     // Системные методы
@@ -133,17 +134,17 @@ public class CardsGrid_View extends BaseView implements
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                 newCardsService = ((NewCardsService.ServiceBinder) iBinder).getService();
-                scheduleNewCardsChecking();
                 presenter.bindNewCardsService(newCardsService);
+                scheduleNewCardsChecking();
             }
 
             @Override
             public void onServiceDisconnected(ComponentName componentName) {
+                unScheduleNewCardsChecking();
                 presenter.unbindNewCardsService();
                 newCardsService = null;
             }
         };
-
 
         configureSwipeRefresh();
 
@@ -185,6 +186,18 @@ public class CardsGrid_View extends BaseView implements
             presenter.processInputIntent(getIntent());
     }
 
+    /*@Override
+    protected void onResume() {
+        super.onResume();
+        scheduleNewCardsChecking();
+    }*/
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unScheduleNewCardsChecking();
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -194,11 +207,6 @@ public class CardsGrid_View extends BaseView implements
         unbindComponents();
 
         unbindService(newCardsServiceConnection);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -766,7 +774,7 @@ public class CardsGrid_View extends BaseView implements
     }
 
     private void scheduleNewCardsChecking() {
-        Handler handler = new Handler() {
+        Handler newCardsCheckingHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
@@ -779,20 +787,22 @@ public class CardsGrid_View extends BaseView implements
             }
         };
 
-        TimerTask timerTask = new TimerTask() {
+        newCardsCheckingTimerTask = new TimerTask() {
             @Override
             public void run() {
-                checkForNewCards(handler);
+                checkForNewCards(newCardsCheckingHandler);
             }
         };
 
-        Timer timer = new Timer();
-
-        timer.schedule(
-                timerTask,
+        new Timer().schedule(
+                newCardsCheckingTimerTask,
                 AppConfig.NEW_CARDS_CHECK_DELAY,
                 AppConfig.NEW_CARDS_CHECK_INTERVAL
         );
+    }
+
+    private void unScheduleNewCardsChecking() {
+        newCardsCheckingTimerTask.cancel();
     }
 
     private void checkForNewCards(Handler handler) {
