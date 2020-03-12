@@ -507,7 +507,7 @@
 
     <string name="BACKUP_STATUS_page_title">Информация о резервном копировании</string>
 
-    <string name="PREFERENCE_backup_category">Резервное копирование</string>
+    <string name="PREFERENCE_category_backup">Резервное копирование</string>
     <string name="PREFERENCE_database_backup_title">База данных</string>
     <string name="PREFERENCE_database_backup_description">Выполнять рез. копирование базы данных силами телефона</string>
     <string name="PREFERENCE_database_backup_switched_on_text">Включено</string>
@@ -656,5 +656,10 @@
     <string name="SHORTCUT_PROCESSOR_data_error">Ошибка данных</string>
     <string name="CARDS_GRID_load_more">Загрузить ещё</string>
     <string name="CARDS_GRID_new_cards_available">Есть новые карточки (%1$d)</string>
+    <string name="PREFERENCE_category_notifications">Уведомления</string>
+    <string name="PREFERENCE_notify_about_new_cards_title">Новые карточки</string>
+    <string name="PREFERENCE_notify_about_new_cards_description">Уведомлять о новых карточках</string>
+    <string name="PREFERENCE_notify_on_comments_title">Комментарии</string>
+    <string name="PREFERENCE_notify_on_comments_description">Уведомлять о комментариях</string>
 
 </resources><!-- «%1$s» -->

@@ -499,7 +499,7 @@
 
     <string name="BACKUP_STATUS_page_title">Backup info</string>
 
-    <string name="PREFERENCE_backup_category">Backup</string>
+    <string name="PREFERENCE_category_backup">Backup</string>
     <string name="PREFERENCE_database_backup_title">Database</string>
     <string name="PREFERENCE_database_backup_description">Perform database backup with this phone</string>
     <string name="PREFERENCE_database_backup_switched_on_text">Enabled</string>
@@ -647,5 +647,10 @@
     <string name="SHORTCUT_PROCESSOR_data_error">Data error</string>
     <string name="CARDS_GRID_load_more">Load more</string>
     <string name="CARDS_GRID_new_cards_available">New cards available (%1$d)</string>
+    <string name="PREFERENCE_category_notifications">Notifications</string>
+    <string name="PREFERENCE_notify_about_new_cards_title">New cards</string>
+    <string name="PREFERENCE_notify_about_new_cards_description">Notify about new cards</string>
+    <string name="PREFERENCE_notify_on_comments_title">Comments</string>
+    <string name="PREFERENCE_notify_on_comments_description">Notify about comments</string>
 </resources>
 <!-- «%1$s» -->
