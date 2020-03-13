@@ -17,6 +17,7 @@ import ru.aakumykov.me.sociocat.card_show.stubs.DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iComment_ViewHolder;
+import ru.aakumykov.me.sociocat.utils.NotificationsHelper;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
@@ -389,7 +390,6 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     }
 
     private void showCard(Card card) {
-
         storeCurrentCard(card);
 
         pageView.hideSwipeThrobber();
@@ -398,8 +398,9 @@ public class CardShow_Presenter implements iCardShow.iPresenter
 
         dataAdapter.showCard(card);
 
-        dataAdapter.clearCommentsList();
+        NotificationsHelper.removeNotification(pageView.getAppContext(), card.getKey().hashCode());
 
+        dataAdapter.clearCommentsList();
         loadComments(currentCard.getKey(), null, null);
     }
 
