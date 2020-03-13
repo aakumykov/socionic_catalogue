@@ -84,8 +84,7 @@ public class NotificationsHelper {
             int notificationId,
             String channelId,
             T titleIdOrString,
-            T messageIdOrString,
-            int iconId
+            T messageIdOrString
     ) {
         String title = (titleIdOrString instanceof String) ?
                 (String) titleIdOrString : context.getString((Integer)titleIdOrString);
@@ -95,7 +94,7 @@ public class NotificationsHelper {
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(context, channelId)
-                        .setSmallIcon(iconId)
+                        .setSmallIcon(R.drawable.ic_notification_default)
                         .setContentTitle(title)
                         .setContentText(message)
                         .setAutoCancel(true);
