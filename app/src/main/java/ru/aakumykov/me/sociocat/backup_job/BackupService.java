@@ -113,6 +113,8 @@ public class BackupService extends Service {
             editor.putBoolean(Constants.PREFERENCE_KEY_perform_database_backup, false);
             editor.apply();
 
+            saveLastBackupTime(this);
+
             return START_NOT_STICKY;
         }
     }

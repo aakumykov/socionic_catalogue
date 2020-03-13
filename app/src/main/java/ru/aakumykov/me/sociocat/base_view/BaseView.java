@@ -576,15 +576,16 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     private void produceBackup() {
-        boolean isAdmin = UsersSingleton.getInstance().currentUserIsAdmin();
-        boolean backupIsEnabled = PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(Constants.PREFERENCE_KEY_perform_database_backup, false);
-
         boolean isTimeToDoBackup = BackupService.isTimeToDoBackup(this);
-        boolean backupIsRunning  = BackupService.isRunning();
 
-        if (backupIsEnabled && isAdmin) {
-            if (isTimeToDoBackup && !backupIsRunning) {
+        if (isTimeToDoBackup) {
+
+            boolean isAdmin = UsersSingleton.getInstance().currentUserIsAdmin();
+            boolean backupIsEnabled = PreferenceManager.getDefaultSharedPreferences(this)
+                    .getBoolean(Constants.PREFERENCE_KEY_perform_database_backup, false);
+            boolean backupIsRunning  = BackupService.isRunning();
+
+            if (backupIsEnabled && isAdmin && !backupIsRunning) {
                 try {
                     startService(new Intent(this, BackupService.class));
                 } catch (Exception e) {
