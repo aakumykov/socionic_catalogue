@@ -1,16 +1,26 @@
 package ru.aakumykov.me.sociocat.preferences;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.base_view.BaseView;
 
-public class PreferencesActivity extends AppCompatActivity {
+public class PreferencesActivity extends BaseView {
 
-    // TODO: что со статусом авторизации?
+    @Override
+    public void onUserLogin() {
+
+    }
+
+    @Override
+    public void onUserLogout() {
+        finish();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,6 +36,11 @@ public class PreferencesActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(android.R.id.content, new PreferencesFragment())
                 .commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
     }
 
     @Override
