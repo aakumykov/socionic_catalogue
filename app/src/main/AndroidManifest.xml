@@ -186,7 +186,7 @@
         -->
 
         <service
-            android:name=".push_notifications.MyFirebaseMessagingService"
+            android:name=".push_notifications.FCMService"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

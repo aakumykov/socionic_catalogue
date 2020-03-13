@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.utils;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -7,16 +8,21 @@ import android.os.Build;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+
+import ru.aakumykov.me.sociocat.R;
 
 public class NotificationsHelper {
 
+    private static final String TAG = "NotificationsHelper";
+
+
+    // Каналы уведомлений
     public interface NotificationChannelCreationCallbacks {
         void onNotificationChannelCreateSuccess();
         void onNotificationChannelCreateError(String errorMsg);
     }
-
-    private static final String TAG = "NotifChannelHelper";
 
     public static void createNotificationChannel(
             Context context,
@@ -69,6 +75,34 @@ public class NotificationsHelper {
             return channel.getImportance() != NotificationManager.IMPORTANCE_NONE;
         else
             return false;
+    }
+
+
+    // Уведомления
+    public static <T> void showSimpleNotification(
+            Context context,
+            int notificationId,
+            String channelId,
+            T titleIdOrString,
+            T messageIdOrString,
+            int iconId
+    ) {
+        String title = (titleIdOrString instanceof String) ?
+                (String) titleIdOrString : context.getString((Integer)titleIdOrString);
+
+        String message = (messageIdOrString instanceof String) ?
+                (String) messageIdOrString : context.getString((Integer) messageIdOrString);
+
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(context, channelId)
+                        .setSmallIcon(iconId)
+                        .setContentTitle(title)
+                        .setContentText(message)
+                        .setAutoCancel(true);
+
+        Notification notification = notificationBuilder.build();
+
+        NotificationManagerCompat.from(context).notify(notificationId, notification);
     }
 
     public static void removeNotification(Context context, int notificationId) {

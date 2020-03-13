@@ -14,13 +14,10 @@ import java.util.Map;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class MyFirebaseMessagingService extends FirebaseMessagingService {
+public class FCMService extends FirebaseMessagingService {
 
     private static final String TAG = "FCM_Service";
 
-    public MyFirebaseMessagingService() {
-        Log.d(TAG, "new FCMService()");
-    }
 
     // Service
     @Override
@@ -37,8 +34,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Map<String, String> data = remoteMessage.getData();
 
         if (data.containsKey("isCardNotification")) {
-            String cardKey = data.get(Card.KEY_KEY);
-            EventBus.getDefault().post(new NewCardEvent(cardKey));
+            NewCardEvent newCardEvent = new NewCardEvent();
+
+            newCardEvent.setCardKey(data.get(Card.KEY_KEY));
+            newCardEvent.setCardTitle(data.get(Card.KEY_TITLE));
+            newCardEvent.setCardAuthor(data.get(Card.KEY_USER_NAME));
+
+            EventBus.getDefault().post(newCardEvent);
         }
     }
 

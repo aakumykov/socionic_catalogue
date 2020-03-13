@@ -1,12 +1,16 @@
 package ru.aakumykov.me.sociocat.services;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -14,7 +18,12 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.HashSet;
 import java.util.Set;
 
+import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.backup_job.BackupStatus_Activity;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
+import ru.aakumykov.me.sociocat.utils.NotificationsHelper;
 
 public class NewCardsService extends Service {
 
@@ -26,27 +35,23 @@ public class NewCardsService extends Service {
     // Service
     @Override
     public void onCreate() {
-        Log.d(TAG, "onCreate()");
         super.onCreate();
         EventBus.getDefault().register(this);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand()");
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "onDestroy()");
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "onBind()");
         return binder;
     }
 
@@ -54,9 +59,10 @@ public class NewCardsService extends Service {
     // Подписка на событие NewCardEvent
     @Subscribe
     public void onNewCardEvent(NewCardEvent newCardEvent) {
-        Log.d(TAG, "onNewCardEvent()");
         String cardKey = newCardEvent.getCardKey();
         incrementNewCardsCount(cardKey);
+
+        showNewCardNotification(newCardEvent);
     }
 
 
@@ -91,6 +97,36 @@ public class NewCardsService extends Service {
 
     private synchronized void clearLocallyCreatedCardsList() {
         locallyCreatedCardsKeys.clear();
+    }
+
+    private void showNewCardNotification(@NonNull NewCardEvent newCardEvent) {
+        String cardKey = newCardEvent.getCardKey();
+        int notificationId = cardKey.hashCode();
+
+        Intent intent = new Intent(this, CardShow_View.class);
+        intent.putExtra(Constants.CARD_KEY, cardKey);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this,
+                Constants.CODE_SHOW_CARD,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        String title = getString(R.string.aquotes, newCardEvent.getCardTitle());
+
+        String message = getString(R.string.NOTIFICATIONS_new_card_notification_message, newCardEvent.getCardAuthor());
+
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, Constants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS)
+                        .setSmallIcon(R.drawable.ic_notification_new_card)
+                        .setContentTitle(title)
+                        .setContentText(message)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
+
+        Notification notification = notificationBuilder.build();
+        NotificationManagerCompat.from(this).notify(notificationId, notification);
     }
 
 

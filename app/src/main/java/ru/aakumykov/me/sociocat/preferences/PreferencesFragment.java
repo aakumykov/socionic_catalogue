@@ -76,13 +76,13 @@ public class PreferencesFragment extends PreferenceFragment implements
         if (enabled) {
             NotificationsHelper.createNotificationChannel(
                     getActivity(),
-                    Constants.TOPIC_NAME_NEW_CARDS,
+                    Constants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS,
                     R.string.NOTIFICATIONS_new_cards_channel_title,
                     R.string.NOTIFICATIONS_new_cards_channel_description,
                     new NotificationsHelper.NotificationChannelCreationCallbacks() {
                         @Override
                         public void onNotificationChannelCreateSuccess() {
-                            subscribe2topic(Constants.TOPIC_NAME_NEW_CARDS, preferencesKey);
+                            subscribe2topic(Constants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS, preferencesKey);
                         }
 
                         @Override
@@ -93,7 +93,7 @@ public class PreferencesFragment extends PreferenceFragment implements
             );
         }
         else {
-            unsubscribe4romTopic(Constants.TOPIC_NAME_NEW_CARDS, preferencesKey);
+            unsubscribe4romTopic(Constants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS, preferencesKey);
         }
     }
 
@@ -103,13 +103,13 @@ public class PreferencesFragment extends PreferenceFragment implements
         if (enabled) {
             NotificationsHelper.createNotificationChannel(
                     getActivity(),
-                    Constants.TOPIC_NAME_NEW_COMMENTS,
+                    Constants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_COMMENTS,
                     R.string.NOTIFICATIONS_new_comments_channel_title,
                     R.string.NOTIFICATIONS_new_comments_channel_description,
                     new NotificationsHelper.NotificationChannelCreationCallbacks() {
                         @Override
                         public void onNotificationChannelCreateSuccess() {
-                            subscribe2topic(Constants.TOPIC_NAME_NEW_COMMENTS, preferencesKey);
+                            subscribe2topic(Constants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_COMMENTS, preferencesKey);
                         }
 
                         @Override
@@ -120,7 +120,7 @@ public class PreferencesFragment extends PreferenceFragment implements
             );
         }
         else {
-            unsubscribe4romTopic(Constants.TOPIC_NAME_NEW_CARDS, preferencesKey);
+            unsubscribe4romTopic(Constants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS, preferencesKey);
         }
     }
 
