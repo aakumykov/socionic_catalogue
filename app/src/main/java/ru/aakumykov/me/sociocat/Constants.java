@@ -124,6 +124,9 @@ public final class Constants
     public final static String PREFERENCE_KEY_IS_FIRST_RUN = "PREFERENCE_KEY_IS_FIRST_RUN";
     public static final String PREFERENCE_KEY_LAST_BACKUP_TIME = "PREFERENCE_KEY_LAST_BACKUP_TIME";
 
+    public final static String PREFERENCE_notify_about_new_cards = "notify_about_new_cards";
+    public final static String PREFERENCE_notify_on_comments = "notify_on_comments";
+
     public static String DRAFT_DEFERRED = "DRAFT_DEFERRED";
 
     // Эти значения должны совпадать с атрибутами "action" в файлах shortcuts.xml

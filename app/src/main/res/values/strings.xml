@@ -505,6 +505,7 @@
 
     <string name="BACKUP_STATUS_page_title">Информация о резервном копировании</string>
 
+    <string name="PREFERENCE_category_backup_key" translatable="false">category_backup</string>
     <string name="PREFERENCE_category_backup">Резервное копирование</string>
     <string name="PREFERENCE_database_backup_title">База данных</string>
     <string name="PREFERENCE_database_backup_description">Выполнять рез. копирование базы данных силами телефона</string>

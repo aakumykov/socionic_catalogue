@@ -25,7 +25,10 @@
             android:title="@string/PREFERENCE_notify_on_comments_title" />
 
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/PREFERENCE_category_backup">
+
+    <PreferenceCategory
+        android:key="@string/PREFERENCE_category_backup_key"
+        android:title="@string/PREFERENCE_category_backup">
 
         <EditTextPreference
             android:defaultValue="@string/PREFERENCE_dropbox_access_token_stub"
@@ -38,9 +41,8 @@
 
         <SwitchPreference
             android:key="perform_database_backup"
-            android:title="@string/PREFERENCE_database_backup_title"
             android:summary="@string/PREFERENCE_database_backup_description"
-        />
+            android:title="@string/PREFERENCE_database_backup_title" />
 
     </PreferenceCategory>
 

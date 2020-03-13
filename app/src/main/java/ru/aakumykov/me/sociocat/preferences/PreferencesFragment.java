@@ -2,7 +2,9 @@ package ru.aakumykov.me.sociocat.preferences;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -11,6 +13,7 @@ import androidx.annotation.Nullable;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.push_notifications.PushSubscriptionHelper;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.NotificationsHelper;
 
 public class PreferencesFragment extends PreferenceFragment implements
@@ -19,13 +22,19 @@ public class PreferencesFragment extends PreferenceFragment implements
     private static final String TAG = "PreferencesFragment";
     private SharedPreferences sharedPreferences;
 
-
     // PreferencesFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         sharedPreferences = getPreferenceScreen().getSharedPreferences();
+
+        if (!UsersSingleton.getInstance().currentUserIsAdmin()) {
+            String categoryName = getString(R.string.PREFERENCE_category_backup_key);
+            PreferenceCategory category = (PreferenceCategory) findPreference(categoryName);
+            PreferenceScreen preferenceScreen = getPreferenceScreen();
+            preferenceScreen.removePreference(category);
+        }
     }
 
     @Override
@@ -54,11 +63,11 @@ public class PreferencesFragment extends PreferenceFragment implements
 //                if (enabled) Backup_JobService.scheduleJob(getActivity());
 //                else Backup_JobService.unscheduleJob(getActivity());
 //                break;
-            case "notify_about_new_cards":
+            case Constants.PREFERENCE_notify_about_new_cards:
                 processNewCardsNotification(key);
                 break;
 
-            case "notify_on_comments":
+            case Constants.PREFERENCE_notify_on_comments:
                 processCommentsNotification(key);
                 break;
 
