@@ -30,20 +30,20 @@
         android:key="@string/PREFERENCE_category_backup_key"
         android:title="@string/PREFERENCE_category_backup">
 
-        <EditTextPreference
-            android:defaultValue="@string/PREFERENCE_dropbox_access_token_stub"
-            android:key="dropbox_access_token"
-            android:selectAllOnFocus="true"
-            android:singleLine="false"
-            android:summary="@string/PREFERENCE_dropbox_access_token_description"
-            android:title="@string/PREFERENCE_dropbox_access_token_title"
-            app:defaultValue="true" />
-
         <SwitchPreference
             android:defaultValue="false"
             android:key="perform_database_backup"
             android:summary="@string/PREFERENCE_database_backup_description"
             android:title="@string/PREFERENCE_database_backup_title" />
+
+        <EditTextPreference
+            android:key="dropbox_access_token"
+            android:dependency="perform_database_backup"
+            android:selectAllOnFocus="true"
+            android:singleLine="false"
+            android:summary="@string/PREFERENCE_dropbox_access_token_description"
+            android:title="@string/PREFERENCE_dropbox_access_token_title"
+            app:defaultValue="true" />
 
     </PreferenceCategory>
 
