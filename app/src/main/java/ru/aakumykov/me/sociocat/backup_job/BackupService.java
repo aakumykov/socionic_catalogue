@@ -108,11 +108,6 @@ public class BackupService extends Service {
                     R.string.BACKUP_SERVICE_dropbox_access_token_missing
             );
 
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(Constants.PREFERENCE_KEY_perform_database_backup, false);
-            editor.apply();
-
             saveLastBackupTime(this);
 
             return START_NOT_STICKY;
