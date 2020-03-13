@@ -87,8 +87,6 @@ public class MyApp extends Application {
 
         prepareDefaultPreferences();
 
-        produceBackup();
-
         logFCMRegistrationToken();
 
         startNewCardsService();
@@ -202,16 +200,6 @@ public class MyApp extends Application {
 //
 //        }
 //    }
-
-    private void produceBackup() {
-        if (BackupService.isTimeToDoBackup(this)) {
-            try {
-                startService(new Intent(this, BackupService.class));
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
-        }
-    }
 
     private void logFCMRegistrationToken() {
 

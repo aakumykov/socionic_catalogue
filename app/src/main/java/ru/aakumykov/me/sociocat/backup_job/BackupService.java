@@ -64,13 +64,14 @@ public class BackupService extends Service {
     );
 
     private static boolean isRunning = false;
-    private static boolean backupImpossible = true;
+    private static boolean backupIsImpossible = true;
     private String targetDirName;
     private String imagesDirName;
 
     private List<BackupElement> backupPool = new ArrayList<>();
     private List<Card> backuppingCardsList = new ArrayList<>();
     private Map<String, Card> previousCollection = new HashMap<>();
+    private String dropboxAccessToken;
 
 
     // ======================== УПРАВЛЕНИЕ СЛУЖБОЙ ========================
@@ -78,52 +79,42 @@ public class BackupService extends Service {
     public void onCreate() {
         super.onCreate();
 
+        // TODO: убрать в настройки
         createNotificationChannel(this);
+    }
 
+    private boolean backupIsPossible() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final String KEY_NAME = "dropbox_access_token";
-
-        String dropboxAccessToken = (sharedPreferences.contains(KEY_NAME)) ?
-                sharedPreferences.getString(KEY_NAME, null) : null;
-
-        if (null != dropboxAccessToken)
-            dropboxAccessToken = dropboxAccessToken.trim();
-
-        String dropboxAccessTokenStub = getString(R.string.PREFERENCE_dropbox_access_token_stub);
-
-        // Если dropboxAccessToken содержит заглушку
-        if (dropboxAccessTokenStub.equals(dropboxAccessToken)) {
-
-            showCustomNotification(
-                    R.string.BACKUP_SERVICE_backup_impossible,
-                    R.string.BACKUP_SERVICE_dropbox_access_token_missing
-            );
-
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("perform_database_backup", false);
-            editor.commit();
-        }
-        else {
-            backupImpossible = false;
-            dropboxBackuper = new DropboxBackuper(dropboxAccessToken);
-        }
+        dropboxAccessToken = sharedPreferences.getString(Constants.PREFERENCE_KEY_dropbox_access_token, null);
+        return !TextUtils.isEmpty(dropboxAccessToken);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        //Log.d(TAG, "onStartCommand()");
 
-        if (backupImpossible)
+        if (backupIsPossible()) {
+            dropboxBackuper = new DropboxBackuper(dropboxAccessToken);
+
+            sendServiceBroadcast(SERVICE_STATUS_START);
+            startBackup();
+
+            isRunning = true;
             return START_NOT_STICKY;
+        }
+        else {
+            showCustomNotification(
+                    R.string.BACKUP_SERVICE_backup_impossible,
+                    R.string.BACKUP_SERVICE_dropbox_access_token_missing
+            );
 
-        sendServiceBroadcast(SERVICE_STATUS_START);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(Constants.PREFERENCE_KEY_perform_database_backup, false);
+            editor.apply();
 
-        startBackup();
-
-        isRunning = true;
-
-        return START_NOT_STICKY;
+            return START_NOT_STICKY;
+        }
     }
 
     @Nullable @Override
@@ -144,7 +135,7 @@ public class BackupService extends Service {
     private void startBackup() {
         notifyAboutBackupProgress(MyUtils.getString(this, R.string.BACKUP_SERVICE_backup_started));
 
-        restoreBackupedCards();
+        readPreviouslyBackupedCards();
 
         createBackupDirs();
     }
@@ -471,7 +462,7 @@ public class BackupService extends Service {
         editor.apply();
     }
 
-    private void restoreBackupedCards() {
+    private void readPreviouslyBackupedCards() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_BACKUP_SERVICE, Context.MODE_PRIVATE);
 
         if (sharedPreferences.contains(KEY_CARDS_LIST)) {
@@ -710,7 +701,7 @@ public class BackupService extends Service {
         long currentTimeInSeconds = MyUtils.getCurrentTimeInSeconds();
         long elapsedTime = currentTimeInSeconds - lastBackupTime;
 
-        return elapsedTime > AppConfig.BACKUP_INTERVAL_SECONDS;
+        return elapsedTime > AppConfig.BACKUP_INTERVAL_IN_SECONDS;
     }
 
     public static void saveLastBackupTime(Context context) {

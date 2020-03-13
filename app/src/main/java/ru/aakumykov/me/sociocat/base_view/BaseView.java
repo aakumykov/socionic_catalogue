@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +25,10 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.BuildConfig;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
@@ -31,6 +37,7 @@ import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 import ru.aakumykov.me.sociocat.login.Login_View;
 import ru.aakumykov.me.sociocat.preferences.PreferencesActivity;
@@ -74,6 +81,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         saveLastLoginTime();
+        makeBackup();
     }
 
     @Override
@@ -556,11 +564,33 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
         editor.apply();
     }
 
-    private void doProbe() {
-        if (!BackupService.isRunning())
-            startService(new Intent(this, BackupService.class));
-        else
-            showLongToast(R.string.DEBUG_backup_service_already_running);
+    private void makeBackup() {
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                produceBackup();
+            }
+        };
+
+        new Timer().schedule(task, AppConfig.BACKUP_DELAY_IN_SECONDS);
     }
 
+    private void produceBackup() {
+        boolean isAdmin = UsersSingleton.getInstance().currentUserIsAdmin();
+        boolean backupIsEnabled = PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean(Constants.PREFERENCE_KEY_perform_database_backup, false);
+
+        boolean isTimeToDoBackup = BackupService.isTimeToDoBackup(this);
+        boolean backupIsRunning  = BackupService.isRunning();
+
+        if (backupIsEnabled && isAdmin) {
+            if (isTimeToDoBackup && !backupIsRunning) {
+                try {
+                    startService(new Intent(this, BackupService.class));
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
+            }
+        }
+    }
 }

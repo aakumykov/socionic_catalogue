@@ -121,11 +121,16 @@ public final class Constants
     public final static String NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS = "new_cards";
     public final static String NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_COMMENTS = "new_comments";
 
+//    public final static String NOTIFICATIONS_CHANNEL_BACKUP_SERVICE = "new_comments";
+
     public final static String PREFERENCE_KEY_IS_FIRST_RUN = "PREFERENCE_KEY_IS_FIRST_RUN";
     public static final String PREFERENCE_KEY_LAST_BACKUP_TIME = "PREFERENCE_KEY_LAST_BACKUP_TIME";
 
     public final static String PREFERENCE_notify_about_new_cards = "notify_about_new_cards";
     public final static String PREFERENCE_notify_on_comments = "notify_on_comments";
+
+    public final static String PREFERENCE_KEY_perform_database_backup = "perform_database_backup";
+    public final static String PREFERENCE_KEY_dropbox_access_token = "dropbox_access_token";
 
     public static String DRAFT_DEFERRED = "DRAFT_DEFERRED";
 
@@ -147,4 +152,5 @@ public final class Constants
     // TODO: перенести в модель Comment
     public final static String COMMENT_KEY_CARD_ID = "cardId";
     public final static String COMMENT_KEY_CREATED_AT = "createdAt";
+
 }
