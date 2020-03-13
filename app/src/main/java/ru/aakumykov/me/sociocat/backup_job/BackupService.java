@@ -697,7 +697,7 @@ public class BackupService extends Service {
     public static boolean isTimeToDoBackup(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_ADMIN, MODE_PRIVATE);
 
-        long lastBackupTime = sharedPreferences.getLong(Constants.PREFERENCE_KEY_LAST_BACKUP_TIME, -1);
+        long lastBackupTime = sharedPreferences.getLong(Constants.PREFERENCE_KEY_last_backup_time, -1);
         long currentTimeInSeconds = MyUtils.getCurrentTimeInSeconds();
         long elapsedTime = currentTimeInSeconds - lastBackupTime;
 
@@ -708,7 +708,7 @@ public class BackupService extends Service {
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_ADMIN, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         long currentTimeInSeconds = MyUtils.getCurrentTimeInSeconds();
-        editor.putLong(Constants.PREFERENCE_KEY_LAST_BACKUP_TIME, currentTimeInSeconds);
+        editor.putLong(Constants.PREFERENCE_KEY_last_backup_time, currentTimeInSeconds);
         editor.apply();
     }
 

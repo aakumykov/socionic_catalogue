@@ -15,21 +15,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
-import ru.aakumykov.me.sociocat.backup_job.BackupService;
-import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
 import ru.aakumykov.me.sociocat.services.NewCardsService;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class MyApp extends Application {
 
@@ -111,7 +105,7 @@ public class MyApp extends Application {
         SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Проверяю, первый ли это запуск программы?
-        boolean isFirstRun = defaultSharedPreferences.getBoolean(Constants.PREFERENCE_KEY_IS_FIRST_RUN, true);
+        boolean isFirstRun = defaultSharedPreferences.getBoolean(Constants.PREFERENCE_KEY_is_first_run, true);
 
         // Если это первый запуск, устанавдиваю в механизме настроек значения по умолчанию и обрабатываю их все
         if (isFirstRun) {
@@ -120,7 +114,7 @@ public class MyApp extends Application {
 
             // Помечаю, что теперь это не первый запуск
             SharedPreferences.Editor editor = defaultSharedPreferences.edit();
-            editor.putBoolean(Constants.PREFERENCE_KEY_IS_FIRST_RUN, false);
+            editor.putBoolean(Constants.PREFERENCE_KEY_is_first_run, false);
             editor.apply();
         }
     }

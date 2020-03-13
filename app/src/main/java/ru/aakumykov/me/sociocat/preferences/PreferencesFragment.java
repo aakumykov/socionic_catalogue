@@ -63,11 +63,11 @@ public class PreferencesFragment extends PreferenceFragment implements
 //                if (enabled) Backup_JobService.scheduleJob(getActivity());
 //                else Backup_JobService.unscheduleJob(getActivity());
 //                break;
-            case Constants.PREFERENCE_notify_about_new_cards:
+            case Constants.PREFERENCE_KEY_notify_about_new_cards:
                 processNewCardsNotification(key);
                 break;
 
-            case Constants.PREFERENCE_notify_on_comments:
+            case Constants.PREFERENCE_KEY_notify_on_comments:
                 processCommentsNotification(key);
                 break;
 
