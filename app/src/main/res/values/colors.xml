@@ -74,4 +74,6 @@
     <!-- Метки -->
     <color name="tags_list_item_border">#C4CBF1</color>
 
+    <!-- Элемент "Есть новые карточки" -->
+    <color name="new_cards_notification_background">#FFF176</color>
 </resources>

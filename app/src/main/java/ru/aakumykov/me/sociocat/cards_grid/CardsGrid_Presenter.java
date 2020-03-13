@@ -14,9 +14,10 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
-import ru.aakumykov.me.sociocat.cards_grid.stubs.CardsGrid_DataAdapter_Stub;
-import ru.aakumykov.me.sociocat.cards_grid.stubs.CardsGrid_View_Stub;
-import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
+import ru.aakumykov.me.sociocat.cards_grid.stubs.CardsGrid_DataAdapterStub;
+import ru.aakumykov.me.sociocat.cards_grid.stubs.CardsGrid_ViewStub;
+import ru.aakumykov.me.sociocat.services.NewCardsService;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
@@ -24,7 +25,7 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.DeleteCard_Helper;
-import ru.aakumykov.me.sociocat.utils.MyDialogs;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsGrid_Presenter implements iCardsGrid.iPresenter
@@ -37,24 +38,36 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     private final static String TAG = "CG3_Presenter";
     private iCardsGrid.iPageView pageView;
     private iCardsGrid.iDataAdapter dataAdapter;
+    private NewCardsService newCardsService;
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
     private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
     private String tagFilter;
-    private String filterWord;
-
+    private Card newCardsBoundaryCard;
+    private boolean newCardsAreLoadedNow = false;
+    private boolean isRefreshing = false;
 
     @Override
-    public void linkViews(iCardsGrid.iPageView pageView, iCardsGrid.iDataAdapter dataAdapter) {
+    public void bindComponents(iCardsGrid.iPageView pageView, iCardsGrid.iDataAdapter dataAdapter) {
         this.pageView = pageView;
         this.dataAdapter = dataAdapter;
 
-        //dataAdapter.restoreList(mList, openedItemPosition);
     }
 
     @Override
-    public void unlinkViews() {
-        this.pageView = new CardsGrid_View_Stub();
-        this.dataAdapter = new CardsGrid_DataAdapter_Stub();
+    public void unbindComponents() {
+        this.pageView = new CardsGrid_ViewStub();
+        this.dataAdapter = new CardsGrid_DataAdapterStub();
+
+    }
+
+    @Override
+    public void bindNewCardsService(NewCardsService newCardsService) {
+        this.newCardsService = newCardsService;
+    }
+
+    @Override
+    public void unbindNewCardsService() {
+        this.newCardsService = null;
     }
 
 
@@ -88,18 +101,27 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
     @Override
     public void onRefreshRequested() {
 
+        isRefreshing = true;
+
+        pageView.hideMessage();
         pageView.showSwipeThrobber();
+        pageView.hideNewCardsNotification();
 
         iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
+                isRefreshing = false;
+                newCardsService.reset();
+
                 pageView.hideSwipeThrobber();
                 pageView.onPageRefreshed();
+
                 dataAdapter.setList(cardsList2gridItemsList(list));
             }
 
             @Override
             public void onListLoadFail(String errorMessage) {
+                isRefreshing = false;
                 pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
             }
         };
@@ -145,6 +167,46 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         else {
             cardsSingleton.loadCardsAfter(lastCard, listCallbacks);
         }
+    }
+
+    @Override
+    public void onNewCardsAvailable(int count) {
+        if (newCardsAreLoadedNow || isRefreshing)
+            return;
+
+        pageView.showNewCardsNotification(count);
+
+        if (null == newCardsBoundaryCard)
+            newCardsBoundaryCard = (Card) dataAdapter.getFirstCardItem().getPayload();
+    }
+
+    @Override
+    public void onNewCardsAvailableClicked() {
+        GridItem_Card cardGridItem = dataAdapter.getFirstCardItem();
+
+        newCardsAreLoadedNow = true;
+        pageView.hideNewCardsNotification();
+
+        pageView.showLoadingNewCardsThrobber();
+
+        cardsSingleton.loadCardsFromNewestTo(newCardsBoundaryCard, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                pageView.hideLoadingNewCardsThrobber();
+                dataAdapter.addNewCards(cardsList2gridItemsList(list), newCardsBoundaryCard);
+
+                newCardsAreLoadedNow = false;
+                newCardsBoundaryCard = null;
+                newCardsService.reset();
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                pageView.hideLoadingNewCardsThrobber();
+                pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+                newCardsAreLoadedNow = false;
+            }
+        });
     }
 
     @Override
@@ -262,6 +324,8 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
                     return;
                 }
             }
+
+            newCardsService.addLocallyCreatedCard(card.getKey());
 
             dataAdapter.insertItem(0, new GridItem_Card(card));
             pageView.scroll2position(0);

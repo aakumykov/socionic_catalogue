@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.interfaces;
+package ru.aakumykov.me.sociocat.base_view;
 
 import android.app.Activity;
 import android.content.Context;

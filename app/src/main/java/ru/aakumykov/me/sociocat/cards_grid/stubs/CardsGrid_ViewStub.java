@@ -1,11 +1,11 @@
 package ru.aakumykov.me.sociocat.cards_grid.stubs;
 
-import ru.aakumykov.me.sociocat.BaseView_Stub;
+import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class CardsGrid_View_Stub extends BaseView_Stub implements iCardsGrid.iPageView {
+public class CardsGrid_ViewStub extends BaseView_Stub implements iCardsGrid.iPageView {
 
     @Override
     public <T> void setTitle(T title) {
@@ -59,6 +59,26 @@ public class CardsGrid_View_Stub extends BaseView_Stub implements iCardsGrid.iPa
 
     @Override
     public void scroll2position(int position) {
+
+    }
+
+    @Override
+    public void showNewCardsNotification(int count) {
+
+    }
+
+    @Override
+    public void hideNewCardsNotification() {
+
+    }
+
+    @Override
+    public void showLoadingNewCardsThrobber() {
+
+    }
+
+    @Override
+    public void hideLoadingNewCardsThrobber() {
 
     }
 

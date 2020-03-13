@@ -20,12 +20,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingTop="6dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include"
-        tools:visibility="visible"
-        android:paddingTop="6dp">
+        tools:visibility="visible">
 
         <TextView
             android:id="@+id/filterTagLabel"
@@ -58,6 +58,33 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/newCardsNotification"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/new_cards_notification_background"
+        android:padding="8dp"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tagsParentContainer"
+        tools:text="Есть новые карточки"
+        tools:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/newCardsThrobber"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newCardsNotification"
+        tools:text="Есть новые карточки"
+         />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="0dp"
@@ -66,7 +93,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tagsParentContainer">
+        app:layout_constraintTop_toBottomOf="@+id/newCardsThrobber">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

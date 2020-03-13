@@ -1,7 +1,5 @@
 package ru.aakumykov.me.sociocat.cards_grid.view_holders;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,12 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.Request;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.target.SizeReadyCallback;
-import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.transition.Transition;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,17 +17,13 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.utils.CardUtils;
-import ru.aakumykov.me.sociocat.utils.ImageLoader;
-import ru.aakumykov.me.sociocat.utils.ImageUtils;
-import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Card_ViewHolder extends BaseViewHolder
 {
     private final static String TAG = "Card_ViewHolder";
 
-    @BindView(R.id.cardView) CardView mCardView;
-    @BindView(R.id.titleView) TextView mTitleView;
+    @BindView(R.id.mainView) CardView mCardView;
+    @BindView(R.id.labelView) TextView mTitleView;
     @Nullable @BindView(R.id.imageView) ImageView mImageView;
 
     private iCardsGrid.iPresenter mPresenter;

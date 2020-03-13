@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,12 +31,8 @@ public final class ImageLoader {
         if (null == context)
             throw new IllegalArgumentException("Context cannot be null");
 
-        if (null == imageLink)
-            throw new IllegalArgumentException("imageLink cannot be null");
-
         if (null == callbacks)
             throw new IllegalArgumentException("Callbacks cannot be null");
-
 
         try {
             Glide.with(context)

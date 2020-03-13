@@ -15,8 +15,8 @@ import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 
 public class LoadMore_ViewHolder extends BaseViewHolder {
 
-    @BindView(R.id.cardView) CardView cardView;
-    @BindView(R.id.titleView) TextView titleView;
+    @BindView(R.id.mainView) CardView cardView;
+    @BindView(R.id.labelView) TextView titleView;
     private final static String TAG = "LoadMore_ViewHolder";
     private iCardsGrid.iPresenter presenter;
 

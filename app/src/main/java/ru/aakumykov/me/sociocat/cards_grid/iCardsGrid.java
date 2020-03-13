@@ -12,8 +12,9 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
 import ru.aakumykov.me.sociocat.cards_grid.items.iGridItem;
 import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
-import ru.aakumykov.me.sociocat.interfaces.iBaseView;
+import ru.aakumykov.me.sociocat.base_view.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.services.NewCardsService;
 
 public interface iCardsGrid {
 
@@ -43,6 +44,12 @@ public interface iCardsGrid {
         void hideSwipeThrobber();
 
         void scroll2position(int position);
+
+        void showNewCardsNotification(int count);
+        void hideNewCardsNotification();
+
+        void showLoadingNewCardsThrobber();
+        void hideLoadingNewCardsThrobber();
     }
 
     interface iDataAdapter {
@@ -73,6 +80,8 @@ public interface iCardsGrid {
         void showLoadMoreItem();
         void hideLoadMoreItem(int position);
 
+        void addNewCards(List<iGridItem> gridItemsList, @Nullable Card newCardsBoundaryKey);
+
         void showThrobber(int position);
         void hideThrobber(int position);
 
@@ -88,14 +97,20 @@ public interface iCardsGrid {
     }
 
     interface iPresenter {
-        void linkViews(iPageView pageView, iDataAdapter dataAdapter);
-        void unlinkViews();
+        void bindComponents(iPageView pageView, iDataAdapter dataAdapter);
+        void unbindComponents();
+
+        void bindNewCardsService(NewCardsService newCardsService);
+        void unbindNewCardsService();
 
         void processInputIntent(@Nullable Intent intent);
 
         void onRefreshRequested();
 
         void onLoadMoreClicked(int position);
+
+        void onNewCardsAvailable(int count);
+        void onNewCardsAvailableClicked();
 
         void onCardClicked(int position);
         void onCardLongClicked(int position, View view, iGridViewHolder gridViewHolder);

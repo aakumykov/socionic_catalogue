@@ -9,7 +9,7 @@ import ru.aakumykov.me.sociocat.models.Comment;
 
 public class DataAdapter_Stub implements iCardShow.iDataAdapter {
     @Override
-    public boolean isFilled() {
+    public boolean notYetFilled() {
         return false;
     }
 

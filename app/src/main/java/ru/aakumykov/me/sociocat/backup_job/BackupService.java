@@ -45,6 +45,7 @@ import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 import ru.aakumykov.me.sociocat.utils.DropboxBackuper;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.NotificationsHelper;
 
 public class BackupService extends Service {
 
@@ -586,12 +587,22 @@ public class BackupService extends Service {
     private static int resultNotificationId = 20;
 
     public static void createNotificationChannel(Context context) {
-        MyUtils.createNotificationChannel(
+        NotificationsHelper.createNotificationChannel(
                 context,
                 BACKUP_JOB_NOTIFICATION_CHANNEL,
-                context.getResources().getString(R.string.BACKUP_SERVICE_channel_title),
-                context.getResources().getString(R.string.BACKUP_SERVICE_channel_description),
-                NotificationManagerCompat.IMPORTANCE_LOW
+                R.string.BACKUP_SERVICE_channel_title,
+                R.string.BACKUP_SERVICE_channel_description,
+                new NotificationsHelper.NotificationChannelCreationCallbacks() {
+                    @Override
+                    public void onNotificationChannelCreateSuccess() {
+
+                    }
+
+                    @Override
+                    public void onNotificationChannelCreateError(String errorMsg) {
+                        Log.e(TAG, errorMsg);
+                    }
+                }
         );
     }
 

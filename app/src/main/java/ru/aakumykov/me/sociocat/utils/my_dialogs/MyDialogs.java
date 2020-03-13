@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.utils;
+package ru.aakumykov.me.sociocat.utils.my_dialogs;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -12,8 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
 import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class MyDialogs {
 

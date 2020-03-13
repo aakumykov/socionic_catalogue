@@ -30,7 +30,7 @@ import ru.aakumykov.me.sociocat.singletons.CommentsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 
-public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
+public class CardShow_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
     iCardShow.iDataAdapter
 {
     private final static int CARD_POSITION = 0;
@@ -39,7 +39,7 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     private iCardShow.iPresenter presenter;
 
 
-    DataAdapter(iCardShow.iPresenter presenter) {
+    CardShow_DataAdapter(iCardShow.iPresenter presenter) {
         this.presenter = presenter;
     }
 
@@ -129,8 +129,8 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
     @Override
-    public boolean isFilled() {
-        return itemsList.size() > 0;
+    public boolean notYetFilled() {
+        return itemsList.size() == 0;
     }
 
     // iDataAdapter

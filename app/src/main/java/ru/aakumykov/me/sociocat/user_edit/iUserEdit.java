@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.interfaces.iBaseView;
+import ru.aakumykov.me.sociocat.base_view.iBaseView;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.utils.ImageType;
 

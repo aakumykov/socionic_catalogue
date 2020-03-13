@@ -42,7 +42,6 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private iCardsGrid.iGridItemClickListener gridItemClickListener;
     private iCardsGrid.iLoadMoreClickListener loadMoreClickListener;
 
-    private int fakeIndex = 0;
 
     public CardsGrid_DataAdapter(iCardsGrid.iPageView pageView,
                                  iCardsGrid.iGridItemClickListener gridItemClickListener,
@@ -112,11 +111,6 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-    }
-
-    @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
 
         iGridItem gridItem = itemsList.get(position);
@@ -140,6 +134,11 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         else {
             throw new RuntimeException("Unknown item type: "+gridItem);
         }
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
     }
 
     @Override
@@ -198,13 +197,6 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         itemsList.add(position, gridItem);
         notifyItemInserted(position);
     }
-
-    private void append_LoadMore_Item() {
-        GridItem_LoadMore itemLoadMore = new GridItem_LoadMore(R.string.CARDS_GRID_load_old, true);
-        insertItem(itemsList.size(), itemLoadMore);
-    }
-
-
 
     @Override
     public void addList(List<iGridItem> inputList,
@@ -292,7 +284,9 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if (0 == itemsList.size())
             return null;
 
-        iGridItem gridItem = itemsList.get(itemsList.size() - 2);
+        int subtractedNumber = (itemsList.size() < 2) ? 1 : 2;
+
+        iGridItem gridItem = itemsList.get(itemsList.size() - subtractedNumber);
 
         return (gridItem instanceof GridItem_Card) ? (GridItem_Card) gridItem : null;
     }
@@ -326,6 +320,30 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             itemsList.remove(position);
             notifyItemRemoved(position);
         }
+    }
+
+    private void hideCheckingNewCardsThrobber() {
+
+        iGridItem gridItem = getGridItem(0);
+
+        if (gridItem instanceof GridItem_Throbber) {
+            itemsList.remove(0);
+            notifyItemRemoved(0);
+        }
+    }
+
+    @Override
+    public void addNewCards(List<iGridItem> gridItemsList, @Nullable Card newCardsBoundaryCard) {
+
+        // Удаляю элементы, добавленные позже сообщения о новых карточках
+        if (null != newCardsBoundaryCard) {
+            iGridItem newCardsBoundaryElement = getGridItem(newCardsBoundaryCard);
+            int boundaryIndex = itemsList.indexOf(newCardsBoundaryElement);
+            List<iGridItem> list2delete = itemsList.subList(0, boundaryIndex);
+            itemsList.removeAll(list2delete);
+        }
+
+        insertList(0, gridItemsList);
     }
 
     @Override
@@ -558,5 +576,10 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 notifyItemInserted(i);
             }
         }
+    }
+
+    private void append_LoadMore_Item() {
+        GridItem_LoadMore itemLoadMore = new GridItem_LoadMore(R.string.CARDS_GRID_load_old, true);
+        insertItem(itemsList.size(), itemLoadMore);
     }
 }

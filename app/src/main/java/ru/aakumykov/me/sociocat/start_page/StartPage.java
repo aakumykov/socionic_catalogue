@@ -1,11 +1,14 @@
-package ru.aakumykov.me.sociocat.shortcuts_processor;
+package ru.aakumykov.me.sociocat.start_page;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
@@ -13,8 +16,9 @@ import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_grid.CardsGrid_View;
 import ru.aakumykov.me.sociocat.models.Card;
 
-public class ShortcutsProcessor extends BaseView {
+public class StartPage extends BaseView {
 
+    private static final String TAG = "StartPage";
     private boolean dryRun = true;
 
     @Override public void onUserLogin() {}
@@ -44,31 +48,36 @@ public class ShortcutsProcessor extends BaseView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == Constants.CODE_CREATE_CARD) {
-
-            try {
+        switch (requestCode) {
+            case Constants.CODE_CREATE_CARD:
                 processCardCreationResult(resultCode, data);
-            } catch (Exception e) {
-                showErrorMsg(R.string.SHORTCUT_PROCESSOR_error_creating_card, e.getMessage());
-                e.printStackTrace();
-            }
-
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
+                break;
+            case Constants.CODE_SHOW_CARD:
+                go2cardsGrid();
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
     
     // Внутренние методы
     private void processInputIntent(@Nullable Intent data) throws Exception {
-        if (null == data)
+        if (null == data) {
+            go2cardsGrid();
             return;
+        }
+
+        Bundle bundle = data.getExtras();
+        if (null != bundle && bundle.containsKey("isPushNotification")) {
+            processPushNotification(bundle);
+            return;
+        }
+
 
         String cardType;
 
-        String action = data.getAction() + "";
-
-        switch (action) {
+        switch (data.getAction() + "") {
             case Constants.SHORTCUT_CREATE_TEXT_CARD:
                 cardType = Constants.TEXT_CARD;
                 break;
@@ -86,8 +95,7 @@ public class ShortcutsProcessor extends BaseView {
                 break;
 
             default:
-                Intent intent = new Intent(this, CardsGrid_View.class);
-                startActivity(intent);
+                go2cardsGrid();
                 return;
 
         }
@@ -98,28 +106,59 @@ public class ShortcutsProcessor extends BaseView {
         startActivityForResult(intent, Constants.CODE_CREATE_CARD);
     }
 
-    private void processCardCreationResult(int resultCode, @Nullable Intent data) throws Exception {
+    private void processPushNotification(@NonNull Bundle bundle) {
+        if (bundle.containsKey("isCardNotification")) {
+            processCardNotification(bundle);
+            return;
+        }
+    }
+
+    private void processCardNotification(@NonNull Bundle bundle) {
+        String cardKey = bundle.getString("key");
+        if (!TextUtils.isEmpty(cardKey)) {
+            Intent intent = new Intent(this, CardShow_View.class);
+            intent.putExtra(Constants.CARD_KEY, cardKey);
+            startActivityForResult(intent, Constants.CODE_SHOW_CARD);
+        }
+        else {
+            Log.e(TAG, "There is no card key in bundle");
+            go2cardsGrid();
+        }
+    }
+
+    private void processCardCreationResult(int resultCode, @Nullable Intent data) {
         switch (resultCode) {
             case RESULT_OK:
-                Card card = data.getParcelableExtra(Constants.CARD);
-                Intent cardShowIntent = new Intent(this, CardShow_View.class);
-                cardShowIntent.putExtra(Constants.CARD, card);
-                startActivity(cardShowIntent);
+                go2showCard(data);
                 break;
 
             case RESULT_CANCELED:
                 showToast(R.string.SHORTCUT_PROCESSOR_card_creation_cencelled);
-                goToCardsGrid();
+                go2cardsGrid();
                 break;
 
             default:
                 showToast(R.string.SHORTCUT_PROCESSOR_unknown_result_code);
-                goToCardsGrid();
+                go2cardsGrid();
                 break;
         }
     }
 
-    private void goToCardsGrid() {
+    private void go2showCard(@Nullable Intent data) {
+        if (null == data) {
+            showToast(R.string.SHORTCUT_PROCESSOR_data_error);
+            Log.e(TAG, "Intent is null");
+            go2cardsGrid();
+            return;
+        }
+
+        Card card = data.getParcelableExtra(Constants.CARD);
+        Intent cardShowIntent = new Intent(this, CardShow_View.class);
+        cardShowIntent.putExtra(Constants.CARD, card);
+        startActivity(cardShowIntent);
+    }
+
+    private void go2cardsGrid() {
         Intent cardsGridIntent = new Intent(this, CardsGrid_View.class);
         startActivity(cardsGridIntent);
     }

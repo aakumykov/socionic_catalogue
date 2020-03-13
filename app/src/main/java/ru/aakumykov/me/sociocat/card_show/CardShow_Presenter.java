@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
@@ -16,7 +17,8 @@ import ru.aakumykov.me.sociocat.card_show.stubs.DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iComment_ViewHolder;
-import ru.aakumykov.me.sociocat.interfaces.iMyDialogs;
+import ru.aakumykov.me.sociocat.utils.NotificationsHelper;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.User;
@@ -28,7 +30,7 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCommentsSingleton;
 import ru.aakumykov.me.sociocat.utils.DeleteCard_Helper;
-import ru.aakumykov.me.sociocat.utils.MyDialogs;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -64,10 +66,12 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     @Override
     public void onRefreshRequested() {
 
+        pageView.showProgressMessage(R.string.CARD_SHOW_loading_card);
+
         loadCard(currentCard.getKey(), new iLoadCardCallbacks() {
             @Override
             public void onCardLoaded(Card card) {
-                onCardReceived(card);
+                showCard(card);
             }
         });
     }
@@ -326,29 +330,26 @@ public class CardShow_Presenter implements iCardShow.iPresenter
     }
 
     @Override
-    public boolean hasHard() {
-        return null != currentCard;
-    }
-
-    @Override
-    public void onPageRecreated() {
-        dataAdapter.showCard(currentCard);
-    }
-
-    @Override
-    public void processInputIntent(@Nullable Intent data) {
+    public void onFirstOpen(@Nullable Intent data) {
         if (null == data) {
             pageView.showErrorMsg(R.string.data_error, "Intent is NULL");
             return;
         }
 
-        Card card = data.getParcelableExtra(Constants.CARD);
-        if (null == card) {
-            pageView.showErrorMsg(R.string.data_error, "Card from Intent is null");
+        String cardKey = data.getStringExtra(Constants.CARD_KEY);
+        if (null != cardKey) {
+            loadAndShowCard(cardKey);
             return;
         }
 
-        onCardReceived(card);
+        Card card = data.getParcelableExtra(Constants.CARD);
+        if (null != card) {
+            showCard(card);
+            return;
+        }
+
+        pageView.showErrorMsg(R.string.data_error, "There is no Card or card key in Intent");
+        // TODO: pageView.setState()
     }
 
     @Override
@@ -378,8 +379,17 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         });
     }
 
-    private void onCardReceived(Card card) {
+    private void loadAndShowCard(@NonNull String cardKey) {
 
+        loadCard(cardKey, new iLoadCardCallbacks() {
+            @Override
+            public void onCardLoaded(Card card) {
+                showCard(card);
+            }
+        });
+    }
+
+    private void showCard(Card card) {
         storeCurrentCard(card);
 
         pageView.hideSwipeThrobber();
@@ -388,8 +398,9 @@ public class CardShow_Presenter implements iCardShow.iPresenter
 
         dataAdapter.showCard(card);
 
-        dataAdapter.clearCommentsList();
+        NotificationsHelper.removeNotification(pageView.getAppContext(), card.getKey().hashCode());
 
+        dataAdapter.clearCommentsList();
         loadComments(currentCard.getKey(), null, null);
     }
 

@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.interfaces.iBaseView;
+import ru.aakumykov.me.sociocat.base_view.iBaseView;
 import ru.aakumykov.me.sociocat.models.Tag;
 
 public interface iTagsList3 {

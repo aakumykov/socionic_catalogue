@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.R;
 
 public class BackupActivity extends BaseView {

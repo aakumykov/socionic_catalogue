@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat.reset_password_step_2;
 
-import ru.aakumykov.me.sociocat.interfaces.iBaseView;
+import ru.aakumykov.me.sociocat.base_view.iBaseView;
 
 interface iResetPasswordStep2 {
 

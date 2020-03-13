@@ -11,7 +11,7 @@ import ru.aakumykov.me.sociocat.card_show.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.card_show.view_holders.Card_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iCard_ViewHolder;
 import ru.aakumykov.me.sociocat.card_show.view_holders.iComment_ViewHolder;
-import ru.aakumykov.me.sociocat.interfaces.iBaseView;
+import ru.aakumykov.me.sociocat.base_view.iBaseView;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.models.Comment;
 import ru.aakumykov.me.sociocat.models.iCommentable;
@@ -49,7 +49,7 @@ public interface iCardShow
     }
 
     interface iDataAdapter {
-        boolean isFilled();
+        boolean notYetFilled();
 
         void showCardThrobber();
 
@@ -83,6 +83,8 @@ public interface iCardShow
         void bindViewAndAdapter(iPageView pageView, iDataAdapter dataAdapter);
         void unbindViewAndAdapter();
 
+        void onFirstOpen(@Nullable Intent data);
+
         boolean canEditCard();
         boolean canDeleteCard();
 
@@ -94,39 +96,27 @@ public interface iCardShow
 
         void onAuthorClicked();
         void onTagClicked(String tagName);
+        void onReplyClicked(iList_Item listItem);
+        void onCardRateUpClicked(iCard_ViewHolder cardViewHolder);
+        void onCardRateDownClicked(iCard_ViewHolder cardViewHolder);
+        void onEditCardClicked();
+        void onEditCardComplete(Card card);
+        void onDeleteCardClicked();
 
         void onLoadMoreClicked(iList_Item listItem);
-        void onReplyClicked(iList_Item listItem);
+
         void onDeleteCommentClicked(iList_Item listItem, iComment_ViewHolder commentViewHolder);
         void onDeleteCommentConfirmed(iList_Item listItem, iComment_ViewHolder commentViewHolder);
         void onEditCommentClicked(iList_Item listItem);
         void onRemoveCommentQuoteClicked();
         void onSendCommentClicked();
-
-        void onCardRateUpClicked(iCard_ViewHolder cardViewHolder);
-        void onCardRateDownClicked(iCard_ViewHolder cardViewHolder);
-
         void onCommentAuthorClicked(iList_Item commentItem);
         void onCommentRateUpClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem);
         void onCommentRateDownClicked(iComment_ViewHolder commentViewHolder, iList_Item commentItem);
-
-        void onDeleteCardClicked();
-
-        void onEditCardClicked();
-        void onEditCardComplete(Card card);
-
-        boolean hasHard();
-
-        void onPageRecreated();
-
-        void processInputIntent(@Nullable Intent data);
 
         void onOpenInBrowserClicked();
 
         void onGoBackRequested();
     }
 
-    interface iRatingChangeCallbacks {
-        void onRatingChangeComplete(int ratingValue);
-    }
 }

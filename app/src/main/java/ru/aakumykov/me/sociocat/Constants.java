@@ -76,7 +76,7 @@ public final class Constants
 
     public final static String PARENT_COMMENT = "PARENT_COMMENT";
 
-    public final static String SOCIOCAT_NOTIFICATIONS_CHANNEL = "SOCIOCAT_NOTIFICATIONS_CHANNEL";
+    public final static String SOCIOCAT_DEFAULT_NOTIFICATIONS_CHANNEL_NAME = "SOCIOCAT_NOTIFICATIONS";
 
     public static final String BACK_BUTTON_ENABLED = "BACK_BUTON_ENABLED";
 
@@ -118,7 +118,8 @@ public final class Constants
     public final static String KEY_LAST_LOGIN = "LAST_LOGIN";
     public static final String KEY_STORED_EMAIL = "STORED_EMAIL";
 
-    public final static String TOPIC_NEW_CARDS = "new_cards";
+    public final static String NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS = "new_cards";
+    public final static String NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_COMMENTS = "new_comments";
 
     public final static String PREFERENCE_KEY_IS_FIRST_RUN = "PREFERENCE_KEY_IS_FIRST_RUN";
     public static final String PREFERENCE_KEY_LAST_BACKUP_TIME = "PREFERENCE_KEY_LAST_BACKUP_TIME";

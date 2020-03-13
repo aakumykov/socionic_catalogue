@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 
 import androidx.annotation.Nullable;
 
-import ru.aakumykov.me.sociocat.BaseView_Stub;
+import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
 import ru.aakumykov.me.sociocat.user_change_password.iUserChangePassword;
 
 @SuppressLint("Registered")

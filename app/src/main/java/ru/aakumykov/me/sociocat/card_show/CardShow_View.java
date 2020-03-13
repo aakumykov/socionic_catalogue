@@ -19,7 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
@@ -68,7 +68,7 @@ public class CardShow_View extends BaseView implements
 
         this.dataAdapter = cardShowViewModel.getDataAdapter();
         if (null == this.dataAdapter) {
-            this.dataAdapter = new DataAdapter(presenter);
+            this.dataAdapter = new CardShow_DataAdapter(presenter);
             cardShowViewModel.storeDataAdapter(this.dataAdapter);
         }
 
@@ -114,8 +114,8 @@ public class CardShow_View extends BaseView implements
 
         presenter.bindViewAndAdapter(this, dataAdapter);
 
-        if (!dataAdapter.isFilled())
-            presenter.processInputIntent(getIntent());
+        if (dataAdapter.notYetFilled())
+            presenter.onFirstOpen(getIntent());
     }
 
     @Override

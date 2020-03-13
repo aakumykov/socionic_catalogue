@@ -381,8 +381,13 @@
     <string name="PREFERENCES_error_subscribing_to_new_cards">Error subscribing to new cards notifications</string>
     <string name="PREFERENCES_you_are_unsubscribed_from_new_cards">You are unsubscribed from new cards notifications</string>
     <string name="PREFERENCES_error_unsubscribing_from_new_cards_notifications">Error unsubscribing from new cards notifications</string>
-    <string name="NOTIFICATIONS_sociocat_channel_name">Cosionic Catalogue channel</string>
-    <string name="NOTIFICATIONS_sociocat_channel_description">Notifications about new cards in Socionic catalogue</string>
+
+    <string name="NOTIFICATIONS_new_cards_channel_title">New cards</string>
+    <string name="NOTIFICATIONS_new_cards_channel_description">Notifications about new cards</string>
+
+    <string name="NOTIFICATIONS_new_comments_channel_title">Comments</string>
+    <string name="NOTIFICATIONS_new_comments_channel_description">Notifications about comments</string>
+
     <string name="SHORTCUT_create_text_card_short_label">Text</string>
     <string name="SHORTCUT_create_text_card_long_label">Create card with text</string>
     <string name="SHORTCUT_creation_unavailable">Card creation unavailable</string>
@@ -494,7 +499,7 @@
 
     <string name="BACKUP_STATUS_page_title">Backup info</string>
 
-    <string name="PREFERENCE_backup_category">Backup</string>
+    <string name="PREFERENCE_category_backup">Backup</string>
     <string name="PREFERENCE_database_backup_title">Database</string>
     <string name="PREFERENCE_database_backup_description">Perform database backup with this phone</string>
     <string name="PREFERENCE_database_backup_switched_on_text">Enabled</string>
@@ -638,5 +643,18 @@
     <string name="probe">Probe</string>
     <string name="DEBUG_backup_service_already_running">Backup service already running</string>
     <string name="BACKUP_SERVICE_creating_dir">Creating directory «%1$s»</string>
+    <string name="NOTIFICATIONS_new_card_notification_title">New card</string>
+    <string name="SHORTCUT_PROCESSOR_data_error">Data error</string>
+    <string name="CARDS_GRID_load_more">Load more</string>
+    <string name="CARDS_GRID_new_cards_available">New cards available (%1$d)</string>
+    <string name="PREFERENCE_category_notifications">Notifications</string>
+    <string name="PREFERENCE_notify_about_new_cards_title">New cards</string>
+    <string name="PREFERENCE_notify_about_new_cards_description">Notify about new cards</string>
+    <string name="PREFERENCE_notify_on_comments_title">Comments</string>
+    <string name="PREFERENCE_notify_on_comments_description">Notify about comments</string>
+    <string name="PREFERENCES_error_changing_preference">Error changing preference</string>
+    <string name="PREFERENCE_you_are_unsubscribed">Unsubscribed</string>
+    <string name="PREFERENCE_you_are_subscribed">Subscribed</string>
+    <string name="NOTIFICATIONS_new_card_notification_message">New card from %1$s</string>
 </resources>
 <!-- «%1$s» -->

@@ -2,8 +2,7 @@ package ru.aakumykov.me.sociocat.template_of_list.stubs;
 
 import android.annotation.SuppressLint;
 
-import ru.aakumykov.me.sociocat.BaseView;
-import ru.aakumykov.me.sociocat.BaseView_Stub;
+import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 
 @SuppressLint("Registered")

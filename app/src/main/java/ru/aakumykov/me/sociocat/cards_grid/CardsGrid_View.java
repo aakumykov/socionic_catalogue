@@ -1,11 +1,16 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
@@ -14,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
@@ -29,15 +35,18 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
-import ru.aakumykov.me.sociocat.BaseView;
 import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_grid.items.GridItem_Card;
@@ -46,6 +55,7 @@ import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_model.CardsGrid_ViewModel;
 import ru.aakumykov.me.sociocat.cards_grid.view_model.CardsGrid_ViewModel_Factory;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.services.NewCardsService;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -62,9 +72,12 @@ public class CardsGrid_View extends BaseView implements
         SpeedDialView.OnActionSelectedListener
 {
     private static final String TAG = "CardsGrid_View";
+    private static final int NEW_CARDS_AVAILABLE = 10;
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.newCardsNotification) TextView newCardsNotification;
+    @BindView(R.id.newCardsThrobber) View newCardsThrobber;
     @BindView(R.id.tagsParentContainer) LinearLayout tagsParentContainer;
     @BindView(R.id.tagsContainer) TagContainerLayout tagsContainer;
     @BindView(R.id.speedDialView) SpeedDialView fabSpeedDialView;
@@ -82,6 +95,9 @@ public class CardsGrid_View extends BaseView implements
     private final static String KEY_LIST_STATE = "LIST_STATE";
     private int backPressedCount = 0;
     private Menu menu;
+    private ServiceConnection newCardsServiceConnection;
+    private NewCardsService newCardsService;
+    private TimerTask newCardsCheckingTimerTask;
 
 
     // Системные методы
@@ -113,6 +129,22 @@ public class CardsGrid_View extends BaseView implements
 
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
         recyclerView.setLayoutManager(layoutManager);
+
+        newCardsServiceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                newCardsService = ((NewCardsService.ServiceBinder) iBinder).getService();
+                presenter.bindNewCardsService(newCardsService);
+                scheduleNewCardsChecking();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+                unScheduleNewCardsChecking();
+                presenter.unbindNewCardsService();
+                newCardsService = null;
+            }
+        };
 
         configureSwipeRefresh();
 
@@ -148,20 +180,33 @@ public class CardsGrid_View extends BaseView implements
 
         bindComponents();
 
+        bindService(new Intent(this, NewCardsService.class), newCardsServiceConnection, BIND_IMPORTANT);
+
         if (!dataAdapter.hasData())
             presenter.processInputIntent(getIntent());
+    }
+
+    /*@Override
+    protected void onResume() {
+        super.onResume();
+        scheduleNewCardsChecking();
+    }*/
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unScheduleNewCardsChecking();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        dataAdapter.disableFiltering();
-        unbindComponents();
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+        dataAdapter.disableFiltering();
+
+        unbindComponents();
+
+        unbindService(newCardsServiceConnection);
     }
 
     @Override
@@ -384,6 +429,27 @@ public class CardsGrid_View extends BaseView implements
         recyclerView.scrollToPosition(position);
     }
 
+    @Override
+    public void showNewCardsNotification(int count) {
+        newCardsNotification.setText(getString(R.string.CARDS_GRID_new_cards_available, count));
+        MyUtils.show(newCardsNotification);
+    }
+
+    @Override
+    public void hideNewCardsNotification() {
+        MyUtils.hide(newCardsNotification);
+    }
+
+    @Override
+    public void showLoadingNewCardsThrobber() {
+        MyUtils.show(newCardsThrobber);
+    }
+
+    @Override
+    public void hideLoadingNewCardsThrobber() {
+        MyUtils.hide(newCardsThrobber);
+    }
+
 
     // iGridItemClickListener
     @Override
@@ -435,16 +501,23 @@ public class CardsGrid_View extends BaseView implements
     }
 
 
+    // Нажатия
+    @OnClick(R.id.newCardsNotification)
+    void onNewCardsAvailableClicked() {
+        presenter.onNewCardsAvailableClicked();
+    }
+
+
     // Внутренние методы
     private void bindComponents() {
-        presenter.linkViews(this, dataAdapter);
+        presenter.bindComponents(this, dataAdapter);
         dataAdapter.linkPresenter(presenter);
     }
 
     private void unbindComponents() {
         // В обратном порядке
         dataAdapter.unlinkPresenter();
-        presenter.unlinkViews();
+        presenter.unbindComponents();
     }
 
     private void configureSwipeRefresh() {
@@ -647,7 +720,7 @@ public class CardsGrid_View extends BaseView implements
         searchWidget.setVisible(false);
     }
 
-    List<iGridItem> getSavedCardsList() {
+    private List<iGridItem> getSavedCardsList() {
         try {
             List<iGridItem> gridItemsList = new ArrayList<>();
 
@@ -699,5 +772,48 @@ public class CardsGrid_View extends BaseView implements
             e.printStackTrace();
         }
     }
+
+    private void scheduleNewCardsChecking() {
+        Handler newCardsCheckingHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case NEW_CARDS_AVAILABLE:
+                        presenter.onNewCardsAvailable((Integer) msg.obj);
+                        break;
+                    default:
+                        super.handleMessage(msg);
+                }
+            }
+        };
+
+        newCardsCheckingTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                checkForNewCards(newCardsCheckingHandler);
+            }
+        };
+
+        new Timer().schedule(
+                newCardsCheckingTimerTask,
+                AppConfig.NEW_CARDS_CHECK_DELAY,
+                AppConfig.NEW_CARDS_CHECK_INTERVAL
+        );
+    }
+
+    private void unScheduleNewCardsChecking() {
+        newCardsCheckingTimerTask.cancel();
+    }
+
+    private void checkForNewCards(Handler handler) {
+        if (null != newCardsService) {
+            int newCardsCount = newCardsService.getNewCardsCount();
+            if (newCardsCount > 0) {
+                Message message = handler.obtainMessage(NEW_CARDS_AVAILABLE, newCardsCount);
+                handler.sendMessage(message);
+            }
+        }
+    }
+
 
 }

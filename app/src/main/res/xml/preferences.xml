@@ -10,7 +10,22 @@
         android:title="@string/PREFERENCES_notify_on_new_cards_title"
         />-->
 
-    <PreferenceCategory android:title="@string/PREFERENCE_backup_category">
+    <PreferenceCategory android:title="@string/PREFERENCE_category_notifications">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="notify_about_new_cards"
+            android:summary="@string/PREFERENCE_notify_about_new_cards_description"
+            android:title="@string/PREFERENCE_notify_about_new_cards_title" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="notify_on_comments"
+            android:summary="@string/PREFERENCE_notify_on_comments_description"
+            android:title="@string/PREFERENCE_notify_on_comments_title" />
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/PREFERENCE_category_backup">
 
         <EditTextPreference
             android:defaultValue="@string/PREFERENCE_dropbox_access_token_stub"

@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.utils;
+package ru.aakumykov.me.sociocat.utils.my_dialogs;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.interfaces.iDialogCallbacks;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.iDialogCallbacks;
 
 
 public class YesNoDialog {

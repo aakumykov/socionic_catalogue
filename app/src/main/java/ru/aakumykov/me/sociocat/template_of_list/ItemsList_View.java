@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.template_of_list;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,7 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.aakumykov.me.sociocat.BaseView;
+import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.template_of_list.view_model.ItemsList_ViewModel;
 import ru.aakumykov.me.sociocat.template_of_list.view_model.ItemsList_ViewModelFactory;

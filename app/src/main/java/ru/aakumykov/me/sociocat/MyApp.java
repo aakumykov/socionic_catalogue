@@ -6,26 +6,35 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import ru.aakumykov.me.sociocat.backup_job.BackupService;
-import ru.aakumykov.me.sociocat.event_objects.UserAuthorizedEvent;
-import ru.aakumykov.me.sociocat.event_objects.UserUnauthorizedEvent;
+import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
+import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
+import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.preferences.PreferencesProcessor;
+import ru.aakumykov.me.sociocat.services.NewCardsService;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
+import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class MyApp extends Application {
 
     private final static String TAG = "=MyApp=";
     private iUsersSingleton usersSingleton;
-
 
     // Методы Application
     @Override
@@ -79,8 +88,11 @@ public class MyApp extends Application {
         prepareDefaultPreferences();
 
         produceBackup();
-    }
 
+        logFCMRegistrationToken();
+
+        startNewCardsService();
+    }
 
     // Внутренние методы
     private void authorizeUser(User user) {
@@ -106,7 +118,7 @@ public class MyApp extends Application {
         // Если это первый запуск, устанавдиваю в механизме настроек значения по умолчанию и обрабатываю их все
         if (isFirstRun) {
             PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
-            PreferencesProcessor.processAllPreferences(this, defaultSharedPreferences);
+            //PreferencesProcessor.processAllPreferences(this, defaultSharedPreferences);
 
             // Помечаю, что теперь это не первый запуск
             SharedPreferences.Editor editor = defaultSharedPreferences.edit();
@@ -193,7 +205,34 @@ public class MyApp extends Application {
 
     private void produceBackup() {
         if (BackupService.isTimeToDoBackup(this)) {
-            startService(new Intent(this, BackupService.class));
+            try {
+                startService(new Intent(this, BackupService.class));
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
         }
+    }
+
+    private void logFCMRegistrationToken() {
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                    @Override
+                    public void onSuccess(InstanceIdResult instanceIdResult) {
+                        Log.d(TAG, "InstanceId: "+instanceIdResult.getId());
+                        Log.d(TAG, "Token: "+instanceIdResult.getToken());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, e.getMessage());
+                        Log.w(TAG, e);
+                    }
+                });
+    }
+
+    private void startNewCardsService() {
+        startService(new Intent(this, NewCardsService.class));
     }
 }

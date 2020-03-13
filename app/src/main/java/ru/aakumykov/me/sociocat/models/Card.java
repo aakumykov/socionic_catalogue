@@ -24,8 +24,10 @@ public class Card implements
         Parcelable,
         iCommentable
 {
+    public static final String KEY_KEY = "key";
     public final static String KEY_CTIME = "ctime";
     public static final String KEY_TAGS = "tags";
+    public static final String KEY_TITLE = "title";
     public static final String KEY_USER_NAME = "userName";
     public static final String KEY_USER_AVATAR_URL = "userAvatarURL";
     public static final String KEY_COMMENTS_KEYS = "commentsKeys";

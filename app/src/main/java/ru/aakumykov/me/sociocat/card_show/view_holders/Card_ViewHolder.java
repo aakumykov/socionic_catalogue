@@ -1,6 +1,5 @@
 package ru.aakumykov.me.sociocat.card_show.view_holders;
 
-import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -24,8 +23,6 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.iCardShow;
 import ru.aakumykov.me.sociocat.card_show.list_items.iList_Item;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.utils.CardUtils;
-import ru.aakumykov.me.sociocat.utils.ImageLoader;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class Card_ViewHolder extends Base_ViewHolder implements
@@ -34,7 +31,7 @@ public class Card_ViewHolder extends Base_ViewHolder implements
 {
 //    @BindView(R.id.cardLayout) LinearLayout cardLayout;
 
-    @BindView(R.id.titleView) TextView titleView;
+    @BindView(R.id.labelView) TextView titleView;
     @BindView(R.id.quoteView) TextView quoteView;
     @BindView(R.id.imageView) ImageView imageView;
     @BindView(R.id.videoContainer) FrameLayout videoContainer;

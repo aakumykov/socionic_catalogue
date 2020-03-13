@@ -7,7 +7,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_grid.iCardsGrid;
 
 public abstract class BaseViewHolder extends RecyclerView.ViewHolder implements iGridViewHolder
 {
@@ -16,7 +15,7 @@ public abstract class BaseViewHolder extends RecyclerView.ViewHolder implements 
 
     BaseViewHolder(@NonNull View itemView) {
         super(itemView);
-        mCardView = itemView.findViewById(R.id.cardView);
+        mCardView = itemView.findViewById(R.id.mainView);
     }
 
     @Override

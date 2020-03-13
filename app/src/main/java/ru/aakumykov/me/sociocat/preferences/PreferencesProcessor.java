@@ -5,13 +5,12 @@ import android.content.SharedPreferences;
 
 import java.util.Map;
 
-import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.utils.MVPUtils.MVPUtils;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class PreferencesProcessor {
 
+    // Внешние методы
     public static void processAllPreferences(Context context, SharedPreferences sharedPreferences) {
 
         for (Map.Entry<String,?> entry : sharedPreferences.getAll().entrySet()) {
@@ -20,6 +19,7 @@ public class PreferencesProcessor {
         }
     }
 
+    // Методы пакета
     static void processPreferenceKey(Context context, SharedPreferences sharedPreferences, String key) {
 
         String notifyOnNewCards = context.getString(R.string.PREFERENCES_notify_on_new_cards);
@@ -31,19 +31,8 @@ public class PreferencesProcessor {
 
     }
 
+    // Внутренние методы
     private static void processNewCardsSubscription(Context context, boolean isEnabled) {
-        /*if (isEnabled)
-            MVPUtils.subscribeToTopicNotifications(
-                    context,
-                    Constants.TOPIC_NEW_CARDS,
-                    null
-            );
-        else
-            MVPUtils.unsubscribeFromTopicNotifications(
-                    context,
-                    Constants.TOPIC_NEW_CARDS,
-                    null);*/
-
         throw new RuntimeException(MyUtils.getString(context, R.string.not_implemented_yet));
     }
 }
