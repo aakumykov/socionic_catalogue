@@ -22,6 +22,8 @@ import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCommentEvent;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 
 public class NewCommentsService extends Service {
 
@@ -99,6 +101,15 @@ public class NewCommentsService extends Service {
     }
 
     private void showNewCommentNotification(@NonNull NewCommentEvent newCommentEvent) {
+
+        String currentUserId = AuthSingleton.currentUserId();
+        if (null == currentUserId)
+            return;
+
+        String commentAuthorId = newCommentEvent.getUserId();
+        if (!currentUserId.equals(commentAuthorId))
+            return;
+
         String commentKey = newCommentEvent.getCommentKey();
         String cardId = newCommentEvent.getCardId();
 

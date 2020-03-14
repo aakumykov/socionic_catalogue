@@ -21,6 +21,7 @@ public class Comment implements
         iCommentable
 {
     public static final String KEY_KEY = "key";
+    public static final String KEY_USER_ID = "userId";
     public static final String KEY_USER_NAME = "userName";
     public static final String KEY_USER_AVATAR = "userAvatarURL";
     public static final String KEY_TEXT = "text";

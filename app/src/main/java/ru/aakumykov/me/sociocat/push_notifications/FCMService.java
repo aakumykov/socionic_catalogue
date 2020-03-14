@@ -48,6 +48,7 @@ public class FCMService extends FirebaseMessagingService {
             NewCommentEvent newCommentEvent = new NewCommentEvent(
                     data.get(Comment.KEY_KEY),
                     data.get(Comment.KEY_TEXT),
+                    data.get(Comment.KEY_USER_ID),
                     data.get(Comment.KEY_USER_NAME),
                     data.get(Comment.KEY_CARD_ID)
             );
