@@ -1,24 +1,24 @@
 package ru.aakumykov.me.sociocat.event_bus_objects;
 
 public class NewCommentEvent {
-    private String key;
+    private String commentKey;
     private String text;
     private String userName;
     private String cardId;
 
-    public NewCommentEvent(String key, String text, String userName, String cardId) {
-        this.key = key;
+    public NewCommentEvent(String commentKey, String text, String userName, String cardId) {
+        this.commentKey = commentKey;
         this.text = text;
         this.userName = userName;
         this.cardId = cardId;
     }
 
-    public String getKey() {
-        return key;
+    public String getCommentKey() {
+        return commentKey;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setCommentKey(String commentKey) {
+        this.commentKey = commentKey;
     }
 
     public String getText() {

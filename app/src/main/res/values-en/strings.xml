@@ -656,5 +656,6 @@
     <string name="PREFERENCE_you_are_unsubscribed">Unsubscribed</string>
     <string name="PREFERENCE_you_are_subscribed">Subscribed</string>
     <string name="NOTIFICATIONS_new_card_notification_message">New card from %1$s</string>
+    <string name="NOTIFICATIONS_new_comment_notification_title">New comment from %1$s</string>
 </resources>
 <!-- «%1$s» -->

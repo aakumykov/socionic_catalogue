@@ -20,10 +20,8 @@ import java.util.Set;
 
 import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.backup_job.BackupStatus_Activity;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
-import ru.aakumykov.me.sociocat.utils.NotificationsHelper;
 
 public class NewCardsService extends Service {
 
@@ -83,11 +81,11 @@ public class NewCardsService extends Service {
 
     // Внутренние методы
     private void incrementNewCardsCount(@Nullable String cardKey) {
-        if (cardNotCreatedLocally(cardKey))
+        if (cardIsNotCreatedLocally(cardKey))
             setNewCardsCount(newCardsCount+1);
     }
 
-    private boolean cardNotCreatedLocally(String cardKey) {
+    private boolean cardIsNotCreatedLocally(String cardKey) {
         return !locallyCreatedCardsKeys.contains(cardKey);
     }
 
