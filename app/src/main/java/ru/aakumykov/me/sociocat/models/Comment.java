@@ -31,10 +31,12 @@ public class Comment implements
     public static final String KEY_PARENT_TEXT = "parentText";
     public static final String KEY_RATING = "rating";
     public static final String KEY_CARD_ID = "cardId";
+    public static final String KEY_CARD_TITLE = "cardTitle";
 
     private String key;
     private String text;
     private String cardId;
+    private String cardTitle;
     private String parentId;
     private String parentText;
     private String userId;
@@ -52,11 +54,13 @@ public class Comment implements
     public Comment(
             String text,
             String cardId,
+            String cardTitle,
             iCommentable parent,
             User user
     ) {
         setCommentText(text);
         setCardId(cardId);
+        setCardTitle(cardTitle);
         setParent(parent);
         setUser(user);
 
@@ -66,6 +70,7 @@ public class Comment implements
     public Comment(
             String text,
             String cardId,
+            String cardTitle,
             String parentId,
             String parentText,
             String userId,
@@ -74,6 +79,7 @@ public class Comment implements
     ) {
         this.text = text;
         this.cardId = cardId;
+        this.cardTitle = cardTitle;
         this.parentId = parentId;
         this.parentText = parentText;
         this.userId = userId;
@@ -88,6 +94,7 @@ public class Comment implements
                 +"key: "+key
                 +", text: "+text
                 +", cardId: "+cardId
+                +", cardTitle: "+cardTitle
                 +", parentId: "+parentId
                 +", parentText: "+parentText
                 +", userId: "+userId
@@ -105,6 +112,7 @@ public class Comment implements
             map.put("key", key);
             map.put("text", text);
             map.put("cardId", cardId);
+            map.put("cardTitle", cardTitle);
             map.put("parentId", parentId);
             map.put("parentText", parentText);
             map.put("userId", userId);
@@ -141,14 +149,15 @@ public class Comment implements
         dest.writeString(key); // 01
         dest.writeString(text); // 02
         dest.writeString(cardId); // 03
-        dest.writeString(parentId); // 04
-        dest.writeString(parentText); // 05
-        dest.writeString(userId); // 06
-        dest.writeString(userName); // 07
-        dest.writeString(userAvatarURL); // 08
-        dest.writeLong(createdAt); // 09
-        dest.writeLong(editedAt); // 10
-        dest.writeInt(rating); // 11
+        dest.writeString(cardTitle); // 04
+        dest.writeString(parentId); // 05
+        dest.writeString(parentText); // 06
+        dest.writeString(userId); // 07
+        dest.writeString(userName); // 08
+        dest.writeString(userAvatarURL); // 09
+        dest.writeLong(createdAt); // 10
+        dest.writeLong(editedAt); // 11
+        dest.writeInt(rating); // 12
     }
 
     public Comment(Parcel in) {
@@ -156,14 +165,15 @@ public class Comment implements
         key = in.readString(); // 01
         text = in.readString(); // 02
         cardId = in.readString(); // 03
-        parentId = in.readString(); // 04
-        parentText = in.readString(); // 05
-        userId = in.readString(); // 06
-        userName = in.readString(); // 07
-        userAvatarURL = in.readString(); // 08
-        createdAt = in.readLong(); // 09
-        editedAt = in.readLong(); // 10
-        rating = in.readInt(); // 11
+        cardTitle = in.readString(); // 04
+        parentId = in.readString(); // 05
+        parentText = in.readString(); // 06
+        userId = in.readString(); // 07
+        userName = in.readString(); // 08
+        userAvatarURL = in.readString(); // 09
+        createdAt = in.readLong(); // 10
+        editedAt = in.readLong(); // 11
+        rating = in.readInt(); // 12
     }
     // Конверт, конец
 
@@ -194,6 +204,13 @@ public class Comment implements
     }
     public void setCardId(String cardId) {
         this.cardId = cardId;
+    }
+
+    public String getCardTitle() {
+        return cardTitle;
+    }
+    public void setCardTitle(String cardTitle) {
+        this.cardTitle = cardTitle;
     }
 
     public String getParentId() {
