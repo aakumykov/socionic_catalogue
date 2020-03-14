@@ -60,8 +60,7 @@ public class NewCommentsService extends Service {
         if (null == currentUserId)
             return;
 
-        String commentAuthorId = newCommentEvent.getUserId();
-        if (!currentUserId.equals(commentAuthorId))
+        if (currentUserId.equals(newCommentEvent.getUserId()))
             return;
 
         String commentKey = newCommentEvent.getCommentKey();
