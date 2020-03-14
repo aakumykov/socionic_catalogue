@@ -27,22 +27,11 @@ import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 
 public class NewCommentsService extends Service {
 
-    private static final String TAG = "NewCommentsService";
-    private ServiceBinder binder = new ServiceBinder();
-    private int newCommentsCount = 0;
-    private Set<String> locallyCreatedCommentsKeys = new HashSet<>();
-
-
     // Service
     @Override
     public void onCreate() {
         super.onCreate();
         EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
@@ -53,53 +42,18 @@ public class NewCommentsService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return binder;
+        return null;
     }
 
 
     // Подписка на событие NewCommentEvent
     @Subscribe
     public void onNewCommentEvent(NewCommentEvent newCommentEvent) {
-        String commentKey = newCommentEvent.getCommentKey();
-        incrementNewCommentsCount(commentKey);
-
         showNewCommentNotification(newCommentEvent);
     }
 
 
-    // Внешние методы
-    public int getNewCommentsCount() {
-        return newCommentsCount;
-    }
-
-    public void addLocallyCreatedComment(String commentKey) {
-        locallyCreatedCommentsKeys.add(commentKey);
-    }
-
-    public void reset() {
-        setNewCommentsCount(0);
-        clearLocallyCreatedCommentsList();
-    }
-
-
     // Внутренние методы
-    private void incrementNewCommentsCount(@Nullable String commentKey) {
-        if (commentIsNotCreatedLocally(commentKey))
-            setNewCommentsCount(newCommentsCount +1);
-    }
-
-    private boolean commentIsNotCreatedLocally(String commentKey) {
-        return !locallyCreatedCommentsKeys.contains(commentKey);
-    }
-
-    private synchronized void setNewCommentsCount(int count) {
-        newCommentsCount = count;
-    }
-
-    private synchronized void clearLocallyCreatedCommentsList() {
-        locallyCreatedCommentsKeys.clear();
-    }
-
     private void showNewCommentNotification(@NonNull NewCommentEvent newCommentEvent) {
 
         String currentUserId = AuthSingleton.currentUserId();
@@ -145,11 +99,4 @@ public class NewCommentsService extends Service {
         NotificationManagerCompat.from(this).notify(notificationId, notification);
     }
 
-
-    // Классы
-    public class ServiceBinder extends Binder {
-        public NewCommentsService getService() {
-            return NewCommentsService.this;
-        }
-    }
 }
