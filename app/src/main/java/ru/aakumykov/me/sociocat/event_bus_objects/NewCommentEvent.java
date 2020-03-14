@@ -6,13 +6,32 @@ public class NewCommentEvent {
     private String userId;
     private String userName;
     private String cardId;
+    private String cardTitle;
 
-    public NewCommentEvent(String commentKey, String text, String userId, String userName, String cardId) {
+    public NewCommentEvent() {}
+
+    public void setCommentKey(String commentKey) {
         this.commentKey = commentKey;
+    }
+
+    public void setText(String text) {
         this.text = text;
+    }
+
+    public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public void setCardId(String cardId) {
         this.cardId = cardId;
+    }
+
+    public void setCardTitle(String cardTitle) {
+        this.cardTitle = cardTitle;
     }
 
     public String getCommentKey() {
@@ -33,5 +52,9 @@ public class NewCommentEvent {
 
     public String getCardId() {
         return cardId;
+    }
+
+    public String getCardTitle() {
+        return cardTitle;
     }
 }

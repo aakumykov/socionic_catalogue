@@ -45,13 +45,13 @@ public class FCMService extends FirebaseMessagingService {
             EventBus.getDefault().post(newCardEvent);
         }
         else if (data.containsKey("isCommentNotification")) {
-            NewCommentEvent newCommentEvent = new NewCommentEvent(
-                    data.get(Comment.KEY_KEY),
-                    data.get(Comment.KEY_TEXT),
-                    data.get(Comment.KEY_USER_ID),
-                    data.get(Comment.KEY_USER_NAME),
-                    data.get(Comment.KEY_CARD_ID)
-            );
+            NewCommentEvent newCommentEvent = new NewCommentEvent();
+                newCommentEvent.setCommentKey(data.get(Comment.KEY_KEY));
+                newCommentEvent.setText(data.get(Comment.KEY_TEXT));
+                newCommentEvent.setUserId(data.get(Comment.KEY_USER_ID));
+                newCommentEvent.setUserName(data.get(Comment.KEY_USER_NAME));
+                newCommentEvent.setCardId(data.get(Comment.KEY_CARD_ID));
+                newCommentEvent.setCardTitle(data.get(Comment.KEY_CARD_TITLE));
 
             EventBus.getDefault().post(newCommentEvent);
         }

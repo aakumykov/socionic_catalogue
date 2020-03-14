@@ -664,6 +664,8 @@
     <string name="PREFERENCE_you_are_unsubscribed">Вы отписаны</string>
     <string name="PREFERENCE_you_are_subscribed">Подписка оформлена</string>
     <string name="NOTIFICATIONS_new_card_notification_message">Новая карточка от %1$s</string>
-    <string name="NOTIFICATIONS_new_comment_notification_title">Новый комментарий от %1$s</string>
-
-</resources><!-- «%1$s» -->
+    <string name="NOTIFICATIONS_new_comment_notification_title">Новый комментарий к карточке «%1$s»</string>
+    <string name="NOTIFICATIONS_new_comment_short_message">От пользователя %1$s</string>
+</resources>
+<!--пользователя %1$s к карточке «%2$s» -->
+<!-- «%1$s» -->
