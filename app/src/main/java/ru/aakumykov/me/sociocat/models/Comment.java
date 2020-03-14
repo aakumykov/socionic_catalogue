@@ -20,6 +20,7 @@ public class Comment implements
         Parcelable,
         iCommentable
 {
+    public static final String KEY_KEY = "key";
     public static final String KEY_USER_NAME = "userName";
     public static final String KEY_USER_AVATAR = "userAvatarURL";
     public static final String KEY_TEXT = "text";
@@ -28,6 +29,7 @@ public class Comment implements
     public static final String KEY_PARENT_ID = "parentKey";
     public static final String KEY_PARENT_TEXT = "parentText";
     public static final String KEY_RATING = "rating";
+    public static final String KEY_CARD_ID = "cardId";
 
     private String key;
     private String text;

@@ -12,7 +12,9 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.Map;
 
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
+import ru.aakumykov.me.sociocat.event_bus_objects.NewCommentEvent;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.models.Comment;
 
 public class FCMService extends FirebaseMessagingService {
 
@@ -41,6 +43,19 @@ public class FCMService extends FirebaseMessagingService {
             newCardEvent.setCardAuthor(data.get(Card.KEY_USER_NAME));
 
             EventBus.getDefault().post(newCardEvent);
+        }
+        else if (data.containsKey("isCommentNotification")) {
+            NewCommentEvent newCommentEvent = new NewCommentEvent(
+                    data.get(Comment.KEY_KEY),
+                    data.get(Comment.KEY_TEXT),
+                    data.get(Comment.KEY_USER_NAME),
+                    data.get(Comment.KEY_CARD_ID)
+            );
+
+            EventBus.getDefault().post(newCommentEvent);
+        }
+        else {
+            Log.e(TAG, "Unknown push notification type: "+data);
         }
     }
 
