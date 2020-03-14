@@ -475,6 +475,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         editedComment = new Comment(
                 pageView.getCommentText(),
                 currentCard.getKey(),
+                currentCard.getTitle(),
                 this.repliedItem,
                 usersSingleton.getCurrentUser()
         );
