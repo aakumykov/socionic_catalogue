@@ -207,11 +207,6 @@
             android:enabled="true"
             android:exported="false" />
 
-        <service
-            android:name=".services.NewCommentsService"
-            android:enabled="true"
-            android:exported="false" />
-
     </application>
 
 </manifest>

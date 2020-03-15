@@ -24,7 +24,6 @@ import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.services.NewCardsService;
-import ru.aakumykov.me.sociocat.services.NewCommentsService;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
@@ -223,10 +222,6 @@ public class MyApp extends Application {
 
     private void startNewCardsService() {
         startService(new Intent(this, NewCardsService.class));
-    }
-
-    private void startNewCommentsService() {
-        startService(new Intent(this, NewCommentsService.class));
     }
 
     @Subscribe
