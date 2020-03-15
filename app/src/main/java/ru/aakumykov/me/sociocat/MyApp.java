@@ -121,7 +121,7 @@ public class MyApp extends Application {
     }
 
     private synchronized static void setNewCardsCounter(int newValue) {
-
+        newCardsCounter = newValue;
     }
 
 

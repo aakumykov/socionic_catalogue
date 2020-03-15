@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_grid;
 
 import android.app.SearchManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -9,7 +8,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.os.Parcelable;
 import android.util.Log;
@@ -45,6 +43,7 @@ import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.MyApp;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
@@ -55,7 +54,6 @@ import ru.aakumykov.me.sociocat.cards_grid.view_holders.iGridViewHolder;
 import ru.aakumykov.me.sociocat.cards_grid.view_model.CardsGrid_ViewModel;
 import ru.aakumykov.me.sociocat.cards_grid.view_model.CardsGrid_ViewModel_Factory;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.services.NewCardsService;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -95,8 +93,6 @@ public class CardsGrid_View extends BaseView implements
     private final static String KEY_LIST_STATE = "LIST_STATE";
     private int backPressedCount = 0;
     private Menu menu;
-    private ServiceConnection newCardsServiceConnection;
-    private NewCardsService newCardsService;
     private TimerTask newCardsCheckingTimerTask;
 
 
@@ -129,22 +125,6 @@ public class CardsGrid_View extends BaseView implements
 
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
         recyclerView.setLayoutManager(layoutManager);
-
-        newCardsServiceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                newCardsService = ((NewCardsService.ServiceBinder) iBinder).getService();
-                presenter.bindNewCardsService(newCardsService);
-                scheduleNewCardsChecking();
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName componentName) {
-                unScheduleNewCardsChecking();
-                presenter.unbindNewCardsService();
-                newCardsService = null;
-            }
-        };
 
         configureSwipeRefresh();
 
@@ -180,17 +160,15 @@ public class CardsGrid_View extends BaseView implements
 
         bindComponents();
 
-        bindService(new Intent(this, NewCardsService.class), newCardsServiceConnection, BIND_IMPORTANT);
-
         if (!dataAdapter.hasData())
             presenter.processInputIntent(getIntent());
     }
 
-    /*@Override
+    @Override
     protected void onResume() {
         super.onResume();
         scheduleNewCardsChecking();
-    }*/
+    }
 
     @Override
     protected void onPause() {
@@ -205,8 +183,6 @@ public class CardsGrid_View extends BaseView implements
         dataAdapter.disableFiltering();
 
         unbindComponents();
-
-        unbindService(newCardsServiceConnection);
     }
 
     @Override
@@ -806,12 +782,10 @@ public class CardsGrid_View extends BaseView implements
     }
 
     private void checkForNewCards(Handler handler) {
-        if (null != newCardsService) {
-            int newCardsCount = newCardsService.getNewCardsCount();
-            if (newCardsCount > 0) {
-                Message message = handler.obtainMessage(NEW_CARDS_AVAILABLE, newCardsCount);
-                handler.sendMessage(message);
-            }
+        int newCardsCount = MyApp.getNewCardsCount();
+        if (newCardsCount > 0) {
+            Message message = handler.obtainMessage(NEW_CARDS_AVAILABLE, newCardsCount);
+            handler.sendMessage(message);
         }
     }
 

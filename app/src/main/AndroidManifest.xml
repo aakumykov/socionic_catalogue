@@ -202,11 +202,6 @@
 
         <service android:name=".backup_job.BackupService" />
 
-        <service
-            android:name=".services.NewCardsService"
-            android:enabled="true"
-            android:exported="false" />
-
     </application>
 
 </manifest>
