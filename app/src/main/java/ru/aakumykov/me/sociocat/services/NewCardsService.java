@@ -57,7 +57,7 @@ public class NewCardsService extends Service {
     // Подписка на событие NewCardEvent
     @Subscribe
     public void onNewCardEvent(NewCardEvent newCardEvent) {
-        String cardKey = newCardEvent.getCardKey();
+        String cardKey = newCardEvent.getKey();
         incrementNewCardsCount(cardKey);
 
         showNewCardNotification(newCardEvent);
@@ -98,7 +98,7 @@ public class NewCardsService extends Service {
     }
 
     private void showNewCardNotification(@NonNull NewCardEvent newCardEvent) {
-        String cardKey = newCardEvent.getCardKey();
+        String cardKey = newCardEvent.getKey();
         int notificationId = cardKey.hashCode();
 
         Intent intent = new Intent(this, CardShow_View.class);
@@ -111,9 +111,9 @@ public class NewCardsService extends Service {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
-        String title = getString(R.string.aquotes, newCardEvent.getCardTitle());
+        String title = getString(R.string.aquotes, newCardEvent.getTitle());
 
-        String message = getString(R.string.NOTIFICATIONS_new_card_notification_message, newCardEvent.getCardAuthor());
+        String message = getString(R.string.NOTIFICATIONS_new_card_notification_message, newCardEvent.getUserName());
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, Constants.NOTIFICATIONS_CHANNEL_AND_TOPIC_NAME_NEW_CARDS)

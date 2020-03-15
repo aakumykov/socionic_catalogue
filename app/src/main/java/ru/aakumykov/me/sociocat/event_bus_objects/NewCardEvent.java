@@ -1,40 +1,43 @@
 package ru.aakumykov.me.sociocat.event_bus_objects;
 
 public class NewCardEvent {
-    private String cardKey;
-    private String cardTitle;
-    private String cardAuthor;
+    private String key;
+    private String title;
+    private String userId;
+    private String userName;
 
     public NewCardEvent() {
     }
 
-    public NewCardEvent(String cardKey, String cardTitle, String cardAuthor) {
-        this.cardKey = cardKey;
-        this.cardTitle = cardTitle;
-        this.cardAuthor = cardAuthor;
+    public String getKey() {
+        return key;
     }
 
-    public void setCardKey(String cardKey) {
-        this.cardKey = cardKey;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public void setCardTitle(String cardTitle) {
-        this.cardTitle = cardTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setCardAuthor(String cardAuthor) {
-        this.cardAuthor = cardAuthor;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getCardKey() {
-        return cardKey;
+    public String getUserId() {
+        return userId;
     }
 
-    public String getCardTitle() {
-        return cardTitle;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getCardAuthor() {
-        return cardAuthor;
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

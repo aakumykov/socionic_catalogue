@@ -19,6 +19,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCommentEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
@@ -85,10 +86,19 @@ public class MyApp extends Application {
 
         logFCMRegistrationToken();
 
-        startNewCardsService();
-
-        //startNewCommentsService();
         EventBus.getDefault().register(this);
+    }
+
+
+    // Подписки на события EventBus
+    @Subscribe
+    public void onNewCardEvent(NewCardEvent newCardEvent) {
+        NewCardNotificationHelper.showNotification(this, newCardEvent);
+    }
+
+    @Subscribe
+    public void onNewCommentEvent(NewCommentEvent newCommentEvent) {
+        NewCommentNotificationHelper.showNotification(this, newCommentEvent);
     }
 
 
@@ -219,15 +229,5 @@ public class MyApp extends Application {
                     }
                 });
     }
-
-    private void startNewCardsService() {
-        startService(new Intent(this, NewCardsService.class));
-    }
-
-    @Subscribe
-    public void onNewCommentEvent(NewCommentEvent newCommentEvent) {
-        NewCommentNotificationHelper.showNotification(this, newCommentEvent);
-    }
-
 
 }
