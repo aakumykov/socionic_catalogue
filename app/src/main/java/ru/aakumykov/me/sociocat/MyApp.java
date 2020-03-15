@@ -17,7 +17,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
+import ru.aakumykov.me.sociocat.event_bus_objects.NewCommentEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.models.User;
@@ -86,8 +88,10 @@ public class MyApp extends Application {
 
         startNewCardsService();
 
-        startNewCommentsService();
+        //startNewCommentsService();
+        EventBus.getDefault().register(this);
     }
+
 
     // Внутренние методы
     private void authorizeUser(User user) {
@@ -224,4 +228,11 @@ public class MyApp extends Application {
     private void startNewCommentsService() {
         startService(new Intent(this, NewCommentsService.class));
     }
+
+    @Subscribe
+    public void onNewCommentEvent(NewCommentEvent newCommentEvent) {
+        NewCommentNotificationHelper.showNotification(this, newCommentEvent);
+    }
+
+
 }
