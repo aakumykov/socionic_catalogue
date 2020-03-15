@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat;
+package ru.aakumykov.me.sociocat.push_notifications;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -8,13 +8,21 @@ import android.content.Intent;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
+import ru.aakumykov.me.sociocat.push_notifications.iNewCardEventCallbacks;
 import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
 public class NewCardNotificationHelper {
 
-    public static void showNotification(Context context, NewCardEvent newCardEvent, iNewCardsCounter newCardsCounter) {
+    public interface NewCardsNotificationCallbacks {
+        void onNewCardCreatedByOtherUser();
+    }
+
+
+    public static void processNotification(Context context, NewCardEvent newCardEvent, iNewCardEventCallbacks newCardEventCallbacks) {
 
         String currentUserId = AuthSingleton.currentUserId();
         if (null == currentUserId)
@@ -23,7 +31,7 @@ public class NewCardNotificationHelper {
         if (currentUserId.equals(newCardEvent.getUserId()))
             return;
 
-        newCardsCounter.onNewCardCreatedByOtherUser();
+        newCardEventCallbacks.onNewCardCreatedByOtherUserReceived();
 
         int notificationId = newCardEvent.getKey().hashCode();
 

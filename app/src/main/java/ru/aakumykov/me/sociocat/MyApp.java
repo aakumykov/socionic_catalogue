@@ -22,6 +22,10 @@ import ru.aakumykov.me.sociocat.event_bus_objects.NewCardEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.NewCommentEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
+import ru.aakumykov.me.sociocat.push_notifications.NewCardNotificationHelper;
+import ru.aakumykov.me.sociocat.push_notifications.NewCardsCounter;
+import ru.aakumykov.me.sociocat.push_notifications.NewCommentNotificationHelper;
+import ru.aakumykov.me.sociocat.push_notifications.iNewCardEventCallbacks;
 import ru.aakumykov.me.sociocat.models.User;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
@@ -29,7 +33,6 @@ import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 public class MyApp extends Application {
 
     private final static String TAG = "=MyApp=";
-    private static volatile int newCardsCounter = 0;
     private iUsersSingleton usersSingleton;
 
 
@@ -93,35 +96,17 @@ public class MyApp extends Application {
     // Подписки на события EventBus
     @Subscribe
     public void onNewCardEvent(NewCardEvent newCardEvent) {
-        NewCardNotificationHelper.showNotification(this, newCardEvent, new iNewCardsCounter() {
+        NewCardNotificationHelper.processNotification(this, newCardEvent, new iNewCardEventCallbacks() {
             @Override
-            public void onNewCardCreatedByOtherUser() {
-                incrementNewCardsCounter();
+            public void onNewCardCreatedByOtherUserReceived() {
+                NewCardsCounter.incrementCounter();
             }
         });
     }
 
     @Subscribe
     public void onNewCommentEvent(NewCommentEvent newCommentEvent) {
-        NewCommentNotificationHelper.showNotification(this, newCommentEvent);
-    }
-
-
-    // Методы манипулирования счётчиком новых карточек
-    public static int getNewCardsCount() {
-        return newCardsCounter;
-    }
-
-    public static void resetNewCardsCount() {
-        setNewCardsCounter(0);
-    }
-
-    private static void incrementNewCardsCounter() {
-        setNewCardsCounter(newCardsCounter + 1);
-    }
-
-    private synchronized static void setNewCardsCounter(int newValue) {
-        newCardsCounter = newValue;
+        NewCommentNotificationHelper.processNotification(this, newCommentEvent);
     }
 
 

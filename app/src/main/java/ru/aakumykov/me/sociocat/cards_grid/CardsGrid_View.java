@@ -3,7 +3,6 @@ package ru.aakumykov.me.sociocat.cards_grid;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -43,7 +42,7 @@ import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.Constants;
-import ru.aakumykov.me.sociocat.MyApp;
+import ru.aakumykov.me.sociocat.push_notifications.NewCardsCounter;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.card_edit.CardEdit_View;
@@ -782,7 +781,7 @@ public class CardsGrid_View extends BaseView implements
     }
 
     private void checkForNewCards(Handler handler) {
-        int newCardsCount = MyApp.getNewCardsCount();
+        int newCardsCount = NewCardsCounter.getCount();
         if (newCardsCount > 0) {
             Message message = handler.obtainMessage(NEW_CARDS_AVAILABLE, newCardsCount);
             handler.sendMessage(message);
