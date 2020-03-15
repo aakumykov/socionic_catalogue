@@ -1,7 +1,6 @@
 package ru.aakumykov.me.sociocat;
 
 import android.app.Application;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -24,14 +23,15 @@ import ru.aakumykov.me.sociocat.event_bus_objects.NewCommentEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserAuthorizedEvent;
 import ru.aakumykov.me.sociocat.event_bus_objects.UserUnauthorizedEvent;
 import ru.aakumykov.me.sociocat.models.User;
-import ru.aakumykov.me.sociocat.services.NewCardsService;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 
 public class MyApp extends Application {
 
     private final static String TAG = "=MyApp=";
+    private static volatile int newCardsCounter = 0;
     private iUsersSingleton usersSingleton;
+
 
     // Методы Application
     @Override
@@ -93,12 +93,35 @@ public class MyApp extends Application {
     // Подписки на события EventBus
     @Subscribe
     public void onNewCardEvent(NewCardEvent newCardEvent) {
-        NewCardNotificationHelper.showNotification(this, newCardEvent);
+        NewCardNotificationHelper.showNotification(this, newCardEvent, new iNewCardsCounter() {
+            @Override
+            public void onNewCardCreatedByOtherUser() {
+                incrementNewCardsCounter();
+            }
+        });
     }
 
     @Subscribe
     public void onNewCommentEvent(NewCommentEvent newCommentEvent) {
         NewCommentNotificationHelper.showNotification(this, newCommentEvent);
+    }
+
+
+    // Методы манипулирования счётчиком новых карточек
+    public static int getNewCardsCount() {
+        return newCardsCounter;
+    }
+
+    public static void resetNewCardsCount() {
+        setNewCardsCounter(0);
+    }
+
+    private static void incrementNewCardsCounter() {
+        setNewCardsCounter(newCardsCounter + 1);
+    }
+
+    private synchronized static void setNewCardsCounter(int newValue) {
+
     }
 
 

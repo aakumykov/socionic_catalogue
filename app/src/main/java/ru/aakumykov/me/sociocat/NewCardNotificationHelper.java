@@ -14,7 +14,7 @@ import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 
 public class NewCardNotificationHelper {
 
-    public static void showNotification(Context context, NewCardEvent newCardEvent) {
+    public static void showNotification(Context context, NewCardEvent newCardEvent, iNewCardsCounter newCardsCounter) {
 
         String currentUserId = AuthSingleton.currentUserId();
         if (null == currentUserId)
@@ -22,6 +22,8 @@ public class NewCardNotificationHelper {
 
         if (currentUserId.equals(newCardEvent.getUserId()))
             return;
+
+        newCardsCounter.onNewCardCreatedByOtherUser();
 
         int notificationId = newCardEvent.getKey().hashCode();
 
