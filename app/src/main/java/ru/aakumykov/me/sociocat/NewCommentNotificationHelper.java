@@ -23,9 +23,9 @@ public class NewCommentNotificationHelper {
         if (currentUserId.equals(newCommentEvent.getUserId()))
             return;
 
-        Notification notification = prepareNotification(context, newCommentEvent);
-
         int notificationId = newCommentEvent.getCommentKey().hashCode();
+
+        Notification notification = prepareNotification(context, newCommentEvent);
 
         NotificationManagerCompat.from(context).notify(notificationId, notification);
     }
@@ -34,7 +34,7 @@ public class NewCommentNotificationHelper {
 
         String title = context.getString(R.string.NOTIFICATIONS_new_comment_notification_title, newCommentEvent.getCardTitle());
 
-        String shortMessage = context.getString(R.string.NOTIFICATIONS_new_comment_short_message, newCommentEvent.getText());
+        String shortMessage = newCommentEvent.getText();
 
         String longMessage = newCommentEvent.getText();
 

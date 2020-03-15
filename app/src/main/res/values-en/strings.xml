@@ -370,9 +370,6 @@
     <string name="BASE_VIEW_error_reading_current_user">Error reading current user</string>
     <string name="BASE_VIEW_error_recieving_push_token">Error receiving PUSH-messages token</string>
 
-    <string name="PUSH_NOTIFICATION_SERVICE_new_card_created_message">New card from %1$s</string>
-    <string name="PUSH_NOTIFICATION_SERVICE_new_comment_created_message">New comment from %1$s</string>
-
     <string name="PREFERENCES_notify_on_new_cards_summary">Send or not notifications on new cards</string>
     <string name="PREFERENCES_notify_on_new_cards_title">Notify on new cards</string>
     <string name="PREFERENCES_ACTIVITY_page_title">App preferences</string>
@@ -643,7 +640,6 @@
     <string name="probe">Probe</string>
     <string name="DEBUG_backup_service_already_running">Backup service already running</string>
     <string name="BACKUP_SERVICE_creating_dir">Creating directory «%1$s»</string>
-    <string name="NOTIFICATIONS_new_card_notification_title">New card</string>
     <string name="SHORTCUT_PROCESSOR_data_error">Data error</string>
     <string name="CARDS_GRID_load_more">Load more</string>
     <string name="CARDS_GRID_new_cards_available">New cards available (%1$d)</string>
@@ -655,9 +651,12 @@
     <string name="PREFERENCES_error_changing_preference">Error changing preference</string>
     <string name="PREFERENCE_you_are_unsubscribed">Unsubscribed</string>
     <string name="PREFERENCE_you_are_subscribed">Subscribed</string>
+
+    <string name="NOTIFICATIONS_new_card_notification_title">«%1$s»</string>
     <string name="NOTIFICATIONS_new_card_notification_message">New card from %1$s</string>
-    <string name="NOTIFICATIONS_new_comment_notification_title">New comment to card «%1$s»</string>
-    <string name="NOTIFICATIONS_new_comment_short_message">From user %1$s</string>
+
+    <string name="NOTIFICATIONS_new_comment_notification_title">New comment from «%1$s»</string>
+<!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>
 <!-- «%1$s» -->
 <!--from user %1$s to card «%2$s»-->

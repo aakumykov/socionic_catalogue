@@ -36,13 +36,13 @@ public class FCMService extends FirebaseMessagingService {
         Map<String, String> data = remoteMessage.getData();
 
         if (data.containsKey("isCardNotification")) {
-            NewCardEvent newCardEvent = new NewCardEvent();
+            /*NewCardEvent newCardEvent = new NewCardEvent();
 
             newCardEvent.setCardKey(data.get(Card.KEY_KEY));
             newCardEvent.setCardTitle(data.get(Card.KEY_TITLE));
             newCardEvent.setCardAuthor(data.get(Card.KEY_USER_NAME));
 
-            EventBus.getDefault().post(newCardEvent);
+            EventBus.getDefault().post(newCardEvent);*/
         }
         else if (data.containsKey("isCommentNotification")) {
             NewCommentEvent newCommentEvent = new NewCommentEvent();
