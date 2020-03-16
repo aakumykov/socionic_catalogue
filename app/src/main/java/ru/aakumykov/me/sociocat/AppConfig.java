@@ -50,7 +50,7 @@ public final class AppConfig {
     public static final int CREATE_TEMP_USER_NAME_TRIES_COUNT = 10;
 
     public static final long BACKUP_DELAY_IN_SECONDS = 10;
-    public static final long BACKUP_INTERVAL_IN_SECONDS = 600; // каждые 10 минут
+    public static final long BACKUP_INTERVAL_IN_SECONDS = 3600; // каждый час
 
     public static final long NEW_CARDS_CHECK_DELAY = 1000;
     public static final long NEW_CARDS_CHECK_INTERVAL = 20000;
