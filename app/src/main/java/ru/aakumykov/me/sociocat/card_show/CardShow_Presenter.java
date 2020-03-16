@@ -3,6 +3,7 @@ package ru.aakumykov.me.sociocat.card_show;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -336,20 +337,22 @@ public class CardShow_Presenter implements iCardShow.iPresenter
             return;
         }
 
-        String cardKey = data.getStringExtra(Constants.CARD_KEY);
-        if (null != cardKey) {
-            loadAndShowCard(cardKey);
-            return;
-        }
-
         Card card = data.getParcelableExtra(Constants.CARD);
-        if (null != card) {
-            showCard(card);
-            return;
-        }
+        String cardKey = data.getStringExtra(Constants.CARD_KEY);
 
-        pageView.showErrorMsg(R.string.data_error, "There is no Card or card key in Intent");
-        // TODO: pageView.setState()
+        if (null != card && null == cardKey) {
+            showCard(card);
+        }
+        else if (null != cardKey && null == card) {
+            loadAndShowCard(cardKey);
+        }
+        else if (null != card && null != cardKey) {
+            pageView.showErrorMsg(R.string.CARD_SHOW_info_both_card_and_card_id_presented, "Both Card and cardKey are provided");
+            loadAndShowCard(cardKey);
+        }
+        else {
+            pageView.showErrorMsg(R.string.data_error, "There is no Card or card key in Intent");
+        }
     }
 
     @Override

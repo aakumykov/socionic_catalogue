@@ -656,7 +656,8 @@
     <string name="NOTIFICATIONS_new_card_notification_message">New card from %1$s</string>
 
     <string name="NOTIFICATIONS_new_comment_notification_title">New comment from «%1$s»</string>
-<!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
+    <string name="CARD_SHOW_info_both_card_and_card_id_presented">Input data conflict</string>
+    <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>
 <!-- «%1$s» -->
 <!--from user %1$s to card «%2$s»-->
