@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -572,7 +570,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
             }
         };
 
-        new Timer().schedule(task, AppConfig.BACKUP_DELAY_IN_SECONDS);
+        new Timer().schedule(task, AppConfig.BACKUP_START_DELAY_IN_SECONDS);
     }
 
     private void produceBackup() {
