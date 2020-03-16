@@ -335,9 +335,9 @@ public class CardsSingleton implements iCardsSingleton {
         );
 
         writeBatch.commit()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                    public void onSuccess(Void aVoid) {
                         callbacks.onCardDeleteSuccess(card);
                     }
                 })
