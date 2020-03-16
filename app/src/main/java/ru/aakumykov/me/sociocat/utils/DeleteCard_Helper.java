@@ -11,9 +11,6 @@ import ru.aakumykov.me.sociocat.singletons.iStorageSingleton;
 
 public class DeleteCard_Helper {
 
-    private final static String TAG = "DeleteCard_Helper";
-
-
     public interface iDeletionCallbacks {
         void onCardDeleteSuccess(Card card);
         void onCardDeleteError(String errorMsg);
@@ -26,31 +23,20 @@ public class DeleteCard_Helper {
             @Override
             public void onCardLoadSuccess(Card card) {
 
-                // Если это карточка с картинкой
-                if (card.isImageCard()) {
+                deleteCardReal(card, new iCardDeletionCallbacksInternal() {
+                    @Override
+                    public void onCardDeleted(Card card) {
+                        if (card.isImageCard())
+                            deleteImageOfCard(card);
 
-                    String imageFileName = card.getFileName();
-                    if (null == imageFileName) {
-                        callbacks.onCardDeleteError("Image file name is NULL");
-                        return;
+                        callbacks.onCardDeleteSuccess(card);
                     }
 
-                    StorageSingleton.getInstance().deleteImage(imageFileName, new iStorageSingleton.FileDeletionCallbacks() {
-                        @Override
-                        public void onDeleteSuccess() {
-                            deleteCardReal(card, callbacks);
-                        }
-
-                        @Override
-                        public void onDeleteFail(String errorMsg) {
-                            callbacks.onCardDeleteError(errorMsg);
-                        }
-                    });
-                }
-                // Если без картинки
-                else {
-                    deleteCardReal(card, callbacks);
-                }
+                    @Override
+                    public void onCardNotDeleted(String errorMsg) {
+                        callbacks.onCardDeleteError(errorMsg);
+                    }
+                });
             }
 
             @Override
@@ -60,17 +46,46 @@ public class DeleteCard_Helper {
         });
     }
 
-    private static void deleteCardReal(Card card, iDeletionCallbacks callbacks) {
+
+    private final static String TAG = DeleteCard_Helper.class.getSimpleName();
+
+    private interface iCardDeletionCallbacksInternal {
+        void onCardDeleted(Card card);
+        void onCardNotDeleted(String errorMsg);
+    }
+
+    private static void deleteCardReal(Card card, iCardDeletionCallbacksInternal callbacks) {
 
         CardsSingleton.getInstance().deleteCard(card, new iCardsSingleton.DeleteCallbacks() {
             @Override
             public void onCardDeleteSuccess(Card card) {
-                callbacks.onCardDeleteSuccess(card);
+                callbacks.onCardDeleted(card);
             }
 
             @Override
             public void onCardDeleteError(String msg) {
-                callbacks.onCardDeleteError(msg);
+                callbacks.onCardNotDeleted(msg);
+            }
+        });
+    }
+
+    private static void deleteImageOfCard(Card card) {
+        String imageFileName = card.getFileName();
+
+        if (null == imageFileName) {
+            Log.e(TAG, "Image file name of card "+card.getKey()+" cannot be NULL");
+            return;
+        }
+
+        StorageSingleton.getInstance().deleteImage(imageFileName, new iStorageSingleton.FileDeletionCallbacks() {
+            @Override
+            public void onDeleteSuccess() {
+
+            }
+
+            @Override
+            public void onDeleteFail(String errorMsg) {
+                Log.e(TAG, "Error deleting image "+imageFileName+" of card "+card.getKey());
             }
         });
     }
