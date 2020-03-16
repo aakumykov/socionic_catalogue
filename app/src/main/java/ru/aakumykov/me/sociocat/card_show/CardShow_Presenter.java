@@ -66,15 +66,8 @@ public class CardShow_Presenter implements iCardShow.iPresenter
 
     @Override
     public void onRefreshRequested() {
-
         pageView.showProgressMessage(R.string.CARD_SHOW_loading_card);
-
-        loadCard(currentCard.getKey(), new iLoadCardCallbacks() {
-            @Override
-            public void onCardLoaded(Card card) {
-                showCard(card);
-            }
-        });
+        loadAndShowCard(currentCard.getKey());
     }
 
     @Override
@@ -387,6 +380,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         loadCard(cardKey, new iLoadCardCallbacks() {
             @Override
             public void onCardLoaded(Card card) {
+                pageView.hideProgressMessage();
                 showCard(card);
             }
         });
