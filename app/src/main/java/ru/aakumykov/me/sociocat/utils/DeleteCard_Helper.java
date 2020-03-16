@@ -17,12 +17,9 @@ public class DeleteCard_Helper {
     }
 
     public static void deleteCard(String cardKey, iDeletionCallbacks callbacks) {
-
-        // Получаю свежий объект карточки с сервера
         CardsSingleton.getInstance().loadCard(cardKey, new iCardsSingleton.LoadCallbacks() {
             @Override
             public void onCardLoadSuccess(Card card) {
-
                 deleteCardReal(card, new iCardDeletionCallbacksInternal() {
                     @Override
                     public void onCardDeleted(Card card) {
@@ -55,7 +52,6 @@ public class DeleteCard_Helper {
     }
 
     private static void deleteCardReal(Card card, iCardDeletionCallbacksInternal callbacks) {
-
         CardsSingleton.getInstance().deleteCard(card, new iCardsSingleton.DeleteCallbacks() {
             @Override
             public void onCardDeleteSuccess(Card card) {
