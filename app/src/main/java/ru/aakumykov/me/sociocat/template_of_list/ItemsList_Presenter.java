@@ -8,10 +8,10 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_ViewStub;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
-import ru.aakumykov.me.sociocat.template_of_list.stubs._DataAdapter_Stub;
-import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_ViewStub;
+import ru.aakumykov.me.sociocat.template_of_list.stubs.DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class ItemsList_Presenter implements iItemsList.iPresenter {
@@ -31,7 +31,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void unlinkView() {
         this.pageView = new ItemsList_ViewStub();
-        this.dataAdapter = new _DataAdapter_Stub();
+        this.dataAdapter = new DataAdapter_Stub();
     }
 
     @Override
@@ -110,9 +110,8 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     @Override
-    public void onActionModeFinished() {
+    public void onActionModeDestroyed() {
         dataAdapter.clearSelection();
-        pageView.destroyActionMode();
     }
 
 

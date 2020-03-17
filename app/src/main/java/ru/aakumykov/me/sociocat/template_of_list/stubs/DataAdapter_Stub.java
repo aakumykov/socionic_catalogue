@@ -4,11 +4,10 @@ import android.widget.Filter;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.template_of_list.SelectableAdapter_Stub;
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 
-public class _DataAdapter_Stub
+public class DataAdapter_Stub
         extends SelectableAdapter_Stub
         implements iItemsList.iDataAdapter
 {

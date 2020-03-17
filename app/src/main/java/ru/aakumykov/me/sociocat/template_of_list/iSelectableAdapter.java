@@ -4,7 +4,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 
-interface iSelectableAdapter {
+public interface iSelectableAdapter {
     boolean isSelected(int position);
 
     int getSelectedItemCount();

@@ -213,11 +213,6 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     }
 
     @Override
-    public void destroyActionMode() {
-        actionMode = null;
-    }
-
-    @Override
     public void showSelectedItemsCount(int count) {
         actionMode.setTitle(String.valueOf(count));
         actionMode.invalidate();
@@ -340,7 +335,8 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
 
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
-            presenter.onActionModeFinished();
+            actionMode = null;
+            presenter.onActionModeDestroyed();
         }
     }
 

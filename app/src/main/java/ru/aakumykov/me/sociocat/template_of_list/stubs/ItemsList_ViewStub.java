@@ -6,8 +6,10 @@ import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 
 @SuppressLint("Registered")
-public class ItemsList_ViewStub extends BaseView_Stub implements iItemsList.iPageView {
-
+public class ItemsList_ViewStub
+        extends BaseView_Stub
+        implements iItemsList.iPageView
+{
     @Override
     public void showRefreshThrobber() {
 
@@ -25,11 +27,6 @@ public class ItemsList_ViewStub extends BaseView_Stub implements iItemsList.iPag
 
     @Override
     public void finishActionMode() {
-
-    }
-
-    @Override
-    public void destroyActionMode() {
 
     }
 
