@@ -234,7 +234,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
         this.linearLayoutManager = new LinearLayoutManager(this);
 
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(dataAdapter);
+        recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
     }
 
     private void configureSwipeRefresh() {
