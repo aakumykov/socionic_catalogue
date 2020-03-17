@@ -105,6 +105,14 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onSelectedItemsDeleteClicked() {
         pageView.showToast(R.string.not_implemented_yet);
+        dataAdapter.clearSelection();
+        pageView.finishActionMode();
+    }
+
+    @Override
+    public void onActionModeFinished() {
+        dataAdapter.clearSelection();
+        pageView.destroyActionMode();
     }
 
 

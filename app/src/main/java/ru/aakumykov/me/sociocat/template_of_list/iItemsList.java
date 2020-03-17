@@ -18,6 +18,7 @@ public interface iItemsList {
 
         void startActionMode();
         void finishActionMode();
+        void destroyActionMode();
 
         void showSelectedItemsCount(int count);
     }
@@ -61,6 +62,8 @@ public interface iItemsList {
         void onSortByCountClicked();
 
         void onSelectedItemsDeleteClicked();
+
+        void onActionModeFinished();
     }
 
 

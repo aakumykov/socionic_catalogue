@@ -29,6 +29,11 @@ public class ItemsList_ViewStub extends BaseView_Stub implements iItemsList.iPag
     }
 
     @Override
+    public void destroyActionMode() {
+
+    }
+
+    @Override
     public void showSelectedItemsCount(int count) {
 
     }

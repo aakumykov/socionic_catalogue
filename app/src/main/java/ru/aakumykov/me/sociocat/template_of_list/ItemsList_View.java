@@ -206,8 +206,15 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
 
     @Override
     public void finishActionMode() {
-        if (null != actionMode)
+        if (null != actionMode) {
             actionMode.finish();
+            actionMode = null;
+        }
+    }
+
+    @Override
+    public void destroyActionMode() {
+        actionMode = null;
     }
 
     @Override
@@ -324,7 +331,6 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
             switch (item.getItemId()) {
                 case R.id.actionDelete:
                     presenter.onSelectedItemsDeleteClicked();
-                    actionMode.finish();
                     return true;
 
                 default:
@@ -334,8 +340,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
 
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
-            dataAdapter.clearSelection();
-            ItemsList_View.this.actionMode = null;
+            presenter.onActionModeFinished();
         }
     }
 
