@@ -662,6 +662,7 @@
 
     <string name="NOTIFICATIONS_new_comment_notification_title">Новый комментарий от %1$s</string>
     <string name="CARD_SHOW_info_both_card_and_card_id_presented">Противоречивые входящие данные</string>
+    <string name="MENU_delete">Удалить</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
 </resources>
 <!--пользователя %1$s к карточке «%2$s» -->

@@ -8,13 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 
 public class Item_ViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.tagItem) View tagItem;
+    @BindView(R.id.cardView) View cardView;
     @BindView(R.id.nameView) TextView nameView;
     @BindView(R.id.countView) TextView countView;
 
@@ -40,8 +41,13 @@ public class Item_ViewHolder extends RecyclerView.ViewHolder {
     }
 
     // Нажатия
-    @OnClick(R.id.tagItem)
+    @OnClick(R.id.cardView)
     void onItemClicked() {
         presenter.onItemClicked(this.item);
+    }
+
+    @OnLongClick(R.id.cardView)
+    void onItemLongClicked() {
+        presenter.onItemLongClicked(this.item);
     }
 }

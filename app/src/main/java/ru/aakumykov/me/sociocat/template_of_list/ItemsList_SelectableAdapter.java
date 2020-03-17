@@ -7,19 +7,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ItemsList_SelectableAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
-
+public abstract class ItemsList_SelectableAdapter<VH extends RecyclerView.ViewHolder>
+        extends RecyclerView.Adapter<VH>
+    implements iSelectableAdapter
+{
     private static final String TAG = ItemsList_SelectableAdapter.class.getSimpleName();
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
 
+    @Override
     public boolean isSelected(int position) {
         return getSelectedItems().contains(position);
     }
 
+    @Override
     public int getSelectedItemCount() {
         return selectedItems.size();
     }
 
+    @Override
     public List<Integer> getSelectedItems() {
         List<Integer> items = new ArrayList<>(selectedItems.size());
         for (int i = 0; i < selectedItems.size(); ++i) {
@@ -28,6 +33,7 @@ public abstract class ItemsList_SelectableAdapter<VH extends RecyclerView.ViewHo
         return items;
     }
 
+    @Override
     public void toggleSelection(int position) {
         if (selectedItems.get(position, false)) {
             selectedItems.delete(position);
@@ -37,6 +43,7 @@ public abstract class ItemsList_SelectableAdapter<VH extends RecyclerView.ViewHo
         notifyItemChanged(position);
     }
 
+    @Override
     public void clearSelection() {
         List<Integer> selection = getSelectedItems();
         selectedItems.clear();

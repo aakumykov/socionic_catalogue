@@ -15,6 +15,8 @@ public interface iItemsList {
     interface iPageView extends iBaseView {
         void showRefreshThrobber();
         void hideRefreshThrobber();
+
+        void startActionMode();
     }
 
     interface iDataAdapter extends Filterable {
@@ -43,6 +45,7 @@ public interface iItemsList {
         void onPageRefreshRequested();
 
         void onItemClicked(Item item);
+        void onItemLongClicked(Item item);
 
         void onListFiltered(CharSequence filterText, List<Item> filteredList);
 
@@ -51,6 +54,8 @@ public interface iItemsList {
 
         void onSortByNameClicked();
         void onSortByCountClicked();
+
+        void onSelectedItemsDeleteClicked();
     }
 
 

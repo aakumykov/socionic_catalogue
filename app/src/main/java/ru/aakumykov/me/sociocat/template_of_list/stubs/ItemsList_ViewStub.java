@@ -18,4 +18,9 @@ public class ItemsList_ViewStub extends BaseView_Stub implements iItemsList.iPag
 
     }
 
+    @Override
+    public void startActionMode() {
+
+    }
+
 }

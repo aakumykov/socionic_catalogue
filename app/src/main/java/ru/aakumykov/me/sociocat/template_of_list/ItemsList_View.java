@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.ActionMode;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,13 +29,17 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
     private SearchView searchView;
-    private iItemsList.iDataAdapter dataAdapter;
+    private ItemsList_DataAdapter dataAdapter;
     private iItemsList.iPresenter presenter;
     private boolean isFilterActive = false;
 
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
     private RecyclerView.LayoutManager currentLayoutManager;
+
+    private ActionMode actionMode;
+    private ActionMode.Callback actionModeCallback = new ActionModeCallback();
+
 
     // Activity
     @Override
@@ -193,6 +198,13 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    @Override
+    public void startActionMode() {
+        if (actionMode == null) {
+            actionMode = startSupportActionMode(actionModeCallback);
+        }
+    }
+
 
     // Внутренние методы
     private void configurePresenterAndAdapter() {
@@ -222,7 +234,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
         this.linearLayoutManager = new LinearLayoutManager(this);
 
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
+        recyclerView.setAdapter(dataAdapter);
     }
 
     private void configureSwipeRefresh() {
@@ -280,4 +292,40 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
             }
         });
     }
+
+    private class ActionModeCallback implements ActionMode.Callback {
+        @SuppressWarnings("unused")
+        private final String TAG = ActionModeCallback.class.getSimpleName();
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.selected_menu, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.actionDelete:
+                    presenter.onSelectedItemsDeleteClicked();
+                    actionMode.finish();
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            dataAdapter.clearSelection();
+            ItemsList_View.this.actionMode = null;
+        }
+    }
+
 }

@@ -59,7 +59,13 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onItemClicked(Item item) {
-        dataAdapter.removeItem(item);
+        //dataAdapter.removeItem(item);
+    }
+
+    @Override
+    public void onItemLongClicked(Item item) {
+        pageView.startActionMode();
+        //dataAdapter.
     }
 
     @Override
@@ -96,6 +102,11 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
                 pageView.refreshMenu();
             }
         });
+    }
+
+    @Override
+    public void onSelectedItemsDeleteClicked() {
+        pageView.showToast(R.string.not_implemented_yet);
     }
 
 
