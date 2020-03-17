@@ -76,4 +76,7 @@
 
     <!-- Элемент "Есть новые карточки" -->
     <color name="new_cards_notification_background">#FFF176</color>
+
+    <!--  Цвет выделенного элемента списка  -->
+    <color name="template_of_list_selected_item_overlay">#799575CD</color>
 </resources>
