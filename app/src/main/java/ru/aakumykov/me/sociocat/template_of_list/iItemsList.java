@@ -17,6 +17,9 @@ public interface iItemsList {
         void hideRefreshThrobber();
 
         void startActionMode();
+        void finishActionMode();
+
+        void showSelectedItemsCount(int count);
     }
 
     interface iDataAdapter extends Filterable, iSelectableAdapter {

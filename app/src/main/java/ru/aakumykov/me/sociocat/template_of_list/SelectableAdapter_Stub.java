@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.template_of_list;
 
 import java.util.List;
 
-public abstract class ItemsList_SelectableAdapter_Stub implements iSelectableAdapter {
+public abstract class SelectableAdapter_Stub implements iSelectableAdapter {
     @Override
     public boolean isSelected(int position) {
         return false;

@@ -200,9 +200,20 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
 
     @Override
     public void startActionMode() {
-        if (actionMode == null) {
+        if (actionMode == null)
             actionMode = startSupportActionMode(actionModeCallback);
-        }
+    }
+
+    @Override
+    public void finishActionMode() {
+        if (null != actionMode)
+            actionMode.finish();
+    }
+
+    @Override
+    public void showSelectedItemsCount(int count) {
+        actionMode.setTitle(String.valueOf(count));
+        actionMode.invalidate();
     }
 
 

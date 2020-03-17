@@ -7,13 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.template_of_list.model.Item;
-
-public abstract class ItemsList_SelectableAdapter<VH extends RecyclerView.ViewHolder>
+public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH>
         implements iSelectableAdapter
 {
-    private static final String TAG = ItemsList_SelectableAdapter.class.getSimpleName();
+    private static final String TAG = SelectableAdapter.class.getSimpleName();
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
 
     @Override

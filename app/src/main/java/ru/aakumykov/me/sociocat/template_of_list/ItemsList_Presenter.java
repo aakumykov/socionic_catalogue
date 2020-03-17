@@ -7,12 +7,10 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.tags_lsit3.iTagsList3;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
-import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_DataAdapter_Stub;
+import ru.aakumykov.me.sociocat.template_of_list.stubs._DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_ViewStub;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -33,7 +31,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void unlinkView() {
         this.pageView = new ItemsList_ViewStub();
-        this.dataAdapter = new ItemsList_DataAdapter_Stub();
+        this.dataAdapter = new _DataAdapter_Stub();
     }
 
     @Override
@@ -59,13 +57,13 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onItemClicked(Item item) {
-        //dataAdapter.removeItem(item);
+        toggleItemSelection(item);
     }
 
     @Override
     public void onItemLongClicked(Item item) {
         pageView.startActionMode();
-        dataAdapter.toggleSelection(dataAdapter.getPositionOf(item));
+        toggleItemSelection(item);
     }
 
     @Override
@@ -134,7 +132,6 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         pageView.setPageTitle(R.string.LIST_TEMPLATE_title_extended, String.valueOf(count));
     }
 
-
     private List<Item> createRandomList() {
         int min = 10;
         int max = 20;
@@ -148,5 +145,16 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         }
 
         return list;
+    }
+
+    private void toggleItemSelection(Item item) {
+        dataAdapter.toggleSelection(dataAdapter.getPositionOf(item));
+
+        int selectedItemsCount = dataAdapter.getSelectedItemCount();
+        if (0 == selectedItemsCount) {
+            pageView.finishActionMode();
+        } else {
+            pageView.showSelectedItemsCount(selectedItemsCount);
+        }
     }
 }
