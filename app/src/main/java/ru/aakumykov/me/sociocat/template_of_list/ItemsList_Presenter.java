@@ -83,26 +83,6 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     @Override
-    public void onSortByNameClicked() {
-        dataAdapter.sortByName(new iItemsList.SortingListener() {
-            @Override
-            public void onSortingComplete() {
-                pageView.refreshMenu();
-            }
-        });
-    }
-
-    @Override
-    public void onSortByCountClicked() {
-        dataAdapter.sortByCount(new iItemsList.SortingListener() {
-            @Override
-            public void onSortingComplete() {
-                pageView.refreshMenu();
-            }
-        });
-    }
-
-    @Override
     public void onSelectedItemsDeleteClicked() {
         pageView.showToast(R.string.not_implemented_yet);
         dataAdapter.clearSelection();

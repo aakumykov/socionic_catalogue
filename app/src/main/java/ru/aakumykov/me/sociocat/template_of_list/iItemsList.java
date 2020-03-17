@@ -57,9 +57,6 @@ public interface iItemsList {
         boolean hasFilterText();
         CharSequence getFilterText();
 
-        void onSortByNameClicked();
-        void onSortByCountClicked();
-
         void onSelectedItemsDeleteClicked();
 
         void onActionModeDestroyed();
