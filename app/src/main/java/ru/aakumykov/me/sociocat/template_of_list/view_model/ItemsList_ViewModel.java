@@ -2,21 +2,21 @@ package ru.aakumykov.me.sociocat.template_of_list.view_model;
 
 import androidx.lifecycle.ViewModel;
 
-import ru.aakumykov.me.sociocat.template_of_list.ItemsList_DataAdapter;
+import ru.aakumykov.me.sociocat.template_of_list.iItemsList.iDataAdapter;
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 
 public class ItemsList_ViewModel extends ViewModel {
 
-    private ItemsList_DataAdapter dataAdapter;
+    private iItemsList.iDataAdapter dataAdapter;
     private iItemsList.iPresenter presenter;
 
     public boolean hasDataAdapter() {
         return null != dataAdapter;
     }
-    public void storeDataAdapter(ItemsList_DataAdapter dataAdapter) {
+    public void storeDataAdapter(iItemsList.iDataAdapter dataAdapter) {
         this.dataAdapter = dataAdapter;
     }
-    public ItemsList_DataAdapter getDataAdapter() {
+    public iItemsList.iDataAdapter getDataAdapter() {
         return dataAdapter;
     }
 

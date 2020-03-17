@@ -29,7 +29,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
     private SearchView searchView;
-    private ItemsList_DataAdapter dataAdapter;
+    private iItemsList.iDataAdapter dataAdapter;
     private iItemsList.iPresenter presenter;
     private boolean isFilterActive = false;
 
