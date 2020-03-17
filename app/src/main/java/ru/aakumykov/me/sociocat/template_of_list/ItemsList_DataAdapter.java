@@ -59,8 +59,9 @@ public class ItemsList_DataAdapter extends ItemsList_SelectableAdapter<RecyclerV
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Item item = itemsList.get(position);
-        Item_ViewHolder tagRowViewHolder = (Item_ViewHolder) holder;
-        tagRowViewHolder.initialize(item);
+        Item_ViewHolder itemViewHolder = (Item_ViewHolder) holder;
+        itemViewHolder.initialize(item);
+        itemViewHolder.setSelected(isSelected(position));
     }
 
     @Override
@@ -159,6 +160,11 @@ public class ItemsList_DataAdapter extends ItemsList_SelectableAdapter<RecyclerV
     @Override
     public iItemsList.SortingMode getSortingMode() {
         return currentSortingMode;
+    }
+
+    @Override
+    public int getPositionOf(Item item) {
+        return itemsList.indexOf(item);
     }
 
 

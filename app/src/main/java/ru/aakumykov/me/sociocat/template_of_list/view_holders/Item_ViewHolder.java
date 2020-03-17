@@ -18,6 +18,7 @@ public class Item_ViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.cardView) View cardView;
     @BindView(R.id.nameView) TextView nameView;
     @BindView(R.id.countView) TextView countView;
+    @BindView(R.id.selectedOverlay) View selectedOverlay;
 
     private iItemsList.iPresenter presenter;
     private Item item;
@@ -49,5 +50,9 @@ public class Item_ViewHolder extends RecyclerView.ViewHolder {
     @OnLongClick(R.id.cardView)
     void onItemLongClicked() {
         presenter.onItemLongClicked(this.item);
+    }
+
+    public void setSelected(boolean selected) {
+        selectedOverlay.setVisibility((selected) ? View.VISIBLE : View.INVISIBLE);
     }
 }

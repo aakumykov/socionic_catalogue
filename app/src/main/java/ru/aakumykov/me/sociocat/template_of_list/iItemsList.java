@@ -19,7 +19,7 @@ public interface iItemsList {
         void startActionMode();
     }
 
-    interface iDataAdapter extends Filterable {
+    interface iDataAdapter extends Filterable, iSelectableAdapter {
         boolean isVirgin();
 
         void setList(List<Item> inputList);
@@ -34,6 +34,8 @@ public interface iItemsList {
         void sortByName(SortingListener sortingListener);
         void sortByCount(SortingListener sortingListener);
         SortingMode getSortingMode();
+
+        int getPositionOf(Item item);
     }
 
     interface iPresenter {

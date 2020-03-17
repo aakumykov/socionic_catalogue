@@ -65,7 +65,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onItemLongClicked(Item item) {
         pageView.startActionMode();
-        //dataAdapter.
+        dataAdapter.toggleSelection(dataAdapter.getPositionOf(item));
     }
 
     @Override

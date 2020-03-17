@@ -4,11 +4,14 @@ import android.widget.Filter;
 
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.template_of_list.ItemsList_SelectableAdapter_Stub;
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 
-public class ItemsList_DataAdapter_Stub implements iItemsList.iDataAdapter {
-
+public class ItemsList_DataAdapter_Stub
+        extends ItemsList_SelectableAdapter_Stub
+        implements iItemsList.iDataAdapter
+{
     @Override
     public boolean isVirgin() {
         return false;
@@ -57,6 +60,11 @@ public class ItemsList_DataAdapter_Stub implements iItemsList.iDataAdapter {
     @Override
     public iItemsList.SortingMode getSortingMode() {
         return null;
+    }
+
+    @Override
+    public int getPositionOf(Item item) {
+        return 0;
     }
 
     @Override
