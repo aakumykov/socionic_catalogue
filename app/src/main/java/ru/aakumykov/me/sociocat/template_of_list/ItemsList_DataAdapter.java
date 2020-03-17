@@ -18,7 +18,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.Item_ViewHolder;
 
-public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+public class ItemsList_DataAdapter extends ItemsList_SelectableAdapter<RecyclerView.ViewHolder>
         implements iItemsList.iDataAdapter, Filterable
 {
     private iItemsList.iPresenter presenter;
