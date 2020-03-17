@@ -7,7 +7,7 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 
-public class DataAdapter_Stub
+public class ItemsList_DataAdapter_Stub
         extends SelectableAdapter_Stub
         implements iItemsList.iDataAdapter
 {
