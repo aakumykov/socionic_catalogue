@@ -24,11 +24,9 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private iItemsList.iPresenter presenter;
 
     private boolean isVirgin = true;
-
     private List<Item> itemsList = new ArrayList<>();
 
     private ItemsFilter itemsFilter;
-
     private iItemsList.SortingMode currentSortingMode = iItemsList.SortingMode.ORDER_NAME_DIRECT;
 
 
