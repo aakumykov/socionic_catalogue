@@ -116,6 +116,11 @@ public class ItemsList_DataAdapter
     }
 
     @Override
+    public List<Item> getAllItems() {
+        return itemsList;
+    }
+
+    @Override
     public void removeItem(Item item) {
         int index = itemsList.indexOf(item);
         if (index >= 0) {

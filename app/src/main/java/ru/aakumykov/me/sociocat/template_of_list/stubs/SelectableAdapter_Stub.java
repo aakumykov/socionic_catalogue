@@ -27,6 +27,11 @@ public abstract class SelectableAdapter_Stub implements iSelectableAdapter {
     }
 
     @Override
+    public void selectItemsList(List<Item> itemList) {
+
+    }
+
+    @Override
     public void clearSelection() {
 
     }

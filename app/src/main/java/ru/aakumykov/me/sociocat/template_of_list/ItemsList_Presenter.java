@@ -103,6 +103,11 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     @Override
+    public void onSelectAllClicked() {
+        dataAdapter.selectItemsList(dataAdapter.getAllItems());
+    }
+
+    @Override
     public void onEditSelectedItemClicked() {
         pageView.showToast(R.string.not_implemented_yet);
     }

@@ -37,6 +37,11 @@ public class ItemsList_DataAdapter_Stub
     }
 
     @Override
+    public List<Item> getAllItems() {
+        return null;
+    }
+
+    @Override
     public void removeItem(Item item) {
 
     }

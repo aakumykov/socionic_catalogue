@@ -31,6 +31,8 @@ public interface iItemsList {
         void appendList(List<Item> inputList);
 
         Item getItem(int position);
+        List<Item> getAllItems();
+
         void removeItem(Item item);
 
         int getListSize();
@@ -59,11 +61,12 @@ public interface iItemsList {
         boolean hasFilterText();
         CharSequence getFilterText();
 
-        boolean canDeleteSelectedItem();
         boolean canEditSelectedItem();
+        boolean canDeleteSelectedItem();
 
-        void onDeleteSelectedItemsClicked();
+        void onSelectAllClicked();
         void onEditSelectedItemClicked();
+        void onDeleteSelectedItemsClicked();
     }
 
 

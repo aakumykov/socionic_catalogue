@@ -44,6 +44,13 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
     }
 
     @Override
+    public void selectItemsList(List<Item> itemList) {
+        selectedItems.clear();
+        selectedItems.addAll(itemList);
+        notifyDataSetChanged();
+    }
+
+    @Override
     public void clearSelection() {
         List<Integer> indexes = new ArrayList<>();
         for (Item item : selectedItems)

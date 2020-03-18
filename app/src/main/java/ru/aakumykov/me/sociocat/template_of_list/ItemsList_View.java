@@ -339,6 +339,10 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
         @Override
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem item) {
             switch (item.getItemId()) {
+                case R.id.actionSelectAll:
+                    presenter.onSelectAllClicked();
+                    return true;
+
                 case R.id.actionDelete:
                     presenter.onDeleteSelectedItemsClicked();
                     return true;
