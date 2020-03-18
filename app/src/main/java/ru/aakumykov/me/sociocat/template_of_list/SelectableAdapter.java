@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.template_of_list;
 
+import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,16 +8,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.template_of_list.model.Item;
+
 public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH>
         implements iSelectableAdapter
 {
     private static final String TAG = SelectableAdapter.class.getSimpleName();
-    private SparseBooleanArray selectedItems = new SparseBooleanArray();
+    private List<Item> selectedItems = new ArrayList<>();
 
     @Override
-    public boolean isSelected(int position) {
-        return getSelectedItems().contains(position);
+    public boolean isSelected(Item item) {
+        return selectedItems.contains(item);
     }
 
     @Override
@@ -25,31 +28,32 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
     }
 
     @Override
-    public List<Integer> getSelectedItems() {
-        List<Integer> items = new ArrayList<>(selectedItems.size());
-        for (int i = 0; i < selectedItems.size(); ++i) {
-            items.add(selectedItems.keyAt(i));
-        }
+    public List<Item> getSelectedItems() {
+        List<Item> items = new ArrayList<>(selectedItems.size());
+        items.addAll(selectedItems);
         return items;
     }
 
     @Override
-    public void toggleSelection(int position) {
-        if (selectedItems.get(position, false)) {
-            selectedItems.delete(position);
-        } else {
-            selectedItems.put(position, true);
-        }
-        notifyItemChanged(position);
+    public void toggleSelection(Item item) {
+        if (selectedItems.contains(item))
+            selectedItems.remove(item);
+        else
+            selectedItems.add(item);
+
+        notifyItemChanged(selectedItems.indexOf(item));
     }
 
     @Override
     public void clearSelection() {
-        List<Integer> selection = getSelectedItems();
+        List<Integer> indexes = new ArrayList<>();
+        for (Item item : selectedItems)
+            indexes.add(selectedItems.indexOf(item));
+
         selectedItems.clear();
-        for (Integer i : selection) {
+
+        for (Integer i : indexes)
             notifyItemChanged(i);
-        }
     }
 
 }

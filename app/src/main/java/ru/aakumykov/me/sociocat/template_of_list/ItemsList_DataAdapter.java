@@ -61,7 +61,7 @@ public class ItemsList_DataAdapter
         Item item = itemsList.get(position);
         Item_ViewHolder itemViewHolder = (Item_ViewHolder) holder;
         itemViewHolder.initialize(item);
-        itemViewHolder.setSelected(isSelected(position));
+        itemViewHolder.setSelected(isSelected(item));
     }
 
     @Override

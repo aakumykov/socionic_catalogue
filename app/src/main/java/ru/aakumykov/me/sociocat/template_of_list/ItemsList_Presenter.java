@@ -84,10 +84,10 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onDeleteSelectedItemsClicked() {
-        for (Integer index : dataAdapter.getSelectedItems()) {
+        /*for (Integer index : dataAdapter.getSelectedItems()) {
             Item item2remove = dataAdapter.getItem(index);
             dataAdapter.removeItem(item2remove);
-        }
+        }*/
 
         pageView.finishActionMode();
     }
@@ -133,9 +133,10 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     private void toggleItemSelection(Item item) {
-        dataAdapter.toggleSelection(dataAdapter.getPositionOf(item));
+        dataAdapter.toggleSelection(item);
 
         int selectedItemsCount = dataAdapter.getSelectedItemCount();
+
         if (0 == selectedItemsCount) {
             pageView.finishActionMode();
         } else {

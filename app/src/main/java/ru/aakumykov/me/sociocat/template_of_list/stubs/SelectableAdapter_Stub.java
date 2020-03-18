@@ -3,10 +3,11 @@ package ru.aakumykov.me.sociocat.template_of_list.stubs;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.template_of_list.iSelectableAdapter;
+import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 
 public abstract class SelectableAdapter_Stub implements iSelectableAdapter {
     @Override
-    public boolean isSelected(int position) {
+    public boolean isSelected(Item item) {
         return false;
     }
 
@@ -16,12 +17,12 @@ public abstract class SelectableAdapter_Stub implements iSelectableAdapter {
     }
 
     @Override
-    public List<Integer> getSelectedItems() {
+    public List<Item> getSelectedItems() {
         return null;
     }
 
     @Override
-    public void toggleSelection(int position) {
+    public void toggleSelection(Item item) {
 
     }
 

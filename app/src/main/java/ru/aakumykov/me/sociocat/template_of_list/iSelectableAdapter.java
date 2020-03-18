@@ -5,13 +5,14 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 
 public interface iSelectableAdapter {
-    boolean isSelected(int position);
+
+    boolean isSelected(Item item);
 
     int getSelectedItemCount();
 
-    List<Integer> getSelectedItems();
+    List<Item> getSelectedItems();
 
-    void toggleSelection(int position);
+    void toggleSelection(Item item);
 
     void clearSelection();
 }
