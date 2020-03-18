@@ -36,6 +36,11 @@ public class ItemsList_ViewStub
     }
 
     @Override
+    public void refreshActionMode() {
+
+    }
+
+    @Override
     public void showSelectedItemsCount(int count) {
 
     }

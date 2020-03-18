@@ -219,6 +219,12 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     }
 
     @Override
+    public void refreshActionMode() {
+        if (null != actionMode)
+            actionMode.invalidate();
+    }
+
+    @Override
     public void showSelectedItemsCount(int count) {
         actionMode.setTitle(getString(R.string.LIST_TEMPLATE_items_selected, count));
         actionMode.invalidate();
@@ -325,6 +331,17 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
         @Override
         public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
 
+            MenuItem menuItemSelectAll = menu.findItem(R.id.actionSelectAll);
+            MenuItem menuItemClearSelection = menu.findItem(R.id.actionClearSelection);
+            if (dataAdapter.allItemsAreSelected()) {
+                menuItemSelectAll.setVisible(false);
+                menuItemClearSelection.setVisible(true);
+            }
+            else {
+                menuItemSelectAll.setVisible(true);
+                menuItemClearSelection.setVisible(false);
+            }
+
             MenuItem menuItemEdit = menu.findItem(R.id.actionEdit);
             if (null != menuItemEdit)
                 menuItemEdit.setVisible(presenter.canEditSelectedItem());
@@ -341,6 +358,10 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
             switch (item.getItemId()) {
                 case R.id.actionSelectAll:
                     presenter.onSelectAllClicked();
+                    return true;
+
+                case R.id.actionClearSelection:
+                    presenter.onClearSelectionClicked();
                     return true;
 
                 case R.id.actionDelete:

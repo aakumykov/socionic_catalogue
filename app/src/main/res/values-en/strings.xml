@@ -660,6 +660,7 @@
     <string name="MENU_delete">Delete</string>
     <string name="LIST_TEMPLATE_items_selected">Selected: %1$d</string>
     <string name="select_all">Select all</string>
+    <string name="clear_selection">Clear selection</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>
 <!-- «%1$s» -->

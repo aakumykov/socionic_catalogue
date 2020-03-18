@@ -172,6 +172,13 @@ public class ItemsList_DataAdapter
         return itemsList.indexOf(item);
     }
 
+    @Override
+    public boolean allItemsAreSelected() {
+        int itemsCount = getItemCount();
+        int selectedItemsCount = getSelectedItemCount();
+        return itemsCount > 0 && itemsCount == selectedItemsCount;
+    }
+
 
     // Filterable
     @Override

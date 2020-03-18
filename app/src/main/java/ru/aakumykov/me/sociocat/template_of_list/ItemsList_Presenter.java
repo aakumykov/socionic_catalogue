@@ -105,6 +105,13 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onSelectAllClicked() {
         dataAdapter.selectItemsList(dataAdapter.getAllItems());
+        pageView.showSelectedItemsCount(dataAdapter.getSelectedItemCount());
+    }
+
+    @Override
+    public void onClearSelectionClicked() {
+        dataAdapter.clearSelection();
+        pageView.finishActionMode();
     }
 
     @Override

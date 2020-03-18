@@ -72,6 +72,11 @@ public class ItemsList_DataAdapter_Stub
     }
 
     @Override
+    public boolean allItemsAreSelected() {
+        return false;
+    }
+
+    @Override
     public Filter getFilter() {
         return null;
     }

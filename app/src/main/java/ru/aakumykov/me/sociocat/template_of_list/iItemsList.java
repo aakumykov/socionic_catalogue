@@ -19,6 +19,7 @@ public interface iItemsList {
         void startActionMode();
         void finishActionMode();
         boolean actionModeIsActive();
+        void refreshActionMode();
 
         void showSelectedItemsCount(int count);
     }
@@ -42,6 +43,8 @@ public interface iItemsList {
         SortingMode getSortingMode();
 
         int getPositionOf(Item item);
+
+        boolean allItemsAreSelected();
     }
 
     interface iPresenter {
@@ -65,6 +68,7 @@ public interface iItemsList {
         boolean canDeleteSelectedItem();
 
         void onSelectAllClicked();
+        void onClearSelectionClicked();
         void onEditSelectedItemClicked();
         void onDeleteSelectedItemsClicked();
     }
