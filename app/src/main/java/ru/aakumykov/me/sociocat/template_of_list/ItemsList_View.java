@@ -335,8 +335,8 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
 
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
-            actionMode = null;
-            presenter.onActionModeDestroyed();
+            ItemsList_View.this.actionMode = null;
+            dataAdapter.clearSelection();
         }
     }
 

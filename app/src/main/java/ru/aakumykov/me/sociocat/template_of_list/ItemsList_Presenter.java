@@ -89,11 +89,6 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         pageView.finishActionMode();
     }
 
-    @Override
-    public void onActionModeDestroyed() {
-        dataAdapter.clearSelection();
-    }
-
 
     // Внутренние методы
     private void loadList() {

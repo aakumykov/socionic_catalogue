@@ -58,8 +58,6 @@ public interface iItemsList {
         CharSequence getFilterText();
 
         void onSelectedItemsDeleteClicked();
-
-        void onActionModeDestroyed();
     }
 
 
