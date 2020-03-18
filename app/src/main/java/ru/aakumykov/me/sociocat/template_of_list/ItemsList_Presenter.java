@@ -86,6 +86,28 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     @Override
+    public boolean canEditSelectedItem() {
+        Item item = dataAdapter.getSingleSelectedItem();
+
+        if (null == item)
+            return false;
+
+        int a = item.getCount() % 2;
+
+        return 0 != a;
+    }
+
+    @Override
+    public boolean canDeleteSelectedItem() {
+        return false;
+    }
+
+    @Override
+    public void onEditSelectedItemClicked() {
+        pageView.showToast(R.string.not_implemented_yet);
+    }
+
+    @Override
     public void onDeleteSelectedItemsClicked() {
         for (Item item : dataAdapter.getSelectedItems())
             dataAdapter.removeItem(item);

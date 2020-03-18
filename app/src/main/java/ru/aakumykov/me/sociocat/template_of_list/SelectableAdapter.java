@@ -36,8 +36,9 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
 
         if (selectedItems.contains(item))
             selectedItems.remove(item);
-        else
+        else {
             selectedItems.add(item);
+        }
 
         notifyItemChanged(itemIndex);
     }
@@ -52,6 +53,22 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
 
         for (Integer i : indexes)
             notifyItemChanged(i);
+    }
+
+    @Override
+    public boolean isMultipleItemsSelected() {
+        return selectedItems.size() > 1;
+    }
+
+    @Override
+    public Item getSingleSelectedItem() {
+        if (isMultipleItemsSelected())
+            return null;
+
+        if (0 == selectedItems.size())
+            return null;
+
+        return selectedItems.get(0);
     }
 
 }

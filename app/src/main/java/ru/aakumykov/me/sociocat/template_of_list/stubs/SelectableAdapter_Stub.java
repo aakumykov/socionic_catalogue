@@ -30,4 +30,14 @@ public abstract class SelectableAdapter_Stub implements iSelectableAdapter {
     public void clearSelection() {
 
     }
+
+    @Override
+    public boolean isMultipleItemsSelected() {
+        return false;
+    }
+
+    @Override
+    public Item getSingleSelectedItem() {
+        return null;
+    }
 }

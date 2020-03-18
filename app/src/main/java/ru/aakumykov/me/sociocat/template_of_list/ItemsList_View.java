@@ -324,7 +324,13 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
 
         @Override
         public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-            return false;
+            boolean canEditItem = presenter.canEditSelectedItem();
+
+            MenuItem menuItemEdit = menu.findItem(R.id.actionEdit);
+            if (null != menuItemEdit)
+                menuItemEdit.setVisible(canEditItem);
+
+            return true;
         }
 
         @Override
@@ -332,6 +338,10 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
             switch (item.getItemId()) {
                 case R.id.actionDelete:
                     presenter.onDeleteSelectedItemsClicked();
+                    return true;
+
+                case R.id.actionEdit:
+                    presenter.onEditSelectedItemClicked();
                     return true;
 
                 default:

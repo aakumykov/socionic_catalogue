@@ -15,4 +15,8 @@ public interface iSelectableAdapter {
     void toggleSelection(Item item, int itemIndex);
 
     void clearSelection();
+
+    boolean isMultipleItemsSelected();
+
+    Item getSingleSelectedItem();
 }
