@@ -99,7 +99,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public boolean canDeleteSelectedItem() {
-        return false;
+        return true;
     }
 
     @Override
