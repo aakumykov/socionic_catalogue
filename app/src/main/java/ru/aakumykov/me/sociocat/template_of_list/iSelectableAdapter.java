@@ -12,7 +12,7 @@ public interface iSelectableAdapter {
 
     List<Item> getSelectedItems();
 
-    void toggleSelection(Item item);
+    void toggleSelection(Item item, int itemIndex);
 
     void clearSelection();
 }

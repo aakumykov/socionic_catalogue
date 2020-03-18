@@ -22,7 +22,7 @@ public abstract class SelectableAdapter_Stub implements iSelectableAdapter {
     }
 
     @Override
-    public void toggleSelection(Item item) {
+    public void toggleSelection(Item item, int itemIndex) {
 
     }
 

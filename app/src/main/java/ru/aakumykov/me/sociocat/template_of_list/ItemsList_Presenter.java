@@ -57,7 +57,10 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onItemClicked(Item item) {
-        toggleItemSelection(item);
+        if (pageView.actionModeIsActive())
+            toggleItemSelection(item);
+        else
+            pageView.showToast(R.string.not_implemented_yet);
     }
 
     @Override
@@ -131,7 +134,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     private void toggleItemSelection(Item item) {
-        dataAdapter.toggleSelection(item);
+        dataAdapter.toggleSelection(item, dataAdapter.getPositionOf(item));
 
         int selectedItemsCount = dataAdapter.getSelectedItemCount();
 

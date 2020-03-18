@@ -18,6 +18,7 @@ public interface iItemsList {
 
         void startActionMode();
         void finishActionMode();
+        boolean actionModeIsActive();
 
         void showSelectedItemsCount(int count);
     }

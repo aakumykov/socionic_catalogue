@@ -214,8 +214,13 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     }
 
     @Override
+    public boolean actionModeIsActive() {
+        return null != actionMode;
+    }
+
+    @Override
     public void showSelectedItemsCount(int count) {
-        actionMode.setTitle(String.valueOf(count));
+        actionMode.setTitle(getString(R.string.LIST_TEMPLATE_items_selected, count));
         actionMode.invalidate();
     }
 

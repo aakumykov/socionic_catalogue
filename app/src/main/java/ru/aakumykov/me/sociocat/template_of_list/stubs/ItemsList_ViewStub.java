@@ -31,6 +31,11 @@ public class ItemsList_ViewStub
     }
 
     @Override
+    public boolean actionModeIsActive() {
+        return false;
+    }
+
+    @Override
     public void showSelectedItemsCount(int count) {
 
     }

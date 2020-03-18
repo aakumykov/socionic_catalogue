@@ -1,8 +1,5 @@
 package ru.aakumykov.me.sociocat.template_of_list;
 
-import android.util.SparseArray;
-import android.util.SparseBooleanArray;
-
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -35,13 +32,14 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
     }
 
     @Override
-    public void toggleSelection(Item item) {
+    public void toggleSelection(Item item, int itemIndex) {
+
         if (selectedItems.contains(item))
             selectedItems.remove(item);
         else
             selectedItems.add(item);
 
-        notifyItemChanged(selectedItems.indexOf(item));
+        notifyItemChanged(itemIndex);
     }
 
     @Override
