@@ -262,7 +262,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                presenter.onPageRefreshRequested();
+                presenter.onRefreshRequested();
             }
         });
     }

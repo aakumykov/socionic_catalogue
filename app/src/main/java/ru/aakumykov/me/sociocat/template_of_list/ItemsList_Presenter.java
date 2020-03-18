@@ -50,8 +50,8 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     @Override
-    public void onPageRefreshRequested() {
-//        pageView.showToast("Ручное обновление страницы");
+    public void onRefreshRequested() {
+        pageView.finishActionMode();
         setRandomList();
     }
 

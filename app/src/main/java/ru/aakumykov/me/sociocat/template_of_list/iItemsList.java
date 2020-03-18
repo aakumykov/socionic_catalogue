@@ -48,7 +48,8 @@ public interface iItemsList {
 
         void onFirstOpen(@Nullable Intent intent);
         void onConfigurationChanged();
-        void onPageRefreshRequested();
+
+        void onRefreshRequested();
 
         void onItemClicked(Item item);
         void onItemLongClicked(Item item);
