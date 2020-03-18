@@ -210,6 +210,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
             actionMode.finish();
             actionMode = null;
         }
+        dataAdapter.clearSelection();
     }
 
     @Override
@@ -325,7 +326,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.actionDelete:
-                    presenter.onSelectedItemsDeleteClicked();
+                    presenter.onDeleteSelectedItemsClicked();
                     return true;
 
                 default:

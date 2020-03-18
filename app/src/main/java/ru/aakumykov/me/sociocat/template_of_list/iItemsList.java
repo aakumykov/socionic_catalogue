@@ -57,7 +57,7 @@ public interface iItemsList {
         boolean hasFilterText();
         CharSequence getFilterText();
 
-        void onSelectedItemsDeleteClicked();
+        void onDeleteSelectedItemsClicked();
     }
 
 
