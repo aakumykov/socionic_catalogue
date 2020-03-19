@@ -99,14 +99,9 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public boolean canEditSelectedItem() {
-        Item item = dataAdapter.getSingleSelectedItem();
+        Integer index = dataAdapter.getSingleSelectedItemIndex();
 
-        if (null == item)
-            return false;
-
-        int a = item.getCount() % 2;
-
-        return 0 != a;
+        return null != index;
     }
 
     @Override
@@ -116,7 +111,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onSelectAllClicked() {
-        dataAdapter.selectItemsList(dataAdapter.getAllItems());
+        dataAdapter.selectAll(dataAdapter.getListSize());
         pageView.setState(iItemsList.ViewState.SELECTION, null, dataAdapter.getSelectedItemCount());
     }
 
@@ -133,8 +128,8 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onDeleteSelectedItemsClicked() {
-        for (Item item : dataAdapter.getSelectedItems())
-            dataAdapter.removeItem(item);
+        for (Integer index : dataAdapter.getSelectedIndexes())
+            dataAdapter.removeItem(dataAdapter.getItem(index));
 
         setInitialViewState();
     }
@@ -195,7 +190,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     private void toggleItemSelection(Item item) {
-        dataAdapter.toggleSelection(item, dataAdapter.getPositionOf(item));
+        dataAdapter.toggleSelection(dataAdapter.getPositionOf(item));
 
         int selectedItemsCount = dataAdapter.getSelectedItemCount();
 

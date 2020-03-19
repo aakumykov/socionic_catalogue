@@ -3,60 +3,60 @@ package ru.aakumykov.me.sociocat.template_of_list;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
-
-import ru.aakumykov.me.sociocat.template_of_list.model.Item;
+import java.util.Set;
 
 public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH>
         implements iSelectableAdapter
 {
     private static final String TAG = SelectableAdapter.class.getSimpleName();
-    private List<Item> selectedItems = new ArrayList<>();
+    private Set<Integer> selectedItemsIndexes = new HashSet<>();
 
     @Override
-    public boolean isSelected(Item item) {
-        return selectedItems.contains(item);
+    public boolean isSelected(Integer index) {
+        return selectedItemsIndexes.contains(index);
     }
 
     @Override
     public int getSelectedItemCount() {
-        return selectedItems.size();
+        return selectedItemsIndexes.size();
     }
 
     @Override
-    public List<Item> getSelectedItems() {
-        List<Item> items = new ArrayList<>(selectedItems.size());
-        items.addAll(selectedItems);
-        return items;
+    public List<Integer> getSelectedIndexes() {
+        List<Integer> list = new ArrayList<>(selectedItemsIndexes.size());
+        list.addAll(selectedItemsIndexes);
+        return list;
     }
 
     @Override
-    public void toggleSelection(Item item, int itemIndex) {
+    public void toggleSelection(int itemIndex) {
 
-        if (selectedItems.contains(item))
-            selectedItems.remove(item);
+        if (selectedItemsIndexes.contains(itemIndex))
+            selectedItemsIndexes.remove(itemIndex);
         else {
-            selectedItems.add(item);
+            selectedItemsIndexes.add(itemIndex);
         }
 
         notifyItemChanged(itemIndex);
     }
 
     @Override
-    public void selectItemsList(List<Item> itemList) {
-        selectedItems.clear();
-        selectedItems.addAll(itemList);
+    public void selectAll(int listSize) {
+//        selectedItemsIndexes.clear();
+        for (int i=0; i<listSize; i++)
+            selectedItemsIndexes.add(i);
         notifyDataSetChanged();
     }
 
     @Override
     public void clearSelection() {
-        List<Integer> indexes = new ArrayList<>();
-        for (Item item : selectedItems)
-            indexes.add(selectedItems.indexOf(item));
+        Set<Integer> indexes = new HashSet<>(selectedItemsIndexes);
 
-        selectedItems.clear();
+        selectedItemsIndexes.clear();
 
         for (Integer i : indexes)
             notifyItemChanged(i);
@@ -64,18 +64,18 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
 
     @Override
     public boolean isMultipleItemsSelected() {
-        return selectedItems.size() > 1;
+        return selectedItemsIndexes.size() > 1;
     }
 
     @Override
-    public Item getSingleSelectedItem() {
+    public Integer getSingleSelectedItemIndex() {
         if (isMultipleItemsSelected())
             return null;
 
-        if (0 == selectedItems.size())
+        if (0 == selectedItemsIndexes.size())
             return null;
 
-        return selectedItems.get(0);
+        return selectedItemsIndexes.iterator().next();
     }
 
 }

@@ -59,9 +59,12 @@ public class ItemsList_DataAdapter
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Item item = itemsList.get(position);
+
         Item_ViewHolder itemViewHolder = (Item_ViewHolder) holder;
+
         itemViewHolder.initialize(item);
-        itemViewHolder.setSelected(isSelected(item));
+
+        itemViewHolder.setSelected(isSelected(position));
     }
 
     @Override
