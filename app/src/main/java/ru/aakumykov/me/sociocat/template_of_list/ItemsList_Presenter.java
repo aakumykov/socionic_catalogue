@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.template_of_list.model.Item;
+import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_ViewStub;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -82,21 +82,26 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     @Override
-    public void onItemClicked(Item item) {
+    public void onItemClicked(DataItem dataItem) {
         if (pageView.actionModeIsActive())
-            toggleItemSelection(item);
+            toggleItemSelection(dataItem);
         else
             pageView.showToast(R.string.not_implemented_yet);
     }
 
     @Override
-    public void onItemLongClicked(Item item) {
+    public void onItemLongClicked(DataItem dataItem) {
         pageView.setState(iItemsList.ViewState.SELECTION, null, null);
-        toggleItemSelection(item);
+        toggleItemSelection(dataItem);
     }
 
     @Override
-    public void onListFiltered(CharSequence filterText, List<Item> filteredList) {
+    public void onLoadMoreClicked() {
+
+    }
+
+    @Override
+    public void onListFiltered(CharSequence filterText, List<DataItem> filteredList) {
         dataAdapter.setList(filteredList);
         this.filterText = filterText;
     }
@@ -177,7 +182,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     private void setRandomList(iLoadListCallbacks callbacks) {
-        List<Item> list = createRandomList();
+        List<DataItem> list = createRandomList();
 
         if (hasFilterText())
             dataAdapter.setList(list, getFilterText());
@@ -193,23 +198,23 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         pageView.setPageTitle(R.string.LIST_TEMPLATE_title_extended, String.valueOf(count));
     }
 
-    private List<Item> createRandomList() {
+    private List<DataItem> createRandomList() {
         int min = 10;
         int max = 20;
         int randomSize = MyUtils.random(min, max);
 
-        List<Item> list = new ArrayList<>();
+        List<DataItem> list = new ArrayList<>();
 
         for (int i=1; i<=randomSize; i++) {
             String text = MyUtils.getString(pageView.getAppContext(), R.string.LIST_TEMPLATE_item_name, String.valueOf(i));
-            list.add(new Item(text, MyUtils.random(min, max)));
+            list.add(new DataItem(text, MyUtils.random(min, max)));
         }
 
         return list;
     }
 
-    private void toggleItemSelection(Item item) {
-        dataAdapter.toggleSelection(dataAdapter.getPositionOf(item));
+    private void toggleItemSelection(DataItem dataItem) {
+        dataAdapter.toggleSelection(dataAdapter.getPositionOf(dataItem));
 
         int selectedItemsCount = dataAdapter.getSelectedItemCount();
 

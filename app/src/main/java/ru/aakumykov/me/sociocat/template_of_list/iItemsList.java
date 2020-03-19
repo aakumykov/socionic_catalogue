@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.base_view.iBaseView;
-import ru.aakumykov.me.sociocat.template_of_list.model.Item;
+import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
 
 public interface iItemsList {
 
@@ -34,14 +34,14 @@ public interface iItemsList {
     interface iDataAdapter extends Filterable, iSelectableAdapter {
         boolean isVirgin();
 
-        void setList(List<Item> inputList);
-        void setList(List<Item> inputList, CharSequence filterQuery);
-        void appendList(List<Item> inputList);
+        void setList(List<DataItem> inputList);
+        void setList(List<DataItem> inputList, CharSequence filterQuery);
+        void appendList(List<DataItem> inputList);
 
-        Item getItem(int position);
-        List<Item> getAllItems();
+        DataItem getItem(int position);
+        List<DataItem> getAllItems();
 
-        void removeItem(Item item);
+        void removeItem(DataItem dataItem);
 
         int getListSize();
 
@@ -49,7 +49,7 @@ public interface iItemsList {
         void sortByCount(SortingListener sortingListener);
         SortingMode getSortingMode();
 
-        int getPositionOf(Item item);
+        int getPositionOf(DataItem dataItem);
 
         boolean allItemsAreSelected();
     }
@@ -68,10 +68,11 @@ public interface iItemsList {
 
         void onRefreshRequested();
 
-        void onItemClicked(Item item);
-        void onItemLongClicked(Item item);
+        void onItemClicked(DataItem dataItem);
+        void onItemLongClicked(DataItem dataItem);
+        void onLoadMoreClicked();
 
-        void onListFiltered(CharSequence filterText, List<Item> filteredList);
+        void onListFiltered(CharSequence filterText, List<DataItem> filteredList);
 
         boolean hasFilterText();
         CharSequence getFilterText();

@@ -5,7 +5,7 @@ import android.widget.Filter;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
-import ru.aakumykov.me.sociocat.template_of_list.model.Item;
+import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
 
 public class ItemsList_DataAdapter_Stub
         extends SelectableAdapter_Stub
@@ -17,32 +17,32 @@ public class ItemsList_DataAdapter_Stub
     }
 
     @Override
-    public void setList(List<Item> inputList) {
+    public void setList(List<DataItem> inputList) {
 
     }
 
     @Override
-    public void setList(List<Item> inputList, CharSequence filterQuery) {
+    public void setList(List<DataItem> inputList, CharSequence filterQuery) {
 
     }
 
     @Override
-    public void appendList(List<Item> tagsList) {
+    public void appendList(List<DataItem> tagsList) {
 
     }
 
     @Override
-    public Item getItem(int position) {
+    public DataItem getItem(int position) {
         return null;
     }
 
     @Override
-    public List<Item> getAllItems() {
+    public List<DataItem> getAllItems() {
         return null;
     }
 
     @Override
-    public void removeItem(Item item) {
+    public void removeItem(DataItem dataItem) {
 
     }
 
@@ -67,7 +67,7 @@ public class ItemsList_DataAdapter_Stub
     }
 
     @Override
-    public int getPositionOf(Item item) {
+    public int getPositionOf(DataItem dataItem) {
         return 0;
     }
 

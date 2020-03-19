@@ -11,9 +11,9 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
-import ru.aakumykov.me.sociocat.template_of_list.model.Item;
+import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
 
-public class Item_ViewHolder extends RecyclerView.ViewHolder {
+public class DataItem_ViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.cardView) View cardView;
     @BindView(R.id.nameView) TextView nameView;
@@ -21,10 +21,10 @@ public class Item_ViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.selectedOverlay) View selectedOverlay;
 
     private iItemsList.iPresenter presenter;
-    private Item item;
+    private DataItem dataItem;
 
     // Конструктор
-    public Item_ViewHolder(View itemView, iItemsList.iPresenter presenter) {
+    public DataItem_ViewHolder(View itemView, iItemsList.iPresenter presenter) {
         super(itemView);
         this.presenter = presenter;
         ButterKnife.bind(this, itemView);
@@ -32,24 +32,24 @@ public class Item_ViewHolder extends RecyclerView.ViewHolder {
 
     // Заполнение данными
     public void initialize(Object payload) {
-        this.item = (Item) payload;
+        this.dataItem = (DataItem) payload;
 
         if (nameView != null)
-            nameView.setText(item.getName());
+            nameView.setText(dataItem.getName());
 
         if (countView != null)
-            countView.setText(String.valueOf(item.getCount()));
+            countView.setText(String.valueOf(dataItem.getCount()));
     }
 
     // Нажатия
     @OnClick(R.id.cardView)
     void onItemClicked() {
-        presenter.onItemClicked(this.item);
+        presenter.onItemClicked(this.dataItem);
     }
 
     @OnLongClick(R.id.cardView)
     void onItemLongClicked() {
-        presenter.onItemLongClicked(this.item);
+        presenter.onItemLongClicked(this.dataItem);
     }
 
     public void setSelected(boolean selected) {

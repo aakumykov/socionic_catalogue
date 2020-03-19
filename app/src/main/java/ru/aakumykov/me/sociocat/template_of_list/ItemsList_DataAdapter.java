@@ -17,8 +17,8 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.template_of_list.filter_stuff.ItemsComparator;
 import ru.aakumykov.me.sociocat.template_of_list.filter_stuff.ItemsFilter;
-import ru.aakumykov.me.sociocat.template_of_list.model.Item;
-import ru.aakumykov.me.sociocat.template_of_list.view_holders.Item_ViewHolder;
+import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
+import ru.aakumykov.me.sociocat.template_of_list.view_holders.DataItem_ViewHolder;
 
 public class ItemsList_DataAdapter
         extends SelectableAdapter<RecyclerView.ViewHolder>
@@ -27,7 +27,7 @@ public class ItemsList_DataAdapter
     private iItemsList.iPresenter presenter;
 
     private boolean isVirgin = true;
-    private List<Item> itemsList = new ArrayList<>();
+    private List<DataItem> itemsList = new ArrayList<>();
 
     private ItemsFilter itemsFilter;
     private iItemsList.SortingMode currentSortingMode = iItemsList.SortingMode.ORDER_NAME_DIRECT;
@@ -54,17 +54,17 @@ public class ItemsList_DataAdapter
     @NonNull @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.template_of_list_item, parent, false);
-        return new Item_ViewHolder(itemView, presenter);
+        View itemView = layoutInflater.inflate(R.layout.template_of_list_data_item, parent, false);
+        return new DataItem_ViewHolder(itemView, presenter);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Item item = itemsList.get(position);
+        DataItem dataItem = itemsList.get(position);
 
-        Item_ViewHolder itemViewHolder = (Item_ViewHolder) holder;
+        DataItem_ViewHolder itemViewHolder = (DataItem_ViewHolder) holder;
 
-        itemViewHolder.initialize(item);
+        itemViewHolder.initialize(dataItem);
 
         itemViewHolder.setSelected(isSelected(position));
     }
@@ -82,7 +82,7 @@ public class ItemsList_DataAdapter
     }
 
     @Override
-    public void setList(List<Item> inputList) {
+    public void setList(List<DataItem> inputList) {
         itemsList.clear();
         itemsList.addAll(inputList);
 
@@ -92,7 +92,7 @@ public class ItemsList_DataAdapter
     }
 
     @Override
-    public void setList(List<Item> inputList, CharSequence filterQuery) {
+    public void setList(List<DataItem> inputList, CharSequence filterQuery) {
         itemsList.clear();
         itemsList.addAll(inputList);
 
@@ -104,14 +104,14 @@ public class ItemsList_DataAdapter
     }
 
     @Override
-    public void appendList(List<Item> inputList) {
+    public void appendList(List<DataItem> inputList) {
         int startIndex = maxIndex();
         itemsList.addAll(inputList);
         notifyItemRangeChanged(startIndex, inputList.size());
     }
 
     @Override
-    public Item getItem(int position) {
+    public DataItem getItem(int position) {
         if (position >= 0 && position <= maxIndex()) {
             return itemsList.get(position);
         }
@@ -121,13 +121,13 @@ public class ItemsList_DataAdapter
     }
 
     @Override
-    public List<Item> getAllItems() {
+    public List<DataItem> getAllItems() {
         return itemsList;
     }
 
     @Override
-    public void removeItem(Item item) {
-        int index = itemsList.indexOf(item);
+    public void removeItem(DataItem dataItem) {
+        int index = itemsList.indexOf(dataItem);
         if (index >= 0) {
             itemsList.remove(index);
             notifyItemRemoved(index);
@@ -173,8 +173,8 @@ public class ItemsList_DataAdapter
     }
 
     @Override
-    public int getPositionOf(Item item) {
-        return itemsList.indexOf(item);
+    public int getPositionOf(DataItem dataItem) {
+        return itemsList.indexOf(dataItem);
     }
 
     @Override
