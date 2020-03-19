@@ -21,7 +21,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     private CharSequence filterText;
 
     private iItemsList.ViewState viewState;
-    private int viewMessageId;
+    private Integer viewMessageId;
     private String viewMessageDetails;
 
 
@@ -33,7 +33,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     @Override
-    public void unlinkView() {
+    public void unlinkViewAndAdapter() {
         this.pageView = new ItemsList_ViewStub();
         this.dataAdapter = new ItemsList_DataAdapter_Stub();
     }
@@ -41,7 +41,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onFirstOpen(@Nullable Intent intent) {
         if (null == intent) {
-            pageView.showErrorMsg(R.string.data_error, "Intent is null");
+            pageView.setState(iItemsList.ViewState.ERROR, R.string.data_error, "Intent is null");
             return;
         }
 
@@ -51,10 +51,11 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onConfigurationChanged() {
         updatePageTitle();
+        pageView.setState(viewState, viewMessageId, viewMessageDetails);
     }
 
     @Override
-    public void storeViewState(iItemsList.ViewState viewState, int messageId, String messageDetails) {
+    public void storeViewState(iItemsList.ViewState viewState, Integer messageId, String messageDetails) {
         this.viewState = viewState;
         this.viewMessageId = messageId;
         this.viewMessageDetails = messageDetails;
@@ -63,7 +64,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onRefreshRequested() {
         pageView.finishActionMode();
-        setRandomList();
+        loadList();
     }
 
     @Override
@@ -141,10 +142,21 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     // Внутренние методы
     private void loadList() {
-        setRandomList();
+        pageView.setState(iItemsList.ViewState.PROGRESS, R.string.LIST_TEMPLATE_loading_list, null);
+
+        setRandomList(new iLoadListCallbacks() {
+            @Override
+            public void onListLoaded() {
+                pageView.setState(iItemsList.ViewState.SUCCESS, null, null);
+            }
+        });
     }
 
-    private void setRandomList() {
+    private interface iLoadListCallbacks {
+        void onListLoaded();
+    }
+
+    private void setRandomList(iLoadListCallbacks callbacks) {
         List<Item> list = createRandomList();
 
         if (hasFilterText())
@@ -153,9 +165,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
             dataAdapter.setList(list);
         }
 
-        updatePageTitle();
-
-        pageView.hideRefreshThrobber();
+        callbacks.onListLoaded();
     }
 
     private void updatePageTitle() {

@@ -54,7 +54,7 @@ public class ItemsList_View
 
         activateUpButton();
 
-        configurePresenterAndAdapter();
+        configureViewModel();
 
         configureRecyclerView();
 
@@ -77,7 +77,7 @@ public class ItemsList_View
     @Override
     protected void onStop() {
         super.onStop();
-        presenter.unlinkView();
+        presenter.unlinkViewAndAdapter();
     }
 
     @Override
@@ -236,32 +236,33 @@ public class ItemsList_View
 
     // iViewStates
     @Override
-    public void setState(iItemsList.ViewState viewState, int messageId, @Nullable String messageDetails) {
+    public void setState(iItemsList.ViewState viewState, Integer messageId, @Nullable String messageDetails) {
 
         presenter.storeViewState(viewState, messageId, messageDetails);
 
         switch (viewState) {
             case INITIAL:
-
                 break;
 
             case PROGRESS:
-
+                showProgressMessage(messageId);
                 break;
 
             case SUCCESS:
-
+                hideProgressMessage();
+                hideRefreshThrobber();
                 break;
 
             case ERROR:
-
+                hideRefreshThrobber();
+                showErrorMsg(messageId, messageDetails);
                 break;
         }
     }
 
 
     // Внутренние методы
-    private void configurePresenterAndAdapter() {
+    private void configureViewModel() {
 
         ItemsList_ViewModel viewModel = new ViewModelProvider(this, new ItemsList_ViewModelFactory())
                 .get(ItemsList_ViewModel.class);

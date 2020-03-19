@@ -20,7 +20,7 @@ public interface iItemsList {
     }
 
     interface iPageView extends iBaseView {
-        void setState(ViewState viewState, int messageId, @Nullable String messageDetails);
+        void setState(ViewState viewState, Integer messageId, @Nullable String messageDetails);
 
         void showRefreshThrobber();
         void hideRefreshThrobber();
@@ -58,12 +58,12 @@ public interface iItemsList {
 
     interface iPresenter {
         void linkViewAndAdapter(iPageView pageView, iDataAdapter dataAdapter);
-        void unlinkView();
+        void unlinkViewAndAdapter();
 
         void onFirstOpen(@Nullable Intent intent);
         void onConfigurationChanged();
 
-        void storeViewState(ViewState viewState, int messageId, String messageDetails);
+        void storeViewState(ViewState viewState, Integer messageId, String messageDetails);
 
         void onRefreshRequested();
 
