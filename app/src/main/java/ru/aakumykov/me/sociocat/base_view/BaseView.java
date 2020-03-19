@@ -60,8 +60,6 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     public void onUserAuthorized(UserAuthorizedEvent event) {
         invalidateOptionsMenu();
 
-        hideMessage();
-
         onUserLogin();
     }
     @Subscribe
