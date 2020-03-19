@@ -113,7 +113,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public boolean canSelectAll() {
-        return false;
+        return true;
     }
 
     @Override
