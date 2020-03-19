@@ -23,6 +23,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     private iItemsList.ViewState viewState;
     private Integer viewMessageId;
     private Object viewMessageDetails;
+    private iItemsList.LayoutType currentLayoutType;
 
 
     // iItemsList.iPresenter
@@ -51,7 +52,10 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onConfigurationChanged() {
         updatePageTitle();
+
         pageView.setState(viewState, viewMessageId, viewMessageDetails);
+
+        pageView.setLayoutType(currentLayoutType);
     }
 
     @Override
@@ -59,6 +63,16 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         this.viewState = viewState;
         this.viewMessageId = messageId;
         this.viewMessageDetails = messageDetails;
+    }
+
+    @Override
+    public void storeLayoutType(iItemsList.LayoutType layoutType) {
+        currentLayoutType = layoutType;
+    }
+
+    @Override
+    public iItemsList.LayoutType getLayoutType() {
+        return currentLayoutType;
     }
 
     @Override

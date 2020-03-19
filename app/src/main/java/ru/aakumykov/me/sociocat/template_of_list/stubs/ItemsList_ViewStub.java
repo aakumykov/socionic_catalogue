@@ -18,6 +18,11 @@ public class ItemsList_ViewStub
     }
 
     @Override
+    public void setLayoutType(iItemsList.LayoutType layoutType) {
+
+    }
+
+    @Override
     public boolean actionModeIsActive() {
         return false;
     }

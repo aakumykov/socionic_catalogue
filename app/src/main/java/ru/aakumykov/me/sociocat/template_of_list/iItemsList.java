@@ -12,6 +12,11 @@ import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 
 public interface iItemsList {
 
+    enum LayoutType {
+        LIST,
+        GRID
+    }
+
     enum ViewState {
         INITIAL,
         PROGRESS,
@@ -22,6 +27,7 @@ public interface iItemsList {
 
     interface iPageView extends iBaseView {
         void setState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
+        void setLayoutType(LayoutType layoutType);
         boolean actionModeIsActive();
     }
 
@@ -56,6 +62,9 @@ public interface iItemsList {
         void onConfigurationChanged();
 
         void storeViewState(ViewState viewState, Integer messageId, Object messageDetails);
+
+        void storeLayoutType(LayoutType layoutType);
+        LayoutType getLayoutType();
 
         void onRefreshRequested();
 

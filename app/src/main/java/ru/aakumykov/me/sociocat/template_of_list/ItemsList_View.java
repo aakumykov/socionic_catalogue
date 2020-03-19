@@ -19,6 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.cards_grid2.iCardsGrid2;
 import ru.aakumykov.me.sociocat.template_of_list.view_model.ItemsList_ViewModel;
 import ru.aakumykov.me.sociocat.template_of_list.view_model.ItemsList_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
@@ -142,31 +143,17 @@ public class ItemsList_View
                 break;
 
             case R.id.actionListView:
-                onShowAsListClicked();
+                toggleLayoutType();
                 break;
 
             case R.id.actionGridView:
-                onShowAsGridClicked();
+                toggleLayoutType();
                 break;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
-    }
-
-    private void onShowAsGridClicked() {
-        currentLayoutManager = staggeredGridLayoutManager;
-        recyclerView.setLayoutManager(currentLayoutManager);
-
-        refreshMenu();
-    }
-
-    private void onShowAsListClicked() {
-        currentLayoutManager = linearLayoutManager;
-        recyclerView.setLayoutManager(currentLayoutManager);
-
-        refreshMenu();
     }
 
     @Override
@@ -201,6 +188,8 @@ public class ItemsList_View
 
         presenter.storeViewState(viewState, messageId, messageDetails);
 
+        setLayoutType(presenter.getLayoutType());
+
         switch (viewState) {
             case INITIAL:
                 finishActionMode();
@@ -231,6 +220,25 @@ public class ItemsList_View
                     showSelectedItemsCount((Integer) messageDetails);
                 break;
         }
+    }
+
+    @Override
+    public void setLayoutType(iItemsList.LayoutType layoutType) {
+        iItemsList.LayoutType currentLayoutType;
+
+        if (iItemsList.LayoutType.GRID.equals(layoutType)) {
+            currentLayoutManager = staggeredGridLayoutManager;
+            currentLayoutType = iItemsList.LayoutType.GRID;
+        } else {
+            currentLayoutManager = linearLayoutManager;
+            currentLayoutType = iItemsList.LayoutType.LIST;
+        }
+
+        presenter.storeLayoutType(currentLayoutType);
+
+        recyclerView.setLayoutManager(currentLayoutManager);
+
+        refreshMenu();
     }
 
 
@@ -319,6 +327,18 @@ public class ItemsList_View
                 return false;
             }
         });
+    }
+
+    private void toggleLayoutType() {
+        iItemsList.LayoutType currentLayoutType = presenter.getLayoutType();
+        iItemsList.LayoutType newLayoutType;
+
+        if (null == currentLayoutType || iItemsList.LayoutType.GRID.equals(currentLayoutType))
+            newLayoutType = iItemsList.LayoutType.LIST;
+        else
+            newLayoutType = iItemsList.LayoutType.GRID;
+
+        setLayoutType(newLayoutType);
     }
 
     private void showRefreshThrobber() {
