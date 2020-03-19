@@ -236,13 +236,11 @@ public class ItemsList_View
 
     // iViewStates
     @Override
-    public <T> void setState(T viewState, int messageId) {
-        setState(viewState, messageId, null);
-    }
+    public void setState(iItemsList.ViewState viewState, int messageId, @Nullable String messageDetails) {
 
-    @Override
-    public <T> void setState(T viewState, int messageId, @Nullable String errorMsg) {
-        switch ((iItemsList.ViewStates) viewState) {
+        presenter.storeViewState(viewState, messageId, messageDetails);
+
+        switch (viewState) {
             case INITIAL:
 
                 break;

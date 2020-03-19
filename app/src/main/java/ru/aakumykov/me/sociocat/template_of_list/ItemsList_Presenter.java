@@ -20,6 +20,10 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     private iItemsList.iDataAdapter dataAdapter;
     private CharSequence filterText;
 
+    private iItemsList.ViewState viewState;
+    private int viewMessageId;
+    private String viewMessageDetails;
+
 
     // iItemsList.iPresenter
     @Override
@@ -47,6 +51,13 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onConfigurationChanged() {
         updatePageTitle();
+    }
+
+    @Override
+    public void storeViewState(iItemsList.ViewState viewState, int messageId, String messageDetails) {
+        this.viewState = viewState;
+        this.viewMessageId = messageId;
+        this.viewMessageDetails = messageDetails;
     }
 
     @Override

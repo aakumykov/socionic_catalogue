@@ -8,19 +8,20 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.base_view.iBaseView;
-import ru.aakumykov.me.sociocat.iViewStates;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 
 public interface iItemsList {
 
-    enum ViewStates {
+    enum ViewState {
         INITIAL,
         PROGRESS,
         SUCCESS,
         ERROR
     }
 
-    interface iPageView extends iBaseView, iViewStates {
+    interface iPageView extends iBaseView {
+        void setState(ViewState viewState, int messageId, @Nullable String messageDetails);
+
         void showRefreshThrobber();
         void hideRefreshThrobber();
 
@@ -61,6 +62,8 @@ public interface iItemsList {
 
         void onFirstOpen(@Nullable Intent intent);
         void onConfigurationChanged();
+
+        void storeViewState(ViewState viewState, int messageId, String messageDetails);
 
         void onRefreshRequested();
 

@@ -136,7 +136,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
 
             @Override
             public void onExists() {
-                view.setState(iUserEditEmail.ViewStates.EMAIL_ERROR, R.string.USER_EDIT_error_email_already_used);
+                view.setState(iUserEditEmail.ViewState.EMAIL_ERROR, R.string.USER_EDIT_error_email_already_used);
             }
 
             @Override
@@ -147,7 +147,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
 
             @Override
             public void onCheckFail(String errorMsg) {
-                view.setState(iUserEditEmail.ViewStates.ERROR, R.string.USER_EDIT_EMAIL_error_checking_email, errorMsg);
+                view.setState(iUserEditEmail.ViewState.ERROR, R.string.USER_EDIT_EMAIL_error_checking_email, errorMsg);
             }
         });*/
     }
@@ -176,7 +176,7 @@ class UserEditEmail_Presenter implements iUserEditEmail.iPresenter {
         usersSingleton.changeEmail(newEmail, new iUsersSingleton.ChangeEmailCallbacks() {
             @Override
             public void onEmailChangeSuccess() {
-//                view.setState(iUserEditEmail.ViewStates.SUCCESS, R.string.USER_EDIT_EMAIL_email_successfully_updated);
+//                view.setState(iUserEditEmail.ViewState.SUCCESS, R.string.USER_EDIT_EMAIL_email_successfully_updated);
                 view.closePage();
             }
 
