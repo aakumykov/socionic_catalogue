@@ -67,6 +67,7 @@ public interface iItemsList {
         boolean hasFilterText();
         CharSequence getFilterText();
 
+        boolean canSelectAll();
         boolean canEditSelectedItem();
         boolean canDeleteSelectedItem();
 

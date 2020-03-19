@@ -363,13 +363,22 @@ public class ItemsList_View
 
             MenuItem menuItemSelectAll = menu.findItem(R.id.actionSelectAll);
             MenuItem menuItemClearSelection = menu.findItem(R.id.actionClearSelection);
-            if (dataAdapter.allItemsAreSelected()) {
-                menuItemSelectAll.setVisible(false);
-                menuItemClearSelection.setVisible(true);
+
+            if (presenter.canSelectAll()) {
+                if (dataAdapter.allItemsAreSelected()) {
+                    menuItemSelectAll.setVisible(false);
+                    menuItemClearSelection.setVisible(true);
+                } else {
+                    menuItemSelectAll.setVisible(true);
+                    menuItemClearSelection.setVisible(false);
+                }
             }
             else {
-                menuItemSelectAll.setVisible(true);
-                menuItemClearSelection.setVisible(false);
+                if (null != menuItemSelectAll)
+                    menuItemSelectAll.setVisible(false);
+
+                if (null != menuItemClearSelection)
+                    menuItemClearSelection.setVisible(false);
             }
 
             MenuItem menuItemEdit = menu.findItem(R.id.actionEdit);

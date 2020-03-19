@@ -98,6 +98,11 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     @Override
+    public boolean canSelectAll() {
+        return false;
+    }
+
+    @Override
     public boolean canEditSelectedItem() {
         Integer index = dataAdapter.getSingleSelectedItemIndex();
 
