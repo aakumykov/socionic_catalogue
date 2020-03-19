@@ -8,11 +8,19 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.base_view.iBaseView;
+import ru.aakumykov.me.sociocat.iViewStates;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 
 public interface iItemsList {
 
-    interface iPageView extends iBaseView {
+    enum ViewStates {
+        INITIAL,
+        PROGRESS,
+        SUCCESS,
+        ERROR
+    }
+
+    interface iPageView extends iBaseView, iViewStates {
         void showRefreshThrobber();
         void hideRefreshThrobber();
 

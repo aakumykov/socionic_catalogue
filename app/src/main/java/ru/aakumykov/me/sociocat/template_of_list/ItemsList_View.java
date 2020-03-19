@@ -23,8 +23,10 @@ import ru.aakumykov.me.sociocat.template_of_list.view_model.ItemsList_ViewModel;
 import ru.aakumykov.me.sociocat.template_of_list.view_model.ItemsList_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class ItemsList_View extends BaseView implements iItemsList.iPageView {
-
+public class ItemsList_View
+        extends BaseView
+        implements iItemsList.iPageView
+{
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
@@ -177,6 +179,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
             super.onBackPressed();
     }
 
+
     // BaseView
     @Override
     public void onUserLogin() {
@@ -228,6 +231,34 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     public void showSelectedItemsCount(int count) {
         actionMode.setTitle(getString(R.string.LIST_TEMPLATE_items_selected, count));
         actionMode.invalidate();
+    }
+
+
+    // iViewStates
+    @Override
+    public <T> void setState(T viewState, int messageId) {
+        setState(viewState, messageId, null);
+    }
+
+    @Override
+    public <T> void setState(T viewState, int messageId, @Nullable String errorMsg) {
+        switch ((iItemsList.ViewStates) viewState) {
+            case INITIAL:
+
+                break;
+
+            case PROGRESS:
+
+                break;
+
+            case SUCCESS:
+
+                break;
+
+            case ERROR:
+
+                break;
+        }
     }
 
 
