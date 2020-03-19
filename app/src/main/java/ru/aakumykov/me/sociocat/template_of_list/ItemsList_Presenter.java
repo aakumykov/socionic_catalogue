@@ -7,10 +7,8 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.tags_lsit3.iTagsList3;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_ViewStub;
@@ -22,6 +20,10 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     private iItemsList.iDataAdapter dataAdapter;
     private CharSequence filterText;
 
+    private iItemsList.ViewState viewState;
+    private Integer viewMessageId;
+    private Object viewMessageDetails;
+
 
     // iItemsList.iPresenter
     @Override
@@ -31,7 +33,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     @Override
-    public void unlinkView() {
+    public void unlinkViewAndAdapter() {
         this.pageView = new ItemsList_ViewStub();
         this.dataAdapter = new ItemsList_DataAdapter_Stub();
     }
@@ -39,7 +41,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onFirstOpen(@Nullable Intent intent) {
         if (null == intent) {
-            pageView.showErrorMsg(R.string.data_error, "Intent is null");
+            pageView.setState(iItemsList.ViewState.ERROR, R.string.data_error, "Intent is null");
             return;
         }
 
@@ -49,17 +51,34 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onConfigurationChanged() {
         updatePageTitle();
+        pageView.setState(viewState, viewMessageId, viewMessageDetails);
     }
 
     @Override
-    public void onPageRefreshRequested() {
-//        pageView.showToast("Ручное обновление страницы");
-        setRandomList();
+    public void storeViewState(iItemsList.ViewState viewState, Integer messageId, Object messageDetails) {
+        this.viewState = viewState;
+        this.viewMessageId = messageId;
+        this.viewMessageDetails = messageDetails;
+    }
+
+    @Override
+    public void onRefreshRequested() {
+        pageView.setState(iItemsList.ViewState.REFRESHING, null, null);
+        loadList();
     }
 
     @Override
     public void onItemClicked(Item item) {
-        dataAdapter.removeItem(item);
+        if (pageView.actionModeIsActive())
+            toggleItemSelection(item);
+        else
+            pageView.showToast(R.string.not_implemented_yet);
+    }
+
+    @Override
+    public void onItemLongClicked(Item item) {
+        pageView.setState(iItemsList.ViewState.SELECTION, null, null);
+        toggleItemSelection(item);
     }
 
     @Override
@@ -79,32 +98,71 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     @Override
-    public void onSortByNameClicked() {
-        dataAdapter.sortByName(new iItemsList.SortingListener() {
-            @Override
-            public void onSortingComplete() {
-                pageView.refreshMenu();
-            }
-        });
+    public boolean canSelectAll() {
+        return false;
     }
 
     @Override
-    public void onSortByCountClicked() {
-        dataAdapter.sortByCount(new iItemsList.SortingListener() {
-            @Override
-            public void onSortingComplete() {
-                pageView.refreshMenu();
-            }
-        });
+    public boolean canEditSelectedItem() {
+        Integer index = dataAdapter.getSingleSelectedItemIndex();
+
+        return null != index;
+    }
+
+    @Override
+    public boolean canDeleteSelectedItem() {
+        return true;
+    }
+
+    @Override
+    public void onSelectAllClicked() {
+        dataAdapter.selectAll(dataAdapter.getListSize());
+        pageView.setState(iItemsList.ViewState.SELECTION, null, dataAdapter.getSelectedItemCount());
+    }
+
+    @Override
+    public void onClearSelectionClicked() {
+        dataAdapter.clearSelection();
+        setInitialViewState();
+    }
+
+    @Override
+    public void onEditSelectedItemClicked() {
+        pageView.showToast(R.string.not_implemented_yet);
+    }
+
+    @Override
+    public void onDeleteSelectedItemsClicked() {
+        for (Integer index : dataAdapter.getSelectedIndexes())
+            dataAdapter.removeItem(dataAdapter.getItem(index));
+
+        setInitialViewState();
+    }
+
+    @Override
+    public void onActionModeDestroyed() {
+        dataAdapter.clearSelection();
+        setInitialViewState();
     }
 
 
     // Внутренние методы
     private void loadList() {
-        setRandomList();
+        pageView.setState(iItemsList.ViewState.PROGRESS, R.string.LIST_TEMPLATE_loading_list, null);
+
+        setRandomList(new iLoadListCallbacks() {
+            @Override
+            public void onListLoaded() {
+                setInitialViewState();
+            }
+        });
     }
 
-    private void setRandomList() {
+    private interface iLoadListCallbacks {
+        void onListLoaded();
+    }
+
+    private void setRandomList(iLoadListCallbacks callbacks) {
         List<Item> list = createRandomList();
 
         if (hasFilterText())
@@ -113,16 +171,13 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
             dataAdapter.setList(list);
         }
 
-        updatePageTitle();
-
-        pageView.hideRefreshThrobber();
+        callbacks.onListLoaded();
     }
 
     private void updatePageTitle() {
         int count = dataAdapter.getListSize();
         pageView.setPageTitle(R.string.LIST_TEMPLATE_title_extended, String.valueOf(count));
     }
-
 
     private List<Item> createRandomList() {
         int min = 10;
@@ -137,5 +192,21 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         }
 
         return list;
+    }
+
+    private void toggleItemSelection(Item item) {
+        dataAdapter.toggleSelection(dataAdapter.getPositionOf(item));
+
+        int selectedItemsCount = dataAdapter.getSelectedItemCount();
+
+        if (0 == selectedItemsCount) {
+            setInitialViewState();
+        } else {
+            pageView.setState(iItemsList.ViewState.SELECTION, null, selectedItemsCount);
+        }
+    }
+
+    private void setInitialViewState() {
+        pageView.setState(iItemsList.ViewState.INITIAL, null, null);
     }
 }

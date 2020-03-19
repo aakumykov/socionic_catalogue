@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.template_of_list.model;
 
+import androidx.annotation.NonNull;
+
 public class Item {
 
     private String name;
@@ -24,5 +26,21 @@ public class Item {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    @NonNull @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(Item.class.getSimpleName());
+        stringBuilder.append(" {");
+        stringBuilder.append(" name: ");
+        stringBuilder.append(name);
+        stringBuilder.append(", ");
+        stringBuilder.append("count: ");
+        stringBuilder.append(count);
+        stringBuilder.append(" }");
+
+        return stringBuilder.toString();
     }
 }

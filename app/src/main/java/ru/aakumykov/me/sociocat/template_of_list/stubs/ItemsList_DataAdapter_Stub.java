@@ -7,8 +7,10 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 
-public class ItemsList_DataAdapter_Stub implements iItemsList.iDataAdapter {
-
+public class ItemsList_DataAdapter_Stub
+        extends SelectableAdapter_Stub
+        implements iItemsList.iDataAdapter
+{
     @Override
     public boolean isVirgin() {
         return false;
@@ -31,6 +33,11 @@ public class ItemsList_DataAdapter_Stub implements iItemsList.iDataAdapter {
 
     @Override
     public Item getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public List<Item> getAllItems() {
         return null;
     }
 
@@ -60,7 +67,57 @@ public class ItemsList_DataAdapter_Stub implements iItemsList.iDataAdapter {
     }
 
     @Override
+    public int getPositionOf(Item item) {
+        return 0;
+    }
+
+    @Override
+    public boolean allItemsAreSelected() {
+        return false;
+    }
+
+    @Override
     public Filter getFilter() {
         return null;
+    }
+
+    @Override
+    public boolean isSelected(Integer index) {
+        return false;
+    }
+
+    @Override
+    public boolean isMultipleItemsSelected() {
+        return false;
+    }
+
+    @Override
+    public int getSelectedItemCount() {
+        return 0;
+    }
+
+    @Override
+    public Integer getSingleSelectedItemIndex() {
+        return null;
+    }
+
+    @Override
+    public List<Integer> getSelectedIndexes() {
+        return null;
+    }
+
+    @Override
+    public void toggleSelection(int itemIndex) {
+
+    }
+
+    @Override
+    public void selectAll(int listSize) {
+
+    }
+
+    @Override
+    public void clearSelection() {
+
     }
 }

@@ -12,12 +12,20 @@ import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 
 public interface iItemsList {
 
-    interface iPageView extends iBaseView {
-        void showRefreshThrobber();
-        void hideRefreshThrobber();
+    enum ViewState {
+        INITIAL,
+        PROGRESS,
+        REFRESHING,
+        SELECTION,
+        ERROR
     }
 
-    interface iDataAdapter extends Filterable {
+    interface iPageView extends iBaseView {
+        void setState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
+        boolean actionModeIsActive();
+    }
+
+    interface iDataAdapter extends Filterable, iSelectableAdapter {
         boolean isVirgin();
 
         void setList(List<Item> inputList);
@@ -25,6 +33,8 @@ public interface iItemsList {
         void appendList(List<Item> inputList);
 
         Item getItem(int position);
+        List<Item> getAllItems();
+
         void removeItem(Item item);
 
         int getListSize();
@@ -32,25 +42,41 @@ public interface iItemsList {
         void sortByName(SortingListener sortingListener);
         void sortByCount(SortingListener sortingListener);
         SortingMode getSortingMode();
+
+        int getPositionOf(Item item);
+
+        boolean allItemsAreSelected();
     }
 
     interface iPresenter {
         void linkViewAndAdapter(iPageView pageView, iDataAdapter dataAdapter);
-        void unlinkView();
+        void unlinkViewAndAdapter();
 
         void onFirstOpen(@Nullable Intent intent);
         void onConfigurationChanged();
-        void onPageRefreshRequested();
+
+        void storeViewState(ViewState viewState, Integer messageId, Object messageDetails);
+
+        void onRefreshRequested();
 
         void onItemClicked(Item item);
+        void onItemLongClicked(Item item);
 
         void onListFiltered(CharSequence filterText, List<Item> filteredList);
 
         boolean hasFilterText();
         CharSequence getFilterText();
 
-        void onSortByNameClicked();
-        void onSortByCountClicked();
+        boolean canSelectAll();
+        boolean canEditSelectedItem();
+        boolean canDeleteSelectedItem();
+
+        void onSelectAllClicked();
+        void onClearSelectionClicked();
+        void onEditSelectedItemClicked();
+        void onDeleteSelectedItemsClicked();
+
+        void onActionModeDestroyed();
     }
 
 

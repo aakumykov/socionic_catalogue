@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.ActionMode;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,8 +23,10 @@ import ru.aakumykov.me.sociocat.template_of_list.view_model.ItemsList_ViewModel;
 import ru.aakumykov.me.sociocat.template_of_list.view_model.ItemsList_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class ItemsList_View extends BaseView implements iItemsList.iPageView {
-
+public class ItemsList_View
+        extends BaseView
+        implements iItemsList.iPageView
+{
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
@@ -36,6 +39,10 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     private LinearLayoutManager linearLayoutManager;
     private RecyclerView.LayoutManager currentLayoutManager;
 
+    private ActionMode actionMode;
+    private ActionMode.Callback actionModeCallback = new ActionModeCallback();
+
+
     // Activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +54,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
 
         activateUpButton();
 
-        configurePresenterAndAdapter();
+        configureViewModel();
 
         configureRecyclerView();
 
@@ -70,7 +77,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     @Override
     protected void onStop() {
         super.onStop();
-        presenter.unlinkView();
+        presenter.unlinkViewAndAdapter();
     }
 
     @Override
@@ -172,6 +179,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
             super.onBackPressed();
     }
 
+
     // BaseView
     @Override
     public void onUserLogin() {
@@ -184,18 +192,50 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
     }
 
     @Override
-    public void showRefreshThrobber() {
-        swipeRefreshLayout.setRefreshing(true);
+    public boolean actionModeIsActive() {
+        return null != actionMode;
     }
 
     @Override
-    public void hideRefreshThrobber() {
-        swipeRefreshLayout.setRefreshing(false);
+    public void setState(iItemsList.ViewState viewState, Integer messageId, @Nullable Object messageDetails) {
+
+        presenter.storeViewState(viewState, messageId, messageDetails);
+
+        switch (viewState) {
+            case INITIAL:
+                finishActionMode();
+                hideProgressMessage();
+                hideRefreshThrobber();
+                break;
+
+            case PROGRESS:
+                finishActionMode();
+                hideRefreshThrobber();
+                showProgressMessage(messageId);
+                break;
+
+            case REFRESHING:
+                finishActionMode();
+                hideProgressMessage();
+                break;
+
+            case ERROR:
+                finishActionMode();
+                hideRefreshThrobber();
+                showErrorMsg(messageId, (String) messageDetails);
+                break;
+
+            case SELECTION:
+                startActionMode();
+                if (null != messageDetails)
+                    showSelectedItemsCount((Integer) messageDetails);
+                break;
+        }
     }
 
 
     // Внутренние методы
-    private void configurePresenterAndAdapter() {
+    private void configureViewModel() {
 
         ItemsList_ViewModel viewModel = new ViewModelProvider(this, new ItemsList_ViewModelFactory())
                 .get(ItemsList_ViewModel.class);
@@ -231,7 +271,7 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                presenter.onPageRefreshRequested();
+                presenter.onRefreshRequested();
             }
         });
     }
@@ -279,5 +319,107 @@ public class ItemsList_View extends BaseView implements iItemsList.iPageView {
                 return false;
             }
         });
+    }
+
+    private void showRefreshThrobber() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    private void hideRefreshThrobber() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void showSelectedItemsCount(int count) {
+        actionMode.setTitle(getString(R.string.LIST_TEMPLATE_items_selected, count));
+        actionMode.invalidate();
+    }
+
+    private void startActionMode() {
+        if (actionMode == null)
+            actionMode = startSupportActionMode(actionModeCallback);
+    }
+
+    private void finishActionMode() {
+        if (null != actionMode) {
+            actionMode.finish();
+            actionMode = null;
+        }
+    }
+
+
+    // Внутренние классы
+    private class ActionModeCallback implements ActionMode.Callback {
+        @SuppressWarnings("unused")
+        private final String TAG = ActionModeCallback.class.getSimpleName();
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.selected_menu, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+
+            MenuItem menuItemSelectAll = menu.findItem(R.id.actionSelectAll);
+            MenuItem menuItemClearSelection = menu.findItem(R.id.actionClearSelection);
+
+            if (presenter.canSelectAll()) {
+                if (dataAdapter.allItemsAreSelected()) {
+                    menuItemSelectAll.setVisible(false);
+                    menuItemClearSelection.setVisible(true);
+                } else {
+                    menuItemSelectAll.setVisible(true);
+                    menuItemClearSelection.setVisible(false);
+                }
+            }
+            else {
+                if (null != menuItemSelectAll)
+                    menuItemSelectAll.setVisible(false);
+
+                if (null != menuItemClearSelection)
+                    menuItemClearSelection.setVisible(false);
+            }
+
+            MenuItem menuItemEdit = menu.findItem(R.id.actionEdit);
+            if (null != menuItemEdit)
+                menuItemEdit.setVisible(presenter.canEditSelectedItem());
+
+            MenuItem menuItemDelete = menu.findItem(R.id.actionDelete);
+            if (null != menuItemDelete)
+                menuItemDelete.setVisible(presenter.canDeleteSelectedItem());
+
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.actionSelectAll:
+                    presenter.onSelectAllClicked();
+                    return true;
+
+                case R.id.actionClearSelection:
+                    presenter.onClearSelectionClicked();
+                    return true;
+
+                case R.id.actionDelete:
+                    presenter.onDeleteSelectedItemsClicked();
+                    return true;
+
+                case R.id.actionEdit:
+                    presenter.onEditSelectedItemClicked();
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            ItemsList_View.this.actionMode = null;
+            presenter.onActionModeDestroyed();
+        }
     }
 }

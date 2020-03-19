@@ -18,17 +18,16 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.Item_ViewHolder;
 
-public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+public class ItemsList_DataAdapter
+        extends SelectableAdapter<RecyclerView.ViewHolder>
         implements iItemsList.iDataAdapter, Filterable
 {
     private iItemsList.iPresenter presenter;
 
     private boolean isVirgin = true;
-
     private List<Item> itemsList = new ArrayList<>();
 
     private ItemsFilter itemsFilter;
-
     private iItemsList.SortingMode currentSortingMode = iItemsList.SortingMode.ORDER_NAME_DIRECT;
 
 
@@ -60,8 +59,12 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Item item = itemsList.get(position);
-        Item_ViewHolder tagRowViewHolder = (Item_ViewHolder) holder;
-        tagRowViewHolder.initialize(item);
+
+        Item_ViewHolder itemViewHolder = (Item_ViewHolder) holder;
+
+        itemViewHolder.initialize(item);
+
+        itemViewHolder.setSelected(isSelected(position));
     }
 
     @Override
@@ -116,6 +119,11 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
+    public List<Item> getAllItems() {
+        return itemsList;
+    }
+
+    @Override
     public void removeItem(Item item) {
         int index = itemsList.indexOf(item);
         if (index >= 0) {
@@ -160,6 +168,18 @@ public class ItemsList_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public iItemsList.SortingMode getSortingMode() {
         return currentSortingMode;
+    }
+
+    @Override
+    public int getPositionOf(Item item) {
+        return itemsList.indexOf(item);
+    }
+
+    @Override
+    public boolean allItemsAreSelected() {
+        int itemsCount = getItemCount();
+        int selectedItemsCount = getSelectedItemCount();
+        return itemsCount > 0 && itemsCount == selectedItemsCount;
     }
 
 

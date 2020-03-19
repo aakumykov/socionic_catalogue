@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.template_of_list.view_model;
 
 import androidx.lifecycle.ViewModel;
 
+import ru.aakumykov.me.sociocat.template_of_list.iItemsList.iDataAdapter;
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 
 public class ItemsList_ViewModel extends ViewModel {
