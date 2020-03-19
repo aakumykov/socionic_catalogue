@@ -344,7 +344,6 @@ public class ItemsList_View
             actionMode.finish();
             actionMode = null;
         }
-        dataAdapter.clearSelection();
     }
 
 
@@ -411,7 +410,7 @@ public class ItemsList_View
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
             ItemsList_View.this.actionMode = null;
-            dataAdapter.clearSelection();
+            presenter.onActionModeDestroyed();
         }
     }
 }

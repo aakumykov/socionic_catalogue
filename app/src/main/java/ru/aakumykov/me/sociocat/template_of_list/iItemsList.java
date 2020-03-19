@@ -74,6 +74,8 @@ public interface iItemsList {
         void onClearSelectionClicked();
         void onEditSelectedItemClicked();
         void onDeleteSelectedItemsClicked();
+
+        void onActionModeDestroyed();
     }
 
 

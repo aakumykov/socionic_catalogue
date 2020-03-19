@@ -123,7 +123,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onClearSelectionClicked() {
         dataAdapter.clearSelection();
-        pageView.setState(iItemsList.ViewState.INITIAL, null, null);
+        setInitialViewState();
     }
 
     @Override
@@ -136,7 +136,13 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         for (Item item : dataAdapter.getSelectedItems())
             dataAdapter.removeItem(item);
 
-        pageView.setState(iItemsList.ViewState.INITIAL, null, null);
+        setInitialViewState();
+    }
+
+    @Override
+    public void onActionModeDestroyed() {
+        dataAdapter.clearSelection();
+        setInitialViewState();
     }
 
 
@@ -147,7 +153,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         setRandomList(new iLoadListCallbacks() {
             @Override
             public void onListLoaded() {
-                pageView.setState(iItemsList.ViewState.INITIAL, null, null);
+                setInitialViewState();
             }
         });
     }
@@ -194,9 +200,13 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         int selectedItemsCount = dataAdapter.getSelectedItemCount();
 
         if (0 == selectedItemsCount) {
-            pageView.setState(iItemsList.ViewState.INITIAL, null, null);
+            setInitialViewState();
         } else {
             pageView.setState(iItemsList.ViewState.SELECTION, null, selectedItemsCount);
         }
+    }
+
+    private void setInitialViewState() {
+        pageView.setState(iItemsList.ViewState.INITIAL, null, null);
     }
 }
