@@ -1,7 +1,8 @@
-package ru.aakumykov.me.sociocat.template_of_list;
+package ru.aakumykov.me.sociocat.template_of_list.filter_stuff;
 
 import java.util.Comparator;
 
+import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 
 public class ItemsComparator implements Comparator {

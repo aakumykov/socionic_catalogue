@@ -15,6 +15,8 @@ import java.util.Collections;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.template_of_list.filter_stuff.ItemsComparator;
+import ru.aakumykov.me.sociocat.template_of_list.filter_stuff.ItemsFilter;
 import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.Item_ViewHolder;
 
