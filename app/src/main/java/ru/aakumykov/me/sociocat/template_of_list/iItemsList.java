@@ -13,7 +13,6 @@ import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 public interface iItemsList {
 
     enum ViewState {
-        INITIAL,
         PROGRESS,
         SUCCESS,
         ERROR

@@ -241,9 +241,6 @@ public class ItemsList_View
         presenter.storeViewState(viewState, messageId, messageDetails);
 
         switch (viewState) {
-            case INITIAL:
-                break;
-
             case PROGRESS:
                 showProgressMessage(messageId);
                 break;
