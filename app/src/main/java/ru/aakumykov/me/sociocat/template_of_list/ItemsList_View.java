@@ -192,67 +192,43 @@ public class ItemsList_View
     }
 
     @Override
-    public void showRefreshThrobber() {
-        swipeRefreshLayout.setRefreshing(true);
-    }
-
-    @Override
-    public void hideRefreshThrobber() {
-        swipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public void startActionMode() {
-        if (actionMode == null)
-            actionMode = startSupportActionMode(actionModeCallback);
-    }
-
-    @Override
-    public void finishActionMode() {
-        if (null != actionMode) {
-            actionMode.finish();
-            actionMode = null;
-        }
-        dataAdapter.clearSelection();
-    }
-
-    @Override
     public boolean actionModeIsActive() {
         return null != actionMode;
     }
 
     @Override
-    public void refreshActionMode() {
-        if (null != actionMode)
-            actionMode.invalidate();
-    }
-
-    @Override
-    public void showSelectedItemsCount(int count) {
-        actionMode.setTitle(getString(R.string.LIST_TEMPLATE_items_selected, count));
-        actionMode.invalidate();
-    }
-
-
-    // iViewStates
-    @Override
-    public void setState(iItemsList.ViewState viewState, Integer messageId, @Nullable String messageDetails) {
+    public void setState(iItemsList.ViewState viewState, Integer messageId, @Nullable Object messageDetails) {
 
         presenter.storeViewState(viewState, messageId, messageDetails);
 
         switch (viewState) {
-            case PROGRESS:
-                showProgressMessage(messageId);
-                break;
-
-            case SUCCESS:
+            case INITIAL:
+                finishActionMode();
                 hideProgressMessage();
                 hideRefreshThrobber();
                 break;
 
-            case ERROR:
+            case PROGRESS:
+                finishActionMode();
                 hideRefreshThrobber();
-                showErrorMsg(messageId, messageDetails);
+                showProgressMessage(messageId);
+                break;
+
+            case REFRESHING:
+                finishActionMode();
+                hideProgressMessage();
+                break;
+
+            case ERROR:
+                finishActionMode();
+                hideRefreshThrobber();
+                showErrorMsg(messageId, (String) messageDetails);
+                break;
+
+            case SELECTION:
+                startActionMode();
+                if (null != messageDetails)
+                    showSelectedItemsCount((Integer) messageDetails);
                 break;
         }
     }
@@ -345,6 +321,34 @@ public class ItemsList_View
         });
     }
 
+    private void showRefreshThrobber() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    private void hideRefreshThrobber() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void showSelectedItemsCount(int count) {
+        actionMode.setTitle(getString(R.string.LIST_TEMPLATE_items_selected, count));
+        actionMode.invalidate();
+    }
+
+    private void startActionMode() {
+        if (actionMode == null)
+            actionMode = startSupportActionMode(actionModeCallback);
+    }
+
+    private void finishActionMode() {
+        if (null != actionMode) {
+            actionMode.finish();
+            actionMode = null;
+        }
+        dataAdapter.clearSelection();
+    }
+
+
+    // Внутренние классы
     private class ActionModeCallback implements ActionMode.Callback {
         @SuppressWarnings("unused")
         private final String TAG = ActionModeCallback.class.getSimpleName();
@@ -410,5 +414,4 @@ public class ItemsList_View
             dataAdapter.clearSelection();
         }
     }
-
 }

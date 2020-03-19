@@ -13,23 +13,16 @@ import ru.aakumykov.me.sociocat.template_of_list.model.Item;
 public interface iItemsList {
 
     enum ViewState {
+        INITIAL,
         PROGRESS,
-        SUCCESS,
+        REFRESHING,
+        SELECTION,
         ERROR
     }
 
     interface iPageView extends iBaseView {
-        void setState(ViewState viewState, Integer messageId, @Nullable String messageDetails);
-
-        void showRefreshThrobber();
-        void hideRefreshThrobber();
-
-        void startActionMode();
-        void finishActionMode();
+        void setState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
         boolean actionModeIsActive();
-        void refreshActionMode();
-
-        void showSelectedItemsCount(int count);
     }
 
     interface iDataAdapter extends Filterable, iSelectableAdapter {
@@ -62,7 +55,7 @@ public interface iItemsList {
         void onFirstOpen(@Nullable Intent intent);
         void onConfigurationChanged();
 
-        void storeViewState(ViewState viewState, Integer messageId, String messageDetails);
+        void storeViewState(ViewState viewState, Integer messageId, Object messageDetails);
 
         void onRefreshRequested();
 

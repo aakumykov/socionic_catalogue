@@ -13,27 +13,7 @@ public class ItemsList_ViewStub
         implements iItemsList.iPageView
 {
     @Override
-    public void setState(iItemsList.ViewState viewState, Integer messageId, @Nullable String messageDetails) {
-
-    }
-
-    @Override
-    public void showRefreshThrobber() {
-
-    }
-
-    @Override
-    public void hideRefreshThrobber() {
-
-    }
-
-    @Override
-    public void startActionMode() {
-
-    }
-
-    @Override
-    public void finishActionMode() {
+    public void setState(iItemsList.ViewState viewState, Integer messageId, @Nullable Object messageDetails) {
 
     }
 
@@ -41,15 +21,4 @@ public class ItemsList_ViewStub
     public boolean actionModeIsActive() {
         return false;
     }
-
-    @Override
-    public void refreshActionMode() {
-
-    }
-
-    @Override
-    public void showSelectedItemsCount(int count) {
-
-    }
-
 }

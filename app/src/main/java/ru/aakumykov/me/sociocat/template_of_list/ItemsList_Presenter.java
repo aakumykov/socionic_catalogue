@@ -22,7 +22,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     private iItemsList.ViewState viewState;
     private Integer viewMessageId;
-    private String viewMessageDetails;
+    private Object viewMessageDetails;
 
 
     // iItemsList.iPresenter
@@ -55,7 +55,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     @Override
-    public void storeViewState(iItemsList.ViewState viewState, Integer messageId, String messageDetails) {
+    public void storeViewState(iItemsList.ViewState viewState, Integer messageId, Object messageDetails) {
         this.viewState = viewState;
         this.viewMessageId = messageId;
         this.viewMessageDetails = messageDetails;
@@ -63,7 +63,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onRefreshRequested() {
-        pageView.finishActionMode();
+        pageView.setState(iItemsList.ViewState.REFRESHING, null, null);
         loadList();
     }
 
@@ -77,7 +77,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onItemLongClicked(Item item) {
-        pageView.startActionMode();
+        pageView.setState(iItemsList.ViewState.SELECTION, null, null);
         toggleItemSelection(item);
     }
 
@@ -117,13 +117,13 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onSelectAllClicked() {
         dataAdapter.selectItemsList(dataAdapter.getAllItems());
-        pageView.showSelectedItemsCount(dataAdapter.getSelectedItemCount());
+        pageView.setState(iItemsList.ViewState.SELECTION, null, dataAdapter.getSelectedItemCount());
     }
 
     @Override
     public void onClearSelectionClicked() {
         dataAdapter.clearSelection();
-        pageView.finishActionMode();
+        pageView.setState(iItemsList.ViewState.INITIAL, null, null);
     }
 
     @Override
@@ -136,7 +136,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         for (Item item : dataAdapter.getSelectedItems())
             dataAdapter.removeItem(item);
 
-        pageView.finishActionMode();
+        pageView.setState(iItemsList.ViewState.INITIAL, null, null);
     }
 
 
@@ -147,7 +147,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         setRandomList(new iLoadListCallbacks() {
             @Override
             public void onListLoaded() {
-                pageView.setState(iItemsList.ViewState.SUCCESS, null, null);
+                pageView.setState(iItemsList.ViewState.INITIAL, null, null);
             }
         });
     }
@@ -194,9 +194,9 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         int selectedItemsCount = dataAdapter.getSelectedItemCount();
 
         if (0 == selectedItemsCount) {
-            pageView.finishActionMode();
+            pageView.setState(iItemsList.ViewState.INITIAL, null, null);
         } else {
-            pageView.showSelectedItemsCount(selectedItemsCount);
+            pageView.setState(iItemsList.ViewState.SELECTION, null, selectedItemsCount);
         }
     }
 }
