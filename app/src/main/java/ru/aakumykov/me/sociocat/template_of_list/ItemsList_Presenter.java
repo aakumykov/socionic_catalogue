@@ -97,7 +97,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onLoadMoreClicked() {
-
+        pageView.showToast("Загрузить ещё...");
     }
 
     @Override

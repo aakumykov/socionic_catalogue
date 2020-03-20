@@ -40,7 +40,6 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     }
 
     // Нажатия
-/*
     @OnClick(R.id.cardView)
     void onItemClicked() {
         presenter.onItemClicked(this.dataItem);
@@ -50,7 +49,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     void onItemLongClicked() {
         presenter.onItemLongClicked(this.dataItem);
     }
-*/
+
 
     public void setSelected(boolean isSelected) {
         selectedOverlay.setVisibility((isSelected) ? View.VISIBLE : View.INVISIBLE);

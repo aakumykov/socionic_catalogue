@@ -31,9 +31,9 @@ public class LoadMore_ViewHolder extends BasicViewHolder {
     }
 
     // Нажатия
-    /*@OnClick(R.id.cardView)
+    @OnClick(R.id.cardView)
     void onItemClicked() {
         presenter.onLoadMoreClicked();
-    }*/
+    }
 
 }

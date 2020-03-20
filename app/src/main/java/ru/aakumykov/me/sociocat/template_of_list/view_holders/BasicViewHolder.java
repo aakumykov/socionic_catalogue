@@ -9,7 +9,7 @@ import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 
 public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
 
-    private iItemsList.iPresenter presenter;
+    iItemsList.iPresenter presenter;
 
     public BasicViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -22,4 +22,5 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
     public void setPresenter(iItemsList.iPresenter presenter) {
         this.presenter = presenter;
     }
+
 }
