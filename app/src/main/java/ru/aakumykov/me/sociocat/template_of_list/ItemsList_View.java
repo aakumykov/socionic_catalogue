@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.template_of_list.view_model.ItemsList_ViewModel;
@@ -282,7 +283,10 @@ public class ItemsList_View
     }
 
     private void configureLayoutManagers() {
-        this.staggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        int colsNum = MyUtils.isPortraitOrientation(this) ?
+                AppConfig.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : AppConfig.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
+
+        this.staggeredGridLayoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
         this.linearLayoutManager = new LinearLayoutManager(this);
 
         currentLayoutManager = staggeredGridLayoutManager;
