@@ -71,7 +71,8 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 itemView = layoutInflater.inflate(R.layout.cards_grid_loadmore_item, parent, false);
                 viewHolder = new LoadMore_ViewHolder(itemView, presenter);
 
-                layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+                ViewGroup.LayoutParams lp = viewHolder.itemView.getLayoutParams();
+                layoutParams = (StaggeredGridLayoutManager.LayoutParams) lp;
                 layoutParams.setFullSpan(true);
                 break;
 

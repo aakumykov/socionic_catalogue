@@ -1,6 +1,8 @@
 package ru.aakumykov.me.sociocat.template_of_list;
 
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -8,11 +10,13 @@ import android.widget.Filterable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.template_of_list.filter_stuff.ItemsComparator;
 import ru.aakumykov.me.sociocat.template_of_list.filter_stuff.ItemsFilter;
 import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
@@ -71,9 +75,36 @@ public class ItemsList_DataAdapter
 
     @NonNull @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        BasicViewHolder basicViewHolder = ListItemsFactory.createViewHolder(viewType, parent);
+        /*BasicViewHolder basicViewHolder = ListItemsFactory.createViewHolder(viewType, parent);
         basicViewHolder.setPresenter(presenter);
-        return basicViewHolder;
+        return basicViewHolder;*/
+
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        StaggeredGridLayoutManager.LayoutParams layoutParams;
+
+        if (viewType == iItemsList.DATA_ITEM_TYPE) {
+            View itemView = layoutInflater.inflate(R.layout.template_of_list_data_item, parent, false);
+            return new DataItem_ViewHolder(itemView);
+        }
+        else if (viewType == iItemsList.LOADMORE_ITEM_TYPE) {
+            View itemView = layoutInflater.inflate(R.layout.template_of_list_loadmore_item, parent, false);
+
+            RecyclerView.ViewHolder viewHolder = new LoadMore_ViewHolder(itemView);
+
+            /*try {
+                ViewGroup.LayoutParams lp = viewHolder.itemView.getLayoutParams();
+                layoutParams = (StaggeredGridLayoutManager.LayoutParams) lp;
+                layoutParams.setFullSpan(true);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }*/
+
+            return viewHolder;
+        }
+        else {
+            View itemView = layoutInflater.inflate(R.layout.template_of_list_unknown_item, parent, false);
+            return new Unknown_ViewHolder(itemView);
+        }
     }
 
     @Override
