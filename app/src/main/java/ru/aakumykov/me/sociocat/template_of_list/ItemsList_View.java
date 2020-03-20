@@ -51,14 +51,13 @@ public class ItemsList_View
         ButterKnife.bind(this);
 
         setPageTitle(R.string.LIST_TEMPLATE_title);
-
         activateUpButton();
 
-        configurePresenterAndAdapter();
-
-        configureRecyclerView();
-
         configureSwipeRefresh();
+
+        configureLayoutManagers();
+        configurePresenterAndAdapter();
+        configureRecyclerView();
     }
 
     @Override
@@ -185,14 +184,14 @@ public class ItemsList_View
     }
 
     @Override
-    public void setState(iItemsList.ViewState viewState, Integer messageId, @Nullable Object messageDetails) {
+    public void setViewState(iItemsList.ViewState viewState, Integer messageId, @Nullable Object messageDetails) {
 
         presenter.storeViewState(viewState, messageId, messageDetails);
 
-        setLayoutType(presenter.getLayoutType());
+        //setLayoutType(presenter.getLayoutType());
 
         switch (viewState) {
-            case INITIAL:
+            case SUCCESS:
                 finishActionMode();
                 hideProgressMessage();
                 hideRefreshThrobber();
@@ -277,11 +276,15 @@ public class ItemsList_View
         }
     }
 
-    private void configureRecyclerView() {
+    private void configureLayoutManagers() {
         this.staggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         this.linearLayoutManager = new LinearLayoutManager(this);
 
-        recyclerView.setLayoutManager(linearLayoutManager);
+        currentLayoutManager = staggeredGridLayoutManager;
+    }
+
+    private void configureRecyclerView() {
+        recyclerView.setLayoutManager(currentLayoutManager);
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
     }
 

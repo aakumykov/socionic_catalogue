@@ -25,7 +25,9 @@ class ListItemsFactory {
         }
         else if (viewType == iItemsList.LOADMORE_ITEM_TYPE) {
             View itemView = createItemView(parent, R.layout.template_of_list_loadmore_item);
-            return new LoadMore_ViewHolder(itemView);
+            BasicViewHolder basicViewHolder = new LoadMore_ViewHolder(itemView);
+            setFullSpanIfSupported(basicViewHolder);
+            return basicViewHolder;
         }
         else {
             View itemView = createItemView(parent, R.layout.template_of_list_unknown_item);
@@ -36,5 +38,12 @@ class ListItemsFactory {
     private static View createItemView(ViewGroup parent, int layoutResourceId) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         return layoutInflater.inflate(layoutResourceId, parent, false);
+    }
+
+    private static void setFullSpanIfSupported(RecyclerView.ViewHolder viewHolder) {
+        ViewGroup.LayoutParams lp = viewHolder.itemView.getLayoutParams();
+        if (lp instanceof StaggeredGridLayoutManager.LayoutParams) {
+            ((StaggeredGridLayoutManager.LayoutParams) lp).setFullSpan(true);
+        }
     }
 }

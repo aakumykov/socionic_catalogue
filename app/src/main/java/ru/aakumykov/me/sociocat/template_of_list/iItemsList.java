@@ -28,7 +28,7 @@ public interface iItemsList {
     }
 
     enum ViewState {
-        INITIAL,
+        SUCCESS,
         PROGRESS,
         REFRESHING,
         SELECTION,
@@ -44,7 +44,7 @@ public interface iItemsList {
 
 
     interface iPageView extends iBaseView {
-        void setState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
+        void setViewState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
         void setLayoutType(LayoutType layoutType);
         boolean actionModeIsActive();
     }

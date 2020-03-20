@@ -42,7 +42,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onFirstOpen(@Nullable Intent intent) {
         if (null == intent) {
-            pageView.setState(iItemsList.ViewState.ERROR, R.string.data_error, "Intent is null");
+            pageView.setViewState(iItemsList.ViewState.ERROR, R.string.data_error, "Intent is null");
             return;
         }
 
@@ -53,7 +53,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     public void onConfigurationChanged() {
         updatePageTitle();
 
-        pageView.setState(viewState, viewMessageId, viewMessageDetails);
+        pageView.setViewState(viewState, viewMessageId, viewMessageDetails);
 
         pageView.setLayoutType(currentLayoutType);
     }
@@ -77,7 +77,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onRefreshRequested() {
-        pageView.setState(iItemsList.ViewState.REFRESHING, null, null);
+        pageView.setViewState(iItemsList.ViewState.REFRESHING, null, null);
         loadList();
     }
 
@@ -91,7 +91,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onItemLongClicked(DataItem dataItem) {
-        pageView.setState(iItemsList.ViewState.SELECTION, null, null);
+        pageView.setViewState(iItemsList.ViewState.SELECTION, null, null);
         toggleItemSelection(dataItem);
     }
 
@@ -136,13 +136,13 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onSelectAllClicked() {
         dataAdapter.selectAll(dataAdapter.getListSize());
-        pageView.setState(iItemsList.ViewState.SELECTION, null, dataAdapter.getSelectedItemCount());
+        pageView.setViewState(iItemsList.ViewState.SELECTION, null, dataAdapter.getSelectedItemCount());
     }
 
     @Override
     public void onClearSelectionClicked() {
         dataAdapter.clearSelection();
-        setInitialViewState();
+        setViewStateSuccess();
     }
 
     @Override
@@ -155,42 +155,43 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         for (Integer index : dataAdapter.getSelectedIndexes())
             dataAdapter.removeItem(dataAdapter.getItem(index));
 
-        setInitialViewState();
+        setViewStateSuccess();
     }
 
     @Override
     public void onActionModeDestroyed() {
         dataAdapter.clearSelection();
-        setInitialViewState();
+        setViewStateSuccess();
     }
 
 
     // Внутренние методы
     private void loadList() {
-        pageView.setState(iItemsList.ViewState.PROGRESS, R.string.LIST_TEMPLATE_loading_list, null);
+        pageView.setViewState(iItemsList.ViewState.PROGRESS, R.string.LIST_TEMPLATE_loading_list, null);
 
-        setRandomList(new iLoadListCallbacks() {
+        getRandomList(new iLoadListCallbacks() {
             @Override
-            public void onListLoaded() {
-                setInitialViewState();
+            public void onListLoaded(List<DataItem> list) {
+                dataAdapter.setList(list);
+                setViewStateSuccess();
             }
         });
     }
 
-    private interface iLoadListCallbacks {
-        void onListLoaded();
-    }
-
-    private void setRandomList(iLoadListCallbacks callbacks) {
+    private void getRandomList(iLoadListCallbacks callbacks) {
         List<DataItem> list = createRandomList();
 
-        if (hasFilterText())
+        /*if (hasFilterText())
             dataAdapter.setList(list, getFilterText());
         else {
             dataAdapter.setList(list);
-        }
+        }*/
 
-        callbacks.onListLoaded();
+        callbacks.onListLoaded(list);
+    }
+
+    private interface iLoadListCallbacks {
+        void onListLoaded(List<DataItem> list);
     }
 
     private void updatePageTitle() {
@@ -220,13 +221,13 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         int selectedItemsCount = dataAdapter.getSelectedItemCount();
 
         if (0 == selectedItemsCount) {
-            setInitialViewState();
+            setViewStateSuccess();
         } else {
-            pageView.setState(iItemsList.ViewState.SELECTION, null, selectedItemsCount);
+            pageView.setViewState(iItemsList.ViewState.SELECTION, null, selectedItemsCount);
         }
     }
 
-    private void setInitialViewState() {
-        pageView.setState(iItemsList.ViewState.INITIAL, null, null);
+    private void setViewStateSuccess() {
+        pageView.setViewState(iItemsList.ViewState.SUCCESS, null, null);
     }
 }
