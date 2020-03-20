@@ -12,6 +12,7 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.BasicViewHolder;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.DataItem_ViewHolder;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.LoadMore_ViewHolder;
+import ru.aakumykov.me.sociocat.template_of_list.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.Unknown_ViewHolder;
 
 class ListItemsFactory {
@@ -25,9 +26,11 @@ class ListItemsFactory {
         }
         else if (viewType == iItemsList.LOADMORE_ITEM_TYPE) {
             View itemView = createItemView(parent, R.layout.template_of_list_loadmore_item);
-            BasicViewHolder basicViewHolder = new LoadMore_ViewHolder(itemView);
-            setFullSpanIfSupported(basicViewHolder);
-            return basicViewHolder;
+            return setFullSpanIfSupported(new LoadMore_ViewHolder(itemView));
+        }
+        else if (viewType == iItemsList.THROBBER_ITEM_TYPE) {
+            View itemView = createItemView(parent, R.layout.template_of_list_throbber_item);
+            return setFullSpanIfSupported(new Throbber_ViewHolder(itemView));
         }
         else {
             View itemView = createItemView(parent, R.layout.template_of_list_unknown_item);
@@ -40,10 +43,11 @@ class ListItemsFactory {
         return layoutInflater.inflate(layoutResourceId, parent, false);
     }
 
-    private static void setFullSpanIfSupported(RecyclerView.ViewHolder viewHolder) {
+    private static BasicViewHolder setFullSpanIfSupported(BasicViewHolder viewHolder) {
         ViewGroup.LayoutParams lp = viewHolder.itemView.getLayoutParams();
         if (lp instanceof StaggeredGridLayoutManager.LayoutParams) {
             ((StaggeredGridLayoutManager.LayoutParams) lp).setFullSpan(true);
         }
+        return viewHolder;
     }
 }

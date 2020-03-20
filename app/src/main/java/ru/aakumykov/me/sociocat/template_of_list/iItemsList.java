@@ -15,11 +15,13 @@ public interface iItemsList {
 
     int DATA_ITEM_TYPE = 10;
     int LOADMORE_ITEM_TYPE = 20;
+    int THROBBER_ITEM_TYPE = 30;
     int UNKNOWN_VIEW_TYPE = -1;
 
     enum ItemType {
         DATA_ITEM,
-        LOADMORE_ITEM
+        LOADMORE_ITEM,
+        THROBBER_ITEM
     }
 
     enum LayoutType {
@@ -63,7 +65,7 @@ public interface iItemsList {
         DataItem getItem(int position);
         List<ListItem> getAllItems();
 
-        void removeItem(DataItem dataItem);
+        void removeItem(ListItem listItem);
 
         int getListSize();
 
@@ -74,6 +76,8 @@ public interface iItemsList {
         int getPositionOf(DataItem dataItem);
 
         boolean allItemsAreSelected();
+
+        void showLoadmoreThrobber();
     }
 
     interface iPresenter {

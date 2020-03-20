@@ -53,7 +53,7 @@ public class ItemsList_DataAdapter_Stub
     }
 
     @Override
-    public void removeItem(DataItem dataItem) {
+    public void removeItem(ListItem listItem) {
 
     }
 
@@ -85,6 +85,11 @@ public class ItemsList_DataAdapter_Stub
     @Override
     public boolean allItemsAreSelected() {
         return false;
+    }
+
+    @Override
+    public void showLoadmoreThrobber() {
+
     }
 
     @Override

@@ -18,9 +18,11 @@ import ru.aakumykov.me.sociocat.template_of_list.filter_stuff.ItemsFilter;
 import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
 import ru.aakumykov.me.sociocat.template_of_list.model.ListItem;
 import ru.aakumykov.me.sociocat.template_of_list.model.LoadMoreItem;
+import ru.aakumykov.me.sociocat.template_of_list.model.ThrobberItem;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.BasicViewHolder;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.DataItem_ViewHolder;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.LoadMore_ViewHolder;
+import ru.aakumykov.me.sociocat.template_of_list.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.Unknown_ViewHolder;
 
 public class ItemsList_DataAdapter
@@ -49,13 +51,6 @@ public class ItemsList_DataAdapter
     }
 
 
-    // RecyclerView
-    @Override
-    public void registerAdapterDataObserver(@NonNull RecyclerView.AdapterDataObserver observer) {
-        super.registerAdapterDataObserver(observer);
-    }
-
-
     // RecyclerView.Adapter
     @Override
     public int getItemViewType(int position) {
@@ -65,6 +60,8 @@ public class ItemsList_DataAdapter
             return iItemsList.DATA_ITEM_TYPE;
         else if (listItem instanceof LoadMoreItem)
             return iItemsList.LOADMORE_ITEM_TYPE;
+        else if (listItem instanceof ThrobberItem)
+            return iItemsList.THROBBER_ITEM_TYPE;
         else
             return iItemsList.UNKNOWN_VIEW_TYPE;
     }
@@ -87,6 +84,9 @@ public class ItemsList_DataAdapter
         else if (listItem instanceof LoadMoreItem) {
             viewHolder = (LoadMore_ViewHolder) holder;
         }
+        else if (listItem instanceof ThrobberItem) {
+            viewHolder = (Throbber_ViewHolder) holder;
+        }
         else {
             viewHolder = (Unknown_ViewHolder) holder;
         }
@@ -108,6 +108,13 @@ public class ItemsList_DataAdapter
         return itemsList.size();
     }
 
+
+    // iItemsList.iDataAdapter
+    @Override
+    public boolean isVirgin() {
+        return this.isVirgin;
+    }
+
     @Override
     public void bindBottomReachedListener(iItemsList.ListEdgeReachedListener listener) {
         this.listEdgeReachedListener = listener;
@@ -116,13 +123,6 @@ public class ItemsList_DataAdapter
     @Override
     public void unbindBottomReachedListener() {
         this.listEdgeReachedListener = null;
-    }
-
-
-    // iItemsList.iDataAdapter
-    @Override
-    public boolean isVirgin() {
-        return this.isVirgin;
     }
 
     @Override
@@ -172,8 +172,8 @@ public class ItemsList_DataAdapter
     }
 
     @Override
-    public void removeItem(DataItem dataItem) {
-        int index = itemsList.indexOf(dataItem);
+    public void removeItem(ListItem listItem) {
+        int index = itemsList.indexOf(listItem);
         if (index >= 0) {
             itemsList.remove(index);
             notifyItemRemoved(index);
@@ -230,6 +230,12 @@ public class ItemsList_DataAdapter
         return itemsCount > 0 && itemsCount == selectedItemsCount;
     }
 
+    @Override
+    public void showLoadmoreThrobber() {
+        removeLoadmoreItem();
+        addThrobberItem();
+    }
+
 
     // Filterable
     @Override
@@ -242,7 +248,36 @@ public class ItemsList_DataAdapter
 
     // Внутренние методы
     private int maxIndex() {
-        return itemsList.size() - 1;
+        int size = itemsList.size();
+
+        if (0 == size)
+            return -1;
+
+        return size - 1;
+    }
+
+    private void removeLoadmoreItem() {
+        ListItem lastItem = getLastItem();
+        if (lastItem instanceof LoadMoreItem)
+            removeItem(lastItem);
+    }
+
+    private void addThrobberItem() {
+        ListItem lastItem = getLastItem();
+        if (lastItem instanceof ThrobberItem)
+            return;
+
+        itemsList.add(new ThrobberItem());
+        notifyItemChanged(maxIndex());
+    }
+
+    private ListItem getLastItem() {
+        int maxIndex = maxIndex();
+
+        if (maxIndex < 0)
+            return null;
+
+        return itemsList.get(maxIndex);
     }
 
     private void performSorting(@Nullable iItemsList.SortingListener sortingListener) {

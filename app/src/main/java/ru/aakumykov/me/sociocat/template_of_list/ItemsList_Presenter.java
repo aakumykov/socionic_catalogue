@@ -97,7 +97,14 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onLoadMoreClicked() {
-        pageView.showToast("Загрузить ещё...");
+        dataAdapter.showLoadmoreThrobber();
+
+        getRandomList(new iLoadListCallbacks() {
+            @Override
+            public void onListLoaded(List<DataItem> list) {
+                //dataAdapter.appendList(list);
+            }
+        });
     }
 
     @Override
