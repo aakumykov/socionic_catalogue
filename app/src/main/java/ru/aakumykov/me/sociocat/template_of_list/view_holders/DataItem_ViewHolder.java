@@ -13,20 +13,18 @@ import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
 
-public class DataItem_ViewHolder extends RecyclerView.ViewHolder {
+public class DataItem_ViewHolder extends BasicViewHolder {
 
     @BindView(R.id.cardView) View cardView;
     @BindView(R.id.nameView) TextView nameView;
     @BindView(R.id.countView) TextView countView;
     @BindView(R.id.selectedOverlay) View selectedOverlay;
 
-    private iItemsList.iPresenter presenter;
     private DataItem dataItem;
 
     // Конструктор
-    public DataItem_ViewHolder(View itemView, iItemsList.iPresenter presenter) {
+    public DataItem_ViewHolder(View itemView) {
         super(itemView);
-        this.presenter = presenter;
         ButterKnife.bind(this, itemView);
     }
 
@@ -42,6 +40,7 @@ public class DataItem_ViewHolder extends RecyclerView.ViewHolder {
     }
 
     // Нажатия
+/*
     @OnClick(R.id.cardView)
     void onItemClicked() {
         presenter.onItemClicked(this.dataItem);
@@ -51,8 +50,9 @@ public class DataItem_ViewHolder extends RecyclerView.ViewHolder {
     void onItemLongClicked() {
         presenter.onItemLongClicked(this.dataItem);
     }
+*/
 
-    public void setSelected(boolean selected) {
-        selectedOverlay.setVisibility((selected) ? View.VISIBLE : View.INVISIBLE);
+    public void setSelected(boolean isSelected) {
+        selectedOverlay.setVisibility((isSelected) ? View.VISIBLE : View.INVISIBLE);
     }
 }

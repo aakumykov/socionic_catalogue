@@ -1,5 +1,7 @@
 package ru.aakumykov.me.sociocat.template_of_list.model;
 
+import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
+
 public class LoadMoreItem extends ListItem {
 
     @Override
@@ -8,5 +10,10 @@ public class LoadMoreItem extends ListItem {
             return -1;
         else
             return 1;
+    }
+
+    @Override
+    public iItemsList.ItemType getItemType() {
+        return iItemsList.ItemType.LOADMORE_ITEM;
     }
 }

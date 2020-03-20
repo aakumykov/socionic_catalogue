@@ -1,8 +1,6 @@
 package ru.aakumykov.me.sociocat.template_of_list;
 
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -15,11 +13,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.template_of_list.filter_stuff.ItemsComparator;
 import ru.aakumykov.me.sociocat.template_of_list.filter_stuff.ItemsFilter;
 import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
+import ru.aakumykov.me.sociocat.template_of_list.model.ListItem;
+import ru.aakumykov.me.sociocat.template_of_list.model.LoadMoreItem;
+import ru.aakumykov.me.sociocat.template_of_list.view_holders.BasicViewHolder;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.DataItem_ViewHolder;
+import ru.aakumykov.me.sociocat.template_of_list.view_holders.LoadMore_ViewHolder;
+import ru.aakumykov.me.sociocat.template_of_list.view_holders.Unknown_ViewHolder;
 
 public class ItemsList_DataAdapter
         extends SelectableAdapter<RecyclerView.ViewHolder>
@@ -31,7 +33,7 @@ public class ItemsList_DataAdapter
     private iItemsList.ListEdgeReachedListener listEdgeReachedListener;
 
     private boolean isVirgin = true;
-    private List<DataItem> itemsList = new ArrayList<>();
+    private List<ListItem> itemsList = new ArrayList<>();
 
     private ItemsFilter itemsFilter;
     private iItemsList.SortingMode currentSortingMode = iItemsList.SortingMode.ORDER_NAME_DIRECT;
@@ -55,31 +57,45 @@ public class ItemsList_DataAdapter
 
 
     // RecyclerView.Adapter
+    @Override
+    public int getItemViewType(int position) {
+        ListItem listItem = itemsList.get(position);
+
+        if (listItem instanceof DataItem)
+            return iItemsList.DATA_ITEM_TYPE;
+        else if (listItem instanceof LoadMoreItem)
+            return iItemsList.LOADMORE_ITEM_TYPE;
+        else
+            return iItemsList.UNKNOWN_VIEW_TYPE;
+    }
+
     @NonNull @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.template_of_list_data_item, parent, false);
-        return new DataItem_ViewHolder(itemView, presenter);
+        BasicViewHolder basicViewHolder = ListItemsFactory.createViewHolder(viewType, parent);
+        basicViewHolder.setPresenter(presenter);
+        return basicViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        DataItem dataItem = itemsList.get(position);
+        ListItem listItem = itemsList.get(position);
+        BasicViewHolder viewHolder;
 
-        DataItem_ViewHolder itemViewHolder = (DataItem_ViewHolder) holder;
-
-        itemViewHolder.initialize(dataItem);
-
-        itemViewHolder.setSelected(isSelected(position));
-
-        if (0 == position) {
-            if (null != listEdgeReachedListener) {
-                listEdgeReachedListener.onTopReached(position);
-                Log.d(TAG, "Достигнут верх страницы");
-            }
+        if (listItem instanceof DataItem) {
+            viewHolder = (DataItem_ViewHolder) holder;
+        }
+        else if (listItem instanceof LoadMoreItem) {
+            viewHolder = (LoadMore_ViewHolder) holder;
+        }
+        else {
+            viewHolder = (Unknown_ViewHolder) holder;
         }
 
-        if (position == (itemsList.size()-1)) {
+        viewHolder.initialize(listItem);
+        viewHolder.setSelected(isSelected(position));
+
+        // Достигнут конец списка
+        if (position == (itemsList.size() - 1)) {
             if (null != listEdgeReachedListener) {
                 listEdgeReachedListener.onBottomReached(position);
                 Log.d(TAG, "Достигнут низ страницы");
@@ -114,6 +130,8 @@ public class ItemsList_DataAdapter
         itemsList.clear();
         itemsList.addAll(inputList);
 
+        itemsList.add(new LoadMoreItem());
+
         this.isVirgin = false;
 
         performSorting(null);
@@ -141,7 +159,7 @@ public class ItemsList_DataAdapter
     @Override
     public DataItem getItem(int position) {
         if (position >= 0 && position <= maxIndex()) {
-            return itemsList.get(position);
+            return (DataItem) itemsList.get(position);
         }
         else {
             return null;
@@ -149,7 +167,7 @@ public class ItemsList_DataAdapter
     }
 
     @Override
-    public List<DataItem> getAllItems() {
+    public List<ListItem> getAllItems() {
         return itemsList;
     }
 

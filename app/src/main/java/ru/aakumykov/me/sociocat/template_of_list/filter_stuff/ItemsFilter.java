@@ -7,14 +7,15 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
+import ru.aakumykov.me.sociocat.template_of_list.model.ListItem;
 
 public class ItemsFilter extends Filter {
 
     private iItemsList.iPresenter presenter;
-    private List<DataItem> originalItemsList = new ArrayList<>();
+    private List<ListItem> originalItemsList = new ArrayList<>();
 
 
-    public ItemsFilter(List<DataItem> tagsList, iItemsList.iPresenter presenter) {
+    public ItemsFilter(List<ListItem> tagsList, iItemsList.iPresenter presenter) {
         this.presenter = presenter;
         this.originalItemsList.addAll(tagsList);
     }
@@ -24,15 +25,15 @@ public class ItemsFilter extends Filter {
 
         FilterResults filterResults = new FilterResults();
 
-        if (null != constraint && constraint.length() > 0)
+        /*if (null != constraint && constraint.length() > 0)
         {
             List<DataItem> filteredItemsList = new ArrayList<>();
             String query = constraint.toString().toLowerCase();
 
-            for (DataItem tag : originalItemsList) {
-                String tagName = tag.getName().toLowerCase();
+            for (ListItem item : originalItemsList) {
+                String tagName = item.getName().toLowerCase();
                 if (tagName.contains(query))
-                    filteredItemsList.add(tag);
+                    filteredItemsList.add(item);
             }
 
             filterResults.count = filteredItemsList.size();
@@ -42,7 +43,7 @@ public class ItemsFilter extends Filter {
         {
             filterResults.count = originalItemsList.size();
             filterResults.values = originalItemsList;
-        }
+        }*/
 
         return filterResults;
     }

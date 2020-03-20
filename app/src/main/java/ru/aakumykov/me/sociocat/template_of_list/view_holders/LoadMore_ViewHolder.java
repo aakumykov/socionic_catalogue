@@ -10,28 +10,30 @@ import butterknife.OnClick;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 
-public class LoadMore_ViewHolder extends RecyclerView.ViewHolder {
+public class LoadMore_ViewHolder extends BasicViewHolder {
 
     @BindView(R.id.cardView) View cardView;
 
-    private iItemsList.iPresenter presenter;
-
     // Конструктор
-    public LoadMore_ViewHolder(View itemView, iItemsList.iPresenter presenter) {
+    public LoadMore_ViewHolder(View itemView) {
         super(itemView);
-        this.presenter = presenter;
         ButterKnife.bind(this, itemView);
     }
 
     // Заполнение данными
-    public void initialize() {
+    public void initialize(Object payload) {
+
+    }
+
+    @Override
+    public void setSelected(boolean isSelected) {
 
     }
 
     // Нажатия
-    @OnClick(R.id.cardView)
+    /*@OnClick(R.id.cardView)
     void onItemClicked() {
         presenter.onLoadMoreClicked();
-    }
+    }*/
 
 }

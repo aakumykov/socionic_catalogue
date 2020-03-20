@@ -2,6 +2,8 @@ package ru.aakumykov.me.sociocat.template_of_list.model;
 
 import androidx.annotation.NonNull;
 
+import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
+
 public class DataItem extends ListItem {
 
     private String name;
@@ -56,5 +58,10 @@ public class DataItem extends ListItem {
         }
 
         return 0;
+    }
+
+    @Override
+    public iItemsList.ItemType getItemType() {
+        return iItemsList.ItemType.DATA_ITEM;
     }
 }

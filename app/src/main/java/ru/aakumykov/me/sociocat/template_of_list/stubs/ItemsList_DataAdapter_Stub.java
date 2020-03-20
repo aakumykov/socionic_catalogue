@@ -6,6 +6,7 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
+import ru.aakumykov.me.sociocat.template_of_list.model.ListItem;
 
 public class ItemsList_DataAdapter_Stub
         extends SelectableAdapter_Stub
@@ -37,7 +38,7 @@ public class ItemsList_DataAdapter_Stub
     }
 
     @Override
-    public void appendList(List<DataItem> tagsList) {
+    public void appendList(List<DataItem> inputList) {
 
     }
 
@@ -47,7 +48,7 @@ public class ItemsList_DataAdapter_Stub
     }
 
     @Override
-    public List<DataItem> getAllItems() {
+    public List<ListItem> getAllItems() {
         return null;
     }
 
@@ -89,45 +90,5 @@ public class ItemsList_DataAdapter_Stub
     @Override
     public Filter getFilter() {
         return null;
-    }
-
-    @Override
-    public boolean isSelected(Integer index) {
-        return false;
-    }
-
-    @Override
-    public boolean isMultipleItemsSelected() {
-        return false;
-    }
-
-    @Override
-    public int getSelectedItemCount() {
-        return 0;
-    }
-
-    @Override
-    public Integer getSingleSelectedItemIndex() {
-        return null;
-    }
-
-    @Override
-    public List<Integer> getSelectedIndexes() {
-        return null;
-    }
-
-    @Override
-    public void toggleSelection(int itemIndex) {
-
-    }
-
-    @Override
-    public void selectAll(int listSize) {
-
-    }
-
-    @Override
-    public void clearSelection() {
-
     }
 }

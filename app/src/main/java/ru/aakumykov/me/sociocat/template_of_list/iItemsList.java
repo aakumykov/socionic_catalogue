@@ -9,8 +9,18 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.base_view.iBaseView;
 import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
+import ru.aakumykov.me.sociocat.template_of_list.model.ListItem;
 
 public interface iItemsList {
+
+    int DATA_ITEM_TYPE = 10;
+    int LOADMORE_ITEM_TYPE = 20;
+    int UNKNOWN_VIEW_TYPE = -1;
+
+    enum ItemType {
+        DATA_ITEM,
+        LOADMORE_ITEM
+    }
 
     enum LayoutType {
         LIST,
@@ -51,7 +61,7 @@ public interface iItemsList {
         void appendList(List<DataItem> inputList);
 
         DataItem getItem(int position);
-        List<DataItem> getAllItems();
+        List<ListItem> getAllItems();
 
         void removeItem(DataItem dataItem);
 
