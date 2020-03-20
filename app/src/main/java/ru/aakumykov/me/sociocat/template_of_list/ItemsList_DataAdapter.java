@@ -151,14 +151,18 @@ public class ItemsList_DataAdapter
 
     @Override
     public void appendList(List<DataItem> inputList) {
-        int startIndex = maxIndex();
+        hideThrobberItem();
+
+        int startIndex = getMaxIndex();
         itemsList.addAll(inputList);
-        notifyItemRangeChanged(startIndex, inputList.size());
+        notifyItemRangeChanged(startIndex, inputList.size() + 1);
+
+        showLoadmoreItem();
     }
 
     @Override
     public DataItem getItem(int position) {
-        if (position >= 0 && position <= maxIndex()) {
+        if (position >= 0 && position <= getMaxIndex()) {
             return (DataItem) itemsList.get(position);
         }
         else {
@@ -231,10 +235,48 @@ public class ItemsList_DataAdapter
     }
 
     @Override
-    public void showLoadmoreThrobber() {
-        removeLoadmoreItem();
-        addThrobberItem();
+    public void showLoadmoreItem() {
+        ListItem listItem = getLastItem();
+
+        if (listItem instanceof LoadMoreItem)
+            return;
+
+        itemsList.add(new LoadMoreItem());
+        notifyItemInserted(getMaxIndex());
     }
+
+    @Override
+    public void hideLoadmoreItem() {
+        ListItem lastItem = getLastItem();
+        int index = getMaxIndex();
+
+        if (lastItem instanceof LoadMoreItem) {
+            removeItem(lastItem);
+            notifyItemRemoved(index);
+        }
+    }
+
+    @Override
+    public void showThrobberItem() {
+        ListItem lastItem = getLastItem();
+        if (lastItem instanceof ThrobberItem)
+            return;
+
+        itemsList.add(new ThrobberItem());
+        notifyItemChanged(getMaxIndex());
+    }
+
+    @Override
+    public void hideThrobberItem() {
+        ListItem lastItem = getLastItem();
+        int index = itemsList.indexOf(lastItem);
+
+        if (lastItem instanceof ThrobberItem) {
+            itemsList.remove(index);
+            notifyItemRemoved(index);
+        }
+    }
+
 
 
     // Filterable
@@ -247,7 +289,7 @@ public class ItemsList_DataAdapter
 
 
     // Внутренние методы
-    private int maxIndex() {
+    private int getMaxIndex() {
         int size = itemsList.size();
 
         if (0 == size)
@@ -256,23 +298,8 @@ public class ItemsList_DataAdapter
         return size - 1;
     }
 
-    private void removeLoadmoreItem() {
-        ListItem lastItem = getLastItem();
-        if (lastItem instanceof LoadMoreItem)
-            removeItem(lastItem);
-    }
-
-    private void addThrobberItem() {
-        ListItem lastItem = getLastItem();
-        if (lastItem instanceof ThrobberItem)
-            return;
-
-        itemsList.add(new ThrobberItem());
-        notifyItemChanged(maxIndex());
-    }
-
     private ListItem getLastItem() {
-        int maxIndex = maxIndex();
+        int maxIndex = getMaxIndex();
 
         if (maxIndex < 0)
             return null;

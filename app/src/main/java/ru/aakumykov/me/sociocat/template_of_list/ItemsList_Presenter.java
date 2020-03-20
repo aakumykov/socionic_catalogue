@@ -97,12 +97,17 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onLoadMoreClicked() {
-        dataAdapter.showLoadmoreThrobber();
+        dataAdapter.hideLoadmoreItem();
+        dataAdapter.showThrobberItem();
 
         getRandomList(new iLoadListCallbacks() {
             @Override
             public void onListLoaded(List<DataItem> list) {
-                //dataAdapter.appendList(list);
+                dataAdapter.hideThrobberItem();
+
+                dataAdapter.appendList(list);
+
+                dataAdapter.showLoadmoreItem();
             }
         });
     }

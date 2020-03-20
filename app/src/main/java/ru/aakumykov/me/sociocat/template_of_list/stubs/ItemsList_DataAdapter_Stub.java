@@ -88,7 +88,22 @@ public class ItemsList_DataAdapter_Stub
     }
 
     @Override
-    public void showLoadmoreThrobber() {
+    public void showLoadmoreItem() {
+
+    }
+
+    @Override
+    public void hideLoadmoreItem() {
+
+    }
+
+    @Override
+    public void showThrobberItem() {
+
+    }
+
+    @Override
+    public void hideThrobberItem() {
 
     }
 

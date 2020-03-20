@@ -77,7 +77,11 @@ public interface iItemsList {
 
         boolean allItemsAreSelected();
 
-        void showLoadmoreThrobber();
+        void showLoadmoreItem();
+        void hideLoadmoreItem();
+
+        void showThrobberItem();
+        void hideThrobberItem();
     }
 
     interface iPresenter {
