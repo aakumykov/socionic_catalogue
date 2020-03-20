@@ -26,4 +26,9 @@ public class ItemsList_ViewStub
     public boolean actionModeIsActive() {
         return false;
     }
+
+    @Override
+    public void scrollToPosition(int position) {
+
+    }
 }

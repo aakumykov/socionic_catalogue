@@ -49,6 +49,8 @@ public interface iItemsList {
         void setViewState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
         void setLayoutType(LayoutType layoutType);
         boolean actionModeIsActive();
+
+        void scrollToPosition(int position);
     }
 
     interface iDataAdapter extends Filterable, iSelectableAdapter {

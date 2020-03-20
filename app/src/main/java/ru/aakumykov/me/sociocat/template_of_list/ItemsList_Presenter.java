@@ -97,6 +97,8 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onLoadMoreClicked() {
+        int scrollPosition = dataAdapter.getListSize() + 1;
+
         dataAdapter.hideLoadmoreItem();
         dataAdapter.showThrobberItem();
 
@@ -106,6 +108,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
                 dataAdapter.hideThrobberItem();
 
                 dataAdapter.appendList(list);
+                pageView.scrollToPosition(scrollPosition);
 
                 dataAdapter.showLoadmoreItem();
             }
@@ -214,7 +217,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     private List<DataItem> createRandomList() {
         int min = 1;
         int max = 100;
-        int randomSize = 4;
+        int randomSize = MyUtils.random(1, 10);
 
         List<DataItem> list = new ArrayList<>();
 

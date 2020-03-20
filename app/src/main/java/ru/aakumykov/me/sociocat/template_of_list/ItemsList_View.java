@@ -184,6 +184,11 @@ public class ItemsList_View
     }
 
     @Override
+    public void scrollToPosition(int position) {
+        recyclerView.scrollToPosition(position);
+    }
+
+    @Override
     public void setViewState(iItemsList.ViewState viewState, Integer messageId, @Nullable Object messageDetails) {
 
         presenter.storeViewState(viewState, messageId, messageDetails);
