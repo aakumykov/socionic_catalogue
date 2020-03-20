@@ -25,7 +25,7 @@ import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class ItemsList_View
         extends BaseView
-        implements iItemsList.iPageView
+        implements iItemsList.iPageView, iItemsList.ListEdgeReachedListener
 {
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
@@ -54,7 +54,7 @@ public class ItemsList_View
 
         activateUpButton();
 
-        configureViewModel();
+        configurePresenterAndAdapter();
 
         configureRecyclerView();
 
@@ -66,6 +66,7 @@ public class ItemsList_View
         super.onStart();
 
         presenter.linkViewAndAdapter(this, dataAdapter);
+        dataAdapter.bindBottomReachedListener(this);
 
         if (dataAdapter.isVirgin()) {
             presenter.onFirstOpen(getIntent());
@@ -77,6 +78,7 @@ public class ItemsList_View
     @Override
     protected void onStop() {
         super.onStop();
+        dataAdapter.unbindBottomReachedListener();
         presenter.unlinkViewAndAdapter();
     }
 
@@ -241,8 +243,19 @@ public class ItemsList_View
     }
 
 
+    // iItemsList.ListEdgeReachedListener
+    @Override
+    public void onTopReached(int position) {
+
+    }
+
+    @Override
+    public void onBottomReached(int position) {
+
+    }
+
     // Внутренние методы
-    private void configureViewModel() {
+    private void configurePresenterAndAdapter() {
 
         ItemsList_ViewModel viewModel = new ViewModelProvider(this, new ItemsList_ViewModelFactory())
                 .get(ItemsList_ViewModel.class);

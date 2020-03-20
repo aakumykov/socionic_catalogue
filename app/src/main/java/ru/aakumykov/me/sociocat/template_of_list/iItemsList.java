@@ -25,6 +25,14 @@ public interface iItemsList {
         ERROR
     }
 
+    enum SortingMode {
+        ORDER_NAME_DIRECT,
+        ORDER_NAME_REVERSED,
+        ORDER_COUNT_DIRECT,
+        ORDER_COUNT_REVERSED
+    }
+
+
     interface iPageView extends iBaseView {
         void setState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
         void setLayoutType(LayoutType layoutType);
@@ -32,6 +40,10 @@ public interface iItemsList {
     }
 
     interface iDataAdapter extends Filterable, iSelectableAdapter {
+
+        void bindBottomReachedListener(ListEdgeReachedListener listener);
+        void unbindBottomReachedListener();
+
         boolean isVirgin();
 
         void setList(List<DataItem> inputList);
@@ -90,14 +102,12 @@ public interface iItemsList {
     }
 
 
-    enum SortingMode {
-        ORDER_NAME_DIRECT,
-        ORDER_NAME_REVERSED,
-        ORDER_COUNT_DIRECT,
-        ORDER_COUNT_REVERSED
-    }
-
     interface SortingListener {
         void onSortingComplete();
+    }
+
+    interface ListEdgeReachedListener {
+        void onTopReached(int position);
+        void onBottomReached(int position);
     }
 }

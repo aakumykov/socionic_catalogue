@@ -12,6 +12,16 @@ public class ItemsList_DataAdapter_Stub
         implements iItemsList.iDataAdapter
 {
     @Override
+    public void bindBottomReachedListener(iItemsList.ListEdgeReachedListener listener) {
+
+    }
+
+    @Override
+    public void unbindBottomReachedListener() {
+
+    }
+
+    @Override
     public boolean isVirgin() {
         return false;
     }

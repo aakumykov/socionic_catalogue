@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.template_of_list;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,10 @@ public class ItemsList_DataAdapter
         extends SelectableAdapter<RecyclerView.ViewHolder>
         implements iItemsList.iDataAdapter, Filterable
 {
+    private static final String TAG = ItemsList_DataAdapter.class.getSimpleName();
+
     private iItemsList.iPresenter presenter;
+    private iItemsList.ListEdgeReachedListener listEdgeReachedListener;
 
     private boolean isVirgin = true;
     private List<DataItem> itemsList = new ArrayList<>();
@@ -67,11 +71,35 @@ public class ItemsList_DataAdapter
         itemViewHolder.initialize(dataItem);
 
         itemViewHolder.setSelected(isSelected(position));
+
+        if (0 == position) {
+            if (null != listEdgeReachedListener) {
+                listEdgeReachedListener.onTopReached(position);
+                Log.d(TAG, "Достигнут верх страницы");
+            }
+        }
+
+        if (position == (itemsList.size()-1)) {
+            if (null != listEdgeReachedListener) {
+                listEdgeReachedListener.onBottomReached(position);
+                Log.d(TAG, "Достигнут низ страницы");
+            }
+        }
     }
 
     @Override
     public int getItemCount() {
         return itemsList.size();
+    }
+
+    @Override
+    public void bindBottomReachedListener(iItemsList.ListEdgeReachedListener listener) {
+        this.listEdgeReachedListener = listener;
+    }
+
+    @Override
+    public void unbindBottomReachedListener() {
+        this.listEdgeReachedListener = null;
     }
 
 
