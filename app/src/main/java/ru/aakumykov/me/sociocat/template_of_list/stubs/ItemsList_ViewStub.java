@@ -13,12 +13,12 @@ public class ItemsList_ViewStub
         implements iItemsList.iPageView
 {
     @Override
-    public void setViewState(iItemsList.ViewState viewState, Integer messageId, @Nullable Object messageDetails) {
+    public void applyViewMode() {
 
     }
 
     @Override
-    public void setLayoutType(iItemsList.LayoutType layoutType) {
+    public void setViewState(iItemsList.ViewState viewState, Integer messageId, @Nullable Object messageDetails) {
 
     }
 

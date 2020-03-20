@@ -23,7 +23,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     private iItemsList.ViewState viewState;
     private Integer viewMessageId;
     private Object viewMessageDetails;
-    private iItemsList.LayoutType currentLayoutType;
+    private iItemsList.ViewMode currentViewMode;
 
 
     // iItemsList.iPresenter
@@ -46,6 +46,8 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
             return;
         }
 
+        pageView.applyViewMode();
+
         loadList();
     }
 
@@ -53,9 +55,9 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     public void onConfigurationChanged() {
         updatePageTitle();
 
-        pageView.setViewState(viewState, viewMessageId, viewMessageDetails);
+        pageView.applyViewMode();
 
-        pageView.setLayoutType(currentLayoutType);
+        pageView.setViewState(viewState, viewMessageId, viewMessageDetails);
     }
 
     @Override
@@ -66,13 +68,13 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     @Override
-    public void storeLayoutType(iItemsList.LayoutType layoutType) {
-        currentLayoutType = layoutType;
+    public void storeViewMode(iItemsList.ViewMode viewMode) {
+        currentViewMode = viewMode;
     }
 
     @Override
-    public iItemsList.LayoutType getLayoutType() {
-        return currentLayoutType;
+    public iItemsList.ViewMode getStoredViewMode() {
+        return currentViewMode;
     }
 
     @Override

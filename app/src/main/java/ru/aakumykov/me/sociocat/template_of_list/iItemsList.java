@@ -24,7 +24,7 @@ public interface iItemsList {
         THROBBER_ITEM
     }
 
-    enum LayoutType {
+    enum ViewMode {
         LIST,
         GRID
     }
@@ -46,10 +46,9 @@ public interface iItemsList {
 
 
     interface iPageView extends iBaseView {
+        void applyViewMode();
         void setViewState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
-        void setLayoutType(LayoutType layoutType);
         boolean actionModeIsActive();
-
         void scrollToPosition(int position);
     }
 
@@ -95,8 +94,8 @@ public interface iItemsList {
 
         void storeViewState(ViewState viewState, Integer messageId, Object messageDetails);
 
-        void storeLayoutType(LayoutType layoutType);
-        LayoutType getLayoutType();
+        void storeViewMode(ViewMode viewMode);
+        ViewMode getStoredViewMode();
 
         void onRefreshRequested();
 

@@ -66,7 +66,7 @@ public class TagsList3_View extends BaseView implements iTagsList3.iPageView {
         }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+//        recyclerView.applyViewMode(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
 
         // Настройка обновления протягиванием

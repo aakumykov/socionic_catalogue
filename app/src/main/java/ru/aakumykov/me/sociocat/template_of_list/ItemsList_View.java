@@ -38,6 +38,7 @@ public class ItemsList_View
 
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
+
     private RecyclerView.LayoutManager currentLayoutManager;
 
     private ActionMode actionMode;
@@ -56,8 +57,8 @@ public class ItemsList_View
 
         configureSwipeRefresh();
 
-        configureLayoutManagers();
         configurePresenterAndAdapter();
+        configureLayoutManagers();
         configureRecyclerView();
     }
 
@@ -144,11 +145,11 @@ public class ItemsList_View
                 break;
 
             case R.id.actionListView:
-                toggleLayoutType();
+                toggleViewMode();
                 break;
 
             case R.id.actionGridView:
-                toggleLayoutType();
+                toggleViewMode();
                 break;
 
             default:
@@ -190,11 +191,23 @@ public class ItemsList_View
     }
 
     @Override
+    public void applyViewMode() {
+        iItemsList.ViewMode viewMode = presenter.getStoredViewMode();
+
+        if (null == viewMode || iItemsList.ViewMode.GRID == viewMode)
+            currentLayoutManager = staggeredGridLayoutManager;
+        else
+            currentLayoutManager = linearLayoutManager;
+
+        recyclerView.setLayoutManager(currentLayoutManager);
+    }
+
+    @Override
     public void setViewState(iItemsList.ViewState viewState, Integer messageId, @Nullable Object messageDetails) {
 
         presenter.storeViewState(viewState, messageId, messageDetails);
 
-        //setLayoutType(presenter.getLayoutType());
+        //applyViewMode(presenter.getStoredViewMode());
 
         switch (viewState) {
             case SUCCESS:
@@ -226,25 +239,6 @@ public class ItemsList_View
                     showSelectedItemsCount((Integer) messageDetails);
                 break;
         }
-    }
-
-    @Override
-    public void setLayoutType(iItemsList.LayoutType layoutType) {
-        iItemsList.LayoutType currentLayoutType;
-
-        if (iItemsList.LayoutType.GRID.equals(layoutType)) {
-            currentLayoutManager = staggeredGridLayoutManager;
-            currentLayoutType = iItemsList.LayoutType.GRID;
-        } else {
-            currentLayoutManager = linearLayoutManager;
-            currentLayoutType = iItemsList.LayoutType.LIST;
-        }
-
-        presenter.storeLayoutType(currentLayoutType);
-
-        recyclerView.setLayoutManager(currentLayoutManager);
-
-        refreshMenu();
     }
 
 
@@ -288,8 +282,6 @@ public class ItemsList_View
 
         this.staggeredGridLayoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
         this.linearLayoutManager = new LinearLayoutManager(this);
-
-        currentLayoutManager = staggeredGridLayoutManager;
     }
 
     private void configureRecyclerView() {
@@ -353,16 +345,19 @@ public class ItemsList_View
         });
     }
 
-    private void toggleLayoutType() {
-        iItemsList.LayoutType currentLayoutType = presenter.getLayoutType();
-        iItemsList.LayoutType newLayoutType;
+    private void toggleViewMode() {
+        iItemsList.ViewMode currentViewMode = presenter.getStoredViewMode();
 
-        if (null == currentLayoutType || iItemsList.LayoutType.GRID.equals(currentLayoutType))
-            newLayoutType = iItemsList.LayoutType.LIST;
+        if (null == currentViewMode || iItemsList.ViewMode.GRID.equals(currentViewMode))
+            currentViewMode = iItemsList.ViewMode.LIST;
         else
-            newLayoutType = iItemsList.LayoutType.GRID;
+            currentViewMode = iItemsList.ViewMode.GRID;
 
-        setLayoutType(newLayoutType);
+        presenter.storeViewMode(currentViewMode);
+
+        applyViewMode();
+
+        refreshMenu();
     }
 
     private void showRefreshThrobber() {
