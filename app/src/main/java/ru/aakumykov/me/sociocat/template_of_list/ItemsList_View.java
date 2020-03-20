@@ -279,11 +279,9 @@ public class ItemsList_View
 
     private void configureRecyclerView() {
         this.staggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-        //this.linearLayoutManager = new LinearLayoutManager(this);
+        this.linearLayoutManager = new LinearLayoutManager(this);
 
-        currentLayoutManager = this.staggeredGridLayoutManager;
-
-        recyclerView.setLayoutManager(currentLayoutManager);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
     }
 
