@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -63,24 +64,19 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View itemView;
         RecyclerView.ViewHolder viewHolder;
-        StaggeredGridLayoutManager.LayoutParams layoutParams;
 
         switch (viewType) {
 
             case iGridItem.LOAD_MORE_VIEW_TYPE:
                 itemView = layoutInflater.inflate(R.layout.cards_grid_loadmore_item, parent, false);
                 viewHolder = new LoadMore_ViewHolder(itemView, presenter);
-
-                layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
-                layoutParams.setFullSpan(true);
+                setFullSpanIfSupported(viewHolder);
                 break;
 
             case iGridItem.THROBBER_VIEW_TYPE:
                 itemView = layoutInflater.inflate(R.layout.cards_grid_throbber_item, parent, false);
                 viewHolder = new Throbber_ViewHolder(itemView);
-
-                layoutParams = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
-                layoutParams.setFullSpan(true);
+                setFullSpanIfSupported(viewHolder);
                 break;
 
             case iGridItem.TEXT_CARD_VIEW_TYPE:
@@ -108,6 +104,13 @@ public class CardsGrid_DataAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
 
         return viewHolder;
+    }
+
+    private void setFullSpanIfSupported(RecyclerView.ViewHolder viewHolder) {
+        ViewGroup.LayoutParams lp = viewHolder.itemView.getLayoutParams();
+        if (lp instanceof StaggeredGridLayoutManager.LayoutParams) {
+            ((StaggeredGridLayoutManager.LayoutParams) lp).setFullSpan(true);
+        }
     }
 
     @Override

@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -86,7 +88,7 @@ public class CardsGrid_View extends BaseView implements
     private iCardsGrid.iDataAdapter dataAdapter;
     private iCardsGrid.iPresenter presenter;
 
-    private StaggeredGridLayoutManager layoutManager;
+    private RecyclerView.LayoutManager layoutManager;
     private int positionInWork = -1;
     private Bundle listStateStorage;
     private final static String KEY_LIST_STATE = "LIST_STATE";
@@ -121,6 +123,8 @@ public class CardsGrid_View extends BaseView implements
         int colsNum = MyUtils.isPortraitOrientation(this) ?
                 AppConfig.CARDS_GRID_COLUMNS_COUNT_PORTRAIT : AppConfig.CARDS_GRID_COLUMNS_COUNT_LANDSCAPE;
         layoutManager = new StaggeredGridLayoutManager(colsNum, StaggeredGridLayoutManager.VERTICAL);
+//        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new GridLayoutManager(this, 2);
 
         recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
         recyclerView.setLayoutManager(layoutManager);
