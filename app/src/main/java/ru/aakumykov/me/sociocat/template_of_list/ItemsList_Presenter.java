@@ -212,15 +212,18 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     private List<DataItem> createRandomList() {
-        int min = 10;
-        int max = 20;
-//        int randomSize = MyUtils.random(min, max);
+        int min = 1;
+        int max = 100;
         int randomSize = 4;
 
         List<DataItem> list = new ArrayList<>();
 
         for (int i=1; i<=randomSize; i++) {
-            String text = MyUtils.getString(pageView.getAppContext(), R.string.LIST_TEMPLATE_item_name, String.valueOf(i));
+            String text = MyUtils.getString(
+                    pageView.getAppContext(),
+                    R.string.LIST_TEMPLATE_item_name,
+                    String.valueOf(MyUtils.random(min, max))
+            );
             list.add(new DataItem(text, MyUtils.random(min, max)));
         }
 
