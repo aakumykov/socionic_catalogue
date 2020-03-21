@@ -151,13 +151,11 @@ public class ItemsList_DataAdapter
 
     @Override
     public void appendList(List<DataItem> inputList) {
-        hideThrobberItem();
-
         int startIndex = getMaxIndex();
-        itemsList.addAll(inputList);
-        notifyItemRangeChanged(startIndex, inputList.size() + 1);
 
-        showLoadmoreItem();
+        itemsList.addAll(inputList);
+
+        notifyItemRangeChanged(startIndex+1, inputList.size());
     }
 
     @Override
@@ -237,45 +235,39 @@ public class ItemsList_DataAdapter
 
     @Override
     public void showLoadmoreItem() {
-        ListItem listItem = getLastItem();
-
-        if (listItem instanceof LoadMoreItem)
+        if (getLastItem() instanceof LoadMoreItem)
             return;
-
-        itemsList.add(new LoadMoreItem());
-        notifyItemInserted(getMaxIndex());
+        addItem(new LoadMoreItem());
     }
 
     @Override
     public void hideLoadmoreItem() {
         ListItem lastItem = getLastItem();
-        int index = getMaxIndex();
 
-        if (lastItem instanceof LoadMoreItem) {
+        if (lastItem instanceof LoadMoreItem)
             removeItem(lastItem);
-            notifyItemRemoved(index);
-        }
     }
 
     @Override
     public void showThrobberItem() {
-        ListItem lastItem = getLastItem();
-        if (lastItem instanceof ThrobberItem)
+        if (getLastItem() instanceof ThrobberItem)
             return;
-
-        itemsList.add(new ThrobberItem());
-        notifyItemChanged(getMaxIndex());
+        addItem(new ThrobberItem());
     }
 
     @Override
     public void hideThrobberItem() {
         ListItem lastItem = getLastItem();
-        int index = itemsList.indexOf(lastItem);
 
-        if (lastItem instanceof ThrobberItem) {
-            itemsList.remove(index);
-            notifyItemRemoved(index);
-        }
+        if (lastItem instanceof ThrobberItem)
+            itemsList.remove(lastItem);
+
+    }
+
+    private void addItem(ListItem listItem) {
+        itemsList.add(listItem);
+        int index = itemsList.indexOf(listItem);
+        notifyItemInserted(index);
     }
 
     @Override
