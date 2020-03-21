@@ -63,7 +63,7 @@ public interface iItemsList {
         void setList(List<DataItem> inputList, CharSequence filterQuery);
         void appendList(List<DataItem> inputList);
 
-        DataItem getItem(int position);
+        DataItem getDataItem(int position);
         List<ListItem> getAllItems();
 
         void removeItem(ListItem listItem);
@@ -83,6 +83,8 @@ public interface iItemsList {
 
         void showThrobberItem();
         void hideThrobberItem();
+
+        List<DataItem> getSelectedItems();
     }
 
     interface iPresenter {
@@ -99,8 +101,8 @@ public interface iItemsList {
 
         void onRefreshRequested();
 
-        void onItemClicked(DataItem dataItem);
-        void onItemLongClicked(DataItem dataItem);
+        void onDataItemClicked(DataItem dataItem);
+        void onDataItemLongClicked(DataItem dataItem);
         void onLoadMoreClicked();
 
         void onListFiltered(CharSequence filterText, List<DataItem> filteredList);

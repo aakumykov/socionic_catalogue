@@ -84,7 +84,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     @Override
-    public void onItemClicked(DataItem dataItem) {
+    public void onDataItemClicked(DataItem dataItem) {
         if (pageView.actionModeIsActive())
             toggleItemSelection(dataItem);
         else
@@ -92,7 +92,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     }
 
     @Override
-    public void onItemLongClicked(DataItem dataItem) {
+    public void onDataItemLongClicked(DataItem dataItem) {
         pageView.setViewState(iItemsList.ViewState.SELECTION, null, null);
         toggleItemSelection(dataItem);
     }
@@ -169,8 +169,10 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
 
     @Override
     public void onDeleteSelectedItemsClicked() {
-        for (Integer index : dataAdapter.getSelectedIndexes())
-            dataAdapter.removeItem(dataAdapter.getItem(index));
+        List<DataItem> selectedItems = dataAdapter.getSelectedItems();
+
+        for (DataItem item : selectedItems)
+            dataAdapter.removeItem(item);
 
         setViewStateSuccess();
     }

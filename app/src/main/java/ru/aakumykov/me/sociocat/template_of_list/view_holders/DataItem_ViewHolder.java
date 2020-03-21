@@ -3,14 +3,11 @@ package ru.aakumykov.me.sociocat.template_of_list.view_holders;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
 
 public class DataItem_ViewHolder extends BasicViewHolder {
@@ -42,12 +39,12 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     // Нажатия
     @OnClick(R.id.cardView)
     void onItemClicked() {
-        presenter.onItemClicked(this.dataItem);
+        presenter.onDataItemClicked(this.dataItem);
     }
 
     @OnLongClick(R.id.cardView)
     void onItemLongClicked() {
-        presenter.onItemLongClicked(this.dataItem);
+        presenter.onDataItemLongClicked(this.dataItem);
     }
 
 

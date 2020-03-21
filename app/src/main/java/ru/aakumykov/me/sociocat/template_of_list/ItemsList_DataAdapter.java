@@ -35,7 +35,7 @@ public class ItemsList_DataAdapter
     private iItemsList.ListEdgeReachedListener listEdgeReachedListener;
 
     private boolean isVirgin = true;
-    private List<ListItem> itemsList = new ArrayList<>();
+    private volatile List<ListItem> itemsList = new ArrayList<>();
 
     private ItemsFilter itemsFilter;
     private iItemsList.SortingMode currentSortingMode = iItemsList.SortingMode.ORDER_NAME_DIRECT;
@@ -161,9 +161,10 @@ public class ItemsList_DataAdapter
     }
 
     @Override
-    public DataItem getItem(int position) {
+    public DataItem getDataItem(int position) {
         if (position >= 0 && position <= getMaxIndex()) {
-            return (DataItem) itemsList.get(position);
+            ListItem listItem = itemsList.get(position);
+            return (listItem instanceof DataItem) ? (DataItem) listItem : null;
         }
         else {
             return null;
@@ -277,6 +278,14 @@ public class ItemsList_DataAdapter
         }
     }
 
+    @Override
+    public List<DataItem> getSelectedItems() {
+        List<Integer> selectedIndexes = getSelectedIndexes();
+        List<DataItem> selectedItems = new ArrayList<>();
+        for (int index : selectedIndexes)
+            selectedItems.add(getDataItem(index));
+        return selectedItems;
+    }
 
 
     // Filterable

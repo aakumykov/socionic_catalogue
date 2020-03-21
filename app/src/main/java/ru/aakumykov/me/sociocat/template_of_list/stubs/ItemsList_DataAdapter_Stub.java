@@ -43,7 +43,7 @@ public class ItemsList_DataAdapter_Stub
     }
 
     @Override
-    public DataItem getItem(int position) {
+    public DataItem getDataItem(int position) {
         return null;
     }
 
@@ -105,6 +105,11 @@ public class ItemsList_DataAdapter_Stub
     @Override
     public void hideThrobberItem() {
 
+    }
+
+    @Override
+    public List<DataItem> getSelectedItems() {
+        return null;
     }
 
     @Override
