@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import ru.aakumykov.me.sociocat.Constants;
+import ru.aakumykov.me.sociocat.iListPayload;
 
 
 // TODO: как сделать так, чтобы графическая карточка не могла сохраниться без картинки?
@@ -22,7 +23,8 @@ import ru.aakumykov.me.sociocat.Constants;
 @IgnoreExtraProperties
 public class Card implements
         Parcelable,
-        iCommentable
+        iCommentable,
+        iListPayload
 {
     public static final String KEY_KEY = "key";
     public final static String KEY_CTIME = "ctime";
@@ -233,6 +235,21 @@ public class Card implements
             default:
                 return "";
         }
+    }
+
+
+    // iListPayload
+
+    // getTitle() реализовано в стандартных геттерах
+
+    @Override
+    public long getDate() {
+        return getCTime();
+    }
+
+    @Override
+    public int getCount() {
+        return getCommentsKeys().size();
     }
 
 

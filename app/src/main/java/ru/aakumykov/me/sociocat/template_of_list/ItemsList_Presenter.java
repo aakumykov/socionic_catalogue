@@ -217,7 +217,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     private <T> List<DataItem> incapsulateObjects2DataItems(List<T> objectList) {
         List<DataItem> outputList = new ArrayList<>();
         for (Object object : objectList) {
-            DataItem dataItem = new DataItem();
+            DataItem dataItem = new DataItem<Card>();
             dataItem.setPayload(object);
             outputList.add(dataItem);
         }
