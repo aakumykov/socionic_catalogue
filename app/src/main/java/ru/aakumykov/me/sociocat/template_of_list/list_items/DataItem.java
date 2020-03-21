@@ -2,6 +2,7 @@ package ru.aakumykov.me.sociocat.template_of_list.list_items;
 
 import androidx.annotation.NonNull;
 
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 
 public class DataItem extends ListItem {
@@ -10,13 +11,17 @@ public class DataItem extends ListItem {
     private int count;
     private Object payload;
 
+    public DataItem() {
+
+    }
+
     public DataItem(String name, int count) {
         this.name = name;
         this.count = count;
     }
 
     public String getName() {
-        return name;
+        return ((Card) payload).getTitle();
     }
 
     public void setName(String name) {
@@ -24,7 +29,7 @@ public class DataItem extends ListItem {
     }
 
     public int getCount() {
-        return count;
+        return ((Card) payload).getTitle().length();
     }
 
     public void setCount(int count) {

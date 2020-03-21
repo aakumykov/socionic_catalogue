@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_ViewStub;
@@ -188,13 +191,37 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     private void loadList() {
         pageView.setViewState(iItemsList.ViewState.PROGRESS, R.string.LIST_TEMPLATE_loading_list, null);
 
-        getRandomList(new iLoadListCallbacks() {
+        /*getRandomList(new iLoadListCallbacks() {
             @Override
             public void onListLoaded(List<DataItem> list) {
                 dataAdapter.setList(list);
                 setViewStateSuccess();
             }
+        });*/
+
+        CardsSingleton.getInstance().loadFirstPortionOfCards(new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                List<DataItem> dataItems = incapsulateObjects2DataItems(list);
+                dataAdapter.setList(dataItems);
+                pageView.setViewState(iItemsList.ViewState.SUCCESS, null, null);
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                pageView.setViewState(iItemsList.ViewState.ERROR, R.string.CARDS_GRID_error_loading_cards, errorMessage);
+            }
         });
+    }
+
+    private <T> List<DataItem> incapsulateObjects2DataItems(List<T> objectList) {
+        List<DataItem> outputList = new ArrayList<>();
+        for (Object object : objectList) {
+            DataItem dataItem = new DataItem();
+            dataItem.setPayload(object);
+            outputList.add(dataItem);
+        }
+        return outputList;
     }
 
     private void getRandomList(iLoadListCallbacks callbacks) {
