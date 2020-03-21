@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.template_of_list.stubs;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.template_of_list.iSelectableAdapter;
+import ru.aakumykov.me.sociocat.template_of_list.selectable_adapter.iSelectableAdapter;
 
 public abstract class SelectableAdapter_Stub implements iSelectableAdapter {
     @Override

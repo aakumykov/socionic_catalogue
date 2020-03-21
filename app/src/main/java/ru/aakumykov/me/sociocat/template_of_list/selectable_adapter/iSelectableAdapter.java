@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.template_of_list;
+package ru.aakumykov.me.sociocat.template_of_list.selectable_adapter;
 
 import java.util.List;
 

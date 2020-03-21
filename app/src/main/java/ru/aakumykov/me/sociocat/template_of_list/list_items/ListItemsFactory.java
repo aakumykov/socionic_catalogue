@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.template_of_list;
+package ru.aakumykov.me.sociocat.template_of_list.list_items;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import ru.aakumykov.me.sociocat.R;
+import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.BasicViewHolder;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.DataItem_ViewHolder;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.Unknown_ViewHolder;
 
-class ListItemsFactory {
+public class ListItemsFactory {
 
     @NonNull
     static BasicViewHolder createViewHolder(int viewType, ViewGroup parent) {
