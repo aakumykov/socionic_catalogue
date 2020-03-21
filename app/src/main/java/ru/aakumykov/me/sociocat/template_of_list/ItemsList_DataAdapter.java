@@ -15,10 +15,10 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.template_of_list.filter_stuff.ItemsComparator;
 import ru.aakumykov.me.sociocat.template_of_list.filter_stuff.ItemsFilter;
-import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
-import ru.aakumykov.me.sociocat.template_of_list.model.ListItem;
-import ru.aakumykov.me.sociocat.template_of_list.model.LoadMoreItem;
-import ru.aakumykov.me.sociocat.template_of_list.model.ThrobberItem;
+import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
+import ru.aakumykov.me.sociocat.template_of_list.list_items.ListItem;
+import ru.aakumykov.me.sociocat.template_of_list.list_items.LoadMoreItem;
+import ru.aakumykov.me.sociocat.template_of_list.list_items.ThrobberItem;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.BasicViewHolder;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.DataItem_ViewHolder;
 import ru.aakumykov.me.sociocat.template_of_list.view_holders.LoadMore_ViewHolder;

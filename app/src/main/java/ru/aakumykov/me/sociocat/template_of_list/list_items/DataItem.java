@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.template_of_list.model;
+package ru.aakumykov.me.sociocat.template_of_list.list_items;
 
 import androidx.annotation.NonNull;
 
@@ -8,6 +8,7 @@ public class DataItem extends ListItem {
 
     private String name;
     private int count;
+    private Object payload;
 
     public DataItem(String name, int count) {
         this.name = name;
@@ -28,6 +29,14 @@ public class DataItem extends ListItem {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public Object getPayload() {
+        return payload;
+    }
+
+    public void setPayload(Object payload) {
+        this.payload = payload;
     }
 
     @NonNull @Override
@@ -60,8 +69,10 @@ public class DataItem extends ListItem {
         return 0;
     }
 
+    // ListItem
     @Override
     public iItemsList.ItemType getItemType() {
         return iItemsList.ItemType.DATA_ITEM;
     }
+
 }

@@ -5,8 +5,8 @@ import android.widget.Filter;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
-import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
-import ru.aakumykov.me.sociocat.template_of_list.model.ListItem;
+import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
+import ru.aakumykov.me.sociocat.template_of_list.list_items.ListItem;
 
 public class ItemsList_DataAdapter_Stub
         extends SelectableAdapter_Stub

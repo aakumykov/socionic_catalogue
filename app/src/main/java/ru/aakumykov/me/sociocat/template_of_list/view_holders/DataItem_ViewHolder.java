@@ -8,7 +8,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
+import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
 
 public class DataItem_ViewHolder extends BasicViewHolder {
 

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
+import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_ViewStub;
 import ru.aakumykov.me.sociocat.utils.MyUtils;

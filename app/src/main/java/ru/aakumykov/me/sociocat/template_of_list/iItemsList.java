@@ -8,8 +8,8 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.base_view.iBaseView;
-import ru.aakumykov.me.sociocat.template_of_list.model.DataItem;
-import ru.aakumykov.me.sociocat.template_of_list.model.ListItem;
+import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
+import ru.aakumykov.me.sociocat.template_of_list.list_items.ListItem;
 
 public interface iItemsList {
 

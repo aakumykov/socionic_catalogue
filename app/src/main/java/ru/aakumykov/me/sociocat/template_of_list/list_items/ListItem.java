@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.template_of_list.model;
+package ru.aakumykov.me.sociocat.template_of_list.list_items;
 
 import ru.aakumykov.me.sociocat.template_of_list.iItemsList;
 
