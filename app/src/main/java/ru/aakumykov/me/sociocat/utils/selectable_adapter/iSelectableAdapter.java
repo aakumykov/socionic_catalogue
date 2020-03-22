@@ -1,4 +1,4 @@
-package ru.aakumykov.me.sociocat.cards_list.selectable_adapter;
+package ru.aakumykov.me.sociocat.utils.selectable_adapter;
 
 import java.util.List;
 

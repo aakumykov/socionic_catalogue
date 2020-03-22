@@ -10,7 +10,7 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.base_view.iBaseView;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
-import ru.aakumykov.me.sociocat.cards_list.selectable_adapter.iSelectableAdapter;
+import ru.aakumykov.me.sociocat.utils.selectable_adapter.iSelectableAdapter;
 
 public interface iCardsList {
 

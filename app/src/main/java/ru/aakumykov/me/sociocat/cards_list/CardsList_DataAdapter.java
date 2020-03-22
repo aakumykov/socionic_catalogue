@@ -20,7 +20,7 @@ import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ListItemsFactory;
 import ru.aakumykov.me.sociocat.cards_list.list_items.LoadMoreItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ThrobberItem;
-import ru.aakumykov.me.sociocat.cards_list.selectable_adapter.SelectableAdapter;
+import ru.aakumykov.me.sociocat.utils.selectable_adapter.SelectableAdapter;
 import ru.aakumykov.me.sociocat.cards_list.view_holders.BasicViewHolder;
 import ru.aakumykov.me.sociocat.cards_list.view_holders.DataItem_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_list.view_holders.LoadMore_ViewHolder;
