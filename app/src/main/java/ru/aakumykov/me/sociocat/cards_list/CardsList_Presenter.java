@@ -47,7 +47,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onFirstOpen(@Nullable Intent intent) {
         if (null == intent) {
-            pageView.setViewState(iCardsList.ViewState.ERROR, R.string.data_error, "Intent is null");
+            showErrorState(R.string.data_error, "Intent is null");
             return;
         }
 
@@ -79,8 +79,25 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onRefreshRequested() {
+
+        DataItem lastDataItem = dataAdapter.getLastDataItem();
+        Card card = (Card) lastDataItem.getPayload();
+
         pageView.setViewState(iCardsList.ViewState.REFRESHING, null, null);
-        loadList();
+
+        cardsSingleton.loadCardsFromNewestTo(card, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                showSuccessState();
+                dataAdapter.setList(incapsulateObjects2DataItems(list));
+                dataAdapter.showLoadmoreItem();
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                showErrorState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+            }
+        });
     }
 
     @Override
@@ -156,7 +173,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onClearSelectionClicked() {
         dataAdapter.clearSelection();
-        setViewStateSuccess();
+        showSuccessState();
     }
 
     @Override
@@ -171,13 +188,13 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         for (DataItem item : selectedItems)
             dataAdapter.removeItem(item);
 
-        setViewStateSuccess();
+        showSuccessState();
     }
 
     @Override
     public void onActionModeDestroyed() {
         dataAdapter.clearSelection();
-        setViewStateSuccess();
+        showSuccessState();
     }
 
     @Override
@@ -200,7 +217,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         cardsSingleton.loadCardsFromBeginning(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                //setViewStateSuccess();
+                showSuccessState();
                 dataAdapter.hideThrobberItem();
                 dataAdapter.setList(incapsulateObjects2DataItems(list));
                 dataAdapter.showLoadmoreItem();
@@ -208,7 +225,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
             @Override
             public void onListLoadFail(String errorMessage) {
-                pageView.setViewState(iCardsList.ViewState.ERROR, R.string.CARDS_GRID_error_loading_cards, errorMessage);
+                showErrorState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
                 dataAdapter.showLoadmoreItem();
             }
         });
@@ -227,7 +244,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
             @Override
             public void onListLoadFail(String errorMessage) {
-                pageView.setViewState(iCardsList.ViewState.ERROR, R.string.CARDS_GRID_error_loading_cards, errorMessage);
+                showErrorState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
                 dataAdapter.showLoadmoreItem();
             }
         });
@@ -289,13 +306,17 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         int selectedItemsCount = dataAdapter.getSelectedItemCount();
 
         if (0 == selectedItemsCount) {
-            setViewStateSuccess();
+            showSuccessState();
         } else {
             pageView.setViewState(iCardsList.ViewState.SELECTION, null, selectedItemsCount);
         }
     }
 
-    private void setViewStateSuccess() {
+    private void showSuccessState() {
         pageView.setViewState(iCardsList.ViewState.SUCCESS, null, null);
+    }
+
+    private void showErrorState(int messageId, String errorMessage) {
+        pageView.setViewState(iCardsList.ViewState.ERROR, messageId, errorMessage);
     }
 }
