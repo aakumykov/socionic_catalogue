@@ -208,6 +208,7 @@ public class CardsList_View
         else
             currentLayoutManager = linearLayoutManager;
 
+        dataAdapter.setViewMode(viewMode);
         recyclerView.setLayoutManager(currentLayoutManager);
     }
 

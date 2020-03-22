@@ -118,6 +118,11 @@ public class CardsList_DataAdapter_Stub
     }
 
     @Override
+    public void setViewMode(iCardsList.ViewMode currentViewMode) {
+
+    }
+
+    @Override
     public Filter getFilter() {
         return null;
     }

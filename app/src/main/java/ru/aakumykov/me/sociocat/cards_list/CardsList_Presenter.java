@@ -23,9 +23,9 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     private iCardsList.iDataAdapter dataAdapter;
     private CharSequence filterText;
 
-    private iCardsList.ViewState viewState;
-    private Integer viewMessageId;
-    private Object viewMessageDetails;
+    private iCardsList.ViewState currentViewState;
+    private Integer currentViewMessageId;
+    private Object currentViewMessageDetails;
     private iCardsList.ViewMode currentViewMode;
 
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
@@ -60,21 +60,23 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     public void onConfigurationChanged() {
         updatePageTitle();
 
+        dataAdapter.setViewMode(currentViewMode);
+
         pageView.applyViewMode();
 
-        pageView.setViewState(viewState, viewMessageId, viewMessageDetails);
+        pageView.setViewState(currentViewState, currentViewMessageId, currentViewMessageDetails);
     }
 
     @Override
     public void storeViewState(iCardsList.ViewState viewState, Integer messageId, Object messageDetails) {
-        this.viewState = viewState;
-        this.viewMessageId = messageId;
-        this.viewMessageDetails = messageDetails;
+        this.currentViewState = viewState;
+        this.currentViewMessageId = messageId;
+        this.currentViewMessageDetails = messageDetails;
     }
 
     @Override
     public void storeViewMode(iCardsList.ViewMode viewMode) {
-        currentViewMode = viewMode;
+        this.currentViewMode = viewMode;
     }
 
     @Override
@@ -211,7 +213,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     private void loadMoreCards(Card startingFromCard) {
         dataAdapter.showThrobberItem();
 
-        CardsSingleton.getInstance().loadCardsAfter(startingFromCard, new iCardsSingleton.ListCallbacks() {
+        cardsSingleton.loadCardsAfter(startingFromCard, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 dataAdapter.hideThrobberItem();

@@ -90,6 +90,8 @@ public interface iCardsList {
         void hideThrobberItem();
 
         List<DataItem> getSelectedItems();
+
+        void setViewMode(ViewMode currentViewMode);
     }
 
     interface iPresenter {

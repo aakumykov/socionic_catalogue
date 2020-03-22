@@ -9,7 +9,7 @@ import ru.aakumykov.me.sociocat.R;
 
 public class LoadMore_ViewHolder extends BasicViewHolder {
 
-    @BindView(R.id.cardView) View cardView;
+    @BindView(R.id.elementView) View cardView;
 
     // Конструктор
     public LoadMore_ViewHolder(View itemView) {
@@ -28,7 +28,7 @@ public class LoadMore_ViewHolder extends BasicViewHolder {
     }
 
     // Нажатия
-    @OnClick(R.id.cardView)
+    @OnClick(R.id.elementView)
     void onItemClicked() {
         presenter.onLoadMoreClicked();
     }

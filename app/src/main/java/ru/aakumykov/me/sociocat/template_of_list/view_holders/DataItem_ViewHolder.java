@@ -12,7 +12,7 @@ import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
 
 public class DataItem_ViewHolder extends BasicViewHolder {
 
-    @BindView(R.id.cardView) View cardView;
+    @BindView(R.id.elementView) View cardView;
     @BindView(R.id.nameView) TextView nameView;
     @BindView(R.id.countView) TextView countView;
     @BindView(R.id.selectedOverlay) View selectedOverlay;
@@ -37,12 +37,12 @@ public class DataItem_ViewHolder extends BasicViewHolder {
     }
 
     // Нажатия
-    @OnClick(R.id.cardView)
+    @OnClick(R.id.elementView)
     void onItemClicked() {
         presenter.onDataItemClicked(this.dataItem);
     }
 
-    @OnLongClick(R.id.cardView)
+    @OnLongClick(R.id.elementView)
     void onItemLongClicked() {
         presenter.onDataItemLongClicked(this.dataItem);
     }
