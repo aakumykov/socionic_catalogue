@@ -1,6 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_list.list_items;
 
-import ru.aakumykov.me.sociocat.cards_list.iItemsList;
+import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 
 public class LoadMoreItem extends ListItem {
 
@@ -13,7 +13,7 @@ public class LoadMoreItem extends ListItem {
     }
 
     @Override
-    public iItemsList.ItemType getItemType() {
-        return iItemsList.ItemType.LOADMORE_ITEM;
+    public iCardsList.ItemType getItemType() {
+        return iCardsList.ItemType.LOADMORE_ITEM;
     }
 }

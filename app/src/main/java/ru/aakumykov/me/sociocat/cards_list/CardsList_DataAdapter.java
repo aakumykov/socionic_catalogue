@@ -27,24 +27,24 @@ import ru.aakumykov.me.sociocat.cards_list.view_holders.LoadMore_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_list.view_holders.Throbber_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_list.view_holders.Unknown_ViewHolder;
 
-public class ItemsList_DataAdapter
+public class CardsList_DataAdapter
         extends SelectableAdapter<RecyclerView.ViewHolder>
-        implements iItemsList.iDataAdapter, Filterable
+        implements iCardsList.iDataAdapter, Filterable
 {
-    private static final String TAG = ItemsList_DataAdapter.class.getSimpleName();
+    private static final String TAG = CardsList_DataAdapter.class.getSimpleName();
 
-    private iItemsList.iPresenter presenter;
-    private iItemsList.ListEdgeReachedListener listEdgeReachedListener;
+    private iCardsList.iPresenter presenter;
+    private iCardsList.ListEdgeReachedListener listEdgeReachedListener;
 
     private boolean isVirgin = true;
     private volatile List<ListItem> itemsList = new ArrayList<>();
 
     private ItemsFilter itemsFilter;
-    private iItemsList.SortingMode currentSortingMode = iItemsList.SortingMode.ORDER_NAME_DIRECT;
+    private iCardsList.SortingMode currentSortingMode = iCardsList.SortingMode.ORDER_NAME_DIRECT;
 
 
     // Конструктор
-    public ItemsList_DataAdapter(iItemsList.iPresenter presenter) {
+    public CardsList_DataAdapter(iCardsList.iPresenter presenter) {
 
         if (null == presenter)
             throw new IllegalArgumentException("Presenter passed as argument cannot be null");
@@ -59,13 +59,13 @@ public class ItemsList_DataAdapter
         ListItem listItem = itemsList.get(position);
 
         if (listItem instanceof DataItem)
-            return iItemsList.DATA_ITEM_TYPE;
+            return iCardsList.DATA_ITEM_TYPE;
         else if (listItem instanceof LoadMoreItem)
-            return iItemsList.LOADMORE_ITEM_TYPE;
+            return iCardsList.LOADMORE_ITEM_TYPE;
         else if (listItem instanceof ThrobberItem)
-            return iItemsList.THROBBER_ITEM_TYPE;
+            return iCardsList.THROBBER_ITEM_TYPE;
         else
-            return iItemsList.UNKNOWN_VIEW_TYPE;
+            return iCardsList.UNKNOWN_VIEW_TYPE;
     }
 
     @NonNull @Override
@@ -111,14 +111,14 @@ public class ItemsList_DataAdapter
     }
 
 
-    // iItemsList.iDataAdapter
+    // iCardsList.iDataAdapter
     @Override
     public boolean isVirgin() {
         return this.isVirgin;
     }
 
     @Override
-    public void bindBottomReachedListener(iItemsList.ListEdgeReachedListener listener) {
+    public void bindBottomReachedListener(iCardsList.ListEdgeReachedListener listener) {
         this.listEdgeReachedListener = listener;
     }
 
@@ -191,13 +191,13 @@ public class ItemsList_DataAdapter
     }
 
     @Override
-    public void sortByName(iItemsList.SortingListener sortingListener) {
+    public void sortByName(iCardsList.SortingListener sortingListener) {
         switch (currentSortingMode) {
             case ORDER_NAME_DIRECT:
-                currentSortingMode = iItemsList.SortingMode.ORDER_NAME_REVERSED;
+                currentSortingMode = iCardsList.SortingMode.ORDER_NAME_REVERSED;
                 break;
             default:
-                currentSortingMode = iItemsList.SortingMode.ORDER_NAME_DIRECT;
+                currentSortingMode = iCardsList.SortingMode.ORDER_NAME_DIRECT;
                 break;
         }
 
@@ -205,13 +205,13 @@ public class ItemsList_DataAdapter
     }
 
     @Override
-    public void sortByCount(iItemsList.SortingListener sortingListener) {
+    public void sortByCount(iCardsList.SortingListener sortingListener) {
         switch (currentSortingMode) {
             case ORDER_COUNT_REVERSED:
-                currentSortingMode = iItemsList.SortingMode.ORDER_COUNT_DIRECT;
+                currentSortingMode = iCardsList.SortingMode.ORDER_COUNT_DIRECT;
                 break;
             default:
-                currentSortingMode = iItemsList.SortingMode.ORDER_COUNT_REVERSED;
+                currentSortingMode = iCardsList.SortingMode.ORDER_COUNT_REVERSED;
                 break;
         }
 
@@ -219,7 +219,7 @@ public class ItemsList_DataAdapter
     }
 
     @Override
-    public iItemsList.SortingMode getSortingMode() {
+    public iCardsList.SortingMode getSortingMode() {
         return currentSortingMode;
     }
 
@@ -310,7 +310,7 @@ public class ItemsList_DataAdapter
         return itemsList.get(maxIndex);
     }
 
-    private void performSorting(@Nullable iItemsList.SortingListener sortingListener) {
+    private void performSorting(@Nullable iCardsList.SortingListener sortingListener) {
         Collections.sort(itemsList, new ItemsComparator(currentSortingMode));
 
         notifyDataSetChanged();

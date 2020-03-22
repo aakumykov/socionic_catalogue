@@ -4,16 +4,16 @@ import android.widget.Filter;
 
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.cards_list.iItemsList;
+import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
 
-public class ItemsList_DataAdapter_Stub
+public class CardsList_DataAdapter_Stub
         extends SelectableAdapter_Stub
-        implements iItemsList.iDataAdapter
+        implements iCardsList.iDataAdapter
 {
     @Override
-    public void bindBottomReachedListener(iItemsList.ListEdgeReachedListener listener) {
+    public void bindBottomReachedListener(iCardsList.ListEdgeReachedListener listener) {
 
     }
 
@@ -63,17 +63,17 @@ public class ItemsList_DataAdapter_Stub
     }
 
     @Override
-    public void sortByName(iItemsList.SortingListener sortingListener) {
+    public void sortByName(iCardsList.SortingListener sortingListener) {
 
     }
 
     @Override
-    public void sortByCount(iItemsList.SortingListener sortingListener) {
+    public void sortByCount(iCardsList.SortingListener sortingListener) {
 
     }
 
     @Override
-    public iItemsList.SortingMode getSortingMode() {
+    public iCardsList.SortingMode getSortingMode() {
         return null;
     }
 

@@ -20,20 +20,20 @@ import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.AppConfig;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
-import ru.aakumykov.me.sociocat.cards_list.view_model.ItemsList_ViewModel;
-import ru.aakumykov.me.sociocat.cards_list.view_model.ItemsList_ViewModelFactory;
+import ru.aakumykov.me.sociocat.cards_list.view_model.CardsList_ViewModel;
+import ru.aakumykov.me.sociocat.cards_list.view_model.CardsList_ViewModelFactory;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
-public class ItemsList_View
+public class CardsList_View
         extends BaseView
-        implements iItemsList.iPageView, iItemsList.ListEdgeReachedListener
+        implements iCardsList.iPageView, iCardsList.ListEdgeReachedListener
 {
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
     private SearchView searchView;
-    private iItemsList.iDataAdapter dataAdapter;
-    private iItemsList.iPresenter presenter;
+    private iCardsList.iDataAdapter dataAdapter;
+    private iCardsList.iPresenter presenter;
     private boolean isFilterActive = false;
 
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
@@ -126,7 +126,7 @@ public class ItemsList_View
 
             case R.id.actionSortByName:
             case R.id.actionSortByNameReverse:
-                dataAdapter.sortByName(new iItemsList.SortingListener() {
+                dataAdapter.sortByName(new iCardsList.SortingListener() {
                     @Override
                     public void onSortingComplete() {
                         refreshMenu();
@@ -136,7 +136,7 @@ public class ItemsList_View
 
             case R.id.actionSortByCount:
             case R.id.actionSortByCountReverse:
-                dataAdapter.sortByCount(new iItemsList.SortingListener() {
+                dataAdapter.sortByCount(new iCardsList.SortingListener() {
                     @Override
                     public void onSortingComplete() {
                         refreshMenu();
@@ -192,9 +192,9 @@ public class ItemsList_View
 
     @Override
     public void applyViewMode() {
-        iItemsList.ViewMode viewMode = presenter.getStoredViewMode();
+        iCardsList.ViewMode viewMode = presenter.getStoredViewMode();
 
-        if (null == viewMode || iItemsList.ViewMode.GRID == viewMode)
+        if (null == viewMode || iCardsList.ViewMode.GRID == viewMode)
             currentLayoutManager = staggeredGridLayoutManager;
         else
             currentLayoutManager = linearLayoutManager;
@@ -203,7 +203,7 @@ public class ItemsList_View
     }
 
     @Override
-    public void setViewState(iItemsList.ViewState viewState, Integer messageId, @Nullable Object messageDetails) {
+    public void setViewState(iCardsList.ViewState viewState, Integer messageId, @Nullable Object messageDetails) {
 
         presenter.storeViewState(viewState, messageId, messageDetails);
 
@@ -242,7 +242,7 @@ public class ItemsList_View
     }
 
 
-    // iItemsList.ListEdgeReachedListener
+    // iCardsList.ListEdgeReachedListener
     @Override
     public void onTopReached(int position) {
 
@@ -256,14 +256,14 @@ public class ItemsList_View
     // Внутренние методы
     private void configurePresenterAndAdapter() {
 
-        ItemsList_ViewModel viewModel = new ViewModelProvider(this, new ItemsList_ViewModelFactory())
-                .get(ItemsList_ViewModel.class);
+        CardsList_ViewModel viewModel = new ViewModelProvider(this, new CardsList_ViewModelFactory())
+                .get(CardsList_ViewModel.class);
 
         // Презентер (должен создаваться перед Адаптером)
         if (viewModel.hasPresenter()) {
             this.presenter = viewModel.getPresenter();
         } else {
-            this.presenter = new ItemsList_Presenter();
+            this.presenter = new CardsList_Presenter();
             viewModel.storePresenter(this.presenter);
         }
 
@@ -271,7 +271,7 @@ public class ItemsList_View
         if (viewModel.hasDataAdapter()) {
             this.dataAdapter = viewModel.getDataAdapter();
         } else {
-            this.dataAdapter = new ItemsList_DataAdapter(presenter);
+            this.dataAdapter = new CardsList_DataAdapter(presenter);
             viewModel.storeDataAdapter(this.dataAdapter);
         }
     }
@@ -346,12 +346,12 @@ public class ItemsList_View
     }
 
     private void toggleViewMode() {
-        iItemsList.ViewMode currentViewMode = presenter.getStoredViewMode();
+        iCardsList.ViewMode currentViewMode = presenter.getStoredViewMode();
 
-        if (null == currentViewMode || iItemsList.ViewMode.GRID.equals(currentViewMode))
-            currentViewMode = iItemsList.ViewMode.LIST;
+        if (null == currentViewMode || iCardsList.ViewMode.GRID.equals(currentViewMode))
+            currentViewMode = iCardsList.ViewMode.LIST;
         else
-            currentViewMode = iItemsList.ViewMode.GRID;
+            currentViewMode = iCardsList.ViewMode.GRID;
 
         presenter.storeViewMode(currentViewMode);
 
@@ -457,7 +457,7 @@ public class ItemsList_View
 
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
-            ItemsList_View.this.actionMode = null;
+            CardsList_View.this.actionMode = null;
             presenter.onActionModeDestroyed();
         }
     }

@@ -2,13 +2,13 @@ package ru.aakumykov.me.sociocat.cards_list.view_model;
 
 import androidx.lifecycle.ViewModel;
 
-import ru.aakumykov.me.sociocat.cards_list.iItemsList;
-import ru.aakumykov.me.sociocat.template_of_list.iItemsList.iDataAdapter;
+import ru.aakumykov.me.sociocat.cards_list.iCardsList;
+import ru.aakumykov.me.sociocat.cards_list.iCardsList.iDataAdapter;
 
-public class ItemsList_ViewModel extends ViewModel {
+public class CardsList_ViewModel extends ViewModel {
 
     private iDataAdapter dataAdapter;
-    private iItemsList.iPresenter presenter;
+    private iCardsList.iPresenter presenter;
 
     public boolean hasDataAdapter() {
         return null != dataAdapter;
@@ -23,10 +23,10 @@ public class ItemsList_ViewModel extends ViewModel {
     public boolean hasPresenter() {
         return null != presenter;
     }
-    public void storePresenter(iItemsList.iPresenter presenter) {
+    public void storePresenter(iCardsList.iPresenter presenter) {
         this.presenter = presenter;
     }
-    public iItemsList.iPresenter getPresenter() {
+    public iCardsList.iPresenter getPresenter() {
         return presenter;
     }
 }

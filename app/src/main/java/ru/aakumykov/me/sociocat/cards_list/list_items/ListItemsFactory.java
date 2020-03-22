@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_list.iItemsList;
+import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.cards_list.view_holders.BasicViewHolder;
 import ru.aakumykov.me.sociocat.cards_list.view_holders.DataItem_ViewHolder;
 import ru.aakumykov.me.sociocat.cards_list.view_holders.LoadMore_ViewHolder;
@@ -20,15 +20,15 @@ public class ListItemsFactory {
     @NonNull
     public static BasicViewHolder createViewHolder(int viewType, ViewGroup parent) {
 
-        if (viewType == iItemsList.DATA_ITEM_TYPE) {
+        if (viewType == iCardsList.DATA_ITEM_TYPE) {
             View itemView = createItemView(parent, R.layout.template_of_list_data_item);
             return new DataItem_ViewHolder(itemView);
         }
-        else if (viewType == iItemsList.LOADMORE_ITEM_TYPE) {
+        else if (viewType == iCardsList.LOADMORE_ITEM_TYPE) {
             View itemView = createItemView(parent, R.layout.template_of_list_loadmore_item);
             return setFullSpanIfSupported(new LoadMore_ViewHolder(itemView));
         }
-        else if (viewType == iItemsList.THROBBER_ITEM_TYPE) {
+        else if (viewType == iCardsList.THROBBER_ITEM_TYPE) {
             View itemView = createItemView(parent, R.layout.template_of_list_throbber_item);
             return setFullSpanIfSupported(new Throbber_ViewHolder(itemView));
         }

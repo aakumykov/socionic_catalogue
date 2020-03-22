@@ -2,7 +2,7 @@ package ru.aakumykov.me.sociocat.cards_list.list_items;
 
 import androidx.annotation.NonNull;
 
-import ru.aakumykov.me.sociocat.cards_list.iItemsList;
+import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.iListPayload;
 
 public class DataItem<T extends iListPayload> extends ListItem {
@@ -76,8 +76,8 @@ public class DataItem<T extends iListPayload> extends ListItem {
 
     // ListItem
     @Override
-    public iItemsList.ItemType getItemType() {
-        return iItemsList.ItemType.DATA_ITEM;
+    public iCardsList.ItemType getItemType() {
+        return iCardsList.ItemType.DATA_ITEM;
     }
 
 }

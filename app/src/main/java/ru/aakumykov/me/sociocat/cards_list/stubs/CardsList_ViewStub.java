@@ -5,12 +5,12 @@ import android.annotation.SuppressLint;
 import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
-import ru.aakumykov.me.sociocat.cards_list.iItemsList;
+import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 
 @SuppressLint("Registered")
-public class ItemsList_ViewStub
+public class CardsList_ViewStub
         extends BaseView_Stub
-        implements iItemsList.iPageView
+        implements iCardsList.iPageView
 {
     @Override
     public void applyViewMode() {
@@ -18,7 +18,7 @@ public class ItemsList_ViewStub
     }
 
     @Override
-    public void setViewState(iItemsList.ViewState viewState, Integer messageId, @Nullable Object messageDetails) {
+    public void setViewState(iCardsList.ViewState viewState, Integer messageId, @Nullable Object messageDetails) {
 
     }
 

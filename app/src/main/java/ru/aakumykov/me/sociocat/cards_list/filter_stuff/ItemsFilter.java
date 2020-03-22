@@ -5,17 +5,17 @@ import android.widget.Filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.aakumykov.me.sociocat.cards_list.iItemsList;
+import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
 
 public class ItemsFilter extends Filter {
 
-    private iItemsList.iPresenter presenter;
+    private iCardsList.iPresenter presenter;
     private List<ListItem> originalItemsList = new ArrayList<>();
 
 
-    public ItemsFilter(List<ListItem> tagsList, iItemsList.iPresenter presenter) {
+    public ItemsFilter(List<ListItem> tagsList, iCardsList.iPresenter presenter) {
         this.presenter = presenter;
         this.originalItemsList.addAll(tagsList);
     }
