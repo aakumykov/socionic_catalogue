@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public interface iBaseView {
@@ -15,8 +16,8 @@ public interface iBaseView {
     Activity getActivity();
 
     // Сообщения вверху страницы
-    void showProgressMessage(Integer messageId);
-    void showProgressMessage(@Nullable Integer messageId, String insertedText);
+    void showProgressMessage(int messageId);
+    void showProgressMessage(int messageId, String insertedText);
     void hideProgressMessage();
 
     void showProgressBar();
@@ -26,12 +27,12 @@ public interface iBaseView {
 
     void showInfoMsg(int messageId, String... formatArguments);
 
-    void showErrorMsg(@Nullable Integer messageId, @Nullable String consoleMessage);
-    void showErrorMsg(@Nullable Integer messageId, @Nullable String consoleMessage, boolean forceShowConsoleMessage);
+    void showErrorMsg(int messageId, @Nullable String consoleMessage);
+    void showErrorMsg(int messageId, @Nullable String consoleMessage, boolean forceShowConsoleMessage);
 
     void hideMessage();
 
-    void showToast(@Nullable Integer msgId);
+    void showToast(int msgId);
     void showToast(String message);
 
     void showLongToast(int msgId);

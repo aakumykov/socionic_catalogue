@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.view.Menu;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public class BaseView_Stub implements iBaseView {
 
@@ -22,12 +21,12 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
-    public void showProgressMessage(Integer messageId) {
+    public void showProgressMessage(int messageId) {
 
     }
 
     @Override
-    public void showProgressMessage(@Nullable Integer messageId, String insertedText) {
+    public void showProgressMessage(int messageId, String insertedText) {
 
     }
 
@@ -57,12 +56,12 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
-    public void showErrorMsg(@Nullable Integer messageId, String consoleMessage) {
+    public void showErrorMsg(int messageId, String consoleMessage) {
 
     }
 
     @Override
-    public void showErrorMsg(@Nullable Integer messageId, String consoleMessage, boolean forceShowConsoleMessage) {
+    public void showErrorMsg(int messageId, String consoleMessage, boolean forceShowConsoleMessage) {
 
     }
 
@@ -72,7 +71,7 @@ public class BaseView_Stub implements iBaseView {
     }
 
     @Override
-    public void showToast(@Nullable Integer msgId) {
+    public void showToast(int msgId) {
 
     }
 

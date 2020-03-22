@@ -265,11 +265,9 @@ public final class MyUtils {
 
 
     // Всплывающие сообщения
-    public static void showCustomToast(Context context, @Nullable Integer messageId) {
-        if (null != messageId) {
-            String message = context.getResources().getString(messageId);
-            showCustomToast(context, message);
-        }
+    public static void showCustomToast(Context context, int messageId) {
+        String message = context.getResources().getString(messageId);
+        showCustomToast(context, message);
     }
 
     public static void showCustomToast(Context context, String message) {

@@ -195,19 +195,15 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
 
     // Сообщения вверху страницы
     @Override
-    public void showProgressMessage(Integer messageId) {
-        if (null != messageId) {
-            String msg = getResources().getString(messageId);
-            showProgressMessage(msg);
-        }
+    public void showProgressMessage(int messageId) {
+        String msg = getResources().getString(messageId);
+        showProgressMessage(msg);
     }
 
     @Override
-    public void showProgressMessage(@Nullable Integer messageId, String insertedText) {
-        if (null != messageId) {
-            String msg = getResources().getString(messageId, insertedText);
-            showProgressMessage(msg);
-        }
+    public void showProgressMessage(int messageId, String insertedText) {
+        String msg = getResources().getString(messageId, insertedText);
+        showProgressMessage(msg);
     }
 
     @Override
@@ -255,26 +251,22 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public void showErrorMsg(@Nullable Integer messageId, @Nullable String consoleMessage) {
-        if (null != messageId) {
-            boolean showConsoleMessage = BuildConfig.DEBUG && null != consoleMessage;
-            showErrorMsg(messageId, consoleMessage, showConsoleMessage);
-        }
+    public void showErrorMsg(int messageId, @Nullable String consoleMessage) {
+        boolean showConsoleMessage = BuildConfig.DEBUG && null != consoleMessage;
+        showErrorMsg(messageId, consoleMessage, showConsoleMessage);
     }
 
     @Override
-    public void showErrorMsg(@Nullable Integer messageId, @Nullable String consoleMessage, boolean forceShowConsoleMessage) {
-        if (null != messageId) {
-            String msg = getResources().getString(messageId);
+    public void showErrorMsg(int messageId, @Nullable String consoleMessage, boolean forceShowConsoleMessage) {
+        String msg = getResources().getString(messageId);
 
-            if (forceShowConsoleMessage) {
-                msg = msg + ": " + consoleMessage;
-                Log.e(TAG, "" + consoleMessage);
-            }
-
-            hideProgressMessage();
-            showMsg(msg, R.color.error, R.color.error_background);
+        if (forceShowConsoleMessage) {
+            msg = msg + ": " + consoleMessage;
+            Log.e(TAG, "" + consoleMessage);
         }
+
+        hideProgressMessage();
+        showMsg(msg, R.color.error, R.color.error_background);
     }
 
     @Override
@@ -294,7 +286,7 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
-    public void showToast(@Nullable Integer msgId) {
+    public void showToast(int msgId) {
         MyUtils.showCustomToast(getAppContext(), msgId);
     }
 

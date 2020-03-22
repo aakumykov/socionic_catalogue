@@ -257,7 +257,7 @@ public class CardEdit_View extends BaseView implements
     }
 
     @Override
-    public void showErrorMsg(@Nullable Integer messageId, String consoleMessage) {
+    public void showErrorMsg(int messageId, String consoleMessage) {
         super.showErrorMsg(messageId, consoleMessage);
         enableForm();
         MyUtils.hide(mediaThrobber);
