@@ -147,11 +147,11 @@ public class CardsList_View
                 break;
 
             case R.id.actionListView:
-                toggleViewMode();
+                presenter.onChangeLayoutClicked();
                 break;
 
             case R.id.actionGridView:
-                toggleViewMode();
+                presenter.onChangeLayoutClicked();
                 break;
 
             default:
@@ -200,16 +200,18 @@ public class CardsList_View
     }
 
     @Override
-    public void applyViewMode() {
-        iCardsList.ViewMode viewMode = presenter.getStoredViewMode();
+    public void changeLayout(@Nullable iCardsList.LayoutMode layoutMode) {
 
-        if (null == viewMode || iCardsList.ViewMode.GRID == viewMode)
+        if (null == layoutMode || iCardsList.LayoutMode.GRID == layoutMode)
             currentLayoutManager = staggeredGridLayoutManager;
         else
             currentLayoutManager = linearLayoutManager;
 
-        dataAdapter.setViewMode(viewMode);
         recyclerView.setLayoutManager(currentLayoutManager);
+
+        recyclerView.setAdapter(null);
+        dataAdapter.setLayoutMode(presenter.getCurrentLayoutMode());
+        recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
     }
 
     @Override
@@ -354,21 +356,6 @@ public class CardsList_View
                 return false;
             }
         });
-    }
-
-    private void toggleViewMode() {
-        iCardsList.ViewMode currentViewMode = presenter.getStoredViewMode();
-
-        if (null == currentViewMode || iCardsList.ViewMode.GRID.equals(currentViewMode))
-            currentViewMode = iCardsList.ViewMode.LIST;
-        else
-            currentViewMode = iCardsList.ViewMode.GRID;
-
-        presenter.storeViewMode(currentViewMode);
-
-        applyViewMode();
-
-        refreshMenu();
     }
 
     private void showRefreshThrobber() {

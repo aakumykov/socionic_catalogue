@@ -18,39 +18,39 @@ import ru.aakumykov.me.sociocat.cards_list.view_holders.Unknown_ViewHolder;
 public class ListItemsFactory {
 
     @NonNull
-    public static BasicViewHolder createViewHolder(int viewType, ViewGroup parent, iCardsList.ViewMode viewMode) {
+    public static BasicViewHolder createViewHolder(int viewType, ViewGroup parent, iCardsList.LayoutMode layoutMode) {
         switch (viewType) {
             case iCardsList.DATA_ITEM_TYPE:
-                return dataItemViewHolder(parent, viewMode);
+                return dataItemViewHolder(parent, layoutMode);
 
             case iCardsList.LOADMORE_ITEM_TYPE:
-                return loadmoreViewHolder(parent, viewMode);
+                return loadmoreViewHolder(parent, layoutMode);
 
             case iCardsList.THROBBER_ITEM_TYPE:
-                return throbberItemViewHolder(parent, viewMode);
+                return throbberItemViewHolder(parent, layoutMode);
 
             default:
-                return unknownItemViewHolder(parent, viewMode);
+                return unknownItemViewHolder(parent, layoutMode);
         }
     }
 
-    private static BasicViewHolder unknownItemViewHolder(ViewGroup parent, iCardsList.ViewMode viewMode) {
+    private static BasicViewHolder unknownItemViewHolder(ViewGroup parent, iCardsList.LayoutMode layoutMode) {
         View itemView = createItemView(parent, R.layout.cards_list_item_unknown);
         return new Unknown_ViewHolder(itemView);
     }
 
-    private static BasicViewHolder throbberItemViewHolder(ViewGroup parent, iCardsList.ViewMode viewMode) {
+    private static BasicViewHolder throbberItemViewHolder(ViewGroup parent, iCardsList.LayoutMode layoutMode) {
         View itemView = createItemView(parent, R.layout.cards_list_item_throbber);
         return setFullSpanIfSupported(new Throbber_ViewHolder(itemView));
     }
 
-    private static BasicViewHolder loadmoreViewHolder(ViewGroup parent, iCardsList.ViewMode viewMode) {
+    private static BasicViewHolder loadmoreViewHolder(ViewGroup parent, iCardsList.LayoutMode layoutMode) {
         View itemView = createItemView(parent, R.layout.cards_list_item_loadmore);
         return setFullSpanIfSupported(new LoadMore_ViewHolder(itemView));
     }
 
-    private static BasicViewHolder dataItemViewHolder(ViewGroup parent, iCardsList.ViewMode viewMode) {
-        int layoutResourceId = (iCardsList.ViewMode.LIST.equals(viewMode)) ?
+    private static BasicViewHolder dataItemViewHolder(ViewGroup parent, iCardsList.LayoutMode layoutMode) {
+        int layoutResourceId = (iCardsList.LayoutMode.LIST.equals(layoutMode)) ?
                 R.layout.cards_list_item_data_list_mode :
                 R.layout.cards_list_item_data_grid_mode;
 

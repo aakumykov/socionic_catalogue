@@ -26,7 +26,7 @@ public interface iCardsList {
         THROBBER_ITEM
     }
 
-    enum ViewMode {
+    enum LayoutMode {
         LIST,
         GRID
     }
@@ -48,7 +48,7 @@ public interface iCardsList {
 
 
     interface iPageView extends iBaseView {
-        void applyViewMode();
+        void changeLayout(LayoutMode layoutMode);
         void setViewState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
         boolean actionModeIsActive();
         void scrollToPosition(int position);
@@ -91,7 +91,7 @@ public interface iCardsList {
 
         List<DataItem> getSelectedItems();
 
-        void setViewMode(ViewMode currentViewMode);
+        void setLayoutMode(LayoutMode currentLayoutMode);
     }
 
     interface iPresenter {
@@ -103,8 +103,7 @@ public interface iCardsList {
 
         void storeViewState(ViewState viewState, Integer messageId, Object messageDetails);
 
-        void storeViewMode(ViewMode viewMode);
-        ViewMode getStoredViewMode();
+        LayoutMode getCurrentLayoutMode();
 
         void onRefreshRequested();
 
@@ -127,6 +126,8 @@ public interface iCardsList {
         void onDeleteSelectedItemsClicked();
 
         void onActionModeDestroyed();
+
+        void onChangeLayoutClicked();
     }
 
 

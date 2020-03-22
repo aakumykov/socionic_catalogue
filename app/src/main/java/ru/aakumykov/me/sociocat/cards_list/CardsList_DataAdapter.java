@@ -41,7 +41,7 @@ public class CardsList_DataAdapter
 
     private ItemsFilter itemsFilter;
     private iCardsList.SortingMode currentSortingMode = iCardsList.SortingMode.ORDER_NAME_DIRECT;
-    private iCardsList.ViewMode currentViewMode;
+    private iCardsList.LayoutMode currentLayoutMode;
 
 
     // Конструктор
@@ -72,7 +72,7 @@ public class CardsList_DataAdapter
     @NonNull @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        BasicViewHolder basicViewHolder = ListItemsFactory.createViewHolder(viewType, parent, currentViewMode);
+        BasicViewHolder basicViewHolder = ListItemsFactory.createViewHolder(viewType, parent, currentLayoutMode);
 
         basicViewHolder.setPresenter(presenter);
 
@@ -303,8 +303,9 @@ public class CardsList_DataAdapter
     }
 
     @Override
-    public void setViewMode(iCardsList.ViewMode currentViewMode) {
-        this.currentViewMode = currentViewMode;
+    public void setLayoutMode(iCardsList.LayoutMode currentLayoutMode) {
+        this.currentLayoutMode = currentLayoutMode;
+        notifyDataSetChanged();
     }
 
 

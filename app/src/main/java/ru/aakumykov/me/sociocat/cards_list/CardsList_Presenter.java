@@ -26,7 +26,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     private iCardsList.ViewState currentViewState;
     private Integer currentViewMessageId;
     private Object currentViewMessageDetails;
-    private iCardsList.ViewMode currentViewMode;
+    private iCardsList.LayoutMode currentLayoutMode;
 
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
 
@@ -51,7 +51,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
             return;
         }
 
-        pageView.applyViewMode();
+        pageView.changeLayout(currentLayoutMode);
 
         loadList();
     }
@@ -60,9 +60,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     public void onConfigurationChanged() {
         updatePageTitle();
 
-        dataAdapter.setViewMode(currentViewMode);
-
-        pageView.applyViewMode();
+        pageView.changeLayout(currentLayoutMode);
 
         pageView.setViewState(currentViewState, currentViewMessageId, currentViewMessageDetails);
     }
@@ -75,13 +73,8 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     }
 
     @Override
-    public void storeViewMode(iCardsList.ViewMode viewMode) {
-        this.currentViewMode = viewMode;
-    }
-
-    @Override
-    public iCardsList.ViewMode getStoredViewMode() {
-        return currentViewMode;
+    public iCardsList.LayoutMode getCurrentLayoutMode() {
+        return currentLayoutMode;
     }
 
     @Override
@@ -185,6 +178,17 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     public void onActionModeDestroyed() {
         dataAdapter.clearSelection();
         setViewStateSuccess();
+    }
+
+    @Override
+    public void onChangeLayoutClicked() {
+        if (null == currentLayoutMode || iCardsList.LayoutMode.GRID.equals(currentLayoutMode))
+            currentLayoutMode = iCardsList.LayoutMode.LIST;
+        else
+            currentLayoutMode = iCardsList.LayoutMode.GRID;
+
+        pageView.changeLayout(currentLayoutMode);
+        pageView.refreshMenu();
     }
 
 
