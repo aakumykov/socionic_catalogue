@@ -83,6 +83,8 @@ public interface iCardsList {
         void showLoadmoreItem();
         void showThrobberItem();
 
+        void hideThrobberItem();
+
         List<DataItem> getSelectedItems();
     }
 

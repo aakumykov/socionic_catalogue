@@ -132,8 +132,6 @@ public class CardsList_DataAdapter
         itemsList.clear();
         itemsList.addAll(inputList);
 
-        itemsList.add(new LoadMoreItem());
-
         this.isVirgin = false;
 
         performSorting(null);
@@ -270,9 +268,17 @@ public class CardsList_DataAdapter
             return;
 
         if (endingItem instanceof LoadMoreItem)
-            replaceEndingItem(new LoadMoreItem());
+            replaceEndingItem(new ThrobberItem());
         else
-            addItem(new LoadMoreItem());
+            addItem(new ThrobberItem());
+    }
+
+    @Override
+    public void hideThrobberItem() {
+        ListItem endingItem = getEndingItem();
+
+        if (endingItem instanceof ThrobberItem)
+            removeItem(endingItem);
     }
 
     private void addItem(ListItem listItem) {

@@ -28,6 +28,8 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     private Object viewMessageDetails;
     private iCardsList.ViewMode currentViewMode;
 
+    private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+
 
     // iCardsList.iPresenter
     @Override
@@ -51,7 +53,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
         pageView.applyViewMode();
 
-        loadList(null);
+        loadList();
     }
 
     @Override
@@ -83,7 +85,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onRefreshRequested() {
         pageView.setViewState(iCardsList.ViewState.REFRESHING, null, null);
-        loadList(null);
+        loadList();
     }
 
     @Override
@@ -104,13 +106,10 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     public void onLoadMoreClicked() {
         //int scrollPosition = dataAdapter.getListSize() + 1;
 
-        dataAdapter.hideLoadmoreItem();
-        dataAdapter.showThrobberItem();
-
         DataItem lastDataItem = dataAdapter.getLastDataItem();
         Card card = (Card) lastDataItem.getPayload();
 
-        loadList(card);
+        loadMoreCards(card);
     }
 
     @Override
@@ -181,38 +180,42 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
 
     // Внутренние методы
-    private void loadList(@Nullable Card startFromCard) {
+    private void loadList() {
+        pageView.setViewState(iCardsList.ViewState.PROGRESS, R.string.CARDS_GRID_loading_cards, null);
 
-        iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
-
-        iCardsSingleton.ListCallbacks listCallbacks = new iCardsSingleton.ListCallbacks() {
+        cardsSingleton.loadCardsFromBeginning(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                List<DataItem> dataItems = incapsulateObjects2DataItems(list);
-
-                if (null == startFromCard)
-                    dataAdapter.setList(dataItems);
-                else
-                    dataAdapter.appendList(dataItems);
-
+                dataAdapter.setList(incapsulateObjects2DataItems(list));
+                dataAdapter.showLoadmoreItem();
                 pageView.setViewState(iCardsList.ViewState.SUCCESS, null, null);
-                dataAdapter.hideThrobberItem();
             }
 
             @Override
             public void onListLoadFail(String errorMessage) {
+                dataAdapter.showLoadmoreItem();
                 pageView.setViewState(iCardsList.ViewState.ERROR, R.string.CARDS_GRID_error_loading_cards, errorMessage);
             }
-        };
+        });
+    }
 
-        if (null == startFromCard) {
-            pageView.setViewState(iCardsList.ViewState.PROGRESS, R.string.LIST_TEMPLATE_loading_list, null);
-            cardsSingleton.loadCardsFromBeginning(listCallbacks);
-        }
-        else {
-            dataAdapter.showThrobberItem();
-            cardsSingleton.loadCardsAfter(startFromCard, listCallbacks);
-        }
+    private void loadMoreCards(Card startingFromCard) {
+        dataAdapter.showThrobberItem();
+
+        CardsSingleton.getInstance().loadCardsAfter(startingFromCard, new iCardsSingleton.ListCallbacks() {
+            @Override
+            public void onListLoadSuccess(List<Card> list) {
+                dataAdapter.hideThrobberItem();
+                dataAdapter.appendList(incapsulateObjects2DataItems(list));
+                dataAdapter.showLoadmoreItem();
+            }
+
+            @Override
+            public void onListLoadFail(String errorMessage) {
+                dataAdapter.showLoadmoreItem();
+                pageView.setViewState(iCardsList.ViewState.ERROR, R.string.CARDS_GRID_error_loading_cards, errorMessage);
+            }
+        });
     }
 
     private <T> List<DataItem> incapsulateObjects2DataItems(List<T> objectList) {

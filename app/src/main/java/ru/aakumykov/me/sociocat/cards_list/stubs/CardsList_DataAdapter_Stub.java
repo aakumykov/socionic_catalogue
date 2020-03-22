@@ -103,6 +103,11 @@ public class CardsList_DataAdapter_Stub
     }
 
     @Override
+    public void hideThrobberItem() {
+
+    }
+
+    @Override
     public List<DataItem> getSelectedItems() {
         return null;
     }
