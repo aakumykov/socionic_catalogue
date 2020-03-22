@@ -80,9 +80,9 @@ public interface iItemsList {
         boolean allItemsAreSelected();
 
         void showLoadmoreItem();
-        void hideLoadmoreItem();
-
         void showThrobberItem();
+
+        void hideLoadmoreItem();
         void hideThrobberItem();
 
         List<DataItem> getSelectedItems();

@@ -237,39 +237,44 @@ public class ItemsList_DataAdapter
 
     @Override
     public void showLoadmoreItem() {
-        if (getLastItem() instanceof LoadMoreItem)
+        ListItem endingItem = getEndingItem();
+
+        if (endingItem instanceof LoadMoreItem)
             return;
-        addItem(new LoadMoreItem());
-    }
 
-    @Override
-    public void hideLoadmoreItem() {
-        ListItem lastItem = getLastItem();
-
-        if (lastItem instanceof LoadMoreItem)
-            removeItem(lastItem);
+        if (endingItem instanceof ThrobberItem)
+            replaceEndingItem(new LoadMoreItem());
+        else
+            addItem(new LoadMoreItem());
     }
 
     @Override
     public void showThrobberItem() {
-        if (getLastItem() instanceof ThrobberItem)
+        ListItem endingItem = getEndingItem();
+
+        if (endingItem instanceof ThrobberItem)
             return;
-        addItem(new ThrobberItem());
+
+        if (endingItem instanceof LoadMoreItem)
+            replaceEndingItem(new ThrobberItem());
+        else
+            addItem(new ThrobberItem());
+    }
+
+    @Override
+    public void hideLoadmoreItem() {
+        ListItem endingItem = getEndingItem();
+
+        if (endingItem instanceof LoadMoreItem)
+            removeItem(endingItem);
     }
 
     @Override
     public void hideThrobberItem() {
-        ListItem lastItem = getLastItem();
+        ListItem endingItem = getEndingItem();
 
-        if (lastItem instanceof ThrobberItem)
-            itemsList.remove(lastItem);
-
-    }
-
-    private void addItem(ListItem listItem) {
-        itemsList.add(listItem);
-        int index = itemsList.indexOf(listItem);
-        notifyItemInserted(index);
+        if (endingItem instanceof ThrobberItem)
+            removeItem(endingItem);
     }
 
     @Override
@@ -301,13 +306,28 @@ public class ItemsList_DataAdapter
         return size - 1;
     }
 
-    private ListItem getLastItem() {
+    private void addItem(ListItem listItem) {
+        itemsList.add(listItem);
+        int index = itemsList.indexOf(listItem);
+        notifyItemInserted(index);
+    }
+
+    private ListItem getEndingItem() {
         int maxIndex = getMaxIndex();
 
         if (maxIndex < 0)
             return null;
 
         return itemsList.get(maxIndex);
+    }
+
+    private void replaceEndingItem(ListItem replacementItem) {
+        ListItem endingItem = getEndingItem();
+        if (null != endingItem) {
+            int index = itemsList.indexOf(endingItem);
+            itemsList.set(index, replacementItem);
+            notifyItemChanged(index);
+        }
     }
 
     private void performSorting(@Nullable iItemsList.SortingListener sortingListener) {
