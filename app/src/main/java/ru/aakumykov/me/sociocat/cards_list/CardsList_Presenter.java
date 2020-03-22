@@ -109,9 +109,14 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         //int scrollPosition = dataAdapter.getListSize() + 1;
 
         DataItem lastDataItem = dataAdapter.getLastDataItem();
-        Card card = (Card) lastDataItem.getPayload();
 
-        loadMoreCards(card);
+        if (null != lastDataItem) {
+            Card card = (Card) lastDataItem.getPayload();
+            loadMoreCards(card);
+        }
+        else {
+            loadList();
+        }
     }
 
     @Override

@@ -228,7 +228,8 @@ public class CardsList_View
             case PROGRESS:
                 finishActionMode();
                 hideRefreshThrobber();
-                showProgressMessage(messageId);
+                //showProgressMessage(messageId);
+                dataAdapter.showThrobberItem();
                 break;
 
             case REFRESHING:

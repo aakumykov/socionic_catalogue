@@ -274,6 +274,14 @@ public class CardsList_DataAdapter
     }
 
     @Override
+    public void hideLoadmoreItem() {
+        ListItem endingItem = getEndingItem();
+
+        if (endingItem instanceof LoadMoreItem)
+            removeItem(endingItem);
+    }
+
+    @Override
     public void hideThrobberItem() {
         ListItem endingItem = getEndingItem();
 

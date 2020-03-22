@@ -103,6 +103,11 @@ public class CardsList_DataAdapter_Stub
     }
 
     @Override
+    public void hideLoadmoreItem() {
+
+    }
+
+    @Override
     public void hideThrobberItem() {
 
     }
