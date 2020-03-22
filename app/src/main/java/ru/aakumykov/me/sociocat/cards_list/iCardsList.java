@@ -66,6 +66,7 @@ public interface iCardsList {
 
         DataItem getDataItem(int position);
         List<ListItem> getAllItems();
+        DataItem getLastDataItem();
 
         void removeItem(ListItem listItem);
 

@@ -53,6 +53,11 @@ public class CardsList_DataAdapter_Stub
     }
 
     @Override
+    public DataItem getLastDataItem() {
+        return null;
+    }
+
+    @Override
     public void removeItem(ListItem listItem) {
 
     }

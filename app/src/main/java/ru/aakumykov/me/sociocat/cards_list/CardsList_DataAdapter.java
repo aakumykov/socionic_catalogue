@@ -177,6 +177,20 @@ public class CardsList_DataAdapter
     }
 
     @Override
+    public DataItem getLastDataItem() {
+        int listSize = itemsList.size();
+        int maxIndex = getMaxIndex();
+
+        for (int i=0; i < listSize; i++) {
+            ListItem listItem = itemsList.get(maxIndex - i);
+            if (listItem instanceof DataItem)
+                return (DataItem) listItem;
+        }
+
+        return null;
+    }
+
+    @Override
     public void removeItem(ListItem listItem) {
         int index = itemsList.indexOf(listItem);
         if (index >= 0) {

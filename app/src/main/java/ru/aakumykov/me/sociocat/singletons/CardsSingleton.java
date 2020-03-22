@@ -54,7 +54,7 @@ public class CardsSingleton implements iCardsSingleton {
 
 
     @Override
-    public void loadFirstPortionOfCards(ListCallbacks callbacks) {
+    public void loadCardsFromBeginning(ListCallbacks callbacks) {
         loadListEnhanced(
                 null,
                 null,

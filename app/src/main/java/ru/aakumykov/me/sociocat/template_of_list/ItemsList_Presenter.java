@@ -199,7 +199,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
             }
         });*/
 
-        CardsSingleton.getInstance().loadFirstPortionOfCards(new iCardsSingleton.ListCallbacks() {
+        CardsSingleton.getInstance().loadCardsFromBeginning(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 List<DataItem> dataItems = incapsulateObjects2DataItems(list);
