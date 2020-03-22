@@ -80,8 +80,8 @@ public class Card implements
     @Override @Exclude
     public String toString() {
         return "Card {"+
-                "  key: "+getKey()+
-                ", title: "+getTitle()+
+                " title: "+getTitle()+
+                ",  key: "+getKey()+
                 ", userId: "+getUserId()+
                 ", userName: "+getUserName()+
                 ", userAvatarURL: "+getUserAvatarURL()+
