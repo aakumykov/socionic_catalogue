@@ -188,20 +188,20 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     // Внутренние методы
     private void loadList() {
-        pageView.setViewState(iCardsList.ViewState.PROGRESS, R.string.CARDS_GRID_loading_cards, null);
+        dataAdapter.showThrobberItem();
 
         cardsSingleton.loadCardsFromBeginning(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
+                dataAdapter.hideThrobberItem();
                 dataAdapter.setList(incapsulateObjects2DataItems(list));
                 dataAdapter.showLoadmoreItem();
-                pageView.setViewState(iCardsList.ViewState.SUCCESS, null, null);
             }
 
             @Override
             public void onListLoadFail(String errorMessage) {
-                dataAdapter.showLoadmoreItem();
                 pageView.setViewState(iCardsList.ViewState.ERROR, R.string.CARDS_GRID_error_loading_cards, errorMessage);
+                dataAdapter.showLoadmoreItem();
             }
         });
     }
@@ -219,8 +219,8 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
             @Override
             public void onListLoadFail(String errorMessage) {
-                dataAdapter.showLoadmoreItem();
                 pageView.setViewState(iCardsList.ViewState.ERROR, R.string.CARDS_GRID_error_loading_cards, errorMessage);
+                dataAdapter.showLoadmoreItem();
             }
         });
     }

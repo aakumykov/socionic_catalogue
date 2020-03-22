@@ -53,7 +53,7 @@ public class CardsList_View
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.template_of_list_activity);
+        setContentView(R.layout.cards_list_activity);
         ButterKnife.bind(this);
 
         setPageTitle(R.string.CARDS_LIST_page_title);
@@ -228,8 +228,7 @@ public class CardsList_View
             case PROGRESS:
                 finishActionMode();
                 hideRefreshThrobber();
-                //showProgressMessage(messageId);
-                dataAdapter.showThrobberItem();
+                showProgressMessage(messageId);
                 break;
 
             case REFRESHING:
