@@ -57,7 +57,6 @@ public class CardsList_View
         ButterKnife.bind(this);
 
         setPageTitle(R.string.CARDS_LIST_page_title);
-        activateUpButton();
 
         configureSwipeRefresh();
         configurePresenterAndAdapter();
