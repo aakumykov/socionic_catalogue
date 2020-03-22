@@ -191,14 +191,6 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     private void loadList() {
         pageView.setViewState(iCardsList.ViewState.PROGRESS, R.string.LIST_TEMPLATE_loading_list, null);
 
-        /*getRandomList(new iLoadListCallbacks() {
-            @Override
-            public void onListLoaded(List<DataItem> list) {
-                dataAdapter.setList(list);
-                setViewStateSuccess();
-            }
-        });*/
-
         CardsSingleton.getInstance().loadFirstPortionOfCards(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {

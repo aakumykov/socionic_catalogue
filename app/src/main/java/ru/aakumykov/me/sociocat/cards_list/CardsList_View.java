@@ -52,11 +52,10 @@ public class CardsList_View
         setContentView(R.layout.template_of_list_activity);
         ButterKnife.bind(this);
 
-        setPageTitle(R.string.LIST_TEMPLATE_title);
+        setPageTitle(R.string.CARDS_LIST_page_title);
         activateUpButton();
 
         configureSwipeRefresh();
-
         configurePresenterAndAdapter();
         configureLayoutManagers();
         configureRecyclerView();
