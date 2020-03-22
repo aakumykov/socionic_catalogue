@@ -251,37 +251,28 @@ public class CardsList_DataAdapter
 
     @Override
     public void showLoadmoreItem() {
-        ListItem lastItem = getLastItem();
+        ListItem endingItem = getEndingItem();
 
-        if (lastItem instanceof LoadMoreItem)
+        if (endingItem instanceof LoadMoreItem)
             return;
 
-        if (lastItem instanceof ThrobberItem) {
-            int index = itemsList.indexOf(lastItem);
-            itemsList.set(index, new LoadMoreItem());
-            notifyItemChanged(index);
-            return;
-        }
-
-        addItem(new LoadMoreItem());
-    }
-
-    @Override
-    public void showThrobberItem() {
-        ListItem lastItem = getLastItem();
-
-        if (lastItem instanceof ThrobberItem)
-            return;
-
-        if (lastItem instanceof LoadMoreItem) {
-            replaceEndItem(new LoadMoreItem());
-        }
+        if (endingItem instanceof ThrobberItem)
+            replaceEndingItem(new LoadMoreItem());
         else
             addItem(new LoadMoreItem());
     }
 
-    private void replaceEndItem(ListItem listItem) {
+    @Override
+    public void showThrobberItem() {
+        ListItem endingItem = getEndingItem();
 
+        if (endingItem instanceof ThrobberItem)
+            return;
+
+        if (endingItem instanceof LoadMoreItem)
+            replaceEndingItem(new LoadMoreItem());
+        else
+            addItem(new LoadMoreItem());
     }
 
     private void addItem(ListItem listItem) {
@@ -319,13 +310,22 @@ public class CardsList_DataAdapter
         return size - 1;
     }
 
-    private ListItem getLastItem() {
+    private ListItem getEndingItem() {
         int maxIndex = getMaxIndex();
 
         if (maxIndex < 0)
             return null;
 
         return itemsList.get(maxIndex);
+    }
+
+    private void replaceEndingItem(ListItem replacementItem) {
+        ListItem endingItem = getEndingItem();
+        if (null != endingItem) {
+            int index = itemsList.indexOf(endingItem);
+            itemsList.set(index, replacementItem);
+            notifyItemChanged(index);
+        }
     }
 
     private void performSorting(@Nullable iCardsList.SortingListener sortingListener) {
