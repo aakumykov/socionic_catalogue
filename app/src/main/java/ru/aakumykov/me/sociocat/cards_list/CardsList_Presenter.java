@@ -188,11 +188,13 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     // Внутренние методы
     private void loadList() {
+        //pageView.setViewState(iCardsList.ViewState.PROGRESS, null, null);
         dataAdapter.showThrobberItem();
 
         cardsSingleton.loadCardsFromBeginning(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
+                //setViewStateSuccess();
                 dataAdapter.hideThrobberItem();
                 dataAdapter.setList(incapsulateObjects2DataItems(list));
                 dataAdapter.showLoadmoreItem();

@@ -212,11 +212,12 @@ public class CardsList_View
     }
 
     @Override
-    public void setViewState(iCardsList.ViewState viewState, Integer messageId, @Nullable Object messageDetails) {
+    public void setViewState(@Nullable iCardsList.ViewState viewState, @Nullable Integer messageId, @Nullable Object messageDetails) {
 
         presenter.storeViewState(viewState, messageId, messageDetails);
 
-        //applyViewMode(presenter.getStoredViewMode());
+        if (null == viewState)
+            return;
 
         switch (viewState) {
             case SUCCESS:

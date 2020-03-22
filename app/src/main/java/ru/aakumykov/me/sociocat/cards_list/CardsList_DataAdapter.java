@@ -289,12 +289,6 @@ public class CardsList_DataAdapter
             removeItem(endingItem);
     }
 
-    private void addItem(ListItem listItem) {
-        itemsList.add(listItem);
-        int index = itemsList.indexOf(listItem);
-        notifyItemInserted(index);
-    }
-
     @Override
     public List<DataItem> getSelectedItems() {
         List<Integer> selectedIndexes = getSelectedIndexes();
@@ -322,6 +316,12 @@ public class CardsList_DataAdapter
             return -1;
 
         return size - 1;
+    }
+
+    private void addItem(ListItem listItem) {
+        itemsList.add(listItem);
+        int index = itemsList.indexOf(listItem);
+        notifyItemInserted(index);
     }
 
     private ListItem getEndingItem() {
