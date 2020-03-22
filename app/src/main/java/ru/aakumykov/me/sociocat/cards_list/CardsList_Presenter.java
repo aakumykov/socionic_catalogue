@@ -92,8 +92,10 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     public void onDataItemClicked(DataItem dataItem) {
         if (pageView.actionModeIsActive())
             toggleItemSelection(dataItem);
-        else
-            pageView.showToast(R.string.not_implemented_yet);
+        else {
+            Card card = (Card) dataItem.getPayload();
+            pageView.goShowCard(card);
+        }
     }
 
     @Override

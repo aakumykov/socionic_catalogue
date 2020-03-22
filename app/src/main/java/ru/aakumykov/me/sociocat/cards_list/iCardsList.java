@@ -10,6 +10,7 @@ import java.util.List;
 import ru.aakumykov.me.sociocat.base_view.iBaseView;
 import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.list_items.ListItem;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.selectable_adapter.iSelectableAdapter;
 
 public interface iCardsList {
@@ -51,6 +52,8 @@ public interface iCardsList {
         void setViewState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
         boolean actionModeIsActive();
         void scrollToPosition(int position);
+
+        void goShowCard(Card card);
     }
 
     interface iDataAdapter extends Filterable, iSelectableAdapter {

@@ -1,5 +1,6 @@
 package ru.aakumykov.me.sociocat.cards_list;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,10 +19,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.aakumykov.me.sociocat.AppConfig;
+import ru.aakumykov.me.sociocat.Constants;
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.base_view.BaseView;
+import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.view_model.CardsList_ViewModel;
 import ru.aakumykov.me.sociocat.cards_list.view_model.CardsList_ViewModelFactory;
+import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsList_View
@@ -187,6 +191,13 @@ public class CardsList_View
     @Override
     public void scrollToPosition(int position) {
         recyclerView.scrollToPosition(position);
+    }
+
+    @Override
+    public void goShowCard(Card card) {
+        Intent intent = new Intent(this, CardShow_View.class);
+        intent.putExtra(Constants.CARD, card);
+        startActivityForResult(intent, Constants.CODE_SHOW_CARD);
     }
 
     @Override

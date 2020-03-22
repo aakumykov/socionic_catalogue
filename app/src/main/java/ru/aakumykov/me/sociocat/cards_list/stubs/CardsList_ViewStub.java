@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 
 import ru.aakumykov.me.sociocat.base_view.BaseView_Stub;
 import ru.aakumykov.me.sociocat.cards_list.iCardsList;
+import ru.aakumykov.me.sociocat.models.Card;
 
 @SuppressLint("Registered")
 public class CardsList_ViewStub
@@ -29,6 +30,11 @@ public class CardsList_ViewStub
 
     @Override
     public void scrollToPosition(int position) {
+
+    }
+
+    @Override
+    public void goShowCard(Card card) {
 
     }
 }
