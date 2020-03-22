@@ -81,10 +81,7 @@ public interface iCardsList {
         boolean allItemsAreSelected();
 
         void showLoadmoreItem();
-        void hideLoadmoreItem();
-
         void showThrobberItem();
-        void hideThrobberItem();
 
         List<DataItem> getSelectedItems();
     }

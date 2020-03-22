@@ -251,32 +251,36 @@ public class CardsList_DataAdapter
 
     @Override
     public void showLoadmoreItem() {
-        if (getLastItem() instanceof LoadMoreItem)
+        ListItem lastItem = getLastItem();
+
+        if (lastItem instanceof LoadMoreItem)
             return;
+
+        if (lastItem instanceof ThrobberItem) {
+            int index = itemsList.indexOf(lastItem);
+            itemsList.set(index, new LoadMoreItem());
+            notifyItemChanged(index);
+            return;
+        }
+
         addItem(new LoadMoreItem());
     }
 
     @Override
-    public void hideLoadmoreItem() {
-        ListItem lastItem = getLastItem();
-
-        if (lastItem instanceof LoadMoreItem)
-            removeItem(lastItem);
-    }
-
-    @Override
     public void showThrobberItem() {
-        if (getLastItem() instanceof ThrobberItem)
-            return;
-        addItem(new ThrobberItem());
-    }
-
-    @Override
-    public void hideThrobberItem() {
         ListItem lastItem = getLastItem();
 
         if (lastItem instanceof ThrobberItem)
-            itemsList.remove(lastItem);
+            return;
+
+        if (lastItem instanceof LoadMoreItem) {
+            replaceEndItem(new LoadMoreItem());
+        }
+        else
+            addItem(new LoadMoreItem());
+    }
+
+    private void replaceEndItem(ListItem listItem) {
 
     }
 
