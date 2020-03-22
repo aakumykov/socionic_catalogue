@@ -19,7 +19,7 @@ import ru.aakumykov.me.sociocat.template_of_list.view_holders.Unknown_ViewHolder
 public class ListItemsFactory {
 
     @NonNull
-    static BasicViewHolder createViewHolder(int viewType, ViewGroup parent) {
+    public static BasicViewHolder createViewHolder(int viewType, ViewGroup parent) {
 
         if (viewType == iItemsList.DATA_ITEM_TYPE) {
             View itemView = createItemView(parent, R.layout.template_of_list_data_item);
