@@ -220,7 +220,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         //pageView.setViewState(iCardsList.ViewState.PROGRESS, null, null);
         dataAdapter.showThrobberItem();
 
-        cardsSingleton.loadCardsFromBeginning(new iCardsSingleton.ListCallbacks() {
+        iCardsSingleton.ListCallbacks callbacks = new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 showSuccessState();
@@ -234,7 +234,11 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
                 showErrorState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
                 dataAdapter.showLoadmoreItem();
             }
-        });
+        };
+
+        //cardsSingleton.loadCardsFromBeginning(callbacks);
+
+        cardsSingleton.simplyLoadCards(callbacks);
     }
 
     private void loadMoreCards(Card startingFromCard) {

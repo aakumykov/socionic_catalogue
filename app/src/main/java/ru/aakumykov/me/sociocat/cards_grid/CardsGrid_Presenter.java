@@ -330,7 +330,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
 
         dataAdapter.showThrobber(0);
 
-        cardsSingleton.loadCardsFromBeginning(new iCardsSingleton.ListCallbacks() {
+        iCardsSingleton.ListCallbacks callbacks = new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
                 dataAdapter.hideThrobber(insertPosition);
@@ -341,7 +341,11 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
             public void onListLoadFail(String errorMessage) {
                 pageView.showErrorMsg(R.string.CARDS_GRID_error_loading_cards, errorMessage);
             }
-        });
+        };
+
+//        cardsSingleton.loadCardsFromBeginning(callbacks);
+
+        cardsSingleton.simplyLoadCards(callbacks);
     }
 
     private void loadCardsWithTag(String filterTag) {
