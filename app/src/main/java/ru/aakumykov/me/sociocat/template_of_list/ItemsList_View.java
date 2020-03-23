@@ -32,13 +32,15 @@ public class ItemsList_View
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
     private SearchView searchView;
-    private iItemsList.iDataAdapter dataAdapter;
-    private iItemsList.iPresenter presenter;
+
+    private boolean viewIsFresh = true;
     private boolean isFilterActive = false;
+
+    private iItemsList.iPresenter presenter;
+    private iItemsList.iDataAdapter dataAdapter;
 
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
-
     private RecyclerView.LayoutManager currentLayoutManager;
 
     private ActionMode actionMode;
@@ -68,10 +70,18 @@ public class ItemsList_View
         presenter.linkViewAndAdapter(this, dataAdapter);
         dataAdapter.bindBottomReachedListener(this);
 
-        if (dataAdapter.isVirgin()) {
-            presenter.onFirstOpen(getIntent());
-        } else {
-            presenter.onConfigurationChanged();
+        if (viewIsFresh)
+        {
+            viewIsFresh = false;
+
+            if (dataAdapter.isVirgin())
+            {
+                presenter.onFirstOpen(getIntent());
+            }
+            else
+            {
+                presenter.onConfigurationChanged();
+            }
         }
     }
 

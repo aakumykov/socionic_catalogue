@@ -48,9 +48,12 @@ public interface iCardsList {
 
 
     interface iPageView extends iBaseView {
-        void changeLayout(LayoutMode layoutMode);
         void setViewState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
+
+        void changeLayout(LayoutMode layoutMode);
+
         boolean actionModeIsActive();
+
         void scrollToPosition(int position);
 
         void goShowCard(Card card);
