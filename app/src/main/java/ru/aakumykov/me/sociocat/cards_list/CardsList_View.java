@@ -56,7 +56,7 @@ public class CardsList_View
         setContentView(R.layout.cards_list_activity);
         ButterKnife.bind(this);
 
-        setPageTitle(R.string.CARDS_LIST_page_title);
+        setPageTitle(R.string.CARDS_GRID_page_title);
 
         configureSwipeRefresh();
         configurePresenterAndAdapter();

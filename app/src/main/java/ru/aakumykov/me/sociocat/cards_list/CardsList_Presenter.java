@@ -58,10 +58,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onConfigurationChanged() {
-        updatePageTitle();
-
         pageView.changeLayout(currentLayoutMode);
-
         pageView.setViewState(currentViewState, currentViewMessageId, currentViewMessageDetails);
     }
 
@@ -280,11 +277,6 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     private interface iLoadListCallbacks {
         void onListLoaded(List<DataItem> list);
-    }
-
-    private void updatePageTitle() {
-        int count = dataAdapter.getListSize();
-        pageView.setPageTitle(R.string.LIST_TEMPLATE_title_extended, String.valueOf(count));
     }
 
     private List<DataItem> createRandomList() {
