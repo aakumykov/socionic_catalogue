@@ -27,7 +27,7 @@ public interface iCardsSingleton {
         UNRATE_DOWN
     }
 
-    void simplyLoadCards(ListCallbacks callbacks);
+
     void loadCardsFromBeginning(ListCallbacks callbacks);
     void loadCardsAfter(Card cardToLoadAfter, ListCallbacks callbacks);
     void loadCardsWithTag(String tagName, ListCallbacks callbacks) throws Exception;

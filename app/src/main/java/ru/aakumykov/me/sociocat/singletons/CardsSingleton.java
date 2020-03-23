@@ -54,43 +54,6 @@ public class CardsSingleton implements iCardsSingleton {
 
 
     @Override
-    public void simplyLoadCards(ListCallbacks callbacks) {
-
-//        Query query = cardsCollection.limit(AppConfig.DEFAULT_CARDS_LOAD_COUNT);
-        Query query = cardsCollection
-//                .orderBy(Card.KEY_KEY)
-//                .orderBy(Card.KEY_KEY, Query.Direction.ASCENDING)
-                .orderBy(Card.KEY_CTIME, Query.Direction.DESCENDING)
-                .limit(4L);
-
-        query.get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        extractCardsFromQuerySnapshot(queryDocumentSnapshots, new iExtractQuerySnapshotCallbacks() {
-                            @Override
-                            public void OnExtractSuccess(List<Card> cardsList) {
-                                callbacks.onListLoadSuccess(cardsList);
-                            }
-
-                            @Override
-                            public void OnExtractFail(List<String> errorsList) {
-                                callbacks.onListLoadFail("Error exception(s) on cards loading.");
-                                Log.e(TAG, TextUtils.join("\n", errorsList));
-                            }
-                        });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        callbacks.onListLoadFail(e.getMessage());
-                        MyUtils.printError(TAG, e);
-                    }
-                });
-    }
-
-    @Override
     public void loadCardsFromBeginning(ListCallbacks callbacks) {
         loadListEnhanced(
                 null,
