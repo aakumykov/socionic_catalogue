@@ -81,6 +81,12 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     public void onRefreshRequested() {
 
         DataItem lastDataItem = dataAdapter.getLastDataItem();
+
+        if (null == lastDataItem) {
+            showSuccessState();
+            return;
+        }
+
         Card card = (Card) lastDataItem.getPayload();
 
         pageView.setViewState(iCardsList.ViewState.REFRESHING, null, null);
