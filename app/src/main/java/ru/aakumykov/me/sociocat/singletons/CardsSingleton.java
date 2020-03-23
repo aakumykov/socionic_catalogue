@@ -204,16 +204,16 @@ public class CardsSingleton implements iCardsSingleton {
                             callbacks.onCardLoadSuccess(card);
                         }
                         catch (Exception e) {
-                            e.printStackTrace();
                             callbacks.onCardLoadFailed(e.getMessage());
+                            MyUtils.printError(TAG, e);
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
                         callbacks.onCardLoadFailed(e.getMessage());
+                        MyUtils.printError(TAG, e);
                     }
                 });
 
@@ -519,8 +519,8 @@ public class CardsSingleton implements iCardsSingleton {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
                         callbacks.onListLoadFail(e.getMessage());
+                        MyUtils.printError(TAG, e);
                     }
                 });
     }
