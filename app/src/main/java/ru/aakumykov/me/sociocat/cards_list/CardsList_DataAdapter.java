@@ -137,6 +137,8 @@ public class CardsList_DataAdapter
         itemsList.addAll(inputList);
 
         this.isVirgin = false;
+
+        notifyDataSetChanged();
     }
 
     @Override
@@ -148,7 +150,7 @@ public class CardsList_DataAdapter
 
         getFilter().filter(filterQuery);
 
-        //notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -256,10 +258,11 @@ public class CardsList_DataAdapter
         if (endingItem instanceof LoadMoreItem)
             return;
 
-        if (endingItem instanceof ThrobberItem)
+        if (endingItem instanceof ThrobberItem) {
             replaceEndingItem(new LoadMoreItem());
-        else
+        } else {
             addItem(new LoadMoreItem());
+        }
     }
 
     @Override

@@ -51,10 +51,10 @@ public class DataItem<T extends iListPayload> extends ListItem {
         stringBuilder.append(DataItem.class.getSimpleName());
         stringBuilder.append(" {");
         stringBuilder.append(" name: ");
-        stringBuilder.append(name);
+        stringBuilder.append(getName());
         stringBuilder.append(", ");
         stringBuilder.append("count: ");
-        stringBuilder.append(count);
+        stringBuilder.append(getCount());
         stringBuilder.append(" }");
 
         return stringBuilder.toString();
