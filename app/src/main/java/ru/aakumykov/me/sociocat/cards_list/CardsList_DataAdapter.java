@@ -137,8 +137,6 @@ public class CardsList_DataAdapter
         itemsList.addAll(inputList);
 
         this.isVirgin = false;
-
-        performSorting(null);
     }
 
     @Override
@@ -150,7 +148,7 @@ public class CardsList_DataAdapter
 
         getFilter().filter(filterQuery);
 
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
     @Override
