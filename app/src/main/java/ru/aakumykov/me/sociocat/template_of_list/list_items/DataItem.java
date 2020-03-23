@@ -22,7 +22,7 @@ public class DataItem<T extends iListPayload> extends ListItem {
     }
 
     public String getName() {
-        return ((T) payload).getTitle();
+        return name;
     }
 
     public void setName(String name) {
@@ -30,7 +30,7 @@ public class DataItem<T extends iListPayload> extends ListItem {
     }
 
     public int getCount() {
-        return ((T) payload).getCount();
+        return count;
     }
 
     public void setCount(int count) {
@@ -52,10 +52,10 @@ public class DataItem<T extends iListPayload> extends ListItem {
         stringBuilder.append(DataItem.class.getSimpleName());
         stringBuilder.append(" {");
         stringBuilder.append(" name: ");
-        stringBuilder.append(name);
+        stringBuilder.append(getName());
         stringBuilder.append(", ");
         stringBuilder.append("count: ");
-        stringBuilder.append(count);
+        stringBuilder.append(getCount());
         stringBuilder.append(" }");
 
         return stringBuilder.toString();

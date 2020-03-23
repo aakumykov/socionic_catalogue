@@ -56,7 +56,6 @@ public class ItemsList_View
         activateUpButton();
 
         configureSwipeRefresh();
-
         configurePresenterAndAdapter();
         configureLayoutManagers();
         configureRecyclerView();
@@ -145,11 +144,11 @@ public class ItemsList_View
                 break;
 
             case R.id.actionListView:
-                toggleViewMode();
+                presenter.onChangeLayoutClicked();
                 break;
 
             case R.id.actionGridView:
-                toggleViewMode();
+                presenter.onChangeLayoutClicked();
                 break;
 
             default:
@@ -191,23 +190,27 @@ public class ItemsList_View
     }
 
     @Override
-    public void applyViewMode() {
-        iItemsList.ViewMode viewMode = presenter.getStoredViewMode();
+    public void changeLayout(@Nullable iItemsList.LayoutMode layoutMode) {
 
-        if (null == viewMode || iItemsList.ViewMode.GRID == viewMode)
+        if (null == layoutMode || iItemsList.LayoutMode.GRID == layoutMode)
             currentLayoutManager = staggeredGridLayoutManager;
         else
             currentLayoutManager = linearLayoutManager;
 
         recyclerView.setLayoutManager(currentLayoutManager);
+
+        recyclerView.setAdapter(null);
+        dataAdapter.setLayoutMode(presenter.getCurrentLayoutMode());
+        recyclerView.setAdapter((RecyclerView.Adapter) dataAdapter);
     }
 
     @Override
-    public void setViewState(iItemsList.ViewState viewState, Integer messageId, @Nullable Object messageDetails) {
+    public void setViewState(@Nullable iItemsList.ViewState viewState, @Nullable Integer messageId, @Nullable Object messageDetails) {
 
         presenter.storeViewState(viewState, messageId, messageDetails);
 
-        //applyViewMode(presenter.getStoredViewMode());
+        if (null == viewState)
+            return;
 
         switch (viewState) {
             case SUCCESS:
@@ -343,21 +346,6 @@ public class ItemsList_View
                 return false;
             }
         });
-    }
-
-    private void toggleViewMode() {
-        iItemsList.ViewMode currentViewMode = presenter.getStoredViewMode();
-
-        if (null == currentViewMode || iItemsList.ViewMode.GRID.equals(currentViewMode))
-            currentViewMode = iItemsList.ViewMode.LIST;
-        else
-            currentViewMode = iItemsList.ViewMode.GRID;
-
-        presenter.storeViewMode(currentViewMode);
-
-        applyViewMode();
-
-        refreshMenu();
     }
 
     private void showRefreshThrobber() {

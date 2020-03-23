@@ -3,6 +3,8 @@ package ru.aakumykov.me.sociocat.template_of_list.view_holders;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -14,7 +16,7 @@ public class DataItem_ViewHolder extends BasicViewHolder {
 
     @BindView(R.id.cardView) View cardView;
     @BindView(R.id.nameView) TextView nameView;
-    @BindView(R.id.countView) TextView countView;
+    @Nullable @BindView(R.id.countView) TextView countView;
     @BindView(R.id.selectedOverlay) View selectedOverlay;
 
     private DataItem dataItem;

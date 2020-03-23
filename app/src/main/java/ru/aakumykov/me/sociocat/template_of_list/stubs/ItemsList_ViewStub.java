@@ -12,8 +12,9 @@ public class ItemsList_ViewStub
         extends BaseView_Stub
         implements iItemsList.iPageView
 {
+
     @Override
-    public void applyViewMode() {
+    public void changeLayout(iItemsList.LayoutMode layoutMode) {
 
     }
 

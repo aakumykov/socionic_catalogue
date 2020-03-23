@@ -53,6 +53,11 @@ public class ItemsList_DataAdapter_Stub
     }
 
     @Override
+    public DataItem getLastDataItem() {
+        return null;
+    }
+
+    @Override
     public void removeItem(ListItem listItem) {
 
     }
@@ -110,6 +115,11 @@ public class ItemsList_DataAdapter_Stub
     @Override
     public List<DataItem> getSelectedItems() {
         return null;
+    }
+
+    @Override
+    public void setLayoutMode(iItemsList.LayoutMode layoutMode) {
+
     }
 
     @Override

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.template_of_list.filter_stuff.ItemsComparator;
 import ru.aakumykov.me.sociocat.template_of_list.filter_stuff.ItemsFilter;
 import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
@@ -41,6 +42,7 @@ public class ItemsList_DataAdapter
 
     private ItemsFilter itemsFilter;
     private iItemsList.SortingMode currentSortingMode = iItemsList.SortingMode.ORDER_NAME_DIRECT;
+    private iItemsList.LayoutMode currentLayoutMode;
 
 
     // Конструктор
@@ -70,8 +72,11 @@ public class ItemsList_DataAdapter
 
     @NonNull @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        BasicViewHolder basicViewHolder = ListItemsFactory.createViewHolder(viewType, parent);
+
+        BasicViewHolder basicViewHolder = ListItemsFactory.createViewHolder(viewType, parent, currentLayoutMode);
+
         basicViewHolder.setPresenter(presenter);
+
         return basicViewHolder;
     }
 
@@ -132,11 +137,9 @@ public class ItemsList_DataAdapter
         itemsList.clear();
         itemsList.addAll(inputList);
 
-        itemsList.add(new LoadMoreItem());
-
         this.isVirgin = false;
 
-        performSorting(null);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -174,6 +177,20 @@ public class ItemsList_DataAdapter
     @Override
     public List<ListItem> getAllItems() {
         return itemsList;
+    }
+
+    @Override
+    public DataItem getLastDataItem() {
+        int listSize = itemsList.size();
+        int maxIndex = getMaxIndex();
+
+        for (int i=0; i < listSize; i++) {
+            ListItem listItem = itemsList.get(maxIndex - i);
+            if (listItem instanceof DataItem)
+                return (DataItem) listItem;
+        }
+
+        return null;
     }
 
     @Override
@@ -279,6 +296,12 @@ public class ItemsList_DataAdapter
         for (int index : selectedIndexes)
             selectedItems.add(getDataItem(index));
         return selectedItems;
+    }
+
+    @Override
+    public void setLayoutMode(iItemsList.LayoutMode layoutMode) {
+        this.currentLayoutMode = layoutMode;
+        notifyDataSetChanged();
     }
 
 

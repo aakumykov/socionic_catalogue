@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.base_view.iBaseView;
+import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.template_of_list.list_items.ListItem;
 import ru.aakumykov.me.sociocat.template_of_list.selectable_adapter.iSelectableAdapter;
@@ -25,7 +26,7 @@ public interface iItemsList {
         THROBBER_ITEM
     }
 
-    enum ViewMode {
+    enum LayoutMode {
         LIST,
         GRID
     }
@@ -47,7 +48,7 @@ public interface iItemsList {
 
 
     interface iPageView extends iBaseView {
-        void applyViewMode();
+        void changeLayout(LayoutMode layoutMode);
         void setViewState(ViewState viewState, Integer messageId, @Nullable Object messageDetails);
         boolean actionModeIsActive();
         void scrollToPosition(int position);
@@ -66,6 +67,7 @@ public interface iItemsList {
 
         DataItem getDataItem(int position);
         List<ListItem> getAllItems();
+        DataItem getLastDataItem();
 
         void removeItem(ListItem listItem);
 
@@ -86,6 +88,8 @@ public interface iItemsList {
         void hideThrobberItem();
 
         List<DataItem> getSelectedItems();
+
+        void setLayoutMode(LayoutMode layoutMode);
     }
 
     interface iPresenter {
@@ -95,10 +99,9 @@ public interface iItemsList {
         void onFirstOpen(@Nullable Intent intent);
         void onConfigurationChanged();
 
-        void storeViewState(ViewState viewState, Integer messageId, Object messageDetails);
+        LayoutMode getCurrentLayoutMode();
 
-        void storeViewMode(ViewMode viewMode);
-        ViewMode getStoredViewMode();
+        void storeViewState(ViewState viewState, Integer messageId, Object messageDetails);
 
         void onRefreshRequested();
 
@@ -121,6 +124,8 @@ public interface iItemsList {
         void onDeleteSelectedItemsClicked();
 
         void onActionModeDestroyed();
+
+        void onChangeLayoutClicked();
     }
 
 

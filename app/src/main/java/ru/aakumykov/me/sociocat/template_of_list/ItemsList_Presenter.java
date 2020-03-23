@@ -10,8 +10,6 @@ import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_ViewStub;
@@ -23,10 +21,10 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     private iItemsList.iDataAdapter dataAdapter;
     private CharSequence filterText;
 
-    private iItemsList.ViewState viewState;
-    private Integer viewMessageId;
-    private Object viewMessageDetails;
-    private iItemsList.ViewMode currentViewMode;
+    private iItemsList.ViewState currentViewState;
+    private Integer currentViewMessageId;
+    private Object currentViewMessageDetails;
+    private iItemsList.LayoutMode currentLayoutMode;
 
 
     // iItemsList.iPresenter
@@ -45,11 +43,11 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onFirstOpen(@Nullable Intent intent) {
         if (null == intent) {
-            pageView.setViewState(iItemsList.ViewState.ERROR, R.string.data_error, "Intent is null");
+            showErrorState(R.string.data_error, "Intent is null");
             return;
         }
 
-        pageView.applyViewMode();
+        pageView.changeLayout(currentLayoutMode);
 
         loadList();
     }
@@ -58,31 +56,35 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     public void onConfigurationChanged() {
         updatePageTitle();
 
-        pageView.applyViewMode();
+        pageView.changeLayout(currentLayoutMode);
 
-        pageView.setViewState(viewState, viewMessageId, viewMessageDetails);
+        pageView.setViewState(currentViewState, currentViewMessageId, currentViewMessageDetails);
+    }
+
+    @Override
+    public iItemsList.LayoutMode getCurrentLayoutMode() {
+        return currentLayoutMode;
     }
 
     @Override
     public void storeViewState(iItemsList.ViewState viewState, Integer messageId, Object messageDetails) {
-        this.viewState = viewState;
-        this.viewMessageId = messageId;
-        this.viewMessageDetails = messageDetails;
-    }
-
-    @Override
-    public void storeViewMode(iItemsList.ViewMode viewMode) {
-        currentViewMode = viewMode;
-    }
-
-    @Override
-    public iItemsList.ViewMode getStoredViewMode() {
-        return currentViewMode;
+        this.currentViewState = viewState;
+        this.currentViewMessageId = messageId;
+        this.currentViewMessageDetails = messageDetails;
     }
 
     @Override
     public void onRefreshRequested() {
+
+        DataItem lastDataItem = dataAdapter.getLastDataItem();
+
+        if (null == lastDataItem) {
+            showSuccessState();
+            return;
+        }
+
         pageView.setViewState(iItemsList.ViewState.REFRESHING, null, null);
+
         loadList();
     }
 
@@ -104,20 +106,15 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     public void onLoadMoreClicked() {
         int scrollPosition = dataAdapter.getListSize() + 1;
 
-        dataAdapter.hideLoadmoreItem();
-        dataAdapter.showThrobberItem();
+        DataItem lastDataItem = dataAdapter.getLastDataItem();
 
-        getRandomList(new iLoadListCallbacks() {
-            @Override
-            public void onListLoaded(List<DataItem> list) {
-                dataAdapter.hideThrobberItem();
-
-                dataAdapter.appendList(list);
-                pageView.scrollToPosition(scrollPosition);
-
-                dataAdapter.showLoadmoreItem();
-            }
-        });
+        if (null != lastDataItem) {
+            Object object = lastDataItem.getPayload();
+            loadMoreCards(object);
+        }
+        else {
+            loadList();
+        }
     }
 
     @Override
@@ -162,7 +159,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
     @Override
     public void onClearSelectionClicked() {
         dataAdapter.clearSelection();
-        setViewStateSuccess();
+        showSuccessState();
     }
 
     @Override
@@ -177,39 +174,55 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         for (DataItem item : selectedItems)
             dataAdapter.removeItem(item);
 
-        setViewStateSuccess();
+        showSuccessState();
     }
 
     @Override
     public void onActionModeDestroyed() {
         dataAdapter.clearSelection();
-        setViewStateSuccess();
+        showSuccessState();
+    }
+
+    @Override
+    public void onChangeLayoutClicked() {
+        if (null == currentLayoutMode || iItemsList.LayoutMode.GRID.equals(currentLayoutMode))
+            currentLayoutMode = iItemsList.LayoutMode.LIST;
+        else
+            currentLayoutMode = iItemsList.LayoutMode.GRID;
+
+        pageView.changeLayout(currentLayoutMode);
+        pageView.refreshMenu();
     }
 
 
     // Внутренние методы
-    private void loadList() {
-        pageView.setViewState(iItemsList.ViewState.PROGRESS, R.string.LIST_TEMPLATE_loading_list, null);
+    private interface iLoadListCallbacks {
+        void onListLoaded(List<DataItem> list);
+    }
 
-        /*getRandomList(new iLoadListCallbacks() {
+    private void loadList() {
+        dataAdapter.showThrobberItem();
+
+        getRandomList(new iLoadListCallbacks() {
             @Override
             public void onListLoaded(List<DataItem> list) {
+                showSuccessState();
+                dataAdapter.hideThrobberItem();
                 dataAdapter.setList(list);
-                setViewStateSuccess();
+                dataAdapter.showLoadmoreItem();
             }
-        });*/
+        });
+    }
 
-        CardsSingleton.getInstance().loadFirstPortionOfCards(new iCardsSingleton.ListCallbacks() {
-            @Override
-            public void onListLoadSuccess(List<Card> list) {
-                List<DataItem> dataItems = incapsulateObjects2DataItems(list);
-                dataAdapter.setList(dataItems);
-                pageView.setViewState(iItemsList.ViewState.SUCCESS, null, null);
-            }
+    private void loadMoreCards(Object startingFromObject) {
+        dataAdapter.showThrobberItem();
 
+        getRandomList(new iLoadListCallbacks() {
             @Override
-            public void onListLoadFail(String errorMessage) {
-                pageView.setViewState(iItemsList.ViewState.ERROR, R.string.CARDS_GRID_error_loading_cards, errorMessage);
+            public void onListLoaded(List<DataItem> list) {
+                dataAdapter.hideThrobberItem();
+                dataAdapter.appendList(list);
+                dataAdapter.showLoadmoreItem();
             }
         });
     }
@@ -224,25 +237,13 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         return outputList;
     }
 
-    private void getRandomList(iLoadListCallbacks callbacks) {
-        List<DataItem> list = createRandomList();
-
-        /*if (hasFilterText())
-            dataAdapter.setList(list, getFilterText());
-        else {
-            dataAdapter.setList(list);
-        }*/
-
-        callbacks.onListLoaded(list);
-    }
-
-    private interface iLoadListCallbacks {
-        void onListLoaded(List<DataItem> list);
-    }
-
     private void updatePageTitle() {
         int count = dataAdapter.getListSize();
         pageView.setPageTitle(R.string.LIST_TEMPLATE_title_extended, String.valueOf(count));
+    }
+
+    private void getRandomList(iLoadListCallbacks callbacks) {
+        callbacks.onListLoaded(createRandomList());
     }
 
     private List<DataItem> createRandomList() {
@@ -270,13 +271,17 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         int selectedItemsCount = dataAdapter.getSelectedItemCount();
 
         if (0 == selectedItemsCount) {
-            setViewStateSuccess();
+            showSuccessState();
         } else {
             pageView.setViewState(iItemsList.ViewState.SELECTION, null, selectedItemsCount);
         }
     }
 
-    private void setViewStateSuccess() {
+    private void showSuccessState() {
         pageView.setViewState(iItemsList.ViewState.SUCCESS, null, null);
+    }
+
+    private void showErrorState(int messageId, String errorMessage) {
+        pageView.setViewState(iItemsList.ViewState.ERROR, messageId, errorMessage);
     }
 }
