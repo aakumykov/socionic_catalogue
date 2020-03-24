@@ -202,6 +202,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
         Card card = (Card) dataItem.getPayload();
 
+        dataAdapter.showItemIsNowDeleting(dataItem);
         pageView.setViewState(iCardsList.ViewState.PROGRESS, R.string.deleting_card, null);
 
         DeleteCard_Helper.deleteCard(card.getKey(), new DeleteCard_Helper.iDeletionCallbacks() {

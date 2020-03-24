@@ -95,6 +95,8 @@ public interface iCardsList {
         List<DataItem> getSelectedItems();
 
         void setLayoutMode(LayoutMode currentLayoutMode);
+
+        void showItemIsNowDeleting(DataItem dataItem);
     }
 
     interface iPresenter {
