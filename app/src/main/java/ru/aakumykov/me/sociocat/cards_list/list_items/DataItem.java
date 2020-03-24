@@ -44,6 +44,7 @@ public class DataItem<T extends iListPayload> extends ListItem {
         this.payload = payload;
     }
 
+    // Object
     @NonNull @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -60,6 +61,8 @@ public class DataItem<T extends iListPayload> extends ListItem {
         return stringBuilder.toString();
     }
 
+
+    // ListItem
     @Override
     public int compareTo(ListItem listItem) {
         if (listItem instanceof LoadMoreItem)
@@ -74,7 +77,6 @@ public class DataItem<T extends iListPayload> extends ListItem {
         return 0;
     }
 
-    // ListItem
     @Override
     public iCardsList.ItemType getItemType() {
         return iCardsList.ItemType.DATA_ITEM;

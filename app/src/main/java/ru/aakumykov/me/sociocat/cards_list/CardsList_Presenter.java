@@ -2,7 +2,9 @@ package ru.aakumykov.me.sociocat.cards_list;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -15,9 +17,12 @@ import ru.aakumykov.me.sociocat.cards_list.stubs.CardsList_ViewStub;
 import ru.aakumykov.me.sociocat.models.Card;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.utils.DeleteCard_Helper;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsList_Presenter implements iCardsList.iPresenter {
+
+    private static final String TAG = CardsList_Presenter.class.getSimpleName();
 
     private iCardsList.iPageView pageView;
     private iCardsList.iDataAdapter dataAdapter;
@@ -47,7 +52,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onFirstOpen(@Nullable Intent intent) {
         if (null == intent) {
-            showErrorState(R.string.data_error, "Intent is null");
+            showErrorViewState(R.string.data_error, "Intent is null");
             return;
         }
 
@@ -80,7 +85,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         DataItem lastDataItem = dataAdapter.getLastDataItem();
 
         if (null == lastDataItem) {
-            showSuccessState();
+            showSuccessViewState();
             return;
         }
 
@@ -91,14 +96,14 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         cardsSingleton.loadCardsFromNewestTo(card, new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                showSuccessState();
+                showSuccessViewState();
                 dataAdapter.setList(incapsulateObjects2DataItems(list));
                 dataAdapter.showLoadmoreItem();
             }
 
             @Override
             public void onListLoadFail(String errorMessage) {
-                showErrorState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+                showErrorViewState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
             }
         });
     }
@@ -164,6 +169,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public boolean canDeleteSelectedItem() {
+        // TODO: реализация
         return true;
     }
 
@@ -176,7 +182,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     @Override
     public void onClearSelectionClicked() {
         dataAdapter.clearSelection();
-        showSuccessState();
+        showSuccessViewState();
     }
 
     @Override
@@ -188,16 +194,37 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     public void onDeleteSelectedItemsClicked() {
         List<DataItem> selectedItems = dataAdapter.getSelectedItems();
 
-        for (DataItem item : selectedItems)
-            dataAdapter.removeItem(item);
+        for (DataItem dataItem : selectedItems)
+            deleteCard(dataItem);
+    }
 
-        showSuccessState();
+    private void deleteCard(@NonNull DataItem dataItem) {
+
+        Card card = (Card) dataItem.getPayload();
+
+        pageView.setViewState(iCardsList.ViewState.PROGRESS, R.string.deleting_card, null);
+
+        DeleteCard_Helper.deleteCard(card.getKey(), new DeleteCard_Helper.iDeletionCallbacks() {
+            @Override
+            public void onCardDeleteSuccess(Card card) {
+                showSuccessViewState();
+                pageView.showToast(pageView.getString(R.string.card_deleted_long, card.getTitle()));
+                dataAdapter.removeItem(dataItem);
+            }
+
+            @Override
+            public void onCardDeleteError(String errorMsg) {
+                pageView.showToast(pageView.getString(R.string.error_deleting_card_long, card.getTitle()));
+                Log.e(TAG, errorMsg);
+            }
+        });
+
     }
 
     @Override
     public void onActionModeDestroyed() {
         dataAdapter.clearSelection();
-        showSuccessState();
+        showSuccessViewState();
     }
 
     @Override
@@ -220,7 +247,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         cardsSingleton.loadCardsFromBeginning(new iCardsSingleton.ListCallbacks() {
             @Override
             public void onListLoadSuccess(List<Card> list) {
-                showSuccessState();
+                showSuccessViewState();
                 dataAdapter.hideThrobberItem();
                 dataAdapter.setList(incapsulateObjects2DataItems(list));
                 dataAdapter.showLoadmoreItem();
@@ -228,7 +255,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
             @Override
             public void onListLoadFail(String errorMessage) {
-                showErrorState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+                showErrorViewState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
                 dataAdapter.showLoadmoreItem();
             }
         });
@@ -247,7 +274,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
             @Override
             public void onListLoadFail(String errorMessage) {
-                showErrorState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
+                showErrorViewState(R.string.CARDS_GRID_error_loading_cards, errorMessage);
                 dataAdapter.showLoadmoreItem();
             }
         });
@@ -262,6 +289,10 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         }
         return outputList;
     }
+
+//    private <T> List<T> extractObjectsFromDataItems(List<DataItem> dataItemsList) {
+//
+//    }
 
     private void getRandomList(iLoadListCallbacks callbacks) {
         List<DataItem> list = createRandomList();
@@ -304,17 +335,17 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         int selectedItemsCount = dataAdapter.getSelectedItemCount();
 
         if (0 == selectedItemsCount) {
-            showSuccessState();
+            showSuccessViewState();
         } else {
             pageView.setViewState(iCardsList.ViewState.SELECTION, null, selectedItemsCount);
         }
     }
 
-    private void showSuccessState() {
+    private void showSuccessViewState() {
         pageView.setViewState(iCardsList.ViewState.SUCCESS, null, null);
     }
 
-    private void showErrorState(int messageId, String errorMessage) {
+    private void showErrorViewState(int messageId, String errorMessage) {
         pageView.setViewState(iCardsList.ViewState.ERROR, messageId, errorMessage);
     }
 }

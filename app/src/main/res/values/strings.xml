@@ -46,7 +46,7 @@
     <string name="add_card">Добавить карточку</string>
     <string name="text">Текст</string>
     <string name="image">Картинка</string>
-    <string name="card_deleted">Карточка удалена</string>
+    <string name="card_deleted_short">Карточка удалена</string>
     <string name="deleting_card">Удаляем карточку</string>
     <string name="CARD_SHOW_error_deleting_card">Ошибка удаления карточки</string>
     <string name="unknown_request_code">Неизвестный код операции</string>
@@ -530,7 +530,7 @@
     <string name="error">Ошибка</string>
     <string name="USER_SHOW_complex_page_title">Профиль пользователя «%1$s»</string>
     <string name="COMMENT_error_cannot_change_comment_rating">Ошибка изменения рейтинга</string>
-    <string name="error_deleting_card">Ошибка удаления карточки</string>
+    <string name="error_deleting_card_short">Ошибка удаления карточки</string>
     <string name="cannot_edit_card">Редактирование запрещено</string>
     <string name="CARD_SHOW_edit_cancelled">Редактирование отменено</string>
     <string name="PREFERENCE_dropbox_access_token_title">Ключ доступа Dropbox</string>
@@ -667,6 +667,8 @@
     <string name="select_all">Выбрать всё</string>
     <string name="clear_selection">Снять выделение</string>
     <string name="LIST_TEMPLATE_loading_list">Загружаем список</string>
+    <string name="card_deleted_long">Карточка «%1$s» удалена</string>
+    <string name="error_deleting_card_long">Ошибка удаления карточки «%1$s»</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">%1$s</string>-->
 </resources>
 <!--пользователя %1$s к карточке «%2$s» -->

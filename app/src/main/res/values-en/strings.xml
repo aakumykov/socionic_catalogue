@@ -46,7 +46,7 @@
     <string name="add_card">Add card</string>
     <string name="text">Create text card</string>
     <string name="image">Create image card</string>
-    <string name="card_deleted">Card is deleted</string>
+    <string name="card_deleted_short">Card is deleted</string>
     <string name="deleting_card">Deleting card</string>
     <string name="CARD_SHOW_error_deleting_card">Error deleting card</string>
     <string name="unknown_request_code">Unknown request code</string>
@@ -525,7 +525,7 @@
     <string name="USER_SHOW_complex_page_title">Profile of user «%1$s»</string>
     <string name="LOGIN_email_confirmation_required">Confirm your Email (●\'◡\'●)</string>
     <string name="COMMENT_error_cannot_change_comment_rating">Error rating comment</string>
-    <string name="error_deleting_card">Error deleting card</string>
+    <string name="error_deleting_card_short">Error deleting card</string>
     <string name="cannot_edit_card">Edition refused</string>
     <string name="CARD_SHOW_edit_cancelled">Card edition cancelled</string>
     <string name="PREFERENCE_dropbox_access_token_title">Dropbox access token</string>
@@ -662,6 +662,8 @@
     <string name="select_all">Select all</string>
     <string name="clear_selection">Clear selection</string>
     <string name="LIST_TEMPLATE_loading_list">Loading list</string>
+    <string name="card_deleted_long">Card «%1$s» is deleted</string>
+    <string name="error_deleting_card_long">Error deleting card «%1$s»</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>
 <!-- «%1$s» -->
