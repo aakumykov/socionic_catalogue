@@ -79,6 +79,4 @@
 
     <!--  Цвет выделенного элемента списка  -->
     <color name="template_of_list_selected_item_overlay">#799575CD</color>
-
-    <color name="card_is_now_deleting_background">#AEF48FB1</color>
 </resources>

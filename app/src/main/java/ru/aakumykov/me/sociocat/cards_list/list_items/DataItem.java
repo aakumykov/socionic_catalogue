@@ -11,9 +11,6 @@ public class DataItem<T extends iListPayload> extends ListItem {
     private int count;
     private Object payload;
 
-    private boolean isNowDeleting = false;
-
-
     public DataItem() {
 
     }
@@ -85,11 +82,4 @@ public class DataItem<T extends iListPayload> extends ListItem {
         return iCardsList.ItemType.DATA_ITEM;
     }
 
-    public boolean isNowDeleting() {
-        return isNowDeleting;
-    }
-
-    public void setNowDeleting(boolean nowDeleting) {
-        isNowDeleting = nowDeleting;
-    }
 }

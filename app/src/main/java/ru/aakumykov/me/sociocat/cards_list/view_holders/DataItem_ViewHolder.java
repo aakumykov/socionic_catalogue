@@ -4,7 +4,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,7 +15,7 @@ import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 
 public class DataItem_ViewHolder extends BasicViewHolder {
 
-    @BindView(R.id.elementView) CardView elementView;
+    @BindView(R.id.elementView) View cardView;
     @BindView(R.id.nameView) TextView nameView;
     @Nullable @BindView(R.id.countView) TextView countView;
     @BindView(R.id.selectedOverlay) View selectedOverlay;
@@ -54,12 +53,5 @@ public class DataItem_ViewHolder extends BasicViewHolder {
 
     public void setSelected(boolean isSelected) {
         selectedOverlay.setVisibility((isSelected) ? View.VISIBLE : View.INVISIBLE);
-    }
-
-    public void setIsNowDeleting(boolean isNowDeleting) {
-        if (isNowDeleting) {
-//            elementView.setBackgroundResource(R.drawable.shape_card_is_now_deleting_background);
-            elementView.setCardBackgroundColor(elementView.getResources().getColor(R.color.card_is_now_deleting_background));
-        }
     }
 }
