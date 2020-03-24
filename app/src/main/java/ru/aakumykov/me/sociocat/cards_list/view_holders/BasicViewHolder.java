@@ -23,4 +23,5 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         this.presenter = presenter;
     }
 
+    public abstract void setIsNowDeleting(boolean isNowDeleting);
 }

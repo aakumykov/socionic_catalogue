@@ -10,6 +10,7 @@ public class DataItem<T extends iListPayload> extends ListItem {
     private String name;
     private int count;
     private Object payload;
+    private boolean isNowDeleting = false;
 
     public DataItem() {
 
@@ -80,6 +81,16 @@ public class DataItem<T extends iListPayload> extends ListItem {
     @Override
     public iCardsList.ItemType getItemType() {
         return iCardsList.ItemType.DATA_ITEM;
+    }
+
+    @Override
+    public void setIsNowDeleting(boolean value) {
+        this.isNowDeleting = value;
+    }
+
+    @Override
+    public boolean isNowDeleting() {
+        return this.isNowDeleting;
     }
 
 }

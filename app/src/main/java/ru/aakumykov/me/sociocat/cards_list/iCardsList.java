@@ -53,6 +53,7 @@ public interface iCardsList {
         void changeLayout(LayoutMode layoutMode);
 
         boolean actionModeIsActive();
+        void finishActionMode();
 
         void scrollToPosition(int position);
 
@@ -95,6 +96,8 @@ public interface iCardsList {
         List<DataItem> getSelectedItems();
 
         void setLayoutMode(LayoutMode currentLayoutMode);
+
+        void setItemIsNowDeleting(DataItem dataItem, boolean value);
     }
 
     interface iPresenter {
@@ -112,6 +115,7 @@ public interface iCardsList {
 
         void onDataItemClicked(DataItem dataItem);
         void onDataItemLongClicked(DataItem dataItem);
+
         void onLoadMoreClicked();
 
         void onListFiltered(CharSequence filterText, List<DataItem> filteredList);

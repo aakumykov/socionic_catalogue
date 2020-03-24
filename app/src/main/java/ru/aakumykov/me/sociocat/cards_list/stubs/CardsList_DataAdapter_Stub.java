@@ -123,6 +123,11 @@ public class CardsList_DataAdapter_Stub
     }
 
     @Override
+    public void setItemIsNowDeleting(DataItem dataItem, boolean value) {
+
+    }
+
+    @Override
     public Filter getFilter() {
         return null;
     }

@@ -18,4 +18,9 @@ public class Unknown_ViewHolder extends BasicViewHolder {
     public void setSelected(boolean isSelected) {
 
     }
+
+    @Override
+    public void setIsNowDeleting(boolean isNowDeleting) {
+
+    }
 }

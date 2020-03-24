@@ -194,31 +194,10 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     public void onDeleteSelectedItemsClicked() {
         List<DataItem> selectedItems = dataAdapter.getSelectedItems();
 
+        pageView.finishActionMode();
+
         for (DataItem dataItem : selectedItems)
             deleteCard(dataItem);
-    }
-
-    private void deleteCard(@NonNull DataItem dataItem) {
-
-        Card card = (Card) dataItem.getPayload();
-
-        pageView.setViewState(iCardsList.ViewState.PROGRESS, R.string.deleting_card, null);
-
-        DeleteCard_Helper.deleteCard(card.getKey(), new DeleteCard_Helper.iDeletionCallbacks() {
-            @Override
-            public void onCardDeleteSuccess(Card card) {
-                showSuccessViewState();
-                pageView.showToast(pageView.getString(R.string.card_deleted_long, card.getTitle()));
-                dataAdapter.removeItem(dataItem);
-            }
-
-            @Override
-            public void onCardDeleteError(String errorMsg) {
-                pageView.showToast(pageView.getString(R.string.error_deleting_card_long, card.getTitle()));
-                Log.e(TAG, errorMsg);
-            }
-        });
-
     }
 
     @Override
@@ -290,10 +269,6 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         return outputList;
     }
 
-//    private <T> List<T> extractObjectsFromDataItems(List<DataItem> dataItemsList) {
-//
-//    }
-
     private void getRandomList(iLoadListCallbacks callbacks) {
         List<DataItem> list = createRandomList();
 
@@ -347,5 +322,27 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     private void showErrorViewState(int messageId, String errorMessage) {
         pageView.setViewState(iCardsList.ViewState.ERROR, messageId, errorMessage);
+    }
+
+    private void deleteCard(@NonNull DataItem dataItem) {
+
+        Card card = (Card) dataItem.getPayload();
+
+        dataAdapter.setItemIsNowDeleting(dataItem, true);
+
+        DeleteCard_Helper.deleteCard(card.getKey(), new DeleteCard_Helper.iDeletionCallbacks() {
+            @Override
+            public void onCardDeleteSuccess(Card card) {
+                dataAdapter.removeItem(dataItem);
+                pageView.showToast(pageView.getString(R.string.card_deleted_long, card.getTitle()));
+            }
+
+            @Override
+            public void onCardDeleteError(String errorMsg) {
+                dataAdapter.setItemIsNowDeleting(dataItem, false);
+                pageView.showToast(pageView.getString(R.string.error_deleting_card_long, card.getTitle()));
+                Log.e(TAG, errorMsg);
+            }
+        });
     }
 }

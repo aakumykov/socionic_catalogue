@@ -86,6 +86,8 @@ public class CardsList_DataAdapter
 
         if (listItem instanceof DataItem) {
             viewHolder = (DataItem_ViewHolder) holder;
+
+            viewHolder.setIsNowDeleting(listItem.isNowDeleting());
         }
         else if (listItem instanceof LoadMoreItem) {
             viewHolder = (LoadMore_ViewHolder) holder;
@@ -203,7 +205,11 @@ public class CardsList_DataAdapter
 
     @Override
     public int getListSize() {
-        return itemsList.size();
+        int size = 0;
+        for (ListItem listItem : itemsList)
+            if (listItem instanceof DataItem)
+                size++;
+        return size;
     }
 
     @Override
@@ -307,6 +313,12 @@ public class CardsList_DataAdapter
     public void setLayoutMode(iCardsList.LayoutMode currentLayoutMode) {
         this.currentLayoutMode = currentLayoutMode;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void setItemIsNowDeleting(DataItem dataItem, boolean value) {
+        dataItem.setIsNowDeleting(value);
+        notifyItemChanged(itemsList.indexOf(dataItem));
     }
 
 

@@ -198,6 +198,14 @@ public class CardsList_View
     }
 
     @Override
+    public void finishActionMode() {
+        if (null != actionMode) {
+            actionMode.finish();
+            actionMode = null;
+        }
+    }
+
+    @Override
     public void scrollToPosition(int position) {
         recyclerView.scrollToPosition(position);
     }
@@ -386,12 +394,7 @@ public class CardsList_View
             actionMode = startSupportActionMode(actionModeCallback);
     }
 
-    private void finishActionMode() {
-        if (null != actionMode) {
-            actionMode.finish();
-            actionMode = null;
-        }
-    }
+
 
 
     // Внутренние классы

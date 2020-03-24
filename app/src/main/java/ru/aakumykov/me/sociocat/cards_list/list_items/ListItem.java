@@ -7,4 +7,8 @@ public abstract class ListItem {
     public abstract int compareTo(ListItem listItem);
 
     public abstract iCardsList.ItemType getItemType();
+
+    public abstract void setIsNowDeleting(boolean value);
+
+    public abstract boolean isNowDeleting();
 }
