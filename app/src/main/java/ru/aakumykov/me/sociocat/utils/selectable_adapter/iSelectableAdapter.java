@@ -10,7 +10,7 @@ public interface iSelectableAdapter {
 
     int getSelectedItemsCount();
 
-    Integer getSingleSelectedItemIndex();
+    boolean isSingleItemSelected();
 
     List<Integer> getSelectedIndexes();
 

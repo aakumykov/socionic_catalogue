@@ -21,8 +21,8 @@ public abstract class SelectableAdapter_Stub implements iSelectableAdapter {
     }
 
     @Override
-    public Integer getSingleSelectedItemIndex() {
-        return null;
+    public boolean isSingleItemSelected() {
+        return false;
     }
 
     @Override
