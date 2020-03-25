@@ -26,6 +26,7 @@ import ru.aakumykov.me.sociocat.card_show.CardShow_View;
 import ru.aakumykov.me.sociocat.cards_list.view_model.CardsList_ViewModel;
 import ru.aakumykov.me.sociocat.cards_list.view_model.CardsList_ViewModelFactory;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
 public class CardsList_View
@@ -128,6 +129,12 @@ public class CardsList_View
             default:
                 break;
         }
+
+        // Профиль пользователя
+        if (AuthSingleton.isLoggedIn())
+            menuInflater.inflate(R.menu.profile_in, menu);
+        else
+            menuInflater.inflate(R.menu.profile_out, menu);
 
         return super.onCreateOptionsMenu(menu);
     }

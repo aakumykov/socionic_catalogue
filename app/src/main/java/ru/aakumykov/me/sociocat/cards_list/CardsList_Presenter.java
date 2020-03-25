@@ -15,8 +15,11 @@ import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.stubs.CardsList_DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.cards_list.stubs.CardsList_ViewStub;
 import ru.aakumykov.me.sociocat.models.Card;
+import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
+import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.DeleteCard_Helper;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
 
@@ -34,6 +37,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     private iCardsList.LayoutMode currentLayoutMode;
 
     private iCardsSingleton cardsSingleton = CardsSingleton.getInstance();
+    private iUsersSingleton usersSingleton = UsersSingleton.getInstance();
 
 
     // iCardsList.iPresenter
@@ -157,20 +161,18 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public boolean canSelectAll() {
-        return true;
+        return usersSingleton.currentUserIsAdmin();
     }
 
     @Override
     public boolean canEditSelectedItem() {
         Integer index = dataAdapter.getSingleSelectedItemIndex();
-
         return null != index;
     }
 
     @Override
     public boolean canDeleteSelectedItem() {
-        // TODO: реализация
-        return true;
+        return usersSingleton.currentUserIsAdmin();
     }
 
     @Override
