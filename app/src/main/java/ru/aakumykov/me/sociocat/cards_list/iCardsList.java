@@ -72,12 +72,12 @@ public interface iCardsList {
         void appendList(List<DataItem> inputList);
 
         DataItem getDataItem(int position);
-        List<ListItem> getAllItems();
+        List<DataItem> getAllDataItems();
         DataItem getLastDataItem();
 
         void removeItem(ListItem listItem);
 
-        int getListSize();
+        int getDataItemsCount();
 
         void sortByName(SortingListener sortingListener);
         void sortByCount(SortingListener sortingListener);

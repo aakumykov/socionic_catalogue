@@ -20,7 +20,7 @@ public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder>
     }
 
     @Override
-    public int getSelectedItemCount() {
+    public int getSelectedItemsCount() {
         return selectedItemsIndexes.size();
     }
 

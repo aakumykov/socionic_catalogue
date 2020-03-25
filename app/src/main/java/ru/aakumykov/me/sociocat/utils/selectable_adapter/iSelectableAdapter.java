@@ -8,7 +8,7 @@ public interface iSelectableAdapter {
 
     boolean isMultipleItemsSelected();
 
-    int getSelectedItemCount();
+    int getSelectedItemsCount();
 
     Integer getSingleSelectedItemIndex();
 

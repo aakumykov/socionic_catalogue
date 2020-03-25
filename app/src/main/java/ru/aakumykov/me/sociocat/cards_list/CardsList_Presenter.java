@@ -15,7 +15,6 @@ import ru.aakumykov.me.sociocat.cards_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.cards_list.stubs.CardsList_DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.cards_list.stubs.CardsList_ViewStub;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.singletons.AuthSingleton;
 import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.UsersSingleton;
 import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
@@ -130,7 +129,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onLoadMoreClicked() {
-        //int scrollPosition = dataAdapter.getListSize() + 1;
+        //int scrollPosition = dataAdapter.getDataItemsCount() + 1;
 
         DataItem lastDataItem = dataAdapter.getLastDataItem();
 
@@ -177,8 +176,8 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onSelectAllClicked() {
-        dataAdapter.selectAll(dataAdapter.getListSize());
-        pageView.setViewState(iCardsList.ViewState.SELECTION, null, dataAdapter.getSelectedItemCount());
+        dataAdapter.selectAll(dataAdapter.getDataItemsCount());
+        pageView.setViewState(iCardsList.ViewState.SELECTION, null, dataAdapter.getSelectedItemsCount());
     }
 
     @Override
@@ -309,7 +308,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
     private void toggleItemSelection(DataItem dataItem) {
         dataAdapter.toggleSelection(dataAdapter.getPositionOf(dataItem));
 
-        int selectedItemsCount = dataAdapter.getSelectedItemCount();
+        int selectedItemsCount = dataAdapter.getSelectedItemsCount();
 
         if (0 == selectedItemsCount) {
             showSuccessViewState();

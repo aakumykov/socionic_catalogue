@@ -16,7 +16,7 @@ public abstract class SelectableAdapter_Stub implements iSelectableAdapter {
     }
 
     @Override
-    public int getSelectedItemCount() {
+    public int getSelectedItemsCount() {
         return 0;
     }
 

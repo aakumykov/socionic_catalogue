@@ -48,7 +48,7 @@ public class CardsList_DataAdapter_Stub
     }
 
     @Override
-    public List<ListItem> getAllItems() {
+    public List<DataItem> getAllDataItems() {
         return null;
     }
 
@@ -63,7 +63,7 @@ public class CardsList_DataAdapter_Stub
     }
 
     @Override
-    public int getListSize() {
+    public int getDataItemsCount() {
         return 0;
     }
 

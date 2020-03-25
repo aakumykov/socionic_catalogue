@@ -176,8 +176,12 @@ public class CardsList_DataAdapter
     }
 
     @Override
-    public List<ListItem> getAllItems() {
-        return itemsList;
+    public List<DataItem> getAllDataItems() {
+        List<DataItem> dataItemsList = new ArrayList<>();
+        for (ListItem listItem : itemsList)
+            if (listItem instanceof DataItem)
+                dataItemsList.add((DataItem) listItem);
+        return dataItemsList;
     }
 
     @Override
@@ -204,12 +208,8 @@ public class CardsList_DataAdapter
     }
 
     @Override
-    public int getListSize() {
-        int size = 0;
-        for (ListItem listItem : itemsList)
-            if (listItem instanceof DataItem)
-                size++;
-        return size;
+    public int getDataItemsCount() {
+        return getAllDataItems().size();
     }
 
     @Override
@@ -252,9 +252,9 @@ public class CardsList_DataAdapter
 
     @Override
     public boolean allItemsAreSelected() {
-        int itemsCount = getItemCount();
-        int selectedItemsCount = getSelectedItemCount();
-        return itemsCount > 0 && itemsCount == selectedItemsCount;
+        int dataItemsCount = getDataItemsCount();
+        int selectedItemsCount = getSelectedItemsCount();
+        return dataItemsCount == selectedItemsCount && dataItemsCount > 0;
     }
 
     @Override
