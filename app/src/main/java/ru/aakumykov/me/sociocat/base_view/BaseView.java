@@ -345,6 +345,11 @@ public abstract class BaseView extends AppCompatActivity implements iBaseView
     }
 
     @Override
+    public String getString(int stringResourceId, int substitutedMessage) {
+        return getResources().getString(stringResourceId, substitutedMessage);
+    }
+
+    @Override
     public String getString(int stringResourceId, String substitutedMessage) {
         return getResources().getString(stringResourceId, substitutedMessage);
     }
