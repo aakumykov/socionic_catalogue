@@ -161,17 +161,18 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public boolean canSelectAll() {
-        return isAdmin();
+        return usersSingleton.currentUserIsAdmin();
     }
 
     @Override
     public boolean canEditSelectedItem() {
-        return isAdmin();
+        Integer index = dataAdapter.getSingleSelectedItemIndex();
+        return null != index;
     }
 
     @Override
     public boolean canDeleteSelectedItem() {
-        return isAdmin();
+        return usersSingleton.currentUserIsAdmin();
     }
 
     @Override
@@ -323,10 +324,6 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     private void showErrorViewState(int messageId, String errorMessage) {
         pageView.setViewState(iCardsList.ViewState.ERROR, messageId, errorMessage);
-    }
-
-    private boolean isAdmin() {
-        return usersSingleton.currentUserIsAdmin();
     }
 
     private void deleteCard(@NonNull DataItem dataItem) {
