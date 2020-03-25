@@ -9,10 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.aakumykov.me.sociocat.R;
-import ru.aakumykov.me.sociocat.cards_list.iCardsList;
 import ru.aakumykov.me.sociocat.models.Card;
-import ru.aakumykov.me.sociocat.singletons.CardsSingleton;
-import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.template_of_list.list_items.DataItem;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_DataAdapter_Stub;
 import ru.aakumykov.me.sociocat.template_of_list.stubs.ItemsList_ViewStub;
@@ -257,7 +254,7 @@ public class ItemsList_Presenter implements iItemsList.iPresenter {
         List<DataItem> list = new ArrayList<>();
 
         for (int i=1; i<=randomSize; i++) {
-            String text = MyUtils.getString(
+            String text = MyUtils.getStringWithString(
                     pageView.getAppContext(),
                     R.string.LIST_TEMPLATE_item_name,
                     String.valueOf(MyUtils.random(min, max))

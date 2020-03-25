@@ -307,7 +307,7 @@ public class CardsGrid_View extends BaseView implements
     public <T> void setTitle(T title) {
 //        String titleString = "";
 //        if (title instanceof Integer) {
-//            titleString = getResources().getString((Integer)title);
+//            titleString = getResources().getStringWithStringResource((Integer)title);
 //        }
 //        else if (title instanceof String) {
 //            titleString = (String) title;

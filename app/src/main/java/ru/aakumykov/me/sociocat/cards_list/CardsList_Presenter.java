@@ -21,6 +21,8 @@ import ru.aakumykov.me.sociocat.singletons.iCardsSingleton;
 import ru.aakumykov.me.sociocat.singletons.iUsersSingleton;
 import ru.aakumykov.me.sociocat.utils.DeleteCard_Helper;
 import ru.aakumykov.me.sociocat.utils.MyUtils;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.MyDialogs;
+import ru.aakumykov.me.sociocat.utils.my_dialogs.iMyDialogs;
 
 public class CardsList_Presenter implements iCardsList.iPresenter {
 
@@ -192,12 +194,46 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
 
     @Override
     public void onDeleteSelectedItemsClicked() {
-        List<DataItem> selectedItems = dataAdapter.getSelectedItems();
 
-        pageView.finishActionMode();
+        String questionText = pageView.getString(
+                R.string.CARDS_GRID_delete_selected_cards_title,
+                dataAdapter.getSelectedItemsCount()
+        );
+
+        MyDialogs.selectedCardsDeleteDialog(
+                pageView.getActivity(),
+                dataAdapter.getSelectedItemsCount(),
+                new iMyDialogs.DeleteCallbacks() {
+                    @Override
+                    public void onCancelInDialog() {
+
+                    }
+
+                    @Override
+                    public void onNoInDialog() {
+
+                    }
+
+                    @Override
+                    public boolean onCheckInDialog() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onYesInDialog() {
+                        onDeleteSelectedCardsConfirmed();
+                    }
+                }
+        );
+    }
+
+    private void onDeleteSelectedCardsConfirmed() {
+        List<DataItem> selectedItems = dataAdapter.getSelectedItems();
 
         for (DataItem dataItem : selectedItems)
             deleteCard(dataItem);
+
+        pageView.finishActionMode();
     }
 
     @Override
@@ -293,7 +329,7 @@ public class CardsList_Presenter implements iCardsList.iPresenter {
         List<DataItem> list = new ArrayList<>();
 
         for (int i=1; i<=randomSize; i++) {
-            String text = MyUtils.getString(
+            String text = MyUtils.getStringWithString(
                     pageView.getAppContext(),
                     R.string.LIST_TEMPLATE_item_name,
                     String.valueOf(MyUtils.random(min, max))

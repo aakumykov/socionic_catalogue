@@ -249,7 +249,7 @@ public class CardsGrid_Presenter implements iCardsGrid.iPresenter
         MyDialogs.cardDeleteDialog(
                 pageView.getActivity(),
                 card.getTitle(),
-                new iMyDialogs.Delete() {
+                new iMyDialogs.DeleteCallbacks() {
                     @Override
                     public void onCancelInDialog() {
 

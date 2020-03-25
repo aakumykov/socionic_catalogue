@@ -148,7 +148,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         MyDialogs.commentDeleteDialog(
                 pageView.getActivity(),
                 comment.getText(),
-                new iMyDialogs.Delete() {
+                new iMyDialogs.DeleteCallbacks() {
                     @Override
                     public void onCancelInDialog() {
 
@@ -282,7 +282,7 @@ public class CardShow_Presenter implements iCardShow.iPresenter
         MyDialogs.cardDeleteDialog(
                 pageView.getActivity(),
                 currentCard.getTitle(),
-                new iMyDialogs.Delete() {
+                new iMyDialogs.DeleteCallbacks() {
                     @Override
                     public void onCancelInDialog() {
 

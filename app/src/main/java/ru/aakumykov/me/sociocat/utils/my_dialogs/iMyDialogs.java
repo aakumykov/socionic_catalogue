@@ -21,11 +21,11 @@ public interface iMyDialogs {
     }
 
 
-    interface Edit extends StringInputCallback {
+    interface EditCallbacks extends StringInputCallback {
 
     }
 
-    interface Delete extends StandardCallbacks {
+    interface DeleteCallbacks extends StandardCallbacks {
 
     }
 

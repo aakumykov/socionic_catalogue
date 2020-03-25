@@ -155,7 +155,7 @@ public class RegisterStep2_View extends BaseView implements
                 break;
 
             case SUCCESS:
-                String message = MyUtils.getString(this, R.string.REGISTER2_registration_success, R.string.app_name);
+                String message = MyUtils.getStringWithStringResource(this, R.string.REGISTER2_registration_success, R.string.app_name);
                 showToast(message);
                 goToMainPage();
                 break;

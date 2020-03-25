@@ -140,7 +140,7 @@ public class BackupService extends Service {
     private void createBackupDirs() {
         String dirName = date2string("yyyy-MM-dd_HH.mm.ss");
 
-        notifyAboutBackupProgress(MyUtils.getString(
+        notifyAboutBackupProgress(MyUtils.getStringWithString(
                 BackupService.this,
                 R.string.BACKUP_SERVICE_creating_dir,
                 dirName
@@ -225,7 +225,7 @@ public class BackupService extends Service {
 
 
     private void loadCollection(String collectionName) {
-        notifyAboutBackupProgress(MyUtils.getString(
+        notifyAboutBackupProgress(MyUtils.getStringWithString(
                 this,
                 R.string.BACKUP_SERVICE_loading_collection,
                 collectionName)
@@ -276,7 +276,7 @@ public class BackupService extends Service {
     private void loadCards() {
         String collectionName = Constants.CARDS_PATH;
 
-        notifyAboutBackupProgress(MyUtils.getString(
+        notifyAboutBackupProgress(MyUtils.getStringWithString(
                 this,
                 R.string.BACKUP_SERVICE_loading_collection,
                 collectionName)
@@ -319,7 +319,7 @@ public class BackupService extends Service {
     private void backupJSON(BackupElement backupElement) {
         String collectionName = backupElement.getCollectionName();
 
-        notifyAboutBackupProgress(MyUtils.getString(
+        notifyAboutBackupProgress(MyUtils.getStringWithString(
                 BackupService.this,
                 R.string.BACKUP_SERVICE_saving_collection,
                 collectionName
@@ -356,7 +356,7 @@ public class BackupService extends Service {
         String imageFileName = backupElement.getImageFileName();
         String cardKey = backupElement.getCardKey();
 
-        notifyAboutBackupProgress(MyUtils.getString(
+        notifyAboutBackupProgress(MyUtils.getStringWithString(
                 BackupService.this,
                 R.string.BACKUP_SERVICE_saving_image,
                 imageFileName
@@ -421,7 +421,7 @@ public class BackupService extends Service {
     }
 
     private void finishBackupWithSuccess() {
-        String message = MyUtils.getString(
+        String message = MyUtils.getStringWithString(
                 this,
                 R.string.BACKUP_SERVICE_all_collections_are_processed,
                 date2string()
@@ -732,7 +732,7 @@ public class BackupService extends Service {
     private void storeSuccessMessage(int messageId, @Nullable String insertedText) {
         String message = (null == insertedText) ?
                 MyUtils.getString(this, messageId) :
-                MyUtils.getString(this, messageId, insertedText);
+                MyUtils.getStringWithString(this, messageId, insertedText);
         backupSuccessList.add(message);
         Log.d(TAG, message);
     }
@@ -744,10 +744,10 @@ public class BackupService extends Service {
                 message = MyUtils.getString(this, messageId);
                 break;
             case 1:
-                message = MyUtils.getString(this, messageId, insertedTextPieces[0]);
+                message = MyUtils.getStringWithString(this, messageId, insertedTextPieces[0]);
                 break;
             default:
-                message = MyUtils.getString(this, messageId, insertedTextPieces);
+                message = MyUtils.getStringWithMultipleStrings(this, messageId, insertedTextPieces);
         }
         backupErrorsList.add(message);
         Log.e(TAG, message);

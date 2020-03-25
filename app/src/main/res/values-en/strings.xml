@@ -664,6 +664,8 @@
     <string name="LIST_TEMPLATE_loading_list">Loading list</string>
     <string name="card_deleted_long">Card «%1$s» is deleted</string>
     <string name="error_deleting_card_long">Error deleting card «%1$s»</string>
+    <string name="CARDS_GRID_delete_selected_cards_title">Delete selected cards?</string>
+    <string name="CARDS_GRID_delete_selected_cards_subtitle">%1$d cards</string>
     <!--    <string name="NOTIFICATIONS_new_comment_notification_message">From user %1$s</string>-->
 </resources>
 <!-- «%1$s» -->

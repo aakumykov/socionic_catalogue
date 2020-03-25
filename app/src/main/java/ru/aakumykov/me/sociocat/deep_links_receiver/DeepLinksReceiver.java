@@ -188,7 +188,7 @@ public class DeepLinksReceiver extends BaseView {
     private void processEmailSignIn_DeepLink(String deepLink) {
 
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_USER, Context.MODE_PRIVATE);
-        String storedEmail = sharedPreferences.getString(Constants.KEY_STORED_EMAIL, "");
+        String storedEmail = sharedPreferences.getStringWithStringResource(Constants.KEY_STORED_EMAIL, "");
 
         if (TextUtils.isEmpty(storedEmail)) {
             continueWithError(R.string.DEEP_LINKS_RECEIVER_login_error, "There is no stored email to complete sign in process");
